@@ -815,7 +815,7 @@ class Windows(OperatingSystem):
             self.quit_application(aid)
             del self._apps[aid]
 
-    def quit_application(self, app_id: str = None, send_keys: bool = False) -> None:
+    def quit_application(self, app_id: int = None, send_keys: bool = False) -> None:
         """Quit an application by application id or
         active application if `app_id` is None.
 
@@ -1650,6 +1650,43 @@ class Windows(OperatingSystem):
             )
             return None
 
+        element_dict = self._prepare_element_dict(element)
+        element_info = element.element_info
+        element_attributes = [a for a in dir(element_info) if not a.startswith("_")]
+
+        for attr in element_attributes:
+            try:
+                attr_value = getattr(element_info, attr)
+                if attr == "parent":
+                    element_dict["parent"] = getattr(attr_value, "control_type", None)
+                else:
+                    element_dict[attr] = (
+                        attr_value() if callable(attr_value) else str(attr_value)
+                    )
+            except TypeError:
+                pass
+            except NotImplementedError:
+                pass
+            except COMError as ce:
+                self.logger.info("Got COM error: %s", str(ce))
+
+        return self._clean_element_dict(element_dict)
+
+    def _prepare_element_dict(self, element):
+        element_dict = {}
+
+        element_dict["object"] = element
+        try:
+            element_dict["legacy"] = (
+                element.legacy_properties()
+                if hasattr(element, "legacy_properties")
+                else None
+            )
+        except AttributeError:
+            pass
+        return element_dict
+
+    def _clean_element_dict(self, element_dict):
         attributes_to_remove = [
             # "automation_id",
             "children",
@@ -1678,43 +1715,8 @@ class Windows(OperatingSystem):
             # "visible",
         ]
 
-        element_dict = {}
-        element_info = element.element_info
-        element_attributes = [a for a in dir(element_info) if not a.startswith("_")]
-
-        for attr in element_attributes:
-            try:
-                attr_value = getattr(element_info, attr)
-                if attr == "parent":
-                    element_dict["parent"] = getattr(attr_value, "control_type", None)
-                else:
-                    element_dict[attr] = (
-                        attr_value() if callable(attr_value) else str(attr_value)
-                    )
-            except TypeError:
-                pass
-            except COMError as ce:
-                self.logger.info("Got COM error: %s", str(ce))
-
         for attr in attributes_to_remove:
             element_dict.pop(attr, None)
-
-        element_dict["legacy"] = (
-            element.legacy_properties()
-            if hasattr(element, "legacy_properties")
-            else None
-        )
-        element_dict["object"] = element
-        # child_id = (
-        #     f"[{element_dict['legacy']['ChildId']}]"
-        #     if (element_dict["legacy"] and element_dict["legacy"]["ChildId"] > 0)
-        #     else ""
-        # )
-        # element_dict[
-        #     "xpath"
-        # ] = f"/{element_dict['parent']}/{element_dict['control_type']}{child_id}"
-        # if "Window" not in element_dict["xpath"]:
-        #     element_dict["xpath"] = f"/Window{element_dict['xpath']}"
 
         return element_dict
 

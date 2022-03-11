@@ -41,11 +41,13 @@ def to_configuration_type(value):
 class Process:
     """A library for interacting with Control Room (CR) Process API endpoints.
 
-    See https://robocorp.com/docs/control-room/operating-workforce for information
-    about process run, step run and work item states.
+    See `Operating Workforce`_ for information about process run, step run and work
+    item states.
 
-    See https://robocorp.com/docs/control-room/apis-and-webhooks for information
-    about Control Room APIs.
+    See `APIs and webhooks`_ for information about Control Room APIs.
+
+    .. _Operating Workforce: https://robocorp.com/docs/control-room/operating-workforce
+    .. _APIs and webhooks: https://robocorp.com/docs/control-room/apis-and-webhooks
 
     **Examples**
 
@@ -386,6 +388,40 @@ class Process:
         )
 
     @keyword(tags=["process", "get", "work item"])
+    def list_process_run_work_items(
+        self,
+        process_run_id: str = None,
+        process_id: str = None,
+        include_data: bool = False,
+        item_state: str = None,
+    ):
+        """List work items belonging to a specific process run
+
+        :param process_run_id: specific process step run to which items
+         belongs to
+        :param process_id: specific process to which items belongs to
+        :param include_data: include work item payload and files in
+         the response (default False)
+        :param item_state: state of work items to return (default all)
+        """
+        response = self.http.session_less_get(
+            url=f"{self.process_api(process_id)}/runs/{process_run_id}/work-items",
+            headers=self.headers,
+            params={
+                "includeData": str(include_data).lower(),
+                "sortBy": "createTs",
+                "sortOrder": "desc",
+            },
+        )
+        response.raise_for_status()
+        data = response.json()["data"]
+        return (
+            [d for d in data if d["state"].upper() == item_state.upper()]
+            if item_state
+            else data
+        )
+
+    @keyword(tags=["process", "get", "work item"])
     def get_work_item(
         self, workitem_id: str, include_data: bool = False, process_id: str = None
     ):
@@ -458,15 +494,22 @@ class Process:
 
     @keyword(tags=["process", "get", "runs"])
     def get_process_run_status(
-        self, process_run_id: str, process_id: Optional[str] = None
+        self,
+        process_run_id: str,
+        step_run_id: Optional[str] = None,
+        process_id: Optional[str] = None,
     ):
         """Get a process run status by run id
 
         :param process_run_id: id of the process run
+        :param step_run_id: id of the process step run
         :param process_id: specific process to which runs belongs to
         """
+        request_url = f"{self.process_api(process_id)}/runs/{process_run_id}"
+        if step_run_id:
+            request_url = f"{request_url}/robotRuns/{step_run_id}"
         response = self.http.session_less_get(
-            url=f"{self.process_api(process_id)}/runs/{process_run_id}",
+            url=request_url,
             headers=self.headers,
         )
         response.raise_for_status()

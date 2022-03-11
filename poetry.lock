@@ -154,14 +154,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.9"
+version = "1.21.17"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.9,<1.25.0"
+botocore = ">=1.24.17,<1.25.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -170,7 +170,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.9"
+version = "1.24.17"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -307,7 +307,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "dnspython"
-version = "2.2.0"
+version = "2.2.1"
 description = "DNS toolkit"
 category = "main"
 optional = false
@@ -380,13 +380,14 @@ termcolor = "*"
 
 [[package]]
 name = "fpdf2"
-version = "2.5.0"
+version = "2.5.1"
 description = "Simple PDF generation for Python"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
+defusedxml = "*"
 Pillow = "*"
 
 [[package]]
@@ -403,7 +404,7 @@ six = ">=1.8.0"
 
 [[package]]
 name = "google-api-core"
-version = "2.5.0"
+version = "2.7.1"
 description = "Google API client core library"
 category = "main"
 optional = false
@@ -424,14 +425,14 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.39.0"
+version = "2.40.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-google-api-core = ">=1.21.0,<3.0.0dev"
+google-api-core = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev"
 google-auth = ">=1.16.0,<3.0.0dev"
 google-auth-httplib2 = ">=0.1.0"
 httplib2 = ">=0.15.0,<1dev"
@@ -486,45 +487,45 @@ tool = ["click (>=6.0.0)"]
 
 [[package]]
 name = "google-cloud-core"
-version = "2.2.2"
+version = "2.2.3"
 description = "Google Cloud API client core library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-google-api-core = ">=1.21.0,<3.0.0dev"
-google-auth = ">=1.24.0,<3.0dev"
+google-api-core = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev"
+google-auth = ">=1.25.0,<3.0dev"
 
 [package.extras]
 grpc = ["grpcio (>=1.8.2,<2.0dev)"]
 
 [[package]]
 name = "google-cloud-language"
-version = "2.4.0"
+version = "2.4.1"
 description = "Google Cloud Natural Language API client library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-google-api-core = {version = ">=1.28.0,<3.0.0dev", extras = ["grpc"]}
-proto-plus = ">=1.10.0"
+google-api-core = {version = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev", extras = ["grpc"]}
+proto-plus = ">=1.15.0"
 
 [package.extras]
 libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-speech"
-version = "2.13.0"
+version = "2.13.1"
 description = "Google Cloud Speech API client library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-google-api-core = {version = ">=1.28.0,<3.0.0dev", extras = ["grpc"]}
-proto-plus = ">=1.4.0"
+google-api-core = {version = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev", extras = ["grpc"]}
+proto-plus = ">=1.15.0"
 
 [package.extras]
 libcst = ["libcst (>=0.2.5)"]
@@ -548,54 +549,54 @@ six = "*"
 
 [[package]]
 name = "google-cloud-texttospeech"
-version = "2.10.1"
+version = "2.11.0"
 description = "Google Cloud Text-to-Speech API client library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-google-api-core = {version = ">=1.28.0,<3.0.0dev", extras = ["grpc"]}
-proto-plus = ">=1.4.0"
+google-api-core = {version = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev", extras = ["grpc"]}
+proto-plus = ">=1.15.0"
 
 [[package]]
 name = "google-cloud-translate"
-version = "3.7.1"
+version = "3.7.2"
 description = "Google Cloud Translation API client library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-google-api-core = {version = ">=1.28.0,<3.0.0dev", extras = ["grpc"]}
+google-api-core = {version = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev", extras = ["grpc"]}
 google-cloud-core = ">=1.3.0,<3.0.0dev"
-proto-plus = ">=0.4.0"
+proto-plus = ">=1.15.0"
 
 [[package]]
 name = "google-cloud-videointelligence"
-version = "2.6.0"
+version = "2.6.1"
 description = "Google Cloud Video Intelligence API client library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-google-api-core = {version = ">=1.28.0,<3.0.0dev", extras = ["grpc"]}
-proto-plus = ">=1.10.0"
+google-api-core = {version = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev", extras = ["grpc"]}
+proto-plus = ">=1.15.0"
 
 [package.extras]
 libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-vision"
-version = "2.7.0"
+version = "2.7.1"
 description = "Cloud Vision API API client library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-google-api-core = {version = ">=1.28.0,<3.0.0dev", extras = ["grpc"]}
+google-api-core = {version = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev", extras = ["grpc"]}
 proto-plus = ">=1.15.0"
 
 [package.extras]
@@ -614,7 +615,7 @@ testing = ["pytest"]
 
 [[package]]
 name = "google-resumable-media"
-version = "2.3.0"
+version = "2.3.2"
 description = "Utilities for Google Media Downloads and Resumable Uploads"
 category = "main"
 optional = false
@@ -1001,7 +1002,7 @@ numpy = ">=1.13.3"
 
 [[package]]
 name = "opencv-python-headless"
-version = "4.5.5.62"
+version = "4.5.5.64"
 description = "Wrapper package for OpenCV python bindings."
 category = "main"
 optional = false
@@ -1408,7 +1409,7 @@ python-versions = "*"
 
 [[package]]
 name = "pywebview"
-version = "3.6.1"
+version = "3.6.2"
 description = "Build GUI for your Python program with JavaScript, HTML, and CSS."
 category = "main"
 optional = false
@@ -1667,7 +1668,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "12.8.2"
+version = "12.9.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -2408,12 +2409,12 @@ black = [
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.9-py3-none-any.whl", hash = "sha256:32080e2d956b222f36b76f8fec532ec237ddb4a935dd1c9bb79c759fbe4a5868"},
-    {file = "boto3-1.21.9.tar.gz", hash = "sha256:bd7c71274e9257596879f99cff3d0f531b801e567e509b5e3d613bd2033a7279"},
+    {file = "boto3-1.21.17-py3-none-any.whl", hash = "sha256:b01d29305527fe8754a0c5847c0431ec677dca34069aaed9429ff178826ab366"},
+    {file = "boto3-1.21.17.tar.gz", hash = "sha256:a235c422239d1b468924b37faa95f5750c6abd43651fe7deb3976e10a331c991"},
 ]
 botocore = [
-    {file = "botocore-1.24.9-py3-none-any.whl", hash = "sha256:c44758c487df7a357c4a103d959962d78e225d1ab6c9eeda4c77f79a410ccd19"},
-    {file = "botocore-1.24.9.tar.gz", hash = "sha256:8d41deb25e585b0d7b6ee8547990d5e95562f1dc5d3127af58459450b25c13c7"},
+    {file = "botocore-1.24.17-py3-none-any.whl", hash = "sha256:e61b9e6d0d5e384f8135211f05fc05694571505390293d939a9688ac08d4f62a"},
+    {file = "botocore-1.24.17.tar.gz", hash = "sha256:29212b4be640efc047665650fee474357e884725a3e2a9bc029bca46a6ef0853"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2533,8 +2534,8 @@ defusedxml = [
     {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
 ]
 dnspython = [
-    {file = "dnspython-2.2.0-py3-none-any.whl", hash = "sha256:081649da27ced5e75709a1ee542136eaba9842a0fe4c03da4fb0a3d3ed1f3c44"},
-    {file = "dnspython-2.2.0.tar.gz", hash = "sha256:e79351e032d0b606b98d38a4b0e6e2275b31a5b85c873e587cc11b73aca026d6"},
+    {file = "dnspython-2.2.1-py3-none-any.whl", hash = "sha256:a851e51367fb93e9e1361732c1d60dab63eff98712e503ea7d92e6eccb109b4f"},
+    {file = "dnspython-2.2.1.tar.gz", hash = "sha256:0f7569a4a6ff151958b64304071d370daa3243d15941a7beedf0c9fe5105603e"},
 ]
 docutils = [
     {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},
@@ -2552,20 +2553,20 @@ fire = [
     {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
 ]
 fpdf2 = [
-    {file = "fpdf2-2.5.0-py2.py3-none-any.whl", hash = "sha256:f3dd5e444f0ee435fff35cd1c10141a1f7ae49db214c9402e0829285eac06e6b"},
-    {file = "fpdf2-2.5.0.tar.gz", hash = "sha256:a171cfd49d71fb43f038341225e3506fa6bf42a133e21c44a0612e527879ad67"},
+    {file = "fpdf2-2.5.1-py2.py3-none-any.whl", hash = "sha256:59c54a8b2a9fed71cbf81d9e59d5921258cb01b25532db47ae4f01b4759e558b"},
+    {file = "fpdf2-2.5.1.tar.gz", hash = "sha256:602f6485ef0156ffa1b39bc83ee5ca00c88d32e5be8651e6ade1a69b825a677e"},
 ]
 furl = [
     {file = "furl-2.1.3-py2.py3-none-any.whl", hash = "sha256:9ab425062c4217f9802508e45feb4a83e54324273ac4b202f1850363309666c0"},
     {file = "furl-2.1.3.tar.gz", hash = "sha256:5a6188fe2666c484a12159c18be97a1977a71d632ef5bb867ef15f54af39cc4e"},
 ]
 google-api-core = [
-    {file = "google-api-core-2.5.0.tar.gz", hash = "sha256:f33863a6709651703b8b18b67093514838c79f2b04d02aa501203079f24b8018"},
-    {file = "google_api_core-2.5.0-py2.py3-none-any.whl", hash = "sha256:7d030edbd3a0e994d796e62716022752684e863a6df9864b6ca82a1616c2a5a6"},
+    {file = "google-api-core-2.7.1.tar.gz", hash = "sha256:b0fa577e512f0c8e063386b974718b8614586a798c5894ed34bedf256d9dae24"},
+    {file = "google_api_core-2.7.1-py3-none-any.whl", hash = "sha256:6be1fc59e2a7ba9f66808bbc22f976f81e4c3e7ab20fa0620ce42686288787d0"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.39.0.tar.gz", hash = "sha256:401169215ecafb5afb683d3fe0e43c059eb625c71fea1929f16403dda72a2dc1"},
-    {file = "google_api_python_client-2.39.0-py2.py3-none-any.whl", hash = "sha256:69c73c2e206995839b2145255e8348bfb28ad825fae4c01e9db36d5856f0c770"},
+    {file = "google-api-python-client-2.40.0.tar.gz", hash = "sha256:080d4be6c66aa95fb530916844cb2601645daf5e5a1ce8d2bc57b8c72f1c7cf6"},
+    {file = "google_api_python_client-2.40.0-py2.py3-none-any.whl", hash = "sha256:bf969a84cf882958999cf6de35928bf5ae3957637d5842060798e5d39b0ba1e5"},
 ]
 google-auth = [
     {file = "google-auth-2.6.0.tar.gz", hash = "sha256:ad160fc1ea8f19e331a16a14a79f3d643d813a69534ba9611d2c80dc10439dad"},
@@ -2580,36 +2581,36 @@ google-auth-oauthlib = [
     {file = "google_auth_oauthlib-0.4.6-py2.py3-none-any.whl", hash = "sha256:3f2a6e802eebbb6fb736a370fbf3b055edcb6b52878bf2f26330b5e041316c73"},
 ]
 google-cloud-core = [
-    {file = "google-cloud-core-2.2.2.tar.gz", hash = "sha256:7d19bf8868b410d0bdf5a03468a3f3f2db233c0ee86a023f4ecc2b7a4b15f736"},
-    {file = "google_cloud_core-2.2.2-py2.py3-none-any.whl", hash = "sha256:d9cffaf86df6a876438d4e8471183bbe404c9a15de9afe60433bc7dce8cb4252"},
+    {file = "google-cloud-core-2.2.3.tar.gz", hash = "sha256:89d2f7189bc6dc74de128d423ea52cc8719f0a5dbccd9ca80433f6504a20255c"},
+    {file = "google_cloud_core-2.2.3-py2.py3-none-any.whl", hash = "sha256:a423852f4c36622376c8f0be509b67533690e061062368b763b92694c4ee06a7"},
 ]
 google-cloud-language = [
-    {file = "google-cloud-language-2.4.0.tar.gz", hash = "sha256:66a9f0be95df58611cfb288898d1911945d524688dcc615e3129a39fb333b901"},
-    {file = "google_cloud_language-2.4.0-py2.py3-none-any.whl", hash = "sha256:2c0623e5c8f74640e10b80bfe46364231ff6df97a9c33feefd6eecc5cb706ca1"},
+    {file = "google-cloud-language-2.4.1.tar.gz", hash = "sha256:061410e1067b19b69c8e92cb8392d79b583922120c937b49743ac764baaeb939"},
+    {file = "google_cloud_language-2.4.1-py2.py3-none-any.whl", hash = "sha256:de0797286a41a6307439d509b9e22c3f886ca545c376381ce1560bb465da2798"},
 ]
 google-cloud-speech = [
-    {file = "google-cloud-speech-2.13.0.tar.gz", hash = "sha256:34eda8c55b336e6d8a6223763429f779d232071f84fbeb2db494e065dff25f34"},
-    {file = "google_cloud_speech-2.13.0-py2.py3-none-any.whl", hash = "sha256:f6c7a3886526f4faba12d4889f0c69ebc6489b3dbc4ea7b65b81cfa6f9e9bcb1"},
+    {file = "google-cloud-speech-2.13.1.tar.gz", hash = "sha256:2718480b838cb178dd258343a261219873d40b3bde152d287835ac5ffc1de730"},
+    {file = "google_cloud_speech-2.13.1-py2.py3-none-any.whl", hash = "sha256:77af160d53933bf35d637e18f193c8ab57505120b3aabc089a7d6c80801056e0"},
 ]
 google-cloud-storage = [
     {file = "google-cloud-storage-1.44.0.tar.gz", hash = "sha256:29edbfeedd157d853049302bf5d104055c6f0cb7ef283537da3ce3f730073001"},
     {file = "google_cloud_storage-1.44.0-py2.py3-none-any.whl", hash = "sha256:cd4a223e9c18d771721a85c98a9c01b97d257edddff833ba63b7b1f0b9b4d6e9"},
 ]
 google-cloud-texttospeech = [
-    {file = "google-cloud-texttospeech-2.10.1.tar.gz", hash = "sha256:e6e16d1ea649828b9406090636a481150ad6694d869b4ea27038cac79ec763de"},
-    {file = "google_cloud_texttospeech-2.10.1-py2.py3-none-any.whl", hash = "sha256:3d13dc93549fde509beefaf162344a6f21521833800992d312bcf0b8f3736d70"},
+    {file = "google-cloud-texttospeech-2.11.0.tar.gz", hash = "sha256:50948fddaf46ea4d5aacca68878feb5ab9d1e2062d3d6e9de8b1b05ae9395868"},
+    {file = "google_cloud_texttospeech-2.11.0-py2.py3-none-any.whl", hash = "sha256:ed902c1ac5dff41153106f08a440d8f6072a55e096f9fc070a8b2c46fab35aa8"},
 ]
 google-cloud-translate = [
-    {file = "google-cloud-translate-3.7.1.tar.gz", hash = "sha256:c788122d5368dae93ddc65a9bdc3ccdb47f4809d52df1fc155ed77a0d2296b46"},
-    {file = "google_cloud_translate-3.7.1-py2.py3-none-any.whl", hash = "sha256:7e86535bebe7d8b10affa234c54082a06ed8a0c55cba1832e520d458bbbba1d9"},
+    {file = "google-cloud-translate-3.7.2.tar.gz", hash = "sha256:89c646df71bf9e88a2f55d2bb074c6fd07bc70a0d50df01244acb65d160ce588"},
+    {file = "google_cloud_translate-3.7.2-py2.py3-none-any.whl", hash = "sha256:e7cefdef56daaabc8465b53891105e003252517693085bdff9f480e1913f8e24"},
 ]
 google-cloud-videointelligence = [
-    {file = "google-cloud-videointelligence-2.6.0.tar.gz", hash = "sha256:6e590d31d87d7a144cf6c89d8066a3224ac782b2424fdea1cc6de7554d03068e"},
-    {file = "google_cloud_videointelligence-2.6.0-py2.py3-none-any.whl", hash = "sha256:28aa488ef9f75021f8d1644cb774aa77e2f13488342b1358442a245d4dfe7ddf"},
+    {file = "google-cloud-videointelligence-2.6.1.tar.gz", hash = "sha256:a751d7171511b346b138daea1da865fd23ef58dda684086f25e3c53b0cd14787"},
+    {file = "google_cloud_videointelligence-2.6.1-py2.py3-none-any.whl", hash = "sha256:5be36b7a2ec648f1505c3ef763b059bcd81ead5b779b5229f3874d2fcfb201e0"},
 ]
 google-cloud-vision = [
-    {file = "google-cloud-vision-2.7.0.tar.gz", hash = "sha256:6a7b69285e9e807b726b883db0ab902d07a9cf54112d0e8b8827697d806c0e1f"},
-    {file = "google_cloud_vision-2.7.0-py2.py3-none-any.whl", hash = "sha256:291d82023519076151ca45a74e3b3f33bd46136d85de7654f79d8d801b4397d3"},
+    {file = "google-cloud-vision-2.7.1.tar.gz", hash = "sha256:4f2f340bbdcadff4de6ec7521e29e6a76cbc4ca80e7eda93e4f20369fab51a03"},
+    {file = "google_cloud_vision-2.7.1-py2.py3-none-any.whl", hash = "sha256:b500e87f8263206b2a2825ce5e13f5c6354b9497403c9ef6b3058eed6e170f54"},
 ]
 google-crc32c = [
     {file = "google-crc32c-1.3.0.tar.gz", hash = "sha256:276de6273eb074a35bc598f8efbc00c7869c5cf2e29c90748fccc8c898c244df"},
@@ -2657,8 +2658,8 @@ google-crc32c = [
     {file = "google_crc32c-1.3.0-pp37-pypy37_pp73-win_amd64.whl", hash = "sha256:7f6fe42536d9dcd3e2ffb9d3053f5d05221ae3bbcefbe472bdf2c71c793e3183"},
 ]
 google-resumable-media = [
-    {file = "google-resumable-media-2.3.0.tar.gz", hash = "sha256:1a7dce5790b04518edc02c2ce33965556660d64957106d66a945086e2b642572"},
-    {file = "google_resumable_media-2.3.0-py2.py3-none-any.whl", hash = "sha256:36dc2f7201ee1cb360ef502187aa4e1f2b6ec4467fcee92e08a8cf165e36f587"},
+    {file = "google-resumable-media-2.3.2.tar.gz", hash = "sha256:06924e8b1e79f158f0202e7dd151ad75b0ea9d59b997c850f56bdd4a5a361513"},
+    {file = "google_resumable_media-2.3.2-py2.py3-none-any.whl", hash = "sha256:3c13f84813861ac8f5b6371254bdd437076bf1f3bac527a9f3fd123a70166f52"},
 ]
 googleapis-common-protos = [
     {file = "googleapis-common-protos-1.55.0.tar.gz", hash = "sha256:53eb313064738f45d5ac634155ae208e121c963659627b90dfcb61ef514c03e1"},
@@ -3083,13 +3084,13 @@ opencv-python-headless = [
     {file = "opencv_python_headless-4.5.2.54-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:4735a717b770c5c08d267461bdfb8c5f4c9faa82b3fbb1a3ef01bfd0beaf943b"},
     {file = "opencv_python_headless-4.5.2.54-cp39-cp39-win32.whl", hash = "sha256:5312bed3107e35030cfddc6e6e943985f22d165651558a0929a13925e3e154e8"},
     {file = "opencv_python_headless-4.5.2.54-cp39-cp39-win_amd64.whl", hash = "sha256:32303224c4ce8cd362164f90c32bf95bbf131262611d8fe7c061baf73d2d6f05"},
-    {file = "opencv-python-headless-4.5.5.62.tar.gz", hash = "sha256:12aa335156adf62efdaa6dc5966d6c3415a7e2834d336e4f10ee5fccc65202c8"},
-    {file = "opencv_python_headless-4.5.5.62-cp36-abi3-macosx_10_15_x86_64.whl", hash = "sha256:a4b21d055036460e2e1f5d97809c299c21790c59fb382fa2b9f6ef6113a97a68"},
-    {file = "opencv_python_headless-4.5.5.62-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:359989d3aeb7b5d01f7f2f0445d448260b955274b7b1803f38e983eb85431e1f"},
-    {file = "opencv_python_headless-4.5.5.62-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bf84d8e98f6bf38f07fa0ef3a287e087e42fc0d5174ce05292ef322a96c1b4dc"},
-    {file = "opencv_python_headless-4.5.5.62-cp36-abi3-win32.whl", hash = "sha256:d53f70229d23cd0e54de5b8730a79ae92d3d874eedda8c1effb376aa5a4e6ea6"},
-    {file = "opencv_python_headless-4.5.5.62-cp36-abi3-win_amd64.whl", hash = "sha256:e8a8c02ee060ae30a31be27fb65527c9698a6aa0fec967b49d6e56ea4473d6be"},
-    {file = "opencv_python_headless-4.5.5.62-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:5c716001e76ca356d775875f82576c310e9d7cd38d3979a2616eea5e44c8eccd"},
+    {file = "opencv-python-headless-4.5.5.64.tar.gz", hash = "sha256:c3c2dda44d601757a508b07d628537c49f31223ad4edd0f747a70d4c852a7b98"},
+    {file = "opencv_python_headless-4.5.5.64-cp36-abi3-macosx_10_15_x86_64.whl", hash = "sha256:62e31878641a8f96e773118d1eea9f34bdda87c9990a0faab04ebaafb5ae015c"},
+    {file = "opencv_python_headless-4.5.5.64-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:567a54c1919bcf5b3d20a9830e3c511e57134de8def286ce137c3544a892f98c"},
+    {file = "opencv_python_headless-4.5.5.64-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3f330468c29882dbbec5af25695c5e575572c6b855cb0f9fe53e14116fd46bfc"},
+    {file = "opencv_python_headless-4.5.5.64-cp36-abi3-win32.whl", hash = "sha256:4bdf982574bf2fefc5f82c86df7cb42e56ad627874c7c0f4d94ecf4ae8885304"},
+    {file = "opencv_python_headless-4.5.5.64-cp36-abi3-win_amd64.whl", hash = "sha256:a60e9ff48854ec37be391e19dd634883cc26c2f0f814e5325b3deca33420912c"},
+    {file = "opencv_python_headless-4.5.5.64-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:ca4f013fa958f60fb2327fe87e6127c1ac0ab536890b1d4b00847f417b7af1ba"},
 ]
 openpyxl = [
     {file = "openpyxl-3.0.9-py2.py3-none-any.whl", hash = "sha256:8f3b11bd896a95468a4ab162fc4fcd260d46157155d1f8bfaabb99d88cfcf79f"},
@@ -3422,8 +3423,8 @@ pytz = [
     {file = "pytz-2021.3.tar.gz", hash = "sha256:acad2d8b20a1af07d4e4c9d2e9285c5ed9104354062f275f3fcd88dcef4f1326"},
 ]
 pywebview = [
-    {file = "pywebview-3.6.1-py3-none-any.whl", hash = "sha256:353d2ba16082527d74fa8809991a98b35dc7da75ab2fd2d7d157956116a5022d"},
-    {file = "pywebview-3.6.1.tar.gz", hash = "sha256:7c286451f69f5344abda158cbfdf601bad373e03c607204161d9eddd073a2998"},
+    {file = "pywebview-3.6.2-py3-none-any.whl", hash = "sha256:43ec12cf720cc018a64c2234fef4f383737299237e22c73b152d1da62284c5da"},
+    {file = "pywebview-3.6.2.tar.gz", hash = "sha256:5f52f30a8df3b635506ee3ed744c281b60537085f052f22cb5f9506084ca3f25"},
 ]
 pywin32 = [
     {file = "pywin32-303-cp310-cp310-win32.whl", hash = "sha256:6fed4af057039f309263fd3285d7b8042d41507343cd5fa781d98fcc5b90e8bb"},
