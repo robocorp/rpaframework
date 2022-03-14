@@ -162,7 +162,11 @@ class JSON:
 
     @keyword("Save JSON to file")
     def save_json_to_file(
-        self, doc: JSONType, filename: str, indent: Optional[int] = None, encoding="utf-8"
+        self,
+        doc: JSONType,
+        filename: str,
+        indent: Optional[int] = None,
+        encoding="utf-8",
     ) -> None:
         """Save a JSON serializable object or a string containg
         a JSON value into a file.
@@ -260,7 +264,9 @@ class JSON:
         return doc
 
     @keyword("Get value from JSON")
-    def get_value_from_json(self, doc: JSONType, expr: str, default: Optional[Any] = None) -> str:
+    def get_value_from_json(
+        self, doc: JSONType, expr: str, default: Optional[Any] = None
+    ) -> str:
         """Get a single value from a JSON serializable object that matches the given expression.
 
         Raises a ValueError if there is more than one match.
