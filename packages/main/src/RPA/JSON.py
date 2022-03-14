@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 
 from jsonpath_ng import Index, Fields
 from jsonpath_ng.ext import parse
@@ -162,7 +162,7 @@ class JSON:
 
     @keyword("Save JSON to file")
     def save_json_to_file(
-        self, doc: JSONType, filename: str, indent: int = None, encoding="utf-8"
+        self, doc: JSONType, filename: str, indent: Optional[int] = None, encoding="utf-8"
     ) -> None:
         """Save a JSON serializable object or a string containg
         a JSON value into a file.
@@ -171,7 +171,6 @@ class JSON:
         :param filename: path to output file
         :param indent: if given this value is used for json file indent
         :param encoding: file character encoding
-        :return: None
 
         Example:
 
@@ -261,7 +260,7 @@ class JSON:
         return doc
 
     @keyword("Get value from JSON")
-    def get_value_from_json(self, doc: JSONType, expr: str, default: Any = None) -> str:
+    def get_value_from_json(self, doc: JSONType, expr: str, default: Optional[Any] = None) -> str:
         """Get a single value from a JSON serializable object that matches the given expression.
 
         Raises a ValueError if there is more than one match.
