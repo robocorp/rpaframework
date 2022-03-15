@@ -141,6 +141,10 @@ class ElementNotFound(ValueError):
     """No matching elements were found."""
 
 
+class JavaWindowNotFound(ValueError):
+    """No active Java window were found."""
+
+
 class InvalidLocatorError(AttributeError):
     """Invalid locator string."""
 
@@ -378,6 +382,7 @@ class JavaAccessBridge:
         self.refresh_counter = 1
         self.display_scale_factor = ScalingFactor
         self.ignore_callbacks = ignore_callbacks
+        self.pid = None
 
     def _initialize(self):
         pipe = queue.Queue()
@@ -449,7 +454,7 @@ class JavaAccessBridge:
         while time.time() <= end_time:
             start = time.time()
             try:
-                self.jab_wrapper.switch_window_by_title(title)
+                self.pid = self.jab_wrapper.switch_window_by_title(title)
                 window_found = True
                 break
             except Exception:  # pylint: disable=broad-except
@@ -996,3 +1001,12 @@ class JavaAccessBridge:
             for i in range(0, len(table_elements), columnCount)
         ]
         return table_rows
+
+    @keyword
+    def close_java_window(self):
+        """Close active Java window which has been accessed
+        via ```Select Window`` keyword.
+        """
+        if not self.pid:
+            raise JavaWindowNotFound()
+        os.system(f"taskkill /F /T /PID {self.pid}")
