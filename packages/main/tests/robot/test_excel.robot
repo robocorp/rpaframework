@@ -1,27 +1,35 @@
 *** Settings ***
-Library           RPA.Excel.Files
-Force Tags        skip
+Library     RPA.Excel.Files
+Library     RPA.FileSystem
+
+Task Teardown   Close Workbook
+
 
 *** Variables ***
-${EXCELFILE}      ./resources/orders.xlsx
-${EMPTYEXCEL}     ./resouces/empty_orders.xlsx
+${RESOURCES}    ${CURDIR}${/}..${/}resources
+
+
+*** Keywords ***
+Append Content To Sheet
+    [Arguments]    ${excel_file}    ${content}
+    ${src} =    Set Variable    ${RESOURCES}${/}${excel_file}
+    ${dest} =    Set Variable    ${OUTPUT_DIR}${/}${excel_file}
+    Copy File    ${src}    ${dest}
+    Open Workbook    ${dest}
+    Append Rows To Worksheet    ${content}    header=${True}
+    Save Workbook
+    ${data} =    Read Worksheet    Sheet    header=${True}
+    Should Be Equal    ${data}    ${content}
+    Close Workbook
+
 
 *** Tasks ***
-Reading rows
-    ${rows}=    Read rows    ${EXCELFILE}
-    Log Many    ${rows}
-    ${rows}=    Read rows    ${EXCELFILE}    header=True
-    Log Many    ${rows}
-    ${rows}=    Read rows    ${EXCELFILE}    header=True    aslist=True
-    Log Many    ${rows}
-    ${length}=    Get Length    ${rows}
-    Log    ${length}
-    ${rows}=    Read rows    ${EMPTYEXCEL}    header=True    aslist=True
-    ${length}=    Get Length    ${rows}
-    Log    ${length}
-    ${rows}=    Read rows    ${EMPTYEXCEL}    aslist=True
-    ${length}=    Get Length    ${rows}
-    Log    ${length}
-    ${rows}=    Read rows    ${EMPTYEXCEL}
-    ${length}=    Get Length    ${rows}
-    Log    ${length}
+Test single row sheet
+    # "Single" in this case acts like header for a 1x1 table.
+    &{row} =    Create Dictionary    Single    Test
+    @{content} =    Create List    ${row}
+
+    Append Content To Sheet    one-row.xlsx    ${content}
+    Append Content To Sheet    one-row.xls    ${content}
+    Append Content To Sheet    empty.xlsx    ${content}
+    Append Content To Sheet    empty.xls    ${content}

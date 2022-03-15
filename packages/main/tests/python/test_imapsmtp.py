@@ -1,13 +1,13 @@
-import pytest
-from pathlib import Path
 from smtplib import SMTP
 
 import mock
+import pytest
 from RPA.Email.ImapSmtp import ImapSmtp
 from docx import Document
 
+from . import RESOURCES_DIR
 
-RESOURCE_DIR = Path(__file__).resolve().parent.parent / "resources"
+
 SENDMAIL_MOCK = "RPA.Email.ImapSmtp.SMTP.sendmail"
 recipient = "person1@domain.com"
 multi_recipients = "person2@domain.com,person3@domain.com"
@@ -59,7 +59,7 @@ def test_send_message_with_images(mocked, library):
         body="body of the message<img src='approved.png'/>",
         recipients=recipient,
         html=True,
-        images=RESOURCE_DIR / "approved.png",
+        images=RESOURCES_DIR / "approved.png",
     )
     assert status
 
@@ -71,7 +71,7 @@ def test_send_message_with_attachments(mocked, library):
         subject="My test email subject",
         body="body of the message",
         recipients=recipient,
-        attachments=RESOURCE_DIR / "approved.png",
+        attachments=RESOURCES_DIR / "approved.png",
     )
     assert status
 
@@ -83,9 +83,9 @@ def test_send_message_with_attachments_and_images(mocked, library):
         subject="My test email subject",
         body="body of the message",
         recipients=recipient,
-        attachments=RESOURCE_DIR / "approved.png",
+        attachments=RESOURCES_DIR / "approved.png",
         html=True,
-        images=RESOURCE_DIR / "approved.png",
+        images=RESOURCES_DIR / "approved.png",
     )
     assert status
 
@@ -148,7 +148,7 @@ def test_parse_folders_failed(library, caplog):
     ],
 )
 def test_email_to_document(tmp_path, library, input_file, expected_text):
-    input_source = RESOURCE_DIR / "emails" / f"{input_file}.eml"
+    input_source = RESOURCES_DIR / "emails" / f"{input_file}.eml"
     output_source = tmp_path / f"{input_file}.docx"
     library.email_to_document(input_source, output_source)
 

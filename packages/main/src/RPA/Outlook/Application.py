@@ -45,6 +45,8 @@ class Application:
     # pylint: disable=C0301
     """`Outlook.Application` is a library for controlling the Outlook application.
 
+    *Note*. Library works only Windows platform.
+
     **About Email Filtering**
 
     Emails can be filtered according to specification set by Restrict method of the Item

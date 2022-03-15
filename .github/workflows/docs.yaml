@@ -16,7 +16,8 @@ on:
 jobs:
   publish:
     runs-on: windows-latest
-
+    env:
+      SETUPTOOLS_USE_DISTUTILS: stdlib
     steps:
       - uses: actions/checkout@v2
         with:
