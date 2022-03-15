@@ -34,10 +34,11 @@ CLEAN_PATTERNS = [
     "*.libspec",
 ]
 
+EXCLUDE_ROBOT_TASKS = ["skip"]
 if platform.system() == "Windows":
-    OS_ROBOT_ARGS = "--exclude skip --exclude posix"
+    EXCLUDE_ROBOT_TASKS.append("posix")
 else:
-    OS_ROBOT_ARGS = "--exclude skip --exclude windows"
+    EXCLUDE_ROBOT_TASKS.append("windows")
 
 
 def poetry(ctx, command, **kwargs):
@@ -157,15 +158,23 @@ def testpython(ctx):
 
 
 @task(install)
-def testrobot(ctx):
-    """Run Robot Framework tests"""
-    arguments = (
-        "--loglevel TRACE --outputdir tests/results --pythonpath tests/resources"
-    )
-    poetry(
-        ctx,
-        f"run robot {arguments} {OS_ROBOT_ARGS} -L TRACE tests/robot",
-    )
+def testrobot(ctx, robot_name=None, task_robot=None):
+    """Run Robot Framework tests."""
+    exclude_list = EXCLUDE_ROBOT_TASKS[:]  # copy of the original list
+    if task_robot:
+        # Run specific explicit task without exclusion. (during development)
+        exclude_list.clear()
+        task = f'--task "{task_robot}"'
+    else:
+        # Run all tasks and take into account exclusions. (during CI)
+        task = ""
+    exclude_str = " ".join(f"--exclude {tag}" for tag in exclude_list)
+    arguments = f"--loglevel TRACE --outputdir tests/results --pythonpath tests/resources"
+    robot = Path("tests") / "robot"
+    if robot_name:
+        robot /= f"test_{robot_name}.robot"
+    run_cmd = f"run robot {arguments} {exclude_str} {task} {robot}"
+    poetry(ctx, run_cmd)
 
 
 @task(install)

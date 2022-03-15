@@ -1,6 +1,7 @@
 from pathlib import Path
 import pytest
 import subprocess
+from time import sleep
 
 from RPA.JavaAccessBridge import JavaAccessBridge
 
@@ -23,3 +24,11 @@ def test_typing_text():
     jab.type_text("role:text", "text for the textarea", enter=True)
     jab.type_text("role:text", "text for the input field", index=1, clear=True)
     jab.click_element("role:push button and name:Send")
+
+
+if __name__ == "__main__":
+    javalib = JavaAccessBridge()
+    sleep(5)
+    javalib.select_window("Chat Frame")
+    sleep(5)
+    javalib.close_java_window()
