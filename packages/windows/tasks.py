@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import os
 import platform
 import re
 import shutil
 import subprocess
 from glob import glob
 from pathlib import Path
+
 from invoke import task
 
 
@@ -108,8 +108,12 @@ def libspec(ctx):
     poetry(ctx, command)
     modify_libspec_files()
 
-
 @task
+def lock(ctx):
+    """Lock the poetry environment"""
+    poetry(ctx, "lock")
+
+@task(lock)
 def install(ctx):
     """Install development environment"""
     poetry(ctx, "install")
@@ -143,15 +147,19 @@ def test(ctx):
 
 
 @task(install)
-def testrobot(ctx, ci=False):
+def testrobot(ctx, ci=False, task_robot=None):
     """Run Robot Framework tests"""
-    exclude = "--exclude manual"
-    if ci:
-        exclude += " --exclude skip"
-    poetry(
-        ctx,
-        f"run robot -d tests/output {exclude} -L TRACE tests/robot/test_windows.robot",
-    )
+    exclude = []
+    if not task_robot:
+        exclude.append("manual")
+        if ci:
+            exclude.append("skip")
+    exclude_str = " ".join(f"--exclude {tag}" for tag in exclude)
+    run_cmd = f"run robot -d tests/output {exclude_str} -L TRACE"
+    if task_robot:
+        run_cmd += f' --task "{task_robot}"'
+    run_cmd += " tests/robot/test_windows.robot"
+    poetry(ctx, run_cmd)
 
 
 # add test
@@ -170,4 +178,4 @@ def publish(ctx, ci=False):
         poetry(ctx, "publish -v --no-interaction --repository devpi")
     else:
         poetry(ctx, "publish -v")
-        ctx.run(f'{TOOLS / "tag.py"}')
+        poetry(ctx, f'run python {TOOLS / "tag.py"}')
