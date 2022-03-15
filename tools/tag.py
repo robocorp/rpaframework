@@ -1,10 +1,22 @@
 #!/usr/bin/env python3
+
+import platform
 import subprocess
 from pathlib import Path
 
 
 def run(*args):
-    return subprocess.check_output(args).decode().strip()
+    run_process = lambda params: subprocess.check_output(params).decode().strip()
+
+    try:
+        return run_process(args)
+    except FileNotFoundError:
+        if platform.system() != "Windows":
+            raise
+
+        # Edge-case for Windows 11 with different paths. (solved by absolute path)
+        abs_path = run_process(["where", args[0]]).splitlines()[-1]
+        return run_process((abs_path,) + args[1:])
 
 
 def main():
