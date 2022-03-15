@@ -1,5 +1,6 @@
-from robot.api.deco import keyword
+from robot.api.deco import keyword  # imported from here by keyword modules
 
+from .action import ActionKeywords
 from .context import (
     ActionNotPossible,
     ElementNotFound,
@@ -8,8 +9,8 @@ from .context import (
     MultipleControlsFound,
     TimeoutException,
     WindowControlError,
+    with_timeout,
 )
-from .action import ActionKeywords
 from .elements import ElementKeywords
-from .locators import LocatorKeywords
+from .locators import Locator, LocatorKeywords
 from .window import WindowKeywords

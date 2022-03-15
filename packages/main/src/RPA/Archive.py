@@ -212,7 +212,7 @@ class Archive:
             Add To Archive  stat.png       archive.tar.gz  images
             @{files}        Create List    filename1.txt   filename2.txt
             Add To Archive  ${files}       files.tar
-        """
+        """  # noqa: E501
         files_to_add = []
 
         if isinstance(files, list):
@@ -307,7 +307,7 @@ class Archive:
         .. code-block:: robotframework
 
             &{archiveinfo}   Get Archive Info    myfiles.zip
-        """
+        """  # noqa: E501
         archive_info = None
         st = os.stat(archive_name)
         if zipfile.is_zipfile(archive_name):

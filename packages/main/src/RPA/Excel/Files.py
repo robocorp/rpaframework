@@ -171,13 +171,13 @@ class Files:
         self.logger = logging.getLogger(__name__)
         self.workbook = None
 
-    def _load_workbook(self, path):
+    def _load_workbook(self, path, data_only):
         # pylint: disable=broad-except
         path = pathlib.Path(path).resolve(strict=True)
 
         try:
             book = XlsxWorkbook(path)
-            book.open()
+            book.open(data_only=data_only)
             return book
         except InvalidFileException as exc:
             self.logger.debug(exc)  # Unsupported extension, silently try xlrd
@@ -232,16 +232,19 @@ class Files:
         self.workbook.create()
         return self.workbook
 
-    def open_workbook(self, path):
+    def open_workbook(self, path: str, data_only: bool = False):
         """Open an existing Excel workbook.
 
         Opens the workbook in memory and sets it as the active workbook.
         This library can only have one workbook open at a time, and
         any previously opened workbooks are closed first.
 
-        The file can be in either ``.xlsx`` or ``.xlsx`` format.
+        The file can be in either ``.xlsx`` or ``.xls`` format.
 
         :param path: path to Excel file
+        :param data_only: controls whether cells with formulae have either
+         the formula (default, False) or the value stored the last time Excel
+         read the sheet (True). Affects only ``.xlsx`` files.
 
         Examples:
 
@@ -253,7 +256,7 @@ class Files:
         if self.workbook:
             self.close_workbook()
 
-        self.workbook = self._load_workbook(path)
+        self.workbook = self._load_workbook(path, data_only)
         self.logger.info("Opened workbook: %s", self.workbook)
         return self.workbook
 
@@ -400,9 +403,9 @@ class Files:
         :param content: Rows of values to append
         :param name:    Name of worksheet to append to
         :param header:  Set rows according to existing header row
-        :param start:   Start of data, NOTE: Only required when headers is True
+        :param start:   Start of data, NOTE: Only required when header is True
 
-        The ``content`` argument can be of any tabular format. Typically
+        The ``content`` argument can be of any tabular format. Typically,
         this is a Table object created by the ``RPA.Tables`` library,
         but it can also be a list of lists, or a list of dictionaries.
 
@@ -618,6 +621,13 @@ class XlsxWorkbook:
         self._extension = None
         self._active = None
 
+    @staticmethod
+    def is_sheet_empty(sheet):
+        # Maximum rows/columns are always 1 or more, even when the sheet doesn't
+        #  contain cells at all. (https://stackoverflow.com/a/37673211/4766178)
+        # pylint: disable=protected-access
+        return not sheet._cells  # there's no public API for this
+
     @property
     def sheetnames(self):
         return list(self._book.sheetnames)
@@ -673,7 +683,7 @@ class XlsxWorkbook:
         self._book = openpyxl.Workbook()
         self._extension = None
 
-    def open(self, path=None, read_only=False, write_only=False):
+    def open(self, path=None, read_only=False, write_only=False, data_only=False):
         path = path or self.path
         if not path:
             raise ValueError("No path defined for workbook")
@@ -683,7 +693,7 @@ class XlsxWorkbook:
         except TypeError:
             extension = None
 
-        options = {"filename": path}
+        options = {"filename": path, "data_only": data_only}
 
         # Only set mode arguments if truthy, otherwise openpyxl complains
         if read_only and write_only:
@@ -721,7 +731,7 @@ class XlsxWorkbook:
         sheet = self._book[name]
         start = self._to_index(start)
 
-        if start >= sheet.max_row:
+        if start > sheet.max_row or self.is_sheet_empty(sheet):
             return []
 
         if header:
@@ -753,7 +763,7 @@ class XlsxWorkbook:
         name = self._get_sheetname(name)
         sheet = self._book[name]
         start = self._to_index(start)
-        is_empty = sheet.max_row <= 1 and sheet.max_column <= 1
+        is_empty = self.is_sheet_empty(sheet)
 
         if header and not is_empty:
             columns = [cell.value for cell in sheet[start]]
@@ -846,6 +856,10 @@ class XlsWorkbook:
         self._active = None
         self._images = []
 
+    @staticmethod
+    def is_sheet_empty(sheet):
+        return not any([sheet.ncols, sheet.nrows])
+
     @property
     def sheetnames(self):
         return [sheet.name for sheet in self._book.sheets()]
@@ -920,7 +934,7 @@ class XlsWorkbook:
 
         self._extension = None
 
-    def open(self, path=None, read_only=False, write_only=False):
+    def open(self, path=None, read_only=False, write_only=False, data_only=False):
         path = path or self.path
         if not path:
             raise ValueError("No path defined for workbook")
@@ -932,8 +946,10 @@ class XlsWorkbook:
 
         options = {"on_demand": True, "formatting_info": True}
 
-        if read_only or write_only:
-            self.logger.info("Modes read_only/write_only not supported with .xls")
+        if read_only or write_only or data_only:
+            self.logger.info(
+                "Modes read_only/write_only/data_only not supported with .xls"
+            )
 
         if hasattr(path, "read"):
             options["file_contents"] = path.read()
@@ -1033,7 +1049,7 @@ class XlsWorkbook:
         name = self._get_sheetname(name)
         sheet_read = self._book.sheet_by_name(name)
         start = self._to_index(start)
-        is_empty = sheet_read.ncols <= 1 and sheet_read.nrows <= 1
+        is_empty = self.is_sheet_empty(sheet_read)
 
         if header and not is_empty:
             columns = [cell.value for cell in sheet_read.row(start)]
