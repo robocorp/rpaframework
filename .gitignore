@@ -42,3 +42,6 @@ poetry.toml
 
 # FPDF fonts
 *.pkl
+
+# library log files
+jab_wrapper.log

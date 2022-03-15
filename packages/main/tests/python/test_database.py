@@ -9,7 +9,7 @@ except ImportError:
 import pytest
 from RPA.Database import Database
 
-from . import RESOURCE_DIR, RESULTS_DIR, temp_filename
+from . import RESOURCES_DIR, RESULTS_DIR, temp_filename
 
 
 DB_PATH = str(RESULTS_DIR / "database.db")
@@ -80,7 +80,7 @@ def test_query_no_transaction(library_no_commit, commit):
     ],
 )
 def test_execute_sql_script(library_no_commit, should_fail, no_trans, orders_nr):
-    sql_data = (RESOURCE_DIR / "script.sql").read_text()
+    sql_data = (RESOURCES_DIR / "script.sql").read_text()
     if should_fail:
         sql_data += "\nINVALID STATEMENT;"
         effect = pytest.raises(sqlite3.OperationalError)

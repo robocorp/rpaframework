@@ -1,19 +1,19 @@
 import logging
+from typing import Optional
 
 # pylint: disable=wrong-import-position
 from robotlibcore import DynamicCore
 
-
-from RPA.Windows.keywords import (
+from . import utils
+from .keywords import (
     ActionKeywords,
     ElementKeywords,
+    Locator,
     LocatorKeywords,
     WindowKeywords,
 )
 
-from RPA.Windows import utils
-
-if utils.is_windows():
+if utils.IS_WINDOWS:
     # Configure comtypes to not generate DLL bindings into
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
@@ -378,7 +378,11 @@ class Windows(DynamicCore):
     can be installed separately. Other options are tools `Inspect Object`_  and `UI Automation Verify`_, which
     can be accessed by installing Windows SDK.
 
-    .. _Accessibility Insights: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+    A more programmatic approach is to run `Print Tree    log_as_warnings=${True}`
+    keyword and then observe in the logs the found elements structure starting from
+    Desktop as root. (refer to keyword's documentation for more details)
+
+    .. _Accessibility Insights: https://accessibilityinsights.io/
     .. _Inspect Object: https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects
     .. _UI Automation Verify: https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify
 
@@ -392,7 +396,7 @@ class Windows(DynamicCore):
 
     .. code-block:: bash
 
-        C:\\Users\\User\\robots\\>windows-record
+        C:\\Users\\User\\robots\\>windows-record  # or >python -m RPA.Windows
         keyboard and mouse listeners started
 
         --------------------------------------------------------------------------------
@@ -466,13 +470,13 @@ class Windows(DynamicCore):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self):
+    def __init__(self, locators_path: Optional[str] = None):
         self.logger = logging.getLogger(__name__)
-        self.wait_time = 0.5
-        self.global_timeout = auto.uiautomation.TIME_OUT_SECOND
-        self.simulate_move = False
-        self.window = None
-        self.anchor_element = None
+        self.wait_time: float = 0.5
+        self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
+        self.simulate_move = False  # this is currently used, but not set anywhere else
+        self.window_element: Optional[Locator] = None
+        self.anchor_element: Optional[Locator] = None
 
         # prevent comtypes writing lot of log messages
         comtypelogger = logging.getLogger("comtypes")
@@ -485,7 +489,7 @@ class Windows(DynamicCore):
         libraries = [
             ActionKeywords(self),
             ElementKeywords(self),
-            LocatorKeywords(self),
+            LocatorKeywords(self, locators_path=locators_path),
             WindowKeywords(self),
         ]
         super().__init__(libraries)
