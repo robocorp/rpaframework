@@ -194,7 +194,10 @@ class Process:
 
     @keyword(tags=["set"])
     def set_credentials(
-        self, workspace_id: Optional[str] = None, process_id: Optional[str] = None, apikey: Optional[str] = None
+        self,
+        workspace_id: Optional[str] = None,
+        process_id: Optional[str] = None,
+        apikey: Optional[str] = None,
     ) -> None:
         """Set credentials needed by the Process API
 
@@ -356,7 +359,7 @@ class Process:
             return response.status_code, response.text
 
     @keyword(tags=["process", "get"])
-    def list_processes(self, workspace_id: Optional[str] = None) -> Dict[str,Any]:
+    def list_processes(self, workspace_id: Optional[str] = None) -> Dict[str, Any]:
         """List all processes in a workspace
 
         :param workspace_id: specific Control Room workspace to which process belongs to
@@ -371,7 +374,10 @@ class Process:
 
     @keyword(tags=["process", "get", "work item"])
     def list_process_work_items(
-        self, process_id: Optional[str] = None, include_data: bool = False, item_state: Optional[str] = None
+        self,
+        process_id: Optional[str] = None,
+        include_data: bool = False,
+        item_state: Optional[str] = None,
     ) -> Union[str, None, Any]:
         """List work items belonging to a process
 
@@ -430,8 +436,11 @@ class Process:
 
     @keyword(tags=["process", "get", "work item"])
     def get_work_item(
-        self, workitem_id: str, include_data: bool = False, process_id: Optional[str] = None
-    ) -> Dict[str,Any]:
+        self,
+        workitem_id: str,
+        include_data: bool = False,
+        process_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """Get work item from Control Room
 
         :param workitem_id: id of the work item
@@ -544,7 +553,7 @@ class Process:
         self,
         work_item_id: str,
         process_id: Optional[str] = None,
-    ) -> Dict[str,Any]:
+    ) -> Dict[str, Any]:
         """Retry processing of work item in FAILED state
 
         :param work_item_id: ID of the work item to retry
