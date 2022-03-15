@@ -1840,6 +1840,7 @@ class Tables:
         header: bool = True,
         dialect: Dialect = Dialect.Excel,
         encoding: Optional[str] = None,
+        delimiter: Optional[str] = ",",
     ):
         """Write a table as a CSV file.
 
@@ -1849,6 +1850,7 @@ class Tables:
         :param dialect:  The format of output CSV
         :param encoding: Text encoding for output file,
                          uses system encoding by default
+        :param delimiter: Delimiter character between columns
 
         Valid ``dialect`` values are ``Excel``, ``ExcelTab``, and ``Unix``.
 
@@ -1865,7 +1867,9 @@ class Tables:
             dialect = Dialect(dialect)
 
         with open(path, mode="w", newline="", encoding=encoding) as fd:
-            writer = csv.DictWriter(fd, fieldnames=table.columns, dialect=dialect.value)
+            writer = csv.DictWriter(
+                fd, fieldnames=table.columns, dialect=dialect.value, delimiter=delimiter
+            )
 
             if header:
                 writer.writeheader()

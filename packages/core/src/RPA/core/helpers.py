@@ -1,10 +1,13 @@
 import importlib
+import code
 import logging
 import os
 import string
+import sys
 import time
 import unicodedata
-from typing import Any
+from typing import Any, Optional
+
 
 # Sentinel value for undefined argument
 UNDEFINED = object()
@@ -96,3 +99,19 @@ def import_by_name(name: str, caller: str = None) -> Any:
             pass
 
     raise ValueError(f"No module/attribute with name: {name}")
+
+
+def interact(expression: Any = None, local: Optional[dict] = None):
+    """Interrupts the execution with an interactive shell on `expression`."""
+    if expression is not None and not expression:
+        return
+
+    sys.stdin, bkp_stdin = sys.__stdin__, sys.stdin
+    sys.stdout, bkp_stdout = sys.__stdout__, sys.stdout
+    sys.stderr, bkp_stderr = sys.__stderr__, sys.stderr
+    try:
+        code.interact(local=local or {**globals(), **locals()})
+    finally:
+        sys.stdin = bkp_stdin
+        sys.stdout = bkp_stdout
+        sys.stderr = bkp_stderr

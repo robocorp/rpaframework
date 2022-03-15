@@ -10,6 +10,7 @@ from .containers import (
     ImageLocator,
     OcrLocator,
     BrowserLocator,
+    WindowsLocator,
     # For backwards compatibility:
     Coordinates,
     Offset,
