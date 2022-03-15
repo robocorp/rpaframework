@@ -424,18 +424,29 @@ class Selenium(SeleniumLibrary):
 
     def _close_on_exit(self):
         """Register function to clean leftover webdrivers on process exit."""
-        connections = self._drivers._connections  # pylint: disable=protected-access
+        current_platform = platform.system()
 
         def stop_drivers():
             if not self.auto_close:
+                # On Windows chromedriver.exe keeps hanging and
+                # prevents rcc close
+                if current_platform == "Windows":
+                    self._driver_connection_handler(process_kill=True)
                 return
-            for driver in connections:
-                try:
-                    driver.service.stop()
-                except Exception:  # pylint: disable=broad-except
-                    pass
+            self._driver_connection_handler(process_kill=False)
 
         atexit.register(stop_drivers)
+
+    def _driver_connection_handler(self, process_kill: bool = False):
+        connections = self._drivers._connections  # pylint: disable=protected-access
+        for driver in connections:
+            try:
+                if process_kill:
+                    driver.service.process.kill()
+                else:
+                    driver.service.stop()
+            except Exception:  # pylint: disable=broad-except
+                pass
 
     @property
     def location(self) -> str:
@@ -1768,7 +1779,10 @@ class Selenium(SeleniumLibrary):
     def set_download_directory(
         self, directory: str = None, download_pdf: bool = True
     ) -> None:
-        """Set browser download directory
+        """Set browser download directory.
+
+        Works with ``Open Available Browser``, ``Open Chrome Browser`` and
+        ``Open Headless Chrome Browser`` keywords.
 
         ``directory``    target directory for downloads, defaults to None which means
                          that setting is removed

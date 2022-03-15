@@ -1,12 +1,15 @@
 import contextlib
 import functools
 from typing import Optional
+import logging
 
-from RPA.Windows.utils import IS_WINDOWS
+from .helpers import IS_WINDOWS
 
 if IS_WINDOWS:
-    import uiautomation as auto
     from comtypes import COMError  # noqa
+    import uiautomation as auto
+else:
+    COMError = Exception
 
 
 class ControlNotFound(ValueError):
@@ -33,11 +36,21 @@ class ActionNotPossible(ValueError):
     """Action is not possible for the given Control"""
 
 
-class LibraryContext:
+class DefaultWindowsContext:
+    """Default context"""
+
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
+        self.window_element = None
+        self.anchor_element = None
+
+
+class WindowsContext:
     """Shared context for all keyword libraries."""
 
     def __init__(self, ctx):
-        self.ctx = ctx
+        self.ctx = ctx or DefaultWindowsContext()
 
     @property
     def logger(self):

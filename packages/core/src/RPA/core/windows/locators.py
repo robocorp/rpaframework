@@ -2,17 +2,17 @@ import re
 from dataclasses import dataclass, field
 from typing import List, Optional, Union
 
-from RPA.Windows import utils
-from RPA.Windows.keywords import keyword
-from RPA.Windows.keywords.context import (
+from RPA.core.locators import LocatorsDatabase, WindowsLocator
+
+from .helpers import IS_WINDOWS
+from .context import (
     ElementNotFound,
-    LibraryContext,
+    WindowsContext,
     WindowControlError,
     with_timeout,
 )
-from RPA.core.locators import LocatorsDatabase, WindowsLocator
 
-if utils.IS_WINDOWS:
+if IS_WINDOWS:
     import uiautomation as auto
     from uiautomation.uiautomation import Control
 
@@ -43,11 +43,9 @@ class WindowsElement:
     """Represent Control as dataclass"""
 
     _WINDOW_SIBLING_COMPARE = {
-        # <locator_strategy>: <element_attribute>
         "name": "name",  # this works for "subname" as well
         "class": "class_name",
         "control": "control_type",
-        "id": "automation_id",
     }
 
     item: Control
@@ -65,24 +63,22 @@ class WindowsElement:
     xcenter: int = -1
     ycenter: int = -1
 
-    def __init__(self, item: Control, locator: Optional[Locator]):
-        self.item: Control = item
+    def __init__(self, item, locator: Optional[Locator]):
+        self.item = item
         self.locator: Optional[Locator] = locator
         self.name = item.Name
         self.automation_id = item.AutomationId
         self.control_type = item.ControlTypeName
         self.class_name = item.ClassName
-        # If there's no rectangle, then all coords are defaulting to -1.
         rect = item.BoundingRectangle
-        if rect:
-            self.left = rect.left
-            self.right = rect.right
-            self.top = rect.top
-            self.bottom = rect.bottom
-            self.width = rect.width()
-            self.height = rect.height()
-            self.xcenter = rect.xcenter()
-            self.ycenter = rect.ycenter()
+        self.left = rect.left if rect else -1
+        self.right = rect.right if rect else -1
+        self.top = rect.top if rect else -1
+        self.bottom = rect.bottom if rect else -1
+        self.width = rect.width() if rect else -1
+        self.height = rect.height() if rect else -1
+        self.xcenter = rect.xcenter() if rect else -1
+        self.ycenter = rect.ycenter() if rect else -1
 
     def is_sibling(self, win_elem: "WindowsElement") -> bool:
         """Returns `True` if the provided window element is a sibling."""
@@ -199,8 +195,8 @@ class MatchObject:
         return uniques
 
 
-class LocatorKeywords(LibraryContext):
-    """Keywords for handling Windows locators"""
+class WindowsElements(WindowsContext):
+    """Keywords for finding Windows GUI elements"""
 
     def __init__(self, ctx, locators_path: Optional[str] = None):
         self._locators_path = locators_path
@@ -211,7 +207,7 @@ class LocatorKeywords(LibraryContext):
     ) -> Control:
         match_object = MatchObject()
         mo = match_object.parse_locator(locator)
-        self.ctx.logger.info("locator '%s' to match element: %s" % (locator, mo))
+        self.ctx.logger.info("locator '%s' to match element: %s", locator, mo)
         search_params = {}
         for loc in mo.locators:  # pylint: disable=not-an-iterable
             search_params[loc[0]] = loc[1]
@@ -233,7 +229,7 @@ class LocatorKeywords(LibraryContext):
                     "Found more than one window with executable '%s'" % executable
                 )
             self.logger.info(
-                "Found process with window title: '%s'" % matches[0]["title"]
+                "Found process with window title: '%s'", matches[0]["title"]
             )
             search_params["Name"] = matches[0]["title"]
             element = Control(**search_params)
@@ -255,7 +251,7 @@ class LocatorKeywords(LibraryContext):
                     "Found more than one window with handle '%s'" % handle
                 )
             self.logger.info(
-                "Found process with window title: '%s'" % matches[0]["title"]
+                "Found process with window title: '%s'", matches[0]["title"]
             )
             search_params["Name"] = matches[0]["title"]
             element = Control(**search_params)
@@ -286,43 +282,14 @@ class LocatorKeywords(LibraryContext):
             pass
         return criteria
 
-    @keyword
     @with_timeout
     def get_element(
         self,
         locator: Optional[Locator] = None,
         search_depth: int = 8,
-        root_element: Optional[WindowsElement] = None,
+        root_element: WindowsElement = None,
         timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> WindowsElement:
-        """Get Control element defined by the locator.
-
-        Returned element can be used instead of a locator string for
-        keywords accepting `locator`.
-
-        Keyword ``Get Attribute`` can be used to read element attribute values.
-
-        If `locator` is *None* then returned `element` will be in order of preference:
-
-            1. anchor element if that has been set with `Set Anchor`
-            2. current active window if that has been set with `Control Window`
-            3. final option is the `Desktop`
-
-        :param locator: locator as a string or as an element
-        :param search_depth: how deep the element search will traverse (default 8)
-        :param root_element: can be used to set search root element
-        :param timeout: float value in seconds, see keyword
-         ``Set Global Timeout``
-        :return: WindowsElement object
-
-        Example:
-
-        .. code-block:: robotframework
-
-            ${element}=    Get Element    name:'Text Editor*
-            Set Value   ${element}  note to myself
-        """
-        # TODO. Add examples
         if isinstance(locator, str):
             locator = self._load_by_alias(locator)
         self.logger.info("Getting element with locator: %s", locator)
@@ -347,17 +314,17 @@ class LocatorKeywords(LibraryContext):
         root = root_element.item if self._window_or_none(root_element) else None
         anchor = self.anchor.item if self.anchor else None
         window = self.window.item if self.window else None
-        self.logger.debug("argument root = %s" % root)
-        self.logger.debug("active anchor = %s" % anchor)
-        self.logger.debug("active window = %s" % window)
+        self.logger.debug("argument root = %s", root)
+        self.logger.debug("active anchor = %s", anchor)
+        self.logger.debug("active window = %s", window)
         root_result = root or anchor or window or auto.GetRootControl()
-        self.logger.debug("resulting root = %s" % root_result)
+        self.logger.debug("resulting root = %s", root_result)
         element = None
 
         locators = locator.split(" > ")
         try:
             for loc in locators:
-                self.logger.info("Root element: '%s'" % root_result)
+                self.logger.info("Root element: '%s'", root_result)
                 element = self._get_element_with_locator_part(
                     loc, search_depth, root_result
                 )
@@ -367,7 +334,6 @@ class LocatorKeywords(LibraryContext):
 
         return WindowsElement(element, locator)
 
-    @keyword
     @with_timeout
     def get_elements(
         self,
@@ -376,25 +342,6 @@ class LocatorKeywords(LibraryContext):
         root_element: Optional[WindowsElement] = None,
         timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> List[WindowsElement]:
-        """Get list of elements matching locator.
-
-        :param locator: locator as a string or as an element
-        :param search_depth: how deep the element search will traverse (default 8)
-        :param root_element: can be used to set search root element
-        :param timeout: float value in seconds, see keyword
-         ``Set Global Timeout``
-        :return: list of WindowsElement objects
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Set Anchor    id:DataGrid
-            ${elements}=    Get Elements    type:HeaderItem
-            FOR    ${el}    IN    @{elements}
-                Log To Console    ${el.Name}
-            END
-        """
         elements = []
         initial_window_element = window_element = self.get_element(
             locator, search_depth, root_element

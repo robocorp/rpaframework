@@ -8,24 +8,86 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.9.0 - 11 Mar 2022
+--------------------
+
+- Library **RPA.Robocorp.Process**:
+
+  - Add keyword ``List Process Run Work Items``
+  - Add parameter `step_run_id` into ``Get Process Run Status``
+
+- Library **RPA.Desktop.Windows**: Fix issue with ``Get Window Elements``
+- Library **RPA.Browser.Selenium**: Fix issue of `auto_close=False` "hanging" on
+  Windows OS task teardown
+- Library **RPA.Email.ImapSmtp**:
+
+  - Add parameters `cc` and `bcc` to the ``Send Message`` keyword
+  - Fix issue with ``List Messages``
+
+- Library **RPA.Email.Exchange**:
+
+  - Add more filtering keys to the `criterion` parameter (detailed description in the
+    `library documentation <https://rpaframework.org/libraries/email_exchange/index.html>`_)
+  - The `contains` parameter has been deprecated as filtering keys now has `_contains` option, for
+    example `sender_contains:name@domain.com`
+  - Fix issue with keyword ``Wait For Message``
+
+- Resolved **Github** issues
+
+  - `RPA.Email.Exchange. Error with Wait For Message keyword filtering <https://github.com/robocorp/rpaframework/issues/418>`_
+  - `RPA.Email.Exchange Wait for Message keyword throws an error <https://github.com/robocorp/rpaframework/issues/377>`_
+  - `Email.Exchange: Add more support for email filtering <https://github.com/robocorp/rpaframework/issues/410>`_
+  - `Get Window Elements triggers NotImplementedError <https://github.com/robocorp/rpaframework/issues/344>`_
+  - `Email.ImapSmtp: Issues with filtering emails <https://github.com/robocorp/rpaframework/issues/409>`_
+
+
+
+12.8.2 - 25 Feb 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems**: Keyword ``Create Output Work Item`` supports
+  adding `variables`, `files` and saving in one go through parameters. (:issue:`392`)
+- Library **RPA.Windows** (``rpaframework-windows`` **2.2.2**): Keyword
+  ``Get Os Version`` returns proper Windows version. (:pr:`394`)
+- Library **RPA.Excel.Files**:
+
+  - Fix I/O for tables with one or no rows. (:issue:`391`)
+  - Add parameter ``data_only`` to keyword ``Open Workbook`` to read value instead of
+    formula on XLSX file.
+
+12.8.1 - 18 Feb 2022
+--------------------
+
+- Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update.
+- Package **comtypes** upgrade which fixes `Syntax Error` issues.
+- Library **RPA.core**: Add internal ``interact()`` helper for interrupting code
+  execution and spawning an interactive shell which aids REPL debugging.
+- Library **RPA.Windows** (``rpaframework-windows`` **2.2.1**):
+
+  - Add keyword ``Get Os Version`` which returns the current Windows version.
+  - Add keyword ``Close Window`` which closes any matched open window.
+  - Keyword ``Get Elements`` returns now only sibling elements similar to provided
+    `locator`.
+  - General library and tests fixes. (`COMError`, comtypes)
+
 12.8.0 - 10 Feb 2022
 --------------------
 
-  - Library **RPA.Tables**: Add delimiter support to ``Write Table To CSV``
+- Library **RPA.Tables**: Add delimiter support to ``Write Table To CSV``
 
 12.7.0 - 10 Feb 2022
 --------------------
 
-  - Library **RPA.Email.ImapSmtp**
+- Library **RPA.Email.ImapSmtp**
 
-    - Add email dictionary support for all keywords with parameter ``criterion``
-    - Add `prefix` parameter to keywords ``Save Message`` and ``Save Attachment``
+  - Add email dictionary support for all keywords with parameter ``criterion``
+  - Add `prefix` parameter to keywords ``Save Message`` and ``Save Attachment``
 
 12.6.1 - 08 Feb 2022
 --------------------
 
-  - Library **RPA.Email.Exchange**: Fix saving .eml attachments from emails (:issue:`381`)
-  - Library **RPA.Email.ImapSmtp**: Fix handling of folder names with spaces (:issue:`380`)
+- Library **RPA.Email.Exchange**: Fix saving .eml attachments from emails (:issue:`381`)
+- Library **RPA.Email.ImapSmtp**: Fix handling of folder names with spaces (:issue:`380`)
 
 12.6.0 - 27 Jan 2022
 --------------------

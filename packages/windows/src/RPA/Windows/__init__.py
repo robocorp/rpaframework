@@ -378,6 +378,10 @@ class Windows(DynamicCore):
     can be installed separately. Other options are tools `Inspect Object`_  and `UI Automation Verify`_, which
     can be accessed by installing Windows SDK.
 
+    A more programmatic approach is to run `Print Tree    log_as_warnings=${True}`
+    keyword and then observe in the logs the found elements structure starting from
+    Desktop as root. (refer to keyword's documentation for more details)
+
     .. _Accessibility Insights: https://accessibilityinsights.io/
     .. _Inspect Object: https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects
     .. _UI Automation Verify: https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify
@@ -392,7 +396,7 @@ class Windows(DynamicCore):
 
     .. code-block:: bash
 
-        C:\\Users\\User\\robots\\>windows-record
+        C:\\Users\\User\\robots\\>windows-record  # or >python -m RPA.Windows
         keyboard and mouse listeners started
 
         --------------------------------------------------------------------------------

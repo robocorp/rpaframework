@@ -2,12 +2,12 @@ import base64
 import os
 import signal
 import time
-from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Optional
 
 from PIL import Image
 
+from RPA.Windows import utils
 from RPA.Windows.keywords import (
     ElementNotFound,
     LibraryContext,
@@ -15,7 +15,6 @@ from RPA.Windows.keywords import (
     keyword,
     with_timeout,
 )
-from RPA.Windows import utils
 from .locators import Locator, WindowsElement
 
 if utils.IS_WINDOWS:
@@ -49,8 +48,8 @@ class WindowKeywords(LibraryContext):
         self,
         locator: Optional[Locator] = None,
         foreground: bool = True,
-        wait_time: float = None,
-        timeout: float = None,  # pylint: disable=unused-argument
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,  # pylint: disable=unused-argument
         main: bool = True,
     ) -> WindowsElement:
         """Controls the window defined by the locator.
@@ -105,8 +104,8 @@ class WindowKeywords(LibraryContext):
         self,
         locator: Optional[Locator] = None,
         foreground: bool = True,
-        wait_time: float = None,
-        timeout: float = None,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Get control of child window of the active window
         by locator.
@@ -251,11 +250,15 @@ class WindowKeywords(LibraryContext):
         return window
 
     @keyword(tags=["window"])
-    def list_windows(self, icons: bool = False) -> List[Dict]:
+    def list_windows(
+        self, icons: bool = False, icon_save_directory: Optional[str] = None
+    ) -> List[Dict]:
         """List all window element on the system.
 
         :param icons: on True dictionary will contain Base64
          string of the icon, default False
+        :param icon_save_directory: if set will save retrieved icons
+         into this filepath, by default icon files are not saved
         :return: list of dictionaries containing information
          about Window elements
 
@@ -278,50 +281,65 @@ class WindowKeywords(LibraryContext):
             pid = win.ProcessId
             fullpath = None
             try:
-                handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS, False, pid)
+                handle = win32api.OpenProcess(
+                    win32con.PROCESS_QUERY_LIMITED_INFORMATION, False, pid
+                )
                 fullpath = win32process.GetModuleFileNameEx(handle, 0)
             except Exception as err:  # pylint: disable=broad-except
                 self.logger.info("Open process error in `List Windows`: %s", str(err))
-
+            icon_string = (
+                self.get_icon(fullpath, icon_save_directory) if icons else None
+            )
             info = {
                 "title": win.Name,
                 "pid": pid,
-                "name": process_list[pid] if pid in process_list.keys() else None,
+                "name": process_list[pid] if pid in process_list else None,
                 "path": fullpath,
                 "handle": win.NativeWindowHandle,
-                "icon": self.get_icon(fullpath) if icons else None,
+                "icon": icon_string,
             }
+            if icons and not icon_string:
+                self.logger.info("Icon for %s returned empty", win.Name)
             win_list.append(info)
         return win_list
 
-    def get_icon(self, filepath: str) -> str:
-        image_string = None
-        executable_path = Path(filepath)
-        ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
-        ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
+    @staticmethod
+    def get_icon(
+        filepath: str, icon_save_directory: Optional[str] = None
+    ) -> Optional[str]:
+        if not filepath:
+            return None
 
-        large, small = win32gui.ExtractIconEx(filepath, 0, 10)
+        # TODO: Get different sized icons.
+        small, large = win32gui.ExtractIconEx(filepath, 0, 10)
         if len(small) > 0:
             win32gui.DestroyIcon(small[0])
-
         hdc = win32ui.CreateDCFromHandle(win32gui.GetDC(0))
         hbmp = win32ui.CreateBitmap()
 
+        ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
+        ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
         hbmp.CreateCompatibleBitmap(hdc, ico_x, ico_y)
         hdc = hdc.CreateCompatibleDC()
 
         hdc.SelectObject(hbmp)
 
+        image_string = None
         if len(large) > 0:
+            executable_path = Path(filepath)
             hdc.DrawIcon((0, 0), large[0])
-            result_image_file = f"icon_{executable_path.name}.bmp"
-            hbmp.SaveBitmapFile(hdc, result_image_file)
-            # signedIntsArray = hbmp.GetBitmapBits(True)
-            with Image.open(result_image_file) as img:
-                buffered = BytesIO()
-                img.save(buffered, format="PNG")
-                image_string = base64.b64encode(buffered.getvalue())
-            Path(result_image_file).unlink()
+            result_image_file = f"icon_{executable_path.name}.png"
+            if icon_save_directory:
+                result_image_file = Path(icon_save_directory) / result_image_file
+                result_image_file = result_image_file.resolve()
+            bmpstr = hbmp.GetBitmapBits(True)
+            img = Image.frombuffer("RGBA", (32, 32), bmpstr, "raw", "BGRA", 0, 1)
+            img.save(result_image_file)
+            with open(result_image_file, "rb") as img_file:
+                image_string = base64.b64encode(img_file.read())
+            if not icon_save_directory:
+                Path(result_image_file).unlink()
+
         return image_string
 
     @keyword(tags=["window"])
@@ -359,7 +377,10 @@ class WindowKeywords(LibraryContext):
 
             Windows Search   Outlook
         """
-        self.ctx.send_keys(None, "{Win}s")
+        search_cmd = "{Win}s"
+        if utils.get_win_version() == "11":
+            search_cmd = search_cmd.rstrip("s")
+        self.ctx.send_keys(None, search_cmd)
         self.ctx.send_keys(None, text)
         self.ctx.send_keys(None, "{Enter}")
         time.sleep(wait_time)
@@ -405,6 +426,8 @@ class WindowKeywords(LibraryContext):
         """Closes identified windows or logs the problems.
 
         :param locator: String locator or `Control` element.
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
         :return: How many windows were found and closed.
 
         Example:
@@ -416,17 +439,18 @@ class WindowKeywords(LibraryContext):
         # Starts the search from Desktop level.
         root_element = WindowsElement(auto.GetRootControl(), locator)
         # With all flavors of locators. (if flexible)
-        elements: Optional[List[WindowsElement]] = None
         for loc in self._iter_locator(locator):
             try:
-                elements = self.ctx.get_elements(loc, root_element=root_element)
+                elements: List[WindowsElement] = self.ctx.get_elements(
+                    loc, root_element=root_element
+                )
             except (ElementNotFound, LookupError):
-                pass
-            else:
-                break
-        if not elements:
-            self.logger.info("Couldn't find any window with locator: %s", locator)
-            return 0
+                continue
+            break
+        else:
+            raise WindowControlError(
+                f"Couldn't find any window with locator: {locator}"
+            )
 
         closed = 0
         for element in elements:
@@ -437,3 +461,16 @@ class WindowKeywords(LibraryContext):
             except Exception as exc:  # pylint: disable=broad-except
                 self.logger.warning("Couldn't close window %r due to: %s", element, exc)
         return closed
+
+    @keyword(tags=["window"])
+    def get_os_version(self) -> str:
+        """Returns the current Windows major version as string.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${ver} =     Get OS Version
+            Log     ${ver}  # 10
+        """
+        return utils.get_win_version()
