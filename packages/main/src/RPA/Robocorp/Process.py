@@ -1,9 +1,8 @@
-from ast import Tuple
 from enum import Enum
 import json
 import logging
 from pathlib import Path
-from typing import Optional, Dict, List, Union, Any
+from typing import Optional, Dict, List, Union, Any, Tuple
 
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
