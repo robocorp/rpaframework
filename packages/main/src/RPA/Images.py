@@ -2,7 +2,7 @@ import logging
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, List
+from typing import List
 
 from PIL import Image
 from PIL import ImageDraw
@@ -56,7 +56,7 @@ class RGB:
 
         return cls(red, green, blue)
 
-    def luminance(self):
+    def luminance(self) -> int:
         """Approximate (perceived) luminance for RGB value."""
         return (self.red * 2 + self.green * 3 + self.blue) // 6
 
@@ -148,7 +148,6 @@ class Images:
         :param image:       Image to crop
         :param region:      Region to crop image to
         :param filename:    Save cropped image to filename
-        :return: None
         """
         region = to_region(region)
         image = to_image(image)
