@@ -334,7 +334,7 @@ class Process:
         workitem_filename: str,
         workitem_id: str,
         process_id: Optional[str] = None,
-    ) -> Tuple[str, json]:
+    ) -> Tuple[str, Dict[str, Any]]:
         upload_filesize = Path(filepath).stat().st_size
         response = self.http.session_less_post(
             url=f"{self.process_api(process_id)}/work-items/{workitem_id}/files/upload",
