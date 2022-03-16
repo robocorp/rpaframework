@@ -2,8 +2,7 @@ from ast import keyword
 import logging
 import re
 from os import access
-from typing import List, Dict
-from exchangelib import Contact
+from typing import List, Dict, Optional
 
 from pprint import pprint
 
@@ -23,8 +22,12 @@ class HubSpotObjectTypeError(Exception):
 
 
 @library(scope="Global", doc_format="REST")
-class HubSpot:
-    """`HubSpot` is a library for accessing HubSpot using REST API."""
+class Hubspot:
+    """`Hubspot` is a library for accessing HubSpot using REST API.
+
+    Current features of this library focus on retrieving object data
+    from HubSpot via API.
+    """
 
     BUILTIN_SINGULAR_MAP = {
         "contacts": "contact",
@@ -76,36 +79,6 @@ class HubSpot:
     def _require_authentication(self) -> None:
         if self.hs is None:
             raise HubSpotAuthenticationError("Authentication was not completed.")
-
-    def auth_with_token(self, access_token: str) -> None:
-        """Authorize to HubSpot with Private App access token.
-
-        :param access_token: The access token created for the Private App
-        in your HubSpot account.
-        """
-        self.hs = HubSpotApi(access_token=access_token)
-
-    @keyword
-    def list_contacts(
-        self, properties: List[str] = None, associations: List[str] = None
-    ) -> List[dict]:
-        """Returns a list of available contacts. A list of properties
-        and associations can be provided and will be included in the
-        returned list.
-
-        :param properties: a list of strings representing properties of
-        the HubSpot Contacts to be returned. If such a property does not
-        exist, it will be ignored.
-        :param associations: a list of object types to retrieve associated
-        IDs for. If such an object type does not exist, it will be ignored.
-        """
-        self._require_authentication()
-        return fetch_all(
-            self.hs.crm.contacts.basic_api,
-            properties=properties,
-            associations=associations,
-            archived=False,
-        )
 
     def _search_objects(
         self,
@@ -190,12 +163,51 @@ class HubSpot:
             raise HubSpotObjectTypeError(f"Object type {name} does not exist.")
 
     @keyword
+    def auth_with_token(self, access_token: str) -> None:
+        """Authorize to HubSpot with Private App access token.
+
+        :param access_token: The access token created for the Private App
+        in your HubSpot account.
+        """
+        self.hs = HubSpotApi(access_token=access_token)
+
+    @keyword
+    def auth_with_api_key(self, api_key: str) -> None:
+        """Authorize to HubSpot with an account-wide API key.
+
+        :param api_key: The API key for the account to autheniticate to.
+        """
+        self.hs = HubSpotApi(api_key=api_key)
+
+    @keyword
+    def list_contacts(
+        self, properties: List[str] = None, associations: List[str] = None
+    ) -> List[dict]:
+        """Returns a list of available contacts. A list of properties
+        and associations can be provided and will be included in the
+        returned list.
+
+        :param properties: a list of strings representing properties of
+        the HubSpot Contacts to be returned. If such a property does not
+        exist, it will be ignored.
+        :param associations: a list of object types to retrieve associated
+        IDs for. If such an object type does not exist, it will be ignored.
+        """
+        self._require_authentication()
+        return fetch_all(
+            self.hs.crm.contacts.basic_api,
+            properties=properties,
+            associations=associations,
+            archived=False,
+        )
+
+    @keyword
     def search_for_objects(
         self,
         object_type: str,
-        search: List[dict] = None,
+        search: Optional[List[dict]] = None,
         string_query: str = "",
-        properties: List[str] = None,
+        properties: Optional[List[str]] = None,
     ) -> Dict:
         """Returns a list of objects of the specified `type` based on the
         provided `search` criteria. The following types are supported:
@@ -310,6 +322,7 @@ class HubSpot:
             properties,
         )
 
+    @keyword
     def list_associations(
         self, object_type: str, object_id: str, to_object_type: str
     ) -> List[Dict]:
@@ -334,18 +347,21 @@ class HubSpot:
             )
         )
 
+    @keyword
     def get_object(
         self,
         object_type: str,
         object_id: str,
-        id_property: str = None,
-        properties: List[str] = None,
-        associations: List[str] = None,
+        id_property: Optional[str] = None,
+        properties: Optional[List[str]] = None,
+        associations: Optional[List[str]] = None,
     ) -> Dict:
         """Reads a single object of `object_type` from HubSpot with the
         provided `object_id`. The objects can be found using an
         alternate ID by providing the name of that HubSpot property
-        which contains the unique identifier to `id_property`.
+        which contains the unique identifier to `id_property`. The `object_type`
+        parameter automatically looks up custom object IDs based on the
+        provided name.
 
         A list of property names can be provided to `properties`
         and they will be included in the returned object. Nonexistent
@@ -353,7 +369,8 @@ class HubSpot:
 
         A list of object types can be provided to `associations` and all
         object IDs associated to the returned object of that type will
-        be returned as well.
+        be returned as well. Object types passed to this parameter are
+        also validated against built-in objects and custom object schemas.
 
         :param object_type: The object type to be returned and that has
         the ID indicated.
@@ -371,10 +388,10 @@ class HubSpot:
 
         self._require_authentication()
 
-        # TODO: The object API may not be able to handle the properties and associations kwargs.
         return self.hs.crm.objects.basic_api.get_by_id(
             self._validate_object_type(object_type),
             object_id,
             properties=properties,
-            associations=associations,
+            associations=[self._validate_object_type(obj) for obj in associations],
+            id_property=id_property,
         )
