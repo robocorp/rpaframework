@@ -2,7 +2,7 @@ from ast import keyword
 import logging
 import re
 from os import access
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 
 from pprint import pprint
 
@@ -11,6 +11,11 @@ from robot.api.deco import keyword, library
 from hubspot import HubSpot as HubSpotApi
 from hubspot.utils.objects import fetch_all
 from hubspot.crm.objects import PublicObjectSearchRequest as ObjectSearchRequest
+from hubspot.crm.objects.models import (
+    SimplePublicObject,
+    SimplePublicObjectWithAssociations,
+    AssociatedId,
+)
 
 
 class HubSpotAuthenticationError(Exception):
@@ -86,54 +91,69 @@ class Hubspot:
         search: List[dict] = None,
         string_query: str = "",
         properties: List[str] = None,
-    ) -> Dict:
+        max_results: int = 1000,
+    ) -> List[SimplePublicObject]:
         self._require_authentication()
         if search:
             search_request = ObjectSearchRequest(
-                filter_groups=search, properties=properties
+                filter_groups=search, properties=properties, limit=100
             )
         elif string_query:
             search_request = ObjectSearchRequest(
-                query=string_query, properties=properties
+                query=string_query, properties=properties, limit=100
             )
         else:
             raise ValueError("Search or string_query must have a value.")
-
-        return fetch_all(
-            self.hs.crm.objects.search_api.do_search(
-                object_type, public_object_search_request=search_request
-            )
+        self.logger.debug(f"Search to use is:\n{search_request}")
+        response = self.hs.crm.objects.search_api.do_search(
+            object_type, public_object_search_request=search_request
         )
+        self.logger.debug(f"First response received:\n{response}")
+        results = []
+        results.extend(response.results)
+        if response.paging:
+            search_request.after = response.paging.next.after
+            while len(results) < max_results or max_results <= 0:
+                self.logger.debug(f"Current cursor is: {search_request.after}")
+                page = self.hs.crm.objects.search_api.do_search(
+                    object_type, public_object_search_request=search_request
+                )
+                results.extend(page.results)
+                if page.paging is None:
+                    break
+                search_request.after = page.paging.next.after
+        self.logger.debug(f"Total results found: {len(results)}")
+        return results
 
     def _get_all_schemas(self) -> List[Dict]:
         self._require_authentication()
         if self.schemas is None:
             self.schemas = self.hs.crm.schemas.core_api.get_all()
-        return self.schemas
+        return self.schemas.results
 
     def _get_custom_object_schema(self, name: str) -> Dict:
         self._require_authentication()
         for s in self._get_all_schemas():
             if (
-                s["name"] == name.lower()
-                or s["labels"]["singular"].lower() == name.lower()
-                or s["labels"]["plural"].lower() == name.lower()
+                s.name == name.lower()
+                or s.labels.singular.lower() == name.lower()
+                or s.labels.plural.lower() == name.lower()
             ):
                 return s
 
     def _get_custom_object_id(self, name: str) -> str:
         self._require_authentication()
         schema = self._get_custom_object_schema(self._validate_object_type(name))
-        return schema["objectTypeId"]
+        return schema.object_type_id
 
     def _singularize_object(self, name: str) -> str:
         if self.singular_map is None:
             self.singular_map = self.BUILTIN_SINGULAR_MAP
             schemas = self._get_all_schemas()
-            labels = [s["labels"] for s in schemas]
-            self.singular_map.update({l["plural"]: l["singular"] for l in labels})
+            labels = [s.labels for s in schemas]
+            self.singular_map.update({l.plural: l.singular for l in labels})
             self.singular_map.update(
-                {s["objectTypeId"]: s["objectTypeId"] for s in schemas}
+                {s.object_type_id: s.object_type_id for s in schemas}
             )
         return self.singular_map[self._validate_object_type(name)]
 
@@ -141,10 +161,10 @@ class Hubspot:
         if self.plural_map is None:
             self.plural_map = self.BUILTIN_PLURAL_MAP
             schemas = self._get_all_schemas()
-            labels = [s["labels"] for s in schemas]
-            self.plural_map.update({l["singular"]: l["plural"] for l in labels})
+            labels = [s.labels for s in schemas]
+            self.plural_map.update({l.singular: l.plural for l in labels})
             self.plural_map.update(
-                {s["objectTypeId"]: s["objectTypeId"] for s in schemas}
+                {s.object_type_id: s.object_type_id for s in schemas}
             )
         return self.plural_map[self._validate_object_type(name)]
 
@@ -155,8 +175,8 @@ class Hubspot:
         Raises `HubSpotObjectTypeError` if `name` cannot be validated.
         """
         valid_names = list(self.BUILTIN_SINGULAR_MAP.keys())
-        valid_names.extend([s["objectTypeId"] for s in self._get_all_schemas()])
-        valid_names.extend([s["name"] for s in self._get_all_schemas()])
+        valid_names.extend([s.object_type_id for s in self._get_all_schemas()])
+        valid_names.extend([s.name for s in self._get_all_schemas()])
         if name.lower() in valid_names:
             return name.lower()
         else:
@@ -179,7 +199,6 @@ class Hubspot:
         """
         self.hs = HubSpotApi(api_key=api_key)
 
-    @keyword
     def list_contacts(
         self, properties: List[str] = None, associations: List[str] = None
     ) -> List[dict]:
@@ -205,10 +224,11 @@ class Hubspot:
     def search_for_objects(
         self,
         object_type: str,
-        search: Optional[List[dict]] = None,
+        search: Optional[List[Dict]] = None,
         string_query: str = "",
         properties: Optional[List[str]] = None,
-    ) -> Dict:
+        max_results: int = 1000,
+    ) -> List[SimplePublicObject]:
         """Returns a list of objects of the specified `type` based on the
         provided `search` criteria. The following types are supported:
          - COMPANIES
@@ -222,25 +242,26 @@ class Hubspot:
          - Custom objects, which can be provided as the name of the
            object or the custom object ID in Hubspot.
 
+        Returns no more than `max_results` which defaults to 1,000 records.
+        Provide 0 for all results.
+
         Search criteria must be pased as a list of dictionaries. For
         example, to search for contacts with the first name of "Alice",
         you would construct the `search` criteria like so:
 
         .. code-block:: python
 
-            alice_search = {
-                "filterGroups": [
-                    {
-                        "filters": [
-                            {
-                                "propertyName": "firstname",
-                                "operator": "EQ",
-                                "value": "Alice",
-                            }
-                        ]
-                    }
-                ]
-            }
+            alice_search = [
+                {
+                    "filters": [
+                        {
+                            "propertyName": "firstname",
+                            "operator": "EQ",
+                            "value": "Alice",
+                        }
+                    ]
+                }
+            ]
 
         To include multiple filter criteria, you can group filters within
         `filterGroups`:
@@ -257,25 +278,23 @@ class Hubspot:
 
         .. code-block:: python
 
-            combination_search = {
-                "filterGroups": [
-                    {
-                        "filters": [
-                            {
-                                "propertyName": "firstname",
-                                "operator": "EQ",
-                                "value": "Alice",
-                            },
-                            {
-                                "propertyName": "lastname",
-                                "operator": "NEQ",
-                                "value": "Smith",
-                            },
-                        ]
-                    },
-                    {"filters": [{"propertyName": "enum1", "operator": "HAS_PROPERTY"}]},
-                ]
-            }
+            combination_search = [
+                {
+                    "filters": [
+                        {
+                            "propertyName": "firstname",
+                            "operator": "EQ",
+                            "value": "Alice",
+                        },
+                        {
+                            "propertyName": "lastname",
+                            "operator": "NEQ",
+                            "value": "Smith",
+                        },
+                    ]
+                },
+                {"filters": [{"propertyName": "enum1", "operator": "HAS_PROPERTY"}]},
+            ]
 
         You can use the following operators in a filter:
 
@@ -315,6 +334,8 @@ class Hubspot:
         #   Search For Objects    contacts    firstname    EQ    Alice
         self._require_authentication()
 
+        # TODO: Convert incoming `search` to filter and filter_group objects from hubspot.crm.objects.models
+
         return self._search_objects(
             self._pluralize_object(self._validate_object_type(object_type)),
             search,
@@ -325,7 +346,7 @@ class Hubspot:
     @keyword
     def list_associations(
         self, object_type: str, object_id: str, to_object_type: str
-    ) -> List[Dict]:
+    ) -> List[AssociatedId]:
         """List associations of an object by type, you must define the `object_type`
         with its `object_id`. You must also provide the associated objects with
         `to_object_type`. The API will return a list of dictionaries with
@@ -338,14 +359,21 @@ class Hubspot:
         """
 
         self._require_authentication()
-
-        return fetch_all(
-            self.hs.crm.objects.associations_api.get_all(
+        results = []
+        after = None
+        while True:
+            page = self.hs.crm.objects.associations_api.get_all(
                 self._validate_object_type(self._singularize_object(object_type)),
                 object_id,
                 self._validate_object_type(self._singularize_object(to_object_type)),
+                after=after,
+                limit=500,
             )
-        )
+            results.extend(page.results)
+            if page.paging is None:
+                break
+            after = page.paging.next.after
+        return results
 
     @keyword
     def get_object(
@@ -353,9 +381,9 @@ class Hubspot:
         object_type: str,
         object_id: str,
         id_property: Optional[str] = None,
-        properties: Optional[List[str]] = None,
-        associations: Optional[List[str]] = None,
-    ) -> Dict:
+        properties: Optional[Union[str, List[str]]] = None,
+        associations: Optional[Union[str, List[str]]] = None,
+    ) -> Union[SimplePublicObject, SimplePublicObjectWithAssociations]:
         """Reads a single object of `object_type` from HubSpot with the
         provided `object_id`. The objects can be found using an
         alternate ID by providing the name of that HubSpot property
@@ -392,6 +420,10 @@ class Hubspot:
             self._validate_object_type(object_type),
             object_id,
             properties=properties,
-            associations=[self._validate_object_type(obj) for obj in associations],
+            associations=(
+                [self._validate_object_type(obj) for obj in associations]
+                if associations
+                else None
+            ),
             id_property=id_property,
         )
