@@ -10,8 +10,10 @@ from robot.api.deco import keyword, library
 
 from hubspot import HubSpot as HubSpotApi
 from hubspot.utils.objects import fetch_all
-from hubspot.crm.objects import PublicObjectSearchRequest as ObjectSearchRequest
-from hubspot.crm.objects.models import (
+from hubspot.crm.objects import (
+    PublicObjectSearchRequest as ObjectSearchRequest,
+    FilterGroup,
+    Filter,
     SimplePublicObject,
     SimplePublicObjectWithAssociations,
     AssociatedId,
@@ -24,6 +26,10 @@ class HubSpotAuthenticationError(Exception):
 
 class HubSpotObjectTypeError(Exception):
     "Error when the object type provided does not exist."
+
+
+class HubSpotSearchParseError(Exception):
+    "Error when the natural word search engine cannot parse the provided words."
 
 
 @library(scope="Global", doc_format="REST")
@@ -85,46 +91,6 @@ class Hubspot:
         if self.hs is None:
             raise HubSpotAuthenticationError("Authentication was not completed.")
 
-    def _search_objects(
-        self,
-        object_type: str,
-        search: List[dict] = None,
-        string_query: str = "",
-        properties: List[str] = None,
-        max_results: int = 1000,
-    ) -> List[SimplePublicObject]:
-        self._require_authentication()
-        if search:
-            search_request = ObjectSearchRequest(
-                filter_groups=search, properties=properties, limit=100
-            )
-        elif string_query:
-            search_request = ObjectSearchRequest(
-                query=string_query, properties=properties, limit=100
-            )
-        else:
-            raise ValueError("Search or string_query must have a value.")
-        self.logger.debug(f"Search to use is:\n{search_request}")
-        response = self.hs.crm.objects.search_api.do_search(
-            object_type, public_object_search_request=search_request
-        )
-        self.logger.debug(f"First response received:\n{response}")
-        results = []
-        results.extend(response.results)
-        if response.paging:
-            search_request.after = response.paging.next.after
-            while len(results) < max_results or max_results <= 0:
-                self.logger.debug(f"Current cursor is: {search_request.after}")
-                page = self.hs.crm.objects.search_api.do_search(
-                    object_type, public_object_search_request=search_request
-                )
-                results.extend(page.results)
-                if page.paging is None:
-                    break
-                search_request.after = page.paging.next.after
-        self.logger.debug(f"Total results found: {len(results)}")
-        return results
-
     def _get_all_schemas(self) -> List[Dict]:
         self._require_authentication()
         if self.schemas is None:
@@ -182,6 +148,87 @@ class Hubspot:
         else:
             raise HubSpotObjectTypeError(f"Object type {name} does not exist.")
 
+    def _create_search_object(self, words: List):
+        def _split(words: List, oper: str):
+            size = len(words)
+            index_list = [i + 1 for i, v in enumerate(words) if v == oper]
+            return [
+                words[i:j]
+                for i, j in zip(
+                    [0] + index_list,
+                    index_list + ([size] if index_list[-1] != size else []),
+                )
+            ]
+
+        def _process_and(words: List):
+            if words.count("AND") > 3:
+                raise HubSpotSearchParseError(
+                    "No more than 3 logical 'AND' operators can be used between each 'OR' operator."
+                )
+            search_filters = []
+            if "AND" in words:
+                word_filters = _split(words, "AND")
+                for word_filter in word_filters:
+                    search_filters.append(_process_filter(word_filter))
+            else:
+                search_filters.append(_process_filter(words))
+            return search_filters
+
+        def _process_filter(words: List):
+            if len(words) not in (2, 3):
+                raise HubSpotSearchParseError(
+                    f"The provided words cannot be parsed as a search object. The words {words} could not be parsed."
+                )
+            if words[1] not in ("HAS_PROPERTY", "NOT_HAS_PROPERTY"):
+                search_filter = Filter(
+                    property_name=words[0], operator=words[1], value=words[2]
+                )
+            else:
+                search_filter = Filter(property_name=words[0], operator=words[1])
+            return search_filter
+
+        if words.count("OR") > 3:
+            raise HubSpotSearchParseError(
+                "No more than 3 logical 'OR' operators can be used."
+            )
+        filter_groups = []
+        if "OR" in words:
+            word_groups = _split(words, "OR")
+            for word_group in word_groups:
+                filter_groups.append(FilterGroup(_process_and(word_group)))
+        else:
+            filter_groups.append(FilterGroup(_process_and(words)))
+        return ObjectSearchRequest(filter_groups)
+
+    def _search_objects(
+        self,
+        object_type: str,
+        search_object: ObjectSearchRequest,
+        max_results: int = 1000,
+    ) -> List[SimplePublicObject]:
+        self._require_authentication()
+        search_object.limit = 100
+        self.logger.debug(f"Search to use is:\n{search_object}")
+        response = self.hs.crm.objects.search_api.do_search(
+            object_type, public_object_search_request=search_object
+        )
+        self.logger.debug(f"First response received:\n{response}")
+        results = []
+        results.extend(response.results)
+        if response.paging:
+            search_object.after = response.paging.next.after
+            while len(results) < max_results or max_results <= 0:
+                self.logger.debug(f"Current cursor is: {search_object.after}")
+                page = self.hs.crm.objects.search_api.do_search(
+                    object_type, public_object_search_request=search_object
+                )
+                results.extend(page.results)
+                if page.paging is None:
+                    break
+                search_object.after = page.paging.next.after
+        self.logger.debug(f"Total results found: {len(results)}")
+        return results
+
     @keyword
     def auth_with_token(self, access_token: str) -> None:
         """Authorize to HubSpot with Private App access token.
@@ -224,6 +271,7 @@ class Hubspot:
     def search_for_objects(
         self,
         object_type: str,
+        *natural_search,
         search: Optional[List[Dict]] = None,
         string_query: str = "",
         properties: Optional[List[str]] = None,
@@ -328,19 +376,30 @@ class Hubspot:
         to be included in the returned data.
         :return: A list of found hubspot objects.
         """
-
-        # TODO: Consider creating separate keywords for search and query so that
-        # search can be performed with natural language in RFW, like:
-        #   Search For Objects    contacts    firstname    EQ    Alice
         self._require_authentication()
 
-        # TODO: Convert incoming `search` to filter and filter_group objects from hubspot.crm.objects.models
-
+        if string_query:
+            search_object = ObjectSearchRequest(query=string_query)
+        elif natural_search:
+            search_object = self._create_search_object(natural_search)
+        elif search:
+            search_object = ObjectSearchRequest(
+                [
+                    FilterGroup(
+                        [
+                            Filter(f.get("value"), f["propertyName"], f["operator"])
+                            for f in g["filters"]
+                        ]
+                    )
+                    for g in search
+                ]
+            )
+        else:
+            search_object = ObjectSearchRequest()
+        search_object.properties = properties
         return self._search_objects(
             self._pluralize_object(self._validate_object_type(object_type)),
-            search,
-            string_query,
-            properties,
+            search_object,
         )
 
     @keyword
