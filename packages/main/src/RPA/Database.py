@@ -346,9 +346,9 @@ class Database:
     def call_stored_procedure(
         self,
         name: str,
-        params: Optional[List[str, int, Any]] = None,
+        params: Optional[List[str]] = None,
         sanstran: Optional[bool] = False,
-    ) -> list:
+    ) -> List[str]:
         """Call stored procedure with name and params.
 
         :param name: procedure name
