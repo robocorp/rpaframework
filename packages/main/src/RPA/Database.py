@@ -197,7 +197,6 @@ class Database:
         :param charset: for example, "utf-8", defaults to None
         :param config_file: location of configuration file, defaults to "db.cfg"
         :param autocommit: set autocommit value for connect (only with pymssql atm)
-        :returns: None
 
         Example:
 
@@ -413,8 +412,6 @@ class Database:
     def disconnect_from_database(self) -> None:
         """Close connection to SQL database
 
-        :returns: None
-
         Example:
 
         .. code-block:: robotframework
@@ -437,7 +434,6 @@ class Database:
         :param sanstran: Run the query without an implicit transaction commit or
             rollback if such additional action was detected. (turned off by default)
         :param encoding: character encoding of file
-        :returns: None
 
         Example:
 
@@ -610,7 +606,6 @@ class Database:
         """Set database auto commit mode.
 
         :param autocommit: boolean value for auto commit, defaults to True
-        :returns: None
 
         Example:
 
