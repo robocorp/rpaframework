@@ -1,14 +1,19 @@
 *** Settings ***
-Library           RPA.Hubspot
-Library           Collections
-Force Tags        hubspot
+Documentation       API keys and variables must be provided in ./setup.py. These should use a live or
+...                 sandbox Hubspot environment to test the API, there is no mocking function.
+
+Library             RPA.Hubspot
+Library             Collections
+Variables           ./setup.py
+
+Force Tags          hubspot
 
 *** Variables ***
-${NOT_AUTHENTICATED_ERROR}    STARTS:HubSpotAuthenticationError:
-${AUTHENTICATION_FAILED}    STARTS:ApiException: (401)
-${HUBSPOT_TYPE_ERROR}    STARTS:HubSpotObjectTypeError:
+${NOT_AUTHENTICATED_ERROR}      STARTS:HubSpotAuthenticationError:
+${AUTHENTICATION_FAILED}        STARTS:ApiException: (401)
+${HUBSPOT_TYPE_ERROR}           STARTS:HubSpotObjectTypeError:
 
-*** Tasks ***
+*** Test Cases ***
 Search for objects should fail without authentication
     Run Keyword And Expect Error    ${NOT_AUTHENTICATED_ERROR}
     ...    Search for objects    object_type=CONTACTS
@@ -27,36 +32,65 @@ Authentication fails with bad API key
     ...    Search for objects    object_type=CONTACTS
 
 Search for Contact by First Name Returns Contacts
-    Auth with API key    %{API_KEY}
-    ${search_object}=    Evaluate    [{'filters':[{'propertyName':'firstname','operator':'EQ','value':'%{FIRST_NAME}'}]}]
+    Auth with API key    ${API_KEY}
+    ${search_object}=    Evaluate
+    ...    [{'filters':[{'propertyName':'firstname','operator':'EQ','value':'${FIRST_NAME}'}]}]
     ${contacts}=    Search for objects    CONTACTS    search=${search_object}
-    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    %{FIRST_NAME}    case_insensitive=${True}
+    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME}
+    ...    case_insensitive=${True}
 
 Search for All Contacts Returns 1000 Contacts
-    Auth with API key    %{API_KEY}
+    Auth with API key    ${API_KEY}
     ${search_object}=    Evaluate    [{'filters':[{'propertyName':'firstname','operator':'HAS_PROPERTY'}]}]
     ${contacts}=    Search for objects    CONTACTS    search=${search_object}
     ${length}=    Get Length    ${contacts}
     Should Be Equal As Integers    1000    ${length}
 
 Search for object with natural language returns object
-    Auth with API key    %{API_KEY}
-    ${contacts}=    Search for objects    CONTACTS    firstname    EQ    %{FIRST_NAME}    AND    lastname    EQ    %{LAST_NAME}
-    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    %{FIRST_NAME}    case_insensitive=${True}
-    Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    %{LAST_NAME}    case_insensitive=${True}
+    Auth with API key    ${API_KEY}
+    ${contacts}=    Search for objects    CONTACTS    firstname    EQ    ${FIRST_NAME}    AND    lastname    EQ
+    ...    ${LAST_NAME}
+    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME}
+    ...    case_insensitive=${True}
+    Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    ${LAST_NAME}
+    ...    case_insensitive=${True}
 
 Retrieve One Object Using ID Returns Object
-    Auth with API key    %{API_KEY}
-    ${contact}=    Get object    CONTACT    %{OBJECT_ID}
-    Should Be Equal    %{OBJECT_ID}    ${contact.id}
+    Auth with API key    ${API_KEY}
+    ${contact}=    Get object    CONTACT    ${OBJECT_ID}
+    Should Be Equal As Strings    ${OBJECT_ID}    ${contact.id}
 
 List company associations for contact returns one company
-    Auth with API key    %{API_KEY}
-    ${associations}=    List associations    CONTACT    %{OBJECT_ID}    COMPANY
-    Should Be Equal    %{COMPANY_ID}    ${{$associations[0].id}}
+    Auth with API key    ${API_KEY}
+    ${associations}=    List associations    CONTACT    ${OBJECT_ID}    COMPANY
+    Should Be Equal As Strings    ${COMPANY_ID}    ${{$associations[0].id}}
 
 Retrieve Custom Object Using Custom ID Returns Object
-    Auth with API key    %{API_KEY}
-    ${custom_object}=    Get object    %{CUSTOM_OBJECT_TYPE}    %{CUSTOM_OBJ_ID}
-    ...    id_property=%{ID_PROPERTY}    properties=%{ID_PROPERTY}
-    Should Be Equal    %{CUSTOM_OBJ_ID}    ${custom_object.properties["%{ID_PROPERTY}"]}
+    Auth with API key    ${API_KEY}
+    ${custom_object}=    Get object    ${CUSTOM_OBJECT_TYPE}    ${CUSTOM_OBJ_ID}
+    ...    id_property=${ID_PROPERTY}    properties=${ID_PROPERTY}
+    Should Be Equal as Strings    ${CUSTOM_OBJ_ID}    ${custom_object.properties["${ID_PROPERTY}"]}
+
+List Deal Pipelines Should Return Default Pipeline
+    Auth with API key    ${API_KEY}
+    ${pipelines}=    List pipelines    DEALS
+    ${pipeline_ids}=    Evaluate    [p.id for p in $pipelines]
+    List should contain value    ${pipeline_ids}    default
+
+List Default Deal Pipeline Should Return Default Pipeline
+    Auth with API key    ${API_KEY}
+    ${default_pipeline}=    Get pipeline    DEALS    default
+
+List Deal Pipeline With Label Should Return Pipeline
+    Auth with API key    ${API_KEY}
+    ${default_pipeline}=    Get pipeline    DEALS    ${PIPELINE_LABEL}
+
+Get Pipeline Stages For Labeled Pipeline Returns Dictionary In Proper Order
+    Auth with API key    ${API_KEY}
+    &{stages}=    Get Pipeline Stages    DEALS    ${PIPELINE_LABEL}
+    @{stage_labels}=    Get dictionary keys    ${stages}    sort_keys=${False}
+    Lists should be equal    ${EXPECTED_STAGE_ORDER}    ${stage_labels}
+
+Check Test Deal Is Currently In Expected Stages
+    Auth with API key    ${API_KEY}
+    ${test_deal}=    Get object    DEAL    ${TEST_DEAL}
