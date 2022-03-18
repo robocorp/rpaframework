@@ -3,7 +3,7 @@ import logging
 from posixpath import split
 import re
 from os import access
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional, Tuple, Union
 
 from pprint import pprint
 
@@ -11,13 +11,18 @@ from robot.api.deco import keyword, library
 
 from hubspot import HubSpot as HubSpotApi
 from hubspot.utils.objects import fetch_all
-from hubspot.crm.objects import (
+from hubspot.crm.objects.models import (
     PublicObjectSearchRequest as ObjectSearchRequest,
     FilterGroup,
     Filter,
     SimplePublicObject,
     SimplePublicObjectWithAssociations,
     AssociatedId,
+)
+from hubspot.crm.schemas.models import ObjectSchema
+from hubspot.crm.pipelines.models import (
+    Pipeline,
+    PipelineStage,
 )
 
 
@@ -31,6 +36,10 @@ class HubSpotObjectTypeError(Exception):
 
 class HubSpotSearchParseError(Exception):
     "Error when the natural word search engine cannot parse the provided words."
+
+
+class HubSpotNoPipelineError(Exception):
+    "Error when there is no pipeline associated with an object."
 
 
 @library(scope="Global", doc_format="REST")
@@ -95,23 +104,36 @@ class Hubspot:
             self.hs = HubSpotApi(access_token=hubspot_apikey)
         else:
             self.hs = None
-        self.schemas = None
-        self.singular_map = None
-        self.plural_map = None
+        self._schemas = []
+        self._singular_map = {}
+        self._plural_map = {}
+        self._pipelines = {}
 
     def _require_authentication(self) -> None:
         if self.hs is None:
             raise HubSpotAuthenticationError("Authentication was not completed.")
 
-    def _get_all_schemas(self) -> List[Dict]:
+    @property
+    def schemas(self) -> List[ObjectSchema]:
         self._require_authentication()
-        if self.schemas is None:
+        if len(self._schemas) == 0:
             self.schemas = self.hs.crm.schemas.core_api.get_all()
-        return self.schemas.results
+        return self._schemas
+
+    @schemas.setter
+    def schemas(self, results):
+        if hasattr(results, "results"):
+            results = results.results
+        if isinstance(results, list) and isinstance(results[0], ObjectSchema):
+            self._schemas = results
+        else:
+            raise TypeError(
+                "Invalid values for `results`, must be list of `ObjectSchema`."
+            )
 
     def _get_custom_object_schema(self, name: str) -> Dict:
         self._require_authentication()
-        for s in self._get_all_schemas():
+        for s in self.schemas:
             if (
                 s.name == name.lower()
                 or s.labels.singular.lower() == name.lower()
@@ -125,26 +147,24 @@ class Hubspot:
         return schema.object_type_id
 
     def _singularize_object(self, name: str) -> str:
-        if self.singular_map is None:
-            self.singular_map = self.BUILTIN_SINGULAR_MAP
-            schemas = self._get_all_schemas()
-            labels = [s.labels for s in schemas]
-            self.singular_map.update({l.plural: l.singular for l in labels})
-            self.singular_map.update(
-                {s.object_type_id: s.object_type_id for s in schemas}
+        if len(self._singular_map) == 0:
+            self._singular_map = self.BUILTIN_SINGULAR_MAP
+            labels = [s.labels for s in self.schemas]
+            self._singular_map.update({l.plural: l.singular for l in labels})
+            self._singular_map.update(
+                {s.object_type_id: s.object_type_id for s in self.schemas}
             )
-        return self.singular_map[self._validate_object_type(name)]
+        return self._singular_map[self._validate_object_type(name)]
 
     def _pluralize_object(self, name: str) -> str:
-        if self.plural_map is None:
-            self.plural_map = self.BUILTIN_PLURAL_MAP
-            schemas = self._get_all_schemas()
-            labels = [s.labels for s in schemas]
-            self.plural_map.update({l.singular: l.plural for l in labels})
-            self.plural_map.update(
-                {s.object_type_id: s.object_type_id for s in schemas}
+        if len(self._plural_map) == 0:
+            self._plural_map = self.BUILTIN_PLURAL_MAP
+            labels = [s.labels for s in self.schemas]
+            self._plural_map.update({l.singular: l.plural for l in labels})
+            self._plural_map.update(
+                {s.object_type_id: s.object_type_id for s in self.schemas}
             )
-        return self.plural_map[self._validate_object_type(name)]
+        return self._plural_map[self._validate_object_type(name)]
 
     def _validate_object_type(self, name: str) -> str:
         """Validates the provided `name` against the built in list of
@@ -153,8 +173,8 @@ class Hubspot:
         Raises `HubSpotObjectTypeError` if `name` cannot be validated.
         """
         valid_names = list(self.BUILTIN_SINGULAR_MAP.keys())
-        valid_names.extend([s.object_type_id for s in self._get_all_schemas()])
-        valid_names.extend([s.name for s in self._get_all_schemas()])
+        valid_names.extend([s.object_type_id for s in self.schemas])
+        valid_names.extend([s.name for s in self.schemas])
         if name.lower() in valid_names:
             return name.lower()
         else:
@@ -514,3 +534,177 @@ class Hubspot:
             ),
             id_property=id_property,
         )
+
+    @property
+    def pipelines(self) -> Dict[str, List[Pipeline]]:
+        return self._pipelines
+
+    def _set_pipelines(self, object_type: str, archived: bool = False):
+        self._require_authentication()
+        valid_object_type = self._validate_object_type(object_type)
+        self._pipelines[valid_object_type] = (
+            self.hs.crm.pipelines.pipelines_api.get_all(
+                valid_object_type, archived=archived
+            )
+        ).results
+
+    def _get_cached_pipeline(self, object_type, pipeline_id):
+        return next(
+            (
+                p
+                for p in self.pipelines.get(object_type, [])
+                if p.id == pipeline_id or p.label == pipeline_id
+            ),
+            None,
+        )
+
+    def _get_set_a_pipeline(self, object_type, pipeline_id, use_cache=True):
+        self._require_authentication()
+        valid_object_type = self._validate_object_type(object_type)
+        if (
+            self._get_cached_pipeline(valid_object_type, pipeline_id) is None
+            or not use_cache
+        ):
+            response = self.hs.crm.pipelines.pipelines_api.get_by_id(
+                valid_object_type, pipeline_id
+            )
+            if self.pipelines.get(valid_object_type) is not list:
+                self._pipelines[valid_object_type] = []
+            self._pipelines[valid_object_type].extend([response])
+        return self._get_cached_pipeline(valid_object_type, pipeline_id)
+
+    def _get_pipelines(
+        self, object_type, pipeline_id=None, archived=False, use_cache=True
+    ):
+        self._require_authentication()
+        valid_object_type = self._validate_object_type(object_type)
+        if self.pipelines.get(valid_object_type) is None or not use_cache:
+            if pipeline_id is None:
+                self._set_pipelines(valid_object_type, archived)
+            else:
+                self._get_set_a_pipeline(object_type, pipeline_id, use_cache=False)
+        return (
+            self._get_set_a_pipeline(object_type, pipeline_id, use_cache)
+            if pipeline_id
+            else self.pipelines[valid_object_type]
+        )
+
+    @keyword
+    def list_pipelines(
+        self, object_type: str, archived: bool = False, use_cache: bool = True
+    ) -> List[Pipeline]:
+        """Returns a list of all pipelines configured in Hubspot for the
+        provided `object_type`. By default only active, unarchived pipelines
+        are returned.
+
+        This keyword caches results for future use, to refresh results from
+        Hupspot, set `use_cache` to `False`.
+        """
+        self._require_authentication()
+
+        return self._get_pipelines(
+            self._validate_object_type(object_type),
+            archived=archived,
+            use_cache=use_cache,
+        )
+
+    @keyword
+    def get_pipeline(
+        self, object_type: str, pipeline_id: str, use_cache: bool = True
+    ) -> Pipeline:
+        """Returns the `object_type` pipeline identified by `pipeline_id`.
+        The provided `pipeline_id` can be provided as the label (case sensitive)
+        or API ID code.
+
+        The `Pipeline` object returned includes a `stages` property, which
+        is a list of `PipelineStage` objects. The `stages` of the pipeline represent
+        the discreet steps an object travels through within the pipeline.
+        The order of the steps is determined by the `display_order` property.
+        These properties can be accessessed with dot notation and generator
+        comprehension; however, these are advanced Python concepts, so
+        it is generally easier to use the keyword `Get Pipeline Stages` to
+        get an ordered dictionary of the stages from first to last.
+
+        ** Examples **
+
+        ** Robot Framework **
+
+        .. code-block:: robotframework
+
+            ${pipeline}=    Get pipeline    DEALS   default
+            ${step_one}=    Evaluate   ${{next((s.label for s in $pipeline.stages if s.display_order == 0))}}
+
+
+        This keyword caches results for future use, to refresh results from
+        Hupspot, set `use_cache` to `False`.
+        """
+        self._require_authentication()
+
+        return self._get_pipelines(
+            self._validate_object_type(object_type),
+            pipeline_id=pipeline_id,
+            use_cache=use_cache,
+        )
+
+    @keyword
+    def get_pipeline_stages(
+        self,
+        object_type: str,
+        pipeline_id: str,
+        return_labels: bool = True,
+        use_cache: bool = True,
+    ) -> Dict[str, Dict]:
+        """Returns a dictionary representing the stages available in the
+        requested pipeline. Only pipelines for `object_type` are searched
+        using the `pipeline_id` as the label or Hubspot API identifier code.
+
+        By default, the keys of the returned dictionary represent the labels
+        of the stages, in order from first to last stage.
+
+        Each item's value is a dictionary with two keys: `id` and `metadata`.
+        The `id` is the numerical API ID associated with the stage, while the
+        `metadata` is a dictionary of metadata associated with that stage
+        (e.g., `isClosed` and `probability` for deals pipelines) that
+        is unique per pipeline.
+
+        The above logic can be reversed by setting the argument `return_labels`
+        to `False`. This will cause the keys of the returned dictionaries to
+        be the `id` and each item's value will be `label` and `metadata`.
+
+        This keyword caches results for future use, to refresh results from
+        Hupspot, set `use_cache` to `False`.
+        """
+        self._require_authentication()
+        stages = self.get_pipeline(object_type, pipeline_id, use_cache).stages
+        stages.sort(key=lambda s: (s.display_order, s.label))
+        if return_labels:
+            return {s.label: {"id": s.id, "metadata": dict(s.metadata)} for s in stages}
+        else:
+            return {
+                s.id: {"label": s.label, "metadata": dict(s.metadata)} for s in stages
+            }
+
+    @keyword
+    def get_current_stage_of_object(
+        self,
+        object_type: str,
+        object_id: str,
+        id_property: Optional[str] = None,
+    ) -> Tuple[str, Dict]:
+        """Returns the current pipeline stage for the object as a tuple of
+        the stage label and that stage's associated metadata as a dictionary.
+        """
+        self._require_authentication()
+        hs_object = self.get_object(object_type, object_id, id_property)
+        if hs_object.properties.get("pipeline"):
+            pipeline_stages = self.get_pipeline_stages(
+                object_type, hs_object.properties["pipeline"], return_labels=False
+            )
+            stage_key = hs_object.properties.get(
+                "dealstage", hs_object.properties.get("hs_pipeline_stage")
+            )
+            return (stage_key, pipeline_stages[stage_key])
+        else:
+            raise HubSpotNoPipelineError(
+                f"The {object_type} object type with ID '{object_id}' is not in a pipeline."
+            )
