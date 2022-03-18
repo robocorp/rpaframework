@@ -2,7 +2,7 @@ from enum import Enum
 import json
 import logging
 from pathlib import Path
-from typing import Optional, Dict, List, Union, Any
+from typing import Optional, Dict, List, Union, Any, Tuple
 
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -25,7 +25,7 @@ class ConfigurationType(Enum):
     # storages = "storages"
 
 
-def to_configuration_type(value):
+def to_configuration_type(value: Any) -> ConfigurationType:
     """Convert value to ConfigurationType enum."""
     if isinstance(value, ConfigurationType):
         return value
@@ -165,7 +165,7 @@ class Process:
         self.http = HTTP()
 
     @keyword(tags=["set"])
-    def set_workspace_id(self, workspace_id: str = None):
+    def set_workspace_id(self, workspace_id: Optional[str] = None) -> None:
         """Set Control Room workspace ID
 
         :param workspace_id: ID of the Control Room workspace
@@ -174,7 +174,7 @@ class Process:
             self.workspace_id = workspace_id
 
     @keyword(tags=["set"])
-    def set_process_id(self, process_id: str = None):
+    def set_process_id(self, process_id: Optional[str] = None) -> None:
         """Set Control Room process ID
 
         :param process_id: ID of the Control Room process
@@ -183,7 +183,7 @@ class Process:
             self.process_id = process_id
 
     @keyword(tags=["set"])
-    def set_apikey(self, apikey: str = None):
+    def set_apikey(self, apikey: Optional[str] = None) -> None:
         """Set Workspace API access key
 
         :param apikey: workspace API access key
@@ -193,8 +193,11 @@ class Process:
 
     @keyword(tags=["set"])
     def set_credentials(
-        self, workspace_id: str = None, process_id: str = None, apikey: str = None
-    ):
+        self,
+        workspace_id: Optional[str] = None,
+        process_id: Optional[str] = None,
+        apikey: Optional[str] = None,
+    ) -> None:
         """Set credentials needed by the Process API
 
         :param workspace_id: ID of the Control Room workspace
@@ -206,35 +209,35 @@ class Process:
         self.set_apikey(apikey)
 
     @property
-    def headers(self):
+    def headers(self) -> Dict[str, str]:
         return {"Authorization": f"RC-WSKEY {self.workspace_api_key}"}
 
     @property
-    def base_api(self):
+    def base_api(self) -> str:
         return f"{self.robocorp_api_server}/workspaces/{self.workspace_id}"
 
-    def process_api(self, process_id: str = None):
+    def process_api(self, process_id: Optional[str] = None) -> str:
         pid = process_id or self.process_id
         return f"{self.base_api}/processes/{pid}"
 
-    def workspace_api(self, workspace_id: str = None):
+    def workspace_api(self, workspace_id: Optional[str] = None) -> str:
         wid = workspace_id or self.workspace_id
         return f"{self.robocorp_api_server}/workspaces/{wid}"
 
     @keyword(tags=["process", "post", "work item", "start"])
     def start_process(
         self,
-        work_items: Union[Dict, List[Dict]] = None,
+        work_items: Optional[Union[Dict, List[Dict]]] = None,
         batch: bool = False,
-        process_id: str = None,
-    ):
+        process_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """Start a Control Room process
 
         :param work_items: input work items for the process (default empty)
         :param batch: set to True if sending list of workitems to start each
          as a separate run
         :param process_id: specific process to start
-
+        :return: JSON of the request response
 
         Table showing different results depending on parameter
         values.
@@ -264,13 +267,14 @@ class Process:
         self,
         config_type: ConfigurationType = ConfigurationType.default,
         extra_info: Optional[Union[str, List]] = None,
-        process_id: str = None,
-    ):
+        process_id: Optional[str] = None,
+    ) -> str:
         """Start a Control Room process with the provided configuration
 
         :param config_type: type of the start, (ConfigurationType.default)
         :param extra_info: data to be sent with the start, for example. work item IDs
         :param process_id: specific process to start
+        :return: string of the request response
         """
         ctype = to_configuration_type(config_type)
         request_data = {"type": ctype.value}
@@ -291,15 +295,16 @@ class Process:
     @keyword(tags=["process", "post", "work item"])
     def create_input_work_item(
         self,
-        payload: Any = None,
+        payload: Optional[Any] = None,
         files: Optional[Union[str, List]] = None,
-        process_id: str = None,
-    ):
+        process_id: Optional[str] = None,
+    ) -> int:
         """Create an input work item for a process
 
         :param payload: work item data
         :param files: absolute filepaths as single string or list
         :param process_id: specific process to which item belongs to
+        :return: The integer that represents the work item id
         """
         files = [files] if isinstance(files, str) else files or []
         response = self.http.session_less_post(
@@ -328,8 +333,8 @@ class Process:
         filepath: str,
         workitem_filename: str,
         workitem_id: str,
-        process_id: str = None,
-    ):
+        process_id: Optional[str] = None,
+    ) -> Tuple[str, Dict[str, Any]]:
         upload_filesize = Path(filepath).stat().st_size
         response = self.http.session_less_post(
             url=f"{self.process_api(process_id)}/work-items/{workitem_id}/files/upload",
@@ -341,7 +346,9 @@ class Process:
         response.raise_for_status()
         return response.status_code, response.json()
 
-    def upload_file_to_s3(self, filepath, workitem_filename, data):
+    def upload_file_to_s3(
+        self, filepath: str, workitem_filename: str, data: Any
+    ) -> Tuple[str, str]:
         with open(filepath, "rb") as infile:
             url = data["url"]
             fields = data["fields"]
@@ -351,10 +358,11 @@ class Process:
             return response.status_code, response.text
 
     @keyword(tags=["process", "get"])
-    def list_processes(self, workspace_id: str = None):
+    def list_processes(self, workspace_id: Optional[str] = None) -> Dict[str, Any]:
         """List all processes in a workspace
 
         :param workspace_id: specific Control Room workspace to which process belongs to
+        :return: the JSON data of the process runs based on the provided parameters
         """
         response = self.http.session_less_get(
             url=f"{self.workspace_api(workspace_id)}/processes",
@@ -365,14 +373,18 @@ class Process:
 
     @keyword(tags=["process", "get", "work item"])
     def list_process_work_items(
-        self, process_id: str = None, include_data: bool = False, item_state: str = None
-    ):
+        self,
+        process_id: Optional[str] = None,
+        include_data: bool = False,
+        item_state: Optional[str] = None,
+    ) -> Union[str, None, Any]:
         """List work items belonging to a process
 
         :param include_data: include work item payload and files in
          the response (default False)
         :param item_state: state of work items to return (default all)
         :param process_id: specific process to which items belongs to
+        :return: the JSON data of the process runs based on the provided parameters
         """
         response = self.http.session_less_get(
             url=f"{self.process_api(process_id)}/work-items",
@@ -423,14 +435,18 @@ class Process:
 
     @keyword(tags=["process", "get", "work item"])
     def get_work_item(
-        self, workitem_id: str, include_data: bool = False, process_id: str = None
-    ):
+        self,
+        workitem_id: str,
+        include_data: bool = False,
+        process_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """Get work item from Control Room
 
         :param workitem_id: id of the work item
         :param include_data: include work item payload and files in
          the response (default False)
         :param process_id: specific process to which runs belongs to
+        :return: the JSON of the work items associated with a given process
         """
         response = self.http.session_less_get(
             url=f"{self.process_api(process_id)}/work-items/{workitem_id}",
@@ -446,12 +462,13 @@ class Process:
         run_state: Optional[str] = None,
         limit: Optional[int] = 10,
         process_id: Optional[str] = None,
-    ):
+    ) -> Union[str, None, Any]:
         """List of runs related to a process
 
         :param run_state: state of runs to return (default all)
         :param limit: number of runs to return (default 10)
         :param process_id: specific process to which runs belongs to
+        :return: the JSON data of the process runs based on the provided parameters
         """
         response = self.http.session_less_get(
             url=f"{self.process_api(process_id)}/runs",
@@ -472,12 +489,13 @@ class Process:
         run_state: Optional[str] = None,
         limit: Optional[int] = 10,
         workspace_id: Optional[str] = None,
-    ):
+    ) -> Union[str, None, Any]:
         """List all process runs in a workspace
 
         :param run_state: state of runs to return (default all)
         :param limit: number of runs to return (default 10)
         :param workspace_id: specific Control Room workspace to which process belongs to
+        :return: the JSON data of the process runs based on the provided parameters
         """
         response = self.http.session_less_get(
             url=f"{self.workspace_api(workspace_id)}/pruns",
@@ -498,12 +516,13 @@ class Process:
         process_run_id: str,
         step_run_id: Optional[str] = None,
         process_id: Optional[str] = None,
-    ):
+    ) -> Dict[str, Any]:
         """Get a process run status by run id
 
         :param process_run_id: id of the process run
         :param step_run_id: id of the process step run
         :param process_id: specific process to which runs belongs to
+        :return: the response JSON
         """
         request_url = f"{self.process_api(process_id)}/runs/{process_run_id}"
         if step_run_id:
@@ -518,11 +537,12 @@ class Process:
     @keyword(tags=["process", "get"])
     def get_process_id_by_name(
         self, process_name: str, workspace_id: Optional[str] = None
-    ):
+    ) -> Union[int, None]:
         """Get a process id of the process by name
 
         :param process_name: name of the process in the Control Room
         :param workspace_id: specific Control Room workspace to which process belongs to
+        :return: the next iteration id or None
         """
         processes = self.list_processes(workspace_id)
         return next((p["id"] for p in processes if p["name"] == process_name), None)
@@ -531,12 +551,13 @@ class Process:
     def retry_work_item(
         self,
         work_item_id: str,
-        process_id: str = None,
-    ):
+        process_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """Retry processing of work item in FAILED state
 
         :param work_item_id: ID of the work item to retry
         :param process_id: specific process to start
+        :return: the response JSON
         """
         response = self.http.session_less_post(
             url=f"{self.process_api(process_id)}/work-items/{work_item_id}/retry",
