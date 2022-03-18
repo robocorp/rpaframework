@@ -364,6 +364,8 @@ First steps to start developing:
    - another possibility for Robocorp internal development is to use Robocorp **devpi** instance, by ``poetry publish --ci``
      and point **conda.yaml** to use rpaframework version in devpi
 #. ``poetry run python -m robot <ROBOT_ARGS> <TARGET_ROBOT_FILE>``
+
+   - common *ROBOT_ARGS* from Robocorp Robot template: ``--report NONE --outputdir output --logtitle "Task log"``
 #. ``poetry run python <TARGET_PYTHON_FILE>``
 #. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines. It is possible and likely
    that Github action will fail the if developer has not linted the code changes. Code formatting is based on `black`_ and `flake8`_
