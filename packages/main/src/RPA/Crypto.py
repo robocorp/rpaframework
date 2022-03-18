@@ -110,7 +110,6 @@ class Crypto:
         """Set key for all following encryption/decryption operations.
 
         :param key: Encryption key as base64 string
-        :return: None
 
         Assumes the given key has been generated previously using
         either the keyword ``Generate Key`` or with the matching command
@@ -132,7 +131,6 @@ class Crypto:
 
         :param name: Name of secret in Vault
         :param key: Name of encryption key in secret
-        :return: None
 
         If the secret only has one value, the key argument is optional.
 
