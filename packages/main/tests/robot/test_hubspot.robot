@@ -41,8 +41,9 @@ Search for All Contacts Returns 1000 Contacts
 
 Search for object with natural language returns object
     Auth with API key    %{API_KEY}
-    ${contacts}=    Search for objects    CONTACTS    firstname    EQ    %{FIRST_NAME}
+    ${contacts}=    Search for objects    CONTACTS    firstname    EQ    %{FIRST_NAME}    AND    lastname    EQ    %{LAST_NAME}
     Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    %{FIRST_NAME}    case_insensitive=${True}
+    Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    %{LAST_NAME}    case_insensitive=${True}
 
 Retrieve One Object Using ID Returns Object
     Auth with API key    %{API_KEY}
