@@ -1,5 +1,6 @@
 from ast import keyword
 import logging
+from posixpath import split
 import re
 from os import access
 from typing import List, Dict, Optional, Union
@@ -38,6 +39,17 @@ class Hubspot:
 
     Current features of this library focus on retrieving object data
     from HubSpot via API.
+
+    **Using Date Times**
+
+    When using date times with the Hubspot API, you must provide
+    them as Unix-style epoch timestamps (with milliseconds), which can be obtained
+    using the `DateTime` library's `Convert Date` with the
+    argument `result_format=epoch`. The resulting timestamp string
+    will be a float, but the API only accepts integers, so you must
+    multiply the resulting timestamp by 1,000 and then round  it to
+    the nearest integar to include in API calls (i.e., the resulting
+    integer sent to the API must have 13 digits as of March 18, 2022).
     """
 
     BUILTIN_SINGULAR_MAP = {
@@ -150,15 +162,21 @@ class Hubspot:
 
     def _create_search_object(self, words: List):
         def _split(words: List, oper: str):
+            self.logger.debug(f"Words to split on operator '{oper}': {words}")
             size = len(words)
-            index_list = [i + 1 for i, v in enumerate(words) if v == oper]
-            return [
+            first_index_list = [i + 1 for i, v in enumerate(words) if v == oper]
+            second_index_list = [i for i, v in enumerate(words) if v == oper]
+            self.logger.debug(f"Index list is: {first_index_list}")
+            split_result = [
                 words[i:j]
                 for i, j in zip(
-                    [0] + index_list,
-                    index_list + ([size] if index_list[-1] != size else []),
+                    [0] + first_index_list,
+                    second_index_list
+                    + ([size] if second_index_list[-1] != size else []),
                 )
             ]
+            self.logger.debug(f"Split result: {split_result}")
+            return split_result
 
         def _process_and(words: List):
             if words.count("AND") > 3:
@@ -168,13 +186,18 @@ class Hubspot:
             search_filters = []
             if "AND" in words:
                 word_filters = _split(words, "AND")
+                self.logger.debug(
+                    f"Found these groups of words as Filters: {word_filters}"
+                )
                 for word_filter in word_filters:
                     search_filters.append(_process_filter(word_filter))
             else:
+                self.logger.debug(f"Found this group of words as Filter: {words}")
                 search_filters.append(_process_filter(words))
             return search_filters
 
         def _process_filter(words: List):
+            self.logger.debug(f"Attempting to turn {words} into Filter object.")
             if len(words) not in (2, 3):
                 raise HubSpotSearchParseError(
                     f"The provided words cannot be parsed as a search object. The words {words} could not be parsed."
@@ -185,6 +208,7 @@ class Hubspot:
                 )
             else:
                 search_filter = Filter(property_name=words[0], operator=words[1])
+            self.logger.debug(f"Resulting Filter object: {search_filter}")
             return search_filter
 
         if words.count("OR") > 3:
@@ -194,9 +218,13 @@ class Hubspot:
         filter_groups = []
         if "OR" in words:
             word_groups = _split(words, "OR")
+            self.logger.debug(
+                f"Found these groups of words as FilterGroups: {word_groups}"
+            )
             for word_group in word_groups:
                 filter_groups.append(FilterGroup(_process_and(word_group)))
         else:
+            self.logger.debug(f"Found this group of words as FilterGroup: {words}")
             filter_groups.append(FilterGroup(_process_and(words)))
         return ObjectSearchRequest(filter_groups)
 
