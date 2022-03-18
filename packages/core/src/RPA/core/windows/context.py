@@ -1,15 +1,14 @@
 import contextlib
 import functools
-from typing import Optional
 import logging
+from typing import Optional
 
-from .helpers import IS_WINDOWS
+from RPA.core.windows.helpers import IS_WINDOWS
+from RPA.core.windows.locators import Locator
 
 if IS_WINDOWS:
-    from comtypes import COMError  # noqa
     import uiautomation as auto
-else:
-    COMError = Exception
+    from comtypes import COMError  # noqa
 
 
 class ControlNotFound(ValueError):
@@ -42,8 +41,8 @@ class DefaultWindowsContext:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
-        self.window_element = None
-        self.anchor_element = None
+        self.window_element: Optional[Locator] = None
+        self.anchor_element: Optional[Locator] = None
 
 
 class WindowsContext:

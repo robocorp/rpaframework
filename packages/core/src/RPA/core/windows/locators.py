@@ -2,15 +2,14 @@ import re
 from dataclasses import dataclass, field
 from typing import List, Optional, Union
 
-from RPA.core.locators import LocatorsDatabase, WindowsLocator
-
-from .helpers import IS_WINDOWS
-from .context import (
+from RPA.core.windows.context import (
     ElementNotFound,
     WindowsContext,
     WindowControlError,
     with_timeout,
 )
+from RPA.core.windows.helpers import IS_WINDOWS
+from RPA.core.locators import LocatorsDatabase, WindowsLocator
 
 if IS_WINDOWS:
     import uiautomation as auto
@@ -43,9 +42,11 @@ class WindowsElement:
     """Represent Control as dataclass"""
 
     _WINDOW_SIBLING_COMPARE = {
+        # <locator_strategy>: <element_attribute>
         "name": "name",  # this works for "subname" as well
         "class": "class_name",
         "control": "control_type",
+        "id": "automation_id",
     }
 
     item: Control
@@ -63,22 +64,24 @@ class WindowsElement:
     xcenter: int = -1
     ycenter: int = -1
 
-    def __init__(self, item, locator: Optional[Locator]):
-        self.item = item
+    def __init__(self, item: Control, locator: Optional[Locator]):
+        self.item: Control = item
         self.locator: Optional[Locator] = locator
         self.name = item.Name
         self.automation_id = item.AutomationId
         self.control_type = item.ControlTypeName
         self.class_name = item.ClassName
+        # If there's no rectangle, then all coords are defaulting to -1.
         rect = item.BoundingRectangle
-        self.left = rect.left if rect else -1
-        self.right = rect.right if rect else -1
-        self.top = rect.top if rect else -1
-        self.bottom = rect.bottom if rect else -1
-        self.width = rect.width() if rect else -1
-        self.height = rect.height() if rect else -1
-        self.xcenter = rect.xcenter() if rect else -1
-        self.ycenter = rect.ycenter() if rect else -1
+        if rect:
+            self.left = rect.left
+            self.right = rect.right
+            self.top = rect.top
+            self.bottom = rect.bottom
+            self.width = rect.width()
+            self.height = rect.height()
+            self.xcenter = rect.xcenter()
+            self.ycenter = rect.ycenter()
 
     def is_sibling(self, win_elem: "WindowsElement") -> bool:
         """Returns `True` if the provided window element is a sibling."""
@@ -287,7 +290,7 @@ class WindowsElements(WindowsContext):
         self,
         locator: Optional[Locator] = None,
         search_depth: int = 8,
-        root_element: WindowsElement = None,
+        root_element: Optional[WindowsElement] = None,
         timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> WindowsElement:
         if isinstance(locator, str):
@@ -333,26 +336,3 @@ class WindowsElements(WindowsContext):
             raise ElementNotFound(f"Element not found with locator {locator}") from err
 
         return WindowsElement(element, locator)
-
-    @with_timeout
-    def get_elements(
-        self,
-        locator: Optional[Locator] = None,
-        search_depth: int = 8,
-        root_element: Optional[WindowsElement] = None,
-        timeout: Optional[float] = None,  # pylint: disable=unused-argument
-    ) -> List[WindowsElement]:
-        elements = []
-        initial_window_element = window_element = self.get_element(
-            locator, search_depth, root_element
-        )
-        elements.append(initial_window_element)
-        while True:
-            next_element = window_element.item.GetNextSiblingControl()
-            if next_element:
-                window_element = WindowsElement(next_element, locator)
-                if initial_window_element.is_sibling(window_element):
-                    elements.append(window_element)
-            else:
-                break
-        return elements
