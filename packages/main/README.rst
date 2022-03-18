@@ -330,7 +330,7 @@ to see where to get started.
 Development
 -----------
 
-Repository development is **`Python <https://www.python.org/>_`** based and requires at minimum
+Repository development is `Python <https://www.python.org/>`_ based and requires at minimum
 Python version 3.7+ installed on the development machine. The default Python version used in the
 Robocorp Robot template is 3.7.5 so it is a good choice for the version to install. Not recommended
 versions are 3.7.6 and 3.8.1, because they have issues with some of the dependencies related to rpaframework.
@@ -343,40 +343,57 @@ purposes for example for linting, testing and publishing tasks.
 
 First steps to start developing:
 
-#. clone the repository
+1. initial poetry configuration
+
+.. code:: shell
+
+   poetry config virtualenvs.path null
+   poetry config virtualenvs.in-project true
+   poetry config repositories.devpi "https://devpi.robocorp.cloud/ci/test"
+2. git clone the repository
 #. create a new Git branch or switch to correct branch or stay in master branch
-#. create the .venv directory into package you are developing
-#. poetry install
-#. if testing against Robocorp Robot which is using devdata/env.json
+
+   - some branch naming conventions **feature/name-of-feature**, **hotfix/name-of-the-issue**, **release/number-of-release**
+#. ``poetry install`` which install package with its dependencies into the **.venv** directory of the package, for example **packages/main/.venv**
+#. if testing against Robocorp Robot which is using **devdata/env.json**
+
    - set environment variables
-   - or poetry build and use resulting .whl file in the Robot conda.yaml
-   - or poetry build and push resulting .whl file into a repository and use raw url
-     to include it in the Robot conda.yaml
-#. poetry run python -m robot <ROBOT_ARGS> <TARGET_ROBOT_FILE>
-#. poetry run python <TARGET_PYTHON_FILE>
-#. invoke lint
-#. invoke test (this will run both Python unittests and robotframebased tests defined in the
-   packages tests/ directory)
-#. Git commit changes
-#. Git push changes to remote
+   - or ``poetry build`` and use resulting .whl file (in the **dist/** directory) in the Robot **conda.yaml**
+   - or ``poetry build`` and push resulting .whl file  (in the **dist/** directory) into a repository and use raw url
+     to include it in the Robot **conda.yaml**
+   - another possibility for Robocorp internal development is to use Robocorp **devpi** instance, by ``poetry publish --ci``
+     and point **conda.yaml** to use rpaframework version in devpi
+#. ``poetry run python -m robot <ROBOT_ARGS> <TARGET_ROBOT_FILE>``
+#. ``poetry run python <TARGET_PYTHON_FILE>``
+#. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines. It is possible and likely
+   that Github action will fail the if developer has not linted the code changes. Code formatting is based on `black`_ and `flake8`_
+   and those are run with the ``invoke lint``.
+#. ``invoke test`` (this will run both Python unittests and robotframework tests defined in the packages **tests/ directory**)
+
+   - to run specific Python test: ``poetry run pytest path/to/test.py::test_function``
+   - to run specific Robotframework test: ``inv testrobot -r <robot_name> -t <task_name>``
+#. git commit changes
+#. git push changes to remote
 #. create pull request from the branch describing changes included in the description
-#. update docs/source/releasenotes.rst with changes (commit and push)
+#. update **docs/source/releasenotes.rst** with changes (commit and push)
 
 Packaging and publishing are done after changes have been merged into master branch.
 All the following steps should be done within master branch.
 
-#. in the package directory containing changes execute invoke lint and invoke test
-#. update pyproject.toml with new version according to semantic versioning
-#. update docs/source/releasenotes.rst with changes
-#. in the repository root (so called "meta" package level) run command poetry update
-#. git commit changed poetry.lock files (on meta and target package level), releasenotes.rst
-   and poetry with message "PACKAGE. version x.y.z"
+#. git pull latest changes into master branch
+#. in the package directory containing changes execute ``invoke lint`` and ``invoke test``
+#. update **pyproject.toml** with new version according to semantic versioning
+#. update **docs/source/releasenotes.rst** with changes
+#. in the repository root (so called "meta" package level) run command ``poetry update``
+#. git commit changed **poetry.lock** files (on meta and target package level), **releasenotes.rst**
+   and **pyproject.toml** with message "PACKAGE. version x.y.z"
 #. git push
-#. invoke publish after Github action on master branch is all green
+#. ``invoke publish`` after Github action on master branch is all green
 
 Some recommended tools for development
 
 - `Visual Studio Code`_ as a code editor with following extensions:
+
    - `Robocorp Code`_
    - `Robot Framework Language Server`_
    - `GitLens`_
@@ -390,6 +407,8 @@ Some recommended tools for development
 .. _Robocorp Code: https://marketplace.visualstudio.com/items?itemName=robocorp.robocorp-code
 .. _Robot Framework Language Server: https://marketplace.visualstudio.com/items?itemName=robocorp.robotframework-lsp
 .. _GitLens: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
+.. _black: https://pypi.org/project/black/
+.. _flake8: https://pypi.org/project/flake8/
 
 License
 -------
