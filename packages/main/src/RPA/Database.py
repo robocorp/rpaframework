@@ -343,7 +343,12 @@ class Database:
             if module_name == "sqlite3":
                 self._dbconnection.isolation_level = None if autocommit else "IMMEDIATE"
 
-    def call_stored_procedure(self, name: str, params: Optional[List[str, int, Any]] = None, sanstran: Optional[bool] = False) -> list:
+    def call_stored_procedure(
+        self,
+        name: str,
+        params: Optional[List[str, int, Any]] = None,
+        sanstran: Optional[bool] = False,
+    ) -> list:
         """Call stored procedure with name and params.
 
         :param name: procedure name
@@ -426,7 +431,10 @@ class Database:
 
     # pylint: disable=R0912
     def execute_sql_script(  # noqa: C901
-        self, filename: str, sanstran: Optional[bool] = False, encoding: Optional[str] = "utf-8"
+        self,
+        filename: str,
+        sanstran: Optional[bool] = False,
+        encoding: Optional[str] = "utf-8",
     ) -> None:  # noqa: C901
         """Execute content of SQL script as SQL commands.
 
@@ -618,7 +626,11 @@ class Database:
         self._dbconnection.autocommit = autocommit
 
     def get_rows(
-        self, table, columns: Optional[str] = None, conditions: Optional[str] = None, as_table: Optional[bool] = True
+        self,
+        table,
+        columns: Optional[str] = None,
+        conditions: Optional[str] = None,
+        as_table: Optional[bool] = True,
     ) -> Union[List, Dict, Table, Any]:
         """Get rows from table. Columns and conditions can be
         set to filter result.
