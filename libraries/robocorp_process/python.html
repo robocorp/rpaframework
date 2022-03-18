@@ -340,7 +340,7 @@ before starting the process (note. different start keyword than above).</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.create_input_work_item">
-<code class="sig-name descname">create_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">payload: Any = None</em>, <em class="sig-param">files: Union[str</em>, <em class="sig-param">List</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.create_input_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">payload: Optional[Any] = None</em>, <em class="sig-param">files: Union[str</em>, <em class="sig-param">List</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Robocorp.Process.Process.create_input_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an input work item for a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -350,12 +350,15 @@ before starting the process (note. different start keyword than above).</p>
 <li><p><strong>process_id</strong> – specific process to which item belongs to</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The integer that represents the work item id</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.get_process_id_by_name">
-<code class="sig-name descname">get_process_id_by_name</code><span class="sig-paren">(</span><em class="sig-param">process_name: str</em>, <em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_id_by_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_process_id_by_name</code><span class="sig-paren">(</span><em class="sig-param">process_name: str</em>, <em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Optional[int]<a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_id_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a process id of the process by name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -364,12 +367,15 @@ before starting the process (note. different start keyword than above).</p>
 <li><p><strong>workspace_id</strong> – specific Control Room workspace to which process belongs to</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the next iteration id or None</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.get_process_run_status">
-<code class="sig-name descname">get_process_run_status</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">step_run_id: Optional[str] = None</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_run_status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_process_run_status</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">step_run_id: Optional[str] = None</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_run_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a process run status by run id</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -379,12 +385,15 @@ before starting the process (note. different start keyword than above).</p>
 <li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the response JSON</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.get_work_item">
-<code class="sig-name descname">get_work_item</code><span class="sig-paren">(</span><em class="sig-param">workitem_id: str</em>, <em class="sig-param">include_data: bool = False</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_work_item</code><span class="sig-paren">(</span><em class="sig-param">workitem_id: str</em>, <em class="sig-param">include_data: bool = False</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.get_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get work item from Control Room</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -394,6 +403,9 @@ before starting the process (note. different start keyword than above).</p>
 the response (default False)</p></li>
 <li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the JSON of the work items associated with a given process</p>
 </dd>
 </dl>
 </dd></dl>
@@ -423,7 +435,7 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.list_process_runs">
-<code class="sig-name descname">list_process_runs</code><span class="sig-paren">(</span><em class="sig-param">run_state: Optional[str] = None</em>, <em class="sig-param">limit: Optional[int] = 10</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_runs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_process_runs</code><span class="sig-paren">(</span><em class="sig-param">run_state: Optional[str] = None</em>, <em class="sig-param">limit: Optional[int] = 10</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[str, None, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_runs" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of runs related to a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -433,12 +445,15 @@ the response (default False)</p></li>
 <li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the JSON data of the process runs based on the provided parameters</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.list_process_runs_in_workspace">
-<code class="sig-name descname">list_process_runs_in_workspace</code><span class="sig-paren">(</span><em class="sig-param">run_state: Optional[str] = None</em>, <em class="sig-param">limit: Optional[int] = 10</em>, <em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_runs_in_workspace" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_process_runs_in_workspace</code><span class="sig-paren">(</span><em class="sig-param">run_state: Optional[str] = None</em>, <em class="sig-param">limit: Optional[int] = 10</em>, <em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[str, None, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_runs_in_workspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all process runs in a workspace</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -448,12 +463,15 @@ the response (default False)</p></li>
 <li><p><strong>workspace_id</strong> – specific Control Room workspace to which process belongs to</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the JSON data of the process runs based on the provided parameters</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.list_process_work_items">
-<code class="sig-name descname">list_process_work_items</code><span class="sig-paren">(</span><em class="sig-param">process_id: str = None</em>, <em class="sig-param">include_data: bool = False</em>, <em class="sig-param">item_state: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_work_items" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_process_work_items</code><span class="sig-paren">(</span><em class="sig-param">process_id: Optional[str] = None</em>, <em class="sig-param">include_data: bool = False</em>, <em class="sig-param">item_state: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[str, None, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_work_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>List work items belonging to a process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -464,33 +482,39 @@ the response (default False)</p></li>
 <li><p><strong>process_id</strong> – specific process to which items belongs to</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the JSON data of the process runs based on the provided parameters</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.list_processes">
-<code class="sig-name descname">list_processes</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_processes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_processes</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.list_processes" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all processes in a workspace</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>workspace_id</strong> – specific Control Room workspace to which process belongs to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the JSON data of the process runs based on the provided parameters</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.process_api">
-<code class="sig-name descname">process_api</code><span class="sig-paren">(</span><em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.process_api" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_api</code><span class="sig-paren">(</span><em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.Process.Process.process_api" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.register_file_upload">
-<code class="sig-name descname">register_file_upload</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em>, <em class="sig-param">workitem_filename: str</em>, <em class="sig-param">workitem_id: str</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.register_file_upload" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">register_file_upload</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em>, <em class="sig-param">workitem_filename: str</em>, <em class="sig-param">workitem_id: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Tuple[str, Dict[str, Any]]<a class="headerlink" href="#RPA.Robocorp.Process.Process.register_file_upload" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.retry_work_item">
-<code class="sig-name descname">retry_work_item</code><span class="sig-paren">(</span><em class="sig-param">work_item_id: str</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.retry_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">retry_work_item</code><span class="sig-paren">(</span><em class="sig-param">work_item_id: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.retry_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retry processing of work item in FAILED state</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -499,12 +523,15 @@ the response (default False)</p></li>
 <li><p><strong>process_id</strong> – specific process to start</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the response JSON</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.set_apikey">
-<code class="sig-name descname">set_apikey</code><span class="sig-paren">(</span><em class="sig-param">apikey: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.set_apikey" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_apikey</code><span class="sig-paren">(</span><em class="sig-param">apikey: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Robocorp.Process.Process.set_apikey" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Workspace API access key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -515,7 +542,7 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.set_credentials">
-<code class="sig-name descname">set_credentials</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em>, <em class="sig-param">process_id: str = None</em>, <em class="sig-param">apikey: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.set_credentials" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_credentials</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: Optional[str] = None</em>, <em class="sig-param">process_id: Optional[str] = None</em>, <em class="sig-param">apikey: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Robocorp.Process.Process.set_credentials" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set credentials needed by the Process API</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -530,7 +557,7 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.set_process_id">
-<code class="sig-name descname">set_process_id</code><span class="sig-paren">(</span><em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.set_process_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_process_id</code><span class="sig-paren">(</span><em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Robocorp.Process.Process.set_process_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Control Room process ID</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -541,7 +568,7 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.set_workspace_id">
-<code class="sig-name descname">set_workspace_id</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.set_workspace_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_workspace_id</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Robocorp.Process.Process.set_workspace_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Control Room workspace ID</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -552,7 +579,7 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.start_configured_process">
-<code class="sig-name descname">start_configured_process</code><span class="sig-paren">(</span><em class="sig-param">config_type: RPA.Robocorp.Process.ConfigurationType = &lt;ConfigurationType.default: 'default'&gt;</em>, <em class="sig-param">extra_info: Union[str</em>, <em class="sig-param">List</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.start_configured_process" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">start_configured_process</code><span class="sig-paren">(</span><em class="sig-param">config_type: RPA.Robocorp.Process.ConfigurationType = &lt;ConfigurationType.default: 'default'&gt;</em>, <em class="sig-param">extra_info: Union[str</em>, <em class="sig-param">List</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.Process.Process.start_configured_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start a Control Room process with the provided configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -562,12 +589,15 @@ the response (default False)</p></li>
 <li><p><strong>process_id</strong> – specific process to start</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string of the request response</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.start_process">
-<code class="sig-name descname">start_process</code><span class="sig-paren">(</span><em class="sig-param">work_items: Union[Dict</em>, <em class="sig-param">List[Dict]] = None</em>, <em class="sig-param">batch: bool = False</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.start_process" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">start_process</code><span class="sig-paren">(</span><em class="sig-param">work_items: Union[Dict, List[Dict], None] = None, batch: bool = False, process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.start_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start a Control Room process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -577,6 +607,9 @@ the response (default False)</p></li>
 as a separate run</p></li>
 <li><p><strong>process_id</strong> – specific process to start</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON of the request response</p>
 </dd>
 </dl>
 <p>Table showing different results depending on parameter
@@ -624,19 +657,19 @@ values.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.upload_file_to_s3">
-<code class="sig-name descname">upload_file_to_s3</code><span class="sig-paren">(</span><em class="sig-param">filepath</em>, <em class="sig-param">workitem_filename</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.upload_file_to_s3" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">upload_file_to_s3</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em>, <em class="sig-param">workitem_filename: str</em>, <em class="sig-param">data: Any</em><span class="sig-paren">)</span> &#x2192; Tuple[str, str]<a class="headerlink" href="#RPA.Robocorp.Process.Process.upload_file_to_s3" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.workspace_api">
-<code class="sig-name descname">workspace_api</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.workspace_api" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">workspace_api</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.Process.Process.workspace_api" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="RPA.Robocorp.Process.to_configuration_type">
-<code class="sig-prename descclassname">RPA.Robocorp.Process.</code><code class="sig-name descname">to_configuration_type</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.to_configuration_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">RPA.Robocorp.Process.</code><code class="sig-name descname">to_configuration_type</code><span class="sig-paren">(</span><em class="sig-param">value: Any</em><span class="sig-paren">)</span> &#x2192; RPA.Robocorp.Process.ConfigurationType<a class="headerlink" href="#RPA.Robocorp.Process.to_configuration_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert value to ConfigurationType enum.</p>
 </dd></dl>
 
