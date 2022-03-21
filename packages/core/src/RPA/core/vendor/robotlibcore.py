@@ -32,6 +32,7 @@ PY_VERSION = sys.version_info[:3]
 __version__ = "3.0.0"
 
 
+# pylint: disable=missing-class-docstring
 class HybridCore:
     def __init__(self, library_components):
         self.keywords = {}
@@ -61,6 +62,7 @@ class HybridCore:
                 "Libraries must be modules or instances, got "
                 "class {!r} instead.".format(component.__name__)
             )
+        # pylint: disable=unidiomatic-typecheck
         if type(component) != component.__class__:
             raise TypeError(
                 "Libraries must be modules or new-style class "
