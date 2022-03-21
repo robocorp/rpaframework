@@ -87,7 +87,7 @@ List Deal Pipeline With Label Should Return Pipeline
 
 Get Pipeline Stages For Labeled Pipeline Returns Dictionary In Proper Order
     Auth with API key    ${API_KEY}
-    &{stages}=    Get Pipeline Stages    DEALS    ${PIPELINE_LABEL}
+    &{stages}=    Get Pipeline Stages    DEALS    ${PIPELINE_LABEL}    use_cache=${False}
     @{stage_labels}=    Get dictionary keys    ${stages}    sort_keys=${False}
     Lists should be equal    ${EXPECTED_STAGE_ORDER}    ${stage_labels}
 
@@ -95,3 +95,8 @@ Check Test Deal Is Currently In Expected Stage
     Auth with API key    ${API_KEY}
     ${current_stage}=    Get current stage of object    DEAL    ${TEST_DEAL}
     Should be equal as strings    ${EXPECTED_STAGE}    ${current_stage}[0]
+
+Get User Returns Expected User
+    Auth with token    ${ACCESS_TOKEN}
+    ${user}=    Get user    ${USER_ID}
+    Should be equal as strings    ${USER_EMAIL}    ${user}[email]

@@ -6,9 +6,11 @@ from os import access
 from typing import List, Dict, Optional, Tuple, Union
 
 from pprint import pprint
+from pyparsing import Keyword
 
 from robot.api.deco import keyword, library
 
+import requests
 from hubspot import HubSpot as HubSpotApi
 from hubspot.utils.objects import fetch_all
 from hubspot.crm.objects.models import (
@@ -24,6 +26,7 @@ from hubspot.crm.pipelines.models import (
     Pipeline,
     PipelineStage,
 )
+from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiException
 
 
 class HubSpotAuthenticationError(Exception):
@@ -98,10 +101,14 @@ class Hubspot:
         "quotes": "quotes",
     }
 
-    def __init__(self, hubspot_apikey: str = None) -> None:
+    def __init__(
+        self, hubspot_apikey: str = None, hubspot_access_token: str = None
+    ) -> None:
         self.logger = logging.getLogger(__name__)
         if hubspot_apikey:
-            self.hs = HubSpotApi(access_token=hubspot_apikey)
+            self.hs = HubSpotApi(api_key=hubspot_apikey)
+        elif hubspot_access_token:
+            self.hs = HubSpotApi(access_token=hubspot_access_token)
         else:
             self.hs = None
         self._schemas = []
@@ -112,6 +119,12 @@ class Hubspot:
     def _require_authentication(self) -> None:
         if self.hs is None:
             raise HubSpotAuthenticationError("Authentication was not completed.")
+
+    def _require_token_authentication(self) -> None:
+        if self.hs.access_token is None:
+            raise HubSpotAuthenticationError(
+                "This endpoint requires a private app authorization token to use."
+            )
 
     @property
     def schemas(self) -> List[ObjectSchema]:
@@ -565,12 +578,15 @@ class Hubspot:
             self._get_cached_pipeline(valid_object_type, pipeline_id) is None
             or not use_cache
         ):
-            response = self.hs.crm.pipelines.pipelines_api.get_by_id(
-                valid_object_type, pipeline_id
-            )
-            if self.pipelines.get(valid_object_type) is not list:
-                self._pipelines[valid_object_type] = []
-            self._pipelines[valid_object_type].extend([response])
+            try:
+                response = self.hs.crm.pipelines.pipelines_api.get_by_id(
+                    valid_object_type, pipeline_id
+                )
+                if self.pipelines.get(valid_object_type) is not list:
+                    self._pipelines[valid_object_type] = []
+                self._pipelines[valid_object_type].extend([response])
+            except PipelineApiException:
+                self._set_pipelines(valid_object_type)
         return self._get_cached_pipeline(valid_object_type, pipeline_id)
 
     def _get_pipelines(
@@ -729,3 +745,28 @@ class Hubspot:
             raise HubSpotNoPipelineError(
                 f"The {object_type} object type with ID '{object_id}' is not in a pipeline."
             )
+
+    @keyword
+    def get_user(self, user_id: str = "", user_email: str = "") -> Dict:
+        """Returns a dictionary with the keys `id` and `email` based on the
+        provided `user_id` or `user_email`. If both are provided, this
+        keyword will prefer the `user_id`
+        """
+        self._require_token_authentication()
+
+        if user_id:
+            url = f"https://api.hubapi.com/settings/v3/users/{user_id}"
+            params = None
+        else:
+            url = f"https://api.hubapi.com/settings/v3/users/{user_email}"
+            params = {"idProperty": "EMAIL"}
+
+        headers = {
+            "accept": "application/json",
+            "Authorization": f"Bearer {self.hs.access_token}",
+        }
+
+        response = requests.request("GET", url, headers=headers, params=params)
+        response.raise_for_status()
+        self.logger.debug(f"Response is:\nStatus: {response.status_code} {response.reason}\nContent: {response.json()}")
+        return response.json()
