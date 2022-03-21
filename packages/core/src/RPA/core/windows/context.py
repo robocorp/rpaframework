@@ -9,28 +9,12 @@ if IS_WINDOWS:
     from comtypes import COMError  # noqa
 
 
-class ControlNotFound(ValueError):
-    """No matching controls were found."""
-
-
 class ElementNotFound(ValueError):
     """No matching elements were found."""
 
 
-class MultipleControlsFound(ValueError):
-    """Multiple matching controls were found, but only one was expected."""
-
-
-class TimeoutException(ValueError):
-    """Timeout reached while waiting for condition."""
-
-
 class WindowControlError(ValueError):
     """Matching window was not found"""
-
-
-class ActionNotPossible(ValueError):
-    """Action is not possible for the given Control"""
 
 
 class WindowsContext:

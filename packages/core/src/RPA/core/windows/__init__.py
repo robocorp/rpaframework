@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 
 from .helpers import IS_WINDOWS
-from .inspect import ElementInspector
+from .inspect import ElementInspector, RecordElement
 from .locators import Locator, LocatorMethods
 from .window import WindowMethods
 from ..vendor.robotlibcore import DynamicCore

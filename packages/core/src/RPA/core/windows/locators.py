@@ -2,6 +2,7 @@ import re
 from dataclasses import dataclass, field
 from typing import List, Optional, Union
 
+from RPA.core.locators import LocatorsDatabase, WindowsLocator
 from RPA.core.windows.context import (
     ElementNotFound,
     WindowsContext,
@@ -9,7 +10,6 @@ from RPA.core.windows.context import (
     with_timeout,
 )
 from RPA.core.windows.helpers import IS_WINDOWS
-from RPA.core.locators import LocatorsDatabase, WindowsLocator
 
 if IS_WINDOWS:
     import uiautomation as auto
