@@ -6,7 +6,7 @@ if IS_WINDOWS:
     import uiautomation as auto
 
 
-RecordElement = Dict[str, Union[str, auto.Control]]
+RecordElement = Dict[str, Union[float, str, auto.Control]]
 
 
 class ElementInspector:
