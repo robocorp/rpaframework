@@ -320,8 +320,7 @@ class ServiceS3(AWSBase):
         for _, object_name in enumerate(files):
             try:
                 object_as_path = Path(object_name)
-                file_name = object_as_path.name
-                download_path = str(Path(target_directory) / file_name)
+                download_path = str(Path(target_directory) / object_as_path.name)
                 response = client.download_file(bucket_name, object_name, download_path)
                 if response is None:
                     download_count += 1
