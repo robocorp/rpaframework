@@ -198,7 +198,7 @@ class MatchObject:
         return uniques
 
 
-class WindowsElements(WindowsContext):
+class LocatorMethods(WindowsContext):
     """Keywords for finding Windows GUI elements"""
 
     def __init__(self, ctx, locators_path: Optional[str] = None):

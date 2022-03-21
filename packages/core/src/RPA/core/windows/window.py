@@ -17,7 +17,7 @@ if IS_WINDOWS:
     import uiautomation as auto
 
 
-class Window(WindowsContext):
+class WindowMethods(WindowsContext):
     """Keywords for handling the Windows GUI windows"""
 
     @staticmethod

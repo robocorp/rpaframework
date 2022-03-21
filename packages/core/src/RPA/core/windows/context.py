@@ -1,10 +1,8 @@
 import contextlib
 import functools
-import logging
 from typing import Optional
 
 from RPA.core.windows.helpers import IS_WINDOWS
-from RPA.core.windows.locators import Locator
 
 if IS_WINDOWS:
     import uiautomation as auto
@@ -35,21 +33,11 @@ class ActionNotPossible(ValueError):
     """Action is not possible for the given Control"""
 
 
-class DefaultWindowsContext:
-    """Default context"""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
-        self.window_element: Optional[Locator] = None
-        self.anchor_element: Optional[Locator] = None
-
-
 class WindowsContext:
     """Shared context for all keyword libraries."""
 
     def __init__(self, ctx):
-        self.ctx = ctx or DefaultWindowsContext()
+        self.ctx = ctx
 
     @property
     def logger(self):
