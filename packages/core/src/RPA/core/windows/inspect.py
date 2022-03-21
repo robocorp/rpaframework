@@ -24,7 +24,8 @@ class ElementInspector:
 
         :param verbose: Show exhaustive locators if `True`, otherwise just simple ones.
         :param action: Action attached to the locator.
-        :param control_window: Include relevant ``Control Window  ...`` statement or not.
+        :param control_window: Include relevant ``Control Window  ...`` statement or
+            not.
         :param recording: Where to store records.
         """
         # TODO: Python syntax support too instead of just RF.
@@ -42,9 +43,12 @@ class ElementInspector:
                 top_level_handle = top_level_control.NativeWindowHandle
 
             parent_locator = (
-                cls._get_element_key_properties(parent_control, verbose=verbose) or "N/A"
+                cls._get_element_key_properties(parent_control, verbose=verbose)
+                or "N/A"
             )
-            child_locator = cls._get_element_key_properties(control, verbose=verbose) or "N/A"
+            child_locator = (
+                cls._get_element_key_properties(control, verbose=verbose) or "N/A"
+            )
             locator_path = f"{parent_locator} > {child_locator}"
             if "name:" in child_locator or "id:" in child_locator:
                 locator_path = child_locator
