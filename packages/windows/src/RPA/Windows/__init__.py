@@ -2,13 +2,16 @@ import logging
 from typing import Optional
 
 # pylint: disable=wrong-import-position
-from robotlibcore import DynamicCore
+from RPA.core.windows import (
+    DynamicCore as RPADynamicCore,
+    WindowsElements,
+)
+from robotlibcore import DynamicCore as RobotDynamicCore
 
 from . import utils
 from .keywords import (
     ActionKeywords,
     ElementKeywords,
-    Locator,
     LocatorKeywords,
     WindowKeywords,
 )
@@ -18,14 +21,18 @@ if utils.IS_WINDOWS:
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
     import comtypes.client
-
     comtypes.client.gen_dir = None
 
-    import uiautomation as auto
     from uiautomation.uiautomation import Logger
 
 
-class Windows(DynamicCore):
+class DynamicCore(RobotDynamicCore, RPADynamicCore):
+    """Ensures robotframework methods get in front of the vendorized ones."""
+
+
+# NOTE(cmiN): We inherit from our `DynamicCore` just to make sure the robotframework
+#  one takes precedence in front of core's vendorized one.
+class Windows(WindowsElements, DynamicCore):
     # pylint: disable=anomalous-backslash-in-string
     """The `Windows` is a library that can be used for Windows desktop automation.
 
@@ -469,27 +476,23 @@ class Windows(DynamicCore):
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    SIMULATE_MOVE = False
 
     def __init__(self, locators_path: Optional[str] = None):
-        self.logger = logging.getLogger(__name__)
         self.wait_time: float = 0.5
-        self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
-        self.simulate_move = False  # this is currently used, but not set anywhere else
-        self.window_element: Optional[Locator] = None
-        self.anchor_element: Optional[Locator] = None
 
-        # prevent comtypes writing lot of log messages
-        comtypelogger = logging.getLogger("comtypes")
-        comtypelogger.propagate = False
-
-        # disable uiautomation writing a log file
+        # Prevent comtypes writing a lot of log messages.
+        comtypes_logger = logging.getLogger("comtypes")
+        comtypes_logger.propagate = False
+        # Disable uiautomation writing into a log file.
         Logger.SetLogFile("")
 
-        # register keyword libraries to LibCore
-        libraries = [
+        super().__init__(locators_path=locators_path)
+
+    def _get_libraries(self, locators_path: Optional[str]):
+        return [
             ActionKeywords(self),
             ElementKeywords(self),
             LocatorKeywords(self, locators_path=locators_path),
             WindowKeywords(self),
         ]
-        super().__init__(libraries)
