@@ -67,7 +67,9 @@ class Window(WindowsContext):
             pid = win.ProcessId
             fullpath = None
             try:
-                handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS, False, pid)
+                handle = win32api.OpenProcess(
+                    win32con.PROCESS_QUERY_LIMITED_INFORMATION, False, pid
+                )
                 fullpath = win32process.GetModuleFileNameEx(handle, 0)
             except Exception as err:  # pylint: disable=broad-except
                 self.logger.info("Open process error in `List Windows`: %s", str(err))
