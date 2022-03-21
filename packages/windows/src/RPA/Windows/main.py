@@ -1,12 +1,13 @@
 from datetime import datetime
+from typing import List
 
 import fire
 from pynput_robocorp import mouse, keyboard  # pylint: disable=C0415
-from RPA.core.windows.inspect import ElementInspector
+from RPA.core.windows.inspect import ElementInspector, RecordElement
 
 
 recording_time = None
-recording = []
+recording: List[RecordElement] = []
 
 
 def stop_listeners():
