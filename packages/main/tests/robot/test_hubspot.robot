@@ -91,6 +91,7 @@ Get Pipeline Stages For Labeled Pipeline Returns Dictionary In Proper Order
     @{stage_labels}=    Get dictionary keys    ${stages}    sort_keys=${False}
     Lists should be equal    ${EXPECTED_STAGE_ORDER}    ${stage_labels}
 
-Check Test Deal Is Currently In Expected Stages
+Check Test Deal Is Currently In Expected Stage
     Auth with API key    ${API_KEY}
-    ${test_deal}=    Get object    DEAL    ${TEST_DEAL}
+    ${current_stage}=    Get current stage of object    DEAL    ${TEST_DEAL}
+    Should be equal as strings    ${EXPECTED_STAGE}    ${current_stage}[0]

@@ -651,7 +651,7 @@ class Hubspot:
         self,
         object_type: str,
         pipeline_id: str,
-        return_labels: bool = True,
+        label_as_key: bool = True,
         use_cache: bool = True,
     ) -> Dict[str, Dict]:
         """Returns a dictionary representing the stages available in the
@@ -659,17 +659,16 @@ class Hubspot:
         using the `pipeline_id` as the label or Hubspot API identifier code.
 
         By default, the keys of the returned dictionary represent the labels
-        of the stages, in order from first to last stage.
+        of the stages, in order from first to last stage. You can have the
+        keyword return the numerical API ID as the key instead by setting
+        `label_as_key` to `False`.
 
-        Each item's value is a dictionary with two keys: `id` and `metadata`.
-        The `id` is the numerical API ID associated with the stage, while the
+        Each item's value is a dictionary with three keys: `id`, `label`
+        and `metadata`. The `id` is the numerical API ID associated with
+        the stage and `label` is the name of that stage. The
         `metadata` is a dictionary of metadata associated with that stage
-        (e.g., `isClosed` and `probability` for deals pipelines) that
+        (e.g., `isClosed` and `probability` for "deals" pipelines) that
         is unique per pipeline.
-
-        The above logic can be reversed by setting the argument `return_labels`
-        to `False`. This will cause the keys of the returned dictionaries to
-        be the `id` and each item's value will be `label` and `metadata`.
 
         This keyword caches results for future use, to refresh results from
         Hupspot, set `use_cache` to `False`.
@@ -677,11 +676,15 @@ class Hubspot:
         self._require_authentication()
         stages = self.get_pipeline(object_type, pipeline_id, use_cache).stages
         stages.sort(key=lambda s: (s.display_order, s.label))
-        if return_labels:
-            return {s.label: {"id": s.id, "metadata": dict(s.metadata)} for s in stages}
+        if label_as_key:
+            return {
+                s.label: {"id": s.id, "label": s.label, "metadata": dict(s.metadata)}
+                for s in stages
+            }
         else:
             return {
-                s.id: {"label": s.label, "metadata": dict(s.metadata)} for s in stages
+                s.id: {"id": s.id, "label": s.label, "metadata": dict(s.metadata)}
+                for s in stages
             }
 
     @keyword
@@ -690,20 +693,38 @@ class Hubspot:
         object_type: str,
         object_id: str,
         id_property: Optional[str] = None,
+        label_as_key: bool = True,
+        use_cache: bool = True,
     ) -> Tuple[str, Dict]:
         """Returns the current pipeline stage for the object as a tuple of
         the stage label and that stage's associated metadata as a dictionary.
+        If you want the label to be returned as the numerical API ID, set
+        `label_as_key` to False.
+
+        If the object type does not have an applied pipeline, the keyword
+        will fail.
+
+        This keyword caches results for future use, to refresh results from
+        Hupspot, set `use_cache` to `False`.
         """
         self._require_authentication()
         hs_object = self.get_object(object_type, object_id, id_property)
         if hs_object.properties.get("pipeline"):
             pipeline_stages = self.get_pipeline_stages(
-                object_type, hs_object.properties["pipeline"], return_labels=False
+                object_type,
+                hs_object.properties["pipeline"],
+                label_as_key=False,
+                use_cache=use_cache,
             )
             stage_key = hs_object.properties.get(
                 "dealstage", hs_object.properties.get("hs_pipeline_stage")
             )
-            return (stage_key, pipeline_stages[stage_key])
+            stage_label = (
+                pipeline_stages[stage_key]["label"]
+                if label_as_key
+                else pipeline_stages[stage_key]
+            )
+            return (stage_label, pipeline_stages[stage_key])
         else:
             raise HubSpotNoPipelineError(
                 f"The {object_type} object type with ID '{object_id}' is not in a pipeline."
