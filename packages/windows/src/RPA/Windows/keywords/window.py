@@ -266,7 +266,9 @@ class WindowKeywords(WindowMethods):
                 Log  Window process handle:${window}[handle]
             END
         """
-        return super().list_windows(icons=icons, icon_save_directory=icon_save_directory)
+        return super().list_windows(
+            icons=icons, icon_save_directory=icon_save_directory
+        )
 
     @keyword(tags=["window"])
     def windows_run(self, text: str, wait_time: float = 3.0) -> None:

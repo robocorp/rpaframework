@@ -1,12 +1,8 @@
 import logging
 from typing import Optional
 
-# pylint: disable=wrong-import-position
-from RPA.core.windows import (
-    DynamicCore as RPADynamicCore,
-    WindowsElements,
-)
-from robotlibcore import DynamicCore as RobotDynamicCore
+from RPA.core.windows import WindowsElementsMixin
+from robotlibcore import DynamicCore
 
 from . import utils
 from .keywords import (
@@ -21,18 +17,15 @@ if utils.IS_WINDOWS:
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
     import comtypes.client
+
     comtypes.client.gen_dir = None
 
     from uiautomation.uiautomation import Logger
 
 
-class DynamicCore(RobotDynamicCore, RPADynamicCore):
-    """Ensures robotframework methods get in front of the vendorized ones."""
-
-
-# NOTE(cmiN): We inherit from our `DynamicCore` just to make sure the robotframework
-#  one takes precedence in front of core's vendorized one.
-class Windows(WindowsElements, DynamicCore):
+# NOTE(cmiN): We use as base the robotframework `DynamicCore` this time instead of the
+#  vendorized one, like found in `RPA.core.windows.WindowsElements`.
+class Windows(WindowsElementsMixin, DynamicCore):
     # pylint: disable=anomalous-backslash-in-string
     """The `Windows` is a library that can be used for Windows desktop automation.
 

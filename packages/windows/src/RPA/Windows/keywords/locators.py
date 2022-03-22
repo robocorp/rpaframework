@@ -51,7 +51,12 @@ class LocatorKeywords(LocatorMethods):
         """
         # NOTE(cmiN): Explicitly set timeout to `None` in the upper call, so we alter
         #  the behaviour (context timeout setting) here only.
-        return super().get_element(locator=locator, search_depth=search_depth, root_element=root_element, timeout=None)
+        return super().get_element(
+            locator=locator,
+            search_depth=search_depth,
+            root_element=root_element,
+            timeout=None,
+        )
 
     @keyword
     @with_timeout

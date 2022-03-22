@@ -32,7 +32,7 @@ def start_recording(verbose: bool = False):
                 seconds = max(round(float(timediff.microseconds / 1000000.0), 1), 0.1)
                 recording.append({"type": "sleep", "value": seconds})
             recording_time = inspect_time
-            ElementInspector.inspect_element(verbose=verbose, recording=recording)
+            ElementInspector.inspect_element(recording=recording, verbose=verbose)
 
     def on_release(key):
         if key == keyboard.Key.esc:
