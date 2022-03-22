@@ -1,12 +1,8 @@
-from ast import keyword
 import logging
-from posixpath import split
 import re
-from os import access
 from typing import List, Dict, Optional, Tuple, Union
 
 from pprint import pprint
-from pyparsing import Keyword
 
 from robot.api.deco import keyword, library
 
@@ -768,5 +764,7 @@ class Hubspot:
 
         response = requests.request("GET", url, headers=headers, params=params)
         response.raise_for_status()
-        self.logger.debug(f"Response is:\nStatus: {response.status_code} {response.reason}\nContent: {response.json()}")
+        self.logger.debug(
+            f"Response is:\nStatus: {response.status_code} {response.reason}\nContent: {response.json()}"
+        )
         return response.json()
