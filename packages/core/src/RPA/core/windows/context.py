@@ -1,56 +1,27 @@
 import contextlib
 import functools
 from typing import Optional
-import logging
 
-from .helpers import IS_WINDOWS
+from RPA.core.windows.helpers import IS_WINDOWS
 
 if IS_WINDOWS:
-    from comtypes import COMError  # noqa
     import uiautomation as auto
-else:
-    COMError = Exception
-
-
-class ControlNotFound(ValueError):
-    """No matching controls were found."""
+    from comtypes import COMError  # noqa
 
 
 class ElementNotFound(ValueError):
     """No matching elements were found."""
 
 
-class MultipleControlsFound(ValueError):
-    """Multiple matching controls were found, but only one was expected."""
-
-
-class TimeoutException(ValueError):
-    """Timeout reached while waiting for condition."""
-
-
 class WindowControlError(ValueError):
     """Matching window was not found"""
-
-
-class ActionNotPossible(ValueError):
-    """Action is not possible for the given Control"""
-
-
-class DefaultWindowsContext:
-    """Default context"""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
-        self.window_element = None
-        self.anchor_element = None
 
 
 class WindowsContext:
     """Shared context for all keyword libraries."""
 
     def __init__(self, ctx):
-        self.ctx = ctx or DefaultWindowsContext()
+        self.ctx = ctx
 
     @property
     def logger(self):

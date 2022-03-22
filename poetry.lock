@@ -1728,19 +1728,24 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-core"
-version = "6.6.2"
+version = "6.6.3"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = "^3.6.2"
+develop = false
 
 [package.dependencies]
-pillow = ">=8.4.0,<9.0.0"
-psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
+pillow = "^8.4.0"
+psutil = {version = "^5.9.0", markers = "sys_platform == \"win32\""}
 pywin32 = {version = ">=300,<304", markers = "python_full_version < \"3.7.6\" and sys_platform == \"win32\" or python_full_version > \"3.7.6\" and python_full_version < \"3.8.1\" and sys_platform == \"win32\" or python_full_version > \"3.8.1\" and sys_platform == \"win32\""}
-selenium = ">=3.141.0,<4.0.0"
-uiautomation = {version = ">=2.0.15,<3.0.0", markers = "sys_platform == \"win32\""}
-webdrivermanager = ">=0.10.0,<0.11.0"
+selenium = "^3.141.0"
+uiautomation = {version = "^2.0.15", markers = "sys_platform == \"win32\""}
+webdrivermanager = "^0.10.0"
+
+[package.source]
+type = "directory"
+url = "packages/core"
 
 [[package]]
 name = "rpaframework-dialogs"
@@ -1748,12 +1753,17 @@ version = "0.4.2"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = "^3.6.2"
+develop = false
 
 [package.dependencies]
-robocorp-dialog = ">=0.4.1,<0.5.0"
-robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
-rpaframework-core = ">=6.1.0,<7.0.0"
+robocorp-dialog = "^0.4.1"
+robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
+rpaframework-core = "^6.1.0"
+
+[package.source]
+type = "directory"
+url = "packages/dialogs"
 
 [[package]]
 name = "rpaframework-google"
@@ -1790,15 +1800,20 @@ version = "1.30.4"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = "^3.6.2"
+develop = false
 
 [package.dependencies]
-fpdf2 = ">=2.4.6,<3.0.0"
+fpdf2 = "^2.4.6"
 "pdfminer.six" = "20201018"
-pypdf2 = ">=1.26.0,<2.0.0"
+pypdf2 = "^1.26.0"
 robotframework = ">=3.2.2,<5.0"
-robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=6.1.0,<7.0.0"
+robotframework-pythonlibcore = "^3.0.0"
+rpaframework-core = "^6.1.0"
+
+[package.source]
+type = "directory"
+url = "packages/pdf"
 
 [[package]]
 name = "rpaframework-recognition"
@@ -1806,14 +1821,19 @@ version = "1.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = "^3.6.2"
+develop = false
 
 [package.dependencies]
-numpy = ">=1.19.3,<2.0.0"
-opencv-python-headless = ">=4.5.2,<5.0.0"
-pillow = ">=8.4.0,<9.0.0"
-pytesseract = ">=0.3.6,<0.4.0"
-rpaframework-core = ">=6.0.0,<7.0.0"
+numpy = "^1.19.3"
+opencv-python-headless = "^4.5.2"
+pillow = "^8.4.0"
+pytesseract = "^0.3.6"
+rpaframework-core = "^6.0.0"
+
+[package.source]
+type = "directory"
+url = "packages/recognition"
 
 [[package]]
 name = "rpaframework-windows"
@@ -2339,7 +2359,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "27530fea34e459461f334f4a89278266da660cba7d5d500c3e57ebd47de40781"
+content-hash = "489db2fad6407361f6babc31e88942248e1defae6f178cacac69d45d009575a0"
 
 [metadata.files]
 alabaster = [
@@ -3522,23 +3542,11 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = []
-rpaframework-core = [
-    {file = "rpaframework-core-6.6.2.tar.gz", hash = "sha256:efde9dc55248bed22fd5d3c2056c739b60cb1ab20f86c5a02f5e7ea4ee93124e"},
-    {file = "rpaframework_core-6.6.2-py3-none-any.whl", hash = "sha256:66846b36bfe87d295cffd555a355af80d6c77e1cd224d33cc42d4a458b83b78e"},
-]
-rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-0.4.2.tar.gz", hash = "sha256:c32fba721d5af0515348a4615b8f36c033ec0361775876810955ffbee4622c5c"},
-    {file = "rpaframework_dialogs-0.4.2-py3-none-any.whl", hash = "sha256:057f4a05532663d5fad50ceaf6e35812aaba5fb50cb583a3f35653323f3329d0"},
-]
+rpaframework-core = []
+rpaframework-dialogs = []
 rpaframework-google = []
-rpaframework-pdf = [
-    {file = "rpaframework-pdf-1.30.4.tar.gz", hash = "sha256:630809104468588d466633910111827f8bc2e6cab2c21eaf138ca193349f5ae3"},
-    {file = "rpaframework_pdf-1.30.4-py3-none-any.whl", hash = "sha256:a0e97bb940a75689bada7919f4db7eca74a503bf6cd81266351a3d00544e1ee4"},
-]
-rpaframework-recognition = [
-    {file = "rpaframework-recognition-1.0.0.tar.gz", hash = "sha256:5fa73ce22f6a6d96f37b5335c50d7e566655bbf36ee8f57d33a4b38a2bde7a5d"},
-    {file = "rpaframework_recognition-1.0.0-py3-none-any.whl", hash = "sha256:4357786352bff575f9c3bb8440ff6e3a9f9d053d07dece919652facfa6ea41d0"},
-]
+rpaframework-pdf = []
+rpaframework-recognition = []
 rpaframework-windows = []
 rsa = [
     {file = "rsa-4.8-py3-none-any.whl", hash = "sha256:95c5d300c4e879ee69708c428ba566c59478fd653cc3a22243eeb8ed846950bb"},
