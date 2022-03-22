@@ -1,6 +1,7 @@
 import logging
 import re
-from typing import List, Dict, Optional, Tuple, Union
+import traceback
+from typing import List, Dict, Optional, Tuple, Union, Any
 
 from pprint import pprint
 
@@ -22,6 +23,7 @@ from hubspot.crm.pipelines.models import (
     Pipeline,
     PipelineStage,
 )
+from hubspot.crm.owners.models import PublicOwner
 from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiException
 
 
@@ -768,3 +770,81 @@ class Hubspot:
             f"Response is:\nStatus: {response.status_code} {response.reason}\nContent: {response.json()}"
         )
         return response.json()
+
+    @keyword
+    def get_owner_by_id(
+        self, owner_id: str = "", owner_email: str = "", user_id: str = ""
+    ) -> PublicOwner:
+        """Returns an owner object with details about a Hubspot user denoted
+        as an owner of another Hubspot object, such as a contact or company.
+        You may provide the identifier as `owner_id`, `user_id`, or `owner_email`.
+        The `owner_id` will correspond to fields from the CRM API while the `user_id`
+        will correspond to the user provisioning API (see keyword `Get User`).
+
+        The owner object has the following properties (accessible via
+        dot notation):
+         - `id`
+         - `email`
+         - `first_name`
+         - `last_name`
+         - `user_id`
+         - `created_at`
+         - `updated_at`
+         - `archived`
+
+        If more than one of these IDs are provided, the keyword prefers
+        the `owner_id`, then `owner_email`, then the `user_id`.
+        """
+        self._require_authentication()
+        if owner_id:
+            return self.hs.crm.owners.owners_api.get_by_id(owner_id, id_property="id")
+        elif owner_email:
+            return self.hs.crm.owners.owners_api.get_by_id(
+                owner_email, id_property="email"
+            )
+        elif user_id:
+            return self.hs.crm.owners.owners_api.get_by_id(
+                user_id, id_property="userId"
+            )
+
+    @keyword
+    def get_owner_of_object(
+        self,
+        object: Union[SimplePublicObject, SimplePublicObjectWithAssociations, Dict],
+        owner_property: str = None,
+    ) -> PublicOwner:
+        """Looks up the owner of a given Hubspot object, the provided object
+        should be from this library or it should be a dictionary with an
+        `hubspot_owner_id` key. If the object has no owner, this keyword
+        returns None. See keyword `Get Owner By ID` for information about
+        the returned object.
+
+        You can use an alternate property as the owner ID property by providing
+        it with argument `owner_property`. If that property does not exist
+        this keyword will try the default `hubspot_owner_id` property, instead.
+        """
+        self._require_authentication()
+        try:
+            if owner_property:
+                owner_id = getattr(
+                    object.properties,
+                    owner_property,
+                    object.properties.get(
+                        owner_property, object.properties["hubspot_owner_id"]
+                    ),
+                )
+            else:
+                owner_id = getattr(
+                    object.properties,
+                    "hubspot_owner_id",
+                    object.properties["hubspot_owner_id"],
+                )
+        except AttributeError:
+            self.logger.debug(
+                "AttributeError caught while attempting to retrieve owner information from object."
+                + f"\nObject details: {object}."
+                + f"\nError details:\n{traceback.format_exc()}"
+            )
+            return None
+
+        return self.get_owner_by_id(owner_id)
