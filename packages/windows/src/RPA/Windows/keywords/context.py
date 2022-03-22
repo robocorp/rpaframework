@@ -1,4 +1,5 @@
-from RPA.core.windows.context import (
+# pylint: disable=unused-import
+from RPA.core.windows.context import (  # noqa: F401
     ElementNotFound,
     WindowControlError,
     WindowsContext as LibraryContext,

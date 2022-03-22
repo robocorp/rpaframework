@@ -1,6 +1,7 @@
 import logging
 from typing import Optional
 
+# pylint: disable=wrong-import-order
 from RPA.core.windows import WindowsElementsMixin
 from robotlibcore import DynamicCore
 

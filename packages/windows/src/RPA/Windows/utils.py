@@ -1,5 +1,11 @@
 import platform
-from RPA.core.windows.helpers import IS_WINDOWS, get_process_list, is_numeric
+
+# pylint: disable=unused-import
+from RPA.core.windows.helpers import (  # noqa: F401
+    IS_WINDOWS,
+    get_process_list,
+    is_numeric,
+)
 
 
 def call_attribute_if_available(object_name, attribute_name):
