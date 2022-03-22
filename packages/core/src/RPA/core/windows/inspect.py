@@ -5,7 +5,7 @@ from RPA.core.windows.helpers import IS_WINDOWS, is_numeric
 if IS_WINDOWS:
     import uiautomation as auto
 
-    RecordElement = Dict[str, Union[float, str, auto.Control]]
+    RecordElement = Dict[str, Optional[Union[float, str, auto.Control]]]
 
 
 class ElementInspector:
@@ -66,7 +66,7 @@ class ElementInspector:
                         "top_handle": top_level_handle,
                         "x": top_level_control,
                         "locator": locator_path,
-                        "name": parent_control.Name,
+                        "name": parent_control.Name if parent_locator else None,
                         "control": parent_control,
                     }
                 )
