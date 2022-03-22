@@ -5,8 +5,7 @@ from RPA.core.windows.helpers import IS_WINDOWS, is_numeric
 if IS_WINDOWS:
     import uiautomation as auto
 
-
-RecordElement = Dict[str, Union[float, str, auto.Control]]
+    RecordElement = Dict[str, Union[float, str, auto.Control]]
 
 
 class ElementInspector:
@@ -18,7 +17,7 @@ class ElementInspector:
         verbose: bool = False,
         action: str = "Click",
         control_window: bool = True,
-        recording: Optional[List[RecordElement]] = None,
+        recording: Optional[List["RecordElement"]] = None,
     ):
         """Inspect Windows element under mouse pointer.
 
