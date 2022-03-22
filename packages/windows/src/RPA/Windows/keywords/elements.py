@@ -2,13 +2,14 @@ import inspect
 from pathlib import Path
 from typing import List, Optional
 
+from RPA.core.windows.locators import Locator
+
 from RPA.Windows import utils
 from RPA.Windows.keywords import (
     ActionNotPossible,
     keyword,
     LibraryContext,
 )
-from .locators import Locator
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
