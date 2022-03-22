@@ -1,14 +1,14 @@
 import logging
 from typing import Optional
 
-# pylint: disable=wrong-import-position
+# pylint: disable=wrong-import-order
+from RPA.core.windows import WindowsElementsMixin
 from robotlibcore import DynamicCore
 
 from . import utils
 from .keywords import (
     ActionKeywords,
     ElementKeywords,
-    Locator,
     LocatorKeywords,
     WindowKeywords,
 )
@@ -21,11 +21,12 @@ if utils.IS_WINDOWS:
 
     comtypes.client.gen_dir = None
 
-    import uiautomation as auto
     from uiautomation.uiautomation import Logger
 
 
-class Windows(DynamicCore):
+# NOTE(cmiN): We use as base the robotframework `DynamicCore` this time instead of the
+#  vendorized one, like found in `RPA.core.windows.WindowsElements`.
+class Windows(WindowsElementsMixin, DynamicCore):
     # pylint: disable=anomalous-backslash-in-string
     """The `Windows` is a library that can be used for Windows desktop automation.
 
@@ -469,27 +470,23 @@ class Windows(DynamicCore):
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    SIMULATE_MOVE = False
 
     def __init__(self, locators_path: Optional[str] = None):
-        self.logger = logging.getLogger(__name__)
         self.wait_time: float = 0.5
-        self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
-        self.simulate_move = False  # this is currently used, but not set anywhere else
-        self.window_element: Optional[Locator] = None
-        self.anchor_element: Optional[Locator] = None
 
-        # prevent comtypes writing lot of log messages
-        comtypelogger = logging.getLogger("comtypes")
-        comtypelogger.propagate = False
-
-        # disable uiautomation writing a log file
+        # Prevent comtypes writing a lot of log messages.
+        comtypes_logger = logging.getLogger("comtypes")
+        comtypes_logger.propagate = False
+        # Disable uiautomation writing into a log file.
         Logger.SetLogFile("")
 
-        # register keyword libraries to LibCore
-        libraries = [
+        super().__init__(locators_path=locators_path)
+
+    def _get_libraries(self, locators_path: Optional[str]):
+        return [
             ActionKeywords(self),
             ElementKeywords(self),
             LocatorKeywords(self, locators_path=locators_path),
             WindowKeywords(self),
         ]
-        super().__init__(libraries)

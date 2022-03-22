@@ -1,27 +1,11 @@
-from typing import Dict
 import platform
 
-IS_WINDOWS = platform.system() == "Windows"
-
-if IS_WINDOWS:
-    import psutil
-
-
-def get_process_list() -> Dict:
-    """Get process list.
-
-    Returns dictionary mapping process id to process name
-    """
-    return {proc.pid: proc.name() for proc in psutil.process_iter()}
-
-
-def is_numeric(value):
-    try:
-        float(value)
-    except ValueError:
-        return False
-    else:
-        return float(value).is_integer()
+# pylint: disable=unused-import
+from RPA.core.windows.helpers import (  # noqa: F401
+    IS_WINDOWS,
+    get_process_list,
+    is_numeric,
+)
 
 
 def call_attribute_if_available(object_name, attribute_name):
