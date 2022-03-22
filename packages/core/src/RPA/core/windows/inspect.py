@@ -66,7 +66,7 @@ class ElementInspector:
                         "top_handle": top_level_handle,
                         "x": top_level_control,
                         "locator": locator_path,
-                        "name": parent_control.Name if parent_locator else None,
+                        "name": parent_control.Name if parent_control else None,
                         "control": parent_control,
                     }
                 )
