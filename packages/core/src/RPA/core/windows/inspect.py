@@ -5,8 +5,7 @@ from RPA.core.windows.helpers import IS_WINDOWS, is_numeric
 if IS_WINDOWS:
     import uiautomation as auto
 
-
-RecordElement = Dict[str, Union[float, str, auto.Control]]
+    RecordElement = Dict[str, Union[float, str, auto.Control]]
 
 
 class ElementInspector:
@@ -15,18 +14,18 @@ class ElementInspector:
     @classmethod
     def inspect_element(
         cls,
-        verbose: bool = False,
         action: str = "Click",
         control_window: bool = True,
-        recording: Optional[List[RecordElement]] = None,
+        recording: Optional[List["RecordElement"]] = None,
+        verbose: bool = False,
     ):
         """Inspect Windows element under mouse pointer.
 
-        :param verbose: Show exhaustive locators if `True`, otherwise just simple ones.
         :param action: Action attached to the locator.
         :param control_window: Include relevant ``Control Window  ...`` statement or
             not.
         :param recording: Where to store records.
+        :param verbose: Show exhaustive locators if `True`, otherwise just simple ones.
         """
         # TODO: Python syntax support too instead of just RF.
         output = []
@@ -67,6 +66,8 @@ class ElementInspector:
                         "top_handle": top_level_handle,
                         "x": top_level_control,
                         "locator": locator_path,
+                        "name": parent_control.Name,
+                        "control": parent_control,
                     }
                 )
 

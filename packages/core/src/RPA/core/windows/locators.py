@@ -49,7 +49,7 @@ class WindowsElement:
         "id": "automation_id",
     }
 
-    item: Control
+    item: "Control"
     locator: Optional[Locator] = None
     name: str = ""
     automation_id: str = ""
@@ -64,8 +64,8 @@ class WindowsElement:
     xcenter: int = -1
     ycenter: int = -1
 
-    def __init__(self, item: Control, locator: Optional[Locator]):
-        self.item: Control = item
+    def __init__(self, item: "Control", locator: Optional[Locator]):
+        self.item: "Control" = item
         self.locator: Optional[Locator] = locator
         self.name = item.Name
         self.automation_id = item.AutomationId
@@ -207,7 +207,7 @@ class LocatorMethods(WindowsContext):
 
     def _get_element_with_locator_part(
         self, locator, search_depth, root_element
-    ) -> Control:
+    ) -> "Control":
         match_object = MatchObject()
         mo = match_object.parse_locator(locator)
         self.ctx.logger.info("locator '%s' to match element: %s", locator, mo)
