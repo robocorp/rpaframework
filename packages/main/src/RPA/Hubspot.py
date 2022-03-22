@@ -24,6 +24,7 @@ from hubspot.crm.pipelines.models import (
     PipelineStage,
 )
 from hubspot.crm.owners.models import PublicOwner
+from hubspot.crm.schemas.exceptions import ApiException as SchemaApiException
 from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiException
 
 
@@ -295,7 +296,20 @@ class Hubspot:
         :param access_token: The access token created for the Private App
         in your HubSpot account.
         """
-        self.hs = HubSpotApi(access_token=access_token)
+        if self.hs is None or getattr(self.hs, "access_token", "") != access_token:
+            self.hs = HubSpotApi(access_token=access_token)
+            try:
+                self.schemas
+            except SchemaApiException as e:
+                if e.status == 401:
+                    raise HubSpotAuthenticationError(
+                        "Authentication was not successful."
+                    )
+                else:
+                    raise e
+            self.logger.info("Authentication to Hubspot CRM API with token successful.")
+        else:
+            self.logger.info("Already authenticated with access token.")
 
     @keyword
     def auth_with_api_key(self, api_key: str) -> None:
@@ -303,7 +317,22 @@ class Hubspot:
 
         :param api_key: The API key for the account to autheniticate to.
         """
-        self.hs = HubSpotApi(api_key=api_key)
+        if self.hs is None or getattr(self.hs, "api_key", "") != api_key:
+            self.hs = HubSpotApi(api_key=api_key)
+            try:
+                self.schemas
+            except SchemaApiException as e:
+                if e.status == 401:
+                    raise HubSpotAuthenticationError(
+                        "Authentication was not successful."
+                    )
+                else:
+                    raise e
+            self.logger.info(
+                "Authentication to Hubspot CRM API with API key successful."
+            )
+        else:
+            self.logger.info("Already authenticated with API key.")
 
     def list_contacts(
         self, properties: List[str] = None, associations: List[str] = None

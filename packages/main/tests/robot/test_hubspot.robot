@@ -10,7 +10,7 @@ Force Tags          hubspot
 
 *** Variables ***
 ${NOT_AUTHENTICATED_ERROR}      STARTS:HubSpotAuthenticationError:
-${AUTHENTICATION_FAILED}        STARTS:ApiException: (401)
+${AUTHENTICATION_FAILED}        HubSpotAuthenticationError: Authentication was not successful.
 ${HUBSPOT_TYPE_ERROR}           STARTS:HubSpotObjectTypeError:
 
 *** Test Cases ***
@@ -27,9 +27,8 @@ Get object should fail without authentication
     ...    Get object    object_type=contact    object_id=123
 
 Authentication fails with bad API key
-    Auth with API key    api_key=123
     Run Keyword And Expect Error    ${AUTHENTICATION_FAILED}
-    ...    Search for objects    object_type=CONTACTS
+    ...    Auth with API key    api_key=123
 
 Search for Contact by First Name Returns Contacts
     Auth with API key    ${API_KEY}
