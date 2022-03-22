@@ -370,7 +370,7 @@ First steps to start developing:
 #. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines. It is possible and likely
    that Github action will fail the if developer has not linted the code changes. Code formatting is based on `black`_ and `flake8`_
    and those are run with the ``invoke lint``.
-#. the library documentation can be created on the in the repository root (so called "meta" package level)
+#. the library documentation can be created in the repository root (so called "meta" package level)
 
    - ``poetry update``
    - ``make docs``
