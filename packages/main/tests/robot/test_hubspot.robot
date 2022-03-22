@@ -100,3 +100,22 @@ Get User Returns Expected User
     Auth with token    ${ACCESS_TOKEN}
     ${user}=    Get user    ${USER_ID}
     Should be equal as strings    ${USER_EMAIL}    ${user}[email]
+
+Get Owner by ID Returns Expected Owner
+    Auth with API key    ${API_KEY}
+    ${owner}=    Get owner by id    ${OWNER_ID}
+    Should be equal as strings    ${OWNER_EMAIL}    ${owner.email}
+
+Get Owner of Company Returns Expected Owner
+    Auth with API key    ${API_KEY}
+    ${extra_properties}=    Create list    hubspot_owner_id
+    ${company}=    Get object    COMPANY    ${COMPANY_WITH_OWNER_ID}    properties=${extra_properties}
+    ${owner}=    Get owner of object    ${company}
+    Should be equal as strings    ${EXPECTED_COMPANY_OWNER}    ${owner.id}
+
+Get Custom Owner Property of Company Returns Expected Owner
+    Auth with API key    ${API_KEY}
+    ${extra_properties}=    Create list    hubspot_owner_id    ${CUSTOM_OWNER_PROPERTY}
+    ${company}=    Get object    COMPANY    ${COMPANY_ID_WITH_CUSTOM_OWNER}    properties=${extra_properties}
+    ${owner}=    Get owner of object    ${company}    owner_property=${CUSTOM_OWNER_PROPERTY}
+    Should be equal as strings    ${EXPECTED_CUSTOM_OWNER}    ${owner.id}
