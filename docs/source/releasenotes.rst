@@ -8,6 +8,16 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.10.0 - 11 Mar 2022
+---------------------
+
+- Library **RPA.Cloud.AWS**: Fix ``Download Files`` on saving objects with paths.
+- Library **RPA.HTTP**: Overriding ``RequestsLibrary`` logging to DEBUG level for
+  request and response.
+- Automatically installing ``rpaframework-windows`` **2.3.2**. (no need to specify this
+  dependency in your *conda.yaml* anymore)
+- Deprecated ``RPA.Desktop.Windows`` in favor of ``RPA.Windows``.
+
 12.9.0 - 11 Mar 2022
 --------------------
 
@@ -39,8 +49,6 @@ Release notes
   - `Email.Exchange: Add more support for email filtering <https://github.com/robocorp/rpaframework/issues/410>`_
   - `Get Window Elements triggers NotImplementedError <https://github.com/robocorp/rpaframework/issues/344>`_
   - `Email.ImapSmtp: Issues with filtering emails <https://github.com/robocorp/rpaframework/issues/409>`_
-
-
 
 12.8.2 - 25 Feb 2022
 --------------------
