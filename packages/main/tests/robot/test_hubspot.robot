@@ -118,3 +118,16 @@ Get Custom Owner Property of Company Returns Expected Owner
     ${company}=    Get object    COMPANY    ${COMPANY_ID_WITH_CUSTOM_OWNER}    properties=${extra_properties}
     ${owner}=    Get owner of object    ${company}    owner_property=${CUSTOM_OWNER_PROPERTY}
     Should be equal as strings    ${EXPECTED_CUSTOM_OWNER}    ${owner.id}
+
+Induce Rate Limit Error and Ensure Good results
+    Auth with API key    ${API_KEY}
+    ${contacts}=    Search for objects    CONTACTS    firstname    HAS_PROPERTY    max_results=20
+    FOR    ${contact}    IN    @{contacts}
+        ${individual_contact}=    Search for objects    CONTACTS    hs_object_id    EQ    ${contact.id}
+    END
+    ${contacts}=    Search for objects    CONTACTS    firstname    EQ    ${FIRST_NAME}    AND    lastname    EQ
+    ...    ${LAST_NAME}
+    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME}
+    ...    case_insensitive=${True}
+    Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    ${LAST_NAME}
+    ...    case_insensitive=${True}
