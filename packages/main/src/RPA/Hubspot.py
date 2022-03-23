@@ -1,7 +1,10 @@
+import time
+from functools import wraps
 import logging
 import re
 import traceback
-from typing import List, Dict, Optional, Tuple, Union, Any
+from typing import Callable, List, Dict, Optional, Tuple, Union, Any
+from retry import retry
 
 from pprint import pprint
 
@@ -9,7 +12,6 @@ from robot.api.deco import keyword, library
 
 import requests
 from hubspot import HubSpot as HubSpotApi
-from hubspot.utils.objects import fetch_all
 from hubspot.crm.objects.models import (
     PublicObjectSearchRequest as ObjectSearchRequest,
     FilterGroup,
@@ -24,8 +26,10 @@ from hubspot.crm.pipelines.models import (
     PipelineStage,
 )
 from hubspot.crm.owners.models import PublicOwner
+from hubspot.crm.objects.exceptions import ApiException as ObjectApiException
 from hubspot.crm.schemas.exceptions import ApiException as SchemaApiException
 from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiException
+from hubspot.crm.owners.exceptions import ApiException as OwnersApiException
 
 
 class HubSpotAuthenticationError(Exception):
@@ -42,6 +46,10 @@ class HubSpotSearchParseError(Exception):
 
 class HubSpotNoPipelineError(Exception):
     "Error when there is no pipeline associated with an object."
+
+
+class HubSpotRateLimitError(Exception):
+    "Error when the API's rate limits are exceeded."
 
 
 @library(scope="Global", doc_format="REST")
@@ -126,10 +134,18 @@ class Hubspot:
             )
 
     @property
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
     def schemas(self) -> List[ObjectSchema]:
         self._require_authentication()
         if len(self._schemas) == 0:
-            self.schemas = self.hs.crm.schemas.core_api.get_all()
+            try:
+                self.schemas = self.hs.crm.schemas.core_api.get_all()
+            except SchemaApiException as e:
+                if e.status == 429:
+                    self.logger.debug("Rate limit exceeded, retry should occur.")
+                    raise HubSpotRateLimitError from e
+                else:
+                    raise e
         return self._schemas
 
     @schemas.setter
@@ -260,6 +276,7 @@ class Hubspot:
             filter_groups.append(FilterGroup(_process_and(words)))
         return ObjectSearchRequest(filter_groups)
 
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
     def _search_objects(
         self,
         object_type: str,
@@ -267,11 +284,21 @@ class Hubspot:
         max_results: int = 1000,
     ) -> List[SimplePublicObject]:
         self._require_authentication()
-        search_object.limit = 100
+        if max_results < 100:
+            search_object.limit = max_results
+        else:
+            search_object.limit = 100
         self.logger.debug(f"Search to use is:\n{search_object}")
-        response = self.hs.crm.objects.search_api.do_search(
-            object_type, public_object_search_request=search_object
-        )
+        try:
+            response = self.hs.crm.objects.search_api.do_search(
+                object_type, public_object_search_request=search_object
+            )
+        except ObjectApiException as e:
+            if e.status == 429:
+                self.logger.debug("Rate limit exceeded, retry should occur.")
+                raise HubSpotRateLimitError from e
+            else:
+                raise e
         self.logger.debug(f"First response received:\n{response}")
         results = []
         results.extend(response.results)
@@ -279,9 +306,16 @@ class Hubspot:
             search_object.after = response.paging.next.after
             while len(results) < max_results or max_results <= 0:
                 self.logger.debug(f"Current cursor is: {search_object.after}")
-                page = self.hs.crm.objects.search_api.do_search(
-                    object_type, public_object_search_request=search_object
-                )
+                try:
+                    page = self.hs.crm.objects.search_api.do_search(
+                        object_type, public_object_search_request=search_object
+                    )
+                except ObjectApiException as e:
+                    if e.status == 429:
+                        self.logger.debug("Rate limit exceeded, retry should occur.")
+                        raise HubSpotRateLimitError from e
+                    else:
+                        raise e
                 results.extend(page.results)
                 if page.paging is None:
                     break
@@ -333,27 +367,6 @@ class Hubspot:
             )
         else:
             self.logger.info("Already authenticated with API key.")
-
-    def list_contacts(
-        self, properties: List[str] = None, associations: List[str] = None
-    ) -> List[dict]:
-        """Returns a list of available contacts. A list of properties
-        and associations can be provided and will be included in the
-        returned list.
-
-        :param properties: a list of strings representing properties of
-        the HubSpot Contacts to be returned. If such a property does not
-        exist, it will be ignored.
-        :param associations: a list of object types to retrieve associated
-        IDs for. If such an object type does not exist, it will be ignored.
-        """
-        self._require_authentication()
-        return fetch_all(
-            self.hs.crm.contacts.basic_api,
-            properties=properties,
-            associations=associations,
-            archived=False,
-        )
 
     @keyword
     def search_for_objects(
@@ -488,9 +501,11 @@ class Hubspot:
         return self._search_objects(
             self._pluralize_object(self._validate_object_type(object_type)),
             search_object,
+            max_results=max_results,
         )
 
     @keyword
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
     def list_associations(
         self, object_type: str, object_id: str, to_object_type: str
     ) -> List[AssociatedId]:
@@ -509,13 +524,22 @@ class Hubspot:
         results = []
         after = None
         while True:
-            page = self.hs.crm.objects.associations_api.get_all(
-                self._validate_object_type(self._singularize_object(object_type)),
-                object_id,
-                self._validate_object_type(self._singularize_object(to_object_type)),
-                after=after,
-                limit=500,
-            )
+            try:
+                page = self.hs.crm.objects.associations_api.get_all(
+                    self._validate_object_type(self._singularize_object(object_type)),
+                    object_id,
+                    self._validate_object_type(
+                        self._singularize_object(to_object_type)
+                    ),
+                    after=after,
+                    limit=500,
+                )
+            except ObjectApiException as e:
+                if e.status == 429:
+                    self.logger.debug("Rate limit exceeded, retry should occur.")
+                    raise HubSpotRateLimitError from e
+                else:
+                    raise e
             results.extend(page.results)
             if page.paging is None:
                 break
@@ -523,6 +547,7 @@ class Hubspot:
         return results
 
     @keyword
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
     def get_object(
         self,
         object_type: str,
@@ -563,30 +588,45 @@ class Hubspot:
 
         self._require_authentication()
 
-        return self.hs.crm.objects.basic_api.get_by_id(
-            self._validate_object_type(object_type),
-            object_id,
-            properties=properties,
-            associations=(
-                [self._validate_object_type(obj) for obj in associations]
-                if associations
-                else None
-            ),
-            id_property=id_property,
-        )
+        try:
+            return self.hs.crm.objects.basic_api.get_by_id(
+                self._validate_object_type(object_type),
+                object_id,
+                properties=properties,
+                associations=(
+                    [self._validate_object_type(obj) for obj in associations]
+                    if associations
+                    else None
+                ),
+                id_property=id_property,
+            )
+        except ObjectApiException as e:
+            if e.status == 429:
+                self.logger.debug("Rate limit exceeded, retry should occur.")
+                raise HubSpotRateLimitError from e
+            else:
+                raise e
 
     @property
     def pipelines(self) -> Dict[str, List[Pipeline]]:
         return self._pipelines
 
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
     def _set_pipelines(self, object_type: str, archived: bool = False):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
-        self._pipelines[valid_object_type] = (
-            self.hs.crm.pipelines.pipelines_api.get_all(
-                valid_object_type, archived=archived
-            )
-        ).results
+        try:
+            self._pipelines[valid_object_type] = (
+                self.hs.crm.pipelines.pipelines_api.get_all(
+                    valid_object_type, archived=archived
+                )
+            ).results
+        except PipelineApiException as e:
+            if e.status == 429:
+                self.logger.debug("Rate limit exceeded, retry should occur.")
+                raise HubSpotRateLimitError from e
+            else:
+                raise e
 
     def _get_cached_pipeline(self, object_type, pipeline_id):
         return next(
@@ -598,6 +638,7 @@ class Hubspot:
             None,
         )
 
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
     def _get_set_a_pipeline(self, object_type, pipeline_id, use_cache=True):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
@@ -612,8 +653,12 @@ class Hubspot:
                 if self.pipelines.get(valid_object_type) is not list:
                     self._pipelines[valid_object_type] = []
                 self._pipelines[valid_object_type].extend([response])
-            except PipelineApiException:
-                self._set_pipelines(valid_object_type)
+            except PipelineApiException as e:
+                if e.status == 429:
+                    self.logger.debug("Rate limit exceeded, retry should occur.")
+                    raise HubSpotRateLimitError from e
+                else:
+                    self._set_pipelines(valid_object_type)
         return self._get_cached_pipeline(valid_object_type, pipeline_id)
 
     def _get_pipelines(
@@ -801,6 +846,7 @@ class Hubspot:
         return response.json()
 
     @keyword
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
     def get_owner_by_id(
         self, owner_id: str = "", owner_email: str = "", user_id: str = ""
     ) -> PublicOwner:
@@ -825,16 +871,25 @@ class Hubspot:
         the `owner_id`, then `owner_email`, then the `user_id`.
         """
         self._require_authentication()
-        if owner_id:
-            return self.hs.crm.owners.owners_api.get_by_id(owner_id, id_property="id")
-        elif owner_email:
-            return self.hs.crm.owners.owners_api.get_by_id(
-                owner_email, id_property="email"
-            )
-        elif user_id:
-            return self.hs.crm.owners.owners_api.get_by_id(
-                user_id, id_property="userId"
-            )
+        try:
+            if owner_id:
+                return self.hs.crm.owners.owners_api.get_by_id(
+                    owner_id, id_property="id"
+                )
+            elif owner_email:
+                return self.hs.crm.owners.owners_api.get_by_id(
+                    owner_email, id_property="email"
+                )
+            elif user_id:
+                return self.hs.crm.owners.owners_api.get_by_id(
+                    user_id, id_property="userId"
+                )
+        except OwnersApiException as e:
+            if e.status == 429:
+                self.logger.debug("Rate limit exceeded, retry should occur.")
+                raise HubSpotRateLimitError from e
+            else:
+                raise e
 
     @keyword
     def get_owner_of_object(
