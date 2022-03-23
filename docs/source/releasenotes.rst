@@ -8,7 +8,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-12.10.0 - 11 Mar 2022
+12.10.0 - 23 Mar 2022
 ---------------------
 
 - Library **RPA.Cloud.AWS**: Fix ``Download Files`` on saving objects with paths.
