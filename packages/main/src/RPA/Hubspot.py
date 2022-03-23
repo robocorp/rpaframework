@@ -131,7 +131,7 @@ class Hubspot:
             )
 
     @property
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def schemas(self) -> List[ObjectSchema]:
         self._require_authentication()
         if len(self._schemas) == 0:
@@ -200,7 +200,7 @@ class Hubspot:
         valid_names = list(self.BUILTIN_SINGULAR_MAP.keys())
         valid_names.extend([s.object_type_id for s in self.schemas])
         valid_names.extend([s.name for s in self.schemas])
-        valid_names.extend([s.labels.plural for s in self.schemas])
+        valid_names.extend([s.labels.plural.lower() for s in self.schemas])
         if name.lower() in valid_names:
             return name.lower()
         else:
@@ -276,7 +276,7 @@ class Hubspot:
             filter_groups.append(FilterGroup(_process_and(words)))
         return ObjectSearchRequest(filter_groups)
 
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def _search_objects(
         self,
         object_type: str,
@@ -505,7 +505,7 @@ class Hubspot:
         )
 
     @keyword
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def list_associations(
         self, object_type: str, object_id: str, to_object_type: str
     ) -> List[AssociatedId]:
@@ -547,7 +547,7 @@ class Hubspot:
         return results
 
     @keyword
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def get_object(
         self,
         object_type: str,
@@ -611,7 +611,7 @@ class Hubspot:
     def pipelines(self) -> Dict[str, List[Pipeline]]:
         return self._pipelines
 
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def _set_pipelines(self, object_type: str, archived: bool = False):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
@@ -638,7 +638,7 @@ class Hubspot:
             None,
         )
 
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def _get_set_a_pipeline(self, object_type, pipeline_id, use_cache=True):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
@@ -846,7 +846,7 @@ class Hubspot:
         return response.json()
 
     @keyword
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, backoff=2)
+    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def get_owner_by_id(
         self, owner_id: str = "", owner_email: str = "", user_id: str = ""
     ) -> PublicOwner:
