@@ -200,10 +200,13 @@ class Hubspot:
         valid_names = list(self.BUILTIN_SINGULAR_MAP.keys())
         valid_names.extend([s.object_type_id for s in self.schemas])
         valid_names.extend([s.name for s in self.schemas])
+        valid_names.extend([s.labels.plural for s in self.schemas])
         if name.lower() in valid_names:
             return name.lower()
         else:
-            raise HubSpotObjectTypeError(f"Object type {name} does not exist.")
+            raise HubSpotObjectTypeError(
+                f"Object type {name} does not exist. Current accepted names are:\n{valid_names}."
+            )
 
     def _create_search_object(self, words: List):
         def _split(words: List, oper: str):
