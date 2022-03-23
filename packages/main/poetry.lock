@@ -1159,7 +1159,7 @@ test = ["ipaddress", "mock", "unittest2", "enum34", "pywin32", "wmi"]
 name = "py"
 version = "1.11.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -1613,6 +1613,18 @@ python-versions = "*"
 
 [package.dependencies]
 requests = ">=2.0.1,<3.0.0"
+
+[[package]]
+name = "retry2"
+version = "0.9.3"
+description = "Easy to use retry decorator."
+category = "main"
+optional = false
+python-versions = ">=2.6"
+
+[package.dependencies]
+decorator = ">=3.4.2"
+py = ">=1.4.26,<2.0.0"
 
 [[package]]
 name = "rfc3987"
@@ -3520,6 +3532,9 @@ requests-toolbelt = [
     { file = "requests-toolbelt-0.9.1.tar.gz", hash = "sha256:968089d4584ad4ad7c171454f0a5c6dac23971e9472521ea3b6d49d610aa6fc0" },
     { file = "requests_toolbelt-0.9.1-py2.py3-none-any.whl", hash = "sha256:380606e1d10dc85c3bd47bf5a6095f815ec007be7a8b69c878507068df059e6f" },
 ]
+retry2 = [
+    { file = "retry2-0.9.3-py2.py3-none-any.whl", hash = "sha256:dad23fe6222fe72436a244f2fb893a5c498831283d96df008e4811d8485b55bd" },
+]
 rfc3987 = [
     { file = "rfc3987-1.3.8-py2.py3-none-any.whl", hash = "sha256:10702b1e51e5658843460b189b185c0366d2cf4cff716f13111b0ea9fd2dce53" },
     { file = "rfc3987-1.3.8.tar.gz", hash = "sha256:d3c4d257a560d544e9826b38bc81db676890c79ab9d7ac92b39c7a253d5ca733" },
@@ -3725,6 +3740,9 @@ tzdata = [
 tzlocal = [
     { file = "tzlocal-2.1-py2.py3-none-any.whl", hash = "sha256:e2cb6c6b5b604af38597403e9852872d7f534962ae2954c7f35efcb1ccacf4a4" },
     { file = "tzlocal-2.1.tar.gz", hash = "sha256:643c97c5294aedc737780a49d9df30889321cbe1204eac2c2ec6134035a92e44" },
+]
+uiautomation = [
+    { file = "uiautomation-2.0.16-py3-none-any.whl", hash = "sha256:ebe8ef1a7c02e1fd70ecc73a868f796dbf079d4384373a3e6e61aeff4859545b" },
 ]
 uiautomation = [
     { file = "uiautomation-2.0.16-py3-none-any.whl", hash = "sha256:ebe8ef1a7c02e1fd70ecc73a868f796dbf079d4384373a3e6e61aeff4859545b" },
