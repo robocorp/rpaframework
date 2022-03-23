@@ -12,7 +12,7 @@ Introduction
 
 `RPA Framework` is a collection of open-source libraries and tools for
 Robotic Process Automation (RPA), and it is designed to be used with both
-`Robot Framework`_ and Python_. The goal is to offer well-documented and
+`Robot Framework`_ and `Python`_. The goal is to offer well-documented and
 actively maintained core libraries for Software Robot Developers.
 
 Learn more about RPA at `Robocorp Documentation`_.
@@ -26,7 +26,7 @@ Learn more about RPA at `Robocorp Documentation`_.
 
 .. _Robot Framework: https://robotframework.org
 .. _Robot Framework Foundation: https://robotframework.org/foundation/
-.. _Python: https://python.org
+.. _Python: https://www.python.org/
 .. _Robocorp: https://robocorp.com
 .. _Robocorp Documentation: https://robocorp.com/docs/
 .. _Control Room: https://robocorp.com/docs/control-room
@@ -330,7 +330,7 @@ to see where to get started.
 Development
 -----------
 
-Repository development is `Python <https://www.python.org/>`_ based and requires at minimum
+Repository development is `Python`_ based and requires at minimum
 Python version 3.7+ installed on the development machine. The default Python version used in the
 Robocorp Robot template is 3.7.5 so it is a good choice for the version to install. Not recommended
 versions are 3.7.6 and 3.8.1, because they have issues with some of the dependencies related to rpaframework.
@@ -350,6 +350,7 @@ First steps to start developing:
    poetry config virtualenvs.path null
    poetry config virtualenvs.in-project true
    poetry config repositories.devpi "https://devpi.robocorp.cloud/ci/test"
+
 2. git clone the repository
 #. create a new Git branch or switch to correct branch or stay in master branch
 
@@ -404,7 +405,7 @@ Some recommended tools for development
    - `Robocorp Code`_
    - `Robot Framework Language Server`_
    - `GitLens`_
-   - `Python <https://marketplace.visualstudio.com/items?itemName=ms-python.python>`_
+   - `Python extension`_
 - `GitHub Desktop`_ will make version management less prone to errors
 
 .. _poetry: https://python-poetry.org
@@ -414,6 +415,7 @@ Some recommended tools for development
 .. _Robocorp Code: https://marketplace.visualstudio.com/items?itemName=robocorp.robocorp-code
 .. _Robot Framework Language Server: https://marketplace.visualstudio.com/items?itemName=robocorp.robotframework-lsp
 .. _GitLens: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
+.. _Python extension: https://marketplace.visualstudio.com/items?itemName=ms-python.python
 .. _black: https://pypi.org/project/black/
 .. _flake8: https://pypi.org/project/flake8/
 
