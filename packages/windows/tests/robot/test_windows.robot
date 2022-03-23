@@ -116,8 +116,17 @@ Play Task Calculator
     Control Window    Calculator
     Click    id:clearButton
     Click    type:Group and name:'Number pad' > type:Button and index:4
-    Click    type:Group and name:'Number pad' > type:Button index:5 offset:370,0    # it is optional to use "and" in the locator syntax
-    Click    control:Group and name:'Number pad' > control:Button index:7    # "control" maps to same thing as "type" -> "ControlType"
+    # It is optional to use "and" in the locator syntax.
+    ${ver} =    Get OS Version
+    IF    "${ver}" == "11"
+        # FIXME(cmiN): On Windows 11 this offset minimizes the window. (might be resolution bound)
+        ${locator} =    Set Variable    type:Group and name:'Number pad' > type:Button index:5
+    ELSE
+        ${locator} =    Set Variable    type:Group and name:'Number pad' > type:Button index:5 offset:370,0
+    END
+    Click    ${locator}
+    # "control" maps to same thing as "type" -> "ControlType".
+    Click    control:Group and name:'Number pad' > control:Button index:7
     Click    id:equalButton
     [Teardown]    Close Current Window
 
