@@ -27,7 +27,7 @@ jobs:
       matrix:
         name: [
           # Py3.6 not available on Windows anymore.
-          #"windows-py36",
+          # "windows-py36", no support anymore for the package
           "windows-py37",
           "windows-py38",
           "windows-py39",
@@ -37,17 +37,13 @@ jobs:
           "ubuntu-py38",
           "ubuntu-py39",
 
-          # This version has been disabled for now
-          #"macos-py36",
+          # "macos-py36", no support anymore for the package
           "macos-py37",
           "macos-py38",
           "macos-py39",
         ]
 
         include:
-          # - name: "windows-py36"
-          #   python: "3.6"
-          #   os: windows-latest
           - name: "windows-py37"
             python: "3.7"
             os: windows-latest
@@ -69,9 +65,6 @@ jobs:
           - name: "ubuntu-py39"
             python: "3.9"
             os: ubuntu-latest
-          #- name: "macos-py36"
-          #  python: "3.6"
-          #  os: macos-latest
           - name: "macos-py37"
             python: "3.7"
             os: macos-latest
@@ -98,7 +91,7 @@ jobs:
       run: invoke install
     - name: Lint
       run: invoke lint
-    # Windows tests disabled in CI for now
+    # Windows tests disabled in CI for now (require VM with UI support)
     #- name: Test
     #  run: invoke test
 
