@@ -8,7 +8,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-13.0.0 - 24 Mar 2022
+13.0.0 - 25 Mar 2022
 --------------------
 
 - Major version upgrades for the following packages (incompatible with
