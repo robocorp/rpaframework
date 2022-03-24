@@ -16,18 +16,23 @@ from hubspot.crm.objects.models import (
     Filter,
     SimplePublicObject,
     SimplePublicObjectWithAssociations,
-    AssociatedId,
 )
 from hubspot.crm.schemas.models import ObjectSchema
 from hubspot.crm.pipelines.models import (
     Pipeline,
     PipelineStage,
 )
+from hubspot.crm.associations.models import (
+    BatchInputPublicObjectId,
+    PublicObjectId,
+    AssociatedId,
+)
 from hubspot.crm.owners.models import PublicOwner
 from hubspot.crm.objects.exceptions import ApiException as ObjectApiException
 from hubspot.crm.schemas.exceptions import ApiException as SchemaApiException
 from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiException
 from hubspot.crm.owners.exceptions import ApiException as OwnersApiException
+from hubspot.crm.associations.exceptions import ApiException as AssociationsApiException
 
 
 class HubSpotAuthenticationError(Exception):
@@ -48,6 +53,10 @@ class HubSpotNoPipelineError(Exception):
 
 class HubSpotRateLimitError(Exception):
     "Error when the API's rate limits are exceeded."
+
+
+class HubSpotBatchResponseError(Exception):
+    "Error when the entire batch response is nothing but errors."
 
 
 class ExtendedFilter(Filter):
@@ -586,6 +595,8 @@ class Hubspot:
         to be included in the returned data.
         :return: A list of found hubspot objects.
         """
+        # TODO: Update doc string to describe how natural searching
+        # actually works.
         self._require_authentication()
 
         if string_query:
@@ -615,22 +626,10 @@ class Hubspot:
             max_results=max_results,
         )
 
-    @keyword
     @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
-    def list_associations(
+    def _list_associations(
         self, object_type: str, object_id: str, to_object_type: str
     ) -> List[AssociatedId]:
-        """List associations of an object by type, you must define the `object_type`
-        with its `object_id`. You must also provide the associated objects with
-        `to_object_type`. The API will return a list of dictionaries with
-        the associated object `id` and association `type` (e.g., `contact_to_company`).
-
-        :param object_type: The type of object for the object ID provided, e.g. `contact`.
-        :param object_id: The HubSpot ID for the object of type `object_type`.
-        :param to_object_type: The type of object associations to return.
-        :return: A list of dictionaries representing the associated objects.
-        """
-
         self._require_authentication()
         results = []
         after = None
@@ -655,6 +654,67 @@ class Hubspot:
             if page.paging is None:
                 break
             after = page.paging.next.after
+        return results
+
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    def _list_associations_by_batch(
+        self, object_type: str, object_id: List[str], to_object_type: str
+    ) -> Dict[str, List[AssociatedId]]:
+        self._require_authentication()
+        batch_reader = BatchInputPublicObjectId(
+            inputs=[PublicObjectId(o) for o in object_id]
+        )
+        try:
+            response = self.hs.crm.associations.batch_api.read(
+                self._singularize_object(self._get_custom_object_id(object_type)),
+                self._singularize_object(self._get_custom_object_id(to_object_type)),
+                batch_input_public_object_id=batch_reader,
+            )
+        except AssociationsApiException as e:
+            if e.status == 429:
+                self.logger.debug("Rate limit exceeded, retry should occur.")
+                raise HubSpotRateLimitError from e
+            else:
+                raise e
+        if getattr(response, "num_errors", None):
+            if response.num_errors >= len(object_id):
+                raise HubSpotBatchResponseError(
+                    f"Batch API failed all items with the following errors:\n{response.errors}"
+                )
+            elif response.num_errors > 0:
+                self.logger.warn(f"Batch API returned some errors:\n{response.errors}")
+        self.logger.debug(f"Full results received:\n{response.results}")
+
+        return {o._from.id: o.to for o in response.results}
+
+    @keyword
+    def list_associations(
+        self, object_type: str, object_id: Union[str, List[str]], to_object_type: str
+    ) -> Union[List[AssociatedId], Dict[str, List[AssociatedId]]]:
+        """List associations of an object by type, you must define the `object_type`
+        with its `object_id`. You must also provide the associated objects with
+        `to_object_type`. The API will return a list of dictionaries with
+        the associated object `id` and association `type` (e.g., `contact_to_company`).
+
+        You may provide a list of object IDs, if you do, the return object is a
+        dictionary where the keys are the requested IDs and the value associated
+        to each key is a list of associated objects (like a single search).
+
+        :param object_type: The type of object for the object ID provided, e.g. `contact`.
+        :param object_id: The HubSpot ID for the object of type `object_type`.
+        If you provide a list of object_ids, they will be searched via the
+        batch read API.
+        :param to_object_type: The type of object associations to return.
+        :return: A list of dictionaries representing the associated objects.
+        """
+
+        self._require_authentication()
+        if isinstance(object_id, list):
+            results = self._list_associations_by_batch(
+                object_type, object_id, to_object_type
+            )
+        else:
+            results = self._list_associations(object_type, object_id, to_object_type)
         return results
 
     @keyword
