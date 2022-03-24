@@ -131,7 +131,7 @@ class Hubspot:
             )
 
     @property
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def schemas(self) -> List[ObjectSchema]:
         self._require_authentication()
         if len(self._schemas) == 0:
@@ -156,7 +156,7 @@ class Hubspot:
                 "Invalid values for `results`, must be list of `ObjectSchema`."
             )
 
-    def _get_custom_object_schema(self, name: str) -> Dict:
+    def _get_custom_object_schema(self, name: str) -> Union[Dict, None]:
         self._require_authentication()
         for s in self.schemas:
             if (
@@ -165,11 +165,13 @@ class Hubspot:
                 or s.labels.plural.lower() == name.lower()
             ):
                 return s
+            else:
+                return None
 
     def _get_custom_object_id(self, name: str) -> str:
         self._require_authentication()
         schema = self._get_custom_object_schema(self._validate_object_type(name))
-        return schema.object_type_id
+        return schema.object_type_id if schema else name
 
     def _singularize_object(self, name: str) -> str:
         if len(self._singular_map) == 0:
@@ -286,7 +288,7 @@ class Hubspot:
             filter_groups.append(FilterGroup(_process_and(words)))
         return ObjectSearchRequest(filter_groups)
 
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def _search_objects(
         self,
         object_type: str,
@@ -385,7 +387,7 @@ class Hubspot:
         *natural_search,
         search: Optional[List[Dict]] = None,
         string_query: str = "",
-        properties: Optional[List[str]] = None,
+        properties: Optional[Union[str, List[str]]] = None,
         max_results: int = 1000,
     ) -> List[SimplePublicObject]:
         """Returns a list of objects of the specified `type` based on the
@@ -507,15 +509,17 @@ class Hubspot:
             )
         else:
             search_object = ObjectSearchRequest()
-        search_object.properties = properties
+        search_object.properties = (
+            [properties] if isinstance(properties, str) else properties
+        )
         return self._search_objects(
-            self._pluralize_object(self._validate_object_type(object_type)),
+            self._pluralize_object(self._get_custom_object_id(object_type)),
             search_object,
             max_results=max_results,
         )
 
     @keyword
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def list_associations(
         self, object_type: str, object_id: str, to_object_type: str
     ) -> List[AssociatedId]:
@@ -557,7 +561,7 @@ class Hubspot:
         return results
 
     @keyword
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def get_object(
         self,
         object_type: str,
@@ -621,7 +625,7 @@ class Hubspot:
     def pipelines(self) -> Dict[str, List[Pipeline]]:
         return self._pipelines
 
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def _set_pipelines(self, object_type: str, archived: bool = False):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
@@ -648,7 +652,7 @@ class Hubspot:
             None,
         )
 
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def _get_set_a_pipeline(self, object_type, pipeline_id, use_cache=True):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
@@ -856,7 +860,7 @@ class Hubspot:
         return response.json()
 
     @keyword
-    @retry(HubSpotRateLimitError, tries=5, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def get_owner_by_id(
         self, owner_id: str = "", owner_email: str = "", user_id: str = ""
     ) -> PublicOwner:

@@ -70,6 +70,12 @@ Retrieve Custom Object Using Custom ID Returns Object
     ...    id_property=${ID_PROPERTY}    properties=${ID_PROPERTY}
     Should Be Equal as Strings    ${CUSTOM_OBJ_ID}    ${custom_object.properties["${ID_PROPERTY}"]}
 
+Search for custom object with natural language returns object
+    Auth with API key    ${API_KEY}
+    ${custom_objects}=    Search for objects    ${CUSTOM_OBJECT_TYPE}    ${ID_PROPERTY}    EQ    ${CUSTOM_OBJ_ID}
+    ...    properties=${ID_PROPERTY}
+    Should Be Equal as Strings    ${CUSTOM_OBJ_ID}    ${custom_objects[0].properties["${ID_PROPERTY}"]}
+
 List Deal Pipelines Should Return Default Pipeline
     Auth with API key    ${API_KEY}
     ${pipelines}=    List pipelines    DEALS
