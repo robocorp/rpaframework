@@ -8,9 +8,13 @@ authors = [
 
 [tool.poetry.dependencies]
 python = "^3.6.2"
-rpaframework = { path = "packages/main", extras = ["cv", "playwright", "aws"] }
+rpaframework = { path = "packages/main" }
 rpaframework-google = { path = "packages/google" }
+rpaframework-recognition = { path = "packages/recognition" }
 rpaframework-windows = { path = "packages/windows" }
+amazon-textract-response-parser = { version = "^0.1.1" }
+boto3 = { version = "^1.13.4" }
+robotframework-browser = { version = "^11.1.0", python = ">=3.7,<4.0" }
 
 [tool.poetry.dev-dependencies]
 robotframeworklexer = "^1.1"
