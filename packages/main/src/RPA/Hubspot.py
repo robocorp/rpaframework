@@ -175,7 +175,12 @@ class Hubspot:
         if len(self._singular_map) == 0:
             self._singular_map = self.BUILTIN_SINGULAR_MAP
             labels = [s.labels for s in self.schemas]
-            self._singular_map.update({l.plural: l.singular for l in labels})
+            self._singular_map.update(
+                {l.plural.lower(): l.singular.lower() for l in labels}
+            )
+            self._singular_map.update(
+                {l.singular.lower(): l.singular.lower() for l in labels}
+            )
             self._singular_map.update(
                 {s.object_type_id: s.object_type_id for s in self.schemas}
             )
@@ -185,7 +190,12 @@ class Hubspot:
         if len(self._plural_map) == 0:
             self._plural_map = self.BUILTIN_PLURAL_MAP
             labels = [s.labels for s in self.schemas]
-            self._plural_map.update({l.singular: l.plural for l in labels})
+            self._plural_map.update(
+                {l.singular.lower(): l.plural.lower() for l in labels}
+            )
+            self._plural_map.update(
+                {l.plural.lower(): l.plural.lower() for l in labels}
+            )
             self._plural_map.update(
                 {s.object_type_id: s.object_type_id for s in self.schemas}
             )
