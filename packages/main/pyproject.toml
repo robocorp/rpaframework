@@ -41,6 +41,7 @@ dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
 rpaframework-core = "^7.0.0"
 rpaframework-dialogs = "^1.0.0"
 rpaframework-pdf = "^2.0.0"
+rpaframework-recognition = { version = "^2.0.0", optional = true }
 rpaframework-windows = {version = "^3.0.0", platform = "win32"}
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
@@ -48,6 +49,7 @@ robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
 robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
 robotframework-requests = "^0.9.1"
+robotframework-browser = { version = "^11.1.0", optional = true,  python = ">=3.7,<4.0" }
 pywinauto = { version = "^0.6.8", platform = "win32", python = "!=3.8.1,!=3.7.6" }
 pywin32 = { version = ">=302,<304", platform = "win32", python = "!=3.8.1,!=3.7.6" }
 comtypes = { version = "1.1.11", platform = "win32" }
@@ -74,6 +76,8 @@ chardet = "^3.0.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
 selenium = "^3.141.0"
 click = "^7.1.2"
+boto3 = { version = "^1.13.4", optional = true }
+amazon-textract-response-parser = { version = "^0.1.1", optional = true }
 java-access-bridge-wrapper = "^0.9.4"
 PyYAML = "^5.4.1"
 tenacity = "^8.0.1"
@@ -102,6 +106,11 @@ docutils = "0.16"
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
 use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
+
+[tool.poetry.extras]
+cv = ["rpaframework-recognition"]
+playwright = ["robotframework-browser"]
+aws = ["boto3", "amazon-textract-response-parser"]
 
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]
