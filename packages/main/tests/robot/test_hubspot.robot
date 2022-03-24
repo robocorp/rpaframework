@@ -54,6 +54,22 @@ Search for object with natural language returns object
     Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    ${LAST_NAME}
     ...    case_insensitive=${True}
 
+Seach for object using IN operator returns object
+    Auth with API key    ${API_KEY}
+    ${contacts}=    Search for objects    CONTACTS    email    IN    ${CONTACT_EMAILS}
+    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME}
+    ...    case_insensitive=${True}
+    Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    ${LAST_NAME}
+    ...    case_insensitive=${True}
+
+Search for object using BETWEEN operator returns object
+    Auth with API key    ${API_KEY}
+    ${contacts}=    Search for objects    CONTACTS    hs_object_id    BETWEEN    ${{[$CONTACT_ID,$CONTACT_ID]}}
+    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME}
+    ...    case_insensitive=${True}
+    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME_2}
+    ...    case_insensitive=${True}
+
 Retrieve One Object Using ID Returns Object
     Auth with API key    ${API_KEY}
     ${contact}=    Get object    CONTACT    ${OBJECT_ID}

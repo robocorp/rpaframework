@@ -1,4 +1,5 @@
 import logging
+from multiprocessing.sharedctypes import Value
 import traceback
 from typing import List, Dict, Optional, Tuple, Union
 from retry import retry
@@ -47,6 +48,89 @@ class HubSpotNoPipelineError(Exception):
 
 class HubSpotRateLimitError(Exception):
     "Error when the API's rate limits are exceeded."
+
+
+class ExtendedFilter(Filter):
+    openapi_types = {
+        "value": "str",
+        "values": "list",
+        "high_value": "str",
+        "property_name": "str",
+        "operator": "str",
+    }
+
+    attribute_map = {
+        "value": "value",
+        "values": "values",
+        "high_value": "highValue",
+        "property_name": "propertyName",
+        "operator": "operator",
+    }
+
+    def __init__(
+        self,
+        value=None,
+        values=None,
+        high_value=None,
+        property_name=None,
+        operator=None,
+        local_vars_configuration=None,
+    ):
+        if value and values:
+            raise ValueError(
+                "You cannot construct a Filter with both `value` and `values`."
+            )
+        super().__init__(value, property_name, operator, local_vars_configuration)
+        self._values = None
+        self._high_value = None
+        if values is not None:
+            self.values = values
+        if high_value is not None:
+            self.high_value = high_value
+
+    @property
+    def values(self):
+        return self._values
+
+    @values.setter
+    def values(self, values):
+        self._values = values
+        if values is not None:
+            self.value = None
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
+        if value is not None:
+            self.values = None
+
+    @property
+    def high_value(self):
+        return self._high_value
+
+    @high_value.setter
+    def high_value(self, high_value):
+        self._high_value = high_value
+        if high_value is not None:
+            self.values = None
+            if self._value is None:
+                self._value = 0
+
+    def __eq__(self, other):
+        if not isinstance(other, ExtendedFilter):
+            return False
+
+        return self.to_dict() == other.to_dict()
+
+    def __ne__(self, other):
+        if not isinstance(other, ExtendedFilter):
+            return True
+
+        return self.to_dict() != other.to_dict()
 
 
 @library(scope="Global", doc_format="REST")
@@ -262,12 +346,25 @@ class Hubspot:
                 raise HubSpotSearchParseError(
                     f"The provided words cannot be parsed as a search object. The words {words} could not be parsed."
                 )
-            if words[1] not in ("HAS_PROPERTY", "NOT_HAS_PROPERTY"):
-                search_filter = Filter(
-                    property_name=words[0], operator=words[1], value=words[2]
+            if words[1] in ("HAS_PROPERTY", "NOT_HAS_PROPERTY"):
+                search_filter = ExtendedFilter(
+                    property_name=words[0], operator=words[1]
+                )
+            elif words[1] in ("IN", "NOT_IN"):
+                search_filter = ExtendedFilter(
+                    property_name=words[0], operator=words[1], values=words[2]
+                )
+            elif words[1] == "BETWEEN":
+                search_filter = ExtendedFilter(
+                    property_name=words[0],
+                    operator=words[1],
+                    value=words[2][0],
+                    high_value=words[2][1],
                 )
             else:
-                search_filter = Filter(property_name=words[0], operator=words[1])
+                search_filter = ExtendedFilter(
+                    property_name=words[0], operator=words[1], value=words[2]
+                )
             self.logger.debug(f"Resulting Filter object: {search_filter}")
             return search_filter
 
