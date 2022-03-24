@@ -59,7 +59,7 @@ Seach for object using IN operator returns object
     ${contacts}=    Search for objects    CONTACTS    email    IN    ${CONTACT_EMAILS}
     Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME}
     ...    case_insensitive=${True}
-    Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    ${LAST_NAME}
+    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME_2}
     ...    case_insensitive=${True}
 
 Search for object using BETWEEN operator returns object
@@ -67,7 +67,7 @@ Search for object using BETWEEN operator returns object
     ${contacts}=    Search for objects    CONTACTS    hs_object_id    BETWEEN    ${{[$CONTACT_ID,$CONTACT_ID]}}
     Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME}
     ...    case_insensitive=${True}
-    Should Contain Match    ${{[c.properties["firstname"] for c in $contacts]}}    ${FIRST_NAME_2}
+    Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    ${LAST_NAME}
     ...    case_insensitive=${True}
 
 Retrieve One Object Using ID Returns Object
@@ -79,6 +79,14 @@ List company associations for contact returns one company
     Auth with API key    ${API_KEY}
     ${associations}=    List associations    CONTACT    ${OBJECT_ID}    COMPANY
     Should Be Equal As Strings    ${COMPANY_ID}    ${{$associations[0].id}}
+
+List company associations for list of contacts returns companies
+    Auth with API key    ${API_KEY}
+    ${associations}=    List associations    CONTACT    ${OBJECT_IDS}    COMPANY
+    FOR    ${id}    ${associated_objs}    IN    &{associations}
+        ${associated_ids}=    Evaluate    [o.id for o in $associated_objs]
+        List should contain value    ${associated_ids}    ${EXPECTED_ASSOCIATION_MAP}[${id}]
+    END
 
 Retrieve Custom Object Using Custom ID Returns Object
     Auth with API key    ${API_KEY}
