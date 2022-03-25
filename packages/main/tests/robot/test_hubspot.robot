@@ -75,6 +75,13 @@ Retrieve One Object Using ID Returns Object
     ${contact}=    Get object    CONTACT    ${OBJECT_ID}
     Should Be Equal As Strings    ${OBJECT_ID}    ${contact.id}
 
+Retrieve Objects Using IDs Returns Objects
+    Auth with API key    ${API_KEY}
+    ${contacts}=    Get object    CONTACT    ${OBJECT_IDS}
+    FOR    ${obj}    IN    @{contacts}
+        List should contain value    ${EXPECTED_EMAILS}    ${obj.properties}[email]
+    END
+
 List company associations for contact returns one company
     Auth with API key    ${API_KEY}
     ${associations}=    List associations    CONTACT    ${OBJECT_ID}    COMPANY
