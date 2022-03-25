@@ -8,6 +8,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.10.1 - 25 Mar 2022
+---------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix multiple recipients error with ``Send Message``
+
 12.10.0 - 23 Mar 2022
 ---------------------
 
