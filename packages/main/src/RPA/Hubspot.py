@@ -16,6 +16,8 @@ from hubspot.crm.objects.models import (
     Filter,
     SimplePublicObject,
     SimplePublicObjectWithAssociations,
+    BatchReadInputSimplePublicObjectId,
+    SimplePublicObjectId,
 )
 from hubspot.crm.schemas.models import ObjectSchema
 from hubspot.crm.pipelines.models import (
@@ -710,16 +712,14 @@ class Hubspot:
 
         self._require_authentication()
         if isinstance(object_id, list):
-            results = self._list_associations_by_batch(
+            return self._list_associations_by_batch(
                 object_type, object_id, to_object_type
             )
         else:
-            results = self._list_associations(object_type, object_id, to_object_type)
-        return results
+            return self._list_associations(object_type, object_id, to_object_type)
 
-    @keyword
     @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
-    def get_object(
+    def _get_object(
         self,
         object_type: str,
         object_id: str,
@@ -727,12 +727,85 @@ class Hubspot:
         properties: Optional[Union[str, List[str]]] = None,
         associations: Optional[Union[str, List[str]]] = None,
     ) -> Union[SimplePublicObject, SimplePublicObjectWithAssociations]:
-        """Reads a single object of `object_type` from HubSpot with the
+        self._require_authentication()
+
+        try:
+            return self.hs.crm.objects.basic_api.get_by_id(
+                self._validate_object_type(object_type),
+                object_id,
+                properties=properties,
+                associations=(
+                    [self._validate_object_type(obj) for obj in associations]
+                    if associations
+                    else None
+                ),
+                id_property=id_property,
+            )
+        except ObjectApiException as e:
+            if e.status == 429:
+                self.logger.debug("Rate limit exceeded, retry should occur.")
+                raise HubSpotRateLimitError from e
+            else:
+                raise e
+
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    def _get_object_by_batch(
+        self,
+        object_type: str,
+        object_id: List[str],
+        id_property: Optional[str] = None,
+        properties: Optional[Union[str, List[str]]] = None,
+    ) -> List[SimplePublicObject]:
+        self._require_authentication()
+        batch_reader = BatchReadInputSimplePublicObjectId(
+            properties=properties,
+            id_property=id_property,
+            inputs=[SimplePublicObjectId(o) for o in object_id],
+        )
+        try:
+            response = self.hs.crm.objects.batch_api.read(
+                self._singularize_object(self._get_custom_object_id(object_type)),
+                batch_read_input_simple_public_object_id=batch_reader,
+            )
+        except ObjectApiException as e:
+            if e.status == 429:
+                self.logger.debug("Rate limit exceeded, retry should occur.")
+                raise HubSpotRateLimitError from e
+            else:
+                raise e
+        if getattr(response, "num_errors", None):
+            if response.num_errors >= len(object_id):
+                raise HubSpotBatchResponseError(
+                    f"Batch API failed all items with the following errors:\n{response.errors}"
+                )
+            elif response.num_errors > 0:
+                self.logger.warn(f"Batch API returned some errors:\n{response.errors}")
+        self.logger.debug(f"Full results received:\n{response.results}")
+
+        return response.results
+
+    @keyword
+    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    def get_object(
+        self,
+        object_type: str,
+        object_id: Union[str, List[str]],
+        id_property: Optional[str] = None,
+        properties: Optional[Union[str, List[str]]] = None,
+        associations: Optional[Union[str, List[str]]] = None,
+    ) -> Union[
+        SimplePublicObject,
+        SimplePublicObjectWithAssociations,
+        List[SimplePublicObject],
+    ]:
+        """Reads objects of `object_type` from HubSpot with the
         provided `object_id`. The objects can be found using an
         alternate ID by providing the name of that HubSpot property
         which contains the unique identifier to `id_property`. The `object_type`
         parameter automatically looks up custom object IDs based on the
-        provided name.
+        provided name. If a list of object IDs is provided, the batch
+        API will be utilized, but in that case, `associations` cannot be
+        returned.
 
         A list of property names can be provided to `properties`
         and they will be included in the returned object. Nonexistent
@@ -759,24 +832,14 @@ class Hubspot:
 
         self._require_authentication()
 
-        try:
-            return self.hs.crm.objects.basic_api.get_by_id(
-                self._validate_object_type(object_type),
-                object_id,
-                properties=properties,
-                associations=(
-                    [self._validate_object_type(obj) for obj in associations]
-                    if associations
-                    else None
-                ),
-                id_property=id_property,
+        if isinstance(object_id, list):
+            return self._get_object_by_batch(
+                object_type, object_id, id_property, properties
             )
-        except ObjectApiException as e:
-            if e.status == 429:
-                self.logger.debug("Rate limit exceeded, retry should occur.")
-                raise HubSpotRateLimitError from e
-            else:
-                raise e
+        else:
+            return self._get_object(
+                object_type, object_id, id_property, properties, associations
+            )
 
     @property
     def pipelines(self) -> Dict[str, List[Pipeline]]:
