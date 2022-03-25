@@ -25,9 +25,10 @@ import sys
 import typing
 
 
+# Explicitly set here instead of importing stuff from `robot`.
+PY_VERSION = sys.version_info[:3]
 robot_version = "4."
 RF32 = robot_version < "4."  # `False` all the time
-PY_VERSION = sys.version_info[:3]
 
 __version__ = "3.0.0"
 
