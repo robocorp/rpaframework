@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional, Union
 
 from RPA.core.locators import LocatorsDatabase, WindowsLocator
+from RPA.core.vendor.deco import keyword as method
 from RPA.core.windows.context import (
     ElementNotFound,
     WindowsContext,
@@ -285,6 +286,7 @@ class LocatorMethods(WindowsContext):
             pass
         return criteria
 
+    @method
     @with_timeout
     def get_element(
         self,
@@ -303,7 +305,7 @@ class LocatorMethods(WindowsContext):
                 or WindowsElement(auto.GetRootControl(), None)
             )
         elif isinstance(locator, str):
-            element = self.get_element_by_locator_string(
+            element = self._get_element_by_locator_string(
                 locator, search_depth, root_element
             )
         else:
@@ -313,7 +315,7 @@ class LocatorMethods(WindowsContext):
         self.logger.info("Returning element: %s", element)
         return element
 
-    def get_element_by_locator_string(self, locator, search_depth, root_element):
+    def _get_element_by_locator_string(self, locator, search_depth, root_element):
         root = root_element.item if self._window_or_none(root_element) else None
         anchor = self.anchor.item if self.anchor else None
         window = self.window.item if self.window else None
