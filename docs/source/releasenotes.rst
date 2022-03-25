@@ -8,7 +8,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-13.0.0 - 25 Mar 2022
+13.0.0 - 28 Mar 2022
 --------------------
 
 - Major version upgrades for the following packages (incompatible with
@@ -28,6 +28,11 @@ Release notes
   .. note::
     Package ``rpaframework-windows`` can be omitted entirely from the *conda.yaml*
     since it's included automatically with this version.
+
+12.10.1 - 25 Mar 2022
+---------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix multiple recipients error with ``Send Message``
 
 12.10.0 - 23 Mar 2022
 ---------------------

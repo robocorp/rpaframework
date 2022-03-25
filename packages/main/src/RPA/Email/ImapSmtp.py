@@ -430,8 +430,9 @@ class ImapSmtp:
         self._add_attachments_to_msg(attachments, msg)
 
         sender = sender.encode("idna").decode("ascii")
+        msg_to = ",".join(to).encode("idna").decode("ascii")
         msg["From"] = sender
-        msg["To"] = ",".join(to).encode("idna").decode("ascii")
+        msg["To"] = msg_to
         msg["Subject"] = Header(subject, self.encoding)
         rcpt_cc = []
         rcpt_bcc = []
@@ -474,7 +475,7 @@ class ImapSmtp:
         try:
             if self.smtp_conn is None:
                 self.authorize_smtp()
-            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
+            self.smtp_conn.sendmail(sender, msg_to, str_io.getvalue())
         except Exception as err:
             raise ValueError(f"Send Message failed: {err}") from err
         return True
