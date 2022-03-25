@@ -97,8 +97,9 @@ def keyword(name=None, tags=(), types=()):
 
 
 @not_keyword
-def library(scope=None, version=None, doc_format=None, listener=None,
-            auto_keywords=False):
+def library(
+    scope=None, version=None, doc_format=None, listener=None, auto_keywords=False
+):
     """Class decorator to control keyword discovery and other library settings.
 
     By default disables automatic keyword detection by setting class attribute
