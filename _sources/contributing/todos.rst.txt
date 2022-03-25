@@ -2,15 +2,6 @@
 TODO
 ****
 
-RPA.Database:
-=============
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "209", "take autocommit into use for all database modules"
-
 RPA.Desktop.Windows:
 ====================
 
@@ -18,7 +9,6 @@ RPA.Desktop.Windows:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "644", "Handle too compled method"
    "1130", "return more valuable information about what should"
    "1378", "supporting multiple search criterias at same time to identify ONE element"
    "1404", "supporting multiple search criterias at same time to identify ONE element"
@@ -68,7 +58,7 @@ RPA.Email.ImapSmtp:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "784", "mypy should handle enum exhaustivity validation"
+   "785", "mypy should handle enum exhaustivity validation"
 
 RPA.FileSystem:
 ===============
@@ -101,16 +91,6 @@ RPA.JavaAccessBridge:
    :widths: 10, 40
 
    "360", "add keyword for taking screenshots of elements and window"
-   "361", "implement proper XPath syntax support"
-
-RPA.Robocorp.Process:
-=====================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "138", "Add support for all Process API endpoints"
 
 RPA.Tables:
 ===========
