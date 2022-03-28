@@ -3,6 +3,7 @@ import json
 import logging
 from functools import wraps
 from pathlib import Path
+from time import sleep
 from typing import Any
 
 try:
@@ -19,7 +20,6 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.Cloud.objects import TextractDocument
 from RPA.Robocorp.Vault import Vault
 from RPA.RobotLogListener import RobotLogListener
-from RPA.Tables import Tables
 from RPA.core.helpers import required_param, required_env
 
 
@@ -459,12 +459,10 @@ class ServiceTextract(AWSBase):
                 else:
                     rows[row] = {col: val}
 
-            tables = Tables()
             data = [
                 [rows[col][idx] for idx in sorted(rows[col])] for col in sorted(rows)
             ]
-            table = tables.create_table(data)
-            self.tables[idx] = table
+            self.tables[idx] = data
 
     def get_tables(self):
         """Get parsed tables from the response
@@ -562,7 +560,11 @@ class ServiceTextract(AWSBase):
 
     @aws_dependency_required
     def get_document_analysis(
-        self, job_id: str = None, max_results: int = 1000, next_token: str = None
+        self,
+        job_id: str = None,
+        max_results: int = 1000,
+        next_token: str = None,
+        wait_for_result: bool = False,
     ) -> dict:
         """Get the results of Textract asynchronous `Document Analysis` operation
 
@@ -592,8 +594,25 @@ class ServiceTextract(AWSBase):
         if next_token:
             method_arguments["NextToken"] = next_token
 
-        response = client.get_document_analysis(**method_arguments)
-        return response
+        total_result = []
+        # job_inprogress = True
+        while True:
+            response = client.get_document_analysis(**method_arguments)
+            if response["JobStatus"] == "IN_PROGRESS":
+                sleep(1)
+                continue
+            total_result.append(response)
+            if "NextToken" in response.keys():
+                method_arguments["NextToken"] = response["NextToken"]
+            else:
+                break
+                # job_inprogress = False
+            # job_inprogress = (
+            #    response["JobStatus"] == "IN_PROGRESS"
+            #    if "JobStatus" in response.keys()
+            #    else False
+            # )
+        return total_result
 
     def get_pages_and_text(self, textract_response: dict) -> dict:
         """Get pages and text out of Textract response json
@@ -724,7 +743,6 @@ class ServiceTextract(AWSBase):
         doc = None
         try:
             doc = TextractDocument(response)
-            self.logger.info(response.keys())
         except Exception as e:  # pylint: disable=broad-except
             self.logger.warning(
                 "Textract response could not be converted into model: %s", str(e)
