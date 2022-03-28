@@ -8,6 +8,27 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13.0.0 - 28 Mar 2022
+--------------------
+
+- Major version upgrades for the following packages (incompatible with
+  ``rpaframework<13``):
+
+  - ``rpaframework-google`` **3.0.0**
+  - ``rpaframework-recognition`` **2.0.0**
+  - ``rpaframework-windows`` **3.0.0**
+  - ``rpaframework-dialogs`` **1.0.0**
+  - ``rpaframework-pdf`` **2.0.0**
+
+  .. warning::
+    Any optional package (`google`, `recognition`) should be upgraded at least to the
+    version above in your *conda.yaml* in order to use ``rpaframework`` **13.0.0**.
+    (if such dependencies are explicitly pinned)
+
+  .. note::
+    Package ``rpaframework-windows`` can be omitted entirely from the *conda.yaml*
+    since it's included automatically with this version.
+
 12.10.1 - 25 Mar 2022
 ---------------------
 
