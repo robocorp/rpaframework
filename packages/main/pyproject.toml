@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "12.10.1"
+version = "13.0.0"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -38,11 +38,11 @@ packages = [
 python = "^3.6.2"
 docutils = "*"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
-rpaframework-core = "^6.5.4"
-rpaframework-pdf = "^1.30.4"
-rpaframework-dialogs = "^0.4.1"
-rpaframework-recognition = { version = "^1.0.0", optional = true }
-rpaframework-windows = {version = "^2.3.2", platform = "win32"}
+rpaframework-core = "^7.0.1"
+rpaframework-dialogs = "^1.0.0"
+rpaframework-pdf = "^2.0.0"
+rpaframework-recognition = { version = "^2.0.0", optional = true }
+rpaframework-windows = { version = "^3.0.0", platform = "win32" }
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
@@ -86,7 +86,7 @@ htmldocx = "^0.0.6"
 [tool.poetry.dev-dependencies]
 black = {version = "^21.5b0", allow-prereleases = true}
 flake8 = "^3.7.9"
-pylint = "^2.4.4, !=2.13.0"
+pylint = "^2.4.4, <2.13"
 pytest = "^6.2.5"
 pytest-cov = "^2.10.1"
 mock = "^4.0.2"
