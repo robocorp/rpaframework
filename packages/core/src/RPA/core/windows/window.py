@@ -5,6 +5,7 @@ from io import BytesIO
 
 from PIL import Image
 
+from RPA.core.vendor.deco import keyword as method
 from RPA.core.windows.context import WindowsContext
 from RPA.core.windows.helpers import IS_WINDOWS, get_process_list
 
@@ -57,6 +58,7 @@ class WindowMethods(WindowsContext):
             Path(icon_path).unlink()
         return image_string
 
+    @method
     def list_windows(
         self, icons: bool = False, icon_save_directory: Optional[str] = None
     ) -> List[Dict]:

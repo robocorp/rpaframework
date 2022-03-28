@@ -14,8 +14,8 @@ def open_stream(obj, *args, **kwargs):
     """Wrapper for built-in open(), which allows using
     existing IO streams.
     """
+    is_open = False
     try:
-        is_open = False
         if not isinstance(obj, io.IOBase):
             # pylint: disable=consider-using-with,unspecified-encoding
             kwargs.setdefault("encoding", "utf-8")

@@ -97,4 +97,4 @@ build: lint test ## Build distribution packages
 
 publish: build ## Publish package to PyPI
 	poetry publish -v
-	$(tools)/tag.py
+	poetry run python $(tools)/tag.py
