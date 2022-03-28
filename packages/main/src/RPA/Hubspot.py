@@ -1,4 +1,5 @@
 import logging
+import math
 from multiprocessing.sharedctypes import Value
 import traceback
 from typing import List, Dict, Optional, Tuple, Union
@@ -658,36 +659,60 @@ class Hubspot:
             after = page.paging.next.after
         return results
 
+    def _batch_batch_requests(
+        self, ids: List[str], max_batch_size: int = 100
+    ) -> List[List[str]]:
+        """Breaks batch inputs down to a max size for the API, Hubspot
+        batch input maxes out at 100 by default.
+        """
+        output = []
+        for bottom in range(math.ceil(len(ids) / max_batch_size)):
+            top = (bottom + 1) * max_batch_size
+            current_list = ids[bottom:top]
+            output.append(current_list)
+        return output
+
     @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
     def _list_associations_by_batch(
         self, object_type: str, object_id: List[str], to_object_type: str
     ) -> Dict[str, List[AssociatedId]]:
         self._require_authentication()
-        batch_reader = BatchInputPublicObjectId(
-            inputs=[PublicObjectId(o) for o in object_id]
-        )
-        try:
-            response = self.hs.crm.associations.batch_api.read(
-                self._singularize_object(self._get_custom_object_id(object_type)),
-                self._singularize_object(self._get_custom_object_id(to_object_type)),
-                batch_input_public_object_id=batch_reader,
+        batched_ids = self._batch_batch_requests(object_id)
+        collected_responses = {}
+        for i, batch in enumerate(batched_ids):
+            self.logger.debug(f"Executing batch index {i} of batch requests:\n{batch} ")
+            batch_reader = BatchInputPublicObjectId(
+                inputs=[PublicObjectId(o) for o in batch]
             )
-        except AssociationsApiException as e:
-            if e.status == 429:
-                self.logger.debug("Rate limit exceeded, retry should occur.")
-                raise HubSpotRateLimitError from e
-            else:
-                raise e
-        if getattr(response, "num_errors", None):
-            if response.num_errors >= len(object_id):
-                raise HubSpotBatchResponseError(
-                    f"Batch API failed all items with the following errors:\n{response.errors}"
+            try:
+                response = self.hs.crm.associations.batch_api.read(
+                    self._singularize_object(self._get_custom_object_id(object_type)),
+                    self._singularize_object(
+                        self._get_custom_object_id(to_object_type)
+                    ),
+                    batch_input_public_object_id=batch_reader,
                 )
-            elif response.num_errors > 0:
-                self.logger.warn(f"Batch API returned some errors:\n{response.errors}")
-        self.logger.debug(f"Full results received:\n{response.results}")
+            except AssociationsApiException as e:
+                if e.status == 429:
+                    self.logger.debug("Rate limit exceeded, retry should occur.")
+                    raise HubSpotRateLimitError from e
+                else:
+                    raise e
+            if getattr(response, "num_errors", None):
+                if response.num_errors >= len(object_id):
+                    raise HubSpotBatchResponseError(
+                        f"Batch API failed all items with the following errors for batch index {i}:\n{response.errors}"
+                    )
+                elif response.num_errors > 0:
+                    self.logger.warn(
+                        f"Batch API returned some errors for batch index {i}:\n{response.errors}"
+                    )
+            self.logger.debug(
+                f"Full results received for batch index {i}:\n{response.results}"
+            )
+            collected_responses.update({o._from.id: o.to for o in response.results})
 
-        return {o._from.id: o.to for o in response.results}
+        return collected_responses
 
     @keyword
     def list_associations(
@@ -757,32 +782,41 @@ class Hubspot:
         properties: Optional[Union[str, List[str]]] = None,
     ) -> List[SimplePublicObject]:
         self._require_authentication()
-        batch_reader = BatchReadInputSimplePublicObjectId(
-            properties=properties,
-            id_property=id_property,
-            inputs=[SimplePublicObjectId(o) for o in object_id],
-        )
-        try:
-            response = self.hs.crm.objects.batch_api.read(
-                self._singularize_object(self._get_custom_object_id(object_type)),
-                batch_read_input_simple_public_object_id=batch_reader,
+        batched_ids = self._batch_batch_requests(object_id)
+        collected_responses = []
+        for i, batch in enumerate(batched_ids):
+            self.logger.debug(f"Executing batch index {i} of batch requests:\n{batch} ")
+            batch_reader = BatchReadInputSimplePublicObjectId(
+                properties=properties,
+                id_property=id_property,
+                inputs=[SimplePublicObjectId(o) for o in batch],
             )
-        except ObjectApiException as e:
-            if e.status == 429:
-                self.logger.debug("Rate limit exceeded, retry should occur.")
-                raise HubSpotRateLimitError from e
-            else:
-                raise e
-        if getattr(response, "num_errors", None):
-            if response.num_errors >= len(object_id):
-                raise HubSpotBatchResponseError(
-                    f"Batch API failed all items with the following errors:\n{response.errors}"
+            try:
+                response = self.hs.crm.objects.batch_api.read(
+                    self._singularize_object(self._get_custom_object_id(object_type)),
+                    batch_read_input_simple_public_object_id=batch_reader,
                 )
-            elif response.num_errors > 0:
-                self.logger.warn(f"Batch API returned some errors:\n{response.errors}")
-        self.logger.debug(f"Full results received:\n{response.results}")
+            except ObjectApiException as e:
+                if e.status == 429:
+                    self.logger.debug("Rate limit exceeded, retry should occur.")
+                    raise HubSpotRateLimitError from e
+                else:
+                    raise e
+            if getattr(response, "num_errors", None):
+                if response.num_errors >= len(object_id):
+                    raise HubSpotBatchResponseError(
+                        f"Batch API failed all items with the following errors for batch index {i}:\n{response.errors}"
+                    )
+                elif response.num_errors > 0:
+                    self.logger.warn(
+                        f"Batch API returned some errors for batch index {i}:\n{response.errors}"
+                    )
+            self.logger.debug(
+                f"Full results received for batch index {i}:\n{response.results}"
+            )
+            collected_responses.extend(response.results)
 
-        return response.results
+        return collected_responses
 
     @keyword
     @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
