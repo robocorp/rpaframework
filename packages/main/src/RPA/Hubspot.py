@@ -666,8 +666,9 @@ class Hubspot:
         batch input maxes out at 100 by default.
         """
         output = []
-        for bottom in range(math.ceil(len(ids) / max_batch_size)):
-            top = (bottom + 1) * max_batch_size
+        for i in range(math.ceil(len(ids) / max_batch_size)):
+            bottom = i * max_batch_size
+            top = (i + 1) * max_batch_size
             current_list = ids[bottom:top]
             output.append(current_list)
         return output
