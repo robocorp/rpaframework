@@ -575,7 +575,7 @@ class ServiceTextract(AWSBase):
         job_id: str = None,
         max_results: int = 1000,
         next_token: str = None,
-        wait_for_result: bool = False,
+        collect_all_results: bool = False,
     ) -> dict:
         """Get the results of Textract asynchronous `Document Analysis` operation
 
@@ -605,15 +605,19 @@ class ServiceTextract(AWSBase):
         if next_token:
             method_arguments["NextToken"] = next_token
 
-        total_result = []
+        total_result = {}
         while True:
             response = client.get_document_analysis(**method_arguments)
-            total_result.append(response)
-            if wait_for_result and response["JobStatus"] == "IN_PROGRESS":
-                if "NextToken" in response.keys():
-                    method_arguments["NextToken"] = response["NextToken"]
+            # total_result.append(response)
+            if collect_all_results and response["JobStatus"] == "IN_PROGRESS":
                 sleep(1)
-            elif not wait_for_result:
+                continue
+            total_result = dict(total_result, **response)
+            if collect_all_results and "NextToken" in response.keys():
+                method_arguments["NextToken"] = response["NextToken"]
+            elif not collect_all_results:
+                break
+            else:
                 break
 
         return total_result
