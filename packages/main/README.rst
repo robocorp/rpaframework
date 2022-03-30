@@ -110,81 +110,81 @@ The RPA Framework project currently includes the following libraries:
 
 The ``x`` in the **PACKAGE** column means that library **is** included in the **rpaframework** package and for example. ``x,dialogs`` means that ``RPA.Dialogs`` library is provided in both the **rpaframework** and **rpaframework-dialogs** packages.
 
-+----------------------------+----------------------------------------------+-------------+
-| **LIBRARY NAME**           | **DESCRIPTION**                              | **PACKAGE** |
-+----------------------------+----------------------------------------------+-------------+
-| `Archive`_                 | Archiving TAR and ZIP files                  | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Browser.Selenium`_        | Control browsers and automate the web        | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Browser.Playwright`_      | Newer way to control browsers                | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Cloud.AWS`_               | Use Amazon AWS services                      | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Cloud.Azure`_             | Use Microsoft Azure services                 | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Cloud.Google`_            | Use Google Cloud services                    | google      |
-+----------------------------+----------------------------------------------+-------------+
-| `Crypto`_                  | Common hashing and encryption operations     | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Database`_                | Interact with databases                      | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Desktop`_                 | Cross-platform desktop automation            | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Desktop.Clipboard`_       | Interact with the system clipboard           | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Desktop.OperatingSystem`_ | Read OS information and manipulate processes | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Desktop.Windows`_         | Automate Windows desktop applications        | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Dialogs`_                 | Request user input during executions         | x,dialogs   |
-+----------------------------+----------------------------------------------+-------------+
-| `Email.Exchange`_          | E-Mail operations (Exchange protocol)        | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Email.ImapSmtp`_          | E-Mail operations (IMAP & SMTP)              | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Excel.Application`_       | Control the Excel desktop application        | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Excel.Files`_             | Manipulate Excel files directly              | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `FileSystem`_              | Read and manipulate files and paths          | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `FTP`_                     | Interact with FTP servers                    | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `HTTP`_                    | Interact directly with web APIs              | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Images`_                  | Manipulate images                            | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `JavaAccessBridge`_        | Control Java applications                    | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `JSON`_                    | Manipulate JSON objects                      | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Notifier`_                | Notify messages using different services     | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Outlook.Application`_     | Control the Outlook desktop application      | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `PDF`_                     | Read and create PDF documents                | x,pdf       |
-+----------------------------+----------------------------------------------+-------------+
-| `Robocorp.Process`_        | Use the Robocorp Process API                 | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Robocorp.WorkItems`_      | Use the Robocorp Work Items API              | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Robocorp.Vault`_          | Use the Robocorp Secrets API                 | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Salesforce`_              | Salesforce operations                        | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `SAP`_                     | Control SAP GUI desktop client               | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Tables`_                  | Manipulate, sort, and filter tabular data    | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Tasks`_                   | Control task execution                       | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Twitter`_                 | Twitter API interface                        | x           |
-+----------------------------+----------------------------------------------+-------------+
-| `Windows`_                 | Alternative library for Windows automation   | windows     |
-+----------------------------+----------------------------------------------+-------------+
-| `Word.Application`_        | Control the Word desktop application         | x           |
-+----------------------------+----------------------------------------------+-------------+
++----------------------------+----------------------------------------------+------------------------+
+| **LIBRARY NAME**           | **DESCRIPTION**                              | **PACKAGE**            |
++----------------------------+----------------------------------------------+------------------------+
+| `Archive`_                 | Archiving TAR and ZIP files                  | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Browser.Selenium`_        | Control browsers and automate the web        | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Browser.Playwright`_      | Newer way to control browsers                | special (more below)   |
++----------------------------+----------------------------------------------+------------------------+
+| `Cloud.AWS`_               | Use Amazon AWS services                      | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Cloud.Azure`_             | Use Microsoft Azure services                 | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Cloud.Google`_            | Use Google Cloud services                    | google                 |
++----------------------------+----------------------------------------------+------------------------+
+| `Crypto`_                  | Common hashing and encryption operations     | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Database`_                | Interact with databases                      | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Desktop`_                 | Cross-platform desktop automation            | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Desktop.Clipboard`_       | Interact with the system clipboard           | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Desktop.OperatingSystem`_ | Read OS information and manipulate processes | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Desktop.Windows`_         | Automate Windows desktop applications        | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Dialogs`_                 | Request user input during executions         | x,dialogs              |
++----------------------------+----------------------------------------------+------------------------+
+| `Email.Exchange`_          | E-Mail operations (Exchange protocol)        | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Email.ImapSmtp`_          | E-Mail operations (IMAP & SMTP)              | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Excel.Application`_       | Control the Excel desktop application        | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Excel.Files`_             | Manipulate Excel files directly              | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `FileSystem`_              | Read and manipulate files and paths          | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `FTP`_                     | Interact with FTP servers                    | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `HTTP`_                    | Interact directly with web APIs              | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Images`_                  | Manipulate images                            | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `JavaAccessBridge`_        | Control Java applications                    | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `JSON`_                    | Manipulate JSON objects                      | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Notifier`_                | Notify messages using different services     | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Outlook.Application`_     | Control the Outlook desktop application      | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `PDF`_                     | Read and create PDF documents                | x,pdf                  |
++----------------------------+----------------------------------------------+------------------------+
+| `Robocorp.Process`_        | Use the Robocorp Process API                 | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Robocorp.WorkItems`_      | Use the Robocorp Work Items API              | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Robocorp.Vault`_          | Use the Robocorp Secrets API                 | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Salesforce`_              | Salesforce operations                        | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `SAP`_                     | Control SAP GUI desktop client               | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Tables`_                  | Manipulate, sort, and filter tabular data    | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Tasks`_                   | Control task execution                       | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Twitter`_                 | Twitter API interface                        | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `Windows`_                 | Alternative library for Windows automation   | x,windows              |
++----------------------------+----------------------------------------------+------------------------+
+| `Word.Application`_        | Control the Word desktop application         | x                      |
++----------------------------+----------------------------------------------+------------------------+
 
 .. _Archive: https://rpaframework.org/libraries/archive/
 .. _Browser.Playwright: https://rpaframework.org/libraries/browser_playwright/
@@ -223,6 +223,28 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Windows: https://rpaframework.org/libraries/windows/
 .. _Word.Application: https://rpaframework.org/libraries/word_application/
 
+Installation of RPA.Browser.Playwright
+--------------------------------------
+
+The **RPA.Browser.Playwright** at the moment requires special installation, because
+of the package size and the post install step it needs to be fully installed. 
+
+Minimum required conda.yaml to install Playwright:
+
+.. code-block:: yaml
+
+   channels:
+     - conda-forge
+   dependencies:
+     - python=3.7.5
+     - pip=20.1
+     - nodejs=16.4.2
+     - pip:
+       - rpaframework==13.0.0
+       - robotframework-browser==12.2.0
+   rccPostInstall:
+     - rfbrowser init
+
 Installation
 ------------
 
@@ -238,8 +260,8 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
      - python=3.7.5
      - pip=20.1
      - pip:
-       - rpaframework==12.0.0
-
+       - rpaframework==13.0.0
+     
 To install all extra packages (including Playwright dependencies), you can use:
 
 .. code-block:: yaml
@@ -250,13 +272,12 @@ To install all extra packages (including Playwright dependencies), you can use:
      - python=3.7.5
      - tesseract=4.1.1
      - pip=20.1
-     - nodejs=14.17.4
+     - nodejs=16.14.2
      - pip:
-       - rpaframework[aws]==12.0.0
-       - rpaframework-google==1.0.0
-       - rpaframework-recognition==1.0.0
-       - rpaframework-windows==1.2.1
-       - robotframework-browser==10.0.3
+       - rpaframework[aws]==13.0.0
+       - rpaframework-google==3.0.0
+       - rpaframework-recognition==2.0.0
+       - robotframework-browser==12.2.0
    rccPostInstall:
      - rfbrowser init
 
@@ -270,8 +291,8 @@ Separate installation of PDF and Dialogs libraries without main rpaframework:
      - python=3.7.5
      - pip=20.1
      - pip:
-       - rpaframework-dialogs==0.4.2  # included in the rpaframework by default
-       - rpaframework-pdf==1.26.11  # included in the rpaframework by default
+       - rpaframework-dialogs==1.0.0  # included in the rpaframework by default
+       - rpaframework-pdf==3.0.0  # included in the rpaframework by default
 
 
 .. note:: Python 3.6 or higher is required
