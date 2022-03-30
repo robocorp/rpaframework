@@ -18,7 +18,7 @@ def _git_root():
 GIT_ROOT = _git_root()
 CONFIG = GIT_ROOT / "config"
 TOOLS = GIT_ROOT / "tools"
-PACKAGE_DIR = GIT_ROOT / "packages" / "google"
+PACKAGE_DIR = GIT_ROOT / "packages" / "aws"
 
 CLEAN_PATTERNS = [
     "coverage",
@@ -97,6 +97,7 @@ def libspec(ctx):
         "RPA.Desktop.keywords*",
         "RPA.Desktop.utils*",
         "RPA.PDF.keywords*",
+        "RPA.Cloud.AWS.textract",
         "RPA.Cloud.objects*",
         "RPA.Cloud.Google.keywords*",
         "RPA.Robocorp.utils*",
