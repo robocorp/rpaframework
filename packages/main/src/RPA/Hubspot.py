@@ -190,11 +190,16 @@ class Hubspot:
 
         from robot.libraries.DateTime import get_current_date, subtract_time_from_date
         from RPA.Hubspot import Hubspot
+        from RPA.Robocorp.Vault import Vault
 
+        secrets = Vault().get_secret("hubspot")
+
+        hs = Hubspot(hubspot_apikey=secrets["api_key"])
         yesterday = round(
             subtract_time_from_date(get_current_date(), "24h", result_format="epoch") * 1000
         )
-        deals = Hubspot.get_object("DEALS","hs_lastmodifieddate","GTE",yesterday)
+        deals = hs.search_for_objects("DEALS", "hs_lastmodifieddate", "GTE", yesterday)
+        print(deals)
 
     Information Caching
     ===================
