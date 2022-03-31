@@ -80,7 +80,6 @@ PyYAML = "^5.4.1"
 tenacity = "^8.0.1"
 htmldocx = "^0.0.6"
 hubspot-api-client = "^4.0.6"
-retry2 = "^0.9.3"
 
 [tool.poetry.dev-dependencies]
 black = { version = "^21.5b0", allow-prereleases = true }
