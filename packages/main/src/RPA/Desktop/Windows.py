@@ -1266,7 +1266,8 @@ class Windows(OperatingSystem):
         `ElementNotFoundError` if element is not found within timeout.
 
         :param locator: name of the locator
-        :param use_refreshing: wait for element(s) which are not there yet e.g. listbox item or popups, default False
+        :param use_refreshing: wait for element(s) which are not there yet e.g. listbox
+         item or popups, default False
         :param search_criteria: criteria by which element is matched
         :param timeout: defines how long to wait for element to appear,
          defaults to 30.0 seconds
