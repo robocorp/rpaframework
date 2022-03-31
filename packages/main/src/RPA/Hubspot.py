@@ -2,7 +2,12 @@ import logging
 import math
 import traceback
 from typing import List, Dict, Optional, Tuple, Union
-from retry import retry
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from pprint import pprint
 
@@ -521,7 +526,11 @@ class Hubspot:
             )
 
     @property
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def schemas(self) -> List[ObjectSchema]:
         self._require_authentication()
         if len(self._schemas) == 0:
@@ -691,7 +700,11 @@ class Hubspot:
             filter_groups.append(FilterGroup(_process_and(words)))
         return ObjectSearchRequest(filter_groups)
 
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def _search_objects(
         self,
         object_type: str,
@@ -996,7 +1009,11 @@ class Hubspot:
             max_results=max_results,
         )
 
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def _list_associations(
         self, object_type: str, object_id: str, to_object_type: str
     ) -> List[AssociatedId]:
@@ -1040,7 +1057,11 @@ class Hubspot:
             output.append(current_list)
         return output
 
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def _list_associations_by_batch(
         self, object_type: str, object_id: List[str], to_object_type: str
     ) -> Dict[str, List[AssociatedId]]:
@@ -1113,7 +1134,11 @@ class Hubspot:
         else:
             return self._list_associations(object_type, object_id, to_object_type)
 
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def _get_object(
         self,
         object_type: str,
@@ -1143,7 +1168,11 @@ class Hubspot:
             else:
                 raise e
 
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def _get_object_by_batch(
         self,
         object_type: str,
@@ -1189,7 +1218,11 @@ class Hubspot:
         return collected_responses
 
     @keyword
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def get_object(
         self,
         object_type: str,
@@ -1252,7 +1285,11 @@ class Hubspot:
     def pipelines(self) -> Dict[str, List[Pipeline]]:
         return self._pipelines
 
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def _set_pipelines(self, object_type: str, archived: bool = False):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
@@ -1279,7 +1316,11 @@ class Hubspot:
             None,
         )
 
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def _get_set_a_pipeline(self, object_type, pipeline_id, use_cache=True):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
@@ -1561,7 +1602,11 @@ class Hubspot:
         return response.json()
 
     @keyword
-    @retry(HubSpotRateLimitError, tries=10, delay=0.1, jitter=(0.1, 0.2), backoff=2)
+    @retry(
+        retry=retry_if_exception_type(HubSpotRateLimitError),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+    )
     def get_owner_by_id(
         self, owner_id: str = "", owner_email: str = "", user_id: str = ""
     ) -> PublicOwner:
