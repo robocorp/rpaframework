@@ -175,7 +175,6 @@ class FileSystem:
         """Logs all the files in the directory recursively.
 
         :param path:    base directory to start from, defaults to current working dir
-        :return: None
         """
         root = Path(path) if path else Path.cwd()
         files = self.find_files(Path(root, "**/*"))
@@ -295,7 +294,6 @@ class FileSystem:
         updates the modification and access times.
 
         :param path:        path to file which is touched
-        :return: None
         """
         Path(path).touch()
 
@@ -308,7 +306,6 @@ class FileSystem:
         :param content:     content to write to file (optional)
         :param encoding:    character encoding of written content
         :param overwrite:   replace destination file if it already exists
-        :return: None
         """
         if not overwrite and Path(path).exists():
             raise FileExistsError(f"Path already exists: {path}")
@@ -323,7 +320,6 @@ class FileSystem:
         :param path:        path to file to write
         :param content:     content to write to file (optional)
         :param overwrite:   replace destination file if it already exists
-        :return: None
         """
         if not overwrite and Path(path).exists():
             raise FileExistsError(f"Path already exists: {path}")
@@ -338,7 +334,6 @@ class FileSystem:
         :param path:        path to file to append to
         :param content:     content to append
         :param encoding:    character encoding of appended content
-        :return: None
         """
         if not Path(path).exists():
             raise FileNotFoundError(f"File does not exist: {path}")
@@ -351,7 +346,6 @@ class FileSystem:
 
         :param path:        path to file to append to
         :param content:     content to append
-        :return: None
         """
         if not Path(path).exists():
             raise FileNotFoundError(f"File does not exist: {path}")
@@ -365,7 +359,6 @@ class FileSystem:
         :param path:        path to new directory
         :param parents:     create missing parent directories
         :param exist_ok:    continue without errors if directory already exists
-        :return: None
         """
         Path(path).mkdir(parents=parents, exist_ok=exist_ok)
 
@@ -374,7 +367,6 @@ class FileSystem:
 
         :param path:        path to the file to remove
         :param missing_ok:  ignore non-existent file
-        :return: None
         """
         try:
             Path(path).unlink()
@@ -387,7 +379,6 @@ class FileSystem:
 
         :param paths:       paths to files to be removed
         :param missing_ok:  ignore non-existent files
-        :return: None
         """
         # TODO: glob support
         for path in paths:
@@ -398,7 +389,6 @@ class FileSystem:
 
         :param path:        path to directory
         :param recursive:   remove all subdirectories and files
-        :return: None
         """
         if recursive:
             shutil.rmtree(str(path))
@@ -409,7 +399,6 @@ class FileSystem:
         """Removes all the files in the given directory.
 
         :param path:    directory to remove files from
-        :return: None
         """
         # TODO: Should it remove all subdirectories too?
         for item in self.list_files_in_directory(path):
@@ -422,7 +411,6 @@ class FileSystem:
 
         :param source:      path to source file
         :param destination: path to copy destination
-        :return: None
         """
         src = Path(source)
         dst = Path(destination)
@@ -438,7 +426,6 @@ class FileSystem:
 
         :param sources:     list of source files
         :param destination: path to destination folder
-        :return: None
         """
         # TODO: glob support
         dst_dir = Path(destination)
@@ -456,7 +443,6 @@ class FileSystem:
 
         :param source:      path to source directory
         :param destination: path to copy destination
-        :return: None
         """
         src = Path(source)
         dst = Path(destination)
@@ -475,7 +461,6 @@ class FileSystem:
         :param source:      source file path for moving
         :param destination: path to move to
         :param overwrite:   replace destination file if it already exists
-        :return: None
         """
         src = Path(source)
         dst = Path(destination)
@@ -494,7 +479,6 @@ class FileSystem:
         :param sources:     list of files to move
         :param destination: path to move destination
         :param overwrite:   replace destination files if they already exist
-        :return: None
         """
         dst_dir = Path(destination)
 
@@ -511,7 +495,6 @@ class FileSystem:
         :param source:      source directory path for moving
         :param destination: path to move to
         :param overwrite:   replace destination directory if it already exists
-        :return: None
         """
         src = Path(source)
         dst = Path(destination)
@@ -528,7 +511,6 @@ class FileSystem:
 
         :param path:        path to file to rename
         :param extension:   new extension, e.g. .xlsx
-        :return: None
         """
         dst = Path(path).with_suffix(extension)
         self.move_file(path, dst)
@@ -667,7 +649,6 @@ class FileSystem:
 
         :param path:    path to poll
         :param timeout: time in seconds until keyword fails
-        :return: None
         """
         if not self._wait_file(path, lambda p: not p.exists(), timeout):
             raise TimeoutException("Path was not removed within timeout")
@@ -678,7 +659,6 @@ class FileSystem:
         :param path:    path to file to inspect
         :param keyword: Robot Framework keyword to execute
         :param args:    arguments to keyword
-        :return: None
 
         Example:
 
