@@ -151,14 +151,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.27"
+version = "1.21.31"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.27,<1.25.0"
+botocore = ">=1.24.31,<1.25.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -167,7 +167,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.27"
+version = "1.24.31"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -597,7 +597,7 @@ libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-vision"
-version = "2.7.1"
+version = "2.7.2"
 description = "Cloud Vision API API client library"
 category = "main"
 optional = false
@@ -1210,7 +1210,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "pylint"
-version = "2.13.2"
+version = "2.13.4"
 description = "python code static checker"
 category = "dev"
 optional = false
@@ -1680,7 +1680,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "13.0.0"
+version = "13.0.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1688,8 +1688,6 @@ python-versions = "^3.6.2"
 develop = false
 
 [package.dependencies]
-amazon-textract-response-parser = {version = "^0.1.1", optional = true}
-boto3 = {version = "^1.13.4", optional = true}
 chardet = "^3.0.0"
 click = "^7.1.2"
 comtypes = {version = "1.1.11", markers = "sys_platform == \"win32\""}
@@ -1721,6 +1719,7 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
+rpaframework-aws = {version = "^1.0.1", optional = true}
 rpaframework-core = "^7.0.1"
 rpaframework-dialogs = "^1.0.0"
 rpaframework-pdf = "^2.0.0"
@@ -1736,13 +1735,28 @@ xlutils = "^2.0.0"
 xlwt = "^1.3.0"
 
 [package.extras]
+aws = ["rpaframework-aws (>=1.0.1,<2.0.0)"]
 cv = ["rpaframework-recognition (>=2.0.0,<3.0.0)"]
 playwright = ["robotframework-browser (>=11.1.0,<12.0.0)"]
-aws = ["boto3 (>=1.13.4,<2.0.0)", "amazon-textract-response-parser (>=0.1.1,<0.2.0)"]
 
 [package.source]
 type = "directory"
 url = "packages/main"
+
+[[package]]
+name = "rpaframework-aws"
+version = "1.0.1"
+description = "AWS library for RPA Framework"
+category = "main"
+optional = false
+python-versions = ">=3.6.2,<4.0.0"
+
+[package.dependencies]
+amazon-textract-response-parser = ">=0.1.1,<0.2.0"
+boto3 = ">=1.13.4,<2.0.0"
+robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
+robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
+rpaframework-core = ">=7.0.0,<8.0.0"
 
 [[package]]
 name = "rpaframework-core"
@@ -2412,12 +2426,12 @@ black = [
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.27-py3-none-any.whl", hash = "sha256:f165790439117e3fd40f8c06826845068852a70ca5ac62adb192405c97f117e1"},
-    {file = "boto3-1.21.27.tar.gz", hash = "sha256:ef41b9c7b6311d5152bdc78f7de56912c1ed265debf7da14133e1ad00246ad50"},
+    {file = "boto3-1.21.31-py3-none-any.whl", hash = "sha256:35f68b60652bff50e7bc926238443cb578f29f120908bb945e5640e90c6dd53e"},
+    {file = "boto3-1.21.31.tar.gz", hash = "sha256:7f3f93ee97215862ccd1a216f37deb7d64055c71f826b821805904df7b84ee6a"},
 ]
 botocore = [
-    {file = "botocore-1.24.27-py3-none-any.whl", hash = "sha256:88e19efcaead99426434d9898d211093b8a8d0cc90af3b84a4ccb9f196894e87"},
-    {file = "botocore-1.24.27.tar.gz", hash = "sha256:2c11db4b94b4b9504d2782acb758d29a7e5cbdfaa826601f222ac9ddcf004dde"},
+    {file = "botocore-1.24.31-py3-none-any.whl", hash = "sha256:424fd94bef86a11f5340dc15eb50602dedec2ecc01c3a25c4fea23a2c8195500"},
+    {file = "botocore-1.24.31.tar.gz", hash = "sha256:3bb21e3ee5e4de3ed76bb99b4496a46e9b5c82e7b7fdb62702f11dda1b57b769"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2616,8 +2630,8 @@ google-cloud-videointelligence = [
     {file = "google_cloud_videointelligence-2.6.1-py2.py3-none-any.whl", hash = "sha256:5be36b7a2ec648f1505c3ef763b059bcd81ead5b779b5229f3874d2fcfb201e0"},
 ]
 google-cloud-vision = [
-    {file = "google-cloud-vision-2.7.1.tar.gz", hash = "sha256:4f2f340bbdcadff4de6ec7521e29e6a76cbc4ca80e7eda93e4f20369fab51a03"},
-    {file = "google_cloud_vision-2.7.1-py2.py3-none-any.whl", hash = "sha256:b500e87f8263206b2a2825ce5e13f5c6354b9497403c9ef6b3058eed6e170f54"},
+    {file = "google-cloud-vision-2.7.2.tar.gz", hash = "sha256:e0d4d6c9fdeb9ddc35cc720d94132da0499d7d25c69d4fe3121c5a6fcd3b560e"},
+    {file = "google_cloud_vision-2.7.2-py2.py3-none-any.whl", hash = "sha256:1a26fbe86ef268ac77cd736d60f8163a9a5278c9b8f205a74c96031ecf74075b"},
 ]
 google-crc32c = [
     {file = "google-crc32c-1.3.0.tar.gz", hash = "sha256:276de6273eb074a35bc598f8efbc00c7869c5cf2e29c90748fccc8c898c244df"},
@@ -3286,8 +3300,8 @@ pygments = [
     {file = "Pygments-2.11.2.tar.gz", hash = "sha256:4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"},
 ]
 pylint = [
-    {file = "pylint-2.13.2-py3-none-any.whl", hash = "sha256:3cd8eb401c6aa6c66b614d72cf0c54a02d6bf7752aa9890fc41de71030f3c81a"},
-    {file = "pylint-2.13.2.tar.gz", hash = "sha256:0c6dd0e53e6e17f2d0d62660905f3868611e734e9d9b310dc651a4b9f3dc70da"},
+    {file = "pylint-2.13.4-py3-none-any.whl", hash = "sha256:8672cf7441b81410f5de7defdf56e2d559c956fd0579652f2e0a0a35bea2d546"},
+    {file = "pylint-2.13.4.tar.gz", hash = "sha256:7cc6d0c4f61dff440f9ed8b657f4ecd615dcfe35345953eb7b1dc74afe901d7a"},
 ]
 pynput-robocorp-fork = [
     {file = "pynput-robocorp-fork-4.0.0.tar.gz", hash = "sha256:92131856267268d57ca2d7861aa692eecefa0827408940091321b14606d3c04c"},
@@ -3550,6 +3564,10 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = []
+rpaframework-aws = [
+    {file = "rpaframework-aws-1.0.1.tar.gz", hash = "sha256:b058c35bc62e738299e1edf44d5144c606f5a25651aa731666b48eb8284913cc"},
+    {file = "rpaframework_aws-1.0.1-py3-none-any.whl", hash = "sha256:001fc7c1c73dab314b9ae42847293058e0d8d57816c82359bd6afcd59f9a8d8d"},
+]
 rpaframework-core = [
     {file = "rpaframework-core-7.0.1.tar.gz", hash = "sha256:de1b6428f144198d2cfe953f71b18d1242810742575de891fcd9c4343cd1be05"},
     {file = "rpaframework_core-7.0.1-py3-none-any.whl", hash = "sha256:d7280d2f1e34107c3eaf7068bf232cb45808d3f70787d47848133b7220c58aea"},
