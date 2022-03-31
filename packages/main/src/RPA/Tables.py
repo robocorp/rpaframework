@@ -1799,7 +1799,7 @@ class Tables:
         """
         sniffer = csv.Sniffer()
         with open(path, newline="", encoding=encoding) as fd:
-            sample = fd.read(1024)
+            sample = fd.readline()
 
         if dialect is None:
             dialect_name = sniffer.sniff(sample, delimiters)
