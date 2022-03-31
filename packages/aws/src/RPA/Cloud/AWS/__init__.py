@@ -582,7 +582,10 @@ class ServiceTextract(AWSBase):
         :param job_id: job identifier, defaults to None
         :param max_results: number of blocks to get at a time, defaults to 1000
         :param next_token: pagination token for getting next set of results,
-               defaults to None
+         defaults to None
+        :param collect_all_results: when set to True will wait until analysis is
+         complete and returns all blocks of the analysis result, by default (False)
+         the all blocks need to be specifically collected using `next_token` variable
         :return: dictionary
 
         Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
@@ -594,32 +597,38 @@ class ServiceTextract(AWSBase):
 
             Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
             ${jobid}=    Start Document Analysis  s3bucket_name  invoice.pdf
-            FOR    ${i}    IN RANGE    50
-                ${response}    Get Document Analysis  ${jobid}
-                Exit For Loop If    "${response}[JobStatus]" == "SUCCEEDED"
-                Sleep    1s
-            END
+            # Wait for job completion and collect all blocks
+            ${response}=    Get Document Analysis  ${jobid}  collect_all_results=True
+            # Model will contain all pages of the invoice.pdf
+            ${model}=    Convert Textract Response To Model    ${response}
         """
         client = self._get_client_for_service("textract")
         method_arguments = {"JobId": job_id, "MaxResults": max_results}
         if next_token:
             method_arguments["NextToken"] = next_token
 
-        total_result = {}
+        total_blocks = []
+        response = {}
         while True:
             response = client.get_document_analysis(**method_arguments)
-            # total_result.append(response)
             if collect_all_results and response["JobStatus"] == "IN_PROGRESS":
+                self.logger.debug("collecting all and job is still in progress")
                 sleep(1)
-                continue
-            total_result = dict(total_result, **response)
-            if collect_all_results and "NextToken" in response.keys():
-                method_arguments["NextToken"] = response["NextToken"]
             elif not collect_all_results:
                 break
             else:
-                break
-
+                self.logger.debug("Got %s blocks" % len(response["Blocks"]))
+                total_blocks += response["Blocks"]
+                self.logger.debug("Now having %s blocks" % len(total_blocks))
+                if collect_all_results and "NextToken" in response.keys():
+                    self.logger.debug("collecting all and there are more results")
+                    method_arguments["NextToken"] = response["NextToken"]
+                else:
+                    break
+        total_result = response
+        if len(total_blocks) > 0:
+            total_result["Blocks"] = total_blocks
+        self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
         return total_result
 
     def get_pages_and_text(self, textract_response: dict) -> dict:
@@ -627,7 +636,7 @@ class ServiceTextract(AWSBase):
 
         :param textract_response: JSON from Textract
         :return: dictionary, page numbers as keys and value is a list
-                 of text lines
+         of text lines
         """
         document = OrderedDict()
         for item in textract_response["Blocks"]:
@@ -683,14 +692,21 @@ class ServiceTextract(AWSBase):
 
     @aws_dependency_required
     def get_document_text_detection(
-        self, job_id: str = None, max_results: int = 1000, next_token: str = None
+        self,
+        job_id: str = None,
+        max_results: int = 1000,
+        next_token: str = None,
+        collect_all_results: bool = False,
     ) -> dict:
         """Get the results of Textract asynchronous `Document Text Detection` operation
 
         :param job_id: job identifier, defaults to None
         :param max_results: number of blocks to get at a time, defaults to 1000
         :param next_token: pagination token for getting next set of results,
-               defaults to None
+         defaults to None
+        :param collect_all_results: when set to True will wait until analysis is
+         complete and returns all blocks of the analysis result, by default (False)
+         the all blocks need to be specifically collected using `next_token` variable
         :return: dictionary
 
         Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
@@ -702,19 +718,39 @@ class ServiceTextract(AWSBase):
 
             Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
             ${jobid}=    Start Document Text Detection  s3bucket_name  invoice.pdf
-            FOR    ${i}    IN RANGE    50
-                ${response}    Get Document Text Detection    ${jobid}
-                Exit For Loop If    "${response}[JobStatus]" == "SUCCEEDED"
-                Sleep    1s
-            END
-        """
+            # Wait for job completion and collect all blocks
+            ${response}=   Get Document Text Detection    ${jobid}  collect_all_results=True
+            # Model will contain all pages of the invoice.pdf
+            ${model}=    Convert Textract Response To Model    ${response}
+        """  # noqa: E501
         client = self._get_client_for_service("textract")
         method_arguments = {"JobId": job_id, "MaxResults": max_results}
         if next_token:
             method_arguments["NextToken"] = next_token
 
-        response = client.get_document_text_detection(**method_arguments)
-        return response
+        total_blocks = []
+        response = {}
+        while True:
+            response = client.get_document_text_detection(**method_arguments)
+            if collect_all_results and response["JobStatus"] == "IN_PROGRESS":
+                self.logger.debug("collecting all and job is still in progress")
+                sleep(1)
+            elif not collect_all_results:
+                break
+            else:
+                self.logger.debug("Got %s blocks" % len(response["Blocks"]))
+                total_blocks += response["Blocks"]
+                self.logger.debug("Now having %s blocks" % len(total_blocks))
+                if collect_all_results and "NextToken" in response.keys():
+                    self.logger.debug("collecting all and there are more results")
+                    method_arguments["NextToken"] = response["NextToken"]
+                else:
+                    break
+        total_result = response
+        if len(total_blocks) > 0:
+            total_result["Blocks"] = total_blocks
+        self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
+        return total_result
 
     def convert_textract_response_to_model(self, response):
         """Convert AWS Textract JSON response into TextractDocument object,

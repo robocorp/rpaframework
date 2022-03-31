@@ -1,6 +1,6 @@
-from RPA.Cloud.Google import Google
+from RPA.Cloud.AWS import AWS
 
 
 def test_init():
-    lib = Google()
+    lib = AWS()
     assert lib
