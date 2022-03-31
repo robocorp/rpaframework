@@ -166,7 +166,7 @@ class JSON:
         doc: JSONType,
         filename: str,
         indent: Optional[int] = None,
-        encoding="utf-8",
+        encoding: str = "utf-8",
     ) -> None:
         """Save a JSON serializable object or a string containg
         a JSON value into a file.
