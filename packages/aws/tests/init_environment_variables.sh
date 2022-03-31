@@ -1,0 +1,3 @@
+export AWS_KEY_ID=<AWS_KEY>
+export AWS_KEY_SECRET=<AWS_KEY_SECRET>
+export AWS_REGION=us-east-1
