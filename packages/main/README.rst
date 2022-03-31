@@ -119,7 +119,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `Browser.Playwright`_      | Newer way to control browsers                | special (more below)   |
 +----------------------------+----------------------------------------------+------------------------+
-| `Cloud.AWS`_               | Use Amazon AWS services                      | x                      |
+| `Cloud.AWS`_               | Use Amazon AWS services                      | x,aws                  |
 +----------------------------+----------------------------------------------+------------------------+
 | `Cloud.Azure`_             | Use Microsoft Azure services                 | x                      |
 +----------------------------+----------------------------------------------+------------------------+
@@ -227,7 +227,7 @@ Installation of RPA.Browser.Playwright
 --------------------------------------
 
 The **RPA.Browser.Playwright** at the moment requires special installation, because
-of the package size and the post install step it needs to be fully installed. 
+of the package size and the post install step it needs to be fully installed.
 
 Minimum required conda.yaml to install Playwright:
 
@@ -261,7 +261,7 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
      - pip=20.1
      - pip:
        - rpaframework==13.0.0
-     
+
 To install all extra packages (including Playwright dependencies), you can use:
 
 .. code-block:: yaml
@@ -274,14 +274,15 @@ To install all extra packages (including Playwright dependencies), you can use:
      - pip=20.1
      - nodejs=16.14.2
      - pip:
-       - rpaframework[aws]==13.0.0
+       - rpaframework==13.0.0   # rpaframework[aws]==13.0.0
+       - rpaframework-aws==1.0.0
        - rpaframework-google==3.0.0
        - rpaframework-recognition==2.0.0
        - robotframework-browser==12.2.0
    rccPostInstall:
      - rfbrowser init
 
-Separate installation of PDF and Dialogs libraries without main rpaframework:
+Separate installation of AWS, Dialogs, PDF and Windows libraries without main rpaframework:
 
 .. code-block:: yaml
 
@@ -291,8 +292,10 @@ Separate installation of PDF and Dialogs libraries without main rpaframework:
      - python=3.7.5
      - pip=20.1
      - pip:
+       - rpaframework-aws==1.0.0 # included in the rpaframework as an extra
        - rpaframework-dialogs==1.0.0  # included in the rpaframework by default
        - rpaframework-pdf==3.0.0  # included in the rpaframework by default
+       - rpaframework-windows==3.0.0 # included in the rpaframework by default
 
 
 .. note:: Python 3.6 or higher is required
