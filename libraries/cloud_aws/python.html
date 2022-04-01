@@ -282,15 +282,16 @@ names.</p></li>
 <p>The default installation depends on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">boto3</a> library. Due to the size of the
 dependency, this library is available separate package <code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code> but can
 also be installed as an optional package for <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
-<p>Recommended installation is <cite>rpaframework-aws</cite> plus <cite>rpaframework</cite> package.</p>
+<p>Recommended installation is <cite>rpaframework-aws</cite> plus <cite>rpaframework</cite> package.
+Remember to check latest versions from <a class="reference external" href="https://github.com/robocorp/rpaframework">rpaframework Github repository</a>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span><span class="w"></span>
 <span class="nt">dependencies</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=20.1</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==13.1.0</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==1.0.0</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==13.0.1</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==1.0.1</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Following declaration, <cite>rpaframework[aws]</cite>, will install all rpaframework libraries
@@ -302,7 +303,7 @@ removed in the future major release of <cite>rpaframework</cite>.</p>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=20.1</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]==13.1.0</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]==13.0.1</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>Example</strong></p>
