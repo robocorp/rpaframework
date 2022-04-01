@@ -11,7 +11,10 @@ Release notes
 13.0.1 - 01 Apr 2022
 --------------------
 
-- TBA
+- Library **RPA.Cloud.AWS**: Fix getting analysis result from larger PDF files
+- Library **RPA.Tables**: Fix reading table from CSV file with longer rows
+- Various updates to keyword type hinting
+- New package **rpaframework-aws**
 
 13.0.0 - 28 Mar 2022
 --------------------
