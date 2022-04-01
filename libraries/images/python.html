@@ -308,7 +308,7 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 
 <dl class="method">
 <dt id="RPA.Images.Images.crop_image">
-<code class="sig-name descname">crop_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">region</em>, <em class="sig-param">filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.crop_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">crop_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">region</em>, <em class="sig-param">filename=None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Images.Images.crop_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Crop an existing image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -339,14 +339,17 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 <dd class="field-even"><p>List of matching regions</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#RPA.Images.ImageNotFoundError" title="RPA.Images.ImageNotFoundError"><strong>ImageNotFoundError</strong></a> – No match was found</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#RPA.Images.ImageNotFoundError" title="RPA.Images.ImageNotFoundError"><strong>ImageNotFoundError</strong></a> – No match was found</p></li>
+<li><p><strong>ValueError</strong> – Template is larger than search region</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Images.Images.get_pixel_color_in_image">
-<code class="sig-name descname">get_pixel_color_in_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">point</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.get_pixel_color_in_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_pixel_color_in_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">point</em><span class="sig-paren">)</span> &#x2192; RPA.Images.RGB<a class="headerlink" href="#RPA.Images.Images.get_pixel_color_in_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the RGB value of a pixel in the image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -355,12 +358,15 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 <li><p><strong>point</strong> – coordinates for pixel or Point object</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>RGB value of pixel in image</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Images.Images.show_region_in_image">
-<code class="sig-name descname">show_region_in_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">region</em>, <em class="sig-param">color='red'</em>, <em class="sig-param">width=5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.show_region_in_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">show_region_in_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">region</em>, <em class="sig-param">color='red'</em>, <em class="sig-param">width=5</em><span class="sig-paren">)</span> &#x2192; &lt;module 'PIL.Image' from 'D:\\a\\rpaframework\\rpaframework\\.venv\\lib\\site-packages\\PIL\\Image.py'&gt;<a class="headerlink" href="#RPA.Images.Images.show_region_in_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a rectangle onto the image around the given region.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -370,6 +376,9 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 <li><p><strong>color</strong> – color of rectangle</p></li>
 <li><p><strong>width</strong> – line width of rectangle</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Image of the selected region</p>
 </dd>
 </dl>
 </dd></dl>
@@ -399,7 +408,7 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 
 <dl class="method">
 <dt id="RPA.Images.RGB.luminance">
-<code class="sig-name descname">luminance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.RGB.luminance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">luminance</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Images.RGB.luminance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Approximate (perceived) luminance for RGB value.</p>
 </dd></dl>
 
@@ -427,7 +436,7 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 
 <dl class="method">
 <dt id="RPA.Images.TemplateMatcher.match">
-<code class="sig-name descname">match</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">template</em>, <em class="sig-param">limit=None</em>, <em class="sig-param">tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.TemplateMatcher.match" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">match</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">template</em>, <em class="sig-param">limit=None</em>, <em class="sig-param">tolerance=None</em><span class="sig-paren">)</span> &#x2192; List[RPA.core.geometry.Region]<a class="headerlink" href="#RPA.Images.TemplateMatcher.match" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempt to find the template in the given image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -439,7 +448,7 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of regions that match criteria</p>
+<dd class="field-even"><p>list of regions that match the criteria</p>
 </dd>
 </dl>
 </dd></dl>

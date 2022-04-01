@@ -10,8 +10,8 @@ RPA.Desktop.Windows:
    :widths: 10, 40
 
    "1130", "return more valuable information about what should"
-   "1378", "supporting multiple search criterias at same time to identify ONE element"
-   "1404", "supporting multiple search criterias at same time to identify ONE element"
+   "1383", "supporting multiple search criterias at same time to identify ONE element"
+   "1409", "supporting multiple search criterias at same time to identify ONE element"
 
 RPA.Desktop.keywords.application:
 =================================
@@ -67,12 +67,12 @@ RPA.FileSystem:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "369", "glob support"
-   "389", "Should it remove all subdirectories too?"
-   "416", "glob support"
-   "547", "Convert to proper date"
-   "556", "Convert to proper date"
-   "564", "Convert to human-friendly?"
+   "383", "glob support"
+   "403", "Should it remove all subdirectories too?"
+   "430", "glob support"
+   "565", "Convert to proper date"
+   "575", "Convert to proper date"
+   "584", "Convert to human-friendly?"
 
 RPA.JSON:
 =========

@@ -1543,7 +1543,7 @@ applications</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.wait_for_element">
-<code class="sig-name descname">wait_for_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">search_criteria: str = None</em>, <em class="sig-param">timeout: float = 30.0</em>, <em class="sig-param">interval: float = 2.0</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.wait_for_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_for_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">use_refreshing: bool = False</em>, <em class="sig-param">search_criteria: str = None</em>, <em class="sig-param">timeout: float = 30.0</em>, <em class="sig-param">interval: float = 2.0</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.wait_for_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait for element to appear into the window.</p>
 <p>Can return 1 or more elements matching locator, or raises
 <cite>ElementNotFoundError</cite> if element is not found within timeout.</p>
@@ -1551,6 +1551,8 @@ applications</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>locator</strong> – name of the locator</p></li>
+<li><p><strong>use_refreshing</strong> – wait for element(s) which are not there yet e.g. listbox
+item or popups, default False</p></li>
 <li><p><strong>search_criteria</strong> – criteria by which element is matched</p></li>
 <li><p><strong>timeout</strong> – defines how long to wait for element to appear,
 defaults to 30.0 seconds</p></li>

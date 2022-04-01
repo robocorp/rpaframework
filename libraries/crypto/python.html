@@ -275,8 +275,11 @@ the execution before calling encryption/decryption keywords.</p>
 <li><p><strong>output</strong> – Path to decrypted output file</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the decrypted file</p>
+</dd>
 </dl>
-<p>If not output path is given, it will generate one from the input path.
+<p>If no output path is given, it will generate one from the input path.
 The resulting output path is returned.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Use encryption key</span><span class="p">    </span><span class="c">${key}</span><span class="p"></span>
@@ -288,7 +291,7 @@ The resulting output path is returned.</p>
 
 <dl class="method">
 <dt id="RPA.Crypto.Crypto.decrypt_string">
-<code class="sig-name descname">decrypt_string</code><span class="sig-paren">(</span><em class="sig-param">data: Union[bytes, str], encoding='utf-8'</em><span class="sig-paren">)</span> &#x2192; Union[str, bytes]<a class="headerlink" href="#RPA.Crypto.Crypto.decrypt_string" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">decrypt_string</code><span class="sig-paren">(</span><em class="sig-param">data: Union[bytes, str], encoding: str = 'utf-8'</em><span class="sig-paren">)</span> &#x2192; Union[str, bytes]<a class="headerlink" href="#RPA.Crypto.Crypto.decrypt_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decrypt a string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -296,6 +299,9 @@ The resulting output path is returned.</p>
 <li><p><strong>data</strong> – Encrypted data as base64 string</p></li>
 <li><p><strong>encoding</strong> – Original encoding of string</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Decrypted string or raw bytes, if None given as encoding</p>
 </dd>
 </dl>
 <p>Returns the decrypted string that is parsed with the given encoding,
@@ -319,8 +325,11 @@ or if the encoding is <code class="docutils literal notranslate"><span class="pr
 <li><p><strong>output</strong> – Path to encrypted output file</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the encrypted file</p>
+</dd>
 </dl>
-<p>If not output path is given, it will generate one from the input path.
+<p>If no output path is given, it will generate one from the input path.
 The resulting output path is returned.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Use encryption key</span><span class="p">    </span><span class="c">${key}</span><span class="p"></span>
@@ -332,7 +341,7 @@ The resulting output path is returned.</p>
 
 <dl class="method">
 <dt id="RPA.Crypto.Crypto.encrypt_string">
-<code class="sig-name descname">encrypt_string</code><span class="sig-paren">(</span><em class="sig-param">text: Union[bytes, str], encoding='utf-8'</em><span class="sig-paren">)</span> &#x2192; bytes<a class="headerlink" href="#RPA.Crypto.Crypto.encrypt_string" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">encrypt_string</code><span class="sig-paren">(</span><em class="sig-param">text: Union[bytes, str], encoding: str = 'utf-8'</em><span class="sig-paren">)</span> &#x2192; bytes<a class="headerlink" href="#RPA.Crypto.Crypto.encrypt_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encrypt a string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -340,6 +349,9 @@ The resulting output path is returned.</p>
 <li><p><strong>text</strong> – Source text to encrypt</p></li>
 <li><p><strong>encoding</strong> – Used text encoding</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Token of the encrypted string in bytes</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -353,6 +365,11 @@ The resulting output path is returned.</p>
 <dt id="RPA.Crypto.Crypto.generate_key">
 <code class="sig-name descname">generate_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Crypto.Crypto.generate_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a Fernet encryption key as base64 string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Generated key as a string</p>
+</dd>
+</dl>
 <p>This key can be used for encryption/decryption operations
 with this library.</p>
 <p><em>NOTE:</em> Store the generated key in a secure place!
@@ -370,6 +387,9 @@ If anyone else gains access to it, they can decrypt your data.</p>
 <li><p><strong>path</strong> – Path to file</p></li>
 <li><p><strong>method</strong> – The used hashing method</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Hash digest of the file</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -391,6 +411,9 @@ If anyone else gains access to it, they can decrypt your data.</p>
 <li><p><strong>encoding</strong> – Used text encoding</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Hash digest of the string</p>
+</dd>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${digest}=</span><span class="p">    </span><span class="c">Hash string</span><span class="p">    </span><span class="c">A value that will be hashed</span><span class="p"></span>
@@ -401,7 +424,7 @@ If anyone else gains access to it, they can decrypt your data.</p>
 
 <dl class="method">
 <dt id="RPA.Crypto.Crypto.use_encryption_key">
-<code class="sig-name descname">use_encryption_key</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Crypto.Crypto.use_encryption_key" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">use_encryption_key</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Crypto.Crypto.use_encryption_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set key for all following encryption/decryption operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -420,7 +443,7 @@ line utility.</p>
 
 <dl class="method">
 <dt id="RPA.Crypto.Crypto.use_encryption_key_from_vault">
-<code class="sig-name descname">use_encryption_key_from_vault</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">key: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Crypto.Crypto.use_encryption_key_from_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">use_encryption_key_from_vault</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">key: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Crypto.Crypto.use_encryption_key_from_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load an encryption key from Robocorp Vault.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

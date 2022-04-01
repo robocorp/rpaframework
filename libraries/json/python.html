@@ -381,7 +381,7 @@ be seen in the <a class="reference external" href="http://goessner.net/articles/
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.add_to_json">
-<code class="sig-name descname">add_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, value: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.add_to_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, value: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.add_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add items into a JSON serializable object and return the result.</p>
 <p>If the target is a list, the values are appended to the end.
 If the target is a dict, the keys are either added or updated.</p>
@@ -392,6 +392,9 @@ If the target is a dict, the keys are either added or updated.</p>
 <li><p><strong>expr</strong> – JSONPath expression</p></li>
 <li><p><strong>value</strong> – values to either append or update</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON serializable object of the updated JSON</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -411,6 +414,9 @@ If the target is a dict, the keys are either added or updated.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>doc</strong> – JSON serializable object</p>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string of the JSON serializable object</p>
+</dd>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${obj}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">    </span><span class="c">Key=Value</span><span class="p"></span>
@@ -428,6 +434,9 @@ If the target is a dict, the keys are either added or updated.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>doc</strong> – JSON string</p>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON serializable object of the string</p>
+</dd>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${json}=</span><span class="p">    </span><span class="c">Set variable</span><span class="p">    </span><span class="c">{&quot;Key&quot;: &quot;Value&quot;}</span><span class="p"></span>
@@ -439,7 +448,7 @@ If the target is a dict, the keys are either added or updated.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.delete_from_json">
-<code class="sig-name descname">delete_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.delete_from_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.delete_from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete values from a JSON serializable object and return the result.
 Will delete all values that match the expression.</p>
 <dl class="field-list simple">
@@ -448,6 +457,9 @@ Will delete all values that match the expression.</p>
 <li><p><strong>doc</strong> – JSON serializable object or string</p></li>
 <li><p><strong>expr</strong> – JSONPath expression</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON serializable object with values removed</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -460,7 +472,7 @@ Will delete all values that match the expression.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.get_value_from_json">
-<code class="sig-name descname">get_value_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, default: Any = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.get_value_from_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_value_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, default: Optional[Any] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.JSON.JSON.get_value_from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single value from a JSON serializable object that matches the given expression.</p>
 <p>Raises a ValueError if there is more than one match.
 Returns the given default argument (or None) if there
@@ -471,6 +483,12 @@ were no matches.</p>
 <li><p><strong>doc</strong> – JSON serializable object or string</p></li>
 <li><p><strong>expr</strong> – jsonpath expression</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string containg the match OR None if no matches</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if more than one match</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -483,7 +501,7 @@ were no matches.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.get_values_from_json">
-<code class="sig-name descname">get_values_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.get_values_from_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_values_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.JSON.JSON.get_values_from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all values from a JSON serializable object that match the given expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -491,6 +509,9 @@ were no matches.</p>
 <li><p><strong>doc</strong> – JSON serializable object or string</p></li>
 <li><p><strong>expr</strong> – JSONPath expression</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of values that match</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -514,6 +535,9 @@ a list, or a scalar value.</p>
 <li><p><strong>encoding</strong> – file character encoding</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON serializable object of the JSON file</p>
+</dd>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{auth}=</span><span class="p">    </span><span class="c">Load JSON from file</span><span class="p">    </span><span class="c">auth.json</span><span class="p"></span>
@@ -524,7 +548,7 @@ a list, or a scalar value.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.save_json_to_file">
-<code class="sig-name descname">save_json_to_file</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], filename: str, indent: int = None, encoding='utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.save_json_to_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_json_to_file</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], filename: str, indent: Optional[int] = None, encoding: str = 'utf-8'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.JSON.JSON.save_json_to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a JSON serializable object or a string containg
 a JSON value into a file.</p>
 <dl class="field-list simple">
@@ -551,7 +575,7 @@ a JSON value into a file.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.update_value_to_json">
-<code class="sig-name descname">update_value_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, value: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.update_value_to_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_value_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, value: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.update_value_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update existing values in a JSON serializable object and return the result.
 Will change all values that match the expression.</p>
 <dl class="field-list simple">
@@ -561,6 +585,9 @@ Will change all values that match the expression.</p>
 <li><p><strong>expr</strong> – JSONPath expression</p></li>
 <li><p><strong>value</strong> – New value for the matching item(s)</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>JSON serializable object with updated results</p>
 </dd>
 </dl>
 <p>Example:</p>
