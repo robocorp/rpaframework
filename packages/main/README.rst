@@ -66,6 +66,13 @@ Packages
    :alt: rpaframework latest version
 
 
+
+.. image:: https://img.shields.io/pypi/v/rpaframework-aws.svg?label=rpaframework-aws&style=for-the-badge
+   :target: https://pypi.python.org/pypi/rpaframework-aws
+   :alt: rpaframework-aws latest version
+
+
+
 .. image:: https://img.shields.io/pypi/v/rpaframework-core.svg?label=rpaframework-core&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework-core
    :alt: rpaframework-core latest version
