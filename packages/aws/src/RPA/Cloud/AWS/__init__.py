@@ -1022,6 +1022,7 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
     also be installed as an optional package for ``rpaframework``.
 
     Recommended installation is `rpaframework-aws` plus `rpaframework` package.
+    Remember to check latest versions from `rpaframework Github repository`_.
 
     .. code-block:: yaml
 
@@ -1031,8 +1032,8 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
           - python=3.7.5
           - pip=20.1
           - pip:
-            - rpaframework==13.1.0
-            - rpaframework-aws==1.0.0
+            - rpaframework==13.0.1
+            - rpaframework-aws==1.0.1
 
     Following declaration, `rpaframework[aws]`, will install all rpaframework libraries
     plus `RPA.Cloud.AWS` as an optional package. This support is deprecated and will be
@@ -1046,10 +1047,12 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
           - python=3.7.5
           - pip=20.1
           - pip:
-            - rpaframework[aws]==13.1.0
+            - rpaframework[aws]==13.0.1
 
     .. _boto3:
         https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+    .. _rpaframework Github repository:
+        https://github.com/robocorp/rpaframework
 
     **Example**
 
