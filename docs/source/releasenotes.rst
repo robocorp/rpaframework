@@ -14,7 +14,7 @@ Release notes
 - Library **RPA.Cloud.AWS**: Fix getting analysis result from larger PDF files
 - Library **RPA.Tables**: Fix reading table from CSV file with longer rows
 - Various updates to keyword type hinting
-- New package ``rpaframework-aws`` **1.0.1** (can be used without ``rpaframework`` package)
+- New package ``rpaframework-aws`` **1.0.2** (can be used without ``rpaframework`` package)
 
 13.0.0 - 28 Mar 2022
 --------------------
