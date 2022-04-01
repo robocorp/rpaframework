@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 
 from jsonpath_ng import Index, Fields
 from jsonpath_ng.ext import parse
@@ -146,6 +146,7 @@ class JSON:
 
         :param filename: path to input file
         :param encoding: file character encoding
+        :return: JSON serializable object of the JSON file
 
         Example:
 
@@ -161,8 +162,12 @@ class JSON:
 
     @keyword("Save JSON to file")
     def save_json_to_file(
-        self, doc: JSONType, filename: str, indent: int = None, encoding="utf-8"
-    ):
+        self,
+        doc: JSONType,
+        filename: str,
+        indent: Optional[int] = None,
+        encoding: str = "utf-8",
+    ) -> None:
         """Save a JSON serializable object or a string containg
         a JSON value into a file.
 
@@ -197,6 +202,7 @@ class JSON:
         """Convert a JSON serializable object to a string and return it.
 
         :param doc: JSON serializable object
+        :return: string of the JSON serializable object
 
         Example:
 
@@ -214,6 +220,7 @@ class JSON:
         """Convert a string to a JSON serializable object and return it.
 
         :param doc: JSON string
+        :return: JSON serializable object of the string
 
         Example:
 
@@ -227,7 +234,7 @@ class JSON:
         return json.loads(doc)
 
     @keyword("Add to JSON")
-    def add_to_json(self, doc: JSONType, expr: str, value: JSONType):
+    def add_to_json(self, doc: JSONType, expr: str, value: JSONType) -> JSONType:
         """Add items into a JSON serializable object and return the result.
 
         If the target is a list, the values are appended to the end.
@@ -236,6 +243,7 @@ class JSON:
         :param doc: JSON serializable object
         :param expr: JSONPath expression
         :param value: values to either append or update
+        :return: JSON serializable object of the updated JSON
 
         Example:
 
@@ -256,7 +264,9 @@ class JSON:
         return doc
 
     @keyword("Get value from JSON")
-    def get_value_from_json(self, doc: JSONType, expr: str, default: Any = None):
+    def get_value_from_json(
+        self, doc: JSONType, expr: str, default: Optional[Any] = None
+    ) -> str:
         """Get a single value from a JSON serializable object that matches the given expression.
 
         Raises a ValueError if there is more than one match.
@@ -265,6 +275,8 @@ class JSON:
 
         :param doc: JSON serializable object or string
         :param expr: jsonpath expression
+        :return: string containg the match OR None if no matches
+        :raises ValueError: if more than one match
 
         Example:
 
@@ -289,11 +301,12 @@ class JSON:
             )
 
     @keyword("Get values from JSON")
-    def get_values_from_json(self, doc: JSONType, expr: str):
+    def get_values_from_json(self, doc: JSONType, expr: str) -> list:
         """Get all values from a JSON serializable object that match the given expression.
 
         :param doc: JSON serializable object or string
         :param expr: JSONPath expression
+        :return: list of values that match
 
         Example:
 
@@ -308,13 +321,16 @@ class JSON:
         return [match.value for match in parse(expr).find(doc)]
 
     @keyword("Update value to JSON")
-    def update_value_to_json(self, doc: JSONType, expr: str, value: JSONType):
+    def update_value_to_json(
+        self, doc: JSONType, expr: str, value: JSONType
+    ) -> JSONType:
         """Update existing values in a JSON serializable object and return the result.
         Will change all values that match the expression.
 
         :param doc: JSON or string
         :param expr: JSONPath expression
         :param value: New value for the matching item(s)
+        :return: JSON serializable object with updated results
 
         Example:
 
@@ -335,12 +351,13 @@ class JSON:
         return doc
 
     @keyword("Delete from JSON")
-    def delete_from_json(self, doc: JSONType, expr: str):
+    def delete_from_json(self, doc: JSONType, expr: str) -> JSONType:
         """Delete values from a JSON serializable object and return the result.
         Will delete all values that match the expression.
 
         :param doc: JSON serializable object or string
         :param expr: JSONPath expression
+        :return: JSON serializable object with values removed
 
         Example:
 

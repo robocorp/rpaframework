@@ -1,0 +1,69 @@
+[tool.poetry]
+name = "rpaframework-aws"
+version = "1.0.1"
+description = "AWS library for RPA Framework"
+authors = [
+	"RPA Framework <rpafw@robocorp.com>",
+]
+license = "Apache-2.0"
+readme = "README.rst"
+
+homepage = "https://rpaframework.org/"
+documentation = "https://rpaframework.org/"
+repository = "https://github.com/robocorp/rpaframework"
+
+keywords = ["robotframework", "rpa", "automation", "aws"]
+classifiers = [
+	"License :: OSI Approved :: Apache Software License",
+	"Development Status :: 3 - Alpha",
+	"Operating System :: OS Independent",
+	"Intended Audience :: Developers",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+	"Topic :: Software Development :: Libraries",
+	"Framework :: Robot Framework :: Library",
+	"Framework :: Robot Framework",
+	"Programming Language :: Python :: 3.6",
+	"Programming Language :: Python :: 3.7",
+	"Programming Language :: Python :: 3.8",
+]
+
+include = ["*.libspec"]
+
+packages = [
+	{ include = "RPA", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.6.2"
+rpaframework-core = "^7.0.0"
+robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
+robotframework-pythonlibcore = "^3.0.0"
+boto3 = "^1.13.4"
+amazon-textract-response-parser = "^0.1.1"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^21.5b0", allow-prereleases = true}
+flake8 = "^3.7.9"
+pylint = "^2.4.4, <2.13"
+pytest = "^6.1.2"
+mock = "^4.0.2"
+pytest-cov = "^2.10.1"
+invoke = "^1.6.0"
+sphinx = "^2.3.1"
+sphinx_rtd_theme = "^0.4.3"
+toml = "^0.10.1"
+sphinx-markdown-builder = "^0.5.4"
+robotframework-docgen = "^0.14.0"
+sphinx-issues = "^1.2.0"
+docutils = "0.16"
+
+[tool.black]
+target-version = ["py36", "py37", "py38", "py39"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=src --cov-report term-missing --cov-branch"
+testpaths = ["tests"]
