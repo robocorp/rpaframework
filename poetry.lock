@@ -1719,7 +1719,7 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
-rpaframework-aws = {version = "^1.0.1", optional = true}
+rpaframework-aws = {version = "^1.0.2", optional = true}
 rpaframework-core = "^7.0.1"
 rpaframework-dialogs = "^1.0.0"
 rpaframework-pdf = "^2.0.0"
@@ -1735,7 +1735,7 @@ xlutils = "^2.0.0"
 xlwt = "^1.3.0"
 
 [package.extras]
-aws = ["rpaframework-aws (>=1.0.1,<2.0.0)"]
+aws = ["rpaframework-aws (>=1.0.2,<2.0.0)"]
 cv = ["rpaframework-recognition (>=2.0.0,<3.0.0)"]
 playwright = ["robotframework-browser (>=11.1.0,<12.0.0)"]
 
@@ -1745,7 +1745,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "1.0.1"
+version = "1.0.2"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
@@ -2361,7 +2361,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "aa2391b7f4cc15eace5d8432f7ec3805189511ff0ac0e82a632d263b458b85e9"
+content-hash = "ebd91721d239dfd9b7930204200b12d6df3f83abb8e80b29d97dfdf1e5e60730"
 
 [metadata.files]
 alabaster = [
@@ -3565,8 +3565,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework-aws-1.0.1.tar.gz", hash = "sha256:b058c35bc62e738299e1edf44d5144c606f5a25651aa731666b48eb8284913cc"},
-    {file = "rpaframework_aws-1.0.1-py3-none-any.whl", hash = "sha256:001fc7c1c73dab314b9ae42847293058e0d8d57816c82359bd6afcd59f9a8d8d"},
+    {file = "rpaframework-aws-1.0.2.tar.gz", hash = "sha256:05eaf009d16c44ae2c77d5b95862b93d3a62c5ae090e580e69f9aaf9cf5146b4"},
+    {file = "rpaframework_aws-1.0.2-py3-none-any.whl", hash = "sha256:8e65411102e63623d1b05a187d06d365c57a7c100a17aa41f4f1864753abd587"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-7.0.1.tar.gz", hash = "sha256:de1b6428f144198d2cfe953f71b18d1242810742575de891fcd9c4343cd1be05"},

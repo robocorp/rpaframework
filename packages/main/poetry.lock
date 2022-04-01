@@ -1520,7 +1520,7 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-aws"
-version = "1.0.1"
+version = "1.0.2"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = true
@@ -2098,7 +2098,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "16c42e2a22b79bbed2dcf70a62e7a33053e9ebe4eb6d3e43c2cdd9359bd5b61d"
+content-hash = "9b745a4ffc9b53eadab4c9486a88df0d18aba41d670d9e6dbc736abe8df3619d"
 
 [metadata.files]
 alabaster = [
@@ -3263,8 +3263,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-aws = [
-    {file = "rpaframework-aws-1.0.1.tar.gz", hash = "sha256:b058c35bc62e738299e1edf44d5144c606f5a25651aa731666b48eb8284913cc"},
-    {file = "rpaframework_aws-1.0.1-py3-none-any.whl", hash = "sha256:001fc7c1c73dab314b9ae42847293058e0d8d57816c82359bd6afcd59f9a8d8d"},
+    {file = "rpaframework-aws-1.0.2.tar.gz", hash = "sha256:05eaf009d16c44ae2c77d5b95862b93d3a62c5ae090e580e69f9aaf9cf5146b4"},
+    {file = "rpaframework_aws-1.0.2-py3-none-any.whl", hash = "sha256:8e65411102e63623d1b05a187d06d365c57a7c100a17aa41f4f1864753abd587"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-7.0.1.tar.gz", hash = "sha256:de1b6428f144198d2cfe953f71b18d1242810742575de891fcd9c4343cd1be05"},
