@@ -434,14 +434,12 @@ class ImapSmtp:
         msg["From"] = sender
         msg["To"] = msg_to
         msg["Subject"] = Header(subject, self.encoding)
-        rcpt_cc = []
-        rcpt_bcc = []
+        recipients = to if isinstance(to, list) else [to]
         if cc:
             msg["Cc"] = ",".join(cc) if isinstance(cc, list) else cc
-            rcpt_cc = cc if isinstance(cc, list) else cc.split(",")
+            recipients += cc if isinstance(cc, list) else cc.split(",")
         if bcc:
-            rcpt_bcc = bcc if isinstance(bcc, list) else bcc.split(",")
-        recipients = rcpt_cc + rcpt_bcc + [to]
+            recipients += bcc if isinstance(bcc, list) else bcc.split(",")
         if html:
             for im in images:
                 im = im.strip()
@@ -471,11 +469,10 @@ class ImapSmtp:
         str_io = StringIO()
         g = Generator(str_io, False)
         g.flatten(msg)
-
         try:
             if self.smtp_conn is None:
                 self.authorize_smtp()
-            self.smtp_conn.sendmail(sender, msg_to, str_io.getvalue())
+            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
         except Exception as err:
             raise ValueError(f"Send Message failed: {err}") from err
         return True
