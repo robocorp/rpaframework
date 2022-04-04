@@ -1159,7 +1159,7 @@ test = ["ipaddress", "mock", "unittest2", "enum34", "pywin32", "wmi"]
 name = "py"
 version = "1.11.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -1613,18 +1613,6 @@ python-versions = "*"
 
 [package.dependencies]
 requests = ">=2.0.1,<3.0.0"
-
-[[package]]
-name = "retry2"
-version = "0.9.3"
-description = "Easy to use retry decorator."
-category = "main"
-optional = false
-python-versions = ">=2.6"
-
-[package.dependencies]
-decorator = ">=3.4.2"
-py = ">=1.4.26,<2.0.0"
 
 [[package]]
 name = "rfc3987"
@@ -2407,7 +2395,11 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
+<<<<<<< HEAD
 content-hash = "35ab512ce03809e5ba147d5abad0e528d4908ee25b96a8a0a0e186956efe71bb"
+=======
+content-hash = "a3641aed7efbd7ef781ba80530d51ba3ba0235eee1ca3e612a5d28d5935d076c"
+>>>>>>> e791d3b9 (Update `poetry.lock` after rebasing)
 
 [metadata.files]
 alabaster = [
