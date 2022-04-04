@@ -3,8 +3,9 @@ import math
 import traceback
 from typing import List, Dict, Optional, Tuple, Union
 from tenacity import (
+    before_sleep_log,
     retry,
-    retry_if_exception_type,
+    retry_if_exception,
     stop_after_attempt,
     wait_exponential,
 )
@@ -32,11 +33,8 @@ from hubspot.crm.associations.models import (
     AssociatedId,
 )
 from hubspot.crm.owners.models import PublicOwner
-from hubspot.crm.objects.exceptions import ApiException as ObjectApiException
 from hubspot.crm.schemas.exceptions import ApiException as SchemaApiException
 from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiException
-from hubspot.crm.owners.exceptions import ApiException as OwnersApiException
-from hubspot.crm.associations.exceptions import ApiException as AssociationsApiException
 
 
 class HubSpotAuthenticationError(Exception):
@@ -144,6 +142,106 @@ class ExtendedFilter(Filter):
             return True
 
         return self.to_dict() != other.to_dict()
+
+
+class SearchLexer:
+    """A class for analyzing a natural search list for ``RPA.Hubspot``"""
+
+    def __init__(
+        self, search_terms: List[str] = None, logger: logging.Logger = None
+    ) -> None:
+        self._search_terms = search_terms
+        if not logger:
+            self.logger = logging.getLogger(__name__)
+        else:
+            self.logger = logger
+
+    def _split(self, words: List, oper: str):
+        self.logger.debug(f"Words to split on operator '{oper}': {words}")
+        size = len(words)
+        first_index_list = [i + 1 for i, v in enumerate(words) if v == oper]
+        second_index_list = [i for i, v in enumerate(words) if v == oper]
+        self.logger.debug(f"Index list is: {first_index_list}")
+        split_result = [
+            words[i:j]
+            for i, j in zip(
+                [0] + first_index_list,
+                second_index_list + ([size] if second_index_list[-1] != size else []),
+            )
+        ]
+        self.logger.debug(f"Split result: {split_result}")
+        return split_result
+
+    def _process_and(self, words: List):
+        if words.count("AND") > 3:
+            raise HubSpotSearchParseError(
+                "No more than 3 logical 'AND' operators "
+                + "can be used between each 'OR' operator."
+            )
+        search_filters = []
+        if "AND" in words:
+            word_filters = self._split(words, "AND")
+            self.logger.debug(f"Found these groups of words as Filters: {word_filters}")
+            for word_filter in word_filters:
+                search_filters.append(self._process_filter(word_filter))
+        else:
+            self.logger.debug(f"Found this group of words as Filter: {words}")
+            search_filters.append(self._process_filter(words))
+        return search_filters
+
+    def _process_filter(self, words: List):
+        self.logger.debug(f"Attempting to turn {words} into Filter object.")
+        if len(words) not in (2, 3):
+            raise HubSpotSearchParseError(
+                "The provided words cannot be parsed as a search object. "
+                + f"The words {words} could not be parsed."
+            )
+        if words[1] in ("HAS_PROPERTY", "NOT_HAS_PROPERTY"):
+            search_filter = ExtendedFilter(property_name=words[0], operator=words[1])
+        elif words[1] in ("IN", "NOT_IN"):
+            search_filter = ExtendedFilter(
+                property_name=words[0], operator=words[1], values=words[2]
+            )
+        elif words[1] == "BETWEEN":
+            search_filter = ExtendedFilter(
+                property_name=words[0],
+                operator=words[1],
+                value=words[2][0],
+                high_value=words[2][1],
+            )
+        else:
+            search_filter = ExtendedFilter(
+                property_name=words[0], operator=words[1], value=words[2]
+            )
+        self.logger.debug(f"Resulting Filter object: {search_filter}")
+        return search_filter
+
+    def create_search_object(self, words: List[str] = None):
+        if not words:
+            if self._search_terms:
+                words = self._search_terms
+            else:
+                raise ValueError(
+                    "Words must not be null if class was not "
+                    + "initialized with search_terms."
+                )
+
+        if words.count("OR") > 3:
+            raise HubSpotSearchParseError(
+                "No more than 3 logical 'OR' operators can be used."
+            )
+        filter_groups = []
+        if "OR" in words:
+            word_groups = self._split(words, "OR")
+            self.logger.debug(
+                f"Found these groups of words as FilterGroups: {word_groups}"
+            )
+            for word_group in word_groups:
+                filter_groups.append(FilterGroup(self._process_and(word_group)))
+        else:
+            self.logger.debug(f"Found this group of words as FilterGroup: {words}")
+            filter_groups.append(FilterGroup(self._process_and(words)))
+        return ObjectSearchRequest(filter_groups)
 
 
 @library(scope="Global", doc_format="REST")
@@ -524,23 +622,26 @@ class Hubspot:
                 "This endpoint requires a private app authorization token to use."
             )
 
+    # pylint: disable=no-self-argument
+    def _is_rate_limit_error(error: Exception) -> bool:
+        return getattr(error, "status", None) == 429
+
+    # pylint: disable=no-self-argument,no-method-argument
+    def _before_sleep_log():
+        logger = logging.root
+        return before_sleep_log(logger, logging.DEBUG)
+
     @property
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def schemas(self) -> List[ObjectSchema]:
         self._require_authentication()
         if len(self._schemas) == 0:
-            try:
-                self.schemas = self.hs.crm.schemas.core_api.get_all()
-            except SchemaApiException as e:
-                if e.status == 429:
-                    self.logger.debug("Rate limit exceeded, retry should occur.")
-                    raise HubSpotRateLimitError from e
-                else:
-                    raise e
+            self.schemas = self.hs.crm.schemas.core_api.get_all()
         return self._schemas
 
     @schemas.setter
@@ -619,93 +720,11 @@ class Hubspot:
                 + f"Current accepted names are:\n{valid_names}."
             )
 
-    def _create_search_object(self, words: List):
-        def _split(words: List, oper: str):
-            self.logger.debug(f"Words to split on operator '{oper}': {words}")
-            size = len(words)
-            first_index_list = [i + 1 for i, v in enumerate(words) if v == oper]
-            second_index_list = [i for i, v in enumerate(words) if v == oper]
-            self.logger.debug(f"Index list is: {first_index_list}")
-            split_result = [
-                words[i:j]
-                for i, j in zip(
-                    [0] + first_index_list,
-                    second_index_list
-                    + ([size] if second_index_list[-1] != size else []),
-                )
-            ]
-            self.logger.debug(f"Split result: {split_result}")
-            return split_result
-
-        def _process_and(words: List):
-            if words.count("AND") > 3:
-                raise HubSpotSearchParseError(
-                    "No more than 3 logical 'AND' operators "
-                    + "can be used between each 'OR' operator."
-                )
-            search_filters = []
-            if "AND" in words:
-                word_filters = _split(words, "AND")
-                self.logger.debug(
-                    f"Found these groups of words as Filters: {word_filters}"
-                )
-                for word_filter in word_filters:
-                    search_filters.append(_process_filter(word_filter))
-            else:
-                self.logger.debug(f"Found this group of words as Filter: {words}")
-                search_filters.append(_process_filter(words))
-            return search_filters
-
-        def _process_filter(words: List):
-            self.logger.debug(f"Attempting to turn {words} into Filter object.")
-            if len(words) not in (2, 3):
-                raise HubSpotSearchParseError(
-                    "The provided words cannot be parsed as a search object. "
-                    + f"The words {words} could not be parsed."
-                )
-            if words[1] in ("HAS_PROPERTY", "NOT_HAS_PROPERTY"):
-                search_filter = ExtendedFilter(
-                    property_name=words[0], operator=words[1]
-                )
-            elif words[1] in ("IN", "NOT_IN"):
-                search_filter = ExtendedFilter(
-                    property_name=words[0], operator=words[1], values=words[2]
-                )
-            elif words[1] == "BETWEEN":
-                search_filter = ExtendedFilter(
-                    property_name=words[0],
-                    operator=words[1],
-                    value=words[2][0],
-                    high_value=words[2][1],
-                )
-            else:
-                search_filter = ExtendedFilter(
-                    property_name=words[0], operator=words[1], value=words[2]
-                )
-            self.logger.debug(f"Resulting Filter object: {search_filter}")
-            return search_filter
-
-        if words.count("OR") > 3:
-            raise HubSpotSearchParseError(
-                "No more than 3 logical 'OR' operators can be used."
-            )
-        filter_groups = []
-        if "OR" in words:
-            word_groups = _split(words, "OR")
-            self.logger.debug(
-                f"Found these groups of words as FilterGroups: {word_groups}"
-            )
-            for word_group in word_groups:
-                filter_groups.append(FilterGroup(_process_and(word_group)))
-        else:
-            self.logger.debug(f"Found this group of words as FilterGroup: {words}")
-            filter_groups.append(FilterGroup(_process_and(words)))
-        return ObjectSearchRequest(filter_groups)
-
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def _search_objects(
         self,
@@ -719,16 +738,9 @@ class Hubspot:
         else:
             search_object.limit = 100
         self.logger.debug(f"Search to use is:\n{search_object}")
-        try:
-            response = self.hs.crm.objects.search_api.do_search(
-                object_type, public_object_search_request=search_object
-            )
-        except ObjectApiException as e:
-            if e.status == 429:
-                self.logger.debug("Rate limit exceeded, retry should occur.")
-                raise HubSpotRateLimitError from e
-            else:
-                raise e
+        response = self.hs.crm.objects.search_api.do_search(
+            object_type, public_object_search_request=search_object
+        )
         self.logger.debug(f"First response received:\n{response}")
         results = []
         results.extend(response.results)
@@ -736,16 +748,9 @@ class Hubspot:
             search_object.after = response.paging.next.after
             while len(results) < max_results or max_results <= 0:
                 self.logger.debug(f"Current cursor is: {search_object.after}")
-                try:
-                    page = self.hs.crm.objects.search_api.do_search(
-                        object_type, public_object_search_request=search_object
-                    )
-                except ObjectApiException as e:
-                    if e.status == 429:
-                        self.logger.debug("Rate limit exceeded, retry should occur.")
-                        raise HubSpotRateLimitError from e
-                    else:
-                        raise e
+                page = self.hs.crm.objects.search_api.do_search(
+                    object_type, public_object_search_request=search_object
+                )
                 results.extend(page.results)
                 if page.paging is None:
                     break
@@ -993,7 +998,9 @@ class Hubspot:
         if string_query:
             search_object = ObjectSearchRequest(query=string_query)
         elif natural_search:
-            search_object = self._create_search_object(natural_search)
+            search_object = SearchLexer(
+                natural_search, self.logger
+            ).create_search_object()
         elif search:
             search_object = ObjectSearchRequest(
                 [
@@ -1018,9 +1025,10 @@ class Hubspot:
         )
 
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def _list_associations(
         self, object_type: str, object_id: str, to_object_type: str
@@ -1029,22 +1037,13 @@ class Hubspot:
         results = []
         after = None
         while True:
-            try:
-                page = self.hs.crm.objects.associations_api.get_all(
-                    self._validate_object_type(self._singularize_object(object_type)),
-                    object_id,
-                    self._validate_object_type(
-                        self._singularize_object(to_object_type)
-                    ),
-                    after=after,
-                    limit=500,
-                )
-            except ObjectApiException as e:
-                if e.status == 429:
-                    self.logger.debug("Rate limit exceeded, retry should occur.")
-                    raise HubSpotRateLimitError from e
-                else:
-                    raise e
+            page = self.hs.crm.objects.associations_api.get_all(
+                self._validate_object_type(self._singularize_object(object_type)),
+                object_id,
+                self._validate_object_type(self._singularize_object(to_object_type)),
+                after=after,
+                limit=500,
+            )
             results.extend(page.results)
             if page.paging is None:
                 break
@@ -1066,9 +1065,10 @@ class Hubspot:
         return output
 
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def _list_associations_by_batch(
         self, object_type: str, object_id: List[str], to_object_type: str
@@ -1081,20 +1081,11 @@ class Hubspot:
             batch_reader = BatchInputPublicObjectId(
                 inputs=[PublicObjectId(o) for o in batch]
             )
-            try:
-                response = self.hs.crm.associations.batch_api.read(
-                    self._singularize_object(self._get_custom_object_id(object_type)),
-                    self._singularize_object(
-                        self._get_custom_object_id(to_object_type)
-                    ),
-                    batch_input_public_object_id=batch_reader,
-                )
-            except AssociationsApiException as e:
-                if e.status == 429:
-                    self.logger.debug("Rate limit exceeded, retry should occur.")
-                    raise HubSpotRateLimitError from e
-                else:
-                    raise e
+            response = self.hs.crm.associations.batch_api.read(
+                self._singularize_object(self._get_custom_object_id(object_type)),
+                self._singularize_object(self._get_custom_object_id(to_object_type)),
+                batch_input_public_object_id=batch_reader,
+            )
             if getattr(response, "num_errors", None):
                 if response.num_errors >= len(object_id):
                     raise HubSpotBatchResponseError(
@@ -1148,9 +1139,10 @@ class Hubspot:
             return self._list_associations(object_type, object_id, to_object_type)
 
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def _get_object(
         self,
@@ -1162,29 +1154,23 @@ class Hubspot:
     ) -> Union[SimplePublicObject, SimplePublicObjectWithAssociations]:
         self._require_authentication()
 
-        try:
-            return self.hs.crm.objects.basic_api.get_by_id(
-                self._validate_object_type(object_type),
-                object_id,
-                properties=properties,
-                associations=(
-                    [self._validate_object_type(obj) for obj in associations]
-                    if associations
-                    else None
-                ),
-                id_property=id_property,
-            )
-        except ObjectApiException as e:
-            if e.status == 429:
-                self.logger.debug("Rate limit exceeded, retry should occur.")
-                raise HubSpotRateLimitError from e
-            else:
-                raise e
+        return self.hs.crm.objects.basic_api.get_by_id(
+            self._validate_object_type(object_type),
+            object_id,
+            properties=properties,
+            associations=(
+                [self._validate_object_type(obj) for obj in associations]
+                if associations
+                else None
+            ),
+            id_property=id_property,
+        )
 
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def _get_object_by_batch(
         self,
@@ -1203,17 +1189,10 @@ class Hubspot:
                 id_property=id_property,
                 inputs=[SimplePublicObjectId(o) for o in batch],
             )
-            try:
-                response = self.hs.crm.objects.batch_api.read(
-                    self._singularize_object(self._get_custom_object_id(object_type)),
-                    batch_read_input_simple_public_object_id=batch_reader,
-                )
-            except ObjectApiException as e:
-                if e.status == 429:
-                    self.logger.debug("Rate limit exceeded, retry should occur.")
-                    raise HubSpotRateLimitError from e
-                else:
-                    raise e
+            response = self.hs.crm.objects.batch_api.read(
+                self._singularize_object(self._get_custom_object_id(object_type)),
+                batch_read_input_simple_public_object_id=batch_reader,
+            )
             if getattr(response, "num_errors", None):
                 if response.num_errors >= len(object_id):
                     raise HubSpotBatchResponseError(
@@ -1234,9 +1213,10 @@ class Hubspot:
 
     @keyword
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def get_object(
         self,
@@ -1302,25 +1282,19 @@ class Hubspot:
         return self._pipelines
 
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def _set_pipelines(self, object_type: str, archived: bool = False):
         self._require_authentication()
         valid_object_type = self._validate_object_type(object_type)
-        try:
-            self._pipelines[valid_object_type] = (
-                self.hs.crm.pipelines.pipelines_api.get_all(
-                    valid_object_type, archived=archived
-                )
-            ).results
-        except PipelineApiException as e:
-            if e.status == 429:
-                self.logger.debug("Rate limit exceeded, retry should occur.")
-                raise HubSpotRateLimitError from e
-            else:
-                raise e
+        self._pipelines[valid_object_type] = (
+            self.hs.crm.pipelines.pipelines_api.get_all(
+                valid_object_type, archived=archived
+            )
+        ).results
 
     def _get_cached_pipeline(self, object_type, pipeline_id):
         return next(
@@ -1333,9 +1307,10 @@ class Hubspot:
         )
 
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def _get_set_a_pipeline(self, object_type, pipeline_id, use_cache=True):
         self._require_authentication()
@@ -1351,12 +1326,8 @@ class Hubspot:
                 if self.pipelines.get(valid_object_type) is not list:
                     self._pipelines[valid_object_type] = []
                 self._pipelines[valid_object_type].extend([response])
-            except PipelineApiException as e:
-                if e.status == 429:
-                    self.logger.debug("Rate limit exceeded, retry should occur.")
-                    raise HubSpotRateLimitError from e
-                else:
-                    self._set_pipelines(valid_object_type)
+            except PipelineApiException:
+                self._set_pipelines(valid_object_type)
         return self._get_cached_pipeline(valid_object_type, pipeline_id)
 
     def _get_pipelines(
@@ -1628,9 +1599,10 @@ class Hubspot:
 
     @keyword
     @retry(
-        retry=retry_if_exception_type(HubSpotRateLimitError),
+        retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
         wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
     )
     def get_owner_by_id(
         self, owner_id: str = "", owner_email: str = "", user_id: str = ""
@@ -1656,25 +1628,16 @@ class Hubspot:
 
         """
         self._require_authentication()
-        try:
-            if owner_id:
-                return self.hs.crm.owners.owners_api.get_by_id(
-                    owner_id, id_property="id"
-                )
-            elif owner_email:
-                return self.hs.crm.owners.owners_api.get_by_id(
-                    owner_email, id_property="email"
-                )
-            elif user_id:
-                return self.hs.crm.owners.owners_api.get_by_id(
-                    user_id, id_property="userId"
-                )
-        except OwnersApiException as e:
-            if e.status == 429:
-                self.logger.debug("Rate limit exceeded, retry should occur.")
-                raise HubSpotRateLimitError from e
-            else:
-                raise e
+        if owner_id:
+            return self.hs.crm.owners.owners_api.get_by_id(owner_id, id_property="id")
+        elif owner_email:
+            return self.hs.crm.owners.owners_api.get_by_id(
+                owner_email, id_property="email"
+            )
+        elif user_id:
+            return self.hs.crm.owners.owners_api.get_by_id(
+                user_id, id_property="userId"
+            )
 
     @keyword
     def get_owner_of_object(
