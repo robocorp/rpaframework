@@ -9,8 +9,6 @@ from tenacity import (
     wait_exponential,
 )
 
-from pprint import pprint
-
 from robot.api.deco import keyword, library
 
 import requests
@@ -27,7 +25,6 @@ from hubspot.crm.objects.models import (
 from hubspot.crm.schemas.models import ObjectSchema
 from hubspot.crm.pipelines.models import (
     Pipeline,
-    PipelineStage,
 )
 from hubspot.crm.associations.models import (
     BatchInputPublicObjectId,
@@ -463,7 +460,7 @@ class Hubspot:
     *membership* : ``str``
         One of ``PRIMARY``, ``SECONDARY``, or ``CHILD``.
 
-    """
+    """  # noqa: E501
 
     BUILTIN_SINGULAR_MAP = {
         "contacts": "contact",
@@ -579,10 +576,10 @@ class Hubspot:
             self._singular_map = self.BUILTIN_SINGULAR_MAP
             labels = [s.labels for s in self.schemas]
             self._singular_map.update(
-                {l.plural.lower(): l.singular.lower() for l in labels}
+                {lbl.plural.lower(): lbl.singular.lower() for lbl in labels}
             )
             self._singular_map.update(
-                {l.singular.lower(): l.singular.lower() for l in labels}
+                {lbl.singular.lower(): lbl.singular.lower() for lbl in labels}
             )
             self._singular_map.update(
                 {s.object_type_id: s.object_type_id for s in self.schemas}
@@ -594,10 +591,10 @@ class Hubspot:
             self._plural_map = self.BUILTIN_PLURAL_MAP
             labels = [s.labels for s in self.schemas]
             self._plural_map.update(
-                {l.singular.lower(): l.plural.lower() for l in labels}
+                {lbl.singular.lower(): lbl.plural.lower() for lbl in labels}
             )
             self._plural_map.update(
-                {l.plural.lower(): l.plural.lower() for l in labels}
+                {lbl.plural.lower(): lbl.plural.lower() for lbl in labels}
             )
             self._plural_map.update(
                 {s.object_type_id: s.object_type_id for s in self.schemas}
@@ -618,7 +615,8 @@ class Hubspot:
             return name.lower()
         else:
             raise HubSpotObjectTypeError(
-                f"Object type {name} does not exist. Current accepted names are:\n{valid_names}."
+                f"Object type {name} does not exist. "
+                + f"Current accepted names are:\n{valid_names}."
             )
 
     def _create_search_object(self, words: List):
@@ -642,7 +640,8 @@ class Hubspot:
         def _process_and(words: List):
             if words.count("AND") > 3:
                 raise HubSpotSearchParseError(
-                    "No more than 3 logical 'AND' operators can be used between each 'OR' operator."
+                    "No more than 3 logical 'AND' operators "
+                    + "can be used between each 'OR' operator."
                 )
             search_filters = []
             if "AND" in words:
@@ -661,7 +660,8 @@ class Hubspot:
             self.logger.debug(f"Attempting to turn {words} into Filter object.")
             if len(words) not in (2, 3):
                 raise HubSpotSearchParseError(
-                    f"The provided words cannot be parsed as a search object. The words {words} could not be parsed."
+                    "The provided words cannot be parsed as a search object. "
+                    + f"The words {words} could not be parsed."
                 )
             if words[1] in ("HAS_PROPERTY", "NOT_HAS_PROPERTY"):
                 search_filter = ExtendedFilter(
@@ -987,7 +987,7 @@ class Hubspot:
 
         :return: A list of found HubSpot objects of type ``SimplePublicObject``.
 
-        """
+        """  # noqa: E501
         self._require_authentication()
 
         if string_query:
@@ -1098,11 +1098,13 @@ class Hubspot:
             if getattr(response, "num_errors", None):
                 if response.num_errors >= len(object_id):
                     raise HubSpotBatchResponseError(
-                        f"Batch API failed all items with the following errors for batch index {i}:\n{response.errors}"
+                        "Batch API failed all items with the following "
+                        + f"errors for batch index {i}:\n{response.errors}"
                     )
                 elif response.num_errors > 0:
                     self.logger.warn(
-                        f"Batch API returned some errors for batch index {i}:\n{response.errors}"
+                        f"Batch API returned some errors for batch index {i}:\n"
+                        + str(response.errors)
                     )
             self.logger.debug(
                 f"Full results received for batch index {i}:\n{response.results}"
@@ -1118,13 +1120,15 @@ class Hubspot:
         """List associations of an object by type, you must define the ``object_type``
         with its ``object_id``. You must also provide the associated objects with
         ``to_object_type``. The API will return a list of dictionaries with
-        the associated object ``id`` and association ``type`` (e.g., ``contact_to_company``).
+        the associated object ``id`` and association ``type`` (e.g.,
+        ``contact_to_company``).
 
         You may provide a list of object IDs, if you do, the return object is a
         dictionary where the keys are the requested IDs and the value associated
         to each key is a list of associated objects (like a single search).
 
-        :param object_type: The type of object for the object ID provided, e.g. ``contact``.
+        :param object_type: The type of object for the object ID
+            provided, e.g. ``contact``.
         :param object_id: The HubSpot ID for the object of type ``object_type``.
             If you provide a list of object_ids, they will be searched via the
             batch read API.
@@ -1213,11 +1217,13 @@ class Hubspot:
             if getattr(response, "num_errors", None):
                 if response.num_errors >= len(object_id):
                     raise HubSpotBatchResponseError(
-                        f"Batch API failed all items with the following errors for batch index {i}:\n{response.errors}"
+                        "Batch API failed all items with the following "
+                        + f"errors for batch index {i}:\n{response.errors}"
                     )
                 elif response.num_errors > 0:
                     self.logger.warn(
-                        f"Batch API returned some errors for batch index {i}:\n{response.errors}"
+                        f"Batch API returned some errors for batch index {i}:\n"
+                        + str(response.errors)
                     )
             self.logger.debug(
                 f"Full results received for batch index {i}:\n{response.results}"
@@ -1409,8 +1415,8 @@ class Hubspot:
         or API ID code.
 
         The ``Pipeline`` object returned includes a ``stages`` property, which
-        is a list of ``PipelineStage`` objects. The ``stages`` of the pipeline represent
-        the discreet steps an object travels through within the pipeline.
+        is a list of ``PipelineStage`` objects. The ``stages`` of the pipeline
+        represent the discreet steps an object travels through within the pipeline.
         The order of the steps is determined by the ``display_order`` property.
         These properties can be accessessed with dot notation and generator
         comprehension; however, these are advanced Python concepts, so
@@ -1424,7 +1430,8 @@ class Hubspot:
             *** Tasks ***
             Get Step One
                 ${pipeline}=    Get pipeline    DEALS   default
-                ${step_one}=    Evaluate   next((s.label for s in $pipeline.stages if s.display_order == 0))
+                ${step_one}=    Evaluate
+                ... next((s.label for s in $pipeline.stages if s.display_order == 0))
 
         This keyword caches results for future use, to refresh results from
         Hupspot, set ``use_cache`` to ``False``.
@@ -1439,7 +1446,7 @@ class Hubspot:
 
         :return: The ``Pipeline`` object requested.
 
-        """
+        """  # noqa: E501
         self._require_authentication()
 
         return self._get_pipelines(
@@ -1584,7 +1591,8 @@ class Hubspot:
             return (stage_label, pipeline_stages[stage_key])
         else:
             raise HubSpotNoPipelineError(
-                f"The {object_type} object type with ID '{object_id}' is not in a pipeline."
+                f"The {object_type} object type with ID "
+                + f"'{object_id}' is not in a pipeline."
             )
 
     @keyword
@@ -1613,7 +1621,8 @@ class Hubspot:
         response = requests.request("GET", url, headers=headers, params=params)
         response.raise_for_status()
         self.logger.debug(
-            f"Response is:\nStatus: {response.status_code} {response.reason}\nContent: {response.json()}"
+            f"Response is:\nStatus: {response.status_code} {response.reason}\n"
+            + f"Content: {response.json()}"
         )
         return response.json()
 
@@ -1626,11 +1635,12 @@ class Hubspot:
     def get_owner_by_id(
         self, owner_id: str = "", owner_email: str = "", user_id: str = ""
     ) -> PublicOwner:
-        """Returns an owner object with details about a HubSpot user denoted
+        r"""Returns an owner object with details about a HubSpot user denoted
         as an owner of another HubSpot object, such as a contact or company.
-        You may provide the identifier as ``owner_id``, ``owner_email``, or ``user_id``.
-        The ``owner_id`` will correspond to fields from the CRM API while the ``user_id``
-        will correspond to the user provisioning API (see keyword \`Get User\`).
+        You may provide the identifier as ``owner_id``, ``owner_email``, or
+        ``user_id``. The ``owner_id`` will correspond to fields from the
+        CRM API while the ``user_id`` will correspond to the user
+        provisioning API (see keyword \`Get User\`).
 
         The owner object has the following attributes (accessible via
         dot notation):
@@ -1672,7 +1682,7 @@ class Hubspot:
         object: Union[SimplePublicObject, SimplePublicObjectWithAssociations, Dict],
         owner_property: str = None,
     ) -> PublicOwner:
-        """Looks up the owner of a given Hubspot object, the provided object
+        r"""Looks up the owner of a given Hubspot object, the provided object
         should be from this library or it should be a dictionary with an
         ``hubspot_owner_id`` key. If the object has no owner, this keyword
         returns None. See keyword \`Get owner by ID\` for information about
@@ -1708,7 +1718,8 @@ class Hubspot:
                 )
         except AttributeError:
             self.logger.debug(
-                "AttributeError caught while attempting to retrieve owner information from object."
+                "AttributeError caught while attempting to retrieve "
+                + "owner information from object."
                 + f"\nObject details: {object}."
                 + f"\nError details:\n{traceback.format_exc()}"
             )
