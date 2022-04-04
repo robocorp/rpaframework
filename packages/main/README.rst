@@ -160,6 +160,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `HTTP`_                    | Interact directly with web APIs              | x                      |
 +----------------------------+----------------------------------------------+------------------------+
+| `Hubspot`_                 | Access HubSpot CRM data objects              | x                      |
++----------------------------+----------------------------------------------+------------------------+
 | `Images`_                  | Manipulate images                            | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `JavaAccessBridge`_        | Control Java applications                    | x                      |
@@ -213,6 +215,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _FileSystem: https://rpaframework.org/libraries/filesystem/
 .. _FTP: https://rpaframework.org/libraries/ftp/
 .. _HTTP: https://rpaframework.org/libraries/http/
+.. _Hubspot: https://rpaframework.org/libraries/hubspot/
 .. _Images: https://rpaframework.org/libraries/images/
 .. _JavaAccessBridge: https://rpaframework.org/libraries/javaaccessbridge/
 .. _JSON: https://rpaframework.org/libraries/json/
