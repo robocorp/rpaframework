@@ -3,6 +3,7 @@ import importlib
 import json
 import logging
 from functools import wraps
+import os
 from pathlib import Path
 from time import sleep
 from typing import Any
@@ -32,13 +33,11 @@ def import_vault():
         return getattr(module, "Vault")
     except ModuleNotFoundError:
         pass
-
     try:
         module = importlib.import_module("RPA.Robocloud.Secrets")
         return getattr(module, "Secrets")
     except ModuleNotFoundError:
         pass
-
     return None
 
 
@@ -88,19 +87,15 @@ class AWSBase:
         region: str = None,
         use_robocloud_vault: bool = False,
     ):
-        if region is None:
-            region = self.region
         if use_robocloud_vault:
-            vault = import_vault()
-            vault_items = vault.get_secret(self.robocloud_vault_name)
-            vault_items = {k.upper(): v for (k, v) in vault_items.items()}
-            aws_key_id = vault_items["AWS_KEY_ID"]
-            aws_key = vault_items["AWS_KEY"]
+            aws_key_id, aws_key, region = self._get_secrets_from_cloud()
         else:
             if aws_key_id is None or aws_key_id.strip() == "":
                 aws_key_id = required_env("AWS_KEY_ID")
             if aws_key is None or aws_key.strip() == "":
                 aws_key = required_env("AWS_KEY")
+            if region is None or region.strip() == "":
+                region = os.getenv("AWS_REGION", self.region)
         if (
             aws_key_id is None
             or aws_key_id.strip() == ""
@@ -111,6 +106,7 @@ class AWSBase:
                 "AWS key ID and secret access key are required "
                 " to use AWS cloud service: %s" % service_name
             )
+        self.logger.info("Using region: %s", region)
         client = boto3.client(
             service_name,
             region_name=region,
@@ -126,6 +122,30 @@ class AWSBase:
         """
         if vault_name:
             self.robocloud_vault_name = vault_name
+
+    def _get_secrets_from_cloud(self):
+        vault = import_vault()
+        if not vault:
+            raise ImportError(
+                "RPA.Robocorp.Vault library is required to use Vault"
+                " with RPA.Cloud.AWS library"
+            )
+        if not self.robocloud_vault_name:
+            raise KeyError(
+                "Please set Vault secret name with " "Set_Robocloud_Vault keyword"
+            )
+        vault_items = vault().get_secret(self.robocloud_vault_name)
+        vault_items = {k.upper(): v for (k, v) in vault_items.items()}
+        try:
+            aws_key_id = vault_items["AWS_KEY_ID"]
+            aws_key = vault_items["AWS_KEY"]
+            region = vault_items.get("AWS_REGION", self.region)
+            return aws_key_id, aws_key, region
+        except KeyError as err:
+            raise KeyError(
+                "Secrets 'AWS_KEY_ID' and 'AWS_KEY' need to exist in the Vault '%s'"
+                % self.robocloud_vault_name
+            ) from err
 
 
 class ServiceS3(AWSBase):
@@ -968,6 +988,9 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
       with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
       names.
 
+    **Note.** Starting from `rpaframework-aws` **1.0.3** `region` can be given as environment
+    variable ``AWS_REGION`` or include as Robocloud Vault secret with the same key name.
+
     Method 1. credentials using environment variable
 
     .. code-block:: robotframework
@@ -978,7 +1001,7 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
         *** Tasks ***
         Init AWS services
             # NO parameters for client, expecting to get credentials
-            # with AWS_KEY and AWS_KEY_ID environment variable
+            # with AWS_KEY, AWS_KEY_ID and AWS_REGION environment variables
             Init S3 Client
 
     Method 2. credentials with keyword parameter
@@ -986,7 +1009,7 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
     .. code-block:: robotframework
 
         *** Settings ***
-        Library   RPA.Cloud.AWS
+        Library   RPA.Cloud.AWS   region=us-east-1
 
         *** Tasks ***
         Init AWS services
@@ -1032,11 +1055,11 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
           - python=3.7.5
           - pip=20.1
           - pip:
-            - rpaframework==13.0.1
-            - rpaframework-aws==1.0.1
+            - rpaframework==13.0.2
+            - rpaframework-aws==1.0.3
 
     Following declaration, `rpaframework[aws]`, will install all rpaframework libraries
-    plus `RPA.Cloud.AWS` as an optional package. This support is deprecated and will be
+    plus `RPA.Cloud.AWS` as an optional package. The extras support is deprecated and will be
     removed in the future major release of `rpaframework`.
 
     .. code-block:: yaml
@@ -1047,7 +1070,7 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
           - python=3.7.5
           - pip=20.1
           - pip:
-            - rpaframework[aws]==13.0.1
+            - rpaframework[aws]==13.0.2
 
     .. _boto3:
         https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
