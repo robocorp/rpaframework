@@ -151,12 +151,12 @@ class ExtendedFilter(Filter):
 
 @library(scope="Global", doc_format="REST")
 class Hubspot:
-    """``Hubspot`` is a library for accessing HubSpot using REST API. It
-    extends ``hubspot-api-client``_.
+    """*Hubspot* is a library for accessing HubSpot using REST API. It
+    extends `hubspot-api-client <https://pypi.org/project/hubspot-api-client/>`_.
 
     Current features of this library focus on retrieving CRM object data
     from HubSpot via API. For additional information, see
-    `Understanding the CRM <https://developers.hubspot.com/docs/api/crm/understanding-the-crm>`__.
+    `Understanding the CRM <https://developers.hubspot.com/docs/api/crm/understanding-the-crm>`_.
 
     Using Date Times When Searching
     ===============================
@@ -222,7 +222,7 @@ class Hubspot:
 
     This section describes the types of objects returned by this Library
     and their associated attributes. These attributes can be accessed via
-    dot-notation as described in the `Attribute Access` section below.
+    dot-notation as described in the `Attribute Access`_ section below.
 
     Attribute Access
     ----------------
@@ -232,11 +232,11 @@ class Hubspot:
     for dot-notation access of object properties. Properties (e.g.,
     those configured in Hubspot settings for each object) will be
     accessible in a Python dictionary attached to the ``properties`` attribute
-    of the returned object. See the `Attribute Definitions` section for
+    of the returned object. See the `Attribute Definitions`_ section for
     details of that associated attributes for all types returned by this
     library.
 
-    Example usage retrieving the ``city`` property of a Company object:
+    Example usage retrieving the ``city`` property of a *Company* object:
 
     .. code-block:: robotframework
 
@@ -285,24 +285,24 @@ class Hubspot:
     An object in HubSpot. The object itself does not describe what type
     it represents.
 
-    id : str
+    *id* : ``str``
         The HubSpot ID of the object.
 
-    properties : Dict[str, str]
+    *properties* : ``Dict[str, str]``
         A dictionary representing all returned properties associated
         to this object. Properties must be accessed as via standard
         dictionary subscription, e.g., ``properties["name"]``.
 
-    created_at : datetime
+    *created_at* : ``datetime``
         The timestamp when this object was created in HubSpot.
 
-    updated_at : datetime
+    *updated_at* : ``datetime``
         The last modified timestamp for this object.
 
-    archived : bool
+    *archived* : ``bool``
         Whether this object is archived.
 
-    archived_at : datetime
+    *archived_at* : ``datetime``
         The timestamp when this object was archived.
 
     SimplePublicObjectWithAssociations
@@ -311,27 +311,27 @@ class Hubspot:
     An object in HubSpot including associations to other objects. The
     object itself does not describe what type it represents.
 
-    id : str
+    *id* : ``str``
         The HubSpot ID of the object.
 
-    properties : Dict[str, str]
+    *properties* : ``Dict[str, str]``
         A dictionary representing all returned properties associated
         to this object. Properties must be accessed as via standard
         dictionary subscription, e.g., ``properties["name"]``.
 
-    created_at : datetime
+    *created_at* : ``datetime``
         The timestamp when this object was created in HubSpot.
 
-    updated_at : datetime
+    *updated_at* : ``datetime``
         The last modified timestamp for this object.
 
-    archived : bool
+    *archived* : ``bool``
         Whether this object is archived.
 
-    archived_at : datetime
+    *archived_at* : ``datetime``
         The timestamp when this object was archived.
 
-    associations : Dict[str, CollectionResponseAssociatedId]
+    *associations* : ``Dict[str, CollectionResponseAssociatedId]``
         A dictionary whose key will be the requested association type, e.g.,
         ``companies`` and associated value will be a container object
         with all the associations. See `CollectionResponseAssociatedId`_.
@@ -341,10 +341,10 @@ class Hubspot:
 
     The ID of an associated object, as well as the type of association.
 
-    id : str
+    *id* : ``str``
         The ID of the associated HubSpot object.
 
-    type : str
+    *type* : ``str``
         The type of association, e.g., ``deals_to_companies``.
 
     CollectionResponseAssociatedId
@@ -353,10 +353,10 @@ class Hubspot:
     A container object for a collection of `AssociatedId`_ objects returned
     by the API.
 
-    results : List[AssociatedId]
+    *results* : ``List[AssociatedId]``
         The list of `AssociatedId`_ objects returned by the API.
 
-    paging : Paging
+    *paging* : ``Paging``
         Used by this library to assist with retreiving multi-page
         API responses.
 
@@ -365,27 +365,27 @@ class Hubspot:
 
     A pipeline represents the steps objects travel through within HubSpot.
 
-    id : str
+    *id* : ``str``
         The HubSpot ID for the pipeline. All accounts start with one
         pipeline with the id ``default``.
 
-    label : str
+    *label* : ``str``
         The human-readabel label for the pipeline.
 
-    stages : List[PipelineStage]
+    *stages* : ``List[PipelineStage]``
         A list of `PipelineStage`_ objects in the order the object would
         follow through the pipeline.
 
-    created_at : datetime
+    *created_at* : ``datetime``
         The timestamp when this pipeline was created in HubSpot.
 
-    updated_at : datetime
+    *updated_at* : ``datetime``
         The last modified timestamp for this pipeline.
 
-    archived : bool
+    *archived* : ``bool``
         Whether this pipeline is archived.
 
-    display_order : int
+    *display_order* : ``int``
         The place in the list of pipelines where this pipeline is shown
         in the HubSpot UI.
 
@@ -394,26 +394,26 @@ class Hubspot:
 
     A pipeline stage is one of the various stages defined in a `Pipeline`_.
 
-    id : str
+    *id* : ``str``
         The HubSpot ID of the stage.
 
-    label : str
+    *label* : ``str``
         The human-readabel label for the stage.
 
-    metadata : Dict[str, str]
+    *metadata* : ``Dict[str, str]``
         A dictionary of additional data associated with ths stage, such
         as ``probability``.
 
-    created_at : datetime
+    *created_at* : ``datetime``
         The timestamp when this stage was created in HubSpot.
 
-    updated_at : datetime
+    *updated_at* : ``datetime``
         The last modified timestamp for this stage.
 
-    archived : bool
+    *archived* : ``bool``
         Whether this stage is archived.
 
-    archived_at : datetime
+    *archived_at* : ``datetime``
         The timestamp when this stage was archived.
 
     PublicOwner
@@ -422,31 +422,31 @@ class Hubspot:
     An owner in HubSpot. Owners of companies and deals are responsible
     for driving a sale to close or similar.
 
-    id : str
+    *id* : ``str``
         The HubSpot ID of the owner.
 
-    email : str
+    *email* : ``str``
         The owner's email address in HubSpot.
 
-    first_name : str
+    *first_name* : ``str``
         The owner's first name.
 
-    last_name : str
+    *last_name* : ``str``
         The owner's last name.
 
-    user_id : int
+    *user_id* : ``int``
         The associated user ID if the owner is a HubSpot user.
 
-    created_at : datetime
+    *created_at* : ``datetime``
         The timestamp when this owner was created in HubSpot.
 
-    updated_at : datetime
+    *updated_at* : ``datetime``
         The last modified timestamp for this owner.
 
-    archived : bool
+    *archived* : ``bool``
         Whether this owner is archived.
 
-    teams : List[PublicTeam]
+    *teams* : ``List[PublicTeam]``
         A list of teams the owner is in. See `PublicTeam`_.
 
     PublicTeam
@@ -454,17 +454,14 @@ class Hubspot:
 
     A team of owners in HubSpot
 
-    id : str
+    *id* : ``str``
         The HubSpot ID of the Team.
 
-    name : str
+    *name* : ``str``
         The Team's name.
 
-    membership : str
-        One of `PRIMARY`, `SECONDARY`, or `CHILD`.
-
-
-
+    *membership* : ``str``
+        One of ``PRIMARY``, ``SECONDARY``, or ``CHILD``.
 
     """
 
@@ -764,6 +761,7 @@ class Hubspot:
 
         :param access_token: The access token created for the Private App
         in your HubSpot account.
+
         """
         if self.hs is None or getattr(self.hs, "access_token", "") != access_token:
             self.hs = HubSpotApi(access_token=access_token)
@@ -787,6 +785,7 @@ class Hubspot:
         custom object schema from the API.
 
         :param api_key: The API key for the account to autheniticate to.
+
         """
         if self.hs is None or getattr(self.hs, "api_key", "") != api_key:
             self.hs = HubSpotApi(api_key=api_key)
@@ -817,16 +816,17 @@ class Hubspot:
     ) -> List[SimplePublicObject]:
         """Returns a list of objects of the specified ``type`` based on the
         provided ``search`` criteria. The following types are supported:
-         - COMPANIES
-         - CONTACTS
-         - DEALS
-         - FEEDBACK SUBMISSIONS
-         - PRODUCTS
-         - TICKETS
-         - LINE ITEMS
-         - QUOTES
-         - Custom objects, which can be provided as the name of the
-           object or the custom object ID in Hubspot.
+
+        - COMPANIES
+        - CONTACTS
+        - DEALS
+        - FEEDBACK SUBMISSIONS
+        - PRODUCTS
+        - TICKETS
+        - LINE ITEMS
+        - QUOTES
+        - Custom objects, which can be provided as the name of the
+          object or the custom object ID in Hubspot.
 
         Returns no more than ``max_results`` which defaults to 1,000 records.
         Provide 0 for all results.
@@ -906,10 +906,12 @@ class Hubspot:
 
         To include multiple filter criteria, you can group filters within
         ``filterGroups``:
-         - When multiple ``filters`` are present within a ``filterGroup``, they'll
-         be combined using a logical AND operator.
-         - When multiple ``filterGroups`` are included in the request body,
-         they'll be combined using a logical OR operator.
+
+        - When multiple ``filters`` are present within a ``filterGroup``, they'll
+          be combined using a logical AND operator.
+        - When multiple ``filterGroups`` are included in the request body,
+          they'll be combined using a logical OR operator.
+
         You can include a maximum of three filterGroups with up to three
         filters in each group.
 
@@ -975,15 +977,16 @@ class Hubspot:
         ``search_object`` or ``natural_search`` parameters.
 
         :param natural_search: all additional unlabeled parameters will
-        be parsed as a natural language search.
+            be parsed as a natural language search.
         :param search: the search object to use as search criteria.
         :param string_query: a string query can be provided instead of a
-        search object which is used as a text-based search in all default
-        searchable properties in Hubspot.
+            search object which is used as a text-based search in all default
+            searchable properties in Hubspot.
         :param properties: a list of strings representing return properties
-        to be included in the returned data.
+            to be included in the returned data.
 
         :return: A list of found HubSpot objects of type ``SimplePublicObject``.
+
         """
         self._require_authentication()
 
@@ -1123,12 +1126,13 @@ class Hubspot:
 
         :param object_type: The type of object for the object ID provided, e.g. ``contact``.
         :param object_id: The HubSpot ID for the object of type ``object_type``.
-        If you provide a list of object_ids, they will be searched via the
-        batch read API.
+            If you provide a list of object_ids, they will be searched via the
+            batch read API.
         :param to_object_type: The type of object associations to return.
 
         :return: A list of dictionaries representing the associated objects.
-        The associated objects are returned as ``AssociatedId`` objects.
+            The associated objects are returned as ``AssociatedId`` objects.
+
         """
 
         self._require_authentication()
@@ -1259,20 +1263,21 @@ class Hubspot:
         also validated against built-in objects and custom object schemas.
 
         :param object_type: The object type to be returned and that has
-        the ID indicated.
+            the ID indicated.
         :param object_id: The ID of the object to be returned.
         :param id_property: (Optional) Can be used to allow the API to
-        search the object database using an alternate property as the
-        unique ID.
+            search the object database using an alternate property as the
+            unique ID.
         :param properties: (Optional) A list of strings representing
-        property names to be included in the returned object.
-        Nonexistent properties are ignored.
+            property names to be included in the returned object.
+            Nonexistent properties are ignored.
         :param associations: (Optional) A list of strings representing
-        object types to retrieve as associated object IDs.
+            object types to retrieve as associated object IDs.
 
         :return: The requested object as a ``SimplePublicObject`` or
-        ``SimplePublicObjectWithAssociations`` type. If a batch request
-        was made, it returns a list of ``SimplePublicObject``.
+            ``SimplePublicObjectWithAssociations`` type. If a batch request
+            was made, it returns a list of ``SimplePublicObject``.
+
         """
 
         self._require_authentication()
@@ -1376,15 +1381,16 @@ class Hubspot:
         Hupspot, set ``use_cache`` to ``False``.
 
         :param object_type: The object type to be returned and that has
-        the ID indicated. Custom objects will be validated against the
-        schema.
+            the ID indicated. Custom objects will be validated against the
+            schema.
         :param archived: (Optional) Setting this to ``True`` will return
-        archived pipelines as well.
+            archived pipelines as well.
         :param use_cache: (Optional) Setting this to ``False`` will force
-        the system to recache the pipelines from Hubspot.
+            the system to recache the pipelines from Hubspot.
 
         :return: A list of ``Pipeline`` objects representing the pipelines
-        associated with the provided ``object_type``.
+            associated with the provided ``object_type``.
+
         """
         self._require_authentication()
 
@@ -1422,14 +1428,15 @@ class Hubspot:
         Hupspot, set ``use_cache`` to ``False``.
 
         :param object_type: The object type to be returned and that has
-        the ID indicated. Custom objects will be validated against the
-        schema.
+            the ID indicated. Custom objects will be validated against the
+            schema.
         :param pipeline_id: The numerical pipeline ID or the pipeline
-        label visibal in the HubSpot UI (case sensitive).
+            label visibal in the HubSpot UI (case sensitive).
         :param use_cache: (Optional) Setting this to ``False`` will force
-        the system to recache the pipelines from Hubspot.
+            the system to recache the pipelines from Hubspot.
 
         :return: The ``Pipeline`` object requested.
+
         """
         self._require_authentication()
 
@@ -1490,18 +1497,19 @@ class Hubspot:
         Hupspot, set ``use_cache`` to ``False``.
 
         :param object_type: The object type to be returned and that has
-        the ID indicated. Custom objects will be validated against the
-        schema.
+            the ID indicated. Custom objects will be validated against the
+            schema.
         :param pipeline_id: The numerical pipeline ID or the pipeline
-        label visibal in the HubSpot UI (case sensitive).
+            label visibal in the HubSpot UI (case sensitive).
         :param label_as_key: (Optional) Defaults to ``True``. Setting this
-        to ``False`` will cause the returned dictionary to key off of ``id``
-        instead of ``label``.
+            to ``False`` will cause the returned dictionary to key off of ``id``
+            instead of ``label``.
         :param use_cache: (Optional) Setting this to ``False`` will force
-        the system to recache the pipelines from Hubspot.
+            the system to recache the pipelines from Hubspot.
 
         :return: A dictionary representing the pipeline stages and associated
         data.
+
         """
         self._require_authentication()
         stages = self.get_pipeline(object_type, pipeline_id, use_cache).stages
@@ -1538,20 +1546,21 @@ class Hubspot:
         Hupspot, set ``use_cache`` to ``False``.
 
         :param object_type: The object type to be returned and that has
-        the ID indicated. Custom objects will be validated against the
-        schema.
+            the ID indicated. Custom objects will be validated against the
+            schema.
         :param object_id: The ID of the object to be returned.
         :param id_property: (Optional) Can be used to allow the API to
-        search the object database using an alternate property as the
-        unique ID.
+            search the object database using an alternate property as the
+            unique ID.
         :param label_as_key: (Optional) Defaults to ``True``. Setting this
-        to ``False`` will cause the returned dictionary to key off of ``id``
-        instead of ``label``.
+            to ``False`` will cause the returned dictionary to key off of ``id``
+            instead of ``label``.
         :param use_cache: (Optional) Setting this to ``False`` will force
-        the system to recache the pipelines from Hubspot.
+            the system to recache the pipelines from Hubspot.
 
         :return: A tuple where index 0 is the label or ID of the object's
-        current stage and index 1 is associated data.
+            current stage and index 1 is associated data.
+
         """
         self._require_authentication()
         hs_object = self.get_object(object_type, object_id, id_property)
@@ -1632,6 +1641,7 @@ class Hubspot:
         :param user_id: The owner's associated HubSpot user ID.
 
         :return: The requested ``PublicOwner`` object.
+
         """
         self._require_authentication()
         try:
@@ -1663,7 +1673,7 @@ class Hubspot:
         """Looks up the owner of a given Hubspot object, the provided object
         should be from this library or it should be a dictionary with an
         ``hubspot_owner_id`` key. If the object has no owner, this keyword
-        returns None. See keyword \`Get owner by ID\`` for information about
+        returns None. See keyword \`Get owner by ID\` for information about
         the returned object.
 
         You can use an alternate property as the owner ID property by providing
@@ -1671,11 +1681,12 @@ class Hubspot:
         this keyword will try the default ``hubspot_owner_id`` property, instead.
 
         :param object: A HubSpot object, best if the object was obtained
-        via another keyword such as \`Get owner by ID\`
+            via another keyword such as \`Get owner by ID\`
         :param owner_property: An alternate property of the provided
-        object to use as the field containing the Owner to be looked up.
+            object to use as the field containing the Owner to be looked up.
 
         :return: The ``PublicOwner`` of the provided object.
+
         """
         self._require_authentication()
         try:
