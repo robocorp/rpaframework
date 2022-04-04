@@ -820,6 +820,23 @@ urllib3 = ">=1.15"
 dev = ["pytest", "black"]
 
 [[package]]
+name = "hubspot-api-client"
+version = "4.0.6"
+description = "HubSpot API client"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+certifi = "*"
+python-dateutil = "*"
+six = ">=1.10"
+urllib3 = ">=1.15"
+
+[package.extras]
+dev = ["pytest", "black"]
+
+[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -1452,6 +1469,9 @@ mccabe = ">=0.6,<0.8"
 platformdirs = ">=2.2.0"
 tomli = { version = ">=1.1.0", markers = "python_version < \"3.11\"" }
 typing-extensions = { version = ">=3.10.0", markers = "python_version < \"3.10\"" }
+
+[package.extras]
+testutil = ["gitpython (>3)"]
 
 [package.extras]
 testutil = ["gitpython (>3)"]
@@ -2850,6 +2870,10 @@ dill = [
     { file = "dill-0.3.4-py2.py3-none-any.whl", hash = "sha256:7e40e4a70304fd9ceab3535d36e58791d9c4a776b38ec7f7ec9afc8d3dca4d4f" },
     { file = "dill-0.3.4.zip", hash = "sha256:9f9734205146b2b353ab3fec9af0070237b6ddae78452af83d2fca84d739e675" },
 ]
+dill = [
+    { file = "dill-0.3.4-py2.py3-none-any.whl", hash = "sha256:7e40e4a70304fd9ceab3535d36e58791d9c4a776b38ec7f7ec9afc8d3dca4d4f" },
+    { file = "dill-0.3.4.zip", hash = "sha256:9f9734205146b2b353ab3fec9af0070237b6ddae78452af83d2fca84d739e675" },
+]
 dnspython = [
     { file = "dnspython-2.2.1-py3-none-any.whl", hash = "sha256:a851e51367fb93e9e1361732c1d60dab63eff98712e503ea7d92e6eccb109b4f" },
     { file = "dnspython-2.2.1.tar.gz", hash = "sha256:0f7569a4a6ff151958b64304071d370daa3243d15941a7beedf0c9fe5105603e" },
@@ -3093,6 +3117,10 @@ htmldocx = [
 httplib2 = [
     { file = "httplib2-0.20.4-py3-none-any.whl", hash = "sha256:8b6a905cb1c79eefd03f8669fd993c36dc341f7c558f056cb5a33b5c2f458543" },
     { file = "httplib2-0.20.4.tar.gz", hash = "sha256:58a98e45b4b1a48273073f905d2961666ecf0fbac4250ea5b47aef259eb5c585" },
+]
+hubspot-api-client = [
+    { file = "hubspot-api-client-4.0.6.tar.gz", hash = "sha256:621195df4ce231a62bb39739384536441fef0abdede0134b84914b19d3033985" },
+    { file = "hubspot_api_client-4.0.6-py3-none-any.whl", hash = "sha256:45d693b273d5b8fe146f78c80f9aca8191eadf24767269f23a222805196ca539" },
 ]
 hubspot-api-client = [
     { file = "hubspot-api-client-4.0.6.tar.gz", hash = "sha256:621195df4ce231a62bb39739384536441fef0abdede0134b84914b19d3033985" },
