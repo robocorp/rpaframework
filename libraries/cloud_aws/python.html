@@ -239,6 +239,8 @@ in three different ways.</p>
 with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
 names.</p></li>
 </ul>
+<p><strong>Note.</strong> Starting from <cite>rpaframework-aws</cite> <strong>1.0.3</strong> <cite>region</cite> can be given as environment
+variable <code class="docutils literal notranslate"><span class="pre">AWS_REGION</span></code> or include as Robocloud Vault secret with the same key name.</p>
 <p>Method 1. credentials using environment variable</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
@@ -246,13 +248,13 @@ names.</p></li>
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Init AWS services</span><span class="p"></span>
 <span class="p">    </span><span class="c"># NO parameters for client, expecting to get credentials</span>
-<span class="p">    </span><span class="c"># with AWS_KEY and AWS_KEY_ID environment variable</span>
+<span class="p">    </span><span class="c"># with AWS_KEY, AWS_KEY_ID and AWS_REGION environment variables</span>
 <span class="p">    </span><span class="nf">Init S3 Client</span><span class="p"></span>
 </pre></div>
 </div>
 <p>Method 2. credentials with keyword parameter</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">   </span><span class="s">region=us-east-1</span><span class="p"></span>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Init AWS services</span><span class="p"></span>
@@ -290,12 +292,12 @@ Remember to check latest versions from <a class="reference external" href="https
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=20.1</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==13.0.1</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==1.0.1</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==13.0.2</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==1.0.3</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Following declaration, <cite>rpaframework[aws]</cite>, will install all rpaframework libraries
-plus <cite>RPA.Cloud.AWS</cite> as an optional package. This support is deprecated and will be
+plus <cite>RPA.Cloud.AWS</cite> as an optional package. The extras support is deprecated and will be
 removed in the future major release of <cite>rpaframework</cite>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span><span class="w"></span>
@@ -303,7 +305,7 @@ removed in the future major release of <cite>rpaframework</cite>.</p>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=20.1</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]==13.0.1</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]==13.0.2</span><span class="w"></span>
 </pre></div>
 </div>
 <p><strong>Example</strong></p>

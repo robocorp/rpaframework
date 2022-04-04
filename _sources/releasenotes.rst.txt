@@ -8,6 +8,18 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13.0.2 - 04 Apr 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix handling of ``cc`` and ``bcc`` fields
+  with ``Send Message`` keyword
+- Library **RPA.Cloud.AWS**:
+
+  - Fix initializing services with Vault (broken by **13.0.1** release)
+  - The service region can also be given as a environment variable or as Vault
+    key: ``AWS_REGION``
+  - Included and available as separate package ``rpaframework-aws`` **1.0.3**
+
 13.0.1 - 01 Apr 2022
 --------------------
 
