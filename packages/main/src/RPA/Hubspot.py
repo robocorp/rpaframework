@@ -760,7 +760,7 @@ class Hubspot:
         custom object schema from the API.
 
         :param access_token: The access token created for the Private App
-        in your HubSpot account.
+            in your HubSpot account.
 
         """
         if self.hs is None or getattr(self.hs, "access_token", "") != access_token:
@@ -1421,8 +1421,10 @@ class Hubspot:
 
         .. code-block:: robotframework
 
-            ${pipeline}=    Get pipeline    DEALS   default
-            ${step_one}=    Evaluate   next((s.label for s in $pipeline.stages if s.display_order == 0))
+            *** Tasks ***
+            Get Step One
+                ${pipeline}=    Get pipeline    DEALS   default
+                ${step_one}=    Evaluate   next((s.label for s in $pipeline.stages if s.display_order == 0))
 
         This keyword caches results for future use, to refresh results from
         Hupspot, set ``use_cache`` to ``False``.
@@ -1508,7 +1510,7 @@ class Hubspot:
             the system to recache the pipelines from Hubspot.
 
         :return: A dictionary representing the pipeline stages and associated
-        data.
+            data.
 
         """
         self._require_authentication()
