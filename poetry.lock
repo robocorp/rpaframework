@@ -151,14 +151,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.31"
+version = "1.21.32"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.31,<1.25.0"
+botocore = ">=1.24.32,<1.25.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -167,7 +167,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.31"
+version = "1.24.32"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -1680,7 +1680,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "13.0.1"
+version = "13.0.2"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1719,7 +1719,7 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
-rpaframework-aws = {version = "^1.0.2", optional = true}
+rpaframework-aws = {version = "^1.0.3", optional = true}
 rpaframework-core = "^7.0.1"
 rpaframework-dialogs = "^1.0.0"
 rpaframework-pdf = "^2.0.0"
@@ -1735,7 +1735,7 @@ xlutils = "^2.0.0"
 xlwt = "^1.3.0"
 
 [package.extras]
-aws = ["rpaframework-aws (>=1.0.2,<2.0.0)"]
+aws = ["rpaframework-aws (>=1.0.3,<2.0.0)"]
 cv = ["rpaframework-recognition (>=2.0.0,<3.0.0)"]
 playwright = ["robotframework-browser (>=11.1.0,<12.0.0)"]
 
@@ -1745,7 +1745,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "1.0.2"
+version = "1.0.3"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
@@ -2124,7 +2124,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "tqdm"
-version = "4.63.1"
+version = "4.64.0"
 description = "Fast, Extensible Progress Meter"
 category = "main"
 optional = false
@@ -2137,6 +2137,7 @@ importlib-resources = {version = "*", markers = "python_version < \"3.7\""}
 [package.extras]
 dev = ["py-make (>=0.1.0)", "twine", "wheel"]
 notebook = ["ipywidgets (>=6)"]
+slack = ["slack-sdk"]
 telegram = ["requests"]
 
 [[package]]
@@ -2426,12 +2427,12 @@ black = [
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.31-py3-none-any.whl", hash = "sha256:35f68b60652bff50e7bc926238443cb578f29f120908bb945e5640e90c6dd53e"},
-    {file = "boto3-1.21.31.tar.gz", hash = "sha256:7f3f93ee97215862ccd1a216f37deb7d64055c71f826b821805904df7b84ee6a"},
+    {file = "boto3-1.21.32-py3-none-any.whl", hash = "sha256:8e7a6d70cefa4e125466e0c467b489649cb72e3632997844bc3c382f948c46e4"},
+    {file = "boto3-1.21.32.tar.gz", hash = "sha256:05f4438607e560624caadb073c6c63181eda9bf74f8a9e4581e7b43d641cc683"},
 ]
 botocore = [
-    {file = "botocore-1.24.31-py3-none-any.whl", hash = "sha256:424fd94bef86a11f5340dc15eb50602dedec2ecc01c3a25c4fea23a2c8195500"},
-    {file = "botocore-1.24.31.tar.gz", hash = "sha256:3bb21e3ee5e4de3ed76bb99b4496a46e9b5c82e7b7fdb62702f11dda1b57b769"},
+    {file = "botocore-1.24.32-py3-none-any.whl", hash = "sha256:4f08eaaa93ee03f14de760031dd060cda3bd6aab734d194a916dbb8f7e5c7085"},
+    {file = "botocore-1.24.32.tar.gz", hash = "sha256:5c2dab84f21b2a8c00bdab2150149be0ca0c8e8dd0b38712fa3562af5cfe53a2"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3565,8 +3566,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework-aws-1.0.2.tar.gz", hash = "sha256:05eaf009d16c44ae2c77d5b95862b93d3a62c5ae090e580e69f9aaf9cf5146b4"},
-    {file = "rpaframework_aws-1.0.2-py3-none-any.whl", hash = "sha256:8e65411102e63623d1b05a187d06d365c57a7c100a17aa41f4f1864753abd587"},
+    {file = "rpaframework-aws-1.0.3.tar.gz", hash = "sha256:ba5b4282ae6c8a1842486110b4a7c4f94cc7be73dafd42c8130465e2c42ffbc7"},
+    {file = "rpaframework_aws-1.0.3-py3-none-any.whl", hash = "sha256:47ae3b4770100036409c2e96627dfba9b5c4d0a706d557e462a8a7b136d999e7"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-7.0.1.tar.gz", hash = "sha256:de1b6428f144198d2cfe953f71b18d1242810742575de891fcd9c4343cd1be05"},
@@ -3680,8 +3681,8 @@ tomli = [
     {file = "tomli-1.2.3.tar.gz", hash = "sha256:05b6166bff487dc068d322585c7ea4ef78deed501cc124060e0f238e89a9231f"},
 ]
 tqdm = [
-    {file = "tqdm-4.63.1-py2.py3-none-any.whl", hash = "sha256:6461b009d6792008d0000e1b0c7ca50195ec78c0e808a3a6b668a56a3236c3a5"},
-    {file = "tqdm-4.63.1.tar.gz", hash = "sha256:4230a49119a416c88cc47d0d2d32d5d90f1a282d5e497d49801950704e49863d"},
+    {file = "tqdm-4.64.0-py2.py3-none-any.whl", hash = "sha256:74a2cdefe14d11442cedf3ba4e21a3b84ff9a2dbdc6cfae2c34addb2a14a5ea6"},
+    {file = "tqdm-4.64.0.tar.gz", hash = "sha256:40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d"},
 ]
 tweepy = [
     {file = "tweepy-3.10.0-py2.py3-none-any.whl", hash = "sha256:5e22003441a11f6f4c2ea4d05ec5532f541e9f5d874c3908270f0c28e649b53a"},
