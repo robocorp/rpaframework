@@ -13,6 +13,8 @@ from tenacity import (
 from robot.api.deco import keyword, library
 
 import requests
+
+# pylint: disable=no-name-in-module
 from hubspot import HubSpot as HubSpotApi
 from hubspot.crm.objects.models import (
     PublicObjectSearchRequest as ObjectSearchRequest,
@@ -62,6 +64,17 @@ class HubSpotBatchResponseError(Exception):
 
 
 class ExtendedFilter(Filter):
+    """Extends the ``Filter`` class provided by ``hubspot-api-client``
+    to include the following additional attributes supported by
+    the REST API:
+
+    * ``values``
+    * ``high_value``
+
+    It also overloads the implementation of ``value`` to support the
+    existence of the other attributes.
+    """
+
     openapi_types = {
         "value": "str",
         "values": "list",
@@ -776,7 +789,7 @@ class Hubspot:
                 if e.status == 401:
                     raise HubSpotAuthenticationError(
                         "Authentication was not successful."
-                    )
+                    ) from e
                 else:
                     raise e
             self.logger.info("Authentication to Hubspot CRM API with token successful.")
@@ -800,7 +813,7 @@ class Hubspot:
                 if e.status == 401:
                     raise HubSpotAuthenticationError(
                         "Authentication was not successful."
-                    )
+                    ) from e
                 else:
                     raise e
             self.logger.info(
@@ -1093,13 +1106,14 @@ class Hubspot:
                         + f"errors for batch index {i}:\n{response.errors}"
                     )
                 elif response.num_errors > 0:
-                    self.logger.warn(
+                    self.logger.warning(
                         f"Batch API returned some errors for batch index {i}:\n"
                         + str(response.errors)
                     )
             self.logger.debug(
                 f"Full results received for batch index {i}:\n{response.results}"
             )
+            # pylint: disable=protected-access
             collected_responses.update({o._from.id: o.to for o in response.results})
 
         return collected_responses
@@ -1200,7 +1214,7 @@ class Hubspot:
                         + f"errors for batch index {i}:\n{response.errors}"
                     )
                 elif response.num_errors > 0:
-                    self.logger.warn(
+                    self.logger.warning(
                         f"Batch API returned some errors for batch index {i}:\n"
                         + str(response.errors)
                     )
@@ -1301,7 +1315,7 @@ class Hubspot:
             (
                 p
                 for p in self.pipelines.get(object_type, [])
-                if p.id == pipeline_id or p.label == pipeline_id
+                if pipeline_id in (p.id, p.label)
             ),
             None,
         )
@@ -1629,20 +1643,21 @@ class Hubspot:
         """
         self._require_authentication()
         if owner_id:
-            return self.hs.crm.owners.owners_api.get_by_id(owner_id, id_property="id")
+            id_property = "id"
         elif owner_email:
-            return self.hs.crm.owners.owners_api.get_by_id(
-                owner_email, id_property="email"
-            )
+            id_property = "email"
         elif user_id:
-            return self.hs.crm.owners.owners_api.get_by_id(
-                user_id, id_property="userId"
-            )
+            id_property = "userId"
+        else:
+            raise ValueError("All arguments cannot be empty.")
+        return self.hs.crm.owners.owners_api.get_by_id(
+            owner_id, id_property=id_property
+        )
 
     @keyword
     def get_owner_of_object(
         self,
-        object: Union[SimplePublicObject, SimplePublicObjectWithAssociations, Dict],
+        hs_object: Union[SimplePublicObject, SimplePublicObjectWithAssociations, Dict],
         owner_property: str = None,
     ) -> PublicOwner:
         r"""Looks up the owner of a given Hubspot object, the provided object
@@ -1667,23 +1682,23 @@ class Hubspot:
         try:
             if owner_property:
                 owner_id = getattr(
-                    object.properties,
+                    hs_object.properties,
                     owner_property,
-                    object.properties.get(
-                        owner_property, object.properties["hubspot_owner_id"]
+                    hs_object.properties.get(
+                        owner_property, hs_object.properties["hubspot_owner_id"]
                     ),
                 )
             else:
                 owner_id = getattr(
-                    object.properties,
+                    hs_object.properties,
                     "hubspot_owner_id",
-                    object.properties["hubspot_owner_id"],
+                    hs_object.properties["hubspot_owner_id"],
                 )
         except AttributeError:
             self.logger.debug(
                 "AttributeError caught while attempting to retrieve "
                 + "owner information from object."
-                + f"\nObject details: {object}."
+                + f"\nObject details: {hs_object}."
                 + f"\nError details:\n{traceback.format_exc()}"
             )
             return None
