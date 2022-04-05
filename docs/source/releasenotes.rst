@@ -8,6 +8,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13.0.3 - 05 Apr 2022
+--------------------
+
+- Library **RPA.Database**: Fix queries with ``pyodbc`` module. (affects Microsoft SQL
+  Server)
+
 13.0.2 - 04 Apr 2022
 --------------------
 
