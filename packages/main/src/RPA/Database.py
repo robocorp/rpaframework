@@ -1,7 +1,7 @@
 import importlib
 import logging
 import sys
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
@@ -80,9 +80,7 @@ class Configuration:
         return self.module_name, self.configuration
 
     def get(self, param, default=None):
-        return (
-            self.configuration[param] if param in self.configuration.keys() else default
-        )
+        return self.configuration.get(param, default) or default
 
     def set_val(self, param, value):
         self.configuration[param] = value
@@ -239,16 +237,16 @@ class Database:
             )
         elif module_name in ("pyodbc", "pypyodbc"):
             self.config.set_default_port(1433)
+            server = self.config.get("host", "")
+            if server:
+                server += f",{self.config.get('port')}"
+            db = self.config.get("database", "")
+            usr = self.config.get("username", "")
+            pwd = self.config.get("password", "")
             self.config.set_val(
                 "connect_string",
-                "DRIVER={SQL Server};SERVER=%s,%s;DATABASE=%s;UID=%s;PWD=%s"
-                % (
-                    self.config.get("host"),
-                    self.config.get("port"),
-                    self.config.get("database"),
-                    self.config.get("username"),
-                    self.config.get("password"),
-                ),
+                f"DRIVER={{SQL Server}};SERVER={server};DATABASE={db};"
+                f"UID={usr};PWD={pwd};",
             )
             self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(self.config.get("connect_string"))
@@ -560,8 +558,8 @@ class Database:
                 returning is None and self._is_returnable_statement(statement)
             )
             if should_return:
-                rows = cursor.fetchall()
-                columns = [c[0] for c in (cursor.description or [])]
+                rows = [tuple(row) for row in cursor.fetchall()]
+                columns = [col[0] for col in (cursor.description or [])]
                 self._result_assertion(rows, columns, assertion)
                 if as_table:
                     result = Table(rows, columns)
@@ -590,22 +588,24 @@ class Database:
 
         return False
 
-    def _result_assertion(self, rows: int, columns: int, assertion: str):
-        if assertion:
-            # pylint: disable=unused-variable
-            row_count = len(rows)  # noqa: F841
-            available_locals = {
-                "row_count": row_count,
-                "columns": columns,
-            }
-            # pylint: disable=W0123
-            valid = eval(assertion, {"__builtins__": None}, available_locals)
+    @staticmethod
+    def _result_assertion(rows: List[Tuple[Any]], columns: List[str], assertion: str):
+        if not assertion:
+            return
 
-            if not valid:
-                raise AssertionError(
-                    "Query assertion %s failed. Facts: %s"
-                    % (assertion, available_locals)
-                )
+        # pylint: disable=unused-variable
+        row_count = len(rows)  # noqa: F841
+        available_locals = {
+            "row_count": row_count,
+            "columns": columns,
+        }
+        # pylint: disable=W0123
+        valid = eval(assertion, {"__builtins__": None}, available_locals)
+
+        if not valid:
+            raise AssertionError(
+                "Query assertion %s failed. Facts: %s" % (assertion, available_locals)
+            )
 
     def __execute_sql(self, cursor, sqlStatement):
         return cursor.execute(sqlStatement)
