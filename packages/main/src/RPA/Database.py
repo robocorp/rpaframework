@@ -604,8 +604,7 @@ class Database:
 
         if not valid:
             raise AssertionError(
-                "Query assertion %s failed. Facts: %s"
-                % (assertion, available_locals)
+                "Query assertion %s failed. Facts: %s" % (assertion, available_locals)
             )
 
     def __execute_sql(self, cursor, sqlStatement):
