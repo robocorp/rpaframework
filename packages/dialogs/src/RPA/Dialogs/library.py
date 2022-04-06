@@ -821,6 +821,44 @@ class Dialogs:
 
         self.add_element(element)
 
+    @keyword("Add dialog next page button")
+    def add_dialog_next_page_button(
+        self,
+        label: str,
+    ) -> None:
+        """Next button todo
+
+        :param label: The text displayed on the button
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add heading       Send feedback
+            Add text input    email             label=E-mail address
+            Add dialog next page button         label=next
+            Add text input    name              label=Name
+            Add dialog next page button         label=next
+            Add checkbox      name=contact
+            ...     label=Do you want us to contact you?
+            ...     default=True
+            Add dialog next page button         label=next
+            Add text input    message
+            ...    label=Feedback
+            ...    placeholder=Enter feedback here
+            ...    rows=5
+            Add submit buttons  buttons=submit
+            ${result}=    Run dialog
+            Send feedback message    ${result.email}  ${result.message}
+            Run dialog
+        """
+        element = {
+            "type": "next",
+            "label": str(label),
+        }
+
+        self.add_element(element)
+
     @keyword("Add submit buttons", tags=["input"])
     def add_submit_buttons(
         self,

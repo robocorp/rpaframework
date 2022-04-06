@@ -529,7 +529,7 @@ six = ">=1.5"
 
 [[package]]
 name = "pywebview"
-version = "3.6.2"
+version = "3.6.3"
 description = "Build GUI for your Python program with JavaScript, HTML, and CSS."
 category = "main"
 optional = false
@@ -582,7 +582,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "robocorp-dialog"
-version = "0.4.1"
+version = "0.5.1"
 description = "Dialog for querying user input"
 category = "main"
 optional = false
@@ -603,7 +603,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "7.0.0"
+version = "7.0.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -662,7 +662,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "tqdm"
-version = "4.63.0"
+version = "4.64.0"
 description = "Fast, Extensible Progress Meter"
 category = "main"
 optional = false
@@ -675,6 +675,7 @@ importlib-resources = {version = "*", markers = "python_version < \"3.7\""}
 [package.extras]
 dev = ["py-make (>=0.1.0)", "twine", "wheel"]
 notebook = ["ipywidgets (>=6)"]
+slack = ["slack-sdk"]
 telegram = ["requests"]
 
 [[package]]
@@ -755,7 +756,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "5a2126b9c8a99e9923dda3bed308647c5983adcb0a6afc8500ed33e9cf30a293"
+content-hash = "3ae9b9b5d4ba1861fe338dbe0e2fa9634ff9628cf93f2b46d49bca433760ae50"
 
 [metadata.files]
 appdirs = [
@@ -1199,8 +1200,8 @@ python-dateutil = [
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
 ]
 pywebview = [
-    {file = "pywebview-3.6.2-py3-none-any.whl", hash = "sha256:43ec12cf720cc018a64c2234fef4f383737299237e22c73b152d1da62284c5da"},
-    {file = "pywebview-3.6.2.tar.gz", hash = "sha256:5f52f30a8df3b635506ee3ed744c281b60537085f052f22cb5f9506084ca3f25"},
+    {file = "pywebview-3.6.3-py3-none-any.whl", hash = "sha256:4316aec32801a48a7a1ec6f70575c0b69854d76b090033530b70581ed3d545d7"},
+    {file = "pywebview-3.6.3.tar.gz", hash = "sha256:edc82f0ce79f6514411c32f7057b2d5f99f1e9f6b15a373c3c1bf403b327b093"},
 ]
 pywin32 = [
     {file = "pywin32-303-cp310-cp310-win32.whl", hash = "sha256:6fed4af057039f309263fd3285d7b8042d41507343cd5fa781d98fcc5b90e8bb"},
@@ -1252,16 +1253,16 @@ requests = [
     {file = "requests-2.27.1.tar.gz", hash = "sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"},
 ]
 robocorp-dialog = [
-    {file = "robocorp-dialog-0.4.1.tar.gz", hash = "sha256:caebcc6c9d05e0ab39506e8451077ee25ff31f121806d09516696fc5c5fbc526"},
-    {file = "robocorp_dialog-0.4.1-py3-none-any.whl", hash = "sha256:db3867bf5bd843bdc0d768bcd8d81335de0724b37388e6cb67596b631d37b3b9"},
+    {file = "robocorp-dialog-0.5.1.tar.gz", hash = "sha256:276bca37a9e2cb2594c497dd0b5742512d9156a4a106f45bd69dacdab240aa8b"},
+    {file = "robocorp_dialog-0.5.1-py3-none-any.whl", hash = "sha256:f0692327b80dca136dff6621a2de08dab4a0f9da6424c1f8cb9c61949a6c26b7"},
 ]
 robotframework = [
     {file = "robotframework-4.1.3-py2.py3-none-any.whl", hash = "sha256:06c025e5b640a378d372292921f49c28f7d025e4876b7b8f98ecc56a3def9dc0"},
     {file = "robotframework-4.1.3.zip", hash = "sha256:d2675cbe3e5a4c90be3ddb61be3b88cc0d6ff503c298ad8f8a78aad14e71e886"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-7.0.0.tar.gz", hash = "sha256:2e27292c8f4f2a171df1f2eede93ddbb52402b1d8e89b565c45adb3fd65f373b"},
-    {file = "rpaframework_core-7.0.0-py3-none-any.whl", hash = "sha256:e6632a18c82dbaa5a5955b7630c1cfce26b6898e337084115616b3496ff6d6a0"},
+    {file = "rpaframework-core-7.0.1.tar.gz", hash = "sha256:de1b6428f144198d2cfe953f71b18d1242810742575de891fcd9c4343cd1be05"},
+    {file = "rpaframework_core-7.0.1-py3-none-any.whl", hash = "sha256:d7280d2f1e34107c3eaf7068bf232cb45808d3f70787d47848133b7220c58aea"},
 ]
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
@@ -1284,8 +1285,8 @@ tomli = [
     {file = "tomli-1.2.3.tar.gz", hash = "sha256:05b6166bff487dc068d322585c7ea4ef78deed501cc124060e0f238e89a9231f"},
 ]
 tqdm = [
-    {file = "tqdm-4.63.0-py2.py3-none-any.whl", hash = "sha256:e643e071046f17139dea55b880dc9b33822ce21613b4a4f5ea57f202833dbc29"},
-    {file = "tqdm-4.63.0.tar.gz", hash = "sha256:1d9835ede8e394bb8c9dcbffbca02d717217113adc679236873eeaac5bc0b3cd"},
+    {file = "tqdm-4.64.0-py2.py3-none-any.whl", hash = "sha256:74a2cdefe14d11442cedf3ba4e21a3b84ff9a2dbdc6cfae2c34addb2a14a5ea6"},
+    {file = "tqdm-4.64.0.tar.gz", hash = "sha256:40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d"},
 ]
 typed-ast = [
     {file = "typed_ast-1.4.3-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:2068531575a125b87a41802130fa7e29f26c09a2833fea68d9a40cf33902eba6"},
