@@ -4,6 +4,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Database**: Fix configuration value retrieval. (:pr:`456`)
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -12,7 +14,7 @@ Release notes
 --------------------
 
 - Library **RPA.Database**: Fix queries with ``pyodbc`` module. (affects Microsoft SQL
-  Server)
+  Server, :issue:`443`)
 
 13.0.2 - 04 Apr 2022
 --------------------
