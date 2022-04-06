@@ -826,9 +826,12 @@ class Dialogs:
         self,
         label: str,
     ) -> None:
-        """Next button todo
+        """Add a next page button
 
         :param label: The text displayed on the button
+
+        The next page button will delimit the next elements of the dialog in a separate view,
+        so that they will only be displayed after pressing the button, creating a wizard experience in the dialog.
 
         Example:
 
