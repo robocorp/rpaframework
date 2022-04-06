@@ -80,7 +80,9 @@ class Configuration:
         return self.module_name, self.configuration
 
     def get(self, param, default=None):
-        return self.configuration.get(param, default) or default
+        # Missing values are still present in configuration as nulls.
+        value = self.configuration.get(param)
+        return value if value is not None else default
 
     def set_val(self, param, value):
         self.configuration[param] = value
