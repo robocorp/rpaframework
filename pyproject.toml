@@ -20,7 +20,7 @@ sphinx_rtd_theme = "^0.4.3"
 toml = "^0.10.1"
 sphinx-markdown-builder = "^0.5.4"
 robotframework-docgen = "^0.14.0"
-pylint = "^2.6.0"
+pylint = "^2.4.4, <2.13"
 sphinx-issues = "^1.2.0"
 docutils = "0.16"
 black = {version = "^21.7b0", allow-prereleases = true}

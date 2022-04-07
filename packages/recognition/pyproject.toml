@@ -42,7 +42,7 @@ pytesseract = "^0.3.6"
 [tool.poetry.dev-dependencies]
 black = {version = "^21.5b0", allow-prereleases = true}
 flake8 = "^3.7.9"
-pylint = "^2.4.4"
+pylint = "^2.4.4, <2.13"
 pytest = "^6.1.2"
 mock = "^4.0.2"
 pytest-cov = "^2.10.1"
