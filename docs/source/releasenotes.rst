@@ -8,6 +8,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13.2.0 - 07 Apr 2022
+--------------------
+
+- New library **RPA.Hubspot**: Library support for Control Room Process API
+
 13.1.0 - 07 Apr 2022
 --------------------
 
