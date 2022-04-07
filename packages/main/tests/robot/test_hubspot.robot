@@ -55,7 +55,7 @@ Documentation     API keys and variables must be provided in ``./testvars.py``. 
 ...               |    EXPECTED_CUSTOM_OWNER = "123654987"
 Library           RPA.Hubspot
 Library           Collections
-Variables         ./testvars.py
+Variables         ./hubspot_testvars.py
 Force Tags        hubspot
 
 *** Variables ***
