@@ -1226,12 +1226,6 @@ class Hubspot:
         return collected_responses
 
     @keyword
-    @retry(
-        retry=retry_if_exception(_is_rate_limit_error),
-        stop=stop_after_attempt(10),
-        wait=wait_exponential(multiplier=2, min=0.1),
-        before_sleep=_before_sleep_log(),
-    )
     def get_object(
         self,
         object_type: str,
