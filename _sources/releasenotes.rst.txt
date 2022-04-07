@@ -5,6 +5,7 @@ Release notes
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 - Library **RPA.Database**: Fix configuration value retrieval. (:pr:`456`)
+- Library **RPA.Dialogs**: Add next button to support wizard style dialogs. (:issue:`452`)
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
