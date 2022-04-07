@@ -1532,7 +1532,7 @@ python-versions = "*"
 
 [[package]]
 name = "robocorp-dialog"
-version = "0.4.1"
+version = "0.5.1"
 description = "Dialog for querying user input"
 category = "main"
 optional = false
@@ -1706,7 +1706,7 @@ robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
 rpaframework-aws = {version = "^1.0.3", optional = true}
 rpaframework-core = "^7.0.1"
-rpaframework-dialogs = "^1.0.0"
+rpaframework-dialogs = "^1.1.0"
 rpaframework-pdf = "^2.0.0"
 rpaframework-recognition = {version = "^2.0.0", optional = true}
 rpaframework-windows = {version = "^3.0.0", markers = "sys_platform == \"win32\""}
@@ -1761,14 +1761,14 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "1.0.0"
+version = "1.1.0"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
-robocorp-dialog = ">=0.4.1,<0.5.0"
+robocorp-dialog = ">=0.5.1,<0.6.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
 rpaframework-core = ">=7.0.0,<8.0.0"
 
@@ -3503,8 +3503,8 @@ rfc3987 = [
     {file = "rfc3987-1.3.8.tar.gz", hash = "sha256:d3c4d257a560d544e9826b38bc81db676890c79ab9d7ac92b39c7a253d5ca733"},
 ]
 robocorp-dialog = [
-    {file = "robocorp-dialog-0.4.1.tar.gz", hash = "sha256:caebcc6c9d05e0ab39506e8451077ee25ff31f121806d09516696fc5c5fbc526"},
-    {file = "robocorp_dialog-0.4.1-py3-none-any.whl", hash = "sha256:db3867bf5bd843bdc0d768bcd8d81335de0724b37388e6cb67596b631d37b3b9"},
+    {file = "robocorp-dialog-0.5.1.tar.gz", hash = "sha256:276bca37a9e2cb2594c497dd0b5742512d9156a4a106f45bd69dacdab240aa8b"},
+    {file = "robocorp_dialog-0.5.1-py3-none-any.whl", hash = "sha256:f0692327b80dca136dff6621a2de08dab4a0f9da6424c1f8cb9c61949a6c26b7"},
 ]
 robotframework = [
     {file = "robotframework-4.1.3-py2.py3-none-any.whl", hash = "sha256:06c025e5b640a378d372292921f49c28f7d025e4876b7b8f98ecc56a3def9dc0"},
@@ -3555,8 +3555,8 @@ rpaframework-core = [
     {file = "rpaframework_core-7.0.1-py3-none-any.whl", hash = "sha256:d7280d2f1e34107c3eaf7068bf232cb45808d3f70787d47848133b7220c58aea"},
 ]
 rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-1.0.0.tar.gz", hash = "sha256:bb46fda93db3830dcc22e907b8977e8eeebd24209ddcf522ab755fcc34ce6d81"},
-    {file = "rpaframework_dialogs-1.0.0-py3-none-any.whl", hash = "sha256:4bb3be88c9f5eb16ba8eab9a7545ad1f9d8afafec884b2accec8ec5366ac026a"},
+    {file = "rpaframework-dialogs-1.1.0.tar.gz", hash = "sha256:ade8b02ef05c3c528a99cdc1e25221c02f270c304d3483b58a1a0788074349a1"},
+    {file = "rpaframework_dialogs-1.1.0-py3-none-any.whl", hash = "sha256:97cc9782e60e741e8674eec733db94c49ec65f8978d918265cb124aa08adbedc"},
 ]
 rpaframework-google = [
     {file = "rpaframework-google-3.0.0.tar.gz", hash = "sha256:c34a0135466fd93b3bcb7ec27e6d263f531e2136dad35458d5b9423dc6842844"},
