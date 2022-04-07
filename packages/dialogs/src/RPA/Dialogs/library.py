@@ -821,7 +821,7 @@ class Dialogs:
 
         self.add_element(element)
 
-    @keyword("Add dialog next page button")
+    @keyword
     def add_dialog_next_page_button(
         self,
         label: str,
