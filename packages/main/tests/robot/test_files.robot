@@ -207,8 +207,9 @@ Test Join Path
     ...    Join path    ${/}    home    user    folder    test    file.ext
 
 Test Absolute Path
-    Verify equal    ${MOCK_WORKSPACE}${/}subfolder${/}first${/}stuff.ext
-    ...    Absolute path    subfolder/first/stuff.ext
+    ${first_path}=    Set Variable    ${MOCK_WORKSPACE}${/}subfolder${/}first${/}stuff.ext
+    ${second_path}=    Absolute path    subfolder/first/stuff.ext
+    Should Be Equal    ${first_path}    ${second_path}    ignore_case=True
 
 Test Normalize Path
     Verify equal    subfolder${/}stuff.ext
