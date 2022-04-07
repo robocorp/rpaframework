@@ -4,12 +4,15 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Database**: Fix configuration value retrieval. (:pr:`456`)
-- Library **RPA.Dialogs**: Add next button to support wizard style dialogs. (:issue:`452`)
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+13.1.0 - 07 Apr 2022
+--------------------
+
+- Library **RPA.Database**: Fix configuration value retrieval. (:pr:`456`)
+- Library **RPA.Dialogs**: Add next button to support wizard style dialogs. (:issue:`452`)
 
 13.0.3 - 05 Apr 2022
 --------------------

@@ -64,7 +64,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "authlib"
-version = "1.0.0"
+version = "1.0.1"
 description = "The ultimate Python library in building OAuth and OpenID Connect servers and clients."
 category = "main"
 optional = false
@@ -159,14 +159,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.33"
+version = "1.21.35"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.33,<1.25.0"
+botocore = ">=1.24.35,<1.25.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -175,7 +175,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.33"
+version = "1.24.35"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -1269,7 +1269,7 @@ python-versions = "*"
 
 [[package]]
 name = "pywebview"
-version = "3.6.2"
+version = "3.6.3"
 description = "Build GUI for your Python program with JavaScript, HTML, and CSS."
 category = "main"
 optional = false
@@ -1395,7 +1395,7 @@ python-versions = "*"
 
 [[package]]
 name = "robocorp-dialog"
-version = "0.4.1"
+version = "0.5.1"
 description = "Dialog for querying user input"
 category = "main"
 optional = false
@@ -1551,14 +1551,14 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "1.0.0"
+version = "1.1.0"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
-robocorp-dialog = ">=0.4.1,<0.5.0"
+robocorp-dialog = ">=0.5.1,<0.6.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
 rpaframework-core = ">=7.0.0,<8.0.0"
 
@@ -1678,7 +1678,7 @@ python-versions = "*"
 
 [[package]]
 name = "soupsieve"
-version = "2.3.1"
+version = "2.3.2"
 description = "A modern CSS selector implementation for Beautiful Soup."
 category = "main"
 optional = false
@@ -2099,7 +2099,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "b2f67b1d068795b2bbd4c21eb483c8f512972fd9814302f6dde8fc3bf30c6d1c"
+content-hash = "35ab512ce03809e5ba147d5abad0e528d4908ee25b96a8a0a0e186956efe71bb"
 
 [metadata.files]
 alabaster = [
@@ -2127,8 +2127,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 authlib = [
-    {file = "Authlib-1.0.0-py2.py3-none-any.whl", hash = "sha256:e8d589a886b5bcde64ebf961157bf619d613666ef6703822c06254c5b108b3e6"},
-    {file = "Authlib-1.0.0.tar.gz", hash = "sha256:2b13b4ba6465bdc46b89b1a07b2707c85b3434502d5a5fe202f5bdef8ebd5ac9"},
+    {file = "Authlib-1.0.1-py2.py3-none-any.whl", hash = "sha256:1286e2d5ef5bfe5a11cc2d0a0d1031f0393f6ce4d61f5121cfe87fa0054e98bd"},
+    {file = "Authlib-1.0.1.tar.gz", hash = "sha256:6e74a4846ac36dfc882b3cc2fbd3d9eb410a627f2f2dc11771276655345223b1"},
 ]
 babel = [
     {file = "Babel-2.9.1-py2.py3-none-any.whl", hash = "sha256:ab49e12b91d937cd11f0b67cb259a57ab4ad2b59ac7a3b41d6c06c0ac5b0def9"},
@@ -2168,12 +2168,12 @@ black = [
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.33-py3-none-any.whl", hash = "sha256:9d8ddfefe0c4a993423e2c40831034c78fcb7b3425bf3610cf0087301dd9098b"},
-    {file = "boto3-1.21.33.tar.gz", hash = "sha256:c06b9b29f80da8cf6d9fac8f41d74a74d0f5347927acf11b15428b295fcbdd31"},
+    {file = "boto3-1.21.35-py3-none-any.whl", hash = "sha256:4fb810755bca4696effbeb0c6f792295795fae52e895638038dff53965f3f423"},
+    {file = "boto3-1.21.35.tar.gz", hash = "sha256:ab6e001ba9de1db986634424abff6c79d938c15d0d2fa3ef95eb0939c120b4f6"},
 ]
 botocore = [
-    {file = "botocore-1.24.33-py3-none-any.whl", hash = "sha256:16ca4a2b72fef8caaf0eeb423dbf6cd64938442c4b9f96deb672468229e5e3f9"},
-    {file = "botocore-1.24.33.tar.gz", hash = "sha256:ea5fd180082030a6c33fa19bf011d72970f3ed23cfff1b41413069e325768103"},
+    {file = "botocore-1.24.35-py3-none-any.whl", hash = "sha256:734aa598af5d6bc0351e6ecce4a91b0b6ccf245febfd8d4de8425211aada5f36"},
+    {file = "botocore-1.24.35.tar.gz", hash = "sha256:36b5422d8f0c312983582b8b4b056c98e1fd6121cb0b2ddb1f67e882e1ae6867"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3148,8 +3148,8 @@ pytz = [
     {file = "pytz-2022.1.tar.gz", hash = "sha256:1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7"},
 ]
 pywebview = [
-    {file = "pywebview-3.6.2-py3-none-any.whl", hash = "sha256:43ec12cf720cc018a64c2234fef4f383737299237e22c73b152d1da62284c5da"},
-    {file = "pywebview-3.6.2.tar.gz", hash = "sha256:5f52f30a8df3b635506ee3ed744c281b60537085f052f22cb5f9506084ca3f25"},
+    {file = "pywebview-3.6.3-py3-none-any.whl", hash = "sha256:4316aec32801a48a7a1ec6f70575c0b69854d76b090033530b70581ed3d545d7"},
+    {file = "pywebview-3.6.3.tar.gz", hash = "sha256:edc82f0ce79f6514411c32f7057b2d5f99f1e9f6b15a373c3c1bf403b327b093"},
 ]
 pywin32 = [
     {file = "pywin32-303-cp310-cp310-win32.whl", hash = "sha256:6fed4af057039f309263fd3285d7b8042d41507343cd5fa781d98fcc5b90e8bb"},
@@ -3225,8 +3225,8 @@ rfc3987 = [
     {file = "rfc3987-1.3.8.tar.gz", hash = "sha256:d3c4d257a560d544e9826b38bc81db676890c79ab9d7ac92b39c7a253d5ca733"},
 ]
 robocorp-dialog = [
-    {file = "robocorp-dialog-0.4.1.tar.gz", hash = "sha256:caebcc6c9d05e0ab39506e8451077ee25ff31f121806d09516696fc5c5fbc526"},
-    {file = "robocorp_dialog-0.4.1-py3-none-any.whl", hash = "sha256:db3867bf5bd843bdc0d768bcd8d81335de0724b37388e6cb67596b631d37b3b9"},
+    {file = "robocorp-dialog-0.5.1.tar.gz", hash = "sha256:276bca37a9e2cb2594c497dd0b5742512d9156a4a106f45bd69dacdab240aa8b"},
+    {file = "robocorp_dialog-0.5.1-py3-none-any.whl", hash = "sha256:f0692327b80dca136dff6621a2de08dab4a0f9da6424c1f8cb9c61949a6c26b7"},
 ]
 robotframework = [
     {file = "robotframework-4.1.3-py2.py3-none-any.whl", hash = "sha256:06c025e5b640a378d372292921f49c28f7d025e4876b7b8f98ecc56a3def9dc0"},
@@ -3272,8 +3272,8 @@ rpaframework-core = [
     {file = "rpaframework_core-7.0.1-py3-none-any.whl", hash = "sha256:d7280d2f1e34107c3eaf7068bf232cb45808d3f70787d47848133b7220c58aea"},
 ]
 rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-1.0.0.tar.gz", hash = "sha256:bb46fda93db3830dcc22e907b8977e8eeebd24209ddcf522ab755fcc34ce6d81"},
-    {file = "rpaframework_dialogs-1.0.0-py3-none-any.whl", hash = "sha256:4bb3be88c9f5eb16ba8eab9a7545ad1f9d8afafec884b2accec8ec5366ac026a"},
+    {file = "rpaframework-dialogs-1.1.0.tar.gz", hash = "sha256:ade8b02ef05c3c528a99cdc1e25221c02f270c304d3483b58a1a0788074349a1"},
+    {file = "rpaframework_dialogs-1.1.0-py3-none-any.whl", hash = "sha256:97cc9782e60e741e8674eec733db94c49ec65f8978d918265cb124aa08adbedc"},
 ]
 rpaframework-pdf = [
     {file = "rpaframework-pdf-2.0.0.tar.gz", hash = "sha256:1590e50b516b52ba9e83fdc1f23f2084ece7bc085dd3a803524bac6e278920fd"},
@@ -3312,8 +3312,8 @@ sortedcontainers = [
     {file = "sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"},
 ]
 soupsieve = [
-    {file = "soupsieve-2.3.1-py3-none-any.whl", hash = "sha256:1a3cca2617c6b38c0343ed661b1fa5de5637f257d4fe22bd9f1338010a1efefb"},
-    {file = "soupsieve-2.3.1.tar.gz", hash = "sha256:b8d49b1cd4f037c7082a9683dfa1801aa2597fb11c3a1155b7a5b94829b4f1f9"},
+    {file = "soupsieve-2.3.2-py3-none-any.whl", hash = "sha256:a714129d3021ec17ce5be346b1007300558b378332c289a1a20e7d4de6ff18a5"},
+    {file = "soupsieve-2.3.2.tar.gz", hash = "sha256:0bcc6d7432153063e3df09c3ac9442af3eba488715bfcad6a4c38ccb2a523124"},
 ]
 sphinx = [
     {file = "Sphinx-2.4.5-py3-none-any.whl", hash = "sha256:02d7e9dc5f30caa42a682b26de408b755a55c7b07f356a30a3b6300bf7d4740e"},
