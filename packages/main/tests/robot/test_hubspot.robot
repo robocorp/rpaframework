@@ -1,73 +1,69 @@
 *** Settings ***
-Documentation       API keys and variables must be provided in ``./testvars.py``. These should use a live or
-...                 sandbox Hubspot environment to test the API, there is no mocking function.
+Documentation     API keys and variables must be provided in ``./testvars.py``. These should use a live or
+...               sandbox Hubspot environment to test the API, there is no mocking function.
 ...
-...                 The ``testvars.py`` should be built like so (example values provided, these will
-...                 need to be replaced with IDs and data from HubSpot):
+...               The ``testvars.py`` should be built like so (example values provided, these will
+...               need to be replaced with IDs and data from HubSpot):
 ...
-...                 |    # API key for all tests.
-...                 |    API_KEY = "not-a-real-hubspot-api-key"
-...                 |    ACCESS_TOKEN = "pat-na1-not-a-real-hubspot-auth-token"
-...                 |
-...                 |    # Contact/object lookup tests.
-...                 |    FIRST_NAME = "John"
-...                 |    LAST_NAME = "Smith"
-...                 |    FIRST_NAME_2 = "Alice"
-...                 |    CONTACT_EMAILS = ["john@example.com", "alice@example.com"]
-...                 |    CONTACT_ID = "1234"
-...                 |
-...                 |    # Get One Object test
-...                 |    OBJECT_ID = 4567
-...                 |    COMPANY_ID = 123456789
-...                 |
-...                 |    # Batch tests
-...                 |    OBJECT_IDS = [4567, 987654]
-...                 |    EXPECTED_ASSOCIATION_MAP = {"4567": "123456789", "65478": "987654321"}
-...                 |    EXPECTED_EMAILS = ["john@example.com", "alice@example.com"]
-...                 |
-...                 |    # Get Custom Object with Custom ID property test
-...                 |    CUSTOM_OBJ_ID = "123456-8ef6-4af3-9c10-8798a532f"
-...                 |    ID_PROPERTY = "organization_id"
-...                 |    CUSTOM_OBJECT_TYPE = "Organization"
-...                 |
-...                 |    # Pipeline tests.
-...                 |    PIPELINE_LABEL = "Self-Service Pipeline"
-...                 |    EXPECTED_STAGE_ORDER = (
-...                 |    "Free",
-...                 |    "Pro",
-...                 |    "Closed lost",
-...                 |    )
-...                 |    TEST_DEAL = 123456789
-...                 |    EXPECTED_STAGE = "Contract Signed"
-...                 |
-...                 |    # User provisioning tests.
-...                 |    USER_ID = "2456789"
-...                 |    USER_EMAIL = "john@example.com"
-...                 |
-...                 |    # Owner lookup tests.
-...                 |    OWNER_ID = "123654987"
-...                 |    OWNER_EMAIL = "john@example.com"
-...                 |    COMPANY_WITH_OWNER_ID = "123456789"
-...                 |    EXPECTED_COMPANY_OWNER = "987456123"
-...                 |
-...                 |    CUSTOM_OWNER_PROPERTY = "customer_success_contact"
-...                 |    COMPANY_ID_WITH_CUSTOM_OWNER = "123456789"
-...                 |    EXPECTED_CUSTOM_OWNER = "123654987"
-
-Library             RPA.Hubspot
-Library             Collections
-Variables           ./hubspot_testvars.py
-
-Force Tags          hubspot
-
+...               |    # API key for all tests.
+...               |    API_KEY = "not-a-real-hubspot-api-key"
+...               |    ACCESS_TOKEN = "pat-na1-not-a-real-hubspot-auth-token"
+...               |
+...               |    # Contact/object lookup tests.
+...               |    FIRST_NAME = "John"
+...               |    LAST_NAME = "Smith"
+...               |    FIRST_NAME_2 = "Alice"
+...               |    CONTACT_EMAILS = ["john@example.com", "alice@example.com"]
+...               |    CONTACT_ID = "1234"
+...               |
+...               |    # Get One Object test
+...               |    OBJECT_ID = 4567
+...               |    COMPANY_ID = 123456789
+...               |
+...               |    # Batch tests
+...               |    OBJECT_IDS = [4567, 987654]
+...               |    EXPECTED_ASSOCIATION_MAP = {"4567": "123456789", "65478": "987654321"}
+...               |    EXPECTED_EMAILS = ["john@example.com", "alice@example.com"]
+...               |
+...               |    # Get Custom Object with Custom ID property test
+...               |    CUSTOM_OBJ_ID = "123456-8ef6-4af3-9c10-8798a532f"
+...               |    ID_PROPERTY = "organization_id"
+...               |    CUSTOM_OBJECT_TYPE = "Organization"
+...               |
+...               |    # Pipeline tests.
+...               |    PIPELINE_LABEL = "Self-Service Pipeline"
+...               |    EXPECTED_STAGE_ORDER = (
+...               |    "Free",
+...               |    "Pro",
+...               |    "Closed lost",
+...               |    )
+...               |    TEST_DEAL = 123456789
+...               |    EXPECTED_STAGE = "Contract Signed"
+...               |
+...               |    # User provisioning tests.
+...               |    USER_ID = "2456789"
+...               |    USER_EMAIL = "john@example.com"
+...               |
+...               |    # Owner lookup tests.
+...               |    OWNER_ID = "123654987"
+...               |    OWNER_EMAIL = "john@example.com"
+...               |    COMPANY_WITH_OWNER_ID = "123456789"
+...               |    EXPECTED_COMPANY_OWNER = "987456123"
+...               |
+...               |    CUSTOM_OWNER_PROPERTY = "customer_success_contact"
+...               |    COMPANY_ID_WITH_CUSTOM_OWNER = "123456789"
+...               |    EXPECTED_CUSTOM_OWNER = "123654987"
+Library           RPA.Hubspot
+Library           Collections
+Variables         ./hubspot_testvars.py
+Force Tags        hubspot
 
 *** Variables ***
-${NOT_AUTHENTICATED_ERROR}      STARTS:HubSpotAuthenticationError:
-${AUTHENTICATION_FAILED}        HubSpotAuthenticationError: Authentication was not successful.
-${HUBSPOT_TYPE_ERROR}           STARTS:HubSpotObjectTypeError:
+${NOT_AUTHENTICATED_ERROR}    STARTS:HubSpotAuthenticationError:
+${AUTHENTICATION_FAILED}    HubSpotAuthenticationError: Authentication was not successful.
+${HUBSPOT_TYPE_ERROR}    STARTS:HubSpotObjectTypeError:
 
-
-*** Test Cases ***
+*** Tasks ***
 Search for objects should fail without authentication
     Run Keyword And Expect Error    ${NOT_AUTHENTICATED_ERROR}
     ...    Search for objects    object_type=CONTACTS
@@ -243,7 +239,6 @@ Induce Rate Limit Error and Ensure Good results
     ...    case_insensitive=${True}
     Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    ${LAST_NAME}
     ...    case_insensitive=${True}
-
 
 *** Keywords ***
 Check If Variable File Exists
