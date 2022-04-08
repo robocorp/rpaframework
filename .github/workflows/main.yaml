@@ -106,11 +106,12 @@ jobs:
       run: invoke install
     - name: Lint
       run: invoke lint
-    - name: create rpa.hubspot testvars.py file
-      run: 'echo "$HUBSPOT_TESTVARS" >> packages/main/tests/robot/hubspot_testvars.py'
-      shell: bash
+    - name: Create RPA.Hubspot testvars.py file
       env:
         HUBSPOT_TESTVARS : ${{ secrets.HUBSPOT_TESTVARS }}
+      run: 'echo $HUBSPOT_TESTVARS | base64 -d > packages/main/tests/robot/hubspot_testvars.py'
+      shell: bash
+
     - name: Test (non-linux)
       if: matrix.os != 'ubuntu-latest'
       run: invoke test
