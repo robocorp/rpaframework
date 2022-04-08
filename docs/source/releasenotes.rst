@@ -8,6 +8,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13.2.0 - 08 Apr 2022
+--------------------
+
+- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords 
+  primarily focus on retrieving data from Hubspot, there is currently no support for 
+  updating information.
+
 13.1.0 - 07 Apr 2022
 --------------------
 
