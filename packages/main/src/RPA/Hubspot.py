@@ -739,6 +739,25 @@ class Hubspot:
         wait=wait_exponential(multiplier=2, min=0.1),
         before_sleep=_before_sleep_log(),
     )
+    def _get_next_search_page(
+        self,
+        object_type: str,
+        search_object: ObjectSearchRequest,
+        after: int = 0,
+    ):
+        self.logger.debug(f"Current cursor is: {after}")
+        search_object.after = after
+        page = self.hs.crm.objects.search_api.do_search(
+            object_type, public_object_search_request=search_object
+        )
+        self.logger.debug(
+            f"{len(page.results)} received out of {page.total}. "
+            + f"Next cursor is {page.next.after}"
+            if hasattr(page, "next")
+            else ""
+        )
+        return page
+
     def _search_objects(
         self,
         object_type: str,
@@ -751,23 +770,14 @@ class Hubspot:
         else:
             search_object.limit = 100
         self.logger.debug(f"Search to use is:\n{search_object}")
-        response = self.hs.crm.objects.search_api.do_search(
-            object_type, public_object_search_request=search_object
-        )
-        self.logger.debug(f"First response received:\n{response}")
         results = []
-        results.extend(response.results)
-        if response.paging:
-            search_object.after = response.paging.next.after
-            while len(results) < max_results or max_results <= 0:
-                self.logger.debug(f"Current cursor is: {search_object.after}")
-                page = self.hs.crm.objects.search_api.do_search(
-                    object_type, public_object_search_request=search_object
-                )
-                results.extend(page.results)
-                if page.paging is None:
-                    break
-                search_object.after = page.paging.next.after
+        after = 0
+        while len(results) < max_results or max_results <= 0:
+            page = self._get_next_search_page(object_type, search_object, after)
+            results.extend(page.results)
+            if page.paging is None:
+                break
+            after = page.paging.next.after
         self.logger.debug(f"Total results found: {len(results)}")
         return results
 
