@@ -111,10 +111,8 @@ jobs:
         HUBSPOT_TESTVARS : ${{ secrets.HUBSPOT_TESTVARS }}
       run: |
         pwd
-        ls -la
-        echo "$HUBSPOT_TESTVARS" | base64 -d >> packages/main/tests/robot/hubspot_testvars.py
+        echo "$HUBSPOT_TESTVARS" | base64 -d >> tests/robot/hubspot_testvars.py
       shell: bash
-
     - name: Test (non-linux)
       if: matrix.os != 'ubuntu-latest'
       run: invoke test
