@@ -109,7 +109,10 @@ jobs:
     - name: Create RPA.Hubspot testvars.py file
       env:
         HUBSPOT_TESTVARS : ${{ secrets.HUBSPOT_TESTVARS }}
-      run: echo "$HUBSPOT_TESTVARS" | base64 -d >> packages/main/tests/robot/hubspot_testvars.py
+      run: |
+        pwd
+        ls -la
+        echo "$HUBSPOT_TESTVARS" | base64 -d >> packages/main/tests/robot/hubspot_testvars.py
       shell: bash
 
     - name: Test (non-linux)
