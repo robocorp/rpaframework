@@ -169,9 +169,7 @@ class MatchObject:
             )
             default_values.append(part_text)
 
-    def add_locator(
-        self, control_strategy: str, value: Union[str, int], level: int = 0
-    ) -> None:
+    def add_locator(self, control_strategy: str, value: str, level: int = 0) -> None:
         value = value.replace(self._Q, "").strip()
         if not value:
             return
@@ -184,9 +182,9 @@ class MatchObject:
             value = value if value.endswith("Control") else f"{value}Control"
         elif control_strategy == "ClassName":
             self._classes.add(value.lower())  # pylint: disable=no-member
-        self.locators.append(
+        self.locators.append(  # pylint: disable=no-member
             (control_strategy, value, level)
-        )  # pylint: disable=no-member
+        )
 
     @property
     def classes(self) -> List[str]:
