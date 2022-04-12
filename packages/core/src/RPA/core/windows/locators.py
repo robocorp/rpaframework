@@ -1,6 +1,7 @@
+import functools
 import re
 from dataclasses import dataclass, field
-from typing import List, Optional, Union
+from typing import List, Optional, Set, Tuple, Union
 
 from RPA.core.locators import LocatorsDatabase, WindowsLocator
 from RPA.core.vendor.deco import keyword as method
@@ -16,24 +17,6 @@ if IS_WINDOWS:
     import uiautomation as auto
     from uiautomation.uiautomation import Control
 
-
-WINDOWS_LOCATOR_STRATEGIES = {
-    "automationid": "AutomationId",
-    "id": "AutomationId",
-    "class": "ClassName",
-    "control": "ControlType",
-    "depth": "searchDepth",
-    "name": "Name",
-    "regex": "RegexName",
-    "subname": "SubName",
-    "type": "ControlType",
-    "index": "foundIndex",
-    "offset": "offset",
-    "desktop": "desktop",
-    "process": "process",
-    "handle": "handle",
-    "executable": "executable",
-}
 
 Locator = Union["WindowsElement", str]
 
@@ -108,95 +91,107 @@ class WindowsElement:
 class MatchObject:
     """Represents all locator parts as object properties"""
 
+    _WINDOWS_LOCATOR_STRATEGIES = {
+        "automationid": "AutomationId",
+        "id": "AutomationId",
+        "class": "ClassName",
+        "control": "ControlType",
+        "depth": "searchDepth",
+        "name": "Name",
+        "regex": "RegexName",
+        "subname": "SubName",
+        "type": "ControlType",
+        "index": "foundIndex",
+        "offset": "offset",
+        "desktop": "desktop",
+        "process": "process",
+        "handle": "handle",
+        "executable": "executable",
+    }
+    _LOCATOR_REGEX = re.compile(
+        rf"({':|'.join(_WINDOWS_LOCATOR_STRATEGIES)}:|or|and|desktop)"
+        r"('{{1}}(.+)'{{1}})|(\S+)?",
+        re.IGNORECASE
+    )
+
     match_type: str = field(default="all")
     match_index: int = None
-    locators: List = field(default_factory=list)
-    _classes: List = field(default_factory=list)
+    locators: List[Tuple] = field(default_factory=list)
+    _classes: Set[str] = field(default_factory=set)
     regex: str = None
     regex_field: str = None
     max_level: int = 0
 
-    def parse_locator(self, locator: str):
-        locator_tree = [loc.strip() for loc in locator.split(">")]
-        # self.logger.warning(locator_tree)
-        regex = rf"({':|'.join(WINDOWS_LOCATOR_STRATEGIES)}:|or|and|desktop)('{{1}}(.+)'{{1}})|(\S+)?"  # noqa: E501
+    @classmethod
+    def parse_locator(cls, locator: str) -> "MatchObject":
         match_object = MatchObject()
+        locator_tree = [loc.strip() for loc in locator.split(">")]
         for level, branch in enumerate(locator_tree):
-            parts = re.finditer(regex, branch, re.IGNORECASE)
-
-            default_value = []
-            strategy = None
-
-            for part in parts:
-                self.handle_locator_part(
-                    level, part, match_object, default_value, strategy
-                )
-            if not strategy and len(default_value) > 0:
-                match_object.add_locator("Name", " ".join(default_value), level)
-        if len(match_object.locators) == 0:
+            default_values = []
+            for part in cls._LOCATOR_REGEX.finditer(branch):
+                match_object.handle_locator_part(level, part, default_values)
+            if len(default_values) > 0:
+                match_object.add_locator("Name", " ".join(default_values), level=level)
+        if not match_object.locators:
             match_object.add_locator("Name", locator)
         return match_object
 
-    def handle_locator_part(self, level, part, match_object, default_value, strategy):
-        part_text = part.group(0)
-        if len(part_text.strip()) == 0:
+    def handle_locator_part(self, level, part, default_values) -> None:
+        part_text = part.group(0).strip()
+        if not part_text:
             return
-        if part_text == "or":
-            match_object.match_type = "any"
-        elif part_text == "and":
-            pass
-        elif part_text == "desktop":
-            match_object.add_locator("desktop", "desktop", level)
-        else:
-            try:
-                strategy, value = part_text.split(":", 1)
-            except ValueError:
-                strategy = value = None
-                default_value.append(part_text)
-            # self.logger.info("STRATEGY: %s VALUE: %s" % (strategy, value))
-            if strategy and strategy in WINDOWS_LOCATOR_STRATEGIES:
-                if len(default_value) > 0:
-                    match_object.add_locator("Name", " ".join(default_value))
-                    default_value.clear()
-                windows_locator_strategy = WINDOWS_LOCATOR_STRATEGIES[strategy]
-                match_object.add_locator(windows_locator_strategy, value, level)
+
+        add_locator = functools.partial(self.add_locator, level=level)
+
+        if part_text in ("and", "or", "desktop"):
+            # NOTE(cmin764): Only "and" is supported at the moment. (`match_type` is
+            #  ignored and spaces are treated as "and"s)
+            if part_text == "and":
+                self.match_type = "all"
+            elif part_text == "or":
+                self.match_type = "any"
+            elif part_text == "desktop":
+                add_locator("desktop", "desktop")
+            return
+
+        try:
+            strategy, value = part_text.split(":", 1)
+        except ValueError:
+            strategy = value = None
+            default_values.append(part_text)
+        if strategy and strategy in self._WINDOWS_LOCATOR_STRATEGIES:
+            if len(default_values) > 0:
+                add_locator("Name", " ".join(default_values))
+                default_values.clear()
+            windows_locator_strategy = self._WINDOWS_LOCATOR_STRATEGIES[strategy]
+            add_locator(windows_locator_strategy, value)
 
     def add_locator(self, strategy, value, level=0) -> None:
+        value = value.replace("'", "").strip()
         if not value:
             return
+
         self.max_level = max(self.max_level, level)
-        value = value.replace("'", "").strip()
+
+        add_locator = True
         if strategy == "regex":
             self.regex = value
+            add_locator = False
         elif strategy == "regex_field":
             self.regex_field = value
-        elif strategy in ["foundIndex", "searchDepth", "handle"]:
-            value = int(value.strip())
-            self.locators.append([strategy, value, level])  # pylint: disable=no-member
+            add_locator = False
+        elif strategy in ("foundIndex", "searchDepth", "handle"):
+            value = int(value)
         elif strategy == "ControlType":
             value = value if value.endswith("Control") else f"{value}Control"
-            self.locators.append([strategy, value, level])  # pylint: disable=no-member
-        else:
-            self.locators.append([strategy, value, level])  # pylint: disable=no-member
-        if (
-            strategy
-            in [
-                "class",
-                "class_name",
-                "friendly",
-                "friendly_class_name",
-            ]  # pylint: disable=unsupported-membership-test
-            and value.lower() not in self._classes
-        ):
-            self._classes.append(value.lower())  # pylint: disable=no-member
+        elif strategy in ("class", "class_name", "friendly", "friendly_class_name"):
+            self._classes.add(value.lower())  # pylint: disable=no-member
+        if add_locator:
+            self.locators.append((strategy, value, level))  # pylint: disable=no-member
 
     @property
-    def classes(self) -> List:
-        uniques = []
-        for c in self._classes:  # pylint: disable=not-an-iterable
-            if c not in uniques:
-                uniques.append(c)
-        return uniques
+    def classes(self) -> List[str]:
+        return list(self._classes)
 
 
 class LocatorMethods(WindowsContext):
@@ -211,7 +206,7 @@ class LocatorMethods(WindowsContext):
     ) -> "Control":
         match_object = MatchObject()
         mo = match_object.parse_locator(locator)
-        self.ctx.logger.info("locator '%s' to match element: %s", locator, mo)
+        self.logger.info("locator '%s' to match element: %s", locator, mo)
         search_params = {}
         for loc in mo.locators:  # pylint: disable=not-an-iterable
             search_params[loc[0]] = loc[1]
