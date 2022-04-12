@@ -111,11 +111,11 @@ class MatchObject:
         "executable": "executable",
     }
     TREE_SEP = " > "
-    _Q = '"'
+    _Q = '"'  # enclosing quote character
     _LOCATOR_REGEX = re.compile(rf"\S*{_Q}[^{_Q}]+{_Q}|\S+", re.IGNORECASE)
     _LOGGER = logging.getLogger(__name__)
 
-    locators: List[Tuple[Union[str, int]]] = field(default_factory=list)
+    locators: List[Tuple] = field(default_factory=list)
     _classes: Set[str] = field(default_factory=set)
     max_level: int = 0
 
@@ -153,6 +153,7 @@ class MatchObject:
         try:
             strategy, value = part_text.split(":", 1)
         except ValueError:
+            self._LOGGER.debug("No locator strategy found. (assuming 'name')")
             default_values.append(part_text)
             return
 
@@ -168,20 +169,24 @@ class MatchObject:
             )
             default_values.append(part_text)
 
-    def add_locator(self, strategy, value, level=0) -> None:
-        value = value.replace("'", "").strip()
+    def add_locator(
+        self, control_strategy: str, value: Union[str, int], level: int = 0
+    ) -> None:
+        value = value.replace(self._Q, "").strip()
         if not value:
             return
 
         self.max_level = max(self.max_level, level)
 
-        if strategy in ("foundIndex", "searchDepth", "handle"):
+        if control_strategy in ("foundIndex", "searchDepth", "handle"):
             value = int(value)
-        elif strategy == "ControlType":
+        elif control_strategy == "ControlType":
             value = value if value.endswith("Control") else f"{value}Control"
-        elif strategy in ("class", "class_name", "friendly", "friendly_class_name"):
+        elif control_strategy == "ClassName":
             self._classes.add(value.lower())  # pylint: disable=no-member
-        self.locators.append((strategy, value, level))  # pylint: disable=no-member
+        self.locators.append(
+            (control_strategy, value, level)
+        )  # pylint: disable=no-member
 
     @property
     def classes(self) -> List[str]:
