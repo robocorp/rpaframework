@@ -8,8 +8,9 @@ from typing import Dict, List, Optional
 from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload, MediaIoBaseDownload
 
-from . import LibraryContext, keyword, UpdateAction
+from . import LibraryContext, UpdateAction
 from .enums import DriveRole, DriveType, to_drive_role, to_drive_type
+from robotlibcore import keyword
 
 
 class GoogleDriveError(Exception):
@@ -71,6 +72,7 @@ class DriveKeywords(LibraryContext):
         folder: str = None,
         overwrite: bool = False,
         make_dir: bool = False,
+        parent_folder: str = None,
     ) -> str:
         """Upload files into Drive
 
@@ -88,9 +90,9 @@ class DriveKeywords(LibraryContext):
             ${file2_id}=  Upload Drive File  newdata.json  new_folder  make_dir=True
             ${file3_id}=  Upload Drive File  data.json  overwrite=True
         """
-        folder_id = self.get_drive_folder_id(folder)
+        folder_id = self.get_drive_folder_id(folder, parent_folder=parent_folder)
         if folder_id is None and make_dir:
-            folder = self.create_drive_directory(folder)
+            folder = self.create_drive_directory(folder, parent_folder=parent_folder)
             folder_id = folder["id"]
         if folder_id is None:
             raise GoogleDriveError(
@@ -108,6 +110,7 @@ class DriveKeywords(LibraryContext):
         query_string = f"name = '{filepath.name}' and '{folder_id}' in parents"
         self.logger.debug("Upload query_string: '%s'" % query_string)
         target_file = self.search_drive_files(query=query_string, recurse=True)
+        self.logger.debug(f"Query returned {len(target_file)} files")
         guess_mimetype = mimetypes.guess_type(str(filepath.absolute()))
         file_mimetype = guess_mimetype[0] if guess_mimetype else "*/*"
         media = MediaFileUpload(
@@ -123,10 +126,10 @@ class DriveKeywords(LibraryContext):
             self.logger.info("Overwriting file '%s' with new content", filename)
             return self._file_update(target_file, media)
         elif len(target_file) == 1 and not overwrite:
-            self.logger.warn("Not uploading new copy of file '%s'", filepath.name)
+            self.logger.warning("Not uploading new copy of file '%s'", filepath.name)
             return target_file[0]["id"]
         elif len(target_file) > 1:
-            self.logger.warn(
+            self.logger.warning(
                 "Drive already contains '%s' copies of file '%s'. Not uploading again."
                 % (len(target_file), filepath.name)
             )
@@ -136,6 +139,7 @@ class DriveKeywords(LibraryContext):
 
     def _file_create(self, file_metadata, media):
         try:
+            self.logger.debug(f"_file_create: {file_metadata}")
             result = (
                 self.service.files()
                 .create(
@@ -367,7 +371,7 @@ class DriveKeywords(LibraryContext):
                 self.service.files().delete(fileId=tf).execute()
             except HttpError as err:
                 if suppress_errors:
-                    self.logger.warn(str(err))
+                    self.logger.warning(str(err))
                 else:
                     raise GoogleDriveError(str(err)) from err
             delete_count += 1
@@ -650,9 +654,11 @@ class DriveKeywords(LibraryContext):
             parent_folder_id = self.get_drive_folder_id(parent_folder)
             file_metadata["parents"] = [parent_folder_id]
         try:
+            self.logger.debug(f"Files().create: {file_metadata}")
             added_folder = (
                 self.service.files().create(body=file_metadata, fields="id").execute()
             )
+            self.logger.debug(f"Files().create result: {added_folder}")
             return self._folder_response(added_folder["id"])
         except HttpError as err:
             raise GoogleDriveError(str(err)) from err
@@ -868,7 +874,7 @@ class DriveKeywords(LibraryContext):
             )
         except HttpError as err:
             if suppress_errors:
-                self.logger.warn(str(err))
+                self.logger.warning(str(err))
             else:
                 raise GoogleDriveError(str(err)) from err
         return response
@@ -976,7 +982,7 @@ class DriveKeywords(LibraryContext):
             permissions_removed.append(permission)
         except HttpError as err:
             if suppress_errors:
-                self.logger.warn(str(err))
+                self.logger.warning(str(err))
             else:
                 raise GoogleDriveError(str(err)) from err
 
@@ -1046,7 +1052,7 @@ class DriveKeywords(LibraryContext):
             response = self._drive_file_details_into_file_dict(raw_response)
         except HttpError as err:
             if suppress_errors:
-                self.logger.warn(str(err))
+                self.logger.warning(str(err))
             else:
                 raise GoogleDriveError(str(err)) from err
         return response

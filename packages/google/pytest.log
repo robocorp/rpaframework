@@ -1,0 +1,38 @@
+DEBUG    RPA.Cloud.Google:context.py:107 Init service with scopes: ['drive', 'drive.appdata', 'drive.file', 'drive.install', 'drive.metadata']
+INFO     RPA.Cloud.Google:context.py:124 Authenticating with service account file
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'DriveTests' AND mimeType = 'application/vnd.google-apps.folder'"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27DriveTests%27+AND+mimeType+%3D+%27application%2Fvnd.google-apps.folder%27&alt=json
+DEBUG    google_auth_httplib2:google_auth_httplib2.py:118 Making request: POST https://oauth2.googleapis.com/token
+DEBUG    RPA.Cloud.Google:context.py:107 Init service with scopes: ['drive', 'drive.appdata', 'drive.file', 'drive.install', 'drive.metadata']
+INFO     RPA.Cloud.Google:context.py:124 Authenticating with service account file
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'This does not exist for the pytests' AND mimeType = 'application/vnd.google-apps.folder'"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27This+does+not+exist+for+the+pytests%27+AND+mimeType+%3D+%27application%2Fvnd.google-apps.folder%27&alt=json
+DEBUG    google_auth_httplib2:google_auth_httplib2.py:118 Making request: POST https://oauth2.googleapis.com/token
+INFO     RPA.Cloud.Google:drive.py:419 Found 0 directories with name 'This does not exist for the pytests'
+DEBUG    RPA.Cloud.Google:context.py:107 Init service with scopes: ['drive', 'drive.appdata', 'drive.file', 'drive.install', 'drive.metadata']
+INFO     RPA.Cloud.Google:context.py:124 Authenticating with service account file
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'DriveTests' AND mimeType = 'application/vnd.google-apps.folder'"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27DriveTests%27+AND+mimeType+%3D+%27application%2Fvnd.google-apps.folder%27&alt=json
+DEBUG    google_auth_httplib2:google_auth_httplib2.py:118 Making request: POST https://oauth2.googleapis.com/token
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'sub1' AND mimeType = 'application/vnd.google-apps.folder' and '1jogF0t7M8yr-7WveO4MUsmi43L5o6Lg_' in parents"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27sub1%27+AND+mimeType+%3D+%27application%2Fvnd.google-apps.folder%27+and+%271jogF0t7M8yr-7WveO4MUsmi43L5o6Lg_%27+in+parents&alt=json
+INFO     RPA.Cloud.Google:drive.py:419 Found 0 directories with name 'sub1'
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'DriveTests' AND mimeType = 'application/vnd.google-apps.folder'"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27DriveTests%27+AND+mimeType+%3D+%27application%2Fvnd.google-apps.folder%27&alt=json
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'sub1' AND mimeType = 'application/vnd.google-apps.folder' and '1jogF0t7M8yr-7WveO4MUsmi43L5o6Lg_' in parents"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27sub1%27+AND+mimeType+%3D+%27application%2Fvnd.google-apps.folder%27+and+%271jogF0t7M8yr-7WveO4MUsmi43L5o6Lg_%27+in+parents&alt=json
+INFO     RPA.Cloud.Google:drive.py:419 Found 0 directories with name 'sub1'
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'DriveTests' AND mimeType = 'application/vnd.google-apps.folder'"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27DriveTests%27+AND+mimeType+%3D+%27application%2Fvnd.google-apps.folder%27&alt=json
+DEBUG    RPA.Cloud.Google:drive.py:657 Files().create: {'name': 'sub1', 'mimeType': 'application/vnd.google-apps.folder', 'parents': ['1jogF0t7M8yr-7WveO4MUsmi43L5o6Lg_']}
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: POST https://www.googleapis.com/drive/v3/files?fields=id&alt=json
+DEBUG    RPA.Cloud.Google:drive.py:661 Files().create result: {'id': '1vkLjGV8jdsCuUWsZH-SqsRVzsujPYVlV'}
+DEBUG    RPA.Cloud.Google:drive.py:111 Upload query_string: 'name = 'okta.png' and '1vkLjGV8jdsCuUWsZH-SqsRVzsujPYVlV' in parents'
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'okta.png' and '1vkLjGV8jdsCuUWsZH-SqsRVzsujPYVlV' in parents"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27okta.png%27+and+%271vkLjGV8jdsCuUWsZH-SqsRVzsujPYVlV%27+in+parents&alt=json
+DEBUG    RPA.Cloud.Google:drive.py:113 Query returned 0 files
+DEBUG    RPA.Cloud.Google:drive.py:124 Upload file_metadata: '{'name': 'okta.png', 'parents': ['1vkLjGV8jdsCuUWsZH-SqsRVzsujPYVlV'], 'mimeType': 'image/png'}'
+DEBUG    RPA.Cloud.Google:drive.py:142 _file_create: {'name': 'okta.png', 'parents': ['1vkLjGV8jdsCuUWsZH-SqsRVzsujPYVlV'], 'mimeType': 'image/png'}
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: POST https://www.googleapis.com/upload/drive/v3/files?fields=id&alt=json&uploadType=resumable
+DEBUG    RPA.Cloud.Google:drive.py:543 Searching with parameters: '{'fields': '*', 'q': "name = 'okta.png'"}'
+DEBUG    googleapiclient.discovery:discovery.py:1175 URL being requested: GET https://www.googleapis.com/drive/v3/files?fields=%2A&q=name+%3D+%27okta.png%27&alt=json

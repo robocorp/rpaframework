@@ -108,7 +108,7 @@ tzdata = ["tzdata"]
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.11.0"
+version = "4.11.1"
 description = "Screen-scraping library"
 category = "main"
 optional = false
@@ -151,14 +151,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.36"
+version = "1.21.37"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.36,<1.25.0"
+botocore = ">=1.24.37,<1.25.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -167,7 +167,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.36"
+version = "1.24.37"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -1290,7 +1290,7 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pypdf2"
-version = "1.27.1"
+version = "1.27.3"
 description = "PDF toolkit"
 category = "main"
 optional = false
@@ -1796,23 +1796,28 @@ version = "3.0.0"
 description = "Google library for RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = "^3.6.2"
+develop = false
 
 [package.dependencies]
-google-api-python-client = ">=2.2.0,<3.0.0"
-google-auth-httplib2 = ">=0.1.0,<0.2.0"
-google-auth-oauthlib = ">=0.4.4,<0.5.0"
-google-cloud-language = ">=2.0.0,<3.0.0"
-google-cloud-speech = ">=2.3.0,<3.0.0"
-google-cloud-storage = ">=1.37.1,<2.0.0"
-google-cloud-texttospeech = ">=2.3.0,<3.0.0"
-google-cloud-translate = ">=3.1.0,<4.0.0"
-google-cloud-videointelligence = ">=2.1.0,<3.0.0"
-google-cloud-vision = ">=2.3.1,<3.0.0"
-grpcio = ">=1.37.0,<2.0.0"
-robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
-robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=7.0.0,<8.0.0"
+google-api-python-client = "^2.2.0"
+google-auth-httplib2 = "^0.1.0"
+google-auth-oauthlib = "^0.4.4"
+google-cloud-language = "^2.0.0"
+google-cloud-speech = "^2.3.0"
+google-cloud-storage = "^1.37.1"
+google-cloud-texttospeech = "^2.3.0"
+google-cloud-translate = "^3.1.0"
+google-cloud-videointelligence = "^2.1.0"
+google-cloud-vision = "^2.3.1"
+grpcio = "^1.37.0"
+robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
+robotframework-pythonlibcore = "^3.0.0"
+rpaframework-core = "^7.0.0"
+
+[package.source]
+type = "directory"
+url = "packages/google"
 
 [[package]]
 name = "rpaframework-pdf"
@@ -2365,7 +2370,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "4276b6ce0d3f19b3b24061ed748e73008d6321e061120764cfbb856a6bffc2bc"
+content-hash = "1e06b535b3745476dd5d07af08525af1583e24e7089ab0d3e18f3eefa8d4d2f9"
 
 [metadata.files]
 alabaster = [
@@ -2422,20 +2427,20 @@ backports-datetime-fromisoformat = [
     {file = "backports.zoneinfo-0.2.1.tar.gz", hash = "sha256:fadbfe37f74051d024037f223b8e001611eac868b5c5b06144ef4d8b799862f2"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.11.0-py3-none-any.whl", hash = "sha256:577b9e1c36d2ada780d807c5622e889d43172466658c2eb239e97296965cdddb"},
-    {file = "beautifulsoup4-4.11.0.tar.gz", hash = "sha256:ac98f868e1cb8eb9932a61be75b4f7018a118a490e7fdb424a74a982430cfcbd"},
+    {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
+    {file = "beautifulsoup4-4.11.1.tar.gz", hash = "sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693"},
 ]
 black = [
     {file = "black-21.12b0-py3-none-any.whl", hash = "sha256:a615e69ae185e08fdd73e4715e260e2479c861b5740057fde6e8b4e3b7dd589f"},
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.36-py3-none-any.whl", hash = "sha256:727e5ec31692620d9de2f88d6c0438fb84002b1a1ad474cc4bd21fc07b2135e9"},
-    {file = "boto3-1.21.36.tar.gz", hash = "sha256:990a4639869313c8bed54a5845088a3dd9f4a0c715ec10a60e57de61879bfd1e"},
+    {file = "boto3-1.21.37-py3-none-any.whl", hash = "sha256:1e845aa92b3ad70b954329b98835135c28b3000e322ff8d3fc46a956bdb6e94b"},
+    {file = "boto3-1.21.37.tar.gz", hash = "sha256:013ba57295f05da141e364191dd46f4086e8fe3eb83a3cd09730eeb684ffbab3"},
 ]
 botocore = [
-    {file = "botocore-1.24.36-py3-none-any.whl", hash = "sha256:391d31768acafea59209a975a698f59f620e01f3bafd6a2a356203eba204bba8"},
-    {file = "botocore-1.24.36.tar.gz", hash = "sha256:a02e3487dc77ac662b417fca0786309b01202494f0679025fc7b0ed4129da04a"},
+    {file = "botocore-1.24.37-py3-none-any.whl", hash = "sha256:21e164a213beca36033c46026bffa62f2ee2cd2600777271f9a551fb34dba006"},
+    {file = "botocore-1.24.37.tar.gz", hash = "sha256:70c48c4ae3c2b9ec0ca025385979d01f4c7dae4d9a61c82758d4cf7caa7082cd"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3347,8 +3352,8 @@ pyparsing = [
     {file = "pyparsing-3.0.7.tar.gz", hash = "sha256:18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea"},
 ]
 pypdf2 = [
-    {file = "PyPDF2-1.27.1-py3-none-any.whl", hash = "sha256:608649120b873778fbe378fdd27b14bf297d4b54a17cef2f8dddc68eaa4998bd"},
-    {file = "PyPDF2-1.27.1.tar.gz", hash = "sha256:ad2b04f176a036a48e0afde2bd28b71b050ddbc660bed04276bc6a02631f1f76"},
+    {file = "PyPDF2-1.27.3-py3-none-any.whl", hash = "sha256:9b657dd65e0de0fd8710f09939955cda47bfb519f6bfec39128547d3f17246bb"},
+    {file = "PyPDF2-1.27.3.tar.gz", hash = "sha256:b0d28ff065e7b494d8e4fdc8d0ef58909acb6e50eda68d807d98c64988589df5"},
 ]
 pyperclip = [
     {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
@@ -3581,10 +3586,7 @@ rpaframework-dialogs = [
     {file = "rpaframework-dialogs-1.1.0.tar.gz", hash = "sha256:ade8b02ef05c3c528a99cdc1e25221c02f270c304d3483b58a1a0788074349a1"},
     {file = "rpaframework_dialogs-1.1.0-py3-none-any.whl", hash = "sha256:97cc9782e60e741e8674eec733db94c49ec65f8978d918265cb124aa08adbedc"},
 ]
-rpaframework-google = [
-    {file = "rpaframework-google-3.0.0.tar.gz", hash = "sha256:c34a0135466fd93b3bcb7ec27e6d263f531e2136dad35458d5b9423dc6842844"},
-    {file = "rpaframework_google-3.0.0-py3-none-any.whl", hash = "sha256:4def409717b41820df2d9c4be9a505c660ba1e4efc414523b5a5d02a140ade67"},
-]
+rpaframework-google = []
 rpaframework-pdf = [
     {file = "rpaframework-pdf-2.0.0.tar.gz", hash = "sha256:1590e50b516b52ba9e83fdc1f23f2084ece7bc085dd3a803524bac6e278920fd"},
     {file = "rpaframework_pdf-2.0.0-py3-none-any.whl", hash = "sha256:eb06314d31c1955374ac05b8de8fecc5fd9a7db85876cd1aacf42ef061d3a783"},

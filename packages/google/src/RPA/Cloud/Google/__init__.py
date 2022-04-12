@@ -267,4 +267,18 @@ class Google(DynamicCore):
             VideoIntelligenceKeywords(self),
             VisionKeywords(self),
         ]
-        super().__init__(libraries)
+        DynamicCore.__init__(self, libraries)
+
+    def run_keyword(self, name: str, args: tuple, kwargs: dict):
+        try:
+            return DynamicCore.run_keyword(self, name, args, kwargs)
+        except Exception:
+            # self.failure_occurred()
+            raise
+
+    def get_keyword_tags(self, name: str) -> list:
+        tags = list(DynamicCore.get_keyword_tags(self, name))
+        return tags
+
+    def get_keyword_documentation(self, name: str) -> str:
+        return DynamicCore.get_keyword_documentation(self, name)

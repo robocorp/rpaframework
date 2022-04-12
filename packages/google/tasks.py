@@ -141,7 +141,7 @@ def typecheck(ctx):
 @task(install)
 def test(ctx):
     """Run unittests"""
-    poetry(ctx, "run pytest")
+    poetry(ctx, "run pytest --log-file=pytest.log --log-file-level=DEBUG")
 
 
 @task(install)
