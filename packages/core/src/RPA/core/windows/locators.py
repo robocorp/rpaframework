@@ -1,4 +1,5 @@
 import functools
+import logging
 import re
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple, Union
@@ -92,6 +93,7 @@ class MatchObject:
     """Represents all locator parts as object properties"""
 
     _WINDOWS_LOCATOR_STRATEGIES = {
+        # RPA-strategy: UIA-strategy
         "automationid": "AutomationId",
         "id": "AutomationId",
         "class": "ClassName",
@@ -108,63 +110,63 @@ class MatchObject:
         "handle": "handle",
         "executable": "executable",
     }
-    _LOCATOR_REGEX = re.compile(
-        rf"({':|'.join(_WINDOWS_LOCATOR_STRATEGIES)}:|or|and|desktop)"
-        r"('{{1}}(.+)'{{1}})|(\S+)?",
-        re.IGNORECASE,
-    )
+    TREE_SEP = " > "
+    _Q = '"'
+    _LOCATOR_REGEX = re.compile(rf"\S*{_Q}[^{_Q}]+{_Q}|\S+", re.IGNORECASE)
+    _LOGGER = logging.getLogger(__name__)
 
-    match_type: str = field(default="all")
-    match_index: int = None
-    locators: List[Tuple] = field(default_factory=list)
+    locators: List[Tuple[Union[str, int]]] = field(default_factory=list)
     _classes: Set[str] = field(default_factory=set)
-    regex: str = None
-    regex_field: str = None
     max_level: int = 0
 
     @classmethod
     def parse_locator(cls, locator: str) -> "MatchObject":
         match_object = MatchObject()
-        locator_tree = [loc.strip() for loc in locator.split(">")]
+        locator_tree = [loc.strip() for loc in locator.split(cls.TREE_SEP)]
         for level, branch in enumerate(locator_tree):
             default_values = []
             for part in cls._LOCATOR_REGEX.finditer(branch):
-                match_object.handle_locator_part(level, part, default_values)
+                match_object.handle_locator_part(
+                    level, part.group().strip(), default_values
+                )
             if len(default_values) > 0:
                 match_object.add_locator("Name", " ".join(default_values), level=level)
         if not match_object.locators:
             match_object.add_locator("Name", locator)
         return match_object
 
-    def handle_locator_part(self, level, part, default_values) -> None:
-        part_text = part.group(0).strip()
+    def handle_locator_part(
+        self, level: int, part_text: str, default_values: List[str]
+    ) -> None:
         if not part_text:
             return
 
         add_locator = functools.partial(self.add_locator, level=level)
 
         if part_text in ("and", "or", "desktop"):
-            # NOTE(cmin764): Only "and" is supported at the moment. (`match_type` is
-            #  ignored and spaces are treated as "and"s)
-            if part_text == "and":
-                self.match_type = "all"
-            elif part_text == "or":
-                self.match_type = "any"
-            elif part_text == "desktop":
+            # NOTE(cmin764): Only "and" is supported at the moment. (match type is
+            #  ignored and spaces are treated as "and"s by default)
+            if part_text == "desktop":
                 add_locator("desktop", "desktop")
             return
 
         try:
             strategy, value = part_text.split(":", 1)
         except ValueError:
-            strategy = value = None
             default_values.append(part_text)
-        if strategy and strategy in self._WINDOWS_LOCATOR_STRATEGIES:
+            return
+
+        control_strategy = self._WINDOWS_LOCATOR_STRATEGIES.get(strategy)
+        if control_strategy:
             if len(default_values) > 0:
                 add_locator("Name", " ".join(default_values))
                 default_values.clear()
-            windows_locator_strategy = self._WINDOWS_LOCATOR_STRATEGIES[strategy]
-            add_locator(windows_locator_strategy, value)
+            add_locator(control_strategy, value)
+        else:
+            self._LOGGER.warning(
+                "Invalid locator strategy %r! (assuming 'name')", strategy
+            )
+            default_values.append(part_text)
 
     def add_locator(self, strategy, value, level=0) -> None:
         value = value.replace("'", "").strip()
@@ -173,21 +175,13 @@ class MatchObject:
 
         self.max_level = max(self.max_level, level)
 
-        add_locator = True
-        if strategy == "regex":
-            self.regex = value
-            add_locator = False
-        elif strategy == "regex_field":
-            self.regex_field = value
-            add_locator = False
-        elif strategy in ("foundIndex", "searchDepth", "handle"):
+        if strategy in ("foundIndex", "searchDepth", "handle"):
             value = int(value)
         elif strategy == "ControlType":
             value = value if value.endswith("Control") else f"{value}Control"
         elif strategy in ("class", "class_name", "friendly", "friendly_class_name"):
             self._classes.add(value.lower())  # pylint: disable=no-member
-        if add_locator:
-            self.locators.append((strategy, value, level))  # pylint: disable=no-member
+        self.locators.append((strategy, value, level))  # pylint: disable=no-member
 
     @property
     def classes(self) -> List[str]:
@@ -283,7 +277,7 @@ class LocatorMethods(WindowsContext):
         self.logger.debug("resulting root = %s", root_result)
 
         control = None
-        locators = locator.split(" > ")
+        locators = locator.split(MatchObject.TREE_SEP)
         try:
             for loc in locators:
                 self.logger.info("Root element: %r", root_result)
