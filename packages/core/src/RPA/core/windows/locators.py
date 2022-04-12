@@ -170,7 +170,7 @@ class MatchObject:
             default_values.append(part_text)
 
     def add_locator(self, control_strategy: str, value: str, level: int = 0) -> None:
-        value = value.replace(self._Q, "").strip()
+        value = value.strip(f"{self._Q} ")
         if not value:
             return
 
