@@ -380,68 +380,14 @@ class JSON:
             Get email for specific order id
                 ${email}=    Get value from json    ${JSON_DOC}    $.clients[?(@..id=="${ID}")].email
                 Log    \nOUTPUT IS\n ${email}    console=${True}
-
-            Get All Prices and Order Ids
-                # Arithmetic operations only work when lists are of equal lengths and types.
-                ${prices}=    Get values from json
-                ...    ${JSON_DOC}
-                ...    $.clients[*].orders[*].id + " has price " + $.clients[*].orders[*].price.`str()`
-                Log    \nOUTPUT IS\n ${prices}    console=${True}
-
-            Find Only Valid Emails With Regex
-                # The regex used in this example is simplistic and
-                # will not work with all email addresses
-                ${emails}=    Get values from json
-                ...    ${JSON_DOC}
-                ...    $.clients[?(@.email =~ "[a-zA-Z]+@[a-zA-Z]+\\.[a-zA-Z]+")].email
-                Log    \nOUTPUT IS\n ${emails}    console=${True}
-
-            Find Orders From Texas Over 100
-                # The regex used in this example is simplistic and
-                # will not work with all email addresses
-                ${orders}=    Get values from json
-                ...    ${JSON_DOC}
-                ...    $.clients[*].orders[?(@.price > 100 & @.state == "TX")]
-                Log    \nOUTPUT IS\n ${orders}    console=${True}
+                Should be equal as strings    ${email}    jane@example.com
 
             *** Keywords ***
             Ingest JSON
                 ${doc}=    Convert string to json    ${JSON_STRING}
                 Set suite variable    ${JSON_DOC}    ${doc}
 
-        The above code produces the following console output:
-
-        .. code::
-
-            ==============================================================================
-            Json Ext Get Value Example
-            ==============================================================================
-            Get email for specific order id
-            OUTPUT IS
-            jane@example.com
-            | PASS |
-            ------------------------------------------------------------------------------
-            Get All Prices and Order Ids
-            OUTPUT IS
-            ['guid-001 has price 103.2', 'guid-002 has price 98.99', 'guid-003 has price 22.0', 'guid-004 has price 2330.01', 'guid-005 has price 152.12']
-            | PASS |
-            ------------------------------------------------------------------------------
-            Find Only Valid Emails With Regex
-            OUTPUT IS
-            ['john@example.com', 'jane@example.com']
-            | PASS |
-            ------------------------------------------------------------------------------
-            Find Orders From Texas Over 100
-            OUTPUT IS
-            [{'address': 'Streetroad 123', 'state': 'TX', 'price': 103.2, 'id': 'guid-001'}, {'address': 'Streetroad 123', 'state': 'TX', 'price': 2330.01, 'id': 'guid-004'}]
-            | PASS |
-            ------------------------------------------------------------------------------
-            Json Ext Get Value Example                                            | PASS |
-            4 tests, 4 passed, 0 failed
-            ==============================================================================
-
         """  # noqa: E501
-        # TODO: Docstring includes examples for get value and get values.
         self.logger.info('Get value from JSON with expression: "%s"', expr)
         result = [match.value for match in parse(expr).find(doc)]
         if len(result) == 0:
@@ -463,13 +409,91 @@ class JSON:
         :param expr: JSONPath expression
         :return: list of values that match
 
-        Example:
+        Simple Robot Framework Example:
 
         .. code:: robotframework
 
            # Get all the names for all people
            &{people}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
            @{names}=     Get values from JSON     ${people}   $.People[*].Name
+
+        Simple Python Example:
+
+        .. code:: python
+
+            from RPA.JSON import JSON
+
+            # Get all the names for all people
+            people = {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
+            names = JSON().get_values_from_json(people, "$.People[*].Name")
+            print(second)
+
+        Extended Robot Framework Example:
+
+        .. code:: robotframework
+
+            *** Settings ***
+            Library         RPA.JSON
+            Suite Setup     Ingest JSON
+
+            *** Variables ***
+            ${JSON_STRING}      {
+            ...                   "clients": [
+            ...                     {
+            ...                       "name": "Johnny Example",
+            ...                       "email": "john@example.com",
+            ...                       "orders": [
+            ...                         {"address": "Streetroad 123", "state": "TX", "price": 103.20, "id":"guid-001"},
+            ...                         {"address": "Streetroad 123", "state": "TX", "price": 98.99, "id":"guid-002"}
+            ...                       ]
+            ...                     },
+            ...                     {
+            ...                       "name": "Jane Example",
+            ...                       "email": "jane@example.com",
+            ...                       "orders": [
+            ...                         {"address": "Waypath 321", "state": "WA", "price": 22.00, "id":"guid-003"},
+            ...                         {"address": "Streetroad 123", "state": "TX", "price": 2330.01, "id":"guid-004"},
+            ...                         {"address": "Waypath 321", "state": "WA", "price": 152.12, "id":"guid-005"}
+            ...                       ]
+            ...                     }
+            ...                   ]
+            ...                 }
+            ${ID}               guid-003
+
+            *** Tasks ***
+            Get All Prices and Order Ids
+                # Arithmetic operations only work when lists are of equal lengths and types.
+                ${prices}=    Get values from json
+                ...    ${JSON_DOC}
+                ...    $.clients[*].orders[*].id + " has price " + $.clients[*].orders[*].price.`str()`
+                Log    \nOUTPUT IS\n ${prices}    console=${True}
+                Should be equal as strings    ${prices}
+                ...    ['guid-001 has price 103.2', 'guid-002 has price 98.99', 'guid-003 has price 22.0', 'guid-004 has price 2330.01', 'guid-005 has price 152.12']
+
+            Find Only Valid Emails With Regex
+                # The regex used in this example is simplistic and
+                # will not work with all email addresses
+                ${emails}=    Get values from json
+                ...    ${JSON_DOC}
+                ...    $.clients[?(@.email =~ "[a-zA-Z]+@[a-zA-Z]+\\.[a-zA-Z]+")].email
+                Log    \nOUTPUT IS\n ${emails}    console=${True}
+                Should be equal as strings    ${emails}    ['john@example.com', 'jane@example.com']
+
+            Find Orders From Texas Over 100
+                # The regex used in this example is simplistic and
+                # will not work with all email addresses
+                ${orders}=    Get values from json
+                ...    ${JSON_DOC}
+                ...    $.clients[*].orders[?(@.price > 100 & @.state == "TX")]
+                Log    \nOUTPUT IS\n ${orders}    console=${True}
+                Should be equal as strings    ${orders}
+                ...    [{'address': 'Streetroad 123', 'state': 'TX', 'price': 103.2, 'id': 'guid-001'}, {'address': 'Streetroad 123', 'state': 'TX', 'price': 2330.01, 'id': 'guid-004'}]
+
+
+            *** Keywords ***
+            Ingest JSON
+                ${doc}=    Convert string to json    ${JSON_STRING}
+                Set suite variable    ${JSON_DOC}    ${doc}
 
         """  # noqa: E501
         self.logger.info('Get values from JSON with expression: "%s"', expr)
