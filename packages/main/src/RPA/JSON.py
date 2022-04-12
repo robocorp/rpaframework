@@ -110,10 +110,11 @@ class JSON:
     Element  Description
     ======== ===========
     $        Root object/element
-    @        Current object/element
+    @        Current object/element inside expressions
     \. or [] Child operator
     \.\.     Recursive descent
     \*       Wilcard, any element
+    ,        Select multiple fields
     [n]      Array index
     [a:b:c]  Array slice (start, end, step)
     [a,b]    Union of indices or names
@@ -176,7 +177,7 @@ class JSON:
         :param indent: if given this value is used for json file indent
         :param encoding: file character encoding
 
-        Example:
+        Robot Framework Example:
 
         .. code:: robotframework
 
@@ -187,6 +188,16 @@ class JSON:
            # Save string to file
            ${mark}=    Set variable    {"name": "Mark", "mail": "mark@example.com"}
            Save JSON to file    ${mark}    mark.json
+
+        Python Example:
+
+        .. code:: python
+
+            from RPA.JSON import JSON
+
+            # Save dictionary to file.
+            john = {"name": "John", "mail": "john@example.com"}
+            JSON().save_json_to_file(john, "john.json")
 
         """
         self.logger.info("Saving JSON to file: %s", filename)
@@ -204,13 +215,24 @@ class JSON:
         :param doc: JSON serializable object
         :return: string of the JSON serializable object
 
-        Example:
+        Robot Framework Example:
 
         .. code:: robotframework
 
            ${obj}=    Create dictionary    Key=Value
            ${json}=   Convert JSON to string    ${obj}
            Should be equal    ${json}     {"Key": "Value"}
+
+        Python Example:
+
+        .. code:: python
+
+            from RPA.JSON import JSON
+            from robot.libraries.BuiltIn import BuiltIn
+
+            obj = {"Key": "Value"}
+            json = JSON().convert_json_to_string(obj)
+            BuiltIn().should_be_equal(json, '{"Key": "Value"}')
 
         """
         return json.dumps(doc)
@@ -222,13 +244,24 @@ class JSON:
         :param doc: JSON string
         :return: JSON serializable object of the string
 
-        Example:
+        Robot Framework Example:
 
         .. code:: robotframework
 
            ${json}=    Set variable    {"Key": "Value"}
            &{obj}=     Convert string to JSON    ${json}
            Should be equal    ${obj.Key}    Value
+
+        Python Example:
+
+        .. code:: python
+
+            from RPA.JSON import JSON
+            from robot.libraries.BuiltIn import BuiltIn
+
+            json = '{"Key": "Value"}'
+            obj = JSON().convert_string_to_json(json)
+            BuiltIn().should_be_equal(obj["Key"], "Value")
 
         """
         return json.loads(doc)
@@ -245,7 +278,7 @@ class JSON:
         :param value: values to either append or update
         :return: JSON serializable object of the updated JSON
 
-        Example:
+        Robot Framework Example:
 
         .. code:: robotframework
 
@@ -253,6 +286,20 @@ class JSON:
            &{before}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
            &{person}=    Create dictionary      Name=John
            &{after}=     Add to JSON    ${before}   $.People    ${person}
+
+        Python Example:
+
+        .. code:: python
+
+            from RPA.JSON import JSON
+
+            # Change the name value for all people
+            js = JSON()
+            before = js.convert_string_to_json('{"People": [{"Name": "Mark"}, {"Name": "Jane"}]}')
+            person = {"Name": "John"}
+            after = js.add_to_json(before, "$.People", person)
+
+            print(after)
 
         """  # noqa: E501
         self.logger.info('Add to JSON with expression: "%s"', expr)
@@ -278,7 +325,7 @@ class JSON:
         :return: string containg the match OR None if no matches
         :raises ValueError: if more than one match
 
-        Example:
+        Simple Robot Framework Example:
 
         .. code:: robotframework
 
@@ -286,7 +333,115 @@ class JSON:
            &{people}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
            ${first}=     Get value from JSON      ${people}   $.People[0].Name
 
+        Simple Python Example:
+
+        .. code:: python
+
+            from RPA.JSON import JSON
+
+            # Get the name value for the second person.
+            people = {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
+            second = JSON().get_value_from_json(people, "$.People[1].Name")
+            print(second)
+
+        Extended Robot Framework Example:
+
+        .. code:: robotframework
+
+            *** Settings ***
+            Library         RPA.JSON
+            Suite Setup     Ingest JSON
+
+            *** Variables ***
+            ${JSON_STRING}      {
+            ...                   "clients": [
+            ...                     {
+            ...                       "name": "Johnny Example",
+            ...                       "email": "john@example.com",
+            ...                       "orders": [
+            ...                         {"address": "Streetroad 123", "state": "TX", "price": 103.20, "id":"guid-001"},
+            ...                         {"address": "Streetroad 123", "state": "TX", "price": 98.99, "id":"guid-002"}
+            ...                       ]
+            ...                     },
+            ...                     {
+            ...                       "name": "Jane Example",
+            ...                       "email": "jane@example.com",
+            ...                       "orders": [
+            ...                         {"address": "Waypath 321", "state": "WA", "price": 22.00, "id":"guid-003"},
+            ...                         {"address": "Streetroad 123", "state": "TX", "price": 2330.01, "id":"guid-004"},
+            ...                         {"address": "Waypath 321", "state": "WA", "price": 152.12, "id":"guid-005"}
+            ...                       ]
+            ...                     }
+            ...                   ]
+            ...                 }
+            ${ID}               guid-003
+
+            *** Tasks ***
+            Get email for specific order id
+                ${email}=    Get value from json    ${JSON_DOC}    $.clients[?(@..id=="${ID}")].email
+                Log    \nOUTPUT IS\n ${email}    console=${True}
+
+            Get All Prices and Order Ids
+                # Arithmetic operations only work when lists are of equal lengths and types.
+                ${prices}=    Get values from json
+                ...    ${JSON_DOC}
+                ...    $.clients[*].orders[*].id + " has price " + $.clients[*].orders[*].price.`str()`
+                Log    \nOUTPUT IS\n ${prices}    console=${True}
+
+            Find Only Valid Emails With Regex
+                # The regex used in this example is simplistic and
+                # will not work with all email addresses
+                ${emails}=    Get values from json
+                ...    ${JSON_DOC}
+                ...    $.clients[?(@.email =~ "[a-zA-Z]+@[a-zA-Z]+\\.[a-zA-Z]+")].email
+                Log    \nOUTPUT IS\n ${emails}    console=${True}
+
+            Find Orders From Texas Over 100
+                # The regex used in this example is simplistic and
+                # will not work with all email addresses
+                ${orders}=    Get values from json
+                ...    ${JSON_DOC}
+                ...    $.clients[*].orders[?(@.price > 100 & @.state == "TX")]
+                Log    \nOUTPUT IS\n ${orders}    console=${True}
+
+            *** Keywords ***
+            Ingest JSON
+                ${doc}=    Convert string to json    ${JSON_STRING}
+                Set suite variable    ${JSON_DOC}    ${doc}
+
+        The above code produces the following console output:
+
+        .. code::
+
+            ==============================================================================
+            Json Ext Get Value Example
+            ==============================================================================
+            Get email for specific order id
+            OUTPUT IS
+            jane@example.com
+            | PASS |
+            ------------------------------------------------------------------------------
+            Get All Prices and Order Ids
+            OUTPUT IS
+            ['guid-001 has price 103.2', 'guid-002 has price 98.99', 'guid-003 has price 22.0', 'guid-004 has price 2330.01', 'guid-005 has price 152.12']
+            | PASS |
+            ------------------------------------------------------------------------------
+            Find Only Valid Emails With Regex
+            OUTPUT IS
+            ['john@example.com', 'jane@example.com']
+            | PASS |
+            ------------------------------------------------------------------------------
+            Find Orders From Texas Over 100
+            OUTPUT IS
+            [{'address': 'Streetroad 123', 'state': 'TX', 'price': 103.2, 'id': 'guid-001'}, {'address': 'Streetroad 123', 'state': 'TX', 'price': 2330.01, 'id': 'guid-004'}]
+            | PASS |
+            ------------------------------------------------------------------------------
+            Json Ext Get Value Example                                            | PASS |
+            4 tests, 4 passed, 0 failed
+            ==============================================================================
+
         """  # noqa: E501
+        # TODO: Docstring includes examples for get value and get values.
         self.logger.info('Get value from JSON with expression: "%s"', expr)
         result = [match.value for match in parse(expr).find(doc)]
         if len(result) == 0:
