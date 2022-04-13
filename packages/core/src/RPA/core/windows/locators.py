@@ -1,6 +1,8 @@
+import functools
+import logging
 import re
 from dataclasses import dataclass, field
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Set, Tuple, Union
 
 from RPA.core.locators import LocatorsDatabase, WindowsLocator
 from RPA.core.vendor.deco import keyword as method
@@ -16,24 +18,6 @@ if IS_WINDOWS:
     import uiautomation as auto
     from uiautomation.uiautomation import Control
 
-
-WINDOWS_LOCATOR_STRATEGIES = {
-    "automationid": "AutomationId",
-    "id": "AutomationId",
-    "class": "ClassName",
-    "control": "ControlType",
-    "depth": "searchDepth",
-    "name": "Name",
-    "regex": "RegexName",
-    "subname": "SubName",
-    "type": "ControlType",
-    "index": "foundIndex",
-    "offset": "offset",
-    "desktop": "desktop",
-    "process": "process",
-    "handle": "handle",
-    "executable": "executable",
-}
 
 Locator = Union["WindowsElement", str]
 
@@ -108,95 +92,103 @@ class WindowsElement:
 class MatchObject:
     """Represents all locator parts as object properties"""
 
-    match_type: str = field(default="all")
-    match_index: int = None
-    locators: List = field(default_factory=list)
-    _classes: List = field(default_factory=list)
-    regex: str = None
-    regex_field: str = None
+    _WINDOWS_LOCATOR_STRATEGIES = {
+        # RPA-strategy: UIA-strategy
+        "automationid": "AutomationId",
+        "id": "AutomationId",
+        "class": "ClassName",
+        "control": "ControlType",
+        "depth": "searchDepth",
+        "name": "Name",
+        "regex": "RegexName",
+        "subname": "SubName",
+        "type": "ControlType",
+        "index": "foundIndex",
+        "offset": "offset",
+        "desktop": "desktop",
+        "process": "process",
+        "handle": "handle",
+        "executable": "executable",
+    }
+    TREE_SEP = " > "
+    QUOTE = '"'  # enclosing quote character
+    _LOCATOR_REGEX = re.compile(rf"\S*{QUOTE}[^{QUOTE}]+{QUOTE}|\S+", re.IGNORECASE)
+    _LOGGER = logging.getLogger(__name__)
+
+    locators: List[Tuple] = field(default_factory=list)
+    _classes: Set[str] = field(default_factory=set)
     max_level: int = 0
 
-    def parse_locator(self, locator: str):
-        locator_tree = [loc.strip() for loc in locator.split(">")]
-        # self.logger.warning(locator_tree)
-        regex = rf"({':|'.join(WINDOWS_LOCATOR_STRATEGIES)}:|or|and|desktop)('{{1}}(.+)'{{1}})|(\S+)?"  # noqa: E501
+    @classmethod
+    def parse_locator(cls, locator: str) -> "MatchObject":
         match_object = MatchObject()
+        locator_tree = [loc.strip() for loc in locator.split(cls.TREE_SEP)]
         for level, branch in enumerate(locator_tree):
-            parts = re.finditer(regex, branch, re.IGNORECASE)
-
-            default_value = []
-            strategy = None
-
-            for part in parts:
-                self.handle_locator_part(
-                    level, part, match_object, default_value, strategy
+            default_values = []
+            for part in cls._LOCATOR_REGEX.finditer(branch):
+                match_object.handle_locator_part(
+                    level, part.group().strip(), default_values
                 )
-            if not strategy and len(default_value) > 0:
-                match_object.add_locator("Name", " ".join(default_value), level)
-        if len(match_object.locators) == 0:
+            if default_values:
+                match_object.add_locator("Name", " ".join(default_values), level=level)
+        if not match_object.locators:
             match_object.add_locator("Name", locator)
         return match_object
 
-    def handle_locator_part(self, level, part, match_object, default_value, strategy):
-        part_text = part.group(0)
-        if len(part_text.strip()) == 0:
+    def handle_locator_part(
+        self, level: int, part_text: str, default_values: List[str]
+    ) -> None:
+        if not part_text:
             return
-        if part_text == "or":
-            match_object.match_type = "any"
-        elif part_text == "and":
-            pass
-        elif part_text == "desktop":
-            match_object.add_locator("desktop", "desktop", level)
-        else:
-            try:
-                strategy, value = part_text.split(":", 1)
-            except ValueError:
-                strategy = value = None
-                default_value.append(part_text)
-            # self.logger.info("STRATEGY: %s VALUE: %s" % (strategy, value))
-            if strategy and strategy in WINDOWS_LOCATOR_STRATEGIES:
-                if len(default_value) > 0:
-                    match_object.add_locator("Name", " ".join(default_value))
-                    default_value.clear()
-                windows_locator_strategy = WINDOWS_LOCATOR_STRATEGIES[strategy]
-                match_object.add_locator(windows_locator_strategy, value, level)
 
-    def add_locator(self, strategy, value, level=0) -> None:
+        add_locator = functools.partial(self.add_locator, level=level)
+
+        if part_text in ("and", "or", "desktop"):
+            # NOTE(cmin764): Only "and" is supported at the moment. (match type is
+            #  ignored and spaces are treated as "and"s by default)
+            if part_text == "desktop":
+                add_locator("desktop", "desktop")
+            return
+
+        try:
+            strategy, value = part_text.split(":", 1)
+        except ValueError:
+            self._LOGGER.debug("No locator strategy found. (assuming 'name')")
+            default_values.append(part_text)
+            return
+
+        control_strategy = self._WINDOWS_LOCATOR_STRATEGIES.get(strategy)
+        if control_strategy:
+            if default_values:
+                add_locator("Name", " ".join(default_values))
+                default_values.clear()
+            add_locator(control_strategy, value)
+        else:
+            self._LOGGER.warning(
+                "Invalid locator strategy %r! (assuming 'name')", strategy
+            )
+            default_values.append(part_text)
+
+    def add_locator(self, control_strategy: str, value: str, level: int = 0) -> None:
+        value = value.strip(f"{self.QUOTE} ")
         if not value:
             return
+
         self.max_level = max(self.max_level, level)
-        value = value.replace("'", "").strip()
-        if strategy == "regex":
-            self.regex = value
-        elif strategy == "regex_field":
-            self.regex_field = value
-        elif strategy in ["foundIndex", "searchDepth", "handle"]:
-            value = int(value.strip())
-            self.locators.append([strategy, value, level])  # pylint: disable=no-member
-        elif strategy == "ControlType":
+
+        if control_strategy in ("foundIndex", "searchDepth", "handle"):
+            value = int(value)
+        elif control_strategy == "ControlType":
             value = value if value.endswith("Control") else f"{value}Control"
-            self.locators.append([strategy, value, level])  # pylint: disable=no-member
-        else:
-            self.locators.append([strategy, value, level])  # pylint: disable=no-member
-        if (
-            strategy
-            in [
-                "class",
-                "class_name",
-                "friendly",
-                "friendly_class_name",
-            ]  # pylint: disable=unsupported-membership-test
-            and value.lower() not in self._classes
-        ):
-            self._classes.append(value.lower())  # pylint: disable=no-member
+        elif control_strategy == "ClassName":
+            self._classes.add(value.lower())  # pylint: disable=no-member
+        self.locators.append(  # pylint: disable=no-member
+            (control_strategy, value, level)
+        )
 
     @property
-    def classes(self) -> List:
-        uniques = []
-        for c in self._classes:  # pylint: disable=not-an-iterable
-            if c not in uniques:
-                uniques.append(c)
-        return uniques
+    def classes(self) -> List[str]:
+        return list(self._classes)
 
 
 class LocatorMethods(WindowsContext):
@@ -206,74 +198,64 @@ class LocatorMethods(WindowsContext):
         self._locators_path = locators_path
         super().__init__(ctx)
 
-    def _get_element_with_locator_part(
-        self, locator, search_depth, root_element
+    @staticmethod
+    def _get_control_from_params(
+        search_params: Dict[str, str], root_control: Optional["Control"] = None
     ) -> "Control":
-        match_object = MatchObject()
-        mo = match_object.parse_locator(locator)
-        self.ctx.logger.info("locator '%s' to match element: %s", locator, mo)
-        search_params = {}
-        for loc in mo.locators:  # pylint: disable=not-an-iterable
-            search_params[loc[0]] = loc[1]
         offset = search_params.pop("offset", None)
+        control_type = search_params.pop("ControlType", "Control")
+        ElementControl = getattr(root_control, control_type, Control)
+        element = ElementControl(**search_params)
+        new_element = Control.CreateControlFromControl(element)
+        new_element.robocorp_click_offset = offset
+        return new_element
+
+    def _get_control_from_listed_windows(
+        self, search_params: Dict[str, str], *, param_type: str, win_type: str
+    ) -> "Control":
+        win_value = search_params.pop(param_type)
+        window_list = self.ctx.list_windows()
+        matches = [win for win in window_list if win[win_type] == win_value]
+        if not matches:
+            raise WindowControlError(
+                f"Could not locate window with {param_type} {win_value!r}"
+            )
+        elif len(matches) > 1:
+            raise WindowControlError(
+                f"Found more than one window with {param_type} {win_value!r}"
+            )
+        self.logger.info("Found process with window title: %r", matches[0]["title"])
+        search_params["Name"] = matches[0]["title"]
+        return self._get_control_from_params(search_params)
+
+    def _get_control_with_locator_part(
+        self, locator: str, search_depth: int, root_control: "Control"
+    ) -> "Control":
+        # Prepare control search parameters.
+        match_object = MatchObject.parse_locator(locator)
+        self.logger.info("Locator %r produced matcher: %s", locator, match_object)
+        search_params = {}
+        for loc in match_object.locators:  # pylint: disable=not-an-iterable
+            search_params[loc[0]] = loc[1]
         if "searchDepth" not in search_params:
             search_params["searchDepth"] = search_depth
 
+        # Obtain an element with the search parameters.
+        if "desktop" in search_params:
+            root_control = auto.GetRootControl()
+            return Control.CreateControlFromControl(root_control)
+
         if "executable" in search_params:
-            search_params.pop("ControlType")
-            executable = search_params.pop("executable")
-            window_list = self.ctx.list_windows()
-            matches = [w for w in window_list if w["name"] == executable]
-            if not matches:
-                raise WindowControlError(
-                    "Could not locate window with executable '%s'" % executable
-                )
-            elif len(matches) > 1:
-                raise WindowControlError(
-                    "Found more than one window with executable '%s'" % executable
-                )
-            self.logger.info(
-                "Found process with window title: '%s'", matches[0]["title"]
+            return self._get_control_from_listed_windows(
+                search_params, param_type="executable", win_type="name"
             )
-            search_params["Name"] = matches[0]["title"]
-            element = Control(**search_params)
-            new_element = Control.CreateControlFromControl(element)
-            new_element.robocorp_click_offset = offset
-            return new_element
 
         if "handle" in search_params:
-            search_params.pop("ControlType")
-            handle = search_params.pop("handle")
-            window_list = self.ctx.list_windows()
-            matches = [w for w in window_list if w["handle"] == handle]
-            if not matches:
-                raise WindowControlError(
-                    "Could not locate window with handle '%s'" % handle
-                )
-            elif len(matches) > 1:
-                raise WindowControlError(
-                    "Found more than one window with handle '%s'" % handle
-                )
-            self.logger.info(
-                "Found process with window title: '%s'", matches[0]["title"]
+            return self._get_control_from_listed_windows(
+                search_params, param_type="handle", win_type="handle"
             )
-            search_params["Name"] = matches[0]["title"]
-            element = Control(**search_params)
-            new_element = Control.CreateControlFromControl(element)
-            new_element.robocorp_click_offset = offset
-            return new_element
 
-        if "desktop" in search_params:
-            root_element = auto.GetRootControl()
-            search_params.pop("desktop")
-            return Control.CreateControlFromControl(root_element)
-
-        control_type = search_params.pop("ControlType", "Control")
-        element = getattr(root_element, control_type)
-        new_element = element(**search_params)
-        new_element = Control.CreateControlFromControl(new_element)
-        new_element.robocorp_click_offset = offset
-        return new_element
+        return self._get_control_from_params(search_params, root_control=root_control)
 
     def _load_by_alias(self, criteria: str) -> str:
         try:
@@ -281,10 +263,37 @@ class LocatorMethods(WindowsContext):
             if isinstance(locator, WindowsLocator):
                 return locator.value
         except ValueError:
-            # How to check if locator check should be done as inspector
-            # locators are just strings?
             pass
+
         return criteria
+
+    def _get_element_by_locator_string(
+        self, locator: str, search_depth: int, root_element: Optional[WindowsElement]
+    ) -> WindowsElement:
+        root = root_element.item if self._window_or_none(root_element) else None
+        anchor = self.anchor.item if self.anchor else None
+        window = self.window.item if self.window else None
+        self.logger.debug("argument root = %s", root)
+        self.logger.debug("active anchor = %s", anchor)
+        self.logger.debug("active window = %s", window)
+        root_result = root or anchor or window or auto.GetRootControl()
+        self.logger.debug("resulting root = %s", root_result)
+
+        control = None
+        locators = locator.split(MatchObject.TREE_SEP)
+        try:
+            for loc in locators:
+                self.logger.info("Root element: %r", root_result)
+                control = self._get_control_with_locator_part(
+                    loc, search_depth, root_result
+                )
+                root_result = control
+        except LookupError as err:
+            raise ElementNotFound(
+                f"Element not found with locator {locator!r}"
+            ) from err
+
+        return WindowsElement(control, locator)
 
     @method
     @with_timeout
@@ -311,30 +320,6 @@ class LocatorMethods(WindowsContext):
         else:
             element = locator
         if self._window_or_none(element) is None:
-            raise ElementNotFound(f"Unable to get element with '{locator}'")
+            raise ElementNotFound(f"Unable to get element with {locator!r}")
         self.logger.info("Returning element: %s", element)
         return element
-
-    def _get_element_by_locator_string(self, locator, search_depth, root_element):
-        root = root_element.item if self._window_or_none(root_element) else None
-        anchor = self.anchor.item if self.anchor else None
-        window = self.window.item if self.window else None
-        self.logger.debug("argument root = %s", root)
-        self.logger.debug("active anchor = %s", anchor)
-        self.logger.debug("active window = %s", window)
-        root_result = root or anchor or window or auto.GetRootControl()
-        self.logger.debug("resulting root = %s", root_result)
-        element = None
-
-        locators = locator.split(" > ")
-        try:
-            for loc in locators:
-                self.logger.info("Root element: '%s'", root_result)
-                element = self._get_element_with_locator_part(
-                    loc, search_depth, root_result
-                )
-                root_result = element
-        except LookupError as err:
-            raise ElementNotFound(f"Element not found with locator {locator}") from err
-
-        return WindowsElement(element, locator)
