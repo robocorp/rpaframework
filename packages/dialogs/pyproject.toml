@@ -20,7 +20,7 @@ packages = [
 python = "^3.6.2"
 rpaframework-core = "^7.0.0"
 robocorp-dialog = "^0.5.1"
-robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
+robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.5b0", allow-prereleases = true}
