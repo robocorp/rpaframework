@@ -26,17 +26,14 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-          # "windows-py36", no support anymore for the package
           "windows-py37",
           "windows-py38",
           "windows-py39",
 
-          "ubuntu-py36",
           "ubuntu-py37",
           "ubuntu-py38",
           "ubuntu-py39",
 
-          # "macos-py36", no support anymore for the package
           "macos-py37",
           "macos-py38",
           "macos-py39",
@@ -52,9 +49,6 @@ jobs:
           - name: "windows-py39"
             python: "3.9"
             os: windows-latest
-          - name: "ubuntu-py36"
-            python: "3.6"
-            os: ubuntu-latest
           - name: "ubuntu-py37"
             python: "3.7"
             os: ubuntu-latest

@@ -32,7 +32,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 selenium = "^3.141.0"
 webdrivermanager = "^0.10.0"
 psutil = { version = "^5.9.0", platform = "win32" }
