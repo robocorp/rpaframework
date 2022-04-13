@@ -129,7 +129,7 @@ class MatchObject:
                 match_object.handle_locator_part(
                     level, part.group().strip(), default_values
                 )
-            if len(default_values) > 0:
+            if default_values:
                 match_object.add_locator("Name", " ".join(default_values), level=level)
         if not match_object.locators:
             match_object.add_locator("Name", locator)
@@ -159,7 +159,7 @@ class MatchObject:
 
         control_strategy = self._WINDOWS_LOCATOR_STRATEGIES.get(strategy)
         if control_strategy:
-            if len(default_values) > 0:
+            if default_values:
                 add_locator("Name", " ".join(default_values))
                 default_values.clear()
             add_locator(control_strategy, value)
