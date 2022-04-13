@@ -111,8 +111,8 @@ class MatchObject:
         "executable": "executable",
     }
     TREE_SEP = " > "
-    _Q = '"'  # enclosing quote character
-    _LOCATOR_REGEX = re.compile(rf"\S*{_Q}[^{_Q}]+{_Q}|\S+", re.IGNORECASE)
+    QUOTE = '"'  # enclosing quote character
+    _LOCATOR_REGEX = re.compile(rf"\S*{QUOTE}[^{QUOTE}]+{QUOTE}|\S+", re.IGNORECASE)
     _LOGGER = logging.getLogger(__name__)
 
     locators: List[Tuple] = field(default_factory=list)
@@ -170,7 +170,7 @@ class MatchObject:
             default_values.append(part_text)
 
     def add_locator(self, control_strategy: str, value: str, level: int = 0) -> None:
-        value = value.strip(f"{self._Q} ")
+        value = value.strip(f"{self.QUOTE} ")
         if not value:
             return
 
