@@ -18,9 +18,6 @@ from RPA.core.locators import (
     BrowserLocator,
     ImageLocator,
     Coordinates,
-    Offset,
-    BrowserDOM,
-    ImageTemplate,
     sanitize_name,
     literal,
 )
