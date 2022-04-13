@@ -23,12 +23,12 @@ class WindowMethods(WindowsContext):
 
     @staticmethod
     def get_icon(
-        filepath: str, icon_save_directory: Optional[str] = None
+        filepath: Optional[str], icon_save_directory: Optional[str] = None
     ) -> Optional[str]:
         if not filepath:
-            return None  # no file path to save the icon into
+            return None  # no file path to save the icon from
 
-        # TODO. Get different size icons
+        # TODO: Get icons of different sizes.
         small, large = win32gui.ExtractIconEx(filepath, 0, 10)
         if len(large) <= 0:
             return None  # no icon to extract
@@ -74,17 +74,29 @@ class WindowMethods(WindowsContext):
                 )
                 fullpath = win32process.GetModuleFileNameEx(handle, 0)
             except Exception as err:  # pylint: disable=broad-except
-                self.logger.info("Open process error in `List Windows`: %s", str(err))
+                self.logger.info("Open process error in `List Windows`: %s", err)
+            handle = win.NativeWindowHandle
             icon_string = (
                 self.get_icon(fullpath, icon_save_directory) if icons else None
+            )
+            rect = win.BoundingRectangle
+            rectangle = (
+                [rect.left, rect.top, rect.right, rect.bottom] if rect else [None] * 4
             )
             info = {
                 "title": win.Name,
                 "pid": pid,
                 "name": process_list[pid] if pid in process_list else None,
                 "path": fullpath,
-                "handle": win.NativeWindowHandle,
+                "handle": handle,
                 "icon": icon_string,
+                "automation_id": win.AutomationId,
+                "control_type": win.ControlTypeName,
+                "class_name": win.ClassName,
+                "rectangle": rectangle,
+                "keyboard_focus": win.HasKeyboardFocus,
+                "is_active": handle == auto.GetForegroundWindow(),
+                "object": win,
             }
             if icons and not icon_string:
                 self.logger.info("Icon for %s returned empty", win.Name)
