@@ -25,7 +25,7 @@ def get_column_index(column):
     col = 0
     for digit, char in enumerate(column[::-1]):
         value = ord(char) - 96
-        col += (26 ** digit) * value
+        col += (26**digit) * value
 
     return col
 
