@@ -75,6 +75,15 @@ from RPA.core.windows.locators import MatchObject
                 ("executable", "my.exe", 0),
             ],
         ),
+        (
+            'type:Group and name:"Number pad" > type:Button and index:4',
+            [
+                ("ControlType", "GroupControl", 0),
+                ("Name", "Number pad", 0),
+                ("ControlType", "ButtonControl", 1),
+                ("foundIndex", 4, 1),
+            ],
+        ),
     ],
 )
 def test_match_object(locator, locators):
