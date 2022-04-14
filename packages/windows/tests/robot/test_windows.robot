@@ -66,6 +66,7 @@ Calculator with keys
     FOR    ${button}    IN    @{buttons}
         Log To Console    ${button}
     END
+    Length Should Be    ${buttons}      11      msg=From 0 to 9 and decimlar separator
 
 Keep open a single Notepad
     Set Global Timeout    ${TIMEOUT}
@@ -91,12 +92,16 @@ Kill app by name
         END
     END
 
+Close Current Window And Sleep
+    Close Current Window
+    Sleep   1s
+
 
 *** Tasks ***
 Windows search Calculator by clicking buttons
-    Windows Search    Calculator    wait_time=2
+    Windows Search    Calculator    wait_time=1
     Calculator button actions
-    [Teardown]    Close Current Window
+    [Teardown]    Close Current Window And Sleep
 
 Calculator by clicking buttons already running
     [Tags]    skip      manual
@@ -105,14 +110,14 @@ Calculator by clicking buttons already running
 Windows run Do some calculations
     Windows Run    calc.exe     wait_time=1
     Calculator with keys
-    [Teardown]    Close Current Window
+    [Teardown]    Close Current Window And Sleep
 
 Windows run Do some calculations already running
     [Tags]    skip      manual
     Calculator with keys
 
 Play Task Calculator
-    Windows Search    Calculator    wait_time=2
+    Windows Search    Calculator    wait_time=1
     Control Window    Calculator
     Click    id:clearButton
     Click    type:Group and name:"Number pad" > type:Button and index:4
@@ -131,9 +136,8 @@ Play Task Calculator
     [Teardown]    Close Current Window
 
 Play Task Temperature
-    Windows Search    Calculator    wait_time=2
+    Windows Search    Calculator    wait_time=1
     Control Window    Calculator
-
     # Go to Temperature Converter view.
     Click    id:TogglePaneButton
     Send Keys   keys={PAGEDOWN}     wait_time=0.1  # to see the Temperature view
@@ -198,7 +202,7 @@ Play Task UIDemo
 Resize window with Spotify
     [Tags]    skip    manual
 
-#    Windows Run     Spotify.exe
+    Windows Run     Spotify.exe
     ${window} =    Control Window    executable:Spotify.exe
     Log To Console      Spotify window: ${window}
     Maximize Window
@@ -216,7 +220,7 @@ Resize window with Spotify
     [Teardown]    Close Current Window
 
 Notepad write text into a file
-    Windows Search    notepad   wait_time=2
+    Windows Search    notepad   wait_time=1
     Control Window    subname:"- Notepad"
 
     ${ver} =    Get OS Version
@@ -268,7 +272,7 @@ Control Window by handle
     ${win} =    Control Window    handle:${win}[0][handle]    # handle of the first window in the list
     Log To Console      Controlled window: ${win}
 
-Result from recording
+Calculator result from recording
     [Tags]    skip    manual
     Windows Run     Calc
 
@@ -315,7 +319,6 @@ Write to Notepad in the background
 Test getting elements
     [Tags]    skip
     Clear Anchor
-#    Print Tree     log_as_warnings=${True}
 
     ${ver} =    Get OS Version
     ${desktop} =    Get Element
