@@ -44,11 +44,11 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.10.0"
+version = "4.11.1"
 description = "Screen-scraping library"
 category = "main"
 optional = false
-python-versions = ">3.0.0"
+python-versions = ">=3.6.0"
 
 [package.dependencies]
 soupsieve = ">1.2"
@@ -582,7 +582,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "robocorp-dialog"
-version = "0.5.1"
+version = "0.5.3"
 description = "Dialog for querying user input"
 category = "main"
 optional = false
@@ -591,7 +591,7 @@ python-versions = ">=3.6.2,<4.0.0"
 [package.dependencies]
 PyQt5 = {version = ">=5.15.2,<6.0.0", markers = "sys_platform == \"linux\""}
 PyQtWebEngine = {version = ">=5.15.2,<6.0.0", markers = "sys_platform == \"linux\""}
-pywebview = {version = ">=3.5,<4.0", markers = "sys_platform == \"linux\""}
+pywebview = {version = "3.6.3", markers = "sys_platform == \"linux\""}
 
 [[package]]
 name = "robotframework"
@@ -603,7 +603,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "7.0.1"
+version = "7.1.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -638,7 +638,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "soupsieve"
-version = "2.3.1"
+version = "2.3.2"
 description = "A modern CSS selector implementation for Beautiful Soup."
 category = "main"
 optional = false
@@ -756,7 +756,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "3ae9b9b5d4ba1861fe338dbe0e2fa9634ff9628cf93f2b46d49bca433760ae50"
+content-hash = "45a23db3a18ec5d4f1d875a995c7c98f990c59dbae01db7f7125aba020d5056d"
 
 [metadata.files]
 appdirs = [
@@ -776,8 +776,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
-    {file = "beautifulsoup4-4.10.0.tar.gz", hash = "sha256:c23ad23c521d818955a4151a67d81580319d4bf548d3d49f4223ae041ff98891"},
+    {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
+    {file = "beautifulsoup4-4.11.1.tar.gz", hash = "sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693"},
 ]
 black = [
     {file = "black-21.12b0-py3-none-any.whl", hash = "sha256:a615e69ae185e08fdd73e4715e260e2479c861b5740057fde6e8b4e3b7dd589f"},
@@ -1253,16 +1253,16 @@ requests = [
     {file = "requests-2.27.1.tar.gz", hash = "sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"},
 ]
 robocorp-dialog = [
-    {file = "robocorp-dialog-0.5.1.tar.gz", hash = "sha256:276bca37a9e2cb2594c497dd0b5742512d9156a4a106f45bd69dacdab240aa8b"},
-    {file = "robocorp_dialog-0.5.1-py3-none-any.whl", hash = "sha256:f0692327b80dca136dff6621a2de08dab4a0f9da6424c1f8cb9c61949a6c26b7"},
+    {file = "robocorp-dialog-0.5.3.tar.gz", hash = "sha256:bad97f722fe546e0d15ff91a111c0bb674c614c50557fdc0265c8cab9cd14fcf"},
+    {file = "robocorp_dialog-0.5.3-py3-none-any.whl", hash = "sha256:df0d1264e71c3c9005b7c40af6ac23ca53ad758beefe02e579543b2521de24d3"},
 ]
 robotframework = [
     {file = "robotframework-4.1.3-py2.py3-none-any.whl", hash = "sha256:06c025e5b640a378d372292921f49c28f7d025e4876b7b8f98ecc56a3def9dc0"},
     {file = "robotframework-4.1.3.zip", hash = "sha256:d2675cbe3e5a4c90be3ddb61be3b88cc0d6ff503c298ad8f8a78aad14e71e886"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-7.0.1.tar.gz", hash = "sha256:de1b6428f144198d2cfe953f71b18d1242810742575de891fcd9c4343cd1be05"},
-    {file = "rpaframework_core-7.0.1-py3-none-any.whl", hash = "sha256:d7280d2f1e34107c3eaf7068bf232cb45808d3f70787d47848133b7220c58aea"},
+    {file = "rpaframework-core-7.1.0.tar.gz", hash = "sha256:cb3ccdfd515f81ee27a9f053608cea614f84ed7e704379131b1bfee4c6ab6df2"},
+    {file = "rpaframework_core-7.1.0-py3-none-any.whl", hash = "sha256:ff307964265c3755a2742e1329c297ae08e4f1dc5dcb0a7d04a282827675f171"},
 ]
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
@@ -1273,8 +1273,8 @@ six = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 soupsieve = [
-    {file = "soupsieve-2.3.1-py3-none-any.whl", hash = "sha256:1a3cca2617c6b38c0343ed661b1fa5de5637f257d4fe22bd9f1338010a1efefb"},
-    {file = "soupsieve-2.3.1.tar.gz", hash = "sha256:b8d49b1cd4f037c7082a9683dfa1801aa2597fb11c3a1155b7a5b94829b4f1f9"},
+    {file = "soupsieve-2.3.2-py3-none-any.whl", hash = "sha256:a714129d3021ec17ce5be346b1007300558b378332c289a1a20e7d4de6ff18a5"},
+    {file = "soupsieve-2.3.2.tar.gz", hash = "sha256:0bcc6d7432153063e3df09c3ac9442af3eba488715bfcad6a4c38ccb2a523124"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
