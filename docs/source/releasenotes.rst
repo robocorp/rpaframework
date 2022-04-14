@@ -27,7 +27,6 @@ Release notes
 
   - Improved locators parsing and ability to enclose values containing spaces with
     ``"`` double-quote. (:issue:`363`)
-  -
 
   .. warning::
     This is a **breaking** change! If you use single-quote locator value enclosing,
