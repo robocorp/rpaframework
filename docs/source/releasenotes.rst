@@ -4,8 +4,9 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Windows** (:pr:`467`):
+- Library **RPA.Windows** (:issue:`439`):
 
+  - Keyword `Get Elements` returns all similar elements matching locator. (:pr:`471`)
   - Keyword ``List Windows`` returns now extra attributes similar to the old
     deprecated ``RPA.Desktop.Windows`` library (:issue:`408`):
 
@@ -18,7 +19,7 @@ Release notes
     - ``object``
 
   - Improved locators parsing and ability to enclose values containing spaces with
-    ``"`` double-quote (:issue:`363`).
+    ``"`` double-quote. (:issue:`363`)
 
   .. warning::
     This is a **breaking** change! If you use single-quote locator value enclosing,

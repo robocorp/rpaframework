@@ -29,6 +29,7 @@ class WindowsElement:
     # pylint: disable=no-self-argument
     def _cmp_subname(win_elem: "WindowsElement", *, locator: str) -> bool:
         subname = None
+        # pylint: disable=not-an-iterable
         for loc in MatchObject.parse_locator(locator).locators:
             if loc[0] == "SubName":
                 subname = loc[1]
