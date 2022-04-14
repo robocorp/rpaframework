@@ -26,12 +26,26 @@ Locator = Union["WindowsElement", str]
 class WindowsElement:
     """Represent Control as dataclass"""
 
+    # pylint: disable=no-self-argument
+    def _cmp_subname(win_elem: "WindowsElement", *, locator: str) -> bool:
+        subname = None
+        # pylint: disable=not-an-iterable
+        for loc in MatchObject.parse_locator(locator).locators:
+            if loc[0] == "SubName":
+                subname = loc[1]
+                break
+
+        assert subname, f"couldn't find 'SubName' in parsed sub-locator {locator!r}"
+        return subname in win_elem.name
+
     _WINDOW_SIBLING_COMPARE = {
         # <locator_strategy>: <element_attribute>
-        "name": "name",  # this works for "subname" as well
+        "id": "automation_id",
+        re.compile(r"(?<!sub)name:"): "name",
+        "subname": _cmp_subname,
         "class": "class_name",
         "control": "control_type",
-        "id": "automation_id",
+        "type": "control_type",
     }
 
     item: "Control"
@@ -74,18 +88,31 @@ class WindowsElement:
         while locator:
             if isinstance(locator, WindowsElement):
                 locator = locator.locator
-            else:  # reached a string
+            else:  # finally, reached a string locator
                 break
         else:
             return True  # nothing to check here, can be considered sibling
 
-        # FIXME(cmin764): Implement missing strategies like "regex".
+        last_locator_part = locator.split(MatchObject.TREE_SEP)[-1]
         cmp_attrs = []
-        for strategy, attr in self._WINDOW_SIBLING_COMPARE.items():
-            if f"{strategy}:" in locator:
-                cmp_attrs.append(attr)
-        checks = (getattr(self, attr) == getattr(win_elem, attr) for attr in cmp_attrs)
-        return all(checks)
+        for strategy, attr_or_func in self._WINDOW_SIBLING_COMPARE.items():
+            if isinstance(strategy, str):
+                strategy_regex = re.compile(rf"{strategy}:")
+            else:
+                strategy_regex = strategy
+            if strategy_regex.search(last_locator_part):
+                cmp_attrs.append(attr_or_func)
+        # Name is assumed by default if no strategies are found at all.
+        cmp_attrs = cmp_attrs or [self._WINDOW_SIBLING_COMPARE["name"]]
+        for attr_or_func in cmp_attrs:
+            if isinstance(attr_or_func, str):
+                status = getattr(self, attr_or_func) == getattr(win_elem, attr_or_func)
+            else:
+                status = attr_or_func(win_elem, locator=last_locator_part)
+            if not status:
+                return False
+
+        return True
 
 
 @dataclass
@@ -279,7 +306,6 @@ class LocatorMethods(WindowsContext):
         root_result = root or anchor or window or auto.GetRootControl()
         self.logger.debug("resulting root = %s", root_result)
 
-        control = None
         locators = locator.split(MatchObject.TREE_SEP)
         try:
             for loc in locators:
@@ -293,6 +319,7 @@ class LocatorMethods(WindowsContext):
                 f"Element not found with locator {locator!r}"
             ) from err
 
+        # If we get here, then we have a `control` no matter what.
         return WindowsElement(control, locator)
 
     @method
