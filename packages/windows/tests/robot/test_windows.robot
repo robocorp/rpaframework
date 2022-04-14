@@ -13,7 +13,7 @@ ${EXE_NOTEPAD}          notepad.exe
 ${EXE_SPOTIFY}          Spotify.exe
 ${EXE_SAGE50}           sage.exe
 
-${SPOTIFY_PLAYCONTROL}    name:'Player controls' > control:ButtonControl and name:
+${SPOTIFY_PLAYCONTROL}    name:"Player controls" > control:ButtonControl and name:
 ${SPOTIFY_PLAY}    ${SPOTIFY_PLAYCONTROL}Play
 ${SPOTIFY_PAUSE}    ${SPOTIFY_PLAYCONTROL}Pause
 ${SPOTIFY_NEXT}    ${SPOTIFY_PLAYCONTROL}Next
@@ -59,10 +59,10 @@ Calculator button actions
 Calculator with keys
     Control Window    Calculator
     Click    id:clearButton
-    Send Keys    keys=96+4=
-    ${result}=    Get Attribute    id:CalculatorResults    Name
+    Send Keys    keys=96+4=     interval=0.1
+    ${result} =    Get Attribute    id:CalculatorResults    Name
     Log To Console    ${result}
-    ${buttons}=    Get Elements    type:Group and name:'Number pad' > type:Button
+    ${buttons} =    Get Elements    type:Group and name:"Number pad" > type:Button
     FOR    ${button}    IN    @{buttons}
         Log To Console    ${button}
     END
@@ -94,7 +94,7 @@ Kill app by name
 
 *** Tasks ***
 Windows search Calculator by clicking buttons
-    Windows Search    Calculator
+    Windows Search    Calculator    wait_time=2
     Calculator button actions
     [Teardown]    Close Current Window
 
@@ -103,7 +103,7 @@ Calculator by clicking buttons already running
     Calculator button actions
 
 Windows run Do some calculations
-    Windows Run    calc.exe
+    Windows Run    calc.exe     wait_time=1
     Calculator with keys
     [Teardown]    Close Current Window
 
@@ -112,26 +112,26 @@ Windows run Do some calculations already running
     Calculator with keys
 
 Play Task Calculator
-    Windows Search    Calculator    wait_time=1
+    Windows Search    Calculator    wait_time=2
     Control Window    Calculator
     Click    id:clearButton
-    Click    type:Group and name:'Number pad' > type:Button and index:4
+    Click    type:Group and name:"Number pad" > type:Button and index:4
     # It is optional to use "and" in the locator syntax.
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
         # FIXME(cmiN): On Windows 11 this offset minimizes the window. (might be resolution bound)
-        ${locator} =    Set Variable    type:Group and name:'Number pad' > type:Button index:5
+        ${locator} =    Set Variable    type:Group and name:"Number pad" > type:Button index:5
     ELSE
-        ${locator} =    Set Variable    type:Group and name:'Number pad' > type:Button index:5 offset:370,0
+        ${locator} =    Set Variable    type:Group and name:"Number pad" > type:Button index:5 offset:370,0
     END
     Click    ${locator}
     # "control" maps to same thing as "type" -> "ControlType".
-    Click    control:Group and name:'Number pad' > control:Button index:7
+    Click    control:Group and name:"Number pad" > control:Button index:7
     Click    id:equalButton
     [Teardown]    Close Current Window
 
 Play Task Temperature
-    Windows Search    Calculator
+    Windows Search    Calculator    wait_time=2
     Control Window    Calculator
 
     # Go to Temperature Converter view.
@@ -140,7 +140,7 @@ Play Task Temperature
     ${temp} =  Set Variable    id:Temperature  # works on Windows 10 and lower
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
-        ${temp} =  Set Variable    name:'Temperature Converter'
+        ${temp} =  Set Variable    name:"Temperature Converter"
     END
     Click    ${temp}
 
@@ -157,7 +157,7 @@ Play Task Temperature
     Send Keys   keys={PAGEUP}     wait_time=0.1  # to see the Standard view
     ${std} =  Set Variable    id:Standard
     IF    "${ver}" == "11"
-        ${std} =  Set Variable    name:'Standard Calculator'
+        ${std} =  Set Variable    name:"Standard Calculator"
     END
     Click    ${std}
 
@@ -176,7 +176,7 @@ Play Task UIDemo
     Set Anchor    id:DataGrid    10.0
     ${headers} =    Get Elements    type:HeaderItem
     Log To Console      Headers: ${headers}
-    ${rows} =    Get Elements    class:DataGridRow name:'UiDemo.DepositControl+LineOfTable'
+    ${rows} =    Get Elements    class:DataGridRow name:"UiDemo.DepositControl+LineOfTable"
     FOR    ${row}    IN    @{rows}
         ${columns} =    Get Elements    class:DataGridCell    root_element=${row}
         FOR    ${col}    IN    @{columns}
@@ -216,19 +216,19 @@ Resize window with Spotify
     [Teardown]    Close Current Window
 
 Notepad write text into a file
-    Windows Search    notepad
-    Control Window    subname:'- Notepad'
+    Windows Search    notepad   wait_time=2
+    Control Window    subname:"- Notepad"
 
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
         Click    Edit   wait_time=0.5
         Click    Font   wait_time=0.5  # for some reason this only highlitghts the button
-        Click    Font  # and this finally clicks it
-        Send Keys   keys={TAB}{TAB}{TAB}     interval=0.2     wait_time=0.3   send_enter=${True}
-        Click   name:'Lucida Sans Unicode'  wait_time=0.5
-        Send Keys   keys={TAB}{TAB}     interval=0.2     wait_time=0.3   send_enter=${True}
-        Click   name:'26'   wait_time=0.5
-        Click   name:'Back'
+        Click    Font   wait_time=2  # and this finally clicks it
+        Click    id:FontFamilyComboBox
+        Click    name:"Lucida Sans Unicode"  wait_time=0.5
+        Click    id:FontSizeComboBox
+        Click    name:"26"   wait_time=0.5
+        Click    name:"Back"
     ELSE
         Control Window    Font
         Click    type:MenuBar name:Application > name:Format
@@ -238,25 +238,25 @@ Notepad write text into a file
         Click    type:Button name:OK
     END
 
-    Control Window    subname:'- Notepad'
+    Control Window    subname:"- Notepad"
     Send Keys    keys={Ctrl}a{Del}
     Send Keys    keys=Lets add some text to the notepad
 
-    Control Window    subname:'- Notepad'
+    Control Window    subname:"- Notepad"
     IF    "${ver}" == "11"
         Click   File    wait_time=0.3
         Click   Save as
         Click   Save as     wait_time=1.5
     ELSE
         Click    type:MenuBar name:Application > name:File
-        Click    type:MenuItem subname:'Save As'
+        Click    type:MenuItem subname:"Save As"
     END
-    Send Keys    keys=best-win-auto.txt{Enter}  interval=0.1
+    Send Keys    keys=best-win-auto.txt{Enter}  interval=0.05
     ${run} =    Run Keyword And Ignore Error    Control Window    Confirm Save As   timeout=0.5
     IF    "${run}[0]" == "PASS"
         Click   Yes   wait_time=0.3
     END
-    Minimize Window    subname:'- Notepad'
+    Minimize Window    subname:"- Notepad"
     [Teardown]      Close Current Window
 
 Control Window by handle
@@ -273,14 +273,14 @@ Result from recording
     Windows Run     Calc
 
     Control Window    Calculator    # Handle: 4066848
-    Click    name:'Seven'
-    Click    name:'Eight'
-    Click    name:'Nine'
-    Click    name:'Plus'
-    Click    name:'One'
-    Click    name:'Two'
-    Click    name:'Three'
-    Click    name:'Equals'
+    Click    name:"Seven"
+    Click    name:"Eight"
+    Click    name:"Nine"
+    Click    name:"Plus"
+    Click    name:"One"
+    Click    name:"Two"
+    Click    name:"Three"
+    Click    name:"Equals"
 
     [Teardown]    Close Current Window
 
@@ -290,13 +290,13 @@ Write to Notepad in the background
     Windows Run     Calc
 
     Clear Anchor
-    Control Window    subname:'- Notepad'    foreground=${False}
+    Control Window    subname:"- Notepad"    foreground=${False}
     # All the following keyword calls will use the set anchor element as root locator,
     #  UNLESS they specify a locator explicitly or `Clear Anchor` is used.
-    ${text_edit} =      Set Variable    name:'Text Editor'
+    ${text_edit} =      Set Variable    name:"Text Editor"
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
-        ${text_edit} =  Set Variable    name:'RichEdit Control'
+        ${text_edit} =  Set Variable    name:"RichEdit Control"
     END
     Set Anchor      ${text_edit}
 
@@ -322,7 +322,7 @@ Test getting elements
     IF    "${ver}" == "11"
         ${buttons} =    Get Elements    id:TaskbarFrameRepeater > type:Button   root_element=${desktop}
     ELSE
-        ${buttons} =    Get Elements    name:'Running applications' > type:Button   root_element=${desktop}
+        ${buttons} =    Get Elements    name:"Running applications" > type:Button   root_element=${desktop}
     END
     Log To Console    \nList Taskbar applications\n
     Log To Console    Desktop: ${desktop}
