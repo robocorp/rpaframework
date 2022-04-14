@@ -11,6 +11,7 @@ Release notes
 13.3.0 - 14 Apr 2022
 --------------------
 
+- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package
 - Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
 
   - Keyword `Get Elements` returns all similar elements matching locator. (:pr:`471`)
@@ -35,8 +36,8 @@ Release notes
 13.2.0 - 08 Apr 2022
 --------------------
 
-- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords 
-  primarily focus on retrieving data from Hubspot, there is currently no support for 
+- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords
+  primarily focus on retrieving data from Hubspot, there is currently no support for
   updating information.
 
 13.1.0 - 07 Apr 2022
