@@ -4,7 +4,15 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Windows** (:issue:`439`):
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+13.3.0 - 14 Apr 2022
+--------------------
+
+- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
 
   - Keyword `Get Elements` returns all similar elements matching locator. (:pr:`471`)
   - Keyword ``List Windows`` returns now extra attributes similar to the old
@@ -25,15 +33,11 @@ Release notes
     This is a **breaking** change! If you use single-quote locator value enclosing,
     please switch it to double-quote instead.
 
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 13.2.0 - 08 Apr 2022
 --------------------
 
-- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords 
-  primarily focus on retrieving data from Hubspot, there is currently no support for 
+- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords
+  primarily focus on retrieving data from Hubspot, there is currently no support for
   updating information.
 
 13.1.0 - 07 Apr 2022
