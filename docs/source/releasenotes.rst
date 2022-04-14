@@ -14,7 +14,7 @@ Release notes
 - Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package
 - Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
 
-  - Keyword `Get Elements` returns all similar elements matching locator. (:pr:`471`)
+  - Keyword ``Get Elements`` returns all similar elements matching locator. (:pr:`471`)
   - Keyword ``List Windows`` returns now extra attributes similar to the old
     deprecated ``RPA.Desktop.Windows`` library (:issue:`408`):
 
