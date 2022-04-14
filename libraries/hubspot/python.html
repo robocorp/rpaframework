@@ -453,9 +453,9 @@ integer sent to the API must have 13 digits as of March 18, 2022).</p>
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Search with date</span><span class="p"></span>
 <span class="p">    ${</span><span class="nv">yesterday</span><span class="p">}=    </span><span class="nf">Get current date</span><span class="p">    </span><span class="s">increment=-24h</span><span class="p">   </span><span class="s">result_format=epoch</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">yeaterday_hs_ts</span><span class="p">}=    </span><span class="nf">Evaluate</span><span class="p">    </span><span class="s">round(</span><span class="p">${</span><span class="nv">yesterday</span><span class="p">}</span><span class="s"> * 1000)</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">yesterday_hs_ts</span><span class="p">}=    </span><span class="nf">Evaluate</span><span class="p">    </span><span class="s">round(</span><span class="p">${</span><span class="nv">yesterday</span><span class="p">}</span><span class="s"> * 1000)</span><span class="p"></span>
 <span class="p">    ${</span><span class="nv">deals</span><span class="p">}=    </span><span class="nf">Search for objects</span><span class="p">    </span><span class="s">DEALS</span><span class="p"></span>
-<span class="p">    ...    </span><span class="s">hs_lastmodifieddate</span><span class="p">    </span><span class="s">GTE</span><span class="p">    ${</span><span class="nv">yeaterday_hs_ts</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">hs_lastmodifieddate</span><span class="p">    </span><span class="s">GTE</span><span class="p">    ${</span><span class="nv">yesterday_hs_ts</span><span class="p">}</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robot.libraries.DateTime</span> <span class="kn">import</span> <span class="n">get_current_date</span><span class="p">,</span> <span class="n">subtract_time_from_date</span>
@@ -509,7 +509,7 @@ library.</p>
 <span class="gh">*** Keywords ***</span><span class="p"></span>
 <span class="gu">Authorize Hubspot</span><span class="p"></span>
 <span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=    </span><span class="nf">Get secret</span><span class="p">    </span><span class="s">hubspot</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    </span><span class="s">api_key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
+<span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Hubspot</span> <span class="kn">import</span> <span class="n">Hubspot</span>
@@ -910,7 +910,7 @@ is unique per pipeline.</p>
 <span class="gh">*** Keywords ***</span><span class="p"></span>
 <span class="gu">Authorize Hubspot</span><span class="p"></span>
 <span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=    </span><span class="nf">Get secret</span><span class="p">    </span><span class="s">hubspot</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    </span><span class="s">api_key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
+<span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>This keyword caches results for future use, to refresh results from
@@ -1117,7 +1117,7 @@ property.</p></td>
 <span class="gh">*** Keywords ***</span><span class="p"></span>
 <span class="gu">Authorize Hubspot</span><span class="p"></span>
 <span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=    </span><span class="nf">Get secret</span><span class="p">    </span><span class="s">hubspot</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    </span><span class="s">api_key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
+<span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Alternatively, search criteria can be passed as a list of
