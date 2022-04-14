@@ -700,7 +700,7 @@ python-versions = "*"
 
 [[package]]
 name = "soupsieve"
-version = "2.3.2"
+version = "2.3.2.post1"
 description = "A modern CSS selector implementation for Beautiful Soup."
 category = "main"
 optional = false
@@ -1555,8 +1555,8 @@ snowballstemmer = [
     {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
 ]
 soupsieve = [
-    {file = "soupsieve-2.3.2-py3-none-any.whl", hash = "sha256:a714129d3021ec17ce5be346b1007300558b378332c289a1a20e7d4de6ff18a5"},
-    {file = "soupsieve-2.3.2.tar.gz", hash = "sha256:0bcc6d7432153063e3df09c3ac9442af3eba488715bfcad6a4c38ccb2a523124"},
+    {file = "soupsieve-2.3.2.post1-py3-none-any.whl", hash = "sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759"},
+    {file = "soupsieve-2.3.2.post1.tar.gz", hash = "sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d"},
 ]
 sphinx = [
     {file = "Sphinx-2.4.5-py3-none-any.whl", hash = "sha256:02d7e9dc5f30caa42a682b26de408b755a55c7b07f356a30a3b6300bf7d4740e"},
