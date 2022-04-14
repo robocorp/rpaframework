@@ -26,7 +26,8 @@ Locator = Union["WindowsElement", str]
 class WindowsElement:
     """Represent Control as dataclass"""
 
-    def _cmp_subname(this: "WindowsElement", win_elem: "WindowsElement", *, locator: str) -> bool:
+    # pylint: disable=no-self-argument
+    def _cmp_subname(win_elem: "WindowsElement", *, locator: str) -> bool:
         subname = None
         for loc in MatchObject.parse_locator(locator).locators:
             if loc[0] == "SubName":
@@ -106,7 +107,7 @@ class WindowsElement:
             if isinstance(attr_or_func, str):
                 status = getattr(self, attr_or_func) == getattr(win_elem, attr_or_func)
             else:
-                status = attr_or_func(self, win_elem, locator=last_locator_part)
+                status = attr_or_func(win_elem, locator=last_locator_part)
             if not status:
                 return False
 
