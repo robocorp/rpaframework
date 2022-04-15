@@ -409,7 +409,8 @@ class ActionKeywords(LibraryContext):
         element = self.ctx.get_element(locator)
         if not hasattr(element.item, "CaptureToImage"):
             raise ActionNotPossible(
-                f"Element found with {locator!r} does not have 'CaptureToImage' attribute"
+                f"Element found with {locator!r} does not have 'CaptureToImage' "
+                "attribute"
             )
 
         element.item.SetFocus()
