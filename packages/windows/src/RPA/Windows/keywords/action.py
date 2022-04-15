@@ -150,7 +150,7 @@ class ActionKeywords(LibraryContext):
             )
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have '%s' attribute" % (element, click_type)
+                f"Element {element!r} does not have {click_type!r} attribute"
             )
 
     def _click_element(self, element, click_type, click_wait_time):
@@ -162,7 +162,7 @@ class ActionKeywords(LibraryContext):
             )
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have '%s' attribute" % (element, click_type)
+                f"Element {element!r} does not have {click_type!r} attribute"
             )
 
     @keyword(tags=["action"])
@@ -187,7 +187,7 @@ class ActionKeywords(LibraryContext):
             element.item.Select(value)
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have 'Select' attribute" % locator
+                f"Element {locator!r} does not have 'Select' attribute"
             )
         return element
 
@@ -234,12 +234,11 @@ class ActionKeywords(LibraryContext):
         if send_enter:
             keys += "{Enter}"
         if hasattr(element, "SendKeys"):
-            self.logger.info("Sending keys '%s' to element '%s'" % (keys, element))
-            # element.item.SendKeys(keys, interval=interval, waitTime=keys_wait_time)
+            self.logger.info("Sending keys %r to element %r", keys, element)
             element.SendKeys(text=keys, interval=interval, waitTime=keys_wait_time)
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have 'SendKeys' attribute" % locator
+                f"Element found with {locator!r} does not have 'SendKeys' attribute"
             )
 
     @keyword
@@ -256,13 +255,13 @@ class ActionKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${date}=  Get Text   type:Edit name:'Date of birth'
+            ${date} =  Get Text   type:Edit name:"Date of birth"
         """
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "GetWindowText"):
             return element.item.GetWindowText()
         raise ActionNotPossible(
-            "Element '%s' does not have 'GetWindowText' attribute" % locator
+            f"Element found with {locator!r} does not have 'GetWindowText' attribute"
         )
 
     @keyword
@@ -286,7 +285,7 @@ class ActionKeywords(LibraryContext):
             value_pattern = element.item.GetValuePattern()
             return value_pattern.Value
         raise ActionNotPossible(
-            "Element '%s' does not have 'GetValuePattern' attribute" % locator,
+            f"Element found with {locator!r} does not have 'GetValuePattern' attribute"
         )
 
     @keyword(tags=["action"])
@@ -324,15 +323,15 @@ class ActionKeywords(LibraryContext):
 
             Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
             # Press ENTER after setting the value
-            Set Value    type:Edit name:'File name:'    console.txt    enter=True
+            Set Value    type:Edit name:"File name:"    console.txt    enter=True
 
             # Add newline (manually) at the end of the string (Notepad example)
-            Set Value    name:'Text Editor'  abc\\n
+            Set Value    name:"Text Editor"  abc\\n
             # Add newline with parameter
-            Set Value    name:'Text Editor'  abc   newline=True
+            Set Value    name:"Text Editor"  abc   newline=${True}
 
             # Clear Notepad window and start appending text
-            Set Anchor  name:'Text Editor'
+            Set Anchor  name:"Text Editor"
             # all following keyword calls will use anchor element as locator
             # UNLESS they specify locator specifically or `Clear Anchor` is used
             ${time}=    Get Time
@@ -359,7 +358,7 @@ class ActionKeywords(LibraryContext):
             pattern.SetValue(f"{current_value}{value}{newline_string}")
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have value attribute to set" % locator,
+                f"Element found with {locator!r} doesn't support value setting"
             )
         if enter:
             self.send_keys(element, "{Ctrl}{End}{Enter}")
@@ -410,7 +409,8 @@ class ActionKeywords(LibraryContext):
         element = self.ctx.get_element(locator)
         if not hasattr(element.item, "CaptureToImage"):
             raise ActionNotPossible(
-                "Element '%s' does not have 'CaptureToImage' attribute" % locator,
+                f"Element found with {locator!r} does not have 'CaptureToImage' "
+                "attribute"
             )
 
         element.item.SetFocus()

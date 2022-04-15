@@ -349,12 +349,15 @@ Control window after closing linked root element
 
 Tree printing and controlled anchor cleanup
     Print Tree     #capture_image_folder=output${/}controls
+
     Windows Run   Calc
     ${win} =    Control Window   subname:Calc control:WindowControl    timeout=${TIMEOUT}
     Set Anchor    ${win}
-    Close Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
+    ${elem} =    Get Element  # pulls the anchor
+    Should Be Equal    ${elem.name}    Calculator
 
+    Close Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
     # With the controlled Calculator closed and active window/anchor cleaned up, we
-    #  should get the Desktop control only.
-    ${desktop} =    Get Element
-    Should Be Equal     ${desktop.name}     Desktop 1
+    #  should get the Desktop element only.
+    ${elem} =    Get Element
+    Should Be Equal     ${elem.name}     Desktop 1

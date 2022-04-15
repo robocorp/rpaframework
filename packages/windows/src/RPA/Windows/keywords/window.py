@@ -81,7 +81,7 @@ class WindowKeywords(WindowMethods):
         window = self.window
         if window is None:
             raise WindowControlError(
-                f'Could not locate window with locator: "{locator}" '
+                f"Could not locate window with locator: {locator!r} "
                 f"(timeout: {self.current_timeout})"
             )
 
@@ -113,11 +113,11 @@ class WindowKeywords(WindowMethods):
 
         .. code-block:: robotframework
 
-            Control Window   subname:'Sage 50' type:Window
+            Control Window   subname:"Sage 50" type:Window
             # actions on the main application window
             # ...
             # get control of child window of Sage application
-            Control Child Window   subname:'Test Company' depth:1
+            Control Child Window   subname:"Test Company" depth:1
         """
         return self.control_window(locator, foreground, wait_time, timeout, main=False)
 
@@ -158,88 +158,74 @@ class WindowKeywords(WindowMethods):
         window.item.MoveCursorToMyCenter(simulateMove=self.ctx.SIMULATE_MOVE)
         return window
 
+    def _resize_window(
+        self, locator: Optional[Locator] = None, *, attribute: str
+    ) -> WindowsElement:
+        if locator:
+            self.control_window(locator)
+        window = self.window
+        if window is None:
+            raise WindowControlError("There is no active window")
+
+        attr_func = getattr(window.item, attribute, None)
+        if attr_func:
+            attr_func()
+        else:
+            self.logger.warning(
+                "Element %r does not have the %r attribute", window, attribute
+            )
+        return window
+
     @keyword(tags=["window"])
     def minimize_window(self, locator: Optional[Locator] = None) -> WindowsElement:
         """Minimize the current active window or the window defined
         by the locator.
 
-        :param locator: string locator or Control element
-        :return: WindowsElement object
+        :param locator: string locator or element
+        :return: `WindowsElement` object
 
         Example:
 
         .. code-block:: robotframework
 
-            ${window}=  Minimize Window   # Current active window
-            Minimize Window   executable:Spotify.exe
+            ${window} =    Minimize Window  # Current active window
+            Minimize Window    executable:Spotify.exe
         """
-        if locator:
-            self.control_window(locator)
-        window = self.window
-        if window is None:
-            raise WindowControlError("There is no active window")
-
-        if hasattr(window.item, "Minimize"):
-            window.item.Minimize()
-        else:
-            self.logger.warning(
-                "Control '%s' does not have attribute Minimize" % window
-            )
-        return window
+        return self._resize_window(locator, attribute="Minimize")
 
     @keyword(tags=["window"])
     def maximize_window(self, locator: Optional[Locator] = None) -> WindowsElement:
-        """Minimize the current active window or the window defined
+        """Maximize the current active window or the window defined
         by the locator.
 
-        :param locator: string locator or Control element
-        :return: WindowsElement object
+        :param locator: string locator or element
+        :return: `WindowsElement` object
 
         Example:
 
         .. code-block:: robotframework
 
-            Maximize Window   # Current active window
-            ${window}=  Maximize Window   executable:Spotify.exe
+            ${window} =    Maximize Window  # Current active window
+            Maximize Window    executable:Spotify.exe
         """
-        if locator:
-            self.control_window(locator)
-        window = self.window
-        if window is None:
-            raise WindowControlError("There is no active window")
-
-        if not hasattr(window.item, "Maximize"):
-            raise WindowControlError("Window does not have attribute Maximize")
-
-        window.item.Maximize()
-        return window
+        return self._resize_window(locator, attribute="Maximize")
 
     @keyword(tags=["window"])
     def restore_window(self, locator: Optional[Locator] = None) -> WindowsElement:
         """Window restore the current active window or the window
         defined by the locator.
 
-        :param locator: string locator or Control element
-        :return: WindowsElement object
+        :param locator: string locator or element
+        :return: `WindowsElement` object
 
         Example:
 
         .. code-block:: robotframework
 
-            ${window}=  Restore Window   # Current active window
-            Restore Window   executable:Spotify.exe
+            ${window} =    Restore Window  # Current active window
+            Restore Window    executable:Spotify.exe
         """
-        if locator:
-            self.control_window(locator)
-        window = self.window
-        if window is None:
-            raise WindowControlError("There is no active window")
-
-        if not hasattr(window.item, "Restore"):
-            raise WindowControlError("Window does not have attribute Restore")
-
-        window.item.Restore()
-        return window
+        return self._resize_window(locator, attribute="Restore")
 
     @keyword(tags=["window"])
     def list_windows(
@@ -338,8 +324,8 @@ class WindowKeywords(WindowMethods):
 
         anchor = self.ctx.anchor_element
         if anchor and window.is_sibling(anchor):
-            # We just closed the anchor (along with its relatives), so clear it out
-            #  properly.
+            # We just closed the anchor as well (along with its relatives), so clear
+            #  it out properly.
             self.ctx.clear_anchor()
 
         return True
@@ -376,9 +362,7 @@ class WindowKeywords(WindowMethods):
                 continue
             break
         else:
-            raise WindowControlError(
-                f"Couldn't find any window with locator: {locator}"
-            )
+            raise WindowControlError(f"Couldn't find any window with {locator!r}")
 
         closed = 0
         for element in elements:
