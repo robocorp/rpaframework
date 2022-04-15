@@ -1,4 +1,3 @@
-import glob
 import imghdr
 import io
 import os
@@ -15,7 +14,6 @@ from PIL import Image
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.PDF.keywords import LibraryContext, keyword
-from RPA.core.robocorp import robocorp_home
 from .model import Document, Figure
 
 
@@ -54,29 +52,10 @@ class PDF(FPDF, HTMLMixin):
         "I": ASSETS_DIR / "Inter-Italic.ttf",
         "BI": ASSETS_DIR / "Inter-BoldItalic.ttf",
     }
-    FONT_CACHE_DIR = robocorp_home() / "fonts"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.font_cache_dir = self.FONT_CACHE_DIR
-        self.font_cache_dir.mkdir(parents=True, exist_ok=True)
-
-    # pylint: disable=arguments-differ
-    def add_font(self, *args, fname, **kwargs):
-        try:
-            return super().add_font(*args, fname=fname, **kwargs)
-        # pylint: disable=broad-except
-        except Exception:
-            # Usually caching issues, like importing a *.pkl font file serialized on
-            # another OS/env.
-            unifilename = self.font_cache_dir / f"{fname.stem}.pkl"
-            if unifilename.exists():
-                os.remove(unifilename)
-            return super().add_font(*args, fname=fname, **kwargs)
 
     def add_unicode_fonts(self):
         for style, path in self.FONT_PATHS.items():
-            self.add_font("Inter", style=style, fname=path, uni=True)
+            self.add_font("Inter", style=style, fname=str(path))
         self.set_font("Inter")
 
 
@@ -286,23 +265,14 @@ class DocumentKeywords(LibraryContext):
         output_path = self.resolve_output(output_path)
         self.logger.info("Writing output to file %s", output_path)
 
-        def _html_to_pdf():
-            fpdf = PDF()
-            # Support unicode content with a font capable of rendering it.
-            fpdf.core_fonts_encoding = encoding
-            fpdf.add_unicode_fonts()
-            fpdf.set_margin(0)
-            fpdf.add_page()
-            fpdf.write_html(content)
-            fpdf.output(name=output_path)
-
-        try:
-            _html_to_pdf()
-        except FileNotFoundError:
-            serialized_fonts = glob.glob(str(PDF.FONT_CACHE_DIR / "*.pkl"))
-            for serialized_font in serialized_fonts:
-                os.remove(serialized_font)
-            _html_to_pdf()
+        fpdf = PDF()
+        # Support unicode content with a font capable of rendering it.
+        fpdf.core_fonts_encoding = encoding
+        fpdf.add_unicode_fonts()
+        fpdf.set_margin(0)
+        fpdf.add_page()
+        fpdf.write_html(content)
+        fpdf.output(name=output_path)
 
     @keyword
     def get_pdf_info(self, source_path: str = None) -> dict:
