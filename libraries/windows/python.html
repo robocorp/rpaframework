@@ -366,8 +366,8 @@ tree which can be quite huge especially on the desktop level and in certain appl
 </div>
 <p>some example locators, <cite>and</cite> can be omitted ie. space ` ` between locator keys means the same thing as <cite>and</cite>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>id:clearButton
-type:Group and name:<span class="s1">&#39;Number pad&#39;</span> &gt; type:Button and index:4
-type:Group and name:<span class="s1">&#39;Number pad&#39;</span> &gt; control:Button index:5
+type:Group and name:<span class="s2">&quot;Number pad&quot;</span> &gt; type:Button and index:4
+type:Group and name:<span class="s2">&quot;Number pad&quot;</span> &gt; control:Button index:5
 id:Units1 &gt; name:<span class="si">${</span><span class="nv">unit</span><span class="si">}</span>
 class:Button offset:370,0
 </pre></div>
@@ -887,11 +887,11 @@ COPY <span class="p">&amp;</span> PASTE BELOW CODE INTO *** Tasks *** or *** Key
 --------------------------------------------------------------------------------
 
 Control Window    Taskbar  <span class="c1"># Handle: 131380</span>
-Click   name:<span class="s1">&#39;Type here to search&#39;</span>
+Click   name:<span class="s2">&quot;Type here to search&quot;</span>
 Control Window    Calculator  <span class="c1"># Handle: 3411840</span>
-Click   name:<span class="s1">&#39;Five&#39;</span>
-Click   name:<span class="s1">&#39;Eight&#39;</span>
-Click   name:<span class="s1">&#39;Five&#39;</span>
+Click   name:Five
+Click   name:Eight
+Click   name:Five
 
 --------------------------------------------------------------------------------
 </pre></div>
@@ -912,7 +912,7 @@ Click   name:<span class="s1">&#39;Five&#39;</span>
 <span class="p">    </span><span class="nf">Send Keys</span><span class="p">   </span><span class="s">keys=96+4=</span><span class="p"></span>
 <span class="p">    ${</span><span class="nv">result</span><span class="p">}=    </span><span class="nf">Get Attribute</span><span class="p">    </span><span class="s">id:CalculatorResults</span><span class="p">    </span><span class="s">Name</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Log To Console</span><span class="p">    ${</span><span class="nv">result</span><span class="p">}</span>
-<span class="p">    ${</span><span class="nv">buttons</span><span class="p">}=  </span><span class="nf">Get Elements</span><span class="p">  </span><span class="s">type:Group and name:&#39;Number pad&#39; &gt; type:Button</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">buttons</span><span class="p">}=  </span><span class="nf">Get Elements</span><span class="p">  </span><span class="s">type:Group and name:&quot;Number pad&quot; &gt; type:Button</span><span class="p"></span>
 <span class="p">    FOR  ${</span><span class="nv">button</span><span class="p">}  IN  @{</span><span class="nv">buttons</span><span class="p">}</span>
 <span class="p">        </span><span class="nf">Log To Console</span><span class="p">   ${</span><span class="nv">button</span><span class="p">}</span>
 <span class="p">    END</span>
@@ -932,7 +932,7 @@ Click   name:<span class="s1">&#39;Five&#39;</span>
 <span class="p">        </span><span class="c">library.send_keys(keys=&quot;96+4=&quot;)</span><span class="p"></span>
 <span class="p">        </span><span class="c">result = library.get_attribute(&quot;id:CalculatorResults&quot;, &quot;Name&quot;)</span><span class="p"></span>
 <span class="p">        </span><span class="c">print(result)</span><span class="p"></span>
-<span class="p">        </span><span class="c">buttons = library.get_elements(&quot;type:Group and name:&#39;Number pad&#39; &gt; type:Button&quot;)</span><span class="p"></span>
+<span class="p">        </span><span class="c">buttons = library.get_elements(&quot;type:Group and name:&quot;Number pad&quot; &gt; type:Button&quot;)</span><span class="p"></span>
 <span class="p">        </span><span class="c">for button in buttons:</span><span class="p"></span>
 <span class="p">            </span><span class="c">print(button)</span><span class="p"></span>
 <span class="p">    </span><span class="c">finally:</span><span class="p"></span>
