@@ -159,14 +159,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.40"
+version = "1.21.41"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.40,<1.25.0"
+botocore = ">=1.24.41,<1.25.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -175,7 +175,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.40"
+version = "1.24.41"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -1612,7 +1612,7 @@ rpaframework-core = ">=7.0.0,<8.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "3.1.0"
+version = "3.1.1"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -2116,7 +2116,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "1db7487657f1d7e18a70224a1768396028488479ce98d477e8bbcf73153339d3"
+content-hash = "22e368169ae902803c261ece740adf82a2201a44f0776f4962d4b71c49a93385"
 
 [metadata.files]
 alabaster = [
@@ -2185,12 +2185,12 @@ black = [
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.40-py3-none-any.whl", hash = "sha256:f99417fb53d0af357eb91152b30686c40dd22381499bfab0d61830eee72d5a0b"},
-    {file = "boto3-1.21.40.tar.gz", hash = "sha256:03fe95333a51e3a14d7ab9644ae702f9feb008a4f5d308724eaa9ab8fd4c7d71"},
+    {file = "boto3-1.21.41-py3-none-any.whl", hash = "sha256:3b5a3c701bb9b48e145723c1a72d2752fa3613f6e5aaf0660ef605bf13f82bb4"},
+    {file = "boto3-1.21.41.tar.gz", hash = "sha256:986aa67e577b44b65a6cc42bfd74593e6d95e2dbc0b0c37e358f2253b00542db"},
 ]
 botocore = [
-    {file = "botocore-1.24.40-py3-none-any.whl", hash = "sha256:fbf7ad87581a888600e5f0f39b19ded2dd668f6cf6abe29a172ac23ba7f39dd6"},
-    {file = "botocore-1.24.40.tar.gz", hash = "sha256:06badf7bbddadc404b5df10e7fd5bd351caccebd151bda29155a94dde789af5c"},
+    {file = "botocore-1.24.41-py3-none-any.whl", hash = "sha256:65be3e46bb10056c7e6407303928c649e7ea8a01e0e3f449d5cbb6b73f8146e0"},
+    {file = "botocore-1.24.41.tar.gz", hash = "sha256:57ed9843e5b6a74f82530b31dc622c8042b1c62a5ca9d46e92d2b4366450039b"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3306,8 +3306,8 @@ rpaframework-recognition = [
     {file = "rpaframework_recognition-2.0.0-py3-none-any.whl", hash = "sha256:1a6b9d1db8b5a2360f8bbead3811f6604d34136ce5ad1ba986d5a1e09be73f54"},
 ]
 rpaframework-windows = [
-    {file = "rpaframework-windows-3.1.0.tar.gz", hash = "sha256:6a036ed3d421b6aca1f83a71e91f22396af4c2c7c867c165e2c1e6623640a3fc"},
-    {file = "rpaframework_windows-3.1.0-py3-none-any.whl", hash = "sha256:984a456d2a55a5223751526c144848338db5e0c7df6d66d42159034202a0d943"},
+    {file = "rpaframework-windows-3.1.1.tar.gz", hash = "sha256:13e63daab81ced5fa740b116d1b2c8b989cad40187ba9bc617c379e0f46f4428"},
+    {file = "rpaframework_windows-3.1.1-py3-none-any.whl", hash = "sha256:0502b161d7230f06b044a96ccce023efd333cf960dbedae350a43f2743ac15c6"},
 ]
 s3transfer = [
     {file = "s3transfer-0.5.2-py3-none-any.whl", hash = "sha256:7a6f4c4d1fdb9a2b640244008e142cbc2cd3ae34b386584ef044dd0f27101971"},

@@ -151,14 +151,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.40"
+version = "1.21.41"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.40,<1.25.0"
+botocore = ">=1.24.41,<1.25.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -167,7 +167,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.40"
+version = "1.24.41"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -437,7 +437,7 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.6.4"
+version = "2.6.5"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -1682,7 +1682,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "13.3.0"
+version = "13.3.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1727,7 +1727,7 @@ rpaframework-core = "^7.1.1"
 rpaframework-dialogs = "^1.1.1"
 rpaframework-pdf = "^2.0.0"
 rpaframework-recognition = {version = "^2.0.0", optional = true}
-rpaframework-windows = {version = "^3.1.0", markers = "sys_platform == \"win32\""}
+rpaframework-windows = {version = "^3.1.1", markers = "sys_platform == \"win32\""}
 selenium = "^3.141.0"
 simple_salesforce = "^1.0.0"
 tenacity = "^8.0.1"
@@ -1847,7 +1847,7 @@ rpaframework-core = ">=7.0.0,<8.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "3.1.0"
+version = "3.1.1"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -2365,7 +2365,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "a7b816af05a21f76239adb9a1ebae0d18c27857056939803d00f7ce55e75dddb"
+content-hash = "cff73e14b9af5d0727afbfe301b36e8bde92cf1b0fd456222b6996e52ae28140"
 
 [metadata.files]
 alabaster = [
@@ -2430,12 +2430,12 @@ black = [
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.40-py3-none-any.whl", hash = "sha256:f99417fb53d0af357eb91152b30686c40dd22381499bfab0d61830eee72d5a0b"},
-    {file = "boto3-1.21.40.tar.gz", hash = "sha256:03fe95333a51e3a14d7ab9644ae702f9feb008a4f5d308724eaa9ab8fd4c7d71"},
+    {file = "boto3-1.21.41-py3-none-any.whl", hash = "sha256:3b5a3c701bb9b48e145723c1a72d2752fa3613f6e5aaf0660ef605bf13f82bb4"},
+    {file = "boto3-1.21.41.tar.gz", hash = "sha256:986aa67e577b44b65a6cc42bfd74593e6d95e2dbc0b0c37e358f2253b00542db"},
 ]
 botocore = [
-    {file = "botocore-1.24.40-py3-none-any.whl", hash = "sha256:fbf7ad87581a888600e5f0f39b19ded2dd668f6cf6abe29a172ac23ba7f39dd6"},
-    {file = "botocore-1.24.40.tar.gz", hash = "sha256:06badf7bbddadc404b5df10e7fd5bd351caccebd151bda29155a94dde789af5c"},
+    {file = "botocore-1.24.41-py3-none-any.whl", hash = "sha256:65be3e46bb10056c7e6407303928c649e7ea8a01e0e3f449d5cbb6b73f8146e0"},
+    {file = "botocore-1.24.41.tar.gz", hash = "sha256:57ed9843e5b6a74f82530b31dc622c8042b1c62a5ca9d46e92d2b4366450039b"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2590,8 +2590,8 @@ google-api-python-client = [
     {file = "google_api_python_client-2.44.0-py2.py3-none-any.whl", hash = "sha256:0588acf65ea0569ece979c4eecdd5366c98ba314c1212a86a2808de0b7bcd02b"},
 ]
 google-auth = [
-    {file = "google-auth-2.6.4.tar.gz", hash = "sha256:1a8c2c70c070b72fe038e2eb20072e5b4f0fd8ca1875e8fafe7f71b689a8d572"},
-    {file = "google_auth-2.6.4-py2.py3-none-any.whl", hash = "sha256:4dacb91d8a15b7755fc08688576481bd9c37cfac9842289469cf000d557f8962"},
+    {file = "google-auth-2.6.5.tar.gz", hash = "sha256:04e224f241c0566477bb35a8a93be8c635210de743bde454d49393cfb605266d"},
+    {file = "google_auth-2.6.5-py2.py3-none-any.whl", hash = "sha256:9a88ee548f6fd49467e2e443dfbfe10344e5a270629a137a3a0b3437ec6b02a6"},
 ]
 google-auth-httplib2 = [
     {file = "google-auth-httplib2-0.1.0.tar.gz", hash = "sha256:a07c39fd632becacd3f07718dfd6021bf396978f03ad3ce4321d060015cc30ac"},
@@ -3594,8 +3594,8 @@ rpaframework-recognition = [
     {file = "rpaframework_recognition-2.0.0-py3-none-any.whl", hash = "sha256:1a6b9d1db8b5a2360f8bbead3811f6604d34136ce5ad1ba986d5a1e09be73f54"},
 ]
 rpaframework-windows = [
-    {file = "rpaframework-windows-3.1.0.tar.gz", hash = "sha256:6a036ed3d421b6aca1f83a71e91f22396af4c2c7c867c165e2c1e6623640a3fc"},
-    {file = "rpaframework_windows-3.1.0-py3-none-any.whl", hash = "sha256:984a456d2a55a5223751526c144848338db5e0c7df6d66d42159034202a0d943"},
+    {file = "rpaframework-windows-3.1.1.tar.gz", hash = "sha256:13e63daab81ced5fa740b116d1b2c8b989cad40187ba9bc617c379e0f46f4428"},
+    {file = "rpaframework_windows-3.1.1-py3-none-any.whl", hash = "sha256:0502b161d7230f06b044a96ccce023efd333cf960dbedae350a43f2743ac15c6"},
 ]
 rsa = [
     {file = "rsa-4.8-py3-none-any.whl", hash = "sha256:95c5d300c4e879ee69708c428ba566c59478fd653cc3a22243eeb8ed846950bb"},

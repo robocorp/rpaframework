@@ -8,6 +8,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13.3.1 - 15 Apr 2022
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.1**, :pr:`473`): Fix
+  documentation.
+
 13.3.0 - 14 Apr 2022
 --------------------
 
@@ -35,8 +41,8 @@ Release notes
     Notepad'`` -> ``Control Window  subname:"- Notepad"``)
 
     If you're having issues with your current robots, pin in your *conda.yaml*
-    ``rpaframework-core==7.0.1``. Once you do the single-quote fix, remove the pin and
-    upgrade to the latest ``rpaframework``.
+    ``rpaframework-core==7.0.1`` and stay on ``rpaframework<=13.2.0``. Once you do the
+    double-quote fix, remove the pin and upgrade to the latest ``rpaframework``.
 
 13.2.0 - 08 Apr 2022
 --------------------
