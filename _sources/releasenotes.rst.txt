@@ -31,7 +31,12 @@ Release notes
 
   .. warning::
     This is a **breaking** change! If you use single-quote locator value enclosing,
-    please switch it to double-quote instead.
+    please switch it to double-quote instead. (e.g. ``Control Window  subname:'-
+    Notepad'`` -> ``Control Window  subname:"- Notepad"``)
+
+    If you're having issues with your current robots, pin in your *conda.yaml*
+    ``rpaframework-core==7.0.1``. Once you do the single-quote fix, remove the pin and
+    upgrade to the latest ``rpaframework``.
 
 13.2.0 - 08 Apr 2022
 --------------------

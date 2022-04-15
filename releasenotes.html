@@ -246,7 +246,11 @@ deprecated <code class="docutils literal notranslate"><span class="pre">RPA.Desk
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This is a <strong>breaking</strong> change! If you use single-quote locator value enclosing,
-please switch it to double-quote instead.</p>
+please switch it to double-quote instead. (e.g. <code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Window</span>&#160; <span class="pre">subname:'-</span>
+<span class="pre">Notepad'</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Window</span>&#160; <span class="pre">subname:&quot;-</span> <span class="pre">Notepad&quot;</span></code>)</p>
+<p>If you’re having issues with your current robots, pin in your <em>conda.yaml</em>
+<code class="docutils literal notranslate"><span class="pre">rpaframework-core==7.0.1</span></code>. Once you do the single-quote fix, remove the pin and
+upgrade to the latest <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
 </div>
 </li>
 </ul>
