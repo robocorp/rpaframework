@@ -163,8 +163,8 @@ class Windows(WindowsElementsMixin, DynamicCore):
     .. code-block:: bash
 
         id:clearButton
-        type:Group and name:'Number pad' > type:Button and index:4
-        type:Group and name:'Number pad' > control:Button index:5
+        type:Group and name:"Number pad" > type:Button and index:4
+        type:Group and name:"Number pad" > control:Button index:5
         id:Units1 > name:${unit}
         class:Button offset:370,0
 
@@ -405,11 +405,11 @@ class Windows(WindowsElementsMixin, DynamicCore):
         --------------------------------------------------------------------------------
 
         Control Window    Taskbar  # Handle: 131380
-        Click   name:'Type here to search'
+        Click   name:"Type here to search"
         Control Window    Calculator  # Handle: 3411840
-        Click   name:'Five'
-        Click   name:'Eight'
-        Click   name:'Five'
+        Click   name:Five
+        Click   name:Eight
+        Click   name:Five
 
         --------------------------------------------------------------------------------
 
@@ -438,7 +438,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
             Send Keys   keys=96+4=
             ${result}=    Get Attribute    id:CalculatorResults    Name
             Log To Console    ${result}
-            ${buttons}=  Get Elements  type:Group and name:'Number pad' > type:Button
+            ${buttons}=  Get Elements  type:Group and name:"Number pad" > type:Button
             FOR  ${button}  IN  @{buttons}
                 Log To Console   ${button}
             END
@@ -460,7 +460,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
                 library.send_keys(keys="96+4=")
                 result = library.get_attribute("id:CalculatorResults", "Name")
                 print(result)
-                buttons = library.get_elements("type:Group and name:'Number pad' > type:Button")
+                buttons = library.get_elements("type:Group and name:"Number pad" > type:Button")
                 for button in buttons:
                     print(button)
             finally:
