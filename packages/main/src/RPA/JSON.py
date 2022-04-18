@@ -131,8 +131,10 @@ class JSON:
     ``[a,b]``                  Union of indices or names
     ``[?()]``                  Apply a filter expression
     ``()``                     Script expression
-    ``[\\field]``              Sort descending by ``field``, cannot be combined with filters.
-    ``[/field]``               Sort ascending by ``field``, cannot be combined with filters.
+    ``[\\field]``              Sort descending by ``field``, cannot be combined with
+                               filters.
+    ``[/field]``               Sort ascending by ``field``, cannot be combined with
+                               filters.
     ````str()````              Convert value to string, see `functions`_
     ````sub()````              Regex substitution function, see `functions`_
     ````len````                Calculate value's length, see `functions`_
@@ -166,14 +168,14 @@ class JSON:
     Function                             Usage
     ===================================  =====
     ``str()``                            No parameters, but parenthesis are required
-    ``sub(/regex/, repl)``               The regex pattern must be provided in *regex* and
-                                         the replacement value provided in *repl*
+    ``sub(/regex/, repl)``               The regex pattern must be provided in *regex*
+                                         and the replacement value provided in *repl*
     ``len``                              No parameters and no parenthesis
     ``split(char, segment, max_split)``  Separator character provided as *char*, which
                                          index from the resulting array to be returns
                                          provided as *segment*, and maximum number of
-                                         splits to perform provided as *max_split*, ``-1``
-                                         for all splits.
+                                         splits to perform provided as *max_split*,
+                                         ``-1`` for all splits.
     ``parent``                           No parameters, no parenthesis
     ===================================  =====
 
