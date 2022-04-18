@@ -7,7 +7,7 @@ authors = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 rpaframework = { path = "packages/main", extras = ["cv", "playwright", "aws"] }
 rpaframework-google = "^3.0.0"
 rpaframework-windows = "^3.1.1"

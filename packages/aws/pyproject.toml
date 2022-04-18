@@ -34,7 +34,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 rpaframework-core = "^7.0.0"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 robotframework-pythonlibcore = "^3.0.0"
@@ -42,7 +42,7 @@ boto3 = "^1.13.4"
 amazon-textract-response-parser = "^0.1.1"
 
 [tool.poetry.dev-dependencies]
-black = {version = "^21.5b0", allow-prereleases = true}
+black = "^22.3.0"
 flake8 = "^3.7.9"
 pylint = "^2.4.4, <2.13"
 pytest = "^6.1.2"

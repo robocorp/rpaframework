@@ -32,7 +32,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 selenium = "^3.141.0"
 webdrivermanager = "^0.10.0"
 psutil = { version = "^5.9.0", platform = "win32" }
@@ -41,7 +41,7 @@ uiautomation = { version = "^2.0.15", platform = "win32" }
 pillow = "^8.4.0"
 
 [tool.poetry.dev-dependencies]
-black = {version = "^21.5b0", allow-prereleases = true}
+black = "^22.3.0"
 flake8 = "^3.7.9"
 pylint = "^2.4.4, <2.13"
 pytest = "^6.1.2"
