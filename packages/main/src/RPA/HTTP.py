@@ -74,7 +74,7 @@ class HTTP(RequestsLibrary):
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
+    ROBOT_LIBRARY_DOC_FORMAT = "reST"
 
     def __init__(self, *args, **kwargs) -> None:
         RequestsLibrary.__init__(self, *args, **kwargs)
