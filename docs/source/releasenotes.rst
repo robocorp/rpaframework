@@ -4,6 +4,22 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+.. note::
+    The support for Python version 3.6. has been **REMOVED** from the ``rpaframework`` packages
+    starting with the following versions:
+
+      - ``rpaframework``==14.0.0
+      - ``rpaframework-aws``==2.0.0
+      - ``rpaframework-dialogs``==2.0.0
+      - ``rpaframework-google``==4.0.0
+      - ``rpaframework-pdf``==3.0.0
+      - ``rpaframework-recognition``==3.0.0
+      - ``rpaframework-windows``==4.0.0
+
+14.0.0 - xx Apr 2022
+--------------------
+
+  - INCLUDE OTHER LIBRARY CHANGES HERE
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
