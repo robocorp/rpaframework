@@ -411,7 +411,9 @@ class Exchange:
                 if html:
                     body = body.replace(imname, f"cid:{imname}")
 
-    def create_folder(self, folder_name: str = None, parent_folder: str = None) -> bool:
+    def create_folder(
+        self, folder_name: Optional[str] = None, parent_folder: Optional[str] = None
+    ) -> bool:
         """Create email folder
 
         :param folder_name: name for the new folder
@@ -431,7 +433,9 @@ class Exchange:
         new_folder = Folder(parent=parent, name=folder_name)
         new_folder.save()
 
-    def delete_folder(self, folder_name: str = None, parent_folder: str = None) -> bool:
+    def delete_folder(
+        self, folder_name: Optional[str] = None, parent_folder: Optional[str] = None
+    ) -> bool:
         """Delete email folder
 
         :param folder_name: current folder name
@@ -451,7 +455,10 @@ class Exchange:
         folder_to_delete.delete()
 
     def rename_folder(
-        self, oldname: str = None, newname: str = None, parent_folder: str = None
+        self,
+        oldname: Optional[str] = None,
+        newname: Optional[str] = None,
+        parent_folder: Optional[str] = None,
     ) -> bool:
         """Rename email folder
 
@@ -480,9 +487,9 @@ class Exchange:
 
     def empty_folder(
         self,
-        folder_name: str = None,
-        parent_folder: str = None,
-        delete_sub_folders: bool = False,
+        folder_name: Optional[str] = None,
+        parent_folder: Optional[str] = None,
+        delete_sub_folders: Optional[bool] = False,
     ) -> bool:
         """Empty email folder of all items
 
@@ -502,10 +509,10 @@ class Exchange:
 
     def move_messages(
         self,
-        criterion: str = "",
-        source: str = None,
-        target: str = None,
-        contains: bool = False,  # pylint: disable=unused-argument
+        criterion: Optional[str] = "",
+        source: Optional[str] = None,
+        target: Optional[str] = None,
+        contains: Optional[bool] = False,  # pylint: disable=unused-argument
     ) -> bool:
         """Move message(s) from source folder to target folder
 
@@ -537,8 +544,8 @@ class Exchange:
 
     def move_message(
         self,
-        msg: dict,
-        target: str,
+        msg: Optional[dict],
+        target: Optional[str],
     ):
         """Move a message into target folder
 
@@ -682,11 +689,11 @@ class Exchange:
 
     def wait_for_message(
         self,
-        criterion: str = "",
-        timeout: float = 5.0,
-        interval: float = 1.0,
-        contains: bool = False,  # pylint: disable=unused-argument
-        save_dir: str = None,
+        criterion: Optional[str] = "",
+        timeout: Optional[float] = 5.0,
+        interval: Optional[float] = 1.0,
+        contains: Optional[bool] = False,  # pylint: disable=unused-argument
+        save_dir: Optional[str] = None,
     ) -> Any:
         """Wait for email matching `criterion` to arrive into INBOX.
 
@@ -794,8 +801,8 @@ class Exchange:
     def save_attachments(
         self,
         message: Union[dict, str],
-        save_dir: str = None,
-        attachments_from_emls: bool = False,
+        save_dir: Optional[str] = None,
+        attachments_from_emls: Optional[bool] = False,
     ) -> list:
         """Save attachments in message into given directory
 
@@ -862,7 +869,7 @@ class Exchange:
         """Save email as .eml file
 
         :param message: dictionary containing message details
-        :param filename:
+        :param filename: name of the file to save message into
         """
         absolute_filepath = Path(filename).resolve()
         if absolute_filepath.suffix != ".eml":
