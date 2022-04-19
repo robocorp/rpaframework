@@ -1,32 +1,24 @@
-import base64
 import os
 import signal
 import time
-from pathlib import Path
 from typing import Dict, List, Optional
 
-from PIL import Image
+from RPA.core.windows.locators import Locator, WindowsElement
+from RPA.core.windows.window import WindowMethods
 
 from RPA.Windows import utils
 from RPA.Windows.keywords import (
     ElementNotFound,
-    LibraryContext,
     WindowControlError,
     keyword,
     with_timeout,
 )
-from .locators import Locator, WindowsElement
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
-    import win32process
-    import win32api
-    import win32con
-    import win32ui
-    import win32gui
 
 
-class WindowKeywords(LibraryContext):
+class WindowKeywords(WindowMethods):
     """Keywords for handling Window controls"""
 
     @staticmethod
@@ -89,7 +81,7 @@ class WindowKeywords(LibraryContext):
         window = self.window
         if window is None:
             raise WindowControlError(
-                f'Could not locate window with locator: "{locator}" '
+                f"Could not locate window with locator: {locator!r} "
                 f"(timeout: {self.current_timeout})"
             )
 
@@ -121,11 +113,11 @@ class WindowKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            Control Window   subname:'Sage 50' type:Window
+            Control Window   subname:"Sage 50" type:Window
             # actions on the main application window
             # ...
             # get control of child window of Sage application
-            Control Child Window   subname:'Test Company' depth:1
+            Control Child Window   subname:"Test Company" depth:1
         """
         return self.control_window(locator, foreground, wait_time, timeout, main=False)
 
@@ -163,7 +155,25 @@ class WindowKeywords(LibraryContext):
 
         utils.call_attribute_if_available(window.item, "SetFocus")
         utils.call_attribute_if_available(window.item, "SetActive")
-        window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
+        window.item.MoveCursorToMyCenter(simulateMove=self.ctx.SIMULATE_MOVE)
+        return window
+
+    def _resize_window(
+        self, locator: Optional[Locator] = None, *, attribute: str
+    ) -> WindowsElement:
+        if locator:
+            self.control_window(locator)
+        window = self.window
+        if window is None:
+            raise WindowControlError("There is no active window")
+
+        attr_func = getattr(window.item, attribute, None)
+        if attr_func:
+            attr_func()
+        else:
+            self.logger.warning(
+                "Element %r does not have the %r attribute", window, attribute
+            )
         return window
 
     @keyword(tags=["window"])
@@ -171,83 +181,51 @@ class WindowKeywords(LibraryContext):
         """Minimize the current active window or the window defined
         by the locator.
 
-        :param locator: string locator or Control element
-        :return: WindowsElement object
+        :param locator: string locator or element
+        :return: `WindowsElement` object
 
         Example:
 
         .. code-block:: robotframework
 
-            ${window}=  Minimize Window   # Current active window
-            Minimize Window   executable:Spotify.exe
+            ${window} =    Minimize Window  # Current active window
+            Minimize Window    executable:Spotify.exe
         """
-        if locator:
-            self.control_window(locator)
-        window = self.window
-        if window is None:
-            raise WindowControlError("There is no active window")
-
-        if hasattr(window.item, "Minimize"):
-            window.item.Minimize()
-        else:
-            self.logger.warning(
-                "Control '%s' does not have attribute Minimize" % window
-            )
-        return window
+        return self._resize_window(locator, attribute="Minimize")
 
     @keyword(tags=["window"])
     def maximize_window(self, locator: Optional[Locator] = None) -> WindowsElement:
-        """Minimize the current active window or the window defined
+        """Maximize the current active window or the window defined
         by the locator.
 
-        :param locator: string locator or Control element
-        :return: WindowsElement object
+        :param locator: string locator or element
+        :return: `WindowsElement` object
 
         Example:
 
         .. code-block:: robotframework
 
-            Maximize Window   # Current active window
-            ${window}=  Maximize Window   executable:Spotify.exe
+            ${window} =    Maximize Window  # Current active window
+            Maximize Window    executable:Spotify.exe
         """
-        if locator:
-            self.control_window(locator)
-        window = self.window
-        if window is None:
-            raise WindowControlError("There is no active window")
-
-        if not hasattr(window.item, "Maximize"):
-            raise WindowControlError("Window does not have attribute Maximize")
-
-        window.item.Maximize()
-        return window
+        return self._resize_window(locator, attribute="Maximize")
 
     @keyword(tags=["window"])
     def restore_window(self, locator: Optional[Locator] = None) -> WindowsElement:
         """Window restore the current active window or the window
         defined by the locator.
 
-        :param locator: string locator or Control element
-        :return: WindowsElement object
+        :param locator: string locator or element
+        :return: `WindowsElement` object
 
         Example:
 
         .. code-block:: robotframework
 
-            ${window}=  Restore Window   # Current active window
-            Restore Window   executable:Spotify.exe
+            ${window} =    Restore Window  # Current active window
+            Restore Window    executable:Spotify.exe
         """
-        if locator:
-            self.control_window(locator)
-        window = self.window
-        if window is None:
-            raise WindowControlError("There is no active window")
-
-        if not hasattr(window.item, "Restore"):
-            raise WindowControlError("Window does not have attribute Restore")
-
-        window.item.Restore()
-        return window
+        return self._resize_window(locator, attribute="Restore")
 
     @keyword(tags=["window"])
     def list_windows(
@@ -274,73 +252,9 @@ class WindowKeywords(LibraryContext):
                 Log  Window process handle:${window}[handle]
             END
         """
-        windows = auto.GetRootControl().GetChildren()
-        process_list = utils.get_process_list()
-        win_list = []
-        for win in windows:
-            pid = win.ProcessId
-            fullpath = None
-            try:
-                handle = win32api.OpenProcess(
-                    win32con.PROCESS_QUERY_LIMITED_INFORMATION, False, pid
-                )
-                fullpath = win32process.GetModuleFileNameEx(handle, 0)
-            except Exception as err:  # pylint: disable=broad-except
-                self.logger.info("Open process error in `List Windows`: %s", str(err))
-            icon_string = (
-                self.get_icon(fullpath, icon_save_directory) if icons else None
-            )
-            info = {
-                "title": win.Name,
-                "pid": pid,
-                "name": process_list[pid] if pid in process_list else None,
-                "path": fullpath,
-                "handle": win.NativeWindowHandle,
-                "icon": icon_string,
-            }
-            if icons and not icon_string:
-                self.logger.info("Icon for %s returned empty", win.Name)
-            win_list.append(info)
-        return win_list
-
-    @staticmethod
-    def get_icon(
-        filepath: str, icon_save_directory: Optional[str] = None
-    ) -> Optional[str]:
-        if not filepath:
-            return None
-
-        # TODO: Get different sized icons.
-        small, large = win32gui.ExtractIconEx(filepath, 0, 10)
-        if len(small) > 0:
-            win32gui.DestroyIcon(small[0])
-        hdc = win32ui.CreateDCFromHandle(win32gui.GetDC(0))
-        hbmp = win32ui.CreateBitmap()
-
-        ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
-        ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
-        hbmp.CreateCompatibleBitmap(hdc, ico_x, ico_y)
-        hdc = hdc.CreateCompatibleDC()
-
-        hdc.SelectObject(hbmp)
-
-        image_string = None
-        if len(large) > 0:
-            executable_path = Path(filepath)
-            hdc.DrawIcon((0, 0), large[0])
-            result_image_file = f"icon_{executable_path.name}.png"
-            if icon_save_directory:
-                result_image_file = Path(icon_save_directory) / result_image_file
-                result_image_file = result_image_file.resolve()
-            bmpstr = hbmp.GetBitmapBits(True)
-            img = Image.frombuffer("RGBA", (32, 32), bmpstr, "raw", "BGRA", 0, 1)
-            img.save(result_image_file)
-            with open(result_image_file, "rb") as img_file:
-                image_string = base64.b64encode(img_file.read())
-            if not icon_save_directory:
-                Path(result_image_file).unlink()
-
-        return image_string
+        return super().list_windows(
+            icons=icons, icon_save_directory=icon_save_directory
+        )
 
     @keyword(tags=["window"])
     def windows_run(self, text: str, wait_time: float = 3.0) -> None:
@@ -410,8 +324,8 @@ class WindowKeywords(LibraryContext):
 
         anchor = self.ctx.anchor_element
         if anchor and window.is_sibling(anchor):
-            # We just closed the anchor (along with its relatives), so clear it out
-            #  properly.
+            # We just closed the anchor as well (along with its relatives), so clear
+            #  it out properly.
             self.ctx.clear_anchor()
 
         return True
@@ -448,9 +362,7 @@ class WindowKeywords(LibraryContext):
                 continue
             break
         else:
-            raise WindowControlError(
-                f"Couldn't find any window with locator: {locator}"
-            )
+            raise WindowControlError(f"Couldn't find any window with {locator!r}")
 
         closed = 0
         for element in elements:

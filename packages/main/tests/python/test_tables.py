@@ -535,6 +535,15 @@ def test_keyword_read_table_from_csv_encoding(library):
     assert table[0] == ["1", "2", "3"]
 
 
+def test_keyword_read_table_from_csv_longer_lines(library):
+    table = library.read_table_from_csv(
+        RESOURCES / "big.csv", header=False, delimiters=";"
+    )
+    assert len(table) == 3
+    assert len(table.columns) == 72
+    table[-1][1] == "1121321715"
+
+
 def test_keyword_read_table_from_csv_extra(library):
     table = library.read_table_from_csv(
         RESOURCES / "extra.csv", column_unknown="whoknows"

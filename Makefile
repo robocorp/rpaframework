@@ -30,7 +30,7 @@ define make_each
 endef
 
 help: ## Print this help
-	@python -c "$${print_help}" < $(MAKEFILE_LIST)
+	@python3 -c "$${print_help}" < $(MAKEFILE_LIST)
 
 clean: clean-each ## Remove all build/test artifacts
 	$(rm) .venv

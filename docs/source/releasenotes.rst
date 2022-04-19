@@ -8,6 +8,117 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13.3.1 - 15 Apr 2022
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.1**, :pr:`473`): Fix
+  documentation.
+
+13.3.0 - 14 Apr 2022
+--------------------
+
+- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
+
+  - Keyword ``Get Elements`` returns all similar elements matching locator. (:pr:`471`)
+  - Keyword ``List Windows`` returns now extra attributes similar to the old
+    deprecated ``RPA.Desktop.Windows`` library (:issue:`408`):
+
+    - ``automation_id``
+    - ``control_type``
+    - ``class_name``
+    - ``rectangle``
+    - ``keyboard_focus``
+    - ``is_active``
+    - ``object``
+
+  - Improved locators parsing and ability to enclose values containing spaces with
+    ``"`` double-quote. (:issue:`363`)
+
+  .. warning::
+    This is a **breaking** change! If you use single-quote locator value enclosing,
+    please switch it to double-quote instead. (e.g. ``Control Window  subname:'-
+    Notepad'`` -> ``Control Window  subname:"- Notepad"``)
+
+    If you're having issues with your current robots, pin in your *conda.yaml*
+    ``rpaframework-core==7.0.1`` and stay on ``rpaframework<=13.2.0``. Once you do the
+    double-quote fix, remove the pin and upgrade to the latest ``rpaframework``.
+
+13.2.0 - 08 Apr 2022
+--------------------
+
+- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords
+  primarily focus on retrieving data from Hubspot, there is currently no support for
+  updating information.
+
+13.1.0 - 07 Apr 2022
+--------------------
+
+- Library **RPA.Database**: Fix configuration value retrieval. (:pr:`456`)
+- Library **RPA.Dialogs**: Add next button to support wizard style dialogs. (:issue:`452`)
+
+13.0.3 - 05 Apr 2022
+--------------------
+
+- Library **RPA.Database**: Fix queries with ``pyodbc`` module. (affects Microsoft SQL
+  Server, :issue:`443`)
+
+13.0.2 - 04 Apr 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix handling of ``cc`` and ``bcc`` fields
+  with ``Send Message`` keyword
+- Library **RPA.Cloud.AWS**:
+
+  - Fix initializing services with Vault (broken by **13.0.1** release)
+  - The service region can also be given as a environment variable or as Vault
+    key: ``AWS_REGION``
+  - Included and available as separate package ``rpaframework-aws`` **1.0.3**
+
+13.0.1 - 01 Apr 2022
+--------------------
+
+- Library **RPA.Cloud.AWS**: Fix getting analysis result from larger PDF files
+- Library **RPA.Tables**: Fix reading table from CSV file with longer rows
+- Various updates to keyword type hinting
+- New package ``rpaframework-aws`` **1.0.2** (can be used without ``rpaframework`` package)
+
+13.0.0 - 28 Mar 2022
+--------------------
+
+- Major version upgrades for the following packages (incompatible with
+  ``rpaframework<13``):
+
+  - ``rpaframework-google`` **3.0.0**
+  - ``rpaframework-recognition`` **2.0.0**
+  - ``rpaframework-windows`` **3.0.0**
+  - ``rpaframework-dialogs`` **1.0.0**
+  - ``rpaframework-pdf`` **2.0.0**
+
+  .. warning::
+    Any optional package (`google`, `recognition`) should be upgraded at least to the
+    version above in your *conda.yaml* in order to use ``rpaframework`` **13.0.0**.
+    (if such dependencies are explicitly pinned)
+
+  .. note::
+    Package ``rpaframework-windows`` can be omitted entirely from the *conda.yaml*
+    since it's included automatically with this version.
+
+12.10.1 - 25 Mar 2022
+---------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix multiple recipients error with ``Send Message``
+
+12.10.0 - 23 Mar 2022
+---------------------
+
+- Library **RPA.Cloud.AWS**: Fix ``Download Files`` on saving objects with paths.
+- Library **RPA.HTTP**: Overriding ``RequestsLibrary`` logging to DEBUG level for
+  request and response.
+- Automatically installing ``rpaframework-windows`` **2.3.2**. (no need to specify this
+  dependency in your *conda.yaml* anymore)
+- Deprecated ``RPA.Desktop.Windows`` in favor of ``RPA.Windows``.
+
 12.9.0 - 11 Mar 2022
 --------------------
 
@@ -39,8 +150,6 @@ Release notes
   - `Email.Exchange: Add more support for email filtering <https://github.com/robocorp/rpaframework/issues/410>`_
   - `Get Window Elements triggers NotImplementedError <https://github.com/robocorp/rpaframework/issues/344>`_
   - `Email.ImapSmtp: Issues with filtering emails <https://github.com/robocorp/rpaframework/issues/409>`_
-
-
 
 12.8.2 - 25 Feb 2022
 --------------------

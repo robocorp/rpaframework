@@ -14,9 +14,10 @@ from typing import Any, Optional
 from RPA.Desktop import Desktop
 from RPA.Desktop.Clipboard import Clipboard
 from RPA.Desktop.OperatingSystem import OperatingSystem
-from RPA.core.helpers import delay, clean_filename
 from RPA.core.geometry import Region
+from RPA.core.helpers import delay, clean_filename
 from RPA.core.locators import ImageLocator
+from RPA.core.logger import deprecation
 
 
 if platform.system() == "Windows":
@@ -205,6 +206,12 @@ class Windows(OperatingSystem):
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self, backend: str = "uia") -> None:
+        deprecation(
+            "`RPA.Desktop.Windows` got deprecated and will be no longer maintained, "
+            "please use `RPA.Windows` instead "
+            "(https://robocorp.com/docs/libraries/rpa-framework/rpa-windows)"
+        )
+
         OperatingSystem.__init__(self)
         self._apps = {}
         self._app_instance_id = 0
@@ -1248,6 +1255,7 @@ class Windows(OperatingSystem):
     def wait_for_element(
         self,
         locator: str,
+        use_refreshing: bool = False,
         search_criteria: str = None,
         timeout: float = 30.0,
         interval: float = 2.0,
@@ -1258,6 +1266,8 @@ class Windows(OperatingSystem):
         `ElementNotFoundError` if element is not found within timeout.
 
         :param locator: name of the locator
+        :param use_refreshing: wait for element(s) which are not there yet e.g. listbox
+         item or popups, default False
         :param search_criteria: criteria by which element is matched
         :param timeout: defines how long to wait for element to appear,
          defaults to 30.0 seconds
@@ -1278,6 +1288,8 @@ class Windows(OperatingSystem):
         elements = None
         while time.time() < end_time:
             elements, _ = self.find_element(locator, search_criteria)
+            if use_refreshing:
+                self.refresh_window()
             if len(elements) > 0:
                 break
             if interval >= timeout:
