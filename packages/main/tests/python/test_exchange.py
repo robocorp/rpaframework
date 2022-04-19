@@ -35,6 +35,13 @@ def test_send_message_with_multiple_recipients(mocked, library):
 
 
 @mock.patch(SENDMAIL_MOCK)
+def test_send_message_with_multiple_recipients_as_list(mocked, library):
+    multi_recipients_as_list = ["person2@domain.com, person3@domain.com"]
+    status = library.send_message(recipients=multi_recipients_as_list)
+    assert status
+
+
+@mock.patch(SENDMAIL_MOCK)
 def test_send_with_subject(mocked, library):
     status = library.send_message(recipients=recipient, subject="My test email subject")
     assert status
