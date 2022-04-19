@@ -52,7 +52,7 @@ EMAIL_CRITERIA_KEYS = {
 
 
 class NoRecipientsError(ValueError):
-    """Raised when email to be sent does not have any recipients, cc or bcc addresses."""
+    """Raised when email to be sent does not have any recipients, cc or bcc addresses."""  # noqa: E501
 
 
 class Exchange:
@@ -332,7 +332,7 @@ class Exchange:
         )
         if not recipients and not cc and not bcc:
             raise NoRecipientsError(
-                "Atleast one address is required for 'recipients', 'cc' or 'bcc' parameter"
+                "Atleast one address is required for 'recipients', 'cc' or 'bcc' parameter"  # noqa: E501
             )
         self.logger.info("Sending message to %s", ",".join(recipients))
 
@@ -360,7 +360,6 @@ class Exchange:
             m.send_and_save()
         else:
             m.send()
-        return None
 
     def _handle_message_parameters(self, recipients, cc, bcc, attachments, images):
         recipients = recipients or []
