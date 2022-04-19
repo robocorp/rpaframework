@@ -75,11 +75,11 @@ def main():
         output.append("")
 
         output.append(".. csv-table::")
-        output.append("   :header: \"Line\", \"Message\"")
+        output.append('   :header: "Line", "Message"')
         output.append("   :widths: 10, 40")
         output.append("")
         for item in items:
-            output.append("   \"{line}\", \"{message}\"".format(**item))
+            output.append('   "{line}", "{message}"'.format(**item))
         output.append("")
 
     with open(args.output, "w") as outfile:

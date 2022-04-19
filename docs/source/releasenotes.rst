@@ -8,11 +8,47 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13.3.1 - 15 Apr 2022
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.1**, :pr:`473`): Fix
+  documentation.
+
+13.3.0 - 14 Apr 2022
+--------------------
+
+- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
+
+  - Keyword ``Get Elements`` returns all similar elements matching locator. (:pr:`471`)
+  - Keyword ``List Windows`` returns now extra attributes similar to the old
+    deprecated ``RPA.Desktop.Windows`` library (:issue:`408`):
+
+    - ``automation_id``
+    - ``control_type``
+    - ``class_name``
+    - ``rectangle``
+    - ``keyboard_focus``
+    - ``is_active``
+    - ``object``
+
+  - Improved locators parsing and ability to enclose values containing spaces with
+    ``"`` double-quote. (:issue:`363`)
+
+  .. warning::
+    This is a **breaking** change! If you use single-quote locator value enclosing,
+    please switch it to double-quote instead. (e.g. ``Control Window  subname:'-
+    Notepad'`` -> ``Control Window  subname:"- Notepad"``)
+
+    If you're having issues with your current robots, pin in your *conda.yaml*
+    ``rpaframework-core==7.0.1`` and stay on ``rpaframework<=13.2.0``. Once you do the
+    double-quote fix, remove the pin and upgrade to the latest ``rpaframework``.
+
 13.2.0 - 08 Apr 2022
 --------------------
 
-- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords 
-  primarily focus on retrieving data from Hubspot, there is currently no support for 
+- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords
+  primarily focus on retrieving data from Hubspot, there is currently no support for
   updating information.
 
 13.1.0 - 07 Apr 2022

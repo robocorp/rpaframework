@@ -46,16 +46,17 @@ class LocatorKeywords(LocatorMethods):
 
         .. code-block:: robotframework
 
-            ${element}=    Get Element    name:'Text Editor*
-            Set Value   ${element}  note to myself
+            ${element} =    Get Element    name:"RichEdit Control"
+            Set Value    ${element}    note to myself
         """
-        # NOTE(cmiN): Explicitly set timeout to `None` in the upper call, so we alter
-        #  the behaviour (context timeout setting) here only.
+        # NOTE(cmiN): Timeout is automatically set to `None` in the upper call by the
+        #  `with_timeout` decorator, so we alter the behaviour (context timeout
+        #  setting) at this level only.
         return super().get_element(
             locator=locator,
             search_depth=search_depth,
             root_element=root_element,
-            timeout=None,
+            timeout=timeout,
         )
 
     @keyword
@@ -87,16 +88,16 @@ class LocatorKeywords(LocatorMethods):
             END
         """
         elements = []
-        initial_window_element = window_element = self.get_element(
+        initial_element = element = self.get_element(
             locator, search_depth, root_element
         )
-        elements.append(initial_window_element)
+        elements.append(initial_element)
         while True:
-            next_element = window_element.item.GetNextSiblingControl()
-            if next_element:
-                window_element = WindowsElement(next_element, locator)
-                if initial_window_element.is_sibling(window_element):
-                    elements.append(window_element)
+            next_control = element.item.GetNextSiblingControl()
+            if next_control:
+                element = WindowsElement(next_control, locator)
+                if initial_element.is_sibling(element):
+                    elements.append(element)
             else:
                 break
         return elements

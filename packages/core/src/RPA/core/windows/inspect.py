@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Union
 
 from RPA.core.windows.helpers import IS_WINDOWS, is_numeric
+from RPA.core.windows.locators import MatchObject
 
 if IS_WINDOWS:
     import uiautomation as auto
@@ -18,7 +19,7 @@ class ElementInspector:
         control_window: bool = True,
         recording: Optional[List["RecordElement"]] = None,
         verbose: bool = False,
-    ):
+    ) -> List[str]:
         """Inspect Windows element under mouse pointer.
 
         :param action: Action attached to the locator.
@@ -74,7 +75,9 @@ class ElementInspector:
         return output
 
     @staticmethod
-    def _get_element_key_properties(element, *, verbose: bool, regex_limit: int = 300):
+    def _get_element_key_properties(
+        element, *, verbose: bool, regex_limit: int = 300
+    ) -> Optional[str]:
         if not element:
             print("Got null element!")
             return None
@@ -90,7 +93,8 @@ class ElementInspector:
                 name_property = "regex:"
                 name = name[:regex_limit].strip()
             if " " in name:
-                name = f"'{name}'"
+                q = MatchObject.QUOTE
+                name = f"{q}{name}{q}"
             locators.append(f"{name_property}{name}")
         if automation_id and not is_numeric(automation_id):
             locators.append(f"id:{automation_id}")

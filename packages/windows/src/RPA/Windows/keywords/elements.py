@@ -140,11 +140,11 @@ class ElementKeywords(LibraryContext):
         attr = hasattr(element.item, attribute)
         if not attr:
             raise ActionNotPossible(
-                'Element "%s" does not have "%s" attribute' % (locator, attribute)
+                f"Element found with {locator!r} does not have {attribute!r} attribute"
             )
         if callable(attr):
             raise ActionNotPossible(
-                'Can\'t access attribute "%s" of element "%s"' % (attribute, locator)
+                f"Can't access attribute {attribute!r} of element {element!r}"
             )
         return str(getattr(element.item, attribute))
 

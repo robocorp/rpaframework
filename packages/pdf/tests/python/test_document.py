@@ -281,20 +281,3 @@ def test_get_text_from_pdf_all_one_page_after_line_margin_is_set(library):
 
     assert len(pages) == 1
     assert len(pages[1]) == 3556
-
-
-def test_font_serialization(library):
-    html = "<html><body> textă </body></html>"
-    with temp_filename(suffix="-html2.pdf") as pdf_file:
-        library.html_to_pdf(html, pdf_file)
-
-    # Simulate environments swap by changing the path to the .ttf font into a
-    # non-existent one under the serialized artifact. This will trigger a serialized
-    # fonts cleanup before regenerating them with the right path.
-    font_file = FPDF.FONT_CACHE_DIR / f'{FPDF.FONT_PATHS[""].stem}.pkl'
-    content = font_file.read_bytes()
-    content = content.replace(b"assets", b"aseets")  # note the different path here
-    font_file.write_bytes(content)
-
-    with temp_filename(suffix="-html2.pdf") as pdf_file:
-        library.html_to_pdf(html, pdf_file)

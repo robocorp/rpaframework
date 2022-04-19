@@ -290,9 +290,9 @@ class Hubspot:
         *** Tasks ***
         Search with date
             ${yesterday}=    Get current date    increment=-24h   result_format=epoch
-            ${yeaterday_hs_ts}=    Evaluate    round(${yesterday} * 1000)
+            ${yesterday_hs_ts}=    Evaluate    round(${yesterday} * 1000)
             ${deals}=    Search for objects    DEALS
-            ...    hs_lastmodifieddate    GTE    ${yeaterday_hs_ts}
+            ...    hs_lastmodifieddate    GTE    ${yesterday_hs_ts}
 
     .. code-block:: python
 
@@ -365,7 +365,7 @@ class Hubspot:
         *** Keywords ***
         Authorize Hubspot
             ${secrets}=    Get secret    hubspot
-            Auth with api key    api_key    ${secrets}[API_KEY]
+            Auth with api key    ${secrets}[API_KEY]
 
     .. code-block:: python
 
@@ -924,7 +924,7 @@ class Hubspot:
             *** Keywords ***
             Authorize Hubspot
                 ${secrets}=    Get secret    hubspot
-                Auth with api key    api_key    ${secrets}[API_KEY]
+                Auth with api key    ${secrets}[API_KEY]
 
         Object Searching
         ================
@@ -1489,7 +1489,7 @@ class Hubspot:
             *** Keywords ***
             Authorize Hubspot
                 ${secrets}=    Get secret    hubspot
-                Auth with api key    api_key    ${secrets}[API_KEY]
+                Auth with api key    ${secrets}[API_KEY]
 
         This keyword caches results for future use, to refresh results from
         Hupspot, set ``use_cache`` to ``False``.
