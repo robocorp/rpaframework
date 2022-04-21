@@ -74,7 +74,7 @@ class HTTP(RequestsLibrary):
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
+    ROBOT_LIBRARY_DOC_FORMAT = "reST"
 
     def __init__(self, *args, **kwargs) -> None:
         RequestsLibrary.__init__(self, *args, **kwargs)
@@ -100,21 +100,16 @@ class HTTP(RequestsLibrary):
         The old session will be used if the URL scheme and the host are the same as
         previously, e.g., 'https://www.google.fi' part of the URL.
 
-        ``url`` target URL for GET request
-
-        ``target_file`` filepath to save request content, default ``None``
-
-        ``verify`` if SSL verification should be done, default ``True``,
-        a CA_BUNDLE path can also be provided
-
-        ``force_new_session`` if new HTTP session should be created, default ``False``
-
-        ``overwrite`` used together with ``target_file``, if ``True`` will overwrite
-        the target file, default ``False``
-
-        ``stream`` if ``False``, the response content will be immediately downloaded
-
-        Returns request response.
+        :param url: target URL for GET request
+        :param target_file: filepath to save request content, default ``None``
+        :param verify: if SSL verification should be done, default ``True``,
+            a CA_BUNDLE path can also be provided
+        :param force_new_session: if new HTTP session should be created,
+            default ``False``
+        :param overwrite: used together with ``target_file``, if ``True`` will overwrite
+            the target file, default ``False``
+        :param stream: if ``False``, the response content will be immediately downloaded
+        :return: request response as a dict
         """
         uc = urlparse(url)
 
@@ -157,7 +152,7 @@ class HTTP(RequestsLibrary):
     def get_current_session_alias(self) -> str:
         """Get request session alias that was used with the ``HTTP Get`` keyword.
 
-        Return name of session alias.
+        :return: name of session alias as a string
         """
         return self.current_session_alias
 
@@ -178,19 +173,17 @@ class HTTP(RequestsLibrary):
         in the path, then that is used as ``target_file`` to save to. By default,
         the filename will be "downloaded.html".
 
-        ``url`` target URL for GET request
-
-        ``target_file`` filepath to save request content, default ``None``
-
-        ``verify`` if SSL verification should be done, default ``True``,
-        a CA_BUNDLE path can also be provided
-
-        ``force_new_session`` if new HTTP session should be created, default ``False``
-
-        ``overwrite`` used together with ``target_file``, if ``True`` will overwrite
-        the target file, default ``False``
-
-        ``stream`` if ``False``, the response content will be immediately downloaded
+        :param url: target URL for GET request
+        :param target_file: filepath to save request content, default ``None``
+        :param verify: if SSL verification should be done, default ``True``,
+            a CA_BUNDLE path can also be provided
+        :param force_new_session: if new HTTP session should be created,
+            default ``False``
+        :param overwrite: used together with ``target_file``, if ``True`` will overwrite
+            the target file, default ``False``
+        :param stream`` if ``False``, the response content will
+            be immediately downloaded
+        :return: request response as a dict
         """
         response = self.http_get(
             url,
