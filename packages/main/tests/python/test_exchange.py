@@ -2,7 +2,7 @@ import datetime
 import mock
 import pytest
 from RPA.Email.Exchange import Exchange, UTC
-
+from RPA.Robocorp.Vault import Vault
 from . import RESOURCES_DIR
 
 
@@ -31,6 +31,13 @@ def test_send_message_with_recipients(mocked, library):
 @mock.patch(SENDMAIL_MOCK)
 def test_send_message_with_multiple_recipients(mocked, library):
     status = library.send_message(recipients=multi_recipients)
+    assert status
+
+
+@mock.patch(SENDMAIL_MOCK)
+def test_send_message_with_multiple_recipients_as_list(mocked, library):
+    multi_recipients_as_list = ["person2@domain.com, person3@domain.com"]
+    status = library.send_message(recipients=multi_recipients_as_list)
     assert status
 
 
@@ -189,3 +196,20 @@ def test_get_filter_by_key_value_multiple_conditions(library):
     for criteria, expected in criterias.items():
         result = library._get_filter_key_value(criteria)
         assert result == expected
+
+
+@pytest.mark.skip(reason="requires vault and valid email account")
+def test_send_message_with_only_bcc_addresses(library):
+    secrets = Vault().get_secret("Exchange")
+    library.authorize(
+        username=secrets["account"],
+        password=secrets["password"],
+        autodiscover=False,
+        server="outlook.office365.com",
+    )
+    bcc_list = ["robocorp.tester@gmail.com", "robocorp.tester.2@gmail.com"]
+    library.send_message(
+        bcc=bcc_list,
+        subject="test_send_message_with_only_bcc_addresses",
+        body="test_send_message_with_only_bcc_addresses",
+    )
