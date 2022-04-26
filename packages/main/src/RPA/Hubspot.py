@@ -1,7 +1,9 @@
+from enum import Enum
 import logging
 import math
+from multiprocessing.sharedctypes import Value
 import traceback
-from typing import List, Dict, Optional, Tuple, Union
+from typing import Any, List, Dict, Optional, Tuple, Union
 from tenacity import (
     before_sleep_log,
     retry,
@@ -24,6 +26,10 @@ from hubspot.crm.objects.models import (
     SimplePublicObjectWithAssociations,
     BatchReadInputSimplePublicObjectId,
     SimplePublicObjectId,
+    SimplePublicObjectInput as CreateObjectInput,
+    SimplePublicObjectBatchInput as UpdateObjectInput,
+    BatchInputSimplePublicObjectInput as CreateBatchInput,
+    BatchInputSimplePublicObjectBatchInput as UpdateBatchInput,
 )
 from hubspot.crm.schemas.models import ObjectSchema
 from hubspot.crm.pipelines.models import (
@@ -61,6 +67,12 @@ class HubSpotRateLimitError(Exception):
 
 class HubSpotBatchResponseError(Exception):
     "Error when the entire batch response is nothing but errors."
+
+
+class HubSpotBatchInputInvalidError(Exception):
+    """Error when the provided batch input is invalid and cannot be sent
+    to the Hubspot API.
+    """
 
 
 class ExtendedFilter(Filter):
@@ -255,6 +267,138 @@ class SearchLexer:
             self.logger.debug(f"Found this group of words as FilterGroup: {words}")
             filter_groups.append(FilterGroup(self._process_and(words)))
         return ObjectSearchRequest(filter_groups)
+
+
+class BatchMode(Enum):
+    """Enumeration that returns the appropriate class to create a single
+    object inside of a batch input list.
+    """
+
+    UPDATE = "UPDATE"
+    CREATE = "CREATE"
+    INVALID = "INVALID"
+
+
+class BatchInputFactory:
+    """A factory class which can be used to build up a set of inputs
+    for a Hubspot Batch Input process and then used to generate the
+    final object to be passed to the Hubspot API client.
+    """
+
+    def __init__(
+        self,
+        mode: BatchMode = BatchMode.INVALID,
+        object_type: str = None,
+        inputs: List = [],
+    ) -> None:
+        self._mode = mode
+        self._object_type = object_type
+        self._inputs = inputs
+
+    @property
+    def mode(self) -> BatchMode:
+        """The batch mode, either ``UPDATE`` or ``CREATE``."""
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode: BatchMode):
+        if mode not in [BatchMode.UPDATE, BatchMode.CREATE]:
+            self._mode = BatchMode.INVALID
+
+    @property
+    def object_type(self) -> str:
+        """The Hubspot object type this batch input will affect. This
+        class does not validate the provided object type, that must be
+        done by the caller."""
+        return self._object_type
+
+    @object_type.setter
+    def object_type(self, object_type: str):
+        self._object_type = object_type
+
+    @property
+    def inputs(self) -> Union[List[CreateObjectInput], List[UpdateObjectInput]]:
+        """A list of inputs to be sent into the Batch API, returned type
+        depends on ``mode``. Can be set directly, but the ``add_input`` and
+        ``extend_inputs`` methods are more useful."""
+        return self._inputs
+
+    @inputs.setter
+    def inputs(self, inputs: Union[List[CreateObjectInput], List[UpdateObjectInput]]):
+        if isinstance(inputs[0], CreateObjectInput):
+            self.mode = BatchMode.CREATE
+        elif isinstance(inputs[0], UpdateObjectInput):
+            self.mode = BatchMode.UPDATE
+        else:
+            raise TypeError(
+                "Expected a list of type "
+                "SimplePublicObjectInput or SimplePublicObjectBatchInput,"
+                f"but received type {type(inputs[0])}"
+            )
+        self._inputs = inputs
+
+    @inputs.deleter
+    def inputs(self):
+        self._inputs = []
+
+    def _prevent_mode_change_with_inputs(self, other_mode: BatchMode):
+        if (
+            self.mode is not other_mode
+            and self.mode is not BatchMode.INVALID
+            and len(self.inputs) > 0
+        ):
+            raise ValueError(
+                f"This batch is in {str(self.mode)} mode and already has items, "
+                f"it is not possible to implicity switch modes to {str(other_mode)}"
+            )
+
+    def add_input(
+        self,
+        properties: Dict[str, str],
+        id: str = None,
+    ):
+        """Add the provided dictionary of Hubspot properties as an input
+        to this batch's ``inputs`` property. If ``id`` is provided, the
+        input will be considered an ``UPDATE`` mode input.
+        """
+        if id:
+            self._prevent_mode_change_with_inputs(BatchMode.UPDATE)
+            new_input = UpdateObjectInput(properties, id)
+            if self.mode is BatchMode.INVALID:
+                self.mode = BatchMode.UPDATE
+        else:
+            self._prevent_mode_change_with_inputs(BatchMode.CREATE)
+            new_input = CreateObjectInput(properties)
+            if self.mode is BatchMode.INVALID:
+                self.mode = BatchMode.CREATE
+        self._inputs.append(new_input)
+
+    def extend_inputs(self, properties: List[Dict[str, str]], ids: List[str] = []):
+        """Extends this batch's ``inputs`` based on the provided list of
+        ``properties`` and ``ids``. If ``ids`` is provided, it will be
+        zipped with the provided ``properties``. ``UPDATE`` mode is assumed
+        in such a case.
+        """
+        if len(ids) > 0:
+            self._prevent_mode_change_with_inputs(BatchMode.UPDATE)
+            new_inputs = [UpdateObjectInput(p, i) for p, i in zip(properties, ids)]
+            if self.mode is BatchMode.INVALID:
+                self.mode = BatchMode.UPDATE
+        else:
+            self._prevent_mode_change_with_inputs(BatchMode.CREATE)
+            new_inputs = [CreateObjectInput(p) for p in properties]
+            if self.mode is BatchMode.INVALID:
+                self.mode = BatchMode.CREATE
+        self._inputs.extend(new_inputs)
+
+    def create_hubspot_batch_object(self) -> Union[CreateBatchInput, UpdateBatchInput]:
+        """Generates either a BatchInputSimplePublicObjectInput or
+        BatchInputSimplePublicObjectBatchInput depending on whether this
+        factory is in ``CREATE`` or ``UPDATE`` mode."""
+        if self.mode is BatchMode.CREATE:
+            return CreateBatchInput(self.inputs)
+        if self.mode is BatchMode.UPDATE:
+            return UpdateBatchInput(self.inputs)
 
 
 @library(scope="Global", doc_format="REST")
@@ -624,6 +768,7 @@ class Hubspot:
         self._singular_map = {}
         self._plural_map = {}
         self._pipelines = {}
+        self._batch_input = None
 
     def _require_authentication(self) -> None:
         if self.hs is None:
@@ -1087,6 +1232,18 @@ class Hubspot:
             output.append(current_list)
         return output
 
+    def _report_batch_errors(self, response: Any, submitted_length: int):
+        if getattr(response, "num_errors", None):
+            if response.num_errors >= submitted_length:
+                raise HubSpotBatchResponseError(
+                    "Batch failed all items with the following errors:\n"
+                    + str(response.errors)
+                )
+            elif response.num_errors > 0:
+                self.logger.warning(
+                    f"Batch returned some errors:\n" + str(response.errors)
+                )
+
     @retry(
         retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
@@ -1109,17 +1266,7 @@ class Hubspot:
                 self._singularize_object(self._get_custom_object_id(to_object_type)),
                 batch_input_public_object_id=batch_reader,
             )
-            if getattr(response, "num_errors", None):
-                if response.num_errors >= len(object_id):
-                    raise HubSpotBatchResponseError(
-                        "Batch API failed all items with the following "
-                        + f"errors for batch index {i}:\n{response.errors}"
-                    )
-                elif response.num_errors > 0:
-                    self.logger.warning(
-                        f"Batch API returned some errors for batch index {i}:\n"
-                        + str(response.errors)
-                    )
+            self._report_batch_errors(response, len(object_id))
             self.logger.debug(
                 f"Full results received for batch index {i}:\n{response.results}"
             )
@@ -1217,17 +1364,7 @@ class Hubspot:
                 self._singularize_object(self._get_custom_object_id(object_type)),
                 batch_read_input_simple_public_object_id=batch_reader,
             )
-            if getattr(response, "num_errors", None):
-                if response.num_errors >= len(object_id):
-                    raise HubSpotBatchResponseError(
-                        "Batch API failed all items with the following "
-                        + f"errors for batch index {i}:\n{response.errors}"
-                    )
-                elif response.num_errors > 0:
-                    self.logger.warning(
-                        f"Batch API returned some errors for batch index {i}:\n"
-                        + str(response.errors)
-                    )
+            self._report_batch_errors(response, len(object_id))
             self.logger.debug(
                 f"Full results received for batch index {i}:\n{response.results}"
             )
@@ -1293,6 +1430,192 @@ class Hubspot:
         else:
             return self._get_object(
                 object_type, object_id, id_property, properties, associations
+            )
+
+    def _create_simple_input_object(
+        self, properties: Dict[str, Any]
+    ) -> CreateObjectInput:
+        """Creates a ``SimplePublicObjectInput`` from the provided
+        dictionary of properties. The dictionary must have keys that
+        equal Hubspot properties of the underlying object.
+        """
+        if "properties" in properties.keys():
+            raise ValueError(
+                "A Hubspot object cannot have a property called 'properties'."
+            )
+        return CreateObjectInput(properties=properties)
+
+    @keyword
+    @retry(
+        retry=retry_if_exception(_is_rate_limit_error),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
+    )
+    def create_object(self, object_type, **properties) -> SimplePublicObject:
+        """Creates a new Hubspot object of the provided ``object_type``
+        and with the provided properties in Hubspot. Read-only or
+        nonexistent properties are ignored. The ``object_type``
+        parameter automatically looks up custom object IDs based on the
+        provided name.
+
+        The Hubspot properties to be updated must be provided as additional
+        labeled paremeters to this keyword.
+
+        Returns the newly created object. The new object's ``id`` is available
+        via the property ``id``.
+        """
+        self._require_authentication()
+        return self.hs.crm.objects.basic_api.create(
+            self._validate_object_type(object_type),
+            self._create_simple_input_object(properties),
+        )
+
+    @keyword
+    @retry(
+        retry=retry_if_exception(_is_rate_limit_error),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
+    )
+    def update_object(
+        self,
+        object_type: str,
+        object_id: Union[str, List[str]],
+        id_property: Optional[str] = None,
+        **properties,
+    ) -> SimplePublicObject:
+        """Performs a partial update of an Object identified by
+        ``object_type`` and ``object_id`` with the provided properties
+        in Hubspot. The objects can be found using an
+        alternate ID by providing the name of that HubSpot property
+        which contains the unique identifier to ``id_property``. The ``object_type``
+        parameter automatically looks up custom object IDs based on the
+        provided name.
+
+        The Hubspot properties to be updated must be provided as additional
+        labeled paremeters to this keyword.
+
+        Returns the newly created object. The new object's ``id`` is available
+        via the property ``id``.
+        """
+        self._require_authentication()
+        return self.hs.crm.objects.basic_api.update(
+            self._validate_object_type(object_type),
+            object_id,
+            self._create_simple_input_object(properties),
+            id_property=id_property,
+        )
+
+    @property
+    def batch_input(self) -> BatchInputFactory:
+        if self._batch_input is None:
+            self._batch_input = BatchInputFactory()
+        return self._batch_input
+
+    @batch_input.setter
+    def batch_input(
+        self,
+        batch_factory: BatchInputFactory,
+    ):
+        self._batch_input = batch_factory
+
+    @batch_input.deleter
+    def batch_input(self):
+        self._batch_input = None
+
+    @keyword
+    def create_new_batch_input(self, object_type: str, mode: BatchMode) -> None:
+        """Creates a new blank batch input for the provided ``object_type`` in
+        either the ``UPDATE`` or ``CREATE`` mode.
+
+        See `Batch Inputs`_ for complete information on using the batch
+        input API.
+        """
+        self.batch_input = BatchInputFactory(
+            mode, self._validate_object_type(object_type)
+        )
+
+    @keyword
+    def add_input_to_batch(self, properties: Dict[str, str], id: str = None) -> None:
+        """Add the provided dictionary of Hubspot ``properties`` to the current
+        batch input. If creating an ``UPDATE`` batch, you must also provide
+        the Hubspot object ``id`` (an alternate ID property cannot be used).
+
+        See `Batch Inputs`_ for complete information on using the batch
+        input API.
+        """
+        self.batch_input.add_input(properties, id)
+
+    @keyword
+    def extend_batch_with_inputs(
+        self, properties: List[Dict[str, str]], ids: List[str] = []
+    ) -> None:
+        """Extends the current batch input with the provided lists of
+        Hubspot ``properties`` and Hubspot object ``ids``. The ``ids``
+        parameter must be provided when extending an ``UPDATE`` batch.
+        The two provided lists will be zipped together in the same order
+        as provided.
+
+        See `Batch Inputs`_ for complete information on using the batch
+        input API.
+        """
+        self.batch_input.extend_inputs(properties, ids)
+
+    @keyword
+    def clear_current_batch_input(self) -> BatchInputFactory:
+        """Returns the current batch input and then clears it.
+
+        See `Batch Inputs`_ for complete information on using the batch
+        input API.
+        """
+        old_batch = self.batch_input
+        del self.batch_input
+        return old_batch
+
+    @keyword
+    def set_current_batch_input(self, batch_input: BatchInputFactory) -> None:
+        """Sets the current batch input to the provided one.
+
+        See `Batch Inputs`_ for complete information on using the batch
+        input API.
+        """
+        self.batch_input = batch_input
+
+    @keyword
+    @retry(
+        retry=retry_if_exception(_is_rate_limit_error),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
+    )
+    def execute_batch_input(self) -> List[SimplePublicObject]:
+        """Sends the current batch input to the Hubspot API.
+
+        See `Batch Inputs`_ for complete information on using the batch
+        input API.
+        """
+        self._require_authentication()
+        if len(self.batch_input.inputs) > 0:
+            if self.batch_input.mode is BatchMode.CREATE:
+                response = self.hs.crm.objects.batch_api.create(
+                    self.batch_input.object_type,
+                    self.batch_input.create_hubspot_batch_object(),
+                )
+            elif self.batch_input.mode is BatchMode.UPDATE:
+                response = self.hs.crm.objects.batch_api.update(
+                    self.batch_input.object_type,
+                    self.batch_input.create_hubspot_batch_object(),
+                )
+            else:
+                raise HubSpotBatchInputInvalidError(
+                    f"Batch Input cannot be sent, "
+                    f"current batch input mode is '{self.batch_input.mode}'"
+                )
+
+        else:
+            raise HubSpotBatchInputInvalidError(
+                f"Batch Input cannot be sent, current batch has no inputs."
             )
 
     @property
