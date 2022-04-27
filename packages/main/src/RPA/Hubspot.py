@@ -295,6 +295,9 @@ class BatchInputFactory:
         self._object_type = object_type
         self._inputs = inputs
 
+    def __len__(self) -> int:
+        return len(self.inputs)
+
     @property
     def mode(self) -> BatchMode:
         """The batch mode, either ``UPDATE`` or ``CREATE``."""
@@ -1678,6 +1681,8 @@ class Hubspot:
             raise HubSpotBatchInputInvalidError(
                 f"Batch Input cannot be sent, current batch has no inputs."
             )
+
+        self._report_batch_errors(response, len(self.batch_input))
 
     @property
     def pipelines(self) -> Dict[str, List[Pipeline]]:
