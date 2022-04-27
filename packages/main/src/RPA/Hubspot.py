@@ -1309,6 +1309,56 @@ class Hubspot:
         else:
             return self._list_associations(object_type, object_id, to_object_type)
 
+    @keyword
+    @retry(
+        retry=retry_if_exception(_is_rate_limit_error),
+        stop=stop_after_attempt(10),
+        wait=wait_exponential(multiplier=2, min=0.1),
+        before_sleep=_before_sleep_log(),
+    )
+    def set_association(
+        self,
+        object_type: str,
+        object_id: str,
+        to_object_type: str,
+        to_object_id: str,
+        association_type: str = None,
+    ) -> SimplePublicObjectWithAssociations:
+        """Sets an association between two Hubspot objects. You must define
+        the primary ``object_type`` and it's Hubspot ``object_id``, as well
+        as the Hubspot object it is to be associated with by using the
+        ``to_object_type`` and ``to_object_id``. You may also define the
+        ``association_type``, but if not, one will be inferred based
+        on the provided object types, for example, if ``object_type`` is
+        ``company`` and ``to_object_type`` is ``contact``, the inferred
+        ``association_type`` will be ``company_to_contact``.
+
+        Returns the object with it's associations.
+
+        :param object_type: The type of object for the object ID
+            provided, e.g. ``contact``.
+        :param object_id: The HubSpot ID for the object of type ``object_type``.
+        :param to_object_type: The type of object to associate the ``object_id``
+            to.
+        :param to_object_id: The HubSpot ID for the object to associate the
+            ``object_id`` to.
+
+        :return: The object represented by the ``object_id`` with the
+            new association. The associations will be available on the
+            returned object's ``associations`` property.
+
+        """
+        self._require_authentication()
+        if not association_type:
+            association_type = f"{object_type}_to_{to_object_type}"
+        return self.hs.crm.objects.associations_api.create(
+            self._validate_object_type(object_type),
+            object_id,
+            self._validate_object_type(to_object_type),
+            to_object_id,
+            association_type,
+        )
+
     @retry(
         retry=retry_if_exception(_is_rate_limit_error),
         stop=stop_after_attempt(10),
@@ -1464,6 +1514,11 @@ class Hubspot:
 
         Returns the newly created object. The new object's ``id`` is available
         via the property ``id``.
+
+        :param object_type: The object type to be created.
+        :param properties: All remaining labeled parameters passed into
+            this keyword will be used as the properties of the new
+            object. Read-only or nonexistent properties will be ignored.
         """
         self._require_authentication()
         return self.hs.crm.objects.basic_api.create(
@@ -1498,6 +1553,12 @@ class Hubspot:
 
         Returns the newly created object. The new object's ``id`` is available
         via the property ``id``.
+
+        :param object_type: The object type to be created.
+        :param object_id: The HubSpot ID of the object to be updated
+        :param properties: All remaining labeled parameters passed into
+            this keyword will be used as the properties of the new
+            object. Read-only or nonexistent properties will be ignored.
         """
         self._require_authentication()
         return self.hs.crm.objects.basic_api.update(
