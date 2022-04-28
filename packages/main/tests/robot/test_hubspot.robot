@@ -276,6 +276,25 @@ Create random companies by batch
         Should contain    ${descriptions}    ${company.properties}[description]
     END
 
+Create two hundred random companies by batch
+    Check If Variable File Exists
+    Auth with API key    ${API_KEY}
+    Create new batch    COMPANY    CREATE
+    ${properties_for_batch}=    Create list
+    FOR    ${counter}    IN RANGE    200
+        ${random_name}    ${random_description}=    Generate random name and description
+        ${properties}=    Create dictionary    name=${random_name}    description=${random_description}
+        Append to list    ${properties_for_batch}    ${properties}
+    END
+    Extend batch with inputs    ${properties_for_batch}
+    ${new_companies}=    Execute batch
+    ${all_names}=    Evaluate    [p["name"] for p in $properties_for_batch]
+    ${all_descriptions}=    Evaluate    [p["description"] for p in $properties_for_batch]
+    FOR    ${company}    IN    @{new_companies}
+        Should contain    ${all_names}    ${company.properties}[name]
+        Should contain    ${all_descriptions}    ${company.properties}[description]
+    END
+
 
 *** Keywords ***
 Check If Variable File Exists

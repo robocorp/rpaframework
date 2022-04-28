@@ -1,7 +1,7 @@
 from enum import Enum
 import logging
 import math
-from multiprocessing.sharedctypes import Value
+
 import traceback
 from typing import Any, List, Dict, Optional, Tuple, Union
 from tenacity import (
@@ -315,7 +315,8 @@ class BatchInputFactory:
     def object_type(self) -> str:
         """The Hubspot object type this batch input will affect. This
         class does not validate the provided object type, that must be
-        done by the caller."""
+        done by the caller.
+        """
         return self._object_type
 
     @object_type.setter
@@ -326,7 +327,8 @@ class BatchInputFactory:
     def inputs(self) -> Union[List[CreateObjectInput], List[UpdateObjectInput]]:
         """A list of inputs to be sent into the Batch API, returned type
         depends on ``mode``. Can be set directly, but the ``add_input`` and
-        ``extend_inputs`` methods are more useful."""
+        ``extend_inputs`` methods are more useful.
+        """
         return self._inputs
 
     @inputs.setter
@@ -397,14 +399,20 @@ class BatchInputFactory:
                 self.mode = BatchMode.CREATE
         self._inputs.extend(new_inputs)
 
-    def create_hubspot_batch_object(self) -> Union[CreateBatchInput, UpdateBatchInput]:
+    def create_hubspot_batch_object(
+        self, start: int = 0, end: int = None
+    ) -> Union[CreateBatchInput, UpdateBatchInput]:
         """Generates either a BatchInputSimplePublicObjectInput or
         BatchInputSimplePublicObjectBatchInput depending on whether this
-        factory is in ``CREATE`` or ``UPDATE`` mode."""
+        factory is in ``CREATE`` or ``UPDATE`` mode. If ``start`` or ``end``
+        is provided, it will return a batch object including only a slice
+        of the current inputs (useful when total number of inputs is more
+        than 100, which requires batches to be batch due to API restrictions).
+        """
         if self.mode is BatchMode.CREATE:
-            return CreateBatchInput(self.inputs)
+            return CreateBatchInput(self.inputs[start:end])
         if self.mode is BatchMode.UPDATE:
-            return UpdateBatchInput(self.inputs)
+            return UpdateBatchInput(self.inputs[start:end])
 
 
 @library(scope="Global", doc_format="REST")
@@ -532,8 +540,8 @@ class Hubspot:
         hs.batch_input = batch
         updated_companies = hs.execute_batch()
         print(
-            "Companies have been updated:\n" +
-            "\n".join([str(c) for c in updated_companies])
+            "Companies have been updated:\\n" +
+            "\\n".join([str(c) for c in updated_companies])
         )
 
     Information Caching
@@ -1324,7 +1332,7 @@ class Hubspot:
                 )
             elif response.num_errors > 0:
                 self.logger.warning(
-                    f"Batch returned some errors:\n" + str(response.errors)
+                    "Batch returned some errors:\n" + str(response.errors)
                 )
 
     @retry(
@@ -1784,6 +1792,22 @@ class Hubspot:
         """
         return [i.to_dict() for i in self.batch_input.inputs]
 
+    def _batch_batch_inputs(
+        self, max_batch_size: int = 100
+    ) -> Union[List[CreateBatchInput], List[UpdateBatchInput]]:
+        """Creates multiple batch input objects each with a max number of
+        inputs equal to the ``max_batch_size`` which defaults to 100.
+        """
+        output = []
+        for i in range(math.ceil(len(self.batch_input.inputs) / max_batch_size)):
+            bottom = i * max_batch_size
+            top = (i + 1) * max_batch_size
+            current_input_obj = self.batch_input.create_hubspot_batch_object(
+                bottom, top
+            )
+            output.append(current_input_obj)
+        return output
+
     @keyword
     @retry(
         retry=retry_if_exception(_is_rate_limit_error),
@@ -1806,26 +1830,30 @@ class Hubspot:
         """
         self._require_authentication()
         if len(self.batch_input.inputs) > 0:
-            if self.batch_input.mode is BatchMode.CREATE:
-                response = self.hs.crm.objects.batch_api.create(
-                    self.batch_input.object_type,
-                    self.batch_input.create_hubspot_batch_object(),
-                )
-            elif self.batch_input.mode is BatchMode.UPDATE:
-                response = self.hs.crm.objects.batch_api.update(
-                    self.batch_input.object_type,
-                    self.batch_input.create_hubspot_batch_object(),
-                )
-            else:
-                raise HubSpotBatchInputInvalidError(
-                    f"Batch Input cannot be sent, "
-                    f"current batch input mode is '{self.batch_input.mode}'"
-                )
+            input_objects = self._batch_batch_inputs()
+            collected_results = []
+            for input in input_objects:
+                if self.batch_input.mode is BatchMode.CREATE:
+                    response = self.hs.crm.objects.batch_api.create(
+                        self.batch_input.object_type,
+                        input,
+                    )
+                elif self.batch_input.mode is BatchMode.UPDATE:
+                    response = self.hs.crm.objects.batch_api.update(
+                        self.batch_input.object_type,
+                        input,
+                    )
+                else:
+                    raise HubSpotBatchInputInvalidError(
+                        f"Batch Input cannot be sent, "
+                        f"current batch input mode is '{self.batch_input.mode}'"
+                    )
+                self._report_batch_errors(response, len(self.batch_input))
+                collected_results.extend(response.results)
         else:
             raise HubSpotBatchInputInvalidError(
-                f"Batch Input cannot be sent, current batch has no inputs."
+                "Batch Input cannot be sent, current batch has no inputs."
             )
-        self._report_batch_errors(response, len(self.batch_input))
         return response.results
 
     @property
