@@ -2,8 +2,9 @@ Release notes
 =============
 
 .. note::
-  The support for Python version 3.6 has been **REMOVED** from the ``rpaframework``
+  The support for Python version 3.6 has been **REMOVED** from the ``rpaframework[-*]``
   packages starting with the following versions:
+
     - ``rpaframework`` **14.0.0**
     - ``rpaframework-aws`` **2.0.0**
     - ``rpaframework-dialogs`` **2.0.0**
@@ -39,13 +40,16 @@ Release notes
 
   .. warning::
     Unsupported:
+
       - Python 2 (Jython, IronPython) and 3.6 (:pr:`469`)
       - ``Exit/Continue For Loop`` outside of loops (indirect usage)
       - ``Run Keyword And Expect Error`` partial match at the beginning with regex
         pattern
       - Tidy tool (in favor to RoboTidy)
       - `Other backwards incompatible changes <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#other-backwards-incompatible-changes>`_
+
     Deprecated:
+
       - ``Exit For Loop[ If]``
       - ``Continue For Loop[ If]``
       - ``Return From Keyword[ If]``
@@ -54,10 +58,14 @@ Release notes
 
   .. note::
     Recommendations:
+
       - Control loop execution with ``BREAK``, ``CONTINUE``.
       - Use the uniform ``RETURN`` instead of ``[Return]`` or ``Return From Keyword``.
+
     Others:
+
       - `Round half to even <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#rounding-changes>`_
+
     If your robot starts to behave incorrectly and you still want the latest updates,
     then pin in your *conda.yaml* ``robotframework<5.0`` under the **pip** section.
 
