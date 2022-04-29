@@ -14,9 +14,10 @@ from xlutils.copy import copy as xlutils_copy
 from PIL import Image
 
 from RPA.Tables import Tables, Table
+from typing import List, Any, Union
 
 
-def get_column_index(column):
+def get_column_index(column: str) -> int:
     """Get column index from name, e.g. A -> 1, D -> 4, AC -> 29.
     Reverse of `get_column_letter()`
     """
@@ -30,13 +31,13 @@ def get_column_index(column):
     return col
 
 
-def ensure_unique(values):
+def ensure_unique(values: Any) -> List[Any]:
     """Ensures that each string value in the list is unique.
     Adds a suffix to each value that has duplicates,
     e.g. [Banana, Apple, Lemon, Apple] -> [Banana, Apple, Lemon, Apple_2]
     """
 
-    def to_unique(values):
+    def to_unique(values: Any) -> List[Any]:
         output = []
         seen = defaultdict(int)
         for value in values:
@@ -171,7 +172,7 @@ class Files:
         self.logger = logging.getLogger(__name__)
         self.workbook = None
 
-    def _load_workbook(self, path, data_only):
+    def _load_workbook(self, path: str, data_only:bool) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         # pylint: disable=broad-except
         path = pathlib.Path(path).resolve(strict=True)
 
@@ -198,7 +199,7 @@ class Files:
             "verify that the path and extension are correct"
         )
 
-    def create_workbook(self, path=None, fmt="xlsx"):
+    def create_workbook(self, path: str=None, fmt: str="xlsx") -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Create and open a new Excel workbook.
 
         Automatically also creates a new worksheet with the name "Sheet".
@@ -232,7 +233,7 @@ class Files:
         self.workbook.create()
         return self.workbook
 
-    def open_workbook(self, path: str, data_only: bool = False):
+    def open_workbook(self, path: str, data_only: bool = False) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Open an existing Excel workbook.
 
         Opens the workbook in memory and sets it as the active workbook.
@@ -260,14 +261,14 @@ class Files:
         self.logger.info("Opened workbook: %s", self.workbook)
         return self.workbook
 
-    def close_workbook(self):
+    def close_workbook(self) -> None:
         """Close the active workbook."""
         if self.workbook:
             self.logger.info("Closing workbook: %s", self.workbook)
             self.workbook.close()
             self.workbook = None
 
-    def save_workbook(self, path=None):
+    def save_workbook(self, path: str=None) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Save the active workbook.
 
         **Note:** No changes to the workbook are saved to the actual file unless
@@ -296,22 +297,22 @@ class Files:
 
         return self.workbook.save(path)
 
-    def list_worksheets(self):
+    def list_worksheets(self) -> List[str]:
         """List all names of worksheets in the given workbook."""
         assert self.workbook, "No active workbook"
         return self.workbook.sheetnames
 
-    def worksheet_exists(self, name):
+    def worksheet_exists(self, name:str) -> bool:
         """Return True if worksheet with given name is in workbook."""
         assert self.workbook, "No active workbook"
         return bool(str(name) in self.list_worksheets())
 
-    def get_active_worksheet(self):
+    def get_active_worksheet(self) -> str:
         """Get the name of the worksheet which is currently active."""
         assert self.workbook, "No active workbook"
         return self.workbook.active
 
-    def set_active_worksheet(self, value):
+    def set_active_worksheet(self, value: str) -> None:
         """Set the active worksheet.
 
         This keyword can be used to set the default worksheet for keywords,
@@ -331,7 +332,7 @@ class Files:
         assert self.workbook, "No active workbook"
         self.workbook.active = value
 
-    def create_worksheet(self, name, content=None, exist_ok=False, header=False):
+    def create_worksheet(self, name: str, content: Any=None, exist_ok: bool=False, header: bool=False) -> None:
         """Create a new worksheet in the current workbook.
 
         :param name:     Name of new worksheet
@@ -354,7 +355,7 @@ class Files:
         if content:
             self.workbook.append_worksheet(name, content, header)
 
-    def read_worksheet(self, name=None, header=False, start=None):
+    def read_worksheet(self, name: str=None, header: bool=False, start: int=None) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Read the content of a worksheet into a list of dictionaries.
 
         Each key in the dictionary will be either values from the header row,
@@ -375,7 +376,7 @@ class Files:
         assert self.workbook, "No active workbook"
         return self.workbook.read_worksheet(name, header, start)
 
-    def read_worksheet_as_table(self, name=None, header=False, trim=True, start=None):
+    def read_worksheet_as_table(self, name: str=None, header: bool=False, trim: bool=True, start: int=None) -> Tables:
         """Read the content of a worksheet into a Table container. Allows
         sorting/filtering/manipulating using the ``RPA.Tables`` library.
 
