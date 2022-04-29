@@ -19,7 +19,9 @@ Release notes
 --------------------
 
 - *<INCLUDE OTHER LIBRARY CHANGES HERE>*
-- Robot Framework 5 support (but not restricted to):
+- Library `RPA.Email.Exchange` (:issue:`477`): Keyword ``Send Message`` supports
+  sending messages with any combination of `recipients`, `cc` and/or `bcc`.
+- Robot Framework 5 support, but not restricted to (:pr:`470`):
 
   - `TRY/EXCEPT <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#tryexcept>`_
     (supports ``ELSE`` and ``FINALLY`` as well)
@@ -37,7 +39,7 @@ Release notes
 
   .. warning::
     Unsupported:
-      - Python 2 (Jython, IronPython) and 3.6
+      - Python 2 (Jython, IronPython) and 3.6 (:pr:`469`)
       - ``Exit/Continue For Loop`` outside of loops (indirect usage)
       - ``Run Keyword And Expect Error`` partial match at the beginning with regex
         pattern
