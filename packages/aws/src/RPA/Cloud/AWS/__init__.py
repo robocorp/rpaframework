@@ -10,7 +10,8 @@ from typing import Any
 
 try:
     import boto3
-    from botocore.exceptions import ClientError
+    from botocore.exceptions import ClientError, WaiterError
+    from botocore.waiter import Waiter, WaiterModel, create_waiter_with_client
     from boto3.exceptions import S3UploadFailedError
 
     HAS_BOTO3 = True
@@ -969,6 +970,205 @@ class ServiceSQS(AWSBase):
         client = self._get_client_for_service("sqs")
         response = client.delete_queue(queue_name)
         return response
+
+
+# TODO: Implement INSERT from RPA.Table
+class ServiceRedshiftData(AWSBase):
+    """Class for AWS Redshift Data API Service."""
+
+    def __init__(self) -> None:
+        self.services.append("redshift_data")
+        self.logger.debug("ServiceRedshiftData init")
+
+    def init_redshift_data_client(
+        self,
+        aws_key_id: str = None,
+        aws_key: str = None,
+        region: str = None,
+        cluster_identifier: str = None,
+        database: str = None,
+        database_user: str = None,
+        secret_arn: str = None,
+        use_robocloud_vault: bool = False,
+    ) -> None:
+        """Initialize AWS Redshift Data API client
+
+        :param aws_key_id: access key ID
+        :param aws_key: secret access key
+        :param region: AWS region
+        :param cluster_identifier: The cluster identifier. This parameter
+            is required when connecting to a cluster and authenticating
+            using either Secrets Manager or temporary credentials.
+        :param database: The name of the database. This parameter is required
+            when authenticating using either Secrets Manager or temporary
+            credentials.
+        :param database_user: The database user name. This parameter is
+            required when connecting to a cluster and authenticating using
+            temporary credentials.
+        :param secret_arn: The name or ARN of the secret that enables access
+            to the database. This parameter is required when authenticating
+            using Secrets Manager.
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        """
+        self._init_client(
+            "redshift-data", aws_key_id, aws_key, region, use_robocloud_vault
+        )
+        self.cluster_identifier = cluster_identifier
+        self.database = database
+        self.database_user = database_user
+        self.secret_arn = secret_arn
+
+    @aws_dependency_required
+    def execute_redshift_statement(
+        self,
+        sql: str,
+        parameters: list = None,
+        statement_name: str = None,
+        with_event: bool = False,
+    ) -> dict:
+        """Runs an SQL statement, which can be data manipulation language
+        (DML) or data definition language (DDL). This statement must be a
+        single SQL statement. Depending on the authorization method, use
+        one of the following combinations of request parameters:
+
+        * Secrets Manager - when connecting to a cluster, specify the Amazon
+          Resource Name (ARN) of the secret, the database name, and the
+          cluster identifier that matches the cluster in the secret. When
+          connecting to a serverless endpoint, specify the Amazon Resource
+          Name (ARN) of the secret and the database name.
+        * Temporary credentials - when connecting to a cluster, specify the
+          cluster identifier, the database name, and the database user name.
+          Also, permission to call the redshift:GetClusterCredentials operation
+          is required. When connecting to a serverless endpoint, specify
+          the database name.
+
+        SQL statements can be parameterized with named parameters through
+        the use of the ``parameters`` argument. Parameters must be dictionaries
+        with the following two keys:
+
+        * ``name``: The name of the parameter. In the SQL statement this
+          will be referenced as ``:name``.
+        * ``value``: The value of the parameter. Amazon Redshift implicitly
+          converts to the proper data type. For more inforation, see
+          `Data types`_ in the `Amazon Redshift Database Developer Guide`.
+
+        .. _Data types: https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html
+
+        If tabular data is returned, it is returned as a table (see RPA.Tables). Other
+        types of data (SQL errors and result statements) are returned as strings.
+
+        **Robot framework example:**
+
+        .. code-block:: robotframework
+
+            #TODO
+
+        **Python example:**
+
+        .. code-block:: python
+
+            sql = "insert into mytable values (:id, :address)"
+            parameters = [
+                {"name": "id", "value": "1"},
+                {"name": "address", "value": "Seattle"},
+            ]
+            response = aws.execute_redshift_statement(sql, parameters)
+            print(response)
+
+        :param parameters: The parameters for the SQL statement. Must consist
+            of a list of dictionaries with two keys: ``name`` and ``value``.
+        :param sql: The SQL statement text to run.
+        :param statement_name: The name of the SQL statement. You can name
+            the SQL statement when you create it to identify the query.
+        :param with_event: A value that indicates whether to send an event
+            to the Amazon EventBridge event bus after the SQL statement runs.
+
+        """
+        # TODO: implement this pseudocode:
+        #   --Execute statement--
+        #   --Get waiter ## is this a function?--
+        #   --Wait--
+        #   --Get Paginator(get results)--
+        #   Translate results into RPA.Tables
+        #   ### I don't think I can use RPA.Tables because this package
+        #       can stand alone.
+        #   Return table.
+        client = self._get_client_for_service("redshift-data")
+        run_token = client.execute_statement(
+            ClusterIdentifier=self.cluster_identifier,
+            Database=self.database,
+            DbUser=self.database_user,
+            Parameters=parameters,
+            SecretArn=self.secret_arn,
+            Sql=sql,
+            StatementName=statement_name,
+            WithEvent=with_event,
+        )
+        statement_waiter = self._create_waiter_for_results(client)
+        statement_waiter.wait(Id=run_token["Id"])
+        paginator = client.get_paginator("get_statement_result")
+        full_result = paginator.paginate(Id=run_token["Id"]).build_full_result()
+        # I might not be able to use RPA.Table because of cross-package
+        # dependancies being bad.
+
+    def _create_waiter_for_results(
+        self,
+        redshift_data_client,
+        delay: int = 2,
+        max_attempts: int = 20,
+    ) -> Waiter:
+        waiter_name = "StatementFinished"
+        waiter_config = {
+            "version": 2,
+            "waiters": {
+                waiter_name: {
+                    "operation": "DescribeStatement",
+                    "delay": delay,
+                    "maxAttempts": max_attempts,
+                    "acceptors": [
+                        {
+                            "matcher": "path",
+                            "expected": "ABORTED",
+                            "argument": "Status",
+                            "state": "failure",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "FAILED",
+                            "argument": "Status",
+                            "state": "failure",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "SUBMITTED",
+                            "argument": "Status",
+                            "state": "retry",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "PICKED",
+                            "argument": "Status",
+                            "state": "retry",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "STARTED",
+                            "argument": "Status",
+                            "state": "retry",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "FINISHED",
+                            "argument": "Status",
+                            "state": "success",
+                        },
+                    ],
+                }
+            },
+        }
+        return create_waiter_with_client(
+            waiter_name, WaiterModel(waiter_config), redshift_data_client
+        )
 
 
 class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
