@@ -101,7 +101,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
-version = "8.1.2"
+version = "8.1.3"
 description = "Composable command line interface toolkit"
 category = "dev"
 optional = false
@@ -574,11 +574,11 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "rpaframework-core"
-version = "7.1.1"
+version = "8.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 pillow = ">=8.4.0,<9.0.0"
@@ -726,7 +726,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "c1caaa73468d66bdb0bdbe006a26062dc54cf5014ae53a5985a9a48e95d5a3c4"
+content-hash = "5c594964d4836c0e2229d24a2b2de3f6186e24e5cfa0eac4a911ae75192ab669"
 
 [metadata.files]
 appdirs = [
@@ -783,8 +783,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 click = [
-    {file = "click-8.1.2-py3-none-any.whl", hash = "sha256:24e1a4a9ec5bf6299411369b208c1df2188d9eb8d916302fe6bf03faed227f1e"},
-    {file = "click-8.1.2.tar.gz", hash = "sha256:479707fe14d9ec9a0757618b7a100a0ae4c4e236fac5b7f80ca68028141a1a72"},
+    {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
+    {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -1234,8 +1234,8 @@ robotframework = [
     {file = "robotframework-5.0.zip", hash = "sha256:bffecba8c43d4294936d921f0af4941079039edce88194769133719732c608bc"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-7.1.1.tar.gz", hash = "sha256:5c36b71b76ebcbdc1f11068e85a49d030fea808b5b26e01e7d5f1299eb610ddb"},
-    {file = "rpaframework_core-7.1.1-py3-none-any.whl", hash = "sha256:79809418aa1d6e6c7904c3a504345c8b971717822a8e9dad53fbbd36b716b752"},
+    {file = "rpaframework-core-8.0.0.tar.gz", hash = "sha256:75f63a3e8cf327eb4b606050826274f9d622ee2009e5351ee46aaa4b1a40510d"},
+    {file = "rpaframework_core-8.0.0-py3-none-any.whl", hash = "sha256:389bd6c35a44d9a5f0038ed75131d1472153dd572393a4c3a73c9d4665a4d84b"},
 ]
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},

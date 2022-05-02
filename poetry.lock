@@ -135,14 +135,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.44"
+version = "1.22.4"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.44,<1.25.0"
+botocore = ">=1.25.4,<1.26.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -151,7 +151,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.44"
+version = "1.25.4"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -221,7 +221,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
-version = "8.1.2"
+version = "8.1.3"
 description = "Composable command line interface toolkit"
 category = "main"
 optional = false
@@ -380,7 +380,7 @@ six = ">=1.8.0"
 
 [[package]]
 name = "google-api-core"
-version = "2.7.2"
+version = "2.7.3"
 description = "Google API client core library"
 category = "main"
 optional = false
@@ -401,7 +401,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.45.0"
+version = "2.46.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -416,7 +416,7 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.6.5"
+version = "2.6.6"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -550,7 +550,7 @@ proto-plus = ">=1.15.0"
 
 [[package]]
 name = "google-cloud-videointelligence"
-version = "2.6.1"
+version = "2.7.0"
 description = "Google Cloud Video Intelligence API client library"
 category = "main"
 optional = false
@@ -1184,11 +1184,11 @@ dev = ["black", "coverage", "docformatter", "flake8", "flake8-black", "flake8-bu
 
 [[package]]
 name = "pygments"
-version = "2.11.2"
+version = "2.12.0"
 description = "Pygments is a syntax highlighting package written in Python."
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.6"
 
 [[package]]
 name = "pylint"
@@ -1266,7 +1266,7 @@ diagrams = ["railroad-diagrams", "jinja2"]
 
 [[package]]
 name = "pypdf2"
-version = "1.27.7"
+version = "1.27.11"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
@@ -2413,12 +2413,12 @@ black = [
     {file = "black-22.3.0.tar.gz", hash = "sha256:35020b8886c022ced9282b51b5a875b6d1ab0c387b31a065b84db7c33085ca79"},
 ]
 boto3 = [
-    {file = "boto3-1.21.44-py3-none-any.whl", hash = "sha256:0789842ca7d722723d7e9fae2158aea6f304c14df08929f9c62b6a277705ff39"},
-    {file = "boto3-1.21.44.tar.gz", hash = "sha256:1300661bd4defa42d7e019d515fbfd2984170cf3f5c0bf6bc275fbd9498faf5f"},
+    {file = "boto3-1.22.4-py3-none-any.whl", hash = "sha256:13fe18ecefe342d2fe50ae7b4305d7423ec6e96bfaef19bc2f14212877a67727"},
+    {file = "boto3-1.22.4.tar.gz", hash = "sha256:71019d49562112bcf8c2e5c183f3cca263edf02785e6a2c5f98ee104927cbb44"},
 ]
 botocore = [
-    {file = "botocore-1.24.44-py3-none-any.whl", hash = "sha256:ed07772c924984e5b3c1005f7ba4600cebd4169c23307cf6e92cccadf0b5d2e7"},
-    {file = "botocore-1.24.44.tar.gz", hash = "sha256:0030a11eac972be46859263820885ba650503622c5acfe58966f482d42cc538d"},
+    {file = "botocore-1.25.4-py3-none-any.whl", hash = "sha256:0a7b56eda54af6cb210894113f59fb0e2aaf07893d839de292d9c7b07f626dde"},
+    {file = "botocore-1.25.4.tar.gz", hash = "sha256:71cf60ccb024d3c925424d28eba9ca953fc13f36a345dca177b080971ed1141a"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2493,8 +2493,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 click = [
-    {file = "click-8.1.2-py3-none-any.whl", hash = "sha256:24e1a4a9ec5bf6299411369b208c1df2188d9eb8d916302fe6bf03faed227f1e"},
-    {file = "click-8.1.2.tar.gz", hash = "sha256:479707fe14d9ec9a0757618b7a100a0ae4c4e236fac5b7f80ca68028141a1a72"},
+    {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
+    {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -2561,16 +2561,16 @@ furl = [
     {file = "furl-2.1.3.tar.gz", hash = "sha256:5a6188fe2666c484a12159c18be97a1977a71d632ef5bb867ef15f54af39cc4e"},
 ]
 google-api-core = [
-    {file = "google-api-core-2.7.2.tar.gz", hash = "sha256:65480309a7437f739e4476da037af02a3ec8263f1d1f89f72bbdc8f54fe402d2"},
-    {file = "google_api_core-2.7.2-py3-none-any.whl", hash = "sha256:8fcbe52dc129fd83dca4e638a76f22b3a11579c493e643134e50e9870b233302"},
+    {file = "google-api-core-2.7.3.tar.gz", hash = "sha256:17957f0704cbe95bd2ce25019efd2046423978594d181d4263e5dcffd2dbbc79"},
+    {file = "google_api_core-2.7.3-py3-none-any.whl", hash = "sha256:bb40d2d6412c77c367943b88d08323091d724deaea96892fff4a1ebd06f6e5be"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.45.0.tar.gz", hash = "sha256:375ce07994fdc187b25cc86788048ad30f8d55ff077d5e34cfcd6cbbea697128"},
-    {file = "google_api_python_client-2.45.0-py2.py3-none-any.whl", hash = "sha256:5d1ddc111a080675376e40d9f9e468d38a6bf1f91b88211e46340ee65aceea72"},
+    {file = "google-api-python-client-2.46.0.tar.gz", hash = "sha256:ba41ce1da337d39d76da1c5affea6e0b95bb6da74aa2adfe5a40618dd67a01fe"},
+    {file = "google_api_python_client-2.46.0-py2.py3-none-any.whl", hash = "sha256:1a7a954fdb778c77ad2a7b28c8e5f4b8761728aca89f5a017e05abd92814b6e9"},
 ]
 google-auth = [
-    {file = "google-auth-2.6.5.tar.gz", hash = "sha256:04e224f241c0566477bb35a8a93be8c635210de743bde454d49393cfb605266d"},
-    {file = "google_auth-2.6.5-py2.py3-none-any.whl", hash = "sha256:9a88ee548f6fd49467e2e443dfbfe10344e5a270629a137a3a0b3437ec6b02a6"},
+    {file = "google-auth-2.6.6.tar.gz", hash = "sha256:1ba4938e032b73deb51e59c4656a00e0939cf0b1112575099f136babb4563312"},
+    {file = "google_auth-2.6.6-py2.py3-none-any.whl", hash = "sha256:349ac49b18b01019453cc99c11c92ed772739778c92f184002b7ab3a5b7ac77d"},
 ]
 google-auth-httplib2 = [
     {file = "google-auth-httplib2-0.1.0.tar.gz", hash = "sha256:a07c39fd632becacd3f07718dfd6021bf396978f03ad3ce4321d060015cc30ac"},
@@ -2605,8 +2605,8 @@ google-cloud-translate = [
     {file = "google_cloud_translate-3.7.2-py2.py3-none-any.whl", hash = "sha256:e7cefdef56daaabc8465b53891105e003252517693085bdff9f480e1913f8e24"},
 ]
 google-cloud-videointelligence = [
-    {file = "google-cloud-videointelligence-2.6.1.tar.gz", hash = "sha256:a751d7171511b346b138daea1da865fd23ef58dda684086f25e3c53b0cd14787"},
-    {file = "google_cloud_videointelligence-2.6.1-py2.py3-none-any.whl", hash = "sha256:5be36b7a2ec648f1505c3ef763b059bcd81ead5b779b5229f3874d2fcfb201e0"},
+    {file = "google-cloud-videointelligence-2.7.0.tar.gz", hash = "sha256:ca5cd2eb7328464279259a4b04c5fa07d104f7d1306a15ae0bcac4611834d01d"},
+    {file = "google_cloud_videointelligence-2.7.0-py2.py3-none-any.whl", hash = "sha256:cab6bc1c8db51e44d5c77306b359483000a8f97506e7a2e23fa475637e3ea1eb"},
 ]
 google-cloud-vision = [
     {file = "google-cloud-vision-2.7.2.tar.gz", hash = "sha256:e0d4d6c9fdeb9ddc35cc720d94132da0499d7d25c69d4fe3121c5a6fcd3b560e"},
@@ -3277,8 +3277,8 @@ pydash = [
     {file = "pydash-5.1.0.tar.gz", hash = "sha256:1b2b050ac1bae049cd07f5920b14fabbe52638f485d9ada1eb115a9eebff6835"},
 ]
 pygments = [
-    {file = "Pygments-2.11.2-py3-none-any.whl", hash = "sha256:44238f1b60a76d78fc8ca0528ee429702aae011c265fe6a8dd8b63049ae41c65"},
-    {file = "Pygments-2.11.2.tar.gz", hash = "sha256:4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"},
+    {file = "Pygments-2.12.0-py3-none-any.whl", hash = "sha256:dc9c10fb40944260f6ed4c688ece0cd2048414940f1cea51b8b226318411c519"},
+    {file = "Pygments-2.12.0.tar.gz", hash = "sha256:5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"},
 ]
 pylint = [
     {file = "pylint-2.12.2-py3-none-any.whl", hash = "sha256:daabda3f7ed9d1c60f52d563b1b854632fd90035bcf01443e234d3dc794e3b74"},
@@ -3324,8 +3324,8 @@ pyparsing = [
     {file = "pyparsing-3.0.8.tar.gz", hash = "sha256:7bf433498c016c4314268d95df76c81b842a4cb2b276fa3312cfb1e1d85f6954"},
 ]
 pypdf2 = [
-    {file = "PyPDF2-1.27.7-py3-none-any.whl", hash = "sha256:51855f5df6f25b825f7bc8f63066819ef6c5654ac01c191ed657ee456153574b"},
-    {file = "PyPDF2-1.27.7.tar.gz", hash = "sha256:fd35f4e6bb8f050a809fec3eecb6c3603f5043584b57002f7c5b26660d6b16ce"},
+    {file = "PyPDF2-1.27.11-py3-none-any.whl", hash = "sha256:c882229e0eb49ecf57288f9774eea06aacb49d1f79aa95c306c65eb08d6e47a6"},
+    {file = "PyPDF2-1.27.11.tar.gz", hash = "sha256:7162b07462542e92674d493195c1473632c1921a2986caba059c1c92a2bda8df"},
 ]
 pyperclip = [
     {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
