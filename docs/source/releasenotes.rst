@@ -3,7 +3,7 @@ Release notes
 
 .. note::
   The support for Python version 3.6 has been **REMOVED** from the ``rpaframework[-*]``
-  packages starting with the following versions:
+  packages starting with the following versions (:pr:`469`):
 
     - ``rpaframework`` **14.0.0**
     - ``rpaframework-aws`` **2.0.0**
@@ -13,61 +13,23 @@ Release notes
     - ``rpaframework-recognition`` **3.0.0**
     - ``rpaframework-windows`` **4.0.0**
 
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 14.0.0 - xx May 2022
 --------------------
 
-- *<INCLUDE OTHER LIBRARY CHANGES HERE>*
 - Library `RPA.Email.Exchange` (:issue:`477`): Keyword ``Send Message`` supports
   sending messages with any combination of `recipients`, `cc` and/or `bcc`.
 - Robot Framework 5 support, but not restricted to (:pr:`470`):
 
-  - `TRY/EXCEPT <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#tryexcept>`_
-    (supports ``ELSE`` and ``FINALLY`` as well)
-  - `WHILE <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#while>`_
-    (use ``limit=NONE`` to make it unlimited)
-  - `Inline IF <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#inline-if>`_
-    (supports ``ELSE`` and ``ELSE IF`` as well)
-  - `BREAK and CONTINUE <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#break-and-continue>`_
-  - `RETURN <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#return>`_
-  - `Custom argument conversion <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#custom-argument-conversion>`_
-  - `Automatic type conversion info added to Libdoc outputs <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#automatic-type-conversion-info-added-to-libdoc-outputs>`_
-  - `Enhancements to xUnit compatible outputs <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#enhancements-to-xunit-compatible-outputs>`_
-  - `Variable files can be imported as modules <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#variable-files-can-be-imported-as-modules>`_
-  - `User Guide styles have been enhanced <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#user-guide-styles-have-been-enhanced>`_
-
-  .. warning::
-    Unsupported:
-
-      - Python 2 (Jython, IronPython) and 3.6 (:pr:`469`)
-      - ``Exit/Continue For Loop`` outside of loops (indirect usage)
-      - ``Run Keyword And Expect Error`` partial match at the beginning with regex
-        pattern
-      - Tidy tool (in favor to RoboTidy)
-      - `Other backwards incompatible changes <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#other-backwards-incompatible-changes>`_
-
-    Deprecated:
-
-      - ``Exit For Loop[ If]``
-      - ``Continue For Loop[ If]``
-      - ``Return From Keyword[ If]``
-      - ``Run Keyword Unless``
-      - `Deprecated features <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#deprecated-features>`_
-
-  .. note::
-    Recommendations:
-
-      - Control loop execution with ``BREAK``, ``CONTINUE``.
-      - Use the uniform ``RETURN`` instead of ``[Return]`` or ``Return From Keyword``.
-
-    Others:
-
-      - `Round half to even <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#rounding-changes>`_
-
-    If your robot starts to behave incorrectly and you still want the latest updates,
-    then pin in your *conda.yaml* ``robotframework<5.0`` under the **pip** section.
+  - Read **migration instructions** on `Taking Robot Framework 5 into use <https://robocorp.com/docs/languages-and-frameworks/robot-framework/robot-framework-5>`_
+  - TRY-EXCEPT-ELSE-FINALLY
+  - WHILE
+  - Inline IF-ELSE IF-ELSE
+  - BREAK and CONTINUE
+  - RETURN
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
