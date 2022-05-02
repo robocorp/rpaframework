@@ -16,7 +16,7 @@ python-versions = "*"
 
 [[package]]
 name = "astroid"
-version = "2.11.3"
+version = "2.11.4"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
@@ -559,7 +559,7 @@ diagrams = ["railroad-diagrams", "jinja2"]
 
 [[package]]
 name = "pypdf2"
-version = "1.27.11"
+version = "1.27.9"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
@@ -996,7 +996,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "1dacf46b0db7f0b39cd94e5f58914f5ef658564e4af6219c984ee6e961ff2dad"
+content-hash = "452d90dca70b1865cc4b2cf7193181d9428eb832e74b78b4ebba2c719cd4cec5"
 
 [metadata.files]
 alabaster = [
@@ -1008,8 +1008,8 @@ appdirs = [
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
 astroid = [
-    {file = "astroid-2.11.3-py3-none-any.whl", hash = "sha256:f1af57483cd17e963b2eddce8361e00fc593d1520fe19948488e94ff6476bd71"},
-    {file = "astroid-2.11.3.tar.gz", hash = "sha256:4e5ba10571e197785e312966ea5efb2f5783176d4c1a73fa922d474ae2be59f7"},
+    {file = "astroid-2.11.4-py3-none-any.whl", hash = "sha256:da0632b7c046d8361dfe1b1abb2e085a38624961fabe2997565a9c06c1be9d9a"},
+    {file = "astroid-2.11.4.tar.gz", hash = "sha256:561dc6015eecce7e696ff7e3b40434bc56831afeff783f0ea853e19c4f635c06"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
@@ -1533,8 +1533,8 @@ pyparsing = [
     {file = "pyparsing-3.0.8.tar.gz", hash = "sha256:7bf433498c016c4314268d95df76c81b842a4cb2b276fa3312cfb1e1d85f6954"},
 ]
 pypdf2 = [
-    {file = "PyPDF2-1.27.11-py3-none-any.whl", hash = "sha256:c882229e0eb49ecf57288f9774eea06aacb49d1f79aa95c306c65eb08d6e47a6"},
-    {file = "PyPDF2-1.27.11.tar.gz", hash = "sha256:7162b07462542e92674d493195c1473632c1921a2986caba059c1c92a2bda8df"},
+    {file = "PyPDF2-1.27.9-py3-none-any.whl", hash = "sha256:5e29ffaf2efcfb77c25206e3b8df517a18af84e64ebe1b3a93abac8d01176374"},
+    {file = "PyPDF2-1.27.9.tar.gz", hash = "sha256:5f7937fd94ba387a2a241db8858770e53091d8ffab9922512c0bf48e3f4cc615"},
 ]
 pytest = [
     {file = "pytest-6.2.5-py3-none-any.whl", hash = "sha256:7310f8d27bc79ced999e760ca304d69f6ba6c6649c0b60fb0e04a4a77cacc134"},
