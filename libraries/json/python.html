@@ -231,7 +231,6 @@
 <p>JSON is a common data interchange format inspired by a subset of
 the Javascript programming language, but these days is a de facto
 standard in modern web APIs and is language agnostic.</p>
-<p><strong>Serialization</strong></p>
 <p>The term <cite>serialization</cite> refers to the process of converting
 Robot Framework or Python types to JSON or the other way around.</p>
 <p>Basic types can be easily converted between the domains,
@@ -273,15 +272,14 @@ and the mapping is as follows:</p>
 </tr>
 </tbody>
 </table>
-<p><strong>About JSONPath</strong></p>
 <p>Reading and writing values from/to JSON serializable objects is done
 using <a class="reference external" href="http://goessner.net/articles/JsonPath/">JSONPath</a>. It’s a syntax designed to quickly and easily refer to
-specific elements in a JSON structure.</p>
+specific elements in a JSON structure. The specific flavor used in this
+library is based on <a class="reference external" href="https://pypi.org/project/jsonpath-ng/#description">jsonpath-ng</a>.</p>
 <p>Compared to Python’s normal dictionary access, JSONPath expressions can
 target multiple elements through features such as conditionals and wildcards,
 which can simplify many JSON-related operations. It’s analogous to XPath
 for XML structures.</p>
-<p><strong>Syntax example</strong></p>
 <p>For this example consider the following structure:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;clients&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
@@ -306,27 +304,30 @@ for XML structures.</p>
 </pre></div>
 </div>
 <p>In the simplest case JSONPath can replace nested access:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># First order of first client, with direct dictionary access</span>
-<span class="c">${value}=</span><span class="p">    </span><span class="c">Set variable</span><span class="p">    </span><span class="c">${json}[&quot;clients&quot;][0][&quot;orders&quot;][0]</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Nested access</span><span class="p"></span>
+<span class="p">    </span><span class="c"># First order of first client, with direct dictionary access</span>
+<span class="p">    ${</span><span class="nv">value</span><span class="p">}=    </span><span class="nf">Set variable</span><span class="p">    ${</span><span class="nv">json</span><span class="p">}[</span><span class="nv">&quot;clients&quot;</span><span class="p">][</span><span class="nv">0</span><span class="p">][</span><span class="nv">&quot;orders&quot;</span><span class="p">][</span><span class="nv">0</span><span class="p">]</span>
 
-<span class="c"># JSONPath access</span>
-<span class="c">${value}=</span><span class="p">    </span><span class="c">Get value from JSON</span><span class="p">    </span><span class="c">${json}</span><span class="p">    </span><span class="c">$.clients[0].orders[0]</span><span class="p"></span>
+<span class="p">    </span><span class="c"># JSONPath access</span>
+<span class="p">    ${</span><span class="nv">value</span><span class="p">}=    </span><span class="nf">Get value from JSON</span><span class="p">    ${</span><span class="nv">json</span><span class="p">}    </span><span class="s">$.clients[0].orders[0]</span><span class="p"></span>
 </pre></div>
 </div>
 <p>But the power comes from complicated expressions:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Find delivery addresses for all orders</span>
-<span class="c">${prices}=</span><span class="p">        </span><span class="c">Get values from JSON</span><span class="p">    </span><span class="c">$..address</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Complicated expressions</span><span class="p"></span>
+<span class="p">    </span><span class="c"># Find delivery addresses for all orders</span>
+<span class="p">    ${</span><span class="nv">prices</span><span class="p">}=        </span><span class="nf">Get values from JSON</span><span class="p">    </span><span class="s">$..address</span><span class="p"></span>
 
-<span class="c"># Find orders that cost over 100</span>
-<span class="c">${expensives}=</span><span class="p">    </span><span class="c">Get values from JSON</span><span class="p">    </span><span class="c">$..orders[?(@.price&gt;100)]</span><span class="p"></span>
+<span class="p">    </span><span class="c"># Find orders that cost over 100</span>
+<span class="p">    ${</span><span class="nv">expensives</span><span class="p">}=    </span><span class="nf">Get values from JSON</span><span class="p">    </span><span class="s">$..orders[?(@.price&gt;100)]</span><span class="p"></span>
 </pre></div>
 </div>
-<p><strong>Supported Expressions</strong></p>
 <p>The supported syntax elements are:</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 21%" />
-<col style="width: 79%" />
+<col style="width: 30%" />
+<col style="width: 70%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Element</p></th>
@@ -334,38 +335,122 @@ for XML structures.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>$</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$</span></code></p></td>
 <td><p>Root object/element</p></td>
 </tr>
-<tr class="row-odd"><td><p>&#64;</p></td>
-<td><p>Current object/element</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;</span></code></p></td>
+<td><p>Current object/element inside expressions</p></td>
 </tr>
-<tr class="row-even"><td><p>. or []</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.</span></code> or <code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 <td><p>Child operator</p></td>
 </tr>
-<tr class="row-odd"><td><p>..</p></td>
-<td><p>Recursive descent</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">..</span></code></p></td>
+<td><p>Recursive descendant operator</p></td>
 </tr>
-<tr class="row-even"><td><p>*</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">``parent``</span></code></p></td>
+<td><p>Parent operator, see <a href="#id3"><span class="problematic" id="id4">`functions`_</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">*</span></code></p></td>
 <td><p>Wilcard, any element</p></td>
 </tr>
-<tr class="row-odd"><td><p>[n]</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">,</span></code></p></td>
+<td><p>Select multiple fields</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[n]</span></code></p></td>
 <td><p>Array index</p></td>
 </tr>
-<tr class="row-even"><td><p>[a:b:c]</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[a:b:c]</span></code></p></td>
 <td><p>Array slice (start, end, step)</p></td>
 </tr>
-<tr class="row-odd"><td><p>[a,b]</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[a,b]</span></code></p></td>
 <td><p>Union of indices or names</p></td>
 </tr>
-<tr class="row-even"><td><p>?()</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[?()]</span></code></p></td>
 <td><p>Apply a filter expression</p></td>
 </tr>
-<tr class="row-odd"><td><p>()</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">()</span></code></p></td>
 <td><p>Script expression</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[\\field]</span></code></p></td>
+<td><p>Sort descending by <code class="docutils literal notranslate"><span class="pre">field</span></code>, cannot be combined with
+filters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[/field]</span></code></p></td>
+<td><p>Sort ascending by <code class="docutils literal notranslate"><span class="pre">field</span></code>, cannot be combined with
+filters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">``str()``</span></code></p></td>
+<td><p>Convert value to string, see <a href="#id5"><span class="problematic" id="id6">`functions`_</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">``sub()``</span></code></p></td>
+<td><p>Regex substitution function, see <a href="#id7"><span class="problematic" id="id8">`functions`_</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">``len``</span></code></p></td>
+<td><p>Calculate value’s length, see <a href="#id9"><span class="problematic" id="id10">`functions`_</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">``split()``</span></code></p></td>
+<td><p>String split function, see <a href="#id11"><span class="problematic" id="id12">`functions`_</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code> <code class="docutils literal notranslate"><span class="pre">-</span></code> <code class="docutils literal notranslate"><span class="pre">*</span></code> <code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
+<td><p>Arithmetic functions, see <a href="#id13"><span class="problematic" id="id14">`functions`_</span></a></p></td>
 </tr>
 </tbody>
 </table>
+<p>This library allows JSON path expressions to include certain functions
+which can provide additional benefit to users. These functions are
+generally encapsulated in backticks (<code class="docutils literal notranslate"><span class="pre">`</span></code>). Some functions require
+you to pass arguments similar to a Python function.</p>
+<p>For example, let’s say a JSON has nodes on the JSON path
+<code class="docutils literal notranslate"><span class="pre">$.books[*].genres</span></code> which are represented as strings of genres with
+commas separating each genre. So for one book, this node might have a
+value like <code class="docutils literal notranslate"><span class="pre">horror,young-adult</span></code>. You can return a list of first genre
+for each book by using the <code class="docutils literal notranslate"><span class="pre">split</span></code> function like so:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Get genres</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">genres</span><span class="p">}=  </span><span class="nf">Get values from JSON</span><span class="p">    </span><span class="s">$.books[*].genres.`split(,, 0, -1)`</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Each functions parameters are defined here:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str()</span></code></p></td>
+<td><p>No parameters, but parenthesis are required</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sub(/regex/,</span> <span class="pre">repl)</span></code></p></td>
+<td><p>The regex pattern must be provided in <em>regex</em>
+and the replacement value provided in <em>repl</em></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">len</span></code></p></td>
+<td><p>No parameters and no parenthesis</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">split(char,</span> <span class="pre">segment,</span> <span class="pre">max_split)</span></code></p></td>
+<td><p>Separator character provided as <em>char</em>, which
+index from the resulting array to be returns
+provided as <em>segment</em>, and maximum number of
+splits to perform provided as <em>max_split</em>,
+<code class="docutils literal notranslate"><span class="pre">-1</span></code> for all splits.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parent</span></code></p></td>
+<td><p>No parameters, no parenthesis</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Arithmetic Functions</strong></p>
+<p>JSON Path can be written and combined to concatenate string values
+or perform arithmetic functions on numerical values. Each JSONPath
+expression used must return the same type, and when performing
+such functions between returned lists, each list must be the same
+length. An example is included in documentation for the keyword
+`Get values from JSON`.</p>
 <p>There are a multitude of different script expressions
 in addition to the elements listed above, which can
 be seen in the <a class="reference external" href="http://goessner.net/articles/JsonPath/">aforementioned article</a>.</p>
@@ -398,11 +483,24 @@ If the target is a dict, the keys are either added or updated.</p>
 <dd class="field-even"><p>JSON serializable object of the updated JSON</p>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Change the name value for all people</span>
-<span class="c">&amp;{before}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">&amp;{person}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">      </span><span class="c">Name=John</span><span class="p"></span>
-<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Add to JSON</span><span class="p">    </span><span class="c">${before}</span><span class="p">   </span><span class="c">$.People</span><span class="p">    </span><span class="c">${person}</span><span class="p"></span>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Change the name value for all people</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">before</span><span class="p">}=    </span><span class="nf">Convert string to JSON</span><span class="p">   </span><span class="s">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">person</span><span class="p">}=    </span><span class="nf">Create dictionary</span><span class="p">      </span><span class="s">Name=John</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">after</span><span class="p">}=     </span><span class="nf">Add to JSON</span><span class="p">    ${</span><span class="nv">before</span><span class="p">}   </span><span class="s">$.People</span><span class="p">    ${</span><span class="nv">person</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JSON</span> <span class="kn">import</span> <span class="n">JSON</span>
+
+<span class="c1"># Change the name value for all people</span>
+<span class="n">js</span> <span class="o">=</span> <span class="n">JSON</span><span class="p">()</span>
+<span class="n">before</span> <span class="o">=</span> <span class="n">js</span><span class="o">.</span><span class="n">convert_string_to_json</span><span class="p">(</span><span class="s1">&#39;{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}&#39;</span><span class="p">)</span>
+<span class="n">person</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">}</span>
+<span class="n">after</span> <span class="o">=</span> <span class="n">js</span><span class="o">.</span><span class="n">add_to_json</span><span class="p">(</span><span class="n">before</span><span class="p">,</span> <span class="s2">&quot;$.People&quot;</span><span class="p">,</span> <span class="n">person</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">after</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -419,10 +517,21 @@ If the target is a dict, the keys are either added or updated.</p>
 <dd class="field-even"><p>string of the JSON serializable object</p>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${obj}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">    </span><span class="c">Key=Value</span><span class="p"></span>
-<span class="c">${json}=</span><span class="p">   </span><span class="c">Convert JSON to string</span><span class="p">    </span><span class="c">${obj}</span><span class="p"></span>
-<span class="c">Should be equal</span><span class="p">    </span><span class="c">${json}</span><span class="p">     </span><span class="c">{&quot;Key&quot;: &quot;Value&quot;}</span><span class="p"></span>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Convert to string</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">obj</span><span class="p">}=    </span><span class="nf">Create dictionary</span><span class="p">    </span><span class="s">Key=Value</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">json</span><span class="p">}=   </span><span class="nf">Convert JSON to string</span><span class="p">    ${</span><span class="nv">obj</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Should be equal</span><span class="p">    ${</span><span class="nv">json</span><span class="p">}     </span><span class="s">{&quot;Key&quot;: &quot;Value&quot;}</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JSON</span> <span class="kn">import</span> <span class="n">JSON</span>
+<span class="kn">from</span> <span class="nn">robot.libraries.BuiltIn</span> <span class="kn">import</span> <span class="n">BuiltIn</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">}</span>
+<span class="n">json</span> <span class="o">=</span> <span class="n">JSON</span><span class="p">()</span><span class="o">.</span><span class="n">convert_json_to_string</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="n">BuiltIn</span><span class="p">()</span><span class="o">.</span><span class="n">should_be_equal</span><span class="p">(</span><span class="n">json</span><span class="p">,</span> <span class="s1">&#39;{&quot;Key&quot;: &quot;Value&quot;}&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -439,10 +548,21 @@ If the target is a dict, the keys are either added or updated.</p>
 <dd class="field-even"><p>JSON serializable object of the string</p>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${json}=</span><span class="p">    </span><span class="c">Set variable</span><span class="p">    </span><span class="c">{&quot;Key&quot;: &quot;Value&quot;}</span><span class="p"></span>
-<span class="c">&amp;{obj}=</span><span class="p">     </span><span class="c">Convert string to JSON</span><span class="p">    </span><span class="c">${json}</span><span class="p"></span>
-<span class="c">Should be equal</span><span class="p">    </span><span class="c">${obj.Key}</span><span class="p">    </span><span class="c">Value</span><span class="p"></span>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Convert to json</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">json</span><span class="p">}=    </span><span class="nf">Set variable</span><span class="p">    </span><span class="s">{&quot;Key&quot;: &quot;Value&quot;}</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">obj</span><span class="p">}=     </span><span class="nf">Convert string to JSON</span><span class="p">    ${</span><span class="nv">json</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Should be equal</span><span class="p">    ${</span><span class="nv">obj.Key</span><span class="p">}    </span><span class="s">Value</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JSON</span> <span class="kn">import</span> <span class="n">JSON</span>
+<span class="kn">from</span> <span class="nn">robot.libraries.BuiltIn</span> <span class="kn">import</span> <span class="n">BuiltIn</span>
+
+<span class="n">json</span> <span class="o">=</span> <span class="s1">&#39;{&quot;Key&quot;: &quot;Value&quot;}&#39;</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">JSON</span><span class="p">()</span><span class="o">.</span><span class="n">convert_string_to_json</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+<span class="n">BuiltIn</span><span class="p">()</span><span class="o">.</span><span class="n">should_be_equal</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;Key&quot;</span><span class="p">],</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -464,9 +584,18 @@ Will delete all values that match the expression.</p>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Delete all people</span>
-<span class="c">&amp;{before}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Delete from JSON</span><span class="p">    </span><span class="c">${before}</span><span class="p">   </span><span class="c">$.People[*]</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Delete all people</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">before</span><span class="p">}=    </span><span class="nf">Convert string to JSON</span><span class="p">   </span><span class="s">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">after</span><span class="p">}=     </span><span class="nf">Delete from JSON</span><span class="p">    ${</span><span class="nv">before</span><span class="p">}   </span><span class="s">$.People[*]</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JSON</span> <span class="kn">import</span> <span class="n">JSON</span>
+
+<span class="c1"># Delete all people</span>
+<span class="n">before</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;People&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane&quot;</span><span class="p">}]}</span>
+<span class="n">after</span> <span class="o">=</span> <span class="n">JSON</span><span class="p">()</span><span class="o">.</span><span class="n">delete_from_json</span><span class="p">(</span><span class="n">before</span><span class="p">,</span> <span class="s2">&quot;$.People[*]&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">after</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -492,10 +621,61 @@ were no matches.</p>
 <dd class="field-odd"><p><strong>ValueError</strong> – if more than one match</p>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Get the name value for the first person</span>
-<span class="c">&amp;{people}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">${first}=</span><span class="p">     </span><span class="c">Get value from JSON</span><span class="p">      </span><span class="c">${people}</span><span class="p">   </span><span class="c">$.People[0].Name</span><span class="p"></span>
+<p>Short Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Get the name value for the first person</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">people</span><span class="p">}=    </span><span class="nf">Convert string to JSON</span><span class="p">   </span><span class="s">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">first</span><span class="p">}=     </span><span class="nf">Get value from JSON</span><span class="p">      ${</span><span class="nv">people</span><span class="p">}   </span><span class="s">$.People[0].Name</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Short Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JSON</span> <span class="kn">import</span> <span class="n">JSON</span>
+
+<span class="c1"># Get the name value for the second person.</span>
+<span class="n">people</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;People&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane&quot;</span><span class="p">}]}</span>
+<span class="n">second</span> <span class="o">=</span> <span class="n">JSON</span><span class="p">()</span><span class="o">.</span><span class="n">get_value_from_json</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="s2">&quot;$.People[1].Name&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">second</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Extended Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.JSON</span><span class="p"></span>
+<span class="kn">Suite Setup</span><span class="p">     </span><span class="nf">Ingest JSON</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">JSON_STRING</span><span class="p">}      </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                   </span><span class="s">&quot;clients&quot;: [</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;name&quot;: &quot;Johnny Example&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;email&quot;: &quot;john@example.com&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;orders&quot;: [</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 103.20, &quot;id&quot;:&quot;guid-001&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 98.99, &quot;id&quot;:&quot;guid-002&quot;}</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">},</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;name&quot;: &quot;Jane Example&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;email&quot;: &quot;jane@example.com&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;orders&quot;: [</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Waypath 321&quot;, &quot;state&quot;: &quot;WA&quot;, &quot;price&quot;: 22.00, &quot;id&quot;:&quot;guid-003&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 2330.01, &quot;id&quot;:&quot;guid-004&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Waypath 321&quot;, &quot;state&quot;: &quot;WA&quot;, &quot;price&quot;: 152.12, &quot;id&quot;:&quot;guid-005&quot;}</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">}</span><span class="p"></span>
+<span class="p">...                   </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                 </span><span class="s">}</span><span class="p"></span>
+<span class="p">${</span><span class="nv">ID</span><span class="p">}               </span><span class="s">guid-003</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Get email for specific order id</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">email</span><span class="p">}=    </span><span class="nf">Get value from json</span><span class="p">    ${</span><span class="nv">JSON_DOC</span><span class="p">}    </span><span class="s">$.clients[?(@..id==&quot;</span><span class="p">${</span><span class="nv">ID</span><span class="p">}</span><span class="s">&quot;)].email</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">\nOUTPUT IS\n </span><span class="p">${</span><span class="nv">email</span><span class="p">}    </span><span class="s">console=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Should be equal as strings</span><span class="p">    ${</span><span class="nv">email</span><span class="p">}    </span><span class="s">jane@example.com</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Ingest JSON</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">doc</span><span class="p">}=    </span><span class="nf">Convert string to json</span><span class="p">    ${</span><span class="nv">JSON_STRING</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Set suite variable</span><span class="p">    ${</span><span class="nv">JSON_DOC</span><span class="p">}    ${</span><span class="nv">doc</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -515,10 +695,85 @@ were no matches.</p>
 <dd class="field-even"><p>list of values that match</p>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Get all the names for all people</span>
-<span class="c">&amp;{people}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">@{names}=</span><span class="p">     </span><span class="c">Get values from JSON</span><span class="p">     </span><span class="c">${people}</span><span class="p">   </span><span class="c">$.People[*].Name</span><span class="p"></span>
+<p>Short Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Get all the names for all people</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">people</span><span class="p">}=    </span><span class="nf">Convert string to JSON</span><span class="p">   </span><span class="s">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">names</span><span class="p">}=     </span><span class="nf">Get values from JSON</span><span class="p">     ${</span><span class="nv">people</span><span class="p">}   </span><span class="s">$.People[*].Name</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Short Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JSON</span> <span class="kn">import</span> <span class="n">JSON</span>
+
+<span class="c1"># Get all the names for all people</span>
+<span class="n">people</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;People&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane&quot;</span><span class="p">}]}</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">JSON</span><span class="p">()</span><span class="o">.</span><span class="n">get_values_from_json</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="s2">&quot;$.People[*].Name&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">second</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Extended Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.JSON</span><span class="p"></span>
+<span class="kn">Suite Setup</span><span class="p">     </span><span class="nf">Ingest JSON</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">JSON_STRING</span><span class="p">}      </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                   </span><span class="s">&quot;clients&quot;: [</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;name&quot;: &quot;Johnny Example&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;email&quot;: &quot;john@example.com&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;orders&quot;: [</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 103.20, &quot;id&quot;:&quot;guid-001&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 98.99, &quot;id&quot;:&quot;guid-002&quot;}</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">},</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;name&quot;: &quot;Jane Example&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;email&quot;: &quot;jane@example.com&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;orders&quot;: [</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Waypath 321&quot;, &quot;state&quot;: &quot;WA&quot;, &quot;price&quot;: 22.00, &quot;id&quot;:&quot;guid-003&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 2330.01, &quot;id&quot;:&quot;guid-004&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Waypath 321&quot;, &quot;state&quot;: &quot;WA&quot;, &quot;price&quot;: 152.12, &quot;id&quot;:&quot;guid-005&quot;}</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">}</span><span class="p"></span>
+<span class="p">...                   </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                 </span><span class="s">}</span><span class="p"></span>
+<span class="p">${</span><span class="nv">ID</span><span class="p">}               </span><span class="s">guid-003</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Get All Prices and Order Ids</span><span class="p"></span>
+<span class="p">    </span><span class="c"># Arithmetic operations only work when lists are of equal lengths and types.</span>
+<span class="p">    ${</span><span class="nv">prices</span><span class="p">}=    </span><span class="nf">Get values from json</span><span class="p"></span>
+<span class="p">    ...    ${</span><span class="nv">JSON_DOC</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">$.clients[*].orders[*].id + &quot; has price &quot; + $.clients[*].orders[*].price.`str()`</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">\nOUTPUT IS\n </span><span class="p">${</span><span class="nv">prices</span><span class="p">}    </span><span class="s">console=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Should be equal as strings</span><span class="p">    ${</span><span class="nv">prices</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">[&#39;guid-001 has price 103.2&#39;, &#39;guid-002 has price 98.99&#39;, &#39;guid-003 has price 22.0&#39;, &#39;guid-004 has price 2330.01&#39;, &#39;guid-005 has price 152.12&#39;]</span><span class="p"></span>
+
+<span class="gu">Find Only Valid Emails With Regex</span><span class="p"></span>
+<span class="p">    </span><span class="c"># The regex used in this example is simplistic and</span>
+<span class="p">    </span><span class="c"># will not work with all email addresses</span>
+<span class="p">    ${</span><span class="nv">emails</span><span class="p">}=    </span><span class="nf">Get values from json</span><span class="p"></span>
+<span class="p">    ...    ${</span><span class="nv">JSON_DOC</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">$.clients[?(@.email =~ &quot;[a-zA-Z]+@[a-zA-Z]+\.[a-zA-Z]+&quot;)].email</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">\nOUTPUT IS\n </span><span class="p">${</span><span class="nv">emails</span><span class="p">}    </span><span class="s">console=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Should be equal as strings</span><span class="p">    ${</span><span class="nv">emails</span><span class="p">}    </span><span class="s">[&#39;john@example.com&#39;, &#39;jane@example.com&#39;]</span><span class="p"></span>
+
+<span class="gu">Find Orders From Texas Over 100</span><span class="p"></span>
+<span class="p">    </span><span class="c"># The regex used in this example is simplistic and</span>
+<span class="p">    </span><span class="c"># will not work with all email addresses</span>
+<span class="p">    ${</span><span class="nv">orders</span><span class="p">}=    </span><span class="nf">Get values from json</span><span class="p"></span>
+<span class="p">    ...    ${</span><span class="nv">JSON_DOC</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">$.clients[*].orders[?(@.price &gt; 100 &amp; @.state == &quot;TX&quot;)]</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">\nOUTPUT IS\n </span><span class="p">${</span><span class="nv">orders</span><span class="p">}    </span><span class="s">console=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Should be equal as strings</span><span class="p">    ${</span><span class="nv">orders</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">[{&#39;address&#39;: &#39;Streetroad 123&#39;, &#39;state&#39;: &#39;TX&#39;, &#39;price&#39;: 103.2, &#39;id&#39;: &#39;guid-001&#39;}, {&#39;address&#39;: &#39;Streetroad 123&#39;, &#39;state&#39;: &#39;TX&#39;, &#39;price&#39;: 2330.01, &#39;id&#39;: &#39;guid-004&#39;}]</span><span class="p"></span>
+
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Ingest JSON</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">doc</span><span class="p">}=    </span><span class="nf">Convert string to json</span><span class="p">    ${</span><span class="nv">JSON_STRING</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Set suite variable</span><span class="p">    ${</span><span class="nv">JSON_DOC</span><span class="p">}    ${</span><span class="nv">doc</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -541,8 +796,10 @@ a list, or a scalar value.</p>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{auth}=</span><span class="p">    </span><span class="c">Load JSON from file</span><span class="p">    </span><span class="c">auth.json</span><span class="p"></span>
-<span class="c">Log</span><span class="p">   </span><span class="c">Current auth token: ${auth.token}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Load json</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">auth</span><span class="p">}=    </span><span class="nf">Load JSON from file</span><span class="p">    </span><span class="s">auth.json</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">   </span><span class="s">Current auth token: </span><span class="p">${</span><span class="nv">auth.token</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -562,14 +819,23 @@ a JSON value into a file.</p>
 </ul>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Save dictionary to file</span>
-<span class="c">${john}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">    </span><span class="c">name=John</span><span class="p">    </span><span class="c">mail=john@example.com</span><span class="p"></span>
-<span class="c">Save JSON to file</span><span class="p">    </span><span class="c">${john}</span><span class="p">    </span><span class="c">john.json</span><span class="p"></span>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Save dictionary to file</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">john</span><span class="p">}=    </span><span class="nf">Create dictionary</span><span class="p">    </span><span class="s">name=John</span><span class="p">    </span><span class="s">mail=john@example.com</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save JSON to file</span><span class="p">    ${</span><span class="nv">john</span><span class="p">}    </span><span class="s">john.json</span><span class="p"></span>
 
-<span class="c"># Save string to file</span>
-<span class="c">${mark}=</span><span class="p">    </span><span class="c">Set variable</span><span class="p">    </span><span class="c">{&quot;name&quot;: &quot;Mark&quot;, &quot;mail&quot;: &quot;mark@example.com&quot;}</span><span class="p"></span>
-<span class="c">Save JSON to file</span><span class="p">    </span><span class="c">${mark}</span><span class="p">    </span><span class="c">mark.json</span><span class="p"></span>
+<span class="gu">Save string to file</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">mark</span><span class="p">}=    </span><span class="nf">Set variable</span><span class="p">    </span><span class="s">{&quot;name&quot;: &quot;Mark&quot;, &quot;mail&quot;: &quot;mark@example.com&quot;}</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save JSON to file</span><span class="p">    ${</span><span class="nv">mark</span><span class="p">}    </span><span class="s">mark.json</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JSON</span> <span class="kn">import</span> <span class="n">JSON</span>
+
+<span class="c1"># Save dictionary to file.</span>
+<span class="n">john</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;mail&quot;</span><span class="p">:</span> <span class="s2">&quot;john@example.com&quot;</span><span class="p">}</span>
+<span class="n">JSON</span><span class="p">()</span><span class="o">.</span><span class="n">save_json_to_file</span><span class="p">(</span><span class="n">john</span><span class="p">,</span> <span class="s2">&quot;john.json&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -591,10 +857,79 @@ Will change all values that match the expression.</p>
 <dd class="field-even"><p>JSON serializable object with updated results</p>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Change the name key for all people</span>
-<span class="c">&amp;{before}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Update value to JSON</span><span class="p">     </span><span class="c">${before}</span><span class="p">   </span><span class="c">$.People[*].Name</span><span class="p">    </span><span class="c">JohnMalkovich</span><span class="p"></span>
+<p>Short Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<span class="gu">Change the name key for all people</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">before</span><span class="p">}=    </span><span class="nf">Convert string to JSON</span><span class="p">   </span><span class="s">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">after</span><span class="p">}=     </span><span class="nf">Update value to JSON</span><span class="p">     ${</span><span class="nv">before</span><span class="p">}   </span><span class="s">$.People[*].Name</span><span class="p">    </span><span class="s">JohnMalkovich</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JSON</span> <span class="kn">import</span> <span class="n">JSON</span>
+
+<span class="c1"># Change the name key for all people</span>
+<span class="n">before</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;People&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane&quot;</span><span class="p">}]}</span>
+<span class="n">after</span> <span class="o">=</span> <span class="n">JSON</span><span class="p">()</span><span class="o">.</span><span class="n">update_value_to_json</span><span class="p">(</span><span class="n">before</span><span class="p">,</span> <span class="s2">&quot;$.People[*].Name&quot;</span><span class="p">,</span><span class="s2">&quot;JohnMalkovich&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">after</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Extended Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.JSON</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">Collections</span><span class="p"></span>
+<span class="kn">Suite Setup</span><span class="p">     </span><span class="nf">Ingest JSON</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">JSON_STRING</span><span class="p">}      </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                   </span><span class="s">&quot;clients&quot;: [</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;name&quot;: &quot;Johnny Example&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;email&quot;: &quot;john@example.com&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;id&quot;: &quot;user-001&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;orders&quot;: [</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 103.20, &quot;id&quot;:&quot;guid-001&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 98.99, &quot;id&quot;:&quot;guid-002&quot;}</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">},</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">{</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;name&quot;: &quot;Jane Example&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;email&quot;: &quot;jane@example.com&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;id&quot;: &quot;user-002&quot;,</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">&quot;orders&quot;: [</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Waypath 321&quot;, &quot;state&quot;: &quot;WA&quot;, &quot;price&quot;: 22.00, &quot;id&quot;:&quot;guid-003&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Streetroad 123&quot;, &quot;state&quot;: &quot;TX&quot;, &quot;price&quot;: 2330.01, &quot;id&quot;:&quot;guid-004&quot;},</span><span class="p"></span>
+<span class="p">...                         </span><span class="s">{&quot;address&quot;: &quot;Waypath 321&quot;, &quot;state&quot;: &quot;WA&quot;, &quot;price&quot;: 152.12, &quot;id&quot;:&quot;guid-005&quot;}</span><span class="p"></span>
+<span class="p">...                       </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                     </span><span class="s">}</span><span class="p"></span>
+<span class="p">...                   </span><span class="s">]</span><span class="p"></span>
+<span class="p">...                 </span><span class="s">}</span><span class="p"></span>
+<span class="p">${</span><span class="nv">ID</span><span class="p">}               </span><span class="s">guid-003</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Update user email</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">updated_doc</span><span class="p">}=    </span><span class="nf">Update value to json</span><span class="p"></span>
+<span class="p">    ...    ${</span><span class="nv">JSON_DOC</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">$.clients[?(@.id==&quot;user-001&quot;)].email</span><span class="p"></span>
+<span class="p">    ...    </span><span class="s">johnny@example.com</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">\nNEW JSON IS\n </span><span class="p">${</span><span class="nv">updated_doc</span><span class="p">}    </span><span class="s">console=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">new_email</span><span class="p">}=    </span><span class="nf">Get value from json</span><span class="p">    ${</span><span class="nv">updated_doc</span><span class="p">}    </span><span class="s">$.clients[?(@.id==&quot;user-001&quot;)].email</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Should be equal as strings</span><span class="p">    ${</span><span class="nv">new_email</span><span class="p">}    </span><span class="s">johnny@example.com</span><span class="p"></span>
+
+<span class="gu">Add additional charge to all prices in WA</span><span class="p"></span>
+<span class="p">    </span><span class="c"># This example also shows how the update keyword changes the original JSON doc in memory.</span>
+<span class="p">    ${</span><span class="nv">id_price</span><span class="p">}=    </span><span class="nf">Get values from json</span><span class="p"></span>
+<span class="p">    ...    ${</span><span class="nv">JSON_DOC</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">$.clients[*].orders[?(@.state==&quot;WA&quot;)].id,price</span><span class="p"></span>
+<span class="p">    FOR    ${</span><span class="nv">order_id</span><span class="p">}    ${</span><span class="nv">price</span><span class="p">}    IN    @{</span><span class="nv">id_price</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Update value to json</span><span class="p">    ${</span><span class="nv">JSON_DOC</span><span class="p">}    </span><span class="s">$.clients[*].orders[?(@.id==&quot;</span><span class="p">${</span><span class="nv">order_id</span><span class="p">}</span><span class="s">&quot;)].price</span><span class="p">    ${</span><span class="nv">{</span><span class="p">${</span><span class="nv">price</span><span class="p">}</span><span class="nv"> * 1.06</span><span class="p">}</span><span class="s">}</span><span class="p"></span>
+<span class="p">    END</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">\nNEW JSON IS\n </span><span class="p">${</span><span class="nv">JSON_DOC</span><span class="p">}    </span><span class="s">console=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">one_price</span><span class="p">}=    </span><span class="nf">Get value from json</span><span class="p">    ${</span><span class="nv">JSON_DOC</span><span class="p">}    </span><span class="s">$..orders[?(@.id==</span><span class="p">${</span><span class="nv">ID</span><span class="p">}</span><span class="s">)].price</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Should be equal as numbers</span><span class="p">    ${</span><span class="nv">one_price</span><span class="p">}    </span><span class="s">23.32</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Ingest JSON</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">doc</span><span class="p">}=    </span><span class="nf">Convert string to json</span><span class="p">    ${</span><span class="nv">JSON_STRING</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Set suite variable</span><span class="p">    ${</span><span class="nv">JSON_DOC</span><span class="p">}    ${</span><span class="nv">doc</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>

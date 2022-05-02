@@ -61,6 +61,15 @@ RPA.Desktop.keywords.screen:
 
    "180", "Draw a circle instead?"
 
+RPA.Email.Exchange:
+===================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "356", "The exchangelib does not seem to provide any straightforward way of"
+
 RPA.Email.ImapSmtp:
 ===================
 
@@ -91,7 +100,7 @@ RPA.JSON:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "133", "Add more logging about affected rows, at least on debug level"
+   "203", "Add more logging about affected rows, at least on debug level"
 
 RPA.JavaAccessBridge:
 =====================

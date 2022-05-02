@@ -382,7 +382,7 @@ only against <cite>new</cite> not <cite>new year</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: str</em>, <em class="sig-param">autodiscover: bool = True</em>, <em class="sig-param">access_type: str = 'DELEGATE'</em>, <em class="sig-param">server: str = None</em>, <em class="sig-param">primary_smtp_address: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.Exchange.Exchange.authorize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: str</em>, <em class="sig-param">autodiscover: Optional[bool] = True</em>, <em class="sig-param">access_type: Optional[str] = 'DELEGATE'</em>, <em class="sig-param">server: Optional[str] = None</em>, <em class="sig-param">primary_smtp_address: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.Exchange.Exchange.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to Exchange account</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -401,7 +401,7 @@ set to be different than username</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.create_folder">
-<code class="sig-name descname">create_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">parent_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.create_folder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.create_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create email folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -418,7 +418,7 @@ set to be different than username</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.delete_folder">
-<code class="sig-name descname">delete_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">parent_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.delete_folder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.delete_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete email folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -435,7 +435,7 @@ set to be different than username</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.empty_folder">
-<code class="sig-name descname">empty_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">parent_folder: str = None</em>, <em class="sig-param">delete_sub_folders: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.empty_folder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">empty_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em>, <em class="sig-param">delete_sub_folders: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.empty_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Empty email folder of all items</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -453,7 +453,7 @@ set to be different than username</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.list_messages">
-<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">criterion: str = None</em>, <em class="sig-param">contains: bool = False</em>, <em class="sig-param">count: int = 100</em>, <em class="sig-param">save_dir: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">folder_name: Optional[str] = None</em>, <em class="sig-param">criterion: Optional[str] = None</em>, <em class="sig-param">contains: Optional[bool] = False</em>, <em class="sig-param">count: Optional[int] = 100</em>, <em class="sig-param">save_dir: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>List messages in the account inbox. Order by descending
 received time.</p>
 <dl class="field-list simple">
@@ -473,7 +473,7 @@ default None (attachments are not saved)</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.list_unread_messages">
-<code class="sig-name descname">list_unread_messages</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">criterion: str = None</em>, <em class="sig-param">contains: bool = False</em>, <em class="sig-param">count: int = 100</em>, <em class="sig-param">save_dir: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_unread_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_unread_messages</code><span class="sig-paren">(</span><em class="sig-param">folder_name: Optional[str] = None</em>, <em class="sig-param">criterion: Optional[str] = None</em>, <em class="sig-param">contains: Optional[bool] = False</em>, <em class="sig-param">count: Optional[int] = 100</em>, <em class="sig-param">save_dir: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_unread_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>List unread messages in the account inbox. Order by descending
 received time.</p>
 <dl class="field-list simple">
@@ -493,7 +493,7 @@ default None (attachments are not saved)</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.move_message">
-<code class="sig-name descname">move_message</code><span class="sig-paren">(</span><em class="sig-param">msg: dict</em>, <em class="sig-param">target: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.move_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">move_message</code><span class="sig-paren">(</span><em class="sig-param">msg: Optional[dict], target: Optional[str]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.move_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move a message into target folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -521,7 +521,7 @@ default None (attachments are not saved)</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.move_messages">
-<code class="sig-name descname">move_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">source: str = None</em>, <em class="sig-param">target: str = None</em>, <em class="sig-param">contains: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.move_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">move_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: Optional[str] = ''</em>, <em class="sig-param">source: Optional[str] = None</em>, <em class="sig-param">target: Optional[str] = None</em>, <em class="sig-param">contains: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.move_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move message(s) from source folder to target folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -547,7 +547,7 @@ and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.rename_folder">
-<code class="sig-name descname">rename_folder</code><span class="sig-paren">(</span><em class="sig-param">oldname: str = None</em>, <em class="sig-param">newname: str = None</em>, <em class="sig-param">parent_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.rename_folder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rename_folder</code><span class="sig-paren">(</span><em class="sig-param">oldname: Optional[str] = None</em>, <em class="sig-param">newname: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.rename_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename email folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -565,7 +565,7 @@ and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.save_attachments">
-<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, str], save_dir: str = None, attachments_from_emls: bool = False</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.save_attachments" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, str], save_dir: Optional[str] = None, attachments_from_emls: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.save_attachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save attachments in message into given directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -598,7 +598,7 @@ save attachments from that EML file, default False</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – dictionary containing message details</p></li>
-<li><p><strong>filename</strong> – </p></li>
+<li><p><strong>filename</strong> – name of the file to save message into</p></li>
 </ul>
 </dd>
 </dl>
@@ -606,19 +606,19 @@ save attachments from that EML file, default False</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: str</em>, <em class="sig-param">subject: str = ''</em>, <em class="sig-param">body: str = ''</em>, <em class="sig-param">attachments: str = None</em>, <em class="sig-param">html: bool = False</em>, <em class="sig-param">images: str = None</em>, <em class="sig-param">cc: str = None</em>, <em class="sig-param">bcc: str = None</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: Union[List[str], str, None] = None, subject: Optional[str] = '', body: Optional[str] = '', attachments: Union[List[str], str, None] = None, html: Optional[bool] = False, images: Union[List[str], str, None] = None, cc: Union[List[str], str, None] = None, bcc: Union[List[str], str, None] = None, save: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.Exchange.Exchange.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keyword for sending message through connected Exchange account.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>recipients</strong> – list of email addresses, defaults to []</p></li>
+<li><p><strong>recipients</strong> – list of email addresses</p></li>
 <li><p><strong>subject</strong> – message subject, defaults to “”</p></li>
 <li><p><strong>body</strong> – message body, defaults to “”</p></li>
-<li><p><strong>attachments</strong> – list of filepaths to attach, defaults to []</p></li>
+<li><p><strong>attachments</strong> – list of filepaths to attach, defaults to <cite>None</cite></p></li>
 <li><p><strong>html</strong> – if message content is in HTML, default <cite>False</cite></p></li>
-<li><p><strong>images</strong> – list of filepaths for inline use, defaults to []</p></li>
-<li><p><strong>cc</strong> – list of email addresses, defaults to []</p></li>
-<li><p><strong>bcc</strong> – list of email addresses, defaults to []</p></li>
+<li><p><strong>images</strong> – list of filepaths for inline use, defaults to <cite>None</cite></p></li>
+<li><p><strong>cc</strong> – list of email addresses</p></li>
+<li><p><strong>bcc</strong> – list of email addresses</p></li>
 <li><p><strong>save</strong> – is sent message saved to Sent messages folder or not,
 defaults to False</p></li>
 </ul>
@@ -626,12 +626,12 @@ defaults to False</p></li>
 </dl>
 <p>Email addresses can be prefixed with <code class="docutils literal notranslate"><span class="pre">ex:</span></code> to indicate an Exchange
 account address.</p>
-<p>Recipients is a <cite>required</cite> parameter.</p>
+<p>At least one target needs to exist for <cite>recipients</cite>, <cite>cc</cite> or <cite>bcc</cite>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.wait_for_message">
-<code class="sig-name descname">wait_for_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">timeout: float = 5.0</em>, <em class="sig-param">interval: float = 1.0</em>, <em class="sig-param">contains: bool = False</em>, <em class="sig-param">save_dir: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.Exchange.Exchange.wait_for_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_for_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: Optional[str] = ''</em>, <em class="sig-param">timeout: Optional[float] = 5.0</em>, <em class="sig-param">interval: Optional[float] = 1.0</em>, <em class="sig-param">contains: Optional[bool] = False</em>, <em class="sig-param">save_dir: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.Exchange.Exchange.wait_for_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait for email matching <cite>criterion</cite> to arrive into INBOX.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -650,6 +650,25 @@ default None (attachments are not saved)</p></li>
 <dd class="field-even"><p>list of messages</p>
 </dd>
 </dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Email.Exchange.NoRecipientsError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">NoRecipientsError</code><a class="headerlink" href="#RPA.Email.Exchange.NoRecipientsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>Raised when email to be sent does not have any recipients, cc or bcc addresses.</p>
+<dl class="attribute">
+<dt id="RPA.Email.Exchange.NoRecipientsError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Email.Exchange.NoRecipientsError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.NoRecipientsError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.NoRecipientsError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 </dd></dl>
