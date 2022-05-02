@@ -1,8 +1,36 @@
 Release notes
 =============
 
+.. note::
+  The support for Python version 3.6 has been **REMOVED** from the ``rpaframework[-*]``
+  packages starting with the following versions (:pr:`469`):
+
+    - ``rpaframework`` **14.0.0**
+    - ``rpaframework-aws`` **2.0.0**
+    - ``rpaframework-dialogs`` **2.0.0**
+    - ``rpaframework-google`` **4.0.0**
+    - ``rpaframework-pdf`` **3.0.0**
+    - ``rpaframework-recognition`` **3.0.0**
+    - ``rpaframework-windows`` **4.0.0**
+
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14.0.0 - xx May 2022
+--------------------
+
+- Robot Framework 5 support, but not restricted to (:pr:`470`):
+
+  - Read **migration instructions** on `Taking Robot Framework 5 into use <https://robocorp.com/docs/languages-and-frameworks/robot-framework/robot-framework-5>`_
+  - TRY-EXCEPT-ELSE-FINALLY
+  - WHILE
+  - Inline IF-ELSE IF-ELSE
+  - BREAK and CONTINUE
+  - RETURN
+
+- Library `RPA.Email.Exchange` (:issue:`477`): Keyword ``Send Message`` supports
+  sending messages with any combination of `recipients`, `cc` and/or `bcc`.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
@@ -17,7 +45,7 @@ Release notes
 13.3.0 - 14 Apr 2022
 --------------------
 
-- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package
+- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package.
 - Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
 
   - Keyword ``Get Elements`` returns all similar elements matching locator. (:pr:`471`)
