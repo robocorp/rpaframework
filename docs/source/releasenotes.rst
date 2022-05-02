@@ -17,7 +17,11 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-14.0.0 - xx May 2022
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14.0.0 - 02 May 2022
 --------------------
 
 - Robot Framework 5 support, but not restricted to (:pr:`470`):
@@ -29,12 +33,8 @@ Release notes
   - BREAK and CONTINUE
   - RETURN
 
-- Library `RPA.Email.Exchange` (:issue:`477`): Keyword ``Send Message`` supports
+- Library **RPA.Email.Exchange** (:issue:`477`): Keyword ``Send Message`` supports
   sending messages with any combination of `recipients`, `cc` and/or `bcc`.
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 13.3.1 - 15 Apr 2022
 --------------------

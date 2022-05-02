@@ -1080,7 +1080,7 @@ diagrams = ["railroad-diagrams", "jinja2"]
 
 [[package]]
 name = "pypdf2"
-version = "1.27.11"
+version = "1.27.9"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
@@ -1393,11 +1393,11 @@ pywebview = {version = "3.6.3", markers = "sys_platform == \"linux\""}
 
 [[package]]
 name = "robotframework"
-version = "4.1.3"
+version = "5.0"
 description = "Generic automation framework for acceptance testing and robotic process automation (RPA)"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 
 [[package]]
 name = "robotframework-assertion-engine"
@@ -1505,26 +1505,26 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-aws"
-version = "1.0.3"
+version = "2.0.0"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = true
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 amazon-textract-response-parser = ">=0.1.1,<0.2.0"
 boto3 = ">=1.13.4,<2.0.0"
-robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
+robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=7.0.0,<8.0.0"
+rpaframework-core = ">=8.0.0,<9.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "7.1.1"
+version = "8.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 pillow = ">=8.4.0,<9.0.0"
@@ -1536,55 +1536,55 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "1.1.1"
+version = "2.0.0"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 robocorp-dialog = ">=0.5.3,<0.6.0"
-robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
-rpaframework-core = ">=7.0.0,<8.0.0"
+robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
+rpaframework-core = ">=8.0.0,<9.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "2.0.1"
+version = "3.0.0"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 fpdf2 = ">=2.5.2,<3.0.0"
 "pdfminer.six" = "20201018"
-pypdf2 = ">=1.27.4,<2.0.0"
-robotframework = ">=3.2.2,<5.0"
+pypdf2 = ">=1.27.4,<1.27.10"
+robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=7.0.0,<8.0.0"
+rpaframework-core = ">=8.0.0,<9.0.0"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "2.0.0"
+version = "3.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = true
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 numpy = ">=1.19.3,<2.0.0"
 opencv-python-headless = ">=4.5.2,<5.0.0"
 pillow = ">=8.4.0,<9.0.0"
 pytesseract = ">=0.3.6,<0.4.0"
-rpaframework-core = ">=7.0.0,<8.0.0"
+rpaframework-core = ">=8.0.0,<9.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "3.1.1"
+version = "4.0.0"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 comtypes = {version = "1.1.11", markers = "sys_platform == \"win32\""}
@@ -1593,9 +1593,9 @@ pillow = ">=8.4.0,<9.0.0"
 psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
 pynput-robocorp-fork = ">=4.0.0,<5.0.0"
 pywin32 = {version = ">=300,<304", markers = "python_full_version < \"3.7.6\" and sys_platform == \"win32\" or python_full_version > \"3.7.6\" and python_full_version < \"3.8.1\" and sys_platform == \"win32\" or python_full_version > \"3.8.1\" and sys_platform == \"win32\""}
-robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
+robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=7.1.1,<8.0.0"
+rpaframework-core = ">=8.0.0,<9.0.0"
 uiautomation = ">=2.0.15,<3.0.0"
 
 [[package]]
@@ -2082,7 +2082,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "43cc94bde34d180572e02f3559b9d9c1422d3b544cd2fe7aab95e3fdda2c4128"
+content-hash = "43e7c2add890bd59a6a746d1ca89b3a1c3eac3c56d97873331c969e01ac00b77"
 
 [metadata.files]
 alabaster = [
@@ -3000,8 +3000,8 @@ pyparsing = [
     {file = "pyparsing-3.0.8.tar.gz", hash = "sha256:7bf433498c016c4314268d95df76c81b842a4cb2b276fa3312cfb1e1d85f6954"},
 ]
 pypdf2 = [
-    {file = "PyPDF2-1.27.11-py3-none-any.whl", hash = "sha256:c882229e0eb49ecf57288f9774eea06aacb49d1f79aa95c306c65eb08d6e47a6"},
-    {file = "PyPDF2-1.27.11.tar.gz", hash = "sha256:7162b07462542e92674d493195c1473632c1921a2986caba059c1c92a2bda8df"},
+    {file = "PyPDF2-1.27.9-py3-none-any.whl", hash = "sha256:5e29ffaf2efcfb77c25206e3b8df517a18af84e64ebe1b3a93abac8d01176374"},
+    {file = "PyPDF2-1.27.9.tar.gz", hash = "sha256:5f7937fd94ba387a2a241db8858770e53091d8ffab9922512c0bf48e3f4cc615"},
 ]
 pyperclip = [
     {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
@@ -3187,8 +3187,8 @@ robocorp-dialog = [
     {file = "robocorp_dialog-0.5.3-py3-none-any.whl", hash = "sha256:df0d1264e71c3c9005b7c40af6ac23ca53ad758beefe02e579543b2521de24d3"},
 ]
 robotframework = [
-    {file = "robotframework-4.1.3-py2.py3-none-any.whl", hash = "sha256:06c025e5b640a378d372292921f49c28f7d025e4876b7b8f98ecc56a3def9dc0"},
-    {file = "robotframework-4.1.3.zip", hash = "sha256:d2675cbe3e5a4c90be3ddb61be3b88cc0d6ff503c298ad8f8a78aad14e71e886"},
+    {file = "robotframework-5.0-py3-none-any.whl", hash = "sha256:ee912636885e2dc4bcf4ec1d5b3ac2a5b81cadfcfedf4a169bd4ad6576ff8f53"},
+    {file = "robotframework-5.0.zip", hash = "sha256:bffecba8c43d4294936d921f0af4941079039edce88194769133719732c608bc"},
 ]
 robotframework-assertion-engine = [
     {file = "robotframework-assertion-engine-0.5.1.tar.gz", hash = "sha256:b66fdcd45490472d001d5927ec74c3d09a8b7c7b1a41cab13e1ac6ad0095ed3a"},
@@ -3222,28 +3222,28 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-aws = [
-    {file = "rpaframework-aws-1.0.3.tar.gz", hash = "sha256:ba5b4282ae6c8a1842486110b4a7c4f94cc7be73dafd42c8130465e2c42ffbc7"},
-    {file = "rpaframework_aws-1.0.3-py3-none-any.whl", hash = "sha256:47ae3b4770100036409c2e96627dfba9b5c4d0a706d557e462a8a7b136d999e7"},
+    {file = "rpaframework-aws-2.0.0.tar.gz", hash = "sha256:025e4be7cdad685862f347b0fc8e4696e1ce8d8e4b9e80abdf450850d1423d9e"},
+    {file = "rpaframework_aws-2.0.0-py3-none-any.whl", hash = "sha256:8cccd965a6dd8980ffde96b6791032191622b6d868264dbf66779f98465f8579"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-7.1.1.tar.gz", hash = "sha256:5c36b71b76ebcbdc1f11068e85a49d030fea808b5b26e01e7d5f1299eb610ddb"},
-    {file = "rpaframework_core-7.1.1-py3-none-any.whl", hash = "sha256:79809418aa1d6e6c7904c3a504345c8b971717822a8e9dad53fbbd36b716b752"},
+    {file = "rpaframework-core-8.0.0.tar.gz", hash = "sha256:75f63a3e8cf327eb4b606050826274f9d622ee2009e5351ee46aaa4b1a40510d"},
+    {file = "rpaframework_core-8.0.0-py3-none-any.whl", hash = "sha256:389bd6c35a44d9a5f0038ed75131d1472153dd572393a4c3a73c9d4665a4d84b"},
 ]
 rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-1.1.1.tar.gz", hash = "sha256:c3887bfe436cece2e2a8ead0f6b04bc80355bf927648ed879a73797e6eefa918"},
-    {file = "rpaframework_dialogs-1.1.1-py3-none-any.whl", hash = "sha256:600e5ac545e7a2b0b4688535099930f2d96d32feb1a8668a1a0fe34295c6f7ea"},
+    {file = "rpaframework-dialogs-2.0.0.tar.gz", hash = "sha256:8391488db0677ecf274341d5bb9cc5330bf561e323b9dfd0f061b17f4eeaf748"},
+    {file = "rpaframework_dialogs-2.0.0-py3-none-any.whl", hash = "sha256:8147e1771fcb110c1397eb9d6ec2dcace94a9e839d2b1409dad4623bc23aa522"},
 ]
 rpaframework-pdf = [
-    {file = "rpaframework-pdf-2.0.1.tar.gz", hash = "sha256:aee5f92e9b9567e596c99c4c339dcc8c3fa5d7a12ece8353d0d163a278c13042"},
-    {file = "rpaframework_pdf-2.0.1-py3-none-any.whl", hash = "sha256:db146a0b036a75207e67b1296319bc08c6a4aed47855e567abd8b92d0eb61b44"},
+    {file = "rpaframework-pdf-3.0.0.tar.gz", hash = "sha256:f4e2fb5e57d128e02e39d27c45dc170fe28528d08c9215207029f3e988280d4c"},
+    {file = "rpaframework_pdf-3.0.0-py3-none-any.whl", hash = "sha256:36806171c1fdcd63264abcdc5c6e7693c1374380ee871c1030d38669ce4cdce1"},
 ]
 rpaframework-recognition = [
-    {file = "rpaframework-recognition-2.0.0.tar.gz", hash = "sha256:42b20943bf00993179aed1d6a0f5a1068eea69aee7e637d6f8ffa1a93f343cf1"},
-    {file = "rpaframework_recognition-2.0.0-py3-none-any.whl", hash = "sha256:1a6b9d1db8b5a2360f8bbead3811f6604d34136ce5ad1ba986d5a1e09be73f54"},
+    {file = "rpaframework-recognition-3.0.0.tar.gz", hash = "sha256:ef5d3284fddde373dc22583007e08418d07a979b7178c21f031d83f2455d626a"},
+    {file = "rpaframework_recognition-3.0.0-py3-none-any.whl", hash = "sha256:94fde76d675e1da14686ca5dfe67e30249b5d703bd3eb8d7db2ca62c7f501015"},
 ]
 rpaframework-windows = [
-    {file = "rpaframework-windows-3.1.1.tar.gz", hash = "sha256:13e63daab81ced5fa740b116d1b2c8b989cad40187ba9bc617c379e0f46f4428"},
-    {file = "rpaframework_windows-3.1.1-py3-none-any.whl", hash = "sha256:0502b161d7230f06b044a96ccce023efd333cf960dbedae350a43f2743ac15c6"},
+    {file = "rpaframework-windows-4.0.0.tar.gz", hash = "sha256:d2a54d57c40a59cd5b749098967254d6d8ebcaec5d5f83a27533efad7aff4722"},
+    {file = "rpaframework_windows-4.0.0-py3-none-any.whl", hash = "sha256:8be6a083470791fea19d72aa0e9ca2d1ab88a9be12af139c545f865e1be02208"},
 ]
 s3transfer = [
     {file = "s3transfer-0.5.2-py3-none-any.whl", hash = "sha256:7a6f4c4d1fdb9a2b640244008e142cbc2cd3ae34b386584ef044dd0f27101971"},
