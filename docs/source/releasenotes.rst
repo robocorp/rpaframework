@@ -20,8 +20,6 @@ Release notes
 14.0.0 - xx May 2022
 --------------------
 
-- Library `RPA.Email.Exchange` (:issue:`477`): Keyword ``Send Message`` supports
-  sending messages with any combination of `recipients`, `cc` and/or `bcc`.
 - Robot Framework 5 support, but not restricted to (:pr:`470`):
 
   - Read **migration instructions** on `Taking Robot Framework 5 into use <https://robocorp.com/docs/languages-and-frameworks/robot-framework/robot-framework-5>`_
@@ -30,6 +28,9 @@ Release notes
   - Inline IF-ELSE IF-ELSE
   - BREAK and CONTINUE
   - RETURN
+
+- Library `RPA.Email.Exchange` (:issue:`477`): Keyword ``Send Message`` supports
+  sending messages with any combination of `recipients`, `cc` and/or `bcc`.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
