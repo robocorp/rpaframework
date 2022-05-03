@@ -49,10 +49,6 @@ def import_tables():
         module = importlib.import_module("RPA.Tables")
         return getattr(module, "Tables")
     except ModuleNotFoundError:
-        logging.getLogger().info(
-            "Tables in the AWS response will be in a `dictionary` type, "
-            "because `RPA.Tables` library is not available in the scope."
-        )
         return None
 
 
@@ -506,6 +502,11 @@ class ServiceTextract(AWSBase):
                     rows[row] = {col: val}
 
             tables = import_tables()
+            if not tables:
+                logging.getLogger().info(
+                    "Tables in the AWS response will be in a `dictionary` type, "
+                    "because `RPA.Tables` library is not available in the scope."
+                )
             data = [
                 [rows[col][idx] for idx in sorted(rows[col])] for col in sorted(rows)
             ]
