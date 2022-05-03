@@ -17,6 +17,7 @@ setup.py
 
 # Robot Framework
 tests/results
+tests/output
 tests/temp
 tests/*.html
 tests/*.xml
