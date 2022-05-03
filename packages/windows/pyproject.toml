@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-windows"
-version = "3.1.1"
+version = "4.0.0"
 description = "Windows library for RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -36,8 +36,8 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.7"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
-rpaframework-core = "^7.1.1"
-robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
+rpaframework-core = "^8.0.0"
+robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-pythonlibcore = "^3.0.0"
 pynput-robocorp-fork = "^4.0.0"
 uiautomation = "^2.0.15"
@@ -59,7 +59,7 @@ sphinx = "^2.3.1"
 sphinx_rtd_theme = "^0.4.3"
 toml = "^0.10.1"
 sphinx-markdown-builder = "^0.5.4"
-robotframework-docgen = "^0.14.0"
+robotframework-docgen = "^0.15.0"
 sphinx-issues = "^1.2.0"
 docutils = "0.16"
 
