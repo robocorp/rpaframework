@@ -987,18 +987,23 @@ class WorkItems:
 
         return body
 
-    def _get_email_content(self, variables: Dict) -> Optional[Tuple[str, bool, Tuple[str]]]:
+    def _get_email_content(
+        self, variables: Dict
+    ) -> Optional[Tuple[str, bool, Tuple[str]]]:
         # Returns the extracted e-mail [parsed] content and its payload destination.
-        to_tuple = lambda keys: keys if isinstance(keys, tuple) else (keys,)
+        to_tuple = (
+            lambda keys: keys if isinstance(keys, tuple) else (keys,)
+        )  # noqa: E731
         for input_keys, output_keys in self._auto_parse_email.items():
             input_keys = to_tuple(input_keys)
             for input_key in input_keys:
                 content = get_dot_value(variables, input_key)
                 # TODO(cmin764): Look into files as well if the variable isn't found.
                 if content:
-                    parsed = False if input_key == "rawEmail" else True
+                    parsed = not input_key == "rawEmail"
                     output_keys = to_tuple(output_keys)
                     return content, parsed, output_keys
+        return None
 
     def _parse_work_item_from_email(self):
         """Parse and return a dictionary from the input work item of a process started
@@ -1053,12 +1058,12 @@ class WorkItems:
 
         for output_key in output_keys:
             keys = output_key.split(".", 1)
-            # pylint: disable=undefined-loop-variable
             parsed_email = self.get_work_item_variable(keys[0], default={})
             if len(keys) == 2:
                 set_dot_value(parsed_email, keys[1], value=email_data)
             else:
                 parsed_email = email_data
+            # pylint: disable=undefined-loop-variable
             self.set_work_item_variable(keys[0], parsed_email)
 
     def _start_suite(self, data, result):
