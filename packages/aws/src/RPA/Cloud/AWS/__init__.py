@@ -648,7 +648,8 @@ class ServiceTextract(AWSBase):
         total_result = response
         if len(total_blocks) > 0:
             total_result["Blocks"] = total_blocks
-        self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
+        if "Blocks" in total_result.keys():
+            self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
         return total_result
 
     def get_pages_and_text(self, textract_response: dict) -> dict:
