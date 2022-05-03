@@ -32,6 +32,29 @@ from .utils import (
 
 
 UNDEFINED = object()  # Undefined default value
+AUTO_PARSE_EMAIL_TYPE = Optional[Dict[Union[str, Tuple[str]], Union[str, Tuple[str]]]]
+AUTO_PARSE_EMAIL_DEFAULT = {
+    # Source payload keys or file names -> destination payload keys with the parsed
+    # e-mail content.
+    ("email.text", "__mail.html"): ("email.body", "parsedEmail.Body"),
+    "rawEmail": "parsedEmail",
+}
+
+
+def get_dot_value(source: Dict, key: str) -> Any:
+    keys = key.split(".")
+    value = source
+    for _key in keys:
+        if not isinstance(value, dict):
+            return value
+        value = value.get(_key)
+    return value
+
+
+def set_dot_value(source: Dict, key: str, *, value: Any):
+    keys = key.rsplit(".", 1)
+    source = source if len(keys) == 1 else get_dot_value(source, keys[0])
+    source[keys[-1]] = value
 
 
 class State(Enum):
@@ -890,7 +913,7 @@ class WorkItems:
         root: Optional[str] = None,
         default_adapter: Union[Type[BaseAdapter], str] = RobocorpAdapter,
         # pylint: disable=dangerous-default-value
-        auto_parse_email: Optional[Dict[str, str]] = {"rawEmail": "parsedEmail"},
+        auto_parse_email: AUTO_PARSE_EMAIL_TYPE = AUTO_PARSE_EMAIL_DEFAULT,
     ):
         self.ROBOT_LIBRARY_LISTENER = self
 
@@ -964,6 +987,19 @@ class WorkItems:
 
         return body
 
+    def _get_email_content(self, variables: Dict) -> Optional[Tuple[str, bool, Tuple[str]]]:
+        # Returns the extracted e-mail [parsed] content and its payload destination.
+        to_tuple = lambda keys: keys if isinstance(keys, tuple) else (keys,)
+        for input_keys, output_keys in self._auto_parse_email.items():
+            input_keys = to_tuple(input_keys)
+            for input_key in input_keys:
+                content = get_dot_value(variables, input_key)
+                # TODO(cmin764): Look into files as well if the variable isn't found.
+                if content:
+                    parsed = False if input_key == "rawEmail" else True
+                    output_keys = to_tuple(output_keys)
+                    return content, parsed, output_keys
+
     def _parse_work_item_from_email(self):
         """Parse and return a dictionary from the input work item of a process started
         by e-mail trigger.
@@ -1001,22 +1037,29 @@ class WorkItems:
         except ValueError:
             return  # payload not a dictionary
 
-        for input_key, output_key in self._auto_parse_email.items():
-            raw_email = variables.get(input_key)
-            if raw_email:
-                break
-        else:
+        content, parsed, output_keys = self._get_email_content(variables)
+        if not content:
             return  # no e-mail content found in the work item
 
-        # pylint: disable=no-member
-        message = email.message_from_string(raw_email)
-        body, _ = ImapSmtp().get_decoded_email_body(message)
-        body = self._interpret_content(body)
-        message_dict = dict(message.items())
-        message_dict["Body"] = body
+        if parsed:  # With "Parse email" Control Room configuration option enabled.
+            email_data = self._interpret_content(content)
+        else:  # With "Parse email" Control Room configuration option disabled.
+            # pylint: disable=no-member
+            message = email.message_from_string(content)
+            message_dict = dict(message.items())
+            body, _ = ImapSmtp().get_decoded_email_body(message)
+            message_dict["Body"] = self._interpret_content(body)
+            email_data = message_dict
 
-        # pylint: disable=undefined-loop-variable
-        self.set_work_item_variable(output_key, message_dict)
+        for output_key in output_keys:
+            keys = output_key.split(".", 1)
+            # pylint: disable=undefined-loop-variable
+            parsed_email = self.get_work_item_variable(keys[0], default={})
+            if len(keys) == 2:
+                set_dot_value(parsed_email, keys[1], value=email_data)
+            else:
+                parsed_email = email_data
+            self.set_work_item_variable(keys[0], parsed_email)
 
     def _start_suite(self, data, result):
         """Robot Framework listener method, called when suite starts."""
