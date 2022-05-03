@@ -503,7 +503,7 @@ class ServiceTextract(AWSBase):
 
             tables = import_tables()
             if not tables:
-                logging.getLogger().info(
+                self.logger.info(
                     "Tables in the AWS response will be in a `dictionary` type, "
                     "because `RPA.Tables` library is not available in the scope."
                 )
@@ -1128,8 +1128,12 @@ class ServiceRedshiftData(AWSBase):
         statement_waiter.wait(Id=run_token["Id"])
         paginator = client.get_paginator("get_statement_result")
         full_result = paginator.paginate(Id=run_token["Id"]).build_full_result()
-        # I might not be able to use RPA.Table because of cross-package
-        # dependancies being bad.
+        tables = import_tables()
+        if not tables:
+            self.logger.info(
+                "Tables in the AWS response will be in a `dictionary` type, "
+                "because `RPA.Tables` library is not available in the scope."
+            )
 
     def _create_waiter_for_results(
         self,
