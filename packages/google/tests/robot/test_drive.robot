@@ -14,10 +14,12 @@ ${RESOURCE_FOLDER}    ${CURDIR}${/}..${/}resources
 ...               pywinauto.pdf
 ...               landscape_image.png
 @{TEST_FILES_IN_DRIVE}    @{EMPTY}
+${SERVICE_ACCOUNT_FILE}     %{GOOGLE_TEST_SERVICE_ACCOUNT}
 
 *** Keywords ***
 Setup files and folders
-    Init Drive    %{ROBOT_ROOT}${/}serviceaccount2.json
+    Log To Console    Using service account file: ${SERVICE_ACCOUNT_FILE}
+    Init Drive    ${SERVICE_ACCOUNT_FILE}
     ${folder}=    Create Drive Directory    ${FOLDER_NAME}
     ${folder2}=    Create Drive Directory    subfolder    ${FOLDER_NAME}
     Set Global Variable    ${MAIN_TEST_FOLDER_ID}    ${folder}[id]

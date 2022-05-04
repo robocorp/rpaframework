@@ -1,11 +1,71 @@
+# pylint: disable=C0411,C0412,C0413
 import logging
-from urllib.parse import urlparse
-from typing import Any, Union
 from pathlib import Path
+from typing import Any, Union
+from urllib.parse import urlparse
 
-from RequestsLibrary import RequestsLibrary
-from RPA.FileSystem import FileSystem
+import RequestsLibrary.log
+from RequestsLibrary.utils import is_file_descriptor
+from robot.api import logger
+
 from RPA.core.notebook import notebook_file
+from RPA.FileSystem import FileSystem
+
+LOG_CHAR_LIMIT = 10000
+
+
+def log_response(response):
+    logger.debug(
+        "%s Response : url=%s \n " % (response.request.method.upper(), response.url)
+        + "status=%s, reason=%s \n " % (response.status_code, response.reason)
+        + "headers=%s \n " % response.headers
+        + "body=%s \n " % format_data_to_log_string(response.text)
+    )
+
+
+def log_request(response):
+    request = response.request
+    if response.history:
+        original_request = response.history[0].request
+        redirected = "(redirected) "
+    else:
+        original_request = request
+        redirected = ""
+    logger.debug(
+        "%s Request : " % original_request.method.upper()
+        + "url=%s %s\n " % (original_request.url, redirected)
+        + "path_url=%s \n " % original_request.path_url
+        + "headers=%s \n " % original_request.headers
+        + "body=%s \n " % format_data_to_log_string(original_request.body)
+    )
+
+
+def format_data_to_log_string(data, limit=LOG_CHAR_LIMIT):
+
+    if not data:
+        return None
+
+    if is_file_descriptor(data):
+        return repr(data)
+
+    if len(data) > limit and logging.getLogger().level > 10:
+        data = (
+            "%s... (set the log level to DEBUG or TRACE to see the full content)"
+            % data[:limit]
+        )
+
+    return data
+
+
+RequestsLibrary.log.log_response = log_response
+RequestsLibrary.log.log_request = log_request
+
+
+from RequestsLibrary import RequestsLibrary  # noqa: E402
+
+# NOTE. Above logging changes are related to. Especially on Automation Studio
+# extensive INFO level logging makes readability problematic.
+# https://github.com/MarketSquare/robotframework-requests/issues/353
 
 
 class HTTP(RequestsLibrary):
@@ -14,7 +74,7 @@ class HTTP(RequestsLibrary):
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
+    ROBOT_LIBRARY_DOC_FORMAT = "reST"
 
     def __init__(self, *args, **kwargs) -> None:
         RequestsLibrary.__init__(self, *args, **kwargs)
@@ -40,21 +100,16 @@ class HTTP(RequestsLibrary):
         The old session will be used if the URL scheme and the host are the same as
         previously, e.g., 'https://www.google.fi' part of the URL.
 
-        ``url`` target URL for GET request
-
-        ``target_file`` filepath to save request content, default ``None``
-
-        ``verify`` if SSL verification should be done, default ``True``,
-        a CA_BUNDLE path can also be provided
-
-        ``force_new_session`` if new HTTP session should be created, default ``False``
-
-        ``overwrite`` used together with ``target_file``, if ``True`` will overwrite
-        the target file, default ``False``
-
-        ``stream`` if ``False``, the response content will be immediately downloaded
-
-        Returns request response.
+        :param url: target URL for GET request
+        :param target_file: filepath to save request content, default ``None``
+        :param verify: if SSL verification should be done, default ``True``,
+            a CA_BUNDLE path can also be provided
+        :param force_new_session: if new HTTP session should be created,
+            default ``False``
+        :param overwrite: used together with ``target_file``, if ``True`` will overwrite
+            the target file, default ``False``
+        :param stream: if ``False``, the response content will be immediately downloaded
+        :return: request response as a dict
         """
         uc = urlparse(url)
 
@@ -97,7 +152,7 @@ class HTTP(RequestsLibrary):
     def get_current_session_alias(self) -> str:
         """Get request session alias that was used with the ``HTTP Get`` keyword.
 
-        Return name of session alias.
+        :return: name of session alias as a string
         """
         return self.current_session_alias
 
@@ -118,19 +173,17 @@ class HTTP(RequestsLibrary):
         in the path, then that is used as ``target_file`` to save to. By default,
         the filename will be "downloaded.html".
 
-        ``url`` target URL for GET request
-
-        ``target_file`` filepath to save request content, default ``None``
-
-        ``verify`` if SSL verification should be done, default ``True``,
-        a CA_BUNDLE path can also be provided
-
-        ``force_new_session`` if new HTTP session should be created, default ``False``
-
-        ``overwrite`` used together with ``target_file``, if ``True`` will overwrite
-        the target file, default ``False``
-
-        ``stream`` if ``False``, the response content will be immediately downloaded
+        :param url: target URL for GET request
+        :param target_file: filepath to save request content, default ``None``
+        :param verify: if SSL verification should be done, default ``True``,
+            a CA_BUNDLE path can also be provided
+        :param force_new_session: if new HTTP session should be created,
+            default ``False``
+        :param overwrite: used together with ``target_file``, if ``True`` will overwrite
+            the target file, default ``False``
+        :param stream`` if ``False``, the response content will
+            be immediately downloaded
+        :return: request response as a dict
         """
         response = self.http_get(
             url,

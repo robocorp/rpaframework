@@ -78,7 +78,9 @@ disable=fixme,
         duplicate-code,
 	  line-too-long,
         consider-using-f-string,
-        consider-iterating-dictionary
+        consider-iterating-dictionary,
+        logging-fstring-interpolation,
+        logging-not-lazy
 
 
 # Enable the message, report, category or checker with the given id(s). You can

@@ -1,19 +1,20 @@
+import datetime
 import logging
+from multiprocessing import AuthenticationError
 import os
 from pathlib import Path
+import re
 import time
-from typing import Any, Union
-
+from typing import Any, List, Optional, Union
 import email
 from email import policy  # pylint: disable=no-name-in-module
+import pytz
 
 from exchangelib import (
     Account,
     Configuration,
     Credentials,
     DELEGATE,
-    EWSDateTime,
-    EWSTimeZone,
     FileAttachment,
     Folder,
     HTMLBody,
@@ -21,6 +22,7 @@ from exchangelib import (
     ItemAttachment,
     Mailbox,
     Message,
+    UTC,
 )
 
 
@@ -31,6 +33,26 @@ def mailbox_to_email_address(mailbox):
         if hasattr(mailbox, "email_address")
         else "",
     }
+
+
+EMAIL_CRITERIA_KEYS = {
+    "subject": "subject",
+    "subject_contains": "subject__contains",
+    "body": "body",
+    "body_contains": "body__contains",
+    "sender": "sender",
+    "sender_contains": "sender__contains",
+    "before": "datetime_received__range",
+    "after": "datetime_received__range",
+    "between": "datetime_received__range",
+    "category": "categories",
+    "category_contains": "categories__contains",
+    "importance": "importance",
+}
+
+
+class NoRecipientsError(ValueError):
+    """Raised when email to be sent does not have any recipients, cc or bcc addresses."""  # noqa: E501
 
 
 class Exchange:
@@ -82,14 +104,14 @@ class Exchange:
             # Using save_dir all attachments in listed messages are saved
             ${messages}=    List Messages
             ...    INBOX/Problems/sub1
-            ...    criterion=subject:about my orders
+            ...    criterion=subject:'about my orders'
             ...    save_dir=${CURDIR}${/}savedir2
             FOR    ${msg}    IN    @{messages}
                 Log Many    ${msg}
             END
 
         Task of moving messages
-            Move Messages    criterion=subject:about my orders
+            Move Messages    criterion=subject:'about my orders'
             ...    source=INBOX/Processed Purchase Invoices/sub2
             ...    target=INBOX/Problems/sub1
 
@@ -109,6 +131,59 @@ class Exchange:
             subject="Message from RPA Python",
             body="RPA Python message body",
         )
+
+    **About criterion parameter**
+
+    Following table shows possible criterion keys that can be used to filter emails.
+    There apply to all keywords which have ``criterion`` parameter.
+
+    ================= ================
+    Key               Effective search
+    ================= ================
+    subject           subject to match
+    subject_contains  subject to contain
+    body              body to match
+    body_contains     body to contain
+    sender            sender (from) to match
+    sender_contains   sender (from) to contain
+    before            received time before this time
+    after             received time after this time
+    between           received time between start and end
+    category          categories to match
+    category_contains categories to contain
+    importance        importance to match
+    ================= ================
+
+    Keys `before`, `after` and `between` at the moment support two
+    different timeformats either `%d-%m-%Y %H:%M` or `%d-%m-%Y`. These
+    keys also support special string `NOW` which can be used especially
+    together with keyword ``Wait for message  criterion=after:NOW``.
+
+    When giving time which includes hours and minutes then the whole
+    time string needs to be enclosed into single quotes.
+
+    .. code-block:: bash
+
+        before:25-02-2022
+        after:NOW
+        between:'31-12-2021 23:50 and 01-01-2022 00:10'
+
+    Different criterion keys can be combined.
+
+    .. code-block:: bash
+
+        subject_contains:'new year' between:'31-12-2021 23:50 and 01-01-2022 00:10'
+
+    Please **note** that all values in the criterion that contain spaces need
+    to be enclosed within single quotes.
+
+    In the following example the email `subject` is going to matched
+    only against `new` not `new year`.
+
+    .. code-block:: bash
+
+        subject_contains:new year
+
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -125,10 +200,10 @@ class Exchange:
         self,
         username: str,
         password: str,
-        autodiscover: bool = True,
-        access_type: str = "DELEGATE",
-        server: str = None,
-        primary_smtp_address: str = None,
+        autodiscover: Optional[bool] = True,
+        access_type: Optional[str] = "DELEGATE",
+        server: Optional[str] = None,
+        primary_smtp_address: Optional[str] = None,
     ) -> None:
         """Connect to Exchange account
 
@@ -159,11 +234,11 @@ class Exchange:
 
     def list_messages(
         self,
-        folder_name: str = None,
-        criterion: str = None,
-        contains: bool = False,
-        count: int = 100,
-        save_dir: str = None,
+        folder_name: Optional[str] = None,
+        criterion: Optional[str] = None,
+        contains: Optional[bool] = False,  # pylint: disable=unused-argument
+        count: Optional[int] = 100,
+        save_dir: Optional[str] = None,
     ) -> list:
         """List messages in the account inbox. Order by descending
         received time.
@@ -180,7 +255,7 @@ class Exchange:
         messages = []
         source_folder = self._get_folder_object(folder_name)
         if criterion:
-            filter_dict = self._get_filter_key_value(criterion, contains)
+            filter_dict = self._get_filter_key_value(criterion)
             items = source_folder.filter(**filter_dict)
         else:
             items = source_folder.all()
@@ -193,11 +268,11 @@ class Exchange:
 
     def list_unread_messages(
         self,
-        folder_name: str = None,
-        criterion: str = None,
-        contains: bool = False,
-        count: int = 100,
-        save_dir: str = None,
+        folder_name: Optional[str] = None,
+        criterion: Optional[str] = None,
+        contains: Optional[bool] = False,
+        count: Optional[int] = 100,
+        save_dir: Optional[str] = None,
     ) -> list:
         """List unread messages in the account inbox. Order by descending
         received time.
@@ -222,37 +297,43 @@ class Exchange:
 
     def send_message(
         self,
-        recipients: str,
-        subject: str = "",
-        body: str = "",
-        attachments: str = None,
-        html: bool = False,
-        images: str = None,
-        cc: str = None,
-        bcc: str = None,
-        save: bool = False,
-    ):
+        recipients: Optional[Union[List[str], str]] = None,
+        subject: Optional[str] = "",
+        body: Optional[str] = "",
+        attachments: Optional[Union[List[str], str]] = None,
+        html: Optional[bool] = False,
+        images: Optional[Union[List[str], str]] = None,
+        cc: Optional[Union[List[str], str]] = None,
+        bcc: Optional[Union[List[str], str]] = None,
+        save: Optional[bool] = False,
+    ) -> None:
         """Keyword for sending message through connected Exchange account.
 
-        :param recipients: list of email addresses, defaults to []
+        :param recipients: list of email addresses
         :param subject: message subject, defaults to ""
         :param body: message body, defaults to ""
-        :param attachments: list of filepaths to attach, defaults to []
+        :param attachments: list of filepaths to attach, defaults to `None`
         :param html: if message content is in HTML, default `False`
-        :param images: list of filepaths for inline use, defaults to []
-        :param cc: list of email addresses, defaults to []
-        :param bcc: list of email addresses, defaults to []
+        :param images: list of filepaths for inline use, defaults to `None`
+        :param cc: list of email addresses
+        :param bcc: list of email addresses
         :param save: is sent message saved to Sent messages folder or not,
             defaults to False
 
         Email addresses can be prefixed with ``ex:`` to indicate an Exchange
         account address.
 
-        Recipients is a `required` parameter.
+        At least one target needs to exist for `recipients`, `cc` or `bcc`.
         """
+        if not self.account:
+            raise AuthenticationError("Not authorized to any Exchange account")
         recipients, cc, bcc, attachments, images = self._handle_message_parameters(
             recipients, cc, bcc, attachments, images
         )
+        if not recipients and not cc and not bcc:
+            raise NoRecipientsError(
+                "Atleast one address is required for 'recipients', 'cc' or 'bcc' parameter"  # noqa: E501
+            )
         self.logger.info("Sending message to %s", ",".join(recipients))
 
         m = Message(
@@ -272,28 +353,26 @@ class Exchange:
         else:
             m.body = body
 
+        # TODO. The exchangelib does not seem to provide any straightforward way of
+        # verifying if message was sent or not
         if save:
             m.folder = self.account.sent
             m.send_and_save()
         else:
             m.send()
-        return True
 
     def _handle_message_parameters(self, recipients, cc, bcc, attachments, images):
-        if cc is None:
-            cc = []
-        if bcc is None:
-            bcc = []
-        if attachments is None:
-            attachments = []
-        if images is None:
-            images = []
+        recipients = recipients or []
+        cc = cc or []
+        bcc = bcc or []
+        attachments = attachments or []
+        images = images or []
         if not isinstance(recipients, list):
             recipients = recipients.split(",")
         if not isinstance(cc, list):
-            cc = [cc]
+            cc = cc.split(",")
         if not isinstance(bcc, list):
-            bcc = [bcc]
+            bcc = bcc.split(",")
         if not isinstance(attachments, list):
             attachments = str(attachments).split(",")
         if not isinstance(images, list):
@@ -332,7 +411,9 @@ class Exchange:
                 if html:
                     body = body.replace(imname, f"cid:{imname}")
 
-    def create_folder(self, folder_name: str = None, parent_folder: str = None) -> bool:
+    def create_folder(
+        self, folder_name: Optional[str] = None, parent_folder: Optional[str] = None
+    ) -> bool:
         """Create email folder
 
         :param folder_name: name for the new folder
@@ -352,7 +433,9 @@ class Exchange:
         new_folder = Folder(parent=parent, name=folder_name)
         new_folder.save()
 
-    def delete_folder(self, folder_name: str = None, parent_folder: str = None) -> bool:
+    def delete_folder(
+        self, folder_name: Optional[str] = None, parent_folder: Optional[str] = None
+    ) -> bool:
         """Delete email folder
 
         :param folder_name: current folder name
@@ -372,7 +455,10 @@ class Exchange:
         folder_to_delete.delete()
 
     def rename_folder(
-        self, oldname: str = None, newname: str = None, parent_folder: str = None
+        self,
+        oldname: Optional[str] = None,
+        newname: Optional[str] = None,
+        parent_folder: Optional[str] = None,
     ) -> bool:
         """Rename email folder
 
@@ -401,9 +487,9 @@ class Exchange:
 
     def empty_folder(
         self,
-        folder_name: str = None,
-        parent_folder: str = None,
-        delete_sub_folders: bool = False,
+        folder_name: Optional[str] = None,
+        parent_folder: Optional[str] = None,
+        delete_sub_folders: Optional[bool] = False,
     ) -> bool:
         """Empty email folder of all items
 
@@ -423,10 +509,10 @@ class Exchange:
 
     def move_messages(
         self,
-        criterion: str = "",
-        source: str = None,
-        target: str = None,
-        contains: bool = False,
+        criterion: Optional[str] = "",
+        source: Optional[str] = None,
+        target: Optional[str] = None,
+        contains: Optional[bool] = False,  # pylint: disable=unused-argument
     ) -> bool:
         """Move message(s) from source folder to target folder
 
@@ -447,7 +533,7 @@ class Exchange:
         target_folder = self._get_folder_object(target)
         if source_folder == target_folder:
             raise KeyError("Source folder is same as target folder")
-        filter_dict = self._get_filter_key_value(criterion, contains)
+        filter_dict = self._get_filter_key_value(criterion)
         items = source_folder.filter(**filter_dict)
         if items and items.count() > 0:
             items.move(to_folder=target_folder)
@@ -458,8 +544,8 @@ class Exchange:
 
     def move_message(
         self,
-        msg: dict,
-        target: str,
+        msg: Optional[dict],
+        target: Optional[str],
     ):
         """Move a message into target folder
 
@@ -503,49 +589,132 @@ class Exchange:
                 folder_object = folder
         return folder_object
 
-    def _get_filter_key_value(self, criterion, contains):
-        if criterion.startswith("subject:"):
-            search_key = "subject"
-        elif criterion.startswith("body:"):
-            search_key = "body"
-        elif criterion.startswith("sender:"):
-            search_key = "sender"
+    def _get_filter_key_value(self, criterion):
+        regex1 = rf"({':|'.join(EMAIL_CRITERIA_KEYS)}:|or|and)'(.*?)'"
+        regex2 = rf"({':|'.join(EMAIL_CRITERIA_KEYS)}:|or|and)(\S*)\s*"
+        parts = re.findall(regex1, criterion, re.IGNORECASE)
+        valid_filters = {}
+        for part in parts:
+            res = self._parse_email_criteria(part)
+            if not res or len(res) != 2:
+                continue
+            self.logger.debug("First regex pass: %s %s", res[0], res[1])
+            if res[0] not in valid_filters.keys():
+                valid_filters[res[0]] = res[1]
+        parts = re.findall(regex2, criterion, re.IGNORECASE)
+        for part in parts:
+            res = self._parse_email_criteria(part)
+            if not res or len(res) != 2:
+                continue
+            self.logger.debug("Second regex pass: %s %s", res[0], res[1])
+            if res[0] not in valid_filters.keys():
+                valid_filters[res[0]] = res[1]
+        if criterion and criterion != "" and len(valid_filters) == 0:
+            raise KeyError("Invalid criterion '%s'" % criterion)
+        self.logger.info(
+            "Using filter: %s",
+            ",".join(["{}:{}".format(k, v) for k, v in valid_filters.items()]),
+        )
+        return valid_filters
+
+    def _parse_email_criteria(self, part):
+        original_key, value = part
+        original_key = original_key.replace(":", "")
+        if original_key in ["and", "or", "contains"]:
+            # Note. Not implemented yet
+            return None
+        key = None
+        if original_key in EMAIL_CRITERIA_KEYS.keys():
+            key = EMAIL_CRITERIA_KEYS[original_key]
         else:
-            raise KeyError("Unknown criterion for filtering items '%s'" % criterion)
-        if contains:
-            search_key += "__contains"
-        _, search_val = criterion.split(":", 1)
-        return {search_key: search_val}
+            raise KeyError("Unknown email criteria key '%s'" % original_key)
+
+        if value.startswith("'") and value.endswith("'"):
+            value = value[1:-1]
+
+        value = self._handle_specific_keys(original_key, value)
+        self.logger.debug("Returning parsed criteria (%s, %s)", key, value)
+        return key, value
+
+    def _parse_date_from_string(self, date_string):
+        date = None
+        if date_string.upper() == "NOW":
+            right_now = datetime.datetime.now()
+            return right_now.astimezone(pytz.utc)
+        try:
+            date = datetime.datetime.strptime(date_string, "%d-%m-%Y %H:%M")
+            return self._date_for_exchange(date)
+        except ValueError:
+            pass
+        try:
+            date = datetime.datetime.strptime(date_string, "%d-%m-%Y")
+            return self._date_for_exchange(date)
+        except ValueError:
+            pass
+        return date
+
+    def _date_for_exchange(self, date):
+        return datetime.datetime(
+            date.year,
+            date.month,
+            date.day,
+            date.hour,
+            date.minute,
+            tzinfo=UTC,
+        )
+
+    def _handle_specific_keys(self, key, value):
+        if key.upper() == "BEFORE":
+            start = datetime.datetime(1972, 1, 1, tzinfo=UTC)
+            end = self._parse_date_from_string(value)
+            value = (start, end)
+        if key.upper() == "AFTER":
+            start = self._parse_date_from_string(value)
+            end = datetime.datetime(2050, 1, 1, tzinfo=UTC)
+            value = (start, end)
+        if key.upper() == "BETWEEN":
+            ranges = value.upper().split(" AND ")
+            if len(ranges) == 2:
+                start = self._parse_date_from_string(ranges[0])
+                end = self._parse_date_from_string(ranges[1])
+                value = (start, end)
+            else:
+                return None
+        if key.upper() == "IMPORTANCE":
+            try:
+                value = value.capitalize()
+            except ValueError:
+                return None
+        return value
 
     def wait_for_message(
         self,
-        criterion: str = "",
-        timeout: float = 5.0,
-        interval: float = 1.0,
-        contains: bool = False,
-        save_dir: str = None,
+        criterion: Optional[str] = "",
+        timeout: Optional[float] = 5.0,
+        interval: Optional[float] = 1.0,
+        contains: Optional[bool] = False,  # pylint: disable=unused-argument
+        save_dir: Optional[str] = None,
     ) -> Any:
         """Wait for email matching `criterion` to arrive into INBOX.
 
         :param criterion: wait for message matching criterion
         :param timeout: total time in seconds to wait for email, defaults to 5.0
-        :param interval: time in seconds for new check, defaults to 1.0
+        :param interval: time in seconds for new check, defaults to 1.0 (minimum)
         :param contains: if matching should be done using `contains` matching
          and not `equals` matching, default `False` is means `equals` matching
+         THIS PARAMETER IS DEPRECATED AS OF rpaframework 12.9.0
         :param save_dir: set to path where attachments should be saved,
          default None (attachments are not saved)
         :return: list of messages
         """
         self.logger.info("Wait for messages")
         end_time = time.time() + float(timeout)
-        filter_dict = self._get_filter_key_value(criterion, contains)
+        filter_dict = self._get_filter_key_value(criterion)
         items = None
-        tz = EWSTimeZone.localzone()
-        right_now = tz.localize(EWSDateTime.now())  # pylint: disable=E1101
+        # minimum interval is 1.0 seconds
+        interval = max(interval, 1.0)
         while time.time() < end_time:
-            items = self.account.inbox.filter(  # pylint: disable=E1101
-                **filter_dict, datetime_received__gte=right_now
-            )
+            items = self.account.inbox.filter(**filter_dict)  # pylint: disable=E1101
             if items.count() > 0:
                 break
             time.sleep(interval)
@@ -621,6 +790,7 @@ class Exchange:
             "message_id": item.message_id,
             "size": item.size,
             "categories": item.categories,
+            "has_attachments": len(item.attachments) > 0,
             "attachments": attachments,
             "attachments_object": item.attachments,
             "id": item.id,
@@ -631,8 +801,8 @@ class Exchange:
     def save_attachments(
         self,
         message: Union[dict, str],
-        save_dir: str = None,
-        attachments_from_emls: bool = False,
+        save_dir: Optional[str] = None,
+        attachments_from_emls: Optional[bool] = False,
     ) -> list:
         """Save attachments in message into given directory
 
@@ -644,7 +814,7 @@ class Exchange:
 
         Example.
 
-            .. code:: robotframework
+        .. code:: robotframework
 
             ${messages}=    List Messages
             FOR    ${msg}    IN    @{messages}}
@@ -699,7 +869,7 @@ class Exchange:
         """Save email as .eml file
 
         :param message: dictionary containing message details
-        :param filename:
+        :param filename: name of the file to save message into
         """
         absolute_filepath = Path(filename).resolve()
         if absolute_filepath.suffix != ".eml":

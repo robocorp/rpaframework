@@ -56,7 +56,7 @@ class RGB:
 
         return cls(red, green, blue)
 
-    def luminance(self):
+    def luminance(self) -> int:
         """Approximate (perceived) luminance for RGB value."""
         return (self.red * 2 + self.green * 3 + self.blue) // 6
 
@@ -142,7 +142,7 @@ class Images:
         self.logger = logging.getLogger(__name__)
         self.matcher = TemplateMatcher()
 
-    def crop_image(self, image, region, filename=None):
+    def crop_image(self, image, region, filename=None) -> None:
         """Crop an existing image.
 
         :param image:       Image to crop
@@ -172,6 +172,7 @@ class Images:
         :param tolerance:   Tolerance for matching, value between 0.1 and 1.0
         :return:            List of matching regions
         :raises ImageNotFoundError: No match was found
+        :raises ValueError: Template is larger than search region
         """
         # Ensure images are in Pillow format
         image = to_image(image)
@@ -207,13 +208,14 @@ class Images:
 
         return matches
 
-    def show_region_in_image(self, image, region, color="red", width=5):
+    def show_region_in_image(self, image, region, color="red", width=5) -> Image:
         """Draw a rectangle onto the image around the given region.
 
         :param image:   image to draw onto
         :param region:  coordinates for region or Region object
         :param color:   color of rectangle
         :param width:   line width of rectangle
+        :return:    Image of the selected region
         """
         image = to_image(image)
         region = to_region(region)
@@ -222,11 +224,12 @@ class Images:
         draw.rectangle(region.as_tuple(), outline=color, width=int(width))
         return image
 
-    def get_pixel_color_in_image(self, image, point):
+    def get_pixel_color_in_image(self, image, point) -> RGB:
         """Get the RGB value of a pixel in the image.
 
         :param image:   image to get pixel from
         :param point:   coordinates for pixel or Point object
+        :return: RGB value of pixel in image
         """
         point = to_point(point)
         pixel = image.getpixel(point.as_tuple())
@@ -245,28 +248,30 @@ class TemplateMatcher:
         self._tolerance_warned = False
 
     @property
-    def tolerance(self):
+    def tolerance(self) -> float:
         return self._tolerance
 
     @tolerance.setter
-    def tolerance(self, value):
+    def tolerance(self, value) -> float:
         self._tolerance = clamp(0.10, value, 1.00)
 
-    def match(self, image, template, limit=None, tolerance=None):
+    def match(self, image, template, limit=None, tolerance=None) -> List[Region]:
         """Attempt to find the template in the given image.
 
         :param image:       image to search from
         :param template:    image to search with
         :param limit:       maximum number of returned matches
         :param tolerance:   minimum correlation factor between template and image
-        :return:            list of regions that match criteria
+        :return:            list of regions that match the criteria
         """
         if HAS_RECOGNITION:
             return self._find_recognition(image, template, limit, tolerance)
         else:
             return self._find_exact(image, template, limit, tolerance)
 
-    def _find_recognition(self, image, template, limit=None, tolerance=None):
+    def _find_recognition(
+        self, image, template, limit=None, tolerance=None
+    ) -> List[Region]:
         """Find template using recognition module."""
         if tolerance is None:
             tolerance = self._tolerance
@@ -274,7 +279,7 @@ class TemplateMatcher:
         confidence = tolerance * 100.0
         return templates.find(image, template, limit=limit, confidence=confidence)
 
-    def _find_exact(self, image, template, limit=None, tolerance=None):
+    def _find_exact(self, image, template, limit=None, tolerance=None) -> List[Region]:
         """Fallback finder when no recognition module available."""
         if tolerance is not None and not self._tolerance_warned:
             self._tolerance_warned = True
@@ -295,7 +300,7 @@ class TemplateMatcher:
 
         return matches
 
-    def _iter_matches(self, image, template):
+    def _iter_matches(self, image, template) -> Region:
         """Brute-force search for template image in larger image.
 
         Use optimized string search for finding the first row and then
@@ -326,7 +331,7 @@ class TemplateMatcher:
                         image_x, image_y, template_width, template_height
                     )
 
-    def _search_string(self, text, pattern):
+    def _search_string(self, text, pattern) -> int:
         """Python implementation of Knuth-Morris-Pratt string search algorithm."""
         pattern_len = len(pattern)
 

@@ -43,6 +43,8 @@ def catch_com_error():
 class Application:
     """`Excel.Application` is a library for controlling an Excel application.
 
+    *Note*. Library works only Windows platform.
+
     **Examples**
 
     **Robot Framework**

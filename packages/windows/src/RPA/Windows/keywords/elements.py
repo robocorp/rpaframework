@@ -2,13 +2,14 @@ import inspect
 from pathlib import Path
 from typing import List, Optional
 
+from RPA.core.windows.locators import Locator
+
 from RPA.Windows import utils
 from RPA.Windows.keywords import (
     ActionNotPossible,
     keyword,
     LibraryContext,
 )
-from .locators import Locator
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
@@ -139,11 +140,11 @@ class ElementKeywords(LibraryContext):
         attr = hasattr(element.item, attribute)
         if not attr:
             raise ActionNotPossible(
-                'Element "%s" does not have "%s" attribute' % (locator, attribute)
+                f"Element found with {locator!r} does not have {attribute!r} attribute"
             )
         if callable(attr):
             raise ActionNotPossible(
-                'Can\'t access attribute "%s" of element "%s"' % (attribute, locator)
+                f"Can't access attribute {attribute!r} of element {element!r}"
             )
         return str(getattr(element.item, attribute))
 

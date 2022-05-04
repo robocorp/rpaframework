@@ -1,12 +1,183 @@
 Release notes
 =============
 
+.. note::
+  The support for Python version 3.6 has been **REMOVED** from the ``rpaframework[-*]``
+  packages starting with the following versions (:pr:`469`):
+
+    - ``rpaframework`` **14.0.0**
+    - ``rpaframework-aws`` **2.0.0**
+    - ``rpaframework-dialogs`` **2.0.0**
+    - ``rpaframework-google`` **4.0.0**
+    - ``rpaframework-pdf`` **3.0.0**
+    - ``rpaframework-recognition`` **3.0.0**
+    - ``rpaframework-windows`` **4.0.0**
+
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14.0.0 - 02 May 2022
+--------------------
+
+- Robot Framework 5 support, but not restricted to (:pr:`470`):
+
+  - Read **migration instructions** on `Taking Robot Framework 5 into use <https://robocorp.com/docs/languages-and-frameworks/robot-framework/robot-framework-5>`_
+  - TRY-EXCEPT-ELSE-FINALLY
+  - WHILE
+  - Inline IF-ELSE IF-ELSE
+  - BREAK and CONTINUE
+  - RETURN
+
+- Library **RPA.Email.Exchange** (:issue:`477`): Keyword ``Send Message`` supports
+  sending messages with any combination of `recipients`, `cc` and/or `bcc`.
+
+13.3.1 - 15 Apr 2022
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.1**, :pr:`473`): Fix
+  documentation.
+
+13.3.0 - 14 Apr 2022
+--------------------
+
+- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package.
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
+
+  - Keyword ``Get Elements`` returns all similar elements matching locator. (:pr:`471`)
+  - Keyword ``List Windows`` returns now extra attributes similar to the old
+    deprecated ``RPA.Desktop.Windows`` library (:issue:`408`):
+
+    - ``automation_id``
+    - ``control_type``
+    - ``class_name``
+    - ``rectangle``
+    - ``keyboard_focus``
+    - ``is_active``
+    - ``object``
+
+  - Improved locators parsing and ability to enclose values containing spaces with
+    ``"`` double-quote. (:issue:`363`)
+
+  .. warning::
+    This is a **breaking** change! If you use single-quote locator value enclosing,
+    please switch it to double-quote instead. (e.g. ``Control Window  subname:'-
+    Notepad'`` -> ``Control Window  subname:"- Notepad"``)
+
+    If you're having issues with your current robots, pin in your *conda.yaml*
+    ``rpaframework-core==7.0.1`` and stay on ``rpaframework<=13.2.0``. Once you do the
+    double-quote fix, remove the pin and upgrade to the latest ``rpaframework``.
+
+13.2.0 - 08 Apr 2022
+--------------------
+
+- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords
+  primarily focus on retrieving data from Hubspot, there is currently no support for
+  updating information.
+
+13.1.0 - 07 Apr 2022
+--------------------
+
+- Library **RPA.Database**: Fix configuration value retrieval. (:pr:`456`)
+- Library **RPA.Dialogs**: Add next button to support wizard style dialogs. (:issue:`452`)
+
+13.0.3 - 05 Apr 2022
+--------------------
+
+- Library **RPA.Database**: Fix queries with ``pyodbc`` module. (affects Microsoft SQL
+  Server, :issue:`443`)
+
+13.0.2 - 04 Apr 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix handling of ``cc`` and ``bcc`` fields
+  with ``Send Message`` keyword
+- Library **RPA.Cloud.AWS**:
+
+  - Fix initializing services with Vault (broken by **13.0.1** release)
+  - The service region can also be given as a environment variable or as Vault
+    key: ``AWS_REGION``
+  - Included and available as separate package ``rpaframework-aws`` **1.0.3**
+
+13.0.1 - 01 Apr 2022
+--------------------
+
+- Library **RPA.Cloud.AWS**: Fix getting analysis result from larger PDF files
+- Library **RPA.Tables**: Fix reading table from CSV file with longer rows
+- Various updates to keyword type hinting
+- New package ``rpaframework-aws`` **1.0.2** (can be used without ``rpaframework`` package)
+
+13.0.0 - 28 Mar 2022
+--------------------
+
+- Major version upgrades for the following packages (incompatible with
+  ``rpaframework<13``):
+
+  - ``rpaframework-google`` **3.0.0**
+  - ``rpaframework-recognition`` **2.0.0**
+  - ``rpaframework-windows`` **3.0.0**
+  - ``rpaframework-dialogs`` **1.0.0**
+  - ``rpaframework-pdf`` **2.0.0**
+
+  .. warning::
+    Any optional package (`google`, `recognition`) should be upgraded at least to the
+    version above in your *conda.yaml* in order to use ``rpaframework`` **13.0.0**.
+    (if such dependencies are explicitly pinned)
+
+  .. note::
+    Package ``rpaframework-windows`` can be omitted entirely from the *conda.yaml*
+    since it's included automatically with this version.
+
+12.10.1 - 25 Mar 2022
+---------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix multiple recipients error with ``Send Message``
+
+12.10.0 - 23 Mar 2022
+---------------------
+
+- Library **RPA.Cloud.AWS**: Fix ``Download Files`` on saving objects with paths.
+- Library **RPA.HTTP**: Overriding ``RequestsLibrary`` logging to DEBUG level for
+  request and response.
+- Automatically installing ``rpaframework-windows`` **2.3.2**. (no need to specify this
+  dependency in your *conda.yaml* anymore)
+- Deprecated ``RPA.Desktop.Windows`` in favor of ``RPA.Windows``.
+
+12.9.0 - 11 Mar 2022
+--------------------
+
+- Library **RPA.Robocorp.Process**:
+
+  - Add keyword ``List Process Run Work Items``
+  - Add parameter `step_run_id` into ``Get Process Run Status``
+
+- Library **RPA.Desktop.Windows**: Fix issue with ``Get Window Elements``
+- Library **RPA.Browser.Selenium**: Fix issue of `auto_close=False` "hanging" on
+  Windows OS task teardown
+- Library **RPA.Email.ImapSmtp**:
+
+  - Add parameters `cc` and `bcc` to the ``Send Message`` keyword
+  - Fix issue with ``List Messages``
+
+- Library **RPA.Email.Exchange**:
+
+  - Add more filtering keys to the `criterion` parameter (detailed description in the
+    `library documentation <https://rpaframework.org/libraries/email_exchange/index.html>`_)
+  - The `contains` parameter has been deprecated as filtering keys now has `_contains` option, for
+    example `sender_contains:name@domain.com`
+  - Fix issue with keyword ``Wait For Message``
+
+- Resolved **Github** issues
+
+  - `RPA.Email.Exchange. Error with Wait For Message keyword filtering <https://github.com/robocorp/rpaframework/issues/418>`_
+  - `RPA.Email.Exchange Wait for Message keyword throws an error <https://github.com/robocorp/rpaframework/issues/377>`_
+  - `Email.Exchange: Add more support for email filtering <https://github.com/robocorp/rpaframework/issues/410>`_
+  - `Get Window Elements triggers NotImplementedError <https://github.com/robocorp/rpaframework/issues/344>`_
+  - `Email.ImapSmtp: Issues with filtering emails <https://github.com/robocorp/rpaframework/issues/409>`_
 
 12.8.2 - 25 Feb 2022
 --------------------

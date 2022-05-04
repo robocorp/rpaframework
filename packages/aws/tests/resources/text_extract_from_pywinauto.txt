@@ -1,0 +1,29 @@
+Some controls (especially Ownerdrawn controls) do not respond to events as expected. For example if you look at any
+HLP file and go to the Index Tab (click ‘Search’ button) you will see a listbox. Running Spy or Winspector on this
+will show you that it is indeed a list box - but it is ownerdrawn. This means that the developer has told Windows that
+they will override how items are displayed and do it themselves. And in this case they have made it so that strings
+cannot be retrieved :-(.
+So what problems does this cause?
+app.HelpTopics.ListBox.texts() # 1
+app.HelpTopics.ListBox.select("ItemInList") # 2
+1. Will return a list of empty strings, all this means is that pywinauto has not been able to get the strings in the
+listbox
+2. This will fail with an IndexError because the select(string) method of a ListBox looks for the item in the Texts
+to know the index of the item that it should select.
+The following workaround will work on this control
+app.HelpTopics.ListBox.select(1)
+This will select the 2nd item in the listbox, because it is not a string lookup it works correctly.
+Unfortunately not even this will always work. The developer can make it so that the control does not respond to
+standard events like Select. In this case the only way you can select items in the listbox is by using the keyboard
+simulation of TypeKeys().
+This allows you to send any keystrokes to a control. So to select the 3rd item you would use
+app.Helptopics.ListBox1.type_keys("{HOME}{DOWN 2}{ENTER}")
+• {HOME} will make sure that the first item is highlighted.
+• {DOWN 2} will then move the highlight down two items
+• {ENTER} will select the highlighted item
+If your application made an extensive use of a similar control type then you could make using it easier by deriving a
+new class from ListBox, that could use extra knowledge about your particular application. For example in theWinHelp
+example every time an item is highlighted in the list view, its text is inserted into the Edit control above the list, and
+you CAN get the text of the item from there e.g.
+# print the text of the item currently selected in the list box
+# (as long as you are not typing into the Edit control!)

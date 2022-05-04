@@ -99,7 +99,7 @@ class FTP:
         certfile: str = None,
         timeout: int = None,
         source_address: Tuple[str, int] = None,
-    ):
+    ) -> bool:
         """Connect to FTP server
 
         :param host: address of the server
@@ -113,6 +113,7 @@ class FTP:
         :param timeout: a timeout in seconds for the connection attempt
         :param source_address: socket to bind to as its source address before connecting
         :raises AuthenticationException: on authentication error with the server
+        :return: true if the connnection completes and an error code if it fails
         """
         try:
             if tls:
@@ -141,7 +142,7 @@ class FTP:
         self.logger.info("FTP connection successful")
         return True
 
-    def quit(self):
+    def quit(self) -> None:
         """Send QUIT command to the server and close connection"""
         try:
             self.instance.quit()
@@ -151,7 +152,7 @@ class FTP:
         finally:
             self.instance = None
 
-    def close(self):
+    def close(self) -> None:
         """Close connection to the server unilaterally"""
         if self.instance:
             self.instance.close()
@@ -163,6 +164,7 @@ class FTP:
 
         :param localfile: path to file to upload
         :param remotefile: name of uploaded file in the server
+        :return: true or false based on success or failure
         """
         cmd = f"STOR {remotefile}"
         # pylint: disable=consider-using-with
@@ -174,6 +176,7 @@ class FTP:
         :param remotefile: path to remote file on the server
         :param localfile: name of the downloaded file on the local filesystem,
             if `None` will have same name as remote file
+        :return: true or false based on success or failure
         """
         if self.instance is None:
             raise FTPException("No FTP connection")
@@ -200,12 +203,16 @@ class FTP:
         """Change working directory on the server
 
         :param dirname: name of the directory
+        :return: true or false based on success or failure
         """
         self.instance.cwd(dirname)
 
     @ftpcommand
     def pwd(self) -> str:
-        """Get current working directory on the server"""
+        """Get current working directory on the server
+
+        :return: current working directory name as a string
+        """
         return self.instance.pwd()
 
     @ftpcommand
@@ -213,6 +220,7 @@ class FTP:
         """Create a new directory on the server
 
         :param dirname: name of the directory
+        :return: true or false based on success or failure
         """
         self.instance.mkd(dirname)
 
@@ -221,6 +229,7 @@ class FTP:
         """Remove directory on the server
 
         :param dirname: name of the directory
+        :return: true or false based on success or failure
         """
         self.instance.rmd(dirname)
 
@@ -229,6 +238,7 @@ class FTP:
         """List files on the server directory
 
         :param dirname: name of the directory
+        :return: list of files present in the server directory
         """
         try:
             return list(self.instance.mlsd(path=dirname))
@@ -240,6 +250,7 @@ class FTP:
         """Delete file on the server
 
         :param filepath: path to server file
+        :return: true or false based on success or failure
         """
         self.instance.delete(filepath)
 
@@ -249,6 +260,7 @@ class FTP:
 
         :param fromname: current name of the file
         :param toname: new name for the file
+        :return: true or false based on success or failure
         """
         self.instance.rename(fromname, toname)
 
@@ -260,6 +272,7 @@ class FTP:
         https://en.wikipedia.org/wiki/List_of_FTP_commands
 
         :param command: name of the command to send
+        :return: true or false based on success or failure
         """
         return self.instance.sendcmd(command)
 
@@ -268,20 +281,24 @@ class FTP:
         """Return byte size of the file on the server
 
         :param filepath: path to server file
+        :return: byte size as an int
         """
         self.set_binary_mode()
         return self.instance.size(filepath)
 
     @ftpcommand
     def abort(self) -> bool:
-        """Abort a file transfer in progress"""
+        """Abort a file transfer in progress
+
+        :return: true or false based on success or failure
+        """
         self.instance.abort()
 
     @ftpcommand
     def get_welcome_message(self) -> str:
         """Get server welcome message
 
-        :return: welcome message
+        :return: welcome message as a string
         """
         return self.instance.getwelcome()
 
@@ -290,6 +307,7 @@ class FTP:
         """Set debug level for the library
 
         :param level: integer value of debug level, defaults to 0
+        :return: true or false based on success or failure
 
         0 - no debugging output
         1 - moderate amount of debugging
@@ -300,10 +318,16 @@ class FTP:
         else:
             self.logger.warning("Valid debug levels are 0, 1 or 2+")
 
-    def set_ascii_mode(self):
-        """Set transfer mode to ASCII"""
+    def set_ascii_mode(self) -> bool:
+        """Set transfer mode to ASCII
+
+        :return: true or false based on success or failure
+        """
         self.send_command("TYPE a")
 
-    def set_binary_mode(self):
-        """Set transfer mode to BINARY"""
+    def set_binary_mode(self) -> bool:
+        """Set transfer mode to BINARY
+
+        :return: true or false based on success or failure
+        """
         self.send_command("TYPE i")
