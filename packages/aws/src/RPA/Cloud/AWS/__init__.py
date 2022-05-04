@@ -1045,7 +1045,7 @@ class ServiceRedshiftData(AWSBase):
         parameters: list = None,
         statement_name: str = None,
         with_event: bool = False,
-    ) -> dict:
+    ):
         """Runs an SQL statement, which can be data manipulation language
         (DML) or data definition language (DDL). This statement must be a
         single SQL statement. Depending on the authorization method, use
@@ -1074,8 +1074,11 @@ class ServiceRedshiftData(AWSBase):
 
         .. _Data types: https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html
 
-        If tabular data is returned, it is returned as a table (see RPA.Tables). Other
-        types of data (SQL errors and result statements) are returned as strings.
+        If tabular data is returned, this keyword tries to return it as
+        a table (see ``RPA.Tables``), if ``RPA.Tables`` is not available
+        in the keyword's scope, the data will be returned as a list of dictionaries.
+        Other types of data (SQL errors and result statements) are returned
+        as strings.
 
         **Robot framework example:**
 
@@ -1109,31 +1112,74 @@ class ServiceRedshiftData(AWSBase):
         #   --Get waiter ## is this a function?--
         #   --Wait--
         #   --Get Paginator(get results)--
-        #   Translate results into RPA.Tables
-        #   ### I don't think I can use RPA.Tables because this package
-        #       can stand alone.
+        #   --Translate results into RPA.Tables--
         #   Return table.
         client = self._get_client_for_service("redshift-data")
+        additional_params = {}
+        if self.secret_arn:
+            additional_params["SecretArn"] = self.secret_arn
+        if parameters:
+            additional_params["Parameters"] = parameters
+        if statement_name:
+            additional_params["StatementName"] = statement_name
         run_token = client.execute_statement(
             ClusterIdentifier=self.cluster_identifier,
             Database=self.database,
             DbUser=self.database_user,
-            Parameters=parameters,
-            SecretArn=self.secret_arn,
             Sql=sql,
-            StatementName=statement_name,
             WithEvent=with_event,
+            **additional_params,
         )
-        statement_waiter = self._create_waiter_for_results(client)
-        statement_waiter.wait(Id=run_token["Id"])
-        paginator = client.get_paginator("get_statement_result")
-        full_result = paginator.paginate(Id=run_token["Id"]).build_full_result()
-        tables = import_tables()
-        if not tables:
-            self.logger.info(
-                "Tables in the AWS response will be in a `dictionary` type, "
-                "because `RPA.Tables` library is not available in the scope."
+        try:
+            statement_waiter = self._create_waiter_for_results(client)
+            statement_waiter.wait(Id=run_token["Id"])
+        except WaiterError as e:
+            # TODO: properly log and fail the keyword when statement errors during
+            #       the Waiter's execution.
+            raise ClientError(e.last_response, "DescribeStatement")
+
+        finished_statement = client.describe_statement(Id=run_token["Id"])
+        if finished_statement["HasResultSet"]:
+            paginator = client.get_paginator("get_statement_result")
+            full_result = paginator.paginate(Id=run_token["Id"]).build_full_result()
+
+            # This handles results that are tabular. I don't know what non-tabular
+            # responses look like.
+            tables = import_tables()
+            if not tables:
+                self.logger.info(
+                    "Tables in the AWS response will be in a `dictionary` type, "
+                    "because `RPA.Tables` library is not available in the scope."
+                )
+            column_names = [
+                m.get("name") for m in full_result.get("ColumnMetadata", {})
+            ]
+            data = [
+                {c: self._parse_tagged_union(f) for c, f in zip(column_names, row)}
+                for row in full_result.get("Records", [])
+            ]
+            return tables().create_table(data) if tables else data
+        else:
+            return f"Statement finished, total rows affected: " + str(
+                finished_statement.get("ResultRows", "NONE")
             )
+
+    def _parse_tagged_union(self, tagged_union: dict):
+        if tagged_union.get("blobValue"):
+            output = bytes(tagged_union["blobValue"])
+        elif tagged_union.get("booleanValue"):
+            output = bool(tagged_union["booleanValue"])
+        elif tagged_union.get("doubleValue"):
+            output = float(tagged_union["doubleValue"])
+        elif tagged_union.get("isNull"):
+            output = None if tagged_union["isNull"] else "UNKNOWN_DATA_MEMBER"
+        elif tagged_union.get("longValue"):
+            output = int(tagged_union["longValue"])
+        elif tagged_union.get("stringValue"):
+            output = str(tagged_union["stringValue"])
+        else:
+            output = "UNKNOWN_DATA_MEMBER"
+        return output
 
     def _create_waiter_for_results(
         self,
@@ -1195,7 +1241,9 @@ class ServiceRedshiftData(AWSBase):
         )
 
 
-class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
+class AWS(
+    ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS, ServiceRedshiftData
+):
     """`AWS` is a library for operating with Amazon AWS services S3, SQS,
     Textract and Comprehend.
 
@@ -1331,6 +1379,7 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
         ServiceTextract.__init__(self)
         ServiceComprehend.__init__(self)
         ServiceSQS.__init__(self)
+        ServiceRedshiftData.__init__(self)
         self.region = region
         listener = RobotLogListener()
         listener.register_protected_keywords(
