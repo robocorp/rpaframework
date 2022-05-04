@@ -203,13 +203,15 @@ class Files:
 
         Automatically also creates a new worksheet with the name "Sheet".
 
-        **Note:** Must be paired with the `Save Workbook`_ keyword or the newly created workbook will be deleted upon Bot completion.
-        .. _Save Workbook: https://robocorp.com/docs/libraries/rpa-framework/rpa-excel-files/keywords#save-workbook
+        **Note:** Must be paired with the ``Save Workbook`` keyword
+        or the newly created workbook will be deleted upon Bot completion.
 
-        **Note:** The filename must be set in either the ``Create Workbook`` keyword or the ``Save Workbook`` keyword and must include the file extension
+        **Note:** The filename must be set in either the ``Create Workbook`` keyword
+        or the ``Save Workbook`` keyword and must include the file extension
 
         :param path: Save path for workbook; defaults to robot root if not provided
-        :param fmt:  Format of workbook, i.e. xlsx or xls; defaults to xlsx if not provided
+        :param fmt:  Format of workbook, i.e. xlsx or xls;
+                     Defaults to xlsx if not provided
 
         Examples:
 
@@ -228,7 +230,7 @@ class Files:
             Save workbook    orders.xls
 
             # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword 
+            # Note that the file name must be set in the Create Workbook keyword
             # if the path argument is used
             Create Workbook    path=${OUTPUT_DIR}${/}orders.xls    fmt=xls
             Save Workbook
@@ -251,7 +253,7 @@ class Files:
             lib.save_workbook("orders.xls")
 
             # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword 
+            # Note that the file name must be set in the Create Workbook keyword
             # if the path is used
             lib = Files()
             lib.create_workbook(path="./output/orders.xls", fmt="xls")
@@ -292,7 +294,8 @@ class Files:
             # Open workbook with only path provided
             Open Workbook    path/to/file.xlsx
 
-            # Open workbook with path provided and reading formulas in cells as the value stored
+            # Open workbook with path provided and reading formulas in cells
+            # as the value stored
             # Note: Can only be used with XLSX workbooks
             Open Workbook    path/to/file.xlsx    data_only=True
 
@@ -301,7 +304,8 @@ class Files:
             # Open workbook with only path provided
             lib.open_workbook(path="path/to/file.xlsx")
 
-            # Open workbook with path provided and reading formulas in cells as the value stored
+            # Open workbook with path provided and reading formulas in cells
+            # as the value stored
             # Note: Can only be used with XLSX workbooks
             lib.open_workbook(path="path/to/file.xlsx", data_only=True)
         """
@@ -314,12 +318,12 @@ class Files:
 
     def close_workbook(self):
         """Close the active workbook.
-        
+
         .. code-block:: robotframework
 
             # Close active workbook
             Close Workbook
-         
+
         .. code-block:: python
 
             # Close active workbook
@@ -341,20 +345,26 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Saving the active workbook to a new location/filename or saving to a new location/filename
-            # Note: You cannot use Save Workbook to convert from XLSX to XLS or vice-versa
+            # Saving the active workbook to a new location/filename or saving to
+            # a new location/filename
+            # Note: You cannot use Save Workbook to convert from XLSX to XLS
+            # or vice-versa
             Save Workbook   path=${OUTPUT_DIR}${/}orders.xlsx
 
-            # Saving the active workbook changes if location/filename were set in Create Workbook or Open Workbook
+            # Saving the active workbook changes if location/filename were set
+            # in Create Workbook or Open Workbook
             Save Workbook
 
         .. code-block:: python
-            # Saving the active workbook to a new location/filename or saving to a new location/filename
-            # Note: You cannot use Save Workbook to convert from XLSX to XLS or vice-versa
+            # Saving the active workbook to a new location/filename or saving to
+            # a new location/filename
+            # Note: You cannot use Save Workbook to convert from XLSX to XLS
+            # or vice-versa
             lib.save_workbook(path="./output/orders.xlsx")
 
-            # Saving the active workbook changes if location/filename were set in Create Workbook or Open Workbook
-            Save Workbook
+            # Saving the active workbook changes if location/filename were set
+            # in Create Workbook or Open Workbook
+            lib.save_workbook()
 
         """
         assert self.workbook, "No active workbook"
@@ -379,19 +389,19 @@ class Files:
 
     def list_worksheets(self):
         """List all names of worksheets in the given workbook.
-        
+
         .. code-block:: robotframework
             # List Worksheets will read the worksheet names into a list variable
-            # The variable should be declared with the List type "@" when being used 
+            # The variable should be declared with the List type "@" when being used
             # to store the sheet names from the List Worksets keyword
             @{sheets}=    List Worksheets
 
         .. code-block:: python
             # List Worksheets will read the worksheet names into a list variable
-            # The variable should be declared with the List type "@" when being used 
+            # The variable should be declared with the List type "@" when being used
             # to store the sheet names from the List Worksets keyword
             sheets = lib.list_worksheets()
-        
+
         """
         assert self.workbook, "No active workbook"
         return self.workbook.sheetnames
@@ -400,10 +410,11 @@ class Files:
         """Return True if worksheet with given name is in workbook.
 
         :param name: Name of worksheet you are looking for
-        
+
         .. code-block:: robotframework
-            # To use Worksheet Exists in a conditional statement set it to a variable first, 
-            # like you see here, and then compare the variable to ${TRUE} or ${FALSE}
+            # To use Worksheet Exists in a conditional statement set it to
+            # a variable first, like you see here, and then compare the
+            # variable to ${TRUE} or ${FALSE}
             ${Does_Worksheet_Exist}=    Worksheet Exists    Sheet
 
         .. code-block:: python
@@ -414,7 +425,7 @@ class Files:
 
     def get_active_worksheet(self):
         """Get the name of the worksheet which is currently active.
-        
+
         .. code-block:: robotframework
             ${Active_Worksheet}=    Get Active Worksheet
 
@@ -471,21 +482,33 @@ class Files:
             # Create a new blank worksheet named "Customers"
             Create Worksheet    Customers
 
-            # Create a new worksheet with headers and contents using a List of Dictonaries
+            # Create a new worksheet with headers and contents using
+            # a List of Dictonaries
             # Don't forget to `Save Workbook` once your changes are complete
             &{Employees_Row1}=    Create Dictionary    name=Mark    age=${58}
             &{Employees_Row2}=    Create Dictionary    name=John    age=${22}
             &{Employees_Row3}=    Create Dictionary    name=Adam    age=${67}
-            @{Worksheet_Data}=    Create List    ${Worksheet_Data_row1}    ${Worksheet_Data_row2}    ${Worksheet_Data_row3}
-            Create Worksheet    name=Employees    content=${Worksheet_Data}    header=True
+            @{Worksheet_Data}=    Create List
+            ...    ${Worksheet_Data_row1}
+            ...    ${Worksheet_Data_row2}
+            ...    ${Worksheet_Data_row3}
+            Create Worksheet
+            ...    name=Employees
+            ...    content=${Worksheet_Data}
+            ...    header=True
             Save Workbook
 
             # Create a new workseet using a Dictionary of Lists
             # Don't forget to `Save Workbook` once your changes are complete
             @{Employees_name}=    Create List    Mark    John    Adam
             @{Employees_age}=    Create List    ${58}    ${22}    ${67}
-            &{Worksheet_Data}=    Create Dictionary    name=${Worksheet_Data_name}    age=${Worksheet_Data_age}
-            Create Worksheet    name=Employees    content=${Worksheet_Data}    header=True
+            &{Worksheet_Data}=    Create Dictionary
+            ...    name=${Worksheet_Data_name}
+            ...    age=${Worksheet_Data_age}
+            Create Worksheet
+            ...    name=Employees
+            ...    content=${Worksheet_Data}
+            ...    header=True
             Save Workbook
 
         .. code-block:: python
@@ -500,8 +523,8 @@ class Files:
                 {"name": "Adam", "age": 67},
                 ]
             lib.create_worksheet(name="Employees",content=Worksheet_Data,header=True)
-            lib.save_workbook()         
-            
+            lib.save_workbook()
+
             # Create a new workseet using a Dictionary of Lists
             # Don't forget to `Save Workbook` once your changes are complete
             Worksheet_Data = {
@@ -525,15 +548,17 @@ class Files:
         Each key in the dictionary will be either values from the header row,
         or Excel-style column letters.
 
-        :param name:   Name of worksheet to read (optional). Defaults to the active worksheet.
+        :param name:   Name of worksheet to read (optional).
+                       Defaults to the active worksheet.
         :param header: If `True`, use the first row of the worksheet
                        as headers for the rest of the rows. Default is `False`.
-        :param start: Row index to start reading data from (1-indexed). Default value is row 1.
+        :param start: Row index to start reading data from (1-indexed).
+                      Default value is row 1.
 
         Examples:
 
         .. code-block:: robotframework
-            
+
             # The most simple form. Column keys will be Column letters.
             ${rows}=    Read Worksheet
 
@@ -544,7 +569,7 @@ class Files:
             ${rows}=    Read Worksheet     header=True    start=${3}
 
         .. code-block:: python
-            
+
             # The most simple form. Keys will be Column letters.
             rows = lib.read_worksheet()
 
@@ -561,11 +586,14 @@ class Files:
         """Read the contents of a worksheet into a Table container. Allows
         sorting/filtering/manipulating using the ``RPA.Tables`` library.
 
-        :param name:   Name of worksheet to read (optional). Defaults to the active worksheet.
+        :param name:   Name of worksheet to read (optional).
+                       Defaults to the active worksheet.
         :param header: If `True`, use the first row of the worksheet
                        as headers for the rest of the rows. Default value is False.
-        :param trim:   Remove all empty rows from the end of the worksheet. Default value is True.
-        :param start:  Row index to start reading data from (1-indexed). Default value is row 1.
+        :param trim:   Remove all empty rows from the end of the worksheet.
+                       Default value is True.
+        :param start:  Row index to start reading data from (1-indexed).
+                       Default value is row 1.
 
         Examples:
 
@@ -581,7 +609,7 @@ class Files:
             ${table}=    Read Worksheet As Table     header=True    start=${3}
 
         .. code-block:: python
-            
+
             # The most simple form. Keys will be Column letters.
             table = lib.read_worksheet_as_table()
 
@@ -599,7 +627,8 @@ class Files:
         """Append values to the end of the worksheet.
 
         :param content: Rows of values to append
-        :param name:    Name of worksheet to append to (optional). Defaults to the active worksheet.
+        :param name:    Name of worksheet to append to (optional).
+                        Defaults to the active worksheet.
         :param header:  Set rows according to existing header row
         :param start:   Start of data, NOTE: Only required when header is True
 
@@ -660,7 +689,8 @@ class Files:
     def remove_worksheet(self, name=None):
         """Remove a worksheet from the active workbook.
 
-        :param name: Name of worksheet to remove (optional). Defaults to the active worksheet.
+        :param name: Name of worksheet to remove (optional).
+                     Defaults to the active worksheet.
 
         Examples:
 
@@ -738,7 +768,7 @@ class Files:
             ${column1}=    Get cell value    1    A
             ${column2}=    Get cell value    1    B
             ${column3}=    Get cell value    1    C
-        
+
         .. code-block:: python
 
             # Read header names
@@ -768,7 +798,7 @@ class Files:
 
             # Set a value with cell formatting
             Set cell value    2    B    ${value}    fmt=0%
-        
+
         .. code-block:: python
 
             # Set a value in the first row and column
