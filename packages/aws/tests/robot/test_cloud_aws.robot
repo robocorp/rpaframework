@@ -3,7 +3,7 @@ Library         RPA.Cloud.AWS
 Force Tags      skip
 
 *** Variables ***
-${S3_BUCKET_NAME}  testresources
+${S3_BUCKET_NAME}    %{AWS_BUCKET=testresources}
 ${RESOURCES}    ${CURDIR}${/}..${/}resources
 
 *** Keywords ***
