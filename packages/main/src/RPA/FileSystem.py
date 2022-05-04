@@ -548,6 +548,14 @@ class FileSystem:
         """
         return str(Path(path).name)
 
+    def get_file_stem(self, path) -> str:
+        """Returns only the filename without its suffix.
+
+        :param path:    path to file
+        :return: filename without its suffix as a string
+        """
+        return str(Path(path).stem)
+
     def get_file_extension(self, path) -> str:
         """Returns the suffix for the file.
 
