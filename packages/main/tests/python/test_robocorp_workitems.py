@@ -23,7 +23,7 @@ from RPA.Robocorp.WorkItems import (
     State,
     WorkItems,
 )
-from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError
+from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError, set_dot_value
 
 from . import RESOURCES_DIR, RESULTS_DIR
 
@@ -714,13 +714,36 @@ class TestLibrary:
         library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
 
         library.get_input_work_item()
-        body = library.get_work_item_variable("parsedEmail")["Body"]
-        assert body == expected_body
+        parsed_email = library.get_work_item_variable("parsedEmail")
+        assert parsed_email["Body"] == expected_body
 
     def test_parse_work_item_from_email_missing_content(self, library):
         library.get_input_work_item()
         with pytest.raises(KeyError):
             library.get_work_item_variable("parsedEmail")
+
+    @pytest.mark.parametrize(
+        "email_var, is_file, body",
+        [
+            ("email.text", False, "A message from e-mail"),
+            ("__mail.html", True, "from email"),
+        ],
+    )
+    def test_parse_work_item_from_parsed_email(self, library, email_var, is_file, body):
+        if is_file:
+            email_content = (RESOURCES_DIR / "work-items" / email_var).read_bytes()
+            library.adapter.FILES["workitem-id-first"][email_var] = email_content
+        else:
+            payload = library.adapter.DATA["workitem-id-first"]
+            payload["email"] = {}
+            set_dot_value(payload, email_var, value=body)
+
+        library.get_input_work_item()
+        parsed_email = library.get_work_item_variable("parsedEmail")
+        email_parsed = library.get_work_item_variable("email")
+        assert parsed_email["Body"] == email_parsed["body"]
+        assert body in parsed_email["Body"]
+        assert body in email_parsed["body"]
 
 
 class TestFileAdapter:

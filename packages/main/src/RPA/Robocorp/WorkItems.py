@@ -14,18 +14,20 @@ from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
 import yaml
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
-
-from RPA.Email.ImapSmtp import ImapSmtp
-from RPA.FileSystem import FileSystem
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
-from .utils import (
+
+from RPA.Email.ImapSmtp import ImapSmtp
+from RPA.FileSystem import FileSystem
+from RPA.Robocorp.utils import (
     JSONType,
     Requests,
+    get_dot_value,
     is_json_equal,
     json_dumps,
     resolve_path,
+    set_dot_value,
     truncate,
     url_join,
 )
@@ -42,22 +44,6 @@ AUTO_PARSE_EMAIL_DEFAULT = {
     ("email.text", "__mail.html"): ("email.body", "parsedEmail.Body"),
     "rawEmail": "parsedEmail",
 }
-
-
-def get_dot_value(source: Dict, key: str) -> Any:
-    keys = key.split(".")
-    value = source
-    for _key in keys:
-        if not isinstance(value, dict):
-            return value
-        value = value.get(_key)
-    return value
-
-
-def set_dot_value(source: Dict, key: str, *, value: Any):
-    keys = key.rsplit(".", 1)
-    source = source if len(keys) == 1 else get_dot_value(source, keys[0])
-    source[keys[-1]] = value
 
 
 class State(Enum):
@@ -974,15 +960,15 @@ class WorkItems:
 
     @staticmethod
     def _interpret_content(body: str) -> Union[dict, str]:
-        loaders = [json.loads, yaml.full_load]
-        for loader in loaders:
+        loaders = {"JSON": json.loads, "YAML": yaml.full_load}
+        for name, loader in loaders.items():
             try:
                 body = loader(body)
             except Exception as exc:  # pylint: disable=broad-except
                 logging.debug(
                     "Failed deserializing input e-mail body content with loader %r "
                     "due to: %s",
-                    loader.__name__,
+                    name,
                     exc,
                 )
             else:
@@ -1022,31 +1008,6 @@ class WorkItems:
     def _parse_work_item_from_email(self):
         """Parse and return a dictionary from the input work item of a process started
         by e-mail trigger.
-
-        Since a process can be started in Control Room by sending an e-mail, a body
-        in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
-        input work item with the "rawEmail" payload variable. This method parses the
-        content of it and saves into "parsedEmail" the dictionary transformation of the
-        original e-mail.
-
-        Example:
-
-        After starting the process by sending an e-mail with a body like:
-
-        .. code-block:: json
-
-            {
-                "message": "Hello world!"
-            }
-
-        The robot can use the parsed e-mail body's dictionary:
-
-        .. code-block:: robotframework
-
-            ${mail} =    Get Work Item Variable    parsedEmail
-            Set Work Item Variables    &{mail}[Body]
-            ${message} =     Get Work Item Variable     message
-            Log    ${message}  # will print "Hello world!"
         """
         if not self._auto_parse_email:
             return  # auto e-mail parsing disabled
@@ -1150,8 +1111,8 @@ class WorkItems:
         self.inputs.append(item)
         self.current = item
 
-        # Checks for raw e-mail content and parses it if present. This happens with
-        # processes triggered by e-mail.
+        # Checks for raw/parsed e-mail content and parses it if present. This happens
+        # with Processes triggered by e-mail.
         self._parse_work_item_from_email()
 
         return self.current

@@ -10,6 +10,9 @@
         "payload": {
             "workspace": "Another example workspace",
             "user_id": "Another example user id"
+        },
+        "files": {
+            "__mail.html": "__mail.html"
         }
     },
     {
