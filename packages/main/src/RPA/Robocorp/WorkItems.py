@@ -32,7 +32,10 @@ from .utils import (
 
 
 UNDEFINED = object()  # Undefined default value
-AUTO_PARSE_EMAIL_TYPE = Optional[Dict[Union[str, Tuple[str]], Union[str, Tuple[str]]]]
+ENCODING = "utf-8"
+
+_STRINGS_TYPE = Union[str, Tuple[str, ...]]
+AUTO_PARSE_EMAIL_TYPE = Optional[Dict[_STRINGS_TYPE, _STRINGS_TYPE]]
 AUTO_PARSE_EMAIL_DEFAULT = {
     # Source payload keys or file names -> destination payload keys with the parsed
     # e-mail content.
@@ -476,7 +479,7 @@ class FileAdapter(BaseAdapter):
             path = self.output_path
             data = self.outputs
 
-        with open(path, "w", encoding="utf-8") as fd:
+        with open(path, "w", encoding=ENCODING) as fd:
             fd.write(json_dumps(data, indent=4))
 
         logging.info("Saved into %s file: %s", source, path)
@@ -546,7 +549,7 @@ class FileAdapter(BaseAdapter):
     def load_database(self) -> List:
         try:
             try:
-                with open(self.input_path, "r", encoding="utf-8") as infile:
+                with open(self.input_path, "r", encoding=ENCODING) as infile:
                     data = json.load(infile)
             except (TypeError, FileNotFoundError):
                 logging.warning("No input work items file found: %s", self.input_path)
@@ -994,13 +997,24 @@ class WorkItems:
         to_tuple = (
             lambda keys: keys if isinstance(keys, tuple) else (keys,)
         )  # noqa: E731
+        file_list = self.list_work_item_files()
         for input_keys, output_keys in self._auto_parse_email.items():
             input_keys = to_tuple(input_keys)
             for input_key in input_keys:
                 content = get_dot_value(variables, input_key)
-                # TODO(cmin764): Look into files as well if the variable isn't found.
+                if not content and input_key in file_list:
+                    path = Path(self.get_work_item_file(input_key))
+                    content = path.read_text(encoding=ENCODING)
+                    path.unlink()
                 if content:
                     parsed = not input_key == "rawEmail"
+                    if not parsed:
+                        deprecation(
+                            "Legacy non-parsed e-mail trigger detected! Please enable "
+                            '"Parse email" configuration option in Control Room. (more'
+                            " details: https://robocorp.com/docs/control-room/attended"
+                            "-or-unattended/email-trigger#parse-email)"
+                        )
                     output_keys = to_tuple(output_keys)
                     return content, parsed, output_keys
         return None
@@ -1042,10 +1056,11 @@ class WorkItems:
         except ValueError:
             return  # payload not a dictionary
 
-        content, parsed, output_keys = self._get_email_content(variables)
-        if not content:
+        content_details = self._get_email_content(variables)
+        if not content_details:
             return  # no e-mail content found in the work item
 
+        content, parsed, output_keys = content_details
         if parsed:  # With "Parse email" Control Room configuration option enabled.
             email_data = self._interpret_content(content)
         else:  # With "Parse email" Control Room configuration option disabled.
