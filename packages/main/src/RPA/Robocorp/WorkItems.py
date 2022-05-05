@@ -14,24 +14,36 @@ from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
 import yaml
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
-
-from RPA.Email.ImapSmtp import ImapSmtp
-from RPA.FileSystem import FileSystem
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
-from .utils import (
+
+from RPA.Email.ImapSmtp import ImapSmtp
+from RPA.FileSystem import FileSystem
+from RPA.Robocorp.utils import (
     JSONType,
     Requests,
+    get_dot_value,
     is_json_equal,
     json_dumps,
     resolve_path,
+    set_dot_value,
     truncate,
     url_join,
 )
 
 
 UNDEFINED = object()  # Undefined default value
+ENCODING = "utf-8"
+
+_STRINGS_TYPE = Union[str, Tuple[str, ...]]
+AUTO_PARSE_EMAIL_TYPE = Optional[Dict[_STRINGS_TYPE, _STRINGS_TYPE]]
+AUTO_PARSE_EMAIL_DEFAULT = {
+    # Source payload keys or file names -> destination payload keys with the parsed
+    # e-mail content.
+    ("email.text", "__mail.html"): ("email.body", "parsedEmail.Body"),
+    "rawEmail": "parsedEmail",
+}
 
 
 class State(Enum):
@@ -453,7 +465,7 @@ class FileAdapter(BaseAdapter):
             path = self.output_path
             data = self.outputs
 
-        with open(path, "w", encoding="utf-8") as fd:
+        with open(path, "w", encoding=ENCODING) as fd:
             fd.write(json_dumps(data, indent=4))
 
         logging.info("Saved into %s file: %s", source, path)
@@ -523,7 +535,7 @@ class FileAdapter(BaseAdapter):
     def load_database(self) -> List:
         try:
             try:
-                with open(self.input_path, "r", encoding="utf-8") as infile:
+                with open(self.input_path, "r", encoding=ENCODING) as infile:
                     data = json.load(infile)
             except (TypeError, FileNotFoundError):
                 logging.warning("No input work items file found: %s", self.input_path)
@@ -738,10 +750,20 @@ class WorkItems:
     **E-mail triggering**
 
     Since a process can be started in Control Room by sending an e-mail, a body
-    in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
-    input work item with the "rawEmail" payload variable. This library automatically
-    parses the content of it and saves into "parsedEmail" the dictionary transformation
-    of the original e-mail.
+    in Text/JSON/YAML/HTML format can be sent as well and this gets attached to the
+    input work item with the ``rawEmail`` payload variable. This library automatically
+    parses the content of it and saves into ``parsedEmail`` the dictionary
+    transformation of the original e-mail.
+
+    If "Parse email" Control Room configuration option is enabled (recommended), then
+    your e-mail is automatically parsed in the work item under the ``email`` payload
+    variable, which is a dictionary containing a ``body`` holding the final parsed form
+    of the interpreted e-mail body. The payload variable ``parsedEmail`` is still
+    available for backwards compatibility reasons and holds the very same body inside
+    the ``parsedEmail[Body]``.
+
+    E-mail attachments will be added into the work item as files. Read more on:
+    https://robocorp.com/docs/control-room/attended-or-unattended/email-trigger
 
     Example:
 
@@ -757,17 +779,18 @@ class WorkItems:
 
     .. code-block:: robotframework
 
-        ${mail} =    Get Work Item Variable    parsedEmail
-        Set Work Item Variables    &{mail}[Body]
+        ${mail} =    Get Work Item Variable    email
+        Set Work Item Variables    &{mail}[body]
         ${message} =     Get Work Item Variable     message
         Log    ${message}  # will print "Hello world!"
 
     The behaviour can be disabled by loading the library with
     ``auto_parse_email=${None}`` or altered by providing to it a dictionary with one
-    "key: value" where the key is usually "rawEmail" (the variable set by Control Room,
-    which acts as source for the raw e-mail data) and the value is "parsedEmail" by
-    default (where the parsed e-mail dictionary gets stored into), value which can be
-    customized and retrieved with ``Get Work Item Variable``.
+    "key: value" where the key is usually "email.text" (deprecated "rawEmail", the
+    variable set by Control Room, which acts as source for the parsed (deprecated raw)
+    e-mail data) and the value can be "email.body" (deprecated "parsedEmail", where the
+    parsed e-mail data gets stored into), value which can be customized and retrieved
+    with ``Get Work Item Variable``.
 
     **Creating outputs**
 
@@ -884,13 +907,18 @@ class WorkItems:
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 2
 
+    EMAIL_BODY_LOADERS = [
+        ("JSON", json.loads),
+        ("YAML", yaml.full_load),
+    ]
+
     def __init__(
         self,
         autoload: bool = True,
         root: Optional[str] = None,
         default_adapter: Union[Type[BaseAdapter], str] = RobocorpAdapter,
         # pylint: disable=dangerous-default-value
-        auto_parse_email: Optional[Dict[str, str]] = {"rawEmail": "parsedEmail"},
+        auto_parse_email: AUTO_PARSE_EMAIL_TYPE = AUTO_PARSE_EMAIL_DEFAULT,
     ):
         self.ROBOT_LIBRARY_LISTENER = self
 
@@ -946,17 +974,16 @@ class WorkItems:
 
         return adapter
 
-    @staticmethod
-    def _interpret_content(body: str) -> Union[dict, str]:
-        loaders = [json.loads, yaml.full_load]
-        for loader in loaders:
+    @classmethod
+    def _interpret_content(cls, body: str) -> Union[dict, str]:
+        for name, loader in cls.EMAIL_BODY_LOADERS:
             try:
                 body = loader(body)
             except Exception as exc:  # pylint: disable=broad-except
                 logging.debug(
                     "Failed deserializing input e-mail body content with loader %r "
                     "due to: %s",
-                    loader.__name__,
+                    name,
                     exc,
                 )
             else:
@@ -964,35 +991,38 @@ class WorkItems:
 
         return body
 
+    def _get_email_content(
+        self, variables: Dict
+    ) -> Optional[Tuple[str, bool, Tuple[str]]]:
+        # Returns the extracted e-mail [parsed] content and its payload destination.
+        to_tuple = (
+            lambda keys: keys if isinstance(keys, tuple) else (keys,)
+        )  # noqa: E731
+        file_list = self.list_work_item_files()
+        for input_keys, output_keys in self._auto_parse_email.items():
+            input_keys = to_tuple(input_keys)
+            for input_key in input_keys:
+                content = get_dot_value(variables, input_key)
+                if not content and input_key in file_list:
+                    path = Path(self.get_work_item_file(input_key))
+                    content = path.read_text(encoding=ENCODING)
+                    path.unlink()
+                if content:
+                    parsed = not input_key == "rawEmail"
+                    if not parsed:
+                        deprecation(
+                            "Legacy non-parsed e-mail trigger detected! Please enable "
+                            '"Parse email" configuration option in Control Room. (more'
+                            " details: https://robocorp.com/docs/control-room/attended"
+                            "-or-unattended/email-trigger#parse-email)"
+                        )
+                    output_keys = to_tuple(output_keys)
+                    return content, parsed, output_keys
+        return None
+
     def _parse_work_item_from_email(self):
-        """Parse and return a dictionary from the input work item of a process started
-        by e-mail trigger.
-
-        Since a process can be started in Control Room by sending an e-mail, a body
-        in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
-        input work item with the "rawEmail" payload variable. This method parses the
-        content of it and saves into "parsedEmail" the dictionary transformation of the
-        original e-mail.
-
-        Example:
-
-        After starting the process by sending an e-mail with a body like:
-
-        .. code-block:: json
-
-            {
-                "message": "Hello world!"
-            }
-
-        The robot can use the parsed e-mail body's dictionary:
-
-        .. code-block:: robotframework
-
-            ${mail} =    Get Work Item Variable    parsedEmail
-            Set Work Item Variables    &{mail}[Body]
-            ${message} =     Get Work Item Variable     message
-            Log    ${message}  # will print "Hello world!"
-        """
+        # Parse and return a dictionary from the input work item of a process started
+        #  by e-mail trigger.
         if not self._auto_parse_email:
             return  # auto e-mail parsing disabled
 
@@ -1001,22 +1031,31 @@ class WorkItems:
         except ValueError:
             return  # payload not a dictionary
 
-        for input_key, output_key in self._auto_parse_email.items():
-            raw_email = variables.get(input_key)
-            if raw_email:
-                break
-        else:
+        content_details = self._get_email_content(variables)
+        if not content_details:
             return  # no e-mail content found in the work item
 
-        # pylint: disable=no-member
-        message = email.message_from_string(raw_email)
-        body, _ = ImapSmtp().get_decoded_email_body(message)
-        body = self._interpret_content(body)
-        message_dict = dict(message.items())
-        message_dict["Body"] = body
+        content, parsed, output_keys = content_details
+        if parsed:  # With "Parse email" Control Room configuration option enabled.
+            email_data = self._interpret_content(content)
+        else:  # With "Parse email" Control Room configuration option disabled.
+            # pylint: disable=no-member
+            message = email.message_from_string(content)
+            message_dict = dict(message.items())
+            body, has_attachments = ImapSmtp().get_decoded_email_body(message)
+            message_dict["Body"] = self._interpret_content(body)
+            message_dict["Has-Attachments"] = has_attachments
+            email_data = message_dict
 
-        # pylint: disable=undefined-loop-variable
-        self.set_work_item_variable(output_key, message_dict)
+        for output_key in output_keys:
+            keys = output_key.split(".", 1)
+            parsed_email = self.get_work_item_variable(keys[0], default={})
+            if len(keys) == 2:
+                set_dot_value(parsed_email, keys[1], value=email_data)
+            else:
+                parsed_email = email_data
+            # pylint: disable=undefined-loop-variable
+            self.set_work_item_variable(keys[0], parsed_email)
 
     def _start_suite(self, data, result):
         """Robot Framework listener method, called when suite starts."""
@@ -1087,8 +1126,8 @@ class WorkItems:
         self.inputs.append(item)
         self.current = item
 
-        # Checks for raw e-mail content and parses it if present. This happens with
-        # processes triggered by e-mail.
+        # Checks for raw/parsed e-mail content and parses it if present. This happens
+        # with Processes triggered by e-mail.
         self._parse_work_item_from_email()
 
         return self.current

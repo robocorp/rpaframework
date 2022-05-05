@@ -1,67 +1,72 @@
 *** Settings ***
-Documentation     API keys and variables must be provided in ``./testvars.py``. These should use a live or
-...               sandbox Hubspot environment to test the API, there is no mocking function.
+Documentation       API keys and variables must be provided in ``./testvars.py``. These should use a live or
+...                 sandbox Hubspot environment to test the API, there is no mocking function.
 ...
-...               The ``testvars.py`` should be built like so (example values provided, these will
-...               need to be replaced with IDs and data from HubSpot):
+...                 The ``testvars.py`` should be built like so (example values provided, these will
+...                 need to be replaced with IDs and data from HubSpot):
 ...
-...               |    # API key for all tests.
-...               |    API_KEY = "not-a-real-hubspot-api-key"
-...               |    ACCESS_TOKEN = "pat-na1-not-a-real-hubspot-auth-token"
-...               |
-...               |    # Contact/object lookup tests.
-...               |    FIRST_NAME = "John"
-...               |    LAST_NAME = "Smith"
-...               |    FIRST_NAME_2 = "Alice"
-...               |    CONTACT_EMAILS = ["john@example.com", "alice@example.com"]
-...               |    CONTACT_ID = "1234"
-...               |
-...               |    # Get One Object test
-...               |    OBJECT_ID = 4567
-...               |    COMPANY_ID = 123456789
-...               |
-...               |    # Batch tests
-...               |    OBJECT_IDS = [4567, 987654]
-...               |    EXPECTED_ASSOCIATION_MAP = {"4567": "123456789", "65478": "987654321"}
-...               |    EXPECTED_EMAILS = ["john@example.com", "alice@example.com"]
-...               |
-...               |    # Get Custom Object with Custom ID property test
-...               |    CUSTOM_OBJ_ID = "123456-8ef6-4af3-9c10-8798a532f"
-...               |    ID_PROPERTY = "organization_id"
-...               |    CUSTOM_OBJECT_TYPE = "Organization"
-...               |
-...               |    # Pipeline tests.
-...               |    PIPELINE_LABEL = "Self-Service Pipeline"
-...               |    EXPECTED_STAGE_ORDER = (
-...               |    "Free",
-...               |    "Pro",
-...               |    "Closed lost",
-...               |    )
-...               |    TEST_DEAL = 123456789
-...               |    EXPECTED_STAGE = "Contract Signed"
-...               |
-...               |    # User provisioning tests.
-...               |    USER_ID = "2456789"
-...               |    USER_EMAIL = "john@example.com"
-...               |
-...               |    # Owner lookup tests.
-...               |    OWNER_ID = "123654987"
-...               |    OWNER_EMAIL = "john@example.com"
-...               |    COMPANY_WITH_OWNER_ID = "123456789"
-...               |    EXPECTED_COMPANY_OWNER = "987456123"
-...               |
-...               |    CUSTOM_OWNER_PROPERTY = "customer_success_contact"
-...               |    COMPANY_ID_WITH_CUSTOM_OWNER = "123456789"
-...               |    EXPECTED_CUSTOM_OWNER = "123654987"
-Library           RPA.Hubspot
-Library           Collections
-Variables         ./hubspot_testvars.py
-Force Tags        hubspot
+...                 |    # API key for all tests.
+...                 |    API_KEY = "not-a-real-hubspot-api-key"
+...                 |    ACCESS_TOKEN = "pat-na1-not-a-real-hubspot-auth-token"
+...                 |
+...                 |    # Contact/object lookup tests.
+...                 |    FIRST_NAME = "John"
+...                 |    LAST_NAME = "Smith"
+...                 |    FIRST_NAME_2 = "Alice"
+...                 |    CONTACT_EMAILS = ["john@example.com", "alice@example.com"]
+...                 |    CONTACT_ID = "1234"
+...                 |
+...                 |    # Get One Object test
+...                 |    OBJECT_ID = 4567
+...                 |    COMPANY_ID = 123456789
+...                 |
+...                 |    # Batch tests
+...                 |    OBJECT_IDS = [4567, 987654]
+...                 |    EXPECTED_ASSOCIATION_MAP = {"4567": "123456789", "65478": "987654321"}
+...                 |    EXPECTED_EMAILS = ["john@example.com", "alice@example.com"]
+...                 |
+...                 |    # Get Custom Object with Custom ID property test
+...                 |    CUSTOM_OBJ_ID = "123456-8ef6-4af3-9c10-8798a532f"
+...                 |    ID_PROPERTY = "organization_id"
+...                 |    CUSTOM_OBJECT_TYPE = "Organization"
+...                 |
+...                 |    # Pipeline tests.
+...                 |    PIPELINE_LABEL = "Self-Service Pipeline"
+...                 |    EXPECTED_STAGE_ORDER = (
+...                 |    "Free",
+...                 |    "Pro",
+...                 |    "Closed lost",
+...                 |    )
+...                 |    TEST_DEAL = 123456789
+...                 |    EXPECTED_STAGE = "Contract Signed"
+...                 |
+...                 |    # User provisioning tests.
+...                 |    USER_ID = "2456789"
+...                 |    USER_EMAIL = "john@example.com"
+...                 |
+...                 |    # Owner lookup tests.
+...                 |    OWNER_ID = "123654987"
+...                 |    OWNER_EMAIL = "john@example.com"
+...                 |    COMPANY_WITH_OWNER_ID = "123456789"
+...                 |    EXPECTED_COMPANY_OWNER = "987456123"
+...                 |
+...                 |    CUSTOM_OWNER_PROPERTY = "customer_success_contact"
+...                 |    COMPANY_ID_WITH_CUSTOM_OWNER = "123456789"
+...                 |    EXPECTED_CUSTOM_OWNER = "123654987"
+
+Library             RPA.Hubspot
+Library             Collections
+Library             String
+Variables           ./hubspot_testvars.py
+
+Force Tags          hubspot
+
 
 *** Variables ***
-${NOT_AUTHENTICATED_ERROR}    STARTS:HubSpotAuthenticationError:
-${AUTHENTICATION_FAILED}    HubSpotAuthenticationError: Authentication was not successful.
-${HUBSPOT_TYPE_ERROR}    STARTS:HubSpotObjectTypeError:
+${NOT_AUTHENTICATED_ERROR}      STARTS:HubSpotAuthenticationError:
+${AUTHENTICATION_FAILED}        HubSpotAuthenticationError: Authentication was not successful.
+${HUBSPOT_TYPE_ERROR}           STARTS:HubSpotObjectTypeError:
+
 
 *** Tasks ***
 Search for objects should fail without authentication
@@ -240,6 +245,57 @@ Induce Rate Limit Error and Ensure Good results
     Should Contain Match    ${{[c.properties["lastname"] for c in $contacts]}}    ${LAST_NAME}
     ...    case_insensitive=${True}
 
+Create random company
+    Check If Variable File Exists
+    Auth with API key    ${API_KEY}
+    ${random_name}    ${random_description}=    Generate random name and description
+    ${new_object}=    Create object    COMPANY    name=${random_name}    description=${random_description}
+    Should be equal as strings    ${random_name}    ${new_object.properties}[name]
+    Should be equal as strings    ${random_description}    ${new_object.properties}[description]
+
+Set company number of employees to random number
+    Check If Variable File Exists
+    Auth with API key    ${API_KEY}
+    ${random_number}=    Generate random string    3    [NUMBERS]
+    ${updated_object}=    Update object    COMPANY    ${COMPANY_ID}    numberofemployees=${random_number}
+    Should be equal as integers    ${random_number}    ${updated_object.properties}[numberofemployees]
+
+Create random companies by batch
+    Check If Variable File Exists
+    Auth with API key    ${API_KEY}
+    Create new batch    COMPANY    CREATE
+    ${random_name1}    ${random_description1}=    Generate random name and description
+    Add input to batch    name=${random_name1}    description=${random_description1}
+    ${random_name2}    ${random_description2}=    Generate random name and description
+    Add input to batch    name=${random_name2}    description=${random_description2}
+    ${new_companies}=    Execute batch
+    ${names}=    Create list    ${random_name1}    ${random_name2}
+    ${descriptions}=    Create list    ${random_description1}    ${random_description2}
+    FOR    ${company}    IN    @{new_companies}
+        Should contain    ${names}    ${company.properties}[name]
+        Should contain    ${descriptions}    ${company.properties}[description]
+    END
+
+Create two hundred random companies by batch
+    Check If Variable File Exists
+    Auth with API key    ${API_KEY}
+    Create new batch    COMPANY    CREATE
+    ${properties_for_batch}=    Create list
+    FOR    ${counter}    IN RANGE    200
+        ${random_name}    ${random_description}=    Generate random name and description
+        ${properties}=    Create dictionary    name=${random_name}    description=${random_description}
+        Append to list    ${properties_for_batch}    ${properties}
+    END
+    Extend batch with inputs    ${properties_for_batch}
+    ${new_companies}=    Execute batch
+    ${all_names}=    Evaluate    [p["name"] for p in $properties_for_batch]
+    ${all_descriptions}=    Evaluate    [p["description"] for p in $properties_for_batch]
+    FOR    ${company}    IN    @{new_companies}
+        Should contain    ${all_names}    ${company.properties}[name]
+        Should contain    ${all_descriptions}    ${company.properties}[description]
+    END
+
+
 *** Keywords ***
 Check If Variable File Exists
     ${result}    ${_}=    Run keyword and ignore error    Variable Should Exist    ${API_KEY}
@@ -248,3 +304,8 @@ Check If Variable File Exists
         Log    ${message}    level=WARN
         Skip    ${message}
     END
+
+Generate random name and description
+    ${random_name}=    Generate random string    8    [LETTERS]
+    ${random_description}=    Generate random string    20    chars=\ [LETTERS]
+    [Return]    ${random_name}    ${random_description}
