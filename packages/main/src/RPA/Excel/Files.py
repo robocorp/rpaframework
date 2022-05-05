@@ -748,7 +748,7 @@ class Files:
 
         .. code-block:: python
 
-            next = lib.find_mpty_row()
+            next = lib.find_empty_row()
         """
         assert self.workbook, "No active workbook"
         return self.workbook.find_empty_row(name)
