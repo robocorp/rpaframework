@@ -1096,6 +1096,11 @@ class XlsWorkbook:
             book._Workbook__worksheets = [
                 sheet for sheet in book._Workbook__worksheets if sheet.name != name
             ]
+            book._Workbook__active_sheet = next(
+                idx
+                for idx, sheet in enumerate(book._Workbook__worksheets)
+                if sheet.name == self.active
+            )
 
     def rename_worksheet(self, title, name=None):
         title = str(title)
