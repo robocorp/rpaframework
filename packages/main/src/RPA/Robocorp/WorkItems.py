@@ -1006,9 +1006,8 @@ class WorkItems:
         return None
 
     def _parse_work_item_from_email(self):
-        """Parse and return a dictionary from the input work item of a process started
-        by e-mail trigger.
-        """
+        # Parse and return a dictionary from the input work item of a process started
+        #  by e-mail trigger.
         if not self._auto_parse_email:
             return  # auto e-mail parsing disabled
 

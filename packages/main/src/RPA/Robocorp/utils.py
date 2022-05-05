@@ -82,8 +82,9 @@ def get_dot_value(source: Dict, key: str) -> Any:
 
 def set_dot_value(source: Dict, key: str, *, value: Any):
     """Sets the end `value` into `source` dictionary given `key` destination."""
-    keys = key.rsplit(".", 1)
-    source = source if len(keys) == 1 else get_dot_value(source, keys[0])
+    keys = key.rsplit(".", 1)  # one or at most two parts
+    if len(keys) == 2:
+        source = get_dot_value(source, keys[0])
     source[keys[-1]] = value
 
 
