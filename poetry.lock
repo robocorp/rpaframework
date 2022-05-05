@@ -135,14 +135,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.22.4"
+version = "1.22.7"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.25.4,<1.26.0"
+botocore = ">=1.25.7,<1.26.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -151,7 +151,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.25.4"
+version = "1.25.7"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -401,7 +401,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.46.0"
+version = "2.47.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -1715,7 +1715,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "2.0.0"
+version = "2.0.1"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
@@ -2413,12 +2413,12 @@ black = [
     {file = "black-22.3.0.tar.gz", hash = "sha256:35020b8886c022ced9282b51b5a875b6d1ab0c387b31a065b84db7c33085ca79"},
 ]
 boto3 = [
-    {file = "boto3-1.22.4-py3-none-any.whl", hash = "sha256:13fe18ecefe342d2fe50ae7b4305d7423ec6e96bfaef19bc2f14212877a67727"},
-    {file = "boto3-1.22.4.tar.gz", hash = "sha256:71019d49562112bcf8c2e5c183f3cca263edf02785e6a2c5f98ee104927cbb44"},
+    {file = "boto3-1.22.7-py3-none-any.whl", hash = "sha256:de4fa49ca1cbc93313144e93e6d0997cbb61c8cca91f3418b4e3646dc215f441"},
+    {file = "boto3-1.22.7.tar.gz", hash = "sha256:4dc0df36c3465ff0d586017da68b0152123695f38f30ad98fed7185e59298d2c"},
 ]
 botocore = [
-    {file = "botocore-1.25.4-py3-none-any.whl", hash = "sha256:0a7b56eda54af6cb210894113f59fb0e2aaf07893d839de292d9c7b07f626dde"},
-    {file = "botocore-1.25.4.tar.gz", hash = "sha256:71cf60ccb024d3c925424d28eba9ca953fc13f36a345dca177b080971ed1141a"},
+    {file = "botocore-1.25.7-py3-none-any.whl", hash = "sha256:83da857c12fff5cf4c1a64afaa72a28ff5bef929a2834ec4ed5b0b674f88fd0e"},
+    {file = "botocore-1.25.7.tar.gz", hash = "sha256:190361776d96323ff401b976175f76172acf7ebbe3efbb19c4c6f9800a9ad6b6"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2565,8 +2565,8 @@ google-api-core = [
     {file = "google_api_core-2.7.3-py3-none-any.whl", hash = "sha256:bb40d2d6412c77c367943b88d08323091d724deaea96892fff4a1ebd06f6e5be"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.46.0.tar.gz", hash = "sha256:ba41ce1da337d39d76da1c5affea6e0b95bb6da74aa2adfe5a40618dd67a01fe"},
-    {file = "google_api_python_client-2.46.0-py2.py3-none-any.whl", hash = "sha256:1a7a954fdb778c77ad2a7b28c8e5f4b8761728aca89f5a017e05abd92814b6e9"},
+    {file = "google-api-python-client-2.47.0.tar.gz", hash = "sha256:b5201be41304b730e697824d84b24d3a404bd4b9b0fd3e94dcd30599fd642641"},
+    {file = "google_api_python_client-2.47.0-py2.py3-none-any.whl", hash = "sha256:44492f8abf87e8316a699a8ce2d6370b69538edbcd028b8defaae74eeeaebadc"},
 ]
 google-auth = [
     {file = "google-auth-2.6.6.tar.gz", hash = "sha256:1ba4938e032b73deb51e59c4656a00e0939cf0b1112575099f136babb4563312"},
@@ -3540,8 +3540,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework-aws-2.0.0.tar.gz", hash = "sha256:025e4be7cdad685862f347b0fc8e4696e1ce8d8e4b9e80abdf450850d1423d9e"},
-    {file = "rpaframework_aws-2.0.0-py3-none-any.whl", hash = "sha256:8cccd965a6dd8980ffde96b6791032191622b6d868264dbf66779f98465f8579"},
+    {file = "rpaframework-aws-2.0.1.tar.gz", hash = "sha256:304f4c2c13b9c54ca441bcf3038804c48677a0dcc79e2eee165a9f04726468d5"},
+    {file = "rpaframework_aws-2.0.1-py3-none-any.whl", hash = "sha256:45e31e3c012fe79104681f6060089f7ce10cb3253afbd7611ec1d90fba6a0506"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-8.0.0.tar.gz", hash = "sha256:75f63a3e8cf327eb4b606050826274f9d622ee2009e5351ee46aaa4b1a40510d"},
