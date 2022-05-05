@@ -8,7 +8,7 @@ python-versions = "*"
 
 [[package]]
 name = "amazon-textract-response-parser"
-version = "0.1.29"
+version = "0.1.30"
 description = "Easily parse JSON returned by Amazon Textract."
 category = "main"
 optional = true
@@ -616,7 +616,7 @@ six = "*"
 
 [[package]]
 name = "jsonschema"
-version = "4.4.0"
+version = "4.5.0"
 description = "An implementation of JSON Schema validation for Python"
 category = "main"
 optional = false
@@ -2090,8 +2090,8 @@ alabaster = [
     {file = "alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
 ]
 amazon-textract-response-parser = [
-    {file = "amazon-textract-response-parser-0.1.29.tar.gz", hash = "sha256:453236ae3cb204e43915ba7b98870befcf47f8a9967bafa7f67ec5b8452b7dcd"},
-    {file = "amazon_textract_response_parser-0.1.29-py2.py3-none-any.whl", hash = "sha256:f4f117a732abc3c902c0c8256c5da34910a0d3535f08dbd63037ac8b8c2b3a9e"},
+    {file = "amazon-textract-response-parser-0.1.30.tar.gz", hash = "sha256:e70f602ded8bd1f4a274bcb2cb6234078d20bace55afcc67f500a6bbc40f6e19"},
+    {file = "amazon_textract_response_parser-0.1.30-py2.py3-none-any.whl", hash = "sha256:eaf2c9ed0c6b1a719d79cdc3910fe3a94da2b4759de680ca573cc9a53e97cc1e"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -2517,8 +2517,8 @@ jsonpath-ng = [
     {file = "jsonpath_ng-1.5.3-py3-none-any.whl", hash = "sha256:292a93569d74029ba75ac2dc3d3630fc0e17b2df26119a165fa1d498ca47bf65"},
 ]
 jsonschema = [
-    {file = "jsonschema-4.4.0-py3-none-any.whl", hash = "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"},
-    {file = "jsonschema-4.4.0.tar.gz", hash = "sha256:636694eb41b3535ed608fe04129f26542b59ed99808b4f688aa32dcf55317a83"},
+    {file = "jsonschema-4.5.0-py3-none-any.whl", hash = "sha256:71440faf604ccc4958f0a54fad16fa24e4977256f9666a21e8ad59a5447bd0b0"},
+    {file = "jsonschema-4.5.0.tar.gz", hash = "sha256:19462141d4efb2d8046cd4a7076126c5bdb1dd04f6fb9129b46b4b8f7b0de355"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.7.1.tar.gz", hash = "sha256:d609c75b986def706743cdebe5e47553f4a5a1da9c5ff66d76013ef396b5a8a4"},
