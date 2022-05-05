@@ -289,15 +289,12 @@ class BatchInputFactory:
     def __init__(
         self,
         mode: BatchMode = BatchMode.INVALID,
-        object_type: str = None,
-        inputs: List = None,
+        object_type: Optional[str] = None,
+        inputs: Optional[List] = None,
     ) -> None:
         self._mode = mode
-        self._object_type = object_type
-        if inputs:
-            self._inputs = inputs
-        else:
-            self._inputs = []
+        self.object_type = object_type
+        self._inputs = inputs or []
 
     def __len__(self) -> int:
         return len(self.inputs)
@@ -309,20 +306,8 @@ class BatchInputFactory:
 
     @mode.setter
     def mode(self, mode: BatchMode):
-        if mode not in [BatchMode.UPDATE, BatchMode.CREATE]:
-            self._mode = BatchMode.INVALID
-
-    @property
-    def object_type(self) -> str:
-        """The Hubspot object type this batch input will affect. This
-        class does not validate the provided object type, that must be
-        done by the caller.
-        """
-        return self._object_type
-
-    @object_type.setter
-    def object_type(self, object_type: str):
-        self._object_type = object_type
+        if not isinstance(mode, BatchMode):
+            self._mode = BatchMode(mode)
 
     @property
     def inputs(self) -> Union[List[CreateObjectInput], List[UpdateObjectInput]]:
@@ -391,11 +376,10 @@ class BatchInputFactory:
         in such a case.
         """
         if ids:
-            if len(ids) > 0:
-                self._prevent_mode_change_with_inputs(BatchMode.UPDATE)
-                new_inputs = [UpdateObjectInput(p, i) for p, i in zip(properties, ids)]
-                if self.mode is BatchMode.INVALID:
-                    self.mode = BatchMode.UPDATE
+            self._prevent_mode_change_with_inputs(BatchMode.UPDATE)
+            new_inputs = [UpdateObjectInput(p, i) for p, i in zip(properties, ids)]
+            if self.mode is BatchMode.INVALID:
+                self.mode = BatchMode.UPDATE
         else:
             self._prevent_mode_change_with_inputs(BatchMode.CREATE)
             new_inputs = [CreateObjectInput(p) for p in properties]
