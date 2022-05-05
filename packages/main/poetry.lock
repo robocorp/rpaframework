@@ -616,7 +616,7 @@ six = "*"
 
 [[package]]
 name = "jsonschema"
-version = "4.4.0"
+version = "4.5.0"
 description = "An implementation of JSON Schema validation for Python"
 category = "main"
 optional = false
@@ -2517,8 +2517,8 @@ jsonpath-ng = [
     {file = "jsonpath_ng-1.5.3-py3-none-any.whl", hash = "sha256:292a93569d74029ba75ac2dc3d3630fc0e17b2df26119a165fa1d498ca47bf65"},
 ]
 jsonschema = [
-    {file = "jsonschema-4.4.0-py3-none-any.whl", hash = "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"},
-    {file = "jsonschema-4.4.0.tar.gz", hash = "sha256:636694eb41b3535ed608fe04129f26542b59ed99808b4f688aa32dcf55317a83"},
+    {file = "jsonschema-4.5.0-py3-none-any.whl", hash = "sha256:71440faf604ccc4958f0a54fad16fa24e4977256f9666a21e8ad59a5447bd0b0"},
+    {file = "jsonschema-4.5.0.tar.gz", hash = "sha256:19462141d4efb2d8046cd4a7076126c5bdb1dd04f6fb9129b46b4b8f7b0de355"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.7.1.tar.gz", hash = "sha256:d609c75b986def706743cdebe5e47553f4a5a1da9c5ff66d76013ef396b5a8a4"},
