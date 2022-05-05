@@ -17,6 +17,9 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Robocorp.WorkItems** (:issue:`485`): Automatically parse into
+  ``email[body]`` payload variable the e-mail body on e-mail Process triggering with
+  "Parse email" configuration option enabled in Control Room.
 - Library **RPA.Hubspot**: Add keywords for creating and updating objects in
   Hubspot, as well as a new batch system when creating batched inputs via keyword.
 
