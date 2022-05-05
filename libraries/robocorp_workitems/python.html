@@ -611,7 +611,7 @@ until <code class="docutils literal notranslate"><span class="pre">save()</span>
 
 <dl class="class">
 <dt id="RPA.Robocorp.WorkItems.WorkItems">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">WorkItems</code><span class="sig-paren">(</span><em class="sig-param">autoload: bool = True, root: Optional[str] = None, default_adapter: Union[Type[RPA.Robocorp.WorkItems.BaseAdapter], str] = &lt;class 'RPA.Robocorp.WorkItems.RobocorpAdapter'&gt;, auto_parse_email: Optional[Dict[str, str]] = {'rawEmail': 'parsedEmail'}</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">WorkItems</code><span class="sig-paren">(</span><em class="sig-param">autoload: bool = True, root: Optional[str] = None, default_adapter: Union[Type[RPA.Robocorp.WorkItems.BaseAdapter], str] = &lt;class 'RPA.Robocorp.WorkItems.RobocorpAdapter'&gt;, auto_parse_email: Optional[Dict[Union[str, Tuple[str, ...]], Union[str, Tuple[str, ...]]]] = {('email.text', '__mail.html'): ('email.body', 'parsedEmail.Body'), 'rawEmail': 'parsedEmail'}</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A library for interacting with Control Room work items.</p>
 <p>Work items are used for managing data that go through multiple
@@ -634,10 +634,18 @@ library input argument <code class="docutils literal notranslate"><span class="p
 through corresponding keywords, and optionally these values can be modified.</p>
 <p><strong>E-mail triggering</strong></p>
 <p>Since a process can be started in Control Room by sending an e-mail, a body
-in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
-input work item with the “rawEmail” payload variable. This library automatically
-parses the content of it and saves into “parsedEmail” the dictionary transformation
-of the original e-mail.</p>
+in Text/JSON/YAML/HTML format can be sent as well and this gets attached to the
+input work item with the <code class="docutils literal notranslate"><span class="pre">rawEmail</span></code> payload variable. This library automatically
+parses the content of it and saves into <code class="docutils literal notranslate"><span class="pre">parsedEmail</span></code> the dictionary
+transformation of the original e-mail.</p>
+<p>If “Parse email” Control Room configuration option is enabled (recommended), then
+your e-mail is automatically parsed in the work item under the <code class="docutils literal notranslate"><span class="pre">email</span></code> payload
+variable, which is a dictionary containing a <code class="docutils literal notranslate"><span class="pre">body</span></code> holding the final parsed form
+of the interpreted e-mail body. The payload variable <code class="docutils literal notranslate"><span class="pre">parsedEmail</span></code> is still
+available for backwards compatibility reasons and holds the very same body inside
+the <code class="docutils literal notranslate"><span class="pre">parsedEmail[Body]</span></code>.</p>
+<p>E-mail attachments will be added into the work item as files. Read more on:
+<a class="reference external" href="https://robocorp.com/docs/control-room/attended-or-unattended/email-trigger">https://robocorp.com/docs/control-room/attended-or-unattended/email-trigger</a></p>
 <p>Example:</p>
 <p>After starting the process by sending an e-mail with a body like:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
@@ -646,18 +654,19 @@ of the original e-mail.</p>
 </pre></div>
 </div>
 <p>The robot can use the parsed e-mail body’s dictionary:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${mail} =</span><span class="p">    </span><span class="c">Get Work Item Variable</span><span class="p">    </span><span class="c">parsedEmail</span><span class="p"></span>
-<span class="c">Set Work Item Variables</span><span class="p">    </span><span class="c">&amp;{mail}[Body]</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${mail} =</span><span class="p">    </span><span class="c">Get Work Item Variable</span><span class="p">    </span><span class="c">email</span><span class="p"></span>
+<span class="c">Set Work Item Variables</span><span class="p">    </span><span class="c">&amp;{mail}[body]</span><span class="p"></span>
 <span class="c">${message} =</span><span class="p">     </span><span class="c">Get Work Item Variable</span><span class="p">     </span><span class="c">message</span><span class="p"></span>
 <span class="c">Log</span><span class="p">    </span><span class="c">${message}</span><span class="p">  </span><span class="c"># will print &quot;Hello world!&quot;</span>
 </pre></div>
 </div>
 <p>The behaviour can be disabled by loading the library with
 <code class="docutils literal notranslate"><span class="pre">auto_parse_email=${None}</span></code> or altered by providing to it a dictionary with one
-“key: value” where the key is usually “rawEmail” (the variable set by Control Room,
-which acts as source for the raw e-mail data) and the value is “parsedEmail” by
-default (where the parsed e-mail dictionary gets stored into), value which can be
-customized and retrieved with <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Work</span> <span class="pre">Item</span> <span class="pre">Variable</span></code>.</p>
+“key: value” where the key is usually “email.text” (deprecated “rawEmail”, the
+variable set by Control Room, which acts as source for the parsed (deprecated raw)
+e-mail data) and the value can be “email.body” (deprecated “parsedEmail”, where the
+parsed e-mail data gets stored into), value which can be customized and retrieved
+with <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Work</span> <span class="pre">Item</span> <span class="pre">Variable</span></code>.</p>
 <p><strong>Creating outputs</strong></p>
 <p>It’s possible to create multiple new work items as an output from a
 task. With the keyword <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code> a new empty item
@@ -745,6 +754,11 @@ load the first work item.</p>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="attribute">
+<dt id="RPA.Robocorp.WorkItems.WorkItems.EMAIL_BODY_LOADERS">
+<code class="sig-name descname">EMAIL_BODY_LOADERS</code><em class="property"> = [('JSON', &lt;function loads&gt;), ('YAML', &lt;function full_load&gt;)]</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.EMAIL_BODY_LOADERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_AUTO_KEYWORDS">
 <code class="sig-name descname">ROBOT_AUTO_KEYWORDS</code><em class="property"> = False</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition">¶</a></dt>

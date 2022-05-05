@@ -663,6 +663,7 @@ of text lines</p>
 <dt id="RPA.Cloud.AWS.AWS.get_tables">
 <code class="sig-name descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parsed tables from the response</p>
+<p>Returns <cite>RPA.Tables.Table</cite> if possible otherwise returns an dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>tables</p>
@@ -1584,6 +1585,7 @@ of text lines</p>
 <dt id="RPA.Cloud.AWS.ServiceTextract.get_tables">
 <code class="sig-name descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parsed tables from the response</p>
+<p>Returns <cite>RPA.Tables.Table</cite> if possible otherwise returns an dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>tables</p>
@@ -1713,6 +1715,12 @@ be overridden by giving parameter <code class="docutils literal notranslate"><sp
 <dt id="RPA.Cloud.AWS.aws_dependency_required">
 <code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">aws_dependency_required</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.aws_dependency_required" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="RPA.Cloud.AWS.import_tables">
+<code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">import_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.import_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to import Tables library</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="RPA.Cloud.AWS.import_vault">
