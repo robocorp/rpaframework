@@ -750,10 +750,17 @@ class WorkItems:
     **E-mail triggering**
 
     Since a process can be started in Control Room by sending an e-mail, a body
-    in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
-    input work item with the "rawEmail" payload variable. This library automatically
-    parses the content of it and saves into "parsedEmail" the dictionary transformation
-    of the original e-mail.
+    in Text/JSON/YAML/HTML format can be sent as well and this gets attached to the
+    input work item with the ``rawEmail`` payload variable. This library automatically
+    parses the content of it and saves into ``parsedEmail`` the dictionary
+    transformation of the original e-mail.
+
+    If "Parse email" Control Room configuration option is enabled (recommended), then
+    your e-mail is automatically parsed in the work item under the ``email`` payload
+    variable, which is a dictionary containing a ``body`` holding the final parsed form
+    of the interpreted e-mail body. The payload variable ``parsedEmail`` is still
+    available for backwards compatibility reasons and holds the very same body inside
+    the ``parsedEmail[Body]``.
 
     Example:
 
@@ -769,17 +776,18 @@ class WorkItems:
 
     .. code-block:: robotframework
 
-        ${mail} =    Get Work Item Variable    parsedEmail
-        Set Work Item Variables    &{mail}[Body]
+        ${mail} =    Get Work Item Variable    email
+        Set Work Item Variables    &{mail}[body]
         ${message} =     Get Work Item Variable     message
         Log    ${message}  # will print "Hello world!"
 
     The behaviour can be disabled by loading the library with
     ``auto_parse_email=${None}`` or altered by providing to it a dictionary with one
-    "key: value" where the key is usually "rawEmail" (the variable set by Control Room,
-    which acts as source for the raw e-mail data) and the value is "parsedEmail" by
-    default (where the parsed e-mail dictionary gets stored into), value which can be
-    customized and retrieved with ``Get Work Item Variable``.
+    "key: value" where the key is usually "email.text" (deprecated "rawEmail", the
+    variable set by Control Room, which acts as source for the parsed (deprecated raw)
+    e-mail data) and the value can be "email.body" (deprecated "parsedEmail", where the
+    parsed e-mail data gets stored into), value which can be customized and retrieved
+    with ``Get Work Item Variable``.
 
     **Creating outputs**
 
@@ -896,6 +904,11 @@ class WorkItems:
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 2
 
+    EMAIL_DATA_LOADERS = [
+        ("JSON", json.loads),
+        ("YAML", yaml.full_load),
+    ]
+
     def __init__(
         self,
         autoload: bool = True,
@@ -958,10 +971,9 @@ class WorkItems:
 
         return adapter
 
-    @staticmethod
-    def _interpret_content(body: str) -> Union[dict, str]:
-        loaders = {"JSON": json.loads, "YAML": yaml.full_load}
-        for name, loader in loaders.items():
+    @classmethod
+    def _interpret_content(cls, body: str) -> Union[dict, str]:
+        for name, loader in cls.EMAIL_DATA_LOADERS:
             try:
                 body = loader(body)
             except Exception as exc:  # pylint: disable=broad-except

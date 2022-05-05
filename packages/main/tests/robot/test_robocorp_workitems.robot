@@ -107,15 +107,15 @@ Consume queue with and without results
     Should Be Equal     ${results}      ${None}
 
 Get payload given e-mail process triggering
-    ${parsed_mail} =    Get Work Item Variable    parsedEmail
-    Set Work Item Variables    &{parsed_mail}[Body]
+    ${parsed_email} =    Get Work Item Variable    parsedEmail
+    Set Work Item Variables    &{parsed_email}[Body]
     Save Work Item
     ${message} =     Get Work Item Variable     message
     Should Be Equal     ${message}      from email
 
     # The newly parsed e-mail trigger option enabled.
     Get Input Work Item
-    ${parsed_mail} =   Get Work Item Variable    parsedEmail
-    Should Contain    ${parsed_mail}[Body]    from email
+    ${parsed_email} =   Get Work Item Variable    parsedEmail
+    Should Contain    ${parsed_email}[Body]    from email
     ${email_parsed} =   Get Work Item Variable    email
     Should Contain    ${email_parsed}[body]    from email
