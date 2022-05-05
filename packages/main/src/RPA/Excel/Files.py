@@ -787,6 +787,14 @@ class XlsxWorkbook:
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)
+        others = [sheet for sheet in self.sheetnames if sheet != name]
+
+        if not others:
+            raise ValueError("Workbook must have at least one other worksheet")
+
+        if name == self.active:
+            self.active = others[0]
+
         sheet = self._book[name]
         self._book.remove(sheet)
 
@@ -1073,9 +1081,13 @@ class XlsWorkbook:
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)
+        others = [sheet for sheet in self.sheetnames if sheet != name]
+
+        if not others:
+            raise ValueError("Workbook must have at least one other worksheet")
 
         if name == self.active:
-            self.active = self.sheetnames[0]
+            self.active = others[0]
 
         with self._book_write() as book:
             # This is pretty ugly, but there seems to be no other way to
@@ -1084,6 +1096,11 @@ class XlsWorkbook:
             book._Workbook__worksheets = [
                 sheet for sheet in book._Workbook__worksheets if sheet.name != name
             ]
+            book._Workbook__active_sheet = next(
+                idx
+                for idx, sheet in enumerate(book._Workbook__worksheets)
+                if sheet.name == self.active
+            )
 
     def rename_worksheet(self, title, name=None):
         title = str(title)

@@ -21,6 +21,10 @@ Release notes
   ``email[body]`` payload variable the e-mail body on e-mail Process triggering with
   "Parse email" configuration option enabled in Control Room.
 
+- Library **RPA.Excel.Files***:
+
+  - Fix IndexError when removing .xls worksheets
+  - Fix removing currently active worksheet
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
