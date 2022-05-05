@@ -1042,8 +1042,9 @@ class WorkItems:
             # pylint: disable=no-member
             message = email.message_from_string(content)
             message_dict = dict(message.items())
-            body, _ = ImapSmtp().get_decoded_email_body(message)
+            body, has_attachments = ImapSmtp().get_decoded_email_body(message)
             message_dict["Body"] = self._interpret_content(body)
+            message_dict["Has-Attachments"] = has_attachments
             email_data = message_dict
 
         for output_key in output_keys:
