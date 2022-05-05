@@ -1,5 +1,6 @@
 *** Settings ***
 Task Setup     Load mock library
+Library        RPA.Email.ImapSmtp
 Library        RPA.FileSystem
 Library        OperatingSystem      WITH NAME   OS
 
@@ -112,6 +113,14 @@ Get payload given e-mail process triggering
     Save Work Item
     ${message} =     Get Work Item Variable     message
     Should Be Equal     ${message}      from email
+    Should Be True    ${parsed_email}[Has-Attachments]
+    ${raw_email} =    Get Work Item Variable    rawEmail
+    ${message} =    Evaluate    email.message_from_string($raw_email)     modules=email
+    Save Attachment     ${message}    ${RESULTS}    overwrite=${True}
+    ${path} =   Set Variable    ${RESULTS}${/}test.txt
+    File Should Exist   ${path}
+    ${data} =   Read File    ${path}
+    Should Be Equal     ${data}    My Cool Attachment   strip_spaces=${True}
 
     # The newly parsed e-mail trigger option enabled.
     Get Input Work Item
