@@ -762,6 +762,9 @@ class WorkItems:
     available for backwards compatibility reasons and holds the very same body inside
     the ``parsedEmail[Body]``.
 
+    E-mail attachments will be added into the work item as files. Read more on:
+    https://robocorp.com/docs/control-room/attended-or-unattended/email-trigger
+
     Example:
 
     After starting the process by sending an e-mail with a body like:

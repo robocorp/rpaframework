@@ -17,6 +17,10 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Robocorp.WorkItems** (:issue:`485`): Automatically parse into
+  ``email[body]`` payload variable the e-mail body on e-mail Process triggering with
+  "Parse email" configuration option enabled in Control Room.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
