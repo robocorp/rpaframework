@@ -17,13 +17,6 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-14.1.0 - 05 May 2022
---------------------
-
 - Library **RPA.Robocorp.WorkItems** (:issue:`485`): Automatically parse into
   ``email[body]`` payload variable the e-mail body on e-mail Process triggering with
   "Parse email" configuration option enabled in Control Room.
@@ -33,6 +26,9 @@ Release notes
 
   - Fix IndexError when removing .xls worksheets
   - Fix removing currently active worksheet
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 14.0.0 - 02 May 2022
 --------------------
