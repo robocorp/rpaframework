@@ -224,6 +224,80 @@
 <div class="section" id="module-RPA.Hubspot">
 <span id="hubspot"></span><h2>Hubspot<a class="headerlink" href="#module-RPA.Hubspot" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="RPA.Hubspot.BatchInputFactory">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Hubspot.</code><code class="sig-name descname">BatchInputFactory</code><span class="sig-paren">(</span><em class="sig-param">mode: RPA.Hubspot.BatchMode = &lt;BatchMode.INVALID: 'INVALID'&gt;</em>, <em class="sig-param">object_type: Optional[str] = None</em>, <em class="sig-param">inputs: Optional[List] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A factory class which can be used to build up a set of inputs
+for a Hubspot Batch Input process and then used to generate the
+final object to be passed to the Hubspot API client.</p>
+<dl class="method">
+<dt id="RPA.Hubspot.BatchInputFactory.add_input">
+<code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em class="sig-param">properties: Dict[str, str], object_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.add_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the provided dictionary of Hubspot properties as an input
+to this batch’s <code class="docutils literal notranslate"><span class="pre">inputs</span></code> property. If <code class="docutils literal notranslate"><span class="pre">object_id</span></code> is provided, the
+input will be considered an <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode input.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.BatchInputFactory.create_hubspot_batch_object">
+<code class="sig-name descname">create_hubspot_batch_object</code><span class="sig-paren">(</span><em class="sig-param">start: int = 0</em>, <em class="sig-param">end: int = None</em><span class="sig-paren">)</span> &#x2192; Union[hubspot.crm.objects.models.batch_input_simple_public_object_input.BatchInputSimplePublicObjectInput, hubspot.crm.objects.models.batch_input_simple_public_object_batch_input.BatchInputSimplePublicObjectBatchInput]<a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.create_hubspot_batch_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates either a BatchInputSimplePublicObjectInput or
+BatchInputSimplePublicObjectBatchInput depending on whether this
+factory is in <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> or <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode. If <code class="docutils literal notranslate"><span class="pre">start</span></code> or <code class="docutils literal notranslate"><span class="pre">end</span></code>
+is provided, it will return a batch object including only a slice
+of the current inputs (useful when total number of inputs is more
+than 100, which requires batches to be batch due to API restrictions).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.BatchInputFactory.extend_inputs">
+<code class="sig-name descname">extend_inputs</code><span class="sig-paren">(</span><em class="sig-param">properties: List[Dict[str, str]], ids: List[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.extend_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extends this batch’s <code class="docutils literal notranslate"><span class="pre">inputs</span></code> based on the provided list of
+<code class="docutils literal notranslate"><span class="pre">properties</span></code> and <code class="docutils literal notranslate"><span class="pre">ids</span></code>. If <code class="docutils literal notranslate"><span class="pre">ids</span></code> is provided, it will be
+zipped with the provided <code class="docutils literal notranslate"><span class="pre">properties</span></code>. <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode is assumed
+in such a case.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.BatchInputFactory.inputs">
+<em class="property">property </em><code class="sig-name descname">inputs</code><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of inputs to be sent into the Batch API, returned type
+depends on <code class="docutils literal notranslate"><span class="pre">mode</span></code>. Can be set directly, but the <code class="docutils literal notranslate"><span class="pre">add_input</span></code> and
+<code class="docutils literal notranslate"><span class="pre">extend_inputs</span></code> methods are more useful.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.BatchInputFactory.mode">
+<em class="property">property </em><code class="sig-name descname">mode</code><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>The batch mode, either <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> or <code class="docutils literal notranslate"><span class="pre">CREATE</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Hubspot.BatchMode">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Hubspot.</code><code class="sig-name descname">BatchMode</code><a class="headerlink" href="#RPA.Hubspot.BatchMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Enumeration that returns the appropriate class to create a single
+object inside of a batch input list.</p>
+<dl class="attribute">
+<dt id="RPA.Hubspot.BatchMode.CREATE">
+<code class="sig-name descname">CREATE</code><em class="property"> = 'CREATE'</em><a class="headerlink" href="#RPA.Hubspot.BatchMode.CREATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Hubspot.BatchMode.INVALID">
+<code class="sig-name descname">INVALID</code><em class="property"> = 'INVALID'</em><a class="headerlink" href="#RPA.Hubspot.BatchMode.INVALID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Hubspot.BatchMode.UPDATE">
+<code class="sig-name descname">UPDATE</code><em class="property"> = 'UPDATE'</em><a class="headerlink" href="#RPA.Hubspot.BatchMode.UPDATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="RPA.Hubspot.ExtendedFilter">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Hubspot.</code><code class="sig-name descname">ExtendedFilter</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">values=None</em>, <em class="sig-param">high_value=None</em>, <em class="sig-param">property_name=None</em>, <em class="sig-param">operator=None</em>, <em class="sig-param">local_vars_configuration=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">hubspot.crm.objects.models.filter.Filter</span></code></p>
@@ -326,6 +400,26 @@ existence of the other attributes.</p>
 <dl class="method">
 <dt id="RPA.Hubspot.HubSpotAuthenticationError.with_traceback">
 <code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotAuthenticationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Hubspot.HubSpotBatchInputInvalidError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Hubspot.</code><code class="sig-name descname">HubSpotBatchInputInvalidError</code><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchInputInvalidError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error when the provided batch input is invalid and cannot be sent
+to the Hubspot API.</p>
+<dl class="attribute">
+<dt id="RPA.Hubspot.HubSpotBatchInputInvalidError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchInputInvalidError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.HubSpotBatchInputInvalidError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchInputInvalidError.with_traceback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
@@ -444,7 +538,7 @@ will be a float, but the API only accepts integers, so you must
 multiply the resulting timestamp by 1,000 and then round  it to
 the nearest integar to include in API calls (i.e., the resulting
 integer sent to the API must have 13 digits as of March 18, 2022).</p>
-<p>Example usage:</p>
+<p><strong>Robot framework example usage:</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">     </span><span class="nn">DateTime</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Hubspot</span><span class="p"></span>
@@ -458,6 +552,7 @@ integer sent to the API must have 13 digits as of March 18, 2022).</p>
 <span class="p">    ...    </span><span class="s">hs_lastmodifieddate</span><span class="p">    </span><span class="s">GTE</span><span class="p">    ${</span><span class="nv">yesterday_hs_ts</span><span class="p">}</span>
 </pre></div>
 </div>
+<p><strong>Python example usage</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robot.libraries.DateTime</span> <span class="kn">import</span> <span class="n">get_current_date</span><span class="p">,</span> <span class="n">subtract_time_from_date</span>
 <span class="kn">from</span> <span class="nn">RPA.Hubspot</span> <span class="kn">import</span> <span class="n">Hubspot</span>
 <span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
@@ -472,6 +567,69 @@ integer sent to the API must have 13 digits as of March 18, 2022).</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">deals</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>When retrieving information, the library automatically batches requests
+that are provided as lists, see `Get object` keyword for an example,
+but when wishing to create or update many objects, the library provides
+a batching system.</p>
+<p>In order to start a batch, you must first call the `Create new batch`
+keyword. This initializes a new batch to accept inputs. If a batch
+already exists when you call this keyword, it will be lost and a new
+blank one will be started.</p>
+<p>Once the batch has been initialized, you can add inputs one at a time with
+`Add input to batch` or many at a time with `Extend batch with inputs`.</p>
+<p>In order to finally send the batch to HubSpot, you must call
+`Execute batch`. The final keyword will return the created or updated
+objects from HubSpot. New object IDs can be obtained from the <code class="docutils literal notranslate"><span class="pre">id</span></code>
+property, see the <a href="#id1"><span class="problematic" id="id2">`SimplePublicObject`_</span></a> reference.</p>
+<p><strong>Robot framework example:</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.Hubspot</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.Robocorp.Vault</span><span class="p"></span>
+<span class="kn">Task Setup</span><span class="p">      </span><span class="nf">Authorize Hubspot</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Create objects via batch</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Create new batch</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Add input to batch</span><span class="p">    </span><span class="s">name=Nokia</span><span class="p">    </span><span class="s">country=Finland</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Add input to batch</span><span class="p">    </span><span class="s">name=Google</span><span class="p">    </span><span class="s">country=USA</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">new_companies</span><span class="p">}=    </span><span class="nf">Execute batch</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">The first new company added has the new id </span><span class="p">${</span><span class="nv">{$new_companies[0].id</span><span class="p">}</span><span class="s">}</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Authorize Hubspot</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=    </span><span class="nf">Get secret</span><span class="p">    </span><span class="s">hubspot</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Python example:</strong></p>
+<p><strong>NOTE:</strong> When executing a batch input in Python, you can directly import the
+<code class="docutils literal notranslate"><span class="pre">BatchInputFactory</span></code> class to use to create your batch input before
+executing the batch.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Hubspot</span> <span class="kn">import</span> <span class="n">Hubspot</span><span class="p">,</span> <span class="n">BatchInputFactory</span><span class="p">,</span> <span class="n">BatchMode</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">RobocorpVault</span>
+
+
+<span class="n">vault</span> <span class="o">=</span> <span class="n">RobocorpVault</span><span class="p">()</span>
+<span class="n">secrets</span> <span class="o">=</span> <span class="n">vault</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;hubspot&quot;</span><span class="p">)</span>
+
+<span class="n">hs</span> <span class="o">=</span> <span class="n">Hubspot</span><span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;API_KEY&quot;</span><span class="p">])</span>
+
+<span class="n">batch</span> <span class="o">=</span> <span class="n">BatchInputFactory</span><span class="p">(</span><span class="n">BatchMode</span><span class="o">.</span><span class="n">UPDATE</span><span class="p">,</span> <span class="s2">&quot;company&quot;</span><span class="p">)</span>
+<span class="n">batch</span><span class="o">.</span><span class="n">extend_inputs</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Nokia&#39;s New Name&quot;</span><span class="p">,</span> <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Espoo&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alphabet&quot;</span><span class="p">,</span> <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Mountain View&quot;</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;1001&quot;</span><span class="p">,</span> <span class="s2">&quot;1002&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">hs</span><span class="o">.</span><span class="n">batch_input</span> <span class="o">=</span> <span class="n">batch</span>
+<span class="n">updated_companies</span> <span class="o">=</span> <span class="n">hs</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Companies have been updated:</span><span class="se">\\</span><span class="s2">n&quot;</span> <span class="o">+</span>
+    <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">updated_companies</span><span class="p">])</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <p>This library loads custom object schemas and pipelines into memory
 the first time when keywords using them are called. These cached versions
 are recalled unless the <code class="docutils literal notranslate"><span class="pre">use_cache</span></code> is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, where available.</p>
@@ -482,16 +640,17 @@ provided name against the configured name or one of the configured
 labels (e.g., “singular” and “plural” types of the name).</p>
 <p>This section describes the types of objects returned by this Library
 and their associated attributes. These attributes can be accessed via
-dot-notation as described in the <a href="#id1"><span class="problematic" id="id2">`Attribute Access`_</span></a> section below.</p>
+dot-notation as described in the <a href="#id3"><span class="problematic" id="id4">`Attribute Access`_</span></a> section below.</p>
 <p>Keywords return native Python Hubspot objects, rather than common Robot
 Framework types. These types have sets of defined attributes allowing
 for dot-notation access of object properties. Properties (e.g.,
 those configured in Hubspot settings for each object) will be
 accessible in a Python dictionary attached to the <code class="docutils literal notranslate"><span class="pre">properties</span></code> attribute
-of the returned object. See the <a href="#id3"><span class="problematic" id="id4">`Attribute Definitions`_</span></a> section for
+of the returned object. See the <a href="#id5"><span class="problematic" id="id6">`Attribute Definitions`_</span></a> section for
 details of that associated attributes for all types returned by this
 library.</p>
 <p>Example usage retrieving the <code class="docutils literal notranslate"><span class="pre">city</span></code> property of a <em>Company</em> object:</p>
+<p><strong>Robot framework example:</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.Hubspot</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.Robocorp.Vault</span><span class="p"></span>
@@ -512,6 +671,7 @@ library.</p>
 <span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
 </pre></div>
 </div>
+<p><strong>Python example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Hubspot</span> <span class="kn">import</span> <span class="n">Hubspot</span>
 <span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">RobocorpVault</span>
 
@@ -564,7 +724,7 @@ dictionary subscription, e.g., <code class="docutils literal notranslate"><span 
 </dd>
 <dt><em>associations</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">Dict[str,</span> <span class="pre">CollectionResponseAssociatedId]</span></code></span></dt><dd><p>A dictionary whose key will be the requested association type, e.g.,
 <code class="docutils literal notranslate"><span class="pre">companies</span></code> and associated value will be a container object
-with all the associations. See <a href="#id5"><span class="problematic" id="id6">`CollectionResponseAssociatedId`_</span></a>.</p>
+with all the associations. See <a href="#id7"><span class="problematic" id="id8">`CollectionResponseAssociatedId`_</span></a>.</p>
 </dd>
 </dl>
 <p>The ID of an associated object, as well as the type of association.</p>
@@ -574,10 +734,10 @@ with all the associations. See <a href="#id5"><span class="problematic" id="id6"
 <dt><em>type</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>The type of association, e.g., <code class="docutils literal notranslate"><span class="pre">deals_to_companies</span></code>.</p>
 </dd>
 </dl>
-<p>A container object for a collection of <a href="#id7"><span class="problematic" id="id8">`AssociatedId`_</span></a> objects returned
+<p>A container object for a collection of <a href="#id9"><span class="problematic" id="id10">`AssociatedId`_</span></a> objects returned
 by the API.</p>
 <dl>
-<dt><em>results</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">List[AssociatedId]</span></code></span></dt><dd><p>The list of <a href="#id9"><span class="problematic" id="id10">`AssociatedId`_</span></a> objects returned by the API.</p>
+<dt><em>results</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">List[AssociatedId]</span></code></span></dt><dd><p>The list of <a href="#id11"><span class="problematic" id="id12">`AssociatedId`_</span></a> objects returned by the API.</p>
 </dd>
 <dt><em>paging</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">Paging</span></code></span></dt><dd><p>Used by this library to assist with retreiving multi-page
 API responses.</p>
@@ -590,7 +750,7 @@ pipeline with the id <code class="docutils literal notranslate"><span class="pre
 </dd>
 <dt><em>label</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>The human-readabel label for the pipeline.</p>
 </dd>
-<dt><em>stages</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">List[PipelineStage]</span></code></span></dt><dd><p>A list of <a href="#id11"><span class="problematic" id="id12">`PipelineStage`_</span></a> objects in the order the object would
+<dt><em>stages</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">List[PipelineStage]</span></code></span></dt><dd><p>A list of <a href="#id13"><span class="problematic" id="id14">`PipelineStage`_</span></a> objects in the order the object would
 follow through the pipeline.</p>
 </dd>
 <dt><em>created_at</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">datetime</span></code></span></dt><dd><p>The timestamp when this pipeline was created in HubSpot.</p>
@@ -603,7 +763,7 @@ follow through the pipeline.</p>
 in the HubSpot UI.</p>
 </dd>
 </dl>
-<p>A pipeline stage is one of the various stages defined in a <a href="#id13"><span class="problematic" id="id14">`Pipeline`_</span></a>.</p>
+<p>A pipeline stage is one of the various stages defined in a <a href="#id15"><span class="problematic" id="id16">`Pipeline`_</span></a>.</p>
 <dl>
 <dt><em>id</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>The HubSpot ID of the stage.</p>
 </dd>
@@ -640,7 +800,7 @@ for driving a sale to close or similar.</p>
 </dd>
 <dt><em>archived</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">bool</span></code></span></dt><dd><p>Whether this owner is archived.</p>
 </dd>
-<dt><em>teams</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">List[PublicTeam]</span></code></span></dt><dd><p>A list of teams the owner is in. See <a href="#id15"><span class="problematic" id="id16">`PublicTeam`_</span></a>.</p>
+<dt><em>teams</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">List[PublicTeam]</span></code></span></dt><dd><p>A list of teams the owner is in. See <a href="#id17"><span class="problematic" id="id18">`PublicTeam`_</span></a>.</p>
 </dd>
 </dl>
 <p>A team of owners in HubSpot</p>
@@ -678,6 +838,30 @@ for driving a sale to close or similar.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Hubspot.Hubspot.add_input_to_batch">
+<code class="sig-name descname">add_input_to_batch</code><span class="sig-paren">(</span><em class="sig-param">object_id: str = None</em>, <em class="sig-param">**properties</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.Hubspot.add_input_to_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the provided free-named keyword arguments to the current
+batch input. If creating an <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> batch, you must also provide
+the Hubspot object <code class="docutils literal notranslate"><span class="pre">id</span></code> (an alternate ID property cannot be used).</p>
+<p>The keyword will fail if an ID is provided to a batch that is
+currently in CREATE mode and has any inputs already.</p>
+<p>See <cite>Batch Inputs`</cite> for complete information on using the batch
+input API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>properties</strong> – A dictionary of HubSpot properties to set to
+the HubSpot object being created or updated.</p></li>
+<li><p><strong>id</strong> – The HubSpot ID of the object to be updated. If provided,
+the batch is assumed to be in UPDATE mode. The keyword will
+fail if an ID is provided to a batch that is currently in CREATE
+mode and has any inputs already.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Hubspot.Hubspot.auth_with_api_key">
 <code class="sig-name descname">auth_with_api_key</code><span class="sig-paren">(</span><em class="sig-param">api_key: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.Hubspot.auth_with_api_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to HubSpot with an account-wide API key. This
@@ -700,6 +884,134 @@ custom object schema from the API.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>access_token</strong> – The access token created for the Private App
 in your HubSpot account.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.batch_input">
+<em class="property">property </em><code class="sig-name descname">batch_input</code><a class="headerlink" href="#RPA.Hubspot.Hubspot.batch_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.clear_current_batch">
+<code class="sig-name descname">clear_current_batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; RPA.Hubspot.BatchInputFactory<a class="headerlink" href="#RPA.Hubspot.Hubspot.clear_current_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current batch and then clears it.</p>
+<p>See <cite>Batch Inputs`</cite> for complete information on using the batch
+input API.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.create_new_batch">
+<code class="sig-name descname">create_new_batch</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">mode: RPA.Hubspot.BatchMode</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.Hubspot.create_new_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new blank batch input for the provided <code class="docutils literal notranslate"><span class="pre">object_type</span></code> in
+either the <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> or <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> mode.</p>
+<p>See <cite>Batch Inputs`</cite> for complete information on using the batch
+input API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – The object type to be created or updated by
+the batch.</p></li>
+<li><p><strong>mode</strong> – either <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> or <code class="docutils literal notranslate"><span class="pre">CREATE</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.create_object">
+<code class="sig-name descname">create_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">**properties</em><span class="sig-paren">)</span> &#x2192; hubspot.crm.objects.models.simple_public_object.SimplePublicObject<a class="headerlink" href="#RPA.Hubspot.Hubspot.create_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new Hubspot object of the provided <code class="docutils literal notranslate"><span class="pre">object_type</span></code>
+and with the provided properties in Hubspot. Read-only or
+nonexistent properties are ignored. The <code class="docutils literal notranslate"><span class="pre">object_type</span></code>
+parameter automatically looks up custom object IDs based on the
+provided name.</p>
+<p>The Hubspot properties to be updated must be provided as additional
+labeled paremeters to this keyword.</p>
+<p>Returns the newly created object. The new object’s <code class="docutils literal notranslate"><span class="pre">id</span></code> is available
+via the property <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – The object type to be created.</p></li>
+<li><p><strong>properties</strong> – All remaining labeled parameters passed into
+this keyword will be used as the properties of the new
+object. Read-only or nonexistent properties will be ignored.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.execute_batch">
+<code class="sig-name descname">execute_batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[hubspot.crm.objects.models.simple_public_object.SimplePublicObject]<a class="headerlink" href="#RPA.Hubspot.Hubspot.execute_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends the current batch input to the Hubspot API.</p>
+<p>Keyword will only fail if all inputs resulted in error. Partial
+failures are reported as warnings.</p>
+<p>See <cite>Batch Inputs`</cite> for complete information on using the batch
+input API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The updated or created objects as a list of
+<code class="docutils literal notranslate"><span class="pre">SimplePublicObject</span></code> types.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.extend_batch_with_inputs">
+<code class="sig-name descname">extend_batch_with_inputs</code><span class="sig-paren">(</span><em class="sig-param">properties: List[Dict[str, str]], ids: List[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.Hubspot.extend_batch_with_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extends the current batch input with the provided lists of
+Hubspot <code class="docutils literal notranslate"><span class="pre">properties</span></code> and Hubspot object <code class="docutils literal notranslate"><span class="pre">ids</span></code>. The <code class="docutils literal notranslate"><span class="pre">ids</span></code>
+parameter must be provided when extending an <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> batch.
+The two provided lists will be zipped together in the same order
+as provided.</p>
+<p>The keyword will fail if an ID is provided to a batch that is
+currently in CREATE mode and has any inputs already.</p>
+<p>See <cite>Batch Inputs`</cite> for complete information on using the batch
+input API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>properties</strong> – A list of dictionaries of HubSpot properties to
+set to the HubSpot objects being created or updated.</p></li>
+<li><p><strong>ids</strong> – The HubSpot IDs of the objects to be updated. If provided,
+the batch is assumed to be in UPDATE mode. The keyword will
+fail if an ID is provided to a batch that is currently in CREATE
+mode and has any inputs already.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.get_current_batch">
+<code class="sig-name descname">get_current_batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; RPA.Hubspot.BatchInputFactory<a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current batch.</p>
+<p>See <cite>Batch Inputs`</cite> for complete information on using the batch
+input API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The current batch input object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.get_current_batch_inputs">
+<code class="sig-name descname">get_current_batch_inputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[Dict[str, Dict[str, str]]]<a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the inputs in the current batch. The returned list will
+be a list of dictionaries each with either 1 or 2 keys depending
+on if the batch is in <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> or <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode. If in <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>
+mode, the dictionaries will have the keys <code class="docutils literal notranslate"><span class="pre">properties</span></code> and <code class="docutils literal notranslate"><span class="pre">id</span></code>,
+but if in <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> mode, the dictionaries will only have the
+<code class="docutils literal notranslate"><span class="pre">properties</span></code> key.</p>
+<p>See <cite>Batch Inputs`</cite> for complete information on using the batch
+input API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of dictionaries representing the current inputs.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1192,6 +1504,79 @@ to be included in the returned data.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A list of found HubSpot objects of type <code class="docutils literal notranslate"><span class="pre">SimplePublicObject</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.set_association">
+<code class="sig-name descname">set_association</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">object_id: str</em>, <em class="sig-param">to_object_type: str</em>, <em class="sig-param">to_object_id: str</em>, <em class="sig-param">association_type: str = None</em><span class="sig-paren">)</span> &#x2192; hubspot.crm.objects.models.simple_public_object_with_associations.SimplePublicObjectWithAssociations<a class="headerlink" href="#RPA.Hubspot.Hubspot.set_association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets an association between two Hubspot objects. You must define
+the primary <code class="docutils literal notranslate"><span class="pre">object_type</span></code> and it’s Hubspot <code class="docutils literal notranslate"><span class="pre">object_id</span></code>, as well
+as the Hubspot object it is to be associated with by using the
+<code class="docutils literal notranslate"><span class="pre">to_object_type</span></code> and <code class="docutils literal notranslate"><span class="pre">to_object_id</span></code>. You may also define the
+<code class="docutils literal notranslate"><span class="pre">association_type</span></code>, but if not, one will be inferred based
+on the provided object types, for example, if <code class="docutils literal notranslate"><span class="pre">object_type</span></code> is
+<code class="docutils literal notranslate"><span class="pre">company</span></code> and <code class="docutils literal notranslate"><span class="pre">to_object_type</span></code> is <code class="docutils literal notranslate"><span class="pre">contact</span></code>, the inferred
+<code class="docutils literal notranslate"><span class="pre">association_type</span></code> will be <code class="docutils literal notranslate"><span class="pre">company_to_contact</span></code>.</p>
+<p>Returns the object with it’s associations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – The type of object for the object ID
+provided, e.g. <code class="docutils literal notranslate"><span class="pre">contact</span></code>.</p></li>
+<li><p><strong>object_id</strong> – The HubSpot ID for the object of type <code class="docutils literal notranslate"><span class="pre">object_type</span></code>.</p></li>
+<li><p><strong>to_object_type</strong> – The type of object to associate the <code class="docutils literal notranslate"><span class="pre">object_id</span></code>
+to.</p></li>
+<li><p><strong>to_object_id</strong> – The HubSpot ID for the object to associate the
+<code class="docutils literal notranslate"><span class="pre">object_id</span></code> to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The object represented by the <code class="docutils literal notranslate"><span class="pre">object_id</span></code> with the
+new association. The associations will be available on the
+returned object’s <code class="docutils literal notranslate"><span class="pre">associations</span></code> property.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.set_current_batch_input">
+<code class="sig-name descname">set_current_batch_input</code><span class="sig-paren">(</span><em class="sig-param">batch_input: RPA.Hubspot.BatchInputFactory</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.Hubspot.set_current_batch_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current batch input to the provided one.</p>
+<p>See <cite>Batch Inputs`</cite> for complete information on using the batch
+input API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batch_input</strong> – A batch object such as one returned from
+the `Get current batch` keyword.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Hubspot.Hubspot.update_object">
+<code class="sig-name descname">update_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str, object_id: Union[str, List[str]], id_property: Optional[str] = None, **properties</em><span class="sig-paren">)</span> &#x2192; hubspot.crm.objects.models.simple_public_object.SimplePublicObject<a class="headerlink" href="#RPA.Hubspot.Hubspot.update_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a partial update of an Object identified by
+<code class="docutils literal notranslate"><span class="pre">object_type</span></code> and <code class="docutils literal notranslate"><span class="pre">object_id</span></code> with the provided properties
+in Hubspot. The objects can be found using an
+alternate ID by providing the name of that HubSpot property
+which contains the unique identifier to <code class="docutils literal notranslate"><span class="pre">id_property</span></code>. The <code class="docutils literal notranslate"><span class="pre">object_type</span></code>
+parameter automatically looks up custom object IDs based on the
+provided name.</p>
+<p>The Hubspot properties to be updated must be provided as additional
+labeled paremeters to this keyword.</p>
+<p>Returns the newly created object. The new object’s <code class="docutils literal notranslate"><span class="pre">id</span></code> is available
+via the property <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – The object type to be created.</p></li>
+<li><p><strong>object_id</strong> – The HubSpot ID of the object to be updated</p></li>
+<li><p><strong>properties</strong> – All remaining labeled parameters passed into
+this keyword will be used as the properties of the new
+object. Read-only or nonexistent properties will be ignored.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
