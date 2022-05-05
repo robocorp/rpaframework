@@ -904,7 +904,7 @@ class WorkItems:
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 2
 
-    EMAIL_DATA_LOADERS = [
+    EMAIL_BODY_LOADERS = [
         ("JSON", json.loads),
         ("YAML", yaml.full_load),
     ]
@@ -973,7 +973,7 @@ class WorkItems:
 
     @classmethod
     def _interpret_content(cls, body: str) -> Union[dict, str]:
-        for name, loader in cls.EMAIL_DATA_LOADERS:
+        for name, loader in cls.EMAIL_BODY_LOADERS:
             try:
                 body = loader(body)
             except Exception as exc:  # pylint: disable=broad-except
