@@ -8,7 +8,7 @@ python-versions = "*"
 
 [[package]]
 name = "amazon-textract-response-parser"
-version = "0.1.29"
+version = "0.1.30"
 description = "Easily parse JSON returned by Amazon Textract."
 category = "main"
 optional = true
@@ -2090,8 +2090,8 @@ alabaster = [
     {file = "alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
 ]
 amazon-textract-response-parser = [
-    {file = "amazon-textract-response-parser-0.1.29.tar.gz", hash = "sha256:453236ae3cb204e43915ba7b98870befcf47f8a9967bafa7f67ec5b8452b7dcd"},
-    {file = "amazon_textract_response_parser-0.1.29-py2.py3-none-any.whl", hash = "sha256:f4f117a732abc3c902c0c8256c5da34910a0d3535f08dbd63037ac8b8c2b3a9e"},
+    {file = "amazon-textract-response-parser-0.1.30.tar.gz", hash = "sha256:e70f602ded8bd1f4a274bcb2cb6234078d20bace55afcc67f500a6bbc40f6e19"},
+    {file = "amazon_textract_response_parser-0.1.30-py2.py3-none-any.whl", hash = "sha256:eaf2c9ed0c6b1a719d79cdc3910fe3a94da2b4759de680ca573cc9a53e97cc1e"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
