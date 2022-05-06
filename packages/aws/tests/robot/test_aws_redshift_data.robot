@@ -6,7 +6,7 @@ Variables       aws_redshift_data_testvars.py
 
 
 *** Variables ***
-${SQL_LIST_TABLES}=         select ejslkerj, table_schema, table_name
+${SQL_LIST_TABLES}=         select table_schema, table_name
 ...                         from information_schema.tables
 ...                         where table_schema not in ('information_schema', 'pg_catalog','pg_internal')
 ...                         and table_type = 'BASE TABLE'
@@ -23,10 +23,9 @@ Insert data into AWS with parameters
     [Setup]    Init
     ${random_id}=    Generate random string    3    [NUMBERS]
     ${random_name}=    Generate random string    25    [LETTERS]
-    ${id_param}=    Create dictionary    name=id    value=${random_id}
-    ${name_param}=    Create dictionary    name=name    value=${random_name}
-    ${param_list}=    Create list    ${id_param}    ${name_param}
-    Execute redshift statement    ${SQL_INSERT_SAMPLE_DB}    ${param_list}
+    ${params}=    Create redshift statement parameters    id=${random_id}    name=${random_name}
+    ${result}=    Execute redshift statement    ${SQL_INSERT_SAMPLE_DB}    ${params}
+    Should be equal as strings    ${result}    Statement finished, total rows affected: 1
 
 
 *** Keywords ***

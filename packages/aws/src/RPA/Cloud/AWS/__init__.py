@@ -6,7 +6,7 @@ from functools import wraps
 import os
 from pathlib import Path
 from time import sleep
-from typing import Any
+from typing import Any, Dict, List, Optional, Union
 
 try:
     import boto3
@@ -52,6 +52,11 @@ def import_tables():
         return None
 
 
+SqlTable = (
+    getattr(importlib.import_module("RPA.Tables"), "Table") if import_tables() else Dict
+)
+
+
 def aws_dependency_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
@@ -63,6 +68,10 @@ def aws_dependency_required(f):
         return f(*args, **kwargs)
 
     return wrapper
+
+
+class RedshiftDatabaseError(Exception):
+    """Raised when the Redshift API raises a database error."""
 
 
 class AWSBase:
@@ -1030,6 +1039,8 @@ class ServiceRedshiftData(AWSBase):
             using Secrets Manager.
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
+        if database_user and secret_arn:
+            raise ValueError("You cannot provide both a secret ARN and database user.")
         self._init_client(
             "redshift-data", aws_key_id, aws_key, region, use_robocloud_vault
         )
@@ -1042,25 +1053,13 @@ class ServiceRedshiftData(AWSBase):
     def execute_redshift_statement(
         self,
         sql: str,
-        parameters: list = None,
-        statement_name: str = None,
+        parameters: Optional[list] = None,
+        statement_name: Optional[str] = None,
         with_event: bool = False,
-    ):
+    ) -> Union[SqlTable, str]:
         """Runs an SQL statement, which can be data manipulation language
         (DML) or data definition language (DDL). This statement must be a
-        single SQL statement. Depending on the authorization method, use
-        one of the following combinations of request parameters:
-
-        * Secrets Manager - when connecting to a cluster, specify the Amazon
-          Resource Name (ARN) of the secret, the database name, and the
-          cluster identifier that matches the cluster in the secret. When
-          connecting to a serverless endpoint, specify the Amazon Resource
-          Name (ARN) of the secret and the database name.
-        * Temporary credentials - when connecting to a cluster, specify the
-          cluster identifier, the database name, and the database user name.
-          Also, permission to call the redshift:GetClusterCredentials operation
-          is required. When connecting to a serverless endpoint, specify
-          the database name.
+        single SQL statement.
 
         SQL statements can be parameterized with named parameters through
         the use of the ``parameters`` argument. Parameters must be dictionaries
@@ -1071,6 +1070,9 @@ class ServiceRedshiftData(AWSBase):
         * ``value``: The value of the parameter. Amazon Redshift implicitly
           converts to the proper data type. For more inforation, see
           `Data types`_ in the `Amazon Redshift Database Developer Guide`.
+
+        For simplicity, a helper keyword, \`Create redshift statement parameters\`,
+        is available and can be used more naturally in Robot Framework contexts.
 
         .. _Data types: https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html
 
@@ -1107,25 +1109,13 @@ class ServiceRedshiftData(AWSBase):
             to the Amazon EventBridge event bus after the SQL statement runs.
 
         """
-        # TODO: implement this pseudocode:
-        #   --Execute statement--
-        #   --Get waiter ## is this a function?--
-        #   --Wait--
-        #   --Get Paginator(get results)--
-        #   --Translate results into RPA.Tables--
-        #   Return table.
         client = self._get_client_for_service("redshift-data")
-        additional_params = {}
-        if self.secret_arn:
-            additional_params["SecretArn"] = self.secret_arn
+        additional_params = self._create_auth_params()
         if parameters:
             additional_params["Parameters"] = parameters
         if statement_name:
             additional_params["StatementName"] = statement_name
         run_token = client.execute_statement(
-            ClusterIdentifier=self.cluster_identifier,
-            Database=self.database,
-            DbUser=self.database_user,
             Sql=sql,
             WithEvent=with_event,
             **additional_params,
@@ -1134,17 +1124,27 @@ class ServiceRedshiftData(AWSBase):
             statement_waiter = self._create_waiter_for_results(client)
             statement_waiter.wait(Id=run_token["Id"])
         except WaiterError as e:
-            # TODO: properly log and fail the keyword when statement errors during
-            #       the Waiter's execution.
-            raise ClientError(e.last_response, "DescribeStatement")
+            error_message = (
+                e.last_response.get("Error", "No error details available")
+                if hasattr(e.last_response, "get")
+                else "Unknown error"
+            )
+            query_string = (
+                e.last_response.get("QueryString", "No query details available")
+                if hasattr(e.last_response, "get")
+                else "None"
+            )
+            raise RedshiftDatabaseError(
+                f"While waiting for the statement to finish executing, "
+                f"an error was encountered: \n{error_message}"
+                f'\n\nFor statement: \n"{query_string}"'
+            ) from e
 
         finished_statement = client.describe_statement(Id=run_token["Id"])
         if finished_statement["HasResultSet"]:
             paginator = client.get_paginator("get_statement_result")
             full_result = paginator.paginate(Id=run_token["Id"]).build_full_result()
 
-            # This handles results that are tabular. I don't know what non-tabular
-            # responses look like.
             tables = import_tables()
             if not tables:
                 self.logger.info(
@@ -1163,6 +1163,31 @@ class ServiceRedshiftData(AWSBase):
             return f"Statement finished, total rows affected: " + str(
                 finished_statement.get("ResultRows", "NONE")
             )
+
+    def create_redshift_statement_parameters(self, **params) -> List[Dict[str, str]]:
+        r"""Returns a formatted dictionary to be used in
+        Redshift Data Api SQL statements.
+
+        ** Example **
+
+        Assume the ``${SQL}`` statement has the parameters ``:id`` and
+        ``:name``:
+
+        .. code-block: robotframework
+
+            *** Tasks ***
+
+            ${params}=    Create sql parameters    id=123    name=Nokia
+            # params produces a data structure like so:
+            #   [
+            #        {"name":"id", "value":"123"},
+            #        {"name":"name", "value":"Nokia"}
+            #    ]
+
+            # Which can be used for the 'parameters' argument.
+            ${response}=    Execute redshift statement    ${SQL}    ${params}
+        """
+        return [{"name": k, "value": v} for (k, v) in params.items()]
 
     def _parse_tagged_union(self, tagged_union: dict):
         if tagged_union.get("blobValue"):
@@ -1240,6 +1265,168 @@ class ServiceRedshiftData(AWSBase):
             waiter_name, WaiterModel(waiter_config), redshift_data_client
         )
 
+    @aws_dependency_required
+    def describe_redshift_table(
+        self, database: str, schema: Optional[str] = None, table: Optional[str] = None
+    ) -> Union[Dict, List[Dict]]:
+        """Describes the detailed information about a table from metadata
+        in the cluster. The information includes its columns.
+
+        If ``schema`` and/or ``table`` is not provided, the API searches
+        all schemas for the provided table, or returns all tables in the
+        schema or entire database.
+
+        The response object is provided as a list of table meta data objects,
+        utilize dot-notation or the ``RPA.JSON`` library to access members:
+
+        .. code-block: json
+
+            {
+                'ColumnList': [
+                    {
+                        'columnDefault': 'string',
+                        'isCaseSensitive': True|False,
+                        'isCurrency': True|False,
+                        'isSigned': True|False,
+                        'label': 'string',
+                        'length': 123,
+                        'name': 'string',
+                        'nullable': 123,
+                        'precision': 123,
+                        'scale': 123,
+                        'schemaName': 'string',
+                        'tableName': 'string',
+                        'typeName': 'string'
+                    },
+                ],
+                'TableName': 'string'
+            }
+
+        :param database: The name of the database that contains the tables
+            to be described. If ommitted, will use the connected Database.
+        :param schema: The schema that contains the table. If no schema
+            is specified, then matching tables for all schemas are returned.
+        :param table: The table name. If no table is specified, then all
+            tables for all matching schemas are returned. If no table and
+            no schema is specified, then all tables for all schemas in the
+            database are returned
+        """
+        client = self._get_client_for_service("redshift-data")
+        additional_params = self._create_auth_params(database)
+        if schema:
+            additional_params["Schema"] = schema
+        if table:
+            additional_params["Table"] = table
+        paginator = client.get_paginator("describe_table")
+        return paginator.paginate(**additional_params).build_full_result()
+
+    @aws_dependency_required
+    def list_redshift_tables(
+        self,
+        database: Optional[str] = None,
+        schema_pattern: Optional[str] = None,
+        table_pattern: Optional[str] = None,
+    ) -> List[Dict]:
+        """List the tables in a database. If neither ``schema_pattern`` nor
+        ``table_pattern`` are specified, then all tables in the database
+        are returned.
+
+        Returned objects are structured like the below JSON in a list:
+
+        .. code-block: json
+
+            {
+                'name': 'string',
+                'schema': 'string',
+                'type': 'string'
+            }
+
+        :param database: The name of the database that contains the tables
+            to be described. If ommitted, will use the connected Database.
+        :param schema_pattern: A pattern to filter results by schema name.
+            Within a schema pattern, "%" means match any substring of 0
+            or more characters and "_" means match any one character.
+            Only schema name entries matching the search pattern are returned.
+            If ``schema_pattern`` is not specified, then all tables that match
+            ``table_pattern`` are returned. If neither ``schema_pattern``
+            or ``table_pattern`` are specified, then all tables are returned.
+        :param table_pattern: A pattern to filter results by table name.
+            Within a table pattern, "%" means match any substring of 0 or
+            more characters and "_" means match any one character. Only
+            table name entries matching the search pattern are returned.
+            If ``table_pattern`` is not specified, then all tables that
+            match ``schema_pattern`` are returned. If neither ``schema_pattern`` or
+            ``table_pattern`` are specified, then all tables are returned.
+        """
+        client = self._get_client_for_service("redshift-data")
+        additional_params = self._create_auth_params(database)
+        if schema_pattern:
+            additional_params["SchemaPattern"] = schema_pattern
+        if table_pattern:
+            additional_params["TablePattern"] = table_pattern
+        paginator = client.get_paginator("list_tables")
+        return paginator.paginate(**additional_params).build_full_result()["Tables"]
+
+    @aws_dependency_required
+    def list_redshift_databases(
+        self,
+    ) -> List[str]:
+        """List the databases in a cluster.
+
+        Database names are returned as a list of strings.
+        """
+        client = self._get_client_for_service("redshift-data")
+        additional_params = self._create_auth_params()
+        paginator = client.get_paginator("list_databases")
+        return paginator.paginate(**additional_params).build_full_result()["Databases"]
+
+    @aws_dependency_required
+    def list_redshift_schemas(
+        self,
+        database: Optional[str] = None,
+        schema_pattern: Optional[str] = None,
+    ) -> List[Dict]:
+        """Lists the schemas in a database.
+
+        Schema names are returned as a list of strings.
+
+        :param database: The name of the database that contains the schemas
+            to list. If ommitted, will use the connected Database.
+        :param schema_pattern: A pattern to filter results by schema name.
+            Within a schema pattern, "%" means match any substring of 0
+            or more characters and "_" means match any one character.
+            Only schema name entries matching the search pattern are returned.
+            If ``schema_pattern`` is not specified, then all schemas are returned.
+        """
+        client = self._get_client_for_service("redshift-data")
+        additional_params = self._create_auth_params(database)
+        if schema_pattern:
+            additional_params["SchemaPattern"] = schema_pattern
+        paginator = client.get_paginator("list_tables")
+        return paginator.paginate(**additional_params).build_full_result()["Schemas"]
+
+    def _create_auth_params(self, alternate_database: Optional[str] = None) -> Dict:
+        """Generates a dictionary of authentication params depending
+        on which method was defined when initializing this class. It should
+        be called before adding call-specific parameters. If an alternate
+        database name is provided, this function checks if it matches the
+        configured database name, and if it does not, adds the params
+        `ConnectedDatabase` and `Database`, otherwise it only adds `Database`.
+        """
+        auth_params = {}
+        if self.cluster_identifier:
+            auth_params["ClusterIdentifier"] = self.cluster_identifier
+        if self.secret_arn:
+            auth_params["SecretArn"] = self.secret_arn
+        elif self.database_user:
+            auth_params["DbUser"] = self.database_user
+        if alternate_database == self.database or not alternate_database:
+            auth_params["Database"] = self.database
+        else:
+            auth_params["ConnectedDatabase"] = self.database
+            auth_params["Database"] = alternate_database
+        return auth_params
+
 
 class AWS(
     ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS, ServiceRedshiftData
@@ -1262,6 +1449,21 @@ class AWS(
 
     **Note.** Starting from `rpaframework-aws` **1.0.3** `region` can be given as environment
     variable ``AWS_REGION`` or include as Robocloud Vault secret with the same key name.
+
+    **Redshift Data authentication:** Depending on the authorization method, use
+    one of the following combinations of request parameters, which can only
+    be passed via method 2:
+
+        * Secrets Manager - when connecting to a cluster, specify the Amazon
+          Resource Name (ARN) of the secret, the database name, and the
+          cluster identifier that matches the cluster in the secret. When
+          connecting to a serverless endpoint, specify the Amazon Resource
+          Name (ARN) of the secret and the database name.
+        * Temporary credentials - when connecting to a cluster, specify the
+          cluster identifier, the database name, and the database user name.
+          Also, permission to call the ``redshift:GetClusterCredentials``
+          operation is required. When connecting to a serverless endpoint,
+          specify the database name.
 
     Method 1. credentials using environment variable
 
