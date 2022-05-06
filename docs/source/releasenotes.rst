@@ -19,6 +19,7 @@ Release notes
 
 - Library **RPA.Excel.Files** (:pr:`490`): Keyword examples updated to be more complete
   and Python examples have been added to all keywords.
+- Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
