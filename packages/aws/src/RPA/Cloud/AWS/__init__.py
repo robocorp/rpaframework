@@ -1008,6 +1008,10 @@ class ServiceRedshiftData(AWSBase):
     def __init__(self) -> None:
         self.services.append("redshift_data")
         self.logger.debug("ServiceRedshiftData init")
+        self.cluster_identifier = None
+        self.database = None
+        self.database_user = None
+        self.secret_arn = None
 
     def init_redshift_data_client(
         self,
@@ -1057,7 +1061,7 @@ class ServiceRedshiftData(AWSBase):
         statement_name: Optional[str] = None,
         with_event: bool = False,
     ) -> Union[SqlTable, str]:
-        """Runs an SQL statement, which can be data manipulation language
+        r"""Runs an SQL statement, which can be data manipulation language
         (DML) or data definition language (DDL). This statement must be a
         single SQL statement.
 
@@ -1108,7 +1112,7 @@ class ServiceRedshiftData(AWSBase):
         :param with_event: A value that indicates whether to send an event
             to the Amazon EventBridge event bus after the SQL statement runs.
 
-        """
+        """  # noqa: W605, E501
         client = self._get_client_for_service("redshift-data")
         additional_params = self._create_auth_params()
         if parameters:
@@ -1160,7 +1164,7 @@ class ServiceRedshiftData(AWSBase):
             ]
             return tables().create_table(data) if tables else data
         else:
-            return f"Statement finished, total rows affected: " + str(
+            return "Statement finished, total rows affected: " + str(
                 finished_statement.get("ResultRows", "NONE")
             )
 
