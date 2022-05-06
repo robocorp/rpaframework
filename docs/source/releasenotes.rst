@@ -29,10 +29,10 @@ Release notes
   "Parse email" configuration option enabled in Control Room.
 - Library **RPA.Hubspot** (:pr:`484`): Add keywords for creating and updating objects in
   Hubspot, as well as a new batch system when creating batched inputs via keyword.
-- Library **RPA.Excel.Files**:
+- Library **RPA.Excel.Files** (:pr:`491`):
 
-  - Fix IndexError when removing .xls worksheets
-  - Fix removing currently active worksheet
+  - Fix ``IndexError`` when removing *.xls* worksheets.
+  - Fix removing currently active worksheet.
 
 14.0.0 - 02 May 2022
 --------------------
