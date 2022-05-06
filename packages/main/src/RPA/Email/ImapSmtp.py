@@ -1011,7 +1011,7 @@ class ImapSmtp:
         target_folder: str,
         overwrite: bool,
         prefix: str = None,
-    ) -> str:
+    ) -> List[str]:
         # pylint: disable=C0301
         """Save mail attachment of single given email into local folder
 
@@ -1043,7 +1043,7 @@ class ImapSmtp:
             target_folder = os.path.expanduser("~")
         return self._save_attachment(message, target_folder, overwrite, prefix)
 
-    def _save_attachment(self, message, target_folder, overwrite, prefix):
+    def _save_attachment(self, message, target_folder, overwrite, prefix) -> List[str]:
         attachments_saved = []
         msg = message["Message"] if isinstance(message, dict) else message
 

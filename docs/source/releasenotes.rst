@@ -1,12 +1,55 @@
 Release notes
 =============
 
+.. note::
+  The support for Python version 3.6 has been **REMOVED** from the ``rpaframework[-*]``
+  packages starting with the following versions (:pr:`469`):
+
+    - ``rpaframework`` **14.0.0**
+    - ``rpaframework-aws`` **2.0.0**
+    - ``rpaframework-dialogs`` **2.0.0**
+    - ``rpaframework-google`` **4.0.0**
+    - ``rpaframework-pdf`` **3.0.0**
+    - ``rpaframework-recognition`` **3.0.0**
+    - ``rpaframework-windows`` **4.0.0**
+
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Excel.Files** (:pr:`490`): Keyword examples updated to be more complete
+  and Python examples have been added to all keywords.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14.1.0 - 05 May 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems** (:issue:`485`): Automatically parse into
+  ``email[body]`` payload variable the e-mail body on e-mail Process triggering with
+  "Parse email" configuration option enabled in Control Room.
+- Library **RPA.Hubspot** (:pr:`484`): Add keywords for creating and updating objects in
+  Hubspot, as well as a new batch system when creating batched inputs via keyword.
+- Library **RPA.Excel.Files** (:pr:`491`):
+
+  - Fix ``IndexError`` when removing *.xls* worksheets.
+  - Fix removing currently active worksheet.
+
+14.0.0 - 02 May 2022
+--------------------
+
+- Robot Framework 5 support, but not restricted to (:pr:`470`):
+
+  - Read **migration instructions** on `Taking Robot Framework 5 into use <https://robocorp.com/docs/languages-and-frameworks/robot-framework/robot-framework-5>`_
+  - TRY-EXCEPT-ELSE-FINALLY
+  - WHILE
+  - Inline IF-ELSE IF-ELSE
+  - BREAK and CONTINUE
+  - RETURN
+
+- Library **RPA.Email.Exchange** (:issue:`477`): Keyword ``Send Message`` supports
+  sending messages with any combination of `recipients`, `cc` and/or `bcc`.
 
 13.3.1 - 15 Apr 2022
 --------------------
@@ -17,7 +60,7 @@ Release notes
 13.3.0 - 14 Apr 2022
 --------------------
 
-- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package
+- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package.
 - Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
 
   - Keyword ``Get Elements`` returns all similar elements matching locator. (:pr:`471`)
