@@ -1183,14 +1183,14 @@ class ServiceRedshiftData(AWSBase):
 
     @aws_dependency_required
     def get_redshift_statement_results(
-        self, id: str, timeout: int = 40
+        self, statement_id: str, timeout: int = 40
     ) -> Union[SqlTable, str]:
         r"""Retrieve the results of a SQL statement previously submitted
         to Redshift. If that statement has not yet completed, this keyword
         will wait for results. See \`Execute Redshift Statement\` for
         additional information.
 
-        :param id: The statement id to use to retreive results.
+        :param statement_id: The statement id to use to retreive results.
         :param timeout: An integar used to calculate the maximum wait.
             Exact timing depends on system variability becuase the
             underlying waiter does not utilize a timeout directly.
@@ -1201,7 +1201,7 @@ class ServiceRedshiftData(AWSBase):
             statement_waiter = self._create_waiter_for_results(
                 client, delay=2, max_attempts=int(timeout / 2)
             )
-            statement_waiter.wait(Id=id)
+            statement_waiter.wait(Id=statement_id)
         except WaiterError as e:
             error_message = (
                 e.last_response.get("Error", "No error details available")
@@ -1219,10 +1219,10 @@ class ServiceRedshiftData(AWSBase):
                 f'\n\nFor statement: \n"{query_string}"'
             ) from e
 
-        finished_statement = client.describe_statement(Id=id)
+        finished_statement = client.describe_statement(Id=statement_id)
         if finished_statement["HasResultSet"]:
             paginator = client.get_paginator("get_statement_result")
-            full_result = paginator.paginate(Id=id).build_full_result()
+            full_result = paginator.paginate(Id=statement_id).build_full_result()
 
             tables = import_tables()
             if not tables:
