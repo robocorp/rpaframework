@@ -1001,9 +1001,10 @@ class ServiceSQS(AWSBase):
         return response
 
 
-# TODO: Implement INSERT from RPA.Table
 class ServiceRedshiftData(AWSBase):
     """Class for AWS Redshift Data API Service."""
+
+    # TODO: Implement INSERT from RPA.Table
 
     def __init__(self) -> None:
         self.services.append("redshift_data")
@@ -1060,6 +1061,7 @@ class ServiceRedshiftData(AWSBase):
         parameters: Optional[list] = None,
         statement_name: Optional[str] = None,
         with_event: bool = False,
+        timeout: int = 40,
     ) -> Union[SqlTable, str]:
         r"""Runs an SQL statement, which can be data manipulation language
         (DML) or data definition language (DDL). This statement must be a
@@ -1086,11 +1088,21 @@ class ServiceRedshiftData(AWSBase):
         Other types of data (SQL errors and result statements) are returned
         as strings.
 
+        **NOTE:** You may modify the max built-in wait time by providing
+        a timeout in seconds (default 40 seconds)
+
         **Robot framework example:**
 
         .. code-block:: robotframework
 
-            #TODO
+            *** Tasks ***
+
+                ${SQL}=    Set variable    insert into mytable values (:id, :address)
+                ${params}=    Create redshift statement parameters
+                ...    id=1
+                ...    address=Seattle
+                ${response}=    Execute redshift statement    ${SQL}    ${params}
+                Log    ${response}
 
         **Python example:**
 
@@ -1111,22 +1123,85 @@ class ServiceRedshiftData(AWSBase):
             the SQL statement when you create it to identify the query.
         :param with_event: A value that indicates whether to send an event
             to the Amazon EventBridge event bus after the SQL statement runs.
+        :param timeout: Used to calculate the maximum wait. Exact timing
+            depends on system variability becuase the underlying waiter
+            does not utilize a timeout directly.
 
         """  # noqa: W605, E501
         client = self._get_client_for_service("redshift-data")
+        run_token = self._submit_statement(
+            client, sql, parameters, statement_name, with_event
+        )
+        return self.get_redshift_statement_results(run_token["Id"], timeout)
+
+    @aws_dependency_required
+    def execute_redshift_statement_asyncronously(
+        self,
+        sql: str,
+        parameters: Optional[list] = None,
+        statement_name: Optional[str] = None,
+        with_event: bool = False,
+    ) -> str:
+        """Submit a sql statement for Redshift to execute asyncronously.
+        Returns the statement ID which can be used to retrieve statement
+        results later.
+
+        :param parameters: The parameters for the SQL statement. Must consist
+            of a list of dictionaries with two keys: ``name`` and ``value``.
+        :param sql: The SQL statement text to run.
+        :param statement_name: The name of the SQL statement. You can name
+            the SQL statement when you create it to identify the query.
+        :param with_event: A value that indicates whether to send an event
+            to the Amazon EventBridge event bus after the SQL statement runs.
+
+        """
+        client = self._get_client_for_service("redshift-data")
+        run_token = self._submit_statement(
+            client, sql, parameters, statement_name, with_event
+        )
+        return run_token["Id"]
+
+    def _submit_statement(
+        self,
+        redshift_data_client,
+        sql: str,
+        parameters: Optional[list] = None,
+        statement_name: Optional[str] = None,
+        with_event: bool = False,
+    ) -> Dict:
+        """Submits SQL to the provided client and returns run token"""
         additional_params = self._create_auth_params()
         if parameters:
             additional_params["Parameters"] = parameters
         if statement_name:
             additional_params["StatementName"] = statement_name
-        run_token = client.execute_statement(
+        return redshift_data_client.execute_statement(
             Sql=sql,
             WithEvent=with_event,
             **additional_params,
         )
+
+    @aws_dependency_required
+    def get_redshift_statement_results(
+        self, id: str, timeout: int = 40
+    ) -> Union[SqlTable, str]:
+        r"""Retrieve the results of a SQL statement previously submitted
+        to Redshift. If that statement has not yet completed, this keyword
+        will wait for results. See \`Execute Redshift Statement\` for
+        additional information.
+
+        :param id: The statement id to use to retreive results.
+        :param timeout: An integar used to calculate the maximum wait.
+            Exact timing depends on system variability becuase the
+            underlying waiter does not utilize a timeout directly.
+            Defaults to 40.
+        """
+        client = self._get_client_for_service("redshift-data")
         try:
-            statement_waiter = self._create_waiter_for_results(client)
-            statement_waiter.wait(Id=run_token["Id"])
+            statement_waiter = self._create_waiter_for_results(
+                client, delay=2, max_attempts=int(timeout / 2)
+            )
+            statement_waiter.wait(Id=id)
         except WaiterError as e:
             error_message = (
                 e.last_response.get("Error", "No error details available")
@@ -1144,10 +1219,10 @@ class ServiceRedshiftData(AWSBase):
                 f'\n\nFor statement: \n"{query_string}"'
             ) from e
 
-        finished_statement = client.describe_statement(Id=run_token["Id"])
+        finished_statement = client.describe_statement(Id=id)
         if finished_statement["HasResultSet"]:
             paginator = client.get_paginator("get_statement_result")
-            full_result = paginator.paginate(Id=run_token["Id"]).build_full_result()
+            full_result = paginator.paginate(Id=id).build_full_result()
 
             tables = import_tables()
             if not tables:
