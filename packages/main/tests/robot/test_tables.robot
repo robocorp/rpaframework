@@ -1,5 +1,6 @@
 *** Settings ***
 Library           Collections
+Library           DateTime
 Library           RPA.Tables
 Library           RPA.FileSystem
 Library           RPA.Excel.Files
@@ -66,6 +67,15 @@ Map Column Values
     Assert cell value    ${table}    0     User     Teppo
     Assert cell value    ${table}    2     User     Cosmin
 
+Filter With Keyword
+    ${table}=    Create table
+    ...    [["One", "5/3/22 9:44"], ["Two", "5/4/22 9:25"], ["Three", "5/3/22 10:21"]]
+    ...    columns=["ID", "Submit Date"]
+
+    Filter table with keyword    ${table}    Match Date    target=05.03.2022
+    Assert cell value    ${table}    0    ID    One
+    Assert cell value    ${table}    1    ID    Three
+
 *** Keywords ***
 List group IDs
     [Arguments]    ${rows}
@@ -91,3 +101,16 @@ Find user name
     ...    three=Cosmin
     ${output}=     Get from dictionary    ${mapping}    ${key}
     [Return]     ${output}
+
+Match Date
+    [Arguments]    ${row}    ${target}
+    ${submit_date}=    Convert date
+    ...    ${row}[Submit Date]
+    ...    date_format=%d/%m/%y %H:%M
+    ...    result_format=%d.%m.%Y
+    ${target_date}=    Convert date
+    ...    ${target}
+    ...    date_format=%d.%m.%Y
+    ...    result_format=%d.%m.%Y
+    ${is_same_date}=    Evaluate    $submit_date == $target_date
+    [Return]    ${is_same_date}

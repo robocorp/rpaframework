@@ -792,19 +792,35 @@ class Table:
 
         return result
 
-    def filter_by_column(self, column, condition):
-        """Remove rows by evaluating `condition` for all `column`
-        values. All rows where it evaluates to falsy are removed.
+    def _filter(self, condition):
+        filtered = [index for index in self.index if not condition(index)]
+        self.delete_rows(filtered)
+
+    def filter_all(self, condition):
+        """Remove rows by evaluating `condition` for all rows.
+        All rows where it evaluates to falsy are removed.
 
         The filtering will be done in-place.
         """
-        filtered = []
-        for index in self.index:
-            value = self.get_cell(index, column)
-            if not condition(value):
-                filtered.append(index)
 
-        self.delete_rows(filtered)
+        def _check_row(index):
+            row = self.get_row(index)
+            return condition(row)
+
+        self._filter(_check_row)
+
+    def filter_by_column(self, column, condition):
+        """Remove rows by evaluating `condition` for cells in `column`.
+        All rows where it evaluates to falsy are removed.
+
+        The filtering will be done in-place.
+        """
+
+        def _check_cell(index):
+            cell = self.get_cell(index, column)
+            return condition(cell)
+
+        self._filter(_check_cell)
 
     def iter_lists(self, with_index=True):
         """Iterate rows with values as lists."""
@@ -1676,7 +1692,31 @@ class Tables:
 
         self.logger.info("Filtered %d rows", after - before)
 
-    def map_column_values(self, table: Table, column: Column, name: str, **kwargs):
+    def filter_table_with_keyword(self, table, name, *args):
+        """Run a keyword for each row of a table, and remove all rows
+        where the called keyword returns a falsy value.
+
+        Can be used to create custom filters.
+
+        :param table:     Table to modify
+        :param name:      Filtering keyword name
+        :param args:      Additional keyword arguments (optional)
+
+        The row value will be given as the first argument to the
+        filtering keyword.
+        """
+        self._requires_table(table)
+
+        def condition(row):
+            return BuiltIn().run_keyword(name, row, *args)
+
+        before = len(table)
+        table.filter_all(condition)
+        after = len(table)
+
+        self.logger.info("Filtered %d rows", after - before)
+
+    def map_column_values(self, table: Table, column: Column, name: str, *args):
         """Run a keyword for each cell in a given column, and replace
         its contents with the return value.
 
@@ -1685,7 +1725,7 @@ class Tables:
         :param table:     Table to modify
         :param column:    Column to modify
         :param name:      Mapping keyword name
-        :param kwargs:    Additional keyword arguments (optional)
+        :param args:      Additional keyword arguments (optional)
 
         The cell value will be given as the first argument to the
         mapping keyword.
@@ -1705,7 +1745,7 @@ class Tables:
         values = []
         for index in table.index:
             cell = table.get_cell(index, column)
-            output = BuiltIn().run_keyword(name, cell, **kwargs)
+            output = BuiltIn().run_keyword(name, cell, *args)
             values.append(output)
 
         table.set_column(column, values)
