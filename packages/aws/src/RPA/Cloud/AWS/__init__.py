@@ -1517,8 +1517,143 @@ class ServiceRedshiftData(AWSBase):
         return auth_params
 
 
+class ServiceSts(AWSBase):
+    """Class for AWS STS Service."""
+
+    def __init__(self) -> None:
+        self.services.append("sts")
+        self.logger.debug("ServiceSts init")
+
+    def init_sts_client(
+        self,
+        aws_key_id: str = None,
+        aws_key: str = None,
+        region: str = None,
+        use_robocloud_vault: bool = False,
+    ) -> None:
+        """Initialize AWS STS client.
+
+        :param aws_key_id: access key ID
+        :param aws_key: secret access key
+        :param region: AWS region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        """
+        self._init_client("sts", aws_key_id, aws_key, region, use_robocloud_vault)
+
+    @aws_dependency_required
+    def assume_role(
+        self,
+        role_arn: str,
+        role_session_name: str,
+        policy_arns: Optional[List[Dict]] = None,
+        policy: Optional[str] = None,
+        duration: Optional[int] = 900,
+        tags: Optional[List[Dict]] = None,
+        transitive_tag_keys: Optional[List[str]] = None,
+        external_id: Optional[str] = None,
+        serial_number: Optional[str] = None,
+        token_code: Optional[str] = None,
+        source_identity: Optional[str] = None,
+    ) -> Dict:
+        """Returns a set of temporary security credentials that you can
+        use to access Amazon Web Services resources that you might not
+        normally have access to. These temporary credentials consist of
+        an access key ID, a secret access key, and a security token.
+        Typically, you use ``Assume Role`` within your account or for
+        cross-account access.
+
+        The credentials are returned as a dictionary with data structure
+        similar to the following JSON:
+
+        .. code-block: json
+
+            {
+                'Credentials': {
+                    'AccessKeyId': 'string',
+                    'SecretAccessKey': 'string',
+                    'SessionToken': 'string',
+                    'Expiration': datetime(2015, 1, 1)
+                },
+                'AssumedRoleUser': {
+                    'AssumedRoleId': 'string',
+                    'Arn': 'string'
+                },
+                'PackedPolicySize': 123,
+                'SourceIdentity': 'string'
+            }
+
+        These credentials can be used to re-initialize services available
+        in this library with the assumed role instead of the original
+        role.
+
+        **NOTE**: For detailed information on the available arguments to this
+        keyword, please see the `Boto3 STS documentation`_.
+
+        .. _Boto3 STS documentation: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html
+
+        :param role_arn: The Amazon Resource Name (ARN) of the role to assume.
+        :param role_session_name: An identifier for the assumed role session.
+        :param policy_arns: The Amazon Resource Names (ARNs) of the IAM
+            managed policies that you want to use as managed session policies.
+            The policies must exist in the same account as the role.
+        :param policy: An IAM policy in JSON format that you want to use
+            as an inline session policy.
+        :param duration: The duration, in seconds, of the role session.
+            The value specified can range from 900 seconds (15 minutes
+            and the default) up to the maximum session duration set for
+            the role.
+        :param tags: A list of session tags that you want to pass. Each
+            session tag consists of a key name and an associated value.
+        :param transitive_tag_keys: A list of keys for session tags that
+            you want to set as transitive. If you set a tag key as
+            transitive, the corresponding key and value passes to
+            subsequent sessions in a role chain.
+        :param external_id: A unique identifier that might be required
+            when you assume a role in another account. If the
+            administrator of the account to which the role belongs
+            provided you with an external ID, then provide that value in
+            this parameter.
+        :param serial_number: The identification number of the MFA device
+            that is associated with the user who is making the
+            using the ``assume_role`` keyword.
+        :param token_code: The value provided by the MFA device, if the
+            trust policy of the role being assumed requires MFA.
+        :param source_identity: The source identity specified by the
+            principal that is using the ``assume_role`` keyword.
+        """
+        if "arn" not in policy_arns[0].keys():
+            raise TypeError(
+                "Policy ARNs must be a list of dictionaries "
+                "each with the single key 'arn'."
+            )
+        if not set(("key", "value")).issubset(tags[0].keys()):
+            raise TypeError(
+                "Tags must be a list of dictionaries each "
+                "containing the keys 'key' and 'value'."
+            )
+        client = self._get_client_for_service("sts")
+        return client.assume_role(
+            RoleArn=role_arn,
+            RoleSessionName=role_session_name,
+            PolicyArns=policy_arns,
+            Policy=policy,
+            DurationSeconds=duration,
+            Tags=tags,
+            TransitiveTagKeys=transitive_tag_keys,
+            ExternalId=external_id,
+            SerialNumber=serial_number,
+            TokenCode=token_code,
+            SourceIdentity=source_identity,
+        )
+
+
 class AWS(
-    ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS, ServiceRedshiftData
+    ServiceS3,
+    ServiceTextract,
+    ServiceComprehend,
+    ServiceSQS,
+    ServiceRedshiftData,
+    ServiceSts,
 ):
     """`AWS` is a library for operating with Amazon AWS services S3, SQS,
     Textract and Comprehend.
@@ -1671,6 +1806,7 @@ class AWS(
         ServiceComprehend.__init__(self)
         ServiceSQS.__init__(self)
         ServiceRedshiftData.__init__(self)
+        ServiceSts.__init__(self)
         self.region = region
         listener = RobotLogListener()
         listener.register_protected_keywords(
