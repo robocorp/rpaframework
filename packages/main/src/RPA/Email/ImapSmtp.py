@@ -339,7 +339,9 @@ class ImapSmtp:
         if imap_server and account and password:
             self.imap_conn = IMAP4_SSL(imap_server, imap_port)
             if is_oauth:
-                self.imap_conn.authenticate("XOAUTH2", lambda _: base64.b64decode(password.encode()).decode())
+                self.imap_conn.authenticate(
+                    "XOAUTH2", lambda _: base64.b64decode(password.encode()).decode()
+                )
             else:
                 self.imap_conn.login(account, password)
             self.imap_conn.select("INBOX")
@@ -379,8 +381,12 @@ class ImapSmtp:
 
             Authorize    ${username}   ${password}  smtp_server=smtp.gmail.com  smtp_port=587
         """  # noqa: E501
-        self.authorize_smtp(account, password, smtp_server, smtp_port, is_oauth=is_oauth)
-        self.authorize_imap(account, password, imap_server, imap_port, is_oauth=is_oauth)
+        self.authorize_smtp(
+            account, password, smtp_server, smtp_port, is_oauth=is_oauth
+        )
+        self.authorize_imap(
+            account, password, imap_server, imap_port, is_oauth=is_oauth
+        )
 
     @smtp_connection
     def send_smtp_hello(self) -> None:
