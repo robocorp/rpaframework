@@ -1132,6 +1132,11 @@ class ServiceRedshiftData(AWSBase):
         run_token = self._submit_statement(
             client, sql, parameters, statement_name, with_event
         )
+        self.logger.info(
+            f"'{run_token['Id']}' SQL statement execution on Redshift started"
+            f"{' with name ' + statement_name if statement_name else ''}:\n{sql}"
+        )
+        self.logger.info(f"Parameters used in SQL statement:\n{parameters}")
         return self.get_redshift_statement_results(run_token["Id"], timeout)
 
     @aws_dependency_required
@@ -1159,6 +1164,11 @@ class ServiceRedshiftData(AWSBase):
         run_token = self._submit_statement(
             client, sql, parameters, statement_name, with_event
         )
+        self.logger.info(
+            f"'{run_token['Id']}' SQL statement submitted to Redshift"
+            f"{' with name ' + statement_name if statement_name else ''}:\n{sql}"
+        )
+        self.logger.info(f"Parameters used in SQL statement:\n{parameters}")
         return run_token["Id"]
 
     def _submit_statement(
