@@ -1618,16 +1618,18 @@ class ServiceSTS(AWSBase):
         :param source_identity: The source identity specified by the
             principal that is using the ``assume_role`` keyword.
         """  # noqa: E501
-        if "arn" not in policy_arns[0].keys():
-            raise TypeError(
-                "Policy ARNs must be a list of dictionaries "
-                "each with the single key 'arn'."
-            )
-        if not set(("key", "value")).issubset(tags[0].keys()):
-            raise TypeError(
-                "Tags must be a list of dictionaries each "
-                "containing the keys 'key' and 'value'."
-            )
+        if policy_arns:
+            if "arn" not in policy_arns[0].keys():
+                raise TypeError(
+                    "Policy ARNs must be a list of dictionaries "
+                    "each with the single key 'arn'."
+                )
+        if tags:
+            if not set(("key", "value")).issubset(tags[0].keys()):
+                raise TypeError(
+                    "Tags must be a list of dictionaries each "
+                    "containing the keys 'key' and 'value'."
+                )
         client = self._get_client_for_service("sts")
         return client.assume_role(
             RoleArn=role_arn,
