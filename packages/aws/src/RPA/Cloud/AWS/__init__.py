@@ -1618,35 +1618,18 @@ class ServiceSTS(AWSBase):
         :param source_identity: The source identity specified by the
             principal that is using the ``assume_role`` keyword.
         """  # noqa: E501
-        other_params = {}
-        if policy_arns:
-            if "arn" not in policy_arns[0].keys():
-                raise TypeError(
-                    "Policy ARNs must be a list of dictionaries "
-                    "each with the single key 'arn'."
-                )
-            other_params["PolicyArns"] = policy_arns
-        if policy:
-            other_params["Policy"] = policy
-        if duration:
-            other_params["DurationSeconds"] = duration
-        if tags:
-            if not set(("key", "value")).issubset(tags[0].keys()):
-                raise TypeError(
-                    "Tags must be a list of dictionaries each "
-                    "containing the keys 'key' and 'value'."
-                )
-            other_params["Tags"] = tags
-        if transitive_tag_keys:
-            other_params["TransitiveTagKeys"] = transitive_tag_keys
-        if external_id:
-            other_params["ExternalId"] = external_id
-        if serial_number:
-            other_params["SerialNumber"] = serial_number
-        if token_code:
-            other_params["TokenCode"] = token_code
-        if source_identity:
-            other_params["SourceIdentity"] = source_identity
+        other_params = {
+            "PolicyArns": policy_arns,
+            "Policy": policy,
+            "DurationSeconds": duration,
+            "Tags": tags,
+            "TransitiveTagKeys": transitive_tag_keys,
+            "ExternalId": external_id,
+            "SerialNumber": serial_number,
+            "TokenCode": token_code,
+            "SourceIdentity": source_identity,
+        }
+        other_params = {k: v for k, v in other_params.items() if v}
         client = self._get_client_for_service("sts")
         return client.assume_role(
             RoleArn=role_arn, RoleSessionName=role_session_name, **other_params
