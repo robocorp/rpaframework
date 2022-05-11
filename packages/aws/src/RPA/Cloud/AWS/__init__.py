@@ -1517,7 +1517,7 @@ class ServiceRedshiftData(AWSBase):
         return auth_params
 
 
-class ServiceSts(AWSBase):
+class ServiceSTS(AWSBase):
     """Class for AWS STS Service."""
 
     def __init__(self) -> None:
@@ -1653,7 +1653,7 @@ class AWS(
     ServiceComprehend,
     ServiceSQS,
     ServiceRedshiftData,
-    ServiceSts,
+    ServiceSTS,
 ):
     """`AWS` is a library for operating with Amazon AWS services S3, SQS,
     Textract and Comprehend.
@@ -1806,7 +1806,7 @@ class AWS(
         ServiceComprehend.__init__(self)
         ServiceSQS.__init__(self)
         ServiceRedshiftData.__init__(self)
-        ServiceSts.__init__(self)
+        ServiceSTS.__init__(self)
         self.region = region
         listener = RobotLogListener()
         listener.register_protected_keywords(
