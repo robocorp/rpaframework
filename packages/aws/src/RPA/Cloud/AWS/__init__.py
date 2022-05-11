@@ -1620,7 +1620,7 @@ class ServiceSts(AWSBase):
             trust policy of the role being assumed requires MFA.
         :param source_identity: The source identity specified by the
             principal that is using the ``assume_role`` keyword.
-        """
+        """  # noqa: E501
         if "arn" not in policy_arns[0].keys():
             raise TypeError(
                 "Policy ARNs must be a list of dictionaries "
