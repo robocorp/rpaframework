@@ -106,6 +106,7 @@ class AWSBase:
         aws_key: str = None,
         region: str = None,
         use_robocloud_vault: bool = False,
+        session_token: str = None,
     ):
         if use_robocloud_vault:
             aws_key_id, aws_key, region = self._get_secrets_from_cloud()
@@ -128,6 +129,8 @@ class AWSBase:
                 "aws_access_key_id": aws_key_id,
                 "aws_secret_access_key": aws_key,
             }
+        if session_token:
+            auth_params["aws_session_token"] = session_token
         self.logger.info("Using region: %s", region)
         client = boto3.client(service_name, region_name=region, **auth_params)
         self._set_service(service_name, client)
@@ -178,6 +181,7 @@ class ServiceS3(AWSBase):
         aws_key: str = None,
         region: str = None,
         use_robocloud_vault: bool = False,
+        session_token: str = None,
     ) -> None:
         """Initialize AWS S3 client
 
@@ -185,8 +189,12 @@ class ServiceS3(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
-        self._init_client("s3", aws_key_id, aws_key, region, use_robocloud_vault)
+        self._init_client(
+            "s3", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+        )
 
     @aws_dependency_required
     def create_bucket(self, bucket_name: str = None) -> bool:
@@ -396,6 +404,7 @@ class ServiceTextract(AWSBase):
         aws_key: str = None,
         region: str = None,
         use_robocloud_vault: bool = False,
+        session_token: str = None,
     ):
         """Initialize AWS Textract client
 
@@ -403,8 +412,12 @@ class ServiceTextract(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
-        self._init_client("textract", aws_key_id, aws_key, region, use_robocloud_vault)
+        self._init_client(
+            "textract", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+        )
 
     @aws_dependency_required
     def analyze_document(
@@ -854,6 +867,7 @@ class ServiceComprehend(AWSBase):
         aws_key: str = None,
         region: str = None,
         use_robocloud_vault: bool = False,
+        session_token: str = None,
     ):
         """Initialize AWS Comprehend client
 
@@ -861,9 +875,16 @@ class ServiceComprehend(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "comprehend", aws_key_id, aws_key, region, use_robocloud_vault
+            "comprehend",
+            aws_key_id,
+            aws_key,
+            region,
+            use_robocloud_vault,
+            session_token,
         )
 
     @aws_dependency_required
@@ -913,6 +934,7 @@ class ServiceSQS(AWSBase):
         region: str = None,
         queue_url: str = None,
         use_robocloud_vault: bool = False,
+        session_token: str = None,
     ):
         """Initialize AWS SQS client
 
@@ -921,8 +943,12 @@ class ServiceSQS(AWSBase):
         :param region: AWS region
         :param queue_url: SQS queue url
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
-        self._init_client("sqs", aws_key_id, aws_key, region, use_robocloud_vault)
+        self._init_client(
+            "sqs", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+        )
         self.queue_url = queue_url
 
     @aws_dependency_required
@@ -1021,6 +1047,7 @@ class ServiceRedshiftData(AWSBase):
         database_user: str = None,
         secret_arn: str = None,
         use_robocloud_vault: bool = False,
+        session_token: str = None,
     ) -> None:
         """Initialize AWS Redshift Data API client
 
@@ -1040,11 +1067,18 @@ class ServiceRedshiftData(AWSBase):
             to the database. This parameter is required when authenticating
             using Secrets Manager.
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
         if database_user and secret_arn:
             raise ValueError("You cannot provide both a secret ARN and database user.")
         self._init_client(
-            "redshift-data", aws_key_id, aws_key, region, use_robocloud_vault
+            "redshift-data",
+            aws_key_id,
+            aws_key,
+            region,
+            use_robocloud_vault,
+            session_token,
         )
         self.cluster_identifier = cluster_identifier
         self.database = database
@@ -1527,6 +1561,7 @@ class ServiceSTS(AWSBase):
         aws_key: str = None,
         region: str = None,
         use_robocloud_vault: bool = False,
+        session_token: str = None,
     ) -> None:
         """Initialize AWS STS client.
 
@@ -1534,8 +1569,12 @@ class ServiceSTS(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
-        self._init_client("sts", aws_key_id, aws_key, region, use_robocloud_vault)
+        self._init_client(
+            "sts", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+        )
 
     @aws_dependency_required
     def assume_role(
