@@ -111,9 +111,9 @@ class AWSBase:
             aws_key_id, aws_key, region = self._get_secrets_from_cloud()
         else:
             if aws_key_id is None or aws_key_id.strip() == "":
-                aws_key_id = required_env("AWS_KEY_ID")
+                aws_key_id = os.getenv("AWS_KEY_ID")
             if aws_key is None or aws_key.strip() == "":
-                aws_key = required_env("AWS_KEY")
+                aws_key = os.getenv("AWS_KEY")
             if region is None or region.strip() == "":
                 region = os.getenv("AWS_REGION", self.region)
         if (
@@ -122,17 +122,14 @@ class AWSBase:
             or aws_key is None
             or aws_key.strip() == ""
         ):
-            raise KeyError(
-                "AWS key ID and secret access key are required "
-                " to use AWS cloud service: %s" % service_name
-            )
+            auth_params = {}
+        else:
+            auth_params = {
+                "aws_access_key_id": aws_key_id,
+                "aws_secret_access_key": aws_key,
+            }
         self.logger.info("Using region: %s", region)
-        client = boto3.client(
-            service_name,
-            region_name=region,
-            aws_access_key_id=aws_key_id,
-            aws_secret_access_key=aws_key,
-        )
+        client = boto3.client(service_name, region_name=region, **auth_params)
         self._set_service(service_name, client)
 
     def set_robocloud_vault(self, vault_name):
