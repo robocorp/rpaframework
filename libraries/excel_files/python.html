@@ -333,7 +333,8 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>content</strong> – Rows of values to append</p></li>
-<li><p><strong>name</strong> – Name of worksheet to append to</p></li>
+<li><p><strong>name</strong> – Name of worksheet to append to (optional).
+Defaults to the active worksheet.</p></li>
 <li><p><strong>header</strong> – Set rows according to existing header row</p></li>
 <li><p><strong>start</strong> – Start of data, NOTE: Only required when header is True</p></li>
 </ul>
@@ -349,12 +350,39 @@ that source data has this data available.</p>
 the <code class="docutils literal notranslate"><span class="pre">start</span></code> argument can be used to give the correct row index.</p>
 <p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Append an existing Table object</span>
-<span class="c">Open workbook</span><span class="p">    </span><span class="c">orders.xls</span><span class="p"></span>
+<span class="c"> # Create a new table using a Dictionary of Lists</span><span class="p"></span>
+<span class="c">@{table_name}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">Sara</span><span class="p">    </span><span class="c">Beth</span><span class="p">    </span><span class="c">Amy</span><span class="p"></span>
+<span class="c">@{table_age}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">${48}</span><span class="p">    </span><span class="c">${21}</span><span class="p">    </span><span class="c">${57}</span><span class="p"></span>
+<span class="c">&amp;{table}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">name=${table_name}</span><span class="p">    </span><span class="c">age=${table_age}</span><span class="p"></span>
+<span class="c">Create Table</span><span class="p">    </span><span class="c">${table}</span><span class="p"></span>
 <span class="c">Append rows to worksheet</span><span class="p">    </span><span class="c">${table}</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p"></span>
 
 <span class="c"># Append to a worksheet with headers on row 5</span>
-<span class="c">Open workbook</span><span class="p">    </span><span class="c">customers.xlsx</span><span class="p"></span>
+<span class="c"> # Create a new table using a Dictionary of Lists</span><span class="p"></span>
+<span class="c">@{table_name}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">Sara</span><span class="p">    </span><span class="c">Beth</span><span class="p">    </span><span class="c">Amy</span><span class="p"></span>
+<span class="c">@{table_age}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">${48}</span><span class="p">    </span><span class="c">${21}</span><span class="p">    </span><span class="c">${57}</span><span class="p"></span>
+<span class="c">&amp;{table}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">name=${table_name}</span><span class="p">    </span><span class="c">age=${table_age}</span><span class="p"></span>
+<span class="c">Create Table</span><span class="p">    </span><span class="c">${table}</span><span class="p"></span>
 <span class="c">Append rows to worksheet</span><span class="p">    </span><span class="c">${table}</span><span class="p">    </span><span class="c">header=${TRUE}</span><span class="p">   </span><span class="c">start=5</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Append an existing Table object</span>
+<span class="n">table</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Sara&quot;</span><span class="p">,</span> <span class="s2">&quot;Beth&quot;</span><span class="p">,</span> <span class="s2">&quot;Amy&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span>  <span class="p">[</span>    <span class="mi">48</span><span class="p">,</span>     <span class="mi">21</span><span class="p">,</span>     <span class="mi">57</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">append_rows_to_worksheet</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
+
+<span class="c1"># Append to a worksheet with headers on row 5</span>
+<span class="n">table</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Sara&quot;</span><span class="p">,</span> <span class="s2">&quot;Beth&quot;</span><span class="p">,</span> <span class="s2">&quot;Amy&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span>  <span class="p">[</span>    <span class="mi">48</span><span class="p">,</span>     <span class="mi">21</span><span class="p">,</span>     <span class="mi">57</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">append_rows_to_worksheet</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -363,6 +391,14 @@ the <code class="docutils literal notranslate"><span class="pre">start</span></c
 <dt id="RPA.Excel.Files.Files.close_workbook">
 <code class="sig-name descname">close_workbook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.close_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close the active workbook.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Close active workbook</span>
+<span class="c">Close Workbook</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Close active workbook</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">close_workbook</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -370,22 +406,37 @@ the <code class="docutils literal notranslate"><span class="pre">start</span></c
 <code class="sig-name descname">create_workbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">fmt='xlsx'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.create_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create and open a new Excel workbook.</p>
 <p>Automatically also creates a new worksheet with the name “Sheet”.</p>
+<p><strong>Note:</strong> Must be paired with the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Workbook</span></code> keyword
+or the newly created workbook will be deleted upon Bot completion.</p>
+<p><strong>Note:</strong> The filename must be set in either the <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Workbook</span></code> keyword
+or the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Workbook</span></code> keyword and must include the file extension</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – Default save path for workbook</p></li>
-<li><p><strong>fmt</strong> – Format of workbook, i.e. xlsx or xls</p></li>
+<li><p><strong>path</strong> – Save path for workbook; defaults to robot root if not provided</p></li>
+<li><p><strong>fmt</strong> – Format of workbook, i.e. xlsx or xls;
+Defaults to xlsx if not provided</p></li>
 </ul>
 </dd>
 </dl>
 <p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Create modern format workbook</span>
-<span class="c">Create workbook</span><span class="p">    </span><span class="c">fmt=xlsx</span><span class="p"></span>
+<span class="c">Create workbook</span><span class="p"></span>
 <span class="c">Save workbook</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
+
+<span class="c"># Create modern format workbook with a path set</span>
+<span class="c">Create workbook</span><span class="p">    </span><span class="c">path=${OUTPUT_DIR}${/}orders.xlsx</span><span class="p"></span>
+<span class="c">Save workbook</span><span class="p"></span>
 
 <span class="c"># Create legacy format workbook</span>
 <span class="c">Create workbook</span><span class="p">    </span><span class="c">fmt=xls</span><span class="p"></span>
 <span class="c">Save workbook</span><span class="p">    </span><span class="c">orders.xls</span><span class="p"></span>
+
+<span class="c"># Create legacy format workbook with a path set</span>
+<span class="c"># Note that the file name must be set in the Create Workbook keyword</span>
+<span class="c"># if the path argument is used</span>
+<span class="c">Create Workbook</span><span class="p">    </span><span class="c">path=${OUTPUT_DIR}${/}orders.xls</span><span class="p">    </span><span class="c">fmt=xls</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -405,8 +456,37 @@ the <code class="docutils literal notranslate"><span class="pre">start</span></c
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open workbook</span><span class="p">       </span><span class="c">customers.xlsx</span><span class="p"></span>
-<span class="c">Create worksheet</span><span class="p">    </span><span class="c">Orders</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Create a new blank worksheet named &quot;Customers&quot;</span>
+<span class="c">Create Worksheet</span><span class="p">    </span><span class="c">Customers</span><span class="p"></span>
+
+<span class="c"># Create a new worksheet with headers and contents using</span>
+<span class="c"># a List of Dictonaries</span>
+<span class="c"># Don&#39;t forget to `Save Workbook` once your changes are complete</span>
+<span class="c">&amp;{Employees_Row1}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">name=Mark</span><span class="p">    </span><span class="c">age=${58}</span><span class="p"></span>
+<span class="c">&amp;{Employees_Row2}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">name=John</span><span class="p">    </span><span class="c">age=${22}</span><span class="p"></span>
+<span class="c">&amp;{Employees_Row3}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">name=Adam</span><span class="p">    </span><span class="c">age=${67}</span><span class="p"></span>
+<span class="c">@{Worksheet_Data}=</span><span class="p">    </span><span class="c">Create List</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">${Worksheet_Data_row1}</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">${Worksheet_Data_row2}</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">${Worksheet_Data_row3}</span><span class="p"></span>
+<span class="c">Create Worksheet</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">name=Employees</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">content=${Worksheet_Data}</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">header=True</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p"></span>
+
+<span class="c"># Create a new workseet using a Dictionary of Lists</span>
+<span class="c"># Don&#39;t forget to `Save Workbook` once your changes are complete</span>
+<span class="c">@{Employees_name}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">Mark</span><span class="p">    </span><span class="c">John</span><span class="p">    </span><span class="c">Adam</span><span class="p"></span>
+<span class="c">@{Employees_age}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">${58}</span><span class="p">    </span><span class="c">${22}</span><span class="p">    </span><span class="c">${67}</span><span class="p"></span>
+<span class="c">&amp;{Worksheet_Data}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">name=${Worksheet_Data_name}</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">age=${Worksheet_Data_age}</span><span class="p"></span>
+<span class="c">Create Worksheet</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">name=Employees</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">content=${Worksheet_Data}</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">header=True</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -418,13 +498,14 @@ the <code class="docutils literal notranslate"><span class="pre">start</span></c
 and return the row number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> – Name of worksheet</p>
+<dd class="field-odd"><p><strong>name</strong> – Name of worksheet (optional). Defaults to the active worksheet.</p>
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Append rows to worksheet</span><span class="p">     </span><span class="c">${rows}</span><span class="p"></span>
-<span class="c">${next}=</span><span class="p">    </span><span class="c">Find empty row</span><span class="p"></span>
-<span class="c">Insert image to worksheet</span><span class="p">    </span><span class="c">${next}</span><span class="p">    </span><span class="c">A</span><span class="p">    </span><span class="c">screenshot.png</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${next}=</span><span class="p">    </span><span class="c">Find empty row</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">next</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">find_empty_row</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -444,7 +525,7 @@ and return the row number.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>row</strong> – Index of row to read, e.g. 3</p></li>
 <li><p><strong>column</strong> – Name or index of column, e.g. C or 7</p></li>
-<li><p><strong>name</strong> – Name of worksheet (optional)</p></li>
+<li><p><strong>name</strong> – Name of worksheet (optional). Defaults to active worksheet.</p></li>
 </ul>
 </dd>
 </dl>
@@ -453,6 +534,12 @@ and return the row number.</p>
 <span class="c">${column1}=</span><span class="p">    </span><span class="c">Get cell value</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">A</span><span class="p"></span>
 <span class="c">${column2}=</span><span class="p">    </span><span class="c">Get cell value</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">B</span><span class="p"></span>
 <span class="c">${column3}=</span><span class="p">    </span><span class="c">Get cell value</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">C</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read header names</span>
+<span class="n">column1</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_cell_value</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="n">column2</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_cell_value</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<span class="n">column3</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_cell_value</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -478,16 +565,16 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 <li><p><strong>row</strong> – Index of row to write</p></li>
 <li><p><strong>column</strong> – Name or index of column</p></li>
 <li><p><strong>path</strong> – Path to image file</p></li>
-<li><p><strong>scale</strong> – Scale of image</p></li>
-<li><p><strong>name</strong> – Name of worksheet</p></li>
+<li><p><strong>scale</strong> – Scale of image (optional). Default value is “1.0”.</p></li>
+<li><p><strong>name</strong> – Name of worksheet (optional). Defaults to the active worksheet.</p></li>
 </ul>
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create worksheet</span><span class="p">    </span><span class="c">Order</span><span class="p"></span>
-<span class="c">Append rows to worksheet</span><span class="p">     </span><span class="c">${details}</span><span class="p"></span>
-<span class="c">${last_row}=</span><span class="p">    </span><span class="c">Find empty row</span><span class="p"></span>
-<span class="c">Insert image to worksheet</span><span class="p">    </span><span class="c">${last_row}</span><span class="p">    </span><span class="c">A</span><span class="p">    </span><span class="c">screenshot.png</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Insert image to worksheet</span><span class="p">    </span><span class="c">${last_row}</span><span class="p">    </span><span class="c">A</span><span class="p">    </span><span class="c">screenshot.png</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">insert_image_to_worksheet</span><span class="p">(</span><span class="n">last_row</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;screenshot.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -503,22 +590,36 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 <code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">data_only: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open an existing Excel workbook.</p>
 <p>Opens the workbook in memory and sets it as the active workbook.
-This library can only have one workbook open at a time, and
-any previously opened workbooks are closed first.</p>
+<strong>This library can only have one workbook open at a time, and
+any previously opened workbooks are closed first.</strong></p>
 <p>The file can be in either <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> or <code class="docutils literal notranslate"><span class="pre">.xls</span></code> format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> – path to Excel file</p></li>
-<li><p><strong>data_only</strong> – controls whether cells with formulae have either
+<li><p><strong>data_only</strong> – controls whether cells with formulas have either
 the formula (default, False) or the value stored the last time Excel
 read the sheet (True). Affects only <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> files.</p></li>
 </ul>
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open workbook</span><span class="p">    </span><span class="c">path/to/file.xlsx</span><span class="p"></span>
-<span class="c">${table}=</span><span class="p">    </span><span class="c">Read worksheet as table</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Open workbook with only path provided</span>
+<span class="c">Open Workbook</span><span class="p">    </span><span class="c">path/to/file.xlsx</span><span class="p"></span>
+
+<span class="c"># Open workbook with path provided and reading formulas in cells</span>
+<span class="c"># as the value stored</span>
+<span class="c"># Note: Can only be used with XLSX workbooks</span>
+<span class="c">Open Workbook</span><span class="p">    </span><span class="c">path/to/file.xlsx</span><span class="p">    </span><span class="c">data_only=True</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open workbook with only path provided</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">open_workbook</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;path/to/file.xlsx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Open workbook with path provided and reading formulas in cells</span>
+<span class="c1"># as the value stored</span>
+<span class="c1"># Note: Can only be used with XLSX workbooks</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">open_workbook</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;path/to/file.xlsx&quot;</span><span class="p">,</span> <span class="n">data_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -532,16 +633,34 @@ or Excel-style column letters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – Name of worksheet to read</p></li>
+<li><p><strong>name</strong> – Name of worksheet to read (optional).
+Defaults to the active worksheet.</p></li>
 <li><p><strong>header</strong> – If <cite>True</cite>, use the first row of the worksheet
-as headers for the rest of the rows.</p></li>
+as headers for the rest of the rows. Default is <cite>False</cite>.</p></li>
+<li><p><strong>start</strong> – Row index to start reading data from (1-indexed).
+Default value is row 1.</p></li>
 </ul>
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Workbook</span><span class="p">   </span><span class="c">orders.xlsx</span><span class="p"></span>
-<span class="c">${rows}=</span><span class="p">        </span><span class="c">Read Worksheet</span><span class="p">     </span><span class="c">header=True</span><span class="p"></span>
-<span class="c">Close Workbook</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># The most simple form. Column keys will be Column letters.</span>
+<span class="c">${rows}=</span><span class="p">    </span><span class="c">Read Worksheet</span><span class="p"></span>
+
+<span class="c"># Since `header=True` the keys will be the header values</span>
+<span class="c">${rows}=</span><span class="p">    </span><span class="c">Read Worksheet</span><span class="p">     </span><span class="c">header=True</span><span class="p"></span>
+
+<span class="c"># Uses the header values as keys and starts reading at row 3</span>
+<span class="c">${rows}=</span><span class="p">    </span><span class="c">Read Worksheet</span><span class="p">     </span><span class="c">header=True</span><span class="p">    </span><span class="c">start=${3}</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The most simple form. Keys will be Column letters.</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">read_worksheet</span><span class="p">()</span>
+
+<span class="c1"># Since `header=True` the keys will be the header values</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">read_worksheet</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Uses the header values as keys and starts reading at row 3</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">read_worksheet</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -549,23 +668,41 @@ as headers for the rest of the rows.</p></li>
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.read_worksheet_as_table">
 <code class="sig-name descname">read_worksheet_as_table</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">trim=True</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read the content of a worksheet into a Table container. Allows
+<dd><p>Read the contents of a worksheet into a Table container. Allows
 sorting/filtering/manipulating using the <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> library.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – Name of worksheet to read</p></li>
+<li><p><strong>name</strong> – Name of worksheet to read (optional).
+Defaults to the active worksheet.</p></li>
 <li><p><strong>header</strong> – If <cite>True</cite>, use the first row of the worksheet
-as headers for the rest of the rows.</p></li>
-<li><p><strong>trim</strong> – Remove all empty rows from the end of the worksheet</p></li>
-<li><p><strong>start</strong> – Row index to start reading data from (1-indexed)</p></li>
+as headers for the rest of the rows. Default value is False.</p></li>
+<li><p><strong>trim</strong> – Remove all empty rows from the end of the worksheet.
+Default value is True.</p></li>
+<li><p><strong>start</strong> – Row index to start reading data from (1-indexed).
+Default value is row 1.</p></li>
 </ul>
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Workbook</span><span class="p">   </span><span class="c">orders.xlsx</span><span class="p"></span>
-<span class="c">${table}=</span><span class="p">       </span><span class="c">Read Worksheet As Table</span><span class="p">     </span><span class="c">header=True</span><span class="p"></span>
-<span class="c">Close Workbook</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># The most simple form. Column keys will be Column letters.</span>
+<span class="c">${table}=</span><span class="p">    </span><span class="c">Read Worksheet As Table</span><span class="p"></span>
+
+<span class="c"># Since `header=True` the keys will be the header values</span>
+<span class="c">${table}=</span><span class="p">    </span><span class="c">Read Worksheet As Table</span><span class="p">     </span><span class="c">header=True</span><span class="p"></span>
+
+<span class="c"># Uses the header values as keys and starts reading at row 3</span>
+<span class="c">${table}=</span><span class="p">    </span><span class="c">Read Worksheet As Table</span><span class="p">     </span><span class="c">header=True</span><span class="p">    </span><span class="c">start=${3}</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The most simple form. Keys will be Column letters.</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">read_worksheet_as_table</span><span class="p">()</span>
+
+<span class="c1"># Since `header=True` the keys will be the header values</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">read_worksheet_as_table</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Uses the header values as keys and starts reading at row 3</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">read_worksheet_as_table</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -576,14 +713,25 @@ as headers for the rest of the rows.</p></li>
 <dd><p>Remove a worksheet from the active workbook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> – Name of worksheet to remove</p>
+<dd class="field-odd"><p><strong>name</strong> – Name of worksheet to remove (optional).
+Defaults to the active worksheet.</p>
 </dd>
 </dl>
 <p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Remove last worksheet</span>
-<span class="c">Open workbook</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
 <span class="c">${sheets}=</span><span class="p">       </span><span class="c">List worksheets</span><span class="p"></span>
 <span class="c">Remove worksheet</span><span class="p">    </span><span class="c">${sheets}[-1]</span><span class="p"></span>
+
+<span class="c"># Remove worksheet by name</span>
+<span class="c">Remove Worksheet</span><span class="p">    </span><span class="c">Sheet</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove last worksheet</span>
+<span class="n">sheets</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">list_worksheets</span><span class="p">()</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">remove_worksheet</span><span class="p">(</span><span class="n">sheets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Remove worksheet by name</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">remove_worksheet</span><span class="p">(</span><span class="s2">&quot;Sheet&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -601,8 +749,10 @@ as headers for the rest of the rows.</p></li>
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create workbook</span><span class="p"></span>
-<span class="c">Rename worksheet</span><span class="p">    </span><span class="c">Sheet</span><span class="p">    </span><span class="c">Orders</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Rename worksheet</span><span class="p">    </span><span class="c">Sheet</span><span class="p">    </span><span class="c">Orders</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">rename_worksheet</span><span class="p">(</span><span class="s2">&quot;Sheet&quot;</span><span class="p">,</span><span class="s2">&quot;Orders&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -619,6 +769,17 @@ this keyword is called.</p>
 when opened or created.</p>
 </dd>
 </dl>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Saving the active workbook to a new location/filename or saving to</span>
+<span class="c"># a new location/filename</span>
+<span class="c"># Note: You cannot use Save Workbook to convert from XLSX to XLS</span>
+<span class="c"># or vice-versa</span>
+<span class="c">Save Workbook</span><span class="p">   </span><span class="c">path=${OUTPUT_DIR}${/}orders.xlsx</span><span class="p"></span>
+
+<span class="c"># Saving the active workbook changes if location/filename were set</span>
+<span class="c"># in Create Workbook or Open Workbook</span>
+<span class="c">Save Workbook</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -634,9 +795,20 @@ It can always be overridden on a per-keyword basis.</p>
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open workbook</span><span class="p">    </span><span class="c">complex.xlsx</span><span class="p"></span>
-<span class="c">Set active worksheet</span><span class="p">    </span><span class="c">Customers</span><span class="p"></span>
-<span class="c">Append rows to worksheet</span><span class="p">    </span><span class="c">${rows}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Set using the name of the worksheet</span>
+<span class="c">Set Active Worksheet</span><span class="p">    </span><span class="c">Customers</span><span class="p"></span>
+
+<span class="c"># Set using the index of the worksheet</span>
+<span class="c"># Worksheet index begings at 0</span>
+<span class="c">Set Active Worksheet</span><span class="p">    </span><span class="c">2</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set using the name of the worksheet</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">set_active_worksheet</span><span class="p">(</span><span class="s2">&quot;Customers&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set using the index of the worksheet</span>
+<span class="c1"># Worksheet index begings at 0</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">set_active_worksheet</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -644,10 +816,20 @@ It can always be overridden on a per-keyword basis.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.set_cell_format">
 <code class="sig-name descname">set_cell_format</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">fmt</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set number format for cell.</p>
+<dd><p>Set format for cell.</p>
 <p>Does not affect the values themselves, but changes how the values
 are displayed when opening with an external application such as
 Microsoft Excel or LibreOffice Calc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> – Index of row to write, e.g. 3</p></li>
+<li><p><strong>column</strong> – Name or index of column, e.g. C or 7</p></li>
+<li><p><strong>fmt</strong> – Format code for cell</p></li>
+<li><p><strong>name</strong> – Name of worksheet (optional). Defaults to active worksheet.</p></li>
+</ul>
+</dd>
+</dl>
 <p>The <code class="docutils literal notranslate"><span class="pre">fmt</span></code> argument accepts all format code values that
 are supported by the aforementioned applications.</p>
 <p>Some examples of valid values:</p>
@@ -681,8 +863,11 @@ are supported by the aforementioned applications.</p>
 </table>
 <p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Set value to have one decimal precision</span>
-<span class="c">Set cell value</span><span class="p">    </span><span class="c">2</span><span class="p">  </span><span class="c">B</span><span class="p">    </span><span class="c">${value}</span><span class="p"></span>
 <span class="c">Set cell format</span><span class="p">   </span><span class="c">2</span><span class="p">  </span><span class="c">B</span><span class="p">    </span><span class="c">00.0</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set value to have one decimal precision</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">set_cell_format</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="mf">00.0</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -697,7 +882,7 @@ are supported by the aforementioned applications.</p>
 <li><p><strong>row</strong> – Index of row to write, e.g. 3</p></li>
 <li><p><strong>column</strong> – Name or index of column, e.g. C or 7</p></li>
 <li><p><strong>value</strong> – New value of cell</p></li>
-<li><p><strong>name</strong> – Name of worksheet (optional)</p></li>
+<li><p><strong>name</strong> – Name of worksheet (optional). Defaults to active worksheet.</p></li>
 <li><p><strong>fmt</strong> – Format code for cell (optional)</p></li>
 </ul>
 </dd>
@@ -709,6 +894,14 @@ are supported by the aforementioned applications.</p>
 
 <span class="c"># Set a value with cell formatting</span>
 <span class="c">Set cell value</span><span class="p">    </span><span class="c">2</span><span class="p">    </span><span class="c">B</span><span class="p">    </span><span class="c">${value}</span><span class="p">    </span><span class="c">fmt=0%</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a value in the first row and column</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">set_cell_value</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Some value&quot;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">set_cell_value</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;Some value&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set a value with cell formatting</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">set_cell_value</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;0%&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -724,6 +917,11 @@ for documentation.</p>
 <dt id="RPA.Excel.Files.Files.worksheet_exists">
 <code class="sig-name descname">worksheet_exists</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.worksheet_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if worksheet with given name is in workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – Name of worksheet you are looking for</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

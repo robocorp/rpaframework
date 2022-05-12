@@ -314,6 +314,11 @@ can be read from <a class="reference external" href="https://robocorp.com/docs/d
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>More secure apps (XOAUTH2 protocol): Check</dt><dd><p><a class="reference external" href="https://github.com/robocorp/example-oauth-email">example-oauth-email</a></p>
+</dd>
+</dl>
+</li>
 </ul>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
@@ -408,7 +413,7 @@ source folder</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">smtp_port: int = None</em>, <em class="sig-param">imap_port: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">smtp_port: int = None</em>, <em class="sig-param">imap_port: int = None</em>, <em class="sig-param">is_oauth: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize user to SMTP and IMAP servers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -419,6 +424,8 @@ source folder</p>
 <li><p><strong>imap_server</strong> – IMAP server address, defaults to None</p></li>
 <li><p><strong>smtp_port</strong> – SMTP server port, defaults to None (587 for SMTP)</p></li>
 <li><p><strong>imap_port</strong> – IMAP server port, defaults to None</p></li>
+<li><p><strong>is_oauth</strong> – Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+<cite>password</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -431,7 +438,7 @@ source folder</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_imap">
-<code class="sig-name descname">authorize_imap</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize_imap</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = None</em>, <em class="sig-param">is_oauth: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to IMAP server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -440,6 +447,8 @@ source folder</p>
 <li><p><strong>password</strong> – IMAP account password, defaults to None</p></li>
 <li><p><strong>imap_server</strong> – IMAP server address, defaults to None</p></li>
 <li><p><strong>imap_port</strong> – IMAP server port, defaults to None</p></li>
+<li><p><strong>is_oauth</strong> – Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+<cite>password</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -454,7 +463,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp">
-<code class="sig-name descname">authorize_smtp</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize_smtp</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = None</em>, <em class="sig-param">is_oauth: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to SMTP server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -463,6 +472,8 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 <li><p><strong>password</strong> – SMTP account password, defaults to None</p></li>
 <li><p><strong>smtp_server</strong> – SMTP server address, defaults to None</p></li>
 <li><p><strong>smtp_port</strong> – SMTP server port, defaults to None (587 for SMTP)</p></li>
+<li><p><strong>is_oauth</strong> – Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+<cite>password</cite></p></li>
 </ul>
 </dd>
 </dl>
