@@ -17,11 +17,18 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Excel.Files** (:pr:`490`): Keyword examples updated to be more complete
-  and Python examples have been added to all keywords.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14.1.1 - 12 May 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp** (:issue:`500`): Keywords ``Authorize[ Imap/Smtp]``
+  support `is_oauth` parameter which instructs the client to authenticate through the
+  basic (`False`) or XOAUTH2 (`True`) protocol.
+- Library **RPA.Excel.Files** (:pr:`490`): Keyword examples updated to be more complete
+  and Python examples have been added to all keywords.
 
 14.1.0 - 05 May 2022
 --------------------

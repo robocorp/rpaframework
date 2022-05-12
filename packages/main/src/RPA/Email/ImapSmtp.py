@@ -123,6 +123,8 @@ class ImapSmtp:
 
     - Authentication error with Gmail - "Application-specific password required"
         see. https://support.google.com/mail/answer/185833?hl=en
+    - More secure apps (XOAUTH2 protocol): Check
+        `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_
 
     **Examples**
 
@@ -266,6 +268,8 @@ class ImapSmtp:
         :param password: SMTP account password, defaults to None
         :param smtp_server: SMTP server address, defaults to None
         :param smtp_port: SMTP server port, defaults to None (587 for SMTP)
+        :param is_oauth: Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+            `password`
 
         Can be called without giving any parameters if library
         has been initialized with necessary information and/or
@@ -318,6 +322,8 @@ class ImapSmtp:
         :param password: IMAP account password, defaults to None
         :param imap_server: IMAP server address, defaults to None
         :param imap_port: IMAP server port, defaults to None
+        :param is_oauth: Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+            `password`
 
         Can be called without giving any parameters if library
         has been initialized with necessary information and/or
@@ -374,6 +380,8 @@ class ImapSmtp:
         :param imap_server: IMAP server address, defaults to None
         :param smtp_port: SMTP server port, defaults to None (587 for SMTP)
         :param imap_port: IMAP server port, defaults to None
+        :param is_oauth: Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+            `password`
 
         Will use separately set credentials or those given in keyword call.
 
