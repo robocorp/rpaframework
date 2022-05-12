@@ -1522,7 +1522,7 @@ class ServiceRedshiftData(AWSBase):
         additional_params = self._create_auth_params(database)
         if schema_pattern:
             additional_params["SchemaPattern"] = schema_pattern
-        paginator = client.get_paginator("list_tables")
+        paginator = client.get_paginator("list_schemas")
         return paginator.paginate(**additional_params).build_full_result()["Schemas"]
 
     def _create_auth_params(self, alternate_database: Optional[str] = None) -> Dict:
