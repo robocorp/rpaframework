@@ -294,7 +294,9 @@ class ImapSmtp:
                 self.smtp_conn = SMTP_SSL(smtp_server, smtp_port, context=context)
             if account and password:
                 if is_oauth:
-                    self.smtp_conn.docmd("AUTH", "XOAUTH2 " + password)
+                    self.smtp_conn.auth(
+                        "XOAUTH2", lambda: base64.b64decode(password.encode()).decode()
+                    )
                 else:
                     self.smtp_conn.login(account, password)
         else:
@@ -340,7 +342,7 @@ class ImapSmtp:
             self.imap_conn = IMAP4_SSL(imap_server, imap_port)
             if is_oauth:
                 self.imap_conn.authenticate(
-                    "XOAUTH2", lambda _: base64.b64decode(password.encode()).decode()
+                    "XOAUTH2", lambda _: base64.b64decode(password.encode())
                 )
             else:
                 self.imap_conn.login(account, password)
