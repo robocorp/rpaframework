@@ -5,7 +5,8 @@ Library           RPA.Email.ImapSmtp
 Library           RPA.FileSystem
 Library           RPA.HTTP
 Library           RPA.Tables
-#Task Setup        Init GMail  # not working yet
+
+Suite Setup       Init GMail
 
 
 *** Variables ***
@@ -15,17 +16,21 @@ ${BODY_IMG2}      ${RESOURCES}${/}invoice.png
 ${EMAIL_BODY}     <h1>Heading</h1><p>Status: <img src='approved.png' alt='approved image'/></p>
 ...               <p>INVOICE: <img src='invoice.png' alt='invoice image'/></p>
 ${IMAGE_URL}      https://static1.squarespace.com/static/5c37bbd23e2d090f4652b5b9/t/5e6b5afca55453445ebc451b/1586254429285/?format=1500w
-${mail_file}      ${RESOURCES}${/}emails${/}work-item-documentation.eml
+${MAIL_FILE}      ${RESOURCES}${/}emails${/}work-item-documentation.eml
 
 
 *** Keywords ***
 Init GMail
     Set environment variable    RPA_SECRET_MANAGER    RPA.Robocorp.Vault.FileSecrets
-    Set environment variable    RPA_SECRET_FILE       ${RESOURCES}${/}secrets.json
-    Import library   RPA.Robocorp.Vault
-    ${email} =    Get secret    gmail
-    Authorize SMTP    ${email}[account]    ${email}[password]    ${email}[smtpserver]
-    Authorize IMAP    ${email}[account]    ${email}[password]    ${email}[imapserver]
+    Set environment variable    RPA_SECRET_FILE       ${RESOURCES}${/}secrets.yaml
+    Import library      RPA.Robocorp.Vault
+    ${email} =    Get Secret    gmail
+    ${status}   ${ret} =     Run Keyword And Ignore Error    Authorize
+    ...     ${email}[account]    ${email}[password]     is_oauth=${email}[is_oauth]
+    ...     smtp_server=${email}[smtpserver]    imap_server=${email}[imapserver]
+    IF    "${status}" == "FAIL"
+        Pass Execution      ${ret}
+    END
 
 
 *** Tasks ***
@@ -150,10 +155,21 @@ Move messages by their IDS
     Move Messages By IDs    ${idlist}    target_folder
 
 Convert email to docx
-    ${mail_name} =      Get File Name   ${mail_file}
+    ${mail_name} =      Get File Name   ${MAIL_FILE}
     ${output_doc} =     Set Variable    ${OUTPUT_DIR}${/}${mail_name}.docx
-    Email To Document    ${mail_file}   ${output_doc}
+    Email To Document    ${MAIL_FILE}   ${output_doc}
 
     File Should Exist   ${output_doc}
     File Should Not Be Empty    ${output_doc}
-    [Teardown]  Remove file     ${output_doc}
+    [Teardown]  RPA.FileSystem.Remove file     ${output_doc}
+
+Send Self Email
+    [Tags]   skip
+    ${email} =    Get Secret    gmail
+    ${auth_type} =  Set Variable    basic
+    IF    ${email}[is_oauth]
+        ${auth_type} =  Set Variable    OAuth2
+    END
+    Send Message    sender=${email}[account]    recipients=${email}[account]
+    ...    subject=E-mail sent through the ${auth_type} flow
+    ...    body=I hope you find this flow easy to understand and use.
