@@ -1225,11 +1225,16 @@ class ServiceRedshiftData(AWSBase):
     @aws_dependency_required
     def get_redshift_statement_results(
         self, statement_id: str, timeout: int = 40
-    ) -> Union[SqlTable, str]:
+    ) -> Union[SqlTable, int]:
         r"""Retrieve the results of a SQL statement previously submitted
         to Redshift. If that statement has not yet completed, this keyword
         will wait for results. See \`Execute Redshift Statement\` for
         additional information.
+
+        If the statement has tabular results, this keyword returns them
+        as a table from ``RPA.Tables`` if that library is available, or
+        as a list of dictionaries if not. If the statement does not have
+        tabular results, it will return the number of rows affected.
 
         :param statement_id: The statement id to use to retreive results.
         :param timeout: An integar used to calculate the maximum wait.
@@ -1261,6 +1266,10 @@ class ServiceRedshiftData(AWSBase):
             ) from e
 
         finished_statement = client.describe_statement(Id=statement_id)
+        self.logger.info(
+            "Statement finished, total rows affected: "
+            + str(finished_statement.get("ResultRows", "NONE"))
+        )
         if finished_statement["HasResultSet"]:
             paginator = client.get_paginator("get_statement_result")
             full_result = paginator.paginate(Id=statement_id).build_full_result()
@@ -1280,9 +1289,7 @@ class ServiceRedshiftData(AWSBase):
             ]
             return tables().create_table(data) if tables else data
         else:
-            return "Statement finished, total rows affected: " + str(
-                finished_statement.get("ResultRows", "NONE")
-            )
+            return finished_statement.get("ResultRows", 0)
 
     def create_redshift_statement_parameters(self, **params) -> List[Dict[str, str]]:
         r"""Returns a formatted dictionary to be used in
