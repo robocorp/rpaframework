@@ -223,6 +223,618 @@
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-RPA.Browser.Selenium">
 <span id="browser-selenium"></span><h2>Browser.Selenium<a class="headerlink" href="#module-RPA.Browser.Selenium" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">BrowserManagementKeywordsOverride</code><span class="sig-paren">(</span><em class="sig-param">ctx</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SeleniumLibrary.keywords.browsermanagement.BrowserManagementKeywords</span></code></p>
+<p>Overriden keywords for browser management.</p>
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.assert_page_contains">
+<code class="sig-name descname">assert_page_contains</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">tag: Optional[str] = None</em>, <em class="sig-param">message: Optional[str] = None</em>, <em class="sig-param">loglevel: str = 'TRACE'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.assert_page_contains" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.assert_page_not_contains">
+<code class="sig-name descname">assert_page_not_contains</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">tag: Optional[str] = None</em>, <em class="sig-param">message: Optional[str] = None</em>, <em class="sig-param">loglevel: str = 'TRACE'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.assert_page_not_contains" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.close_all_browsers">
+<code class="sig-name descname">close_all_browsers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.close_all_browsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes all open browsers and resets the browser cache.</p>
+<p>After this keyword, new indexes returned from <cite>Open Browser</cite> keyword
+are reset to 1.</p>
+<p>This keyword should be used in test or suite teardown to make sure
+all browsers are closed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.close_browser">
+<code class="sig-name descname">close_browser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.close_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the current browser.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.create_webdriver">
+<code class="sig-name descname">create_webdriver</code><span class="sig-paren">(</span><em class="sig-param">driver_name: str</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">kwargs={}</em>, <em class="sig-param">**init_kwargs</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.create_webdriver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of Selenium WebDriver.</p>
+<p>Like <cite>Open Browser</cite>, but allows passing arguments to the created
+WebDriver instance directly. This keyword should only be used if
+the functionality provided by <cite>Open Browser</cite> is not adequate.</p>
+<p><code class="docutils literal notranslate"><span class="pre">driver_name</span></code> must be a WebDriver implementation name like Firefox,
+Chrome, Ie, Opera, Safari, PhantomJS, or Remote.</p>
+<p>The initialized WebDriver can be configured either with a Python
+dictionary <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> or by using keyword arguments <code class="docutils literal notranslate"><span class="pre">**init_kwargs</span></code>.
+These arguments are passed directly to WebDriver without any
+processing. See [<a class="reference external" href="https://seleniumhq.github.io/selenium/docs/api/py/api">https://seleniumhq.github.io/selenium/docs/api/py/api</a>.html|
+Selenium API documentation] for details about the supported arguments.</p>
+<p>Examples:
+| # Use proxy with Firefox   |                |                              |                                      |
+| ${proxy}=                  | <cite>Evaluate</cite>     | selenium.webdriver.Proxy()   | modules=selenium, selenium.webdriver |
+| ${proxy.http_proxy}=       | <cite>Set Variable</cite> | localhost:8888               |                                      |
+| <cite>Create Webdriver</cite>         | Firefox        | proxy=${proxy}               |                                      |
+| # Use proxy with PhantomJS |                |                              |                                      |
+| ${service args}=           | <cite>Create List</cite>  | –proxy=192.168.132.104:8888 |                                      |
+| <cite>Create Webdriver</cite>         | PhantomJS      | service_args=${service args} |                                      |</p>
+<p>Returns the index of this browser instance which can be used later to
+switch back to it. Index starts from 1 and is reset back to it when
+<cite>Close All Browsers</cite> keyword is used. See <cite>Switch Browser</cite> for an
+example.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.debug">
+<code class="sig-name descname">debug</code><span class="sig-paren">(</span><em class="sig-param">msg</em>, <em class="sig-param">html=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.driver">
+<em class="property">property </em><code class="sig-name descname">driver</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.driver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.drivers">
+<em class="property">property </em><code class="sig-name descname">drivers</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.drivers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.element_finder">
+<em class="property">property </em><code class="sig-name descname">element_finder</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.element_finder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.event_firing_webdriver">
+<em class="property">property </em><code class="sig-name descname">event_firing_webdriver</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.event_firing_webdriver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.find_element">
+<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">tag: Optional[str] = None</em>, <em class="sig-param">required: bool = True</em>, <em class="sig-param">parent: selenium.webdriver.remote.webelement.WebElement = None</em><span class="sig-paren">)</span> &#x2192; selenium.webdriver.remote.webelement.WebElement<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.find_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find element matching <cite>locator</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> (<em>str</em><em> or </em><em>selenium.webdriver.remote.webelement.WebElement</em>) – Locator to use when searching the element.
+See library documentation for the supported locator syntax.</p></li>
+<li><p><strong>tag</strong> (<em>str</em>) – Limit searching only to these elements.</p></li>
+<li><p><strong>required</strong> (<em>True</em><em> or </em><em>False</em>) – Raise <cite>ElementNotFound</cite> if element not found when
+true, return <cite>None</cite> otherwise.</p></li>
+<li><p><strong>parent</strong> (<em>selenium.webdriver.remote.webelement.WebElement</em>) – Optional parent <cite>WebElememt</cite> to search child elements
+from. By default, search starts from the root using <cite>WebDriver</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Found <cite>WebElement</cite> or <cite>None</cite> if element not found and
+<cite>required</cite> is false.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>selenium.webdriver.remote.webelement.WebElement</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>SeleniumLibrary.errors.ElementNotFound</strong> – If element not found
+and <cite>required</cite> is true.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.find_elements">
+<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">tag: Optional[str] = None</em>, <em class="sig-param">parent: selenium.webdriver.remote.webelement.WebElement = None</em><span class="sig-paren">)</span> &#x2192; List[selenium.webdriver.remote.webelement.WebElement]<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.find_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all elements matching <cite>locator</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> (<em>str</em><em> or </em><em>selenium.webdriver.remote.webelement.WebElement</em>) – Locator to use when searching the element.
+See library documentation for the supported locator syntax.</p></li>
+<li><p><strong>tag</strong> (<em>str</em>) – Limit searching only to these elements.</p></li>
+<li><p><strong>parent</strong> (<em>selenium.webdriver.remote.webelement.WebElement</em>) – Optional parent <cite>WebElememt</cite> to search child elements
+from. By default, search starts from the root using <cite>WebDriver</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of found <cite>WebElement</cite> or empty if elements are not found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[selenium.webdriver.remote.webelement.WebElement]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_aliases">
+<code class="sig-name descname">get_browser_aliases</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_aliases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns aliases of all active browser that has an alias as NormalizedDict.
+The dictionary contains the aliases as keys and the index as value.
+This can be accessed as dictionary <code class="docutils literal notranslate"><span class="pre">${aliases.key}</span></code> or as list <code class="docutils literal notranslate"><span class="pre">&#64;{aliases}[0]</span></code>.</p>
+<p>Example:
+| <cite>Open Browser</cite> | <a class="reference external" href="https://example.com">https://example.com</a>   | alias=BrowserA | |
+| <cite>Open Browser</cite> | <a class="reference external" href="https://example.com">https://example.com</a>   | alias=BrowserB | |
+| &amp;{aliases}     | <cite>Get Browser Aliases</cite> |                | # &amp;{aliases} = { BrowserA=1|BrowserB=2 } |
+| <cite>Log</cite>          | ${aliases.BrowserA}   |                | # logs <code class="docutils literal notranslate"><span class="pre">1</span></code> |
+| FOR            | ${alias}              | IN             | &#64;{aliases} |
+|                | <cite>Log</cite>                 | ${alias}       | # logs <code class="docutils literal notranslate"><span class="pre">BrowserA</span></code> and <code class="docutils literal notranslate"><span class="pre">BrowserB</span></code> |
+| END            |                       |                | |</p>
+<p>See <cite>Switch Browser</cite> for more information and examples.</p>
+<p>New in SeleniumLibrary 4.0</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_ids">
+<code class="sig-name descname">get_browser_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns index of all active browser as list.</p>
+<p>Example:
+| &#64;{browser_ids}= | Get Browser Ids   |                   |                |
+| FOR             | ${id}             | IN                | &#64;{browser_ids} |
+|                 | &#64;{window_titles}= | Get Window Titles | browser=${id}  |
+|                 | Log               | Browser ${id} has these windows: ${window_titles} | |
+| END             |                   |                   |                |</p>
+<p>See <cite>Switch Browser</cite> for more information and examples.</p>
+<p>New in SeleniumLibrary 4.0</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_location">
+<code class="sig-name descname">get_location</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current browser window URL.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_implicit_wait">
+<code class="sig-name descname">get_selenium_implicit_wait</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_implicit_wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the implicit wait value used by Selenium.</p>
+<p>The value is returned as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.</p>
+<p>See the <cite>Implicit wait</cite> section above for more information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_speed">
+<code class="sig-name descname">get_selenium_speed</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the delay that is waited after each Selenium command.</p>
+<p>The value is returned as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.</p>
+<p>See the <cite>Selenium Speed</cite> section above for more information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_timeout">
+<code class="sig-name descname">get_selenium_timeout</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the timeout that is used by various keywords.</p>
+<p>The value is returned as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.</p>
+<p>See the <cite>Timeout</cite> section above for more information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_session_id">
+<code class="sig-name descname">get_session_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_session_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the currently active browser session id.</p>
+<p>New in SeleniumLibrary 3.2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_source">
+<code class="sig-name descname">get_source</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the entire HTML source of the current page or frame.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_timeout">
+<code class="sig-name descname">get_timeout</code><span class="sig-paren">(</span><em class="sig-param">timeout: Union[str</em>, <em class="sig-param">int</em>, <em class="sig-param">datetime.timedelta</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_title">
+<code class="sig-name descname">get_title</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the title of the current page.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.go_back">
+<code class="sig-name descname">go_back</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.go_back" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates the user clicking the back button on their browser.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.go_to">
+<code class="sig-name descname">go_to</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.go_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Navigates the current browser window to the provided <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.info">
+<code class="sig-name descname">info</code><span class="sig-paren">(</span><em class="sig-param">msg: str</em>, <em class="sig-param">html: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.is_element_enabled">
+<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">tag: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.is_element_enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.is_text_present">
+<code class="sig-name descname">is_text_present</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.is_text_present" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.is_visible">
+<code class="sig-name descname">is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.is_visible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.location_should_be">
+<code class="sig-name descname">location_should_be</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">message: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.location_should_be" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies that the current URL is exactly <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">url</span></code> argument contains the exact url that should exist in browser.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">message</span></code> argument can be used to override the default error
+message.</p>
+<p><code class="docutils literal notranslate"><span class="pre">message</span></code> argument is new in SeleniumLibrary 3.2.0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.location_should_contain">
+<code class="sig-name descname">location_should_contain</code><span class="sig-paren">(</span><em class="sig-param">expected: str</em>, <em class="sig-param">message: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.location_should_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies that the current URL contains <code class="docutils literal notranslate"><span class="pre">expected</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">expected</span></code> argument contains the expected value in url.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">message</span></code> argument can be used to override the default error
+message.</p>
+<p><code class="docutils literal notranslate"><span class="pre">message</span></code> argument is new in SeleniumLibrary 3.2.0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log">
+<code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param">msg: str</em>, <em class="sig-param">level: str = 'INFO'</em>, <em class="sig-param">html: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log_dir">
+<em class="property">property </em><code class="sig-name descname">log_dir</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log_location">
+<code class="sig-name descname">log_location</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs and returns the current browser window URL.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log_source">
+<code class="sig-name descname">log_source</code><span class="sig-paren">(</span><em class="sig-param">loglevel: str = 'INFO'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs and returns the HTML source of the current page or frame.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">loglevel</span></code> argument defines the used log level. Valid log
+levels are <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, <code class="docutils literal notranslate"><span class="pre">INFO</span></code> (default), <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>, <code class="docutils literal notranslate"><span class="pre">TRACE</span></code>
+and <code class="docutils literal notranslate"><span class="pre">NONE</span></code> (no logging).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log_title">
+<code class="sig-name descname">log_title</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.log_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs and returns the title of the current page.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.open_browser">
+<code class="sig-name descname">open_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None</em>, <em class="sig-param">browser: str = 'firefox'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">remote_url: Union[bool</em>, <em class="sig-param">str] = False</em>, <em class="sig-param">desired_capabilities: Union[dict</em>, <em class="sig-param">None</em>, <em class="sig-param">str] = None</em>, <em class="sig-param">ff_profile_dir: Union[selenium.webdriver.firefox.firefox_profile.FirefoxProfile</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">options: Any = None</em>, <em class="sig-param">service_log_path: Optional[str] = None</em>, <em class="sig-param">executable_path: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.open_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a new browser instance to the optional <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">browser</span></code> argument specifies which browser to use. The
+supported browsers are listed in the table below. The browser names
+are case-insensitive and some browsers have multiple supported names.</p>
+<div class="line-block">
+<div class="line-block">
+<div class="line">= Browser =    |        = Name(s) =       |</div>
+</div>
+<div class="line">Firefox           | firefox, ff              |</div>
+<div class="line">Google Chrome     | googlechrome, chrome, gc |</div>
+<div class="line">Headless Firefox  | headlessfirefox          |</div>
+<div class="line">Headless Chrome   | headlesschrome           |</div>
+<div class="line">Internet Explorer | internetexplorer, ie     |</div>
+<div class="line">Edge              | edge                     |</div>
+<div class="line">Safari            | safari                   |</div>
+<div class="line">Opera             | opera                    |</div>
+<div class="line">Android           | android                  |</div>
+<div class="line">Iphone            | iphone                   |</div>
+<div class="line">PhantomJS         | phantomjs                |</div>
+<div class="line">HTMLUnit          | htmlunit                 |</div>
+<div class="line">HTMLUnit with Javascript | htmlunitwithjs    |</div>
+</div>
+<p>To be able to actually use one of these browsers, you need to have
+a matching Selenium browser driver available. See the
+[<a class="reference external" href="https://github.com/robotframework/SeleniumLibrary#browser">https://github.com/robotframework/SeleniumLibrary#browser</a>-drivers|
+project documentation] for more details. Headless Firefox and
+Headless Chrome are new additions in SeleniumLibrary 3.1.0
+and require Selenium 3.8.0 or newer.</p>
+<p>After opening the browser, it is possible to use optional
+<code class="docutils literal notranslate"><span class="pre">url</span></code> to navigate the browser to the desired address.</p>
+<p>Optional <code class="docutils literal notranslate"><span class="pre">alias</span></code> is an alias given for this browser instance and
+it can be used for switching between browsers. When same <code class="docutils literal notranslate"><span class="pre">alias</span></code>
+is given with two <cite>Open Browser</cite> keywords, the first keyword will
+open a new browser, but the second one will switch to the already
+opened browser and will not open a new browser. The <code class="docutils literal notranslate"><span class="pre">alias</span></code>
+definition overrules <code class="docutils literal notranslate"><span class="pre">browser</span></code> definition. When same <code class="docutils literal notranslate"><span class="pre">alias</span></code>
+is used but a different <code class="docutils literal notranslate"><span class="pre">browser</span></code> is defined, then switch to
+a browser with same alias is done and new browser is not opened.
+An alternative approach for switching is using an index returned
+by this keyword. These indices start from 1, are incremented when new
+browsers are opened, and reset back to 1 when <cite>Close All Browsers</cite>
+is called. See <cite>Switch Browser</cite> for more information and examples.</p>
+<p>Optional <code class="docutils literal notranslate"><span class="pre">remote_url</span></code> is the URL for a
+[<a class="reference external" href="https://github.com/SeleniumHQ/selenium/wiki">https://github.com/SeleniumHQ/selenium/wiki</a>/Grid2|Selenium Grid].</p>
+<p>Optional <code class="docutils literal notranslate"><span class="pre">desired_capabilities</span></code> can be used to configure, for example,
+logging preferences for a browser or a browser and operating system
+when using [<a class="reference external" href="http://saucelabs">http://saucelabs</a>.com|Sauce Labs]. Desired capabilities can
+be given either as a Python dictionary or as a string in the format
+<code class="docutils literal notranslate"><span class="pre">key1:value1,key2:value2</span></code>.
+[<a class="reference external" href="https://github.com/SeleniumHQ/selenium/wiki">https://github.com/SeleniumHQ/selenium/wiki</a>/DesiredCapabilities|
+Selenium documentation] lists possible capabilities that can be
+enabled.</p>
+<p>Optional <code class="docutils literal notranslate"><span class="pre">ff_profile_dir</span></code> is the path to the Firefox profile
+directory if you wish to overwrite the default profile Selenium
+uses. Notice that prior to SeleniumLibrary 3.0, the library
+contained its own profile that was used by default. The
+<code class="docutils literal notranslate"><span class="pre">ff_profile_dir</span></code> can also be an instance of the
+[<a class="reference external" href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_firefox/selenium.webdriver.firefox.firefox_profile">https://seleniumhq.github.io/selenium/docs/api/py/webdriver_firefox/selenium.webdriver.firefox.firefox_profile</a>.html|selenium.webdriver.FirefoxProfile]
+. As a third option, it is possible to use <cite>FirefoxProfile</cite> methods
+and attributes to define the profile using methods and attributes
+in the same way as with <code class="docutils literal notranslate"><span class="pre">options</span></code> argument. Example: It is possible
+to use FirefoxProfile <cite>set_preference</cite> to define different
+profile settings. See <code class="docutils literal notranslate"><span class="pre">options</span></code> argument documentation in below
+how to handle backslash escaping.</p>
+<p>Optional <code class="docutils literal notranslate"><span class="pre">options</span></code> argument allows defining browser specific
+Selenium options. Example for Chrome, the <code class="docutils literal notranslate"><span class="pre">options</span></code> argument
+allows defining the following
+[<a class="reference external" href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options">https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options</a>.Options|methods and attributes]
+and for Firefox these
+[<a class="reference external" href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_firefox/selenium.webdriver.firefox.options.html?highlight=firefox#selenium.webdriver.firefox.options">https://seleniumhq.github.io/selenium/docs/api/py/webdriver_firefox/selenium.webdriver.firefox.options.html?highlight=firefox#selenium.webdriver.firefox.options</a>.Options|methods and attributes]
+are available. Please note that not all browsers, supported by the
+SeleniumLibrary, have Selenium options available. Therefore please
+consult the Selenium documentation which browsers do support
+the Selenium options. If <code class="docutils literal notranslate"><span class="pre">browser</span></code> argument is <cite>android</cite> then
+[<a class="reference external" href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options">https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options</a>.Options|Chrome options]
+is used. Selenium options are also supported, when <code class="docutils literal notranslate"><span class="pre">remote_url</span></code>
+argument is used.</p>
+<p>The SeleniumLibrary <code class="docutils literal notranslate"><span class="pre">options</span></code> argument accepts Selenium
+options in two different formats: as a string and as Python object
+which is an instance of the Selenium options class.</p>
+<p>The string format allows defining Selenium options methods
+or attributes and their arguments in Robot Framework test data.
+The method and attributes names are case and space sensitive and
+must match to the Selenium options methods and attributes names.
+When defining a method, it must be defined in a similar way as in
+python: method name, opening parenthesis, zero to many arguments
+and closing parenthesis. If there is a need to define multiple
+arguments for a single method, arguments must be separated with
+comma, just like in Python. Example: <cite>add_argument(“–headless”)</cite>
+or <cite>add_experimental_option(“key”, “value”)</cite>. Attributes are
+defined in a similar way as in Python: attribute name, equal sign,
+and attribute value. Example, <cite>headless=True</cite>. Multiple methods
+and attributes must be separated by a semicolon. Example:
+<cite>add_argument(“–headless”);add_argument(“–start-maximized”)</cite>.</p>
+<p>Arguments allow defining Python data types and arguments are
+evaluated by using Python
+[<a class="reference external" href="https://docs.python.org/3/library/ast.html#ast">https://docs.python.org/3/library/ast.html#ast</a>.literal_eval|ast.literal_eval].
+Strings must be quoted with single or double quotes, example “value”
+or ‘value’. It is also possible to define other Python builtin
+data types, example <cite>True</cite> or <cite>None</cite>, by not using quotes
+around the arguments.</p>
+<p>The string format is space friendly. Usually, spaces do not alter
+the defining methods or attributes. There are two exceptions.
+In some Robot Framework test data formats, two or more spaces are
+considered as cell separator and instead of defining a single
+argument, two or more arguments may be defined. Spaces in string
+arguments are not removed and are left as is. Example
+<cite>add_argument ( “–headless” )</cite> is same as
+<cite>add_argument(“–headless”)</cite>. But <cite>add_argument(” –headless “)</cite> is
+not same same as <cite>add_argument ( “–headless” )</cite>, because
+spaces inside of quotes are not removed. Please note that if
+options string contains backslash, example a Windows OS path,
+the backslash needs escaping both in Robot Framework data and
+in Python side. This means single backslash must be writen using
+four backslash characters. Example, Windows path:
+“C:pathtoprofile” must be written as
+“C:\path\to\profile”. Another way to write
+backslash is use Python
+[https://docs.python.org/3/reference/lexical_analysis.html#string-and-bytes-literals|raw strings]
+and example write: r”C:\path\to\profile”.</p>
+<p>As last format, <code class="docutils literal notranslate"><span class="pre">options</span></code> argument also supports receiving
+the Selenium options as Python class instance. In this case, the
+instance is used as-is and the SeleniumLibrary will not convert
+the instance to other formats.
+For example, if the following code return value is saved to
+<cite>${options}</cite> variable in the Robot Framework data:
+| options = webdriver.ChromeOptions()
+| options.add_argument(‘–disable-dev-shm-usage’)
+| return options</p>
+<p>Then the <cite>${options}</cite> variable can be used as an argument to
+<code class="docutils literal notranslate"><span class="pre">options</span></code>.</p>
+<p>Example the <code class="docutils literal notranslate"><span class="pre">options</span></code> argument can be used to launch Chomium-based
+applications which utilize the
+[<a class="reference external" href="https://bitbucket.org/chromiumembedded/cef/wiki">https://bitbucket.org/chromiumembedded/cef/wiki</a>/UsingChromeDriver|Chromium Embedded Framework]
+. To lauch Chomium-based application, use <code class="docutils literal notranslate"><span class="pre">options</span></code> to define
+<cite>binary_location</cite> attribute and use <cite>add_argument</cite> method to define
+<cite>remote-debugging-port</cite> port for the application. Once the browser
+is opened, the test can interact with the embedded web-content of
+the system under test.</p>
+<p>Optional <code class="docutils literal notranslate"><span class="pre">service_log_path</span></code> argument defines the name of the
+file where to write the browser driver logs. If the
+<code class="docutils literal notranslate"><span class="pre">service_log_path</span></code>  argument contain a  marker <code class="docutils literal notranslate"><span class="pre">{index}</span></code>, it
+will be automatically replaced with unique running
+index preventing files to be overwritten. Indices start’s from 1,
+and how they are represented can be customized using Python’s
+[<a class="reference external" href="https://docs.python.org/3/library/string.html#format-string">https://docs.python.org/3/library/string.html#format-string</a>-syntax|
+format string syntax].</p>
+<p>Optional <code class="docutils literal notranslate"><span class="pre">executable_path</span></code> argument defines the path to the driver
+executable, example to a chromedriver or a geckodriver. If not defined
+it is assumed the executable is in the
+[<a class="reference external" href="https://en.wikipedia.org/wiki/PATH_(variable">https://en.wikipedia.org/wiki/PATH_(variable</a>)|$PATH].</p>
+<p>Examples:
+| <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Chrome  |                                         |
+| <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Firefox | alias=Firefox                           |
+| <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Edge    | remote_url=http://127.0.0.1:4444/wd/hub |
+| <cite>Open Browser</cite> | <a class="reference external" href="about:blank">about:blank</a>        |         |                                         |
+| <cite>Open Browser</cite> | browser=Chrome     |         |                                         |</p>
+<p>Alias examples:
+| ${1_index} =    | <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Chrome  | alias=Chrome     | # Opens new browser because alias is new.         |
+| ${2_index} =    | <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Firefox |                  | # Opens new browser because alias is not defined. |
+| ${3_index} =    | <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Chrome  | alias=Chrome     | # Switches to the browser with Chrome alias.      |
+| ${4_index} =    | <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Chrome  | alias=${1_index} | # Switches to the browser with Chrome alias.      |
+| Should Be Equal | ${1_index}     | ${3_index}         |         |                  |                                                   |
+| Should Be Equal | ${1_index}     | ${4_index}         |         |                  |                                                   |
+| Should Be Equal | ${2_index}     | ${2}               |         |                  |                                                   |</p>
+<p>Example when using
+[<a class="reference external" href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options">https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options</a>.Options|Chrome options]
+method:
+| <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Chrome | options=add_argument(“–disable-popup-blocking”); add_argument(“–ignore-certificate-errors”) | # Sting format.                    |
+|  ${options} =  |     Get Options    |        |                                                                                               | # Selenium options instance.       |
+| <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Chrome | options=${options}                                                                            |                                    |
+| <cite>Open Browser</cite> | None               | Chrome | options=binary_location=”/path/to/binary”;add_argument(“remote-debugging-port=port”)          | # Start Chomium-based application. |
+| <cite>Open Browser</cite> | None               | Chrome | options=binary_location=r”C:\path\to\binary”                                         | # Windows OS path escaping.        |</p>
+<p>Example for FirefoxProfile
+| <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Firefox | ff_profile_dir=/path/to/profile                                                  | # Using profile from disk.                       |
+| <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Firefox | ff_profile_dir=${FirefoxProfile_instance}                                        | # Using instance of FirefoxProfile.              |
+| <cite>Open Browser</cite> | <a class="reference external" href="http://example.com">http://example.com</a> | Firefox | ff_profile_dir=set_preference(“key”, “value”);set_preference(“other”, “setting”) | # Defining profile using FirefoxProfile mehtods. |</p>
+<p>If the provided configuration options are not enough, it is possible
+to use <cite>Create Webdriver</cite> to customize browser initialization even
+more.</p>
+<p>Applying <code class="docutils literal notranslate"><span class="pre">desired_capabilities</span></code> argument also for local browser is
+new in SeleniumLibrary 3.1.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">alias</span></code> to decide, is the new browser opened is new
+in SeleniumLibrary 4.0. The <code class="docutils literal notranslate"><span class="pre">options</span></code> and <code class="docutils literal notranslate"><span class="pre">service_log_path</span></code>
+are new in SeleniumLibrary 4.0. Support for <code class="docutils literal notranslate"><span class="pre">ff_profile_dir</span></code>
+accepting an instance of the <cite>selenium.webdriver.FirefoxProfile</cite>
+and support defining FirefoxProfile with methods and
+attributes are new in SeleniumLibrary 4.0.</p>
+<p>Making <code class="docutils literal notranslate"><span class="pre">url</span></code> optional is new in SeleniumLibrary 4.1.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">executable_path</span></code> argument is new in SeleniumLibrary 4.2.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.reload_page">
+<code class="sig-name descname">reload_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.reload_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates user reloading page.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_browser_implicit_wait">
+<code class="sig-name descname">set_browser_implicit_wait</code><span class="sig-paren">(</span><em class="sig-param">value: datetime.timedelta</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_browser_implicit_wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the implicit wait value used by Selenium.</p>
+<p>Same as <cite>Set Selenium Implicit Wait</cite> but only affects the current
+browser.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_default_url_scheme">
+<code class="sig-name descname">set_default_url_scheme</code><span class="sig-paren">(</span><em class="sig-param">scheme: Optional[str]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_default_url_scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the default <cite>scheme</cite> used for URLs without a defined
+value, such as <cite>http</cite> or <cite>https</cite>.</p>
+<p>The feature is disabled if the value is set to <cite>None</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_selenium_implicit_wait">
+<code class="sig-name descname">set_selenium_implicit_wait</code><span class="sig-paren">(</span><em class="sig-param">value: datetime.timedelta</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_selenium_implicit_wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the implicit wait value used by Selenium.</p>
+<p>The value can be given as a number that is considered to be
+seconds or as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.
+The previous value is returned and can be used to restore
+the original value later if needed.</p>
+<p>This keyword sets the implicit wait for all opened browsers.
+Use <cite>Set Browser Implicit Wait</cite> to set it only to the current
+browser.</p>
+<p>See the <cite>Implicit wait</cite> section above for more information.</p>
+<p>Example:
+| ${orig wait} = | <cite>Set Selenium Implicit Wait</cite> | 10 seconds |
+| <cite>Perform AJAX call that is slow</cite> |
+| <cite>Set Selenium Implicit Wait</cite> | ${orig wait} |</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_selenium_speed">
+<code class="sig-name descname">set_selenium_speed</code><span class="sig-paren">(</span><em class="sig-param">value: datetime.timedelta</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_selenium_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the delay that is waited after each Selenium command.</p>
+<p>The value can be given as a number that is considered to be
+seconds or as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.
+The previous value is returned and can be used to restore
+the original value later if needed.</p>
+<p>See the <cite>Selenium Speed</cite> section above for more information.</p>
+<p>Example:
+| <cite>Set Selenium Speed</cite> | 0.5 seconds |</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_selenium_timeout">
+<code class="sig-name descname">set_selenium_timeout</code><span class="sig-paren">(</span><em class="sig-param">value: datetime.timedelta</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_selenium_timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the timeout that is used by various keywords.</p>
+<p>The value can be given as a number that is considered to be
+seconds or as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.
+The previous value is returned and can be used to restore
+the original value later if needed.</p>
+<p>See the <cite>Timeout</cite> section above for more information.</p>
+<p>Example:
+| ${orig timeout} = | <cite>Set Selenium Timeout</cite> | 15 seconds |
+| <cite>Open page that loads slowly</cite> |
+| <cite>Set Selenium Timeout</cite> | ${orig timeout} |</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.switch_browser">
+<code class="sig-name descname">switch_browser</code><span class="sig-paren">(</span><em class="sig-param">index_or_alias: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.switch_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switches between active browsers using <code class="docutils literal notranslate"><span class="pre">index_or_alias</span></code>.</p>
+<p>Indices are returned by the <cite>Open Browser</cite> keyword and aliases can
+be given to it explicitly. Indices start from 1.</p>
+<p>Example:
+| <cite>Open Browser</cite>        | <a class="reference external" href="http://google.com">http://google.com</a> | ff       |
+| <cite>Location Should Be</cite>  | <a class="reference external" href="http://google.com">http://google.com</a> |          |
+| <cite>Open Browser</cite>        | <a class="reference external" href="http://yahoo.com">http://yahoo.com</a>  | ie       | alias=second |
+| <cite>Location Should Be</cite>  | <a class="reference external" href="http://yahoo.com">http://yahoo.com</a>  |          |
+| <cite>Switch Browser</cite>      | 1                 | # index  |
+| <cite>Page Should Contain</cite> | I’m feeling lucky |          |
+| <cite>Switch Browser</cite>      | second            | # alias  |
+| <cite>Page Should Contain</cite> | More Yahoo!       |          |
+| <cite>Close All Browsers</cite>  |                   |          |</p>
+<p>Above example expects that there was no other open browsers when
+opening the first one because it used index <code class="docutils literal notranslate"><span class="pre">1</span></code> when switching to
+it later. If you are not sure about that, you can store the index
+into a variable as below.</p>
+<div class="line-block">
+<div class="line">${index} =         | <cite>Open Browser</cite> | <a class="reference external" href="http://google.com">http://google.com</a> |</div>
+<div class="line"># Do something … |                |                   |</div>
+<div class="line"><cite>Switch Browser</cite>   | ${index}       |                   |</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.title_should_be">
+<code class="sig-name descname">title_should_be</code><span class="sig-paren">(</span><em class="sig-param">title: str</em>, <em class="sig-param">message: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.title_should_be" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies that the current page title equals <code class="docutils literal notranslate"><span class="pre">title</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">message</span></code> argument can be used to override the default error
+message.</p>
+<p><code class="docutils literal notranslate"><span class="pre">message</span></code> argument is new in SeleniumLibrary 3.1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.warn">
+<code class="sig-name descname">warn</code><span class="sig-paren">(</span><em class="sig-param">msg: str</em>, <em class="sig-param">html: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.warn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="exception">
 <dt id="RPA.Browser.Selenium.BrowserNotFoundError">
 <em class="property">exception </em><code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">BrowserNotFoundError</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserNotFoundError" title="Permalink to this definition">¶</a></dt>
@@ -1466,6 +2078,12 @@ if set to <cite>None</cite> then file is not saved at all</p>
 </div>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Browser.Selenium.ensure_scheme">
+<code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">ensure_scheme</code><span class="sig-paren">(</span><em class="sig-param">url: str, default: Optional[str]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.ensure_scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensures that a URL has a scheme, such as <cite>http</cite> or <cite>https</cite></p>
 </dd></dl>
 
 <dl class="function">
