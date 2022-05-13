@@ -17,6 +17,9 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
+  navigating, such as `https` (default) or `http`. This functionality is controlled
+  with the keyword `Set default URL scheme`.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
