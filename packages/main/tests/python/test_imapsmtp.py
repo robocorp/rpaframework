@@ -1,6 +1,6 @@
-from smtplib import SMTP
+from types import SimpleNamespace
+from unittest import mock
 
-import mock
 import pytest
 from RPA.Email.ImapSmtp import ImapSmtp
 from docx import Document
@@ -8,41 +8,62 @@ from docx import Document
 from . import RESOURCES_DIR
 
 
-SENDMAIL_MOCK = "RPA.Email.ImapSmtp.SMTP.sendmail"
-recipient = "person1@domain.com"
-multi_recipients = "person2@domain.com,person3@domain.com"
+class Resources:
+    image = RESOURCES_DIR / "approved.png"
+    email = RESOURCES_DIR / "emails" / f"work-item-documentation.eml"
 
 
 @pytest.fixture
 def library():
-    library = ImapSmtp()
-    library.smtp_conn = SMTP()
-    return library
+    with mock.patch("RPA.Email.ImapSmtp.SMTP"), mock.patch(
+        "RPA.Email.ImapSmtp.IMAP4_SSL"
+    ):
+        lib = ImapSmtp(smtp_server="smtp.gmail.com", imap_server="imap.gmail.com")
+        yield lib
 
 
-@mock.patch(SENDMAIL_MOCK)
-def test_send_message_all_required_parameters_given(mocked, library):
+@pytest.fixture
+def creds():
+    return SimpleNamespace(
+        account="cosmin@robocorp.com",
+        password="robocorp-is-cool",
+        oauth2_str=(
+            "dXNlcj14b2F1dGhAZ21haWwuY29tAWF1dGg9QmVhcmVyIHlhMjkuQUhFUzZaUktlVVF3SDJ4aG"
+            "lya3NTVURTeWpnOW9QdVJNTWFsMDVUeTBjZkZJVF91UmZFU0h3AQE="
+        ),
+    )
+
+
+@pytest.fixture(
+    params=[
+        "person1@domain.com",
+        "person2@domain.com,person3@domain.com",
+    ]
+)
+def recipients(request):
+    return request.param
+
+
+def test_send_message_all_required_parameters_given(library, recipients):
     status = library.send_message(
         sender="sender@domain.com",
         subject="My test email subject",
         body="body of the message",
-        recipients=recipient,
+        recipients=recipients,
     )
     assert status
 
 
-@mock.patch(SENDMAIL_MOCK)
-def test_send_message_with_no_sender(mocked, library):
+def test_send_message_with_no_sender(library, recipients):
     with pytest.raises(TypeError):
         library.send_message(
             subject="My test email subject",
             body="body of the message",
-            recipients=recipient,
+            recipients=recipients,
         )
 
 
-@mock.patch(SENDMAIL_MOCK)
-def test_send_message_with_no_recipients(mocked, library):
+def test_send_message_with_no_recipients(library):
     with pytest.raises(TypeError):
         library.send_message(
             sender="sender@domain.com",
@@ -51,41 +72,38 @@ def test_send_message_with_no_recipients(mocked, library):
         )
 
 
-@mock.patch(SENDMAIL_MOCK)
-def test_send_message_with_images(mocked, library):
+def test_send_message_with_images(library, recipients):
     status = library.send_message(
         sender="sender@domain.com",
         subject="My test email subject",
         body="body of the message<img src='approved.png'/>",
-        recipients=recipient,
+        recipients=recipients,
         html=True,
-        images=RESOURCES_DIR / "approved.png",
+        images=Resources.image,
     )
     assert status
 
 
-@mock.patch(SENDMAIL_MOCK)
-def test_send_message_with_attachments(mocked, library):
+def test_send_message_with_attachments(library, recipients):
     status = library.send_message(
         sender="sender@domain.com",
         subject="My test email subject",
         body="body of the message",
-        recipients=recipient,
-        attachments=RESOURCES_DIR / "approved.png",
+        recipients=recipients,
+        attachments=Resources.image,
     )
     assert status
 
 
-@mock.patch(SENDMAIL_MOCK)
-def test_send_message_with_attachments_and_images(mocked, library):
+def test_send_message_with_attachments_and_images(library, recipients):
     status = library.send_message(
         sender="sender@domain.com",
         subject="My test email subject",
         body="body of the message",
-        recipients=recipient,
-        attachments=RESOURCES_DIR / "approved.png",
+        recipients=recipients,
+        attachments=Resources.image,
         html=True,
-        images=RESOURCES_DIR / "approved.png",
+        images=Resources.image,
     )
     assert status
 
@@ -138,20 +156,32 @@ def test_parse_folders_failed(library, caplog):
     assert expected_log_text in caplog.text
 
 
-@pytest.mark.parametrize(
-    "input_file,expected_text",
-    [
-        (
-            "work-item-documentation",
-            "Get attached file from work item to disk. Returns the absolute path to the created file.",
-        )
-    ],
-)
-def test_email_to_document(tmp_path, library, input_file, expected_text):
-    input_source = RESOURCES_DIR / "emails" / f"{input_file}.eml"
-    output_source = tmp_path / f"{input_file}.docx"
-    library.email_to_document(input_source, output_source)
+def test_email_to_document(tmp_path, library):
+    output_source = tmp_path / f"{Resources.email.stem}.docx"
+    library.email_to_document(Resources.email, output_source)
 
     doc = Document(output_source)
     texts = [para.text for para in doc.paragraphs]
+    expected_text = (
+        "Get attached file from work item to disk. Returns the absolute path to the "
+        "created file."
+    )
     assert expected_text in texts
+
+
+def test_basic_authorization(library, creds):
+    library.authorize(account=creds.account, password=creds.password)
+    library.imap_conn.login.assert_called_once_with(creds.account, creds.password)
+    library.smtp_conn.login.assert_called_once_with(creds.account, creds.password)
+
+
+def test_oauth_authorization(library, creds):
+    library.authorize(account=creds.account, password=creds.oauth2_str, is_oauth=True)
+
+    authenticate_call = library.imap_conn.authenticate.call_args[0]
+    assert authenticate_call[0] == "XOAUTH2"
+    assert b"xoauth@gmail.com" in authenticate_call[1](None)
+
+    auth_call = library.smtp_conn.auth.call_args[0]
+    assert auth_call[0] == "XOAUTH2"
+    assert "xoauth@gmail.com" in auth_call[1]()

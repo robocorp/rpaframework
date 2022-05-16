@@ -17,12 +17,35 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Hubspot**: Add keywords for creating and updating objects in
-  Hubspot, as well as a new batch system when creating batched inputs via keyword.
+- Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
+  navigating, such as `https` (default) or `http`. This functionality is controlled
+  with the keyword `Set default URL scheme`.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14.1.1 - 12 May 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp** (:issue:`500`): Keywords ``Authorize[ Imap/Smtp]``
+  support `is_oauth` parameter which instructs the client to authenticate through the
+  basic (`False`) or XOAUTH2 (`True`) protocol.
+- Library **RPA.Excel.Files** (:pr:`490`): Keyword examples updated to be more complete
+  and Python examples have been added to all keywords.
+
+14.1.0 - 05 May 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems** (:issue:`485`): Automatically parse into
+  ``email[body]`` payload variable the e-mail body on e-mail Process triggering with
+  "Parse email" configuration option enabled in Control Room.
+- Library **RPA.Hubspot** (:pr:`484`): Add keywords for creating and updating objects in
+  Hubspot, as well as a new batch system when creating batched inputs via keyword.
+- Library **RPA.Excel.Files** (:pr:`491`):
+
+  - Fix ``IndexError`` when removing *.xls* worksheets.
+  - Fix removing currently active worksheet.
 
 14.0.0 - 02 May 2022
 --------------------

@@ -26,7 +26,7 @@ Does alert not contain
 
 Basic browser open and usage
     [Tags]  skip
-    Open available browser          https://www.google.com/    headless=${TRUE}
+    Open available browser          www.google.com    headless=${TRUE}
     Wait Until Element Is Visible   q
     Input Text                      q  Robocorp
     Click Element                   q

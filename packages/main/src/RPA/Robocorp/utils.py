@@ -69,6 +69,25 @@ def log_more(message, *args, func=logging.debug):
         log_to_console(str(message) % args)
 
 
+def get_dot_value(source: Dict, key: str) -> Any:
+    """Returns the end value from `source` dictionary given `key` traversal."""
+    keys = key.split(".")
+    value = source
+    for _key in keys:
+        if not isinstance(value, dict):
+            return value
+        value = value.get(_key)
+    return value
+
+
+def set_dot_value(source: Dict, key: str, *, value: Any):
+    """Sets the end `value` into `source` dictionary given `key` destination."""
+    keys = key.rsplit(".", 1)  # one or at most two parts
+    if len(keys) == 2:
+        source = get_dot_value(source, keys[0])
+    source[keys[-1]] = value
+
+
 class RequestsHTTPError(HTTPError):
     """Custom `requests` HTTP error with status code and message."""
 

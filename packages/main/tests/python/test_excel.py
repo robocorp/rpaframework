@@ -278,8 +278,14 @@ def test_append_to_worksheet_empty_with_headers(fmt):
 
 
 def test_remove_worksheet(library):
+    library.set_active_worksheet("Second")
+
     library.remove_worksheet("Second")
     assert library.list_worksheets() == ["First"]
+    assert library.get_active_worksheet() == "First"
+
+    with pytest.raises(ValueError):
+        library.remove_worksheet("First")
 
 
 def test_rename_worksheet(library):
