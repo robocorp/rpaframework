@@ -52,6 +52,7 @@ sphinx-markdown-builder = "^0.5.4"
 robotframework-docgen = "^0.15.0"
 sphinx-issues = "^1.2.0"
 docutils = "0.16"
+moto = "3.1.8"
 
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]

@@ -25,7 +25,7 @@ Insert data into AWS with parameters
     ${random_name}=    Generate random string    25    [LETTERS]
     ${params}=    Create redshift statement parameters    id=${random_id}    name=${random_name}
     ${result}=    Execute redshift statement    ${SQL_INSERT_SAMPLE_DB}    ${params}
-    Should be equal as strings    ${result}    Statement finished, total rows affected: 1
+    Should be equal as integers    ${result}    1
 
 
 *** Keywords ***
