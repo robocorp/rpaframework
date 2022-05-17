@@ -3,12 +3,37 @@ import logging
 from typing import Any, Dict, List, Union, Optional
 
 from jsonpath_ng import Index, Fields
-from jsonpath_ng.ext import parse
+from jsonpath_ng.ext.filter import Filter
+from jsonpath_ng.ext.parser import ExtentedJsonPathParser
 
 from robot.api.deco import keyword
 
 
 JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
+
+
+def parse(path, debug=False):
+    return RPAJsonPathParser(debug=debug).parse(path)
+
+
+class RPAFilter(Filter):
+    """Extends default filtering JSON path logic."""
+
+    def filter(self, fn, data):
+        for datum in reversed(self.find(data)):
+            index_obj = datum.path
+            if isinstance(data, dict):
+                index_obj.index = list(data)[index_obj.index]
+            index_obj.filter(fn, data)
+        return data
+
+
+class RPAJsonPathParser(ExtentedJsonPathParser):
+    """Extends the default JSON path parser found in `jsonpath_ng.ext`."""
+
+    def p_filter(self, p):
+        "filter : '?' expressions"
+        p[0] = RPAFilter(p[2])
 
 
 class JSON:
@@ -594,7 +619,7 @@ class JSON:
 
         .. code:: robotframework
 
-            *** Task ***
+            *** Tasks ***
             Change the name key for all people
                 &{before}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
                 &{after}=     Update value to JSON     ${before}   $.People[*].Name    JohnMalkovich
@@ -709,5 +734,4 @@ class JSON:
 
         """  # noqa: E501
         self.logger.info('Delete from JSON with expression: "%s"', expr)
-        parse(expr).filter(lambda _: True, doc)
-        return doc
+        return parse(expr).filter(lambda _: True, doc)
