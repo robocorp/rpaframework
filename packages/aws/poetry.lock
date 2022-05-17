@@ -113,14 +113,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.22.13"
+version = "1.23.1"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.25.13,<1.26.0"
+botocore = ">=1.26.1,<1.27.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -129,7 +129,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.25.13"
+version = "1.26.1"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -708,7 +708,7 @@ tests = ["pytest (>=7.0.0)", "coverage (>=6.0.0)", "pytest-cov", "pytest-asyncio
 
 [[package]]
 name = "robotframework"
-version = "5.0"
+version = "5.0.1"
 description = "Generic automation framework for acceptance testing and robotic process automation (RPA)"
 category = "main"
 optional = false
@@ -1159,12 +1159,12 @@ black = [
     {file = "black-22.3.0.tar.gz", hash = "sha256:35020b8886c022ced9282b51b5a875b6d1ab0c387b31a065b84db7c33085ca79"},
 ]
 boto3 = [
-    {file = "boto3-1.22.13-py3-none-any.whl", hash = "sha256:240931d41341f30d3cc0bba72ede4dbfe9704721bf13ca19bcd31a435c235f8d"},
-    {file = "boto3-1.22.13.tar.gz", hash = "sha256:02b6ad889f98c54274f83a4f862d78ce97a6366f805d8d8faaf14b789fd26172"},
+    {file = "boto3-1.23.1-py3-none-any.whl", hash = "sha256:4e3ef99d211266175a97b35d78103c31e3d01af31fd02bf599185421e5873fc0"},
+    {file = "boto3-1.23.1.tar.gz", hash = "sha256:3b50b49c5c0d3f19406cfbcefa32467c199cd6537d80f6fd04f18588670bdeeb"},
 ]
 botocore = [
-    {file = "botocore-1.25.13-py3-none-any.whl", hash = "sha256:79b7773b48c9c59acd42ceba0a05b27ab9e326e9ed9b0ca35f41ad8abad61808"},
-    {file = "botocore-1.25.13.tar.gz", hash = "sha256:d99381bda4eed5896b74f6250132e2e6484c2d6e406b1def862113ffdb41c523"},
+    {file = "botocore-1.26.1-py3-none-any.whl", hash = "sha256:598304f20df607944c6db3870e005f2775230ec4558c8280d870f861a8003632"},
+    {file = "botocore-1.26.1.tar.gz", hash = "sha256:a805cbd8e79b64da0f719869b6b4c698cf5db7991b1aa412b086b25fb2892795"},
 ]
 certifi = [
     {file = "certifi-2021.10.8-py2.py3-none-any.whl", hash = "sha256:d62a0163eb4c2344ac042ab2bdf75399a71a2d8c7d47eac2e2ee91b9d6339569"},
@@ -1677,8 +1677,8 @@ responses = [
     {file = "responses-0.20.0.tar.gz", hash = "sha256:644905bc4fb8a18fa37e3882b2ac05e610fe8c2f967d327eed669e314d94a541"},
 ]
 robotframework = [
-    {file = "robotframework-5.0-py3-none-any.whl", hash = "sha256:ee912636885e2dc4bcf4ec1d5b3ac2a5b81cadfcfedf4a169bd4ad6576ff8f53"},
-    {file = "robotframework-5.0.zip", hash = "sha256:bffecba8c43d4294936d921f0af4941079039edce88194769133719732c608bc"},
+    {file = "robotframework-5.0.1-py3-none-any.whl", hash = "sha256:2d2072cf9ec807e820bf27e5f71240e715e37691c9ba930a59a71d5c0fd61998"},
+    {file = "robotframework-5.0.1.zip", hash = "sha256:cf5dc59777ed9d8c3e1e91fb4403454890242867735681f22f4f22dbb2a20fc8"},
 ]
 robotframework-docgen = [
     {file = "robotframework-docgen-0.15.0.tar.gz", hash = "sha256:72933b6a0690e6ae4701dda391dbd99b034e905799b344a67ab63f4c94892948"},

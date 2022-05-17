@@ -20,6 +20,15 @@ Release notes
 - Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
   navigating, such as `https` (default) or `http`. This functionality is controlled
   with the keyword `Set default URL scheme`.
+- Library **RPA.Cloud.AWS**:
+
+  - New service client support for Amazon Redshift's Data API (:issue:`496`). Keyword
+    support for submitting SQL queries and obtaining results from them (can be
+    performed asynchronously, if desired).
+  - New service client support for Amazon STS and the `Assume Role` operation
+    (:issue:`498`). The `Assume role` keyword returns temporary credentials which
+    include a session token. All services updated to support using the session
+    token as part of their `Init ... client` keyword.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_

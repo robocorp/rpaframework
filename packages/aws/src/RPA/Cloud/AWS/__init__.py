@@ -1066,7 +1066,7 @@ class ServiceRedshiftData(AWSBase):
         :param secret_arn: The name or ARN of the secret that enables access
             to the database. This parameter is required when authenticating
             using Secrets Manager.
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocloud_vault: use secret stored into ``Robocloud Vault``
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
@@ -1295,12 +1295,12 @@ class ServiceRedshiftData(AWSBase):
         r"""Returns a formatted dictionary to be used in
         Redshift Data Api SQL statements.
 
-        ** Example **
+        **Example:**
 
         Assume the ``${SQL}`` statement has the parameters ``:id`` and
         ``:name``:
 
-        .. code-block: robotframework
+        .. code-block:: robotframework
 
             *** Tasks ***
 
@@ -1406,27 +1406,27 @@ class ServiceRedshiftData(AWSBase):
         The response object is provided as a list of table meta data objects,
         utilize dot-notation or the ``RPA.JSON`` library to access members:
 
-        .. code-block: json
+        .. code-block:: json
 
             {
-                'ColumnList': [
+                "ColumnList": [
                     {
-                        'columnDefault': 'string',
-                        'isCaseSensitive': True|False,
-                        'isCurrency': True|False,
-                        'isSigned': True|False,
-                        'label': 'string',
-                        'length': 123,
-                        'name': 'string',
-                        'nullable': 123,
-                        'precision': 123,
-                        'scale': 123,
-                        'schemaName': 'string',
-                        'tableName': 'string',
-                        'typeName': 'string'
+                        "columnDefault": "string",
+                        "isCaseSensitive": true,
+                        "isCurrency": false,
+                        "isSigned": false,
+                        "label": "string",
+                        "length": 123,
+                        "name": "string",
+                        "nullable": 123,
+                        "precision": 123,
+                        "scale": 123,
+                        "schemaName": "string",
+                        "tableName": "string",
+                        "typeName": "string"
                     },
                 ],
-                'TableName': 'string'
+                "TableName": "string"
             }
 
         :param database: The name of the database that contains the tables
@@ -1460,12 +1460,12 @@ class ServiceRedshiftData(AWSBase):
 
         Returned objects are structured like the below JSON in a list:
 
-        .. code-block: json
+        .. code-block:: json
 
             {
-                'name': 'string',
-                'schema': 'string',
-                'type': 'string'
+                "name": "string",
+                "schema": "string",
+                "type": "string"
             }
 
         :param database: The name of the database that contains the tables
@@ -1608,21 +1608,21 @@ class ServiceSTS(AWSBase):
         The credentials are returned as a dictionary with data structure
         similar to the following JSON:
 
-        .. code-block: json
+        .. code-block:: json
 
             {
-                'Credentials': {
-                    'AccessKeyId': 'string',
-                    'SecretAccessKey': 'string',
-                    'SessionToken': 'string',
-                    'Expiration': datetime(2015, 1, 1)
+                "Credentials": {
+                    "AccessKeyId": "string",
+                    "SecretAccessKey": "string",
+                    "SessionToken": "string",
+                    "Expiration": "2015-01-01"
                 },
-                'AssumedRoleUser': {
-                    'AssumedRoleId': 'string',
-                    'Arn': 'string'
+                "AssumedRoleUser": {
+                    "AssumedRoleId": "string",
+                    "Arn": "string"
                 },
-                'PackedPolicySize': 123,
-                'SourceIdentity': 'string'
+                "PackedPolicySize": 123,
+                "SourceIdentity": "string"
             }
 
         These credentials can be used to re-initialize services available
@@ -1723,6 +1723,13 @@ class AWS(
           Also, permission to call the ``redshift:GetClusterCredentials``
           operation is required. When connecting to a serverless endpoint,
           specify the database name.
+
+    **Role Assumption:** With the use of the STS service client, you are able
+    to assume another role, which will return temporary credentials. The
+    temporary credentials will include an access key and session token, see
+    keyword documentation for ``Assume Role`` for details of how the
+    credentials are returned. You can use these temporary credentials
+    as part of method 2, but you must also include the session token.
 
     Method 1. credentials using environment variable
 
