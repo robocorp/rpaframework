@@ -1502,7 +1502,7 @@ class Hubspot:
             self.logger.debug(f"Executing batch index {i} of batch requests:\n{batch} ")
             batch_reader = BatchReadInputSimplePublicObjectId(
                 properties=properties
-                if isinstance(properties, list) or properties == None
+                if isinstance(properties, list) or properties is None
                 else [properties],
                 id_property=id_property,
                 inputs=[SimplePublicObjectId(o) for o in batch],
