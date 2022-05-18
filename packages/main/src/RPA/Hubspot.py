@@ -1691,7 +1691,7 @@ class Hubspot:
 
         """
         self.batch_input = BatchInputFactory(
-            mode, self._validate_object_type(object_type)
+            mode, self._singularize_object(object_type)
         )
 
     @keyword
