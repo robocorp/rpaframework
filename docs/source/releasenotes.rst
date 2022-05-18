@@ -30,6 +30,8 @@ Release notes
     include a session token. All services updated to support using the session
     token as part of their `Init ... client` keyword.
 
+- Library **RPA.Hubspot**: Fix several bugs and improve logging (:issue:`504`,
+  :issue:`505`, :issue:`506`, and :issue:`507`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
