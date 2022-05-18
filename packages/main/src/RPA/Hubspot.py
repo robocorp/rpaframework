@@ -1855,7 +1855,7 @@ class Hubspot:
             raise HubSpotBatchInputInvalidError(
                 "Batch Input cannot be sent, current batch has no inputs."
             )
-        return response.results
+        return collected_results
 
     @property
     def pipelines(self) -> Dict[str, List[Pipeline]]:
