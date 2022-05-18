@@ -420,8 +420,8 @@ First steps to start developing:
 
    **NOTE:** Due to the way optional packages are referenced in the metapackage's ``pyproject.toml``, they will not install
    new versions under development, in order to see new documentation changes for optional packages, you must *temporarily*
-   update the ``pyproject.toml`` to include a local reference to your package. So for example, if you are developing in the
-   ``RPA.Cloud.AWS`` package, you must make the following changes to ``pyproject.toml``:
+   update the ``pyproject.toml`` to include a local reference to your package (WARNING DO NOT COMMIT THIS CHANGE). So for
+   example, if you are developing in the ``RPA.Cloud.AWS`` package, you must make the following changes to ``pyproject.toml``:
 
    .. code-block:: toml
 
