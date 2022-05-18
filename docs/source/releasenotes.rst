@@ -20,6 +20,8 @@ Release notes
 - Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
   navigating, such as `https` (default) or `http`. This functionality is controlled
   with the keyword `Set default URL scheme`.
+- Library **RPA.Hubspot**: Fix several bugs and improve logging (:issue:`504`,
+  :issue:`505`, :issue:`506`, and :issue:`507`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
