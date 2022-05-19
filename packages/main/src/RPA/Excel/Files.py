@@ -217,23 +217,27 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Create modern format workbook
-            Create workbook
-            Save workbook    orders.xlsx
+            *** Keywords ***
+            Create modern format workbook
+                Create workbook
+                Save workbook    orders.xlsx
 
-            # Create modern format workbook with a path set
-            Create workbook    path=${OUTPUT_DIR}${/}orders.xlsx
-            Save workbook
+            *** Keywords ***
+            Create modern format workbook with a path set
+                Create workbook    path=${OUTPUT_DIR}${/}orders.xlsx
+                Save workbook
 
-            # Create legacy format workbook
-            Create workbook    fmt=xls
-            Save workbook    orders.xls
+            *** Keywords ***
+            Create legacy format workbook
+                Create workbook    fmt=xls
+                Save workbook    orders.xls
 
-            # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword
-            # if the path argument is used
-            Create Workbook    path=${OUTPUT_DIR}${/}orders.xls    fmt=xls
-            Save Workbook
+            *** Keywords ***
+            Create legacy format workbook with a path set
+                [Documentation]    Note that the file name must be set in the Create
+                ...    Workbook keyword if the path argument is used
+                Create Workbook    path=${OUTPUT_DIR}${/}orders.xls    fmt=xls
+                Save Workbook
 
         .. code_block:: python
 
@@ -291,13 +295,16 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Open workbook with only path provided
-            Open Workbook    path/to/file.xlsx
+            *** Keywords ***
+            Open workbook with only path provided
+                Open Workbook    path/to/file.xlsx
 
-            # Open workbook with path provided and reading formulas in cells
-            # as the value stored
-            # Note: Can only be used with XLSX workbooks
-            Open Workbook    path/to/file.xlsx    data_only=True
+            *** Keywords ***
+            Open workbook with path provided and data only
+                [Documentation]    This example can only be used with XLSX workbooks
+                ...    and will read the cells as values, even if formulas are in
+                ...    the cell
+                Open Workbook    path/to/file.xlsx    data_only=True
 
         .. code-block:: python
 
@@ -321,8 +328,9 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Close active workbook
-            Close Workbook
+            *** Keywords ***
+            Close active workbook
+                Close Workbook
 
         .. code-block:: python
 
@@ -345,17 +353,18 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Saving the active workbook to a new location/filename or saving to
-            # a new location/filename
-            # Note: You cannot use Save Workbook to convert from XLSX to XLS
-            # or vice-versa
-            Save Workbook   path=${OUTPUT_DIR}${/}orders.xlsx
+            *** Keywords ***
+            Saving active workbook to new location
+                [Documentation] You cannot use Save Workbook to convert from
+                ...    XLSX to XLS or vice-versa
+                Save Workbook   path=${OUTPUT_DIR}${/}orders.xlsx
 
-            # Saving the active workbook changes if location/filename were set
-            # in Create Workbook or Open Workbook
-            Save Workbook
+            *** Keywords ***
+            Saving changes with filename set in Create Workbook
+                Save Workbook
 
         .. code-block:: python
+
             # Saving the active workbook to a new location/filename or saving to
             # a new location/filename
             # Note: You cannot use Save Workbook to convert from XLSX to XLS
@@ -391,12 +400,17 @@ class Files:
         """List all names of worksheets in the given workbook.
 
         .. code-block:: robotframework
-            # List Worksheets will read the worksheet names into a list variable
-            # The variable should be declared with the List type "@" when being used
-            # to store the sheet names from the List Worksets keyword
-            @{sheets}=    List Worksheets
+
+            *** Keywords ***
+            Capture worksheet names in list
+                [Documentation]    List Worksheets will read the worksheet names into a
+                ...    list variable. The variable should be declared with the List type
+                ...    "@" when being used to store the sheet names from the
+                ...    List Worksets keyword.
+                @{sheets}=    List Worksheets
 
         .. code-block:: python
+
             # List Worksheets will read the worksheet names into a list variable
             # The variable should be declared with the List type "@" when being used
             # to store the sheet names from the List Worksets keyword
@@ -412,12 +426,16 @@ class Files:
         :param name: Name of worksheet you are looking for
 
         .. code-block:: robotframework
-            # To use Worksheet Exists in a conditional statement set it to
-            # a variable first, like you see here, and then compare the
-            # variable to ${TRUE} or ${FALSE}
-            ${Does_Worksheet_Exist}=    Worksheet Exists    Sheet
+
+            *** Keywords ***
+            Determine if worksheet exists
+                [Documentation]    To use Worksheet Exists in a conditional statement
+                ...    set it to a variable first, like you see here, and then compare
+                ...    the variable to ${TRUE} or ${FALSE}
+                ${Does_Worksheet_Exist}=    Worksheet Exists    Sheet
 
         .. code-block:: python
+
             Does_Worksheet_Exist = lib.worksheet_exists("Sheet")
         """
         assert self.workbook, "No active workbook"
@@ -427,9 +445,13 @@ class Files:
         """Get the name of the worksheet which is currently active.
 
         .. code-block:: robotframework
-            ${Active_Worksheet}=    Get Active Worksheet
+
+            *** Keywords ***
+            Get current worksheet name
+                ${Active_Worksheet}=    Get Active Worksheet
 
         .. code-block:: python
+
             Active_Worksheet = lib.get_active_worksheet()
         """
         assert self.workbook, "No active workbook"
@@ -448,12 +470,14 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Set using the name of the worksheet
-            Set Active Worksheet    Customers
+            *** Keywords ***
+            Set using the name of the worksheet
+                Set Active Worksheet    Customers
 
-            # Set using the index of the worksheet
-            # Worksheet index begings at 0
-            Set Active Worksheet    2
+            *** Keywords ***
+            Set using the index of the worksheet
+                [Documentation]    Worksheet index begings at 0
+                Set Active Worksheet    2
 
         .. code-block:: python
 
@@ -479,39 +503,44 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Create a new blank worksheet named "Customers"
-            Create Worksheet    Customers
+            *** Keywords ***
+            Create a new blank worksheet named Customers
+                Create Worksheet    Customers
 
-            # Create a new worksheet with headers and contents using
-            # a List of Dictonaries
-            # Don't forget to `Save Workbook` once your changes are complete
-            &{Employees_Row1}=    Create Dictionary    name=Mark    age=${58}
-            &{Employees_Row2}=    Create Dictionary    name=John    age=${22}
-            &{Employees_Row3}=    Create Dictionary    name=Adam    age=${67}
-            @{Worksheet_Data}=    Create List
-            ...    ${Worksheet_Data_row1}
-            ...    ${Worksheet_Data_row2}
-            ...    ${Worksheet_Data_row3}
-            Create Worksheet
-            ...    name=Employees
-            ...    content=${Worksheet_Data}
-            ...    header=True
-            Save Workbook
+            *** Keywords ***
+            Create a new worksheet using a List of Dictonaries
+                [Documentation]    Don't forget to `Save Workbook` once your
+                ...    changes are complete
+                &{Employees_Row1}=    Create Dictionary    name=Mark    age=${58}
+                &{Employees_Row2}=    Create Dictionary    name=John    age=${22}
+                &{Employees_Row3}=    Create Dictionary    name=Adam    age=${67}
+                @{Worksheet_Data}=    Create List
+                ...    ${Worksheet_Data_row1}
+                ...    ${Worksheet_Data_row2}
+                ...    ${Worksheet_Data_row3}
+                Create Worksheet
+                ...    name=Employees
+                ...    content=${Worksheet_Data}
+                ...    header=True
+                Save Workbook
 
-            # Create a new workseet using a Dictionary of Lists
-            # Don't forget to `Save Workbook` once your changes are complete
-            @{Employees_name}=    Create List    Mark    John    Adam
-            @{Employees_age}=    Create List    ${58}    ${22}    ${67}
-            &{Worksheet_Data}=    Create Dictionary
-            ...    name=${Worksheet_Data_name}
-            ...    age=${Worksheet_Data_age}
-            Create Worksheet
-            ...    name=Employees
-            ...    content=${Worksheet_Data}
-            ...    header=True
-            Save Workbook
+            *** Keywords ***
+            Create a new workseet using a Dictionary of Lists
+                [Documentation]    Don't forget to `Save Workbook` once your
+                ...    changes are complete
+                @{Employees_name}=    Create List    Mark    John    Adam
+                @{Employees_age}=    Create List    ${58}    ${22}    ${67}
+                &{Worksheet_Data}=    Create Dictionary
+                ...    name=${Worksheet_Data_name}
+                ...    age=${Worksheet_Data_age}
+                Create Worksheet
+                ...    name=Employees
+                ...    content=${Worksheet_Data}
+                ...    header=True
+                Save Workbook
 
         .. code-block:: python
+
             # Create a new blank worksheet named "Customers"
             lib.create_worksheet("Customers")
 
@@ -559,14 +588,17 @@ class Files:
 
         .. code-block:: robotframework
 
-            # The most simple form. Column keys will be Column letters.
-            ${rows}=    Read Worksheet
+            *** Keywords ***
+            The most simple form where column keys will be column letters
+                ${rows}=    Read Worksheet
 
-            # Since `header=True` the keys will be the header values
-            ${rows}=    Read Worksheet     header=True
+            *** Keywords ***
+            Since header is True the keys will be the header values
+                ${rows}=    Read Worksheet     header=True
 
-            # Uses the header values as keys and starts reading at row 3
-            ${rows}=    Read Worksheet     header=True    start=${3}
+            *** Keywords ***
+            Uses the header values as keys and starts reading at row three
+                ${rows}=    Read Worksheet     header=True    start=${3}
 
         .. code-block:: python
 
@@ -599,14 +631,17 @@ class Files:
 
         .. code-block:: robotframework
 
-            # The most simple form. Column keys will be Column letters.
-            ${table}=    Read Worksheet As Table
+            *** Keywords ***
+            The most simple form where column keys will be column letters
+                ${table}=    Read Worksheet As Table
 
-            # Since `header=True` the keys will be the header values
-            ${table}=    Read Worksheet As Table     header=True
+            *** Keywords ***
+            Since header is True the keys will be the header values
+                ${table}=    Read Worksheet As Table     header=True
 
-            # Uses the header values as keys and starts reading at row 3
-            ${table}=    Read Worksheet As Table     header=True    start=${3}
+            *** Keywords ***
+            Uses the header values as keys and starts reading at row three
+                ${table}=    Read Worksheet As Table     header=True    start=${3}
 
         .. code-block:: python
 
@@ -647,23 +682,27 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Append an existing Table object
-             # Create a new table using a Dictionary of Lists
-            @{table_name}=    Create List    Sara    Beth    Amy
-            @{table_age}=    Create List    ${48}    ${21}    ${57}
-            &{table}=    Create Dictionary    name=${table_name}    age=${table_age}
-            Create Table    ${table}
-            Append rows to worksheet    ${table}
-            Save Workbook
+            *** Keywords ***
+            Append Table Object
+                # Append an existing Table object
+                # Create a new table using a Dictionary of Lists
+                @{table_name}=    Create List    Sara    Beth    Amy
+                @{table_age}=    Create List    ${48}    ${21}    ${57}
+                &{table}=    Create Dictionary    name=${table_name}    age=${table_age}
+                Create Table    ${table}
+                Append rows to worksheet    ${table}
+                Save Workbook
 
-            # Append to a worksheet with headers on row 5
-             # Create a new table using a Dictionary of Lists
-            @{table_name}=    Create List    Sara    Beth    Amy
-            @{table_age}=    Create List    ${48}    ${21}    ${57}
-            &{table}=    Create Dictionary    name=${table_name}    age=${table_age}
-            Create Table    ${table}
-            Append rows to worksheet    ${table}    header=${TRUE}   start=5
-            Save Workbook
+            *** Keywords ***
+            Append worksheet with row 5 headers
+                # Append to a worksheet with headers on row 5
+                # Create a new table using a Dictionary of Lists
+                @{table_name}=    Create List    Sara    Beth    Amy
+                @{table_age}=    Create List    ${48}    ${21}    ${57}
+                &{table}=    Create Dictionary    name=${table_name}    age=${table_age}
+                Create Table    ${table}
+                Append rows to worksheet    ${table}    header=${TRUE}   start=5
+                Save Workbook
 
         .. code-block:: python
 
@@ -696,12 +735,14 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Remove last worksheet
-            ${sheets}=       List worksheets
-            Remove worksheet    ${sheets}[-1]
+            *** Keywords ***
+            Remove last worksheet
+                ${sheets}=       List worksheets
+                Remove worksheet    ${sheets}[-1]
 
-            # Remove worksheet by name
-            Remove Worksheet    Sheet
+            *** Keywords ***
+            Remove worksheet by name
+                Remove Worksheet    Sheet
 
         .. code-block:: python
 
@@ -725,7 +766,9 @@ class Files:
 
         .. code-block:: robotframework
 
-            Rename worksheet    Sheet    Orders
+            *** Keywords ***
+            Rename worksheet example
+                Rename worksheet    Sheet    Orders
 
         .. code-block:: python
 
@@ -744,7 +787,9 @@ class Files:
 
         .. code-block:: robotframework
 
-            ${next}=    Find empty row
+            *** Keywords ***
+            Find empty row example
+                ${next}=    Find empty row
 
         .. code-block:: python
 
@@ -764,10 +809,11 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Read header names
-            ${column1}=    Get cell value    1    A
-            ${column2}=    Get cell value    1    B
-            ${column3}=    Get cell value    1    C
+            *** Keywords ***
+            Read header names
+                ${column1}=    Get cell value    1    A
+                ${column2}=    Get cell value    1    B
+                ${column3}=    Get cell value    1    C
 
         .. code-block:: python
 
@@ -792,12 +838,14 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Set a value in the first row and column
-            Set cell value    1    1    Some value
-            Set cell value    1    A    Some value
+            *** Keywords ***
+            Set a value in the first row and column
+                Set cell value    1    1    Some value
+                Set cell value    1    A    Some value
 
-            # Set a value with cell formatting
-            Set cell value    2    B    ${value}    fmt=0%
+            *** Keywords ***
+            Set a value with cell formatting
+                Set cell value    2    B    ${value}    fmt=0%
 
         .. code-block:: python
 
@@ -846,8 +894,9 @@ class Files:
 
         .. code-block:: robotframework
 
-            # Set value to have one decimal precision
-            Set cell format   2  B    00.0
+            *** Keywords ***
+            Set value to have one decimal precision
+                Set cell format   2  B    00.0
 
         .. code-block:: python
 
@@ -876,7 +925,9 @@ class Files:
 
         .. code-block:: robotframework
 
-            Insert image to worksheet    ${last_row}    A    screenshot.png
+            *** Keywords ***
+            Include image in worksheet
+                Insert image to worksheet    ${last_row}    A    screenshot.png
 
         .. code-block:: python
 
