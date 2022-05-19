@@ -140,6 +140,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
@@ -334,6 +335,8 @@ with the given <code class="docutils literal notranslate"><span class="pre">Secr
 <li><p>RC_API_SECRET_TOKEN:  API token with access to Robocorp Secrets API</p></li>
 <li><p>RC_WORKSPACE_ID:      Robocorp Workspace ID</p></li>
 </ul>
+<p>If the robot run is started from the Robocorp Control Room these environment
+variables will be configured automatically.</p>
 <dl class="attribute">
 <dt id="RPA.Robocorp.Vault.RobocorpVault.ENCRYPTION_SCHEME">
 <code class="sig-name descname">ENCRYPTION_SCHEME</code><em class="property"> = 'robocloud-vault-transit-v2'</em><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.ENCRYPTION_SCHEME" title="Permalink to this definition">¶</a></dt>
@@ -478,12 +481,17 @@ internal values when possible.</p>
 <dt id="RPA.Robocorp.Vault.Vault">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.Vault.</code><code class="sig-name descname">Vault</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.Vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><cite>Vault</cite> is a library for interacting with secrets stored in Robocorp
-Vault (by default) or file-based secrets, which can be taken into use
-by setting some environment variables.</p>
-<p>Robocorp Vault works together with Robocorp Worker or Robocorp CLI (RCC).
-The following three environment variables need to exist, and are set by
-Robocorp Worker automatically and can be set manually with Robocorp CLI.</p>
+<p><cite>Vault</cite> is a library for interacting with secrets stored in the <a class="reference external" href="https://robocorp.com/docs/development-guide/variables-and-secrets/vault">Robocorp
+Control Room Vault</a> (by default) or file-based secrets, which can be taken
+into use by setting some environment variables.</p>
+<p>Robocorp Vault relies on environment variables, which are normally set
+automatically by the Robocorp Work Agent or Assistant when a run is
+initialized by the Robocorp Control Room. When developing robots locally
+in VSCode, you can use the <a class="reference external" href="https://robocorp.com/docs/developer-tools/visual-studio-code/extension-features#connecting-to-control-room-vault">Robocorp Code Extension</a> to set these
+variables automatically as well.</p>
+<p>Alternatively, you may set these environment variable manually using
+<a class="reference external" href="https://robocorp.com/docs/rcc/workflow">rcc</a> or directly in some other fashion. The specific variables which
+must exist are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">RC_API_SECRET_HOST</span></code>: URL to Robocorp Vault API</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RC_API_SECRET_TOKEN</span></code>: API Token for Robocorp Vault API</p></li>
@@ -509,7 +517,7 @@ Robocorp Worker automatically and can be set manually with Robocorp CLI.</p>
 <span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret_sauce</span><span class="w"></span>
 </pre></div>
 </div>
-<p><strong>Examples</strong></p>
+<p><strong>Examples of Using Secrets in a Robot</strong></p>
 <p><strong>Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">    </span><span class="nn">Collections</span><span class="p"></span>
