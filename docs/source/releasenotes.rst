@@ -17,11 +17,23 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Excel.Files** (:pr:`490`): Keyword examples updated to be more complete
-  and Python examples have been added to all keywords.
+- Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
+  navigating, such as `https` (default) or `http`. This functionality is controlled
+  with the keyword `Set default URL scheme`.
+- Library **RPA.Hubspot**: Fix several bugs and improve logging (:issue:`504`,
+  :issue:`505`, :issue:`506`, and :issue:`507`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14.1.1 - 12 May 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp** (:issue:`500`): Keywords ``Authorize[ Imap/Smtp]``
+  support `is_oauth` parameter which instructs the client to authenticate through the
+  basic (`False`) or XOAUTH2 (`True`) protocol.
+- Library **RPA.Excel.Files** (:pr:`490`): Keyword examples updated to be more complete
+  and Python examples have been added to all keywords.
 
 14.1.0 - 05 May 2022
 --------------------

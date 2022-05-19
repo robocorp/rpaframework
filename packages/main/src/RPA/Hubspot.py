@@ -1349,7 +1349,10 @@ class Hubspot:
         batched_ids = self._batch_batch_requests(object_id)
         collected_responses = {}
         for i, batch in enumerate(batched_ids):
-            self.logger.debug(f"Executing batch index {i} of batch requests:\n{batch} ")
+            self.logger.info(
+                f"Executing batch index {i} of {len(batched_ids)} batch requests."
+            )
+            self.logger.debug(f"Batch contents:\n{batch}")
             batch_reader = BatchInputPublicObjectId(
                 inputs=[PublicObjectId(o) for o in batch]
             )
@@ -1498,7 +1501,9 @@ class Hubspot:
         for i, batch in enumerate(batched_ids):
             self.logger.debug(f"Executing batch index {i} of batch requests:\n{batch} ")
             batch_reader = BatchReadInputSimplePublicObjectId(
-                properties=properties,
+                properties=properties
+                if isinstance(properties, list) or properties is None
+                else [properties],
                 id_property=id_property,
                 inputs=[SimplePublicObjectId(o) for o in batch],
             )
@@ -1691,7 +1696,7 @@ class Hubspot:
 
         """
         self.batch_input = BatchInputFactory(
-            mode, self._validate_object_type(object_type)
+            mode, self._singularize_object(object_type)
         )
 
     @keyword
@@ -1833,7 +1838,11 @@ class Hubspot:
         if len(self.batch_input.inputs) > 0:
             input_objects = self._batch_batch_inputs()
             collected_results = []
-            for input_obj in input_objects:
+            for i, input_obj in enumerate(input_objects):
+                self.logger.info(
+                    f"Executing batch index {i} of {len(input_objects)} batch requests."
+                )
+                self.logger.debug(f"Batch contents:\n{input_obj}")
                 if self.batch_input.mode is BatchMode.CREATE:
                     response = self.hs.crm.objects.batch_api.create(
                         self.batch_input.object_type,
@@ -1850,12 +1859,15 @@ class Hubspot:
                         f"current batch input mode is '{self.batch_input.mode}'"
                     )
                 self._report_batch_errors(response, len(self.batch_input))
+                self.logger.debug(
+                    f"Full results received for batch index {i}:\n{response.results}"
+                )
                 collected_results.extend(response.results)
         else:
             raise HubSpotBatchInputInvalidError(
                 "Batch Input cannot be sent, current batch has no inputs."
             )
-        return response.results
+        return collected_results
 
     @property
     def pipelines(self) -> Dict[str, List[Pipeline]]:

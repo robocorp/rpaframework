@@ -200,6 +200,9 @@ class RobocorpVault(BaseSecretManager):
     - RC_API_SECRET_HOST:   URL to Robocorp Secrets API
     - RC_API_SECRET_TOKEN:  API token with access to Robocorp Secrets API
     - RC_WORKSPACE_ID:      Robocorp Workspace ID
+
+    If the robot run is started from the Robocorp Control Room these environment
+    variables will be configured automatically.
     """
 
     ENCRYPTION_SCHEME = "robocloud-vault-transit-v2"
@@ -424,17 +427,27 @@ class RobocorpVault(BaseSecretManager):
 
 
 class Vault:
-    """`Vault` is a library for interacting with secrets stored in Robocorp
-    Vault (by default) or file-based secrets, which can be taken into use
-    by setting some environment variables.
+    """`Vault` is a library for interacting with secrets stored in the `Robocorp
+    Control Room Vault`_ (by default) or file-based secrets, which can be taken
+    into use by setting some environment variables.
 
-    Robocorp Vault works together with Robocorp Worker or Robocorp CLI (RCC).
-    The following three environment variables need to exist, and are set by
-    Robocorp Worker automatically and can be set manually with Robocorp CLI.
+    Robocorp Vault relies on environment variables, which are normally set
+    automatically by the Robocorp Work Agent or Assistant when a run is
+    initialized by the Robocorp Control Room. When developing robots locally
+    in VSCode, you can use the `Robocorp Code Extension`_ to set these
+    variables automatically as well.
+
+    Alternatively, you may set these environment variable manually using
+    `rcc`_ or directly in some other fashion. The specific variables which
+    must exist are:
 
     - ``RC_API_SECRET_HOST``: URL to Robocorp Vault API
     - ``RC_API_SECRET_TOKEN``: API Token for Robocorp Vault API
     - ``RC_WORKSPACE_ID``: Control Room Workspace ID
+
+    .. _Robocorp Control Room Vault: https://robocorp.com/docs/development-guide/variables-and-secrets/vault
+    .. _Robocorp Code Extension: https://robocorp.com/docs/developer-tools/visual-studio-code/extension-features#connecting-to-control-room-vault
+    .. _rcc: https://robocorp.com/docs/rcc/workflow
 
     File-based secrets can be set by defining two environment variables.
 
@@ -460,7 +473,7 @@ class Vault:
             username: standard_user
             password: secret_sauce
 
-    **Examples**
+    **Examples of Using Secrets in a Robot**
 
     **Robot Framework**
 
@@ -499,7 +512,7 @@ class Vault:
             secret["username"] = "nobody"
             secrets.set_secret(secret)
 
-    """
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"

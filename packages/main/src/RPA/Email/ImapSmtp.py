@@ -2,6 +2,7 @@ from enum import Enum
 from functools import wraps
 
 from io import StringIO
+import base64
 import logging
 import os
 import re
@@ -122,6 +123,8 @@ class ImapSmtp:
 
     - Authentication error with Gmail - "Application-specific password required"
         see. https://support.google.com/mail/answer/185833?hl=en
+    - More secure apps (XOAUTH2 protocol): Check
+        `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_
 
     **Examples**
 
@@ -257,6 +260,7 @@ class ImapSmtp:
         password: str = None,
         smtp_server: str = None,
         smtp_port: int = None,
+        is_oauth: bool = False,
     ) -> None:
         """Authorize to SMTP server.
 
@@ -264,6 +268,8 @@ class ImapSmtp:
         :param password: SMTP account password, defaults to None
         :param smtp_server: SMTP server address, defaults to None
         :param smtp_port: SMTP server port, defaults to None (587 for SMTP)
+        :param is_oauth: Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+            `password`
 
         Can be called without giving any parameters if library
         has been initialized with necessary information and/or
@@ -291,7 +297,12 @@ class ImapSmtp:
                 context = ssl.create_default_context()
                 self.smtp_conn = SMTP_SSL(smtp_server, smtp_port, context=context)
             if account and password:
-                self.smtp_conn.login(account, password)
+                if is_oauth:
+                    self.smtp_conn.auth(
+                        "XOAUTH2", lambda: base64.b64decode(password.encode()).decode()
+                    )
+                else:
+                    self.smtp_conn.login(account, password)
         else:
             self.logger.warning("SMTP server address is needed for authentication")
         if self.smtp_conn is None:
@@ -303,6 +314,7 @@ class ImapSmtp:
         password: str = None,
         imap_server: str = None,
         imap_port: int = None,
+        is_oauth: bool = False,
     ) -> None:
         """Authorize to IMAP server.
 
@@ -310,6 +322,8 @@ class ImapSmtp:
         :param password: IMAP account password, defaults to None
         :param imap_server: IMAP server address, defaults to None
         :param imap_port: IMAP server port, defaults to None
+        :param is_oauth: Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+            `password`
 
         Can be called without giving any parameters if library
         has been initialized with necessary information and/or
@@ -332,7 +346,12 @@ class ImapSmtp:
             imap_port = int(imap_port)
         if imap_server and account and password:
             self.imap_conn = IMAP4_SSL(imap_server, imap_port)
-            self.imap_conn.login(account, password)
+            if is_oauth:
+                self.imap_conn.authenticate(
+                    "XOAUTH2", lambda _: base64.b64decode(password.encode())
+                )
+            else:
+                self.imap_conn.login(account, password)
             self.imap_conn.select("INBOX")
         else:
             self.logger.warning(
@@ -350,6 +369,7 @@ class ImapSmtp:
         imap_server: str = None,
         smtp_port: int = None,
         imap_port: int = None,
+        is_oauth: bool = False,
     ) -> None:
         # pylint: disable=C0301
         """Authorize user to SMTP and IMAP servers.
@@ -360,6 +380,8 @@ class ImapSmtp:
         :param imap_server: IMAP server address, defaults to None
         :param smtp_port: SMTP server port, defaults to None (587 for SMTP)
         :param imap_port: IMAP server port, defaults to None
+        :param is_oauth: Use XOAUTH2 protocol with a base64 encoded OAuth2 string as
+            `password`
 
         Will use separately set credentials or those given in keyword call.
 
@@ -369,8 +391,12 @@ class ImapSmtp:
 
             Authorize    ${username}   ${password}  smtp_server=smtp.gmail.com  smtp_port=587
         """  # noqa: E501
-        self.authorize_smtp(account, password, smtp_server, smtp_port)
-        self.authorize_imap(account, password, imap_server, imap_port)
+        self.authorize_smtp(
+            account, password, smtp_server, smtp_port, is_oauth=is_oauth
+        )
+        self.authorize_imap(
+            account, password, imap_server, imap_port, is_oauth=is_oauth
+        )
 
     @smtp_connection
     def send_smtp_hello(self) -> None:
