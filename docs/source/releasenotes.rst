@@ -22,6 +22,8 @@ Release notes
   with the keyword `Set default URL scheme`.
 - Library **RPA.Hubspot**: Fix several bugs and improve logging (:issue:`504`,
   :issue:`505`, :issue:`506`, and :issue:`507`).
+- Library **RPA.Excel.Files** (:pr:`514`): Corrected example formatting errors.
+  (:issue:`510`)
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
