@@ -157,10 +157,18 @@ class JavaAccessBridge:
     # pylint: disable=W1401
     """Java application UI automation library using `Java Access Bridge technology`_.
 
-    Library is at the beta level at the moment so feedback is highly appreciated.
-
     The library utilizes `java-access-bridge-wrapper`_ package to interact with
     Java UI. Currently only the 64-bit Windows OS is supported.
+
+    **Inspecting elements**
+
+    The recommended tool for inspecting Java application is:
+
+        Google's `Access Bridge Explorer`_
+
+    The `Accessibility Insights for Windows`_ can show element properties if application framework
+    supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_. Then recommended
+    library would be `RPA.Windows`_ library.
 
     **Steps to enable**
 
@@ -288,19 +296,11 @@ class JavaAccessBridge:
     possible to opt for interaction elements by their coordinates by giving keyword parameter
     ``action=False`` if parameter is available.
 
-    **Inspecting elements**
-
-    Inspecting Java application elements depends on what kind of Java UI framework the application
-    has been built with.
-
-    The `Accessibility Insights for Windows`_ can show element properties if application framework
-    supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_.
-
-    The Google's `Access Bridge Explorer`_ can also be used for inspecting Java application elements.
 
     .. _Accessibility Insights for Windows: https://accessibilityinsights.io/en/downloads/
     .. _Access Bridge Explorer: https://github.com/google/access-bridge-explorer
     .. _using Accessibility Insights: https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java
+    .. _RPA.Windows: https://robocorp.com/docs/libraries/rpa-framework/rpa-windows
 
     **Examples**
 
