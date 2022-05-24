@@ -17,6 +17,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.JSON** (:issue:`481`): Keyword ``Delete From JSON`` supports *filter*
+  expressions for keys removal.
 - Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
   navigating, such as `https` (default) or `http`. This functionality is controlled
   with the keyword `Set default URL scheme`.

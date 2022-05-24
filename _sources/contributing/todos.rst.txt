@@ -100,7 +100,7 @@ RPA.JSON:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "203", "Add more logging about affected rows, at least on debug level"
+   "229", "Add more logging about affected rows, at least on debug level"
 
 RPA.JavaAccessBridge:
 =====================
