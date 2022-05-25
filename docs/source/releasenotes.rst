@@ -30,7 +30,7 @@ Release notes
   expressions for keys removal.
 - Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
   navigating, such as `https` (default) or `http`. This functionality is controlled
-  with the keyword `Set default URL scheme`.
+  with the keyword ``Set Default URL Scheme``.
 - Library **RPA.Hubspot**: Fix several bugs and improve logging (:issue:`504`,
   :issue:`505`, :issue:`506`, and :issue:`507`).
 
