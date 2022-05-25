@@ -1057,7 +1057,7 @@ class WorkItems:
             # pylint: disable=undefined-loop-variable
             self.set_work_item_variable(keys[0], parsed_email)
 
-    def _start_suite(self, data, result):
+    def _start_suite(self, name, attributes):
         """Robot Framework listener method, called when suite starts."""
         # pylint: disable=unused-argument, broad-except
         if not self.autoload:
@@ -1070,7 +1070,7 @@ class WorkItems:
         finally:
             self.autoload = False
 
-    def _end_suite(self, data, result):
+    def _end_suite(self, name, attributes):
         """Robot Framework listener method, called when suite ends."""
         # pylint: disable=unused-argument
         for item in self.inputs + self.outputs:
@@ -1078,6 +1078,14 @@ class WorkItems:
                 logging.warning(
                     "%s has unsaved changes that will be discarded", self.current
                 )
+
+        if attributes["status"] == "FAIL":
+            self.release_input_work_item(
+                state=State.FAILED,
+                exception_type=Error.APPLICATION,
+                message=attributes["message"],
+                _auto_release=True,
+            )
 
     @keyword
     def set_current_work_item(self, item: WorkItem):
