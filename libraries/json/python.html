@@ -349,7 +349,7 @@ for XML structures.</p>
 <td><p>Recursive descendant operator</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">``parent``</span></code></p></td>
-<td><p>Parent operator, see <a href="#id3"><span class="problematic" id="id4">`functions`_</span></a></p></td>
+<td><p>Parent operator, see <a href="#id5"><span class="problematic" id="id6">`functions`_</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">*</span></code></p></td>
 <td><p>Wilcard, any element</p></td>
@@ -381,19 +381,19 @@ filters.</p></td>
 filters.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">``str()``</span></code></p></td>
-<td><p>Convert value to string, see <a href="#id5"><span class="problematic" id="id6">`functions`_</span></a></p></td>
+<td><p>Convert value to string, see <a href="#id7"><span class="problematic" id="id8">`functions`_</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">``sub()``</span></code></p></td>
-<td><p>Regex substitution function, see <a href="#id7"><span class="problematic" id="id8">`functions`_</span></a></p></td>
+<td><p>Regex substitution function, see <a href="#id9"><span class="problematic" id="id10">`functions`_</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">``len``</span></code></p></td>
-<td><p>Calculate value’s length, see <a href="#id9"><span class="problematic" id="id10">`functions`_</span></a></p></td>
+<td><p>Calculate value’s length, see <a href="#id11"><span class="problematic" id="id12">`functions`_</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">``split()``</span></code></p></td>
-<td><p>String split function, see <a href="#id11"><span class="problematic" id="id12">`functions`_</span></a></p></td>
+<td><p>String split function, see <a href="#id13"><span class="problematic" id="id14">`functions`_</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code> <code class="docutils literal notranslate"><span class="pre">-</span></code> <code class="docutils literal notranslate"><span class="pre">*</span></code> <code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
-<td><p>Arithmetic functions, see <a href="#id13"><span class="problematic" id="id14">`functions`_</span></a></p></td>
+<td><p>Arithmetic functions, see <a href="#id15"><span class="problematic" id="id16">`functions`_</span></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -468,7 +468,7 @@ be seen in the <a class="reference external" href="http://goessner.net/articles/
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.add_to_json">
-<code class="sig-name descname">add_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, value: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.add_to_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None], expr: str, value: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; Union[Dict[Hashable, Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], List[Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.add_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add items into a JSON serializable object and return the result.</p>
 <p>If the target is a list, the values are appended to the end.
 If the target is a dict, the keys are either added or updated.</p>
@@ -508,7 +508,7 @@ If the target is a dict, the keys are either added or updated.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.convert_json_to_string">
-<code class="sig-name descname">convert_json_to_string</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.JSON.JSON.convert_json_to_string" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">convert_json_to_string</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.JSON.JSON.convert_json_to_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a JSON serializable object to a string and return it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -539,7 +539,7 @@ If the target is a dict, the keys are either added or updated.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.convert_string_to_json">
-<code class="sig-name descname">convert_string_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.convert_string_to_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">convert_string_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[Hashable, Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], List[Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.convert_string_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a string to a JSON serializable object and return it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -570,7 +570,7 @@ If the target is a dict, the keys are either added or updated.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.delete_from_json">
-<code class="sig-name descname">delete_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.delete_from_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None], expr: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[Hashable, Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], List[Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.delete_from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete values from a JSON serializable object and return the result.
 Will delete all values that match the expression.</p>
 <dl class="field-list simple">
@@ -603,7 +603,7 @@ Will delete all values that match the expression.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.get_value_from_json">
-<code class="sig-name descname">get_value_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, default: Optional[Any] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.JSON.JSON.get_value_from_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_value_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None], expr: str, default: Optional[Any] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.JSON.JSON.get_value_from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single value from a JSON serializable object that matches the given expression.</p>
 <p>Raises a ValueError if there is more than one match.
 Returns the given default argument (or None) if there
@@ -613,13 +613,14 @@ were no matches.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>doc</strong> – JSON serializable object or string</p></li>
 <li><p><strong>expr</strong> – jsonpath expression</p></li>
+<li><p><strong>default</strong> – default value to return in the absence of a match</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>string containg the match OR None if no matches</p>
+<dd class="field-even"><p>string containing the match OR <cite>default</cite> if there are no matches</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – if more than one match</p>
+<dd class="field-odd"><p><strong>ValueError</strong> – if more than one match is discovered</p>
 </dd>
 </dl>
 <p>Short Robot Framework Example:</p>
@@ -683,7 +684,7 @@ were no matches.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.get_values_from_json">
-<code class="sig-name descname">get_values_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.JSON.JSON.get_values_from_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_values_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None], expr: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.JSON.JSON.get_values_from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all values from a JSON serializable object that match the given expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -781,7 +782,7 @@ were no matches.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.load_json_from_file">
-<code class="sig-name descname">load_json_from_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.load_json_from_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_json_from_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span> &#x2192; Union[Dict[Hashable, Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], List[Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.load_json_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load JSON data from a file, and return it as JSON serializable object.
 Depending on the input file the object can be either a dictionary,
 a list, or a scalar value.</p>
@@ -807,8 +808,8 @@ a list, or a scalar value.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.save_json_to_file">
-<code class="sig-name descname">save_json_to_file</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], filename: str, indent: Optional[int] = None, encoding: str = 'utf-8'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.JSON.JSON.save_json_to_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a JSON serializable object or a string containg
+<code class="sig-name descname">save_json_to_file</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None], filename: str, indent: Optional[int] = None, encoding: str = 'utf-8'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.JSON.JSON.save_json_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a JSON serializable object or a string containing
 a JSON value into a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -843,7 +844,7 @@ a JSON value into a file.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.update_value_to_json">
-<code class="sig-name descname">update_value_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], expr: str, value: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.update_value_to_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_value_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None], expr: str, value: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; Union[Dict[Hashable, Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], List[Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.update_value_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update existing values in a JSON serializable object and return the result.
 Will change all values that match the expression.</p>
 <dl class="field-list simple">
@@ -859,7 +860,7 @@ Will change all values that match the expression.</p>
 </dd>
 </dl>
 <p>Short Robot Framework Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Change the name key for all people</span><span class="p"></span>
 <span class="p">    &amp;{</span><span class="nv">before</span><span class="p">}=    </span><span class="nf">Convert string to JSON</span><span class="p">   </span><span class="s">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
 <span class="p">    &amp;{</span><span class="nv">after</span><span class="p">}=     </span><span class="nf">Update value to JSON</span><span class="p">     ${</span><span class="nv">before</span><span class="p">}   </span><span class="s">$.People[*].Name</span><span class="p">    </span><span class="s">JohnMalkovich</span><span class="p"></span>
@@ -936,6 +937,313 @@ Will change all values that match the expression.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="RPA.JSON.RPAFilter">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.JSON.</code><code class="sig-name descname">RPAFilter</code><span class="sig-paren">(</span><em class="sig-param">expressions</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">jsonpath_ng.ext.filter.Filter</span></code></p>
+<p>Extends default filtering JSON path logic.</p>
+<dl class="method">
+<dt id="RPA.JSON.RPAFilter.child">
+<code class="sig-name descname">child</code><span class="sig-paren">(</span><em class="sig-param">child</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAFilter.child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent to Child(self, next) but with some canonicalization</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAFilter.filter">
+<code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param">fn: Callable[[Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], bool], data: Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]</em><span class="sig-paren">)</span> &#x2192; Union[Dict[Hashable, Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], List[Union[Dict[Hashable, JSONType], List[JSONType], str, int, float, bool, None]], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.RPAFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>data</cite> with the specified path filtering nodes according
+the filter evaluation result returned by the filter function.</p>
+<dl>
+<dt>Arguments:</dt><dd><dl class="simple">
+<dt>fn (function): unary function that accepts one argument</dt><dd><p>and returns bool.</p>
+</dd>
+</dl>
+<p>data (dict|list|tuple): JSON object to filter.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAFilter.find">
+<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param">datum</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAFilter.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>All <cite>JSONPath</cite> types support <cite>find()</cite>, which returns an iterable of <a href="#id3"><span class="problematic" id="id4">`</span></a>DatumInContext`s.
+They keep track of the path followed to the current location, so if the calling code
+has some opinion about that, it can be passed in here as a starting point.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAFilter.find_or_create">
+<code class="sig-name descname">find_or_create</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAFilter.find_or_create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAFilter.make_datum">
+<code class="sig-name descname">make_datum</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAFilter.make_datum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAFilter.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">val</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAFilter.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>data</cite> with the specified path replaced by <cite>val</cite>. Only updates
+if the specified path exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAFilter.update_or_create">
+<code class="sig-name descname">update_or_create</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">val</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAFilter.update_or_create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.JSON.RPAJsonPathParser">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.JSON.</code><code class="sig-name descname">RPAJsonPathParser</code><span class="sig-paren">(</span><em class="sig-param">debug=False</em>, <em class="sig-param">lexer_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">jsonpath_ng.ext.parser.ExtentedJsonPathParser</span></code></p>
+<p>Extends the default JSON path parser found in <cite>jsonpath_ng.ext</cite>.</p>
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_empty">
+<code class="sig-name descname">p_empty</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>empty :</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_error">
+<code class="sig-name descname">p_error</code><span class="sig-paren">(</span><em class="sig-param">t</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_expression">
+<code class="sig-name descname">p_expression</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>expression : jsonpath
+| jsonpath FILTER_OP ID
+| jsonpath FILTER_OP FLOAT
+| jsonpath FILTER_OP NUMBER
+| jsonpath FILTER_OP BOOL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_expressions_and">
+<code class="sig-name descname">p_expressions_and</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_expressions_and" title="Permalink to this definition">¶</a></dt>
+<dd><p>expressions : expressions ‘&amp;’ expressions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_expressions_expression">
+<code class="sig-name descname">p_expressions_expression</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_expressions_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>expressions : expression</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_expressions_parens">
+<code class="sig-name descname">p_expressions_parens</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_expressions_parens" title="Permalink to this definition">¶</a></dt>
+<dd><p>expressions : ‘(‘ expressions ‘)’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_fields_comma">
+<code class="sig-name descname">p_fields_comma</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_fields_comma" title="Permalink to this definition">¶</a></dt>
+<dd><p>fields : fields ‘,’ fields</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_fields_id">
+<code class="sig-name descname">p_fields_id</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_fields_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>fields : ID</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_fields_or_any">
+<code class="sig-name descname">p_fields_or_any</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_fields_or_any" title="Permalink to this definition">¶</a></dt>
+<dd><p>fields_or_any : fields
+| ‘*’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_filter">
+<code class="sig-name descname">p_filter</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>filter : ‘?’ expressions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_idx">
+<code class="sig-name descname">p_idx</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_idx" title="Permalink to this definition">¶</a></dt>
+<dd><p>idx : NUMBER</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_binop">
+<code class="sig-name descname">p_jsonpath_binop</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_binop" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : jsonpath ‘.’ jsonpath
+| jsonpath DOUBLEDOT jsonpath
+| jsonpath WHERE jsonpath
+| jsonpath ‘|’ jsonpath
+| jsonpath ‘&amp;’ jsonpath</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_child_fieldbrackets">
+<code class="sig-name descname">p_jsonpath_child_fieldbrackets</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_child_fieldbrackets" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : jsonpath ‘[‘ fields ‘]’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_child_idxbrackets">
+<code class="sig-name descname">p_jsonpath_child_idxbrackets</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_child_idxbrackets" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : jsonpath ‘[‘ idx ‘]’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_child_slicebrackets">
+<code class="sig-name descname">p_jsonpath_child_slicebrackets</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_child_slicebrackets" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : jsonpath ‘[‘ slice ‘]’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_fieldbrackets">
+<code class="sig-name descname">p_jsonpath_fieldbrackets</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_fieldbrackets" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : ‘[‘ fields ‘]’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_fields">
+<code class="sig-name descname">p_jsonpath_fields</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : fields_or_any</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_filter">
+<code class="sig-name descname">p_jsonpath_filter</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : jsonpath ‘[‘ filter ‘]’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_idx">
+<code class="sig-name descname">p_jsonpath_idx</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_idx" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : ‘[‘ idx ‘]’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_named_operator">
+<code class="sig-name descname">p_jsonpath_named_operator</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_named_operator" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : NAMED_OPERATOR</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_operator_jsonpath">
+<code class="sig-name descname">p_jsonpath_operator_jsonpath</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_operator_jsonpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : NUMBER operator NUMBER
+| FLOAT operator FLOAT
+| ID operator ID
+| NUMBER operator jsonpath
+| FLOAT operator jsonpath
+| jsonpath operator NUMBER
+| jsonpath operator FLOAT
+| jsonpath operator jsonpath</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_parens">
+<code class="sig-name descname">p_jsonpath_parens</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_parens" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : ‘(‘ jsonpath ‘)’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_root">
+<code class="sig-name descname">p_jsonpath_root</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : ‘$’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_slice">
+<code class="sig-name descname">p_jsonpath_slice</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : ‘[‘ slice ‘]’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_sort">
+<code class="sig-name descname">p_jsonpath_sort</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : jsonpath ‘[‘ sorts ‘]’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_jsonpath_this">
+<code class="sig-name descname">p_jsonpath_this</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_jsonpath_this" title="Permalink to this definition">¶</a></dt>
+<dd><p>jsonpath : ‘&#64;’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_maybe_int">
+<code class="sig-name descname">p_maybe_int</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_maybe_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>maybe_int : NUMBER
+| empty</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_operator">
+<code class="sig-name descname">p_operator</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_operator" title="Permalink to this definition">¶</a></dt>
+<dd><p>operator : ‘+’
+| ‘-‘
+| ‘*’
+| ‘/’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_slice">
+<code class="sig-name descname">p_slice</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>slice : maybe_int ‘:’ maybe_int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_slice_any">
+<code class="sig-name descname">p_slice_any</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_slice_any" title="Permalink to this definition">¶</a></dt>
+<dd><p>slice : ‘*’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_sort">
+<code class="sig-name descname">p_sort</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>sort : SORT_DIRECTION jsonpath</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_sorts_comma">
+<code class="sig-name descname">p_sorts_comma</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_sorts_comma" title="Permalink to this definition">¶</a></dt>
+<dd><p>sorts : sorts sorts</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.p_sorts_sort">
+<code class="sig-name descname">p_sorts_sort</code><span class="sig-paren">(</span><em class="sig-param">p</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.p_sorts_sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>sorts : sort</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">string</em>, <em class="sig-param">lexer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.RPAJsonPathParser.parse_token_stream">
+<code class="sig-name descname">parse_token_stream</code><span class="sig-paren">(</span><em class="sig-param">token_iterator</em>, <em class="sig-param">start_symbol='jsonpath'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.parse_token_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.JSON.RPAJsonPathParser.precedence">
+<code class="sig-name descname">precedence</code><em class="property"> = [('left', '+', '-'), ('left', '*', '/'), ('left', ','), ('left', 'DOUBLEDOT'), ('left', '.'), ('left', '|'), ('left', '&amp;'), ('left', 'WHERE'), ('nonassoc', 'ID')]</em><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.precedence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.JSON.RPAJsonPathParser.tokens">
+<code class="sig-name descname">tokens</code><em class="property"> = ['BOOL', 'DOUBLEDOT', 'NUMBER', 'ID', 'NAMED_OPERATOR', 'WHERE', 'FILTER_OP', 'SORT_DIRECTION', 'FLOAT']</em><a class="headerlink" href="#RPA.JSON.RPAJsonPathParser.tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.JSON.parse">
+<code class="sig-prename descclassname">RPA.JSON.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">debug: bool = False</em><span class="sig-paren">)</span> &#x2192; RPA.JSON.RPAJsonPathParser<a class="headerlink" href="#RPA.JSON.parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>

@@ -17,6 +17,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14.2.0 - 25 May 2022
+--------------------
+
 - Library **RPA.PDF** (:issue:`515`, ``rpaframework-pdf`` **3.0.1**): Ensures
   checkboxes are ticked correctly with latest dependency upgrades.
 - Library **RPA.JSON** (:issue:`481`): Keyword ``Delete From JSON`` supports *filter*
@@ -26,9 +33,6 @@ Release notes
   with the keyword `Set default URL scheme`.
 - Library **RPA.Hubspot**: Fix several bugs and improve logging (:issue:`504`,
   :issue:`505`, :issue:`506`, and :issue:`507`).
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 14.1.1 - 12 May 2022
 --------------------

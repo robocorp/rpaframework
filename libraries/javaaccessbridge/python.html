@@ -267,9 +267,16 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">JavaAccessBridge</code><span class="sig-paren">(</span><em class="sig-param">ignore_callbacks: bool = False</em>, <em class="sig-param">access_bridge_path: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Java application UI automation library using <a class="reference external" href="https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html">Java Access Bridge technology</a>.</p>
-<p>Library is at the beta level at the moment so feedback is highly appreciated.</p>
 <p>The library utilizes <a class="reference external" href="https://github.com/robocorp/java-access-bridge-wrapper">java-access-bridge-wrapper</a> package to interact with
 Java UI. Currently only the 64-bit Windows OS is supported.</p>
+<p><strong>Inspecting elements</strong></p>
+<p>The recommended tool for inspecting Java application is:</p>
+<blockquote>
+<div><p>Google’s <a class="reference external" href="https://github.com/google/access-bridge-explorer">Access Bridge Explorer</a></p>
+</div></blockquote>
+<p>The <a class="reference external" href="https://accessibilityinsights.io/en/downloads/">Accessibility Insights for Windows</a> can show element properties if application framework
+supports Windows UI Automation (UIA), see more at <a class="reference external" href="https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java">using Accessibility Insights</a>. Then recommended
+library would be <a class="reference external" href="https://robocorp.com/docs/libraries/rpa-framework/rpa-windows">RPA.Windows</a> library.</p>
 <p><strong>Steps to enable</strong></p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -378,12 +385,6 @@ Most common example is <cite>click</cite> action supported by an button element.
 <p>But because application and technology support for the actions might be limited, it is also
 possible to opt for interaction elements by their coordinates by giving keyword parameter
 <code class="docutils literal notranslate"><span class="pre">action=False</span></code> if parameter is available.</p>
-<p><strong>Inspecting elements</strong></p>
-<p>Inspecting Java application elements depends on what kind of Java UI framework the application
-has been built with.</p>
-<p>The <a class="reference external" href="https://accessibilityinsights.io/en/downloads/">Accessibility Insights for Windows</a> can show element properties if application framework
-supports Windows UI Automation (UIA), see more at <a class="reference external" href="https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java">using Accessibility Insights</a>.</p>
-<p>The Google’s <a class="reference external" href="https://github.com/google/access-bridge-explorer">Access Bridge Explorer</a> can also be used for inspecting Java application elements.</p>
 <p><strong>Examples</strong></p>
 <p><em>robotframework</em></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
