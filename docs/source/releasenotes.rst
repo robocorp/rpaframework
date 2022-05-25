@@ -17,6 +17,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.PDF** (:issue:`515`, ``rpaframework-pdf`` **3.0.1**): Ensures
+  checkboxes are ticked correctly with latest dependency upgrades.
 - Library **RPA.JSON** (:issue:`481`): Keyword ``Delete From JSON`` supports *filter*
   expressions for keys removal.
 - Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
