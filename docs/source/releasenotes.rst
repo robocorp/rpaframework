@@ -1,18 +1,6 @@
 Release notes
 =============
 
-.. note::
-  The support for Python version 3.6 has been **REMOVED** from the ``rpaframework[-*]``
-  packages starting with the following versions (:pr:`469`):
-
-    - ``rpaframework`` **14.0.0**
-    - ``rpaframework-aws`` **2.0.0**
-    - ``rpaframework-dialogs`` **2.0.0**
-    - ``rpaframework-google`` **4.0.0**
-    - ``rpaframework-pdf`` **3.0.0**
-    - ``rpaframework-recognition`` **3.0.0**
-    - ``rpaframework-windows`` **4.0.0**
-
 
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -20,6 +8,22 @@ Release notes
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+security release (all packages) - 27 May 2022
+---------------------------------------------
+
+**Critical** Python package security update concerning ``pillow`` package which is
+a common image processing library for Python.
+
+All new release versions:
+
+    - ``rpaframework`` **15.0.0**
+    - ``rpaframework-aws`` **3.0.0**
+    - ``rpaframework-dialogs`` **3.0.0**
+    - ``rpaframework-google`` **5.0.0**
+    - ``rpaframework-pdf`` **4.0.0**
+    - ``rpaframework-recognition`` **4.0.0**
+    - ``rpaframework-windows`` **5.0.0**
 
 14.2.0 - 25 May 2022
 --------------------
@@ -70,6 +74,17 @@ Release notes
 
 - Library **RPA.Email.Exchange** (:issue:`477`): Keyword ``Send Message`` supports
   sending messages with any combination of `recipients`, `cc` and/or `bcc`.
+
+- The support for Python version 3.6 has been **REMOVED** from the ``rpaframework[-*]``
+  packages starting with the following versions (:pr:`469`):
+
+    - ``rpaframework`` **14.0.0**
+    - ``rpaframework-aws`` **2.0.0**
+    - ``rpaframework-dialogs`` **2.0.0**
+    - ``rpaframework-google`` **4.0.0**
+    - ``rpaframework-pdf`` **3.0.0**
+    - ``rpaframework-recognition`` **3.0.0**
+    - ``rpaframework-windows`` **4.0.0**
 
 13.3.1 - 15 Apr 2022
 --------------------
