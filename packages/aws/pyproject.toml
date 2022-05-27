@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-aws"
-version = "2.0.1"
+version = "3.0.0"
 description = "AWS library for RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -35,7 +35,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-rpaframework-core = "^8.0.0"
+rpaframework-core = "^9.0.0"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-pythonlibcore = "^3.0.0"
 boto3 = "^1.13.4"
