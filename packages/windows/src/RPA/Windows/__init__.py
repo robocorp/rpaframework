@@ -30,13 +30,6 @@ class Windows(WindowsElementsMixin, DynamicCore):
     # pylint: disable=anomalous-backslash-in-string
     """The `Windows` is a library that can be used for Windows desktop automation.
 
-    This library is at this moment in "BETA" stage as an alternative
-    library for `RPA.Desktop.Windows`. Main difference being that this
-    library is using `uiautomation`_ dependency instead of `pywinauto`.
-
-    .. _uiautomation: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
-
-
     **Installation**
 
     This library, ``RPA.Windows`` is available via **rpaframework-windows** package. This

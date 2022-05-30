@@ -2,7 +2,7 @@
 Windows
 #######
 
-Windows desktop automation library - beta version.
+Windows desktop automation library.
 
 .. toctree::
    :maxdepth: 1

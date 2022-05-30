@@ -522,7 +522,7 @@ class ModelKeywords(LibraryContext):
         :param replace_none_value: Enable this to conveniently visualize the fields. (
             replaces the null value with field's name)
         :param encoding: Use an explicit encoding for field name/value parsing. (
-            defaults to "iso-8859-1" but "utf-16" might work for you)
+            defaults to "iso-8859-1" but "utf-8/16" might be the one working for you)
         :returns: A dictionary with all the found fields. Use their key names when
             setting values into them.
         :raises KeyError: If no input fields are enabled in the PDF.
