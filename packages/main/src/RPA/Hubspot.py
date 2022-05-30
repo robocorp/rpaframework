@@ -459,8 +459,6 @@ class Hubspot:
         deals = hs.search_for_objects("DEALS", "hs_lastmodifieddate", "GTE", yesterday)
         print(deals)
 
-    .. _batch-inputs:
-
     Batch Inputs
     ============
 
@@ -624,25 +622,33 @@ class Hubspot:
     An object in HubSpot. The object itself does not describe what type
     it represents.
 
-    *id* : ``str``
-        The HubSpot ID of the object.
+    .. list-table::
+        :header-rows: 1
+        :widths: 25 25 50
 
-    *properties* : ``Dict[str, str]``
-        A dictionary representing all returned properties associated
-        to this object. Properties must be accessed as via standard
-        dictionary subscription, e.g., ``properties["name"]``.
-
-    *created_at* : ``datetime``
-        The timestamp when this object was created in HubSpot.
-
-    *updated_at* : ``datetime``
-        The last modified timestamp for this object.
-
-    *archived* : ``bool``
-        Whether this object is archived.
-
-    *archived_at* : ``datetime``
-        The timestamp when this object was archived.
+        * - Attribute Name
+          - Type
+          - Description
+        * - *id*
+          - ``str``
+          - The HubSpot ID of the object.
+        * - *properties*
+          - ``Dict[str, str]``
+          - A dictionary representing all returned properties associated
+            to this object. Properties must be accessed as via standard
+            dictionary subscription, e.g., ``properties["name"]``.
+        * - *created_at*
+          - ``datetime``
+          - The timestamp when this object was created in HubSpot.
+        * - *updated_at*
+          - ``datetime``
+          - The last modified timestamp for this object.
+        * - *archived*
+          - ``bool``
+          - Whether this object is archived.
+        * - *archived_at*
+          - ``datetime``
+          - The timestamp when this object was archived.
 
     SimplePublicObjectWithAssociations
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -650,41 +656,57 @@ class Hubspot:
     An object in HubSpot including associations to other objects. The
     object itself does not describe what type it represents.
 
-    *id* : ``str``
-        The HubSpot ID of the object.
+    .. list-table::
+        :header-rows: 1
+        :widths: 25 25 50
 
-    *properties* : ``Dict[str, str]``
-        A dictionary representing all returned properties associated
-        to this object. Properties must be accessed as via standard
-        dictionary subscription, e.g., ``properties["name"]``.
-
-    *created_at* : ``datetime``
-        The timestamp when this object was created in HubSpot.
-
-    *updated_at* : ``datetime``
-        The last modified timestamp for this object.
-
-    *archived* : ``bool``
-        Whether this object is archived.
-
-    *archived_at* : ``datetime``
-        The timestamp when this object was archived.
-
-    *associations* : ``Dict[str, CollectionResponseAssociatedId]``
-        A dictionary whose key will be the requested association type, e.g.,
-        ``companies`` and associated value will be a container object
-        with all the associations. See `CollectionResponseAssociatedId`_.
+        * - Attribute Name
+          - Type
+          - Description
+        * - *id*
+          - ``str``
+          - The HubSpot ID of the object.
+        * - *properties*
+          - ``Dict[str, str]``
+          - A dictionary representing all returned properties associated
+            to this object. Properties must be accessed as via standard
+            dictionary subscription, e.g., ``properties["name"]``.
+        * - *created_at*
+          - ``datetime``
+          - The timestamp when this object was created in HubSpot.
+        * - *updated_at*
+          - ``datetime``
+          - The last modified timestamp for this object.
+        * - *archived*
+          - ``bool``
+          - Whether this object is archived.
+        * - *archived_at*
+          - ``datetime``
+          - The timestamp when this object was archived.
+        * - *associations*
+          - ``Dict[str, CollectionResponseAssociatedId]``
+          - A dictionary whose key will be the requested association type, e.g.,
+            ``companies`` and associated value will be a container object
+            with all the associations. See `CollectionResponseAssociatedId`_.
 
     AssociatedId
     ^^^^^^^^^^^^
 
     The ID of an associated object, as well as the type of association.
 
-    *id* : ``str``
-        The ID of the associated HubSpot object.
+    .. list-table::
+        :header-rows: 1
+        :widths: 25 25 50
 
-    *type* : ``str``
-        The type of association, e.g., ``deals_to_companies``.
+        * - Attribute Name
+          - Type
+          - Description
+        * - *id*
+          - ``str``
+          - The ID of the associated HubSpot object.
+        * - *type*
+          - ``str``
+          - The type of association, e.g., ``deals_to_companies``.
 
     CollectionResponseAssociatedId
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -692,68 +714,92 @@ class Hubspot:
     A container object for a collection of `AssociatedId`_ objects returned
     by the API.
 
-    *results* : ``List[AssociatedId]``
-        The list of `AssociatedId`_ objects returned by the API.
+    .. list-table::
+        :header-rows: 1
+        :widths: 25 25 50
 
-    *paging* : ``Paging``
-        Used by this library to assist with retreiving multi-page
-        API responses.
+        * - Attribute Name
+          - Type
+          - Description
+        * - *results*
+          - ``List[AssociatedId]``
+          - The list of `AssociatedId`_ objects returned by the API.
+        * - *paging*
+          - ``Paging``
+          - Used by this library to assist with retreiving multi-page
+            API responses.
 
     Pipeline
     ^^^^^^^^
 
     A pipeline represents the steps objects travel through within HubSpot.
 
-    *id* : ``str``
-        The HubSpot ID for the pipeline. All accounts start with one
-        pipeline with the id ``default``.
+    .. list-table::
+        :header-rows: 1
+        :widths: 25 25 50
 
-    *label* : ``str``
-        The human-readabel label for the pipeline.
-
-    *stages* : ``List[PipelineStage]``
-        A list of `PipelineStage`_ objects in the order the object would
-        follow through the pipeline.
-
-    *created_at* : ``datetime``
-        The timestamp when this pipeline was created in HubSpot.
-
-    *updated_at* : ``datetime``
-        The last modified timestamp for this pipeline.
-
-    *archived* : ``bool``
-        Whether this pipeline is archived.
-
-    *display_order* : ``int``
-        The place in the list of pipelines where this pipeline is shown
-        in the HubSpot UI.
+        * - Attribute Name
+          - Type
+          - Description
+        * - *id*
+          - ``str``
+          - The HubSpot ID for the pipeline. All accounts start with one
+            pipeline with the id ``default``.
+        * - *label*
+          - ``str``
+          - The human-readabel label for the pipeline.
+        * - *stages*
+          - ``List[PipelineStage]``
+          - A list of `PipelineStage`_ objects in the order the object would
+            follow through the pipeline.
+        * - *created_at*
+          - ``datetime``
+          - The timestamp when this pipeline was created in HubSpot.
+        * - *updated_at*
+          - ``datetime``
+          - The last modified timestamp for this pipeline.
+        * - *archived*
+          - ``bool``
+          - Whether this pipeline is archived.
+        * - *display_order*
+          - ``int``
+          - The place in the list of pipelines where this pipeline is shown
+            in the HubSpot UI.
 
     PipelineStage
     ^^^^^^^^^^^^^
 
     A pipeline stage is one of the various stages defined in a `Pipeline`_.
 
-    *id* : ``str``
-        The HubSpot ID of the stage.
+    .. list-table::
+        :header-rows: 1
+        :widths: 25 25 50
 
-    *label* : ``str``
-        The human-readabel label for the stage.
-
-    *metadata* : ``Dict[str, str]``
-        A dictionary of additional data associated with ths stage, such
-        as ``probability``.
-
-    *created_at* : ``datetime``
-        The timestamp when this stage was created in HubSpot.
-
-    *updated_at* : ``datetime``
-        The last modified timestamp for this stage.
-
-    *archived* : ``bool``
-        Whether this stage is archived.
-
-    *archived_at* : ``datetime``
-        The timestamp when this stage was archived.
+        * - Attribute Name
+          - Type
+          - Description
+        * - *id*
+          - ``str``
+          - The HubSpot ID of the stage.
+        * - *label*
+          - ``str``
+          - The human-readabel label for the stage.
+        * - *metadata*
+          - ``Dict[str, str]``
+          - A dictionary of additional data associated with ths stage, such
+            as ``probability``.
+        * - *created_at*
+          - ``datetime``
+          - The timestamp when this stage was created in HubSpot.
+        * - *updated_at*
+          - ``datetime``
+          - The last modified timestamp for this stage.
+        * - *archived*
+          - ``bool``
+          - Whether this stage is archived.
+        * - *archived_at*
+          - ``datetime``
+          - The timestamp when this stage was archived.
 
     PublicOwner
     ^^^^^^^^^^^
@@ -761,46 +807,62 @@ class Hubspot:
     An owner in HubSpot. Owners of companies and deals are responsible
     for driving a sale to close or similar.
 
-    *id* : ``str``
-        The HubSpot ID of the owner.
+    .. list-table::
+        :header-rows: 1
+        :widths: 25 25 50
 
-    *email* : ``str``
-        The owner's email address in HubSpot.
-
-    *first_name* : ``str``
-        The owner's first name.
-
-    *last_name* : ``str``
-        The owner's last name.
-
-    *user_id* : ``int``
-        The associated user ID if the owner is a HubSpot user.
-
-    *created_at* : ``datetime``
-        The timestamp when this owner was created in HubSpot.
-
-    *updated_at* : ``datetime``
-        The last modified timestamp for this owner.
-
-    *archived* : ``bool``
-        Whether this owner is archived.
-
-    *teams* : ``List[PublicTeam]``
-        A list of teams the owner is in. See `PublicTeam`_.
+        * - Attribute Name
+          - Type
+          - Description
+        * - *id*
+          - ``str``
+          - The HubSpot ID of the owner.
+        * - *email*
+          - ``str``
+          - The owner's email address in HubSpot.
+        * - *first_name*
+          - ``str``
+          - The owner's first name.
+        * - *last_name*
+          - ``str``
+          - The owner's last name.
+        * - *user_id*
+          - ``int``
+          - The associated user ID if the owner is a HubSpot user.
+        * - *created_at*
+          - ``datetime``
+          - The timestamp when this owner was created in HubSpot.
+        * - *updated_at*
+          - ``datetime``
+          - The last modified timestamp for this owner.
+        * - *archived*
+          - ``bool``
+          - Whether this owner is archived.
+        * - *teams*
+          - ``List[PublicTeam]``
+          - A list of teams the owner is in. See `PublicTeam`_.
 
     PublicTeam
     ^^^^^^^^^^
 
     A team of owners in HubSpot
 
-    *id* : ``str``
-        The HubSpot ID of the Team.
+    .. list-table::
+        :header-rows: 1
+        :widths: 25 25 50
 
-    *name* : ``str``
-        The Team's name.
-
-    *membership* : ``str``
-        One of ``PRIMARY``, ``SECONDARY``, or ``CHILD``.
+        * - Attribute Name
+          - Type
+          - Description
+        * - *id*
+          - ``str``
+          - The HubSpot ID of the Team.
+        * - *name*
+          - ``str``
+          - The Team's name.
+        * - *membership*
+          - ``str``
+          - One of ``PRIMARY``, ``SECONDARY``, or ``CHILD``.
 
     """  # noqa: E501
 
@@ -1164,7 +1226,7 @@ class Hubspot:
                 Auth with api key    ${secrets}[API_KEY]
 
         Object Searching
-        ================
+        ----------------
 
         Alternatively, search criteria can be passed as a list of
         dictionaries to the label-only parameter ``search``.
@@ -1214,27 +1276,24 @@ class Hubspot:
                 + f"property 'enum1': {contacts}"
             )
 
-        ===============================
         Controlling Returned Properties
-        ===============================
+        -------------------------------
 
         You can retrieve additional properties for the objects by defining
         them with ``properties``. Properties must be provided as a single
         property as a string, or a list of properties as a list. If a
         requested property does not exist, it will be ignored.
 
-        ==================
         Using Associations
-        ==================
+        ------------------
 
         Associated objects can be used as search criteria by using the
         pseudo-property ``associations.{object_type}``, where ``{object_type}``
         is a valid object type, such as ``contact``, but this is not
         supported when seaching custom objects.
 
-        =======================
         Text-based Search Query
-        =======================
+        -----------------------
 
         If you want to search all text-based fields with a simple string,
         it can be provided via the optional label-only parameter
@@ -1687,7 +1746,7 @@ class Hubspot:
         """Creates a new blank batch input for the provided ``object_type`` in
         either the ``UPDATE`` or ``CREATE`` mode.
 
-        See `Batch Inputs`` for complete information on using the batch
+        See ``Batch Inputs`` for complete information on using the batch
         input API.
 
         :param object_type: The object type to be created or updated by
@@ -1708,7 +1767,7 @@ class Hubspot:
         The keyword will fail if an ID is provided to a batch that is
         currently in CREATE mode and has any inputs already.
 
-        See `Batch Inputs`` for complete information on using the batch
+        See ``Batch Inputs`` for complete information on using the batch
         input API.
 
         :param properties: A dictionary of HubSpot properties to set to
@@ -1734,7 +1793,7 @@ class Hubspot:
         The keyword will fail if an ID is provided to a batch that is
         currently in CREATE mode and has any inputs already.
 
-        See `Batch Inputs`` for complete information on using the batch
+        See ``Batch Inputs`` for complete information on using the batch
         input API.
 
         :param properties: A list of dictionaries of HubSpot properties to
@@ -1751,7 +1810,7 @@ class Hubspot:
     def clear_current_batch(self) -> BatchInputFactory:
         """Returns the current batch and then clears it.
 
-        See `Batch Inputs`` for complete information on using the batch
+        See ``Batch Inputs`` for complete information on using the batch
         input API.
         """
         old_batch = self.batch_input
@@ -1762,7 +1821,7 @@ class Hubspot:
     def set_current_batch_input(self, batch_input: BatchInputFactory) -> None:
         r"""Sets the current batch input to the provided one.
 
-        See `Batch Inputs`` for complete information on using the batch
+        See ``Batch Inputs`` for complete information on using the batch
         input API.
 
         :param batch_input: A batch object such as one returned from
@@ -1775,7 +1834,7 @@ class Hubspot:
     def get_current_batch(self) -> BatchInputFactory:
         """Returns the current batch.
 
-        See `Batch Inputs`` for complete information on using the batch
+        See ``Batch Inputs`` for complete information on using the batch
         input API.
 
         :return: The current batch input object.
@@ -1791,7 +1850,7 @@ class Hubspot:
         but if in ``CREATE`` mode, the dictionaries will only have the
         ``properties`` key.
 
-        See `Batch Inputs`` for complete information on using the batch
+        See ``Batch Inputs`` for complete information on using the batch
         input API.
 
         :return: A list of dictionaries representing the current inputs.
@@ -1827,7 +1886,7 @@ class Hubspot:
         Keyword will only fail if all inputs resulted in error. Partial
         failures are reported as warnings.
 
-        See `Batch Inputs`` for complete information on using the batch
+        See ``Batch Inputs`` for complete information on using the batch
         input API.
 
         :return: The updated or created objects as a list of
