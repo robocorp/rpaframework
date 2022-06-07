@@ -1,4 +1,3 @@
-from time import sleep
 import boto3
 import pytest
 import os
@@ -82,7 +81,7 @@ def test_execute_statement(redshift):
         MasterUserPassword=TEST_PASSWORD,
         LoadSampleData="True",
     )
-    # Need to confirm model name and how to call this.
+
     state_manager.set_transition(
         model_name="redshift-data::statement",
         transition={"progression": "time", "seconds": 4},
@@ -96,54 +95,8 @@ def test_execute_statement(redshift):
         database="dev",
         database_user=TEST_USER,
     )
-    # data = boto3.client("redshift-data", region_name=DEFAULT_REGION)
-    # test_resp = data.execute_statement(
-    #     Sql=SELECT_ALL_TABLES_SQL,
-    #     ClusterIdentifier=TEST_CLUSTER,
-    #     DbUser=TEST_USER,
-    #     Database="dev",
-    # )
-    # print("\n\nRESPONSE:")
-    # print(test_resp)
-
-    # test_descrip = data.describe_statement(
-    #     Id=test_resp["Id"],
-    # )
-    # print("\n\nDESCRIPTION 1:")
-    # print(test_descrip)
-    # test_descrip = data.describe_statement(
-    #     Id=test_resp["Id"],
-    # )
-    # print("\n\nDESCRIPTION 2:")
-    # print(test_descrip["Status"])
-    # test_descrip = data.describe_statement(
-    #     Id=test_resp["Id"],
-    # )
-    # print("\n\nDESCRIPTION 3:")
-    # print(test_descrip["Status"])
-    # test_descrip = data.describe_statement(
-    #     Id=test_resp["Id"],
-    # )
-    # print("\n\nDESCRIPTION 4:")
-    # print(test_descrip["Status"])
-    # sleep(5)
-    # test_descrip = data.describe_statement(
-    #     Id=test_resp["Id"],
-    # )
-    # print("\n\nDESCRIPTION 5:")
-    # print(test_descrip["Status"])
-
-    # test_results = data.get_statement_result(Id=test_resp["Id"])
-    # print("\n\nRESULTS:")
-    # print(test_results)
 
     tables = aws.execute_redshift_statement(TEST_SQL)
     print("RETURNED TABLE:")
     print(tables)
     assert tables[0]["City"] == "Vancouver"
-
-    # response = aws.execute_redshift_statement(
-    #     INSERT_SQL,
-    #     aws.create_redshift_statement_parameters(id="123", name="TestName"),
-    # )
-    # assert response == 1

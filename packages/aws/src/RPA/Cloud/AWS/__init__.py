@@ -80,10 +80,10 @@ class AWSBase:
     logger = None
     services: list = []
     clients: dict = {}
-    region: str = None
-    robocloud_vault_name: str = None
+    region: Optional[str] = None
+    robocloud_vault_name: Optional[str] = None
 
-    def _get_client_for_service(self, service_name: str = None):
+    def _get_client_for_service(self, service_name: Optional[str] = None):
         """Return client instance for servive if it has been initialized.
 
         :param service_name: name of the AWS service
@@ -95,18 +95,20 @@ class AWSBase:
             )
         return self.clients[service_name]
 
-    def _set_service(self, service_name: str = None, client: Any = None):
+    def _set_service(
+        self, service_name: Optional[str] = None, client: Optional[Any] = None
+    ):
         self.clients[service_name] = client
 
     @aws_dependency_required
     def _init_client(
         self,
         service_name: str,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
-        session_token: str = None,
+        session_token: Optional[str] = None,
     ):
         if use_robocloud_vault:
             aws_key_id, aws_key, region = self._get_secrets_from_cloud()
@@ -177,11 +179,11 @@ class ServiceS3(AWSBase):
 
     def init_s3_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
-        session_token: str = None,
+        session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS S3 client
 
@@ -197,7 +199,7 @@ class ServiceS3(AWSBase):
         )
 
     @aws_dependency_required
-    def create_bucket(self, bucket_name: str = None) -> bool:
+    def create_bucket(self, bucket_name: Optional[str] = None) -> bool:
         """Create S3 bucket with name
 
         :param bucket_name: name for the bucket
@@ -213,7 +215,7 @@ class ServiceS3(AWSBase):
             return False
 
     @aws_dependency_required
-    def delete_bucket(self, bucket_name: str = None) -> bool:
+    def delete_bucket(self, bucket_name: Optional[str] = None) -> bool:
         """Delete S3 bucket with name
 
         :param bucket_name: name for the bucket
@@ -239,7 +241,9 @@ class ServiceS3(AWSBase):
         return response["Buckets"] if "Buckets" in response else []
 
     @aws_dependency_required
-    def delete_files(self, bucket_name: str = None, files: list = None):
+    def delete_files(
+        self, bucket_name: Optional[str] = None, files: Optional[list] = None
+    ):
         """Delete files in the bucket
 
         :param bucket_name: name for the bucket
@@ -301,7 +305,10 @@ class ServiceS3(AWSBase):
 
     @aws_dependency_required
     def upload_file(
-        self, bucket_name: str = None, filename: str = None, object_name: str = None
+        self,
+        bucket_name: Optional[str] = None,
+        filename: Optional[str] = None,
+        object_name: Optional[str] = None,
     ) -> tuple:
         """Upload single file into bucket
 
@@ -319,7 +326,9 @@ class ServiceS3(AWSBase):
         return self._s3_upload_file(bucket_name, filename, object_name)
 
     @aws_dependency_required
-    def upload_files(self, bucket_name: str = None, files: list = None) -> list:
+    def upload_files(
+        self, bucket_name: Optional[str] = None, files: Optional[list] = None
+    ) -> list:
         """Upload multiple files into bucket
 
         :param bucket_name: name for the bucket
@@ -359,7 +368,10 @@ class ServiceS3(AWSBase):
 
     @aws_dependency_required
     def download_files(
-        self, bucket_name: str = None, files: list = None, target_directory: str = None
+        self,
+        bucket_name: Optional[str] = None,
+        files: Optional[list] = None,
+        target_directory: Optional[str] = None,
     ) -> list:
         """Download files from bucket to local filesystem
 
@@ -400,11 +412,11 @@ class ServiceTextract(AWSBase):
 
     def init_textract_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
-        session_token: str = None,
+        session_token: Optional[str] = None,
     ):
         """Initialize AWS Textract client
 
@@ -422,9 +434,9 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def analyze_document(
         self,
-        image_file: str = None,
-        json_file: str = None,
-        bucket_name: str = None,
+        image_file: Optional[str] = None,
+        json_file: Optional[str] = None,
+        bucket_name: Optional[str] = None,
         model: bool = False,
     ) -> bool:
         """Analyzes an input document for relationships between detected items
@@ -556,7 +568,10 @@ class ServiceTextract(AWSBase):
 
     @aws_dependency_required
     def detect_document_text(
-        self, image_file: str = None, json_file: str = None, bucket_name: str = None
+        self,
+        image_file: Optional[str] = None,
+        json_file: Optional[str] = None,
+        bucket_name: Optional[str] = None,
     ) -> bool:
         """Detects text in the input document.
 
@@ -584,10 +599,10 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def start_document_analysis(
         self,
-        bucket_name_in: str = None,
-        object_name_in: str = None,
-        object_version_in: str = None,
-        bucket_name_out: str = None,
+        bucket_name_in: Optional[str] = None,
+        object_name_in: Optional[str] = None,
+        object_version_in: Optional[str] = None,
+        bucket_name_out: Optional[str] = None,
         prefix_object_out: str = "textract_output",
     ):
         """Starts the asynchronous analysis of an input document
@@ -630,9 +645,9 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def get_document_analysis(
         self,
-        job_id: str = None,
+        job_id: Optional[str] = None,
         max_results: int = 1000,
-        next_token: str = None,
+        next_token: Optional[str] = None,
         collect_all_results: bool = False,
     ) -> dict:
         """Get the results of Textract asynchronous `Document Analysis` operation
@@ -709,10 +724,10 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def start_document_text_detection(
         self,
-        bucket_name_in: str = None,
-        object_name_in: str = None,
-        object_version_in: str = None,
-        bucket_name_out: str = None,
+        bucket_name_in: Optional[str] = None,
+        object_name_in: Optional[str] = None,
+        object_version_in: Optional[str] = None,
+        bucket_name_out: Optional[str] = None,
         prefix_object_out: str = "textract_output",
     ):
         """Starts the asynchronous detection of text in a document.
@@ -752,9 +767,9 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def get_document_text_detection(
         self,
-        job_id: str = None,
+        job_id: Optional[str] = None,
         max_results: int = 1000,
-        next_token: str = None,
+        next_token: Optional[str] = None,
         collect_all_results: bool = False,
     ) -> dict:
         """Get the results of Textract asynchronous `Document Text Detection` operation
@@ -863,11 +878,11 @@ class ServiceComprehend(AWSBase):
 
     def init_comprehend_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
-        session_token: str = None,
+        session_token: Optional[str] = None,
     ):
         """Initialize AWS Comprehend client
 
@@ -888,7 +903,7 @@ class ServiceComprehend(AWSBase):
         )
 
     @aws_dependency_required
-    def detect_sentiment(self, text: str = None, lang="en") -> dict:
+    def detect_sentiment(self, text: Optional[str] = None, lang="en") -> dict:
         """Inspects text and returns an inference of the prevailing sentiment
 
         :param text: A UTF-8 text string. Each string must contain fewer
@@ -906,7 +921,7 @@ class ServiceComprehend(AWSBase):
         }
 
     @aws_dependency_required
-    def detect_entities(self, text: str = None, lang="en") -> dict:
+    def detect_entities(self, text: Optional[str] = None, lang="en") -> dict:
         """Inspects text for named entities, and returns information about them
 
         :param text: A UTF-8 text string. Each string must contain fewer
@@ -929,12 +944,12 @@ class ServiceSQS(AWSBase):
 
     def init_sqs_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
-        queue_url: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
+        queue_url: Optional[str] = None,
         use_robocloud_vault: bool = False,
-        session_token: str = None,
+        session_token: Optional[str] = None,
     ):
         """Initialize AWS SQS client
 
@@ -953,7 +968,7 @@ class ServiceSQS(AWSBase):
 
     @aws_dependency_required
     def send_message(
-        self, message: str = None, message_attributes: dict = None
+        self, message: Optional[str] = None, message_attributes: Optional[dict] = None
     ) -> dict:
         """Send message to the queue
 
@@ -986,7 +1001,7 @@ class ServiceSQS(AWSBase):
         return response["Messages"][0] if "Messages" in response else None
 
     @aws_dependency_required
-    def delete_message(self, receipt_handle: str = None):
+    def delete_message(self, receipt_handle: Optional[str] = None):
         """Delete message in the queue
 
         :param receipt_handle: message handle to delete
@@ -1000,7 +1015,7 @@ class ServiceSQS(AWSBase):
         return response
 
     @aws_dependency_required
-    def create_queue(self, queue_name: str = None):
+    def create_queue(self, queue_name: Optional[str] = None):
         """Create queue with name
 
         :param queue_name: [description], defaults to None
@@ -1012,7 +1027,7 @@ class ServiceSQS(AWSBase):
         return response
 
     @aws_dependency_required
-    def delete_queue(self, queue_name: str = None):
+    def delete_queue(self, queue_name: Optional[str] = None):
         """Delete queue with name
 
         :param queue_name: [description], defaults to None
@@ -1039,15 +1054,15 @@ class ServiceRedshiftData(AWSBase):
 
     def init_redshift_data_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
-        cluster_identifier: str = None,
-        database: str = None,
-        database_user: str = None,
-        secret_arn: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
+        cluster_identifier: Optional[str] = None,
+        database: Optional[str] = None,
+        database_user: Optional[str] = None,
+        secret_arn: Optional[str] = None,
         use_robocloud_vault: bool = False,
-        session_token: str = None,
+        session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS Redshift Data API client
 
@@ -1105,7 +1120,7 @@ class ServiceRedshiftData(AWSBase):
         * ``name``: The name of the parameter. In the SQL statement this
           will be referenced as ``:name``.
         * ``value``: The value of the parameter. Amazon Redshift implicitly
-          converts to the proper data type. For more inforation, see
+          converts to the proper data type. For more information, see
           `Data types`_ in the `Amazon Redshift Database Developer Guide`.
 
         For simplicity, a helper keyword, \`Create redshift statement parameters\`,
@@ -1163,9 +1178,10 @@ class ServiceRedshiftData(AWSBase):
         run_token = self._submit_statement(
             client, sql, parameters, statement_name, with_event
         )
+        statement_name_string = f" with name {statement_name}" if statement_name else ""
         self.logger.info(
             f"'{run_token['Id']}' SQL statement execution on Redshift started"
-            f"{' with name ' + statement_name if statement_name else ''}:\n{sql}"
+            f"{statement_name_string}:\n{sql}"
         )
         self.logger.info(f"Parameters used in SQL statement:\n{parameters}")
         return self.get_redshift_statement_results(run_token["Id"], timeout)
@@ -1237,7 +1253,7 @@ class ServiceRedshiftData(AWSBase):
         tabular results, it will return the number of rows affected.
 
         :param statement_id: The statement id to use to retreive results.
-        :param timeout: An integar used to calculate the maximum wait.
+        :param timeout: An integer used to calculate the maximum wait.
             Exact timing depends on system variability becuase the
             underlying waiter does not utilize a timeout directly.
             Defaults to 40.
@@ -1317,20 +1333,20 @@ class ServiceRedshiftData(AWSBase):
         return [{"name": k, "value": v} for (k, v) in params.items()]
 
     def _parse_tagged_union(self, tagged_union: dict):
-        if tagged_union.get("blobValue"):
-            output = bytes(tagged_union["blobValue"])
-        elif tagged_union.get("booleanValue"):
-            output = bool(tagged_union["booleanValue"])
-        elif tagged_union.get("doubleValue"):
-            output = float(tagged_union["doubleValue"])
-        elif tagged_union.get("isNull"):
-            output = None if tagged_union["isNull"] else "UNKNOWN_DATA_MEMBER"
-        elif tagged_union.get("longValue"):
-            output = int(tagged_union["longValue"])
-        elif tagged_union.get("stringValue"):
-            output = str(tagged_union["stringValue"])
-        else:
-            output = "UNKNOWN_DATA_MEMBER"
+        TAGGED_TYPES = {
+            "blobValue": bytes,
+            "booleanValue": bool,
+            "doubleValue": float,
+            "isNull": lambda a: None,
+            "longValue": int,
+            "stringValue": str,
+            "SDK_UNKNOWN_MEMBER": lambda a: "UNKNOWN_DATA_MEMBER",
+        }
+        for item_key, item_value in tagged_union.items():
+            try:
+                output = TAGGED_TYPES[item_key](item_value)
+            except KeyError:
+                output = "UNKNOWN_DATA_MEMBER"
         return output
 
     def _create_waiter_for_results(
@@ -1564,11 +1580,11 @@ class ServiceSTS(AWSBase):
 
     def init_sts_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
-        session_token: str = None,
+        session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS STS client.
 
@@ -1590,7 +1606,7 @@ class ServiceSTS(AWSBase):
         role_session_name: str,
         policy_arns: Optional[List[Dict]] = None,
         policy: Optional[str] = None,
-        duration: Optional[int] = 900,
+        duration: int = 900,
         tags: Optional[List[Dict]] = None,
         transitive_tag_keys: Optional[List[str]] = None,
         external_id: Optional[str] = None,
@@ -1667,7 +1683,7 @@ class ServiceSTS(AWSBase):
         other_params = {
             "PolicyArns": policy_arns,
             "Policy": policy,
-            "DurationSeconds": duration,
+            "DurationSeconds": duration if duration > 900 else 900,
             "Tags": tags,
             "TransitiveTagKeys": transitive_tag_keys,
             "ExternalId": external_id,
@@ -1840,15 +1856,12 @@ class AWS(
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self, region: str = DEFAULT_REGION, robocloud_vault_name: str = None):
+    def __init__(
+        self, region: str = DEFAULT_REGION, robocloud_vault_name: Optional[str] = None
+    ):
         self.set_robocloud_vault(robocloud_vault_name)
         self.logger = logging.getLogger(__name__)
-        ServiceS3.__init__(self)
-        ServiceTextract.__init__(self)
-        ServiceComprehend.__init__(self)
-        ServiceSQS.__init__(self)
-        ServiceRedshiftData.__init__(self)
-        ServiceSTS.__init__(self)
+        super().__init__()
         self.region = region
         listener = RobotLogListener()
         listener.register_protected_keywords(
