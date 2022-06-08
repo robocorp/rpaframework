@@ -2,13 +2,15 @@
 name = "rpaframework-meta"
 version = "0.0.1"
 description = "Metapackage for RPA Framework"
-authors = [
-	"RPA Framework <rpafw@robocorp.com>",
-]
+authors = ["RPA Framework <rpafw@robocorp.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-rpaframework = { path = "packages/main", extras = ["cv", "playwright", "aws"] }
+rpaframework = { path = "packages/main", extras = [
+	"cv",
+	"playwright",
+	"aws",
+], develop = true }
 rpaframework-google = "^5.0.0"
 rpaframework-windows = "^5.0.0"
 
