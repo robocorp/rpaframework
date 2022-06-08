@@ -1814,8 +1814,8 @@ class WorkItems:
                     ${user} =     Get Work Item Variable    user
                     ${doc} =    Get Work Item Variable    doc
                     TRY
-                        Mock Login Keyword    ${user}
-                        Mock Upload Doc Keyword    ${doc}
+                        Login Keyword    ${user}
+                        Upload Doc Keyword    ${doc}
 
                     EXCEPT    Login Failed
                         Release Input Work Item     FAILED
