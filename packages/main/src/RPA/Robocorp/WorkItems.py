@@ -784,7 +784,7 @@ class WorkItems:
             ${mail} =    Get Work Item Variable    email
             Set Work Item Variables    &{mail}[body]
             ${message} =     Get Work Item Variable     message
-            Log    ${message}  # will print "Hello world!"
+            Log    ${message}    # will print "Hello world!"
 
     The behaviour can be disabled by loading the library with
     ``auto_parse_email=${None}`` or altered by providing to it a dictionary with one
@@ -914,7 +914,7 @@ class WorkItems:
             variables = library.get_work_item_variables()
             for variable, value in variables.items():
                 logging.info("%s = %s", variable, value)
-    """
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
@@ -1094,7 +1094,7 @@ class WorkItems:
 
     @keyword
     def set_current_work_item(self, item: WorkItem):
-        """Set the currently active work item.
+        r"""Set the currently active work item.
 
         The current work item is used as the target by other keywords
         in this library.
@@ -1291,14 +1291,16 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${payload}=    Get work item payload
-            Log    Entire payload as dictionary: ${payload}
+            *** Tasks ***
+            Example task
+                ${payload}=    Get work item payload
+                Log    Entire payload as dictionary: ${payload}
         """
         return self.current.payload
 
     @keyword
     def set_work_item_payload(self, payload):
-        """Set the full JSON payload for a work item.
+        r"""Set the full JSON payload for a work item.
 
         :param payload: Content of payload, must be JSON-serializable
 
@@ -1312,8 +1314,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${output}=    Create dictionary    url=example.com    username=Mark
-            Set work item payload    ${output}
+            *** Tasks ***
+            Example task
+                ${output}=    Create dictionary    url=example.com    username=Mark
+                Set work item payload    ${output}
 
         """
         self.current.payload = payload
@@ -1326,8 +1330,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${variables}=    List work item variables
-            Log    Available variables in work item: ${variables}
+            *** Tasks ***
+            Example task
+                ${variables}=    List work item variables
+                Log    Available variables in work item: ${variables}
 
         """
         return list(self.get_work_item_variables().keys())
@@ -1379,8 +1385,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${variables}=    Get work item variables
-            Log    Username: ${variables}[username], Email: ${variables}[email]
+            *** Tasks ***
+            Example task
+                ${variables}=    Get work item variables
+                Log    Username: ${variables}[username], Email: ${variables}[email]
 
         Python Example:
 
@@ -1414,8 +1422,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Set work item variable    username    MarkyMark
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Set work item variable    username    MarkyMark
+                Save Work Item
 
         Python Example:
 
@@ -1442,8 +1452,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Set work item variables    username=MarkyMark    email=mark@example.com
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Set work item variables    username=MarkyMark    email=mark@example.com
+                Save Work Item
         """
         variables = self.get_work_item_variables()
         for name, value in kwargs.items():
@@ -1461,8 +1473,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Delete work item variables    username    email
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Delete work item variables    username    email
+                Save Work Item
         """
         variables = self.get_work_item_variables()
         for name in names:
@@ -1483,9 +1497,11 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            # Work item has variable INPUT_URL
-            Set task variables from work item
-            Log    The variable is now available: ${INPUT_URL}
+            *** Tasks ***
+            Example task
+                # Work item has variable INPUT_URL
+                Set task variables from work item
+                Log    The variable is now available: ${INPUT_URL}
         """  # noqa: E501
         variables = self.get_work_item_variables()
         for name, value in variables.items():
@@ -1499,8 +1515,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${names}=    List work item files
-            Log    Work item has files with names: ${names}
+            *** Tasks ***
+            Example task
+                ${names}=    List work item files
+                Log    Work item has files with names: ${names}
         """
         return self.current.files
 
@@ -1517,8 +1535,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${path}=    Get work item file    input.xls
-            Open workbook    ${path}
+            *** Tasks ***
+            Example task
+                ${path}=    Get work item file    input.xls
+                Open workbook    ${path}
         """
         path = self.current.get_file(name, path)
         logging.info("Downloaded file to: %s", path)
@@ -1538,8 +1558,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Add work item file    output.xls
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Add work item file    output.xls
+                Save Work Item
         """
         logging.info("Adding file: %s", path)
         return self.current.add_file(path, name=name)
@@ -1557,8 +1579,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Remove work item file    input.xls
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Remove work item file    input.xls
+                Save Work Item
         """
         logging.info("Removing file: %s", name)
         return self.current.remove_file(name, missing_ok)
@@ -1575,10 +1599,12 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${paths}=    Get work item files    customer_*.xlsx
-            FOR  ${path}  IN  @{paths}
-                Handle customer file    ${path}
-            END
+            *** Tasks ***
+            Example task
+                ${paths}=    Get work item files    customer_*.xlsx
+                FOR  ${path}  IN  @{paths}
+                    Handle customer file    ${path}
+                END
         """
         paths = []
         for name in self.list_work_item_files():
@@ -1602,8 +1628,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Add work item files    %{ROBOT_ROOT}/generated/*.csv
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Add work item files    %{ROBOT_ROOT}/generated/*.csv
+                Save Work Item
         """
         matches = FileSystem().find_files(pattern, include_dirs=False)
 
@@ -1626,8 +1654,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Remove work item files    *.xlsx
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Remove work item files    *.xlsx
+                Save Work Item
         """
         names = []
 
@@ -1684,6 +1714,7 @@ class WorkItems:
 
         .. code-block:: robotframework
 
+            *** Tasks ***
             Log Payloads
                 @{lengths} =     For Each Input Work Item    Log Payload
                 Log   Payload lengths: @{lengths}
@@ -1777,10 +1808,32 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Login into portal
-                ${user} =     Get Work Item Variable    user
-                Log     Logging in ${user}
-                Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding  # noqa
+            *** Tasks ***
+            Example task
+                Login into portal
+                    ${user} =     Get Work Item Variable    user
+                    ${doc} =    Get Work Item Variable    doc
+                    TRY
+                        Mock Login Keyword    ${user}
+                        Mock Upload Doc Keyword    ${doc}
+
+                    EXCEPT    Login Failed
+                        Release Input Work Item     FAILED
+                        ...    exception_type=APPLICATION
+                        ...    code=LOGIN_PORTAL_DOWN
+                        ...    message=Unable to login, retry again later.
+
+                    EXCEPT    Format Error    AS    ${err}
+                        ${message} =    Catenate
+                        ...    Document format is not correct and cannot be uploaded.
+                        ...    Correct the format in this work item and try again.
+                        ...    Full error message received: ${err}
+                        Release Input Work Item     FAILED
+                        ...    exception_type=BUSINESS
+                        ...    code=DOC_FORMAT_ERROR
+                        ...    message=${message}
+
+                    END
 
         OR
 
@@ -1853,8 +1906,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${input} =    Get Current Work Item
-            ${output} =   Create Output Work Item
-            Set Current Work Item    ${input}
+            *** Tasks ***
+            Example task
+                ${input} =    Get Current Work Item
+                ${output} =   Create Output Work Item
+                Set Current Work Item    ${input}
         """
         return self.current
