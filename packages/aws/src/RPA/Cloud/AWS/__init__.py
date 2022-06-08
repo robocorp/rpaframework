@@ -17,6 +17,7 @@ try:
 except ImportError:
     HAS_BOTO3 = False
 
+
 from RPA.core.logger import RobotLogListener
 from RPA.core.helpers import required_param, required_env
 
@@ -39,6 +40,19 @@ def import_vault():
     except ModuleNotFoundError:
         pass
     return None
+
+
+def import_tables():
+    """Try to import Tables library"""
+    try:
+        module = importlib.import_module("RPA.Tables")
+        return getattr(module, "Tables")
+    except ModuleNotFoundError:
+        logging.getLogger().info(
+            "Tables in the AWS response will be in a `dictionary` type, "
+            "because `RPA.Tables` library is not available in the scope."
+        )
+        return None
 
 
 def aws_dependency_required(f):
@@ -490,13 +504,16 @@ class ServiceTextract(AWSBase):
                 else:
                     rows[row] = {col: val}
 
+            tables = import_tables()
             data = [
                 [rows[col][idx] for idx in sorted(rows[col])] for col in sorted(rows)
             ]
-            self.tables[idx] = data
+            self.tables[idx] = tables().create_table(data) if tables else data
 
     def get_tables(self):
         """Get parsed tables from the response
+
+        Returns `RPA.Tables.Table` if possible otherwise returns an dictionary.
 
         :return: tables
         """
@@ -648,7 +665,8 @@ class ServiceTextract(AWSBase):
         total_result = response
         if len(total_blocks) > 0:
             total_result["Blocks"] = total_blocks
-        self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
+        if "Blocks" in total_result.keys():
+            self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
         return total_result
 
     def get_pages_and_text(self, textract_response: dict) -> dict:
@@ -769,7 +787,8 @@ class ServiceTextract(AWSBase):
         total_result = response
         if len(total_blocks) > 0:
             total_result["Blocks"] = total_blocks
-        self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
+        if "Blocks" in total_result.keys():
+            self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
         return total_result
 
     def convert_textract_response_to_model(self, response):

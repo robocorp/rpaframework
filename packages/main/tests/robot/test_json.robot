@@ -39,6 +39,8 @@ Delete values from JSON
     Should Not Contain    ${data}[windows]    domain
     ${data}    Delete from JSON    ${data}    $.windows
     Should Not Contain    ${data}    windows
+    ${data}    Delete from JSON    ${data}    $.credentials[?(@.login=="robot")]
+    Should Not Contain    ${data}[credentials]    sap
 
 Get value from JSON
     [Setup]    Test setup for most cases
@@ -60,12 +62,12 @@ Get values from JSON
 Convert JSON to string and vice versa
     [Setup]    Test setup for most cases
     Run Keyword And Expect Error
-    ...    *is not a string*
+    ...    *not a string*
     ...    Should Be String    ${data}
     ${json_str}    Convert JSON to String    ${data}
     Should Be String    ${json_str}
     ${json_obj}    Convert String to JSON    ${json_str}
     Run Keyword And Expect Error
-    ...    *is not a string*
+    ...    *not a string*
     ...    Should Be String    ${data}
     Should Contain    ${json_obj}    swaglabs
