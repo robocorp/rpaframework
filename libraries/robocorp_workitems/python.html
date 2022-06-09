@@ -323,7 +323,7 @@ set self.__traceback__ to tb and return self.</p>
 <dt id="RPA.Robocorp.WorkItems.FileAdapter">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">FileAdapter</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Robocorp.WorkItems.BaseAdapter" title="RPA.Robocorp.WorkItems.BaseAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocorp.WorkItems.BaseAdapter</span></code></a></p>
-<p>Adapter for mocking work item input queues.</p>
+<p>Adapter for simulating work item input queues.</p>
 <p>Reads inputs from the given database file, and writes
 all created output items into an adjacent file
 with the suffix <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;.output.json</span></code>. If the output path is provided by an
@@ -655,10 +655,12 @@ the <code class="docutils literal notranslate"><span class="pre">parsedEmail[Bod
 </pre></div>
 </div>
 <p>The robot can use the parsed e-mail body’s dictionary:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${mail} =</span><span class="p">    </span><span class="c">Get Work Item Variable</span><span class="p">    </span><span class="c">email</span><span class="p"></span>
-<span class="c">Set Work Item Variables</span><span class="p">    </span><span class="c">&amp;{mail}[body]</span><span class="p"></span>
-<span class="c">${message} =</span><span class="p">     </span><span class="c">Get Work Item Variable</span><span class="p">     </span><span class="c">message</span><span class="p"></span>
-<span class="c">Log</span><span class="p">    </span><span class="c">${message}</span><span class="p">  </span><span class="c"># will print &quot;Hello world!&quot;</span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Using Prased Emails</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">mail</span><span class="p">} =    </span><span class="nf">Get Work Item Variable</span><span class="p">    </span><span class="s">email</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Work Item Variables</span><span class="p">    &amp;{</span><span class="nv">mail</span><span class="p">}[</span><span class="nv">body</span><span class="p">]</span>
+<span class="p">    ${</span><span class="nv">message</span><span class="p">} =     </span><span class="nf">Get Work Item Variable</span><span class="p">     </span><span class="s">message</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    ${</span><span class="nv">message</span><span class="p">}    </span><span class="c"># will print &quot;Hello world!&quot;</span>
 </pre></div>
 </div>
 <p>The behaviour can be disabled by loading the library with
@@ -688,7 +690,7 @@ locally and then saved when the keyword <code class="docutils literal notranslat
 This also applies to created output work items.</p>
 <p>It is recommended to defer saves until all changes have been made to prevent
 leaving work items in a half-modified state in case of failures.</p>
-<p><strong>Development and mocking</strong></p>
+<p><strong>Local Development</strong></p>
 <p>While Control Room is the default implementation, it can also be replaced
 with a custom adapter. The selection is based on either the <code class="docutils literal notranslate"><span class="pre">default_adapter</span></code>
 argument for the library, or the <code class="docutils literal notranslate"><span class="pre">RPA_WORKITEMS_ADAPTER</span></code> environment
@@ -714,6 +716,11 @@ It’s a list of work items, each of which has a data payload and files.</p>
 with the same name, but with the extension <code class="docutils literal notranslate"><span class="pre">.output.json</span></code>. You can specify
 through the “RPA_OUTPUT_WORKITEM_PATH” env var a different path and name for this
 file.</p>
+<p><strong>Simulating the Cloud with Robocorp Code VSCode Extension</strong></p>
+<p>If you are developing in VSCode with the <a class="reference external" href="https://robocorp.com/docs/setup/development-environment#visual-studio-code-with-robocorp-extensions">Robocorp Code extension</a>, you can
+utilize the built in local development features described in the
+<a class="reference external" href="https://robocorp.com/docs/development-guide/control-room/work-items#developing-with-work-items-locally">Developing with work items locally</a> section of the
+<a class="reference external" href="https://robocorp.com/docs/development-guide/control-room/work-items">Using work items</a> development guide.</p>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <p>In the following example a task creates an output work item,
@@ -800,8 +807,10 @@ of local file is used.</p></li>
 </dl>
 <p><strong>NOTE</strong>: Files are not uploaded before work item is saved</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item file</span><span class="p">    </span><span class="c">output.xls</span><span class="p"></span>
-<span class="c">Save Work Item</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Add work item file</span><span class="p">    </span><span class="s">output.xls</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -816,8 +825,10 @@ of local file is used.</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item files</span><span class="p">    </span><span class="c">%{ROBOT_ROOT}/generated/*.csv</span><span class="p"></span>
-<span class="c">Save Work Item</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Add work item files</span><span class="p">    %{</span><span class="nv">ROBOT_ROOT</span><span class="p">}</span><span class="s">/generated/*.csv</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -827,8 +838,18 @@ of local file is used.</p></li>
 <code class="sig-name descname">clear_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.clear_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all data and files in the current work item.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Clear work item</span><span class="p"></span>
-<span class="c">Save Work Item</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Clearing a work item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Clear work item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">clear_work_item</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">save_work_item</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -859,23 +880,34 @@ output work item.</p></li>
 </dl>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create output items with variables then save</span><span class="p"></span>
-<span class="p">    </span><span class="c">${customers} =</span><span class="p">  </span><span class="c">Load customer data</span><span class="p"></span>
-<span class="p">    </span><span class="c">FOR</span><span class="p">     </span><span class="c">${customer}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{customers}</span><span class="p"></span>
-<span class="p">        </span><span class="c">Create Output Work Item</span><span class="p"></span>
-<span class="p">        </span><span class="c">Set Work Item Variables</span><span class="p">    </span><span class="c">id=${customer.id}</span><span class="p"></span>
-<span class="p">        </span><span class="c">...</span><span class="p">     </span><span class="c">name=${customer.name}</span><span class="p"></span>
-<span class="p">        </span><span class="c">Save Work Item</span><span class="p"></span>
-<span class="p">    </span><span class="c">END</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Create output items with variables then save</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">customers</span><span class="p">} =  </span><span class="nf">Load customer data</span><span class="p"></span>
+<span class="p">    FOR     ${</span><span class="nv">customer</span><span class="p">}    IN    @{</span><span class="nv">customers</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Create Output Work Item</span><span class="p"></span>
+<span class="p">        </span><span class="nf">Set Work Item Variables</span><span class="p">    </span><span class="s">id=</span><span class="p">${</span><span class="nv">customer.id</span><span class="p">}</span>
+<span class="p">        ...     </span><span class="s">name=</span><span class="p">${</span><span class="nv">customer.name</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Save Work Item</span><span class="p"></span>
+<span class="p">    END</span>
 
-<span class="c">Create and save output items with variables and files in one go</span><span class="p"></span>
-<span class="p">    </span><span class="c">${customers} =</span><span class="p">  </span><span class="c">Load customer data</span><span class="p"></span>
-<span class="p">    </span><span class="c">FOR</span><span class="p">     </span><span class="c">${customer}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{customers}</span><span class="p"></span>
-<span class="p">        </span><span class="c">&amp;{customer_vars} =</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">id=${customer.id}</span><span class="p"></span>
-<span class="p">        </span><span class="c">...</span><span class="p">     </span><span class="c">name=${customer.name}</span><span class="p"></span>
-<span class="p">        </span><span class="c">Create Output Work Item</span><span class="p">     </span><span class="c">variables=${customer_vars}</span><span class="p"></span>
-<span class="p">        </span><span class="c">...</span><span class="p">     </span><span class="c">files=devdata${/}report.csv</span><span class="p">   </span><span class="c">save=${True}</span><span class="p"></span>
-<span class="p">    </span><span class="c">END</span><span class="p"></span>
+<span class="gu">Create and save output items with variables and files in one go</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">customers</span><span class="p">} =  </span><span class="nf">Load customer data</span><span class="p"></span>
+<span class="p">    FOR     ${</span><span class="nv">customer</span><span class="p">}    IN    @{</span><span class="nv">customers</span><span class="p">}</span>
+<span class="p">        &amp;{</span><span class="nv">customer_vars</span><span class="p">} =    </span><span class="nf">Create Dictionary</span><span class="p">    </span><span class="s">id=</span><span class="p">${</span><span class="nv">customer.id</span><span class="p">}</span>
+<span class="p">        ...     </span><span class="s">name=</span><span class="p">${</span><span class="nv">customer.name</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Create Output Work Item</span><span class="p">     </span><span class="s">variables=</span><span class="p">${</span><span class="nv">customer_vars</span><span class="p">}</span>
+<span class="p">        ...     </span><span class="s">files=devdata</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">report.csv</span><span class="p">   </span><span class="s">save=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">customers</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">get_work_item_variable</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">customer</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
+    <span class="n">wi</span><span class="o">.</span><span class="n">create_output_work_item</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -898,8 +930,10 @@ output work item.</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete work item variables</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">email</span><span class="p"></span>
-<span class="c">Save Work Item</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Delete work item variables</span><span class="p">    </span><span class="s">username</span><span class="p">    </span><span class="s">email</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -926,9 +960,10 @@ keyword/function call if truthy</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Log Payloads</span><span class="p"></span>
-<span class="p">    </span><span class="c">@{lengths} =</span><span class="p">     </span><span class="c">For Each Input Work Item</span><span class="p">    </span><span class="c">Log Payload</span><span class="p"></span>
-<span class="p">    </span><span class="c">Log</span><span class="p">   </span><span class="c">Payload lengths: @{lengths}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Log Payloads</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">lengths</span><span class="p">} =     </span><span class="nf">For Each Input Work Item</span><span class="p">    </span><span class="s">Log Payload</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">   </span><span class="s">Payload lengths: </span><span class="p">@{</span><span class="nv">lengths</span><span class="p">}</span>
 
 <span class="gh">*** Keywords ***</span><span class="p"></span>
 <span class="gu">Log Payload</span><span class="p"></span>
@@ -970,9 +1005,11 @@ set the active work item automatically, and return the created
 instance.</p>
 <p>With this keyword the active work item can be retrieved manually.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${input} =</span><span class="p">    </span><span class="c">Get Current Work Item</span><span class="p"></span>
-<span class="c">${output} =</span><span class="p">   </span><span class="c">Create Output Work Item</span><span class="p"></span>
-<span class="c">Set Current Work Item</span><span class="p">    </span><span class="c">${input}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">input</span><span class="p">} =    </span><span class="nf">Get Current Work Item</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">output</span><span class="p">} =   </span><span class="nf">Create Output Work Item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Current Work Item</span><span class="p">    ${</span><span class="nv">input</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1004,8 +1041,10 @@ working directory is used.</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${path}=</span><span class="p">    </span><span class="c">Get work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
-<span class="c">Open workbook</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">path</span><span class="p">}=    </span><span class="nf">Get work item file</span><span class="p">    </span><span class="s">input.xls</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Open workbook</span><span class="p">    ${</span><span class="nv">path</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1024,10 +1063,12 @@ Returns a list of absolute paths to the downloaded files.</p>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${paths}=</span><span class="p">    </span><span class="c">Get work item files</span><span class="p">    </span><span class="c">customer_*.xlsx</span><span class="p"></span>
-<span class="c">FOR</span><span class="p">  </span><span class="c">${path}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{paths}</span><span class="p"></span>
-<span class="p">    </span><span class="c">Handle customer file</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
-<span class="c">END</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">paths</span><span class="p">}=    </span><span class="nf">Get work item files</span><span class="p">    </span><span class="s">customer_*.xlsx</span><span class="p"></span>
+<span class="p">    FOR  ${</span><span class="nv">path</span><span class="p">}  IN  @{</span><span class="nv">paths</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Handle customer file</span><span class="p">    ${</span><span class="nv">path</span><span class="p">}</span>
+<span class="p">    END</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1038,8 +1079,10 @@ Returns a list of absolute paths to the downloaded files.</p>
 <dd><p>Get the full JSON payload for a work item.</p>
 <p><strong>NOTE</strong>: Most use cases should prefer higher-level keywords.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${payload}=</span><span class="p">    </span><span class="c">Get work item payload</span><span class="p"></span>
-<span class="c">Log</span><span class="p">    </span><span class="c">Entire payload as dictionary: ${payload}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">payload</span><span class="p">}=    </span><span class="nf">Get work item payload</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Entire payload as dictionary: </span><span class="p">${</span><span class="nv">payload</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1058,8 +1101,19 @@ or default value if defined and key does not exist.</p>
 </ul>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${username}=</span><span class="p">    </span><span class="c">Get work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">default=guest</span><span class="p"></span>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Using a work item</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">username</span><span class="p">}=    </span><span class="nf">Get work item variable</span><span class="p">    </span><span class="s">username</span><span class="p">    </span><span class="s">default=guest</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">customers</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">get_work_item_variable</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">customers</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1069,11 +1123,22 @@ or default value if defined and key does not exist.</p>
 <code class="sig-name descname">get_work_item_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read all variables from the current work item and
 return their names and values as a dictionary.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${variables}=</span><span class="p">    </span><span class="c">Get work item variables</span><span class="p"></span>
-<span class="c">Log</span><span class="p">    </span><span class="c">Username: ${variables}[username], Email: ${variables}[email]</span><span class="p"></span>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">variables</span><span class="p">}=    </span><span class="nf">Get work item variables</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Username: </span><span class="p">${</span><span class="nv">variables</span><span class="p">}[</span><span class="nv">username</span><span class="p">]</span><span class="s">, Email: </span><span class="p">${</span><span class="nv">variables</span><span class="p">}[</span><span class="nv">email</span><span class="p">]</span>
 </pre></div>
 </div>
+<p>Python Example:</p>
+<blockquote>
+<div><p>from RPA.Robocorp.WorkItems import WorkItems
+wi = WorkItems()
+wi.get_input_work_item()
+input_wi = wi.get_work_item_variables()
+print(input_wi[“username”])
+print(input_wi[“email”])</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="attribute">
@@ -1087,8 +1152,10 @@ return their names and values as a dictionary.</p>
 <code class="sig-name descname">list_work_item_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.list_work_item_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List the names of files attached to the current work item.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${names}=</span><span class="p">    </span><span class="c">List work item files</span><span class="p"></span>
-<span class="c">Log</span><span class="p">    </span><span class="c">Work item has files with names: ${names}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">names</span><span class="p">}=    </span><span class="nf">List work item files</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Work item has files with names: </span><span class="p">${</span><span class="nv">names</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1098,8 +1165,10 @@ return their names and values as a dictionary.</p>
 <code class="sig-name descname">list_work_item_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.list_work_item_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>List the variable names for the current work item.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${variables}=</span><span class="p">    </span><span class="c">List work item variables</span><span class="p"></span>
-<span class="c">Log</span><span class="p">    </span><span class="c">Available variables in work item: ${variables}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">variables</span><span class="p">}=    </span><span class="nf">List work item variables</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Available variables in work item: </span><span class="p">${</span><span class="nv">variables</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1133,10 +1202,32 @@ details regarding the sent exception</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Login into portal</span><span class="p"></span>
-<span class="p">    </span><span class="c">${user} =</span><span class="p">     </span><span class="c">Get Work Item Variable</span><span class="p">    </span><span class="c">user</span><span class="p"></span>
-<span class="p">    </span><span class="c">Log</span><span class="p">     </span><span class="c">Logging in ${user}</span><span class="p"></span>
-<span class="p">    </span><span class="c">Release Input Work Item</span><span class="p">     </span><span class="c">FAILED</span><span class="p">      </span><span class="c">exception_type=BUSINESS</span><span class="p">   </span><span class="c">code=LOGIN_PORTAL_DOWN</span><span class="p">     </span><span class="c">message=Unable to login into the portal – not proceeding</span><span class="p">  </span><span class="c"># noqa</span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Login into portal</span><span class="p"></span>
+<span class="p">        ${</span><span class="nv">user</span><span class="p">} =     </span><span class="nf">Get Work Item Variable</span><span class="p">    </span><span class="s">user</span><span class="p"></span>
+<span class="p">        ${</span><span class="nv">doc</span><span class="p">} =    </span><span class="nf">Get Work Item Variable</span><span class="p">    </span><span class="s">doc</span><span class="p"></span>
+<span class="p">        </span><span class="nf">TRY</span><span class="p"></span>
+<span class="p">            </span><span class="nf">Login Keyword</span><span class="p">    ${</span><span class="nv">user</span><span class="p">}</span>
+<span class="p">            </span><span class="nf">Upload Doc Keyword</span><span class="p">    ${</span><span class="nv">doc</span><span class="p">}</span>
+
+<span class="p">        </span><span class="nf">EXCEPT</span><span class="p">    </span><span class="s">Login Failed</span><span class="p"></span>
+<span class="p">            </span><span class="nf">Release Input Work Item</span><span class="p">     </span><span class="s">FAILED</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">exception_type=APPLICATION</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">code=LOGIN_PORTAL_DOWN</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">message=Unable to login, retry again later.</span><span class="p"></span>
+
+<span class="p">        </span><span class="nf">EXCEPT</span><span class="p">    </span><span class="s">Format Error</span><span class="p">    </span><span class="s">AS</span><span class="p">    ${</span><span class="nv">err</span><span class="p">}</span>
+<span class="p">            ${</span><span class="nv">message</span><span class="p">} =    </span><span class="nf">Catenate</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">Document format is not correct and cannot be uploaded.</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">Correct the format in this work item and try again.</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">Full error message received: </span><span class="p">${</span><span class="nv">err</span><span class="p">}</span>
+<span class="p">            </span><span class="nf">Release Input Work Item</span><span class="p">     </span><span class="s">FAILED</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">exception_type=BUSINESS</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">code=DOC_FORMAT_ERROR</span><span class="p"></span>
+<span class="p">            ...    </span><span class="s">message=</span><span class="p">${</span><span class="nv">message</span><span class="p">}</span>
+
+<span class="p">        END</span>
 </pre></div>
 </div>
 <p>OR</p>
@@ -1168,8 +1259,10 @@ details regarding the sent exception</p></li>
 </dl>
 <p><strong>NOTE</strong>: Files are not deleted before work item is saved</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
-<span class="c">Save Work Item</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Remove work item file</span><span class="p">    </span><span class="s">input.xls</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1187,8 +1280,10 @@ details regarding the sent exception</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item files</span><span class="p">    </span><span class="c">*.xlsx</span><span class="p"></span>
-<span class="c">Save Work Item</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Remove work item files</span><span class="p">    </span><span class="s">*.xlsx</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1212,14 +1307,25 @@ all changes are discarded when the library goes out of scope.</p>
 <dd><p>Set the currently active work item.</p>
 <p>The current work item is used as the target by other keywords
 in this library.</p>
-<p>Keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code>
+<p>Keywords `Get Input Work Item` and `Create Output Work Item`
 set the active work item automatically, and return the created
 instance.</p>
 <p>With this keyword the active work item can be set manually.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${input}=</span><span class="p">    </span><span class="c">Get Input Work Item</span><span class="p"></span>
-<span class="c">${output}=</span><span class="p">   </span><span class="c">Create Output Work Item</span><span class="p"></span>
-<span class="c">Set current work item</span><span class="p">    </span><span class="c">${input}</span><span class="p"></span>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Creating outputs</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">input</span><span class="p">}=    </span><span class="nf">Get Input Work Item</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">output</span><span class="p">}=   </span><span class="nf">Create Output Work Item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set current work item</span><span class="p">    ${</span><span class="nv">input</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">parent_wi</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">child_wi</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">create_output_work_item</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">set_current_work_item</span><span class="p">(</span><span class="n">parent_wi</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1228,11 +1334,13 @@ instance.</p>
 <dt id="RPA.Robocorp.WorkItems.WorkItems.set_task_variables_from_work_item">
 <code class="sig-name descname">set_task_variables_from_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.set_task_variables_from_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert all variables in the current work item to
-Robot Framework task variables.</p>
+Robot Framework task variables, see <a class="reference external" href="https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#variable-scopes">variable scopes</a>.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Work item has variable INPUT_URL</span>
-<span class="c">Set task variables from work item</span><span class="p"></span>
-<span class="c">Log</span><span class="p">    </span><span class="c">The variable is now available: ${INPUT_URL}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="c"># Work item has variable INPUT_URL</span>
+<span class="p">    </span><span class="nf">Set task variables from work item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">The variable is now available: </span><span class="p">${</span><span class="nv">INPUT_URL</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1246,10 +1354,16 @@ Robot Framework task variables.</p>
 <dd class="field-odd"><p><strong>payload</strong> – Content of payload, must be JSON-serializable</p>
 </dd>
 </dl>
-<p><strong>NOTE</strong>: Most use cases should prefer higher-level keywords.</p>
+<p><strong>NOTE</strong>: Most use cases should prefer higher-level keywords.
+Using this keyword may cause errors when getting the payload via
+the normal `Get work item variable` and
+`Get work item variables` keywords if you do not set the payload
+to a <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${output}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">    </span><span class="c">url=example.com</span><span class="p">    </span><span class="c">username=Mark</span><span class="p"></span>
-<span class="c">Set work item payload</span><span class="p">    </span><span class="c">${output}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">output</span><span class="p">}=    </span><span class="nf">Create dictionary</span><span class="p">    </span><span class="s">url=example.com</span><span class="p">    </span><span class="s">username=Mark</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set work item payload</span><span class="p">    ${</span><span class="nv">output</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1266,9 +1380,20 @@ Robot Framework task variables.</p>
 </ul>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">MarkyMark</span><span class="p"></span>
-<span class="c">Save Work Item</span><span class="p"></span>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set work item variable</span><span class="p">    </span><span class="s">username</span><span class="p">    </span><span class="s">MarkyMark</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Work Item</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">customers</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Apple&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Microsoft&quot;</span><span class="p">}]</span>
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">set_work_item_variable</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">customers</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1283,8 +1408,10 @@ Robot Framework task variables.</p>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variables</span><span class="p">    </span><span class="c">username=MarkyMark</span><span class="p">    </span><span class="c">email=mark@example.com</span><span class="p"></span>
-<span class="c">Save Work Item</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Example task</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set work item variables</span><span class="p">    </span><span class="s">username=MarkyMark</span><span class="p">    </span><span class="s">email=mark@example.com</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
