@@ -350,7 +350,7 @@ class RobocorpAdapter(BaseAdapter):
 
 
 class FileAdapter(BaseAdapter):
-    """Adapter for mocking work item input queues.
+    """Adapter for simulating work item input queues.
 
     Reads inputs from the given database file, and writes
     all created output items into an adjacent file
@@ -822,7 +822,7 @@ class WorkItems:
     It is recommended to defer saves until all changes have been made to prevent
     leaving work items in a half-modified state in case of failures.
 
-    **Development and mocking**
+    **Local Development**
 
     While Control Room is the default implementation, it can also be replaced
     with a custom adapter. The selection is based on either the ``default_adapter``
@@ -854,10 +854,10 @@ class WorkItems:
     through the "RPA_OUTPUT_WORKITEM_PATH" env var a different path and name for this
     file.
 
-    **Mocking with Robocorp Code VSCode Extension**
+    **Simulating the Cloud with Robocorp Code VSCode Extension**
 
-    If you are developing in VSCode, the `Robocorp Code extension`_, you can
-    utilize the built in mocking features described in the
+    If you are developing in VSCode with the `Robocorp Code extension`_, you can
+    utilize the built in local development features described in the
     `Developing with work items locally`_ section of the
     `Using work items`_ development guide.
 
