@@ -154,9 +154,9 @@ class Desktop(DynamicCore):
     UI changes. Robot Framework scripts can then only contain a reference
     to a stored locator by name.
 
-    The main way to create named locators is with `Robocorp Lab`_.
+    The main way to create named locators is with `VSCode`_.
 
-    .. _Robocorp Lab: https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview
+    .. _VSCode: https://robocorp.com/docs/developer-tools/visual-studio-code/overview
 
     **Keyboard and mouse**
 
