@@ -1094,7 +1094,8 @@ class WorkItems:
 
     @keyword
     def set_current_work_item(self, item: WorkItem):
-        r"""Set the currently active work item.
+        # pylint: disable=anomalous-backslash-in-string
+        """Set the currently active work item.
 
         The current work item is used as the target by other keywords
         in this library.
@@ -1125,7 +1126,7 @@ class WorkItems:
             parent_wi = wi.get_input_work_item()
             child_wi = wi.create_output_work_item()
             wi.set_current_work_item(parent_wi)
-        """
+        """  # noqa: W605
         self.current = item
 
     @keyword
@@ -1300,7 +1301,8 @@ class WorkItems:
 
     @keyword
     def set_work_item_payload(self, payload):
-        r"""Set the full JSON payload for a work item.
+        # pylint: disable=anomalous-backslash-in-string
+        """Set the full JSON payload for a work item.
 
         :param payload: Content of payload, must be JSON-serializable
 
@@ -1319,7 +1321,7 @@ class WorkItems:
                 ${output}=    Create dictionary    url=example.com    username=Mark
                 Set work item payload    ${output}
 
-        """
+        """  # noqa: W605
         self.current.payload = payload
 
     @keyword
