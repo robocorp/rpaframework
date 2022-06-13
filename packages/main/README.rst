@@ -419,9 +419,10 @@ First steps to start developing:
      ``localhost:8000`` to view docs as a live local webpage.
 
    **NOTE:** Due to the way optional packages are referenced in the metapackage's ``pyproject.toml``, they will not install
-   new versions under development, in order to see new documentation changes for optional packages, you must *temporarily*
-   update the ``pyproject.toml`` to include a local reference to your package (WARNING DO NOT COMMIT THIS CHANGE). So for
-   example, if you are developing in the ``RPA.Cloud.AWS`` package, you must make the following changes to ``pyproject.toml``:
+   new versions under development, in order to see new documentation changes for optional packages, you should used the
+   meta package's invoke task called ``install-local`` using the appropriate package name (e.g., ``rpaframework-aws``). This
+   will reinstall that package as a local editable version instead of from PyPI. In order to reset this, use 
+   ``invoke install --reset``.
 
    .. code-block:: toml
 
