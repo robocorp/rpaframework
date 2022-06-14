@@ -83,7 +83,7 @@ class HTTP(RequestsLibrary):
     required if you use the underlying session keywords, e.g.,
     ``* On Session``.
 
-    """
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "reST"
@@ -139,7 +139,7 @@ class HTTP(RequestsLibrary):
             the target file, default ``False``
         :param stream: if ``False``, the response content will be immediately downloaded
         :return: request response as a dict
-        """
+        """  # noqa: E501
         uc = urlparse(url)
 
         http_host = f"{uc.scheme}://{uc.netloc}"
@@ -232,7 +232,7 @@ class HTTP(RequestsLibrary):
         :param stream: if ``False``, the response content will
             be immediately downloaded
         :return: request response as a dict
-        """
+        """  # noqa: E501
         response = self.http_get(
             url,
             verify=verify,
