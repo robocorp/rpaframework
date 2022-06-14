@@ -7,6 +7,9 @@ Release notes
 
 - Library **RPA.Robocorp.WorkItems** (:pr:`536`): Expand examples for ``Release Input Work Item``
   and fix other documentation issues.
+- Library **RPA.HTTP** (:pr:`544`): Update library-level readme with link to underlying
+  ``RequestsLibrary`` keyword documentation and add explanation of what is added with
+  the ``RPA.HTTP`` extension of it.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
