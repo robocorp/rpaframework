@@ -6,11 +6,12 @@ from functools import wraps
 import os
 from pathlib import Path
 from time import sleep
-from typing import Any
+from typing import Any, Dict, List, Optional, Union
 
 try:
     import boto3
-    from botocore.exceptions import ClientError
+    from botocore.exceptions import ClientError, WaiterError
+    from botocore.waiter import Waiter, WaiterModel, create_waiter_with_client
     from boto3.exceptions import S3UploadFailedError
 
     HAS_BOTO3 = True
@@ -48,11 +49,12 @@ def import_tables():
         module = importlib.import_module("RPA.Tables")
         return getattr(module, "Tables")
     except ModuleNotFoundError:
-        logging.getLogger().info(
-            "Tables in the AWS response will be in a `dictionary` type, "
-            "because `RPA.Tables` library is not available in the scope."
-        )
         return None
+
+
+SqlTable = (
+    getattr(importlib.import_module("RPA.Tables"), "Table") if import_tables() else Dict
+)
 
 
 def aws_dependency_required(f):
@@ -68,16 +70,20 @@ def aws_dependency_required(f):
     return wrapper
 
 
+class RedshiftDatabaseError(Exception):
+    """Raised when the Redshift API raises a database error."""
+
+
 class AWSBase:
     """AWS base class for generic methods"""
 
     logger = None
     services: list = []
     clients: dict = {}
-    region: str = None
-    robocloud_vault_name: str = None
+    region: Optional[str] = None
+    robocloud_vault_name: Optional[str] = None
 
-    def _get_client_for_service(self, service_name: str = None):
+    def _get_client_for_service(self, service_name: Optional[str] = None):
         """Return client instance for servive if it has been initialized.
 
         :param service_name: name of the AWS service
@@ -89,25 +95,28 @@ class AWSBase:
             )
         return self.clients[service_name]
 
-    def _set_service(self, service_name: str = None, client: Any = None):
+    def _set_service(
+        self, service_name: Optional[str] = None, client: Optional[Any] = None
+    ):
         self.clients[service_name] = client
 
     @aws_dependency_required
     def _init_client(
         self,
         service_name: str,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
+        session_token: Optional[str] = None,
     ):
         if use_robocloud_vault:
             aws_key_id, aws_key, region = self._get_secrets_from_cloud()
         else:
             if aws_key_id is None or aws_key_id.strip() == "":
-                aws_key_id = required_env("AWS_KEY_ID")
+                aws_key_id = os.getenv("AWS_KEY_ID")
             if aws_key is None or aws_key.strip() == "":
-                aws_key = required_env("AWS_KEY")
+                aws_key = os.getenv("AWS_KEY")
             if region is None or region.strip() == "":
                 region = os.getenv("AWS_REGION", self.region)
         if (
@@ -116,17 +125,16 @@ class AWSBase:
             or aws_key is None
             or aws_key.strip() == ""
         ):
-            raise KeyError(
-                "AWS key ID and secret access key are required "
-                " to use AWS cloud service: %s" % service_name
-            )
+            auth_params = {}
+        else:
+            auth_params = {
+                "aws_access_key_id": aws_key_id,
+                "aws_secret_access_key": aws_key,
+            }
+        if session_token:
+            auth_params["aws_session_token"] = session_token
         self.logger.info("Using region: %s", region)
-        client = boto3.client(
-            service_name,
-            region_name=region,
-            aws_access_key_id=aws_key_id,
-            aws_secret_access_key=aws_key,
-        )
+        client = boto3.client(service_name, region_name=region, **auth_params)
         self._set_service(service_name, client)
 
     def set_robocloud_vault(self, vault_name):
@@ -171,10 +179,11 @@ class ServiceS3(AWSBase):
 
     def init_s3_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
+        session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS S3 client
 
@@ -182,11 +191,15 @@ class ServiceS3(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
-        self._init_client("s3", aws_key_id, aws_key, region, use_robocloud_vault)
+        self._init_client(
+            "s3", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+        )
 
     @aws_dependency_required
-    def create_bucket(self, bucket_name: str = None) -> bool:
+    def create_bucket(self, bucket_name: Optional[str] = None) -> bool:
         """Create S3 bucket with name
 
         :param bucket_name: name for the bucket
@@ -202,7 +215,7 @@ class ServiceS3(AWSBase):
             return False
 
     @aws_dependency_required
-    def delete_bucket(self, bucket_name: str = None) -> bool:
+    def delete_bucket(self, bucket_name: Optional[str] = None) -> bool:
         """Delete S3 bucket with name
 
         :param bucket_name: name for the bucket
@@ -228,7 +241,9 @@ class ServiceS3(AWSBase):
         return response["Buckets"] if "Buckets" in response else []
 
     @aws_dependency_required
-    def delete_files(self, bucket_name: str = None, files: list = None):
+    def delete_files(
+        self, bucket_name: Optional[str] = None, files: Optional[list] = None
+    ):
         """Delete files in the bucket
 
         :param bucket_name: name for the bucket
@@ -290,7 +305,10 @@ class ServiceS3(AWSBase):
 
     @aws_dependency_required
     def upload_file(
-        self, bucket_name: str = None, filename: str = None, object_name: str = None
+        self,
+        bucket_name: Optional[str] = None,
+        filename: Optional[str] = None,
+        object_name: Optional[str] = None,
     ) -> tuple:
         """Upload single file into bucket
 
@@ -308,7 +326,9 @@ class ServiceS3(AWSBase):
         return self._s3_upload_file(bucket_name, filename, object_name)
 
     @aws_dependency_required
-    def upload_files(self, bucket_name: str = None, files: list = None) -> list:
+    def upload_files(
+        self, bucket_name: Optional[str] = None, files: Optional[list] = None
+    ) -> list:
         """Upload multiple files into bucket
 
         :param bucket_name: name for the bucket
@@ -348,7 +368,10 @@ class ServiceS3(AWSBase):
 
     @aws_dependency_required
     def download_files(
-        self, bucket_name: str = None, files: list = None, target_directory: str = None
+        self,
+        bucket_name: Optional[str] = None,
+        files: Optional[list] = None,
+        target_directory: Optional[str] = None,
     ) -> list:
         """Download files from bucket to local filesystem
 
@@ -389,10 +412,11 @@ class ServiceTextract(AWSBase):
 
     def init_textract_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
+        session_token: Optional[str] = None,
     ):
         """Initialize AWS Textract client
 
@@ -400,15 +424,19 @@ class ServiceTextract(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
-        self._init_client("textract", aws_key_id, aws_key, region, use_robocloud_vault)
+        self._init_client(
+            "textract", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+        )
 
     @aws_dependency_required
     def analyze_document(
         self,
-        image_file: str = None,
-        json_file: str = None,
-        bucket_name: str = None,
+        image_file: Optional[str] = None,
+        json_file: Optional[str] = None,
+        bucket_name: Optional[str] = None,
         model: bool = False,
     ) -> bool:
         """Analyzes an input document for relationships between detected items
@@ -505,6 +533,11 @@ class ServiceTextract(AWSBase):
                     rows[row] = {col: val}
 
             tables = import_tables()
+            if not tables:
+                self.logger.info(
+                    "Tables in the AWS response will be in a `dictionary` type, "
+                    "because `RPA.Tables` library is not available in the scope."
+                )
             data = [
                 [rows[col][idx] for idx in sorted(rows[col])] for col in sorted(rows)
             ]
@@ -535,7 +568,10 @@ class ServiceTextract(AWSBase):
 
     @aws_dependency_required
     def detect_document_text(
-        self, image_file: str = None, json_file: str = None, bucket_name: str = None
+        self,
+        image_file: Optional[str] = None,
+        json_file: Optional[str] = None,
+        bucket_name: Optional[str] = None,
     ) -> bool:
         """Detects text in the input document.
 
@@ -563,10 +599,10 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def start_document_analysis(
         self,
-        bucket_name_in: str = None,
-        object_name_in: str = None,
-        object_version_in: str = None,
-        bucket_name_out: str = None,
+        bucket_name_in: Optional[str] = None,
+        object_name_in: Optional[str] = None,
+        object_version_in: Optional[str] = None,
+        bucket_name_out: Optional[str] = None,
         prefix_object_out: str = "textract_output",
     ):
         """Starts the asynchronous analysis of an input document
@@ -609,9 +645,9 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def get_document_analysis(
         self,
-        job_id: str = None,
+        job_id: Optional[str] = None,
         max_results: int = 1000,
-        next_token: str = None,
+        next_token: Optional[str] = None,
         collect_all_results: bool = False,
     ) -> dict:
         """Get the results of Textract asynchronous `Document Analysis` operation
@@ -688,10 +724,10 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def start_document_text_detection(
         self,
-        bucket_name_in: str = None,
-        object_name_in: str = None,
-        object_version_in: str = None,
-        bucket_name_out: str = None,
+        bucket_name_in: Optional[str] = None,
+        object_name_in: Optional[str] = None,
+        object_version_in: Optional[str] = None,
+        bucket_name_out: Optional[str] = None,
         prefix_object_out: str = "textract_output",
     ):
         """Starts the asynchronous detection of text in a document.
@@ -731,9 +767,9 @@ class ServiceTextract(AWSBase):
     @aws_dependency_required
     def get_document_text_detection(
         self,
-        job_id: str = None,
+        job_id: Optional[str] = None,
         max_results: int = 1000,
-        next_token: str = None,
+        next_token: Optional[str] = None,
         collect_all_results: bool = False,
     ) -> dict:
         """Get the results of Textract asynchronous `Document Text Detection` operation
@@ -842,10 +878,11 @@ class ServiceComprehend(AWSBase):
 
     def init_comprehend_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
         use_robocloud_vault: bool = False,
+        session_token: Optional[str] = None,
     ):
         """Initialize AWS Comprehend client
 
@@ -853,13 +890,20 @@ class ServiceComprehend(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "comprehend", aws_key_id, aws_key, region, use_robocloud_vault
+            "comprehend",
+            aws_key_id,
+            aws_key,
+            region,
+            use_robocloud_vault,
+            session_token,
         )
 
     @aws_dependency_required
-    def detect_sentiment(self, text: str = None, lang="en") -> dict:
+    def detect_sentiment(self, text: Optional[str] = None, lang="en") -> dict:
         """Inspects text and returns an inference of the prevailing sentiment
 
         :param text: A UTF-8 text string. Each string must contain fewer
@@ -877,7 +921,7 @@ class ServiceComprehend(AWSBase):
         }
 
     @aws_dependency_required
-    def detect_entities(self, text: str = None, lang="en") -> dict:
+    def detect_entities(self, text: Optional[str] = None, lang="en") -> dict:
         """Inspects text for named entities, and returns information about them
 
         :param text: A UTF-8 text string. Each string must contain fewer
@@ -900,11 +944,12 @@ class ServiceSQS(AWSBase):
 
     def init_sqs_client(
         self,
-        aws_key_id: str = None,
-        aws_key: str = None,
-        region: str = None,
-        queue_url: str = None,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
+        queue_url: Optional[str] = None,
         use_robocloud_vault: bool = False,
+        session_token: Optional[str] = None,
     ):
         """Initialize AWS SQS client
 
@@ -913,13 +958,17 @@ class ServiceSQS(AWSBase):
         :param region: AWS region
         :param queue_url: SQS queue url
         :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
         """
-        self._init_client("sqs", aws_key_id, aws_key, region, use_robocloud_vault)
+        self._init_client(
+            "sqs", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+        )
         self.queue_url = queue_url
 
     @aws_dependency_required
     def send_message(
-        self, message: str = None, message_attributes: dict = None
+        self, message: Optional[str] = None, message_attributes: Optional[dict] = None
     ) -> dict:
         """Send message to the queue
 
@@ -952,7 +1001,7 @@ class ServiceSQS(AWSBase):
         return response["Messages"][0] if "Messages" in response else None
 
     @aws_dependency_required
-    def delete_message(self, receipt_handle: str = None):
+    def delete_message(self, receipt_handle: Optional[str] = None):
         """Delete message in the queue
 
         :param receipt_handle: message handle to delete
@@ -966,7 +1015,7 @@ class ServiceSQS(AWSBase):
         return response
 
     @aws_dependency_required
-    def create_queue(self, queue_name: str = None):
+    def create_queue(self, queue_name: Optional[str] = None):
         """Create queue with name
 
         :param queue_name: [description], defaults to None
@@ -978,7 +1027,7 @@ class ServiceSQS(AWSBase):
         return response
 
     @aws_dependency_required
-    def delete_queue(self, queue_name: str = None):
+    def delete_queue(self, queue_name: Optional[str] = None):
         """Delete queue with name
 
         :param queue_name: [description], defaults to None
@@ -990,7 +1039,673 @@ class ServiceSQS(AWSBase):
         return response
 
 
-class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
+class ServiceRedshiftData(AWSBase):
+    """Class for AWS Redshift Data API Service."""
+
+    # TODO: Implement INSERT from RPA.Table
+
+    def __init__(self) -> None:
+        self.services.append("redshift_data")
+        self.logger.debug("ServiceRedshiftData init")
+        self.cluster_identifier = None
+        self.database = None
+        self.database_user = None
+        self.secret_arn = None
+
+    def init_redshift_data_client(
+        self,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
+        cluster_identifier: Optional[str] = None,
+        database: Optional[str] = None,
+        database_user: Optional[str] = None,
+        secret_arn: Optional[str] = None,
+        use_robocloud_vault: bool = False,
+        session_token: Optional[str] = None,
+    ) -> None:
+        """Initialize AWS Redshift Data API client
+
+        :param aws_key_id: access key ID
+        :param aws_key: secret access key
+        :param region: AWS region
+        :param cluster_identifier: The cluster identifier. This parameter
+            is required when connecting to a cluster and authenticating
+            using either Secrets Manager or temporary credentials.
+        :param database: The name of the database. This parameter is required
+            when authenticating using either Secrets Manager or temporary
+            credentials.
+        :param database_user: The database user name. This parameter is
+            required when connecting to a cluster and authenticating using
+            temporary credentials.
+        :param secret_arn: The name or ARN of the secret that enables access
+            to the database. This parameter is required when authenticating
+            using Secrets Manager.
+        :param use_robocloud_vault: use secret stored into ``Robocloud Vault``
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
+        """
+        if database_user and secret_arn:
+            raise ValueError("You cannot provide both a secret ARN and database user.")
+        self._init_client(
+            "redshift-data",
+            aws_key_id,
+            aws_key,
+            region,
+            use_robocloud_vault,
+            session_token,
+        )
+        self.cluster_identifier = cluster_identifier
+        self.database = database
+        self.database_user = database_user
+        self.secret_arn = secret_arn
+
+    @aws_dependency_required
+    def execute_redshift_statement(
+        self,
+        sql: str,
+        parameters: Optional[list] = None,
+        statement_name: Optional[str] = None,
+        with_event: bool = False,
+        timeout: int = 40,
+    ) -> Union[SqlTable, str]:
+        r"""Runs an SQL statement, which can be data manipulation language
+        (DML) or data definition language (DDL). This statement must be a
+        single SQL statement.
+
+        SQL statements can be parameterized with named parameters through
+        the use of the ``parameters`` argument. Parameters must be dictionaries
+        with the following two keys:
+
+        * ``name``: The name of the parameter. In the SQL statement this
+          will be referenced as ``:name``.
+        * ``value``: The value of the parameter. Amazon Redshift implicitly
+          converts to the proper data type. For more information, see
+          `Data types`_ in the `Amazon Redshift Database Developer Guide`.
+
+        For simplicity, a helper keyword, \`Create redshift statement parameters\`,
+        is available and can be used more naturally in Robot Framework contexts.
+
+        .. _Data types: https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html
+
+        If tabular data is returned, this keyword tries to return it as
+        a table (see ``RPA.Tables``), if ``RPA.Tables`` is not available
+        in the keyword's scope, the data will be returned as a list of dictionaries.
+        Other types of data (SQL errors and result statements) are returned
+        as strings.
+
+        **NOTE:** You may modify the max built-in wait time by providing
+        a timeout in seconds (default 40 seconds)
+
+        **Robot framework example:**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+
+                ${SQL}=    Set variable    insert into mytable values (:id, :address)
+                ${params}=    Create redshift statement parameters
+                ...    id=1
+                ...    address=Seattle
+                ${response}=    Execute redshift statement    ${SQL}    ${params}
+                Log    ${response}
+
+        **Python example:**
+
+        .. code-block:: python
+
+            sql = "insert into mytable values (:id, :address)"
+            parameters = [
+                {"name": "id", "value": "1"},
+                {"name": "address", "value": "Seattle"},
+            ]
+            response = aws.execute_redshift_statement(sql, parameters)
+            print(response)
+
+        :param parameters: The parameters for the SQL statement. Must consist
+            of a list of dictionaries with two keys: ``name`` and ``value``.
+        :param sql: The SQL statement text to run.
+        :param statement_name: The name of the SQL statement. You can name
+            the SQL statement when you create it to identify the query.
+        :param with_event: A value that indicates whether to send an event
+            to the Amazon EventBridge event bus after the SQL statement runs.
+        :param timeout: Used to calculate the maximum wait. Exact timing
+            depends on system variability becuase the underlying waiter
+            does not utilize a timeout directly.
+
+        """  # noqa: W605, E501
+        client = self._get_client_for_service("redshift-data")
+        run_token = self._submit_statement(
+            client, sql, parameters, statement_name, with_event
+        )
+        statement_name_string = f" with name {statement_name}" if statement_name else ""
+        self.logger.info(
+            f"'{run_token['Id']}' SQL statement execution on Redshift started"
+            f"{statement_name_string}:\n{sql}"
+        )
+        self.logger.info(f"Parameters used in SQL statement:\n{parameters}")
+        return self.get_redshift_statement_results(run_token["Id"], timeout)
+
+    @aws_dependency_required
+    def execute_redshift_statement_asyncronously(
+        self,
+        sql: str,
+        parameters: Optional[list] = None,
+        statement_name: Optional[str] = None,
+        with_event: bool = False,
+    ) -> str:
+        """Submit a sql statement for Redshift to execute asyncronously.
+        Returns the statement ID which can be used to retrieve statement
+        results later.
+
+        :param parameters: The parameters for the SQL statement. Must consist
+            of a list of dictionaries with two keys: ``name`` and ``value``.
+        :param sql: The SQL statement text to run.
+        :param statement_name: The name of the SQL statement. You can name
+            the SQL statement when you create it to identify the query.
+        :param with_event: A value that indicates whether to send an event
+            to the Amazon EventBridge event bus after the SQL statement runs.
+
+        """
+        client = self._get_client_for_service("redshift-data")
+        run_token = self._submit_statement(
+            client, sql, parameters, statement_name, with_event
+        )
+        self.logger.info(
+            f"'{run_token['Id']}' SQL statement submitted to Redshift"
+            f"{' with name ' + statement_name if statement_name else ''}:\n{sql}"
+        )
+        self.logger.info(f"Parameters used in SQL statement:\n{parameters}")
+        return run_token["Id"]
+
+    def _submit_statement(
+        self,
+        redshift_data_client,
+        sql: str,
+        parameters: Optional[list] = None,
+        statement_name: Optional[str] = None,
+        with_event: bool = False,
+    ) -> Dict:
+        """Submits SQL to the provided client and returns run token"""
+        additional_params = self._create_auth_params()
+        if parameters:
+            additional_params["Parameters"] = parameters
+        if statement_name:
+            additional_params["StatementName"] = statement_name
+        return redshift_data_client.execute_statement(
+            Sql=sql,
+            WithEvent=with_event,
+            **additional_params,
+        )
+
+    @aws_dependency_required
+    def get_redshift_statement_results(
+        self, statement_id: str, timeout: int = 40
+    ) -> Union[SqlTable, int]:
+        r"""Retrieve the results of a SQL statement previously submitted
+        to Redshift. If that statement has not yet completed, this keyword
+        will wait for results. See \`Execute Redshift Statement\` for
+        additional information.
+
+        If the statement has tabular results, this keyword returns them
+        as a table from ``RPA.Tables`` if that library is available, or
+        as a list of dictionaries if not. If the statement does not have
+        tabular results, it will return the number of rows affected.
+
+        :param statement_id: The statement id to use to retreive results.
+        :param timeout: An integer used to calculate the maximum wait.
+            Exact timing depends on system variability becuase the
+            underlying waiter does not utilize a timeout directly.
+            Defaults to 40.
+        """
+        client = self._get_client_for_service("redshift-data")
+        try:
+            statement_waiter = self._create_waiter_for_results(
+                client, delay=2, max_attempts=int(timeout / 2)
+            )
+            statement_waiter.wait(Id=statement_id)
+        except WaiterError as e:
+            error_message = (
+                e.last_response.get("Error", "No error details available")
+                if hasattr(e.last_response, "get")
+                else "Unknown error"
+            )
+            query_string = (
+                e.last_response.get("QueryString", "No query details available")
+                if hasattr(e.last_response, "get")
+                else "None"
+            )
+            raise RedshiftDatabaseError(
+                f"While waiting for the statement to finish executing, "
+                f"an error was encountered: \n{error_message}"
+                f'\n\nFor statement: \n"{query_string}"'
+            ) from e
+
+        finished_statement = client.describe_statement(Id=statement_id)
+        self.logger.info(
+            "Statement finished, total rows affected: "
+            + str(finished_statement.get("ResultRows", "NONE"))
+        )
+        if finished_statement["HasResultSet"]:
+            paginator = client.get_paginator("get_statement_result")
+            full_result = paginator.paginate(Id=statement_id).build_full_result()
+
+            tables = import_tables()
+            if not tables:
+                self.logger.info(
+                    "Tables in the AWS response will be in a `dictionary` type, "
+                    "because `RPA.Tables` library is not available in the scope."
+                )
+            column_names = [
+                m.get("name") for m in full_result.get("ColumnMetadata", {})
+            ]
+            data = [
+                {c: self._parse_tagged_union(f) for c, f in zip(column_names, row)}
+                for row in full_result.get("Records", [])
+            ]
+            return tables().create_table(data) if tables else data
+        else:
+            return finished_statement.get("ResultRows", 0)
+
+    def create_redshift_statement_parameters(self, **params) -> List[Dict[str, str]]:
+        r"""Returns a formatted dictionary to be used in
+        Redshift Data Api SQL statements.
+
+        **Example:**
+
+        Assume the ``${SQL}`` statement has the parameters ``:id`` and
+        ``:name``:
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+
+            ${params}=    Create sql parameters    id=123    name=Nokia
+            # params produces a data structure like so:
+            #   [
+            #        {"name":"id", "value":"123"},
+            #        {"name":"name", "value":"Nokia"}
+            #    ]
+
+            # Which can be used for the 'parameters' argument.
+            ${response}=    Execute redshift statement    ${SQL}    ${params}
+        """
+        return [{"name": k, "value": v} for (k, v) in params.items()]
+
+    def _parse_tagged_union(self, tagged_union: dict):
+        TAGGED_TYPES = {
+            "blobValue": bytes,
+            "booleanValue": bool,
+            "doubleValue": float,
+            "isNull": lambda a: None,
+            "longValue": int,
+            "stringValue": str,
+            "SDK_UNKNOWN_MEMBER": lambda a: "UNKNOWN_DATA_MEMBER",
+        }
+        for item_key, item_value in tagged_union.items():
+            try:
+                output = TAGGED_TYPES[item_key](item_value)
+            except KeyError:
+                output = "UNKNOWN_DATA_MEMBER"
+        return output
+
+    def _create_waiter_for_results(
+        self,
+        redshift_data_client,
+        delay: int = 2,
+        max_attempts: int = 20,
+    ) -> Waiter:
+        waiter_name = "StatementFinished"
+        waiter_config = {
+            "version": 2,
+            "waiters": {
+                waiter_name: {
+                    "operation": "DescribeStatement",
+                    "delay": delay,
+                    "maxAttempts": max_attempts,
+                    "acceptors": [
+                        {
+                            "matcher": "path",
+                            "expected": "ABORTED",
+                            "argument": "Status",
+                            "state": "failure",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "FAILED",
+                            "argument": "Status",
+                            "state": "failure",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "SUBMITTED",
+                            "argument": "Status",
+                            "state": "retry",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "PICKED",
+                            "argument": "Status",
+                            "state": "retry",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "STARTED",
+                            "argument": "Status",
+                            "state": "retry",
+                        },
+                        {
+                            "matcher": "path",
+                            "expected": "FINISHED",
+                            "argument": "Status",
+                            "state": "success",
+                        },
+                    ],
+                }
+            },
+        }
+        return create_waiter_with_client(
+            waiter_name, WaiterModel(waiter_config), redshift_data_client
+        )
+
+    @aws_dependency_required
+    def describe_redshift_table(
+        self, database: str, schema: Optional[str] = None, table: Optional[str] = None
+    ) -> Union[Dict, List[Dict]]:
+        """Describes the detailed information about a table from metadata
+        in the cluster. The information includes its columns.
+
+        If ``schema`` and/or ``table`` is not provided, the API searches
+        all schemas for the provided table, or returns all tables in the
+        schema or entire database.
+
+        The response object is provided as a list of table meta data objects,
+        utilize dot-notation or the ``RPA.JSON`` library to access members:
+
+        .. code-block:: json
+
+            {
+                "ColumnList": [
+                    {
+                        "columnDefault": "string",
+                        "isCaseSensitive": true,
+                        "isCurrency": false,
+                        "isSigned": false,
+                        "label": "string",
+                        "length": 123,
+                        "name": "string",
+                        "nullable": 123,
+                        "precision": 123,
+                        "scale": 123,
+                        "schemaName": "string",
+                        "tableName": "string",
+                        "typeName": "string"
+                    },
+                ],
+                "TableName": "string"
+            }
+
+        :param database: The name of the database that contains the tables
+            to be described. If ommitted, will use the connected Database.
+        :param schema: The schema that contains the table. If no schema
+            is specified, then matching tables for all schemas are returned.
+        :param table: The table name. If no table is specified, then all
+            tables for all matching schemas are returned. If no table and
+            no schema is specified, then all tables for all schemas in the
+            database are returned
+        """
+        client = self._get_client_for_service("redshift-data")
+        additional_params = self._create_auth_params(database)
+        if schema:
+            additional_params["Schema"] = schema
+        if table:
+            additional_params["Table"] = table
+        paginator = client.get_paginator("describe_table")
+        return paginator.paginate(**additional_params).build_full_result()
+
+    @aws_dependency_required
+    def list_redshift_tables(
+        self,
+        database: Optional[str] = None,
+        schema_pattern: Optional[str] = None,
+        table_pattern: Optional[str] = None,
+    ) -> List[Dict]:
+        """List the tables in a database. If neither ``schema_pattern`` nor
+        ``table_pattern`` are specified, then all tables in the database
+        are returned.
+
+        Returned objects are structured like the below JSON in a list:
+
+        .. code-block:: json
+
+            {
+                "name": "string",
+                "schema": "string",
+                "type": "string"
+            }
+
+        :param database: The name of the database that contains the tables
+            to be described. If ommitted, will use the connected Database.
+        :param schema_pattern: A pattern to filter results by schema name.
+            Within a schema pattern, "%" means match any substring of 0
+            or more characters and "_" means match any one character.
+            Only schema name entries matching the search pattern are returned.
+            If ``schema_pattern`` is not specified, then all tables that match
+            ``table_pattern`` are returned. If neither ``schema_pattern``
+            or ``table_pattern`` are specified, then all tables are returned.
+        :param table_pattern: A pattern to filter results by table name.
+            Within a table pattern, "%" means match any substring of 0 or
+            more characters and "_" means match any one character. Only
+            table name entries matching the search pattern are returned.
+            If ``table_pattern`` is not specified, then all tables that
+            match ``schema_pattern`` are returned. If neither ``schema_pattern`` or
+            ``table_pattern`` are specified, then all tables are returned.
+        """
+        client = self._get_client_for_service("redshift-data")
+        additional_params = self._create_auth_params(database)
+        if schema_pattern:
+            additional_params["SchemaPattern"] = schema_pattern
+        if table_pattern:
+            additional_params["TablePattern"] = table_pattern
+        paginator = client.get_paginator("list_tables")
+        return paginator.paginate(**additional_params).build_full_result()["Tables"]
+
+    @aws_dependency_required
+    def list_redshift_databases(
+        self,
+    ) -> List[str]:
+        """List the databases in a cluster.
+
+        Database names are returned as a list of strings.
+        """
+        client = self._get_client_for_service("redshift-data")
+        additional_params = self._create_auth_params()
+        paginator = client.get_paginator("list_databases")
+        return paginator.paginate(**additional_params).build_full_result()["Databases"]
+
+    @aws_dependency_required
+    def list_redshift_schemas(
+        self,
+        database: Optional[str] = None,
+        schema_pattern: Optional[str] = None,
+    ) -> List[Dict]:
+        """Lists the schemas in a database.
+
+        Schema names are returned as a list of strings.
+
+        :param database: The name of the database that contains the schemas
+            to list. If ommitted, will use the connected Database.
+        :param schema_pattern: A pattern to filter results by schema name.
+            Within a schema pattern, "%" means match any substring of 0
+            or more characters and "_" means match any one character.
+            Only schema name entries matching the search pattern are returned.
+            If ``schema_pattern`` is not specified, then all schemas are returned.
+        """
+        client = self._get_client_for_service("redshift-data")
+        additional_params = self._create_auth_params(database)
+        if schema_pattern:
+            additional_params["SchemaPattern"] = schema_pattern
+        paginator = client.get_paginator("list_schemas")
+        return paginator.paginate(**additional_params).build_full_result()["Schemas"]
+
+    def _create_auth_params(self, alternate_database: Optional[str] = None) -> Dict:
+        """Generates a dictionary of authentication params depending
+        on which method was defined when initializing this class. It should
+        be called before adding call-specific parameters. If an alternate
+        database name is provided, this function checks if it matches the
+        configured database name, and if it does not, adds the params
+        `ConnectedDatabase` and `Database`, otherwise it only adds `Database`.
+        """
+        auth_params = {}
+        if self.cluster_identifier:
+            auth_params["ClusterIdentifier"] = self.cluster_identifier
+        if self.secret_arn:
+            auth_params["SecretArn"] = self.secret_arn
+        elif self.database_user:
+            auth_params["DbUser"] = self.database_user
+        if alternate_database == self.database or not alternate_database:
+            auth_params["Database"] = self.database
+        else:
+            auth_params["ConnectedDatabase"] = self.database
+            auth_params["Database"] = alternate_database
+        return auth_params
+
+
+class ServiceSTS(AWSBase):
+    """Class for AWS STS Service."""
+
+    def __init__(self) -> None:
+        self.services.append("sts")
+        self.logger.debug("ServiceSts init")
+
+    def init_sts_client(
+        self,
+        aws_key_id: Optional[str] = None,
+        aws_key: Optional[str] = None,
+        region: Optional[str] = None,
+        use_robocloud_vault: bool = False,
+        session_token: Optional[str] = None,
+    ) -> None:
+        """Initialize AWS STS client.
+
+        :param aws_key_id: access key ID
+        :param aws_key: secret access key
+        :param region: AWS region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param session_token: a session token associated with temporary
+            credentials, such as from ``Assume Role``.
+        """
+        self._init_client(
+            "sts", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+        )
+
+    @aws_dependency_required
+    def assume_role(
+        self,
+        role_arn: str,
+        role_session_name: str,
+        policy_arns: Optional[List[Dict]] = None,
+        policy: Optional[str] = None,
+        duration: int = 900,
+        tags: Optional[List[Dict]] = None,
+        transitive_tag_keys: Optional[List[str]] = None,
+        external_id: Optional[str] = None,
+        serial_number: Optional[str] = None,
+        token_code: Optional[str] = None,
+        source_identity: Optional[str] = None,
+    ) -> Dict:
+        """Returns a set of temporary security credentials that you can
+        use to access Amazon Web Services resources that you might not
+        normally have access to. These temporary credentials consist of
+        an access key ID, a secret access key, and a security token.
+        Typically, you use ``Assume Role`` within your account or for
+        cross-account access.
+
+        The credentials are returned as a dictionary with data structure
+        similar to the following JSON:
+
+        .. code-block:: json
+
+            {
+                "Credentials": {
+                    "AccessKeyId": "string",
+                    "SecretAccessKey": "string",
+                    "SessionToken": "string",
+                    "Expiration": "2015-01-01"
+                },
+                "AssumedRoleUser": {
+                    "AssumedRoleId": "string",
+                    "Arn": "string"
+                },
+                "PackedPolicySize": 123,
+                "SourceIdentity": "string"
+            }
+
+        These credentials can be used to re-initialize services available
+        in this library with the assumed role instead of the original
+        role.
+
+        **NOTE**: For detailed information on the available arguments to this
+        keyword, please see the `Boto3 STS documentation`_.
+
+        .. _Boto3 STS documentation: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html
+
+        :param role_arn: The Amazon Resource Name (ARN) of the role to assume.
+        :param role_session_name: An identifier for the assumed role session.
+        :param policy_arns: The Amazon Resource Names (ARNs) of the IAM
+            managed policies that you want to use as managed session policies.
+            The policies must exist in the same account as the role.
+        :param policy: An IAM policy in JSON format that you want to use
+            as an inline session policy.
+        :param duration: The duration, in seconds, of the role session.
+            The value specified can range from 900 seconds (15 minutes
+            and the default) up to the maximum session duration set for
+            the role.
+        :param tags: A list of session tags that you want to pass. Each
+            session tag consists of a key name and an associated value.
+        :param transitive_tag_keys: A list of keys for session tags that
+            you want to set as transitive. If you set a tag key as
+            transitive, the corresponding key and value passes to
+            subsequent sessions in a role chain.
+        :param external_id: A unique identifier that might be required
+            when you assume a role in another account. If the
+            administrator of the account to which the role belongs
+            provided you with an external ID, then provide that value in
+            this parameter.
+        :param serial_number: The identification number of the MFA device
+            that is associated with the user who is making the
+            using the ``assume_role`` keyword.
+        :param token_code: The value provided by the MFA device, if the
+            trust policy of the role being assumed requires MFA.
+        :param source_identity: The source identity specified by the
+            principal that is using the ``assume_role`` keyword.
+        """  # noqa: E501
+        other_params = {
+            "PolicyArns": policy_arns,
+            "Policy": policy,
+            "DurationSeconds": duration if duration > 900 else 900,
+            "Tags": tags,
+            "TransitiveTagKeys": transitive_tag_keys,
+            "ExternalId": external_id,
+            "SerialNumber": serial_number,
+            "TokenCode": token_code,
+            "SourceIdentity": source_identity,
+        }
+        other_params = {k: v for k, v in other_params.items() if v}
+        client = self._get_client_for_service("sts")
+        return client.assume_role(
+            RoleArn=role_arn, RoleSessionName=role_session_name, **other_params
+        )
+
+
+class AWS(
+    ServiceS3,
+    ServiceTextract,
+    ServiceComprehend,
+    ServiceSQS,
+    ServiceRedshiftData,
+    ServiceSTS,
+):
     """`AWS` is a library for operating with Amazon AWS services S3, SQS,
     Textract and Comprehend.
 
@@ -1009,6 +1724,28 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
 
     **Note.** Starting from `rpaframework-aws` **1.0.3** `region` can be given as environment
     variable ``AWS_REGION`` or include as Robocloud Vault secret with the same key name.
+
+    **Redshift Data authentication:** Depending on the authorization method, use
+    one of the following combinations of request parameters, which can only
+    be passed via method 2:
+
+        * Secrets Manager - when connecting to a cluster, specify the Amazon
+          Resource Name (ARN) of the secret, the database name, and the
+          cluster identifier that matches the cluster in the secret. When
+          connecting to a serverless endpoint, specify the Amazon Resource
+          Name (ARN) of the secret and the database name.
+        * Temporary credentials - when connecting to a cluster, specify the
+          cluster identifier, the database name, and the database user name.
+          Also, permission to call the ``redshift:GetClusterCredentials``
+          operation is required. When connecting to a serverless endpoint,
+          specify the database name.
+
+    **Role Assumption:** With the use of the STS service client, you are able
+    to assume another role, which will return temporary credentials. The
+    temporary credentials will include an access key and session token, see
+    keyword documentation for ``Assume Role`` for details of how the
+    credentials are returned. You can use these temporary credentials
+    as part of method 2, but you must also include the session token.
 
     Method 1. credentials using environment variable
 
@@ -1119,13 +1856,12 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self, region: str = DEFAULT_REGION, robocloud_vault_name: str = None):
+    def __init__(
+        self, region: str = DEFAULT_REGION, robocloud_vault_name: Optional[str] = None
+    ):
         self.set_robocloud_vault(robocloud_vault_name)
         self.logger = logging.getLogger(__name__)
-        ServiceS3.__init__(self)
-        ServiceTextract.__init__(self)
-        ServiceComprehend.__init__(self)
-        ServiceSQS.__init__(self)
+        super().__init__()
         self.region = region
         listener = RobotLogListener()
         listener.register_protected_keywords(
