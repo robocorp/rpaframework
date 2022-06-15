@@ -405,24 +405,20 @@ First steps to start developing:
    - common *ROBOT_ARGS* from Robocorp Robot template: ``--report NONE --outputdir output --logtitle "Task log"``
 
 #. ``poetry run python <TARGET_PYTHON_FILE>``
-#. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines. It is possible and likely
-   that Github action will fail the if developer has not linted the code changes. Code formatting is based on `black`_ and `flake8`_
-   and those are run with the ``invoke lint``.
+#. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines.
+   It is possible and likely that Github action will fail the if developer has not linted the code changes. Code 
+   formatting is based on `black`_ and `flake8`_ and those are run with the ``invoke lint``.
 #. the library documentation can be created in the repository root (so called "meta" package level). The documentation is 
-   built by the docgen tools using the locally installed version of the project, in order to see recent changes, you must
-   delete the ``RPA`` folder and associated ``distinfo`` folders in the metapackage's **.venv** directory. The doc gen
-   command will reinstall the local packages.
+   built by the docgen tools using the locally installed version of the project, local changes for the main package
+   will be reflected each time you generate the docs, but if you want to see local changes for optional packages, you must
+   utilize ``invoke install-local --package <package_name>`` using the appropriate package name (e.g., ``rpaframework-aws``). This
+   will reinstall that package as a local editable version instead of from PyPI. Multiple such packages can be added by
+   repeating the use of the ``--package`` option. In order to reset this, use ``invoke install --reset``.
 
-   - ``poetry update``
+   - ``poetry update`` and/or ``invoke install-local --package <package name>``
    - ``make docs``
    - open ``docs/build/html/index.html`` with the browser to view the changes or execute ``make local`` and navigate to
      ``localhost:8000`` to view docs as a live local webpage.
-
-   **NOTE:** Due to the way optional packages are referenced in the metapackage's ``pyproject.toml``, they will not install
-   new versions under development, in order to see new documentation changes for optional packages, you should used the
-   meta package's invoke task called ``install-local`` using the appropriate package name (e.g., ``rpaframework-aws``). This
-   will reinstall that package as a local editable version instead of from PyPI. In order to reset this, use 
-   ``invoke install --reset``.
 
    .. code-block:: toml
 
