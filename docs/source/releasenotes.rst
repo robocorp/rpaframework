@@ -7,6 +7,7 @@ Release notes
 
 - Library **RPA.Robocorp.WorkItems** (:pr:`536`): Expand examples for ``Release Input Work Item``
   and fix other documentation issues.
+- Library **RPA.Outlook.Application** (:pr:`545`): Reduce logging
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
