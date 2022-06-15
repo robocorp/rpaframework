@@ -5,13 +5,26 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Robocorp.WorkItems** (:pr:`536`): Expand examples for ``Release Input Work Item``
-  and fix other documentation issues.
-- Library **RPA.Outlook.Application** (:pr:`545`): Reduce logging
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.1.0 - 15 June 2022
+---------------------
+
+- Library **RPA.Cloud.AWS** (:pr:`508`, ``rpaframework-aws`` **3.1.0**):
+
+  - New service client support for Amazon Redshift's Data API (:issue:`496`). Keyword
+    support for submitting SQL queries and obtaining results from them (can be
+    performed asynchronously, if desired).
+  - New service client support for Amazon STS and the `Assume Role` operation
+    (:issue:`498`). The `Assume role` keyword returns temporary credentials which
+    include a session token. All services updated to support using the session
+    token as part of their `Init ... client` keyword.
+
+- Library **RPA.Robocorp.WorkItems** (:pr:`536`): Expand examples for ``Release Input Work Item``
+  and fix other documentation issues.
+- Library **RPA.Outlook.Application** (:pr:`545`): Reduce logging
 
 security release (all packages) - 27 May 2022
 ---------------------------------------------
@@ -39,6 +52,7 @@ All new release versions:
 - Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
   navigating, such as `https` (default) or `http`. This functionality is controlled
   with the keyword ``Set Default URL Scheme``.
+  with the keyword `Set default URL scheme`.
 - Library **RPA.Hubspot**: Fix several bugs and improve logging (:issue:`504`,
   :issue:`505`, :issue:`506`, and :issue:`507`).
 

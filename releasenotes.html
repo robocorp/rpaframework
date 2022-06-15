@@ -219,14 +219,28 @@
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id2">
+<h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="june-2022">
+<h3>15.1.0 - 15 June 2022<a class="headerlink" href="#june-2022" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p>Library <strong>RPA.Cloud.AWS</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/508">#508</a>, <code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code> <strong>3.1.0</strong>):</p>
+<ul>
+<li><p>New service client support for Amazon Redshift’s Data API (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/496">#496</a>). Keyword
+support for submitting SQL queries and obtaining results from them (can be
+performed asynchronously, if desired).</p></li>
+<li><p>New service client support for Amazon STS and the <cite>Assume Role</cite> operation
+(<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/498">#498</a>). The <cite>Assume role</cite> keyword returns temporary credentials which
+include a session token. All services updated to support using the session
+token as part of their <cite>Init … client</cite> keyword.</p></li>
+</ul>
+</li>
 <li><p>Library <strong>RPA.Robocorp.WorkItems</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/536">#536</a>): Expand examples for <code class="docutils literal notranslate"><span class="pre">Release</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code>
 and fix other documentation issues.</p></li>
 <li><p>Library <strong>RPA.Outlook.Application</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/545">#545</a>): Reduce logging</p></li>
 </ul>
 </div>
-<div class="section" id="id2">
-<h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="security-release-all-packages-27-may-2022">
 <h3>security release (all packages) - 27 May 2022<a class="headerlink" href="#security-release-all-packages-27-may-2022" title="Permalink to this headline">¶</a></h3>
 <p><strong>Critical</strong> Python package security update concerning <code class="docutils literal notranslate"><span class="pre">pillow</span></code> package which is
@@ -253,7 +267,8 @@ checkboxes are ticked correctly with latest dependency upgrades.</p></li>
 expressions for keys removal.</p></li>
 <li><p>Library <strong>RPA.Browser.Selenium</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/502">#502</a>): Automatically add URL scheme when
 navigating, such as <cite>https</cite> (default) or <cite>http</cite>. This functionality is controlled
-with the keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Default</span> <span class="pre">URL</span> <span class="pre">Scheme</span></code>.</p></li>
+with the keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Default</span> <span class="pre">URL</span> <span class="pre">Scheme</span></code>.
+with the keyword <cite>Set default URL scheme</cite>.</p></li>
 <li><p>Library <strong>RPA.Hubspot</strong>: Fix several bugs and improve logging (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/504">#504</a>,
 <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/505">#505</a>, <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/506">#506</a>, and <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/507">#507</a>).</p></li>
 </ul>

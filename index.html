@@ -506,7 +506,7 @@ of the package size and the post install step it needs to be fully installed.</p
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Python 3.6 or higher is required</p>
+<p>Python 3.7 or higher is required</p>
 </div>
 </div>
 <div class="section" id="example">
@@ -572,7 +572,7 @@ poetry config virtualenvs.in-project <span class="nb">true</span>
 poetry config repositories.devpi <span class="s2">&quot;https://devpi.robocorp.cloud/ci/test&quot;</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
+<ol class="arabic" start="2">
 <li><p>git clone the repository</p></li>
 <li><p>create a new Git branch or switch to correct branch or stay in master branch</p>
 <ul class="simple">
@@ -596,15 +596,37 @@ and point <strong>conda.yaml</strong> to use rpaframework version in devpi</p></
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">python</span> <span class="pre">&lt;TARGET_PYTHON_FILE&gt;</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code> to make sure that code formatting is according to <strong>rpaframework</strong> repository guidelines. It is possible and likely
-that Github action will fail the if developer has not linted the code changes. Code formatting is based on <a class="reference external" href="https://pypi.org/project/black/">black</a> and <a class="reference external" href="https://pypi.org/project/flake8/">flake8</a>
-and those are run with the <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code>.</p></li>
-<li><p>the library documentation can be created in the repository root (so called “meta” package level)</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code> to make sure that code formatting is according to <strong>rpaframework</strong> repository guidelines.
+It is possible and likely that Github action will fail the if developer has not linted the code changes. Code
+formatting is based on <a class="reference external" href="https://pypi.org/project/black/">black</a> and <a class="reference external" href="https://pypi.org/project/flake8/">flake8</a> and those are run with the <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code>.</p></li>
+<li><p>the library documentation can be created in the repository root (so called “meta” package level). The documentation is
+built by the docgen tools using the locally installed version of the project, local changes for the main package
+will be reflected each time you generate the docs, but if you want to see local changes for optional packages, you must
+utilize <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install-local</span> <span class="pre">--package</span> <span class="pre">&lt;package_name&gt;</span></code> using the appropriate package name (e.g., <code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code>). This
+will reinstall that package as a local editable version instead of from PyPI. Multiple such packages can be added by
+repeating the use of the <code class="docutils literal notranslate"><span class="pre">--package</span></code> option. In order to reset this, use <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install</span> <span class="pre">--reset</span></code>.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">update</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">update</span></code> and/or <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install-local</span> <span class="pre">--package</span> <span class="pre">&lt;package</span> <span class="pre">name&gt;</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code></p></li>
-<li><p>open <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> with the browser to view the changes</p></li>
+<li><p>open <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> with the browser to view the changes or execute <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">local</span></code> and navigate to
+<code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code> to view docs as a live local webpage.</p></li>
 </ul>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before</span><span class="w"></span>
+<span class="k">[tool.poetry.dependencies]</span><span class="w"></span>
+<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.7&quot;</span><span class="w"></span>
+<span class="n">rpaframework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;packages/main&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;cv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;playwright&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;aws&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="n">rpaframework-google</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^4.0.0&quot;</span><span class="w"></span>
+<span class="n">rpaframework-windows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^4.0.0&quot;</span><span class="w"></span>
+
+<span class="c1"># After</span><span class="w"></span>
+<span class="k">[tool.poetry.dependencies]</span><span class="w"></span>
+<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.7&quot;</span><span class="w"></span>
+<span class="n">rpaframework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;packages/main&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;cv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;playwright&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="n">rpaframework-aws</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;packages/aws&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="n">rpaframework-google</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^4.0.0&quot;</span><span class="w"></span>
+<span class="n">rpaframework-windows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^4.0.0&quot;</span><span class="w"></span>
+</pre></div>
+</div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">test</span></code> (this will run both Python unittests and robotframework tests defined in the packages <strong>tests/ directory</strong>)</p>
 <ul class="simple">
