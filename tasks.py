@@ -40,7 +40,7 @@ def _get_package_paths():
     package_paths = {}
     for project_toml in project_tomls:
         project_config = toml.load(project_toml)
-        package_paths[project_config["tool"]["poetry"]["name"]] = Path(
+        package_paths[str(project_config["tool"]["poetry"]["name"])] = Path(
             project_toml
         ).parent
     return package_paths
@@ -80,13 +80,19 @@ def install(ctx, reset=False):
     .venv to the lock file.
     """
     if reset:
-        packages = _get_package_paths()
+        our_packages = _get_package_paths()
         with ctx.prefix(ACTIVATE):
-            result = pip(ctx, "freeze", echo=False, hide="out")
+            pip_freeze = pip(ctx, "freeze", echo=False, hide="out")
+            # Identifies locally installed packages in development mode.
+            #  (not from PyPI)
+            package_exprs = [
+                rf"{name}(?=={{2}})" for name in our_packages if name != "rpaframework"
+            ]
+            pattern = "|".join(package_exprs)
             local_packages = re.findall(
-                f"^{r'(?=={2})|'.join([str(k) for k in packages.keys()])}(?=={2})",
-                result.stdout,
-                re.MULTILINE,
+                pattern,
+                pip_freeze.stdout,
+                re.MULTILINE | re.IGNORECASE,
             )
             for local_package in local_packages:
                 pip(ctx, f"uninstall {local_package} -y")
@@ -101,22 +107,29 @@ def install_local(ctx, package):
     editable form instead of from PyPi. This task always resets
     the virtual environment first.
 
-    Package must exist as a subfolder module in ``\\packages``,
+    Package must exist as a sub-folder module in ``./packages``,
     see those packages' ``pyproject.toml`` for package names.
     If ran with no packages, all optional packages will be installed
-    from PyPi.
+    locally.
+
+    In order to select multiple packages, the ``--package`` option
+    must be specified for each package choosen, for example:
+
+    .. code-block:: shell
+
+        invoke install-local --package rpaframework-aws --package rpaframework-pdf
 
     **WARNING**: This essentially produces a dirty virtual environment
     that is a cross between all local packages requested. It may
     not be stable.
     """
-    if package:
-        packages = _get_package_paths()
-        for pkg in package:
-            # activate meta context
-            with ctx.prefix(ACTIVATE):
-                # uninstall package
-                pip(ctx, f"uninstall {pkg} -y")
-                # cd to selected package and run poetry install
-                with ctx.cd(packages[pkg]):
-                    poetry(ctx, "install")
+    valid_packages = _get_package_paths()
+    if not package:
+        package = valid_packages.keys()
+    for pkg in package:
+        with ctx.prefix(ACTIVATE):
+            # Installs our package in development mode under the currently active venv.
+            #  (local package)
+            pip(ctx, f"uninstall {pkg} -y")
+            with ctx.cd(valid_packages[pkg]):
+                poetry(ctx, "install")
