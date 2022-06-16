@@ -215,9 +215,9 @@ class HTTP(RequestsLibrary):
             *** Tasks ***
             Download files with reused session with provided file names
                 # Starts a new session
-                HTTP Get    ${WORD_EXAMPLE}    target_file=${DOWNLOAD_PATH}
+                Download    ${WORD_EXAMPLE}    target_file=${DOWNLOAD_PATH}
                 # Uses the previous session
-                HTTP Get    ${EXCEL_EXAMPLE}    target_file=${DOWNLOAD_PATH}
+                Download    ${EXCEL_EXAMPLE}    target_file=${DOWNLOAD_PATH}
                 # Above files are downloaded using the same names as they have
                 # on the remote server.
 
