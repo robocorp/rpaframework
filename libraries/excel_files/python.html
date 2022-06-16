@@ -392,6 +392,7 @@ the <code class="docutils literal notranslate"><span class="pre">start</span></c
 <dt id="RPA.Excel.Files.Files.close_workbook">
 <code class="sig-name descname">close_workbook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.close_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close the active workbook.</p>
+<p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Close active workbook</span>
 <span class="c">Close Workbook</span><span class="p"></span>
 </pre></div>
@@ -438,6 +439,29 @@ Defaults to xlsx if not provided</p></li>
 <span class="c"># if the path argument is used</span>
 <span class="c">Create Workbook</span><span class="p">    </span><span class="c">path=${OUTPUT_DIR}${/}orders.xls</span><span class="p">    </span><span class="c">fmt=xls</span><span class="p"></span>
 <span class="c">Save Workbook</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create modern format workbook with defaults</span>
+<span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">create_workbook</span><span class="p">()</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">(</span><span class="s2">&quot;orders.xlsx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create modern format workbook with a path set</span>
+<span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">create_workbook</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;./output/orders.xlsx&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;xlsx&quot;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
+
+<span class="c1"># Create legacy format workbook</span>
+<span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">create_workbook</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;xls&quot;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">(</span><span class="s2">&quot;orders.xls&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create legacy format workbook with a path set</span>
+<span class="c1"># Note that the file name must be set in the Create Workbook keyword</span>
+<span class="c1"># if the path is used</span>
+<span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">create_workbook</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;./output/orders.xls&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;xls&quot;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -490,6 +514,29 @@ Defaults to xlsx if not provided</p></li>
 <span class="c">Save Workbook</span><span class="p"></span>
 </pre></div>
 </div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new blank worksheet named &quot;Customers&quot;</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">create_worksheet</span><span class="p">(</span><span class="s2">&quot;Customers&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create a new workseet using a List of Dictionaries</span>
+<span class="c1"># Don&#39;t forget to `Save Workbook` once your changes are complete</span>
+<span class="n">Worksheet_Data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">58</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">22</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Adam&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">67</span><span class="p">},</span>
+    <span class="p">]</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">create_worksheet</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Employees&quot;</span><span class="p">,</span><span class="n">content</span><span class="o">=</span><span class="n">Worksheet_Data</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
+
+<span class="c1"># Create a new workseet using a Dictionary of Lists</span>
+<span class="c1"># Don&#39;t forget to `Save Workbook` once your changes are complete</span>
+<span class="n">Worksheet_Data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Adam&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span>  <span class="p">[</span>    <span class="mi">58</span><span class="p">,</span>     <span class="mi">22</span><span class="p">,</span>     <span class="mi">67</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">create_worksheet</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Employees&quot;</span><span class="p">,</span><span class="n">content</span><span class="o">=</span><span class="n">Worksheet_Data</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -515,6 +562,13 @@ and return the row number.</p>
 <dt id="RPA.Excel.Files.Files.get_active_worksheet">
 <code class="sig-name descname">get_active_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_active_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the name of the worksheet which is currently active.</p>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${Active_Worksheet}=</span><span class="p">    </span><span class="c">Get Active Worksheet</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Active_Worksheet</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_active_worksheet</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -584,6 +638,19 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 <dt id="RPA.Excel.Files.Files.list_worksheets">
 <code class="sig-name descname">list_worksheets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.list_worksheets" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all names of worksheets in the given workbook.</p>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># List Worksheets will read the worksheet names into a list variable</span>
+<span class="c"># The variable should be declared with the List type &quot;@&quot; when being used</span>
+<span class="c"># to store the sheet names from the List Worksets keyword</span>
+<span class="c">@{sheets}=</span><span class="p">    </span><span class="c">List Worksheets</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># List Worksheets will read the worksheet names into a list variable</span>
+<span class="c1"># The variable should be declared with the List type &quot;@&quot; when being used</span>
+<span class="c1"># to store the sheet names from the List Worksets keyword</span>
+<span class="n">sheets</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">list_worksheets</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -770,6 +837,7 @@ this keyword is called.</p>
 when opened or created.</p>
 </dd>
 </dl>
+<p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Saving the active workbook to a new location/filename or saving to</span>
 <span class="c"># a new location/filename</span>
 <span class="c"># Note: You cannot use Save Workbook to convert from XLSX to XLS</span>
@@ -779,6 +847,17 @@ when opened or created.</p>
 <span class="c"># Saving the active workbook changes if location/filename were set</span>
 <span class="c"># in Create Workbook or Open Workbook</span>
 <span class="c">Save Workbook</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Saving the active workbook to a new location/filename or saving to</span>
+<span class="c1"># a new location/filename</span>
+<span class="c1"># Note: You cannot use Save Workbook to convert from XLSX to XLS</span>
+<span class="c1"># or vice-versa</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;./output/orders.xlsx&quot;</span><span class="p">)</span>
+
+<span class="c1"># Saving the active workbook changes if location/filename were set</span>
+<span class="c1"># in Create Workbook or Open Workbook</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -923,6 +1002,16 @@ for documentation.</p>
 <dd class="field-odd"><p><strong>name</strong> – Name of worksheet you are looking for</p>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># To use Worksheet Exists in a conditional statement set it to</span>
+<span class="c"># a variable first, like you see here, and then compare the</span>
+<span class="c"># variable to ${TRUE} or ${FALSE}</span>
+<span class="c">${Does_Worksheet_Exist}=</span><span class="p">    </span><span class="c">Worksheet Exists</span><span class="p">    </span><span class="c">Sheet</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Does_Worksheet_Exist</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">worksheet_exists</span><span class="p">(</span><span class="s2">&quot;Sheet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
