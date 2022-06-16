@@ -14,6 +14,9 @@ setup.py
 # Unit tests
 .pytest_cache/
 .coverage
+testvars.py
+*_testvars.py
+
 
 # Robot Framework
 tests/results
