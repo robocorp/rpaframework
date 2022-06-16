@@ -23,6 +23,9 @@ def _git_root():
 
 GIT_ROOT = _git_root()
 PACKAGES_ROOT = GIT_ROOT / "packages"
+DOCS_ROOT = GIT_ROOT / "docs"
+TOOLS_DIR = GIT_ROOT / "tools"
+GIT_HOOKS_DIR = GIT_ROOT / "config" / "git-hooks"
 
 if platform.system() != "Windows":
     ACTIVATE_PATH = GIT_ROOT / ".venv" / "bin" / "activate"
@@ -47,6 +50,29 @@ DOCS_CLEAN_PATTERNS = [
     "docs/source/include/latest.json",
     "docs/source/json",
 ]
+DOCGEN_EXCLUDES = " ".join(
+    [
+        "--exclude RPA.core*",
+        "--exclude RPA.recognition*",
+        "--exclude RPA.scripts*",
+        "--exclude RPA.Desktop.keywords*",
+        "--exclude RPA.Desktop.utils*",
+        "--exclude RPA.PDF.keywords*",
+        "--exclude RPA.Cloud.objects*",
+        "--exclude RPA.Cloud.Google.keywords*",
+        "--exclude RPA.Robocorp.utils*",
+        "--exclude RPA.Dialogs.*",
+        "--exclude RPA.Windows.keywords*",
+        "--exclude RPA.Windows.utils*",
+        "--exclude RPA.Cloud.AWS.textract*",
+    ]
+)
+EXPECTED_POETRY_CONFIG = {
+    "virtualenvs": {"in-project": True, "create": True, "path": "null"},
+    "experimental": {"new-installer": True},
+    "installer": {"parallel": True},
+    "repositories": {"devpi": {"url": "https://devpi.robocorp.cloud/ci/test"}},
+}
 
 
 def _get_package_paths():
@@ -58,6 +84,14 @@ def _get_package_paths():
             project_toml
         ).parent
     return package_paths
+
+
+def _is_poetry_configured():
+    try:
+        poetry_toml = toml.load(GIT_ROOT / "poetry.toml")
+        return poetry_toml == EXPECTED_POETRY_CONFIG
+    except FileNotFoundError:
+        return False
 
 
 def _run(ctx, app, command, **kwargs):
@@ -76,9 +110,31 @@ def pip(ctx, command, **kwargs):
     return _run(ctx, "pip", command, **kwargs)
 
 
+def make(ctx, command, **kwargs):
+    return _run(ctx, "make", command, **kwargs)
+
+
+def python_tool(ctx, tool, *args, **kwargs):
+    if tool[-3:] != ".py":
+        tool_path = TOOLS_DIR / f"{tool}.py"
+    else:
+        tool_path = TOOLS_DIR / tool
+    return poetry(ctx, f"run python {tool_path} {' '.join(args)}", **kwargs)
+
+
 def package_invoke(ctx, directory, command, **kwargs):
     with ctx.cd(directory):
         return _run(ctx, "invoke", command, **kwargs)
+
+
+def git(ctx, command, **kwargs):
+    return _run(ctx, "git", command, **kwargs)
+
+
+def invoke_each(ctx, command, **kwargs):
+    our_packages = _get_package_paths()
+    for package_path in our_packages.values():
+        return package_invoke(ctx, package_path, command, **kwargs)
 
 
 @task()
@@ -107,9 +163,7 @@ def clean(ctx, venv=True, docs=False, all=False):
             except OSError:
                 pass
     if all:
-        our_packages = _get_package_paths()
-        for package_path in our_packages.values():
-            package_invoke(ctx, package_path, "clean")
+        invoke_each(ctx, "clean")
 
 
 @task
@@ -130,7 +184,7 @@ def setup_poetry(ctx, username=None, password=None, token=None):
     poetry(ctx, "config -n --local installer.parallel true")
     poetry(
         ctx,
-        "config -n --local repositories.devpi.url https://devpi.robocorp.cloud/ci/test",
+        "config -n --local repositories.devpi.url 'https://devpi.robocorp.cloud/ci/test'",
     )
     if username and password and token:
         raise ParseError(
@@ -144,7 +198,7 @@ def setup_poetry(ctx, username=None, password=None, token=None):
         poetry(ctx, f"config -n pypi-token.pypi {token}")
 
 
-@task(pre=[setup_poetry])
+@task
 def install(ctx, reset=False):
     """Install development environment. If ``reset`` is set,
     poetry will remove untracked packages, reverting the
@@ -156,6 +210,8 @@ def install(ctx, reset=False):
     if not DEPENDENCIES_AVAILABLE:
         poetry(ctx, "install")
     else:
+        if not _is_poetry_configured():
+            call(setup_poetry)
         if reset:
             our_packages = _get_package_paths()
             with ctx.prefix(ACTIVATE):
@@ -212,3 +268,92 @@ def install_local(ctx, package):
             pip(ctx, f"uninstall {pkg} -y")
             with ctx.cd(valid_packages[pkg]):
                 poetry(ctx, "install")
+
+
+@task(pre=[install])
+def build_libspec(ctx):
+    """Generates library specifications using ``docgen``"""
+    poetry(
+        ctx,
+        "run docgen "
+        + "--no-patches "
+        + "--format libspec "
+        + "output docs/source/libspec/ "
+        + DOCGEN_EXCLUDES
+        + " rpaframework",
+    )
+
+
+@task(pre=[install, build_libspec])
+def build_libdocs(ctx):
+    """Generates library documentation using ``docgen``"""
+    poetry(
+        ctx,
+        "run docgen "
+        + "--template docs/source/template/libdoc/libdoc.html "
+        + "--format html "
+        + "--ouput docs/source/include/libdoc/ "
+        + DOCGEN_EXCLUDES
+        + " rpaframework",
+    )
+    shutil.copy2(
+        "docs/source/template/iframeResizer.contentWindow.map",
+        "docs/source/include/libdoc/",
+    )
+    poetry(
+        ctx,
+        "run docgen "
+        + "--no-patches "
+        + "--format json-html "
+        + "--output docs/source/json/ "
+        + DOCGEN_EXCLUDES
+        + " rpaframework",
+    )
+
+
+@task(pre=[install, build_libdocs])
+def build_docs(ctx):
+    """Builds documentation locally. These can then be browsed directly
+    by going to ./docs/build/html/index.html or using ``invoke local-docs``
+    and navigating to localhost:8000 in your browser.
+
+    If you are developing documentation for an optional package, you must
+    use the appropriate ``invoke install-local`` command first.
+    """
+    with ctx.cd(DOCS_ROOT):
+        make(ctx, "clean")
+    python_tool(ctx, "todos", "packages/main/src", "docs/source/contributing/todos.rst")
+    python_tool(
+        ctx,
+        "merge",
+        "docs/source/json/",
+        "docs/source/include/latest.json",
+    )
+    with ctx.cd(DOCS_ROOT):
+        make(ctx, "html")
+    python_tool(ctx, "rss")
+
+
+@task
+def local_docs(ctx):
+    """Hosts library documentation on a local http server. Navigate to
+    localhost:8000 to browse."""
+    poetry(ctx, "run python -m http.server -d docs/build/html/")
+
+
+@task
+def install_hooks(ctx):
+    """Installs standard git hooks."""
+    git(ctx, f"config core.hooksPath {GIT_HOOKS_DIR}")
+
+
+@task
+def changelog(ctx):
+    """Prints changes in latest release."""
+    python_tool(ctx, "changelog")
+
+
+@task
+def lint_each(ctx):
+    """Executes linting on all packages."""
+    invoke_each(ctx, "lint")
