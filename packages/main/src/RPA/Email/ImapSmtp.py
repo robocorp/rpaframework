@@ -1466,6 +1466,7 @@ class ImapSmtp:
         :param source_folder: location of the messages, default `INBOX`
         :param target_folder: where messages should be move into
         :return: True if all move operations succeeded, False if not
+
         Example:
 
         .. code-block:: robotframework

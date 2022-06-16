@@ -5,7 +5,7 @@ RPA Framework
    :local:
    :depth: 1
 
-.. include:: ../../README.rst
+.. include:: ../../packages/main/README.rst
    :start-after: include-marker
 
 -------------
