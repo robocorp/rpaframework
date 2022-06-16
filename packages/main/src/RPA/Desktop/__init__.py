@@ -156,6 +156,11 @@ class Desktop(DynamicCore):
 
     The main way to create named locators is with `VSCode`_.
 
+    Read more on identifying elements and crafting locators:
+
+    - `Desktop automation and RPA <https://robocorp.com/docs/development-guide/desktop>`_
+    - `How to find user interface elements using locators and keyboard shortcuts in Windows applications <https://robocorp.com/docs/development-guide/desktop/how-to-find-user-interface-elements-using-locators-and-keyboard-shortcuts-in-windows-applications>`_
+
     .. _VSCode: https://robocorp.com/docs/developer-tools/visual-studio-code/overview
 
     **Keyboard and mouse**
