@@ -1,4 +1,5 @@
 from glob import glob
+import os
 import platform
 import re
 import shutil
@@ -33,6 +34,13 @@ CLEAN_PATTERNS = [
     ".venv",
     ".mypy_cache",
 ]
+DOCS_CLEAN_PATTERNS = [
+    "docs/build",
+    "docs/source/libspec",
+    "docs/source/include/libdoc",
+    "docs/source/include/latest.json",
+    "docs/source/json",
+]
 
 
 def _get_package_paths():
@@ -62,15 +70,28 @@ def pip(ctx, command, **kwargs):
     return _run(ctx, "pip", command, **kwargs)
 
 
-@task
-def clean(ctx):
+@task()
+def clean(ctx, venv=True, docs=False):
     """Cleans the virtual development environment by
     completely removing build artifacts and the .venv.
+    You can set ``--no-venv`` to avoid this default.
+
+    If ``--docs`` is supplied, the build artifacts for
+    local documentation will also be cleaned.
     """
-    for pattern in CLEAN_PATTERNS:
+    union_clean_patterns = []
+    if venv:
+        union_clean_patterns.extend(CLEAN_PATTERNS)
+    if docs:
+        union_clean_patterns.extend(DOCS_CLEAN_PATTERNS)
+    for pattern in union_clean_patterns:
         for path in glob(pattern, recursive=True):
             print(f"Removing: {path}")
             shutil.rmtree(path, ignore_errors=True)
+            try:
+                os.remove(path)
+            except OSError:
+                pass
 
 
 @task
