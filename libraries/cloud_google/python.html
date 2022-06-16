@@ -222,8 +222,218 @@
             
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="google">
-<h2>Google<a class="headerlink" href="#google" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-RPA.Cloud.Google">
+<span id="google"></span><h2>Google<a class="headerlink" href="#module-RPA.Cloud.Google" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Cloud.Google.Google">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">Google</code><span class="sig-paren">(</span><em class="sig-param">service_account: str = None</em>, <em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em>, <em class="sig-param">cloud_auth_type: str = 'serviceaccount'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">robotlibcore.DynamicCore</span></code></p>
+<p><cite>Google</cite> is a library for operating with Google API endpoints.</p>
+<p>Usage requires the following steps:</p>
+<ul class="simple">
+<li><p>Create a GCP project</p></li>
+<li><p>Enable approriate APIs</p></li>
+<li><p>Create credentials (OAuth or service account)</p></li>
+<li><p>Install rpaframework-google package</p></li>
+</ul>
+<p><strong>Google authentication</strong></p>
+<p>Authentication for Google is set with <cite>service account JSON file</cite> which can be given to the library
+in three different ways or with <cite>OAuth2 token</cite>, which is used for OAuth authentication.</p>
+<p>Methods when using service account:</p>
+<ul class="simple">
+<li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> with path to service account file.</p></li>
+<li><p>Method 2 as keyword parameter to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span></code> for example.</p></li>
+<li><p>Method 3 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
+or with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocorp</span> <span class="pre">Vault</span></code>. Secret value should contain JSON file contents.</p></li>
+</ul>
+<p>Method 1. service account using environment variable</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="c"># NO parameters for Init Vision, expecting to get JSON</span>
+<span class="p">    </span><span class="c"># with GOOGLE_APPLICATION_CREDENTIALS environment variable</span>
+<span class="p">    </span><span class="nf">Init Vision</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 2. service account with keyword parameter</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Speech To Text</span><span class="p">   </span><span class="s">/path/to/service_account.json</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocorp Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+<span class="p">...       </span><span class="s">vault_name=googlecloud</span><span class="p"></span>
+<span class="p">...       </span><span class="s">vault_secret_key=servicecreds</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Storage</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocorp Vault with keyword</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocorp Vault</span><span class="p">   </span><span class="s">vault_name=googlecloud</span><span class="p">  </span><span class="s">vault_secret_key=servicecreds</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Storage</span><span class="p">    </span><span class="s">use_robocorp_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Methods when using OAuth token:</p>
+<ul class="simple">
+<li><p>Method 1 as keyword parameter <code class="docutils literal notranslate"><span class="pre">token_file</span></code> to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span></code> for example.</p></li>
+<li><p>Method 2 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
+or with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocorp</span> <span class="pre">Vault</span></code>. Secret value should contain JSON file contents.</p></li>
+</ul>
+<p>Method 1. The Google Apps Script and Google Drive services are authenticated using this method.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">@{</span><span class="nv">SCRIPT_SCOPES</span><span class="p">}     </span><span class="s">forms</span><span class="p">   </span><span class="s">spreadsheets</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google OAuth services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Apps Script</span><span class="p">    </span><span class="s">token_file=oauth_token</span><span class="p">   ${</span><span class="nv">SCRIPT_SCOPES</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 2. setting Robocorp Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+<span class="p">...       </span><span class="s">vault_name=googlecloud</span><span class="p"></span>
+<span class="p">...       </span><span class="s">vault_secret_key=oauth</span><span class="p"></span>
+<span class="p">...       </span><span class="s">cloud_auth_type=token</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Storage</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Creating and using OAuth token file</strong></p>
+<p>The token file can be created using <cite>credentials.json</cite> by running command:</p>
+<p><code class="docutils literal notranslate"><span class="pre">rpa-google-oauth</span> <span class="pre">--credentials</span> <span class="pre">&lt;filepath&gt;</span> <span class="pre">--service</span> <span class="pre">drive</span></code> or
+<code class="docutils literal notranslate"><span class="pre">rpa-google-oauth</span> <span class="pre">--credentials</span> <span class="pre">&lt;filepath&gt;</span> <span class="pre">--scopes</span> <span class="pre">drive.appdata,drive.file,drive.install</span></code></p>
+<p>This will start web based authentication process, which outputs the token at the end.
+Token could be stored into <code class="docutils literal notranslate"><span class="pre">Robocorp</span> <span class="pre">Vault</span></code>.</p>
+<p>Example Vault content.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;googlecloud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;oauth-token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gANfd123321aabeedYsc&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Using the Vault.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Set up Google Drive authentication</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocorp Vault</span><span class="p">   </span><span class="s">vault_name=googlecloud</span><span class="p"></span>
+<span class="p">    ...  </span><span class="s">vault_secret_key=oauth-token</span><span class="p"></span>
+<span class="p">    ...  </span><span class="s">cloud_auth_type=token</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Drive</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Installation</strong></p>
+<p>This library, <code class="docutils literal notranslate"><span class="pre">RPA.Cloud.Google</span></code> is available via <strong>rpaframework-google</strong> package.</p>
+<p>Check the latest package version from <a class="reference external" href="https://pypi.org/project/rpaframework-google/">PyPI</a>.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">SERVICE_ACCOUNT</span><span class="p">}    ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">service_account.json</span><span class="p"></span>
+<span class="p">${</span><span class="nv">BUCKET_NAME</span><span class="p">}            </span><span class="s">testbucket12213123123</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Upload a file into a new storage bucket</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Init Storage</span><span class="p">    ${</span><span class="nv">SERVICE_ACCOUNT</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Create Storage Bucket</span><span class="p">    ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Upload Storage File</span><span class="p">      ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    ...   ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">file.pdf</span><span class="p"></span>
+<span class="p">    ...   </span><span class="s">myfile.pdf</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}         </span><span class="nf">List Storage Files</span><span class="p">   ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    FOR   ${</span><span class="nv">file</span><span class="p">}  IN   @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Cloud.Google</span> <span class="kn">import</span> <span class="n">Google</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">Google</span>
+<span class="n">service_account</span> <span class="o">=</span> <span class="s1">&#39;/path/to/service_account.json&#39;</span>
+
+<span class="n">library</span><span class="o">.</span><span class="n">init_vision</span><span class="p">(</span><span class="n">service_account</span><span class="p">)</span>
+<span class="n">library</span><span class="o">.</span><span class="n">init_text_to_speech</span><span class="p">(</span><span class="n">service_account</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">detect_text</span><span class="p">(</span><span class="s1">&#39;imagefile.png&#39;</span><span class="p">,</span> <span class="s1">&#39;result.json&#39;</span><span class="p">)</span>
+<span class="n">library</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="s1">&#39;I want this said aloud&#39;</span><span class="p">,</span> <span class="n">target_file</span><span class="o">=</span><span class="s1">&#39;said.mp3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Cloud.Google.Google.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Cloud.Google.Google.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.add_library_components">
+<code class="sig-name descname">add_library_components</code><span class="sig-paren">(</span><em class="sig-param">library_components</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.add_library_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.get_keyword_arguments">
+<code class="sig-name descname">get_keyword_arguments</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.get_keyword_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.get_keyword_documentation">
+<code class="sig-name descname">get_keyword_documentation</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.get_keyword_documentation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.get_keyword_names">
+<code class="sig-name descname">get_keyword_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.get_keyword_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.get_keyword_source">
+<code class="sig-name descname">get_keyword_source</code><span class="sig-paren">(</span><em class="sig-param">keyword_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.get_keyword_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.get_keyword_tags">
+<code class="sig-name descname">get_keyword_tags</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.get_keyword_tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.get_keyword_types">
+<code class="sig-name descname">get_keyword_types</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.get_keyword_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.run_keyword">
+<code class="sig-name descname">run_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">args</em>, <em class="sig-param">kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.run_keyword" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Cloud.Google.import_vault">
+<code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">import_vault</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.import_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to import Vault/Secrets library, with old and new name.</p>
+</dd></dl>
+
 </div>
 </div>
 

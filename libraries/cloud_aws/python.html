@@ -222,8 +222,2381 @@
             
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="aws">
-<h2>AWS<a class="headerlink" href="#aws" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-RPA.Cloud.AWS">
+<span id="aws"></span><h2>AWS<a class="headerlink" href="#module-RPA.Cloud.AWS" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Cloud.AWS.AWS">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">AWS</code><span class="sig-paren">(</span><em class="sig-param">region: str = 'eu-west-1'</em>, <em class="sig-param">robocloud_vault_name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.ServiceS3" title="RPA.Cloud.AWS.ServiceS3"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceS3</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceTextract" title="RPA.Cloud.AWS.ServiceTextract"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceTextract</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceComprehend" title="RPA.Cloud.AWS.ServiceComprehend"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceComprehend</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceSQS" title="RPA.Cloud.AWS.ServiceSQS"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceSQS</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceRedshiftData" title="RPA.Cloud.AWS.ServiceRedshiftData"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceRedshiftData</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceSTS" title="RPA.Cloud.AWS.ServiceSTS"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceSTS</span></code></a></p>
+<p><cite>AWS</cite> is a library for operating with Amazon AWS services S3, SQS,
+Textract and Comprehend.</p>
+<p>Services are initialized with keywords like <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">S3</span> <span class="pre">Client</span></code> for S3.</p>
+<p><strong>AWS authentication</strong></p>
+<p>Authentication for AWS is set with <cite>key id</cite> and <cite>access key</cite> which can be given to the library
+in three different ways.</p>
+<ul class="simple">
+<li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">AWS_KEY_ID</span></code> and <code class="docutils literal notranslate"><span class="pre">AWS_KEY</span></code>.</p></li>
+<li><p>Method 2 as keyword parameters to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Textract</span> <span class="pre">Client</span></code> for example.</p></li>
+<li><p>Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
+with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
+names.</p></li>
+</ul>
+<p><strong>Note.</strong> Starting from <cite>rpaframework-aws</cite> <strong>1.0.3</strong> <cite>region</cite> can be given as environment
+variable <code class="docutils literal notranslate"><span class="pre">AWS_REGION</span></code> or include as Robocloud Vault secret with the same key name.</p>
+<p><strong>Redshift Data authentication:</strong> Depending on the authorization method, use
+one of the following combinations of request parameters, which can only
+be passed via method 2:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Secrets Manager - when connecting to a cluster, specify the Amazon
+Resource Name (ARN) of the secret, the database name, and the
+cluster identifier that matches the cluster in the secret. When
+connecting to a serverless endpoint, specify the Amazon Resource
+Name (ARN) of the secret and the database name.</p></li>
+<li><p>Temporary credentials - when connecting to a cluster, specify the
+cluster identifier, the database name, and the database user name.
+Also, permission to call the <code class="docutils literal notranslate"><span class="pre">redshift:GetClusterCredentials</span></code>
+operation is required. When connecting to a serverless endpoint,
+specify the database name.</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Role Assumption:</strong> With the use of the STS service client, you are able
+to assume another role, which will return temporary credentials. The
+temporary credentials will include an access key and session token, see
+keyword documentation for <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code> for details of how the
+credentials are returned. You can use these temporary credentials
+as part of method 2, but you must also include the session token.</p>
+<p>Method 1. credentials using environment variable</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="c"># NO parameters for client, expecting to get credentials</span>
+<span class="p">    </span><span class="c"># with AWS_KEY, AWS_KEY_ID and AWS_REGION environment variables</span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 2. credentials with keyword parameter</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">   </span><span class="s">region=us-east-1</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p">  </span><span class="s">aws_key_id=</span><span class="p">${</span><span class="nv">AWS_KEY_ID</span><span class="p">}  </span><span class="s">aws_key=</span><span class="p">${</span><span class="nv">AWS_KEY</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocloud Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">  </span><span class="s">robocloud_vault_name=aws</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocloud Vault with keyword</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">     </span><span class="s">vault_name=aws</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Textract Client</span><span class="p">    </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Requirements</strong></p>
+<p>The default installation depends on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">boto3</a> library. Due to the size of the
+dependency, this library is available separate package <code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code> but can
+also be installed as an optional package for <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
+<p>Recommended installation is <cite>rpaframework-aws</cite> plus <cite>rpaframework</cite> package.
+Remember to check latest versions from <a class="reference external" href="https://github.com/robocorp/rpaframework">rpaframework Github repository</a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span><span class="w"></span>
+<span class="nt">dependencies</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=20.1</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==13.0.2</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==1.0.3</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Following declaration, <cite>rpaframework[aws]</cite>, will install all rpaframework libraries
+plus <cite>RPA.Cloud.AWS</cite> as an optional package. The extras support is deprecated and will be
+removed in the future major release of <cite>rpaframework</cite>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span><span class="w"></span>
+<span class="nt">dependencies</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=20.1</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]==13.0.2</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Example</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">   </span><span class="s">region=us-east-1</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">BUCKET_NAME</span><span class="p">}        </span><span class="s">testbucket12213123123</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Upload a file into S3 bucket</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Init S3 Client</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Upload File</span><span class="p">      ${</span><span class="nv">BUCKET_NAME</span><span class="p">}   ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">file.pdf</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}         </span><span class="nf">List Files</span><span class="p">   ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    FOR   ${</span><span class="nv">file</span><span class="p">}  IN   @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.analyze_document">
+<code class="sig-name descname">analyze_document</code><span class="sig-paren">(</span><em class="sig-param">image_file: Optional[str] = None</em>, <em class="sig-param">json_file: Optional[str] = None</em>, <em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">model: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.analyze_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyzes an input document for relationships between detected items</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath (or object name) of image file</p></li>
+<li><p><strong>json_file</strong> – filepath to resulting json file</p></li>
+<li><p><strong>bucket_name</strong> – if given then using <cite>image_file</cite> from the bucket</p></li>
+<li><p><strong>model</strong> – set <cite>True</cite> to return Textract Document model, default <cite>False</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis response in json or TextractDocument model</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${response}</span><span class="p">    </span><span class="c">Analyze Document</span><span class="p">    </span><span class="c">${filename}</span><span class="p">    </span><span class="c">model=True</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${page}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{response.pages}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page.tables}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page.form}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Lines</span><span class="p">    </span><span class="c">${page.lines}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${page}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${page.form}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.assume_role">
+<code class="sig-name descname">assume_role</code><span class="sig-paren">(</span><em class="sig-param">role_arn: str</em>, <em class="sig-param">role_session_name: str</em>, <em class="sig-param">policy_arns: Optional[List[Dict]] = None</em>, <em class="sig-param">policy: Optional[str] = None</em>, <em class="sig-param">duration: int = 900</em>, <em class="sig-param">tags: Optional[List[Dict]] = None</em>, <em class="sig-param">transitive_tag_keys: Optional[List[str]] = None</em>, <em class="sig-param">external_id: Optional[str] = None</em>, <em class="sig-param">serial_number: Optional[str] = None</em>, <em class="sig-param">token_code: Optional[str] = None</em>, <em class="sig-param">source_identity: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.assume_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of temporary security credentials that you can
+use to access Amazon Web Services resources that you might not
+normally have access to. These temporary credentials consist of
+an access key ID, a secret access key, and a security token.
+Typically, you use <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code> within your account or for
+cross-account access.</p>
+<p>The credentials are returned as a dictionary with data structure
+similar to the following JSON:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;Credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;AccessKeyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;SecretAccessKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;SessionToken&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;Expiration&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2015-01-01&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;AssumedRoleUser&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;AssumedRoleId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;Arn&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;PackedPolicySize&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;SourceIdentity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>These credentials can be used to re-initialize services available
+in this library with the assumed role instead of the original
+role.</p>
+<p><strong>NOTE</strong>: For detailed information on the available arguments to this
+keyword, please see the <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html">Boto3 STS documentation</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>role_arn</strong> – The Amazon Resource Name (ARN) of the role to assume.</p></li>
+<li><p><strong>role_session_name</strong> – An identifier for the assumed role session.</p></li>
+<li><p><strong>policy_arns</strong> – The Amazon Resource Names (ARNs) of the IAM
+managed policies that you want to use as managed session policies.
+The policies must exist in the same account as the role.</p></li>
+<li><p><strong>policy</strong> – An IAM policy in JSON format that you want to use
+as an inline session policy.</p></li>
+<li><p><strong>duration</strong> – The duration, in seconds, of the role session.
+The value specified can range from 900 seconds (15 minutes
+and the default) up to the maximum session duration set for
+the role.</p></li>
+<li><p><strong>tags</strong> – A list of session tags that you want to pass. Each
+session tag consists of a key name and an associated value.</p></li>
+<li><p><strong>transitive_tag_keys</strong> – A list of keys for session tags that
+you want to set as transitive. If you set a tag key as
+transitive, the corresponding key and value passes to
+subsequent sessions in a role chain.</p></li>
+<li><p><strong>external_id</strong> – A unique identifier that might be required
+when you assume a role in another account. If the
+administrator of the account to which the role belongs
+provided you with an external ID, then provide that value in
+this parameter.</p></li>
+<li><p><strong>serial_number</strong> – The identification number of the MFA device
+that is associated with the user who is making the
+using the <code class="docutils literal notranslate"><span class="pre">assume_role</span></code> keyword.</p></li>
+<li><p><strong>token_code</strong> – The value provided by the MFA device, if the
+trust policy of the role being assumed requires MFA.</p></li>
+<li><p><strong>source_identity</strong> – The source identity specified by the
+principal that is using the <code class="docutils literal notranslate"><span class="pre">assume_role</span></code> keyword.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.convert_textract_response_to_model">
+<code class="sig-name descname">convert_textract_response_to_model</code><span class="sig-paren">(</span><em class="sig-param">response</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.convert_textract_response_to_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert AWS Textract JSON response into TextractDocument object,
+which has following structure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Document</p></li>
+<li><p>Page</p></li>
+<li><p>Tables</p></li>
+<li><p>Rows</p></li>
+<li><p>Cells</p></li>
+<li><p>Lines</p></li>
+<li><p>Words</p></li>
+<li><p>Form</p></li>
+<li><p>Field</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>response</strong> – JSON response from AWS Textract service</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>TextractDocument</cite> object</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${response}</span><span class="p">    </span><span class="c">Analyze Document</span><span class="p">    </span><span class="c">${filename}</span><span class="p"></span>
+<span class="c">${model}=</span><span class="p">    </span><span class="c">Convert Textract Response To Model</span><span class="p">    </span><span class="c">${response}</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${page}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{model.pages}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page.tables}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page.form}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Lines</span><span class="p">    </span><span class="c">${page.lines}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${page}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${page.form}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.create_bucket">
+<code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.create_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create S3 bucket with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean indicating status of operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.create_queue">
+<code class="sig-name descname">create_queue</code><span class="sig-paren">(</span><em class="sig-param">queue_name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.create_queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create queue with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>queue_name</strong> – [description], defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>create queue response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.create_redshift_statement_parameters">
+<code class="sig-name descname">create_redshift_statement_parameters</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; List[Dict[str, str]]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.create_redshift_statement_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a formatted dictionary to be used in
+Redshift Data Api SQL statements.</p>
+<p><strong>Example:</strong></p>
+<p>Assume the <code class="docutils literal notranslate"><span class="pre">${SQL}</span></code> statement has the parameters <code class="docutils literal notranslate"><span class="pre">:id</span></code> and
+<code class="docutils literal notranslate"><span class="pre">:name</span></code>:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+
+<span class="p">${</span><span class="nv">params</span><span class="p">}</span><span class="gu">=</span><span class="p">    </span><span class="nf">Create sql parameters</span><span class="p">    </span><span class="s">id=123</span><span class="p">    </span><span class="s">name=Nokia</span><span class="p"></span>
+<span class="c"># params produces a data structure like so:</span>
+<span class="c">#   [</span>
+<span class="c">#        {&quot;name&quot;:&quot;id&quot;, &quot;value&quot;:&quot;123&quot;},</span>
+<span class="c">#        {&quot;name&quot;:&quot;name&quot;, &quot;value&quot;:&quot;Nokia&quot;}</span>
+<span class="c">#    ]</span>
+
+<span class="c"># Which can be used for the &#39;parameters&#39; argument.</span>
+<span class="p">${</span><span class="nv">response</span><span class="p">}</span><span class="gu">=</span><span class="p">    </span><span class="nf">Execute redshift statement</span><span class="p">    ${</span><span class="nv">SQL</span><span class="p">}    ${</span><span class="nv">params</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.delete_bucket">
+<code class="sig-name descname">delete_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete S3 bucket with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean indicating status of operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.delete_files">
+<code class="sig-name descname">delete_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete files in the bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of files to delete</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files deleted or <cite>False</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.delete_message">
+<code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">receipt_handle: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete message in the queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>receipt_handle</strong> – message handle to delete</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>delete message response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.delete_queue">
+<code class="sig-name descname">delete_queue</code><span class="sig-paren">(</span><em class="sig-param">queue_name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete queue with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>queue_name</strong> – [description], defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>delete queue response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.describe_redshift_table">
+<code class="sig-name descname">describe_redshift_table</code><span class="sig-paren">(</span><em class="sig-param">database: str</em>, <em class="sig-param">schema: Optional[str] = None</em>, <em class="sig-param">table: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[Dict, List[Dict]]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.describe_redshift_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes the detailed information about a table from metadata
+in the cluster. The information includes its columns.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">schema</span></code> and/or <code class="docutils literal notranslate"><span class="pre">table</span></code> is not provided, the API searches
+all schemas for the provided table, or returns all tables in the
+schema or entire database.</p>
+<p>The response object is provided as a list of table meta data objects,
+utilize dot-notation or the <code class="docutils literal notranslate"><span class="pre">RPA.JSON</span></code> library to access members:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;ColumnList&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;columnDefault&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;isCaseSensitive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;isCurrency&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;isSigned&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;nullable&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;precision&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;scale&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;schemaName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;tableName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;typeName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;TableName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> – The name of the database that contains the tables
+to be described. If ommitted, will use the connected Database.</p></li>
+<li><p><strong>schema</strong> – The schema that contains the table. If no schema
+is specified, then matching tables for all schemas are returned.</p></li>
+<li><p><strong>table</strong> – The table name. If no table is specified, then all
+tables for all matching schemas are returned. If no table and
+no schema is specified, then all tables for all schemas in the
+database are returned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.detect_document_text">
+<code class="sig-name descname">detect_document_text</code><span class="sig-paren">(</span><em class="sig-param">image_file: Optional[str] = None</em>, <em class="sig-param">json_file: Optional[str] = None</em>, <em class="sig-param">bucket_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.detect_document_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects text in the input document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath (or object name) of image file</p></li>
+<li><p><strong>json_file</strong> – filepath to resulting json file</p></li>
+<li><p><strong>bucket_name</strong> – if given then using <cite>image_file</cite> from the bucket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis response in json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.detect_entities">
+<code class="sig-name descname">detect_entities</code><span class="sig-paren">(</span><em class="sig-param">text: Optional[str] = None</em>, <em class="sig-param">lang='en'</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.detect_entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspects text for named entities, and returns information about them</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string. Each string must contain fewer
+that 5,000 bytes of UTF-8 encoded characters</p></li>
+<li><p><strong>lang</strong> – language code of the text, defaults to “en”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.detect_sentiment">
+<code class="sig-name descname">detect_sentiment</code><span class="sig-paren">(</span><em class="sig-param">text: Optional[str] = None</em>, <em class="sig-param">lang='en'</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.detect_sentiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspects text and returns an inference of the prevailing sentiment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string. Each string must contain fewer
+that 5,000 bytes of UTF-8 encoded characters</p></li>
+<li><p><strong>lang</strong> – language code of the text, defaults to “en”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.download_files">
+<code class="sig-name descname">download_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em>, <em class="sig-param">target_directory: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.download_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download files from bucket to local filesystem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of S3 object names</p></li>
+<li><p><strong>target_directory</strong> – location for the downloaded files, default
+current directory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files downloaded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.execute_redshift_statement">
+<code class="sig-name descname">execute_redshift_statement</code><span class="sig-paren">(</span><em class="sig-param">sql: str</em>, <em class="sig-param">parameters: Optional[list] = None</em>, <em class="sig-param">statement_name: Optional[str] = None</em>, <em class="sig-param">with_event: bool = False</em>, <em class="sig-param">timeout: int = 40</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Tables.Table, str]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.execute_redshift_statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs an SQL statement, which can be data manipulation language
+(DML) or data definition language (DDL). This statement must be a
+single SQL statement.</p>
+<p>SQL statements can be parameterized with named parameters through
+the use of the <code class="docutils literal notranslate"><span class="pre">parameters</span></code> argument. Parameters must be dictionaries
+with the following two keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the parameter. In the SQL statement this
+will be referenced as <code class="docutils literal notranslate"><span class="pre">:name</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: The value of the parameter. Amazon Redshift implicitly
+converts to the proper data type. For more information, see
+<a class="reference external" href="https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html">Data types</a> in the <cite>Amazon Redshift Database Developer Guide</cite>.</p></li>
+</ul>
+<p>For simplicity, a helper keyword, `Create redshift statement parameters`,
+is available and can be used more naturally in Robot Framework contexts.</p>
+<p>If tabular data is returned, this keyword tries to return it as
+a table (see <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code>), if <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> is not available
+in the keyword’s scope, the data will be returned as a list of dictionaries.
+Other types of data (SQL errors and result statements) are returned
+as strings.</p>
+<p><strong>NOTE:</strong> You may modify the max built-in wait time by providing
+a timeout in seconds (default 40 seconds)</p>
+<p><strong>Robot framework example:</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+
+<span class="p">    ${</span><span class="nv">SQL</span><span class="p">}=    </span><span class="nf">Set variable</span><span class="p">    </span><span class="s">insert into mytable values (:id, :address)</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">params</span><span class="p">}=    </span><span class="nf">Create redshift statement parameters</span><span class="p"></span>
+<span class="p">    ...    </span><span class="s">id=1</span><span class="p"></span>
+<span class="p">    ...    </span><span class="s">address=Seattle</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">response</span><span class="p">}=    </span><span class="nf">Execute redshift statement</span><span class="p">    ${</span><span class="nv">SQL</span><span class="p">}    ${</span><span class="nv">params</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    ${</span><span class="nv">response</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;insert into mytable values (:id, :address)&quot;</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;address&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Seattle&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">aws</span><span class="o">.</span><span class="n">execute_redshift_statement</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> – The parameters for the SQL statement. Must consist
+of a list of dictionaries with two keys: <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p></li>
+<li><p><strong>sql</strong> – The SQL statement text to run.</p></li>
+<li><p><strong>statement_name</strong> – The name of the SQL statement. You can name
+the SQL statement when you create it to identify the query.</p></li>
+<li><p><strong>with_event</strong> – A value that indicates whether to send an event
+to the Amazon EventBridge event bus after the SQL statement runs.</p></li>
+<li><p><strong>timeout</strong> – Used to calculate the maximum wait. Exact timing
+depends on system variability becuase the underlying waiter
+does not utilize a timeout directly.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.execute_redshift_statement_asyncronously">
+<code class="sig-name descname">execute_redshift_statement_asyncronously</code><span class="sig-paren">(</span><em class="sig-param">sql: str</em>, <em class="sig-param">parameters: Optional[list] = None</em>, <em class="sig-param">statement_name: Optional[str] = None</em>, <em class="sig-param">with_event: bool = False</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Cloud.AWS.AWS.execute_redshift_statement_asyncronously" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submit a sql statement for Redshift to execute asyncronously.
+Returns the statement ID which can be used to retrieve statement
+results later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> – The parameters for the SQL statement. Must consist
+of a list of dictionaries with two keys: <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p></li>
+<li><p><strong>sql</strong> – The SQL statement text to run.</p></li>
+<li><p><strong>statement_name</strong> – The name of the SQL statement. You can name
+the SQL statement when you create it to identify the query.</p></li>
+<li><p><strong>with_event</strong> – A value that indicates whether to send an event
+to the Amazon EventBridge event bus after the SQL statement runs.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_cells">
+<code class="sig-name descname">get_cells</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parsed cells from the response</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cells</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_document_analysis">
+<code class="sig-name descname">get_document_analysis</code><span class="sig-paren">(</span><em class="sig-param">job_id: Optional[str] = None</em>, <em class="sig-param">max_results: int = 1000</em>, <em class="sig-param">next_token: Optional[str] = None</em>, <em class="sig-param">collect_all_results: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_document_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the results of Textract asynchronous <cite>Document Analysis</cite> operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job identifier, defaults to None</p></li>
+<li><p><strong>max_results</strong> – number of blocks to get at a time, defaults to 1000</p></li>
+<li><p><strong>next_token</strong> – pagination token for getting next set of results,
+defaults to None</p></li>
+<li><p><strong>collect_all_results</strong> – when set to True will wait until analysis is
+complete and returns all blocks of the analysis result, by default (False)
+the all blocks need to be specifically collected using <cite>next_token</cite> variable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Analysis</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c"># Wait for job completion and collect all blocks</span>
+<span class="c">${response}=</span><span class="p">    </span><span class="c">Get Document Analysis</span><span class="p">  </span><span class="c">${jobid}</span><span class="p">  </span><span class="c">collect_all_results=True</span><span class="p"></span>
+<span class="c"># Model will contain all pages of the invoice.pdf</span>
+<span class="c">${model}=</span><span class="p">    </span><span class="c">Convert Textract Response To Model</span><span class="p">    </span><span class="c">${response}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_document_text_detection">
+<code class="sig-name descname">get_document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">job_id: Optional[str] = None</em>, <em class="sig-param">max_results: int = 1000</em>, <em class="sig-param">next_token: Optional[str] = None</em>, <em class="sig-param">collect_all_results: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_document_text_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the results of Textract asynchronous <cite>Document Text Detection</cite> operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job identifier, defaults to None</p></li>
+<li><p><strong>max_results</strong> – number of blocks to get at a time, defaults to 1000</p></li>
+<li><p><strong>next_token</strong> – pagination token for getting next set of results,
+defaults to None</p></li>
+<li><p><strong>collect_all_results</strong> – when set to True will wait until analysis is
+complete and returns all blocks of the analysis result, by default (False)
+the all blocks need to be specifically collected using <cite>next_token</cite> variable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Text Detection</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c"># Wait for job completion and collect all blocks</span>
+<span class="c">${response}=</span><span class="p">   </span><span class="c">Get Document Text Detection</span><span class="p">    </span><span class="c">${jobid}</span><span class="p">  </span><span class="c">collect_all_results=True</span><span class="p"></span>
+<span class="c"># Model will contain all pages of the invoice.pdf</span>
+<span class="c">${model}=</span><span class="p">    </span><span class="c">Convert Textract Response To Model</span><span class="p">    </span><span class="c">${response}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_pages_and_text">
+<code class="sig-name descname">get_pages_and_text</code><span class="sig-paren">(</span><em class="sig-param">textract_response: dict</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_pages_and_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get pages and text out of Textract response json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>textract_response</strong> – JSON from Textract</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary, page numbers as keys and value is a list
+of text lines</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_redshift_statement_results">
+<code class="sig-name descname">get_redshift_statement_results</code><span class="sig-paren">(</span><em class="sig-param">statement_id: str</em>, <em class="sig-param">timeout: int = 40</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Tables.Table, int]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_redshift_statement_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the results of a SQL statement previously submitted
+to Redshift. If that statement has not yet completed, this keyword
+will wait for results. See `Execute Redshift Statement` for
+additional information.</p>
+<p>If the statement has tabular results, this keyword returns them
+as a table from <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> if that library is available, or
+as a list of dictionaries if not. If the statement does not have
+tabular results, it will return the number of rows affected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>statement_id</strong> – The statement id to use to retreive results.</p></li>
+<li><p><strong>timeout</strong> – An integer used to calculate the maximum wait.
+Exact timing depends on system variability becuase the
+underlying waiter does not utilize a timeout directly.
+Defaults to 40.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_tables">
+<code class="sig-name descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parsed tables from the response</p>
+<p>Returns <cite>RPA.Tables.Table</cite> if possible otherwise returns an dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_words">
+<code class="sig-name descname">get_words</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parsed words from the response</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>words</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_comprehend_client">
+<code class="sig-name descname">init_comprehend_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_comprehend_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS Comprehend client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_redshift_data_client">
+<code class="sig-name descname">init_redshift_data_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">cluster_identifier: Optional[str] = None</em>, <em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">database_user: Optional[str] = None</em>, <em class="sig-param">secret_arn: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_redshift_data_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS Redshift Data API client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>cluster_identifier</strong> – The cluster identifier. This parameter
+is required when connecting to a cluster and authenticating
+using either Secrets Manager or temporary credentials.</p></li>
+<li><p><strong>database</strong> – The name of the database. This parameter is required
+when authenticating using either Secrets Manager or temporary
+credentials.</p></li>
+<li><p><strong>database_user</strong> – The database user name. This parameter is
+required when connecting to a cluster and authenticating using
+temporary credentials.</p></li>
+<li><p><strong>secret_arn</strong> – The name or ARN of the secret that enables access
+to the database. This parameter is required when authenticating
+using Secrets Manager.</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <code class="docutils literal notranslate"><span class="pre">Robocloud</span> <span class="pre">Vault</span></code></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_s3_client">
+<code class="sig-name descname">init_s3_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_s3_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS S3 client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_sqs_client">
+<code class="sig-name descname">init_sqs_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">queue_url: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_sqs_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS SQS client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>queue_url</strong> – SQS queue url</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_sts_client">
+<code class="sig-name descname">init_sts_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_sts_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS STS client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_textract_client">
+<code class="sig-name descname">init_textract_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_textract_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS Textract client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.list_buckets">
+<code class="sig-name descname">list_buckets</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_buckets" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all buckets for this account</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of buckets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.list_files">
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>List files in the bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of files</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.list_redshift_databases">
+<code class="sig-name descname">list_redshift_databases</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_databases" title="Permalink to this definition">¶</a></dt>
+<dd><p>List the databases in a cluster.</p>
+<p>Database names are returned as a list of strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.list_redshift_schemas">
+<code class="sig-name descname">list_redshift_schemas</code><span class="sig-paren">(</span><em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">schema_pattern: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[Dict]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_schemas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists the schemas in a database.</p>
+<p>Schema names are returned as a list of strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> – The name of the database that contains the schemas
+to list. If ommitted, will use the connected Database.</p></li>
+<li><p><strong>schema_pattern</strong> – A pattern to filter results by schema name.
+Within a schema pattern, “%” means match any substring of 0
+or more characters and “_” means match any one character.
+Only schema name entries matching the search pattern are returned.
+If <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> is not specified, then all schemas are returned.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.list_redshift_tables">
+<code class="sig-name descname">list_redshift_tables</code><span class="sig-paren">(</span><em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">schema_pattern: Optional[str] = None</em>, <em class="sig-param">table_pattern: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[Dict]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>List the tables in a database. If neither <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are specified, then all tables in the database
+are returned.</p>
+<p>Returned objects are structured like the below JSON in a list:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> – The name of the database that contains the tables
+to be described. If ommitted, will use the connected Database.</p></li>
+<li><p><strong>schema_pattern</strong> – A pattern to filter results by schema name.
+Within a schema pattern, “%” means match any substring of 0
+or more characters and “_” means match any one character.
+Only schema name entries matching the search pattern are returned.
+If <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> is not specified, then all tables that match
+<code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are returned. If neither <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code>
+or <code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are specified, then all tables are returned.</p></li>
+<li><p><strong>table_pattern</strong> – A pattern to filter results by table name.
+Within a table pattern, “%” means match any substring of 0 or
+more characters and “_” means match any one character. Only
+table name entries matching the search pattern are returned.
+If <code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> is not specified, then all tables that
+match <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> are returned. If neither <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> or
+<code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are specified, then all tables are returned.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.receive_message">
+<code class="sig-name descname">receive_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.receive_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive message from queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>message as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.region">
+<code class="sig-name descname">region</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.send_message">
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">message: Optional[str] = None</em>, <em class="sig-param">message_attributes: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.send_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send message to the queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – body of the message</p></li>
+<li><p><strong>message_attributes</strong> – attributes of the message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>send message response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.start_document_analysis">
+<code class="sig-name descname">start_document_analysis</code><span class="sig-paren">(</span><em class="sig-param">bucket_name_in: Optional[str] = None</em>, <em class="sig-param">object_name_in: Optional[str] = None</em>, <em class="sig-param">object_version_in: Optional[str] = None</em>, <em class="sig-param">bucket_name_out: Optional[str] = None</em>, <em class="sig-param">prefix_object_out: str = 'textract_output'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.start_document_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the asynchronous analysis of an input document
+for relationships between detected items such as key-value pairs,
+tables, and selection elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name_in</strong> – name of the S3 bucket for the input object,
+defaults to None</p></li>
+<li><p><strong>object_name_in</strong> – name of the input object, defaults to None</p></li>
+<li><p><strong>object_version_in</strong> – version of the input object, defaults to None</p></li>
+<li><p><strong>bucket_name_out</strong> – name of the S3 bucket where to save analysis result
+object, defaults to None</p></li>
+<li><p><strong>prefix_object_out</strong> – name of the S3 bucket for the analysis result object,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>job identifier</p>
+</dd>
+</dl>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Analysis</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.start_document_text_detection">
+<code class="sig-name descname">start_document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">bucket_name_in: Optional[str] = None</em>, <em class="sig-param">object_name_in: Optional[str] = None</em>, <em class="sig-param">object_version_in: Optional[str] = None</em>, <em class="sig-param">bucket_name_out: Optional[str] = None</em>, <em class="sig-param">prefix_object_out: str = 'textract_output'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.start_document_text_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the asynchronous detection of text in a document.
+Amazon Textract can detect lines of text and the words that make up a
+line of text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name_in</strong> – name of the S3 bucket for the input object,
+defaults to None</p></li>
+<li><p><strong>object_name_in</strong> – name of the input object, defaults to None</p></li>
+<li><p><strong>object_version_in</strong> – version of the input object, defaults to None</p></li>
+<li><p><strong>bucket_name_out</strong> – name of the S3 bucket where to save analysis result
+object, defaults to None</p></li>
+<li><p><strong>prefix_object_out</strong> – name of the S3 bucket for the analysis result object,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>job identifier</p>
+</dd>
+</dl>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Text</span> <span class="pre">Detection</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.upload_file">
+<code class="sig-name descname">upload_file</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">filename: Optional[str] = None</em>, <em class="sig-param">object_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#RPA.Cloud.AWS.AWS.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload single file into bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>filename</strong> – filepath for the file to be uploaded</p></li>
+<li><p><strong>object_name</strong> – name of the object in the bucket, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple of upload status and error</p>
+</dd>
+</dl>
+<p>If <cite>object_name</cite> is not given then basename of the file is
+used as <cite>object_name</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.upload_files">
+<code class="sig-name descname">upload_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.upload_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload multiple files into bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of files (2 possible ways, see above)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files uploaded</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Giving files as list of filepaths:</dt><dd><p>[‘/path/to/file1.txt’, ‘/path/to/file2.txt’]</p>
+</dd>
+<dt>Giving files as list of dictionaries (including filepath and object name):</dt><dd><p>[{‘filepath’:’/path/to/file1.txt’, ‘object_name’: ‘file1.txt’},
+{‘filepath’: ‘/path/to/file2.txt’, ‘object_name’: ‘file2.txt’}]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.AWS.AWSBase">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">AWSBase</code><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>AWS base class for generic methods</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWSBase.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWSBase.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWSBase.region">
+<code class="sig-name descname">region</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWSBase.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWSBase.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWSBase.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Cloud.AWS.RedshiftDatabaseError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">RedshiftDatabaseError</code><a class="headerlink" href="#RPA.Cloud.AWS.RedshiftDatabaseError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when the Redshift API raises a database error.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.RedshiftDatabaseError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Cloud.AWS.RedshiftDatabaseError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.RedshiftDatabaseError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.RedshiftDatabaseError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.AWS.ServiceComprehend">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceComprehend</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
+<p>Class for AWS Comprehend service</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.detect_entities">
+<code class="sig-name descname">detect_entities</code><span class="sig-paren">(</span><em class="sig-param">text: Optional[str] = None</em>, <em class="sig-param">lang='en'</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.detect_entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspects text for named entities, and returns information about them</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string. Each string must contain fewer
+that 5,000 bytes of UTF-8 encoded characters</p></li>
+<li><p><strong>lang</strong> – language code of the text, defaults to “en”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.detect_sentiment">
+<code class="sig-name descname">detect_sentiment</code><span class="sig-paren">(</span><em class="sig-param">text: Optional[str] = None</em>, <em class="sig-param">lang='en'</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.detect_sentiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspects text and returns an inference of the prevailing sentiment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string. Each string must contain fewer
+that 5,000 bytes of UTF-8 encoded characters</p></li>
+<li><p><strong>lang</strong> – language code of the text, defaults to “en”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.init_comprehend_client">
+<code class="sig-name descname">init_comprehend_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.init_comprehend_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS Comprehend client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.region">
+<code class="sig-name descname">region</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceRedshiftData</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
+<p>Class for AWS Redshift Data API Service.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.create_redshift_statement_parameters">
+<code class="sig-name descname">create_redshift_statement_parameters</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; List[Dict[str, str]]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.create_redshift_statement_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a formatted dictionary to be used in
+Redshift Data Api SQL statements.</p>
+<p><strong>Example:</strong></p>
+<p>Assume the <code class="docutils literal notranslate"><span class="pre">${SQL}</span></code> statement has the parameters <code class="docutils literal notranslate"><span class="pre">:id</span></code> and
+<code class="docutils literal notranslate"><span class="pre">:name</span></code>:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+
+<span class="p">${</span><span class="nv">params</span><span class="p">}</span><span class="gu">=</span><span class="p">    </span><span class="nf">Create sql parameters</span><span class="p">    </span><span class="s">id=123</span><span class="p">    </span><span class="s">name=Nokia</span><span class="p"></span>
+<span class="c"># params produces a data structure like so:</span>
+<span class="c">#   [</span>
+<span class="c">#        {&quot;name&quot;:&quot;id&quot;, &quot;value&quot;:&quot;123&quot;},</span>
+<span class="c">#        {&quot;name&quot;:&quot;name&quot;, &quot;value&quot;:&quot;Nokia&quot;}</span>
+<span class="c">#    ]</span>
+
+<span class="c"># Which can be used for the &#39;parameters&#39; argument.</span>
+<span class="p">${</span><span class="nv">response</span><span class="p">}</span><span class="gu">=</span><span class="p">    </span><span class="nf">Execute redshift statement</span><span class="p">    ${</span><span class="nv">SQL</span><span class="p">}    ${</span><span class="nv">params</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.describe_redshift_table">
+<code class="sig-name descname">describe_redshift_table</code><span class="sig-paren">(</span><em class="sig-param">database: str</em>, <em class="sig-param">schema: Optional[str] = None</em>, <em class="sig-param">table: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[Dict, List[Dict]]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.describe_redshift_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes the detailed information about a table from metadata
+in the cluster. The information includes its columns.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">schema</span></code> and/or <code class="docutils literal notranslate"><span class="pre">table</span></code> is not provided, the API searches
+all schemas for the provided table, or returns all tables in the
+schema or entire database.</p>
+<p>The response object is provided as a list of table meta data objects,
+utilize dot-notation or the <code class="docutils literal notranslate"><span class="pre">RPA.JSON</span></code> library to access members:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;ColumnList&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;columnDefault&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;isCaseSensitive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;isCurrency&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;isSigned&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;nullable&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;precision&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;scale&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;schemaName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;tableName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;typeName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;TableName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> – The name of the database that contains the tables
+to be described. If ommitted, will use the connected Database.</p></li>
+<li><p><strong>schema</strong> – The schema that contains the table. If no schema
+is specified, then matching tables for all schemas are returned.</p></li>
+<li><p><strong>table</strong> – The table name. If no table is specified, then all
+tables for all matching schemas are returned. If no table and
+no schema is specified, then all tables for all schemas in the
+database are returned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.execute_redshift_statement">
+<code class="sig-name descname">execute_redshift_statement</code><span class="sig-paren">(</span><em class="sig-param">sql: str</em>, <em class="sig-param">parameters: Optional[list] = None</em>, <em class="sig-param">statement_name: Optional[str] = None</em>, <em class="sig-param">with_event: bool = False</em>, <em class="sig-param">timeout: int = 40</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Tables.Table, str]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.execute_redshift_statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs an SQL statement, which can be data manipulation language
+(DML) or data definition language (DDL). This statement must be a
+single SQL statement.</p>
+<p>SQL statements can be parameterized with named parameters through
+the use of the <code class="docutils literal notranslate"><span class="pre">parameters</span></code> argument. Parameters must be dictionaries
+with the following two keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the parameter. In the SQL statement this
+will be referenced as <code class="docutils literal notranslate"><span class="pre">:name</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: The value of the parameter. Amazon Redshift implicitly
+converts to the proper data type. For more information, see
+<a class="reference external" href="https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html">Data types</a> in the <cite>Amazon Redshift Database Developer Guide</cite>.</p></li>
+</ul>
+<p>For simplicity, a helper keyword, `Create redshift statement parameters`,
+is available and can be used more naturally in Robot Framework contexts.</p>
+<p>If tabular data is returned, this keyword tries to return it as
+a table (see <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code>), if <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> is not available
+in the keyword’s scope, the data will be returned as a list of dictionaries.
+Other types of data (SQL errors and result statements) are returned
+as strings.</p>
+<p><strong>NOTE:</strong> You may modify the max built-in wait time by providing
+a timeout in seconds (default 40 seconds)</p>
+<p><strong>Robot framework example:</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+
+<span class="p">    ${</span><span class="nv">SQL</span><span class="p">}=    </span><span class="nf">Set variable</span><span class="p">    </span><span class="s">insert into mytable values (:id, :address)</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">params</span><span class="p">}=    </span><span class="nf">Create redshift statement parameters</span><span class="p"></span>
+<span class="p">    ...    </span><span class="s">id=1</span><span class="p"></span>
+<span class="p">    ...    </span><span class="s">address=Seattle</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">response</span><span class="p">}=    </span><span class="nf">Execute redshift statement</span><span class="p">    ${</span><span class="nv">SQL</span><span class="p">}    ${</span><span class="nv">params</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    ${</span><span class="nv">response</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;insert into mytable values (:id, :address)&quot;</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;address&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Seattle&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">aws</span><span class="o">.</span><span class="n">execute_redshift_statement</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> – The parameters for the SQL statement. Must consist
+of a list of dictionaries with two keys: <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p></li>
+<li><p><strong>sql</strong> – The SQL statement text to run.</p></li>
+<li><p><strong>statement_name</strong> – The name of the SQL statement. You can name
+the SQL statement when you create it to identify the query.</p></li>
+<li><p><strong>with_event</strong> – A value that indicates whether to send an event
+to the Amazon EventBridge event bus after the SQL statement runs.</p></li>
+<li><p><strong>timeout</strong> – Used to calculate the maximum wait. Exact timing
+depends on system variability becuase the underlying waiter
+does not utilize a timeout directly.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.execute_redshift_statement_asyncronously">
+<code class="sig-name descname">execute_redshift_statement_asyncronously</code><span class="sig-paren">(</span><em class="sig-param">sql: str</em>, <em class="sig-param">parameters: Optional[list] = None</em>, <em class="sig-param">statement_name: Optional[str] = None</em>, <em class="sig-param">with_event: bool = False</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.execute_redshift_statement_asyncronously" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submit a sql statement for Redshift to execute asyncronously.
+Returns the statement ID which can be used to retrieve statement
+results later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> – The parameters for the SQL statement. Must consist
+of a list of dictionaries with two keys: <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p></li>
+<li><p><strong>sql</strong> – The SQL statement text to run.</p></li>
+<li><p><strong>statement_name</strong> – The name of the SQL statement. You can name
+the SQL statement when you create it to identify the query.</p></li>
+<li><p><strong>with_event</strong> – A value that indicates whether to send an event
+to the Amazon EventBridge event bus after the SQL statement runs.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.get_redshift_statement_results">
+<code class="sig-name descname">get_redshift_statement_results</code><span class="sig-paren">(</span><em class="sig-param">statement_id: str</em>, <em class="sig-param">timeout: int = 40</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Tables.Table, int]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.get_redshift_statement_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the results of a SQL statement previously submitted
+to Redshift. If that statement has not yet completed, this keyword
+will wait for results. See `Execute Redshift Statement` for
+additional information.</p>
+<p>If the statement has tabular results, this keyword returns them
+as a table from <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> if that library is available, or
+as a list of dictionaries if not. If the statement does not have
+tabular results, it will return the number of rows affected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>statement_id</strong> – The statement id to use to retreive results.</p></li>
+<li><p><strong>timeout</strong> – An integer used to calculate the maximum wait.
+Exact timing depends on system variability becuase the
+underlying waiter does not utilize a timeout directly.
+Defaults to 40.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.init_redshift_data_client">
+<code class="sig-name descname">init_redshift_data_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">cluster_identifier: Optional[str] = None</em>, <em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">database_user: Optional[str] = None</em>, <em class="sig-param">secret_arn: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.init_redshift_data_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS Redshift Data API client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>cluster_identifier</strong> – The cluster identifier. This parameter
+is required when connecting to a cluster and authenticating
+using either Secrets Manager or temporary credentials.</p></li>
+<li><p><strong>database</strong> – The name of the database. This parameter is required
+when authenticating using either Secrets Manager or temporary
+credentials.</p></li>
+<li><p><strong>database_user</strong> – The database user name. This parameter is
+required when connecting to a cluster and authenticating using
+temporary credentials.</p></li>
+<li><p><strong>secret_arn</strong> – The name or ARN of the secret that enables access
+to the database. This parameter is required when authenticating
+using Secrets Manager.</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <code class="docutils literal notranslate"><span class="pre">Robocloud</span> <span class="pre">Vault</span></code></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_databases">
+<code class="sig-name descname">list_redshift_databases</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_databases" title="Permalink to this definition">¶</a></dt>
+<dd><p>List the databases in a cluster.</p>
+<p>Database names are returned as a list of strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_schemas">
+<code class="sig-name descname">list_redshift_schemas</code><span class="sig-paren">(</span><em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">schema_pattern: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[Dict]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_schemas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists the schemas in a database.</p>
+<p>Schema names are returned as a list of strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> – The name of the database that contains the schemas
+to list. If ommitted, will use the connected Database.</p></li>
+<li><p><strong>schema_pattern</strong> – A pattern to filter results by schema name.
+Within a schema pattern, “%” means match any substring of 0
+or more characters and “_” means match any one character.
+Only schema name entries matching the search pattern are returned.
+If <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> is not specified, then all schemas are returned.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_tables">
+<code class="sig-name descname">list_redshift_tables</code><span class="sig-paren">(</span><em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">schema_pattern: Optional[str] = None</em>, <em class="sig-param">table_pattern: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[Dict]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>List the tables in a database. If neither <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are specified, then all tables in the database
+are returned.</p>
+<p>Returned objects are structured like the below JSON in a list:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> – The name of the database that contains the tables
+to be described. If ommitted, will use the connected Database.</p></li>
+<li><p><strong>schema_pattern</strong> – A pattern to filter results by schema name.
+Within a schema pattern, “%” means match any substring of 0
+or more characters and “_” means match any one character.
+Only schema name entries matching the search pattern are returned.
+If <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> is not specified, then all tables that match
+<code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are returned. If neither <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code>
+or <code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are specified, then all tables are returned.</p></li>
+<li><p><strong>table_pattern</strong> – A pattern to filter results by table name.
+Within a table pattern, “%” means match any substring of 0 or
+more characters and “_” means match any one character. Only
+table name entries matching the search pattern are returned.
+If <code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> is not specified, then all tables that
+match <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> are returned. If neither <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> or
+<code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are specified, then all tables are returned.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.region">
+<code class="sig-name descname">region</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceRedshiftData.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.AWS.ServiceS3">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceS3</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
+<p>Class for AWS S3 service</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.create_bucket">
+<code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.create_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create S3 bucket with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean indicating status of operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.delete_bucket">
+<code class="sig-name descname">delete_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.delete_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete S3 bucket with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean indicating status of operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.delete_files">
+<code class="sig-name descname">delete_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete files in the bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of files to delete</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files deleted or <cite>False</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.download_files">
+<code class="sig-name descname">download_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em>, <em class="sig-param">target_directory: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.download_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download files from bucket to local filesystem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of S3 object names</p></li>
+<li><p><strong>target_directory</strong> – location for the downloaded files, default
+current directory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files downloaded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.init_s3_client">
+<code class="sig-name descname">init_s3_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.init_s3_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS S3 client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.list_buckets">
+<code class="sig-name descname">list_buckets</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.list_buckets" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all buckets for this account</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of buckets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.list_files">
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.list_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>List files in the bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of files</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.region">
+<code class="sig-name descname">region</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.upload_file">
+<code class="sig-name descname">upload_file</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">filename: Optional[str] = None</em>, <em class="sig-param">object_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload single file into bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>filename</strong> – filepath for the file to be uploaded</p></li>
+<li><p><strong>object_name</strong> – name of the object in the bucket, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple of upload status and error</p>
+</dd>
+</dl>
+<p>If <cite>object_name</cite> is not given then basename of the file is
+used as <cite>object_name</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.upload_files">
+<code class="sig-name descname">upload_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.upload_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload multiple files into bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of files (2 possible ways, see above)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files uploaded</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Giving files as list of filepaths:</dt><dd><p>[‘/path/to/file1.txt’, ‘/path/to/file2.txt’]</p>
+</dd>
+<dt>Giving files as list of dictionaries (including filepath and object name):</dt><dd><p>[{‘filepath’:’/path/to/file1.txt’, ‘object_name’: ‘file1.txt’},
+{‘filepath’: ‘/path/to/file2.txt’, ‘object_name’: ‘file2.txt’}]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.AWS.ServiceSQS">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceSQS</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
+<p>Class for AWS SQS service</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSQS.create_queue">
+<code class="sig-name descname">create_queue</code><span class="sig-paren">(</span><em class="sig-param">queue_name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.create_queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create queue with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>queue_name</strong> – [description], defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>create queue response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSQS.delete_message">
+<code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">receipt_handle: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.delete_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete message in the queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>receipt_handle</strong> – message handle to delete</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>delete message response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSQS.delete_queue">
+<code class="sig-name descname">delete_queue</code><span class="sig-paren">(</span><em class="sig-param">queue_name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.delete_queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete queue with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>queue_name</strong> – [description], defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>delete queue response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSQS.init_sqs_client">
+<code class="sig-name descname">init_sqs_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">queue_url: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.init_sqs_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS SQS client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>queue_url</strong> – SQS queue url</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSQS.receive_message">
+<code class="sig-name descname">receive_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.receive_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive message from queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>message as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.region">
+<code class="sig-name descname">region</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSQS.send_message">
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">message: Optional[str] = None</em>, <em class="sig-param">message_attributes: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.send_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send message to the queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – body of the message</p></li>
+<li><p><strong>message_attributes</strong> – attributes of the message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>send message response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSQS.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.AWS.ServiceSTS">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceSTS</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
+<p>Class for AWS STS Service.</p>
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSTS.assume_role">
+<code class="sig-name descname">assume_role</code><span class="sig-paren">(</span><em class="sig-param">role_arn: str</em>, <em class="sig-param">role_session_name: str</em>, <em class="sig-param">policy_arns: Optional[List[Dict]] = None</em>, <em class="sig-param">policy: Optional[str] = None</em>, <em class="sig-param">duration: int = 900</em>, <em class="sig-param">tags: Optional[List[Dict]] = None</em>, <em class="sig-param">transitive_tag_keys: Optional[List[str]] = None</em>, <em class="sig-param">external_id: Optional[str] = None</em>, <em class="sig-param">serial_number: Optional[str] = None</em>, <em class="sig-param">token_code: Optional[str] = None</em>, <em class="sig-param">source_identity: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.assume_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of temporary security credentials that you can
+use to access Amazon Web Services resources that you might not
+normally have access to. These temporary credentials consist of
+an access key ID, a secret access key, and a security token.
+Typically, you use <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code> within your account or for
+cross-account access.</p>
+<p>The credentials are returned as a dictionary with data structure
+similar to the following JSON:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;Credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;AccessKeyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;SecretAccessKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;SessionToken&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;Expiration&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2015-01-01&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;AssumedRoleUser&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;AssumedRoleId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;Arn&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;PackedPolicySize&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;SourceIdentity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>These credentials can be used to re-initialize services available
+in this library with the assumed role instead of the original
+role.</p>
+<p><strong>NOTE</strong>: For detailed information on the available arguments to this
+keyword, please see the <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html">Boto3 STS documentation</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>role_arn</strong> – The Amazon Resource Name (ARN) of the role to assume.</p></li>
+<li><p><strong>role_session_name</strong> – An identifier for the assumed role session.</p></li>
+<li><p><strong>policy_arns</strong> – The Amazon Resource Names (ARNs) of the IAM
+managed policies that you want to use as managed session policies.
+The policies must exist in the same account as the role.</p></li>
+<li><p><strong>policy</strong> – An IAM policy in JSON format that you want to use
+as an inline session policy.</p></li>
+<li><p><strong>duration</strong> – The duration, in seconds, of the role session.
+The value specified can range from 900 seconds (15 minutes
+and the default) up to the maximum session duration set for
+the role.</p></li>
+<li><p><strong>tags</strong> – A list of session tags that you want to pass. Each
+session tag consists of a key name and an associated value.</p></li>
+<li><p><strong>transitive_tag_keys</strong> – A list of keys for session tags that
+you want to set as transitive. If you set a tag key as
+transitive, the corresponding key and value passes to
+subsequent sessions in a role chain.</p></li>
+<li><p><strong>external_id</strong> – A unique identifier that might be required
+when you assume a role in another account. If the
+administrator of the account to which the role belongs
+provided you with an external ID, then provide that value in
+this parameter.</p></li>
+<li><p><strong>serial_number</strong> – The identification number of the MFA device
+that is associated with the user who is making the
+using the <code class="docutils literal notranslate"><span class="pre">assume_role</span></code> keyword.</p></li>
+<li><p><strong>token_code</strong> – The value provided by the MFA device, if the
+trust policy of the role being assumed requires MFA.</p></li>
+<li><p><strong>source_identity</strong> – The source identity specified by the
+principal that is using the <code class="docutils literal notranslate"><span class="pre">assume_role</span></code> keyword.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSTS.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSTS.init_sts_client">
+<code class="sig-name descname">init_sts_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.init_sts_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS STS client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSTS.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSTS.region">
+<code class="sig-name descname">region</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSTS.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSTS.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSTS.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.AWS.ServiceTextract">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceTextract</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
+<p>Class for AWS Textract service</p>
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.analyze_document">
+<code class="sig-name descname">analyze_document</code><span class="sig-paren">(</span><em class="sig-param">image_file: Optional[str] = None</em>, <em class="sig-param">json_file: Optional[str] = None</em>, <em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">model: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.analyze_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyzes an input document for relationships between detected items</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath (or object name) of image file</p></li>
+<li><p><strong>json_file</strong> – filepath to resulting json file</p></li>
+<li><p><strong>bucket_name</strong> – if given then using <cite>image_file</cite> from the bucket</p></li>
+<li><p><strong>model</strong> – set <cite>True</cite> to return Textract Document model, default <cite>False</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis response in json or TextractDocument model</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${response}</span><span class="p">    </span><span class="c">Analyze Document</span><span class="p">    </span><span class="c">${filename}</span><span class="p">    </span><span class="c">model=True</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${page}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{response.pages}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page.tables}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page.form}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Lines</span><span class="p">    </span><span class="c">${page.lines}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${page}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${page.form}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.convert_textract_response_to_model">
+<code class="sig-name descname">convert_textract_response_to_model</code><span class="sig-paren">(</span><em class="sig-param">response</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.convert_textract_response_to_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert AWS Textract JSON response into TextractDocument object,
+which has following structure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Document</p></li>
+<li><p>Page</p></li>
+<li><p>Tables</p></li>
+<li><p>Rows</p></li>
+<li><p>Cells</p></li>
+<li><p>Lines</p></li>
+<li><p>Words</p></li>
+<li><p>Form</p></li>
+<li><p>Field</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>response</strong> – JSON response from AWS Textract service</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>TextractDocument</cite> object</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${response}</span><span class="p">    </span><span class="c">Analyze Document</span><span class="p">    </span><span class="c">${filename}</span><span class="p"></span>
+<span class="c">${model}=</span><span class="p">    </span><span class="c">Convert Textract Response To Model</span><span class="p">    </span><span class="c">${response}</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${page}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{model.pages}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page.tables}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page.form}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Lines</span><span class="p">    </span><span class="c">${page.lines}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">    </span><span class="c">${page}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${page}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${page.form}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.detect_document_text">
+<code class="sig-name descname">detect_document_text</code><span class="sig-paren">(</span><em class="sig-param">image_file: Optional[str] = None</em>, <em class="sig-param">json_file: Optional[str] = None</em>, <em class="sig-param">bucket_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.detect_document_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects text in the input document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath (or object name) of image file</p></li>
+<li><p><strong>json_file</strong> – filepath to resulting json file</p></li>
+<li><p><strong>bucket_name</strong> – if given then using <cite>image_file</cite> from the bucket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis response in json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_cells">
+<code class="sig-name descname">get_cells</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parsed cells from the response</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cells</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_document_analysis">
+<code class="sig-name descname">get_document_analysis</code><span class="sig-paren">(</span><em class="sig-param">job_id: Optional[str] = None</em>, <em class="sig-param">max_results: int = 1000</em>, <em class="sig-param">next_token: Optional[str] = None</em>, <em class="sig-param">collect_all_results: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_document_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the results of Textract asynchronous <cite>Document Analysis</cite> operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job identifier, defaults to None</p></li>
+<li><p><strong>max_results</strong> – number of blocks to get at a time, defaults to 1000</p></li>
+<li><p><strong>next_token</strong> – pagination token for getting next set of results,
+defaults to None</p></li>
+<li><p><strong>collect_all_results</strong> – when set to True will wait until analysis is
+complete and returns all blocks of the analysis result, by default (False)
+the all blocks need to be specifically collected using <cite>next_token</cite> variable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Analysis</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c"># Wait for job completion and collect all blocks</span>
+<span class="c">${response}=</span><span class="p">    </span><span class="c">Get Document Analysis</span><span class="p">  </span><span class="c">${jobid}</span><span class="p">  </span><span class="c">collect_all_results=True</span><span class="p"></span>
+<span class="c"># Model will contain all pages of the invoice.pdf</span>
+<span class="c">${model}=</span><span class="p">    </span><span class="c">Convert Textract Response To Model</span><span class="p">    </span><span class="c">${response}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_document_text_detection">
+<code class="sig-name descname">get_document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">job_id: Optional[str] = None</em>, <em class="sig-param">max_results: int = 1000</em>, <em class="sig-param">next_token: Optional[str] = None</em>, <em class="sig-param">collect_all_results: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_document_text_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the results of Textract asynchronous <cite>Document Text Detection</cite> operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job identifier, defaults to None</p></li>
+<li><p><strong>max_results</strong> – number of blocks to get at a time, defaults to 1000</p></li>
+<li><p><strong>next_token</strong> – pagination token for getting next set of results,
+defaults to None</p></li>
+<li><p><strong>collect_all_results</strong> – when set to True will wait until analysis is
+complete and returns all blocks of the analysis result, by default (False)
+the all blocks need to be specifically collected using <cite>next_token</cite> variable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Text Detection</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c"># Wait for job completion and collect all blocks</span>
+<span class="c">${response}=</span><span class="p">   </span><span class="c">Get Document Text Detection</span><span class="p">    </span><span class="c">${jobid}</span><span class="p">  </span><span class="c">collect_all_results=True</span><span class="p"></span>
+<span class="c"># Model will contain all pages of the invoice.pdf</span>
+<span class="c">${model}=</span><span class="p">    </span><span class="c">Convert Textract Response To Model</span><span class="p">    </span><span class="c">${response}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_pages_and_text">
+<code class="sig-name descname">get_pages_and_text</code><span class="sig-paren">(</span><em class="sig-param">textract_response: dict</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_pages_and_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get pages and text out of Textract response json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>textract_response</strong> – JSON from Textract</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary, page numbers as keys and value is a list
+of text lines</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_tables">
+<code class="sig-name descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parsed tables from the response</p>
+<p>Returns <cite>RPA.Tables.Table</cite> if possible otherwise returns an dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_words">
+<code class="sig-name descname">get_words</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parsed words from the response</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>words</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.init_textract_client">
+<code class="sig-name descname">init_textract_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: Optional[str] = None</em>, <em class="sig-param">aws_key: Optional[str] = None</em>, <em class="sig-param">region: Optional[str] = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">session_token: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.init_textract_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS Textract client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>session_token</strong> – a session token associated with temporary
+credentials, such as from <code class="docutils literal notranslate"><span class="pre">Assume</span> <span class="pre">Role</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.region">
+<code class="sig-name descname">region</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.start_document_analysis">
+<code class="sig-name descname">start_document_analysis</code><span class="sig-paren">(</span><em class="sig-param">bucket_name_in: Optional[str] = None</em>, <em class="sig-param">object_name_in: Optional[str] = None</em>, <em class="sig-param">object_version_in: Optional[str] = None</em>, <em class="sig-param">bucket_name_out: Optional[str] = None</em>, <em class="sig-param">prefix_object_out: str = 'textract_output'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.start_document_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the asynchronous analysis of an input document
+for relationships between detected items such as key-value pairs,
+tables, and selection elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name_in</strong> – name of the S3 bucket for the input object,
+defaults to None</p></li>
+<li><p><strong>object_name_in</strong> – name of the input object, defaults to None</p></li>
+<li><p><strong>object_version_in</strong> – version of the input object, defaults to None</p></li>
+<li><p><strong>bucket_name_out</strong> – name of the S3 bucket where to save analysis result
+object, defaults to None</p></li>
+<li><p><strong>prefix_object_out</strong> – name of the S3 bucket for the analysis result object,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>job identifier</p>
+</dd>
+</dl>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Analysis</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.start_document_text_detection">
+<code class="sig-name descname">start_document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">bucket_name_in: Optional[str] = None</em>, <em class="sig-param">object_name_in: Optional[str] = None</em>, <em class="sig-param">object_version_in: Optional[str] = None</em>, <em class="sig-param">bucket_name_out: Optional[str] = None</em>, <em class="sig-param">prefix_object_out: str = 'textract_output'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.start_document_text_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the asynchronous detection of text in a document.
+Amazon Textract can detect lines of text and the words that make up a
+line of text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name_in</strong> – name of the S3 bucket for the input object,
+defaults to None</p></li>
+<li><p><strong>object_name_in</strong> – name of the input object, defaults to None</p></li>
+<li><p><strong>object_version_in</strong> – version of the input object, defaults to None</p></li>
+<li><p><strong>bucket_name_out</strong> – name of the S3 bucket where to save analysis result
+object, defaults to None</p></li>
+<li><p><strong>prefix_object_out</strong> – name of the S3 bucket for the analysis result object,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>job identifier</p>
+</dd>
+</dl>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Text</span> <span class="pre">Detection</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Cloud.AWS.aws_dependency_required">
+<code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">aws_dependency_required</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.aws_dependency_required" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RPA.Cloud.AWS.import_tables">
+<code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">import_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.import_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to import Tables library</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Cloud.AWS.import_vault">
+<code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">import_vault</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.import_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to import Vault/Secrets library, with old and new name.</p>
+</dd></dl>
+
 </div>
 </div>
 
