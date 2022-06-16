@@ -85,7 +85,18 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def close_all_pdfs(self) -> None:
-        """Close all opened PDF file descriptors."""
+        """Close all opened PDF file descriptors.
+
+        **Examples**
+
+        **Robot Framework**
+        
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Close Multiple PDFs
+                Close all pdfs
+        """
         file_paths = list(self.ctx.documents.keys())
         for filename in file_paths:
             self.close_pdf(filename)
@@ -93,6 +104,16 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def close_pdf(self, source_pdf: str = None) -> None:
         """Close PDF file descriptor for a certain file.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Close just one pdf
+                Close pdf   path/to/the/pdf/file.pdf
 
         :param source_pdf: filepath to the source pdf.
         :raises ValueError: if file descriptor for the file is not found.
@@ -125,11 +146,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Open my pdf file
                 Open PDF    /tmp/sample.pdf
 
         **Python**
@@ -180,19 +198,15 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            *** Settings ***
-            Library    RPA.PDF
-
-            *** Variables ***
-            ${TEMPLATE}    order.template
-            ${PDF}         result.pdf
-            &{DATA}        name=Robot Generated
-            ...            email=robot@domain.com
-            ...            zip=00100
-            ...            items=Item 1, Item 2
-
-            *** Tasks ***
+            *** Keywords ***
             Create PDF from HTML template
+                ${TEMPLATE}=    Set Variable    order.template
+                ${PDF}=         Set Variable    result.pdf
+                &{DATA}=        Create Dictionary
+                ...             name=Robot Generated
+                ...             email=robot@domain.com
+                ...             zip=00100
+                ...             items=Item 1, Item 2
                 Template HTML to PDF   ${TEMPLATE}  ${PDF}  ${DATA}
 
         **Python**
@@ -242,11 +256,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Create PDF from HTML
                 HTML to PDF    ${html_content_as_string}  /tmp/output.pdf
 
         .. code-block:: python
@@ -255,7 +266,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def create_pdf_from_html():
                 pdf.html_to_pdf(html_content_as_string, "/tmp/output.pdf")
 
         :param content: HTML content.
@@ -286,12 +297,13 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Get PDF metadata
                 ${metadata}=    Get PDF Info    /tmp/sample.pdf
+
+            *** Keywords ***
+            Get metadata from PDF that is already opened
+                ${metadata}=    Get PDF Info
 
         **Python**
 
@@ -301,7 +313,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def get_pdf_metadata():
                 metadata = pdf.get_pdf_info("/tmp/sample.pdf")
 
         :param source_path: filepath to the source PDF.
@@ -349,12 +361,13 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Is PDF encrypted
                 ${is_encrypted}=    Is PDF Encrypted    /tmp/sample.pdf
+
+            *** Keywords ***
+            Is open PDF encrypted
+                ${is_encrypted}=    Is PDF Encrypted
 
         **Python**
 
@@ -383,12 +396,12 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Number of pages in PDF
                 ${page_count}=    Get Number Of Pages    /tmp/sample.pdf
+
+            Number of pages in opened PDF
+                ${page_count}=    Get Number Of Pages
 
         **Python**
 
@@ -398,7 +411,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def number_of_pages_in_pdf():
                 page_count = pdf.get_number_of_pages("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf
@@ -421,11 +434,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Jump to another PDF
                 Switch to PDF    /tmp/another.pdf
 
         **Python**
@@ -436,7 +446,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def jump_to_another_pdf():
                 pdf.switch_to_pdf("/tmp/sample.pdf")
 
 
@@ -479,12 +489,12 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Text extraction from PDF
                 ${text}=    Get Text From PDF    /tmp/sample.pdf
+
+            Text extraction from open PDF
+                ${text}=    Get Text From PDF
 
         **Python**
 
@@ -494,7 +504,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def text_extraction_from_pdf():
                 text = pdf.get_text_from_pdf("/tmp/sample.pdf")
 
 
@@ -541,13 +551,15 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Save PDF pages to a new document
                 ${pages}=    Extract Pages From PDF
                 ...          source_path=/tmp/sample.pdf
+                ...          output_path=/tmp/output.pdf
+                ...          pages=5
+
+            Save PDF pages from open PDF to a new document
+                ${pages}=    Extract Pages From PDF
                 ...          output_path=/tmp/output.pdf
                 ...          pages=5
 
@@ -559,7 +571,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def save_pdf_pages_to_a_new_document():
                 pages = pdf.extract_pages_from_pdf(
                     source_path="/tmp/sample.pdf",
                     output_path="/tmp/output.pdf",
@@ -603,11 +615,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            PDF page rotation
                 Rotate Page
                 ...          source_path=/tmp/sample.pdf
                 ...          output_path=/tmp/output.pdf
@@ -621,7 +630,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def rotate_page():
+            def pdf_page_rotation():
                 pages = pdf.rotate_page(
                     source_path="/tmp/sample.pdf",
                     output_path="/tmp/output.pdf",
@@ -675,12 +684,17 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Secure this PDF
                 Encrypt PDF    /tmp/sample.pdf
+
+            Secure this PDF and set passwords
+                Encrypt PDF
+                ...    source_path=/tmp/sample.pdf
+                ...    output_path=/tmp/new/sample_encrypted.pdf
+                ...    user_pwd=complex_password_here
+                ...    owner_pwd=different_complex_password_here
+                ...    use_128bit=${TRUE}
 
         **Python**
 
@@ -690,7 +704,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def secure_this_pdf():
                 pdf.encrypt_pdf("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf.
@@ -728,11 +742,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Make PDF human readable
                 ${success}=  Decrypt PDF    /tmp/sample.pdf
 
         **Python**
@@ -743,7 +754,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def make_pdf_human_readable():
                 success = pdf.decrypt_pdf("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf.
@@ -790,12 +801,12 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Image fetch
                 ${figures}=  Get All Figures    /tmp/sample.pdf
+
+            Image fetch from open PDF
+                ${figures}=  Get All Figures
 
         **Python**
 
@@ -805,7 +816,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def image_fetch():
                 figures = pdf.get_all_figures("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf.
@@ -836,11 +847,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keyword ***
+            Indicate approved with watermark
                 Add Watermark Image To PDF
                 ...             image_path=approved.png
                 ...             source_path=/tmp/sample.pdf
@@ -854,7 +862,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def indicate_approved_with_watermark():
                 pdf.add_watermark_image_to_pdf(
                     image_path="approved.png"
                     source_path="/tmp/sample.pdf"
@@ -944,8 +952,29 @@ class DocumentKeywords(LibraryContext):
     ):
         """Save the contents of a PyPDF2 reader to a new file.
 
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Save changes to PDF
+                Save PDF    /tmp/output.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def save_changes_to_pdf():
+                pdf.save_pdf(output_path="output/output.pdf")
+
         :param output_path: filepath to target PDF
-        :param reader: a PyPDF2 reader.
+        :param reader: a PyPDF2 reader
         """
         writer = PyPDF2.PdfFileWriter()
         for idx in range(reader.getNumPages()):
@@ -989,6 +1018,34 @@ class DocumentKeywords(LibraryContext):
         Figure needs to have byte `stream` and that needs to be recognized
         as image format for successful save.
 
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Figure to Image
+                ${image_file_path}=     Save figure as image
+                ...             figure=figure_identifier
+                ...             images_folder=/tmp/images
+                ...             file_prefix=file_name_here
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def figure_to_image():
+                image_file_path = pdf.save_figure_as_image(
+                    figure="figure_identifier"
+                    images_folder="/tmp/images"
+                    file_prefix="file_name_here"
+                )
+
         :param figure: PDF Figure object which will be saved as an image
         :param images_folder: directory where image files will be created
         :param file_prefix: image filename prefix
@@ -1025,6 +1082,36 @@ class DocumentKeywords(LibraryContext):
         """Save figures from given PDF document as image files.
 
         If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Figures to Images
+                ${image_filenames}=    Save figures as image
+                ...             source_path=/tmp/sample.pdf
+                ...             images_folder=/tmp/images
+                ...             pages=${4}
+                ...             file_prefix=file_name_here
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def figures_to_images():
+                image_filenames = pdf.save_figures_as_image(
+                    source_path="/tmp/sample.pdf"
+                    images_folder="/tmp/images"
+                    pages=4
+                    file_prefix="file_name_here"
+                )
 
         :param source_path: filepath to PDF document
         :param images_folder: directory where image files will be created
@@ -1079,10 +1166,7 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
+            *** Keywords ***
             Add files to pdf
                 ${files}=    Create List
                 ...    ${TESTDATA_DIR}${/}invoice.pdf
