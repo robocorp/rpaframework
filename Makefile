@@ -78,6 +78,7 @@ docs-libdoc: install docs-libspec  ## Generate documentation using Robot Framewo
 		--exclude RPA.Dialogs.*\
 		--exclude RPA.Windows.keywords*\
 		--exclude RPA.Windows.utils*\
+		--exclude RPA.Cloud.AWS.textract*\
 		rpaframework
 
 	poetry run python -c "import shutil; shutil.copy2('docs/source/template/iframeResizer.contentWindow.map', 'docs/source/include/libdoc/')"
@@ -98,6 +99,7 @@ docs-libdoc: install docs-libspec  ## Generate documentation using Robot Framewo
 		--exclude RPA.Dialogs.*\
 		--exclude RPA.Windows.keywords*\
 		--exclude RPA.Windows.utils*\
+		--exclude RPA.Cloud.AWS.textract*\
 		rpaframework
 
 docs-libspec:
@@ -117,6 +119,7 @@ docs-libspec:
 		--exclude RPA.Dialogs.*\
 		--exclude RPA.Windows.keywords*\
 		--exclude RPA.Windows.utils*\
+		--exclude RPA.Cloud.AWS.textract*\
 		rpaframework
 
 changelog: ## Print changes in latest release

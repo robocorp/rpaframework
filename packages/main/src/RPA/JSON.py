@@ -1,14 +1,40 @@
 import json
 import logging
-from typing import Any, Dict, List, Union, Optional
+from typing import Any, Callable, Dict, Hashable, List, Optional, Union
 
 from jsonpath_ng import Index, Fields
-from jsonpath_ng.ext import parse
+from jsonpath_ng.ext.filter import Filter
+from jsonpath_ng.ext.parser import ExtentedJsonPathParser
 
 from robot.api.deco import keyword
 
 
-JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
+JSONValue = Optional[Union[str, int, float, bool]]
+JSONType = Union[Dict[Hashable, "JSONType"], List["JSONType"], JSONValue]
+
+
+class RPAFilter(Filter):
+    """Extends default filtering JSON path logic."""
+
+    def filter(self, fn: Callable[[JSONType], bool], data: JSONType) -> JSONType:
+        for datum in reversed(self.find(data)):
+            index_obj = datum.path
+            if isinstance(data, dict):
+                index_obj.index = list(data)[index_obj.index]
+            index_obj.filter(fn, data)
+        return data
+
+
+class RPAJsonPathParser(ExtentedJsonPathParser):
+    """Extends the default JSON path parser found in `jsonpath_ng.ext`."""
+
+    def p_filter(self, p):
+        """filter : '?' expressions"""
+        p[0] = RPAFilter(p[2])
+
+
+def parse(path: str, debug: bool = False) -> RPAJsonPathParser:
+    return RPAJsonPathParser(debug=debug).parse(path)
 
 
 class JSON:
@@ -240,7 +266,7 @@ class JSON:
         indent: Optional[int] = None,
         encoding: str = "utf-8",
     ) -> None:
-        """Save a JSON serializable object or a string containg
+        """Save a JSON serializable object or a string containing
         a JSON value into a file.
 
         :param doc: JSON serializable object or string
@@ -379,7 +405,7 @@ class JSON:
             print(after)
 
         """  # noqa: E501
-        self.logger.info('Add to JSON with expression: "%s"', expr)
+        self.logger.info("Add to JSON with expression: %r", expr)
         for match in parse(expr).find(doc):
             if isinstance(match.value, dict):
                 match.value.update(value)
@@ -399,8 +425,9 @@ class JSON:
 
         :param doc: JSON serializable object or string
         :param expr: jsonpath expression
-        :return: string containg the match OR None if no matches
-        :raises ValueError: if more than one match
+        :param default: default value to return in the absence of a match
+        :return: string containing the match OR `default` if there are no matches
+        :raises ValueError: if more than one match is discovered
 
         Short Robot Framework Example:
 
@@ -466,18 +493,16 @@ class JSON:
                 Set suite variable    ${JSON_DOC}    ${doc}
 
         """  # noqa: E501
-        self.logger.info('Get value from JSON with expression: "%s"', expr)
+        self.logger.info("Get value from JSON with expression: %r", expr)
         result = [match.value for match in parse(expr).find(doc)]
-        if len(result) == 0:
-            return default
-        elif len(result) == 1:
-            return result[0]
-        else:
+        if len(result) > 1:
             raise ValueError(
                 "Found {count} matches: {values}".format(
                     count=len(result), values=", ".join(str(r) for r in result)
                 )
             )
+
+        return result[0] if result else default
 
     @keyword("Get values from JSON")
     def get_values_from_json(self, doc: JSONType, expr: str) -> list:
@@ -575,7 +600,7 @@ class JSON:
                 Set suite variable    ${JSON_DOC}    ${doc}
 
         """  # noqa: E501
-        self.logger.info('Get values from JSON with expression: "%s"', expr)
+        self.logger.info("Get values from JSON with expression: %r", expr)
         return [match.value for match in parse(expr).find(doc)]
 
     @keyword("Update value to JSON")
@@ -594,7 +619,7 @@ class JSON:
 
         .. code:: robotframework
 
-            *** Task ***
+            *** Tasks ***
             Change the name key for all people
                 &{before}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
                 &{after}=     Update value to JSON     ${before}   $.People[*].Name    JohnMalkovich
@@ -671,7 +696,7 @@ class JSON:
                 Set suite variable    ${JSON_DOC}    ${doc}
 
         """  # noqa: E501
-        self.logger.info('Update JSON with expression: "%s"', expr)
+        self.logger.info("Update JSON with expression: %r", expr)
         for match in parse(expr).find(doc):
             path = match.path
             if isinstance(path, Index):
@@ -708,6 +733,5 @@ class JSON:
             print(after)
 
         """  # noqa: E501
-        self.logger.info('Delete from JSON with expression: "%s"', expr)
-        parse(expr).filter(lambda _: True, doc)
-        return doc
+        self.logger.info("Delete from JSON with expression: %r", expr)
+        return parse(expr).filter(lambda _: True, doc)

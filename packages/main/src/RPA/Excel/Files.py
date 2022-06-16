@@ -235,7 +235,7 @@ class Files:
             Create Workbook    path=${OUTPUT_DIR}${/}orders.xls    fmt=xls
             Save Workbook
 
-        .. code_block:: python
+        .. code-block:: python
 
             # Create modern format workbook with defaults
             lib = Files()
@@ -319,6 +319,8 @@ class Files:
     def close_workbook(self):
         """Close the active workbook.
 
+        Examples:
+
         .. code-block:: robotframework
 
             # Close active workbook
@@ -343,6 +345,8 @@ class Files:
         :param path: Path to save to. If not given, uses path given
                      when opened or created.
 
+        Examples:
+
         .. code-block:: robotframework
 
             # Saving the active workbook to a new location/filename or saving to
@@ -356,6 +360,7 @@ class Files:
             Save Workbook
 
         .. code-block:: python
+
             # Saving the active workbook to a new location/filename or saving to
             # a new location/filename
             # Note: You cannot use Save Workbook to convert from XLSX to XLS
@@ -390,13 +395,17 @@ class Files:
     def list_worksheets(self):
         """List all names of worksheets in the given workbook.
 
+        Examples:
+
         .. code-block:: robotframework
+
             # List Worksheets will read the worksheet names into a list variable
             # The variable should be declared with the List type "@" when being used
             # to store the sheet names from the List Worksets keyword
             @{sheets}=    List Worksheets
 
         .. code-block:: python
+
             # List Worksheets will read the worksheet names into a list variable
             # The variable should be declared with the List type "@" when being used
             # to store the sheet names from the List Worksets keyword
@@ -411,13 +420,17 @@ class Files:
 
         :param name: Name of worksheet you are looking for
 
+        Examples:
+
         .. code-block:: robotframework
+
             # To use Worksheet Exists in a conditional statement set it to
             # a variable first, like you see here, and then compare the
             # variable to ${TRUE} or ${FALSE}
             ${Does_Worksheet_Exist}=    Worksheet Exists    Sheet
 
         .. code-block:: python
+
             Does_Worksheet_Exist = lib.worksheet_exists("Sheet")
         """
         assert self.workbook, "No active workbook"
@@ -426,10 +439,14 @@ class Files:
     def get_active_worksheet(self):
         """Get the name of the worksheet which is currently active.
 
+        Examples:
+
         .. code-block:: robotframework
+
             ${Active_Worksheet}=    Get Active Worksheet
 
         .. code-block:: python
+
             Active_Worksheet = lib.get_active_worksheet()
         """
         assert self.workbook, "No active workbook"
@@ -512,6 +529,7 @@ class Files:
             Save Workbook
 
         .. code-block:: python
+
             # Create a new blank worksheet named "Customers"
             lib.create_worksheet("Customers")
 

@@ -1,9 +1,7 @@
-import os
-import tempfile
-from pathlib import Path
+import urllib.parse
 import pytest
 
-from RPA.Browser.Selenium import Selenium
+from RPA.Browser.Selenium import Selenium, ensure_scheme
 
 from . import RESOURCES_DIR, temp_filename
 
@@ -51,3 +49,19 @@ class TestBrowserFunctionality:
             library.print_to_pdf(output_path=None)
 
         assert str(err.value) == expected
+
+
+@pytest.mark.parametrize(
+    "url,default,scheme",
+    [
+        ("https://www.google.com", "https", "https"),
+        ("http://www.google.com", "https", "http"),
+        ("www.google.com", "https", "https"),
+        ("about:config", "https", "about"),
+        ("www.google.com", None, ""),
+    ],
+)
+def test_ensure_scheme(url, default, scheme):
+    result = ensure_scheme(url, default)
+    parsed = urllib.parse.urlsplit(result)
+    assert parsed.scheme == scheme
