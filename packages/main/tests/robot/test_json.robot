@@ -39,6 +39,8 @@ Delete values from JSON
     Should Not Contain    ${data}[windows]    domain
     ${data}    Delete from JSON    ${data}    $.windows
     Should Not Contain    ${data}    windows
+    ${data}    Delete from JSON    ${data}    $.credentials[?(@.login=="robot")]
+    Should Not Contain    ${data}[credentials]    sap
 
 Get value from JSON
     [Setup]    Test setup for most cases

@@ -411,7 +411,6 @@ class Application:
             account_folder = self._get_account_folder(namespace, account_name)
             if account_folder:
                 folder = self._get_matching_folder(email_folder, account_folder)
-                self.logger.warning(folder)
             else:
                 raise AttributeError("Did not find account by name '%s'" % account_name)
         else:
@@ -436,7 +435,7 @@ class Application:
             folders = folder.Folders
         for f in folders:
             if folder_name == f.Name:
-                self.logger.warning("Found matching folder: %s", f.Name)
+                self.logger.debug("Found matching folder: %s", f.Name)
                 return f
             emails = self._get_matching_folder(folder_name, f)
             if emails:
