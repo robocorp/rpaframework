@@ -1,7 +1,7 @@
 # pylint: disable=C0411,C0412,C0413
 import logging
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Optional, Union
 from urllib.parse import urlparse
 
 import RequestsLibrary.log
@@ -69,9 +69,21 @@ from RequestsLibrary import RequestsLibrary  # noqa: E402
 
 
 class HTTP(RequestsLibrary):
-    """RPA Framework HTTP library that extends functionality of RequestsLibrary,
-    for more information see: https://github.com/MarketSquare/robotframework-requests
-    """
+    """The *RPA.HTTP* library extends functionality of the `RequestsLibrary`_.
+    See that documentation for several examples of how to issue ``GET``
+    requests and utilize the returned ``result`` objects.
+
+    .. _RequestsLibrary: https://marketsquare.github.io/robotframework-requests/doc/RequestsLibrary.html
+
+    This extension provides helper keywords to get an HTTP resource on a
+    session. The ``HTTP Get`` and ``Download`` keywords will initiate a
+    session if one does not exist for the provided URL, or use an existing
+    session. When using these keywords, you do not need to manage
+    sessions with ``Create Session``. Session management is still
+    required if you use the underlying session keywords, e.g.,
+    ``* On Session``.
+
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "reST"
@@ -86,7 +98,7 @@ class HTTP(RequestsLibrary):
     def http_get(
         self,
         url: str,
-        target_file: str = None,
+        target_file: Optional[str] = None,
         verify: Union[bool, str] = True,
         force_new_session: bool = False,
         overwrite: bool = False,
@@ -100,6 +112,23 @@ class HTTP(RequestsLibrary):
         The old session will be used if the URL scheme and the host are the same as
         previously, e.g., 'https://www.google.fi' part of the URL.
 
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library    RPA.HTTP
+
+            *** Variables ***
+            ${DOWNLOAD_PATH}=   ${OUTPUT DIR}${/}downloads
+            ${WORD_EXAMPLE}=    https://file-examples.com/wp-content/uploads/2017/02/file-sample_100kB.doc
+            ${EXCEL_EXAMPLE}=   https://file-examples.com/wp-content/uploads/2017/02/file_example_XLS_10.xls
+
+            *** Tasks ***
+            Download files with reused session
+                # Starts a new session
+                HTTP Get    ${WORD_EXAMPLE}    target_file=${DOWNLOAD_PATH}${/}word-example.doc
+                # Uses the previous session
+                HTTP Get    ${EXCEL_EXAMPLE}    target_file=${DOWNLOAD_PATH}${/}excel-example.xls
+
         :param url: target URL for GET request
         :param target_file: filepath to save request content, default ``None``
         :param verify: if SSL verification should be done, default ``True``,
@@ -110,7 +139,7 @@ class HTTP(RequestsLibrary):
             the target file, default ``False``
         :param stream: if ``False``, the response content will be immediately downloaded
         :return: request response as a dict
-        """
+        """  # noqa: E501
         uc = urlparse(url)
 
         http_host = f"{uc.scheme}://{uc.netloc}"
@@ -159,7 +188,7 @@ class HTTP(RequestsLibrary):
     def download(
         self,
         url: str,
-        target_file: str = None,
+        target_file: Optional[str] = None,
         verify: Union[bool, str] = True,
         force_new_session: bool = False,
         overwrite: bool = False,
@@ -173,6 +202,25 @@ class HTTP(RequestsLibrary):
         in the path, then that is used as ``target_file`` to save to. By default,
         the filename will be "downloaded.html".
 
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library    RPA.HTTP
+
+            *** Variables ***
+            ${DOWNLOAD_PATH}=   ${OUTPUT DIR}${/}downloads
+            ${WORD_EXAMPLE}=    https://file-examples.com/wp-content/uploads/2017/02/file-sample_100kB.doc
+            ${EXCEL_EXAMPLE}=   https://file-examples.com/wp-content/uploads/2017/02/file_example_XLS_10.xls
+
+            *** Tasks ***
+            Download files with reused session with provided file names
+                # Starts a new session
+                Download    ${WORD_EXAMPLE}    target_file=${DOWNLOAD_PATH}
+                # Uses the previous session
+                Download    ${EXCEL_EXAMPLE}    target_file=${DOWNLOAD_PATH}
+                # Above files are downloaded using the same names as they have
+                # on the remote server.
+
         :param url: target URL for GET request
         :param target_file: filepath to save request content, default ``None``
         :param verify: if SSL verification should be done, default ``True``,
@@ -183,7 +231,7 @@ class HTTP(RequestsLibrary):
          the target file, default ``False``
         :param stream: if ``False`` the response content will be immediately downloaded
         :return: request response as a dict
-        """
+        """  # noqa: E501
         response = self.http_get(
             url,
             verify=verify,
