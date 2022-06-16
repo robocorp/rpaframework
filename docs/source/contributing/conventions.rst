@@ -33,7 +33,7 @@ Packages should be reserved according to the `Naming`_ policy. Packages should
 also include the correct `trove classifiers <https://pypi.org/classifiers/>`_
 to make finding them easier.
 
-For Robocode Lab usage, the packages should be installable via Conda. This
+Deprecated: For Robocode Lab usage, the packages should be installable via Conda. This
 can be handled in either pip interop mode (in Conda) or by releasing
 into completely new packages into a Conda channel. The maintenance burden for
 the latter can be eased by having a separate Robocorp channel.
@@ -147,7 +147,7 @@ be validated with a tool such as ``mypy``.
 IPython / Notebook support
 --------------------------
 
-Robocode Lab is based on the IPython / Jupyter Notebook project, which allows
-libraries to visualize output and create interactive widgets. This is an
-integral part of explorative RPA workflow, and should be taken into account
+Deprecated: Robocode Lab is based on the IPython / Jupyter Notebook project, which
+allows libraries to visualize output and create interactive widgets. This is an
+integral part of the exploratory RPA workflow, and should be taken into account
 while developing libraries.
