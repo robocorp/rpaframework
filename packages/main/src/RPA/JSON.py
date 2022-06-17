@@ -9,8 +9,8 @@ from jsonpath_ng.ext.parser import ExtentedJsonPathParser
 from robot.api.deco import keyword
 
 
-JSONValue = Optional[Union[str, int, float, bool]]
-JSONType = Union[Dict[Hashable, "JSONType"], List["JSONType"], JSONValue]
+JSONValue = Optional[Union[str, int, float, bool, "JSONType"]]
+JSONType = Union[Dict[Hashable, JSONValue], List[JSONValue], JSONValue]
 
 
 class RPAFilter(Filter):
