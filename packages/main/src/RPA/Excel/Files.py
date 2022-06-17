@@ -635,8 +635,8 @@ class Files:
     def read_worksheet_as_table(
         self,
         name: Optional[str] = None,
-        header: Optional[bool] = False,
-        trim: Optional[bool] = True,
+        header: bool = False,
+        trim: bool = True,
         start: Optional[int] = None,
     ) -> Tables:
         """Read the contents of a worksheet into a Table container. Allows
