@@ -130,6 +130,14 @@ class FileSystem:
         :param include_dirs:    include directories in results
         :param include_files:   include files in results
         :return:                list of paths that match the pattern
+
+        Example:
+
+        .. code-block:: robotframework
+
+            *** Tasks  ***
+            Finding files recursively
+                Find files    ./output/*
         """
         pattern = Path(pattern)
 
