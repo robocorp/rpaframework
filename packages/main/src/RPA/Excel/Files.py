@@ -202,7 +202,7 @@ class Files:
         )
 
     def create_workbook(
-        self, path: Optional[str] = None, fmt: Optional[str] = "xlsx"
+        self, path: Optional[str] = None, fmt: str = "xlsx"
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Create and open a new Excel workbook.
 
