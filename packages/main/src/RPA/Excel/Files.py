@@ -684,7 +684,7 @@ class Files:
         self,
         content: Any,
         name: Optional[str] = None,
-        header: Optional[bool] = False,
+        header: bool = False,
         start: Optional[int] = None,
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Append values to the end of the worksheet.
