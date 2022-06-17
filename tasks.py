@@ -5,7 +5,7 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
-from invoke import task, call, ParseError
+from invoke import Promise, task, call, ParseError
 
 try:
     import toml
@@ -24,6 +24,8 @@ def _git_root():
 GIT_ROOT = _git_root()
 PACKAGES_ROOT = GIT_ROOT / "packages"
 DOCS_ROOT = GIT_ROOT / "docs"
+DOCS_SOURCE_DIR = DOCS_ROOT / "source"
+DOCS_BUILD_DIR = DOCS_ROOT / "build" / "html"
 TOOLS_DIR = GIT_ROOT / "tools"
 GIT_HOOKS_DIR = GIT_ROOT / "config" / "git-hooks"
 
@@ -50,23 +52,22 @@ DOCS_CLEAN_PATTERNS = [
     "docs/source/include/latest.json",
     "docs/source/json",
 ]
-DOCGEN_EXCLUDES = " ".join(
-    [
-        "--exclude RPA.core*",
-        "--exclude RPA.recognition*",
-        "--exclude RPA.scripts*",
-        "--exclude RPA.Desktop.keywords*",
-        "--exclude RPA.Desktop.utils*",
-        "--exclude RPA.PDF.keywords*",
-        "--exclude RPA.Cloud.objects*",
-        "--exclude RPA.Cloud.Google.keywords*",
-        "--exclude RPA.Robocorp.utils*",
-        "--exclude RPA.Dialogs.*",
-        "--exclude RPA.Windows.keywords*",
-        "--exclude RPA.Windows.utils*",
-        "--exclude RPA.Cloud.AWS.textract*",
-    ]
-)
+DOCGEN_EXCLUDES = [
+    "--exclude RPA.core*",
+    "--exclude RPA.recognition*",
+    "--exclude RPA.scripts*",
+    "--exclude RPA.Desktop.keywords*",
+    "--exclude RPA.Desktop.utils*",
+    "--exclude RPA.PDF.keywords*",
+    "--exclude RPA.Cloud.objects*",
+    "--exclude RPA.Cloud.Google.keywords*",
+    "--exclude RPA.Robocorp.utils*",
+    "--exclude RPA.Dialogs.*",
+    "--exclude RPA.Windows.keywords*",
+    "--exclude RPA.Windows.utils*",
+    "--exclude RPA.Cloud.AWS.textract*",
+]
+
 EXPECTED_POETRY_CONFIG = {
     "virtualenvs": {"in-project": True, "create": True, "path": "null"},
     "experimental": {"new-installer": True},
@@ -110,8 +111,12 @@ def pip(ctx, command, **kwargs):
     return _run(ctx, "pip", command, **kwargs)
 
 
-def make(ctx, command, **kwargs):
-    return _run(ctx, "make", command, **kwargs)
+def sphinx(ctx, command, **kwargs):
+    return poetry(ctx, f"run sphinx-build {command}", **kwargs)
+
+
+def docgen(ctx, command, *flags, **kwargs):
+    return poetry(ctx, f"run docgen {' '.join(flags)} {command}", **kwargs)
 
 
 def python_tool(ctx, tool, *args, **kwargs):
@@ -270,44 +275,50 @@ def install_local(ctx, package):
                 poetry(ctx, "install")
 
 
+@task
+def install_node(ctx):
+    """Installs and configures a node instance in the poetry .venv.
+    Primarily used for ``Playwright`` tasks.
+    """
+    poetry(ctx, "run rfbrowser init --skip-browsers")
+
+
 @task(pre=[install])
-def build_libspec(ctx):
-    """Generates library specifications using ``docgen``"""
-    poetry(
-        ctx,
-        "run docgen "
-        + "--no-patches "
-        + "--format libspec "
-        + "output docs/source/libspec/ "
-        + DOCGEN_EXCLUDES
-        + " rpaframework",
-    )
-
-
-@task(pre=[install, build_libspec])
 def build_libdocs(ctx):
-    """Generates library documentation using ``docgen``"""
-    poetry(
+    """Generates library specification and documentation using ``docgen``"""
+    libspec_promise = docgen(
         ctx,
-        "run docgen "
-        + "--template docs/source/template/libdoc/libdoc.html "
-        + "--format html "
-        + "--ouput docs/source/include/libdoc/ "
-        + DOCGEN_EXCLUDES
-        + " rpaframework",
+        "rpaframework",
+        "--no-patches",
+        "--format libspec",
+        "--output docs/source/libspec/",
+        *DOCGEN_EXCLUDES,
+        asynchronous=True,
     )
+    html_promise = docgen(
+        ctx,
+        "rpaframework",
+        "--template docs/source/template/libdoc/libdoc.html",
+        "--format html",
+        "--output docs/source/include/libdoc/",
+        *DOCGEN_EXCLUDES,
+        asynchronous=True,
+    )
+    json_promise = docgen(
+        ctx,
+        "rpaframework",
+        "--no-patches",
+        "--format json-html",
+        "--output docs/source/json/",
+        *DOCGEN_EXCLUDES,
+        asynchronous=True,
+    )
+    libspec_promise.join()
+    html_promise.join()
+    json_promise.join()
     shutil.copy2(
         "docs/source/template/iframeResizer.contentWindow.map",
         "docs/source/include/libdoc/",
-    )
-    poetry(
-        ctx,
-        "run docgen "
-        + "--no-patches "
-        + "--format json-html "
-        + "--output docs/source/json/ "
-        + DOCGEN_EXCLUDES
-        + " rpaframework",
     )
 
 
@@ -320,8 +331,7 @@ def build_docs(ctx):
     If you are developing documentation for an optional package, you must
     use the appropriate ``invoke install-local`` command first.
     """
-    with ctx.cd(DOCS_ROOT):
-        make(ctx, "clean")
+    sphinx(ctx, f"-M clean {DOCS_SOURCE_DIR} {DOCS_BUILD_DIR}")
     python_tool(ctx, "todos", "packages/main/src", "docs/source/contributing/todos.rst")
     python_tool(
         ctx,
@@ -329,8 +339,7 @@ def build_docs(ctx):
         "docs/source/json/",
         "docs/source/include/latest.json",
     )
-    with ctx.cd(DOCS_ROOT):
-        make(ctx, "html")
+    sphinx(ctx, f"-b html -j auto {DOCS_SOURCE_DIR} {DOCS_BUILD_DIR}")
     python_tool(ctx, "rss")
 
 
