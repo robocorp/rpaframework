@@ -943,7 +943,7 @@ class Files:
         row: int,
         column: Union[int, str],
         path: str,
-        scale: Optional[float] = 1.0,
+        scale: float = 1.0,
         name: Optional[str] = None,
     ) -> None:
         """Insert an image into the given cell.
