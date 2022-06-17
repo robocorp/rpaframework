@@ -434,7 +434,7 @@ class Files:
         """Return True if worksheet with given name is in workbook.
 
         :param name: Name of worksheet you are looking for
-        :return: `True` if the worksheet exists; else `False`
+        :return: `True` if the worksheet exists, `False` otherwise
 
         Examples:
 
