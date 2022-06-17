@@ -5,11 +5,16 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Deprecate *Lab* references under documentation.
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.1.1 - 17 June 2022
+---------------------
+
+- Library **RPA.JSON** (:issue:`548`): Fix *libspec* infinite recursion on ``JSONType``
+  type.
+- Deprecate *Lab* references under documentation.
 
 15.1.0 - 15 June 2022
 ---------------------

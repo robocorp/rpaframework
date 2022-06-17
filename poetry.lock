@@ -135,14 +135,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.10"
+version = "1.24.11"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.10,<1.28.0"
+botocore = ">=1.27.11,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -151,7 +151,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.10"
+version = "1.27.11"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -356,7 +356,7 @@ termcolor = "*"
 
 [[package]]
 name = "fpdf2"
-version = "2.5.4"
+version = "2.5.5"
 description = "Simple & fast PDF generation for Python"
 category = "main"
 optional = false
@@ -364,7 +364,7 @@ python-versions = "*"
 
 [package.dependencies]
 defusedxml = "*"
-Pillow = ">=9.1.0"
+Pillow = ">=6.2.2"
 
 [[package]]
 name = "furl"
@@ -1682,7 +1682,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "15.1.0"
+version = "15.1.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -2444,12 +2444,12 @@ black = [
     {file = "black-22.3.0.tar.gz", hash = "sha256:35020b8886c022ced9282b51b5a875b6d1ab0c387b31a065b84db7c33085ca79"},
 ]
 boto3 = [
-    {file = "boto3-1.24.10-py3-none-any.whl", hash = "sha256:32ffc0fd50408acc710cf5ce40037aa3c14926d6e3f6fbf61ed5990fb63cd881"},
-    {file = "boto3-1.24.10.tar.gz", hash = "sha256:88fd816274d4b64bcf90889441d4efa5f16a0048ed670bc33cbd0f5a678313a6"},
+    {file = "boto3-1.24.11-py3-none-any.whl", hash = "sha256:19d6fb2b5e51f10e7b5d551a111cf9c64b9a5144b2838493ac41be0706e590cf"},
+    {file = "boto3-1.24.11.tar.gz", hash = "sha256:79fc9699006af26de4413105e458af5f1626ba32d1f00fa0b3e8b94c2b16e2dc"},
 ]
 botocore = [
-    {file = "botocore-1.27.10-py3-none-any.whl", hash = "sha256:24ec42b4f29a50f7ef78f9f863c3c25e00f65b5a48db669c8068457789a90803"},
-    {file = "botocore-1.27.10.tar.gz", hash = "sha256:b39da97452c9e2c856e7778d8c908252394da81e2e5792f1d4cb0ece4ce1043a"},
+    {file = "botocore-1.27.11-py3-none-any.whl", hash = "sha256:8efab7f85156705cbe532aeb17b065b67ba32addc3270d9000964b98c07bb20a"},
+    {file = "botocore-1.27.11.tar.gz", hash = "sha256:92f099a36df832d7f151682e1efa8e1d47d23a5cedde8692adcaa6420bcb18aa"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2584,8 +2584,8 @@ fire = [
     {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
 ]
 fpdf2 = [
-    {file = "fpdf2-2.5.4-py2.py3-none-any.whl", hash = "sha256:0f5bb5059d6049ad6b6fa985120bd81ca2beecff60ec48735272e2ab4f1b39d7"},
-    {file = "fpdf2-2.5.4.tar.gz", hash = "sha256:24b045c8bab16ce0b52769f4066385b5255dc6a01c474b0e41cb6d8bbfebe3ff"},
+    {file = "fpdf2-2.5.5-py2.py3-none-any.whl", hash = "sha256:72deaec4d0172e10025f4febddaa306edc5cfad28a3fa0069a368d9d896caa46"},
+    {file = "fpdf2-2.5.5.tar.gz", hash = "sha256:2dace3a7cfa9ebfbfa08a4d40d97d8944838370b3cee739e4b1549c48afc4811"},
 ]
 furl = [
     {file = "furl-2.1.3-py2.py3-none-any.whl", hash = "sha256:9ab425062c4217f9802508e45feb4a83e54324273ac4b202f1850363309666c0"},
