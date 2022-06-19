@@ -995,9 +995,23 @@ class Tables:
         :param trim:    Remove all empty rows from the end of the worksheet,
                         default `False`
         :param columns: Names of columns (optional)
+        :return:        Table object
 
         See the main library documentation for more information about
         supported data types.
+
+        Example:
+
+        ..code-block:: robotframework
+
+            # Create a new table using a Dictionary of Lists
+            # Because of the dictionary keys the column names will be automatically set
+            @{Table_Data_name}=    Create List    Mark    John    Amy
+            @{Table_Data_age}=    Create List    ${58}    ${22}    ${67}
+            &{Table_Data}=    Create Dictionary
+            ...    name=${Table_Data_name}
+            ...    age=${Table_Data_age}
+            ${table}=    Create Table    ${Table_Data}
         """
         table = Table(data, columns)
 
@@ -1018,6 +1032,7 @@ class Tables:
         :param table:       Table to convert to dict
         :param with_index:  Include index in values
         :param as_list:     Export data as list instead of dict
+        :return:            A List or Dictionary that represents the table
 
         Example:
 
@@ -1039,6 +1054,9 @@ class Tables:
         """Make a copy of a table object.
 
         :param table:   Table to copy
+        :return:        Table object
+
+        ${table_copy}=    Copy table    ${table}
         """
         self._requires_table(table)
         return table.copy()
@@ -1047,6 +1065,12 @@ class Tables:
         """Clear table in-place, but keep columns.
 
         :param table:   Table to clear
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Clear table    ${table}
         """
         self._requires_table(table)
         table.clear()
@@ -1056,6 +1080,7 @@ class Tables:
 
         :param tables: Tables to merge
         :param index:  Column name to use as index for merge
+        :return:       Table object
 
         By default rows from all tables are appended one after the other.
         Optionally a column name can be given with ``index``, which is
@@ -1141,8 +1166,10 @@ class Tables:
         """Return table dimensions, as (rows, columns).
 
         :param table:    Table to inspect
+        :return:         Two integer values that represent the number
+                         of rows and columns
 
-        Examples:
+        Example:
 
         .. code-block:: robotframework
 
@@ -1170,11 +1197,12 @@ class Tables:
 
         .. code-block:: robotframework
 
+            # Initially set the column names
             ${columns}=    Create list   First  Second  Third
             Rename table columns    ${table}    ${columns}
             # First, Second, Third
 
-
+            # Update the first and second column names to Uno and Dos
             ${columns}=    Create list   Uno  Dos
             Rename table columns    ${table}    ${columns}
             # Uno, Dos, Third
@@ -1241,7 +1269,7 @@ class Tables:
         It can also be a single value that is set for all columns,
         which is ``None`` by default.
 
-        Example:s
+        Examples:
 
         .. code-block:: robotframework
 
@@ -1266,18 +1294,17 @@ class Tables:
         :param table:   Table to read
         :param row:     Row to read
         :param as_list: Return list instead of dictionary
+        :return:        Dictionary or List of table row
 
         Examples:
 
         .. code-block:: robotframework
 
+            # returns the first row in the table
             ${first}=    Get table row    ${orders}
-            Log     Handling order: ${first}[Order ID]
 
-            ${row}=      Get table row    ${data}    -1    as_list=${TRUE}
-            FOR    ${value}    IN    @{row}
-                Log    Data point: ${value}
-            END
+            # returns the last row in the table
+            ${last}=      Get table row    ${orders}    -1    as_list=${TRUE}
         """
         self._requires_table(table)
         values = table.get_row(row, as_list=as_list)
@@ -1289,15 +1316,13 @@ class Tables:
 
         :param table:   Table to read
         :param column:  Column to read
+        :return:        List of the rows in the selected column
 
         Example:
 
         .. code-block:: robotframework
 
             ${emails}=    Get table column    ${users}    E-Mail Address
-            FOR    ${email}    IN    @{emails}
-                Send promotion    ${email}
-            END
         """
         self._requires_table(table)
         col = table.get_column(column, as_list=True)
@@ -1335,7 +1360,7 @@ class Tables:
         table.set_row(row, values)
 
     def set_table_column(self, table: Table, column: Column, values: Any):
-        """Assign values to entire column in the table.
+        """Assign values to a column in the table.
 
         :param table:   Table to modify
         :param column:  Column to modify
@@ -1366,18 +1391,17 @@ class Tables:
         :param table:   Table to modify
         :param row:     Row index, pops first row if none given
         :param as_list: Return list instead of dictionary
+        :return:        Dictionary or List of the removed, popped, row
 
         Examples:
 
         .. code-block:: robotframework
 
-            ${first}=    Pop table row    ${orders}
-            Log     Handling order: ${first}[Order ID]
+            # Pop the firt row in the table and discard it
+            Pop table row    ${orders}
 
+            # Pop the last row in the table and store it
             ${row}=      Pop table row    ${data}    -1    as_list=${TRUE}
-            FOR    ${value}    IN    @{row}
-                Log    Data point: ${value}
-            END
         """
         self._requires_table(table)
         row = if_none(row, table.index[0])
@@ -1393,6 +1417,7 @@ class Tables:
 
         :param table:   Table to modify
         :param column:  Column to remove
+        :return:        Dictionary or List of the removed, popped, column
 
         Examples:
 
@@ -1422,6 +1447,7 @@ class Tables:
         :param table:   Table to read from
         :param start:   Start index (inclusive)
         :param start:   End index (exclusive)
+        :return:        Table object of the selected rows
 
         If ``start`` is not defined, starts from the first row.
         If ``end`` is not defined, stops at the last row.
@@ -1448,11 +1474,11 @@ class Tables:
         :param table: Table to modify
         :param row:   Row to use as column names
 
-        Examples:
+        Example:
 
         .. code-block:: robotframework
 
-            ${table}=    Read table from CSV    data.csv
+            # Set the column names based on the first row
             Set row as column names    ${table}    0
         """
         values = self.pop_table_row(table, row, as_list=True)
@@ -1466,14 +1492,14 @@ class Tables:
         :param table:   Table to read from
         :param count:   Number of lines to read
         :param as_list: Return list instead of Table
+        :return:        Return Table object or List of the selected rows
 
-        Examples:
+        Example:
 
         .. code-block:: robotframework
 
             # Get the first 10 employees
-            ${employees}=    Read worksheet as table    employees.xlsx
-            ${first}=        Table head    ${employees}    10
+            ${first}=    Table head    ${employees}    10
         """
         self._requires_table(table)
         return table.head(count, as_list)
@@ -1486,13 +1512,13 @@ class Tables:
         :param table:   Table to read from
         :param count:   Number of lines to read
         :param as_list: Return list instead of Table
+        :return:        Return Table object or List of the selected rows
 
-        Examples:
+        Example:
 
         .. code-block:: robotframework
 
             # Get the last 10 orders
-            ${orders}=    Read worksheet as table    orders.xlsx
             ${latest}=    Table tail    ${orders}    10
         """
         self._requires_table(table)
@@ -1504,6 +1530,7 @@ class Tables:
         :param table:   Table to read from
         :param row:     Row of cell
         :param column:  Column of cell
+        :return:        Cell value
 
         Examples:
 
@@ -1514,6 +1541,9 @@ class Tables:
 
             # Get the value in the last row and first column
             Get table cell    ${table}   -1    0
+
+            # Get the value in the last row and last column
+            Get table cell    ${table}   -1    -1
 
             # Get the value in the third row and column "Name"
             Get table cell    ${table}    2    Name
@@ -1539,6 +1569,9 @@ class Tables:
             # Set the value in the last row and first column to "Last"
             Set table cell    ${table}   -1    0       Last
 
+            # Set the value in the last row and last column to "Corner"
+            Set table cell    ${table}   -1    -1       Corner
+
             # Set the value in the third row and column "Name" to "Unknown"
             Set table cell    ${table}    2    Name    Unknown
         """
@@ -1553,6 +1586,7 @@ class Tables:
         :param column:   Name of column to search
         :param operator: Comparison operator
         :param value:    Value to compare against
+        :return:         Table object that matches the row conditions
 
         Supported operators:
 
@@ -1606,12 +1640,15 @@ class Tables:
         :param column:      Column to sort with
         :param ascending:   Table sort order
 
-        Example:
+        Examples:
 
         .. code-block:: robotframework
 
-            ${orders}=    Read worksheet as table    orders.xlsx
+            # Sorts the `order_date` column ascending
             Sort table by column    ${orders}    order_date
+
+            # Sorts the `order_date` column descending
+            Sort table by column    ${orders}    order_date    ascending=${FALSE}
         """
         self._requires_table(table)
         table.sort_by_column(column, ascending=ascending)
@@ -1621,13 +1658,16 @@ class Tables:
 
         :param table:   Table to use for grouping
         :param column:  Column which is used as grouping criteria
+        :return:        List of Table objects
 
         Example:
 
         .. code-block:: robotframework
 
-            ${orders}=    Read worksheet as table    orders.xlsx
+            # Groups rows of matching customers from the `customer` column
+            # and returns the groups or rows as Tables
             @{groups}=    Group table by column    ${orders}    customer
+            # An example of how to use the List of Tables once returned
             FOR    ${group}    IN    @{groups}
                 # Process all orders for the customer at once
                 Process order    ${group}
@@ -1686,7 +1726,6 @@ class Tables:
 
         .. code-block:: robotframework
 
-            ${table}=    Read worksheet as table    orders.xlsx
             Filter empty rows    ${table}
         """
         self._requires_table(table)
@@ -1710,7 +1749,6 @@ class Tables:
 
         .. code-block:: robotframework
 
-            ${table}=    Read worksheet as table    orders.xlsx
             Trim empty rows    ${table}
         """
         self._requires_table(table)
@@ -1735,10 +1773,11 @@ class Tables:
 
         .. code-block:: robotframework
 
-            ${table}=    Read table from CSV    data.csv
-            Log    ${table.columns}  # "One", "Two ", "  Three "
+            # This example will take colums such as:
+            # "One", "Two ", "  Three "
+            # and trim them to become the below:
+            # "One", "Two", "Three"
             Trim column names     ${table}
-            Log    ${table-columns}  # "One", "Two", "Three"
         """
         self._requires_table(table)
         table.columns = [
@@ -1767,6 +1806,7 @@ class Tables:
         :param column_unknown:  Column name for unknown fields
         :param encoding:        Text encoding for input file,
                                 uses system encoding by default
+        :return:                Table object
 
         By default attempts to deduce the CSV format and headers
         from a sample of the input file. If it's unable to determine
