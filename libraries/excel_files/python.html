@@ -328,7 +328,7 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.append_rows_to_worksheet">
-<code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">content</em>, <em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">content: Any</em>, <em class="sig-param">name: Optional[str] = None</em>, <em class="sig-param">header: bool = False</em>, <em class="sig-param">start: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append values to the end of the worksheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -339,6 +339,9 @@ Defaults to the active worksheet.</p></li>
 <li><p><strong>header</strong> – Set rows according to existing header row</p></li>
 <li><p><strong>start</strong> – Start of data, NOTE: Only required when header is True</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of dictionaries that represents the worksheet</p>
 </dd>
 </dl>
 <p>The <code class="docutils literal notranslate"><span class="pre">content</span></code> argument can be of any tabular format. Typically,
@@ -390,7 +393,7 @@ the <code class="docutils literal notranslate"><span class="pre">start</span></c
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.close_workbook">
-<code class="sig-name descname">close_workbook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.close_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">close_workbook</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Files.Files.close_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close the active workbook.</p>
 <p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Close active workbook</span>
@@ -405,7 +408,7 @@ the <code class="docutils literal notranslate"><span class="pre">start</span></c
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.create_workbook">
-<code class="sig-name descname">create_workbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">fmt='xlsx'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.create_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: Optional[str] = None</em>, <em class="sig-param">fmt: str = 'xlsx'</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.create_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create and open a new Excel workbook.</p>
 <p>Automatically also creates a new worksheet with the name “Sheet”.</p>
 <p><strong>Note:</strong> Must be paired with the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Workbook</span></code> keyword
@@ -419,6 +422,9 @@ or the <code class="docutils literal notranslate"><span class="pre">Save</span> 
 <li><p><strong>fmt</strong> – Format of workbook, i.e. xlsx or xls;
 Defaults to xlsx if not provided</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Workbook object</p>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -468,7 +474,7 @@ Defaults to xlsx if not provided</p></li>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.create_worksheet">
-<code class="sig-name descname">create_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">content=None</em>, <em class="sig-param">exist_ok=False</em>, <em class="sig-param">header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.create_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">content: Optional[Any] = None</em>, <em class="sig-param">exist_ok: Optional[bool] = False</em>, <em class="sig-param">header: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Files.Files.create_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new worksheet in the current workbook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -541,12 +547,15 @@ Defaults to xlsx if not provided</p></li>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.find_empty_row">
-<code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.find_empty_row" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Excel.Files.Files.find_empty_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the first empty row after existing content,
 and return the row number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> – Name of worksheet (optional). Defaults to the active worksheet.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>First row number of empty row</p>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -560,8 +569,13 @@ and return the row number.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.get_active_worksheet">
-<code class="sig-name descname">get_active_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_active_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_active_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Excel.Files.Files.get_active_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the name of the worksheet which is currently active.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Active worksheet name</p>
+</dd>
+</dl>
 <p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${Active_Worksheet}=</span><span class="p">    </span><span class="c">Get Active Worksheet</span><span class="p"></span>
 </pre></div>
@@ -573,7 +587,7 @@ and return the row number.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.get_cell_value">
-<code class="sig-name descname">get_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_cell_value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row: int, column: Union[str, int], name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Excel.Files.Files.get_cell_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a cell value in the given worksheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -582,6 +596,9 @@ and return the row number.</p>
 <li><p><strong>column</strong> – Name or index of column, e.g. C or 7</p></li>
 <li><p><strong>name</strong> – Name of worksheet (optional). Defaults to active worksheet.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Cell value</p>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -601,14 +618,14 @@ and return the row number.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.get_worksheet_value">
-<code class="sig-name descname">get_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_worksheet_value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row: int, column: Union[str, int], name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Excel.Files.Files.get_worksheet_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">cell</span> <span class="pre">value</span></code>, see the original keyword
 for documentation.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.insert_image_to_worksheet">
-<code class="sig-name descname">insert_image_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">path</em>, <em class="sig-param">scale=1.0</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.insert_image_to_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">insert_image_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">row: int, column: Union[int, str], path: str, scale: float = 1.0, name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Files.Files.insert_image_to_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert an image into the given cell.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">path</span></code> argument should be a local file path to the image file.</p>
 <p>By default the image is inserted in the original size, but it can
@@ -636,8 +653,13 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.list_worksheets">
-<code class="sig-name descname">list_worksheets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.list_worksheets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_worksheets</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Excel.Files.Files.list_worksheets" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all names of worksheets in the given workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List containing the names of the worksheets</p>
+</dd>
+</dl>
 <p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># List Worksheets will read the worksheet names into a list variable</span>
 <span class="c"># The variable should be declared with the List type &quot;@&quot; when being used</span>
@@ -655,7 +677,7 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.open_workbook">
-<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">data_only: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">data_only: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open an existing Excel workbook.</p>
 <p>Opens the workbook in memory and sets it as the active workbook.
 <strong>This library can only have one workbook open at a time, and
@@ -669,6 +691,9 @@ any previously opened workbooks are closed first.</strong></p>
 the formula (default, False) or the value stored the last time Excel
 read the sheet (True). Affects only <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> files.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Workbook object</p>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -694,7 +719,7 @@ read the sheet (True). Affects only <code class="docutils literal notranslate"><
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.read_worksheet">
-<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name: Optional[str] = None</em>, <em class="sig-param">header: Optional[bool] = False</em>, <em class="sig-param">start: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the content of a worksheet into a list of dictionaries.</p>
 <p>Each key in the dictionary will be either values from the header row,
 or Excel-style column letters.</p>
@@ -708,6 +733,9 @@ as headers for the rest of the rows. Default is <cite>False</cite>.</p></li>
 <li><p><strong>start</strong> – Row index to start reading data from (1-indexed).
 Default value is row 1.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of dictionaries that represents the worksheet</p>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -735,7 +763,7 @@ Default value is row 1.</p></li>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.read_worksheet_as_table">
-<code class="sig-name descname">read_worksheet_as_table</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">trim=True</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet_as_table</code><span class="sig-paren">(</span><em class="sig-param">name: Optional[str] = None</em>, <em class="sig-param">header: bool = False</em>, <em class="sig-param">trim: bool = True</em>, <em class="sig-param">start: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; RPA.Tables.Tables<a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the contents of a worksheet into a Table container. Allows
 sorting/filtering/manipulating using the <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> library.</p>
 <dl class="field-list simple">
@@ -750,6 +778,9 @@ Default value is True.</p></li>
 <li><p><strong>start</strong> – Row index to start reading data from (1-indexed).
 Default value is row 1.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Table object that represents the worksheet</p>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -777,7 +808,7 @@ Default value is row 1.</p></li>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.remove_worksheet">
-<code class="sig-name descname">remove_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.remove_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Files.Files.remove_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a worksheet from the active workbook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -806,7 +837,7 @@ Defaults to the active worksheet.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.rename_worksheet">
-<code class="sig-name descname">rename_worksheet</code><span class="sig-paren">(</span><em class="sig-param">src_name</em>, <em class="sig-param">dst_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.rename_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rename_worksheet</code><span class="sig-paren">(</span><em class="sig-param">src_name: str</em>, <em class="sig-param">dst_name: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Files.Files.rename_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename an existing worksheet in the active workbook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -827,7 +858,7 @@ Defaults to the active worksheet.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.save_workbook">
-<code class="sig-name descname">save_workbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.save_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.save_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the active workbook.</p>
 <p><strong>Note:</strong> No changes to the workbook are saved to the actual file unless
 this keyword is called.</p>
@@ -835,6 +866,9 @@ this keyword is called.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – Path to save to. If not given, uses path given
 when opened or created.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Workbook object</p>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -864,7 +898,7 @@ when opened or created.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.set_active_worksheet">
-<code class="sig-name descname">set_active_worksheet</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_active_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_active_worksheet</code><span class="sig-paren">(</span><em class="sig-param">value: Union[str, int]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Files.Files.set_active_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the active worksheet.</p>
 <p>This keyword can be used to set the default worksheet for keywords,
 which removes the need to specify the worksheet name for each keyword.
@@ -895,7 +929,7 @@ It can always be overridden on a per-keyword basis.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.set_cell_format">
-<code class="sig-name descname">set_cell_format</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">fmt</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_format" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_cell_format</code><span class="sig-paren">(</span><em class="sig-param">row: int, column: Union[str, int], fmt: Union[str, float], name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set format for cell.</p>
 <p>Does not affect the values themselves, but changes how the values
 are displayed when opening with an external application such as
@@ -954,7 +988,7 @@ are supported by the aforementioned applications.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.set_cell_value">
-<code class="sig-name descname">set_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">name=None</em>, <em class="sig-param">fmt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row: int, column: Union[str, int], value: Any, name: Optional[str] = None, fmt: Union[str, float, None] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a cell value in the given worksheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -988,18 +1022,21 @@ are supported by the aforementioned applications.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.set_worksheet_value">
-<code class="sig-name descname">set_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">name=None</em>, <em class="sig-param">fmt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_worksheet_value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row: int, column: Union[str, int], value: Any, name: Optional[str] = None, fmt: Union[str, float, None] = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Excel.Files.Files.set_worksheet_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">cell</span> <span class="pre">value</span></code>, see the original keyword
 for documentation.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.worksheet_exists">
-<code class="sig-name descname">worksheet_exists</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.worksheet_exists" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">worksheet_exists</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Excel.Files.Files.worksheet_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if worksheet with given name is in workbook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> – Name of worksheet you are looking for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if the worksheet exists, <cite>False</cite> otherwise</p>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -1212,7 +1249,7 @@ for documentation.</p>
 
 <dl class="function">
 <dt id="RPA.Excel.Files.ensure_unique">
-<code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">ensure_unique</code><span class="sig-paren">(</span><em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.ensure_unique" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">ensure_unique</code><span class="sig-paren">(</span><em class="sig-param">values: Any</em><span class="sig-paren">)</span> &#x2192; List[Any]<a class="headerlink" href="#RPA.Excel.Files.ensure_unique" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ensures that each string value in the list is unique.
 Adds a suffix to each value that has duplicates,
 e.g. [Banana, Apple, Lemon, Apple] -&gt; [Banana, Apple, Lemon, Apple_2]</p>
@@ -1220,7 +1257,7 @@ e.g. [Banana, Apple, Lemon, Apple] -&gt; [Banana, Apple, Lemon, Apple_2]</p>
 
 <dl class="function">
 <dt id="RPA.Excel.Files.get_column_index">
-<code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">get_column_index</code><span class="sig-paren">(</span><em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.get_column_index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">get_column_index</code><span class="sig-paren">(</span><em class="sig-param">column: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Excel.Files.get_column_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get column index from name, e.g. A -&gt; 1, D -&gt; 4, AC -&gt; 29.
 Reverse of <cite>get_column_letter()</cite></p>
 </dd></dl>
