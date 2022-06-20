@@ -1091,7 +1091,7 @@ class DocumentKeywords(LibraryContext):
 
             *** Keyword ***
             Figures to Images
-                ${image_filenames}=    Save figures as image
+                ${image_filenames}=    Save figures as images
                 ...             source_path=/tmp/sample.pdf
                 ...             images_folder=/tmp/images
                 ...             pages=${4}
