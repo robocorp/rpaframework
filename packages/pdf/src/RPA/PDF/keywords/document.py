@@ -1032,7 +1032,7 @@ class DocumentKeywords(LibraryContext):
             *** Keyword ***
             Figure to Image
                 ${image_file_path} =     Save figure as image
-                ...             figure=figure_identifier
+                ...             figure=pdf_figure_object
                 ...             images_folder=/tmp/images
                 ...             file_prefix=file_name_here
 
@@ -1046,12 +1046,13 @@ class DocumentKeywords(LibraryContext):
 
             def figure_to_image():
                 image_file_path = pdf.save_figure_as_image(
-                    figure="figure_identifier"
+                    figure="pdf_figure_object"
                     images_folder="/tmp/images"
                     file_prefix="file_name_here"
                 )
 
-        :param figure: PDF Figure object which will be saved as an image
+        :param figure: PDF Figure object which will be saved as an image.
+         The PDF Figure object can be determined from the `Get All Figures` keyword
         :param images_folder: directory where image files will be created
         :param file_prefix: image filename prefix
         :return: image filepath or None
