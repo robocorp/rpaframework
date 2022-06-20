@@ -207,7 +207,10 @@ class DocumentKeywords(LibraryContext):
                 ...             email=robot@domain.com
                 ...             zip=00100
                 ...             items=Item 1, Item 2
-                Template HTML to PDF   template=${TEMPLATE}  output_path=${PDF}  variables=${DATA}
+                Template HTML to PDF
+                ...    template=${TEMPLATE}
+                ...    output_path=${PDF}
+                ...    variables=${DATA}
 
         **Python**
 
