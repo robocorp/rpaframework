@@ -207,7 +207,7 @@ class DocumentKeywords(LibraryContext):
                 ...             email=robot@domain.com
                 ...             zip=00100
                 ...             items=Item 1, Item 2
-                Template HTML to PDF   ${TEMPLATE}  ${PDF}  ${DATA}
+                Template HTML to PDF   template=${TEMPLATE}  output_path=${PDF}  variables=${DATA}
 
         **Python**
 
@@ -302,7 +302,7 @@ class DocumentKeywords(LibraryContext):
                 ${metadata}=    Get PDF Info    /tmp/sample.pdf
 
             *** Keywords ***
-            Get metadata from PDF that is already opened
+            Get metadata from an already opened PDF
                 ${metadata}=    Get PDF Info
 
         **Python**
