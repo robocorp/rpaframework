@@ -806,10 +806,10 @@ class DocumentKeywords(LibraryContext):
 
             *** Keywords ***
             Image fetch
-                ${figures}=  Get All Figures    /tmp/sample.pdf
+                &{figures}=  Get All Figures    /tmp/sample.pdf
 
             Image fetch from open PDF
-                ${figures}=  Get All Figures
+                &{figures}=  Get All Figures
 
         **Python**
 
@@ -1029,7 +1029,7 @@ class DocumentKeywords(LibraryContext):
 
             *** Keyword ***
             Figure to Image
-                ${image_file_path}=     Save figure as image
+                ${image_file_path} =     Save figure as image
                 ...             figure=figure_identifier
                 ...             images_folder=/tmp/images
                 ...             file_prefix=file_name_here
@@ -1094,7 +1094,7 @@ class DocumentKeywords(LibraryContext):
 
             *** Keyword ***
             Figures to Images
-                ${image_filenames}=    Save figures as images
+                ${image_filenames} =    Save figures as images
                 ...             source_path=/tmp/sample.pdf
                 ...             images_folder=/tmp/images
                 ...             pages=${4}
