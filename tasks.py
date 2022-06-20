@@ -195,10 +195,10 @@ def setup_poetry(ctx, username=None, password=None, token=None):
         raise ParseError(
             "You cannot specify username-password combination and token simultaneously"
         )
-    if username ^ password:
-        raise ParseError("You must specify both username and password")
     if username and password:
         poetry(ctx, f"config -n http-basic.pypi {username} {password}")
+    else:
+        raise ParseError("You must specify both username and password")        
     if token:
         poetry(ctx, f"config -n pypi-token.pypi {token}")
 
