@@ -5,12 +5,14 @@ import tempfile
 from pathlib import Path
 from typing import List, Tuple, Union, Optional
 
-import pdfminer
 import PyPDF2
+import pdfminer
+from PIL import Image
 from fpdf import FPDF, HTMLMixin
+from pdfminer.image import ImageWriter
+from pdfminer.layout import LTImage
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfparser import PDFParser
-from PIL import Image
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.PDF.keywords import LibraryContext, keyword
@@ -1066,6 +1068,15 @@ class DocumentKeywords(LibraryContext):
                 with open(imagepath, "wb") as fout:
                     fout.write(file_stream)
                     result = str(imagepath)
+            elif isinstance(lt_image, LTImage):
+                img_writer = ImageWriter(images_folder)
+                filename = img_writer.export_image(lt_image)
+                src = images_folder / filename
+                if file_prefix:
+                    dest = images_folder / f"{file_prefix}{filename}"
+                    os.rename(src, dest)
+                    src = dest
+                result = str(src)
             else:
                 self.logger.info("Unable to determine image type for a figure")
         else:

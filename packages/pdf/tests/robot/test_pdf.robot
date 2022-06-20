@@ -171,11 +171,12 @@ Figure to Image
     Open Pdf    ${RESOURCE_DIR}${/}sparebin-receipt.pdf
     &{figures} =    Get All Figures
     Log Dictionary    ${figures}
-    &{figure_dict} =    Get From Dictionary    ${figures}    ${2}
-    ${figure_obj} =    Get From Dictionary    ${figure_dict}   ${0}
+    &{figure_dict} =    Get From Dictionary    ${figures}    ${2}  # page 2
+    ${figure_obj} =    Get From Dictionary    ${figure_dict}   ${0}  # first object
     Log To Console    ${figure_obj}
     ${image_file_path} =    Save figure as image
     ...    figure=${figure_obj}
     ...    images_folder=${WORK_DIR}
-    ...    file_prefix=Carbon Dioxide
+    ...    file_prefix=robot-
     Log To Console    ${image_file_path}
+    File Should Exist    ${WORK_DIR}${/}robot-*.bmp
