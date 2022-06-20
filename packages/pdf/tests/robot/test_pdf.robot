@@ -165,14 +165,15 @@ Figures to Images
     ...    source_path=${RESOURCE_DIR}${/}imagesandtext.pdf
     ...    images_folder=${WORK_DIR}
     ...    pages=${1}
-    ...    file_prefix=Energy price developments
+    ...    file_prefix=Energy-price-developments
+    File Should Exist    ${WORK_DIR}${/}Energy-*.bmp
 
 Figure to Image
     Open Pdf    ${RESOURCE_DIR}${/}sparebin-receipt.pdf
     &{figures} =    Get All Figures
     Log Dictionary    ${figures}
-    &{figure_dict} =    Get From Dictionary    ${figures}    ${2}  # page 2
-    ${figure_obj} =    Get From Dictionary    ${figure_dict}   ${0}  # first object
+    &{figure_dict} =    Get From Dictionary    ${figures}    ${2}    # page 2
+    ${figure_obj} =    Get From Dictionary    ${figure_dict}    ${0}    # first object
     Log To Console    ${figure_obj}
     ${image_file_path} =    Save figure as image
     ...    figure=${figure_obj}
