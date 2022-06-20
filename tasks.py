@@ -4,21 +4,20 @@ import platform
 import re
 import shutil
 import subprocess
+import toml
 from pathlib import Path
 from invoke import Promise, task, call, ParseError
-
-try:
-    import toml
-except ModuleNotFoundError:
-    DEPENDENCIES_AVAILABLE = False
-else:
-    DEPENDENCIES_AVAILABLE = True
+from colorama import Fore, Style
 
 
 def _git_root():
     output = subprocess.check_output(["git", "rev-parse", "--show-toplevel"])
     output = output.decode().strip()
     return Path(output)
+
+
+def _remove_blank_lines(text):
+    return os.linesep.join([s for s in text.splitlines() if s])
 
 
 GIT_ROOT = _git_root()
@@ -138,8 +137,24 @@ def git(ctx, command, **kwargs):
 
 def invoke_each(ctx, command, **kwargs):
     our_packages = _get_package_paths()
-    for package_path in our_packages.values():
-        return package_invoke(ctx, package_path, command, **kwargs)
+    promises = {}
+    for package, path in our_packages.items():
+        print(f"Starting asyncronous task 'invoke {command}' for package '{package}'")
+        promises[package] = package_invoke(
+            ctx, path, command, asynchronous=True, warn=True, **kwargs
+        )
+    print("\nPlease wait for invocations to finish...\n")
+    results = []
+    for package, promise in promises.items():
+        result = promise.join()
+        print(Fore.BLUE + f"Results from 'invoke {command}' for package '{package}':")
+        print(Style.RESET_ALL + _remove_blank_lines(result.stdout))
+        if result.stderr:
+            print(_remove_blank_lines(result.stderr))
+        print(os.linesep)
+        results.append(result)
+    print(f"Invocations complete.")
+    return results
 
 
 @task()
@@ -198,7 +213,7 @@ def setup_poetry(ctx, username=None, password=None, token=None):
     if username and password:
         poetry(ctx, f"config -n http-basic.pypi {username} {password}")
     else:
-        raise ParseError("You must specify both username and password")        
+        raise ParseError("You must specify both username and password")
     if token:
         poetry(ctx, f"config -n pypi-token.pypi {token}")
 
@@ -212,33 +227,28 @@ def install(ctx, reset=False):
     If ``reset`` is attempted before an initial install, it
     is ignored.
     """
-    if not DEPENDENCIES_AVAILABLE:
-        poetry(ctx, "install")
+    if not _is_poetry_configured():
+        call(setup_poetry)
+    if reset:
+        our_packages = _get_package_paths()
+        with ctx.prefix(ACTIVATE):
+            pip_freeze = pip(ctx, "freeze", echo=False, hide="out")
+            # Identifies locally installed packages in development mode.
+            #  (not from PyPI)
+            package_exprs = [
+                rf"{name}(?=={{2}})" for name in our_packages if name != "rpaframework"
+            ]
+            pattern = "|".join(package_exprs)
+            local_packages = re.findall(
+                pattern,
+                pip_freeze.stdout,
+                re.MULTILINE | re.IGNORECASE,
+            )
+            for local_package in local_packages:
+                pip(ctx, f"uninstall {local_package} -y")
+        poetry(ctx, "install --remove-untracked")
     else:
-        if not _is_poetry_configured():
-            call(setup_poetry)
-        if reset:
-            our_packages = _get_package_paths()
-            with ctx.prefix(ACTIVATE):
-                pip_freeze = pip(ctx, "freeze", echo=False, hide="out")
-                # Identifies locally installed packages in development mode.
-                #  (not from PyPI)
-                package_exprs = [
-                    rf"{name}(?=={{2}})"
-                    for name in our_packages
-                    if name != "rpaframework"
-                ]
-                pattern = "|".join(package_exprs)
-                local_packages = re.findall(
-                    pattern,
-                    pip_freeze.stdout,
-                    re.MULTILINE | re.IGNORECASE,
-                )
-                for local_package in local_packages:
-                    pip(ctx, f"uninstall {local_package} -y")
-            poetry(ctx, "install --remove-untracked")
-        else:
-            poetry(ctx, "install")
+        poetry(ctx, "install")
 
 
 @task(pre=[call(install, reset=True)], iterable=["package"])
