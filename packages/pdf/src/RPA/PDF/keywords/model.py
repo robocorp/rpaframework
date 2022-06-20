@@ -337,8 +337,9 @@ class Converter(PDFConverter):
                 self.write(s)
                 for child in item:
                     render(child)
-                    figure = Figure(child)
-                    self._add_unique_figure(figure)
+                    if isinstance(child, LTImage):
+                        figure = Figure(child)
+                        self._add_unique_figure(figure)
                 self.write("</figure>\n")
             elif isinstance(item, LTTextLine):
                 self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
