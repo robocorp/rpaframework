@@ -1014,7 +1014,7 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def save_figure_as_image(
         self, figure: Figure, images_folder: str = ".", file_prefix: str = ""
-    ):
+    ) -> Optional[str]:
         """Try to save the image data from Figure object, and return
         the file name, if successful.
 
@@ -1081,7 +1081,7 @@ class DocumentKeywords(LibraryContext):
         images_folder: str = ".",
         pages: str = None,
         file_prefix: str = "",
-    ) -> list:
+    ) -> List[str]:
         """Save figures from given PDF document as image files.
 
         If no source path given, assumes a PDF is already opened.
