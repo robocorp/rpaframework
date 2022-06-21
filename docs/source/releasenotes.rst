@@ -5,12 +5,18 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete
-- Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated
-- Deprecate *Lab* references under documentation.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.1.2 - 21 June 2022
+---------------------
+
+- Library **RPA.PDF** (:pr:`549`, ``rpaframework-pdf`` **4.0.1**): Extended PDF
+  examples.
+- Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete.
+- Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated.
+- Deprecate *Lab* references under documentation.
 
 15.1.1 - 17 June 2022
 ---------------------
