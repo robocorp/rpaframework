@@ -28,6 +28,7 @@ sphinx-issues = "^1.2.0"
 docutils = "0.16"
 black = "^22.3.0"
 invoke = "^1.6.0"
+colorama = "^0.4.5"
 
 
 [build-system]
