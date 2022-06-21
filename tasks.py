@@ -367,6 +367,12 @@ def install_hooks(ctx):
 
 
 @task
+def uninstall_hooks(ctx):
+    """Uninstalls the standard git hooks."""
+    git(ctx, "config --unset core.hooksPath")
+
+
+@task
 def changelog(ctx):
     """Prints changes in latest release."""
     python_tool(ctx, "changelog")
