@@ -153,6 +153,8 @@ class Page(BaseElement):
 
     @property
     def figures(self) -> OrderedDict:
+        # NOTE(cmiN): Usually all our figures are of type `LTImage` only. (as the
+        #  `LTFigure` ones are duplicates of the previously extracted unique images)
         return self._figures
 
     @property
@@ -328,7 +330,6 @@ class Converter(PDFConverter):
                 )
                 self.write(s)
             elif isinstance(item, LTFigure):
-                figure = Figure(item)
                 s = '<figure name="%s" bbox="%s">\n' % (
                     item.name,
                     bbox2str(item.bbox),
@@ -336,8 +337,10 @@ class Converter(PDFConverter):
                 self.write(s)
                 for child in item:
                     render(child)
+                    if isinstance(child, LTImage):
+                        figure = Figure(child)
+                        self._add_unique_figure(figure)
                 self.write("</figure>\n")
-                self._add_unique_figure(figure)
             elif isinstance(item, LTTextLine):
                 self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
                 for child in item:
@@ -377,7 +380,6 @@ class Converter(PDFConverter):
             elif isinstance(item, LTText):
                 self.write("<text>%s</text>\n" % item.get_text())
             elif isinstance(item, LTImage):
-                figure = Figure(item)
                 if self.imagewriter is not None:
                     name = self.imagewriter.export_image(item)
                     self.write(
@@ -388,6 +390,7 @@ class Converter(PDFConverter):
                     self.write(
                         '<image width="%d" height="%d" />\n' % (item.width, item.height)
                     )
+                figure = Figure(item)
                 self._add_unique_figure(figure)
             else:
                 self._logger.warning("Unknown item: %r", item)
