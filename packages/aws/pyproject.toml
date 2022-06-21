@@ -1,10 +1,8 @@
 [tool.poetry]
 name = "rpaframework-aws"
-version = "3.0.0"
+version = "3.1.0"
 description = "AWS library for RPA Framework"
-authors = [
-	"RPA Framework <rpafw@robocorp.com>",
-]
+authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
 readme = "README.rst"
 
@@ -29,9 +27,7 @@ classifiers = [
 
 include = ["*.libspec"]
 
-packages = [
-	{ include = "RPA", from = "src" }
-]
+packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -56,6 +52,7 @@ sphinx-markdown-builder = "^0.5.4"
 robotframework-docgen = "^0.15.0"
 sphinx-issues = "^1.2.0"
 docutils = "0.16"
+moto = "3.1.8"
 
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]
