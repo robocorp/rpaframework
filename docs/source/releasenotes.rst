@@ -9,6 +9,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+15.1.3 - 22 June 2022
+---------------------
+
+- Fix *VSCode* keyword definitions. (*libspec* Python modules paths)
+
 15.1.2 - 21 June 2022
 ---------------------
 

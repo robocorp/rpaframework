@@ -58,8 +58,7 @@ def cleanlibspec(ctx):
 
 def replace_source(m):
     source_match = m.group(1).replace("\\", "/")
-    source = source_match.split("site-packages/")
-    source_result = source[1] if len(source) == 2 else source[0]
+    source_result = re.split(r"(site-packages|src)/", source_match)[-1]
     return f'source="./{source_result}'
 
 

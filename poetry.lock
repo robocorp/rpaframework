@@ -1682,7 +1682,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "15.1.2"
+version = "15.1.3"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
