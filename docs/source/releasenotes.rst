@@ -16,7 +16,6 @@ Release notes
   examples.
 - Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete.
 - Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated.
-- Deprecate *Lab* references under documentation.
 
 15.1.1 - 17 June 2022
 ---------------------

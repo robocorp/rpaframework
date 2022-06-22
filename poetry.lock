@@ -135,14 +135,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.13"
+version = "1.24.14"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.13,<1.28.0"
+botocore = ">=1.27.14,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -151,7 +151,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.13"
+version = "1.27.14"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -611,14 +611,14 @@ requests = ["requests (>=2.18.0,<3.0.0dev)"]
 
 [[package]]
 name = "googleapis-common-protos"
-version = "1.56.2"
+version = "1.56.3"
 description = "Common protobufs used in Google APIs"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-protobuf = ">=3.15.0,<4.0.0dev"
+protobuf = ">=3.15.0,<5.0.0dev"
 
 [package.extras]
 grpc = ["grpcio (>=1.0.0,<2.0.0dev)"]
@@ -2444,12 +2444,12 @@ black = [
     {file = "black-22.3.0.tar.gz", hash = "sha256:35020b8886c022ced9282b51b5a875b6d1ab0c387b31a065b84db7c33085ca79"},
 ]
 boto3 = [
-    {file = "boto3-1.24.13-py3-none-any.whl", hash = "sha256:13efff22f1cb6d25ec7027edaccdfdd515ba593e093173beb09094cff898a8cc"},
-    {file = "boto3-1.24.13.tar.gz", hash = "sha256:945d49941541a3cbb02710361be64b22f98e68c2e447229f0d51f7c215009e28"},
+    {file = "boto3-1.24.14-py3-none-any.whl", hash = "sha256:490f5e88f5551b33ae3019a37412158b76426d63d1fb910968ade9b6a024e5fe"},
+    {file = "boto3-1.24.14.tar.gz", hash = "sha256:e284705da36faa668c715ae1f74ebbff4320dbfbe3a733df3a8ab076d1ed1226"},
 ]
 botocore = [
-    {file = "botocore-1.27.13-py3-none-any.whl", hash = "sha256:fbc09558c02d415e8646520f95db7e8d313460938780fa6040b00865f098fd55"},
-    {file = "botocore-1.27.13.tar.gz", hash = "sha256:df75e53576b061818bbce4bd70221749e40cc91d16a2b6c03fbeec8023665734"},
+    {file = "botocore-1.27.14-py3-none-any.whl", hash = "sha256:df1e9b208ff93daac7c645b0b04fb6dccd7f20262eae24d87941727025cbeece"},
+    {file = "botocore-1.27.14.tar.gz", hash = "sha256:bb56fa77b8fa1ec367c2e16dee62d60000451aac5140dcce3ebddc167fd5c593"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2693,8 +2693,8 @@ google-resumable-media = [
     {file = "google_resumable_media-2.3.3-py2.py3-none-any.whl", hash = "sha256:5b52774ea7a829a8cdaa8bd2d4c3d4bc660c91b30857ab2668d0eb830f4ea8c5"},
 ]
 googleapis-common-protos = [
-    {file = "googleapis-common-protos-1.56.2.tar.gz", hash = "sha256:b09b56f5463070c2153753ef123f07d2e49235e89148e9b2459ec8ed2f68d7d3"},
-    {file = "googleapis_common_protos-1.56.2-py2.py3-none-any.whl", hash = "sha256:023eaea9d8c1cceccd9587c6af6c20f33eeeb05d4148670f2b0322dc1511700c"},
+    {file = "googleapis-common-protos-1.56.3.tar.gz", hash = "sha256:6f1369b58ed6cf3a4b7054a44ebe8d03b29c309257583a2bbdc064cd1e4a1442"},
+    {file = "googleapis_common_protos-1.56.3-py2.py3-none-any.whl", hash = "sha256:87955d7b3a73e6e803f2572a33179de23989ebba725e05ea42f24838b792e461"},
 ]
 graphviz = [
     {file = "graphviz-0.13.2-py2.py3-none-any.whl", hash = "sha256:241fb099e32b8e8c2acca747211c8237e40c0b89f24b1622860075d59f4c4b25"},
