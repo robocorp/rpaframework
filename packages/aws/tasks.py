@@ -1,11 +1,23 @@
 # -*- coding: utf-8 -*-
-import platform
-import re
+
+import importlib.util
 import shutil
 import subprocess
+import sys
 from glob import glob
 from pathlib import Path
+
 from invoke import task
+
+
+# Import rpaframework/tasks_common.py module from file location.
+tasks_common_path = Path(__file__).parent.parent.parent / "tasks_common.py"
+spec = importlib.util.spec_from_file_location("tasks_common", tasks_common_path)
+tasks_common = importlib.util.module_from_spec(spec)
+sys.modules["tasks_common"] = tasks_common
+spec.loader.exec_module(tasks_common)
+
+poetry = tasks_common.poetry
 
 
 def _git_root():
@@ -34,47 +46,15 @@ CLEAN_PATTERNS = [
 ]
 
 
-def poetry(ctx, command, **kwargs):
-    kwargs.setdefault("echo", True)
-    if platform.system() != "Windows":
-        kwargs.setdefault("pty", True)
-
-    ctx.run(f"poetry {command}", **kwargs)
+@task
+def libspec(ctx):
+    """Generate library libspec files."""
+    tasks_common.libspec(ctx, package_dir=PACKAGE_DIR)
 
 
 @task
 def cleanlibspec(ctx):
-    files = glob(str(PACKAGE_DIR / "*.libspec"), recursive=False)
-    for f in files:
-        Path(f).unlink()
-
-
-def replace_source(m):
-    source_match = m.group(1).replace("\\", "/")
-    source = source_match.split("site-packages/")
-    source_result = source[1] if len(source) == 2 else source[0]
-    return f'source="./{source_result}'
-
-
-def modify_libspec_files():
-    files = glob(str(PACKAGE_DIR / "src" / "*.libspec"), recursive=False)
-    pattern = r"source=\"([^\"]+)"
-    for f in files:
-        outfilename = f"{f}.modified"
-        with open(f) as file_in:
-            file_content = file_in.read()
-            with open(outfilename, "w") as file_out:
-                new_content = re.sub(
-                    pattern, replace_source, file_content, 0, re.MULTILINE
-                )
-                file_out.write(new_content)
-        target_file = PACKAGE_DIR / Path(f).name
-        Path(f).unlink()
-        try:
-            Path(target_file).unlink()
-        except FileNotFoundError:
-            pass
-        Path(outfilename).rename(target_file)
+    tasks_common.cleanlibspec(ctx, package_dir=PACKAGE_DIR)
 
 
 @task
@@ -84,31 +64,6 @@ def clean(ctx):
         for path in glob(pattern, recursive=True):
             print(f"Removing: {path}")
             shutil.rmtree(path, ignore_errors=True)
-
-
-@task
-def libspec(ctx):
-    """Generate library libspec file"""
-    excludes = [
-        "RPA.scripts*",
-        "RPA.core*",
-        "RPA.recognition*",
-        "RPA.Desktop.keywords*",
-        "RPA.Desktop.utils*",
-        "RPA.PDF.keywords*",
-        "RPA.Cloud.AWS.textract",
-        "RPA.Cloud.objects*",
-        "RPA.Cloud.Google.keywords*",
-        "RPA.Robocorp.utils*",
-        "RPA.Dialogs.*",
-        "RPA.Windows.keywords*",
-        "RPA.Windows.utils*",
-    ]
-    exclude_commands = [f"--exclude {package}" for package in excludes]
-    exclude_strings = " ".join(exclude_commands)
-    command = f"run docgen --no-patches --relative-source --format libspec --output src {exclude_strings} rpaframework"
-    poetry(ctx, command)
-    modify_libspec_files()
 
 
 @task
