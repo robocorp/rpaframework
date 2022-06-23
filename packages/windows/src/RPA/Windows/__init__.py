@@ -18,10 +18,9 @@ if utils.IS_WINDOWS:
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
     import comtypes.client
+    from uiautomation.uiautomation import Logger
 
     comtypes.client.gen_dir = None
-
-    from uiautomation.uiautomation import Logger
 
 
 # NOTE(cmiN): We use as base the robotframework `DynamicCore` this time instead of the
@@ -471,8 +470,9 @@ class Windows(WindowsElementsMixin, DynamicCore):
         # Prevent comtypes writing a lot of log messages.
         comtypes_logger = logging.getLogger("comtypes")
         comtypes_logger.propagate = False
-        # Disable uiautomation writing into a log file.
-        Logger.SetLogFile("")
+        if utils.IS_WINDOWS:
+            # Disable uiautomation writing into a log file.
+            Logger.SetLogFile("")
 
         super().__init__(locators_path=locators_path)
 
