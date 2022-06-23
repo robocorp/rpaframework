@@ -1,13 +1,16 @@
-from glob import glob
 import os
 import platform
 import re
 import shutil
 import subprocess
 import toml
+from glob import glob
 from pathlib import Path
-from invoke import Promise, task, call, ParseError
+
+from invoke import task, call, ParseError
 from colorama import Fore, Style
+
+from tasks_common import DOCGEN_EXCLUDES, poetry
 
 
 def _git_root():
@@ -51,21 +54,6 @@ DOCS_CLEAN_PATTERNS = [
     "docs/source/include/latest.json",
     "docs/source/json",
 ]
-DOCGEN_EXCLUDES = [
-    "--exclude RPA.core*",
-    "--exclude RPA.recognition*",
-    "--exclude RPA.scripts*",
-    "--exclude RPA.Desktop.keywords*",
-    "--exclude RPA.Desktop.utils*",
-    "--exclude RPA.PDF.keywords*",
-    "--exclude RPA.Cloud.objects*",
-    "--exclude RPA.Cloud.Google.keywords*",
-    "--exclude RPA.Robocorp.utils*",
-    "--exclude RPA.Dialogs.*",
-    "--exclude RPA.Windows.keywords*",
-    "--exclude RPA.Windows.utils*",
-    "--exclude RPA.Cloud.AWS.textract*",
-]
 
 EXPECTED_POETRY_CONFIG = {
     "virtualenvs": {"in-project": True, "create": True, "path": "null"},
@@ -100,10 +88,6 @@ def _run(ctx, app, command, **kwargs):
         kwargs.setdefault("pty", True)
 
     return ctx.run(f"{app} {command}", **kwargs)
-
-
-def poetry(ctx, command, **kwargs):
-    return _run(ctx, "poetry", command, **kwargs)
 
 
 def pip(ctx, command, **kwargs):
