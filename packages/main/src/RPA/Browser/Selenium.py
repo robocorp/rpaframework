@@ -154,7 +154,7 @@ class Selenium(SeleniumLibrary):
     locator strategy. All keywords support finding elements based on ``id``
     and ``name`` attributes, but some keywords support additional attributes
     or other values that make sense in their context. For example, `Click
-    Link` supports the ``href`` attribute and the link text and addition
+    Link` supports the ``href`` attribute and the link text in addition
     to the normal ``id`` and ``name``.
 
     Examples:
@@ -373,7 +373,7 @@ class Selenium(SeleniumLibrary):
 
     = Timeouts, waits, and delays =
 
-    This section discusses different ways how to wait for elements to
+    This section discusses different ways on how to wait for elements to
     appear on web pages and to slow down execution speed otherwise.
     It also explains the `time format` that can be used when setting various
     timeouts, waits, and delays.
@@ -574,12 +574,6 @@ class Selenium(SeleniumLibrary):
         certain user-agent string for Selenium, which can be overriden
         with the ``user_agent`` argument.
 
-        Example:
-
-        | Open Available Browser | https://www.robocorp.com |
-        | ${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |
-        | Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |
-
         == Browser order ==
 
         The default order of supported browsers is based on the operating system
@@ -657,6 +651,48 @@ class Selenium(SeleniumLibrary):
 
         Chrome can additionally connect through a ``proxy``, which
         should be given as either local or remote address.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Open Browser to Webpage
+                Open Available Browser    https://www.robocorp.com
+
+            *** Keyword ***
+            Open Browser to Webpage
+                ${index}=    Open Available Browser    ${URL}    browser_selection=opera,firefox
+        
+            *** Keyword ***
+            Open Browser to Webpage
+                Open Available Browser    ${URL}    headless=True    alias=HeadlessBrowser
+
+        
+        :param url: URL to open
+        :param use_profile: chrome profile to load into browser, default is `False`.
+         Chrome only feature
+        :param headless: opens a human visable or invisable browser instance,
+         default is "AUTO"
+        :param maximized: maximizes the browser window when opened, default is `False`
+        :param browser_selection: the order in which webdrivers are attempted when
+         opening a new browser, default is `AUTO`
+        :param alias: custom alias for this browser instance
+        :param profile_name: name of the profile, used in conjunction with `use_profile`.
+         Chrome only feature
+        :param profile_path: path to the profile, used in conjunction with `use_profile`.
+         Chrome only feature
+        :param preferences: loads the browser with different preferences for the
+         selected profile, used in conjunction with `use_profile`. Chrome only feature
+        :param proxy: address of the proxy the browser instance should use
+        :param user_agent: a string to set the user identity
+         e.g. User-Agent: Mozilla/<version> (<system-information>)
+          <platform> (<platform-details>) <extensions>
+        :param download: will download an instance of the webdriver for the chosen
+         browser, default is `AUTO`
+        :returns: index or alias of the browser instance
         """  # noqa: E501
         # pylint: disable=redefined-argument-from-local
         browsers = self._arg_browser_selection(browser_selection)
@@ -972,9 +1008,18 @@ class Selenium(SeleniumLibrary):
 
         That port can then be used to connect using this keyword.
 
-        Example:
+        **Example**
 
-        | Attach Chrome Browser | port=9222 |
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Attach Existing Instance of Chrome Browser
+                Attach Chrome Browser    port=9222
+
+        :param port: the unique port number he chrome browser is using
+        :param alias: alias to assign to this browser instance
         """
         options = ChromeOptions()
         options.add_experimental_option("debuggerAddress", f"localhost:{port:d}")
@@ -990,11 +1035,17 @@ class Selenium(SeleniumLibrary):
     def open_headless_chrome_browser(self, url: str) -> int:
         """Open Chrome browser in headless mode.
 
-        ``url`` URL to open
+        **Example**
 
-        Example:
+        **Robot Framework**
 
-        | ${idx} | Open Headless Chrome Browser | https://www.google.com |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Headless Chrome Browser Instance
+                ${idx}=    Open Headless Chrome Browser    https://www.google.com
+
+        :param url: URL to open
         """
         return self.open_chrome_browser(url, headless=True)
 
@@ -1007,19 +1058,41 @@ class Selenium(SeleniumLibrary):
         # pylint: disable=C0301, W0212
         """Capture page and/or element screenshot.
 
-        ``locator`` if defined, take element screenshot, if not takes page screenshot
+        **Examples**
 
-        ``filename`` filename for the screenshot, by default creates file `screenshot-timestamp-element/page.png`
-        if set to `None` then file is not saved at all
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | Screenshot | locator=//img[@alt="Google"] | filename=locator.png              | # element screenshot, defined filename            |
-        | Screenshot | filename=page.png            |                                   | # page screenshot, defined filename               |
-        | Screenshot | filename=${NONE}             |                                   | # page screenshot, NO file will be created        |
-        | Screenshot |                              |                                   | # page screenshot, default filename               |
-        | Screenshot | locator=//img[@alt="Google"] |                                   | # element screenshot, default filename            |
-        | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png | # element screenshot, create dirs if not existing |
+            *** Keyword ***
+            Take a Screenshot defaults
+                Screenshot    # page screenshot, default filename
+
+            *** Keyword ***
+            Take a Screenshot Example 1
+                Screenshot    locator=//img[@alt="Google"]    filename=locator.png    # element screenshot, defined filename
+
+            *** Keyword ***
+            Take a Screenshot Example 2
+                Screenshot    filename=page.png    # page screenshot, defined filename
+
+            *** Keyword ***
+            Take a Screenshot Example 3
+                Screenshot    filename=${NONE}    # page screenshot, NO file will be created
+
+            *** Keyword ***
+            Take a Screenshot Example 4
+                Screenshot    locator=//img[@alt="Google"]    # element screenshot, default filename
+
+            *** Keyword ***
+            Take a Screenshot Example 5
+                Screenshot    locator=//img[@alt="Google"]    filename=${CURDIR}/subdir/loc.png    # element screenshot, create dirs if not existing
+
+        :param locator: if ``locator`` if defined, take element screenshot, if not
+         takes page screenshot
+        :param filename: provides a filename for the screenshot, by default creates
+         file `screenshot-timestamp-element/page.png`. If set to `None` then file is
+         not saved at all
         """  # noqa: E501
         screenshot_keywords = ScreenshotKeywords(self)
         default_filename_prefix = f"screenshot-{int(time.time())}"
@@ -1059,17 +1132,25 @@ class Selenium(SeleniumLibrary):
     ) -> None:
         """Click element identified by ``locator``, once it becomes visible.
 
-        ``locator`` element locator
+        **Examples**
 
-        ``modifier`` press given keys while clicking the element, e.g. CTRL
+        **Robot Framework**
 
-        ``action_chain`` store action in Selenium ActionChain queue
+        .. code-block:: robotframework
 
-        Example:
+            *** Keyword ***
+            Click Visable Element
+                Click Element When Visible    q
 
-        | Click Element When Visible | q |
-        | Click Element When Visible | id:button | CTRL+ALT |
-        | Click Element When Visible | action_chain=True |
+            Click Visable Element Example 1
+                Click Element When Visible    id:button    CTRL+ALT
+
+            Click Visable Element Example 2
+                Click Element When Visible    action_chain=True
+
+        :param locator: element locator
+        :param modifier: press given keys while clicking the element, e.g. CTRL
+        :param action_chain: store action in Selenium ActionChain queue
         """
         self.wait_until_element_is_visible(locator)
         self.click_element(locator, modifier, action_chain)
@@ -1080,13 +1161,18 @@ class Selenium(SeleniumLibrary):
     ) -> None:
         """Click button identified by ``locator``, once it becomes visible.
 
-        ``locator`` element locator
+        **Examples**
 
-        ``modifier`` press given keys while clicking the element, e.g. CTRL
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | Click Button When Visible  | //button[@class="mybutton"] |
+            *** Keyword ***
+            Click Visable Button
+                Click Button When Visible    //button[@class="mybutton"]
+
+        :param locator: element locator
+        :param modifier: press given keys while clicking the element, e.g. CTRL
         """
         self.wait_until_element_is_visible(locator)
         self.click_button(locator, modifier)
@@ -1098,11 +1184,17 @@ class Selenium(SeleniumLibrary):
     def click_element_if_visible(self, locator: str) -> None:
         """Click element if it is visible
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | Click Element If Visible | //button[@class="mybutton"] |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Click Visable Element
+                Click Element If Visible    //button[@class="mybutton"]
+
+        :parma locator: element locator
         """
         visible = self.is_element_visible(locator)
         if visible:
@@ -1113,13 +1205,18 @@ class Selenium(SeleniumLibrary):
         # pylint: disable=C0301
         """Input text into locator after it has become visible.
 
-        ``locator`` element locator
+        **Examples**
 
-        ``text`` insert text to locator
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | Input Text When Element Is Visible | //input[@id="freetext"]  | my feedback |
+            *** Keyword ***
+            Input Text Into Visable Element
+                Input Text When Element Is Visible    //input[@id="freetext"]    my feedback
+
+        :param locator: element locator
+        "param text: insert text to locator
         """  # noqa: E501
         self.wait_until_element_is_visible(locator)
         self.input_text(locator, text)
@@ -1128,13 +1225,20 @@ class Selenium(SeleniumLibrary):
     def is_element_enabled(self, locator: str, missing_ok: bool = True) -> bool:
         """Is element enabled
 
-        ``locator`` element locator
-        ``missing_ok`` default True, set to False if keyword should
-        Fail if element does not exist
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Is Element Enabled | input.field1 |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Check If Input Field Is Enabled
+                ${res}    Is Element Enabled    input.field1
+
+        :param locator: element locator
+        :parma missing_ok: default True, set to False if keyword should Fail
+         if element does not exist
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_enabled,
@@ -1146,13 +1250,20 @@ class Selenium(SeleniumLibrary):
     def is_element_visible(self, locator: str, missing_ok: bool = True) -> bool:
         """Is element visible
 
-        ``locator`` element locator
-        ``missing_ok`` default True, set to False if keyword should
-        Fail if element does not exist
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Is Element Visible | id:confirmation |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Check If Confirmation Button Is Visable
+                ${res}    Is Element Visible    id:confirmation
+
+        :param locator: element locator
+        :parma missing_ok: default True, set to False if keyword should Fail
+         if element does not exist
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_visible,
@@ -1164,13 +1275,20 @@ class Selenium(SeleniumLibrary):
     def is_element_disabled(self, locator: str, missing_ok: bool = True) -> bool:
         """Is element disabled
 
-        ``locator`` element locator
-        ``missing_ok`` default True, set to False if keyword should
-        Fail if element does not exist
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Is Element Disabled | //input[@type="submit"] |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Check if Submit Button is Disabled
+                ${res}    Is Element Disabled    //input[@type="submit"]
+
+        :param locator: element locator
+        :parma missing_ok: default True, set to False if keyword should Fail
+         if element does not exist
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_disabled,
@@ -1182,13 +1300,20 @@ class Selenium(SeleniumLibrary):
     def is_element_focused(self, locator: str, missing_ok: bool = True) -> bool:
         """Is element focused
 
-        ``locator`` element locator
-        ``missing_ok`` default True, set to False if keyword should
-        Fail if element does not exist
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Is Element Focused | //input[@id="freetext"] |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Check if Text Field is Focused
+                ${res}    Is Element Focused    //input[@id="freetext"]
+
+        :param locator: element locator
+        :parma missing_ok: default True, set to False if keyword should Fail
+         if element does not exist
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_focused,
@@ -1202,15 +1327,20 @@ class Selenium(SeleniumLibrary):
     ) -> bool:
         """Is element attribute equal to expected value
 
-        ``locator`` element locator
+        **Examples**
 
-        ``attribute`` element attribute to check for
+        **Robot Framework**
 
-        ``expected`` is attribute value equal to this
+        .. code-block:: robotframework
 
-        Example:
+            *** Keyword ***
+            Does Element Attribute Equal Value
+                ${res}    Is Element Attribute Equal To    h1    id    main
 
-        | ${res} | Is Element Attribute Equal To | h1 | id | main |
+        :param locator: element locator
+        "param attribute: element attribute to check for
+        :param expected: is attribute value equal to this
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.element_attribute_value_should_be, locator, attribute, expected
@@ -1223,14 +1353,20 @@ class Selenium(SeleniumLibrary):
 
         Other possible actions are DISMISS and LEAVE.
 
-        ``text`` check if alert text is matching to this, if `None`
-        will check if alert is present at all
+        **Examples**
 
-        ``action`` possible action if alert is present, default ACCEPT
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Is Alert Present | alert message |
+            *** Keyword ***
+            Check for Alert
+                ${res}    Is Alert Present    alert message
+
+        :param text: check if alert text is matching to this, if `None`
+         will check if alert is present at all
+        :param action: possible action if alert is present, default ACCEPT
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.alert_should_be_present, text, action
@@ -1241,12 +1377,20 @@ class Selenium(SeleniumLibrary):
         # pylint: disable=W0212
         """Does alert contain text.
 
-        ``text`` check if alert includes text, will raise ValueError is text
-        does not exist
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Does Alert Contain | alert message |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Check Alert Message
+                ${res}    Does Alert Contain    alert message
+
+        :param text: check if alert includes text, will raise ValueError if text
+         does not exist
+        :return: `True` or `False`
+        :raises ValueError: if text does not exist in the alert message
         """
         alert_keywords = AlertKeywords(self)
         alert = alert_keywords._wait_alert(timeout)
@@ -1260,12 +1404,20 @@ class Selenium(SeleniumLibrary):
         # pylint: disable=W0212
         """Does alert not contain text.
 
-        ``text`` check that alert does not include text, will raise ValueError if text
-        does exist
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Does Alert Not Contain | unexpected message |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Alert Messgae Should Not Contain
+                ${res}    Does Alert Not Contain    unexpected message
+
+        :param text: check that alert does not include text, will raise ValueError
+         if text does exist
+        :return: `True` or `False`
+        :raises ValueError: if text does exist in the alert message
         """
         alert_keywords = AlertKeywords(self)
         alert = alert_keywords._wait_alert(timeout)
@@ -1279,11 +1431,18 @@ class Selenium(SeleniumLibrary):
     def is_checkbox_selected(self, locator: str) -> bool:
         """Is checkbox selected
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} |  Is Checkbox Selected  | id:taxes-paid |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Look for Selected Checkbox
+                ${res}    Is Checkbox Selected    id:taxes-paid
+
+        :param locator: element locator
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.checkbox_should_be_selected, locator
@@ -1293,13 +1452,19 @@ class Selenium(SeleniumLibrary):
     def does_frame_contain(self, locator: str, text: str) -> bool:
         """Does frame contain expected text
 
-        ``locator`` locator of the frame to check
+        **Examples**
 
-        ``text`` does frame contain this text
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Does Frame Contain | id:myframe | secret |
+            *** Keyword ***
+            Look for Text in Frame
+                ${res}    Does Frame Contain    id:myframe    secret
+
+        :param locator: locator of the frame to check
+        :param text: does frame contain this text
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.frame_should_contain, locator, text
@@ -1312,15 +1477,23 @@ class Selenium(SeleniumLibrary):
         # pylint: disable=C0301
         """Does element contain expected text
 
-        ``locator`` element locator
+        **Examples**
 
-        ``expected`` expected element text
+        **Robot Framework**
 
-        ``ignore_case`` should check be case insensitive, default `False`
+        .. code-block:: robotframework
 
-        Example:
+            *** Keyword ***
+            Look for X in Element
+                ${res}=    Does Element Contain
+                ...    id:spec
+                ...    specification complete
+                ...    ignore_case=True
 
-        | ${res} | Does Element Contain | id:spec | specification complete | ignore_case=True |
+        :param locator: element locator
+        :param expected: expected element text
+        :param ignore_case: should check be case insensitive, default `False`
+        :return: `True` or `False`
         """  # noqa: E501
         return self._run_should_keyword_and_return_status(
             self.element_should_contain,
@@ -1335,16 +1508,24 @@ class Selenium(SeleniumLibrary):
     ) -> bool:
         """Is element text expected
 
-        ``locator`` element locator
+        **Examples**
 
-        ``expected`` expected element text
+        **Robot Framework**
 
-        ``ignore_case`` should check be case insensitive, default `False`
+        .. code-block:: robotframework
 
-        Example:
+            *** Keyword ***
+            Is the Element Text What We Expect
+                ${res}=    Is Element Text    id:name    john doe
 
-        | ${res} | Is Element Text | id:name | john doe |
-        | ${res} | Is Element Text | id:name | john doe | ignore_case=True |
+            *** Keyword ***
+            Is the Element Text What We Expect Ignoring Case
+                ${res}=    Is Element Text    id:name    john doe    ignore_case=True
+
+        :param locator: element locator
+        :param expected: expected element text
+        :param ignore_case: should check be case insensitive, default `False`
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.element_text_should_be,
@@ -1357,13 +1538,19 @@ class Selenium(SeleniumLibrary):
     def is_list_selection(self, locator: str, *expected: str) -> bool:
         """Is list selected with expected values
 
-        ``locator`` element locator
+        **Examples**
 
-        ``expected`` expected selected options
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Is List Selection | id:cars | Ford |
+            *** Keyword ***
+            Does List Contain Our Values
+                ${res}=    Is List Selection    id:cars    Ford
+
+        :param locator: element locator
+        :param expected: expected selected options
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.list_selection_should_be, locator, *expected
@@ -1373,11 +1560,18 @@ class Selenium(SeleniumLibrary):
     def is_list_selected(self, locator: str) -> bool:
         """Is any option selected in the
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Is List Selected | id:cars |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is A List Option Selected
+                ${res}=    Is List Selected    id:cars
+
+        :param locator: element locator
+        :return: `True` or `False`
         """
         self.logger.info("Will return if anything is selected on the list")
         return not self._run_should_keyword_and_return_status(
@@ -1388,12 +1582,18 @@ class Selenium(SeleniumLibrary):
     def is_location(self, url: str) -> bool:
         """Is current URL expected url
 
-        ``url`` expected current URL
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | Open Available Browser | https://www.robocorp.com |
-        | ${res} | Is Location | https://www.robocorp.com |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Confirm the Website Is As Expected
+                ${res}=    Is Location    https://www.robocorp.com
+
+        :param url: expected current URL
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(self.location_should_be, url)
 
@@ -1401,12 +1601,18 @@ class Selenium(SeleniumLibrary):
     def does_location_contain(self, expected: str) -> bool:
         """Does current URL contain expected
 
-        ``expected`` URL should contain this
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | Open Available Browser | https://robocorp.com |
-        | ${res} | Does Location Contain | robocorp |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Does the Website Contain
+                ${res}=    Does Location Contain    robocorp
+
+        :param expected: URL should contain this
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.location_should_contain, expected
@@ -1416,12 +1622,18 @@ class Selenium(SeleniumLibrary):
     def does_page_contain(self, text: str) -> bool:
         """Does page contain expected text
 
-        ``text`` page should contain this
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | Open Available Browser | https://google.com |
-        | ${res} | Does Page Contain | Gmail |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is Expected Text on This Page
+                ${res}=    Does Page Contain    Gmail
+
+        :param text: page should contain this
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain, text
@@ -1431,11 +1643,18 @@ class Selenium(SeleniumLibrary):
     def does_page_contain_button(self, locator: str) -> bool:
         """Does page contain expected button
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Does Page Contain Button | search-button |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is This Button on the Page
+                ${res}=    Does Page Contain Button    search-button
+        
+        :param locator: element locator
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_button, locator
@@ -1445,11 +1664,18 @@ class Selenium(SeleniumLibrary):
     def does_page_contain_checkbox(self, locator: str) -> bool:
         """Does page contain expected checkbox
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Does Page Contain Checkbox | random-selection |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is This Checkbox on the Page
+                ${res}=    Does Page Contain Checkbox    random-selection
+
+        :param locator: element locator
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_checkbox, locator
@@ -1459,15 +1685,24 @@ class Selenium(SeleniumLibrary):
     def does_page_contain_element(self, locator: str, count: int = None) -> bool:
         """Does page contain expected element
 
-        ``locator`` element locator
+        **Examples**
 
-        ``count`` how many times element is expected to appear on page
-        by default one or more
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Does Page Contain Element | textarea |
-        | ${res} | Does Page Contain Element | button | count=4 |
+            *** Keyword ***
+            Is This Element on the Page
+            ${res}=    Does Page Contain Element    textarea
+
+            *** Keyword ***
+            Is This Element on the Page Four Times
+            ${res}=    Does Page Contain Element    button    count=4
+
+        :param locator: element locator
+        :param count: how many times element is expected to appear on page
+         by default one or more
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_element, locator=locator, limit=count
@@ -1477,12 +1712,18 @@ class Selenium(SeleniumLibrary):
     def does_page_contain_image(self, locator: str) -> bool:
         """Does page contain expected image
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | Open Available Browser | https://google.com |
-        | ${res} | Does Page Contain Image | Google |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is an Image on this Page
+                ${res}=    Does Page Contain Image    Google
+
+        :param locator: element locator
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_image, locator
@@ -1492,11 +1733,18 @@ class Selenium(SeleniumLibrary):
     def does_page_contain_link(self, locator: str) -> bool:
         """Does page contain expected link
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Does Page Contain Link | id:submit |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is a Link on this Page
+                ${res}=    Does Page Contain Link    id:submit
+
+        :param locator: element locator
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_link, locator
@@ -1506,11 +1754,18 @@ class Selenium(SeleniumLibrary):
     def does_page_contain_list(self, locator: str) -> bool:
         """Does page contain expected list
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Does Page Contain List | class:selections |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is a List on this Page
+                ${res}=    Does Page Contain List    class:selections
+
+        :param locator: element locator
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_list, locator
@@ -1520,11 +1775,18 @@ class Selenium(SeleniumLibrary):
     def does_page_contain_radio_button(self, locator: str) -> bool:
         """Does page contain expected radio button
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Does Page Contain Radio Button | male |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is a Radio Button on this Page
+            ${res}=    Does Page Contain Radio Button    male
+
+        :param locator: element locator
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_radio_button, locator
@@ -1534,11 +1796,18 @@ class Selenium(SeleniumLibrary):
     def does_page_contain_textfield(self, locator: str) -> bool:
         """Does page contain expected textfield
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Does Page Contain Textfield | id:address |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Is a Textfield on this Page
+                ${res}=    Does Page Contain Textfield    id:address
+
+        :param locator: element locator
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_textfield, locator
@@ -1548,13 +1817,21 @@ class Selenium(SeleniumLibrary):
     def is_radio_button_set_to(self, group_name: str, value: str) -> bool:
         """Is radio button group set to expected value
 
-        ``group_name`` radio button group name
+        **Examples**
 
-        ``value`` expected value
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Is Radio Button Set To | group_name=gender | value=female |
+            *** Keyword ***
+            Check Radio Button Selection
+                ${res}=    Is Radio Button Set To
+                ...    group_name=gender
+                ...    value=female
+
+        :param group_name: radio button group name
+        :param value: expected value
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.radio_button_should_be_set_to, group_name, value
@@ -1564,11 +1841,18 @@ class Selenium(SeleniumLibrary):
     def is_radio_button_selected(self, group_name: str) -> bool:
         """Is any radio button selected in the button group
 
-        ``group_name`` radio button group name
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Is Radio Button Selected | group_name=gender |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Check Radio Button Selection
+                ${res}    Is Radio Button Selected    group_name=gender
+
+        :param group_name: radio button group name
+        :return: `True` or `False`
         """
         self.logger.info(
             "Will return if anything is selected on the radio button group"
@@ -1583,17 +1867,25 @@ class Selenium(SeleniumLibrary):
     ) -> bool:
         """Does table cell contain expected text
 
-        ``locator`` element locator for the table
+        **Examples**
 
-        ``row`` row index starting from 1 (beginning) or -1 (from the end)
+        **Robot Framework**
 
-        ``column`` column index starting from 1 (beginning) or -1 (from the end)
+        .. code-block:: robotframework
 
-        ``expected`` expected text in table row
+            *** Keyword ***
+            Look for Value in Table Cells
+                ${res}=    Does Table Cell Contain
+                ...    //table
+                ...    1
+                ...    1
+                ...    Company
 
-        Example:
-
-        | ${res} | Does Table Cell Contain | //table | 1 | 1 | Company |
+        :param locator: element locator for the table
+        :param row: row index starting from 1 (beginning) or -1 (from the end)
+        :param column: column index starting from 1 (beginning) or -1 (from the end)
+        :param expected: expected text in table row
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.table_cell_should_contain, locator, row, column, expected
@@ -1605,15 +1897,23 @@ class Selenium(SeleniumLibrary):
     ) -> bool:
         """Does table column contain expected text
 
-        ``locator`` element locator for the table
+        **Examples**
 
-        ``column`` column index starting from 1 (beginning) or -1 (from the end)
+        **Robot Framework**
 
-        ``expected`` expected text in table column
+        .. code-block:: robotframework
 
-        Example:
+            *** Keyword ***
+            Look for Value in Table Column
+                ${res}=    Does Table Column Contain
+                ...    //table
+                ...    1
+                ...    Nokia
 
-        | ${res} | Does Table Column Contain | //table | 1 | Nokia |
+        :param locator: element locator for the table
+        :param column: column index starting from 1 (beginning) or -1 (from the end)
+        :param expected: expected text in table column
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.table_column_should_contain, locator, column, expected
@@ -1623,15 +1923,23 @@ class Selenium(SeleniumLibrary):
     def does_table_row_contain(self, locator: str, row: int, expected: str) -> bool:
         """Does table row contain expected text
 
-        ``locator`` element locator for the table
+        **Examples**
 
-        ``row`` row index starting from 1 (beginning) or -1 (from the end)
+        **Robot Framework**
 
-        ``expected`` expected text in table row
+        .. code-block:: robotframework
 
-        Example:
+            *** Keyword ***
+            Look for Value in Table Row
+                ${res}=    Does Table Row Contain
+                ...    //table
+                ...    1
+                ...    Company
 
-        | ${res} | Does Table Row Contain | //table | 1 | Company |
+        :param locator: element locator for the table
+        :param row: row index starting from 1 (beginning) or -1 (from the end)
+        :param expected: expected text in table row
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.table_row_should_contain, locator, row, expected
@@ -1641,13 +1949,19 @@ class Selenium(SeleniumLibrary):
     def does_table_footer_contain(self, locator: str, expected: str) -> bool:
         """Does table footer contain expected text
 
-        ``locator`` element locator for the table
+        **Examples**
 
-        ``expected`` expected text in table footer
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Does Table Footer Contain | //table | Sum |
+            *** Keyword ***
+            Look for Value in Table Footer
+                ${res}=    Does Table Footer Contain    //table    Sum
+
+        :param locator: element locator for the table
+        :param expected: expected text in table footer
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.table_footer_should_contain, locator, expected
@@ -1657,13 +1971,19 @@ class Selenium(SeleniumLibrary):
     def does_table_header_contain(self, locator: str, expected: str) -> bool:
         """Does table header contain expected text
 
-        ``locator`` element locator for the table
+        **Examples**
 
-        ``expected`` expected text in table header
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Does Table Header Contain | //table | Month |
+            *** Keyword ***
+            Look for Value in Table Header
+                ${res}=    Does Table Header Contain    //table    Month
+
+        :param locator: element locator for the table
+        :param expected: expected text in table header
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.table_header_should_contain, locator, expected
@@ -1673,13 +1993,19 @@ class Selenium(SeleniumLibrary):
     def does_table_contain(self, locator: str, expected: str) -> bool:
         """Does table contain expected text
 
-        ``locator`` element locator
+        **Examples**
 
-        ``expected`` expected text in table
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Does Table Contain | //table | February |
+            *** Keyword ***
+            Look for Value in Table
+                ${res}=    Does Table Contain    //table    February
+
+        :param locator: element locator
+        :param expected: expected text in table
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.table_should_contain, locator, expected
@@ -1689,13 +2015,19 @@ class Selenium(SeleniumLibrary):
     def is_textarea_value(self, locator: str, expected: str) -> bool:
         """Is textarea matching expected value
 
-        ``locator`` element locator
+        **Examples**
 
-        ``expected`` expected textarea value
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Is Textarea Value | //textarea | Yours sincerely |
+            *** Keyword ***
+            Look for Textarea Text to Match
+                ${res}=    Is Textarea Value    //textarea    Yours sincerely
+
+        :param locator: element locator
+        :param expected: expected textarea value
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.textarea_value_should_be, locator, expected
@@ -1705,13 +2037,19 @@ class Selenium(SeleniumLibrary):
     def does_textarea_contain(self, locator: str, expected: str) -> bool:
         """Does textarea contain expected text
 
-        ``locator`` element locator
+        **Examples**
 
-        ``expected`` expected text in textarea
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Does Textarea Contain | //textarea | sincerely |
+            *** Keyword ***
+            Look for Specific Text in Textarea
+                ${res}=    Does Textarea Contain    //textarea    sincerely
+
+        :param locator: element locator
+        :param expected: expected text in textarea
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.textarea_should_contain, locator, expected
@@ -1721,13 +2059,19 @@ class Selenium(SeleniumLibrary):
     def does_textfield_contain(self, locator: str, expected: str) -> bool:
         """Does textfield contain expected text
 
-        ``locator`` element locator
+        **Examples**
 
-        ``expected`` expected text in textfield
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Does Textfield Contain | id:lname | Last |
+            *** Keyword ***
+            Look for Specific Text in Textfield
+                ${res}=    Does Textfield Contain    id:lname    Last
+
+        :param locator: element locator
+        :param expected: expected text in textfield
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.textfield_should_contain, locator, expected
@@ -1737,13 +2081,19 @@ class Selenium(SeleniumLibrary):
     def is_textfield_value(self, locator: str, expected: str) -> bool:
         """Is textfield value expected
 
-        ``locator`` element locator
+        **Examples**
 
-        ``expected`` expected textfield value
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | ${res} | Is Textfield Value | id:lname | Lastname |
+            *** Keyword ***
+            Does Textfield Value Match
+                ${res}=    Is Textfield Value    id:lname    Lastname
+
+        :param locator: element locator
+        :param expected: expected textfield value
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(
             self.textfield_value_should_be, locator, expected
@@ -1753,11 +2103,18 @@ class Selenium(SeleniumLibrary):
     def is_title(self, title: str) -> bool:
         """Is page title expected
 
-        ``title`` expected title value
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | ${res} | Is Title | Webpage title text |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Does Title Match
+                ${res}=    Is Title    Webpage title text
+
+        :param title: expected title value
+        :return: `True` or `False`
         """
         return self._run_should_keyword_and_return_status(self.title_should_be, title)
 
@@ -1788,15 +2145,22 @@ class Selenium(SeleniumLibrary):
             - disabled
             - focused
 
-        ``locator`` element locator
+        **Examples**
 
-        Example:
+        **Robot Framework**
 
-        | &{res}  | Get Element Status | class:special |
-        | Log     | ${res.visible} |
-        | Log     | ${res.enabled} |
-        | Log     | ${res.disabled} |
-        | Log     | ${res.focused} |
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Capture and Log Element Status
+                &{res}  Get Element Status    class:special
+                Log     ${res.visible}
+                Log     ${res.enabled}
+                Log     ${res.disabled}
+                Log     ${res.focused}
+
+        :param locator: element locator
+        :return: dictionary of the status of four properties
         """
         status_object = {}
         status_object["visible"] = self.is_element_visible(locator)
@@ -1824,14 +2188,23 @@ class Selenium(SeleniumLibrary):
 
         Read more: https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser
 
-        ``url`` URL to open
-        ``tab`` defines is url is opened in a tab (default `True`) or
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Open User Default Browser and a new Tab
+                Open User Browser    https://www.google.com?q=rpa
+        
+            *** Keyword ***
+            Open User Default Browser and a new Window
+                Open User Browser    https://www.google.com?q=rpa    tab=False
+
+        :param url: URL to open
+        :param tab: defines is url is opened in a tab (default `True`) or
                 in new window (`False`)
-
-        Example:
-
-        | Open User Browser  | https://www.google.com?q=rpa |
-        | Open User Browser  | https://www.google.com?q=rpa | tab=False |
         """  # noqa: E501
         browser_method = webbrowser.open_new_tab if tab else webbrowser.open_new
         browser_method(url)
@@ -1840,9 +2213,17 @@ class Selenium(SeleniumLibrary):
     def get_browser_capabilities(self) -> dict:
         """Get dictionary of browser properties
 
-        Example:
+        **Examples**
 
-        | ${caps}= | Get Browser Capabilities |
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Capture Browser Properties
+                ${caps}=    Get Browser Capabilities
+
+        :return: dictionary of the browser's properties
         """
         capabilities = self.driver.capabilities
         return dict(capabilities)
@@ -1856,10 +2237,26 @@ class Selenium(SeleniumLibrary):
         Works with ``Open Available Browser``, ``Open Chrome Browser`` and
         ``Open Headless Chrome Browser`` keywords.
 
-        ``directory``    target directory for downloads, defaults to None which means
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Define Download Directory for Browser
+                Set Download Directory    /path/to/download/location
+
+            *** Keyword ***
+            Open PDF Instead of Download
+                Set Download Directory
+                ...    /path/to/download/location
+                ...    download_pdf=${FALSE}
+        
+        :param directory: target directory for downloads, defaults to None which means
                          that setting is removed
-        ``download_pdf`` if `True` then PDF is downloaded instead of shown with
-                         browser's internal viewer
+        :param download_pdf: if `True` then PDF is downloaded instead of shown with
+                         browser's internal viewer; default is `True`
         """
         if directory is None:
             self.logger.info("Download directory set back to browser default setting")
@@ -1893,9 +2290,15 @@ class Selenium(SeleniumLibrary):
         ``style``    highlight outline style
         ``color``    highlight outline color
 
-        Example:
+        **Examples**
 
-        | Highlight Elements | xpath://h2 |
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Highlight H2 Elements
+                Highlight Elements    xpath://h2
         """
         elements = self.find_elements(locator)
         attribute_name = "rpaframework-highlight"
@@ -1927,7 +2330,18 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def clear_all_highlights(self):
-        """Remove all highlighting made by ``Highlight Elements``."""
+        """Remove all highlighting made by ``Highlight Elements``.
+        
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Remove Highlights
+                Clear All Highlights
+        """
         attribute_name = "rpaframework-highlight"
 
         elements = self.driver.find_elements_by_css_selector(f"[{attribute_name}]")
@@ -1945,17 +2359,31 @@ class Selenium(SeleniumLibrary):
         For supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
 
-        ``output_path`` filepath for the generated pdf. By default it is saved to
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Save Page as PDF
+                &{print_parameters}=    Create Dictionary
+                ...    landscape=False
+                ...    displayHeaderFooter=False
+                ...    printBackground=True
+                ...    preferCSSPageSize=True
+                Print To Pdf    ${OUTPUT_DIR}    ${print_parameters}
+
+        :param output_path: filepath for the generated pdf. By default it is saved to
           the output folder with name `out.pdf`.
-
-        ``params`` parameters for the Chrome print method. By default uses values:
-
-        ``{
-            "landscape": False,
-            "displayHeaderFooter": False,
-            "printBackground": True,
-            "preferCSSPageSize": True,
-        }``
+        :param params: parameters for the Chrome print method. By default uses values:
+         {
+             "landscape": False,
+             "displayHeaderFooter": False,
+             "printBackground": True,
+             "preferCSSPageSize": True
+         }
+         :return: path to the printed PDF file
         """
         if "chrom" not in self.driver.name:
             raise NotImplementedError("PDF printing works only with Chrome/Chromium")
@@ -1993,16 +2421,22 @@ class Selenium(SeleniumLibrary):
         For more information, available commands and parameters, see:
         https://chromedevtools.github.io/devtools-protocol/
 
-        ``command`` command to execute as string
+        **Examples**
 
-        ``parameters`` parameters for command as a dictionary
+        **Robot Framework**
 
-        Example:
+        .. code-block:: robotframework
 
-        | Open Chrome Browser | about:blank | headless=True |
-        | &{params} | Create Dictionary | useragent=Chrome/83.0.4103.53 |
-        | Execute CDP | Network.setUserAgentOverride | ${params} |
-        | Go To | https://robocorp.com |
+            *** Keyword ***
+            Execute Chrome DevTools Protocol and Navigate to Webpage
+                Open Chrome Browser    about:blank    headless=True
+                &{params}    Create Dictionary    useragent=Chrome/83.0.4103.53
+                Execute CDP    Network.setUserAgentOverride    ${params}
+                Go To    https://robocorp.com
+
+        :param command: command to execute as string
+        :param parameters: parameters for command as a dictionary
+        :return: string of the returned response from the execution
         """
         if "chrom" not in self.driver.name:
             raise NotImplementedError(
