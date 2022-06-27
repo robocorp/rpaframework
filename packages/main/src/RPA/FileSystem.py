@@ -279,7 +279,7 @@ class FileSystem:
 
         :param path:    path to inspected file
         :return: true or false if the files does not exist
-        """
+        """  # noqa: W605
         return not self.does_file_exist(path)
 
     def does_directory_exist(self, path: PATH_TYPE) -> bool:
@@ -290,7 +290,7 @@ class FileSystem:
 
         :param path:    path to inspected directory
         :return: true or false if the directory exists
-        """
+        """  # noqa: W605
         return bool(self.find_files(path, include_files=False))
 
     def does_directory_not_exist(self, path: PATH_TYPE) -> bool:
@@ -343,7 +343,7 @@ class FileSystem:
 
         :param path:    path to inspected directory
         :return: true or false if the directory is not empty
-        """
+        """  # noqa: W605
         return not self.is_directory_empty(path)
 
     def is_file_empty(self, path: PATH_TYPE) -> bool:
@@ -386,7 +386,7 @@ class FileSystem:
         :param path:        path to file to read
         :param encoding:    character encoding of file (default ``utf-8``)
         :return: file content as string
-        """
+        """  # noqa: W605
         with open(path, "r", encoding=encoding) as fd:
             return fd.read()
 
@@ -432,7 +432,8 @@ class FileSystem:
         :param path:        path to file to write
         :param content:     content to write to file (optional)
         :param encoding:    character encoding of written content (default ``utf-8``)
-        :param overwrite:   replace destination file if it already exists (default ``False``)
+        :param overwrite:   replace destination file if it already
+                            exists (default ``False``)
 
         Example:
 
@@ -441,7 +442,8 @@ class FileSystem:
             *** Tasks ***
             Create a new file
                 ${content}=    Get    url=https://www.example.com
-                Create file    output/newfile.html    content=${content.text}    overwrite=${True}
+                Create file    output/newfile.html    content=${content.text}
+                ...    overwrite=${True}
 
         """
         if not overwrite and Path(path).exists():
@@ -489,7 +491,7 @@ class FileSystem:
         :param path:        path to file to append to
         :param content:     content to append
         :param encoding:    character encoding of appended content
-        """
+        """  # noqa: W605
         if not Path(path).exists():
             raise FileNotFoundError(f"File does not exist: {path}")
 
@@ -504,7 +506,7 @@ class FileSystem:
 
         :param path:        path to file to append to
         :param content:     content to append
-        """
+        """  # noqa: W605
         if not Path(path).exists():
             raise FileNotFoundError(f"File does not exist: {path}")
 
@@ -620,7 +622,7 @@ class FileSystem:
 
         :param source:      path to source file
         :param destination: path to copy destination
-        """
+        """  # noqa: W605
         src = Path(source)
         dst = Path(destination)
 
@@ -784,7 +786,9 @@ class FileSystem:
 
             *** Tasks ***
             Change a file extension
-                Change file extension    devdata/work-items-in/default/orders.xls    .xlsx
+                Change file extension
+                ...    devdata/work-items-in/default/orders.xls
+                ...    .xlsx
 
         """
         dst = Path(path).with_suffix(extension)
