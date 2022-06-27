@@ -86,12 +86,12 @@ RPA.FileSystem:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "383", "glob support"
-   "403", "Should it remove all subdirectories too?"
-   "430", "glob support"
-   "565", "Convert to proper date"
-   "575", "Convert to proper date"
-   "584", "Convert to human-friendly?"
+   "573", "glob support"
+   "611", "Should it remove all subdirectories too?"
+   "651", "glob support"
+   "864", "Convert to proper date"
+   "874", "Convert to proper date"
+   "883", "Convert to human-friendly?"
 
 RPA.JSON:
 =========
