@@ -270,7 +270,7 @@ class FinderKeywords(LibraryContext):
 
             ${matches}=    Find elements    image:icon.png
             FOR    ${match}  IN  @{matches}
-                Log    Found icon at ${match.x}, ${match.y}
+                Log    Found icon at ${match.right}, ${match.top}
             END
         """
         self.logger.info("Resolving locator: %s", locator)
@@ -293,7 +293,7 @@ class FinderKeywords(LibraryContext):
         .. code-block:: robotframework
 
             ${match}=    Find element    image:logo.png
-            Log    Found logo at ${match.x}, ${match.y}
+            Log    Found logo at ${match.right}, ${match.top}
         """
         matches = self.find_elements(locator)
 

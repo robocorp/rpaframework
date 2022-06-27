@@ -5,12 +5,36 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete
-- Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated
-- Deprecate *Lab* references under documentation.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.1.4 - 23 June 2022
+---------------------
+
+- Fix *VSCode* keyword definitions in all packages (:issue:`560`). (*libspec* Python
+  modules paths)
+
+  - ``rpaframework-aws`` **3.1.1**
+  - ``rpaframework-google`` **5.0.1**
+  - ``rpaframework-pdf`` **4.0.2**
+  - ``rpaframework-windows`` **5.0.1**
+
+- Library **RPA.Desktop**: Fix docs examples returning ``Region`` elements.
+
+
+15.1.3 - 22 June 2022
+---------------------
+
+- Fix *VSCode* keyword definitions. (*libspec* Python modules paths)
+
+15.1.2 - 21 June 2022
+---------------------
+
+- Library **RPA.PDF** (:pr:`549`, ``rpaframework-pdf`` **4.0.1**): Extended PDF
+  examples.
+- Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete.
+- Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated.
 
 15.1.1 - 17 June 2022
 ---------------------
