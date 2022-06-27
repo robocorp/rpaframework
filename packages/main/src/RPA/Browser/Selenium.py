@@ -665,12 +665,11 @@ class Selenium(SeleniumLibrary):
             *** Keyword ***
             Open Browser to Webpage
                 ${index}=    Open Available Browser    ${URL}    browser_selection=opera,firefox
-        
+
             *** Keyword ***
             Open Browser to Webpage
                 Open Available Browser    ${URL}    headless=True    alias=HeadlessBrowser
 
-        
         :param url: URL to open
         :param use_profile: chrome profile to load into browser, default is `False`.
          Chrome only feature
@@ -1652,7 +1651,7 @@ class Selenium(SeleniumLibrary):
             *** Keyword ***
             Is This Button on the Page
                 ${res}=    Does Page Contain Button    search-button
-        
+
         :param locator: element locator
         :return: `True` or `False`
         """
@@ -2197,7 +2196,7 @@ class Selenium(SeleniumLibrary):
             *** Keyword ***
             Open User Default Browser and a new Tab
                 Open User Browser    https://www.google.com?q=rpa
-        
+
             *** Keyword ***
             Open User Default Browser and a new Window
                 Open User Browser    https://www.google.com?q=rpa    tab=False
@@ -2252,7 +2251,7 @@ class Selenium(SeleniumLibrary):
                 Set Download Directory
                 ...    /path/to/download/location
                 ...    download_pdf=${FALSE}
-        
+
         :param directory: target directory for downloads, defaults to None which means
                          that setting is removed
         :param download_pdf: if `True` then PDF is downloaded instead of shown with
@@ -2331,7 +2330,7 @@ class Selenium(SeleniumLibrary):
     @keyword
     def clear_all_highlights(self):
         """Remove all highlighting made by ``Highlight Elements``.
-        
+
         **Examples**
 
         **Robot Framework**
