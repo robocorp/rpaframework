@@ -175,7 +175,7 @@ class FileSystem:
     def list_files_in_directory(self, path: Optional[PATH_TYPE] = None) -> list:
         """Lists all the files in the given directory, relative to it.
 
-        :param path: base directory for search, defaults to current working dir
+        :param path: base directory for search, defaults to current working directory
         :return: list of files in directory
 
         Example:
@@ -362,6 +362,7 @@ class FileSystem:
 
         :param path:    path to inspected file
         :return: true or false if the file is not empty
+
         Example:
 
         .. code-block:: robotframework
@@ -422,7 +423,7 @@ class FileSystem:
     def create_file(
         self,
         path: PATH_TYPE,
-        content: Optional[Any] = None,
+        content: Optional[str] = None,
         encoding: str = "utf-8",
         overwrite: bool = False,
     ) -> None:
@@ -478,7 +479,7 @@ class FileSystem:
                 fd.write(content)
 
     def append_to_file(
-        self, path: PATH_TYPE, content: Any, encoding: str = "utf-8"
+        self, path: PATH_TYPE, content: str, encoding: str = "utf-8"
     ) -> None:
         # pylint: disable=anomalous-backslash-in-string
         """Appends text to the given file.
@@ -801,7 +802,7 @@ class FileSystem:
 
             *** Tasks ***
             Join path together
-                Join path    output/nested    nested    folder
+                Join path    output/nested    folder
 
         """
         parts = [str(part) for part in parts]
@@ -820,6 +821,17 @@ class FileSystem:
 
         :param path:    path that will be normalized
         :return:        path to file as a string
+
+        Example:
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Get normal path
+                # Normalized path becomes ../inputs/input.xlsx
+                ${normalized_path}=    Normalize path    ..//inputs/./new/../input.xlsx
+                Create work items    ${normalized_path}
+
         """
         return str(os.path.normpath(Path(path)))
 
