@@ -133,7 +133,9 @@ class Selenium(SeleniumLibrary):
     control a web browser. See http://seleniumhq.org for more information
     about Selenium in general.
 
-    = Locating elements =
+    =================
+    Locating elements
+    =================
 
     All keywords in the browser library that need to interact with an element
     on a web page take an argument typically named ``locator`` that specifies
@@ -141,14 +143,16 @@ class Selenium(SeleniumLibrary):
     using the locator syntax described below, but `using WebElements` is
     possible too.
 
-    == Locator syntax ==
+    Locator syntax
+    ==============
 
     Finding elements can be done using different strategies
     such as the element id, XPath expressions, or CSS selectors. The strategy
     can either be explicitly specified with a prefix or the strategy can be
     implicit.
 
-    === Default locator strategy ===
+    Default locator strategy
+    ------------------------
 
     By default, locators are considered to use the keyword specific default
     locator strategy. All keywords support finding elements based on ``id``
@@ -159,9 +163,13 @@ class Selenium(SeleniumLibrary):
 
     Examples:
 
+    +-----------------+---------+-------------------------------------------------+
     | `Click Element` | example | # Match based on ``id`` or ``name``.            |
+    +-----------------+---------+-------------------------------------------------+
     | `Click Link`    | example | # Match also based on link text and ``href``.   |
+    +-----------------+---------+-------------------------------------------------+
     | `Click Button`  | example | # Match based on ``id``, ``name`` or ``value``. |
+    +-----------------+---------+-------------------------------------------------+
 
     If a locator accidentally starts with a prefix recognized as `explicit
     locator strategy` or `implicit XPath strategy`, it is possible to use
@@ -169,38 +177,60 @@ class Selenium(SeleniumLibrary):
 
     Examples:
 
+    +-----------------+------------------+-------------------------------------------------+
     | `Click Element` | name:foo         | # Find element with name ``foo``.               |
+    +-----------------+------------------+-------------------------------------------------+
     | `Click Element` | default:name:foo | # Use default strategy with value ``name:foo``. |
+    +-----------------+------------------+-------------------------------------------------+
     | `Click Element` | //foo            | # Find element using XPath ``//foo``.           |
+    +-----------------+------------------+-------------------------------------------------+
     | `Click Element` | default: //foo   | # Use default strategy with value ``//foo``.    |
+    +-----------------+------------------+-------------------------------------------------+
 
-    === Explicit locator strategy ===
+    Explicit locator strategy
+    -------------------------
 
     The explicit locator strategy is specified with a prefix using either
     syntax ``strategy:value`` or ``strategy=value``. The former syntax
     is preferred because the latter is identical to Robot Framework's
-    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax|
-    named argument syntax] and that can cause problems. Spaces around
+    `named argument syntax`_ and that can cause problems. Spaces around
     the separator are ignored, so ``id:foo``, ``id: foo`` and ``id : foo``
     are all equivalent.
+
+    .. _named argument syntax: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax
 
     Locator strategies that are supported by default are listed in the table
     below. In addition to them, it is possible to register `custom locators`.
 
-    | = Strategy = |          = Match based on =         |         = Example =            |
+    +--------------+-------------------------------------+--------------------------------+
+    | Strategy     | Match based on                      | Example                        |
+    +==============+=====================================+================================+
     | id           | Element ``id``.                     | ``id:example``                 |
+    +--------------+-------------------------------------+--------------------------------+
     | name         | ``name`` attribute.                 | ``name:example``               |
+    +--------------+-------------------------------------+--------------------------------+
     | identifier   | Either ``id`` or ``name``.          | ``identifier:example``         |
+    +--------------+-------------------------------------+--------------------------------+
     | class        | Element ``class``.                  | ``class:example``              |
+    +--------------+-------------------------------------+--------------------------------+
     | tag          | Tag name.                           | ``tag:div``                    |
+    +--------------+-------------------------------------+--------------------------------+
     | xpath        | XPath expression.                   | ``xpath://div[@id="example"]`` |
+    +--------------+-------------------------------------+--------------------------------+
     | css          | CSS selector.                       | ``css:div#example``            |
+    +--------------+-------------------------------------+--------------------------------+
     | dom          | DOM expression.                     | ``dom:document.images[5]``     |
+    +--------------+-------------------------------------+--------------------------------+
     | link         | Exact text a link has.              | ``link:The example``           |
+    +--------------+-------------------------------------+--------------------------------+
     | partial link | Partial link text.                  | ``partial link:he ex``         |
+    +--------------+-------------------------------------+--------------------------------+
     | sizzle       | Sizzle selector deprecated.         | ``sizzle:div.example``         |
+    +--------------+-------------------------------------+--------------------------------+
     | jquery       | jQuery expression.                  | ``jquery:div.example``         |
+    +--------------+-------------------------------------+--------------------------------+
     | default      | Keyword specific default behavior.  | ``default:example``            |
+    +--------------+-------------------------------------+--------------------------------+
 
     See the `Default locator strategy` section below for more information
     about how the default strategy works. Using the explicit ``default``
@@ -221,17 +251,23 @@ class Selenium(SeleniumLibrary):
 
     Examples:
 
-    | `Click Element` | id:foo                      | # Element with id 'foo'. |
-    | `Click Element` | css:div#foo h1              | # h1 element under div with id 'foo'. |
-    | `Click Element` | xpath: //div[@id="foo"]//h1 | # Same as the above using XPath, not CSS. |
-    | `Click Element` | xpath: //*[contains(text(), "example")] | # Element containing text 'example'. |
+    +-----------------+-------------------------------------------+---------------------------------------------------+
+    | `Click Element` | id:foo                                    | # Element with id 'foo'.                          |
+    +-----------------+-------------------------------------------+---------------------------------------------------+
+    | `Click Element` | css:div#foo h1                            | # h1 element under div with id 'foo'.             |
+    +-----------------+-------------------------------------------+---------------------------------------------------+
+    | `Click Element` | xpath: //div[@id="foo"]//h1               | # Same as the above using XPath, not CSS.         |
+    +-----------------+-------------------------------------------+---------------------------------------------------+
+    | `Click Element` | xpath: //\*[contains(text(), "example")]  | # Element containing text 'example'.              |
+    +-----------------+-------------------------------------------+---------------------------------------------------+
 
-    *NOTE:*
+    **NOTE:**
 
     - Using the ``sizzle`` strategy or its alias ``jquery`` requires that
       the system under test contains the jQuery library.
 
-    === Implicit XPath strategy ===
+    Implicit XPath strategy
+    -----------------------
 
     If the locator starts with ``//`` or ``(//``, the locator is considered
     to be an XPath expression. In other words, using ``//div`` is equivalent
@@ -239,10 +275,14 @@ class Selenium(SeleniumLibrary):
 
     Examples:
 
+    +-----------------+----------------------+
     | `Click Element` | //div[@id="foo"]//h1 |
+    +-----------------+----------------------+
     | `Click Element` | (//div)[2]           |
+    +-----------------+----------------------+
 
-    === Chaining locators ===
+    Chaining locators
+    -----------------
 
     It's possible to chain multiple locators together as a single locator. Each chained locator must start
     with a locator strategy. Chained locators must be separated with a single space, two greater than characters,
@@ -257,34 +297,53 @@ class Selenium(SeleniumLibrary):
     chaining is not supported by `sizzle` or `jquery`.
 
     Examples:
+
+    +-----------------+-----------------------+----------------------------------------------------------------------+
     | `Click Element` | css:.bar >> xpath://a | # To find a link which is present inside an element with class "bar" |
+    +-----------------+-----------------------+----------------------------------------------------------------------+
 
     List examples:
-    | ${locator_list} =             | `Create List`   | css:div#div_id            | xpath://*[text(), " >> "] |
-    | `Page Should Contain Element` | ${locator_list} |                           |                           |
-    | ${element} =                  | Get WebElement  | xpath://*[text(), " >> "] |                           |
-    | ${locator_list} =             | `Create List`   | css:div#div_id            | ${element}                |
-    | `Page Should Contain Element` | ${locator_list} |                           |                           |
 
-    == Using WebElements ==
+    +-------------------------------+-----------------+----------------------------+----------------------------+
+    | ${locator_list} =             | `Create List`   | css:div#div_id             | xpath://\*[text(), " >> "] |
+    +-------------------------------+-----------------+----------------------------+----------------------------+
+    | `Page Should Contain Element` | ${locator_list} |                            |                            |
+    +-------------------------------+-----------------+----------------------------+----------------------------+
+    | ${element} =                  | Get WebElement  | xpath://\*[text(), " >> "] |                            |
+    +-------------------------------+-----------------+----------------------------+----------------------------+
+    | ${locator_list} =             | `Create List`   | css:div#div_id             | ${element}                 |
+    +-------------------------------+-----------------+----------------------------+----------------------------+
+    | `Page Should Contain Element` | ${locator_list} |                            |                            |
+    +-------------------------------+-----------------+----------------------------+----------------------------+
+
+    Using WebElements
+    =================
 
     In addition to specifying a locator as a string, it is possible to use
     Selenium's WebElement objects. This requires first getting a WebElement,
     for example, by using the `Get WebElement` keyword.
 
+    +-----------------+------------------+------------+
     | ${elem} =       | `Get WebElement` | id:example |
+    +-----------------+------------------+------------+
     | `Click Element` | ${elem}          |            |
+    +-----------------+------------------+------------+
 
-    == Custom locators ==
+    Custom locators
+    ===============
 
     If more complex lookups are required than what is provided through the
     default locators, custom lookup strategies can be created. Using custom
     locators is a two part process. First, create a keyword that returns
     a WebElement that should be acted on:
 
-    | Custom Locator Strategy | [Arguments] | ${browser} | ${locator} | ${tag} | ${constraints} |
-    |   | ${element}= | Execute Javascript | return window.document.getElementById('${locator}'); |
-    |   | [Return] | ${element} |
+    +-------------------------+-------------+--------------------+------------------------------------------------------+--------+----------------+
+    | Custom Locator Strategy | [Arguments] | ${browser}         | ${locator}                                           | ${tag} | ${constraints} |
+    +-------------------------+-------------+--------------------+------------------------------------------------------+--------+----------------+
+    |                         | ${element}= | Execute Javascript | return window.document.getElementById('${locator}'); |        |                |
+    +-------------------------+-------------+--------------------+------------------------------------------------------+--------+----------------+
+    |                         | [Return]    | ${element}         |                                                      |        |                |
+    +-------------------------+-------------+--------------------+------------------------------------------------------+--------+----------------+
 
     This keyword is a reimplementation of the basic functionality of the
     ``id`` locator where ``${browser}`` is a reference to a WebDriver
@@ -292,26 +351,32 @@ class Selenium(SeleniumLibrary):
     this locator, it must first be registered by using the
     `Add Location Strategy` keyword:
 
+    +-------------------------+--------+-------------------------+
     | `Add Location Strategy` | custom | Custom Locator Strategy |
+    +-------------------------+--------+-------------------------+
 
     The first argument of `Add Location Strategy` specifies the name of
     the strategy and it must be unique. After registering the strategy,
     the usage is the same as with other locators:
 
+    +-----------------+----------------+
     | `Click Element` | custom:example |
+    +-----------------+----------------+
 
     See the `Add Location Strategy` keyword for more details.
 
-    = Browser and Window =
+    ==================
+    Browser and Window
+    ==================
 
     There is different conceptual meaning when this library talks
     about windows or browsers. This chapter explains those differences.
 
-    == Browser ==
+    Browser
+    =======
 
     When `Open Browser` or `Create WebDriver` keyword is called, it
-    will create a new Selenium WebDriver instance by using the
-    [https://www.seleniumhq.org/docs/03_webdriver.jsp|Selenium WebDriver]
+    will create a new Selenium WebDriver instance by using the `Selenium WebDriver`_
     API. In this library's terms, a new browser is created. It is
     possible to start multiple independent browsers (Selenium Webdriver
     instances) at the same time, by calling `Open Browser` or
@@ -320,7 +385,10 @@ class Selenium(SeleniumLibrary):
     sessions or profiles. Typically when the browser starts, it
     creates a single window which is shown to the user.
 
-    == Window ==
+    .. _Selenium WebDriver: https://www.seleniumhq.org/docs/03_webdriver.jsp
+
+    Window
+    ======
 
     Windows are the part of a browser that loads the web site and presents
     it to the user. All content of the site is the content of the window.
@@ -341,28 +409,46 @@ class Selenium(SeleniumLibrary):
     with browsers, and windows attached to these browsers.
 
     Structure:
-    | BrowserA
-    |            Window 1  (location=https://robotframework.org/)
-    |            Window 2  (location=https://robocon.io/)
-    |            Window 3  (location=https://github.com/robotframework/)
-    |
-    | BrowserB
-    |            Window 1  (location=https://github.com/)
+
+    +----------+-----------------------------------------------------------+
+    | BrowserA |    Window 1  (location=https://robotframework.org/)       |
+    |          +-----------------------------------------------------------+
+    |          |  Window 2  (location=https://robocon.io/)                 |
+    |          +-----------------------------------------------------------+
+    |          |  Window 3  (location=https://github.com/robotframework/)  |
+    +----------+-----------------------------------------------------------+
+    | BrowserB |  Window 1  (location=https://github.com/)                 |
+    +----------+-----------------------------------------------------------+
 
     Example:
+    
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Open Browser`       | https://robotframework.org         | ${BROWSER}       | alias=BrowserA   | # BrowserA with first window is opened.                                       |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Execute Javascript` | window.open()                      |                  |                  | # In BrowserA second window is opened.                                        |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Switch Window`      | locator=NEW                        |                  |                  | # Switched to second window in BrowserA                                       |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Go To`              | https://robocon.io                 |                  |                  | # Second window navigates to robocon site.                                    |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Execute Javascript` | window.open()                      |                  |                  | # In BrowserA third window is opened.                                         |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | ${handle}            | `Switch Window`                    | locator=NEW      |                  | # Switched to third window in BrowserA                                        |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Go To`              | https://github.com/robotframework/ |                  |                  | # Third windows goes to robot framework github site.                          |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Open Browser`       | https://github.com                 | ${BROWSER}       | alias=BrowserB   | # BrowserB with first windows is opened.                                      |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | ${location}          | `Get Location`                     |                  |                  | # ${location} is: https://www.github.com                                      |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Switch Window`      | ${handle}                          | browser=BrowserA |                  | # BrowserA second windows is selected.                                        |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | ${location}          | `Get Location`                     |                  |                  | # ${location} = https://robocon.io/                                           |
-    | @{locations 1}       | `Get Locations`                    |                  |                  | # By default, lists locations under the currectly active browser (BrowserA).   |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
+    | @{locations 1}       | `Get Locations`                    |                  |                  | # By default, lists locations under the currectly active browser (BrowserA).  |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | @{locations 2}       | `Get Locations`                    |  browser=ALL     |                  | # By using browser=ALL argument keyword list all locations from all browsers. |
+    +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
 
     The above example, @{locations 1} contains the following items:
     https://robotframework.org/, https://robocon.io/ and
@@ -371,14 +457,17 @@ class Selenium(SeleniumLibrary):
     https://robocon.io/, https://github.com/robotframework/'
     and 'https://github.com/.
 
-    = Timeouts, waits, and delays =
+    ===========================
+    Timeouts, waits, and delays
+    ===========================
 
     This section discusses different ways on how to wait for elements to
     appear on web pages and to slow down execution speed otherwise.
     It also explains the `time format` that can be used when setting various
     timeouts, waits, and delays.
 
-    == Timeout ==
+    Timeout
+    =======
 
     This library contains various keywords that have an optional
     ``timeout`` argument that specifies how long these keywords should
@@ -393,17 +482,21 @@ class Selenium(SeleniumLibrary):
     when `importing` the library. See `time format` below for supported
     timeout syntax.
 
-    == Implicit wait ==
+    Implicit wait
+    =============
 
     Implicit wait specifies the maximum time how long Selenium waits when
     searching for elements. It can be set by using the `Set Selenium Implicit
     Wait` keyword or with the ``implicit_wait`` argument when `importing`
-    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|Selenium documentation]
+    the library. See `Selenium documentation`_
     for more information about this functionality.
+
+    .. _Selenium documentation: https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp
 
     See `time format` below for supported syntax.
 
-    == Selenium speed ==
+    Selenium speed
+    ==============
 
     Selenium execution speed can be slowed down globally by using `Set
     Selenium speed` keyword. This functionality is designed to be used for
@@ -413,15 +506,19 @@ class Selenium(SeleniumLibrary):
 
     See `time format` below for supported syntax.
 
-    == Time format ==
+    Time format
+    ===========
 
     All timeouts and waits can be given as numbers considered seconds
     (e.g. ``0.5`` or ``42``) or in Robot Framework's time syntax
     (e.g. ``1.5 seconds`` or ``1 min 30 s``). For more information about
-    the time syntax see the
-    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format|Robot Framework User Guide].
+    the time syntax see the `Robot Framework User Guide`_.
 
-    = Run-on-failure functionality =
+    .. _Robot Framework User Guide: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format
+
+    ============================
+    Run-on-failure functionality
+    ============================
 
     This library has a handy feature that it can automatically execute
     a keyword if any of its own keywords fails. By default, it uses the
@@ -434,7 +531,9 @@ class Selenium(SeleniumLibrary):
     ``NOTHING`` or anything considered false (see `Boolean arguments`)
     such as ``NONE``.
 
-    = Auto closing browser =
+    ====================
+    Auto closing browser
+    ====================
 
     By default browser instances created during task execution are closed
     at the end of the task. This can be prevented with the ``auto_close``
@@ -445,7 +544,7 @@ class Selenium(SeleniumLibrary):
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     AVAILABLE_OPTIONS = {
         "chrome": "ChromeOptions",
