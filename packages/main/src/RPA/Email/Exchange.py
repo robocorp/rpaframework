@@ -2,7 +2,6 @@ import datetime
 import email
 import logging
 import os
-import pytz
 import re
 import time
 from email import policy  # pylint: disable=no-name-in-module
@@ -10,6 +9,7 @@ from multiprocessing import AuthenticationError
 from pathlib import Path
 from typing import Any, List, Optional, Union
 
+import pytz
 from exchangelib import (
     Account,
     Configuration,
@@ -227,7 +227,7 @@ class Exchange:
         :param client_secret: registered application secret (password)
         :param token: contains access and refresh tokens, type, scope, expiry etc.
         """
-        kwargs = dict()
+        kwargs = {}
         kwargs["autodiscover"] = autodiscover
         kwargs["access_type"] = (
             DELEGATE if access_type.upper() == "DELEGATE" else IMPERSONATION
@@ -240,8 +240,9 @@ class Exchange:
                 identity=Identity(upn=username),
                 client_id=client_id,
                 client_secret=client_secret,
-                # Contains at least a non-expired access token or non-revoked refresh one.
-                access_token=OAuth2Token(params=token) if token else None
+                # Contains at least a non-expired access token or non-revoked refresh
+                #  one. (otherwise an authorization code should be present inside)
+                access_token=OAuth2Token(params=token) if token else None,
             )
         else:
             if password is None:
