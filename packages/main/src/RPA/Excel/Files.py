@@ -202,7 +202,7 @@ class Files:
         )
 
     def create_workbook(
-        self, path: Optional[str] = None, fmt: str = "xlsx"
+        self, path: Optional[str] = None, sheet_name: Optional[str] = None, fmt: str = "xlsx"
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Create and open a new Excel workbook.
 
@@ -225,6 +225,10 @@ class Files:
 
             # Create modern format workbook
             Create workbook
+            Save workbook    orders.xlsx
+            
+            # Create modern format workbook with provided sheet name
+            Create workbook  sheet_name=Sheet1
             Save workbook    orders.xlsx
 
             # Create modern format workbook with a path set
@@ -277,6 +281,10 @@ class Files:
             raise ValueError(f"Unknown format: {fmt}")
 
         self.workbook.create()
+        
+        if sheet_name is not None:
+            self.workbook._book.active.title = sheet_name
+        
         return self.workbook
 
     def open_workbook(
