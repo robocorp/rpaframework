@@ -7,7 +7,7 @@ import time
 from email import policy  # pylint: disable=no-name-in-module
 from multiprocessing import AuthenticationError
 from pathlib import Path
-from typing import Any, List, Optional, Union
+from typing import Any, Callable, List, Optional, Union
 
 import pytz
 from exchangelib import (
@@ -57,6 +57,18 @@ EMAIL_CRITERIA_KEYS = {
 
 class NoRecipientsError(ValueError):
     """Raised when email to be sent does not have any recipients, cc or bcc addresses."""  # noqa: E501
+
+
+class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
+
+    """OAuth2 auth code flow credentials wrapper supporting token state on refresh."""
+
+    def __init__(self, *args, on_token_refresh: Callable, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._on_token_refresh = on_token_refresh
+
+    def on_token_auto_refreshed(self, token: OAuth2Token):
+        self._on_token_refresh(token)
 
 
 class Exchange:
@@ -200,6 +212,14 @@ class Exchange:
         self.account = None
         self._saved_attachments = []
 
+    def on_token_refresh(self, token: OAuth2Token):
+        """Callable you can override in order to save the newly obtained token in a
+        safe place.
+        """
+        self.logger.info(
+            "OAuth2 token was refreshed. (new expiry: %d)", token["expires_in"]
+        )
+
     def authorize(
         self,
         username: str,
@@ -236,7 +256,8 @@ class Exchange:
             primary_smtp_address if primary_smtp_address else username
         )
         if is_oauth:
-            self.credentials = OAuth2AuthorizationCodeCredentials(
+            self.credentials = OAuth2Creds(
+                on_token_refresh=self.on_token_refresh,
                 identity=Identity(upn=username),
                 client_id=client_id,
                 client_secret=client_secret,
