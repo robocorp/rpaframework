@@ -1,15 +1,15 @@
 import datetime
+import email
 import logging
-from multiprocessing import AuthenticationError
 import os
-from pathlib import Path
 import re
 import time
-from typing import Any, List, Optional, Union
-import email
 from email import policy  # pylint: disable=no-name-in-module
-import pytz
+from multiprocessing import AuthenticationError
+from pathlib import Path
+from typing import Any, Callable, List, Optional, Union
 
+import pytz
 from exchangelib import (
     Account,
     Configuration,
@@ -19,11 +19,15 @@ from exchangelib import (
     Folder,
     HTMLBody,
     IMPERSONATION,
+    Identity,
     ItemAttachment,
     Mailbox,
     Message,
+    OAUTH2,
+    OAuth2AuthorizationCodeCredentials,
     UTC,
 )
+from oauthlib.oauth2 import OAuth2Token
 
 
 def mailbox_to_email_address(mailbox):
@@ -53,6 +57,18 @@ EMAIL_CRITERIA_KEYS = {
 
 class NoRecipientsError(ValueError):
     """Raised when email to be sent does not have any recipients, cc or bcc addresses."""  # noqa: E501
+
+
+class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
+
+    """OAuth2 auth code flow credentials wrapper supporting token state on refresh."""
+
+    def __init__(self, *args, on_token_refresh: Callable, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._on_token_refresh = on_token_refresh
+
+    def on_token_auto_refreshed(self, access_token: OAuth2Token):
+        self._on_token_refresh(access_token)
 
 
 class Exchange:
@@ -196,24 +212,40 @@ class Exchange:
         self.account = None
         self._saved_attachments = []
 
+    def on_token_refresh(self, token: OAuth2Token):
+        """Callable you can override in order to save the newly obtained token in a
+        safe place.
+        """
+        self.logger.info(
+            "OAuth2 token was refreshed. (new expiry: %d)", token["expires_at"]
+        )
+
     def authorize(
         self,
         username: str,
-        password: str,
+        password: Optional[str] = None,
         autodiscover: Optional[bool] = True,
         access_type: Optional[str] = "DELEGATE",
         server: Optional[str] = None,
         primary_smtp_address: Optional[str] = None,
+        is_oauth: bool = False,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+        token: Optional[dict] = None,
     ) -> None:
         """Connect to Exchange account
 
         :param username: account username
-        :param password: account password
-        :param autodiscover: use autodiscover or set it off
-        :param accesstype: default "DELEGATE", other option "IMPERSONATION"
-        :param server: required for configuration options
+        :param password: account password (can be skipped with OAuth2)
+        :param autodiscover: use autodiscover or set it off (on by default)
+        :param access_type: default "DELEGATE", other option "IMPERSONATION"
+        :param server: required for configuration setting (with `autodiscover` off)
         :param primary_smtp_address: by default set to username, but can be
-            set to be different than username
+            set to be different from username
+        :param is_oauth: use the OAuth2 authorization code flow (instead of basic auth)
+        :param client_id: registered application ID
+        :param client_secret: registered application secret (password)
+        :param token: contains access and refresh tokens, type, scope, expiry etc.
         """
         kwargs = {}
         kwargs["autodiscover"] = autodiscover
@@ -223,13 +255,37 @@ class Exchange:
         kwargs["primary_smtp_address"] = (
             primary_smtp_address if primary_smtp_address else username
         )
-        self.credentials = Credentials(username, password)
+        if is_oauth:
+            self.credentials = OAuth2Creds(
+                on_token_refresh=self.on_token_refresh,
+                identity=Identity(upn=username),
+                client_id=client_id,
+                client_secret=client_secret,
+                # Contains at least a non-expired access token or non-revoked refresh
+                #  one. (otherwise an authorization code should be present inside)
+                access_token=OAuth2Token(params=token) if token else None,
+            )
+        else:
+            if password is None:
+                raise ValueError("A password should be provided with basic auth")
+            self.credentials = Credentials(username, password)
         if server:
-            self.config = Configuration(server=server, credentials=self.credentials)
+            self.config = Configuration(
+                server=server,
+                credentials=self.credentials,
+                # Automatically detects authentication type based on the provided
+                #  `credentials` object. (when not using OAuth2)
+                auth_type=OAUTH2 if is_oauth else None,
+            )
             kwargs["config"] = self.config
         else:
             kwargs["credentials"] = self.credentials
 
+        if self.config and autodiscover:
+            self.logger.warning(
+                "Autodiscovery is left ON while using custom configuration, you may "
+                "need to turn it OFF in order to use the custom setting."
+            )
         self.account = Account(**kwargs)
 
     def list_messages(
