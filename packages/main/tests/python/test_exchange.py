@@ -211,9 +211,6 @@ def test_get_filter_by_key_value_multiple_conditions(library):
 )
 def test_send_message_with_out_bcc_addresses(library, is_oauth, to_addr):
     secrets = Vault().get_secret("Exchange")
-    params = {
-        "is_oauth": is_oauth,
-    }
     if is_oauth:
         params = {
             "access_type": "IMPERSONATE",
