@@ -10,7 +10,7 @@ from pathlib import Path
 from invoke import task, call, ParseError
 from colorama import Fore, Style
 
-from tasks_common import DOCGEN_EXCLUDES, poetry
+from tools.tasks_common import DOCGEN_EXCLUDES, poetry
 
 
 def _git_root():

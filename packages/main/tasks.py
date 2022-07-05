@@ -11,14 +11,9 @@ from pathlib import Path
 from invoke import task
 
 
-# Import rpaframework/tasks_common.py module from file location.
-tasks_common_path = Path(__file__).parent.parent.parent / "tasks_common.py"
-spec = importlib.util.spec_from_file_location("tasks_common", tasks_common_path)
-tasks_common = importlib.util.module_from_spec(spec)
-sys.modules["tasks_common"] = tasks_common
-spec.loader.exec_module(tasks_common)
-
-poetry = tasks_common.poetry
+def print_test():
+    for p in sys.path:
+        print(p)
 
 
 def _git_root():
@@ -31,6 +26,19 @@ GIT_ROOT = _git_root()
 CONFIG = GIT_ROOT / "config"
 TOOLS = GIT_ROOT / "tools"
 PACKAGE_DIR = GIT_ROOT / "packages" / "main"
+TASKS_COMMON_PATH = GIT_ROOT / "tasks_common.py"
+
+# Import rpaframework/tasks_common.py module from file location.
+sys.path.append(GIT_ROOT)
+print_test()
+import tools.tasks_common as tasks_common
+
+# spec = importlib.util.spec_from_file_location("tasks_common", TASKS_COMMON_PATH)
+# tasks_common = importlib.util.module_from_spec(spec)
+# sys.modules["tasks_common"] = tasks_common
+# spec.loader.exec_module(tasks_common)
+
+# poetry = tasks_common.poetry
 
 CLEAN_PATTERNS = [
     "coverage",
@@ -125,7 +133,9 @@ def testrobot(ctx, robot_name=None, task_robot=None):
         # Run all tasks and take into account exclusions. (during CI)
         task = ""
     exclude_str = " ".join(f"--exclude {tag}" for tag in exclude_list)
-    arguments = f"--loglevel TRACE --outputdir tests/results --pythonpath tests/resources"
+    arguments = (
+        f"--loglevel TRACE --outputdir tests/results --pythonpath tests/resources"
+    )
     robot = Path("tests") / "robot"
     if robot_name:
         robot /= f"test_{robot_name}.robot"
