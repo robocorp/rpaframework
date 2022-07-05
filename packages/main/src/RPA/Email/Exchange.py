@@ -67,8 +67,8 @@ class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
         super().__init__(*args, **kwargs)
         self._on_token_refresh = on_token_refresh
 
-    def on_token_auto_refreshed(self, token: OAuth2Token):
-        self._on_token_refresh(token)
+    def on_token_auto_refreshed(self, access_token: OAuth2Token):
+        self._on_token_refresh(access_token)
 
 
 class Exchange:
@@ -217,7 +217,7 @@ class Exchange:
         safe place.
         """
         self.logger.info(
-            "OAuth2 token was refreshed. (new expiry: %d)", token["expires_in"]
+            "OAuth2 token was refreshed. (new expiry: %d)", token["expires_at"]
         )
 
     def authorize(
