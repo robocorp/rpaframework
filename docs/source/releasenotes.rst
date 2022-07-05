@@ -9,10 +9,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-15.2.0 - 04 July 2022
+15.2.0 - 05 July 2022
 ---------------------
 - Library **RPA.Email.Exchange** (:issue:`567`): Keyword ``Authorize`` supports OAuth2
-  Authorization Code flow. (enable it with ``is_oauth=${True}``)
+  Authorization Code flow. (enable it with ``is_oauth=${True}``; Portal
+  `example <https://robocorp.com/portal/robot/robocorp/example-oauth-email>`_)
 - Library **RPA.FileSystem** (:pr:`568`): Add keyword examples and type hints.
 
 15.1.4 - 23 June 2022
