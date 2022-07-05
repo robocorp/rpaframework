@@ -383,18 +383,22 @@ only against <cite>new</cite> not <cite>new year</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: str</em>, <em class="sig-param">autodiscover: Optional[bool] = True</em>, <em class="sig-param">access_type: Optional[str] = 'DELEGATE'</em>, <em class="sig-param">server: Optional[str] = None</em>, <em class="sig-param">primary_smtp_address: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.Exchange.Exchange.authorize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: Optional[str] = None</em>, <em class="sig-param">autodiscover: Optional[bool] = True</em>, <em class="sig-param">access_type: Optional[str] = 'DELEGATE'</em>, <em class="sig-param">server: Optional[str] = None</em>, <em class="sig-param">primary_smtp_address: Optional[str] = None</em>, <em class="sig-param">is_oauth: bool = False</em>, <em class="sig-param">client_id: Optional[str] = None</em>, <em class="sig-param">client_secret: Optional[str] = None</em>, <em class="sig-param">token: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.Exchange.Exchange.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to Exchange account</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>username</strong> – account username</p></li>
-<li><p><strong>password</strong> – account password</p></li>
-<li><p><strong>autodiscover</strong> – use autodiscover or set it off</p></li>
-<li><p><strong>accesstype</strong> – default “DELEGATE”, other option “IMPERSONATION”</p></li>
-<li><p><strong>server</strong> – required for configuration options</p></li>
+<li><p><strong>password</strong> – account password (can be skipped with OAuth2)</p></li>
+<li><p><strong>autodiscover</strong> – use autodiscover or set it off (on by default)</p></li>
+<li><p><strong>access_type</strong> – default “DELEGATE”, other option “IMPERSONATION”</p></li>
+<li><p><strong>server</strong> – required for configuration setting (with <cite>autodiscover</cite> off)</p></li>
 <li><p><strong>primary_smtp_address</strong> – by default set to username, but can be
-set to be different than username</p></li>
+set to be different from username</p></li>
+<li><p><strong>is_oauth</strong> – use the OAuth2 authorization code flow (instead of basic auth)</p></li>
+<li><p><strong>client_id</strong> – registered application ID</p></li>
+<li><p><strong>client_secret</strong> – registered application secret (password)</p></li>
+<li><p><strong>token</strong> – contains access and refresh tokens, type, scope, expiry etc.</p></li>
 </ul>
 </dd>
 </dl>
@@ -547,6 +551,13 @@ and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.on_token_refresh">
+<code class="sig-name descname">on_token_refresh</code><span class="sig-paren">(</span><em class="sig-param">token: oauthlib.oauth2.rfc6749.tokens.OAuth2Token</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.on_token_refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callable you can override in order to save the newly obtained token in a
+safe place.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.rename_folder">
 <code class="sig-name descname">rename_folder</code><span class="sig-paren">(</span><em class="sig-param">oldname: Optional[str] = None</em>, <em class="sig-param">newname: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.rename_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename email folder</p>
@@ -671,6 +682,53 @@ default None (attachments are not saved)</p></li>
 <dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Email.Exchange.OAuth2Creds">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">OAuth2Creds</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">on_token_refresh: Callable</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exchangelib.credentials.OAuth2AuthorizationCodeCredentials</span></code></p>
+<p>OAuth2 auth code flow credentials wrapper supporting token state on refresh.</p>
+<dl class="method">
+<dt id="RPA.Email.Exchange.OAuth2Creds.lock">
+<em class="property">property </em><code class="sig-name descname">lock</code><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.lock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.OAuth2Creds.on_token_auto_refreshed">
+<code class="sig-name descname">on_token_auto_refreshed</code><span class="sig-paren">(</span><em class="sig-param">access_token: oauthlib.oauth2.rfc6749.tokens.OAuth2Token</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.on_token_auto_refreshed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the access_token. Called after the access token is refreshed (requests-oauthlib can automatically
+refresh tokens if given an OAuth client ID and secret, so this is how our copy of the token stays up-to-date).
+Applications that cache access tokens can override this to store the new token - just remember to call the
+super() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>access_token</strong> – New token obtained by refreshing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.OAuth2Creds.refresh">
+<code class="sig-name descname">refresh</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain a new set of valid credentials. This is mostly intended to support OAuth token refreshing, which can
+happen in long- running applications or those that cache access tokens and so might start with a token close to
+expiration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>session</strong> – requests session asking for refreshed credentials</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.OAuth2Creds.sig">
+<code class="sig-name descname">sig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.sig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

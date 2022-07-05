@@ -5,10 +5,16 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.FileSystem** (:pr:`568`): Add keyword examples and type hints.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.2.0 - 05 July 2022
+---------------------
+- Library **RPA.Email.Exchange** (:issue:`567`): Keyword ``Authorize`` supports OAuth2
+  Authorization Code flow. (enable it with ``is_oauth=${True}``; Portal
+  `example <https://robocorp.com/portal/robot/robocorp/example-oauth-email>`_)
+- Library **RPA.FileSystem** (:pr:`568`): Add keyword examples and type hints.
 
 15.1.4 - 23 June 2022
 ---------------------
@@ -22,7 +28,6 @@ Release notes
   - ``rpaframework-windows`` **5.0.1**
 
 - Library **RPA.Desktop**: Fix docs examples returning ``Region`` elements.
-
 
 15.1.3 - 22 June 2022
 ---------------------
