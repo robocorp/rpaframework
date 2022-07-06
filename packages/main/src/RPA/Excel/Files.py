@@ -1015,6 +1015,8 @@ class Files:
 
 class BaseWorkbook:
 
+    """Common logic for both .xls and .xlsx files management."""
+
     def __init__(self, path: Optional[PathType] = None):
         self.logger = logging.getLogger(__name__)
         self.path = path
