@@ -6,15 +6,17 @@ from io import BytesIO
 from typing import List, Any, Union, Optional
 
 import openpyxl
-from openpyxl.utils import get_column_letter
-from openpyxl.utils.exceptions import InvalidFileException
-
 import xlrd
 import xlwt
-from xlutils.copy import copy as xlutils_copy
 from PIL import Image
+from openpyxl.utils import get_column_letter
+from openpyxl.utils.exceptions import InvalidFileException
+from xlutils.copy import copy as xlutils_copy
 
 from RPA.Tables import Tables, Table
+
+
+PathType = Union[str, pathlib.Path]
 
 
 def get_column_index(column: str) -> int:
@@ -346,6 +348,10 @@ class Files:
             self.workbook.close()
             self.workbook = None
 
+    def _validate_content(self):
+        """Ensures Excel file content is valid prior saving."""
+        self.workbook.validate_content()
+
     def save_workbook(
         self, path: Optional[str] = None
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
@@ -403,6 +409,7 @@ class Files:
                 extension,
             )
 
+        self._validate_content()
         return self.workbook.save(path)
 
     def list_worksheets(self) -> List[str]:
@@ -1006,15 +1013,25 @@ class Files:
         return self.set_cell_value(row, column, value, name, fmt)
 
 
-class XlsxWorkbook:
-    """Container for manipulating moden Excel files (.xlsx)"""
+class BaseWorkbook:
 
-    def __init__(self, path=None):
+    def __init__(self, path: Optional[PathType] = None):
         self.logger = logging.getLogger(__name__)
         self.path = path
         self._book = None
         self._extension = None
         self._active = None
+
+    @property
+    def book(self):
+        return self._book
+
+
+class XlsxWorkbook(BaseWorkbook):
+    """Container for manipulating modern Excel files (.xlsx)"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @staticmethod
     def is_sheet_empty(sheet):
@@ -1109,6 +1126,15 @@ class XlsxWorkbook:
         self._book = None
         self._extension = None
         self._active = None
+
+    def validate_content(self):
+        # Strips leading/trailing whitespace in Excel properties.
+        props_obj = self._book.properties
+        public_props = [prop for prop in dir(props_obj) if not prop.startswith("_")]
+        for prop in public_props:
+            value = getattr(props_obj, prop)
+            if value and isinstance(value, str):
+                setattr(props_obj, prop, value.strip())
 
     def save(self, path=None):
         path = path or self.path
@@ -1248,15 +1274,11 @@ class XlsxWorkbook:
         sheet.add_image(img)
 
 
-class XlsWorkbook:
+class XlsWorkbook(BaseWorkbook):
     """Container for manipulating legacy Excel files (.xls)"""
 
-    def __init__(self, path=None):
-        self.logger = logging.getLogger(__name__)
-        self.path = path
-        self._book = None
-        self._extension = None
-        self._active = None
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._images = []
 
     @staticmethod
@@ -1383,6 +1405,12 @@ class XlsWorkbook:
             self.open(fd)
         finally:
             fd.close()
+
+    def validate_content(self):
+        # Strips leading/trailing whitespace in Excel properties.
+        # FIXME(cmiN): Ensure that `xlutils_copy` will also copy this property back in
+        #  the output file.
+        self._book.user_name = self._book.user_name.strip()
 
     def save(self, path=None):
         path = path or self.path
