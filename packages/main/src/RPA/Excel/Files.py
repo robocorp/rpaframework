@@ -348,10 +348,6 @@ class Files:
             self.workbook.close()
             self.workbook = None
 
-    def _validate_content(self):
-        """Ensures Excel file content is valid prior saving."""
-        self.workbook.validate_content()
-
     def save_workbook(
         self, path: Optional[str] = None
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
@@ -409,7 +405,7 @@ class Files:
                 extension,
             )
 
-        self._validate_content()
+        self.workbook.validate_content()
         return self.workbook.save(path)
 
     def list_worksheets(self) -> List[str]:
@@ -1028,6 +1024,14 @@ class BaseWorkbook:
     def book(self):
         return self._book
 
+    def _validate_content(self, props_obj: Any):
+        # Strips leading/trailing whitespace in Excel properties.
+        public_props = [prop for prop in dir(props_obj) if not prop.startswith("_")]
+        for prop in public_props:
+            value = getattr(props_obj, prop)
+            if value and isinstance(value, str):
+                setattr(props_obj, prop, value.strip())
+
 
 class XlsxWorkbook(BaseWorkbook):
     """Container for manipulating modern Excel files (.xlsx)"""
@@ -1130,13 +1134,7 @@ class XlsxWorkbook(BaseWorkbook):
         self._active = None
 
     def validate_content(self):
-        # Strips leading/trailing whitespace in Excel properties.
-        props_obj = self._book.properties
-        public_props = [prop for prop in dir(props_obj) if not prop.startswith("_")]
-        for prop in public_props:
-            value = getattr(props_obj, prop)
-            if value and isinstance(value, str):
-                setattr(props_obj, prop, value.strip())
+        self._validate_content(self._book.properties)
 
     def save(self, path=None):
         path = path or self.path
@@ -1409,10 +1407,7 @@ class XlsWorkbook(BaseWorkbook):
             fd.close()
 
     def validate_content(self):
-        # Strips leading/trailing whitespace in Excel properties.
-        # FIXME(cmiN): Ensure that `xlutils_copy` will also copy this property back in
-        #  the output file.
-        self._book.user_name = self._book.user_name.strip()
+        self._validate_content(self._book)
 
     def save(self, path=None):
         path = path or self.path

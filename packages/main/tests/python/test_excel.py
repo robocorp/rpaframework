@@ -455,5 +455,6 @@ def test_invalid_whitespace_fix(name):
 
     library.save_workbook(RESULTS_DIR / name)
     # Leading/trailing whitespace is stripped on save, thus not creating any unwanted
-    #  `xml:space="preserve"` tag child under workbook properties.
+    #  `xml:space="preserve"` tag child under workbook properties. (which breaks
+    #  validation with Microsoft)
     assert get_user(library.workbook.book) == "cmin"
