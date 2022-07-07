@@ -225,6 +225,18 @@
 <div class="section" id="module-RPA.Excel.Files">
 <span id="excel-files"></span><h2>Excel.Files<a class="headerlink" href="#module-RPA.Excel.Files" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="RPA.Excel.Files.BaseWorkbook">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">BaseWorkbook</code><span class="sig-paren">(</span><em class="sig-param">path: Union[str</em>, <em class="sig-param">pathlib.Path</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.BaseWorkbook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Common logic for both .xls and .xlsx files management.</p>
+<dl class="method">
+<dt id="RPA.Excel.Files.BaseWorkbook.book">
+<em class="property">property </em><code class="sig-name descname">book</code><a class="headerlink" href="#RPA.Excel.Files.BaseWorkbook.book" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="RPA.Excel.Files.Files">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">Files</code><a class="headerlink" href="#RPA.Excel.Files.Files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -1055,8 +1067,8 @@ for documentation.</p>
 
 <dl class="class">
 <dt id="RPA.Excel.Files.XlsWorkbook">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">XlsWorkbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">XlsWorkbook</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Excel.Files.BaseWorkbook" title="RPA.Excel.Files.BaseWorkbook"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Excel.Files.BaseWorkbook</span></code></a></p>
 <p>Container for manipulating legacy Excel files (.xls)</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.active">
@@ -1066,6 +1078,11 @@ for documentation.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.append_worksheet">
 <code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.book">
+<em class="property">property </em><code class="sig-name descname">book</code><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.book" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1148,13 +1165,18 @@ for documentation.</p>
 <em class="property">property </em><code class="sig-name descname">sheetnames</code><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.sheetnames" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.validate_content">
+<code class="sig-name descname">validate_content</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.validate_content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="RPA.Excel.Files.XlsxWorkbook">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">XlsxWorkbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Container for manipulating moden Excel files (.xlsx)</p>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">XlsxWorkbook</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Excel.Files.BaseWorkbook" title="RPA.Excel.Files.BaseWorkbook"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Excel.Files.BaseWorkbook</span></code></a></p>
+<p>Container for manipulating modern Excel files (.xlsx)</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.active">
 <em class="property">property </em><code class="sig-name descname">active</code><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.active" title="Permalink to this definition">¶</a></dt>
@@ -1163,6 +1185,11 @@ for documentation.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.append_worksheet">
 <code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.book">
+<em class="property">property </em><code class="sig-name descname">book</code><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.book" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1243,6 +1270,11 @@ for documentation.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.sheetnames">
 <em class="property">property </em><code class="sig-name descname">sheetnames</code><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.sheetnames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.validate_content">
+<code class="sig-name descname">validate_content</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.validate_content" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
