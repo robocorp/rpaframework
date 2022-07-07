@@ -7,13 +7,16 @@ import pytest
 from RPA.Excel.Files import Files, XlsxWorkbook, XlsWorkbook, ensure_unique
 from RPA.Tables import Table
 
-from . import RESOURCES_DIR
+from . import RESOURCES_DIR, RESULTS_DIR
+
+
+EXCELS_DIR = RESOURCES_DIR / "excels"
 
 
 @contextlib.contextmanager
 def _library(excel_file):
     lib = Files()
-    excel_path = RESOURCES_DIR / excel_file
+    excel_path = EXCELS_DIR / excel_file
     lib.open_workbook(excel_path)
     yield lib
     lib.close_workbook()
@@ -67,7 +70,7 @@ def test_open_missing(filename):
 def test_wrong_extension_fallback_xlsx():
     # openpyxl does not support xls (actual format) but xlrd will succeed
     library = Files()
-    path = str(RESOURCES_DIR / "wrong_extension.xlsx")
+    path = str(EXCELS_DIR / "wrong_extension.xlsx")
     library.open_workbook(path)
     assert library.workbook is not None
 
@@ -75,7 +78,7 @@ def test_wrong_extension_fallback_xlsx():
 def test_wrong_extension_fallback_xls():
     # openpyxl will refuse to read wrong extension and xlrd does not support xlsx
     library = Files()
-    path = str(RESOURCES_DIR / "wrong_extension.xls")
+    path = str(EXCELS_DIR / "wrong_extension.xls")
     with pytest.raises(ValueError, match=".*wrong_extension.xls.*path.*extension.*"):
         library.open_workbook(path)
     assert library.workbook is None
@@ -426,7 +429,7 @@ def test_create_workbook_default_sheet(fmt):
 )
 def test_read_worksheet_with_formulas(excel_file, data_only):
     library = Files()
-    excel_path = RESOURCES_DIR / excel_file
+    excel_path = EXCELS_DIR / excel_file
     library.open_workbook(excel_path, data_only=data_only)
     assert library.get_worksheet_value(2, "A") == 1
     assert library.get_worksheet_value(2, "B") == 3
@@ -435,3 +438,23 @@ def test_read_worksheet_with_formulas(excel_file, data_only):
     else:
         assert library.get_worksheet_value(2, "C") == 4
     library.close_workbook()
+
+
+@pytest.mark.parametrize("name", ["spaces.xls", "spaces.xlsx"])
+def test_invalid_whitespace_fix(name):
+    library = Files()
+    if name.endswith("xlsx"):
+        get_user = lambda book: book.properties.lastModifiedBy
+        expected_user = "cmin  "
+    else:
+        get_user = lambda book: book.user_name
+        expected_user = "cmin"
+
+    library.open_workbook(EXCELS_DIR / name)
+    assert get_user(library.workbook.book) == expected_user
+
+    library.save_workbook(RESULTS_DIR / name)
+    # Leading/trailing whitespace is stripped on save, thus not creating any unwanted
+    #  `xml:space="preserve"` tag child under workbook properties. (which breaks
+    #  validation with Microsoft)
+    assert get_user(library.workbook.book) == "cmin"
