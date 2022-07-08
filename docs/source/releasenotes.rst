@@ -5,8 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Excel.Files** (:issue:`572`): Fixes a problem with Microsoft validation
-  by stripping leading/trailing whitespace from workbook properties.
+- Library **RPA.Excel.Files**:
+
+  - Keyword ``Create Workbook`` supports now ``sheet_name`` parameter which sets a
+    custom name for the newly created active sheet. (:issue:`224`)
+  - Fixes a problem with Microsoft validation by stripping leading/trailing whitespace
+    from workbook properties. (:issue:`572`)
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_

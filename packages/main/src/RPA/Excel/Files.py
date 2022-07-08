@@ -204,65 +204,74 @@ class Files:
         )
 
     def create_workbook(
-        self, path: Optional[str] = None, fmt: str = "xlsx"
+        self,
+        path: Optional[str] = None,
+        fmt: str = "xlsx",
+        sheet_name: Optional[str] = None,
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Create and open a new Excel workbook.
 
-        Automatically also creates a new worksheet with the name "Sheet".
+        Automatically also creates a new worksheet with the name `sheet_name`.
+        (defaults to "Sheet")
 
         **Note:** Must be paired with the ``Save Workbook`` keyword
-        or the newly created workbook will be deleted upon Bot completion.
+        or the newly created workbook will be deleted upon robot completion.
 
-        **Note:** The filename must be set in either the ``Create Workbook`` keyword
-        or the ``Save Workbook`` keyword and must include the file extension
+        **Note:** The file name/path must be set in either the ``Create Workbook``
+        keyword or the ``Save Workbook`` keyword and must include the file extension.
 
-        :param path: Save path for workbook; defaults to robot root if not provided
-        :param fmt:  Format of workbook, i.e. xlsx or xls;
-                     Defaults to xlsx if not provided
-        :return:     Workbook object
+        :param path: Save path for workbook; defaults to robot root if not provided.
+        :param fmt: Format of workbook, i.e. xlsx or xls; Defaults to xlsx if not
+            provided.
+        :param sheet_name: Custom name for the initial sheet.
+        :return: Workbook object.
 
         Examples:
 
         .. code-block:: robotframework
 
-            # Create modern format workbook
-            Create workbook
-            Save workbook    orders.xlsx
+            # Create modern format workbook.
+            Create Workbook
+            Save Workbook    orders.xlsx
 
-            # Create modern format workbook with a path set
-            Create workbook    path=${OUTPUT_DIR}${/}orders.xlsx
-            Save workbook
+            # Create modern format workbook with custom sheet name.
+            Create Workbook  sheet_name=MyCustomSheetName
+            Save Workbook    orders.xlsx
 
-            # Create legacy format workbook
-            Create workbook    fmt=xls
-            Save workbook    orders.xls
+            # Create modern format workbook with a path set.
+            Create Workbook    path=${OUTPUT_DIR}${/}orders.xlsx
+            Save Workbook
 
-            # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword
-            # if the path argument is used
+            # Create legacy format workbook.
+            Create Workbook    fmt=xls
+            Save Workbook    orders.xls
+
+            # Create legacy format workbook with a path set.
+            # Note that the file name must be set in the `Create Workbook` keyword
+            #  if the path argument is used.
             Create Workbook    path=${OUTPUT_DIR}${/}orders.xls    fmt=xls
             Save Workbook
 
         .. code-block:: python
 
-            # Create modern format workbook with defaults
+            # Create modern format workbook with defaults.
             lib = Files()
             lib.create_workbook()
             lib.save_workbook("orders.xlsx")
 
-            # Create modern format workbook with a path set
+            # Create modern format workbook with a path set.
             lib = Files()
             lib.create_workbook(path="./output/orders.xlsx", fmt="xlsx")
             lib.save_workbook()
 
-            # Create legacy format workbook
+            # Create legacy format workbook.
             lib = Files()
             lib.create_workbook(fmt="xls")
             lib.save_workbook("orders.xls")
 
-            # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword
-            # if the path is used
+            # Create legacy format workbook with a path set.
+            # Note that the file name must be set in the `Create Workbook` keyword
+            #  if the path is used.
             lib = Files()
             lib.create_workbook(path="./output/orders.xls", fmt="xls")
             lib.save_workbook()
@@ -279,6 +288,9 @@ class Files:
             raise ValueError(f"Unknown format: {fmt}")
 
         self.workbook.create()
+        if sheet_name is not None:
+            self.rename_worksheet(self.get_active_worksheet(), sheet_name)
+
         return self.workbook
 
     def open_workbook(
