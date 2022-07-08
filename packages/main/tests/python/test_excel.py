@@ -458,3 +458,12 @@ def test_invalid_whitespace_fix(name):
     #  `xml:space="preserve"` tag child under workbook properties. (which breaks
     #  validation with Microsoft)
     assert get_user(library.workbook.book) == "cmin"
+
+
+@pytest.mark.parametrize("fmt", ["xlsx", "xls"])
+def test_create_with_sheet_name(fmt):
+    library = Files()
+    path = RESULTS_DIR / f"custom-sheet-name.{fmt}"
+    name = "CustomName"
+    library.create_workbook(path, fmt=fmt, sheet_name=name)
+    assert library.get_active_worksheet() == name
