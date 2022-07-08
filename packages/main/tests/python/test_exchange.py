@@ -4,7 +4,6 @@ import pytest
 from RPA.Email.Exchange import Exchange, UTC
 from RPA.Robocorp.Vault import Vault
 from . import RESOURCES_DIR
-from exchangelib.account import Account
 
 SENDMAIL_MOCK = "RPA.Email.Exchange.Message.send"
 recipient = "person1@domain.com"
@@ -16,7 +15,6 @@ pytest.skip("skipped until tests are fixed", allow_module_level=True)
 @pytest.fixture
 def library():
     lib = Exchange()
-    lib.account = Account(primary_smtp_address="user@domain.com")
     return lib
 
 
@@ -202,17 +200,43 @@ def test_get_filter_by_key_value_multiple_conditions(library):
         assert result == expected
 
 
-@pytest.mark.skip(reason="requires vault and valid email account")
-def test_send_message_with_only_bcc_addresses(library):
+@pytest.mark.skip(reason="requires Vault and valid email account")
+@pytest.mark.parametrize(
+    "is_oauth, to_addr",
+    [
+        (True, "cosmin-robocorp@ztzvn.onmicrosoft.com"),
+        (False, "cosmin-robocorp@ztzvn.onmicrosoft.com"),
+        (False, None),
+    ],
+)
+def test_send_message_with_out_bcc_addresses(library, is_oauth, to_addr):
     secrets = Vault().get_secret("Exchange")
+    if is_oauth:
+        params = {
+            "access_type": "IMPERSONATE",
+            "client_id": secrets["client_id"],
+            "client_secret": secrets["client_secret"],
+            "token": secrets["token"],
+        }
+    else:
+        params = {
+            "password": secrets["password"],
+        }
     library.authorize(
         username=secrets["account"],
-        password=secrets["password"],
         autodiscover=False,
         server="outlook.office365.com",
+        is_oauth=is_oauth,
+        **params,
     )
-    bcc_list = ["robocorp.tester@gmail.com", "robocorp.tester.2@gmail.com"]
+    if to_addr:
+        recipient = to_addr
+        bcc_list = []
+    else:
+        recipient = None
+        bcc_list = ["robocorp.tester@gmail.com", "robocorp.tester.2@gmail.com"]
     library.send_message(
+        recipients=recipient,
         bcc=bcc_list,
         subject="test_send_message_with_only_bcc_addresses",
         body="test_send_message_with_only_bcc_addresses",
