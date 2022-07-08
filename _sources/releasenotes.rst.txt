@@ -13,7 +13,7 @@ Release notes
 ---------------------
 
 - Library **RPA.Excel.Application**: Fixes bug with keyword ``Run Macro`` on Excel file
-  names containing spaces or other problematic symbols.
+  names containing spaces or other problematic symbols. (:issue:`479`)
 - Library **RPA.Excel.Files**:
 
   - Keyword ``Create Workbook`` supports now ``sheet_name`` parameter which sets a
