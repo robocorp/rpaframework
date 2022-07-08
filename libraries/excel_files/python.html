@@ -420,63 +420,69 @@ the <code class="docutils literal notranslate"><span class="pre">start</span></c
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.create_workbook">
-<code class="sig-name descname">create_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: Optional[str] = None</em>, <em class="sig-param">fmt: str = 'xlsx'</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.create_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: Optional[str] = None</em>, <em class="sig-param">fmt: str = 'xlsx'</em>, <em class="sig-param">sheet_name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.create_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create and open a new Excel workbook.</p>
-<p>Automatically also creates a new worksheet with the name “Sheet”.</p>
+<p>Automatically also creates a new worksheet with the name <cite>sheet_name</cite>.
+(defaults to “Sheet”)</p>
 <p><strong>Note:</strong> Must be paired with the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Workbook</span></code> keyword
-or the newly created workbook will be deleted upon Bot completion.</p>
-<p><strong>Note:</strong> The filename must be set in either the <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Workbook</span></code> keyword
-or the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Workbook</span></code> keyword and must include the file extension</p>
+or the newly created workbook will be deleted upon robot completion.</p>
+<p><strong>Note:</strong> The file name/path must be set in either the <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Workbook</span></code>
+keyword or the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Workbook</span></code> keyword and must include the file extension.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – Save path for workbook; defaults to robot root if not provided</p></li>
-<li><p><strong>fmt</strong> – Format of workbook, i.e. xlsx or xls;
-Defaults to xlsx if not provided</p></li>
+<li><p><strong>path</strong> – Save path for workbook; defaults to robot root if not provided.</p></li>
+<li><p><strong>fmt</strong> – Format of workbook, i.e. xlsx or xls; Defaults to xlsx if not
+provided.</p></li>
+<li><p><strong>sheet_name</strong> – Custom name for the initial sheet.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Workbook object</p>
+<dd class="field-even"><p>Workbook object.</p>
 </dd>
 </dl>
 <p>Examples:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Create modern format workbook</span>
-<span class="c">Create workbook</span><span class="p"></span>
-<span class="c">Save workbook</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Create modern format workbook.</span>
+<span class="c">Create Workbook</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
 
-<span class="c"># Create modern format workbook with a path set</span>
-<span class="c">Create workbook</span><span class="p">    </span><span class="c">path=${OUTPUT_DIR}${/}orders.xlsx</span><span class="p"></span>
-<span class="c">Save workbook</span><span class="p"></span>
+<span class="c"># Create modern format workbook with custom sheet name.</span>
+<span class="c">Create Workbook</span><span class="p">  </span><span class="c">sheet_name=MyCustomSheetName</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
 
-<span class="c"># Create legacy format workbook</span>
-<span class="c">Create workbook</span><span class="p">    </span><span class="c">fmt=xls</span><span class="p"></span>
-<span class="c">Save workbook</span><span class="p">    </span><span class="c">orders.xls</span><span class="p"></span>
+<span class="c"># Create modern format workbook with a path set.</span>
+<span class="c">Create Workbook</span><span class="p">    </span><span class="c">path=${OUTPUT_DIR}${/}orders.xlsx</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p"></span>
 
-<span class="c"># Create legacy format workbook with a path set</span>
-<span class="c"># Note that the file name must be set in the Create Workbook keyword</span>
-<span class="c"># if the path argument is used</span>
+<span class="c"># Create legacy format workbook.</span>
+<span class="c">Create Workbook</span><span class="p">    </span><span class="c">fmt=xls</span><span class="p"></span>
+<span class="c">Save Workbook</span><span class="p">    </span><span class="c">orders.xls</span><span class="p"></span>
+
+<span class="c"># Create legacy format workbook with a path set.</span>
+<span class="c"># Note that the file name must be set in the `Create Workbook` keyword</span>
+<span class="c">#  if the path argument is used.</span>
 <span class="c">Create Workbook</span><span class="p">    </span><span class="c">path=${OUTPUT_DIR}${/}orders.xls</span><span class="p">    </span><span class="c">fmt=xls</span><span class="p"></span>
 <span class="c">Save Workbook</span><span class="p"></span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create modern format workbook with defaults</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create modern format workbook with defaults.</span>
 <span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">create_workbook</span><span class="p">()</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">(</span><span class="s2">&quot;orders.xlsx&quot;</span><span class="p">)</span>
 
-<span class="c1"># Create modern format workbook with a path set</span>
+<span class="c1"># Create modern format workbook with a path set.</span>
 <span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">create_workbook</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;./output/orders.xlsx&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;xlsx&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
 
-<span class="c1"># Create legacy format workbook</span>
+<span class="c1"># Create legacy format workbook.</span>
 <span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">create_workbook</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;xls&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">(</span><span class="s2">&quot;orders.xls&quot;</span><span class="p">)</span>
 
-<span class="c1"># Create legacy format workbook with a path set</span>
-<span class="c1"># Note that the file name must be set in the Create Workbook keyword</span>
-<span class="c1"># if the path is used</span>
+<span class="c1"># Create legacy format workbook with a path set.</span>
+<span class="c1"># Note that the file name must be set in the `Create Workbook` keyword</span>
+<span class="c1">#  if the path is used.</span>
 <span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">create_workbook</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;./output/orders.xls&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;xls&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">save_workbook</span><span class="p">()</span>
