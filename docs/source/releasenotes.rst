@@ -6,7 +6,7 @@ Release notes
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 - Adds ``overwrite`` parameter (default `False`) for controlling how attachment
-  download happens with the following keywords:
+  download happens with the following keywords (:issue:`584`):
 
   - **RPA.Email.ImapSmtp**:
 
