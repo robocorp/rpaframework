@@ -549,24 +549,6 @@ class ImapSmtp:
                     )
                     msg.attach(part)
 
-    @imap_connection
-    def _fetch_messages(self, mail_ids: list) -> list:
-        messages = []
-        for mail_id in mail_ids:
-            _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
-            if data[0] is None:
-                self.logger.debug("Data was none for : %s", mail_id)
-                continue
-            message = message_from_bytes(data[0][1])
-            message_dict = {"Mail-Id": mail_id, "Message": message}
-            for k, v in message.items():
-                msg_item = decode_header(v)
-                message_dict[k] = make_header(msg_item)
-            message_dict["Body"], has_attachments = self.get_decoded_email_body(message)
-            message_dict["Has-Attachments"] = has_attachments
-            messages.append(message_dict)
-        return messages
-
     def get_decoded_email_body(
         self, message, html_first: bool = False
     ) -> Tuple[str, bool]:
