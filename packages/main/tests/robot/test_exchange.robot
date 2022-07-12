@@ -116,7 +116,9 @@ Sending Email Without Addresses
 
 
 Download Duplicate Attachment
-    Init Exchange
+    # Initially save one e-mail with attachment to local disk. (can be used offline
+    #  afterwards indefinitely)
+#    Init Exchange
 
     ${name} =   Set Variable    exchange-oauth2
     ${ext} =    Set Variable    pdf
@@ -124,8 +126,6 @@ Download Duplicate Attachment
     RPA.FileSystem.Remove Files    @{files}
 
     ${eml_file} =   Set Variable    ${RESOURCES}${/}emails${/}exchange-mail.eml
-    # Initially save one e-mail with attachment to local disk. (can be used offline
-    #  afterwards indefinitely)
 #    @{msgs} =   List Messages   criterion=body:RPA   count=${1}
 #    Save Message    ${msgs}[0]      ${eml_file}
 
