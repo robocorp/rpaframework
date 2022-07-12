@@ -1062,14 +1062,14 @@ class ImapSmtp:
 
         .. code-block:: robotframework
 
-            @{emails}    List Messages    ALL
+            @{emails} =    List Messages    ALL
             FOR    ${email}    IN    @{emails}
                 IF    ${email}[Has-Attachments]
                     Log To Console    Saving attachment for: ${email}[Subject]
-                    ${attachments}=    Save Attachment
+                    ${attachments} =    Save Attachment
                     ...    ${email}
                     ...    target_folder=${CURDIR}
-                    ...    overwrite=True
+                    ...    overwrite=${True}
                     Log To Console    Saved attachments: ${attachments}
                 END
             END

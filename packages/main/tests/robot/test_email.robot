@@ -11,6 +11,7 @@ Suite Setup       Init GMail
 
 *** Variables ***
 ${RESOURCES}      ${CURDIR}${/}..${/}resources
+${RESULTS}        ${CURDIR}${/}..${/}results
 ${BODY_IMG1}      ${RESOURCES}${/}approved.png
 ${BODY_IMG2}      ${RESOURCES}${/}invoice.png
 ${EMAIL_BODY}     <h1>Heading</h1><p>Status: <img src='approved.png' alt='approved image'/></p>
@@ -48,6 +49,7 @@ Sending HTML Email With Downloaded Image
     ...    images=${BODY_IMG1}, ${BODY_IMG2}
     ...    attachments=logo.png
 
+
 Sending HTML Email With Image
     [Documentation]    Sending email with HTML content and attachment
     [Tags]   skip
@@ -61,6 +63,7 @@ Sending HTML Email With Image
     ...    images=${BODY_IMG1}, ${BODY_IMG2}
     ...    attachments=/Users/mika/koodi/syntax_example.png
 
+
 Sending email with inline images
     [Documentation]    Sending email with inline images
     [Tags]   skip
@@ -73,6 +76,7 @@ Sending email with inline images
     ...    images=${BODY_IMG1}, ${BODY_IMG2}
     ...    attachments=/Users/mika/koodi/syntax_example.png
 
+
 Sending Email
     [Documentation]    Sending email with GMail account
     [Tags]   skip
@@ -82,6 +86,7 @@ Sending Email
     ...    recipients=mika@robocorp.com
     ...    subject=Order confirmationäöäöä
     ...    body=Thank you for the order!
+
 
 Filtering emails
     [Documentation]    Filter emails by some criteria
@@ -95,25 +100,30 @@ Filtering emails
         Log    ${msg}[From]
     END
 
+
 Getting emails
     [Tags]   skip
 
     List messages    criterion=SUBJECT "rpa"
+
 
 Saving attachments
     [Tags]   skip
 
     Save attachments    criterion=SUBJECT "rpa"    target_folder=../temp
 
+
 Move messages empty criterion
     [Tags]   skip
 
     Run Keyword And Expect Error    KeyError*    Move Messages    ${EMPTY}
 
+
 Move messages empty target
     [Tags]   skip
 
     Run Keyword And Expect Error    KeyError*    Move Messages    SUBJECT 'RPA'
+
 
 Move messages to target folder from inbox
     [Tags]   skip
@@ -122,6 +132,7 @@ Move messages to target folder from inbox
     ...    criterion=SUBJECT "order confirmation"
     ...    target_folder=yyy
 
+
 Move messages from subfolder to another
     [Tags]   skip
 
@@ -129,6 +140,7 @@ Move messages from subfolder to another
     ...    criterion=ALL
     ...    source_folder=yyy
     ...    target_folder=XXX
+
 
 Performing message actions
     [Tags]   skip
@@ -139,6 +151,7 @@ Performing message actions
     ...    source_folder=XXX
     ...    target_folder=${CURDIR}
     ...    overwrite=True
+
 
 Move messages by their IDS
     [Documentation]    Use case could be one task parsing emails and then passing
@@ -154,6 +167,7 @@ Move messages by their IDS
     # task 2
     Move Messages By IDs    ${idlist}    target_folder
 
+
 Convert email to docx
     ${mail_name} =      Get File Name   ${MAIL_FILE}
     ${output_doc} =     Set Variable    ${OUTPUT_DIR}${/}${mail_name}.docx
@@ -163,13 +177,33 @@ Convert email to docx
     File Should Not Be Empty    ${output_doc}
     [Teardown]  RPA.FileSystem.Remove file     ${output_doc}
 
+
 Send Self Email
     [Tags]   skip
+
     ${email} =    Get Secret    gmail
     ${auth_type} =  Set Variable    basic
     IF    ${email}[is_oauth]
         ${auth_type} =  Set Variable    OAuth2
     END
+
     Send Message    sender=${email}[account]    recipients=${email}[account]
     ...    subject=E-mail sent through the ${auth_type} flow
     ...    body=I hope you find this flow easy to understand and use.
+
+
+Download Duplicate Attachment
+    [Tags]   skip
+
+    ${name} =   Set Variable    exchange-oauth2
+    ${ext} =    Set Variable    pdf
+    @{files} =  Find Files  ${RESULTS}${/}${name}*
+    RPA.FileSystem.Remove Files    @{files}
+
+    Save Attachments    criterion=SUBJECT "Duplicate attachment"
+    ...     target_folder=${RESULTS}
+    Save Attachments    criterion=SUBJECT "Duplicate attachment"
+    ...     target_folder=${RESULTS}
+
+    File Should Exist   ${RESULTS}${/}${name}.${ext}
+    File Should Exist   ${RESULTS}${/}${name}-2.${ext}
