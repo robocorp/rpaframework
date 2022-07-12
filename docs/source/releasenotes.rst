@@ -5,6 +5,17 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Adds ``overwrite`` parameter (default `False`) for controlling how attachment
+  download happens with the following keywords:
+
+  - **RPA.Email.ImapSmtp**:
+
+    - ``Save Attachment``
+    - ``Save Attachments``
+
+  - **RPA.Email.Exchange**: ``Save Attachments``
+  - **RPA.Outlook.Application**: ``Save Email Attachments``
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
