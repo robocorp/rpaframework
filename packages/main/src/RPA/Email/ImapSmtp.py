@@ -70,14 +70,15 @@ def to_action(value):
         raise ValueError(f"Unknown email action: {value}") from err
 
 
-def get_part_filename(msg: Message) -> str:
+def get_part_filename(msg: Message) -> Optional[str]:
     filename = msg.get_filename()
+    if not filename:
+        return None
+
     decoded = decode_header(filename)
-    if filename and decoded[0][1] is not None:
+    if decoded[0][1] is not None:
         filename = decoded[0][0].decode(decoded[0][1])
-    if filename:
-        filename = filename.replace("\r", "").replace("\n", "")
-    return filename
+    return filename.replace("\r", "").replace("\n", "")
 
 
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
