@@ -1,36 +1,33 @@
-from enum import Enum
-from functools import wraps
-
-from io import StringIO
 import base64
 import logging
 import os
 import re
 import time
-
 # email package declares these properties in the __all__ definition but
 # pylint ignores that
 from email import encoders, message_from_bytes  # pylint: disable=E0611
-from email.message import Message  # pylint: disable=E0611
-from email.charset import add_charset, QP  # pylint: disable=E0611
+from email.charset import QP, add_charset  # pylint: disable=E0611
 from email.generator import Generator  # pylint: disable=E0611
-from email.header import Header, decode_header, make_header  # pylint: disable=E0611
+from email.header import (Header, decode_header,  # pylint: disable=E0611
+                          make_header)
+from email.message import Message  # pylint: disable=E0611
 from email.mime.base import MIMEBase  # pylint: disable=E0611
 from email.mime.image import MIMEImage  # pylint: disable=E0611
 from email.mime.multipart import MIMEMultipart  # pylint: disable=E0611
 from email.mime.text import MIMEText  # pylint: disable=E0611
-
-from pathlib import Path
+from enum import Enum
+from functools import wraps
 from imaplib import IMAP4_SSL
-from smtplib import SMTP, SMTP_SSL, ssl
-from smtplib import SMTPConnectError, SMTPNotSupportedError, SMTPServerDisconnected
-
+from io import StringIO
+from pathlib import Path
+from smtplib import (SMTP, SMTP_SSL, SMTPConnectError, SMTPNotSupportedError,
+                     SMTPServerDisconnected, ssl)
 from typing import Any, BinaryIO, List, Optional, Tuple, Union
 
 from htmldocx import HtmlToDocx
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-from RPA.RobotLogListener import RobotLogListener
 
+from RPA.RobotLogListener import RobotLogListener
 
 FilePath = Union[str, Path]
 
@@ -998,7 +995,7 @@ class ImapSmtp:
     def save_attachments(
         self,
         criterion: str = "",
-        target_folder: str = None,
+        target_folder: Optional[str] = None,
         overwrite: bool = False,
         prefix: str = None,
     ) -> List:
