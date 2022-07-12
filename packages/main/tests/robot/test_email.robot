@@ -22,13 +22,13 @@ ${MAIL_FILE}      ${RESOURCES}${/}emails${/}work-item-documentation.eml
 
 *** Keywords ***
 Init GMail
-    Set environment variable    RPA_SECRET_MANAGER    RPA.Robocorp.Vault.FileSecrets
-    Set environment variable    RPA_SECRET_FILE       ${RESOURCES}${/}secrets.yaml
+    Set Environment Variable    RPA_SECRET_MANAGER    RPA.Robocorp.Vault.FileSecrets
+    Set Environment Variable    RPA_SECRET_FILE       ${RESOURCES}${/}secrets.yaml
     Import library      RPA.Robocorp.Vault
     ${email} =    Get Secret    gmail
     ${status}   ${ret} =     Run Keyword And Ignore Error    Authorize
     ...     ${email}[account]    ${email}[password]     is_oauth=${email}[is_oauth]
-    ...     smtp_server=${email}[smtpserver]    imap_server=${email}[imapserver]
+    ...     smtp_server=smtp.gmail.com    imap_server=imap.gmail.com
     IF    "${status}" == "FAIL"
         Pass Execution      ${ret}
     END
