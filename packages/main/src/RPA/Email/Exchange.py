@@ -356,9 +356,6 @@ class Exchange:
             parent = self.account.inbox / parent_folder
         return parent / folder_name if folder_name else parent
 
-    def _get_all_items_in_folder(self, folder_name=None, parent_folder=None):
-        return self._get_inbox_folder(folder_name, parent_folder).all()
-
     def send_message(
         self,
         recipients: Optional[Union[List[str], str]] = None,
@@ -489,7 +486,7 @@ class Exchange:
     def delete_folder(self, folder_name: str, parent_folder: Optional[str] = None):
         """Delete email folder.
 
-        :param folder_name: current folder name
+        :param folder_name: current folder name (required)
         :param parent_folder: name for the parent folder, by default INBOX
         """
         folder_to_delete = self._get_inbox_folder(folder_name, parent_folder)
@@ -511,7 +508,7 @@ class Exchange:
         """
         parent = self._get_inbox_folder("", parent_folder)
         self.logger.info("Rename folder %r to %r", oldname, newname)
-        items = self._get_all_items_in_folder(oldname, parent_folder)
+        items = self._get_inbox_folder(oldname, parent_folder).all()
         old_folder = Folder(parent=parent, name=oldname)
         old_folder.name = newname
         old_folder.save()
@@ -609,15 +606,17 @@ class Exchange:
     def _get_folder_object(self, folder_name):
         if not folder_name:
             return self.account.inbox
+
         folders = folder_name.split("/")
         if "inbox" in folders[0].lower():
             folders[0] = self.account.inbox
         folder_object = None
         for folder in folders:
             if folder_object:
-                folder_object = folder_object / folder.strip()
+                folder_object /= folder.strip()
             else:
                 folder_object = folder
+
         return folder_object
 
     def _get_filter_key_value(self, criterion):

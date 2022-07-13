@@ -5,6 +5,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.4.0 - 13 July 2022
+---------------------
+
 - Adds ``overwrite`` parameter (default `False`) for controlling how attachment
   download happens with the following keywords (:issue:`584`):
 
@@ -15,10 +22,6 @@ Release notes
 
   - **RPA.Email.Exchange**: ``Save Attachments``
   - **RPA.Outlook.Application**: ``Save Email Attachments``
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 15.3.0 - 08 July 2022
 ---------------------
