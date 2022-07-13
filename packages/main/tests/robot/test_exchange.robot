@@ -1,13 +1,14 @@
 *** Settings ***
-Library           DateTime
-Library           OperatingSystem
-Library           RPA.Email.Exchange
-Library           RPA.FileSystem
-Library           RPA.Tables
+Library         Collections
+Library         DateTime
+Library         OperatingSystem
+Library         RPA.Email.Exchange
+Library         RPA.FileSystem
+Library         RPA.Tables
 
-Force Tags        skip
+Task Setup      Init Variables
 
-Task Setup        Init Variables
+Default Tags    skip
 
 
 *** Variables ***
@@ -16,12 +17,17 @@ ${RESULTS}        ${CURDIR}${/}..${/}results
 
 
 *** Keywords ***
+Init Variables
+    ${timestamp}=    Get Current Date
+    Set Global Variable    ${EMAIL_SUBJECT}    From rpaframework tests - ${timestamp}
+
+
 Init Exchange
     Set Environment Variable    RPA_SECRET_MANAGER    RPA.Robocorp.Vault.FileSecrets
     Set Environment Variable    RPA_SECRET_FILE       ${RESOURCES}${/}secrets.yaml
     Import library      RPA.Robocorp.Vault
 
-    ${email} =      Get secret    exchange
+    ${email} =      Get Secret    exchange
     Authorize
     ...    username=${email}[account]
     ...    password=${email}[password]
@@ -29,13 +35,10 @@ Init Exchange
     ...    server=outlook.office365.com
 
 
-Init Variables
-    ${timestamp}=    Get Current Date
-    Set Global Variable    ${EMAIL_SUBJECT}    From rpaframework tests - ${timestamp}
-
-
 *** Tasks ***
 Sending Email Without Authorize
+    [Tags]      ci
+
     Run Keyword And Expect Error    AuthenticationError: Not authorized to any Exchange account
     ...    Send Message
     ...    recipients=robocorp.tester@gmail.com
@@ -116,9 +119,7 @@ Sending Email Without Addresses
 
 
 Download Duplicate Attachment
-    # Initially save one e-mail with attachment to local disk. (can be used offline
-    #  afterwards indefinitely)
-#    Init Exchange
+    [Tags]      ci
 
     ${name} =   Set Variable    exchange-oauth2
     ${ext} =    Set Variable    pdf
@@ -126,13 +127,22 @@ Download Duplicate Attachment
     RPA.FileSystem.Remove Files    @{files}
 
     ${eml_file} =   Set Variable    ${RESOURCES}${/}emails${/}exchange-mail.eml
+    # Initially save one e-mail with attachment to local disk. (can be used offline
+    #  afterwards indefinitely -- uncomment for a file content refresh)
+#    Init Exchange
 #    @{msgs} =   List Messages   criterion=body:RPA   count=${1}
 #    Save Message    ${msgs}[0]      ${eml_file}
 
     # Now save attachments from the given offline e-mail.
-    Save Attachments    ${eml_file}     save_dir=${RESULTS}
-    Save Attachments    ${eml_file}     save_dir=${RESULTS}
+    @{all_paths} =  Save Attachments    ${eml_file}     save_dir=${RESULTS}
+    @{paths} =  Save Attachments    ${eml_file}     save_dir=${RESULTS}
+    Append To List      ${all_paths}    @{paths}
+    @{all_paths} =      Evaluate    [p["local_path"] for p in $all_paths]
 
     # And check their duplicate behaviour.
-    File Should Exist   ${RESULTS}${/}${name}.${ext}
-    File Should Exist   ${RESULTS}${/}${name}-2.${ext}
+    @{expected_paths} =     Create List
+    ...     ${RESULTS}${/}${name}.${ext}    ${RESULTS}${/}${name}-2.${ext}
+    Lists Should Be Equal   ${all_paths}    ${expected_paths}
+    FOR     ${path}     IN      @{all_paths}
+        File Should Exist   ${path}
+    END

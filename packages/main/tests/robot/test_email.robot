@@ -8,6 +8,8 @@ Library           RPA.Tables
 
 Suite Setup       Init GMail
 
+Default Tags      skip
+
 
 *** Variables ***
 ${RESOURCES}      ${CURDIR}${/}..${/}resources
@@ -25,6 +27,7 @@ Init GMail
     Set Environment Variable    RPA_SECRET_MANAGER    RPA.Robocorp.Vault.FileSecrets
     Set Environment Variable    RPA_SECRET_FILE       ${RESOURCES}${/}secrets.yaml
     Import library      RPA.Robocorp.Vault
+
     ${email} =    Get Secret    gmail
     ${status}   ${ret} =     Run Keyword And Ignore Error    Authorize
     ...     ${email}[account]    ${email}[password]     is_oauth=${email}[is_oauth]
@@ -37,7 +40,6 @@ Init GMail
 *** Tasks ***
 Sending HTML Email With Downloaded Image
     [Documentation]    Sending email with HTML content and attachment
-    [Tags]   skip
 
     Download    ${IMAGE_URL}    target_file=logo.png    overwrite=${TRUE}
     Send Message
@@ -52,7 +54,6 @@ Sending HTML Email With Downloaded Image
 
 Sending HTML Email With Image
     [Documentation]    Sending email with HTML content and attachment
-    [Tags]   skip
 
     Send Message
     ...    sender=Robocorporation <robocorp.tester@gmail.com>
@@ -66,7 +67,6 @@ Sending HTML Email With Image
 
 Sending email with inline images
     [Documentation]    Sending email with inline images
-    [Tags]   skip
 
     Send Message
     ...    sender=Robocorporation <robocorp.tester@gmail.com>
@@ -79,7 +79,6 @@ Sending email with inline images
 
 Sending Email
     [Documentation]    Sending email with GMail account
-    [Tags]   skip
 
     Send Message
     ...    sender=Robocorporation <robocorp.tester@gmail.com>
@@ -90,7 +89,6 @@ Sending Email
 
 Filtering emails
     [Documentation]    Filter emails by some criteria
-    [Tags]   skip
 
     ${messages}=    List messages    SUBJECT "rpa"
     ${msgs}=    Create table    ${messages}
@@ -102,50 +100,36 @@ Filtering emails
 
 
 Getting emails
-    [Tags]   skip
-
     List messages    criterion=SUBJECT "rpa"
 
 
 Saving attachments
-    [Tags]   skip
-
     Save attachments    criterion=SUBJECT "rpa"    target_folder=../temp
 
 
 Move messages empty criterion
-    [Tags]   skip
-
     Run Keyword And Expect Error    KeyError*    Move Messages    ${EMPTY}
 
 
 Move messages empty target
-    [Tags]   skip
-
     Run Keyword And Expect Error    KeyError*    Move Messages    SUBJECT 'RPA'
 
 
 Move messages to target folder from inbox
-    [Tags]   skip
-
-    ${result}=    Move Messages
+    ${result} =    Move Messages
     ...    criterion=SUBJECT "order confirmation"
     ...    target_folder=yyy
 
 
 Move messages from subfolder to another
-    [Tags]   skip
-
-    ${result}=    Move Messages
+    ${result} =    Move Messages
     ...    criterion=ALL
     ...    source_folder=yyy
     ...    target_folder=XXX
 
 
 Performing message actions
-    [Tags]   skip
-
-    ${actions}=    Create List    msg_unflag    msg_read    msg_save    msg_attachment_save
+    ${actions} =    Create List    msg_unflag    msg_read    msg_save    msg_attachment_save
     Do Message Actions    SUBJECT "Order confirmation"
     ...    ${actions}
     ...    source_folder=XXX
@@ -156,11 +140,10 @@ Performing message actions
 Move messages by their IDS
     [Documentation]    Use case could be one task parsing emails and then passing
     ...    the Message-IDS to another task to process further
-    [Tags]   skip
 
     # task 1
-    ${messages}=    List Messages    SUBJECT "incoming orders"
-    @{idlist}=    Create List
+    ${messages} =    List Messages    SUBJECT "incoming orders"
+    @{idlist} =    Create List
     FOR    ${msg}    IN    @{messages}
         Append To List    ${idlist}    ${msg}[Message-ID]
     END
@@ -179,8 +162,6 @@ Convert email to docx
 
 
 Send Self Email
-    [Tags]   skip
-
     ${email} =    Get Secret    gmail
     ${auth_type} =  Set Variable    basic
     IF    ${email}[is_oauth]
@@ -193,17 +174,20 @@ Send Self Email
 
 
 Download Duplicate Attachment
-    [Tags]   skip
-
     ${name} =   Set Variable    exchange-oauth2
     ${ext} =    Set Variable    pdf
     @{files} =  Find Files  ${RESULTS}${/}${name}*
     RPA.FileSystem.Remove Files    @{files}
 
-    Save Attachments    criterion=SUBJECT "Duplicate attachment"
+    @{all_paths} =      Save Attachments    criterion=SUBJECT "Duplicate attachment"
     ...     target_folder=${RESULTS}
-    Save Attachments    criterion=SUBJECT "Duplicate attachment"
+    @{paths} =      Save Attachments    criterion=SUBJECT "Duplicate attachment"
     ...     target_folder=${RESULTS}
+    Append To List      ${all_paths}    @{paths}
 
-    File Should Exist   ${RESULTS}${/}${name}.${ext}
-    File Should Exist   ${RESULTS}${/}${name}-2.${ext}
+    @{expected_paths} =     Create List
+    ...     ${RESULTS}${/}${name}.${ext}    ${RESULTS}${/}${name}-2.${ext}
+    Lists Should Be Equal   ${all_paths}    ${expected_paths}
+    FOR     ${path}     IN      @{all_paths}
+        File Should Exist   ${path}
+    END
