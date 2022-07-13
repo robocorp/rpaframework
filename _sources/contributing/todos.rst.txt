@@ -68,7 +68,7 @@ RPA.Email.Exchange:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "412", "The exchangelib does not seem to provide any straightforward way of"
+   "417", "The exchangelib does not seem to provide any straightforward way of"
 
 RPA.Email.ImapSmtp:
 ===================
@@ -77,7 +77,7 @@ RPA.Email.ImapSmtp:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "808", "mypy should handle enum exhaustivity validation"
+   "797", "mypy should handle enum exhaustivity validation"
 
 RPA.FileSystem:
 ===============

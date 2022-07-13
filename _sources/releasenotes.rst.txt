@@ -9,6 +9,20 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+15.4.0 - 13 July 2022
+---------------------
+
+- Adds ``overwrite`` parameter (default `False`) for controlling how attachment
+  download happens with the following keywords (:issue:`584`):
+
+  - **RPA.Email.ImapSmtp**:
+
+    - ``Save Attachment``
+    - ``Save Attachments``
+
+  - **RPA.Email.Exchange**: ``Save Attachments``
+  - **RPA.Outlook.Application**: ``Save Email Attachments``
+
 15.3.0 - 08 July 2022
 ---------------------
 

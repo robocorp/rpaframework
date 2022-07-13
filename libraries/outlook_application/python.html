@@ -420,8 +420,8 @@ ie. all emails in folder</p></li>
 
 <dl class="method">
 <dt id="RPA.Outlook.Application.Application.save_email_attachments">
-<code class="sig-name descname">save_email_attachments</code><span class="sig-paren">(</span><em class="sig-param">attachments: Any</em>, <em class="sig-param">attachment_folder: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Outlook.Application.Application.save_email_attachments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save email attachments</p>
+<code class="sig-name descname">save_email_attachments</code><span class="sig-paren">(</span><em class="sig-param">attachments: Any</em>, <em class="sig-param">attachment_folder: str</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Outlook.Application.Application.save_email_attachments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save email attachments.</p>
 <p>Note. Keyword “Get Emails” can be also used to save attachments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -429,11 +429,12 @@ ie. all emails in folder</p></li>
 <li><p><strong>attachments</strong> – all attachments from email or single attachment</p></li>
 <li><p><strong>attachment_folder</strong> – target folder where attachments are saved,
 defaults to current directory</p></li>
+<li><p><strong>overwrite</strong> – overwrite existing file if True, defaults to False</p></li>
 </ul>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${emails}=</span><span class="p">  </span><span class="c">Get Emails</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${emails} =</span><span class="p">  </span><span class="c">Get Emails</span><span class="p"></span>
 <span class="c">...</span><span class="p">    </span><span class="c">email_folder=priority</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">IN</span><span class="p">   </span><span class="c">@{emails}</span><span class="p"></span>
 <span class="p">    </span><span class="c">FOR</span><span class="p">  </span><span class="c">${attachment}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{email}[Attachments]</span><span class="p"></span>

@@ -406,46 +406,40 @@ set to be different from username</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.create_folder">
-<code class="sig-name descname">create_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.create_folder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create email folder</p>
+<code class="sig-name descname">create_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.create_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create email folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_name</strong> – name for the new folder</p></li>
+<li><p><strong>folder_name</strong> – name for the new folder (required)</p></li>
 <li><p><strong>parent_folder</strong> – name for the parent folder, by default INBOX</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if operation was successful, False if not</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.delete_folder">
-<code class="sig-name descname">delete_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.delete_folder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete email folder</p>
+<code class="sig-name descname">delete_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.delete_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete email folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_name</strong> – current folder name</p></li>
+<li><p><strong>folder_name</strong> – current folder name (required)</p></li>
 <li><p><strong>parent_folder</strong> – name for the parent folder, by default INBOX</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if operation was successful, False if not</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.empty_folder">
-<code class="sig-name descname">empty_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em>, <em class="sig-param">delete_sub_folders: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.empty_folder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">empty_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str</em>, <em class="sig-param">parent_folder: Optional[str] = None</em>, <em class="sig-param">delete_sub_folders: Optional[bool] = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.empty_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Empty email folder of all items</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_name</strong> – current folder name</p></li>
+<li><p><strong>folder_name</strong> – current folder name (required)</p></li>
 <li><p><strong>parent_folder</strong> – name for the parent folder, by default INBOX</p></li>
 <li><p><strong>delete_sub_folders</strong> – delete sub folders or not, by default False</p></li>
 </ul>
@@ -559,7 +553,7 @@ safe place.</p>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.rename_folder">
-<code class="sig-name descname">rename_folder</code><span class="sig-paren">(</span><em class="sig-param">oldname: Optional[str] = None</em>, <em class="sig-param">newname: Optional[str] = None</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.rename_folder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rename_folder</code><span class="sig-paren">(</span><em class="sig-param">oldname: str</em>, <em class="sig-param">newname: str</em>, <em class="sig-param">parent_folder: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.rename_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename email folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -577,35 +571,40 @@ safe place.</p>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.save_attachments">
-<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, str], save_dir: Optional[str] = None, attachments_from_emls: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.save_attachments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save attachments in message into given directory</p>
+<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, str], save_dir: Optional[str] = None, attachments_from_emls: bool = False, overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.save_attachments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save attachments from message into given directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – dictionary or .eml filepath containing message details</p></li>
-<li><p><strong>save_dir</strong> – filepath where attachments will be saved</p></li>
-<li><p><strong>attachments_from_emls</strong> – if attachment is a EML file, set to True to
-save attachments from that EML file, default False</p></li>
+<li><p><strong>message</strong> – dictionary or .eml file path containing message details</p></li>
+<li><p><strong>save_dir</strong> – file path where attachments will be saved</p></li>
+<li><p><strong>attachments_from_emls</strong> – pass <cite>True</cite> if the attachment is an EML file (for
+saving attachments from that EML file instead), <cite>False</cite> otherwise (default)</p></li>
+<li><p><strong>overwrite</strong> – overwrite existing downloaded attachments with the same name
+if set to <cite>True</cite>, <cite>False</cite> otherwise (default)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of saved attachments</p>
 </dd>
 </dl>
-<p>Example.</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${messages}=</span><span class="p">    </span><span class="c">List Messages</span><span class="p"></span>
-<span class="c">FOR</span><span class="p">    </span><span class="c">${msg}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{messages}}</span><span class="p"></span>
-<span class="p">    </span><span class="c">Save Attachments</span><span class="p">    </span><span class="c">${msg}</span><span class="p">    </span><span class="c">%{ROBOT_ARTIFACTS}</span><span class="p">  </span><span class="c">True</span><span class="p"></span>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${messages} =</span><span class="p">    </span><span class="c">List Messages</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${msg}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{messages}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Save Attachments</span><span class="p">    </span><span class="c">${msg}</span><span class="p">    </span><span class="c">%{ROBOT_ARTIFACTS}</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">attachments_from_emls=${True}</span><span class="p"></span>
 <span class="c">END</span><span class="p"></span>
-<span class="c">${attachments}=</span><span class="p">  </span><span class="c">Save Attachments</span><span class="p">  </span><span class="c">${CURDIR}${/}saved.eml</span><span class="p">  </span><span class="c">%{ROBOT_ARTIFACTS}</span><span class="p"></span>
+
+<span class="c">${attachments} =</span><span class="p">    </span><span class="c">Save Attachments</span><span class="p">    </span><span class="c">${CURDIR}${/}saved.eml</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">%{ROBOT_ARTIFACTS}</span><span class="p">    </span><span class="c">overwrite=${True}</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.save_message">
-<code class="sig-name descname">save_message</code><span class="sig-paren">(</span><em class="sig-param">message: dict</em>, <em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.save_message" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save email as .eml file</p>
+<code class="sig-name descname">save_message</code><span class="sig-paren">(</span><em class="sig-param">message: dict</em>, <em class="sig-param">filename: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.save_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save email as .eml file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

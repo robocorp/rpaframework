@@ -899,16 +899,17 @@ source folder</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_attachment">
-<code class="sig-name descname">save_attachment</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, email.message.Message], target_folder: str, overwrite: bool, prefix: str = None</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save mail attachment of single given email into local folder</p>
+<code class="sig-name descname">save_attachment</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, email.message.Message], target_folder: Optional[str], overwrite: bool, prefix: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save mail attachment of a single given email on the local disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – message item</p></li>
 <li><p><strong>target_folder</strong> – local folder for saving attachments to (needs to exist),
 defaults to user’s home directory if None</p></li>
-<li><p><strong>overwrite</strong> – overwrite existing file is True, defaults to False</p></li>
-<li><p><strong>prefix</strong> – optional filename prefix added to the attachments, default empty</p></li>
+<li><p><strong>overwrite</strong> – overwrite existing file if True, defaults to False</p></li>
+<li><p><strong>prefix</strong> – optional filename prefix added to the attachments, empty by
+default</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -916,14 +917,14 @@ defaults to user’s home directory if None</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails}</span><span class="p">    </span><span class="c">List Messages</span><span class="p">    </span><span class="c">ALL</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails} =</span><span class="p">    </span><span class="c">List Messages</span><span class="p">    </span><span class="c">ALL</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">    </span><span class="c">${email}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{emails}</span><span class="p"></span>
 <span class="p">    </span><span class="c">IF</span><span class="p">    </span><span class="c">${email}[Has-Attachments]</span><span class="p"></span>
 <span class="p">        </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">Saving attachment for: ${email}[Subject]</span><span class="p"></span>
-<span class="p">        </span><span class="c">${attachments}=</span><span class="p">    </span><span class="c">Save Attachment</span><span class="p"></span>
+<span class="p">        </span><span class="c">${attachments} =</span><span class="p">    </span><span class="c">Save Attachment</span><span class="p"></span>
 <span class="p">        </span><span class="c">...</span><span class="p">    </span><span class="c">${email}</span><span class="p"></span>
 <span class="p">        </span><span class="c">...</span><span class="p">    </span><span class="c">target_folder=${CURDIR}</span><span class="p"></span>
-<span class="p">        </span><span class="c">...</span><span class="p">    </span><span class="c">overwrite=True</span><span class="p"></span>
+<span class="p">        </span><span class="c">...</span><span class="p">    </span><span class="c">overwrite=${True}</span><span class="p"></span>
 <span class="p">        </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">Saved attachments: ${attachments}</span><span class="p"></span>
 <span class="p">    </span><span class="c">END</span><span class="p"></span>
 <span class="c">END</span><span class="p"></span>
@@ -933,27 +934,28 @@ defaults to user’s home directory if None</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_attachments">
-<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">overwrite: bool = False</em>, <em class="sig-param">prefix: str = None</em><span class="sig-paren">)</span> &#x2192; List<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save mail attachments of emails matching criterion into local folder.</p>
+<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: Optional[str] = None</em>, <em class="sig-param">overwrite: bool = False</em>, <em class="sig-param">prefix: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save mail attachments of emails matching criterion on the local disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>criterion</strong> – attachments are saved for mails matching this, defaults to “”</p></li>
 <li><p><strong>target_folder</strong> – local folder for saving attachments to (needs to exist),
 defaults to user’s home directory if None</p></li>
-<li><p><strong>overwrite</strong> – overwrite existing file is True, defaults to False</p></li>
-<li><p><strong>prefix</strong> – optional filename prefix added to the attachments, default empty</p></li>
+<li><p><strong>overwrite</strong> – overwrite existing file if True, defaults to False</p></li>
+<li><p><strong>prefix</strong> – optional filename prefix added to the attachments, empty by
+default</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of saved attachments (list of absolute filepaths) of all emails</p>
+<dd class="field-even"><p>list of saved attachments (absolute file paths) of all emails</p>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${attachments}</span><span class="p">  </span><span class="c">Save Attachments</span><span class="p">   </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p"></span>
-<span class="c">...</span><span class="p">             </span><span class="c">target_folder=${CURDIR}${/}messages</span><span class="p">  </span><span class="c">overwrite=True</span><span class="p"></span>
-<span class="c">FOR</span><span class="p">  </span><span class="c">${a}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{attachments}</span><span class="p"></span>
-<span class="p">    </span><span class="c">OperatingSystem.File Should Exist</span><span class="p">  </span><span class="c">${a}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${attachments} =</span><span class="p">    </span><span class="c">Save Attachments</span><span class="p">    </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">target_folder=${CURDIR}${/}messages</span><span class="p">  </span><span class="c">overwrite=${True}</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${file}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{attachments}</span><span class="p"></span>
+<span class="p">    </span><span class="c">OperatingSystem.File Should Exist</span><span class="p">  </span><span class="c">${file}</span><span class="p"></span>
 <span class="c">END</span><span class="p"></span>
 </pre></div>
 </div>
@@ -961,7 +963,7 @@ defaults to user’s home directory if None</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_messages">
-<code class="sig-name descname">save_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict</em>, <em class="sig-param">list] = None</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">prefix: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict</em>, <em class="sig-param">list</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">target_folder: Optional[str] = None</em>, <em class="sig-param">prefix: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save messages based on criteria and store them to target folder
 with attachment files.</p>
 <p>Does not save message if <cite>target_folder</cite> is not given.</p>
@@ -970,11 +972,12 @@ with attachment files.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>criterion</strong> – filter messages based on this, defaults to “”</p></li>
 <li><p><strong>target_folder</strong> – path to folder where message are saved, defaults to None</p></li>
-<li><p><strong>prefix</strong> – optional filename prefix added to the message file, default empty</p></li>
+<li><p><strong>prefix</strong> – optional filename prefix added to the attachments, empty by
+default</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if success, False if not</p>
+<dd class="field-even"><p>True if succeeded, False otherwise</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -1112,7 +1115,7 @@ exception if folder does not exist on the server.</p>
 
 <dl class="function">
 <dt id="RPA.Email.ImapSmtp.get_part_filename">
-<code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">get_part_filename</code><span class="sig-paren">(</span><em class="sig-param">msg</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.get_part_filename" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">get_part_filename</code><span class="sig-paren">(</span><em class="sig-param">msg: email.message.Message</em><span class="sig-paren">)</span> &#x2192; Optional[str]<a class="headerlink" href="#RPA.Email.ImapSmtp.get_part_filename" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
