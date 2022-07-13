@@ -1,42 +1,35 @@
 import datetime
 import email
 import logging
-import os
 import re
 import time
 from email import policy  # pylint: disable=no-name-in-module
 from multiprocessing import AuthenticationError
 from pathlib import Path
-from typing import Any, Callable, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import pytz
 from exchangelib import (
+    DELEGATE,
+    IMPERSONATION,
+    OAUTH2,
+    UTC,
     Account,
     Configuration,
     Credentials,
-    DELEGATE,
     FileAttachment,
     Folder,
     HTMLBody,
-    IMPERSONATION,
     Identity,
     ItemAttachment,
     Mailbox,
     Message,
-    OAUTH2,
     OAuth2AuthorizationCodeCredentials,
-    UTC,
 )
+from exchangelib.folders import Inbox
 from oauthlib.oauth2 import OAuth2Token
 
-
-def mailbox_to_email_address(mailbox):
-    return {
-        "name": mailbox.name if hasattr(mailbox, "name") else "",
-        "email_address": mailbox.email_address
-        if hasattr(mailbox, "email_address")
-        else "",
-    }
+from RPA.Email.common import counter_duplicate_path
 
 
 EMAIL_CRITERIA_KEYS = {
@@ -53,6 +46,15 @@ EMAIL_CRITERIA_KEYS = {
     "category_contains": "categories__contains",
     "importance": "importance",
 }
+
+
+def mailbox_to_email_address(mailbox):
+    return {
+        "name": mailbox.name if hasattr(mailbox, "name") else "",
+        "email_address": mailbox.email_address
+        if hasattr(mailbox, "email_address")
+        else "",
+    }
 
 
 class NoRecipientsError(ValueError):
@@ -318,6 +320,7 @@ class Exchange:
         for item in items.order_by("-datetime_received")[:count]:
             attachments = []
             if save_dir and len(item.attachments) > 0:
+                # NOTE(cmin764): Default `overwrite` param is assumed here.
                 attachments = self._save_attachments(item, save_dir)
             messages.append(self._get_email_details(item, attachments))
         return messages
@@ -344,12 +347,14 @@ class Exchange:
         messages = self.list_messages(folder_name, criterion, contains, count, save_dir)
         return [m for m in messages if not m["is_read"]]
 
-    def _get_all_items_in_folder(self, folder_name=None, parent_folder=None) -> list:
+    def _get_inbox_folder(
+        self, folder_name: str, parent_folder: Optional[str] = None
+    ) -> Inbox:
         if parent_folder is None or parent_folder is self.account.inbox:
-            target_folder = self.account.inbox / folder_name
+            parent = self.account.inbox
         else:
-            target_folder = self.account.inbox / parent_folder / folder_name
-        return target_folder.all()
+            parent = self.account.inbox / parent_folder
+        return parent / folder_name if folder_name else parent
 
     def send_message(
         self,
@@ -467,55 +472,33 @@ class Exchange:
                 if html:
                     body = body.replace(imname, f"cid:{imname}")
 
-    def create_folder(
-        self, folder_name: Optional[str] = None, parent_folder: Optional[str] = None
-    ) -> bool:
-        """Create email folder
+    def create_folder(self, folder_name: str, parent_folder: Optional[str] = None):
+        """Create email folder.
 
-        :param folder_name: name for the new folder
+        :param folder_name: name for the new folder (required)
         :param parent_folder: name for the parent folder, by default INBOX
-        :return: True if operation was successful, False if not
         """
-        if folder_name is None:
-            raise KeyError("'folder_name' is required for create folder")
-        if parent_folder is None or parent_folder is self.account.inbox:
-            parent = self.account.inbox
-        else:
-            parent = self.account.inbox / parent_folder / folder_name
-        self.logger.info(
-            "Create folder '%s'",
-            folder_name,
-        )
+        parent = self._get_inbox_folder(folder_name, parent_folder)
+        self.logger.info("Create folder %r", folder_name)
         new_folder = Folder(parent=parent, name=folder_name)
         new_folder.save()
 
-    def delete_folder(
-        self, folder_name: Optional[str] = None, parent_folder: Optional[str] = None
-    ) -> bool:
-        """Delete email folder
+    def delete_folder(self, folder_name: str, parent_folder: Optional[str] = None):
+        """Delete email folder.
 
-        :param folder_name: current folder name
+        :param folder_name: current folder name (required)
         :param parent_folder: name for the parent folder, by default INBOX
-        :return: True if operation was successful, False if not
         """
-        if folder_name is None:
-            raise KeyError("'folder_name' is required for delete folder")
-        if parent_folder is None or parent_folder is self.account.inbox:
-            folder_to_delete = self.account.inbox / folder_name
-        else:
-            folder_to_delete = self.account.inbox / parent_folder / folder_name
-        self.logger.info(
-            "Delete folder  '%s'",
-            folder_name,
-        )
+        folder_to_delete = self._get_inbox_folder(folder_name, parent_folder)
+        self.logger.info("Delete folder %r", folder_name)
         folder_to_delete.delete()
 
     def rename_folder(
         self,
-        oldname: Optional[str] = None,
-        newname: Optional[str] = None,
+        oldname: str,
+        newname: str,
         parent_folder: Optional[str] = None,
-    ) -> bool:
+    ):
         """Rename email folder
 
         :param oldname: current folder name
@@ -523,18 +506,9 @@ class Exchange:
         :param parent_folder: name for the parent folder, by default INBOX
         :return: True if operation was successful, False if not
         """
-        if oldname is None or newname is None:
-            raise KeyError("'oldname' and 'newname' are required for rename folder")
-        if parent_folder is None or parent_folder is self.account.inbox:
-            parent = self.account.inbox
-        else:
-            parent = self.account.inbox / parent_folder
-        self.logger.info(
-            "Rename folder '%s' to '%s'",
-            oldname,
-            newname,
-        )
-        items = self._get_all_items_in_folder(oldname, parent_folder)
+        parent = self._get_inbox_folder("", parent_folder)
+        self.logger.info("Rename folder %r to %r", oldname, newname)
+        items = self._get_inbox_folder(oldname, parent_folder).all()
         old_folder = Folder(parent=parent, name=oldname)
         old_folder.name = newname
         old_folder.save()
@@ -543,24 +517,22 @@ class Exchange:
 
     def empty_folder(
         self,
-        folder_name: Optional[str] = None,
+        folder_name: str,
         parent_folder: Optional[str] = None,
         delete_sub_folders: Optional[bool] = False,
-    ) -> bool:
+    ):
         """Empty email folder of all items
 
-        :param folder_name: current folder name
+        :param folder_name: current folder name (required)
         :param parent_folder: name for the parent folder, by default INBOX
         :param delete_sub_folders: delete sub folders or not, by default False
         :return: True if operation was successful, False if not
         """
-        if folder_name is None:
-            raise KeyError("'folder_name' is required for empty folder")
         if parent_folder is None:
             empty_folder = self._get_folder_object(folder_name)
         else:
             empty_folder = self._get_folder_object(f"{parent_folder} / {folder_name}")
-        self.logger.info("Empty folder '%s'", empty_folder)
+        self.logger.info("Empty folder %r", empty_folder)
         empty_folder.empty(delete_sub_folders=delete_sub_folders)
 
     def move_messages(
@@ -634,15 +606,17 @@ class Exchange:
     def _get_folder_object(self, folder_name):
         if not folder_name:
             return self.account.inbox
+
         folders = folder_name.split("/")
         if "inbox" in folders[0].lower():
             folders[0] = self.account.inbox
         folder_object = None
         for folder in folders:
             if folder_object:
-                folder_object = folder_object / folder.strip()
+                folder_object /= folder.strip()
             else:
                 folder_object = folder
+
         return folder_object
 
     def _get_filter_key_value(self, criterion):
@@ -778,6 +752,7 @@ class Exchange:
         for item in items:
             attachments = []
             if save_dir and len(item.attachments) > 0:
+                # NOTE(cmin764): Default `overwrite` param is assumed here.
                 attachments = self._save_attachments(item, save_dir)
             messages.append(self._get_email_details(item, attachments))
 
@@ -785,43 +760,61 @@ class Exchange:
             self.logger.info("Did not receive any matching items")
         return messages
 
-    def _save_attachments(self, item, save_dir, attachments_from_emls: bool = False):
+    def _save_attachments(
+        self,
+        item,
+        save_dir: str,
+        attachments_from_emls: bool = False,
+        overwrite: bool = False,
+    ):
         self._saved_attachments = self._saved_attachments or []
         incoming_items = item.attachments if hasattr(item, "attachments") else item
+
         for attachment in incoming_items:
-            self.logger.info("Attachment type: %s", type(attachment))
+            self.logger.debug("Attachment type: %s", type(attachment))
+            local_path = Path(save_dir) / attachment.name
+            if not overwrite:
+                local_path = counter_duplicate_path(local_path)
+
             if isinstance(attachment, FileAttachment):
-                local_path = os.path.join(save_dir, attachment.name)
-                with open(local_path, "wb") as f, attachment.fp as fp:
-                    buffer = fp.read(1024)
+                with open(local_path, "wb") as stream_out, attachment.fp as stream_in:
+                    buffer = stream_in.read(1024)
                     while buffer:
-                        f.write(buffer)
-                        buffer = fp.read(1024)
-                self.logger.info("Attachment saved to: %s", local_path)
-                self._saved_attachments.append(
-                    self._new_attachment_dictionary(attachment, local_path)
-                )
+                        stream_out.write(buffer)
+                        buffer = stream_in.read(1024)
             elif isinstance(attachment, ItemAttachment):
-                local_path = os.path.join(save_dir, attachment.name)
                 with open(local_path, "wb") as message_out:
                     message_out.write(attachment.item.mime_content)
-                self.logger.info("Attachment saved to: %s", local_path)
-                self._saved_attachments.append(
-                    self._new_attachment_dictionary(attachment, local_path)
-                )
                 if attachments_from_emls:
-                    self._save_attachments(attachment.item, save_dir, False)
+                    self._save_attachments(
+                        attachment.item,
+                        save_dir,
+                        attachments_from_emls=False,
+                        overwrite=overwrite,
+                    )
+            else:
+                self.logger.warning(
+                    "Unrecognized attachment type: %s", type(attachment)
+                )
+                return self._saved_attachments
+
+            self.logger.info("Attachment saved to: %s", local_path)
+            self._saved_attachments.append(
+                self._new_attachment_dictionary(attachment, local_path)
+            )
+
         return self._saved_attachments
 
-    def _new_attachment_dictionary(self, attachment, local_path):
+    @staticmethod
+    def _new_attachment_dictionary(
+        attachment: Union[FileAttachment, ItemAttachment], local_path: Path
+    ) -> Dict:
         return {
             "name": attachment.name,
             "content_type": attachment.content_type,
             "size": attachment.size,
-            "is_contact_photo": attachment.is_contact_photo
-            if hasattr(attachment, "is_contact_photo")
-            else False,
-            "local_path": local_path,
+            "is_contact_photo": getattr(attachment, "is_contact_photo", False),
+            "local_path": str(local_path),
         }
 
     def _get_email_details(self, item, attachments):
@@ -858,39 +851,52 @@ class Exchange:
         self,
         message: Union[dict, str],
         save_dir: Optional[str] = None,
-        attachments_from_emls: Optional[bool] = False,
+        attachments_from_emls: bool = False,
+        overwrite: bool = False,
     ) -> list:
-        """Save attachments in message into given directory
+        """Save attachments from message into given directory.
 
-        :param message: dictionary or .eml filepath containing message details
-        :param save_dir: filepath where attachments will be saved
-        :param attachments_from_emls: if attachment is a EML file, set to True to
-         save attachments from that EML file, default False
+        :param message: dictionary or .eml file path containing message details
+        :param save_dir: file path where attachments will be saved
+        :param attachments_from_emls: pass `True` if the attachment is an EML file (for
+            saving attachments from that EML file instead), `False` otherwise (default)
+        :param overwrite: overwrite existing downloaded attachments with the same name
+            if set to `True`, `False` otherwise (default)
         :return: list of saved attachments
 
-        Example.
+        Example:
 
         .. code:: robotframework
 
-            ${messages}=    List Messages
-            FOR    ${msg}    IN    @{messages}}
-                Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}  True
+            ${messages} =    List Messages
+            FOR    ${msg}    IN    @{messages}
+                Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}
+                ...    attachments_from_emls=${True}
             END
-            ${attachments}=  Save Attachments  ${CURDIR}${/}saved.eml  %{ROBOT_ARTIFACTS}
+
+            ${attachments} =    Save Attachments    ${CURDIR}${/}saved.eml
+            ...    %{ROBOT_ARTIFACTS}    overwrite=${True}
         """  # noqa: E501
         self._saved_attachments = []
         if isinstance(message, dict):
             return self._save_attachments(
-                message["attachments_object"], save_dir, attachments_from_emls
+                message["attachments_object"],
+                save_dir,
+                attachments_from_emls=attachments_from_emls,
+                overwrite=overwrite,
             )
         else:
             # extract attachments from .eml file
             absolute_filepath = Path(message).resolve()
             if absolute_filepath.suffix != ".eml":
                 raise ValueError("Filename extension needs to be '.eml'")
-            return self._save_attachments_from_file(message, save_dir)
+            return self._save_attachments_from_file(
+                message, save_dir, overwrite=overwrite
+            )
 
-    def _save_attachments_from_file(self, filename: str, save_dir: str):
+    def _save_attachments_from_file(
+        self, filename: str, save_dir: str, *, overwrite: bool
+    ):
         """
         Try to extract the attachments from given .eml file
         """
@@ -904,7 +910,9 @@ class Exchange:
                 output_filename = attachment.get_filename()
                 # If no attachments are found, skip this file
                 if output_filename:
-                    local_path = os.path.join(save_dir, output_filename)
+                    local_path = Path(save_dir) / output_filename
+                    if not overwrite:
+                        local_path = counter_duplicate_path(local_path)
                     with open(local_path, "wb") as of:
                         payload = attachment.get_payload(decode=True)
                         of.write(payload)
@@ -914,15 +922,15 @@ class Exchange:
                                 "content_type": None,
                                 "size": len(payload),
                                 "is_contact_photo": None,
-                                "local_path": local_path,
+                                "local_path": str(local_path),
                             }
                         )
             if len(attachments) == 0:
                 self.logger.warning("No attachment found for file %s!", f.name)
         return attachments
 
-    def save_message(self, message: dict, filename: str) -> list:
-        """Save email as .eml file
+    def save_message(self, message: dict, filename: str):
+        """Save email as .eml file.
 
         :param message: dictionary containing message details
         :param filename: name of the file to save message into

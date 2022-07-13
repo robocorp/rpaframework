@@ -1,7 +1,3 @@
-from enum import Enum
-from functools import wraps
-
-from io import StringIO
 import base64
 import logging
 import os
@@ -11,24 +7,33 @@ import time
 # email package declares these properties in the __all__ definition but
 # pylint ignores that
 from email import encoders, message_from_bytes  # pylint: disable=E0611
-from email.message import Message  # pylint: disable=E0611
-from email.charset import add_charset, QP  # pylint: disable=E0611
+from email.charset import QP, add_charset  # pylint: disable=E0611
 from email.generator import Generator  # pylint: disable=E0611
 from email.header import Header, decode_header, make_header  # pylint: disable=E0611
+from email.message import Message  # pylint: disable=E0611
 from email.mime.base import MIMEBase  # pylint: disable=E0611
 from email.mime.image import MIMEImage  # pylint: disable=E0611
 from email.mime.multipart import MIMEMultipart  # pylint: disable=E0611
 from email.mime.text import MIMEText  # pylint: disable=E0611
-
-from pathlib import Path
+from enum import Enum
+from functools import wraps
 from imaplib import IMAP4_SSL
-from smtplib import SMTP, SMTP_SSL, ssl
-from smtplib import SMTPConnectError, SMTPNotSupportedError, SMTPServerDisconnected
-
+from io import StringIO
+from pathlib import Path
+from smtplib import (
+    SMTP,
+    SMTP_SSL,
+    SMTPConnectError,
+    SMTPNotSupportedError,
+    SMTPServerDisconnected,
+    ssl,
+)
 from typing import Any, BinaryIO, List, Optional, Tuple, Union
 
 from htmldocx import HtmlToDocx
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+
+from RPA.Email.common import counter_duplicate_path
 from RPA.RobotLogListener import RobotLogListener
 
 
@@ -65,13 +70,15 @@ def to_action(value):
         raise ValueError(f"Unknown email action: {value}") from err
 
 
-def get_part_filename(msg):
+def get_part_filename(msg: Message) -> Optional[str]:
     filename = msg.get_filename()
-    if filename and decode_header(filename)[0][1] is not None:
-        filename = decode_header(filename)[0][0].decode(decode_header(filename)[0][1])
-    if filename:
-        filename = filename.replace("\r", "").replace("\n", "")
-    return filename
+    if not filename:
+        return None
+
+    decoded = decode_header(filename)
+    if decoded[0][1] is not None:
+        filename = decoded[0][0].decode(decoded[0][1])
+    return filename.replace("\r", "").replace("\n", "")
 
 
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
@@ -542,24 +549,6 @@ class ImapSmtp:
                     )
                     msg.attach(part)
 
-    @imap_connection
-    def _fetch_messages(self, mail_ids: list) -> list:
-        messages = []
-        for mail_id in mail_ids:
-            _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
-            if data[0] is None:
-                self.logger.debug("Data was none for : %s", mail_id)
-                continue
-            message = message_from_bytes(data[0][1])
-            message_dict = {"Mail-Id": mail_id, "Message": message}
-            for k, v in message.items():
-                msg_item = decode_header(v)
-                message_dict[k] = make_header(msg_item)
-            message_dict["Body"], has_attachments = self.get_decoded_email_body(message)
-            message_dict["Has-Attachments"] = has_attachments
-            messages.append(message_dict)
-        return messages
-
     def get_decoded_email_body(
         self, message, html_first: bool = False
     ) -> Tuple[str, bool]:
@@ -905,9 +894,9 @@ class ImapSmtp:
     @imap_connection
     def save_messages(
         self,
-        criterion: Union[str, dict, list] = None,
-        target_folder: str = None,
-        prefix: str = None,
+        criterion: Optional[Union[str, dict, list]] = None,
+        target_folder: Optional[str] = None,
+        prefix: Optional[str] = None,
     ) -> bool:
         # pylint: disable=C0301
         """Save messages based on criteria and store them to target folder
@@ -917,8 +906,9 @@ class ImapSmtp:
 
         :param criterion: filter messages based on this, defaults to ""
         :param target_folder: path to folder where message are saved, defaults to None
-        :param prefix: optional filename prefix added to the message file, default empty
-        :return: True if success, False if not
+        :param prefix: optional filename prefix added to the attachments, empty by
+            default
+        :return: True if succeeded, False otherwise
 
         Example:
 
@@ -998,28 +988,29 @@ class ImapSmtp:
     def save_attachments(
         self,
         criterion: str = "",
-        target_folder: str = None,
+        target_folder: Optional[str] = None,
         overwrite: bool = False,
-        prefix: str = None,
-    ) -> List:
+        prefix: Optional[str] = None,
+    ) -> List[str]:
         # pylint: disable=C0301
-        """Save mail attachments of emails matching criterion into local folder.
+        """Save mail attachments of emails matching criterion on the local disk.
 
         :param criterion: attachments are saved for mails matching this, defaults to ""
         :param target_folder: local folder for saving attachments to (needs to exist),
             defaults to user's home directory if None
-        :param overwrite: overwrite existing file is True, defaults to False
-        :param prefix: optional filename prefix added to the attachments, default empty
-        :return: list of saved attachments (list of absolute filepaths) of all emails
+        :param overwrite: overwrite existing file if True, defaults to False
+        :param prefix: optional filename prefix added to the attachments, empty by
+            default
+        :return: list of saved attachments (absolute file paths) of all emails
 
         Example:
 
         .. code-block:: robotframework
 
-            ${attachments}  Save Attachments   SUBJECT "rpa task"
-            ...             target_folder=${CURDIR}${/}messages  overwrite=True
-            FOR  ${a}  IN  @{attachments}
-                OperatingSystem.File Should Exist  ${a}
+            ${attachments} =    Save Attachments    SUBJECT "rpa task"
+            ...    target_folder=${CURDIR}${/}messages  overwrite=${True}
+            FOR  ${file}  IN  @{attachments}
+                OperatingSystem.File Should Exist  ${file}
             END
         """  # noqa: E501
         attachments_saved = []
@@ -1034,32 +1025,33 @@ class ImapSmtp:
     def save_attachment(
         self,
         message: Union[dict, Message],
-        target_folder: str,
+        target_folder: Optional[str],
         overwrite: bool,
-        prefix: str = None,
+        prefix: Optional[str] = None,
     ) -> List[str]:
         # pylint: disable=C0301
-        """Save mail attachment of single given email into local folder
+        """Save mail attachment of a single given email on the local disk.
 
         :param message: message item
         :param target_folder: local folder for saving attachments to (needs to exist),
-         defaults to user's home directory if None
-        :param overwrite: overwrite existing file is True, defaults to False
-        :param prefix: optional filename prefix added to the attachments, default empty
+            defaults to user's home directory if None
+        :param overwrite: overwrite existing file if True, defaults to False
+        :param prefix: optional filename prefix added to the attachments, empty by
+            default
         :return: list of saved attachments (list of absolute filepaths) in one email
 
         Example:
 
         .. code-block:: robotframework
 
-            @{emails}    List Messages    ALL
+            @{emails} =    List Messages    ALL
             FOR    ${email}    IN    @{emails}
                 IF    ${email}[Has-Attachments]
                     Log To Console    Saving attachment for: ${email}[Subject]
-                    ${attachments}=    Save Attachment
+                    ${attachments} =    Save Attachment
                     ...    ${email}
                     ...    target_folder=${CURDIR}
-                    ...    overwrite=True
+                    ...    overwrite=${True}
                     Log To Console    Saved attachments: ${attachments}
                 END
             END
@@ -1075,28 +1067,30 @@ class ImapSmtp:
 
         for part in msg.walk():
             content_maintype = part.get_content_maintype()
+            filename = None
             if content_maintype != "multipart":
                 filename = get_part_filename(part)
-                if bool(filename):
-                    filepath = Path(target_folder) / Path(f"{prefix}{filename}").name
-                    self.logger.info("Attachment filepath: '%s'", filepath)
-                    if not filepath.exists() or overwrite:
-                        payload = part.get_payload(decode=True)
-                        if payload:
-                            self.logger.info(
-                                "Saving attachment: %s",
-                                filename,
-                            )
-                            with open(filepath, "wb") as f:
-                                f.write(payload)
-                                attachments_saved.append(str(filepath))
-                        else:
-                            self.logger.info(
-                                "Attachment '%s' did not have payload to write",
-                                filename,
-                            )
-                    elif filepath.exists() and not overwrite:
-                        self.logger.warning("Did not overwrite file: %s", filepath)
+            if not filename:
+                continue
+
+            filepath = Path(target_folder) / Path(f"{prefix}{filename}").name
+            if not overwrite:
+                filepath = counter_duplicate_path(filepath)
+            self.logger.info("Attachment filepath: %r", filepath)
+            payload = part.get_payload(decode=True)
+            if payload:
+                self.logger.info(
+                    "Saving attachment: %s",
+                    filename,
+                )
+                with open(filepath, "wb") as f:
+                    f.write(payload)
+                    attachments_saved.append(str(filepath))
+            else:
+                self.logger.info(
+                    "Attachment %r did not have payload to write",
+                    filename,
+                )
         return attachments_saved
 
     def _save_eml_file(self, message, target_folder, overwrite, prefix):

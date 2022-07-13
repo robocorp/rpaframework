@@ -1,21 +1,57 @@
 import datetime
+import functools
+
 import mock
 import pytest
-from RPA.Email.Exchange import Exchange, UTC
+from exchangelib.services import common as exchangelib_common
+from exchangelib.util import post_ratelimited
+
+from RPA.Email.Exchange import UTC, Exchange
 from RPA.Robocorp.Vault import Vault
+
 from . import RESOURCES_DIR
+
 
 SENDMAIL_MOCK = "RPA.Email.Exchange.Message.send"
 recipient = "person1@domain.com"
 multi_recipients = "person2@domain.com,person3@domain.com"
 
-pytest.skip("skipped until tests are fixed", allow_module_level=True)
+# FIXME: Re-test and refactor every bad unit test. (explicitly skip the ones requiring
+#  online Vault and valid credentials)
+pytest.skip("until all tests are fixed", allow_module_level=True)
 
 
 @pytest.fixture
 def library():
     lib = Exchange()
     return lib
+
+
+@pytest.fixture
+def local_vault(monkeypatch):
+    monkeypatch.setenv("RPA_SECRET_MANAGER", "RPA.Robocorp.Vault.FileSecrets")
+    monkeypatch.setenv("RPA_SECRET_FILE", str(RESOURCES_DIR / "secrets.yaml"))
+    return Vault()
+
+
+def _extended_post_ratelimited(protocol, session, *args, **kwargs):
+    session.post = functools.partial(
+        session.post,
+        client_id=protocol.credentials.client_id,
+        client_secret=protocol.credentials.client_secret,
+    )
+    return post_ratelimited(protocol, session, *args, **kwargs)
+
+
+@pytest.fixture(params=[True, False])
+def is_oauth(monkeypatch, request):
+    if request.param:  # OAuth2 flow enabled
+        # Monkey-patching infinite loop fix on token refresh, due to OAuth2 library bug
+        #  when passing the app credentials to the "/token" endpoint.
+        monkeypatch.setattr(
+            exchangelib_common, "post_ratelimited", _extended_post_ratelimited
+        )
+    return request.param
 
 
 @mock.patch(SENDMAIL_MOCK)
@@ -200,17 +236,10 @@ def test_get_filter_by_key_value_multiple_conditions(library):
         assert result == expected
 
 
-@pytest.mark.skip(reason="requires Vault and valid email account")
-@pytest.mark.parametrize(
-    "is_oauth, to_addr",
-    [
-        (True, "cosmin-robocorp@ztzvn.onmicrosoft.com"),
-        (False, "cosmin-robocorp@ztzvn.onmicrosoft.com"),
-        (False, None),
-    ],
-)
-def test_send_message_with_out_bcc_addresses(library, is_oauth, to_addr):
-    secrets = Vault().get_secret("Exchange")
+@pytest.mark.skip(reason="requires online Vault and valid e-mail account")
+@pytest.mark.parametrize("to_self", [True, False])
+def test_send_message_with_out_bcc_addresses(library, local_vault, is_oauth, to_self):
+    secrets = local_vault.get_secret("exchange")
     if is_oauth:
         params = {
             "access_type": "IMPERSONATE",
@@ -229,15 +258,17 @@ def test_send_message_with_out_bcc_addresses(library, is_oauth, to_addr):
         is_oauth=is_oauth,
         **params,
     )
-    if to_addr:
-        recipient = to_addr
+    if to_self:
+        recipient = secrets["account"]
         bcc_list = []
+        body = "Sent to self without BCC"
     else:
         recipient = None
         bcc_list = ["robocorp.tester@gmail.com", "robocorp.tester.2@gmail.com"]
+        body = "Sent to others with BCC only"
     library.send_message(
         recipients=recipient,
         bcc=bcc_list,
-        subject="test_send_message_with_only_bcc_addresses",
-        body="test_send_message_with_only_bcc_addresses",
+        subject="test_send_message_with_out_bcc_addresses",
+        body=f"{body} ({'OAuth2' if is_oauth else 'basic'})",
     )
