@@ -3,6 +3,7 @@ from unittest import mock
 
 import pytest
 from RPA.Email.ImapSmtp import ImapSmtp
+from RPA.Email.common import counter_duplicate_path
 from docx import Document
 
 from . import RESOURCES_DIR
@@ -185,3 +186,18 @@ def test_oauth_authorization(library, creds):
     auth_call = library.smtp_conn.auth.call_args[0]
     assert auth_call[0] == "XOAUTH2"
     assert "xoauth@gmail.com" in auth_call[1]()
+
+
+def test_counter_duplicate_path(tmp_path):
+    file_path = tmp_path / "my-attachment.txt"
+    new_file_path = counter_duplicate_path(file_path)
+    assert new_file_path == file_path
+
+    file_path.write_text("some data")
+    new_file_path = counter_duplicate_path(file_path)
+    assert new_file_path != file_path
+    assert new_file_path.name == "my-attachment-2.txt"
+
+    new_file_path.write_text("some data 2")
+    newest_file_path = counter_duplicate_path(file_path)
+    assert newest_file_path.name == "my-attachment-3.txt"
