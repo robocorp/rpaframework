@@ -14,13 +14,14 @@ from collections import OrderedDict
 from contextlib import contextmanager
 from functools import partial
 from itertools import product
-from typing import Any, Optional, List, Union, timedelta
+from typing import Any, Optional, List, Union, timedelta, Tuple
 from pathlib import Path
 import webbrowser
 
 import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
+from selenium.webdriver.remote.webelement import WebElement
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
 from SeleniumLibrary.keywords import (
@@ -417,7 +418,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :param service_log_path: defines the name of the file where to write the
          browser driver logs
         :param executable_path: defines the path to the driver executable
-        """
+        """  # noqa: E501
 
         url = ensure_scheme(url, self._default_scheme)
         return super().open_browser(
@@ -463,8 +464,10 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
             Make Cookie Monster Happy
                 Add Cookie    foo    bar
                 Add Cookie    foo    bar    domain=example.com
-                Add Cookie    foo    bar    expiry=2027-09-28 16:21:35    # Expiry as timestamp.
-                Add Cookie    foo    bar    expiry=1822137695    # Expiry as epoch seconds.
+                # Expiry as timestamp.
+                Add Cookie    foo    bar    expiry=2027-09-28 16:21:35
+                # Expiry as epoch seconds
+                Add Cookie    foo    bar    expiry=1822137695
 
         :param name: cookie name
         :param value: cookie value, acceptable cookie values can be found `here`_
@@ -529,11 +532,17 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
     ):
         """Verifies that an alert is present and by default, accepts it.
 
-        Fails if no alert is present. If `text` is a non-empty string, then it is used to verify alert's message. The alert is accepted by default, but that behavior can be controlled by using the `action` argument same way as with Handle Alert.
+        Fails if no alert is present. If `text` is a non-empty string, then it is
+        used to verify alert's message. The alert is accepted by default, but that
+        behavior can be controlled by using the `action` argument same way as with
+        Handle Alert.
 
-        `timeout` specifies how long to wait for the alert to appear. If it is not given, the global default timeout is used instead.
+        `timeout` specifies how long to wait for the alert to appear. If it is not
+        given, the global default timeout is used instead.
 
-        `action` and `timeout` arguments are new in SeleniumLibrary 3.0. In earlier versions, the alert was always accepted and a timeout was hardcoded to one second.
+        `action` and `timeout` arguments are new in SeleniumLibrary 3.0. In earlier
+        versions, the alert was always accepted and a timeout was hardcoded to one
+        second.
 
         **Example**
 
@@ -543,7 +552,10 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
             *** Keyword ***
             Look for Alert
-                Alert Should Be Present    Are you sure?    action=ACCEPT    timeout=30s
+                Alert Should Be Present
+                ...    Are you sure?
+                ...    action=ACCEPT
+                ...    timeout=30s
 
         :param text: alert message text
         :param action: additional alert actions can be found
@@ -630,7 +642,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         locator: Union[WebElement, None, str],
         filename: str = DEFAULT_FILENAME_ELEMENT,
     ) -> str:
-        """Captures a screenshot from the element identified by ``locator`` and embeds it into log file.
+        """Captures a screenshot from the element identified by ``locator``
+        and embeds it into log file.
 
         See `Capture Page Screenshot` for details about ``filename`` argument.
         See the `Locating elements` section for details about the locator
@@ -656,7 +669,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
                 *** Keyword ***
                 Capture Screenshot With Custom Filename
-                    Capture Element Screenshot    id:image_id    ${OUTPUTDIR}/id_image_id-1.png
+                    Capture Element Screenshot
+                    ...    id:image_id
+                    ...    ${OUTPUTDIR}/id_image_id-1.png
 
                 *** Keyword ***
                 Capture Screenshot And Embed In Logs
@@ -913,7 +928,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :param modifier: used to pass Selenium Keys when clicking the element
         :param action_chain: if `True` uses ActionChain click instead of
          <web_element>.Click, defaults to `False`
-        """
+        """  # noqa: E501
 
         super().click_element(locator, modifier=modifier, action_chain=action_chain)
 
@@ -1078,7 +1093,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     @keyword
     def cover_element(self, locator: Union[WebElement, str]):
-        """Will cover elements identified by ``locator`` with a blue div without breaking page layout.
+        """Will cover elements identified by ``locator`` with a blue div without
+        breaking page layout.
 
         See the `Locating elements` section for details about the locator
         syntax.
@@ -1675,7 +1691,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
                 *** Keyword ***
                 Execute JavaScript With Callback
-                    Execute Async JavaScript    var callback = arguments[arguments.length - 1]; window.setTimeout(callback, 2000);
+                    Execute Async JavaScript
+                    ...    var callback = arguments[arguments.length - 1]; window.setTimeout(callback, 2000);
 
                  *** Keyword ***
                 Execute A JavaScript File With Callback
@@ -1691,7 +1708,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         :param code: the JavaScript and arguments to be executed
         :return: result of the javascript execution
-        """
+        """  # noqa: E501
 
         super().execute_async_javascript(*code)
 
@@ -1749,11 +1766,15 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
                 *** Keyword ***
                 Executing JavaScript With Arguments Reverse Order
-                    Execute JavaScript    ARGUMENTS    123    JAVASCRIPT    alert(arguments[0]);
+                    Execute JavaScript
+                    ...    ARGUMENTS
+                    ...    123
+                    ...    JAVASCRIPT
+                    ...    alert(arguments[0]);
 
         :param code: the JavaScript and arguments to be executed
         :return: result of the javascript execution
-        """
+        """  # noqa: E501
 
         super().execute_javascript(*code)
 
@@ -1815,7 +1836,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
     def get_browser_aliases(self) -> List[str]:
         """Returns aliases of all active browser that has an alias as NormalizedDict.
         The dictionary contains the aliases as keys and the index as value.
-        This can be accessed as dictionary ``${aliases.key}`` or as list ``@{aliases}[0]``.
+        This can be accessed as dictionary ``${aliases.key}`` or as
+        list ``@{aliases}[0]``.
 
         See `Switch Browser` for more information and examples.
 
@@ -1935,7 +1957,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         :param name: name of the cookie you are looking for
         :return: information of cookie with ``name`` as an object
-        """
+        """  # noqa: E501
 
     @keyword
     def get_cookies(self, as_dict: bool = False) -> Union[str, dict]:
@@ -1970,7 +1992,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :param as_dict: if `True` returns cookies as a dictionary, if `False` returns
          cookies as a string, defaults to `False`
         :return: all cookies of the current page, returned as either string or dict
-        """
+        """  # noqa: E501
 
         super().get_cookies(as_dict=as_dict)
 
@@ -2110,10 +2132,13 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
                 *** Keyword ***
                 Get List Values
-                    ${values} =    Get List Items    css:#example select    values=True
+                    ${values} =    Get List Items
+                    ...    css:#example select
+                    ...    values=True
 
         :param locator: element locator
-        :param values: if `True` will return values instead of labels, default is `False`
+        :param values: if `True` will return values instead of labels,
+         default is `False`
         :return: all labels or values of selection list ``locator``
         """
 
@@ -2659,7 +2684,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
                 What is the Inner Window Size
                     ${width}    ${height}=    Get Window Size    True
 
-        :param inner: get inner (`True`) or outer (`False`) window property, default is `False`
+        :param inner: get inner (`True`) or outer (`False`) window property,
+         default is `False`
         :return: width and height of the window as floats
         """
 
@@ -2874,7 +2900,10 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
                 *** Keyword ***
                 Add Text To Alert
-                    Input Text Into Alert    Why add text to an alert?    action=ACCEPT    timeout=30s
+                    Input Text Into Alert
+                    ...    Why add text to an alert?
+                    ...    action=ACCEPT
+                    ...    timeout=30s
 
         :param text: alert message text
         :param action: additional alert actions can be found
@@ -2970,7 +2999,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         :param url: contains the exact url that should exist in browser
         :param message: used to override the default error message
-        """
+        """  # noqa: E501
 
         super().location_should_be(url=url, message=message)
 
@@ -3341,19 +3370,26 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
                 *** Keyword ***
                 Look For One Element On Page
-                    `Page Should Contain Element`    div_name    limit=1       # Keyword fails.
+                    Page Should Contain Element
+                    ...    div_name
+                    ...    limit=1       # Keyword fails.
 
                 *** Keyword ***
                 Look For Two Elements On Page
-                    `Page Should Contain Element`    div_name    limit=2       # Keyword passes.
+                    Page Should Contain Element
+                    ...    div_name
+                    ...    limit=2       # Keyword passes.
 
                 *** Keyword ***
                 Look For One Or More Elements On Page
-                    `Page Should Contain Element`    div_name    limit=none    # None is considered one or more.
+                    Page Should Contain Element
+                    ...    div_name
+                    ...    limit=none    # None is considered one or more.
 
                 *** Keyword ***
                 Look For Element On Page With Default Arguments
-                    `Page Should Contain Element`    div_name    # Same as above.
+                    Page Should Contain Element
+                    ...    div_name    # Same as above.
 
         :param locator: element locator
         :param message: used to override the default error message
@@ -3937,7 +3973,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
                     Press Keys    text_field    XXX+YY
 
                 *** Keyword ***
-                Pressing ALT key down, then pressing ARROW_DOWN and then releasing both keys
+                Pressing ALT key down then ARROW_DOWN then releasing both keys
                     Press Keys    text_field    ALT+ARROW_DOWN
 
                 *** Keyword ***
@@ -3945,7 +3981,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
                     Press Keys    text_field    ALT    ARROW_DOWN
 
                 *** Keyword ***
-                Pressing CTRL key down, sends string c and then releases CTRL key
+                Pressing CTRL key down sends string c and then releases CTRL key
                     Press Keys    text_field    CTRL+c
 
                 *** Keyword ***
@@ -3954,7 +3990,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         :param locator: element locator
         :param keys: the keys to be typed or selected on the user's keyboard
-        """
+        """  # noqa: E501
 
         super().press_keys(locator, keys)
 
@@ -4183,10 +4219,13 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
                 *** Keyword ***
                 Changing Frames
-                    Select Frame    top-frame    # Select frame with id or name 'top-frame'
-                    Click Link    example    # Click link 'example' in the selected frame
+                    # Select frame with id or name 'top-frame'
+                    Select Frame    top-frame
+                    # Click link 'example' in the selected frame
+                    Click Link    example
                     Unselect Frame    # Back to main frame.
-                    Select Frame    //iframe[@name='xxx']    # Select frame using xpath
+                    # Select frame using xpath
+                    Select Frame    //iframe[@name='xxx']
 
         :param locator: element locator
         """
@@ -4560,8 +4599,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         If ``inner`` parameter is set to True, keyword sets the necessary
         window width and height to have the desired HTML DOM _window.innerWidth_
-        and _window.innerHeight_. See `Boolean arguments` for more details on how to set boolean
-        arguments.
+        and _window.innerHeight_. See `Boolean arguments` for more details on
+        how to set boolean arguments.
 
         The ``inner`` argument is new since SeleniumLibrary 4.0.
 
@@ -4589,7 +4628,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         :param width: new window width
         :param height: new window height
-        :param inner: set inner (`True`) or outer (`False`) window property, default is `False`
+        :param inner: set inner (`True`) or outer (`False`) window property,
+         default is `False`
         :raises AssertionError: if keyword fails to set the correct window size
         """
 
@@ -5390,7 +5430,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
          to be evaluated
         :para timeout: how long to wait for the condition
         :para error: used to override the default error message
-        """
+        """  # noqa: E501
 
         super().wait_for_condition(condition, timeout=timeout, error=error)
 
@@ -5491,7 +5531,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         `error` can be used to override the default error message.
 
-        Considering read-only elements to be disabled is a new feature in SeleniumLibrary 3.0.
+        Considering read-only elements to be disabled is a new feature in
+        SeleniumLibrary 3.0.
 
         **Example**
 
@@ -5630,7 +5671,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         The `location` argument contains value not expected in url.
 
         Fails if `timeout` expires before the location not contains. See the
-        _Timeouts_ section for more information about using timeouts and their default value.
+        _Timeouts_ section for more information about using timeouts and their
+        default value.
 
         The `message` argument can be used to override the default error message.
 
@@ -6016,15 +6058,15 @@ class Selenium(SeleniumLibrary):
 
     Examples:
 
-    +-----------------+-------------------------------------------+---------------------------------------------------+
-    | `Click Element` | id:foo                                    | # Element with id 'foo'.                          |
-    +-----------------+-------------------------------------------+---------------------------------------------------+
-    | `Click Element` | css:div#foo h1                            | # h1 element under div with id 'foo'.             |
-    +-----------------+-------------------------------------------+---------------------------------------------------+
-    | `Click Element` | xpath: //div[@id="foo"]//h1               | # Same as the above using XPath, not CSS.         |
-    +-----------------+-------------------------------------------+---------------------------------------------------+
-    | `Click Element` | xpath: //\*[contains(text(), "example")]  | # Element containing text 'example'.              |
-    +-----------------+-------------------------------------------+---------------------------------------------------+
+    +-----------------+--------------------------------------------+---------------------------------------------------+
+    | `Click Element` | id:foo                                     | # Element with id 'foo'.                          |
+    +-----------------+--------------------------------------------+---------------------------------------------------+
+    | `Click Element` | css:div#foo h1                             | # h1 element under div with id 'foo'.             |
+    +-----------------+--------------------------------------------+---------------------------------------------------+
+    | `Click Element` | xpath: //div[@id="foo"]//h1                | # Same as the above using XPath, not CSS.         |
+    +-----------------+--------------------------------------------+---------------------------------------------------+
+    | `Click Element` | xpath: //\\*[contains(text(), "example")]  | # Element containing text 'example'.              |
+    +-----------------+--------------------------------------------+---------------------------------------------------+
 
     **NOTE:**
 
@@ -6069,17 +6111,17 @@ class Selenium(SeleniumLibrary):
 
     List examples:
 
-    +-------------------------------+-----------------+----------------------------+----------------------------+
-    | ${locator_list} =             | `Create List`   | css:div#div_id             | xpath://\*[text(), " >> "] |
-    +-------------------------------+-----------------+----------------------------+----------------------------+
-    | `Page Should Contain Element` | ${locator_list} |                            |                            |
-    +-------------------------------+-----------------+----------------------------+----------------------------+
-    | ${element} =                  | Get WebElement  | xpath://\*[text(), " >> "] |                            |
-    +-------------------------------+-----------------+----------------------------+----------------------------+
-    | ${locator_list} =             | `Create List`   | css:div#div_id             | ${element}                 |
-    +-------------------------------+-----------------+----------------------------+----------------------------+
-    | `Page Should Contain Element` | ${locator_list} |                            |                            |
-    +-------------------------------+-----------------+----------------------------+----------------------------+
+    +-------------------------------+-----------------+----------------------------+------------------------------+
+    | ${locator_list} =             | `Create List`   | css:div#div_id             | xpath://\\*[text(), " >> "]  |
+    +-------------------------------+-----------------+----------------------------+------------------------------+
+    | `Page Should Contain Element` | ${locator_list} |                            |                              |
+    +-------------------------------+-----------------+----------------------------+------------------------------+
+    | ${element} =                  | Get WebElement  | xpath://\\*[text(), " >> "] |                             |
+    +-------------------------------+-----------------+----------------------------+------------------------------+
+    | ${locator_list} =             | `Create List`   | css:div#div_id             | ${element}                   |
+    +-------------------------------+-----------------+----------------------------+------------------------------+
+    | `Page Should Contain Element` | ${locator_list} |                            |                              |
+    +-------------------------------+-----------------+----------------------------+------------------------------+
 
     Using WebElements
     =================
