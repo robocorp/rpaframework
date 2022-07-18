@@ -1,4 +1,5 @@
 # pylint: disable=too-many-lines
+from argparse import Action
 import atexit
 import base64
 import importlib
@@ -13,7 +14,7 @@ from collections import OrderedDict
 from contextlib import contextmanager
 from functools import partial
 from itertools import product
-from typing import Any, Optional, List, Union
+from typing import Any, Optional, List, Union, timedelta
 from pathlib import Path
 import webbrowser
 
@@ -91,10 +92,24 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     @keyword
     def go_to(self, url: str) -> None:
+        """Navigates the current browser window to the provided `url`.
+
+        **Example**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Navigate to URL
+                Go To    www.google.com
+
+        :param url: URL to open
+        """
         url = ensure_scheme(url, self._default_scheme)
         super().go_to(url)
 
-    go_to.__doc__ = BrowserManagementKeywords.go_to.__doc__
+        go_to.__doc__ = BrowserManagementKeywords.go_to.__doc__
 
     @keyword
     def open_browser(
@@ -109,6 +124,297 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         service_log_path: Optional[str] = None,
         executable_path: Optional[str] = None,
     ) -> str:
+        """Opens a new browser instance to the optional ``url``.
+
+        The ``browser`` argument specifies which browser to use. The
+        supported browsers are listed in the table below. The browser names
+        are case-insensitive and some browsers have multiple supported names.
+
+        +--------------------------+--------------------------+
+        |      Browser             |          Name(s)         |
+        +==========================+==========================+
+        | Firefox                  | firefox, ff              |
+        +--------------------------+--------------------------+
+        | Google Chrome            | googlechrome, chrome, gc |
+        +--------------------------+--------------------------+
+        | Headless Firefox         | headlessfirefox          |
+        +--------------------------+--------------------------+
+        | Headless Chrome          | headlesschrome           |
+        +--------------------------+--------------------------+
+        | Internet Explorer        | internetexplorer, ie     |
+        +--------------------------+--------------------------+
+        | Edge                     | edge                     |
+        +--------------------------+--------------------------+
+        | Safari                   | safari                   |
+        +--------------------------+--------------------------+
+        | Opera                    | opera                    |
+        +--------------------------+--------------------------+
+        | Android                  | android                  |
+        +--------------------------+--------------------------+
+        | Iphone                   | iphone                   |
+        +--------------------------+--------------------------+
+        | PhantomJS                | phantomjs                |
+        +--------------------------+--------------------------+
+        | HTMLUnit                 | htmlunit                 |
+        +--------------------------+--------------------------+
+        | HTMLUnit with Javascript | htmlunitwithjs           |
+        +--------------------------+--------------------------+
+
+        To be able to actually use one of these browsers, you need to have
+        a matching Selenium browser driver available. See the `project documentation`_
+        for more details. Headless Firefox and
+        Headless Chrome are new additions in SeleniumLibrary 3.1.0
+        and require Selenium 3.8.0 or newer.
+
+        .. _project documentation`: https://github.com/robotframework/SeleniumLibrary#browser-drivers
+
+        After opening the browser, it is possible to use optional
+        ``url`` to navigate the browser to the desired address.
+
+        Optional ``alias`` is an alias given for this browser instance and
+        it can be used for switching between browsers. When same ``alias``
+        is given with two `Open Browser` keywords, the first keyword will
+        open a new browser, but the second one will switch to the already
+        opened browser and will not open a new browser. The ``alias``
+        definition overrules ``browser`` definition. When same ``alias``
+        is used but a different ``browser`` is defined, then switch to
+        a browser with same alias is done and new browser is not opened.
+        An alternative approach for switching is using an index returned
+        by this keyword. These indices start from 1, are incremented when new
+        browsers are opened, and reset back to 1 when `Close All Browsers`
+        is called. See `Switch Browser` for more information and examples.
+
+        Optional ``remote_url`` is the URL for a `Selenium Grid`_.
+        
+        .. _Selenium Grid: https://github.com/SeleniumHQ/selenium/wiki/Grid2
+
+        Optional ``desired_capabilities`` can be used to configure, for example,
+        logging preferences for a browser or a browser and operating system
+        when using `Sauce Labs`_. Desired capabilities can
+        be given either as a Python dictionary or as a string in the format
+        ``key1:value1,key2:value2``. `Selenium documentation`_ lists possible
+        capabilities that can be enabled.
+
+        .. _Sauce Labs: http://saucelabs.com
+        .. _Selenium documentation: https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
+
+        Optional ``ff_profile_dir`` is the path to the Firefox profile
+        directory if you wish to overwrite the default profile Selenium
+        uses. Notice that prior to SeleniumLibrary 3.0, the library
+        contained its own profile that was used by default. The
+        ``ff_profile_dir`` can also be an instance of the
+        selenium.webdriver.FirefoxProfile_.
+        As a third option, it is possible to use `FirefoxProfile` methods
+        and attributes to define the profile using methods and attributes
+        in the same way as with ``options`` argument. Example: It is possible
+        to use FirefoxProfile `set_preference` to define different
+        profile settings. See ``options`` argument documentation in below
+        how to handle backslash escaping.
+
+        .. _selenium.webdriver.FirefoxProfile: https://seleniumhq.github.io/selenium/docs/api/py/webdriver_firefox/selenium.webdriver.firefox.firefox_profile.html
+
+        Optional ``options`` argument allows defining browser specific
+        Selenium options. Example for Chrome, the ``options`` argument
+        allows defining the following `methods and attributes`_
+        and for Firefox these `methods and attributes`_
+        are available. Please note that not all browsers, supported by the
+        SeleniumLibrary, have Selenium options available. Therefore please
+        consult the Selenium documentation which browsers do support
+        the Selenium options. If ``browser`` argument is `android` then
+        `Chrome options`_
+        is used. Selenium options are also supported, when ``remote_url``
+        argument is used.
+
+        .. _methods and attributes: https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options.Options
+        .. _methods and attributes: https://seleniumhq.github.io/selenium/docs/api/py/webdriver_firefox/selenium.webdriver.firefox.options.html?highlight=firefox#selenium.webdriver.firefox.options.Options
+        .. _Chrome options: https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options.Options
+
+        The SeleniumLibrary ``options`` argument accepts Selenium
+        options in two different formats: as a string and as Python object
+        which is an instance of the Selenium options class.
+
+        The string format allows defining Selenium options methods
+        or attributes and their arguments in Robot Framework test data.
+        The method and attributes names are case and space sensitive and
+        must match to the Selenium options methods and attributes names.
+        When defining a method, it must be defined in a similar way as in
+        python: method name, opening parenthesis, zero to many arguments
+        and closing parenthesis. If there is a need to define multiple
+        arguments for a single method, arguments must be separated with
+        comma, just like in Python. Example: `add_argument("--headless")`
+        or `add_experimental_option("key", "value")`. Attributes are
+        defined in a similar way as in Python: attribute name, equal sign,
+        and attribute value. Example, `headless=True`. Multiple methods
+        and attributes must be separated by a semicolon. Example:
+        `add_argument("--headless");add_argument("--start-maximized")`.
+
+        Arguments allow defining Python data types and arguments are
+        evaluated by using Python `ast.literal_eval`_.
+        Strings must be quoted with single or double quotes, example "value"
+        or 'value'. It is also possible to define other Python builtin
+        data types, example `True` or `None`, by not using quotes
+        around the arguments.
+
+        .. _ast.literal_eval: https://docs.python.org/3/library/ast.html#ast.literal_eval
+
+        The string format is space friendly. Usually, spaces do not alter
+        the defining methods or attributes. There are two exceptions.
+        In some Robot Framework test data formats, two or more spaces are
+        considered as cell separator and instead of defining a single
+        argument, two or more arguments may be defined. Spaces in string
+        arguments are not removed and are left as is. Example
+        `add_argument ( "--headless" )` is same as
+        `add_argument("--headless")`. But `add_argument(" --headless ")` is
+        not same same as `add_argument ( "--headless" )`, because
+        spaces inside of quotes are not removed. Please note that if
+        options string contains backslash, example a Windows OS path,
+        the backslash needs escaping both in Robot Framework data and
+        in Python side. This means single backslash must be writen using
+        four backslash characters. Example, Windows path:
+        "C:\\path\\to\\profile" must be written as
+        "C:\\\\\\\\path\\\\\\to\\\\\\\\profile". Another way to write
+        backslash is use Python `raw strings`_
+        and example write: r"C:\\\\path\\\\to\\\\profile".
+
+        .. _raw strings: https://docs.python.org/3/reference/lexical_analysis.html#string-and-bytes-literals
+
+        As last format, ``options`` argument also supports receiving
+        the Selenium options as Python class instance. In this case, the
+        instance is used as-is and the SeleniumLibrary will not convert
+        the instance to other formats.
+        For example, if the following code return value is saved to
+        `${options}` variable in the Robot Framework data:
+        | options = webdriver.ChromeOptions()
+        | options.add_argument('--disable-dev-shm-usage')
+        | return options
+
+        Then the `${options}` variable can be used as an argument to
+        ``options``.
+
+        Example the ``options`` argument can be used to launch Chomium-based
+        applications which utilize the `Chromium Embedded Framework`_
+        . To lauch Chomium-based application, use ``options`` to define
+        `binary_location` attribute and use `add_argument` method to define
+        `remote-debugging-port` port for the application. Once the browser
+        is opened, the test can interact with the embedded web-content of
+        the system under test.
+
+        .. _Chromium Embedded Framework: https://bitbucket.org/chromiumembedded/cef/wiki/UsingChromeDriver
+
+        Optional ``service_log_path`` argument defines the name of the
+        file where to write the browser driver logs. If the
+        ``service_log_path``  argument contain a  marker ``{index}``, it
+        will be automatically replaced with unique running
+        index preventing files to be overwritten. Indices start's from 1,
+        and how they are represented can be customized using Python's
+        `format string syntax`_.
+
+        .. _format string syntax: https://docs.python.org/3/library/string.html#format-string-syntax
+
+        Optional ``executable_path`` argument defines the path to the driver
+        executable, example to a chromedriver or a geckodriver. If not defined
+        it is assumed the executable is in the `$PATH`_.
+
+        .. _$PATH: [https://en.wikipedia.org/wiki/PATH_(variable)
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Open Multiple Browsers
+                [Documentation]    The following keyword demonstrates how
+                ...    Selenium handles opening multiple browsers
+
+                # Each of the following Open Browser calls opens up
+                # a new browser instnce
+                Open Browser    http://example.com    Chrome
+                Open Browser    http://example.com    Firefox    alias=Firefox
+                Open Browser
+                ...    http://example.com
+                ...    Edge
+                ...    remote_url=http://127.0.0.1:4444/wd/hub
+                Open Browser    about:blank
+                Open Browser    browser=Chrome
+
+                # Each of the following Open Browser calls opens up a new browser instance
+                # (on top of the above calls) and the index is captured for each broswer
+                ${1_index} =    Open Browser    http://example.com    Chrome    alias=Chrome    # Opens new browser because alias is new.
+                ${2_index} =    Open Browser    http://example.com    Firefox   # Opens new browser because alias is not defined.
+                ${3_index} =    Open Browser    http://example.com    Chrome    alias=Chrome    # Switches to the browser with Chrome alias.
+                ${4_index} =    Open Browser    http://example.com    Chrome    alias=${1_index}    # Switches to the browser with Chrome alias.
+
+                # Compare each of the open browsers to check that returned indexes match
+                Should Be Equal    ${1_index}    ${3_index}
+                Should Be Equal    ${1_index}    ${4_index}
+                Should Be Equal    ${2_index}    ${2}
+
+                # Examples when using `Chrome options`_ method
+                Open Browser
+                ...    http://example.com
+                ...    Chrome
+                ...    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors")    # Sting format.
+                ${options} =    Get Options    # Selenium options instance.
+                Open Browser
+                ...    http://example.com
+                ...    Chrome
+                ...    options=${options}
+                Open Browser
+                ...    None
+                ...    Chrome
+                ...    options=binary_location="/path/to/binary";add_argument("remote-debugging-port=port")    # Start Chomium-based application.
+                Open Browser
+                ...    None
+                ...    Chrome
+                ...    options=binary_location=r"C:\\\\path\\\\to\\\\binary"    # Windows OS path escaping.
+
+                .. _Chrome options: https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options.Options
+
+                # Examples for FirefoxProfile
+                Open Browser
+                ...    http://example.com
+                ...    Firefox
+                ...    ff_profile_dir=/path/to/profile    # Using profile from disk.
+                Open Browser
+                ...    http://example.com
+                ...    Firefox
+                ...    ff_profile_dir=${FirefoxProfile_instance}    # Using instance of FirefoxProfile.
+                Open Browser
+                ...    http://example.com
+                ...    Firefox
+                ...    ff_profile_dir=set_preference("key", "value");set_preference("other", "setting")    # Defining profile using FirefoxProfile mehtods.
+
+        If the provided configuration options are not enough, it is possible
+        to use `Create Webdriver` to customize browser initialization even
+        more.
+
+        Applying ``desired_capabilities`` argument also for local browser is
+        new in SeleniumLibrary 3.1.
+
+        Using ``alias`` to decide, is the new browser opened is new
+        in SeleniumLibrary 4.0. The ``options`` and ``service_log_path``
+        are new in SeleniumLibrary 4.0. Support for ``ff_profile_dir``
+        accepting an instance of the `selenium.webdriver.FirefoxProfile`
+        and support defining FirefoxProfile with methods and
+        attributes are new in SeleniumLibrary 4.0.
+
+        Making ``url`` optional is new in SeleniumLibrary 4.1.
+
+        The ``executable_path`` argument is new in SeleniumLibrary 4.2.
+
+        :param url: 
+        :param browser: , default is "firefox"
+        :param alias: 
+        :param remote_url: default is `False`
+        :param desired_capabilities: 
+        :param ff_profile_dir: 
+        :param options: 
+        :param service_log_path: 
+        :param executable_path: 
+        """
+        
         url = ensure_scheme(url, self._default_scheme)
         return super().open_browser(
             url=url,
@@ -122,7 +428,5553 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
             executable_path=executable_path,
         )
 
-    open_browser.__doc__ = BrowserManagementKeywords.open_browser.__doc__
+        open_browser.__doc__ = BrowserManagementKeywords.open_browser.__doc__
+
+    @keyword
+    def add_cookie(
+        self,
+        name: str,
+        value: str,
+        path: Optional[str] = None,
+        domain: Optional[str] = None,
+        secure: Optional[bool] = None,
+        expiry: Optional[str] = None,
+    ):
+        """Adds a cookie to your current session.
+
+        `name` and `value` are required, `path`, `domain`, `secure` and `expiry` are optional.
+        `expiry` supports the same formats as the `DateTime`_ library or an epoch timestamp.
+
+        .. _DateTime: http://robotframework.org/robotframework/latest/libraries/DateTime.html
+
+        Prior to SeleniumLibrary 3.0 setting expiry did not work.
+
+        **Example**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Make Cookie Monster Happy
+                Add Cookie    foo    bar
+                Add Cookie    foo    bar    domain=example.com
+                Add Cookie    foo    bar    expiry=2027-09-28 16:21:35    # Expiry as timestamp.
+                Add Cookie    foo    bar    expiry=1822137695    # Expiry as epoch seconds.
+
+        :param name: cookie name
+        :param value: cookie value, acceptable cookie values can be found `here`_
+        :param path: where the cookie will be stored
+        :param domain: domain the cookie is visable to
+        :param secure: whether the cookie is a secure cookie (`True`) or not (`False`)
+        :param expiry: when the cookie expires
+
+        .. _here: https://www.w3.org/TR/webdriver1/#cookies
+        """  # noqa: E501
+
+        super().add_cookie(
+            name, value, path=path, domain=domain, secure=secure, expiry=expiry
+        )
+
+    @keyword
+    def add_location_strategy(
+        self,
+        strategy_name: str,
+        strategy_keyword: str,
+        persist: bool = False,
+    ):
+        """Adds a custom location strategy.
+
+        See Custom locators for information on how to create and use custom strategies.
+         `Remove Location Strategy` can be used to remove a registered strategy.
+
+        Location strategies are automatically removed after leaving the current scope by default.
+         Setting persist to a true value (see Boolean arguments) will cause the location strategy
+         to stay registered throughout the life of the test.
+
+        **Example**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            New Persistent Location Strategy
+                Add Location Strategy
+                ...    extJs
+                ...    return window.document.getElementById((Ext.ComponentQuery.query(arguments[0])[0]).getId());
+                ...    bool=${TRUE}
+
+        :param strategy_name: name the strategy will be referred to in later keywords
+        :param strategy_keyword: strategy (logic) necessary to identify the
+         text or property for that locator
+        :param persist: determines if the new strategy will persist through all tests
+         (`True`) or only the current scope (`False`), default is `False`
+        """  # noqa: E501
+
+        super().add_location_strategy(strategy_name, strategy_keyword=strategy_keyword, persist=persist)
+
+    @keyword
+    def alert_should_be_present(
+        self,
+        text: str,
+        action: str = ACCEPT,
+        timeout: Optional[Union[timedelta, None]] = None,
+    ):
+        """Verifies that an alert is present and by default, accepts it.
+
+        Fails if no alert is present. If `text` is a non-empty string, then it is used to verify alert's message. The alert is accepted by default, but that behavior can be controlled by using the `action` argument same way as with Handle Alert.
+
+        `timeout` specifies how long to wait for the alert to appear. If it is not given, the global default timeout is used instead.
+
+        `action` and `timeout` arguments are new in SeleniumLibrary 3.0. In earlier versions, the alert was always accepted and a timeout was hardcoded to one second.
+
+        **Example**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Look for Alert
+                Alert Should Be Present    Are you sure?    action=ACCEPT    timeout=30s
+
+        :param text: alert message text
+        :param action: additional alert actions can be found
+         in the ``Handle Alert`` keyword, defaults to `ACCEPT`
+        :param timeout: how long to wait for the alert to appear
+        """
+
+        super().alert_should_be_present(text, action=action, timeout=timeout)
+
+    @keyword
+    def alert_should_not_be_present(
+        self,
+        action: str = ACCEPT,
+        timeout: Optional[Union[timedelta, None]] = None,
+    ):
+        """Verifies that no alert is present.
+
+        If the alert actually exists, the `action` argument determines how it should
+         be handled. By default, the alert is accepted, but it can be also dismissed
+          or left open the same way as with the ``Handle Alert`` keyword.
+
+        `timeout` specifies how long to wait for the alert to appear. By default, is
+         not waited for the alert at all, but a custom time can be given if alert
+         may be delayed. See the _time format_ section for information about
+         the syntax.
+
+        New in SeleniumLibrary 3.0.
+
+        **Example**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Hopefully No Alert Appears
+                Alert Should Be Present    action=DISMISS    timeout=30s
+
+        :param action: additional alert actions can be found
+         in the ``Handle Alert`` keyword, defaults to `ACCEPT`
+        :param timeout: how long to wait for the alert to appear
+        """
+
+        super().alert_should_not_be_present(action=action, timeout=timeout)
+
+    @keyword
+    def assign_id_to_element(
+        self,
+        locator: Union[WebElement, str] = None,
+        id: str = None,
+    ):
+
+        """Assigns a temporary id to the element specified by locator.
+
+        This is mainly useful if the locator is complicated and/or slow XPath
+        expression and it is needed multiple times. Identifier expires when the
+        page is reloaded.
+
+        See the Locating elements section for details about the locator syntax.
+
+        **Example**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Give This Element An ID
+                Assign ID to Element
+                ...    //ul[@class='example' and ./li[contains(., 'Stuff')]]
+                ...    my id 
+                # This verifies that the newly assigned ID is found on the page
+                Page Should Contain Element    my id
+
+        :param locator: element locator
+        :param id: temporary id to the element specified by locator
+        """
+
+        super().assign_id_to_element(locator, id)
+
+    @keyword
+    def capture_element_screenshot(
+        self,
+        locator: Union[WebElement, None, str],
+        filename: str = DEFAULT_FILENAME_ELEMENT,
+    ) -> str:
+        """Captures a screenshot from the element identified by ``locator`` and embeds it into log file.
+
+        See `Capture Page Screenshot` for details about ``filename`` argument.
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        An absolute path to the created element screenshot is returned.
+
+        Support for capturing the screenshot from an element has limited support
+        among browser vendors. Please check the browser vendor driver documentation
+        does the browser support capturing a screenshot from an element.
+
+        New in SeleniumLibrary 3.3. Support for EMBED is new in SeleniumLibrary 4.2.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Capture Screenshot With Default Filename
+                    Capture Element Screenshot    id:image_id
+
+                *** Keyword ***
+                Capture Screenshot With Custom Filename
+                    Capture Element Screenshot    id:image_id    ${OUTPUTDIR}/id_image_id-1.png
+
+                *** Keyword ***
+                Capture Screenshot And Embed In Logs
+                    Capture Element Screenshot    id:image_id    EMBED
+
+        :param locator: element locator
+        :param filename: specifies the name of the file to write the screenshot into
+        :return: absolute path to the created element screenshot
+        """
+
+        super().capture_element_screenshot(locator, filename)
+    
+    @keyword
+    def capture_page_screenshot(self, filename: str = DEFAULT_FILENAME_PAGE) -> str:
+        """Takes a screenshot of the current page and embeds it into a log file.
+
+        ``filename`` argument specifies the name of the file to write the
+        screenshot into. The directory where screenshots are saved can be
+        set when `importing` the library or by using the `Set Screenshot
+        Directory` keyword. If the directory is not configured, screenshots
+        are saved to the same directory where Robot Framework's log file is
+        written.
+
+        If ``filename`` equals to EMBED (case insensitive), then screenshot
+        is embedded as Base64 image to the log.html. In this case file is not
+        created in the filesystem.
+
+        Starting from SeleniumLibrary 1.8, if ``filename`` contains marker
+        ``{index}``, it will be automatically replaced with an unique running
+        index, preventing files to be overwritten. Indices start from 1,
+        and how they are represented can be customized using Python's
+        [https://docs.python.org/3/library/string.html#format-string-syntax|
+        format string syntax].
+
+        An absolute path to the created screenshot file is returned or if
+        ``filename``  equals to EMBED, word `EMBED` is returned.
+
+        Support for EMBED is new in SeleniumLibrary 4.2
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Taking Multiple Screenshots and Confirming They Exist
+                    Capture Page Screenshot
+                    File Should Exist          ${OUTPUTDIR}/selenium-screenshot-1.png
+                    ${path} =                  Capture Page Screenshot
+                    File Should Exist          ${OUTPUTDIR}/selenium-screenshot-2.png
+                    File Should Exist          ${path}
+                    Capture Page Screenshot    custom_name.png
+                    File Should Exist          ${OUTPUTDIR}/custom_name.png
+                    Capture Page Screenshot    custom_with_index_{index}.png
+                    File Should Exist          ${OUTPUTDIR}/custom_with_index_1.png
+                    Capture Page Screenshot    formatted_index_{index:03}.png
+                    File Should Exist          ${OUTPUTDIR}/formatted_index_001.png
+                    Capture Page Screenshot    EMBED
+                    File Should Not Exist      EMBED
+
+        :param filename: specifies the name of the file to write the screenshot into
+        :return: absolute path to the created screenshot file
+        """
+
+        super().capture_page_screenshot(filename)
+    
+
+    @keyword
+    def Checkbox_Should_Be_Selected(
+        self,
+        locator: Union[WebElement, str]
+    ):
+        """Verifies checkbox ``locator`` is selected/checked.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Verify Checkbox Is Checked
+                    Checkbox Should Be Selected
+                    ...    id=checkbox_locator
+
+        :param locator: element locator
+        """
+
+        super().checkbox_should_be_selected(locator)
+
+    @keyword
+    def checkbox_should_not_be_selected(
+        self,
+        locator: Union[WebElement, str]
+    ):
+        """Verifies checkbox ``locator`` is not selected/checked.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Verify Checkbox Is Blank
+                    Checkbox Should Not Be Selected
+                    ...    id=checkbox_locator
+
+        :param locator: element locator
+        """
+
+        super().checkbox_should_not_be_selected(locator)
+
+    @keyword
+    def choose_file(
+        self,
+        locator: Union[WebElement, str],
+        file_path: str
+    ):
+        """Inputs the ``file_path`` into the file input field ``locator``.
+
+        This keyword is most often used to input files into upload forms.
+        The keyword does not check ``file_path`` is the file or folder
+        available on the machine where tests are executed. If the ``file_path``
+        points at a file and when using Selenium Grid, Selenium will
+        [https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.command.html?highlight=upload#selenium.webdriver.remote.command.Command.UPLOAD_FILE|magically],
+        transfer the file from the machine where the tests are executed
+        to the Selenium Grid node where the browser is running.
+        Then Selenium will send the file path, from the nodes file
+        system, to the browser.
+
+        That ``file_path`` is not checked, is new in SeleniumLibrary 4.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Upload File To Form
+                    Choose File    my_upload_field    ${CURDIR}/trades.csv
+
+        :param locator: element locator
+        :param file_path: path to the file to be uploaded
+        """
+
+        super().choose_file(locator, file_path)
+
+    @keyword
+    def clear_element_text(self, locator: Union[WebElement, str]):
+        """Clears the value of the text-input-element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Delete All Of The Current Text
+                    Clear Element Text    id:text_field
+        """
+
+        super().clear_element_text(locator)
+
+    @keyword
+    def click_button(
+        self, locator: Union[WebElement, str], modifier: Union[bool, str] = False
+    ):
+        """Clicks the button identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, buttons are
+        searched using ``id``, ``name``, and ``value``.
+
+        See the `Click Element` keyword for details about the
+        ``modifier`` argument.
+
+        The ``modifier`` argument is new in SeleniumLibrary 3.3
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Click The Selected Button
+                    Click Button    id:button_locator
+
+                *** Keyword ***
+                Shift Click The Selected Button
+                    Click Button    id:button_locator    modifier=SHIFT
+
+        :param locator: element locator
+        :param modifier: used to pass Selenium Keys when clicking the button
+        """
+
+        super().click_button(locator, modifier=modifier)
+
+    @keyword
+    def click_element(
+        self,
+        locator: Union[WebElement, str],
+        modifier: Union[bool, str] = False,
+        action_chain: bool = False,
+    ):
+        """Click the element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The ``modifier`` argument can be used to pass
+        [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys|Selenium Keys]
+        when clicking the element. The `+` can be used as a separator
+        for different Selenium Keys. The `CTRL` is internally translated to
+        the `CONTROL` key. The ``modifier`` is space and case insensitive, example
+        "alt" and " aLt " are supported formats to
+        [https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.ALT|ALT key]
+        . If ``modifier`` does not match to Selenium Keys, keyword fails.
+
+        If ``action_chain`` argument is true, see `Boolean arguments` for more
+        details on how to set boolean argument, then keyword uses ActionChain
+        based click instead of the <web_element>.click() function. If both
+        ``action_chain`` and ``modifier`` are defined, the click will be
+        performed using ``modifier`` and ``action_chain`` will be ignored.
+
+        The ``modifier`` argument is new in SeleniumLibrary 3.2
+        The ``action_chain`` argument is new in SeleniumLibrary 4.1
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Would click element without any modifiers
+                    Click Element    id:button
+
+                *** Keyword ***
+                Would click element with CTLR key pressed down
+                    Click Element    id:button    CTRL
+
+                *** Keyword ***
+                Would click element with CTLR and ALT keys pressed down
+                    Click Element    id:button    CTRL+ALT
+
+                *** Keyword ***
+                Clicks the button using Selenium ActionChains
+                    Click Element    id:button    action_chain=True
+
+        :param locator: element locator
+        :param modifier: used to pass Selenium Keys when clicking the element
+        :param action_chain: if `True` uses ActionChain click instead of
+         <web_element>.Click, defaults to `False`
+        """
+
+        super().click_element(locator, modifier=modifier, action_chain=action_chain)
+
+    @keyword
+    def click_element_at_coordinates(
+        self, locator: Union[WebElement, str], xoffset: int, yoffset: int
+    ):
+        """Click the element ``locator`` at ``xoffset/yoffset``.
+
+        The Cursor is moved and the center of the element and x/y coordinates are
+        calculated from that point.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Click Offset From Element
+                    Click Element At Coordinates
+                    ...    id:element_locator
+                    ...    xoffset=158
+                    ...    yoffset=473
+
+        :param locator: element locator
+        :param xoffset: left and right offset from the center of the element
+        :param yoffset: up and down offset from the center of the element
+        """
+
+        super().click_element_at_coordinates(locator, xoffset, yoffset)
+
+    @keyword
+    def click_image(
+        self, locator: Union[WebElement, str], modifier: Union[bool, str] = False
+    ):
+        """Clicks an image identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, images are searched
+        using ``id``, ``name``, ``src`` and ``alt``.
+
+        See the `Click Element` keyword for details about the
+        ``modifier`` argument.
+
+        The ``modifier`` argument is new in SeleniumLibrary 3.3
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Click The Selected Image
+                    Click Image    id:image_locator
+
+                *** Keyword ***
+                Control Click The Selected Image
+                    Click Image    id:image_locator    modifier=CTRL
+
+        :param locator: element locator
+        :param modifier: used to pass Selenium Keys when clicking the image
+        """
+
+        super().click_image(locator, modifier=modifier)
+
+    @keyword
+    def click_link(
+        self, locator: Union[WebElement, str], modifier: Union[bool, str] = False
+    ):
+        """Clicks a link identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, links are searched
+        using ``id``, ``name``, ``href`` and the link text.
+
+        See the `Click Element` keyword for details about the
+        ``modifier`` argument.
+
+        The ``modifier`` argument is new in SeleniumLibrary 3.3
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Click The Selected Link
+                    Click Link    id:link_locator
+
+                *** Keyword ***
+                Control Click The Selected Link
+                    Click Link    id:link_locator    modifier=CTRL
+
+        :param locator: element locator
+        :param modifier: used to pass Selenium Keys when clicking the link
+        """
+
+        super().click_link(locator, modifier=modifier)
+
+    @keyword
+    def close_all_browsers(self):
+        """Closes all open browsers and resets the browser cache.
+
+        After this keyword, new indexes returned from `Open Browser` keyword
+        are reset to 1.
+
+        This keyword should be used in test or suite teardown to make sure
+        all browsers are closed.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                All Open Browsers Are Closed
+                    Close All browsers
+        """
+
+        super().close_all_browsers()
+
+    @keyword
+    def close_browser(self):
+        """Closes the current browser.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Close Just This Browser
+                    Close Browser
+        """
+
+        super().close_browser()
+
+    @keyword
+    def close_window(self):
+        """Closes currently opened and selected browser window/tab.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                And Now The Window Disappears
+                    Close Window
+        """
+
+        super().close_window()
+
+    @keyword
+    def cover_element(self, locator: Union[WebElement, str]):
+        """Will cover elements identified by ``locator`` with a blue div without breaking page layout.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        New in SeleniumLibrary 3.3.0
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Let's Maybe Hide This Container
+                    Cover Element    css:div#container
+
+        :param locator: element locator
+        """
+
+        super().cover_element(locator)
+
+    @keyword
+    def create_webdriver(
+        self,
+        driver_name: str,
+        alias: Optional[str] = None,
+        kwargs={},
+        **init_kwargs
+    ) -> str:
+        """Creates an instance of Selenium WebDriver.
+
+        Like `Open Browser`, but allows passing arguments to the created
+        WebDriver instance directly. This keyword should only be used if
+        the functionality provided by `Open Browser` is not adequate.
+
+        ``driver_name`` must be a WebDriver implementation name like Firefox,
+        Chrome, Ie, Opera, Safari, PhantomJS, or Remote.
+
+        The initialized WebDriver can be configured either with a Python
+        dictionary ``kwargs`` or by using keyword arguments ``**init_kwargs``.
+        These arguments are passed directly to WebDriver without any
+        processing. See [https://seleniumhq.github.io/selenium/docs/api/py/api.html|
+        Selenium API documentation] for details about the supported arguments.
+
+        Returns the index of this browser instance which can be used later to
+        switch back to it. Index starts from 1 and is reset back to it when
+        `Close All Browsers` keyword is used. See `Switch Browser` for an
+        example.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Create Firefox WebDriver using Proxies
+                    ${proxy}=    Evaluate
+                    ...    selenium.webdriver.Proxy()
+                    ...    modules=selenium, selenium.webdriver
+                    ${proxy.http_proxy}=    Set Variable    localhost:8888
+                    Create Webdriver      Firefox           proxy=${proxy}
+                
+                *** Keyword ***
+                Create PhantomJS WebDriver using Proxies
+                    ${service args}=     Create List    --proxy=192.168.132.104:8888
+                    Create Webdriver    PhantomJS        service_args=${service args}
+
+        :param driver_name: str,
+        :param alias: Optional[str] = None, 
+        :param kwargs={},
+        :param **init_kwargs: 
+        :return: index of browser instance
+        """
+
+    @keyword
+    def current_frame_should_contain(self, text: str, loglevel: str = "TRACE"):
+        """Verifies that the current frame contains ``text``.
+
+        See `Page Should Contain` for an explanation about the ``loglevel``
+        argument.
+
+        Prior to SeleniumLibrary 3.0 this keyword was named
+        `Current Frame Contains`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is The Text On The Current Frame
+                    Current Frame Should Contain
+                    ...    Text I am looking for
+                    ...    loglevel=WARN
+
+        :param text: text the frame should contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().current_frame_should_contain(text, loglevel=loglevel)
+
+    @keyword
+    def current_frame_should_not_contain(self, text: str, loglevel: str = "TRACE"):
+        """Verifies that the current frame does not contain ``text``.
+
+        See `Page Should Contain` for an explanation about the ``loglevel``
+        argument.
+        
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Text Should Not Be On The Current Frame
+                    Current Frame Should Not Contain
+                    ...    Text I am looking to avoid
+                    ...    loglevel=NONE
+
+        :param text: text the frame should not contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().current_frame_should_not_contain(text, loglevel=loglevel)
+
+    @keyword
+    def delete_all_cookies(self):
+        """Deletes all cookies.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Removes All Cookies
+                    Delete All Cookies
+        """
+
+        super().delete_all_cookies()
+
+    @keyword
+    def delete_cookie(
+        self,
+        name
+    ):
+        """Deletes the cookie matching ``name``.
+
+        If the cookie is not found, nothing happens.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Delete the Website Cookie
+                    Delete Cookie    Google
+
+        :param name: name of the cookie to be deleted
+        """
+
+        super().delete_cookie(name=name)
+
+    @keyword
+    def double_click_element(self, locator: Union[WebElement, str]):
+        """Double clicks the element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                The Element Must Be Clicked Twice In A Row
+                    Double Click Element    id:element_locator
+
+        :param locator: element locator
+        """
+
+        super().double_click_element(locator)
+
+    @keyword
+    def drag_and_drop(
+        self, locator: Union[WebElement, str], target: Union[WebElement, str]
+    ):
+        """Drags the element identified by ``locator`` into the ``target`` element.
+
+        The ``locator`` argument is the locator of the dragged element
+        and the ``target`` is the locator of the target. See the
+        `Locating elements` section for details about the locator syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Put This Over There
+                    Drag And Drop    css:div#element    css:div.target
+
+        :param locator: element locator
+        :param target: location where the first argument ``locator`` will be dragged to
+        """
+
+        super().drag_and_drop(locator, target)
+
+    @keyword
+    def drag_and_drop_by_offset(
+        self, locator: Union[WebElement, str], xoffset: int, yoffset: int
+    ):
+        """Drags the element identified with ``locator`` by ``xoffset/yoffset``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The element will be moved by ``xoffset`` and ``yoffset``, each of which
+        is a negative or positive number specifying the offset.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Move myElem 50px right and 35px down
+                    Drag And Drop By Offset
+                    ...    myElem
+                    ...    xoffset=50
+                    ...    yoffset=-35
+
+        :param locator: element locator
+        :param xoffset: left and right offset from the center of the element
+        :param yoffset: up and down offset from the center of the element
+        """
+
+        super().drag_and_drop_by_offset(locator, xoffset, yoffset)
+
+    @keyword
+    def element_attribute_value_should_be(
+        self,
+        locator: Union[WebElement, str],
+        attribute: str,
+        expected: Union[None, str],
+        message: Optional[str] = None,
+    ):
+        """Verifies element identified by ``locator`` contains expected attribute value.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        New in SeleniumLibrary 3.2.
+        
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is The Image Link What I Expect
+                    Element Attribute Value Should Be
+                    ...    locator=css:img
+                    ...    attribute=href
+                    ...    expected=value
+
+        :param locator: element locator
+        :param attribute: ``attribute`` from the element ``locator``
+        :param expected: expected value of ``attribute`` from the element ``locator``
+        :param message: used to override the default error message
+        """
+
+        super().element_attribute_value_should_be(locator, attribute, expected, message=message)
+
+    @keyword
+    def element_should_be_disabled(self, locator: Union[WebElement, str]):
+        """Verifies that element identified by ``locator`` is disabled.
+
+        This keyword considers also elements that are read-only to be
+        disabled.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is My Element Read Only Or Disabled
+                    Element Should Be Disabled    id:element_locator
+
+        :param locator: element locator
+        """
+
+        super().element_should_be_disabled(locator)
+
+    @keyword
+    def element_should_be_enabled(self, locator: Union[WebElement, str]):
+        """Verifies that element identified by ``locator`` is enabled.
+
+        This keyword considers also elements that are read-only to be
+        disabled.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is My Element Enabled
+                    Element Should Be Enabled    id:element_locator
+
+        :param locator: element locator
+        """
+
+        super().element_should_be_enabled(locator)
+
+    @keyword
+    def element_should_be_focused(self, locator: Union[WebElement, str]):
+        """Verifies that element identified by ``locator`` is focused.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        New in SeleniumLibrary 3.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is My Element In Focus
+                    Element Should Be Focused    id:element_locator
+
+        :param locator: element locator
+        """
+
+        super().element_should_be_focused(locator)
+
+    @keyword
+    def element_should_contain(
+        self,
+        locator: Union[WebElement, str],
+        expected: Union[None, str],
+        message: Optional[str] = None,
+        ignore_case: bool = False,
+    ):
+        """Verifies that element ``locator`` contains text ``expected``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The ``message`` argument can be used to override the default error
+        message.
+
+        The ``ignore_case`` argument can be set to True to compare case
+        insensitive, default is False. New in SeleniumLibrary 3.1.
+
+        ``ignore_case`` argument is new in SeleniumLibrary 3.1.
+
+        Use `Element Text Should Be` if you want to match the exact text,
+        not a substring.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                I Expect The Element To Contain Some Text
+                    Element Should Contain
+                    ...    name=button23
+                    ...    expected=robocorp
+                    ...    message=This is not a Robocorp button?!?
+                    ...    ignore_case=${TRUE}
+
+        :param locator: element locator
+        :param expected: text the `locator` should contain
+        :param message: used to override the default error message
+        :param ignore_case: set to `True` to compare case insensitive, default
+         is `False`
+        """
+
+        super().element_should_contain(locator, expected, message=message, ignore_case=ignore_case)
+
+    @keyword
+    def element_should_not_be_visible(
+        self, locator: Union[WebElement, str], message: Optional[str] = None
+    ):
+        """Verifies that the element identified by ``locator`` is NOT visible.
+
+        Passes if the element does not exists. See `Element Should Be Visible`
+        for more information about visibility and supported arguments.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Keep The Element Hidden From View
+                    Element Should Not Be Visable
+                    ...    id:element_locator
+                    ...    message=I can see the element...
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        """
+
+        super().element_should_not_be_visible(locator, message=message)
+
+    @keyword
+    def element_should_not_contain(
+        self,
+        locator: Union[WebElement, str],
+        expected: Union[None, str],
+        message: Optional[str] = None,
+        ignore_case: bool = False,
+    ):
+        """Verifies that element ``locator`` does not contain text ``expected``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The ``message`` argument can be used to override the default error
+        message.
+
+        The ``ignore_case`` argument can be set to True to compare case
+        insensitive, default is False.
+
+        ``ignore_case`` argument new in SeleniumLibrary 3.1.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                I Expect The Element Not To Contain Some Text
+                    Element Should Contain
+                    ...    name=button23
+                    ...    expected=manual tasks
+                    ...    message=Why are we still doing things manually?!?
+                    ...    ignore_case=${TRUE}
+
+        :param locator: element locator
+        :param expected: text the `locator` should not contain
+        :param message: used to override the default error message
+        :param ignore_case: set to `True` to compare case insensitive, default
+         is `False`
+        """
+
+        super().element_should_not_contain(locator, expected, message=message, ignore_case=ignore_case)
+
+    @keyword
+    def element_text_should_be(
+        self,
+        locator: Union[WebElement, str],
+        expected: Union[None, str],
+        message: Optional[str] = None,
+        ignore_case: bool = False,
+    ):
+        """Verifies that element ``locator`` contains exact the text ``expected``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The ``message`` argument can be used to override the default error
+        message.
+
+        The ``ignore_case`` argument can be set to True to compare case
+        insensitive, default is False.
+
+        ``ignore_case`` argument is new in SeleniumLibrary 3.1.
+
+        Use `Element Should Contain` if a substring match is desired.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                I Expect The Element Text to Be Exactly The Expected
+                    Element Should Contain
+                    ...    name=text_field
+                    ...    expected=robocorp builds great products
+                    ...    message=Of course they do!
+                    ...    ignore_case=${TRUE}
+
+        :param locator: element locator
+        :param expected: text the `locator` should be
+        :param message: used to override the default error message
+        :param ignore_case: set to `True` to compare case insensitive, default
+         is `False`
+        """
+
+        super().element_text_should_be(locator, expected, message=message, ignore_case=ignore_case)
+
+    @keyword
+    def element_text_should_not_be(
+        self,
+        locator: Union[WebElement, str],
+        not_expected: Union[None, str],
+        message: Optional[str] = None,
+        ignore_case: bool = False,
+    ):
+        """Verifies that element ``locator`` does not contain exact the text ``not_expected``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The ``message`` argument can be used to override the default error
+        message.
+
+        The ``ignore_case`` argument can be set to True to compare case
+        insensitive, default is False.
+
+        New in SeleniumLibrary 3.1.1
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                I Expect The Element Text to Not Be Exactly The Expected
+                    Element Should Contain
+                    ...    name=text_field
+                    ...    expected=robocorp builds products
+                    ...    message=They build robust products!
+                    ...    ignore_case=${TRUE}
+
+        :param locator: element locator
+        :param not_expected: text the `locator` should not be
+        :param message: used to override the default error message
+        :param ignore_case: set to `True` to compare case insensitive, default
+         is `False`
+        """
+
+        super().element_text_should_not_be(locator, not_expected, message=message, ignore_case=ignore_case)
+
+    @keyword
+    def execute_async_javascript(self, *code: Union[WebElement, str]) -> Any:
+        """Executes asynchronous JavaScript code with possible arguments.
+
+        Similar to `Execute Javascript` except that scripts executed with
+        this keyword must explicitly signal they are finished by invoking the
+        provided callback. This callback is always injected into the executed
+        function as the last argument.
+
+        Scripts must complete within the script timeout or this keyword will
+        fail. See the `Timeout` section for more information.
+
+        Starting from SeleniumLibrary 3.2 it is possible to provide JavaScript
+        `arguments`_ as part of ``code`` argument. See `Execute Javascript` for
+        more details.
+
+        .. _arguments: https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.execute_async_script
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Execute JavaScript With Callback
+                    Execute Async JavaScript    var callback = arguments[arguments.length - 1]; window.setTimeout(callback, 2000);
+
+                 *** Keyword ***
+                Execute A JavaScript File With Callback
+                    Execute Async JavaScript    ${CURDIR}/async_js_to_execute.js
+
+                 *** Keyword ***
+                Execute JavaScript With Callback And Check Result
+                    ${result} =    Execute Async JavaScript
+                    ...            var callback = arguments[arguments.length - 1];
+                    ...            function answer(){callback("text");};
+                    ...            window.setTimeout(answer, 2000);
+                    Should Be Equal    ${result}    text
+
+        :param code: the JavaScript and arguments to be executed
+        :return: result of the javascript execution
+        """
+
+        super().execute_async_javascript(*code)
+
+    @keyword
+    def execute_javascript(self, *code: Union[WebElement, str]) -> Any:
+        """Executes the given JavaScript code with possible arguments.
+
+        ``code`` may be divided into multiple cells in the test data and
+        ``code`` may contain multiple lines of code and arguments. In that case,
+        the JavaScript code parts are concatenated together without adding
+        spaces and optional arguments are separated from ``code``.
+
+        If ``code`` is a path to an existing file, the JavaScript
+        to execute will be read from that file. Forward slashes work as
+        a path separator on all operating systems.
+
+        The JavaScript executes in the context of the currently selected
+        frame or window as the body of an anonymous function. Use ``window``
+        to refer to the window of your application and ``document`` to refer
+        to the document object of the current frame or window, e.g.
+        ``document.getElementById('example')``.
+
+        This keyword returns whatever the executed JavaScript code returns.
+        Return values are converted to the appropriate Python types.
+
+        Starting from SeleniumLibrary 3.2 it is possible to provide JavaScript
+        `arguments`_ as part of ``code`` argument. The JavaScript code and
+        arguments must be separated with `JAVASCRIPT` and `ARGUMENTS` markers
+        and must be used exactly with this format. If the Javascript code is
+        first, then the `JAVASCRIPT` marker is optional. The order of
+        `JAVASCRIPT` and `ARGUMENTS` markers can be swapped, but if `ARGUMENTS`
+        is the first marker, then `JAVASCRIPT` marker is mandatory. It is only
+        allowed to use `JAVASCRIPT` and `ARGUMENTS` markers only one time in the
+        ``code`` argument.
+
+        .. _arguments: https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.execute_script
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Executing Just JavaScript
+                    Execute JavaScript    window.myFunc('arg1', 'arg2')
+
+                *** Keyword ***
+                Executing A JavaScript File
+                    Execute JavaScript    ${CURDIR}/js_to_execute.js
+
+                *** Keyword ***
+                Executing JavaScript With Arguments
+                    Execute JavaScript    alert(arguments[0]);    ARGUMENTS    123
+
+                *** Keyword ***
+                Executing JavaScript With Arguments Reverse Order
+                    Execute JavaScript    ARGUMENTS    123    JAVASCRIPT    alert(arguments[0]);
+
+        :param code: the JavaScript and arguments to be executed
+        :return: result of the javascript execution
+        """
+
+        super().execute_javascript(*code)
+
+    @keyword
+    def frame_should_contain(
+        self, locator: Union[WebElement, str], text: str, loglevel: str = "TRACE"
+    ):
+        """Verifies that frame identified by ``locator`` contains ``text``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        See `Page Should Contain` for an explanation about the ``loglevel``
+        argument.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is The Text On The Current Frame
+                    Frame Should Contain
+                    ...    frame_locator
+                    ...    Text I am looking for
+                    ...    loglevel=WARN
+
+        :param locator: element locator
+        :param text: text the frame should contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().frame_should_contain(locator, text, loglevel=loglevel)
+
+    @keyword
+    def get_all_links(self) -> List[str]:
+        """Returns a list containing ids of all links found in current page.
+
+        If a link has no id, an empty string will be in the list instead.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Give Me A List Of All The Page Links
+                    ${links)=    Get All Links
+
+        :return: a list containing ids of all links found in current page
+        """
+
+        super().get_all_links()
+
+    @keyword
+    def get_browser_aliases(self) -> List[str]:
+        """Returns aliases of all active browser that has an alias as NormalizedDict.
+        The dictionary contains the aliases as keys and the index as value.
+        This can be accessed as dictionary ``${aliases.key}`` or as list ``@{aliases}[0]``.
+
+        See `Switch Browser` for more information and examples.
+
+        New in SeleniumLibrary 4.0
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Capture Active Browsers Aliases
+                    Open Browser    https://example.com    alias=BrowserA
+                    Open Browser    https://example.com    alias=BrowserB
+                    &{aliases}    Get Browser Aliases    
+                    # The dictionary of the returned Aliases
+                    #  &{aliases} = { BrowserA=1|BrowserB=2 }
+                    Log    ${aliases.BrowserA}    # logs ``1``
+                    FOR    ${alias}    IN    @{aliases}
+                        Log    ${alias}    # logs ``BrowserA`` and ``BrowserB``
+                    END
+
+        :return: aliases of all active browser that has an alias as NormalizedDict
+        """
+
+        super().get_browser_aliases()
+
+    @keyword
+    def get_browser_ids(self) -> List[str]:
+        """Returns index of all active browser as list.
+
+        See `Switch Browser` for more information and examples.
+
+        New in SeleniumLibrary 4.0
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Capture Active Browsers IDs
+                    @{browser_ids}=    Get Browser Ids
+                    FOR    ${id}    IN    @{browser_ids}
+                        @{window_titles}=    Get Window Titles    browser=${id}
+                        Log    Browser ${id} has these windows: ${window_titles}
+                    END
+
+        :return: index of all active browser as list
+        """
+
+        super().get_browser_ids()
+
+    @keyword
+    def Get_Cookie(self, name: str) -> CookieInformation:
+        """Returns information of cookie with ``name`` as an object.
+
+        If no cookie is found with ``name``, keyword fails. The cookie object
+        contains details about the cookie. Attributes available in the object
+        are documented in the table below.
+
+        +---------------+------------------------------------------------------------+
+        |   Attribute   |               Explanation                                  |
+        +===============+============================================================+
+        | name          | The name of a cookie.                                      |
+        +---------------+------------------------------------------------------------+
+        | value         | Value of the cookie.                                       |
+        +---------------+------------------------------------------------------------+
+        | path          | Indicates a URL path, for example ``/``.                   |
+        +---------------+------------------------------------------------------------+
+        | domain        | The domain, the cookie is visible to.                      |
+        +---------------+------------------------------------------------------------+
+        | secure        | When true, the cookie is only used with HTTPS connections. |
+        +---------------+------------------------------------------------------------+
+        | httpOnly      | When true, the cookie is not accessible via JavaScript.    |
+        +---------------+------------------------------------------------------------+
+        | expiry        | Python datetime object indicating when the cookie expires. |
+        +---------------+------------------------------------------------------------+
+        | extra         | Possible attributes outside of the WebDriver specification |
+        +---------------+------------------------------------------------------------+
+
+        See the `WebDriver specification`_
+        for details about the cookie information.
+        Notice that ``expiry`` is specified as a `datetime object`_
+        not as seconds since Unix Epoch like WebDriver natively does.
+
+        .. _WebDriver specification: https://w3c.github.io/webdriver/#cookies
+
+        .._datetime object: https://docs.python.org/3/library/datetime.html#datetime.datetime
+
+        In some cases, example, when running a browser in the cloud, it is possible that
+        the cookie contains other attributes than is defined in the
+        `WebDriver specification`_.
+        These other attributes are available in an ``extra`` attribute in the cookie
+        object and it contains a dictionary of the other attributes. The ``extra``
+        attribute is new in SeleniumLibrary 4.0.
+
+        .. _WebDriver specification: https://w3c.github.io/webdriver/#cookies
+
+        New in SeleniumLibrary 3.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Set and Retreive Cookie Values
+                    Add Cookie    foo    bar
+                    ${cookie}=    Get Cookie    foo
+                    Should Be Equal    ${cookie.name}    foo
+                    Should Be Equal    ${cookie.value}    bar
+                    Should Be True    ${cookie.expiry.year} > 2017
+
+        :param name: name of the cookie you are looking for
+        :return: information of cookie with ``name`` as an object
+        """
+
+    @keyword
+    def get_cookies(self, as_dict: bool = False) -> Union[str, dict]:
+        """Returns all cookies of the current page.
+
+        If ``as_dict`` argument evaluates as false, see `Boolean arguments`
+        for more details, then cookie information is returned as
+        a single string in format ``name1=value1; name2=value2; name3=value3``.
+        When ``as_dict`` argument evaluates as true, cookie information
+        is returned as Robot Framework dictionary format. The string format
+        can be used, for example, for logging purposes or in headers when
+        sending HTTP requests. The dictionary format is helpful when
+        the result can be passed to requests library's Create Session
+        keyword's optional cookies parameter.
+
+        The `` as_dict`` argument is new in SeleniumLibrary 3.3
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Give Me Page Cookies As String
+                    ${cookie_string}=    Get Cookies
+
+                *** Keyword ***
+                Give Me Page Cookies As Dict
+                    ${cookie_dict}=    Get Cookies    as_dict=${TRUE}
+
+        :param as_dict: if `True` returns cookies as a dictionary, if `False` returns
+         cookies as a string, defaults to `False`
+        :return: all cookies of the current page, returned as either string or dict
+        """
+
+        super().get_cookies(as_dict=as_dict)
+
+    @keyword
+    def get_element_attribute(
+        self, locator: Union[WebElement, str], attribute: str
+    ) -> str:
+        """Returns the value of ``attribute`` from the element ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Passing attribute name as part of the ``locator`` was removed
+        in SeleniumLibrary 3.2. The explicit ``attribute`` argument
+        should be used instead.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Is The ID Attribute of H1
+                    ${id}=    Get Element Attribute    css:h1    id
+
+        :param locator: element locator
+        :param attribute: value of ``attribute`` from the element ``locator``
+        """
+
+        super().get_element_attribute(locator, attribute)
+
+    @keyword
+    def get_element_count(self, locator: Union[WebElement, str]) -> int:
+        """Returns the number of elements matching ``locator``.
+
+        If you wish to assert the number of matching elements, use
+        `Page Should Contain Element` with ``limit`` argument. Keyword will
+        always return an integer.
+
+        New in SeleniumLibrary 3.0.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                How Many Elements Are There
+                    ${count} =    Get Element Count    name:div_name
+                    Should Be True    ${count} > 2
+
+        :param locator: element locator
+        :return: number of elements matching ``locator``
+        """
+
+        super().get_element_count(locator)
+
+    @keyword
+    def get_element_size(self, locator: Union[WebElement, str]) -> Tuple[int, int]:
+        """Returns width and height of the element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Both width and height are returned as integers.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                How Big Is This Container
+                    ${width}    ${height} =    Get Element Size
+                    ...    css:div#container
+
+        :param locator: element locator
+        :return: width and height of the element identified by ``locator``, as integers
+        """
+
+        super().get_element_size(locator)
+
+    @keyword
+    def get_horizontal_position(self, locator: Union[WebElement, str]) -> int:
+        """Returns the horizontal position of the element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The position is returned in pixels off the left side of the page,
+        as an integer.
+
+        See also `Get Vertical Position`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                How Far From The Left Side Is This Button
+                ${h_distance}=    Get Horizontal Position
+                ...    id:button_locator
+
+        :param locator: element locator
+        :return: pixels off the left side of the page, as an integer
+        """
+
+        super().get_horizontal_position(locator)
+
+    @keyword
+    def get_list_items(
+        self, locator: Union[WebElement, str], values: bool = False
+    ) -> List[str]:
+        """Returns all labels or values of selection list ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Returns visible labels by default, but values can be returned by
+        setting the ``values`` argument to a true value (see `Boolean
+        arguments`).
+
+        Support to return values is new in SeleniumLibrary 3.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Get List Labels
+                    ${labels} =    Get List Items    mylist
+
+                *** Keyword ***
+                Get List Values
+                    ${values} =    Get List Items    css:#example select    values=True
+
+        :param locator: element locator
+        :param values: if `True` will return values instead of labels, default is `False`
+        :return: all labels or values of selection list ``locator``
+        """
+
+        super().get_list_items(locator, values=values)
+
+    @keyword
+    def Get_Location(
+
+    ):
+
+        """
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+        """
+
+    @keyword
+    def get_locations(self) -> str:
+        """Returns the current browser window URL.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What URL Am I On
+                    ${url}=    Get Location
+
+        :return: current browser window URL as string
+        """
+
+        super().get_location()
+
+    @keyword
+    def get_selected_list_label(self, locator: Union[WebElement, str]) -> str:
+        """Returns the label of selected option from selection list ``locator``.
+
+        If there are multiple selected options, the label of the first option
+        is returned.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What is the label for this list
+                    ${label}=    Get Selected List Label
+                    ...    list_locator
+
+        :param locator: element locator
+        :return: the label of selected option from selection list ``locator``
+        """
+
+        super().get_selected_list_label(locator)
+
+    @keyword
+    def get_selected_list_labels(self, locator: Union[WebElement, str]) -> List[str]:
+        """Returns labels of selected options from selection list ``locator``.
+
+        Starting from SeleniumLibrary 3.0, returns an empty list if there
+        are no selections. In earlier versions, this caused an error.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What are the labels for this list
+                    ${labels}=    Get Selected List Labels
+                    ...    list_locator
+
+        :param locator: element locator
+        :return: the labels of selected option from selection list ``locator`` as
+         a list
+        """
+
+        super().get_selected_list_labels(locator)
+
+    @keyword
+    def get_selected_list_value(self, locator: Union[WebElement, str]) -> str:
+        """Returns the value of selected option from selection list ``locator``.
+
+        If there are multiple selected options, the value of the first option
+        is returned.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What is the value for this list
+                    ${value}=    Get Selected List Value
+                    ...    list_locator
+
+        :param locator: element locator
+        :return: the value of selected option from selection list ``locator``
+        """
+
+        super().get_selected_list_value(locator)
+
+    @keyword
+    def get_selected_list_values(self, locator: Union[WebElement, str]) -> List[str]:
+        """Returns values of selected options from selection list ``locator``.
+
+        Starting from SeleniumLibrary 3.0, returns an empty list if there
+        are no selections. In earlier versions, this caused an error.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What are the values for this list
+                    ${values}=    Get Selected List Values
+                    ...    list_locator
+
+        :param locator: element locator
+        :return: the values of selected option from selection list ``locator``
+        """
+
+        super().get_selected_list_values(locator)
+
+    @keyword
+    def get_selenium_implicit_wait(self) -> str:
+        """Gets the implicit wait value used by Selenium.
+
+        The value is returned as a human-readable string like ``1 second``.
+
+        See the `Implicit wait` section above for more information.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Is The Implicit Wait Used By Selenium
+                    ${implicit_wait}=    Get Selenium Implicit Wait
+
+        :return: the implicit wait value used by Selenium, returned as a string
+        """
+
+        super().get_selenium_implicit_wait()
+
+    @keyword
+    def get_selenium_speed(self) -> str:
+        """Gets the delay that is waited after each Selenium command.
+
+        The value is returned as a human-readable string like ``1 second``.
+
+        See the `Selenium Speed` section above for more information.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                How Long Do I Wait After A Selenium Command
+                    ${wait_time}=    Get Selenium Speed
+
+        :return: delay that is waited after each Selenium command, returned as string
+        """
+
+        super().get_selenium_speed()
+
+    @keyword
+    def get_selenium_timeout(self) -> str:
+        """Gets the timeout that is used by various keywords.
+
+        The value is returned as a human-readable string like ``1 second``.
+
+        See the `Timeout` section above for more information.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Timeouts Do I Have Set
+                    ${timeout}=    Get Selenium Timeout
+
+        :return: the timeout that is used by various keywords, returned as string
+        """
+
+        super().get_selenium_timeout()
+
+    @keyword
+    def get_session_id(self) -> str:
+        """Returns the currently active browser session id.
+
+        New in SeleniumLibrary 3.2
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Get Browser Session ID
+                    ${sesion_id}=    Get Session ID
+
+        :return: active browser session id as a string
+        """
+
+        super().get_session_id()
+
+    @keyword
+    def get_source(self) -> str:
+        """Returns the entire HTML source of the current page or frame.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Get HTML Source
+                    ${html_source}=    Get Source
+
+        :return: entire HTML source of the current page or frame
+        """
+
+        super().get_source()
+
+    @keyword
+    def get_table_cell(
+        self,
+        locator: Union[WebElement, None, str],
+        row: int,
+        column: int,
+        loglevel: str = "TRACE",
+    ) -> str:
+        """Returns contents of a table cell.
+
+        The table is located using the ``locator`` argument and its cell
+        found using ``row`` and ``column``. See the `Locating elements`
+        section for details about the locator syntax.
+
+        Both row and column indexes start from 1, and header and footer
+        rows are included in the count. It is possible to refer to rows
+        and columns from the end by using negative indexes so that -1
+        is the last row/column, -2 is the second last, and so on.
+
+        All ``<th>`` and ``<td>`` elements anywhere in the table are
+        considered to be cells.
+
+        See `Page Should Contain` for an explanation about the ``loglevel``
+        argument.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Is The Value Of This Cell
+                    Get Table Cell    table_locator    5    8
+
+        :param locator: element locator
+        :param row: row number to access (index starts from 1)
+        :param column: column number to access (index starts from 1)
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :raises ValueError: if row or column are zero values
+        :raises AssertionError: if the table had less rows or columns than requested
+        """
+
+        super().get_table_cell(locator, row, column, loglevel=loglevel)
+
+    @keyword
+    def Get_Testability_Status(
+
+    ):
+
+        """
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+        """
+
+    @keyword
+    def get_text(self, locator: Union[WebElement, str]) -> str:
+        """Returns the text value of the element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Is The Text Value For This Element
+                    ${text}=    Get Text    id:button_locator
+
+        :param locator: element locator
+        :return: text value of the element identified by ``locator`` as a string
+        """
+
+        super().get_text(locator)
+
+    @keyword
+    def get_title(self) -> str:
+        """Returns the title of the current page.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Current Page Title
+                    ${title}=    Get Title
+
+        :return: title of the current page as string
+        """
+
+        super().get_title()
+
+    @keyword
+    def get_value(self, locator: Union[WebElement, str]) -> str:
+        """Returns the value attribute of the element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+        
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Is The Value Attribute For This Element
+                    ${value}=    Get Value    id:text_box
+
+        :param locator: element locator
+        :return: value attribute of the element identified by ``locator`` as a string
+        """
+
+        super().get_value(locator)
+
+    @keyword
+    def get_vertical_position(self, locator: Union[WebElement, str]) -> int:
+        """Returns the vertical position of the element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The position is returned in pixels off the top of the page,
+        as an integer.
+
+        See also `Get Horizontal Position`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                How Far From The Top Of The Screen Is This Element
+                    ${v_distance}=    Get Vertical Position    id:textbox_locator
+
+        :param locator: element locator
+        :return: vertical position of the element identified by ``locator``
+        """
+
+        super().get_vertical_position(locator)
+
+    @keyword
+    def get_webelement(
+        self,
+        locator: Union[WebElement, str]
+    ) -> WebElement:
+        """Returns the first WebElement matching the given ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Give Me The WebElement
+                    ${webelement}=    Get WebElement    id:element34
+
+        :param locator: element locator
+        :return: first WebElement matching the given ``locator``
+        """
+
+        super().get_webelement(locator=locator)
+
+    @keyword
+    def get_webelements(
+        self,
+        locator: Union[WebElement, str]
+    ) -> List[WebElement]:
+        """Returns a list of WebElement objects matching the ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Starting from SeleniumLibrary 3.0, the keyword returns an empty
+        list if there are no matching elements. In previous releases, the
+        keyword failed in this case.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Give Me The WebElements
+                    @{webelements}=    Get WebElements    id:element-common
+
+        :param locator: element locator
+        :return: list of WebElement objects matching the ``locator``
+        """
+
+        super().get_webelements(locator=locator)
+
+    @keyword
+    def get_window_handles(self, browser: str = "CURRENT") -> List[str]:
+        """Returns all child window handles of the selected browser as a list.
+
+        Can be used as a list of windows to exclude with `Select Window`.
+
+        How to select the ``browser`` scope of this keyword, see `Get Locations`.
+
+        Prior to SeleniumLibrary 3.0, this keyword was named `List Windows`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Are The Window Handles
+                    ${window_handles}=    Get Window Handles    browserA
+
+        :param browser: locator that identifies the Selenium WebDriver instance
+        :return: all child window handles of the selected browser as a list
+        """
+
+        super().get_window_handles(browser)
+
+    @keyword
+    def get_window_identifiers(self, browser: str = "CURRENT") -> List:
+        """Returns and logs id attributes of all windows of the selected browser.
+
+        How to select the ``browser`` scope of this keyword, see `Get Locations`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Are The Window Identifiers
+                    ${window_identifiers}=    Get Window Identifiers    browserB
+
+        :param browser: locator that identifies the Selenium WebDriver instance
+        :return: id attributes of all windows of the selected browser as a list
+        """
+
+        super().get_window_identifiers(browser)
+
+    @keyword
+    def get_window_names(self, browser: str = "CURRENT") -> List[str]:
+        """Returns and logs names of all windows of the selected browser.
+
+        How to select the ``browser`` scope of this keyword, see `Get Locations`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Are The Window Names
+                    ${window_names}=    Get Window Names    browserC
+
+        :param browser: locator that identifies the Selenium WebDriver instance
+        :return: names of all windows of the selected browser as a list
+        """
+
+        super().get_window_names(browser)
+
+    @keyword
+    def get_window_position(self) -> Tuple[int, int]:
+        """Returns current window position.
+
+        The position is relative to the top left corner of the screen. Returned
+        values are integers. See also `Set Window Position`.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Where Is The Window
+                    ${x}    ${y}=    Get Window Position
+
+        :return: the top left corner's x and y coordinate
+         in relation to the top left corner of the screen as integers
+        """
+
+        super().get_window_position()
+
+    @keyword
+    def get_window_size(
+        self,
+        inner: bool = False
+    ) -> Tuple[float, float]:
+        """Returns current window width and height as integers.
+
+        See also `Set Window Size`.
+
+        If ``inner`` parameter is set to True, keyword returns
+        HTML DOM window.innerWidth and window.innerHeight properties.
+        See `Boolean arguments` for more details on how to set boolean
+        arguments. The ``inner`` is new in SeleniumLibrary 4.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Is The Outer Window Size
+                    ${width}    ${height}=    Get Window Size
+
+                What is the Inner Window Size
+                    ${width}    ${height}=    Get Window Size    True
+
+        :param inner: get inner (`True`) or outer (`False`) window property, default is `False`
+        :return: width and height of the window as floats
+        """
+
+        super().get_window_size(inner)
+
+    @keyword
+    def get_window_titles(self, browser: str = "CURRENT") -> List[str]:
+        """Returns and logs titles of all windows of the selected browser.
+
+        How to select the ``browser`` scope of this keyword, see `Get Locations`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                What Are The Window Titles
+                    ${window_titles}=    Get Window Titles    browserD
+
+        :param browser: locator that identifies the Selenium WebDriver instance
+        :return: titles of all windows of the selected browser as a list
+        """
+
+        super().get_window_titles(browser)
+
+    @keyword
+    def go_back(self):
+        """Simulates the user clicking the back button on their browser.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Go To The Previous Page
+                    Go Back
+        """
+
+        super().go_back()
+
+    @keyword
+    def handle_alert(
+        self,
+        action: str = ACCEPT,
+        timeout: Optional[timedelta] = None
+    ):
+        """Handles the current alert and returns its message.
+
+        By default, the alert is accepted, but this can be controlled
+        with the ``action`` argument that supports the following
+        case-insensitive values:
+
+        - ``ACCEPT``: Accept the alert i.e. press ``Ok``. Default.
+        - ``DISMISS``: Dismiss the alert i.e. press ``Cancel``.
+        - ``LEAVE``: Leave the alert open.
+
+        The ``timeout`` argument specifies how long to wait for the alert
+        to appear. If it is not given, the global default `timeout` is used
+        instead.
+
+        New in SeleniumLibrary 3.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Accept Alert
+                    Handle Alert
+
+                *** Keyword ***
+                Dismiss Alert
+                    Handle Alert    action=DISMISS
+
+                *** Keyword ***
+                Use Custom Timeout And Accept Alert
+                    Handle Alert    timeout=10 s
+
+                *** Keyword ***
+                Use Custom Timeout And Dismiss Alert
+                    Handle Alert    DISMISS           1 min
+
+                *** Keyword ***
+                Accept Alert And Get Its Message
+                    ${message} =    Handle Alert
+
+                *** Keyword ***
+                Leave Alert Open And Get Its Message
+                    ${message} =    Handle Alert      LEAVE
+
+        :param action: how the alert should be handled, defaults to `ACCEPT`
+        :param timeout: how long to wait for the alert to appear
+        """
+
+        super().handle_alert(action, timeout)
+
+    @keyword
+    def input_password(
+        self,
+        locator: Union[WebElement, str],
+        password: str,
+        clear: bool = True
+    ):
+        """Types the given password into the text field identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax. See `Input Text` for ``clear`` argument details.
+
+        Difference compared to `Input Text` is that this keyword does not
+        log the given password on the INFO level. Notice that if you use
+        the keyword like
+
+        | Input Password | password_field | password |
+
+        the password is shown as a normal keyword argument. A way to avoid
+        that is using variables like
+
+        | Input Password | password_field | ${PASSWORD} |
+
+        Please notice that Robot Framework logs all arguments using
+        the TRACE level and tests must not be executed using level below
+        DEBUG if the password should not be logged in any format.
+
+        The `clear` argument is new in SeleniumLibrary 4.0. Hiding password
+        logging from Selenium logs is new in SeleniumLibrary 4.2.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Input Password In Text Field
+                    Input Password
+                    ...    id=password_field
+                    ...    password=my_secret_password
+
+        :param locator: element locator
+        :param password: password to type into the element locator
+        :param clear: clear the text field before entering the password,
+         defaults to `True`
+        """
+
+        super().input_password(locator, password, clear=clear)
+
+    @keyword
+    def input_text(
+        self, locator: Union[WebElement, str], text: str, clear: bool = True
+    ):
+        """Types the given ``text`` into the text field identified by ``locator``.
+
+        When ``clear`` is true, the input element is cleared before
+        the text is typed into the element. When false, the previous text
+        is not cleared from the element. Use `Input Password` if you
+        do not want the given ``text`` to be logged.
+
+        If `Selenium Grid`_
+        is used and the ``text`` argument points to a file in the file system,
+        then this keyword prevents the Selenium to transfer the file to the
+        Selenium Grid hub. Instead, this keyword will send the ``text`` string
+        as is to the element. If a file should be transferred to the hub and
+        upload should be performed, please use `Choose File` keyword.
+
+        .. _Selenium Grid: https://github.com/SeleniumHQ/selenium/wiki/Grid2
+
+        See the `Locating elements` section for details about the locator
+        syntax. See the `Boolean arguments` section how Boolean values are
+        handled.
+
+        Disabling the file upload the Selenium Grid node and the `clear`
+        argument are new in SeleniumLibrary 4.0
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Input Text Into Text Field
+                    Input Text
+                    ...    id=text_field
+                    ...    Text I would like to enter
+
+        :param locator: element locator
+        :param text: what is typed into the element locator
+        :param clear: When `True`, the input element is cleared before
+        the text is typed into the element, default is `True`
+        """
+
+        super().input_text(locator, text, clear=clear)
+
+    @keyword
+    def input_text_into_alert(
+        self,
+        text: str,
+        action: str = ACCEPT,
+        timeout: Optional[timedelta] = None
+    ):
+        """Types the given ``text`` into an input field in an alert.
+
+        The alert is accepted by default, but that behavior can be controlled
+        by using the ``action`` argument same way as with `Handle Alert`.
+
+        ``timeout`` specifies how long to wait for the alert to appear.
+        If it is not given, the global default `timeout` is used instead.
+
+        New in SeleniumLibrary 3.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Add Text To Alert
+                    Input Text Into Alert    Why add text to an alert?    action=ACCEPT    timeout=30s
+
+        :param text: alert message text
+        :param action: additional alert actions can be found
+         in the ``Handle Alert`` keyword, defaults to `ACCEPT`
+        :param timeout: how long to wait for the alert to appear
+        """
+
+        super().input_text_into_alert(text, action=action, timeout=timeout)
+
+    @keyword
+    def list_selection_should_be(self, locator: Union[WebElement, str], *expected: str):
+        """Verifies selection list ``locator`` has ``expected`` options selected.
+
+        It is possible to give expected options both as visible labels and
+        as values. Starting from SeleniumLibrary 3.0, mixing labels and
+        values is not possible. Order of the selected options is not
+        validated.
+
+        If no expected options are given, validates that the list has
+        no selections. A more explicit alternative is using `List Should
+        Have No Selections`.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Select Just One
+                    List Selection Should Be    gender    Female
+
+                *** Keyword ***
+                Select Two
+                    List Selection Should Be    interests    Test Automation    Python
+
+        :param locator: element locator
+        :param expected: visible labels or values. mixing labels and values is
+         not possible
+        :raises AssertionError: if the selection was different than ``expected``
+        """
+
+        super().list_selection_should_be(locator, *expected)
+
+    @keyword
+    def list_should_have_no_selections(self, locator: Union[WebElement, str]):
+        """Verifies selection list ``locator`` has no options selected.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                None Of The Above Please
+                    List Should Have No Selections    list_locator
+
+        :param locator: element locator
+        :raises AssertionError: if the list has a selection
+        """
+
+        super().list_should_have_no_selections(locator)
+
+    @keyword
+    def location_should_be(
+        self,
+        url: str,
+        message: Optional[str] = None
+    ):
+        """Verifies that the current URL is exactly ``url``.
+
+        The ``url`` argument contains the exact url that should exist in browser.
+
+        The ``message`` argument can be used to override the default error
+        message.
+
+        ``message`` argument is new in SeleniumLibrary 3.2.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is My URL The Same
+                    Location Should Be
+                    ...    https://robocorp.com/docs/libraries/rpa-framework/rpa-browser-selenium
+                    ...    message=You are not on the Robocorp Selenium Docs page!
+
+        :param url: contains the exact url that should exist in browser
+        :param message: used to override the default error message
+        """
+
+        super().location_should_be(url=url, message=message)
+
+    @keyword
+    def location_should_contain(
+        self,
+        expected: str,
+        message: Optional[str] = None
+    ):
+        """Verifies that the current URL contains ``expected``.
+
+        The ``expected`` argument contains the expected value in url.
+
+        The ``message`` argument can be used to override the default error
+        message.
+
+        ``message`` argument is new in SeleniumLibrary 3.2.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Should Be On The Robocorp Site
+                    Location Should Contain
+                    ...    robocorp.com
+                    ...    message=This is not the Robocorp site!
+
+        :param expected: expected value in url
+        :param message: used to override the default error message
+        """
+
+        super().location_should_contain(expected=expected, message=message)
+
+    @keyword
+    def log_location(self) -> str:
+        """Logs and returns the current browser window URL.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Log And Tell Me Where I Am
+                    ${url}=    Log Location
+
+        :return: current browser window URL
+        """
+
+        super().log_location()
+
+    @keyword
+    def log_source(
+        self,
+        loglevel: str = "INFO"
+        ) -> str:
+        """Logs and returns the HTML source of the current page or frame.
+
+        The ``loglevel`` argument defines the used log level. Valid log
+        levels are ``WARN``, ``INFO`` (default), ``DEBUG``, ``TRACE``
+        and ``NONE`` (no logging).
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Log And Tell Me The Source
+                    ${source}=    Log Source
+
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :return: HTML source of the current page or frame
+        """
+
+        super().log_source(loglevel=loglevel)
+
+    @keyword
+    def log_title(self) -> str:
+        """Logs and returns the title of the current page.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Log And Tell Me The Title
+                    ${title}=    Log Title
+
+        :return: title of the current page as string
+        """
+
+        super().log_title()
+
+    @keyword
+    def maximize_browser_window(self):
+        """Maximizes current browser window.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Make The Browser Window BIG
+                    Maximize Browser Window
+        """
+
+        super().maximize_browser_window()
+
+    @keyword
+    def mouse_down(self, locator: Union[WebElement, str]):
+        """Simulates pressing the left mouse button on the element ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The element is pressed without releasing the mouse button.
+
+        See also the more specific keywords `Mouse Down On Image` and
+        `Mouse Down On Link`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Hold The Left Mouse Button Down
+                    Mouse Down    id:button_locator
+
+        :param locator: element locator
+        """
+
+        super().mouse_down(locator)
+
+    @keyword
+    def mouse_down_on_image(self, locator: Union[WebElement, str]):
+        """Simulates a mouse down event on an image identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, images are searched
+        using ``id``, ``name``, ``src`` and ``alt``.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Simulate Mouse Down Event On Image
+                    Mouse Down On Image    id:image_locator
+
+        :param locator: element locator
+        """
+
+        super().mouse_down_on_image(locator)
+
+    @keyword
+    def mouse_down_on_link(self, locator: Union[WebElement, str]):
+        """Simulates a mouse down event on a link identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, links are searched
+        using ``id``, ``name``, ``href`` and the link text.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Mouse Down Event on Link
+                    Mouse Down On Link    id:link_locator
+
+        :param locator: element locator
+        """
+
+        super().mouse_down_on_link(locator)
+
+    @keyword
+    def mouse_out(self, locator: Union[WebElement, str]):
+        """Simulates moving the mouse away from the element ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Move Away From The Scary Element
+                    Mouse Out    id:scary_element_locator
+
+        :param locator: element locator
+        """
+
+        super().mouse_out(locator)
+
+    @keyword
+    def mouse_over(self, locator: Union[WebElement, str]):
+        """Simulates hovering the mouse over the element ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Show Me That Hover Text
+                    Mouse Over    id:scary_element_locator
+
+        :param locator: element locator
+        """
+
+        super().mouse_out(locator)
+
+    @keyword
+    def mouse_up(self, locator: Union[WebElement, str]):
+        """Simulates releasing the left mouse button on the element ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Let The Left Mouse Button Go
+                    Mouse Up    id:element_locator
+
+        :param locator: element locator
+        """
+
+        super().mouse_up(locator)
+
+    @keyword
+    def Open_Chrome_Browser(
+
+    ):
+
+        """
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+        """
+
+    @keyword
+    def open_context_menu(self, locator: Union[WebElement, str]):
+        """Opens the context menu on the element identified by ``locator``.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Let Us Expand The Current Menu
+                    Open Context Menu    id:element_locator
+        """
+
+        super().open_context_menu(locator)
+
+    @keyword
+    def page_should_contain(
+        self,
+        text: str,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies that current page contains ``text``.
+
+        If this keyword fails, it automatically logs the page source
+        using the log level specified with the optional ``loglevel``
+        argument. Valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``. If the log level is ``NONE`` or below
+        the current active log level the source will not be logged.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Look For Text On Page
+                    Page Should Contain
+                    ...    This is my text
+                    ...    loglevel=DEBUG
+
+        :param text: text the page should contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_contain(text, loglevel=loglevel)
+
+    @keyword
+    def page_should_contain_checkbox(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies checkbox ``locator`` is found from the current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Confirm Checkbox On Page
+                    Page Should Contain Checkbox
+                    ...    id:checkbox_locator
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_contain_checkbox(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_contain_element(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+        limit: Optional[int] = None,
+    ):
+        """Verifies that element ``locator`` is found on the current page.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        The ``message`` argument can be used to override the default error
+        message.
+
+        The ``limit`` argument can used to define how many elements the
+        page should contain. When ``limit`` is ``None`` (default) page can
+        contain one or more elements. When limit is a number, page must
+        contain same number of elements.
+
+        See `Page Should Contain` for an explanation about the ``loglevel``
+        argument.
+
+        The ``limit`` argument is new in SeleniumLibrary 3.0.
+
+        **Example** (assumes that locator matches to two elements)
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Look For One Element On Page
+                    `Page Should Contain Element`    div_name    limit=1       # Keyword fails.
+
+                *** Keyword ***
+                Look For Two Elements On Page
+                    `Page Should Contain Element`    div_name    limit=2       # Keyword passes.
+
+                *** Keyword ***
+                Look For One Or More Elements On Page
+                    `Page Should Contain Element`    div_name    limit=none    # None is considered one or more.
+
+                *** Keyword ***
+                Look For Element On Page With Default Arguments
+                    `Page Should Contain Element`    div_name    # Same as above.
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :param limit: used to define how many elements the page should contain
+        """
+
+        super().page_should_contain_element(locator, message=message, loglevel=loglevel, limit=limit)
+
+    @keyword
+    def page_should_contain_image(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies image identified by ``locator`` is found from current page.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, images are searched
+        using ``id``, ``name``, ``src`` and ``alt``.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Looking For An Image With Default Message and Loglevel
+                    Page Should Contain Image    id:image_locator
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_contain_image(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_contain_link(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies link identified by ``locator`` is found from current page.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, links are searched
+        using ``id``, ``name``, ``href`` and the link text.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Looking For A Link With Default Message and Loglevel
+                    Page Should Contain Link    id:link_locator
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_contain_link(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_contain_list(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies selection list ``locator`` is found from current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Looking For A List On A Page With Default Message and Loglevel
+                    Page Should Contain List    id:list_locator
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_contain_list(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_contain_radio_button(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies radio button ``locator`` is found from current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, radio buttons are
+        searched using ``id``, ``name`` and ``value``.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Radio Button Should Be On Page
+                    Page Should Contain Radio Button
+                    ...    name=radio_button
+                    ...    message=My Error Message!
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_contain_radio_button(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_contain_textfield(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies text field ``locator`` is found from current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Textfield Should Be On Page
+                    Page Should Contain Textfield
+                    ...    id=TextField
+                    ...    message=This is my error message
+                    ...    loglevel=DEBUG
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_contain_textfield(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain(self, text: str, loglevel: str = "TRACE"):
+        """Verifies the current page does not contain ``text``.
+
+        See `Page Should Contain` for an explanation about the ``loglevel``
+        argument.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                I Do Not Want To See This Text
+                    Page Should Not Contain    manual tasks
+
+        :param text: text the page should not contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain(text, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain_button(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies button ``locator`` is not found from current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, buttons are
+        searched using ``id``, ``name``, and ``value``.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Button Should Not Be On Page
+                    Page Should Not Contain Button
+                    ...    id=Button
+                    ...    message=This is my message
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain_button(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain_checkbox(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies checkbox ``locator`` is not found from the current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Confirm No Checkbox On Page
+                    Page Should Not Contain Checkbox
+                    ...    id:checkbox_locator
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain_checkbox(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain_element(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies that element ``locator`` is not found on the current page.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        See `Page Should Contain` for an explanation about ``message`` and
+        ``loglevel`` arguments.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Confirm This Element Is Not On Page
+                    Page Should Not Contain Element
+                    ...    id:element_locator
+                    ...    message=I found the element
+                    ...    loglevel=DEBUG
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain_element(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain_image(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies image identified by ``locator`` is not found from current page.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, images are searched
+        using ``id``, ``name``, ``src`` and ``alt``.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Not Looking For An Image With Default Message and Loglevel
+                    Page Should Not Contain Image    id:image_locator
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain_image(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain_link(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies link identified by ``locator`` is not found from current page.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, links are searched
+        using ``id``, ``name``, ``href`` and the link text.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Not Looking For A Link With Default Message and Loglevel
+                    Page Should Not Contain Link    id:link_locator
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain_link(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain_list(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies selection list ``locator`` is not found from current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Not Looking For A List On A Page With Default Message and Loglevel
+                    Page Should Not Contain List    id:list_locator
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain_list(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain_radio_button(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies radio button ``locator`` is not found from current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax. When using the default locator strategy, radio buttons are
+        searched using ``id``, ``name`` and ``value``.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Radio Button Should Not Be On Page
+                    Page Should Not Contain Radio Button
+                    ...    name=radio_button
+                    ...    message=My Error Message!
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain_radio_button(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def page_should_not_contain_textfield(
+        self,
+        locator: Union[WebElement, str],
+        message: Optional[str] = None,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies text field ``locator`` is not found from current page.
+
+        See `Page Should Contain Element` for an explanation about ``message``
+        and ``loglevel`` arguments.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Textfield Should Not Be On Page
+                    Page Should Not Contain Textfield
+                    ...    id=TextField
+                    ...    message=This is my error message
+                    ...    loglevel=DEBUG
+
+        :param locator: element locator
+        :param message: used to override the default error message
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        """
+
+        super().page_should_not_contain_textfield(locator, message=message, loglevel=loglevel)
+
+    @keyword
+    def press_key(self, locator: Union[WebElement, str], key: str):
+        """*DEPRECATED in SeleniumLibrary 4.0.* use `Press Keys` instead.
+
+        :param locator: element locator
+        :param key: the key to be typed or selected on the user's keyboard
+        """
+
+        super().press_key(locator, key)
+
+    @keyword
+    def press_keys(self, locator: Union[WebElement, None, str] = None, *keys: str):
+        """Simulates the user pressing key(s) to an element or on the active browser.
+
+        If ``locator`` evaluates as false, see `Boolean arguments` for more
+        details, then the ``keys`` are sent to the currently active browser.
+        Otherwise element is searched and ``keys`` are send to the element
+        identified by the ``locator``. In later case, keyword fails if element
+        is not found. See the `Locating elements` section for details about
+        the locator syntax.
+
+        ``keys`` arguments can contain one or many strings, but it can not
+        be empty. ``keys`` can also be a combination of `Selenium Keys`_
+        and strings or a single Selenium Key. If Selenium Key is combined
+        with strings, Selenium key and strings must be separated by the
+        `+` character, like in `CONTROL+c`. Selenium Keys
+        are space and case sensitive and Selenium Keys are not parsed
+        inside of the string. Example AALTO, would send string `AALTO`
+        and `ALT` not parsed inside of the string. But `A+ALT+O` would
+        found Selenium ALT key from the ``keys`` argument. It also possible
+        to press many Selenium Keys down at the same time, example
+        'ALT+ARROW_DOWN`.
+        
+        .. _Selenium Keys: https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html
+
+        If Selenium Keys are detected in the ``keys`` argument, keyword
+        will press the Selenium Key down, send the strings and
+         then release the Selenium Key. If keyword needs to send a Selenium
+        Key as a string, then each character must be separated with
+        `+` character, example `E+N+D`.
+
+        `CTRL` is alias for `Selenium CONTROL`_
+        and ESC is alias for `Selenium ESCAPE`_
+
+        .. _Selenium CONTROL: https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.CONTROL
+        .. _Selenium ESCAPE: https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.ESCAPE
+
+        New in SeleniumLibrary 3.3
+
+        **Examples**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Sends string AAAAA to element
+                    Press Keys    text_field    AAAAA
+
+                *** Keyword ***
+                Sends string BBBBB to currently active browser
+                    Press Keys    None    BBBBB
+
+                *** Keyword ***
+                Sends string END to element
+                    Press Keys    text_field    E+N+D
+
+                *** Keyword ***
+                Sends strings XXX and YY to element
+                    Press Keys    text_field    XXX    YY
+
+                *** Keyword ***
+                Same as above
+                    Press Keys    text_field    XXX+YY
+
+                *** Keyword ***
+                Pressing "ALT" key down, then pressing ARROW_DOWN and then releasing both keys
+                    Press Keys    text_field    ALT+ARROW_DOWN
+
+                *** Keyword ***
+                Pressing "ALT" key and then pressing ARROW_DOWN
+                    Press Keys    text_field    ALT    ARROW_DOWN
+
+                *** Keyword ***
+                Pressing CTRL key down, sends string "c" and then releases CTRL key
+                    Press Keys    text_field    CTRL+c
+
+                *** Keyword ***
+                Pressing "ENTER" key to element
+                    Press Keys    button    RETURN
+        
+        :param locator: element locator
+        :param keys: the keys to be typed or selected on the user's keyboard
+        """
+
+        super().press_keys(locator, keys)
+
+    @keyword
+    def radio_button_should_be_set_to(
+        self,
+        group_name: str,
+        value: str
+    ):
+        """Verifies radio button group ``group_name`` is set to ``value``.
+
+        ``group_name`` is the ``name`` of the radio button group.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Select Email Button
+                    Select Radio Button
+                    ...    group_name=contact
+                    ...    value=email
+
+        :parma group_name: name of the radio button group
+        :param value: the ``value`` attribute of the radio
+         button that should be set
+        """
+
+        super().radio_button_should_be_set_to(group_name, value)
+
+    @keyword
+    def radio_button_should_not_be_selected(self, group_name: str):
+        """Verifies radio button group ``group_name`` has no selection.
+
+        ``group_name`` is the ``name`` of the radio button group.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Make Sure Anything Else Is Chosen
+                    Radio Button Should Not Be Selected    uncontacted
+
+        :parma group_name: name of the radio button group
+        """
+
+        super().radio_button_should_not_be_selected(group_name)
+
+    @keyword
+    def register_keyword_to_run_on_failure(self, keyword: Optional[str]) -> str:
+        """Sets the keyword to execute, when a SeleniumLibrary keyword fails.
+
+        ``keyword`` is the name of a keyword that will be executed if a
+        SeleniumLibrary keyword fails. It is possible to use any available
+        keyword, including user keywords or keywords from other libraries,
+        but the keyword must not take any arguments.
+
+        The initial keyword to use is set when `importing` the library, and
+        the keyword that is used by default is `Capture Page Screenshot`.
+        Taking a screenshot when something failed is a very useful
+        feature, but notice that it can slow down the execution.
+
+        It is possible to use string ``NOTHING`` or ``NONE``,
+        case-insensitively, as well as Python ``None`` to disable this
+        feature altogether.
+
+        This keyword returns the name of the previously registered
+        failure keyword or Python ``None`` if this functionality was
+        previously disabled. The return value can be always used to
+        restore the original value later.
+
+        Changes in SeleniumLibrary 3.0:
+        - Possible to use string ``NONE`` or Python ``None`` to disable the
+          functionality.
+        - Return Python ``None`` when the functionality was disabled earlier.
+          In previous versions special value ``No Keyword`` was returned and
+          it could not be used to restore the original state.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Setting And Reverting The Failure Keyword
+                    Register Keyword To Run On Failure    Log Source
+                    ${previous kw}=    Register Keyword To Run On Failure    NONE
+                    Register Keyword To Run On Failure    ${previous kw}
+
+        :param keyword: the name of a keyword that will be executed if a
+        SeleniumLibrary keyword fails
+        :return: the name of the previously registered
+        failure keyword or Python ``None`` if this functionality was
+        previously disabled
+        """
+
+        super().register_keyword_to_run_on_failure(keyword)
+
+    @keyword
+    def reload_page(self):
+        """Simulates user reloading page.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Page Refresh
+                    Reload Page
+        """
+
+        super().reload_page()
+
+    @keyword
+    def remove_location_strategy(self, strategy_name: str):
+        """Removes a previously added custom location strategy.
+
+        See `Custom locators` for information on how to create and use
+        custom strategies.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Get Rid Of Persistent Location Strategy
+                    Remove Location Strategy    extJs
+
+        :param strategy_name: previously added custom location strategy
+        """
+
+        super().remove_location_strategy(strategy_name)
+
+    @keyword
+    def scroll_element_into_view(self, locator: Union[WebElement, str]):
+        """Scrolls the element identified by ``locator`` into view.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        New in SeleniumLibrary 3.2.0
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                You Can Not Hide
+                    Scroll Element Into View    id:element_locator
+
+        :param locator: element locator
+        """
+
+        super().scroll_element_into_view(locator)
+
+    @keyword
+    def select_all_from_list(self, locator: Union[WebElement, str]):
+        """Selects all options from multi-selection list ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Select All From A Multi-Selection List
+                    Select All From List    list_locator
+
+        :param locator: element locator
+        :raises RuntimeError: if ``locator`` is not a multi-selection list
+        """
+
+        super().select_all_from_list(locator)
+
+    @keyword
+    def select_checkbox(
+        self,
+        locator: Union[WebElement, str]
+    ):
+        """Selects the checkbox identified by ``locator``.
+
+        Does nothing if checkbox is already selected.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Mark The Checkbox
+                    Select Checkbox    id=checkbox_locator
+
+        :param locator: element locator
+        """
+
+        super().select_checkbox(locator)
+
+    @keyword
+    def select_frame(self, locator: Union[WebElement, str]):
+        """Sets frame identified by ``locator`` as the current frame.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Works both with frames and iframes. Use `Unselect Frame` to cancel
+        the frame selection and return to the main frame.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Changing Frames
+                    Select Frame    top-frame    # Select frame with id or name 'top-frame'
+                    Click Link    example    # Click link 'example' in the selected frame
+                    Unselect Frame    # Back to main frame.
+                    Select Frame    //iframe[@name='xxx']    # Select frame using xpath
+
+        :param locator: element locator
+        """
+
+        super().select_frame(locator)
+
+    @keyword
+    def select_from_list_by_index(self, locator: Union[WebElement, str], *indexes: str):
+        """Selects options from selection list ``locator`` by ``indexes``.
+
+        Indexes of list options start from 0.
+
+        If more than one option is given for a single-selection list,
+        the last value will be selected. With multi-selection lists all
+        specified options are selected, but possible old selections are
+        not cleared.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                This will take the last index
+                    Select From List By Index
+                    ...    single_selection_list_locator
+                    ...    0 4 6 8
+
+                *** Keyword ***
+                This will read in all indexes
+                    Select From List By Index
+                    ...    multi_selection_list_locator
+                    ...    0 4 6 8
+
+        :param locator: element locator
+        :param indexes: one or more options from selection list
+        :raises ValueError: if no idexes is given
+        """
+
+        super().select_from_list_by_index(locator, *indexes)
+
+    @keyword
+    def select_from_list_by_label(self, locator: Union[WebElement, str], *labels: str):
+        """Selects options from selection list ``locator`` by ``labels``.
+
+        If more than one option is given for a single-selection list,
+        the last value will be selected. With multi-selection lists all
+        specified options are selected, but possible old selections are
+        not cleared.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                This will take the last label
+                    Select From List By Label
+                    ...    single_selection_list_locator
+                    ...    DE CT MD NH
+
+                *** Keyword ***
+                This will read in all labels
+                    Select From List By Label
+                    ...    multi_selection_list_locator
+                    ...    DE CT MD NH
+
+        :param locator: element locator
+        :param indexes: one or more options from selection list
+        :raises ValueError: if no label is given
+        """
+
+        super().select_from_list_by_label(locator, *indexes)
+
+    @keyword
+    def select_from_list_by_value(self, locator: Union[WebElement, str], *values: str):
+        """Selects options from selection list ``locator`` by ``values``.
+
+        If more than one option is given for a single-selection list,
+        the last value will be selected. With multi-selection lists all
+        specified options are selected, but possible old selections are
+        not cleared.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                This will take the last value
+                    Select From List By Value
+                    ...    single_selection_list_locator
+                    ...    Delaware Connecticut Maryland New Hampshire
+
+                *** Keyword ***
+                This will read in all values
+                    Select From List By Value
+                    ...    multi_selection_list_locator
+                    ...    Delaware Connecticut Maryland New Hampshire
+
+        :param locator: element locator
+        :param indexes: one or more options from selection list
+        :raises ValueError: if no value is given
+        """
+
+        super().select_from_list_by_value(locator, *indexes)
+
+    @keyword
+    def select_radio_button(
+        self,
+        group_name: str,
+        value: str
+    ):
+        """Sets the radio button group ``group_name`` to ``value``.
+
+        The radio button to be selected is located by two arguments:
+        - ``group_name`` is the name of the radio button group.
+        - ``value`` is the ``id`` or ``value`` attribute of the actual
+          radio button.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Select XL Size Button
+                    Select Radio Button    size    XL
+
+                *** Keyword ***
+                Select Email Button
+                    Select Radio Button    contact    email
+
+        :parma group_name: name of the radio button group
+        :param value: the ``id`` or ``value`` attribute of the actual radio button
+        """
+
+        super().select_radio_button(group_name, value)
+
+    @keyword
+    def set_browser_implicit_wait(self, value: timedelta):
+        """Sets the implicit wait value used by Selenium.
+
+        Same as `Set Selenium Implicit Wait` but only affects the current
+        browser.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Update Just This Browser's Implicit Wait
+                    Set Browser Implicit Wait    15 seconds
+
+        :param value: the implicit wait value used by Selenium
+        """
+
+        super().set_browser_implicit_wait(value=value)
+
+    @keyword
+    def Set_Default_Url_Scheme(
+
+    ):
+
+        """
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+        """
+
+    @keyword
+    def set_focus_to_element(self, locator: Union[WebElement, str]):
+        """Sets the focus to the element identified by ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Prior to SeleniumLibrary 3.0 this keyword was named `Focus`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                I Want To See This Element Better
+                    Set Focus To Element    id:image_locator
+
+        :param locator: element locator
+        """
+
+        super().set_focus_to_element(locator)
+
+    @keyword
+    def set_screenshot_directory(self, path: Union[None, str]) -> str:
+        """Sets the directory for captured screenshots.
+
+        ``path`` argument specifies the absolute path to a directory where
+        the screenshots should be written to. If the directory does not
+        exist, it will be created. The directory can also be set when
+        `importing` the library. If it is not configured anywhere,
+        screenshots are saved to the same directory where Robot Framework's
+        log file is written.
+
+        If ``path`` equals to EMBED (case insensitive) and
+        `Capture Page Screenshot` or `capture Element Screenshot` keywords
+        filename argument is not changed from the default value, then
+        the page or element screenshot is embedded as Base64 image to
+        the log.html.
+
+        The previous value is returned and can be used to restore
+        the original value later if needed.
+
+        Returning the previous value is new in SeleniumLibrary 3.0.
+        The persist argument was removed in SeleniumLibrary 3.2 and
+        EMBED is new in SeleniumLibrary 4.2.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Set A New Screenshot Directory
+                    ${old_directory}=    Set Screenshot Directory
+                    ...    ${OUTPUT_DIR}${/}new_images_folder
+
+                *** Keyword ***
+                Reset Screenshot Directory
+                    Set Screenshot Directory    ${old_directory}
+
+        :param path: specifies the absolute path to a directory where
+        the screenshots should be written to
+        :return: previous value
+        """
+
+        super().set_screenshot_directory(path)
+
+    @keyword
+    def set_selenium_implicit_wait(self, value: timedelta) -> str:
+        """Sets the implicit wait value used by Selenium.
+
+        The value can be given as a number that is considered to be
+        seconds or as a human-readable string like ``1 second``.
+        The previous value is returned and can be used to restore
+        the original value later if needed.
+
+        This keyword sets the implicit wait for all opened browsers.
+        Use `Set Browser Implicit Wait` to set it only to the current
+        browser.
+
+        See the `Implicit wait` section above for more information.
+
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Update Selenium Implict Wait
+                    ${orig wait}=    Set Selenium Implicit Wait    10 seconds
+                    Perform AJAX call that is slow
+                    Set Selenium Implicit Wait    ${orig wait}
+
+        :param value: the implicit wait value used by Selenium
+        :return: previous implicit wait used by Selenium, returned as a string
+        """
+
+        super().set_selenium_implicit_wait(value=value)
+
+    @keyword
+    def set_selenium_speed(
+        self,
+        value: timedelta
+    ) -> str:
+        """Sets the delay that is waited after each Selenium command.
+
+        The value can be given as a number that is considered to be
+        seconds or as a human-readable string like ``1 second``.
+        The previous value is returned and can be used to restore
+        the original value later if needed.
+
+        See the `Selenium Speed` section above for more information.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Update Selenium Wait After Each Command
+                    ${old_selenium_speed}=    Set Selenium Speed    0.5 seconds
+
+        :param value: the delay that is waited after each Selenium command
+        :return: previous Selenium speed value, returned as a string
+        """
+
+        super().set_selenium_speed(value=value)
+
+    @keyword
+    def set_selenium_timeout(
+            self,
+            value: timedelta
+        ) -> str:
+        """Sets the timeout that is used by various keywords.
+
+        The value can be given as a number that is considered to be
+        seconds or as a human-readable string like ``1 second``.
+        The previous value is returned and can be used to restore
+        the original value later if needed.
+
+        See the `Timeout` section above for more information.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Update Selenium Timeout Used By Keywords
+                    ${orig timeout}=    Set Selenium Timeout    15 seconds
+                    Open page that loads slowly
+                    Set Selenium Timeout    ${orig timeout}
+
+        :param value: the timeout that is used by various keywords
+        :return: previous Selenium timeout value, returned as a string
+        """
+
+        super().set_selenium_timeout(value=value)
+
+    @keyword
+    def set_window_position(self, x: int, y: int):
+        """Sets window position using ``x`` and ``y`` coordinates.
+
+        The position is relative to the top left corner of the screen,
+        but some browsers exclude possible task bar set by the operating
+        system from the calculation. The actual position may thus be
+        different with different browsers.
+
+        Values can be given using strings containing numbers or by using
+        actual numbers. See also `Get Window Position`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Reposition Window
+                    Set Window Position    100    200
+
+        :param x: new left to right position on the screen in relation to the top
+         left corner of the screen
+        :param y: new up and down position on the screen in relation to the top
+         left corner of the screen
+        """
+
+        super().set_window_position()
+
+    @keyword
+    def set_window_size(
+        self,
+        width: int,
+        height: int,
+        inner: bool = False
+    ):
+        """Sets current windows size to given ``width`` and ``height``.
+
+        Values can be given using strings containing numbers or by using
+        actual numbers. See also `Get Window Size`.
+
+        Browsers have a limit on their minimum size. Trying to set them
+        smaller will cause the actual size to be bigger than the requested
+        size.
+
+        If ``inner`` parameter is set to True, keyword sets the necessary
+        window width and height to have the desired HTML DOM _window.innerWidth_
+        and _window.innerHeight_. See `Boolean arguments` for more details on how to set boolean
+        arguments.
+
+        The ``inner`` argument is new since SeleniumLibrary 4.0.
+
+        This ``inner`` argument does not support Frames. If a frame is selected,
+        switch to default before running this.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Set Outer Window Size
+                    Set Window Size
+                    ...    width=500
+                    ...    height=900
+
+                *** Keyword ***
+                Set Inner Window Size
+                    Set Window Size
+                    ...    width=500
+                    ...    height=900
+                    ...    inner=${TRUE}
+
+        :param width: new window width
+        :param height: new window height
+        :param inner: set inner (`True`) or outer (`False`) window property, default is `False`
+        :raises AssertionError: if keyword fails to set the correct window size
+        """
+
+        super().set_window_size(width=width, height=height, inner=inner)
+
+    @keyword
+    def simulate_event(self, locator: Union[WebElement, str], event: str):
+        """Simulates ``event`` on the element identified by ``locator``.
+
+        This keyword is useful if element has ``OnEvent`` handler that
+        needs to be explicitly invoked.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Prior to SeleniumLibrary 3.0 this keyword was named `Simulate`.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Envoke OnEvent Handler
+                    Simulate Event
+                    ...    id:element_locator
+                    ...    onfocus
+
+        :param locator: element locator
+        :param event: the HTML5 event that is to be simulated
+        """
+
+        super().simulate_event(locator, event)
+
+    @keyword
+    def submit_form(
+        self,
+        locator: Union[WebElement, None, str] = None
+    ):
+        """Submits a form identified by ``locator``.
+
+        If ``locator`` is not given, first form on the page is submitted.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Send Form To Robocorp
+                    Submit Form    id=form_locator
+
+        :param locator: element locator
+        """
+
+        super().submit_form(locator)
+
+    @keyword
+    def switch_browser(self, index_or_alias: str):
+        """Switches between active browsers using ``index_or_alias``.
+
+        Indices are returned by the `Open Browser` keyword and aliases can
+        be given to it explicitly. Indices start from 1.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Switch Between Browsers
+                    [Documentation]    The first example below expects that
+                    ...    there is no other open browsers when opening the
+                    ...    first one because it used index ``1`` when
+                    ...    switching to it later.
+
+                    Open Browser    http://google.com    ff
+                    Location Should Be    http://google.com
+                    Open Browser    http://yahoo.com    ie    alias=second
+                    Location Should Be    http://yahoo.com
+                    Switch Browser    1    # index
+                    Page Should Contain    I'm feeling lucky
+                    Switch Browser    second    # alias
+                    Page Should Contain    More Yahoo!
+                    Close All Browsers
+
+                    # If you are not sure about that, you can store the index
+                    # into a variable as below.
+
+                    ${index} =    Open Browser    http://google.com
+                    # Do something ...
+                    Switch Browser    ${index}
+
+        :param index_or_alias: index or alias assigned to the browser upon opening
+        """
+
+        super().switch_browser(index_or_alias)
+
+    @keyword
+    def switch_window(
+        self,
+        locator: Union[list, str] = "MAIN",
+        timeout: Optional[str] = None,
+        browser: str = "CURRENT",
+    ):
+        """Switches to browser window matching ``locator``.
+
+        If the window is found, all subsequent commands use the selected
+        window, until this keyword is used again. If the window is not
+        found, this keyword fails. The previous windows handle is returned
+        and can be used to switch back to it later.
+
+        Notice that alerts should be handled with
+        `Handle Alert` or other alert related keywords.
+
+        The ``locator`` can be specified using different strategies somewhat
+        similarly as when `locating elements` on pages.
+
+        - By default, the ``locator`` is matched against window handle, name,
+          title, and URL. Matching is done in that order and the first
+          matching window is selected.
+
+        - The ``locator`` can specify an explicit strategy by using the format
+          ``strategy:value`` (recommended) or ``strategy=value``. Supported
+          strategies are ``name``, ``title``, and ``url``. These matches windows
+          using their name, title, or URL, respectively. Additionally, ``default``
+          can be used to explicitly use the default strategy explained above.
+
+        - If the ``locator`` is ``NEW`` (case-insensitive), the latest
+          opened window is selected. It is an error if this is the same
+          as the current window.
+
+        - If the ``locator`` is ``MAIN`` (default, case-insensitive),
+          the main window is selected.
+
+        - If the ``locator`` is ``CURRENT`` (case-insensitive), nothing is
+          done. This effectively just returns the current window handle.
+
+        - If the ``locator`` is not a string, it is expected to be a list
+          of window handles _to exclude_. Such a list of excluded windows
+          can be got from `Get Window Handles` before doing an action that
+          opens a new window.
+
+        The ``timeout`` is used to specify how long keyword will poll to select
+        the new window. The ``timeout`` is new in SeleniumLibrary 3.2.
+
+        The ``browser`` argument allows with ``index_or_alias`` to implicitly switch to
+        a specific browser when switching to a window. See `Switch Browser`
+
+        - If the ``browser`` is ``CURRENT`` (case-insensitive), no other browser is
+          selected.
+
+        *NOTE:*
+
+        - The ``strategy:value`` syntax is only supported by SeleniumLibrary
+          3.0 and newer.
+        - Prior to SeleniumLibrary 3.0 matching windows by name, title
+          and URL was case-insensitive.
+        - Earlier versions supported aliases ``None``, ``null`` and the
+          empty string for selecting the main window, and alias ``self``
+          for selecting the current window. Support for these aliases was
+          removed in SeleniumLibrary 3.2.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Opening Up New Windows And Swithching
+                    Click Link     popup1    # Open new window
+                    Switch Window    example    # Select window using default strategy
+                    Title Should Be    Pop-up 1
+                    Click Button    popup2    # Open another window
+                    ${handle}=    Switch Window    NEW    # Select latest opened window
+                    Title Should Be    Pop-up 2
+                    Switch Window    ${handle}    # Select window using handle
+                    Title Should Be    Pop-up 1
+                    Switch Window    MAIN    # Select the main window
+                    Title Should Be    Main
+                    ${excludes}=    Get Window Handles    # Get list of current windows
+                    Click Link    popup3    # Open one more window
+                    Switch Window    ${excludes}    # Select window using excludes
+                    Title Should Be    Pop-up 3
+
+        :param locator: window locator
+        :param timeout: used to specify how long keyword will poll to select the
+         new window
+        :param browser: allows with ``index_or_alias`` to implicitly switch to
+         a specific browser when switching to a window
+        :return: current window handle
+        """
+
+        super().switch_window(locator, timeout=timeout, browser=browser)
+
+    @keyword
+    def table_cell_should_contain(
+        self,
+        locator: Union[WebElement, None, str],
+        row: int,
+        column: int,
+        expected: str,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies table cell contains text ``expected``.
+
+        See `Get Table Cell` that this keyword uses internally for
+        an explanation about accepted arguments.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Does The Cell Match My Expectations
+                    Table Cell Should Contain
+                    ...    table_locator
+                    ...    row=7
+                    ...    column=15
+                    ...    expected=Robocorp
+
+        :param locator: element locator
+        :param row: row number to access (index starts from 1)
+        :param column: column number to access (index starts from 1)
+        :param expected: text the cell is expected to contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :raises AssertionError: if the cell contains different text than ``expected``
+        """
+
+        super().table_cell_should_contain(locator, row, column, expected, loglevel=loglevel)
+
+    @keyword
+    def table_column_should_contain(
+        self,
+        locator: Union[WebElement, None, str],
+        column: int,
+        expected: str,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies table column contains text ``expected``.
+
+        The table is located using the ``locator`` argument and its column
+        found using ``column``. See the `Locating elements` section for
+        details about the locator syntax.
+
+        Column indexes start from 1. It is possible to refer to columns
+        from the end by using negative indexes so that -1 is the last column,
+        -2 is the second last, and so on.
+
+        If a table contains cells that span multiple columns, those merged
+        cells count as a single column.
+
+        See `Page Should Contain Element` for an explanation about the
+        ``loglevel`` argument.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Does The Column Match My Expectations
+                    Table Column Should Contain
+                    ...    table_locator
+                    ...    column=15
+                    ...    expected=Robocorp
+
+        :param locator: element locator
+        :param column: column number to access (index starts from 1)
+        :param expected: text the column is expected to contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :raises AssertionError: if the column text does not contain ``expected``
+        """
+
+        super().table_column_should_contain(locator, column, expected, loglevel=loglevel)
+
+    @keyword
+    def table_footer_should_contain(
+        self,
+        locator: Union[WebElement, None, str],
+        expected: str,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies table footer contains text ``expected``.
+
+        Any ``<td>`` element inside ``<tfoot>`` element is considered to
+        be part of the footer.
+
+        The table is located using the ``locator`` argument. See the
+        `Locating elements` section for details about the locator syntax.
+
+        See `Page Should Contain Element` for an explanation about the
+        ``loglevel`` argument.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Does The Footer Match My Expectations
+                    Table Footer Should Contain
+                    ...    table_locator
+                    ...    expected=Robocorp
+
+        :param locator: element locator
+        :param expected: text the footer is expected to contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :raises AssertionError: if the footer text does not contain ``expected``
+        """
+
+        super().table_footer_should_contain(locator, expected, loglevel=loglevel)
+
+    @keyword
+    def table_header_should_contain(
+        self,
+        locator: Union[WebElement, None, str],
+        expected: str,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies table header contains text ``expected``.
+
+        Any ``<th>`` element anywhere in the table is considered to be
+        part of the header.
+
+        The table is located using the ``locator`` argument. See the
+        `Locating elements` section for details about the locator syntax.
+
+        See `Page Should Contain Element` for an explanation about the
+        ``loglevel`` argument.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Does The Header Match My Expectations
+                    Table Header Should Contain
+                    ...    table_locator
+                    ...    expected=Robocorp
+
+        :param locator: element locator
+        :param expected: text the header is expected to contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :raises AssertionError: if the header text does not contain ``expected``
+        """
+
+        super().table_header_should_contain(locator, expected, loglevel=loglevel)
+
+    @keyword
+    def table_row_should_contain(
+        self,
+        locator: Union[WebElement, None, str],
+        row: int,
+        expected: str,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies that table row contains text ``expected``.
+
+        The table is located using the ``locator`` argument and its column
+        found using ``column``. See the `Locating elements` section for
+        details about the locator syntax.
+
+        Row indexes start from 1. It is possible to refer to rows
+        from the end by using negative indexes so that -1 is the last row,
+        -2 is the second last, and so on.
+
+        If a table contains cells that span multiple rows, a match
+        only occurs for the uppermost row of those merged cells.
+
+        See `Page Should Contain Element` for an explanation about the
+        ``loglevel`` argument.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Does The Row Match My Expectations
+                    Table Row Should Contain
+                    ...    table_locator
+                    ...    row=7
+                    ...    expected=Robocorp
+
+        :param locator: element locator
+        :param row: row number to access (index starts from 1)
+        :param expected: text the row is expected to contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :raises AssertionError: if the row text does not contain ``expected``
+        """
+
+        super().table_row_should_contain(locator, row, expected, loglevel=loglevel)
+
+    @keyword
+    def table_should_contain(
+        self,
+        locator: Union[WebElement, None, str],
+        expected: str,
+        loglevel: str = "TRACE",
+    ):
+        """Verifies table contains text ``expected``.
+
+        The table is located using the ``locator`` argument. See the
+        `Locating elements` section for details about the locator syntax.
+
+        See `Page Should Contain Element` for an explanation about the
+        ``loglevel`` argument.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Does The Table Match My Expectations
+                    Table Should Contain
+                    ...    table_locator
+                    ...    expected=Robocorp
+
+        :param locator: element locator
+        :param expected: text the row is expected to contain
+        :param loglevel: valid log levels are ``DEBUG``, ``INFO`` (default),
+        ``WARN``, and ``NONE``
+        :raises AssertionError: if the row table does not contain ``expected``
+        """
+
+        super().table_should_contain(locator, expected, loglevel=loglevel)
+
+    @keyword
+    def textarea_should_contain(
+        self,
+        locator: Union[WebElement, str],
+        expected: str,
+        message: Optional[str] = None,
+    ):
+        """Verifies text area ``locator`` contains text ``expected``.
+
+        ``message`` can be used to override default error message.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is The Text In The Textarea What I Expect
+                    Textfield Should Contain
+                    ...    textarea_locator
+                    ...    My Text Here
+                    ...    My optional error message here
+
+        :param locator: element locator
+        :param expected: text that should be present in the textarea
+        :param message: used to override the default error message
+        """
+
+        super().textarea_should_contain(locator, expected, message=message)
+
+    @keyword
+    def textarea_value_should_be(
+        self,
+        locator: Union[WebElement, str],
+        expected: str,
+        message: Optional[str] = None,
+    ):
+        """Verifies text area ``locator`` has exactly text ``expected``.
+
+        ``message`` can be used to override default error message.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is The Text In The Textarea Exactly What I Expect
+                    Textfield Should Contain
+                    ...    textarea_locator
+                    ...    My Exact Text Here
+                    ...    My optional error message here
+
+        :param locator: element locator
+        :param expected: text that should match exactly in the textarea
+        :param message: used to override the default error message
+        """
+
+        super().textarea_value_should_be(locator, expected, message=message)
+
+    @keyword
+    def textfield_should_contain(
+        self,
+        locator: Union[WebElement, str],
+        expected: str,
+        message: Optional[str] = None,
+    ):
+        """Verifies text field ``locator`` contains text ``expected``.
+
+        ``message`` can be used to override the default error message.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is The Text In The Textfield What I Expect
+                    Textfield Should Contain
+                    ...    textfield_locator
+                    ...    My Text Here
+                    ...    My optional error message here
+
+        :param locator: element locator
+        :param expected: text that should be present in the textfield
+        :param message: used to override the default error message
+        """
+
+        super().textfield_should_contain(locator, expected, message=message)
+
+    @keyword
+    def textfield_value_should_be(
+        self,
+        locator: Union[WebElement, str],
+        expected: str,
+        message: Optional[str] = None,
+    ):
+        """Verifies text field ``locator`` has exactly text ``expected``.
+
+        ``message`` can be used to override default error message.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is The Text In The Textfield Exactly What I Expect
+                    Textfield Should Contain
+                    ...    textfield_locator
+                    ...    My Exact Text Here
+                    ...    My optional error message here
+
+        :param locator: element locator
+        :param expected: text that should match exactly in the textfield
+        :param message: used to override the default error message
+        """
+
+        super().textfield_value_should_be(locator, expected, message=message)
+
+    @keyword
+    def title_should_be(
+        self,
+        title: str,
+        message: Optional[str] = None
+        ):
+        """Verifies that the current page title equals ``title``.
+
+        The ``message`` argument can be used to override the default error
+        message.
+
+        ``message`` argument is new in SeleniumLibrary 3.1.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Is My Title What I Expect
+                    Title Should Be
+                    ...    My Title Here
+                    ...    message=My Title Is Not Correct. It Shoudl Be "My Title Here"
+
+        :param title: title that the current page should equal
+        :param messgae: used to override the default error message
+        """
+
+        super().title_should_be(title=title, message=message)
+
+    @keyword
+    def unselect_all_from_list(self, locator: Union[WebElement, str]):
+        """Unselects all options from multi-selection list ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        New in SeleniumLibrary 3.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                I Choose None Of The Above
+                    Unselect All From List    list_locator
+
+        :param locator: element locator
+        :raises RuntimeError: if used on a single selection list
+        """
+
+        super().unselect_all_from_list(locator)
+
+    @keyword
+    def unselect_checkbox(
+        self,
+        locator: Union[WebElement, str]
+    ):
+        """Removes the selection of checkbox identified by ``locator``.
+
+        Does nothing if the checkbox is not selected.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Checkbox Left Blank
+                    Unselect Checkbox    id=checkbox_locator
+
+        :param locator: element locator
+        """
+
+        super().unselect_checkbox(locator)
+
+    @keyword
+    def unselect_from_list_by_index(
+        self, locator: Union[WebElement, str], *indexes: str
+    ):
+        """Unselects options from selection list ``locator`` by ``indexes``.
+
+        Indexes of list options start from 0. This keyword works only with
+        multi-selection lists.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                This will unselect the following indexes
+                    Unselect From List By Index
+                    ...    multi_selection_list_locator
+                    ...    0 4 6 8
+
+        :param locator: element locator
+        :param indexes: one or more options from selection list
+        :raises ValueError: if no index is given
+        :raises RuntimeError: if used on a single selection list
+        """
+
+        super().unselect_from_list_by_index(locator, *indexes)
+
+    @keyword
+    def unselect_from_list_by_label(
+        self, locator: Union[WebElement, str], *labels: str
+    ):
+        """Unselects options from selection list ``locator`` by ``labels``.
+
+        This keyword works only with multi-selection lists.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                This will unselect the following labels
+                    Unselect From List By Label
+                    ...    multi_selection_list_locator
+                    ...    DE CT MD NH
+
+        :param locator: element locator
+        :param indexes: one or more options from selection list
+        :raises ValueError: if no label is given
+        :raises RuntimeError: if used on a single selection list
+        """
+
+        super().unselect_from_list_by_label(locator, *indexes)
+
+    @keyword
+    def unselect_from_list_by_value(
+        self, locator: Union[WebElement, str], *values: str
+    ):
+        """Unselects options from selection list ``locator`` by ``values``.
+
+        This keyword works only with multi-selection lists.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+        
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                This will unselect the following values
+                    Unselect From List By Value
+                    ...    multi_selection_list_locator
+                    ...    Delaware Connecticut Maryland New Hampshire
+
+        :param locator: element locator
+        :param indexes: one or more options from selection list
+        :raises ValueError: if no value is given
+        :raises RuntimeError: if used on a single selection list
+        """
+
+        super().unselect_from_list_by_value(locator, *indexes)
+
+    @keyword
+    def wait_for_condition(
+        condition: str,
+        timeout: Optional[timedelta] = None,
+        error: Optional[str] = None,
+    ):
+        """Waits until ``condition`` is true or ``timeout`` expires.
+
+        The condition can be arbitrary JavaScript expression but it
+        must return a value to be evaluated. See `Execute JavaScript` for
+        information about accessing content on pages.
+
+        Fails if the timeout expires before the condition becomes true. See
+        the `Timeouts` section for more information about using timeouts
+        and their default value.
+
+        ``error`` can be used to override the default error message.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Wait On Title Return
+                    Wait For Condition
+                    ...    return document.title == "New Title"
+
+                *** Keyword ***
+                Wait On Not Active Status
+                    Wait For Condition
+                    ...    return jQuery.active == 0
+                    ...    timeout=60s
+                    ...    error=My error message
+
+                *** Keyword ***
+                Wait On Background Colors
+                    Wait For Condition
+                    ...    style = document.querySelector('h1').style; return style.background == "red" && style.color == "white"
+
+        :param condition: arbitrary JavaScript expression but it must return a value
+         to be evaluated
+        :para timeout: how long to wait for the condition
+        :para error: used to override the default error message
+        """
+
+        super().wait_for_condition(condition, timeout=timeout, error=error)
+
+    @keyword
+    def wait_until_element_contains(
+        locator: Union[WebElement, None, str],
+        text: str,
+        timeout: Optional[timedelta] = None,
+        error: Optional[str] = None,
+    ):
+        """Waits until the element ``locator`` contains ``text``.
+
+        Fails if ``timeout`` expires before the text appears. See
+        the `Timeouts` section for more information about using timeouts and
+        their default value and the `Locating elements` section for details
+        about the locator syntax.
+
+        ``error`` can be used to override the default error message.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Wait For Element To Contain
+                    Wait Until Element Contains
+                    ...    name:textBox
+                    ...    open door
+                    ...    timeout=30s
+                    ...    error=My Error Message
+
+        :para locator: element locator
+        :para text: text the locator should contain
+        :para timeout: how long to wait to see if the text is contained in the element
+        :para error: used to override the default error message
+        """
+
+        super().wait_until_element_contains(locator=locator, text=text, timeout=timeout, error=error)
+
+    @keyword
+    def wait_until_element_does_not_contain(
+        locator: Union[WebElement, None, str],
+        text: str,
+        timeout: Optional[Union[timedelta, None]] = None,
+        error: Optional[Union[str, None]] = None,
+    ):
+
+        """Waits until the element ``locator`` does not contain ``text``.
+
+        Fails if ``timeout`` expires before the text disappears. See
+        the `Timeouts` section for more information about using timeouts and
+        their default value and the `Locating elements` section for details
+        about the locator syntax.
+
+        ``error`` can be used to override the default error message.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Wait For Element To Not Contain
+                    Wait Until Element Does Not Contain
+                    ...    name:textBox
+                    ...    open door
+                    ...    timeout=30s
+                    ...    error=My Error Message
+
+        :para locator: element locator
+        :para text: text the locator should not contain
+        :para timeout: how long to wait to see if the text is contained in the element
+        :para error: used to override the default error message
+        """
+
+        super().wait_until_element_does_not_contain(locator=locator, text=text, timeout=timeout, error=error)
+
+    @keyword
+    def wait_until_element_is_enabled(
+        locator: Union[WebElement, None, str],
+        timeout: Optional[Union[timedelta, None]] = None,
+        error: Optional[Union[str, None]] = None,
+    ):
+        """Waits until the element `locator` is enabled.
+
+        Element is considered enabled if it is not disabled nor read-only.
+
+        Fails if `timeout` expires before the element is enabled. See the _Timeouts_
+        section for more information about using timeouts and their default value
+        and the _Locating elements_ section for details about the locator syntax.
+
+        `error` can be used to override the default error message.
+
+        Considering read-only elements to be disabled is a new feature in SeleniumLibrary 3.0.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Should Be Enabled
+                    Wait Until Element Is Enabled
+                    ...    id:locator
+                    ...    timeout=30s
+                    ...    error=This is my error message
+
+        :param locator: element locator
+        :param timeout: how long to wait for the element to be enabled
+        :param error: used to override the default error message
+        """
+
+        super().wait_until_element_is_enabled(locator, timeout=timeout, error=error)
+
+    @keyword
+    def wait_until_element_is_not_visible(
+        locator: Union[WebElement, None, str],
+        timeout: Optional[Union[timedelta, None]] = None,
+        error: Optional[Union[str, None]] = None,
+    ):
+        """Waits until the element `locator` is not visible.
+
+        Fails if `timeout` expires before the element is not visible. See the
+        _Timeouts_ section for more information about using timeouts and their
+        default value and the _Locating elements_ section for details about the
+        locator syntax.
+
+        `error` can be used to override the default error message.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Should Not See Element
+                    Wait Until Element Is Not Visible
+                    ...    id:locator
+                    ...    timeout=30s
+                    ...    error=This is my error message
+
+        :param locator: element locator
+        :param timeout: how long to wait for the element to not be visable
+        :param error: used to override the default error message
+        """
+
+        super().wait_until_element_is_not_visible(locator, timeout=timeout, error=error)
+
+    @keyword
+    def wait_until_element_is_visible(
+        locator: Union[WebElement, None, str],
+        timeout: Optional[Union[timedelta, None]] = None,
+        error: Optional[Union[str, None]] = None,
+    ):
+        """Waits until the element `locator` is visible.
+
+        Fails if `timeout` expires before the element is visible. See the _Timeouts_
+        section for more information about using timeouts and their default value and
+        the _Locating elements_ section for details about the locator syntax.
+
+        `error` can be used to override the default error message.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Should See Element
+                    Wait Until Element Is Visible
+                    ...    id:locator
+                    ...    timeout=30s
+                    ...    error=This is my error message
+
+        :param locator: element locator
+        :param timeout: how long to wait for the element to be visable
+        :param error: used to override the default error message
+        """
+
+        super().wait_until_element_is_visible(locator, timeout=timeout, error=error)
+
+    @keyword
+    def wait_until_location_contains(
+        expected: str,
+        timeout: Optional[Union[timedelta, None]] = None,
+        message: Optional[Union[str, None]] = None,
+    ):
+        """Waits until the current URL contains `expected`.
+
+        The `expected` argument contains the expected value in url.
+
+        Fails if `timeout` expires before the location contains. See the _Timeouts_
+        section for more information about using timeouts and their default value.
+
+        The message argument can be used to override the default error message.
+
+        New in SeleniumLibrary 4.0
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                URL Should Contain
+                    Wait Until Locatin Contains
+                    ...    /shopping/laptops
+                    ...    timeout=30s
+                    ...    message=This is my error message
+
+        :param expected: expected value in url
+        :param timeout: how long to wait for the expected url
+        :param message: used to override the default error message
+        """
+
+        super().wait_until_location_contains(expected, timeout=timeout, message=message)
+
+    @keyword
+    def wait_until_location_does_not_contain(
+        location: str,
+        timeout: Optional[Union[timedelta, None]] = None,
+        message: Optional[Union[str, None]] = None,
+    ):
+        """Waits until the current URL does not contain `location`.
+
+        The `location` argument contains value not expected in url.
+
+        Fails if `timeout` expires before the location not contains. See the
+        _Timeouts_ section for more information about using timeouts and their default value.
+
+        The `message` argument can be used to override the default error message.
+
+        New in SeleniumLibrary 4.3
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                URL Shoud Not Contain
+                    Wait Until Location Does Not Contain
+                    ...    /pictures/2020
+                    ...    timeout=30s
+                    ...    message=This is my error message
+
+        :param location: unexpected value in url
+        :param timeout: how long to wait for the location to change
+        :param message: used to override the default error message
+        """
+
+        super().wait_until_location_does_not_contain(location, timeout=timeout, message=message)
+
+    @keyword
+    def wait_until_location_is(
+        expected: str,
+        timeout: Optional[Union[timedelta, None]] = None,
+        message: Optional[Union[str, None]] = None,
+    ):
+
+        """Waits until the current URL is `expected`.
+
+        The `expected` argument is the expected value in url.
+
+        Fails if `timeout` expires before the location is. See the _Timeouts_
+        section for more information about using timeouts and their default value.
+
+        The `message` argument can be used to override the default error message.
+
+        New in SeleniumLibrary 4.0
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                URL We Expect
+                    Wait Until Locatin Is
+                    ...    www.google.com
+                    ...    timeout=30s
+                    ...    message=This is my error message
+
+        :param expected: expected value in url
+        :param timeout: how long to wait for the expected url
+        :param message: used to override the default error message
+        """
+
+        super().wait_until_location_is(expected, timeout=timeout, message=message)
+
+    @keyword
+    def wait_until_location_is_not(
+        location: str,
+        timeout: Optional[Union[timedelta, None]] = None,
+        message: Optional[Union[str, None]] = None,
+    ):
+        """Waits until the current URL is not `location`.
+
+        The `location` argument is the unexpected value in url.
+
+        Fails if `timeout` expires before the location is not. See the _Timeouts_
+        section for more information about using timeouts and their default value.
+
+        The `message` argument can be used to override the default error message.
+
+        New in SeleniumLibrary 4.3
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                URL Shoud Change
+                    Wait Until Locatin Is Not
+                    ...    www.google.com
+                    ...    timeout=30s
+                    ...    message=This is my error message
+
+        :param location: unexpected value in url
+        :param timeout: how long to wait for the location to change
+        :param message: used to override the default error message
+        """
+
+        super().wait_until_location_is_not(location, timeout=timeout, message=message)
+
+    @keyword
+    def wait_until_page_contains(
+        text: Union[WebElement, None, str],
+        timeout: Optional[Union[timedelta, None]] = None,
+        error: Optional[Union[str, None]] = None,
+    ):
+        """Waits until `text` appears on the current page.
+
+        Fails if `timeout` expires before the text appears. See the _Timeouts_
+        section for more information about using timeouts and their default value.
+
+        `error` can be used to override the default error message.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Text Shoud Appear
+                    Wait Until Page Contain
+                    ...    Text I am looking for
+                    ...    timeout=30s
+                    ...    error=This is my error message
+
+        :param text: text that should appear on the current page
+        :param timeout: how long to wait for the element to appear
+        :param error: used to override the default error message
+        """
+
+        super().wait_until_page_contains(text, timeout=timeout, error=error)
+
+    @keyword
+    def wait_until_page_contains_element(
+        locator: Union[WebElement, None, str],
+        timeout: Optional[Union[timedelta, None]] = None,
+        error: Optional[Union[str, None]] = None,
+        limit: Optional[Union[int, None]] = None,
+    ):
+        """Waits until the element `locator` appears on the current page.
+
+        Fails if `timeout` expires before the element appears. See the _Timeouts_
+        section for more information about using timeouts and their default value
+        and the _Locating elements_ section for details about the locator syntax.
+
+        `error` can be used to override the default error message.
+
+        The `limit` argument can used to define how many elements the page should
+        contain. When `limit` is _None_ (default) page can contain one or more
+        elements. When limit is a number, page must contain same number of elements.
+
+        `limit` is new in SeleniumLibrary 4.4
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Element Should Be On Page
+                    Wait Until Page Contains Element
+                    ...    id:locator
+                    ...    timeout=30s
+                    ...    error=This is my error message
+                    ...    limit=${3}
+
+        :param locator: element locator
+        :param timeout: how long to wait for the element to appear
+        :param error: used to override the default error message
+        :param limit: used to define how many elements the page should contain
+        """
+
+        super().wait_until_page_contains_element(locator, timeout=timeout, error=error, limit=limit)
+
+    @keyword
+    def wait_until_page_does_not_contain(
+        text: Union[WebElement, None, str],
+        timeout: Optional[Union[timedelta, None]] = None,
+        error: Optional[Union[str, None]] = None,
+    ):
+        """Waits until `text` disappears from the current page.
+
+        Fails if `timeout` expires before the text disappears. See the _Timeouts_
+        section for more information about using timeouts and their default value.
+
+        `error` can be used to override the default error message.
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Text Shoud Disappear
+                    Wait Until Page Does Not Contain
+                    ...    Text I am looking for
+                    ...    timeout=30s
+                    ...    error=This is my error message
+
+        :param text: text that should disappear from the current page
+        :param timeout: how long to wait for the element to appear
+        :param error: used to override the default error message
+        """
+
+        super().wait_until_page_does_not_contain(text, timeout=timeout, error=error)
+
+    @keyword
+    def wait_until_page_does_not_contain_element(
+        locator: Union[WebElement, None, str],
+        timeout: Optional[Union[timedelta, None]] = None,
+        error: Optional[Union[str, None]] = None,
+        limit: Optional[Union[int, None]] = None,
+    ):
+        """Waits until the element locator disappears from the current page.
+
+        Fails if `timeout` expires before the element disappears. See the _Timeouts_
+        section for more information about using timeouts and their default value
+        and the _Locating elements_ section for details about the locator syntax.
+
+        `error` can be used to override the default error message.
+
+        The `limit` argument can used to define how many elements the page should not
+        contain. When `limit` is _None_ (default) page can`t contain any elements. When
+        limit is a number, page must not contain same number of elements.
+
+        `limit` is new in SeleniumLibrary 4.4
+
+        **Example**
+
+            **Robot Framework**
+
+            .. code-block:: robotframework
+
+                *** Keyword ***
+                Element Should Not Be On Page
+                    Wait Until Page Does Not Contain Element
+                    ...    id:locator
+                    ...    timeout=30s
+                    ...    error=This is my error message
+                    ...    limit=${3}
+
+        :param locator: element locator
+        :param timeout: how long to wait for the element to appear
+        :param error: used to override the default error message
+        :param limit: used to define how many elements the page should not contain
+        """
+
+        super().wait_until_page_does_not_contain_element(locator, timeout=timeout, error=error, limit=limit)
 
 
 class Selenium(SeleniumLibrary):
@@ -421,7 +6273,7 @@ class Selenium(SeleniumLibrary):
     +----------+-----------------------------------------------------------+
 
     Example:
-    
+
     +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
     | `Open Browser`       | https://robotframework.org         | ${BROWSER}       | alias=BrowserA   | # BrowserA with first window is opened.                                       |
     +----------------------+------------------------------------+------------------+------------------+-------------------------------------------------------------------------------+
