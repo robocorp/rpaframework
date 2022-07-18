@@ -185,7 +185,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         is called. See `Switch Browser` for more information and examples.
 
         Optional ``remote_url`` is the URL for a `Selenium Grid`_.
-        
+
         .. _Selenium Grid: https://github.com/SeleniumHQ/selenium/wiki/Grid2
 
         Optional ``desired_capabilities`` can be used to configure, for example,
@@ -404,17 +404,21 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         The ``executable_path`` argument is new in SeleniumLibrary 4.2.
 
-        :param url: 
-        :param browser: , default is "firefox"
-        :param alias: 
-        :param remote_url: default is `False`
-        :param desired_capabilities: 
-        :param ff_profile_dir: 
-        :param options: 
-        :param service_log_path: 
-        :param executable_path: 
+        :param url: desired address
+        :param browser: specifies which browser to use, default is "firefox"
+        :param alias: alias given for this browser instance and
+         it can be used for switching between browsers
+        :param remote_url: the URL for a `Selenium Grid`, default is `False`
+        :param desired_capabilities: used to configure additional capabilities
+        :param ff_profile_dir: path to the Firefox profile
+         directory if you wish to overwrite the default profile Selenium
+         uses
+        :param options: allows defining browser specific Selenium options
+        :param service_log_path: defines the name of the file where to write the
+         browser driver logs
+        :param executable_path: defines the path to the driver executable
         """
-        
+
         url = ensure_scheme(url, self._default_scheme)
         return super().open_browser(
             url=url,
@@ -512,7 +516,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
          (`True`) or only the current scope (`False`), default is `False`
         """  # noqa: E501
 
-        super().add_location_strategy(strategy_name, strategy_keyword=strategy_keyword, persist=persist)
+        super().add_location_strategy(
+            strategy_name, strategy_keyword=strategy_keyword, persist=persist
+        )
 
     @keyword
     def alert_should_be_present(
@@ -608,7 +614,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
             Give This Element An ID
                 Assign ID to Element
                 ...    //ul[@class='example' and ./li[contains(., 'Stuff')]]
-                ...    my id 
+                ...    my id
                 # This verifies that the newly assigned ID is found on the page
                 Page Should Contain Element    my id
 
@@ -662,7 +668,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         """
 
         super().capture_element_screenshot(locator, filename)
-    
+
     @keyword
     def capture_page_screenshot(self, filename: str = DEFAULT_FILENAME_PAGE) -> str:
         """Takes a screenshot of the current page and embeds it into a log file.
@@ -717,13 +723,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         """
 
         super().capture_page_screenshot(filename)
-    
 
     @keyword
-    def Checkbox_Should_Be_Selected(
-        self,
-        locator: Union[WebElement, str]
-    ):
+    def Checkbox_Should_Be_Selected(self, locator: Union[WebElement, str]):
         """Verifies checkbox ``locator`` is selected/checked.
 
         See the `Locating elements` section for details about the locator
@@ -746,10 +748,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().checkbox_should_be_selected(locator)
 
     @keyword
-    def checkbox_should_not_be_selected(
-        self,
-        locator: Union[WebElement, str]
-    ):
+    def checkbox_should_not_be_selected(self, locator: Union[WebElement, str]):
         """Verifies checkbox ``locator`` is not selected/checked.
 
         See the `Locating elements` section for details about the locator
@@ -772,11 +771,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().checkbox_should_not_be_selected(locator)
 
     @keyword
-    def choose_file(
-        self,
-        locator: Union[WebElement, str],
-        file_path: str
-    ):
+    def choose_file(self, locator: Union[WebElement, str], file_path: str):
         """Inputs the ``file_path`` into the file input field ``locator``.
 
         This keyword is most often used to input files into upload forms.
@@ -1107,11 +1102,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     @keyword
     def create_webdriver(
-        self,
-        driver_name: str,
-        alias: Optional[str] = None,
-        kwargs={},
-        **init_kwargs
+        self, driver_name: str, alias: Optional[str] = None, kwargs={}, **init_kwargs
     ) -> str:
         """Creates an instance of Selenium WebDriver.
 
@@ -1146,16 +1137,16 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
                     ...    modules=selenium, selenium.webdriver
                     ${proxy.http_proxy}=    Set Variable    localhost:8888
                     Create Webdriver      Firefox           proxy=${proxy}
-                
+
                 *** Keyword ***
                 Create PhantomJS WebDriver using Proxies
                     ${service args}=     Create List    --proxy=192.168.132.104:8888
                     Create Webdriver    PhantomJS        service_args=${service args}
 
-        :param driver_name: str,
-        :param alias: Optional[str] = None, 
-        :param kwargs={},
-        :param **init_kwargs: 
+        :param driver_name: must be a WebDriver implementation name
+        :param alias: alias name for this WebDriver implementation
+        :param kwargs: a Python dictionary ``kwargs``
+        :param init_kwargs: keyword arguments
         :return: index of browser instance
         """
 
@@ -1194,7 +1185,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         See `Page Should Contain` for an explanation about the ``loglevel``
         argument.
-        
+
         **Example**
 
             **Robot Framework**
@@ -1232,10 +1223,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().delete_all_cookies()
 
     @keyword
-    def delete_cookie(
-        self,
-        name
-    ):
+    def delete_cookie(self, name):
         """Deletes the cookie matching ``name``.
 
         If the cookie is not found, nothing happens.
@@ -1348,7 +1336,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         syntax.
 
         New in SeleniumLibrary 3.2.
-        
+
         **Example**
 
             **Robot Framework**
@@ -1368,7 +1356,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :param message: used to override the default error message
         """
 
-        super().element_attribute_value_should_be(locator, attribute, expected, message=message)
+        super().element_attribute_value_should_be(
+            locator, attribute, expected, message=message
+        )
 
     @keyword
     def element_should_be_disabled(self, locator: Union[WebElement, str]):
@@ -1489,7 +1479,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
          is `False`
         """
 
-        super().element_should_contain(locator, expected, message=message, ignore_case=ignore_case)
+        super().element_should_contain(
+            locator, expected, message=message, ignore_case=ignore_case
+        )
 
     @keyword
     def element_should_not_be_visible(
@@ -1559,7 +1551,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
          is `False`
         """
 
-        super().element_should_not_contain(locator, expected, message=message, ignore_case=ignore_case)
+        super().element_should_not_contain(
+            locator, expected, message=message, ignore_case=ignore_case
+        )
 
     @keyword
     def element_text_should_be(
@@ -1605,7 +1599,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
          is `False`
         """
 
-        super().element_text_should_be(locator, expected, message=message, ignore_case=ignore_case)
+        super().element_text_should_be(
+            locator, expected, message=message, ignore_case=ignore_case
+        )
 
     @keyword
     def element_text_should_not_be(
@@ -1649,7 +1645,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
          is `False`
         """
 
-        super().element_text_should_not_be(locator, not_expected, message=message, ignore_case=ignore_case)
+        super().element_text_should_not_be(
+            locator, not_expected, message=message, ignore_case=ignore_case
+        )
 
     @keyword
     def execute_async_javascript(self, *code: Union[WebElement, str]) -> Any:
@@ -1833,7 +1831,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
                 Capture Active Browsers Aliases
                     Open Browser    https://example.com    alias=BrowserA
                     Open Browser    https://example.com    alias=BrowserB
-                    &{aliases}    Get Browser Aliases    
+                    &{aliases}    Get Browser Aliases
                     # The dictionary of the returned Aliases
                     #  &{aliases} = { BrowserA=1|BrowserB=2 }
                     Log    ${aliases.BrowserA}    # logs ``1``
@@ -2122,22 +2120,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().get_list_items(locator, values=values)
 
     @keyword
-    def Get_Location(
-
-    ):
-
-        """
-        **Example**
-
-            **Robot Framework**
-
-            .. code-block:: robotframework
-
-                *** Keyword ***
-        """
-
-    @keyword
-    def get_locations(self) -> str:
+    def get_location(self) -> str:
         """Returns the current browser window URL.
 
         **Example**
@@ -2419,21 +2402,6 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().get_table_cell(locator, row, column, loglevel=loglevel)
 
     @keyword
-    def Get_Testability_Status(
-
-    ):
-
-        """
-        **Example**
-
-            **Robot Framework**
-
-            .. code-block:: robotframework
-
-                *** Keyword ***
-        """
-
-    @keyword
     def get_text(self, locator: Union[WebElement, str]) -> str:
         """Returns the text value of the element identified by ``locator``.
 
@@ -2481,7 +2449,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         See the `Locating elements` section for details about the locator
         syntax.
-        
+
         **Example**
 
             **Robot Framework**
@@ -2527,10 +2495,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().get_vertical_position(locator)
 
     @keyword
-    def get_webelement(
-        self,
-        locator: Union[WebElement, str]
-    ) -> WebElement:
+    def get_webelement(self, locator: Union[WebElement, str]) -> WebElement:
         """Returns the first WebElement matching the given ``locator``.
 
         See the `Locating elements` section for details about the locator
@@ -2553,10 +2518,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().get_webelement(locator=locator)
 
     @keyword
-    def get_webelements(
-        self,
-        locator: Union[WebElement, str]
-    ) -> List[WebElement]:
+    def get_webelements(self, locator: Union[WebElement, str]) -> List[WebElement]:
         """Returns a list of WebElement objects matching the ``locator``.
 
         See the `Locating elements` section for details about the locator
@@ -2674,10 +2636,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().get_window_position()
 
     @keyword
-    def get_window_size(
-        self,
-        inner: bool = False
-    ) -> Tuple[float, float]:
+    def get_window_size(self, inner: bool = False) -> Tuple[float, float]:
         """Returns current window width and height as integers.
 
         See also `Set Window Size`.
@@ -2746,11 +2705,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().go_back()
 
     @keyword
-    def handle_alert(
-        self,
-        action: str = ACCEPT,
-        timeout: Optional[timedelta] = None
-    ):
+    def handle_alert(self, action: str = ACCEPT, timeout: Optional[timedelta] = None):
         """Handles the current alert and returns its message.
 
         By default, the alert is accepted, but this can be controlled
@@ -2805,10 +2760,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     @keyword
     def input_password(
-        self,
-        locator: Union[WebElement, str],
-        password: str,
-        clear: bool = True
+        self, locator: Union[WebElement, str], password: str, clear: bool = True
     ):
         """Types the given password into the text field identified by ``locator``.
 
@@ -2902,10 +2854,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     @keyword
     def input_text_into_alert(
-        self,
-        text: str,
-        action: str = ACCEPT,
-        timeout: Optional[timedelta] = None
+        self, text: str, action: str = ACCEPT, timeout: Optional[timedelta] = None
     ):
         """Types the given ``text`` into an input field in an alert.
 
@@ -2951,7 +2900,6 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         See the `Locating elements` section for details about the locator
         syntax.
 
-        
         **Example**
 
             **Robot Framework**
@@ -2998,11 +2946,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().list_should_have_no_selections(locator)
 
     @keyword
-    def location_should_be(
-        self,
-        url: str,
-        message: Optional[str] = None
-    ):
+    def location_should_be(self, url: str, message: Optional[str] = None):
         """Verifies that the current URL is exactly ``url``.
 
         The ``url`` argument contains the exact url that should exist in browser.
@@ -3031,11 +2975,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().location_should_be(url=url, message=message)
 
     @keyword
-    def location_should_contain(
-        self,
-        expected: str,
-        message: Optional[str] = None
-    ):
+    def location_should_contain(self, expected: str, message: Optional[str] = None):
         """Verifies that the current URL contains ``expected``.
 
         The ``expected`` argument contains the expected value in url.
@@ -3083,10 +3023,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().log_location()
 
     @keyword
-    def log_source(
-        self,
-        loglevel: str = "INFO"
-        ) -> str:
+    def log_source(self, loglevel: str = "INFO") -> str:
         """Logs and returns the HTML source of the current page or frame.
 
         The ``loglevel`` argument defines the used log level. Valid log
@@ -3285,21 +3222,6 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().mouse_up(locator)
 
     @keyword
-    def Open_Chrome_Browser(
-
-    ):
-
-        """
-        **Example**
-
-            **Robot Framework**
-
-            .. code-block:: robotframework
-
-                *** Keyword ***
-        """
-
-    @keyword
     def open_context_menu(self, locator: Union[WebElement, str]):
         """Opens the context menu on the element identified by ``locator``.
 
@@ -3381,7 +3303,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_contain_checkbox(locator, message=message, loglevel=loglevel)
+        super().page_should_contain_checkbox(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_contain_element(
@@ -3438,7 +3362,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :param limit: used to define how many elements the page should contain
         """
 
-        super().page_should_contain_element(locator, message=message, loglevel=loglevel, limit=limit)
+        super().page_should_contain_element(
+            locator, message=message, loglevel=loglevel, limit=limit
+        )
 
     @keyword
     def page_should_contain_image(
@@ -3575,7 +3501,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_contain_radio_button(locator, message=message, loglevel=loglevel)
+        super().page_should_contain_radio_button(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_contain_textfield(
@@ -3611,7 +3539,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_contain_textfield(locator, message=message, loglevel=loglevel)
+        super().page_should_contain_textfield(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_not_contain(self, text: str, loglevel: str = "TRACE"):
@@ -3670,7 +3600,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_not_contain_button(locator, message=message, loglevel=loglevel)
+        super().page_should_not_contain_button(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_not_contain_checkbox(
@@ -3704,7 +3636,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_not_contain_checkbox(locator, message=message, loglevel=loglevel)
+        super().page_should_not_contain_checkbox(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_not_contain_element(
@@ -3740,7 +3674,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_not_contain_element(locator, message=message, loglevel=loglevel)
+        super().page_should_not_contain_element(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_not_contain_image(
@@ -3774,7 +3710,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_not_contain_image(locator, message=message, loglevel=loglevel)
+        super().page_should_not_contain_image(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_not_contain_link(
@@ -3808,7 +3746,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_not_contain_link(locator, message=message, loglevel=loglevel)
+        super().page_should_not_contain_link(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_not_contain_list(
@@ -3841,7 +3781,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_not_contain_list(locator, message=message, loglevel=loglevel)
+        super().page_should_not_contain_list(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_not_contain_radio_button(
@@ -3877,7 +3819,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_not_contain_radio_button(locator, message=message, loglevel=loglevel)
+        super().page_should_not_contain_radio_button(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def page_should_not_contain_textfield(
@@ -3913,7 +3857,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         ``WARN``, and ``NONE``
         """
 
-        super().page_should_not_contain_textfield(locator, message=message, loglevel=loglevel)
+        super().page_should_not_contain_textfield(
+            locator, message=message, loglevel=loglevel
+        )
 
     @keyword
     def press_key(self, locator: Union[WebElement, str], key: str):
@@ -3947,7 +3893,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         found Selenium ALT key from the ``keys`` argument. It also possible
         to press many Selenium Keys down at the same time, example
         'ALT+ARROW_DOWN`.
-        
+
         .. _Selenium Keys: https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html
 
         If Selenium Keys are detected in the ``keys`` argument, keyword
@@ -3991,21 +3937,21 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
                     Press Keys    text_field    XXX+YY
 
                 *** Keyword ***
-                Pressing "ALT" key down, then pressing ARROW_DOWN and then releasing both keys
+                Pressing ALT key down, then pressing ARROW_DOWN and then releasing both keys
                     Press Keys    text_field    ALT+ARROW_DOWN
 
                 *** Keyword ***
-                Pressing "ALT" key and then pressing ARROW_DOWN
+                Pressing ALT key and then pressing ARROW_DOWN
                     Press Keys    text_field    ALT    ARROW_DOWN
 
                 *** Keyword ***
-                Pressing CTRL key down, sends string "c" and then releases CTRL key
+                Pressing CTRL key down, sends string c and then releases CTRL key
                     Press Keys    text_field    CTRL+c
 
                 *** Keyword ***
-                Pressing "ENTER" key to element
+                Pressing ENTER key to element
                     Press Keys    button    RETURN
-        
+
         :param locator: element locator
         :param keys: the keys to be typed or selected on the user's keyboard
         """
@@ -4013,11 +3959,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().press_keys(locator, keys)
 
     @keyword
-    def radio_button_should_be_set_to(
-        self,
-        group_name: str,
-        value: str
-    ):
+    def radio_button_should_be_set_to(self, group_name: str, value: str):
         """Verifies radio button group ``group_name`` is set to ``value``.
 
         ``group_name`` is the ``name`` of the radio button group.
@@ -4200,10 +4142,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().select_all_from_list(locator)
 
     @keyword
-    def select_checkbox(
-        self,
-        locator: Union[WebElement, str]
-    ):
+    def select_checkbox(self, locator: Union[WebElement, str]):
         """Selects the checkbox identified by ``locator``.
 
         Does nothing if checkbox is already selected.
@@ -4368,11 +4307,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().select_from_list_by_value(locator, *indexes)
 
     @keyword
-    def select_radio_button(
-        self,
-        group_name: str,
-        value: str
-    ):
+    def select_radio_button(self, group_name: str, value: str):
         """Sets the radio button group ``group_name`` to ``value``.
 
         The radio button to be selected is located by two arguments:
@@ -4421,21 +4356,6 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         """
 
         super().set_browser_implicit_wait(value=value)
-
-    @keyword
-    def Set_Default_Url_Scheme(
-
-    ):
-
-        """
-        **Example**
-
-            **Robot Framework**
-
-            .. code-block:: robotframework
-
-                *** Keyword ***
-        """
 
     @keyword
     def set_focus_to_element(self, locator: Union[WebElement, str]):
@@ -4542,10 +4462,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().set_selenium_implicit_wait(value=value)
 
     @keyword
-    def set_selenium_speed(
-        self,
-        value: timedelta
-    ) -> str:
+    def set_selenium_speed(self, value: timedelta) -> str:
         """Sets the delay that is waited after each Selenium command.
 
         The value can be given as a number that is considered to be
@@ -4572,10 +4489,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().set_selenium_speed(value=value)
 
     @keyword
-    def set_selenium_timeout(
-            self,
-            value: timedelta
-        ) -> str:
+    def set_selenium_timeout(self, value: timedelta) -> str:
         """Sets the timeout that is used by various keywords.
 
         The value can be given as a number that is considered to be
@@ -4634,12 +4548,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().set_window_position()
 
     @keyword
-    def set_window_size(
-        self,
-        width: int,
-        height: int,
-        inner: bool = False
-    ):
+    def set_window_size(self, width: int, height: int, inner: bool = False):
         """Sets current windows size to given ``width`` and ``height``.
 
         Values can be given using strings containing numbers or by using
@@ -4717,10 +4626,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().simulate_event(locator, event)
 
     @keyword
-    def submit_form(
-        self,
-        locator: Union[WebElement, None, str] = None
-    ):
+    def submit_form(self, locator: Union[WebElement, None, str] = None):
         """Submits a form identified by ``locator``.
 
         If ``locator`` is not given, first form on the page is submitted.
@@ -4920,7 +4826,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :raises AssertionError: if the cell contains different text than ``expected``
         """
 
-        super().table_cell_should_contain(locator, row, column, expected, loglevel=loglevel)
+        super().table_cell_should_contain(
+            locator, row, column, expected, loglevel=loglevel
+        )
 
     @keyword
     def table_column_should_contain(
@@ -4967,7 +4875,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :raises AssertionError: if the column text does not contain ``expected``
         """
 
-        super().table_column_should_contain(locator, column, expected, loglevel=loglevel)
+        super().table_column_should_contain(
+            locator, column, expected, loglevel=loglevel
+        )
 
     @keyword
     def table_footer_should_contain(
@@ -5266,11 +5176,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().textfield_value_should_be(locator, expected, message=message)
 
     @keyword
-    def title_should_be(
-        self,
-        title: str,
-        message: Optional[str] = None
-        ):
+    def title_should_be(self, title: str, message: Optional[str] = None):
         """Verifies that the current page title equals ``title``.
 
         The ``message`` argument can be used to override the default error
@@ -5322,10 +5228,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         super().unselect_all_from_list(locator)
 
     @keyword
-    def unselect_checkbox(
-        self,
-        locator: Union[WebElement, str]
-    ):
+    def unselect_checkbox(self, locator: Union[WebElement, str]):
         """Removes the selection of checkbox identified by ``locator``.
 
         Does nothing if the checkbox is not selected.
@@ -5421,7 +5324,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
         See the `Locating elements` section for details about the locator
         syntax.
-        
+
         **Example**
 
             **Robot Framework**
@@ -5527,7 +5430,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :para error: used to override the default error message
         """
 
-        super().wait_until_element_contains(locator=locator, text=text, timeout=timeout, error=error)
+        super().wait_until_element_contains(
+            locator=locator, text=text, timeout=timeout, error=error
+        )
 
     @keyword
     def wait_until_element_does_not_contain(
@@ -5566,7 +5471,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :para error: used to override the default error message
         """
 
-        super().wait_until_element_does_not_contain(locator=locator, text=text, timeout=timeout, error=error)
+        super().wait_until_element_does_not_contain(
+            locator=locator, text=text, timeout=timeout, error=error
+        )
 
     @keyword
     def wait_until_element_is_enabled(
@@ -5747,7 +5654,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :param message: used to override the default error message
         """
 
-        super().wait_until_location_does_not_contain(location, timeout=timeout, message=message)
+        super().wait_until_location_does_not_contain(
+            location, timeout=timeout, message=message
+        )
 
     @keyword
     def wait_until_location_is(
@@ -5898,7 +5807,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :param limit: used to define how many elements the page should contain
         """
 
-        super().wait_until_page_contains_element(locator, timeout=timeout, error=error, limit=limit)
+        super().wait_until_page_contains_element(
+            locator, timeout=timeout, error=error, limit=limit
+        )
 
     @keyword
     def wait_until_page_does_not_contain(
@@ -5974,7 +5885,9 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         :param limit: used to define how many elements the page should not contain
         """
 
-        super().wait_until_page_does_not_contain_element(locator, timeout=timeout, error=error, limit=limit)
+        super().wait_until_page_does_not_contain_element(
+            locator, timeout=timeout, error=error, limit=limit
+        )
 
 
 class Selenium(SeleniumLibrary):
@@ -8122,7 +8035,20 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def get_testability_status(self) -> bool:
-        """Get SeleniumTestability plugin status"""
+        """Get SeleniumTestability plugin status
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            What Is The Plugin Status
+                ${status}=    Get Testability Status
+
+        :return: `True` or `False` based on the plugin status
+        """
         return self.using_testability
 
     @keyword
