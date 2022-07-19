@@ -1070,21 +1070,37 @@ class WorkItems:
             # pylint: disable=undefined-loop-variable
             self.set_work_item_variable(keys[0], parsed_email)
 
-    def _start_suite(self, name, attributes):
+    def _start_suite(self, *_):
         """Robot Framework listener method, called when suite starts."""
-        # pylint: disable=unused-argument, broad-except
         if not self.autoload:
             return
 
         try:
             self.get_input_work_item()
+        # pylint: disable=broad-except
         except Exception as exc:
             logging.warning("Failed to load input work item: %s", exc)
         finally:
             self.autoload = False
 
-    def _end_suite(self, name, attributes):
-        """Robot Framework listener method, called when suite ends."""
+    def _release_on_failure(self, attributes):
+        """Automatically releases current input Work Item when encountering failures
+        with tasks and/or suites.
+        """
+        if attributes["status"] != "FAIL":
+            return
+
+        message = attributes["message"]
+        logging.info("Releasing FAILED input item with APPLICATION error: %s", message)
+        self.release_input_work_item(
+            state=State.FAILED,
+            exception_type=Error.APPLICATION,
+            message=message,
+            _auto_release=True,
+        )
+
+    def _end_suite(self, _, attributes):
+        """Robot Framework listener method, called when the suite ends."""
         # pylint: disable=unused-argument
         for item in self.inputs + self.outputs:
             if item.is_dirty:
@@ -1092,13 +1108,11 @@ class WorkItems:
                     "%s has unsaved changes that will be discarded", self.current
                 )
 
-        if attributes["status"] == "FAIL":
-            self.release_input_work_item(
-                state=State.FAILED,
-                exception_type=Error.APPLICATION,
-                message=attributes["message"],
-                _auto_release=True,
-            )
+        self._release_on_failure(attributes)
+
+    def _end_test(self, _, attributes):
+        """Robot Framework listener method, called when each task ends."""
+        self._release_on_failure(attributes)
 
     @keyword
     def set_current_work_item(self, item: WorkItem):
@@ -1793,10 +1807,10 @@ class WorkItems:
     def release_input_work_item(
         self,
         state: State,
-        _auto_release: bool = False,
         exception_type: Optional[Error] = None,
         code: Optional[str] = None,
         message: Optional[str] = None,
+        _auto_release: bool = False,
     ):
         """Release the lastly retrieved input work item and set its state.
 
