@@ -7,12 +7,13 @@ Task Teardown   Close Workbook
 
 *** Variables ***
 ${RESOURCES}    ${CURDIR}${/}..${/}resources
+${EXCELS}       ${RESOURCES}${/}excels
 
 
 *** Keywords ***
 Append Content To Sheet
     [Arguments]    ${excel_file}    ${content}
-    ${src} =    Set Variable    ${RESOURCES}${/}${excel_file}
+    ${src} =    Set Variable    ${EXCELS}${/}${excel_file}
     ${dest} =    Set Variable    ${OUTPUT_DIR}${/}${excel_file}
     Copy File    ${src}    ${dest}
     Open Workbook    ${dest}

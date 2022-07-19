@@ -1,7 +1,7 @@
 import os
+import platform
 import tempfile
 from contextlib import contextmanager
-import platform
 from pathlib import Path
 
 
@@ -15,6 +15,7 @@ if platform.system() == "Windows":
     # workaround for comtypes._shutdown exception
     # https://issueexplorer.com/issue/pywinauto/pywinauto/1083
     import atexit
+
     import comtypes
 
     atexit.unregister(comtypes._shutdown)

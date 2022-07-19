@@ -391,7 +391,7 @@ class Application:
             raise ValueError("No workbook open")
 
         with catch_com_error():
-            self.app.Application.Run(f"{self.workbook.Name}!{macro_name}", *args)
+            self.app.Application.Run(f"'{self.workbook.Name}'!{macro_name}", *args)
 
     def export_as_pdf(self, pdf_filename: str, excel_filename: str = None):
         """Export Excel as PDF file

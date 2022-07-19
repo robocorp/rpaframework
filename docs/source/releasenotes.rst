@@ -5,12 +5,69 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete
-- Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated
-- Deprecate *Lab* references under documentation.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.4.0 - 13 July 2022
+---------------------
+
+- Adds ``overwrite`` parameter (default `False`) for controlling how attachment
+  download happens with the following keywords (:issue:`584`):
+
+  - **RPA.Email.ImapSmtp**:
+
+    - ``Save Attachment``
+    - ``Save Attachments``
+
+  - **RPA.Email.Exchange**: ``Save Attachments``
+  - **RPA.Outlook.Application**: ``Save Email Attachments``
+
+15.3.0 - 08 July 2022
+---------------------
+
+- Library **RPA.Excel.Application**: Fixes bug with keyword ``Run Macro`` on Excel file
+  names containing spaces or other problematic symbols. (:issue:`479`)
+- Library **RPA.Excel.Files**:
+
+  - Keyword ``Create Workbook`` supports now ``sheet_name`` parameter which sets a
+    custom name for the newly created active sheet. (:issue:`224`)
+  - Fixes a problem with Microsoft validation by stripping leading/trailing whitespace
+    from the workbook properties. (:issue:`572`)
+
+15.2.0 - 05 July 2022
+---------------------
+
+- Library **RPA.Email.Exchange** (:issue:`567`): Keyword ``Authorize`` supports OAuth2
+  Authorization Code flow. (enable it with ``is_oauth=${True}``; Portal
+  `example <https://robocorp.com/portal/robot/robocorp/example-oauth-email>`_)
+- Library **RPA.FileSystem** (:pr:`568`): Add keyword examples and type hints.
+
+15.1.4 - 23 June 2022
+---------------------
+
+- Fix *VSCode* keyword definitions in all packages (:issue:`560`). (*libspec* Python
+  modules paths)
+
+  - ``rpaframework-aws`` **3.1.1**
+  - ``rpaframework-google`` **5.0.1**
+  - ``rpaframework-pdf`` **4.0.2**
+  - ``rpaframework-windows`` **5.0.1**
+
+- Library **RPA.Desktop**: Fix docs examples returning ``Region`` elements.
+
+15.1.3 - 22 June 2022
+---------------------
+
+- Fix *VSCode* keyword definitions. (*libspec* Python modules paths)
+
+15.1.2 - 21 June 2022
+---------------------
+
+- Library **RPA.PDF** (:pr:`549`, ``rpaframework-pdf`` **4.0.1**): Extended PDF
+  examples.
+- Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete.
+- Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated.
 
 15.1.1 - 17 June 2022
 ---------------------

@@ -6,15 +6,17 @@ from io import BytesIO
 from typing import List, Any, Union, Optional
 
 import openpyxl
-from openpyxl.utils import get_column_letter
-from openpyxl.utils.exceptions import InvalidFileException
-
 import xlrd
 import xlwt
-from xlutils.copy import copy as xlutils_copy
 from PIL import Image
+from openpyxl.utils import get_column_letter
+from openpyxl.utils.exceptions import InvalidFileException
+from xlutils.copy import copy as xlutils_copy
 
 from RPA.Tables import Tables, Table
+
+
+PathType = Union[str, pathlib.Path]
 
 
 def get_column_index(column: str) -> int:
@@ -202,65 +204,74 @@ class Files:
         )
 
     def create_workbook(
-        self, path: Optional[str] = None, fmt: str = "xlsx"
+        self,
+        path: Optional[str] = None,
+        fmt: str = "xlsx",
+        sheet_name: Optional[str] = None,
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Create and open a new Excel workbook.
 
-        Automatically also creates a new worksheet with the name "Sheet".
+        Automatically also creates a new worksheet with the name `sheet_name`.
+        (defaults to "Sheet")
 
         **Note:** Must be paired with the ``Save Workbook`` keyword
-        or the newly created workbook will be deleted upon Bot completion.
+        or the newly created workbook will be deleted upon robot completion.
 
-        **Note:** The filename must be set in either the ``Create Workbook`` keyword
-        or the ``Save Workbook`` keyword and must include the file extension
+        **Note:** The file name/path must be set in either the ``Create Workbook``
+        keyword or the ``Save Workbook`` keyword and must include the file extension.
 
-        :param path: Save path for workbook; defaults to robot root if not provided
-        :param fmt:  Format of workbook, i.e. xlsx or xls;
-                     Defaults to xlsx if not provided
-        :return:     Workbook object
+        :param path: Save path for workbook; defaults to robot root if not provided.
+        :param fmt: Format of workbook, i.e. xlsx or xls; Defaults to xlsx if not
+            provided.
+        :param sheet_name: Custom name for the initial sheet.
+        :return: Workbook object.
 
         Examples:
 
         .. code-block:: robotframework
 
-            # Create modern format workbook
-            Create workbook
-            Save workbook    orders.xlsx
+            # Create modern format workbook.
+            Create Workbook
+            Save Workbook    orders.xlsx
 
-            # Create modern format workbook with a path set
-            Create workbook    path=${OUTPUT_DIR}${/}orders.xlsx
-            Save workbook
+            # Create modern format workbook with custom sheet name.
+            Create Workbook  sheet_name=MyCustomSheetName
+            Save Workbook    orders.xlsx
 
-            # Create legacy format workbook
-            Create workbook    fmt=xls
-            Save workbook    orders.xls
+            # Create modern format workbook with a path set.
+            Create Workbook    path=${OUTPUT_DIR}${/}orders.xlsx
+            Save Workbook
 
-            # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword
-            # if the path argument is used
+            # Create legacy format workbook.
+            Create Workbook    fmt=xls
+            Save Workbook    orders.xls
+
+            # Create legacy format workbook with a path set.
+            # Note that the file name must be set in the `Create Workbook` keyword
+            #  if the path argument is used.
             Create Workbook    path=${OUTPUT_DIR}${/}orders.xls    fmt=xls
             Save Workbook
 
         .. code-block:: python
 
-            # Create modern format workbook with defaults
+            # Create modern format workbook with defaults.
             lib = Files()
             lib.create_workbook()
             lib.save_workbook("orders.xlsx")
 
-            # Create modern format workbook with a path set
+            # Create modern format workbook with a path set.
             lib = Files()
             lib.create_workbook(path="./output/orders.xlsx", fmt="xlsx")
             lib.save_workbook()
 
-            # Create legacy format workbook
+            # Create legacy format workbook.
             lib = Files()
             lib.create_workbook(fmt="xls")
             lib.save_workbook("orders.xls")
 
-            # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword
-            # if the path is used
+            # Create legacy format workbook with a path set.
+            # Note that the file name must be set in the `Create Workbook` keyword
+            #  if the path is used.
             lib = Files()
             lib.create_workbook(path="./output/orders.xls", fmt="xls")
             lib.save_workbook()
@@ -277,6 +288,9 @@ class Files:
             raise ValueError(f"Unknown format: {fmt}")
 
         self.workbook.create()
+        if sheet_name is not None:
+            self.rename_worksheet(self.get_active_worksheet(), sheet_name)
+
         return self.workbook
 
     def open_workbook(
@@ -403,6 +417,7 @@ class Files:
                 extension,
             )
 
+        self.workbook.validate_content()
         return self.workbook.save(path)
 
     def list_worksheets(self) -> List[str]:
@@ -1006,15 +1021,35 @@ class Files:
         return self.set_cell_value(row, column, value, name, fmt)
 
 
-class XlsxWorkbook:
-    """Container for manipulating moden Excel files (.xlsx)"""
+class BaseWorkbook:
 
-    def __init__(self, path=None):
+    """Common logic for both .xls and .xlsx files management."""
+
+    def __init__(self, path: Optional[PathType] = None):
         self.logger = logging.getLogger(__name__)
         self.path = path
         self._book = None
         self._extension = None
         self._active = None
+
+    @property
+    def book(self):
+        return self._book
+
+    def _validate_content(self, props_obj: Any):
+        # Strips leading/trailing whitespace in Excel properties.
+        public_props = [prop for prop in dir(props_obj) if not prop.startswith("_")]
+        for prop in public_props:
+            value = getattr(props_obj, prop)
+            if value and isinstance(value, str):
+                setattr(props_obj, prop, value.strip())
+
+
+class XlsxWorkbook(BaseWorkbook):
+    """Container for manipulating modern Excel files (.xlsx)"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @staticmethod
     def is_sheet_empty(sheet):
@@ -1109,6 +1144,9 @@ class XlsxWorkbook:
         self._book = None
         self._extension = None
         self._active = None
+
+    def validate_content(self):
+        self._validate_content(self._book.properties)
 
     def save(self, path=None):
         path = path or self.path
@@ -1248,15 +1286,11 @@ class XlsxWorkbook:
         sheet.add_image(img)
 
 
-class XlsWorkbook:
+class XlsWorkbook(BaseWorkbook):
     """Container for manipulating legacy Excel files (.xls)"""
 
-    def __init__(self, path=None):
-        self.logger = logging.getLogger(__name__)
-        self.path = path
-        self._book = None
-        self._extension = None
-        self._active = None
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._images = []
 
     @staticmethod
@@ -1383,6 +1417,9 @@ class XlsWorkbook:
             self.open(fd)
         finally:
             fd.close()
+
+    def validate_content(self):
+        self._validate_content(self._book)
 
     def save(self, path=None):
         path = path or self.path
