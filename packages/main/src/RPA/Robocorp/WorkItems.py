@@ -9,15 +9,15 @@ from enum import Enum
 from pathlib import Path
 from shutil import copy2
 from threading import Event
-from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 import yaml
-from robot.api.deco import library, keyword
+from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn
+
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
-
 from RPA.Email.ImapSmtp import ImapSmtp
 from RPA.FileSystem import FileSystem
 from RPA.Robocorp.utils import (
