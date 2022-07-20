@@ -1,8 +1,9 @@
 *** Settings ***
-Task Setup     Load mock library
 Library        RPA.Email.ImapSmtp
 Library        RPA.FileSystem
 Library        OperatingSystem      WITH NAME   OS
+
+Task Setup     Load mock library
 
 
 *** Variables ***
@@ -34,6 +35,7 @@ Load mock library
         Set Global Variable     ${first_item}   ${item}
     END
 
+
 Log Payload
     ${payload} =     Get Work Item Payload
     Log    Payload: ${payload}
@@ -55,6 +57,7 @@ Read input and write output
 
     [Teardown]  OS.Remove file     ${temp_out}
 
+
 Explicit state set
     ${payload} =     Get Work Item Payload
     Log     ${payload}
@@ -66,6 +69,7 @@ Explicit state set
     Release Input Work Item     DONE
     Run Keyword And Expect Error    ${err_state_set}        Create Output Work Item
     Run Keyword And Expect Error    ${err_item_released}    Release Input Work Item     DONE
+
 
 Create output work item with variables and files
     Get Input Work Item  # output gets created over a non-released input
@@ -86,15 +90,18 @@ Create output work item with variables and files
     ${obtained_content} =   Read File    ${path}
     Should Be Equal     ${obtained_content}      ${content}
 
+
 Consume queue
     @{results} =     For Each Input Work Item    Log Payload    items_limit=1
     Log   Items keys length: @{results}
     Length should be    ${results}  1
 
+
 Failed release with exception
     Get Input Work Item
     Run Keyword And Expect Error    ${err_fail_without_type}    Release Input Work Item     FAILED      code=LOGIN_PORTAL_DOWN
     Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding
+
 
 Consume queue with and without results
     # Since the first item might be released already or not.
@@ -106,6 +113,7 @@ Consume queue with and without results
 
     ${results} =     For Each Input Work Item    Log Payload    return_results=${False}
     Should Be Equal     ${results}      ${None}
+
 
 Get payload given e-mail process triggering
     ${parsed_email} =    Get Work Item Variable    parsedEmail
