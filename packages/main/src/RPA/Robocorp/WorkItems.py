@@ -230,7 +230,8 @@ class RobocorpAdapter(BaseAdapter):
                 if value is None:
                     del exception[key]
             body["exception"] = exception
-        logging.info(
+        log_func = logging.error if state == State.FAILED else logging.info
+        log_func(
             "Releasing %s input work item %r into %r with exception: %s",
             state.value,
             item_id,
@@ -399,8 +400,9 @@ class FileAdapter(BaseAdapter):
     def release_input(
         self, item_id: str, state: State, exception: Optional[dict] = None
     ):
-        # Nothing happens for now on releasing local dev input work items.
-        logging.info(
+        # Nothing happens for now on releasing local dev input Work Items.
+        log_func = logging.error if state == State.FAILED else logging.info
+        log_func(
             "Releasing item %r with %s state and exception: %s",
             item_id,
             state.value,
