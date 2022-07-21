@@ -153,8 +153,8 @@ class ActionKeywords(LibraryContext):
         offset_y: Optional[int] = None
         log_message = f"{click_type}-ing element"
         if offset:
-            # Get a fresh new bounding box each time, since the element might have been
-            #  moved from his initial spot.
+            # Get a new fresh bounding box each time, since the element might have been
+            #  moved from its initial spot.
             rect = item.BoundingRectangle
             # Now compute the new coordinates starting from the element center.
             dist_x, dist_y = (int(dist.strip()) for dist in offset.split(","))
