@@ -125,7 +125,7 @@ Play Task Calculator
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
         # FIXME(cmiN): On Windows 11 this offset minimizes the window. (might be resolution bound)
-        ${locator} =    Set Variable    type:Group and name:"Number pad" > type:Button index:5
+        ${locator} =    Set Variable    type:Group and name:"Number pad" > type:Button index:5 offset:0,0
     ELSE
         ${locator} =    Set Variable    type:Group and name:"Number pad" > type:Button index:5 offset:370,0
     END
