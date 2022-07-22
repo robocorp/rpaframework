@@ -176,7 +176,10 @@ class ActionKeywords(LibraryContext):
 
         self.logger.debug(log_message)
         click_function(
-            x=offset_x, y=offset_y, simulateMove=False, waitTime=click_wait_time
+            x=offset_x,
+            y=offset_y,
+            simulateMove=self.ctx.SIMULATE_MOVE,
+            waitTime=click_wait_time,
         )
 
     @keyword(tags=["action"])
