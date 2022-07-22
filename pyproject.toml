@@ -12,7 +12,7 @@ rpaframework = { path = "packages/main", extras = [
 	"aws",
 ], develop = true }
 rpaframework-google = "^5.0.1"
-rpaframework-windows = "^5.0.1"
+rpaframework-windows = "^5.0.2"
 
 [tool.poetry.dev-dependencies]
 robotframeworklexer = "^1.1"

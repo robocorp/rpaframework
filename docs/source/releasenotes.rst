@@ -5,14 +5,17 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.5.0 - 22 July 2022
+---------------------
+
 - Library **RPA.Windows** (:issue:`587`): Fix offset-based clicking. (coordinates
   relative to the center of the element with ``offset:x,y`` locator property)
 - Library **RPA.Robocorp.WorkItems** (:issue:`538`): Automatically release the current
   input Work Item as ``FAILED`` `Application` when the robot fails unexpectedly.
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 15.4.0 - 13 July 2022
 ---------------------
