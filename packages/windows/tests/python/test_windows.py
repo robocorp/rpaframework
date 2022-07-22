@@ -31,6 +31,7 @@ def test_do_some_calculations(library):
 @pytest.mark.parametrize(
     "offset, x, y",
     [
+        (None, None, None),  # no offset provided
         ("0,0", 100, 50),  # right in the center
         ("10,30", 110, 80),  # a little bit SE
         ("-100,-50", 0, 0),  # exactly on the left-top corner
