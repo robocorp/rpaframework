@@ -124,46 +124,63 @@ class ActionKeywords(LibraryContext):
         """
         return self._mouse_click(locator, "MiddleClick", wait_time, timeout)
 
-    def _mouse_click(self, element, click_type, wait_time, timeout):
-        click_wait_time = wait_time or self.ctx.wait_time
+    def _mouse_click(
+        self,
+        locator: Locator,
+        click_type: str,
+        wait_time: Optional[float],
+        timeout: Optional[float],
+    ) -> WindowsElement:
+        click_wait_time: float = wait_time or self.ctx.wait_time
         with self.set_timeout(timeout):
-            element = self.ctx.get_element(element)
-            if element.item.robocorp_click_offset:
-                self.ctx.logger.debug("Click element with offset")
-                self._click_element_coordinates(element, click_type, click_wait_time)
-            else:
-                self.ctx.logger.debug("Click element")
-                self._click_element(element, click_type, click_wait_time)
+            element = self.ctx.get_element(locator)
+            self._click_element(element, click_type, click_wait_time)
         return element
 
-    def _click_element_coordinates(self, element, click_type, click_wait_time):
-        callable_attribute = hasattr(element.item, click_type)
-        if callable_attribute:
-            rect = element.item.BoundingRectangle
-            offset_x, offset_y = [
-                int(v) for v in element.item.robocorp_click_offset.split(",")
-            ]
-            getattr(element.item, click_type)(
-                rect.xcenter() + offset_x,
-                rect.ycenter() + offset_y,
-                waitTime=click_wait_time,
-            )
-        else:
+    def _click_element(
+        self, element: WindowsElement, click_type: str, click_wait_time: float
+    ):
+        item = element.item
+        click_function = getattr(item, click_type, None)
+        if not click_function:
             raise ActionNotPossible(
                 f"Element {element!r} does not have {click_type!r} attribute"
             )
 
-    def _click_element(self, element, click_type, click_wait_time):
-        attr = hasattr(element.item, click_type)
-        if attr:
-            getattr(element.item, click_type)(
-                waitTime=click_wait_time,
-                simulateMove=False,
-            )
-        else:
-            raise ActionNotPossible(
-                f"Element {element!r} does not have {click_type!r} attribute"
-            )
+        # Attribute added in `RPA.core.windows.locators.LocatorMethods`.
+        offset: Optional[str] = item.robocorp_click_offset
+        offset_x: Optional[int] = None
+        offset_y: Optional[int] = None
+        log_message = f"{click_type}-ing element"
+        if offset:
+            # Get a new fresh bounding box each time, since the element might have been
+            #  moved from its initial spot.
+            rect = item.BoundingRectangle
+            # Now compute the new coordinates starting from the element center.
+            dist_x, dist_y = (int(dist.strip()) for dist in offset.split(","))
+            pos_x, pos_y = rect.xcenter() + dist_x, rect.ycenter() + dist_y
+            # If we pass the newly obtained absolute position to the clicking function
+            #  that won't work as expected. You see (`help(item.Click)`), if the passed
+            #  offset is positive then it gets relative to the left-top corner and if
+            #  is negative then the right-bottom corner is used.
+            # Let's assume we end up with a positive relative offset. (using left-top
+            #  fixed corner)
+            offset_x, offset_y = pos_x - rect.left, pos_y - rect.top
+            # If by any chance an offset is negative, it gets relative to the
+            #  right-bottom corner, therefore adjust it accordingly.
+            if offset_x < 0:
+                offset_x -= rect.width()
+            if offset_y < 0:
+                offset_y -= rect.height()
+            log_message += f" with offset: {offset_x}, {offset_y}"
+
+        self.logger.debug(log_message)
+        click_function(
+            x=offset_x,
+            y=offset_y,
+            simulateMove=self.ctx.SIMULATE_MOVE,
+            waitTime=click_wait_time,
+        )
 
     @keyword(tags=["action"])
     def select(self, locator: Locator, value: str) -> WindowsElement:
@@ -199,7 +216,7 @@ class ActionKeywords(LibraryContext):
         interval: float = 0.01,
         wait_time: Optional[float] = None,
         send_enter: bool = False,
-    ) -> WindowsElement:
+    ):
         """Send keys to desktop, current window or to Control element
         defined by given locator.
 

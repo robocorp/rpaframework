@@ -99,15 +99,23 @@ def typecheck(ctx):
     poetry(ctx, "run mypy src")
 
 
-@task(install)
+@task
 def test(ctx):
-    """Run unittests"""
+    """Run Python unit tests and Robot Framework tests"""
+    testpython(ctx)
+    # NOTE: Windows robot tests disabled in CI for now. (requires VM with UI support)
+    # testrobot(ctx)
+
+
+@task(install)
+def testpython(ctx):
+    """Run Python unit-tests."""
     poetry(ctx, "run pytest")
 
 
 @task(install)
 def testrobot(ctx, ci=False, task_robot=None):
-    """Run Robot Framework tests"""
+    """Run Robot Framework tests."""
     exclude = []
     if not task_robot:
         exclude.append("manual")
@@ -121,8 +129,7 @@ def testrobot(ctx, ci=False, task_robot=None):
     poetry(ctx, run_cmd)
 
 
-# add test
-@task(cleanlibspec, lint, libspec)
+@task(cleanlibspec, lint, libspec, test)
 def build(ctx):
     """Build distributable python package"""
     poetry(ctx, "build -vv -f sdist")

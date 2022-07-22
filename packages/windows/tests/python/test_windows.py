@@ -1,19 +1,19 @@
-# import pytest
+import pytest
+from unittest import mock
+
 from RPA.Windows import Windows
-
-#
-# Problem with pytest
-# https://github.com/pywinauto/pywinauto/issues/858
-#
-# @pytest.fixture
-# def library():
-#     library = Windows()
-#     return library
-
-library = Windows(locators_path="tests/python/locators.json")
+from RPA.Windows.utils import IS_WINDOWS
 
 
-def test_do_some_calculations():  # (library):
+@pytest.fixture
+def library():
+    lib = Windows(locators_path="tests/python/locators.json")
+    return lib
+
+
+@pytest.mark.skipif(not IS_WINDOWS, reason="Windows required")
+@pytest.mark.xfail(reason="UI rendering required")
+def test_do_some_calculations(library):
     try:
         library.windows_run("calc.exe")
         library.control_window("name:Calculator")
@@ -28,5 +28,35 @@ def test_do_some_calculations():  # (library):
         library.close_current_window()
 
 
-if __name__ == "__main__":
-    test_do_some_calculations()
+@pytest.mark.parametrize(
+    "offset, x, y",
+    [
+        (None, None, None),  # no offset provided
+        ("0,0", 100, 50),  # right in the center
+        ("10,30", 110, 80),  # a little bit SE
+        ("-100,-50", 0, 0),  # exactly on the left-top corner
+        ("100, 50", 200, 100),  # exactly on the right-bottom corner
+        # Outside the bounding-box.
+        ("-110,-60", -210, -110),  # (NW) -- right-bottom corner relative
+        ("110,60", 210, 110),  # (SE) -- left-top corner relative
+    ],
+)
+@mock.patch("RPA.core.windows.locators.LocatorMethods.get_element")
+def test_coordinates_clicking(mock_get_element, library, offset, x, y):
+    # Let's imagine a 200x100 button positioned on the upper left side of the screen.
+    mock_element = mock.Mock()
+    item = mock_element.item
+    rect = item.BoundingRectangle
+    rect.left = 100
+    rect.top = 200
+    rect.right = 300
+    rect.bottom = 300
+    rect.xcenter.return_value = (rect.left + rect.right) // 2
+    rect.ycenter.return_value = (rect.top + rect.bottom) // 2
+    rect.width.return_value = rect.right - rect.left
+    rect.height.return_value = rect.bottom - rect.top
+    mock_get_element.return_value = mock_element
+
+    item.robocorp_click_offset = offset
+    library.click("MyButton")
+    item.Click.assert_called_once_with(x=x, y=y, simulateMove=False, waitTime=0.5)
