@@ -455,7 +455,7 @@ class ModelKeywords(LibraryContext):
             if pagenum in converted_pages:
                 return  # specific page already converted
         else:
-            pages_count = self.active_pdf_document.reader.getNumPages()
+            pages_count = self.pages_count
             if len(converted_pages) >= pages_count:
                 return  # all pages got converted already
 
@@ -753,14 +753,13 @@ class ModelKeywords(LibraryContext):
             self.logger.debug("No values available for updating the form fields")
             updated_fields = {}
 
-        for idx in range(reader.getNumPages()):
-            page = reader.getPage(idx)
+        for page in reader.pages:
             if updated_fields:
                 try:
                     writer.updatePageFormFieldValues(page, fields=updated_fields)
                 except Exception as exc:  # pylint: disable=W0703
                     self.logger.warning(repr(exc))
-            writer.addPage(page)
+            writer.add_page(page)
 
         if output_path is None:
             output_path = self.active_pdf_document.path
