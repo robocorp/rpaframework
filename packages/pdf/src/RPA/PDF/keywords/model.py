@@ -421,8 +421,8 @@ class ModelKeywords(LibraryContext):
 
         :param source_path: source PDF filepath
         :param trim: trim whitespace from the text is set to True (default)
-        :param pagenum: Page number where search is performed on, defaults to `None`. (
-            meaning all pages get converted)
+        :param pagenum: Page number where search is performed on, defaults to `None`.
+            (meaning all pages get converted -- numbers start from 1)
 
         **Examples**
 

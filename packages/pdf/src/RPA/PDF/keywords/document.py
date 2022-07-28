@@ -514,7 +514,7 @@ class DocumentKeywords(LibraryContext):
 
 
         :param source_path: filepath to the source pdf.
-        :param pages: page numbers to get text (numbers start from 0).
+        :param pages: page numbers to get text (numbers start from 1).
         :param details: set to `True` to return textboxes, default `False`.
         :param trim: set to `False` to return raw texts, default `True`
             means whitespace is trimmed from the text
@@ -586,7 +586,7 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
             in the robot output directory as ``output.pdf``
-        :param pages: page numbers to extract from PDF (numbers start from 0)
+        :param pages: page numbers to extract from PDF (numbers start from 1)
             if None then extracts all pages.
         """
         self.switch_to_pdf(source_path)
@@ -642,7 +642,7 @@ class DocumentKeywords(LibraryContext):
                     pages=5
                 )
 
-        :param pages: page numbers to extract from PDF (numbers start from 0).
+        :param pages: page numbers to extract from PDF (numbers start from 1).
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
             in the robot output directory as ``output.pdf``
@@ -1083,9 +1083,9 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def save_figures_as_images(
         self,
-        source_path: str = None,
+        source_path: Optional[str] = None,
         images_folder: str = ".",
-        pages: str = None,
+        pages: Optional[str] = None,
         file_prefix: str = "",
     ) -> List[str]:
         """Save figures from given PDF document as image files.
@@ -1125,7 +1125,8 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to PDF document
         :param images_folder: directory where image files will be created
         :param pages: target figures in the pages, can be single page or range,
-         default `None` means that all pages are scanned for figures to save
+            default `None` means that all pages are scanned for figures to save
+            (numbers start from 1)
         :param file_prefix: image filename prefix
         :return: list of image filenames created
         """
