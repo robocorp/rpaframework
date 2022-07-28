@@ -5,6 +5,9 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.PDF** (:issue:`558`, ``rpaframework-pdf`` **4.1.0**): Fix ``pages``
+  selection rationale when operating with PDFs. (bugs & documentation)
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
