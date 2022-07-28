@@ -20,7 +20,7 @@ from .model import Document, Figure
 
 
 FilePath = Union[str, Path]
-ListOrString = Union[List[int], List[str], str, None]
+PagesType = Union[int, str, List[int], List[str], None]
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
@@ -480,7 +480,7 @@ class DocumentKeywords(LibraryContext):
     def get_text_from_pdf(
         self,
         source_path: str = None,
-        pages: ListOrString = None,
+        pages: PagesType = None,
         details: bool = False,
         trim: bool = True,
     ) -> dict:
@@ -542,7 +542,7 @@ class DocumentKeywords(LibraryContext):
         self,
         source_path: str = None,
         output_path: str = None,
-        pages: ListOrString = None,
+        pages: PagesType = None,
     ) -> None:
         """Extract pages from source PDF and save to a new PDF document.
 
@@ -604,7 +604,7 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def rotate_page(
         self,
-        pages: ListOrString,
+        pages: PagesType,
         source_path: Optional[str] = None,
         output_path: Optional[str] = None,
         clockwise: bool = True,
@@ -992,7 +992,7 @@ class DocumentKeywords(LibraryContext):
 
     @staticmethod
     def _get_page_numbers(
-        pages: ListOrString = None, reader: Optional[PyPDF2.PdfFileReader] = None
+        pages: PagesType = None, reader: Optional[PyPDF2.PdfFileReader] = None
     ) -> List[int]:
         """Resolve page numbers argument to a list of 1-indexed integer pages."""
         if not pages and not reader:
