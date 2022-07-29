@@ -20,7 +20,7 @@ from .model import Document, Figure
 
 
 FilePath = Union[str, Path]
-ListOrString = Union[List[int], List[str], str, None]
+PagesType = Union[int, str, List[int], List[str], None]
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
@@ -327,8 +327,8 @@ class DocumentKeywords(LibraryContext):
         self.switch_to_pdf(source_path)
 
         reader = self.active_pdf_document.reader
-        docinfo = reader.getDocumentInfo()
-        num_pages = reader.getNumPages()
+        docinfo = reader.metadata
+        num_pages = self.pages_count
 
         parser = PDFParser(self.active_pdf_document.fileobject)
         document = PDFDocument(parser)
@@ -424,7 +424,7 @@ class DocumentKeywords(LibraryContext):
         """
         self.switch_to_pdf(source_path)
         reader = self.active_pdf_document.reader
-        return reader.getNumPages()
+        return len(reader.pages)
 
     @keyword
     def switch_to_pdf(self, source_path: Optional[FilePath] = None) -> None:
@@ -480,7 +480,7 @@ class DocumentKeywords(LibraryContext):
     def get_text_from_pdf(
         self,
         source_path: str = None,
-        pages: ListOrString = None,
+        pages: PagesType = None,
         details: bool = False,
         trim: bool = True,
     ) -> dict:
@@ -514,7 +514,7 @@ class DocumentKeywords(LibraryContext):
 
 
         :param source_path: filepath to the source pdf.
-        :param pages: page numbers to get text (numbers start from 0).
+        :param pages: page numbers to get text (numbers start from 1).
         :param details: set to `True` to return textboxes, default `False`.
         :param trim: set to `False` to return raw texts, default `True`
             means whitespace is trimmed from the text
@@ -542,7 +542,7 @@ class DocumentKeywords(LibraryContext):
         self,
         source_path: str = None,
         output_path: str = None,
-        pages: ListOrString = None,
+        pages: PagesType = None,
     ) -> None:
         """Extract pages from source PDF and save to a new PDF document.
 
@@ -586,7 +586,7 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
             in the robot output directory as ``output.pdf``
-        :param pages: page numbers to extract from PDF (numbers start from 0)
+        :param pages: page numbers to extract from PDF (numbers start from 1)
             if None then extracts all pages.
         """
         self.switch_to_pdf(source_path)
@@ -595,18 +595,18 @@ class DocumentKeywords(LibraryContext):
 
         output_path = self.resolve_output(output_path)
 
-        pages = self._get_page_numbers(pages, reader)
-        for pagenum in pages:
-            writer.addPage(reader.getPage(int(pagenum) - 1))
+        pages: List[int] = self._get_page_numbers(pages, reader)  # 1-indexed
+        for page_nr in pages:
+            writer.add_page(reader.pages[page_nr - 1])
         with open(output_path, "wb") as stream:
             writer.write(stream)
 
     @keyword
     def rotate_page(
         self,
-        pages: ListOrString,
-        source_path: str = None,
-        output_path: str = None,
+        pages: PagesType,
+        source_path: Optional[str] = None,
+        output_path: Optional[str] = None,
         clockwise: bool = True,
         angle: int = 90,
     ) -> None:
@@ -642,7 +642,7 @@ class DocumentKeywords(LibraryContext):
                     pages=5
                 )
 
-        :param pages: page numbers to extract from PDF (numbers start from 0).
+        :param pages: page numbers to extract from PDF (numbers start from 1).
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
             in the robot output directory as ``output.pdf``
@@ -657,18 +657,16 @@ class DocumentKeywords(LibraryContext):
         output_path = self.resolve_output(output_path)
 
         pages = self._get_page_numbers(pages, reader)
-        for page in range(reader.getNumPages()):
-            source_page = reader.getPage(int(page))
-            if page in pages:
-                if clockwise:
-                    source_page.rotateClockwise(int(angle))
-                else:
-                    source_page.rotateCounterClockwise(int(angle))
-            else:
-                source_page = reader.getPage(int(page))
-            writer.addPage(source_page)
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        for page, source_page in enumerate(reader.pages):
+            if page + 1 in pages:
+                rotate_attr = (
+                    "rotateClockwise" if clockwise else "rotateCounterClockwise"
+                )
+                rotate_func = getattr(source_page, rotate_attr)
+                rotate_func(int(angle))
+            writer.add_page(source_page)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     @keyword
     def encrypt_pdf(
@@ -886,7 +884,7 @@ class DocumentKeywords(LibraryContext):
         input_reader = self.active_pdf_document.reader
 
         # Set image boundaries.
-        mediabox = input_reader.getPage(0).mediaBox
+        mediabox = input_reader.pages[0].mediaBox
         img_obj = Image.open(image_path)
         max_width = int(float(mediabox.getWidth()) * coverage)
         max_height = int(float(mediabox.getHeight()) * coverage)
@@ -908,14 +906,13 @@ class DocumentKeywords(LibraryContext):
             # Get image page from temporary PDF using PyPDF2. (compatible with the
             # writer)
             img_pdf_reader = PyPDF2.PdfFileReader(temp_img_pdf)
-            watermark_page = img_pdf_reader.getPage(0)
+            watermark_page = img_pdf_reader.pages[0]
 
             # Write the merged pages of source PDF into the destination one.
             output_writer = PyPDF2.PdfFileWriter()
-            for idx in range(input_reader.getNumPages()):
-                page = input_reader.getPage(idx)
+            for page in input_reader.pages:
                 page.mergePage(watermark_page)
-                output_writer.addPage(page)
+                output_writer.add_page(page)
 
             # Since the input PDF can be the same with the output, make sure we close
             #  the input stream after writing into an auxiliary buffer. (if the input
@@ -982,10 +979,9 @@ class DocumentKeywords(LibraryContext):
         :param reader: a PyPDF2 reader
         """
         writer = PyPDF2.PdfFileWriter()
-        for idx in range(reader.getNumPages()):
-            page = reader.getPage(idx)
+        for page in reader.pages:
             try:
-                writer.addPage(page)
+                writer.add_page(page)
             except Exception as exc:  # pylint: disable=W0703
                 self.logger.warning(repr(exc))
                 raise
@@ -996,11 +992,9 @@ class DocumentKeywords(LibraryContext):
 
     @staticmethod
     def _get_page_numbers(
-        pages: ListOrString = None, reader: PyPDF2.PdfFileReader = None
+        pages: PagesType = None, reader: Optional[PyPDF2.PdfFileReader] = None
     ) -> List[int]:
-        """
-        Resolve page numbers argument to a list.
-        """
+        """Resolve page numbers argument to a list of 1-indexed integer pages."""
         if not pages and not reader:
             raise ValueError("Need a reader instance or explicit page numbers")
 
@@ -1009,7 +1003,7 @@ class DocumentKeywords(LibraryContext):
         elif pages and isinstance(pages, int):
             pages = [pages]
         elif reader and not pages:
-            pages = range(1, reader.getNumPages() + 1)
+            pages = range(1, len(reader.pages) + 1)
 
         return list(map(int, pages))
 
@@ -1089,9 +1083,9 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def save_figures_as_images(
         self,
-        source_path: str = None,
+        source_path: Optional[str] = None,
         images_folder: str = ".",
-        pages: str = None,
+        pages: Optional[str] = None,
         file_prefix: str = "",
     ) -> List[str]:
         """Save figures from given PDF document as image files.
@@ -1131,7 +1125,8 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to PDF document
         :param images_folder: directory where image files will be created
         :param pages: target figures in the pages, can be single page or range,
-         default `None` means that all pages are scanned for figures to save
+            default `None` means that all pages are scanned for figures to save
+            (numbers start from 1)
         :param file_prefix: image filename prefix
         :return: list of image filenames created
         """
@@ -1230,18 +1225,18 @@ class DocumentKeywords(LibraryContext):
             parameters = namesplit[1] if len(namesplit) == 2 else None
             file_to_add = file_to_add.parent / basename
             image_filetype = imghdr.what(str(file_to_add))
-            self.logger.info("File %s type: %s" % (str(file_to_add), image_filetype))
+            self.logger.info("File %s type: %s", str(file_to_add), image_filetype)
             if basename.lower().endswith(".pdf"):
                 reader = PyPDF2.PdfFileReader(str(file_to_add), strict=False)
-                pagecount = reader.getNumPages()
-                pages = self._get_pages(pagecount, parameters)
-                for n in pages:
+                pages = self._get_pages(len(reader.pages), parameters)
+                for page_nr in pages:
                     try:
-                        page = reader.getPage(n - 1)
-                        writer.addPage(page)
+                        # Because is 1-offset with `_get_pages()`.
+                        page = reader.pages[page_nr - 1]
+                        writer.add_page(page)
                     except IndexError:
                         self.logger.warning(
-                            "File %s does not have page %d" % (file_to_add, n)
+                            "File %s does not have page %d", file_to_add, page_nr
                         )
             elif image_filetype in ["png", "jpg", "jpeg", "gif"]:
                 temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
@@ -1263,7 +1258,7 @@ class DocumentKeywords(LibraryContext):
                 pdf.output(name=temp_pdf)
 
                 reader = PyPDF2.PdfFileReader(temp_pdf)
-                writer.addPage(reader.getPage(0))
+                writer.add_page(reader.pages[0])
 
         with open(target_document, "wb") as f:
             writer.write(f)
@@ -1276,14 +1271,14 @@ class DocumentKeywords(LibraryContext):
             )
         else:
             reader = PyPDF2.PdfFileReader(str(target_document), strict=False)
-            pagecount = reader.getNumPages()
-            for n in range(pagecount):
-                page = reader.getPage(n)
-                self.logger.info("Adding page: %s" % n)
-                writer.addPage(page)
+            for idx, page in enumerate(reader.pages):
+                self.logger.info("Adding page: %s", idx)
+                writer.add_page(page)
 
-    def _get_pages(self, pagecount, page_reference):
-        page_reference = f"1-{pagecount}" if page_reference is None else page_reference
+    @staticmethod
+    def _get_pages(pagecount: int, page_reference: Optional[str]) -> List[int]:
+        """Returns a flattened list of pages based on provided 1-indexed ranges."""
+        page_reference = page_reference or f"1-{pagecount}"
         temp = [
             (lambda sub: range(sub[0], sub[-1] + 1))(
                 list(map(int, ele.strip().split("-")))

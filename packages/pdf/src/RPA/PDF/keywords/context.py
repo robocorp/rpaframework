@@ -27,3 +27,7 @@ class LibraryContext:
     @active_pdf_document.setter
     def active_pdf_document(self, value):
         self.ctx.active_pdf_document = value
+
+    @property
+    def pages_count(self):
+        return self.ctx.get_number_of_pages()
