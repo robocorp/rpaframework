@@ -95,21 +95,48 @@ def test_html_to_pdf(library, text, encoding):
     assert text in result
 
 
-def test_rotate_page(library):
-    def get_source_page(pdf_file, page_num):
-        reader = PyPDF2.PdfFileReader(pdf_file)
-        return reader.getPage(int(page_num))
+def _get_source_pages(pdf_file, page_nums):
+    reader = PyPDF2.PdfFileReader(pdf_file)
+    if not page_nums:
+        return reader.pages
 
-    page_num_to_rotate = 1
-    page_before_rotation = get_source_page(str(TestFiles.vero_pdf), page_num_to_rotate)
+    return [reader.pages[page] for page in page_nums]
 
-    assert page_before_rotation["/Rotate"] == 0
 
-    with temp_filename() as tmp_file:
-        library.rotate_page(page_num_to_rotate, TestFiles.vero_pdf, tmp_file)
-        page_after_rotation = get_source_page(tmp_file, page_num_to_rotate)
+@pytest.mark.parametrize(
+    "pages, internal_pages, clockwise",
+    [
+        (1, [0], True),
+        (1, [0], False),
+        (
+            0,
+            [0, 1],
+            True,
+        ),  # 0 is considered null, thus all pages are taken into account
+        ("1", [0], True),  # string index
+        ("1,2", [0, 1], False),  # string range
+        ("2", [1], True),  # string index, last page
+        (3, [], True),  # no pages to rotate, so all remain the same
+        ([2, 1], [0, 1], False),  # list of integers
+    ],
+)
+def test_rotate_page(library, pages, internal_pages, clockwise):
+    pages_before_rotation = _get_source_pages(str(TestFiles.vero_pdf), internal_pages)
+    before_obtained = [page["/Rotate"] for page in pages_before_rotation]
+    before_expected = [0] * (len(internal_pages) or len(pages_before_rotation))
+    assert before_obtained == before_expected
 
-        assert page_after_rotation["/Rotate"] == 90
+    with temp_filename(suffix="-rotated.pdf") as tmp_file:
+        library.rotate_page(pages, TestFiles.vero_pdf, tmp_file, clockwise=clockwise)
+        pages_after_rotation = _get_source_pages(tmp_file, internal_pages)
+        after_obtained = [page["/Rotate"] for page in pages_after_rotation]
+        after_expected = (
+            [90 * (1 if clockwise else -1)] * len(internal_pages)
+            if internal_pages
+            else [0] * len(after_obtained)
+        )
+        assert after_expected  # ensuring we don't end up with an empty list
+        assert after_obtained == after_expected
 
 
 def test_encrypt_pdf(library):
@@ -281,20 +308,3 @@ def test_get_text_from_pdf_all_one_page_after_line_margin_is_set(library):
 
     assert len(pages) == 1
     assert len(pages[1]) == 3556
-
-
-def test_font_serialization(library):
-    html = "<html><body> textă </body></html>"
-    with temp_filename(suffix="-html2.pdf") as pdf_file:
-        library.html_to_pdf(html, pdf_file)
-
-    # Simulate environments swap by changing the path to the .ttf font into a
-    # non-existent one under the serialized artifact. This will trigger a serialized
-    # fonts cleanup before regenerating them with the right path.
-    font_file = FPDF.FONT_CACHE_DIR / f'{FPDF.FONT_PATHS[""].stem}.pkl'
-    content = font_file.read_bytes()
-    content = content.replace(b"assets", b"aseets")  # note the different path here
-    font_file.write_bytes(content)
-
-    with temp_filename(suffix="-html2.pdf") as pdf_file:
-        library.html_to_pdf(html, pdf_file)

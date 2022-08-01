@@ -1,9 +1,21 @@
+# pylint: disable=unused-import
+from RPA.core.windows.context import (  # noqa: F401
+    ElementNotFound,
+    WindowControlError,
+    WindowsContext as LibraryContext,
+    with_timeout,
+)
+
+
+class ActionNotPossible(ValueError):
+    """Action is not possible for the given Control."""
+
+
+# Not yet used exceptions:
+
+
 class ControlNotFound(ValueError):
     """No matching controls were found."""
-
-
-class ElementNotFound(ValueError):
-    """No matching elements were found."""
 
 
 class MultipleControlsFound(ValueError):
@@ -12,26 +24,3 @@ class MultipleControlsFound(ValueError):
 
 class TimeoutException(ValueError):
     """Timeout reached while waiting for condition."""
-
-
-class WindowControlError(ValueError):
-    """Matching window was not found"""
-
-
-class ActionNotPossible(ValueError):
-    """Action is not possible for the given Control"""
-
-
-class LibraryContext:
-    """Shared context for all keyword libraries."""
-
-    def __init__(self, ctx):
-        self.ctx = ctx
-
-    @property
-    def logger(self):
-        return self.ctx.logger
-
-    @property
-    def window(self):
-        return self.ctx.window

@@ -535,6 +535,15 @@ def test_keyword_read_table_from_csv_encoding(library):
     assert table[0] == ["1", "2", "3"]
 
 
+def test_keyword_read_table_from_csv_longer_lines(library):
+    table = library.read_table_from_csv(
+        RESOURCES / "big.csv", header=False, delimiters=";"
+    )
+    assert len(table) == 3
+    assert len(table.columns) == 72
+    table[-1][1] == "1121321715"
+
+
 def test_keyword_read_table_from_csv_extra(library):
     table = library.read_table_from_csv(
         RESOURCES / "extra.csv", column_unknown="whoknows"
@@ -615,6 +624,16 @@ def test_keyword_write_table_to_csv_columns_range(library):
     assert len(data) == 3
     assert data[0] == "0,1,2\n"
     assert data[1] == "1,2,3\n"
+
+
+def test_keyword_write_table_to_csv_delimiter(library, table):
+    with temppath() as path:
+        library.write_table_to_csv(table, path, encoding="utf-8", delimiter=";")
+        with open(path) as fd:
+            data = fd.readlines()
+
+    assert len(data) == 7
+    assert data[0] == "one;two;three;four\n"
 
 
 def test_import_with_integer_keys():

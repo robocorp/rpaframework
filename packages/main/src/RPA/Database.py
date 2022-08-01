@@ -1,7 +1,7 @@
 import importlib
 import logging
 import sys
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
@@ -80,9 +80,9 @@ class Configuration:
         return self.module_name, self.configuration
 
     def get(self, param, default=None):
-        return (
-            self.configuration[param] if param in self.configuration.keys() else default
-        )
+        # Missing values are still present in configuration as nulls.
+        value = self.configuration.get(param)
+        return value if value is not None else default
 
     def set_val(self, param, value):
         self.configuration[param] = value
@@ -176,16 +176,16 @@ class Database:
     # pylint: disable=R0915, too-many-branches
     def connect_to_database(  # noqa: C901
         self,
-        module_name: str = None,
-        database: str = None,
-        username: str = None,
-        password: str = None,
-        host: str = None,
-        port: int = None,
-        charset: str = None,
-        config_file: str = "db.cfg",
-        autocommit: bool = False,
-    ):
+        module_name: Optional[str] = None,
+        database: Optional[str] = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        charset: Optional[str] = None,
+        config_file: Optional[str] = "db.cfg",
+        autocommit: Optional[bool] = False,
+    ) -> None:
         """Connect to database using DB API 2.0 module.
 
         :param module_name: database module to use
@@ -239,16 +239,16 @@ class Database:
             )
         elif module_name in ("pyodbc", "pypyodbc"):
             self.config.set_default_port(1433)
+            server = self.config.get("host", "")
+            if server:
+                server += f",{self.config.get('port')}"
+            db = self.config.get("database", "")
+            usr = self.config.get("username", "")
+            pwd = self.config.get("password", "")
             self.config.set_val(
                 "connect_string",
-                "DRIVER={SQL Server};SERVER=%s,%s;DATABASE=%s;UID=%s;PWD=%s"
-                % (
-                    self.config.get("host"),
-                    self.config.get("port"),
-                    self.config.get("database"),
-                    self.config.get("username"),
-                    self.config.get("password"),
-                ),
+                f"DRIVER={{SQL Server}};SERVER={server};DATABASE={db};"
+                f"UID={usr};PWD={pwd};",
             )
             self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(self.config.get("connect_string"))
@@ -343,13 +343,19 @@ class Database:
             if module_name == "sqlite3":
                 self._dbconnection.isolation_level = None if autocommit else "IMMEDIATE"
 
-    def call_stored_procedure(self, name, params=None, sanstran=False):
+    def call_stored_procedure(
+        self,
+        name: str,
+        params: Optional[List[str]] = None,
+        sanstran: Optional[bool] = False,
+    ) -> List[str]:
         """Call stored procedure with name and params.
 
         :param name: procedure name
         :param params: parameters for the procedure as a list, defaults to None
         :param sanstran: Run the query without an implicit transaction commit or
             rollback if such additional action was detected. (turned off by default)
+        :returns: list of results
 
         Example:
 
@@ -385,10 +391,11 @@ class Database:
                 self._dbconnection.commit()
             return value
 
-    def description(self, table):
+    def description(self, table: str) -> list:
         """Get description of the SQL table
 
         :param table: name of the SQL table
+        :returns: database descripton as a list
 
         Example:
 
@@ -407,7 +414,7 @@ class Database:
             ) from e
         return result.to_list()
 
-    def disconnect_from_database(self):
+    def disconnect_from_database(self) -> None:
         """Close connection to SQL database
 
         Example:
@@ -424,14 +431,17 @@ class Database:
 
     # pylint: disable=R0912
     def execute_sql_script(  # noqa: C901
-        self, filename, sanstran=False, encoding="utf-8"
-    ):  # noqa: C901
+        self,
+        filename: str,
+        sanstran: Optional[bool] = False,
+        encoding: Optional[str] = "utf-8",
+    ) -> None:  # noqa: C901
         """Execute content of SQL script as SQL commands.
 
         :param filename: filepath to SQL script to execute
         :param sanstran: Run the query without an implicit transaction commit or
             rollback if such additional action was detected. (turned off by default)
-        :param encoding: character encoding of file
+        :param encoding: character encoding of file (utf-8 by default)
 
         Example:
 
@@ -482,8 +492,8 @@ class Database:
         self,
         statement: str,
         assertion: Optional[str] = None,
-        sanstran: bool = False,
-        as_table: bool = True,
+        sanstran: Optional[bool] = False,
+        as_table: Optional[bool] = True,
         returning: Optional[bool] = None,
     ) -> Union[List, Dict, Table, Any]:
         """Execute a SQL query and optionally return the execution result.
@@ -496,7 +506,7 @@ class Database:
             (turned off by default, meaning that *commit* is performed on successful
             queries and *rollback* on failing ones automatically)
         :param as_table: If the result should be an instance of `Table`, otherwise a
-            `list` will be returned.
+            `list` will be returned. (defaults to `True`)
         :param returning: Set this to `True` if you want to have rows explicitly
             returned (instead of the query result), `False` otherwise. (by default a
             heuristic detects if it should return or not)
@@ -550,8 +560,8 @@ class Database:
                 returning is None and self._is_returnable_statement(statement)
             )
             if should_return:
-                rows = cursor.fetchall()
-                columns = [c[0] for c in (cursor.description or [])]
+                rows = [tuple(row) for row in cursor.fetchall()]
+                columns = [col[0] for col in (cursor.description or [])]
                 self._result_assertion(rows, columns, assertion)
                 if as_table:
                     result = Table(rows, columns)
@@ -580,27 +590,29 @@ class Database:
 
         return False
 
-    def _result_assertion(self, rows, columns, assertion):
-        if assertion:
-            # pylint: disable=unused-variable
-            row_count = len(rows)  # noqa: F841
-            available_locals = {
-                "row_count": row_count,
-                "columns": columns,
-            }
-            # pylint: disable=W0123
-            valid = eval(assertion, {"__builtins__": None}, available_locals)
+    @staticmethod
+    def _result_assertion(rows: List[Tuple[Any]], columns: List[str], assertion: str):
+        if not assertion:
+            return
 
-            if not valid:
-                raise AssertionError(
-                    "Query assertion %s failed. Facts: %s"
-                    % (assertion, available_locals)
-                )
+        # pylint: disable=unused-variable
+        row_count = len(rows)  # noqa: F841
+        available_locals = {
+            "row_count": row_count,
+            "columns": columns,
+        }
+        # pylint: disable=W0123
+        valid = eval(assertion, {"__builtins__": None}, available_locals)
+
+        if not valid:
+            raise AssertionError(
+                "Query assertion %s failed. Facts: %s" % (assertion, available_locals)
+            )
 
     def __execute_sql(self, cursor, sqlStatement):
         return cursor.execute(sqlStatement)
 
-    def set_auto_commit(self, autocommit=True):
+    def set_auto_commit(self, autocommit: bool = True) -> None:
         """Set database auto commit mode.
 
         :param autocommit: boolean value for auto commit, defaults to True
@@ -615,7 +627,13 @@ class Database:
         """
         self._dbconnection.autocommit = autocommit
 
-    def get_rows(self, table, columns=None, conditions=None, as_table=True):
+    def get_rows(
+        self,
+        table,
+        columns: Optional[str] = None,
+        conditions: Optional[str] = None,
+        as_table: Optional[bool] = True,
+    ) -> Union[List, Dict, Table, Any]:
         """Get rows from table. Columns and conditions can be
         set to filter result.
 
@@ -625,6 +643,7 @@ class Database:
         :param conditions: limiting result by WHERE clause, defaults to `None`
         :param as_table: if result should be instance of ``Table``, defaults to `True`
          `False` means that return type would be `list`
+        :returns: table or list based on param as_table arguement
 
         Example:
 
@@ -642,12 +661,13 @@ class Database:
             "SELECT %s FROM %s%s" % (columns, table, where_cond), as_table=as_table
         )
 
-    def get_number_of_rows(self, table, conditions=None):
+    def get_number_of_rows(self, table: str, conditions: Optional[str] = None) -> int:
         """Get number of rows in a table. Conditions can be given
         as arguments for WHERE clause.
 
         :param table: name of the SQL table
         :param conditions: restrictions for selections, defaults to None
+        :returns: number or rows
 
         Example:
 

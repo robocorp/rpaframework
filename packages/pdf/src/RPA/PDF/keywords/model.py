@@ -153,6 +153,8 @@ class Page(BaseElement):
 
     @property
     def figures(self) -> OrderedDict:
+        # NOTE(cmiN): Usually all our figures are of type `LTImage` only. (as the
+        #  `LTFigure` ones are duplicates of the previously extracted unique images)
         return self._figures
 
     @property
@@ -328,7 +330,6 @@ class Converter(PDFConverter):
                 )
                 self.write(s)
             elif isinstance(item, LTFigure):
-                figure = Figure(item)
                 s = '<figure name="%s" bbox="%s">\n' % (
                     item.name,
                     bbox2str(item.bbox),
@@ -336,8 +337,10 @@ class Converter(PDFConverter):
                 self.write(s)
                 for child in item:
                     render(child)
+                    if isinstance(child, LTImage):
+                        figure = Figure(child)
+                        self._add_unique_figure(figure)
                 self.write("</figure>\n")
-                self._add_unique_figure(figure)
             elif isinstance(item, LTTextLine):
                 self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
                 for child in item:
@@ -377,7 +380,6 @@ class Converter(PDFConverter):
             elif isinstance(item, LTText):
                 self.write("<text>%s</text>\n" % item.get_text())
             elif isinstance(item, LTImage):
-                figure = Figure(item)
                 if self.imagewriter is not None:
                     name = self.imagewriter.export_image(item)
                     self.write(
@@ -388,6 +390,7 @@ class Converter(PDFConverter):
                     self.write(
                         '<image width="%d" height="%d" />\n' % (item.width, item.height)
                     )
+                figure = Figure(item)
                 self._add_unique_figure(figure)
             else:
                 self._logger.warning("Unknown item: %r", item)
@@ -418,8 +421,8 @@ class ModelKeywords(LibraryContext):
 
         :param source_path: source PDF filepath
         :param trim: trim whitespace from the text is set to True (default)
-        :param pagenum: Page number where search is performed on, defaults to `None`. (
-            meaning all pages get converted)
+        :param pagenum: Page number where search is performed on, defaults to `None`.
+            (meaning all pages get converted -- numbers start from 1)
 
         **Examples**
 
@@ -452,7 +455,7 @@ class ModelKeywords(LibraryContext):
             if pagenum in converted_pages:
                 return  # specific page already converted
         else:
-            pages_count = self.active_pdf_document.reader.getNumPages()
+            pages_count = self.pages_count
             if len(converted_pages) >= pages_count:
                 return  # all pages got converted already
 
@@ -522,7 +525,7 @@ class ModelKeywords(LibraryContext):
         :param replace_none_value: Enable this to conveniently visualize the fields. (
             replaces the null value with field's name)
         :param encoding: Use an explicit encoding for field name/value parsing. (
-            defaults to "iso-8859-1" but "utf-16" might work for you)
+            defaults to "iso-8859-1" but "utf-8/16" might be the one working for you)
         :returns: A dictionary with all the found fields. Use their key names when
             setting values into them.
         :raises KeyError: If no input fields are enabled in the PDF.
@@ -750,14 +753,13 @@ class ModelKeywords(LibraryContext):
             self.logger.debug("No values available for updating the form fields")
             updated_fields = {}
 
-        for idx in range(reader.getNumPages()):
-            page = reader.getPage(idx)
+        for page in reader.pages:
             if updated_fields:
                 try:
                     writer.updatePageFormFieldValues(page, fields=updated_fields)
                 except Exception as exc:  # pylint: disable=W0703
                     self.logger.warning(repr(exc))
-            writer.addPage(page)
+            writer.add_page(page)
 
         if output_path is None:
             output_path = self.active_pdf_document.path

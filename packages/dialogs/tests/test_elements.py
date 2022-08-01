@@ -233,6 +233,13 @@ def test_add_submit_buttons(library):
         "default": None,
     }
 
+def test_add_dialog_next_page_button(library):
+    library.add_dialog_next_page_button(label="next button")
+    assert len(library.elements) == 1
+    assert library.elements[0] == {
+        "type": "next",
+        "label": "next button"
+    }
 
 def test_clear_elements(library):
     library.add_heading("Whatever")

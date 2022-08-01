@@ -1,40 +1,33 @@
 import logging
+from typing import Optional
 
-# pylint: disable=wrong-import-position
+# pylint: disable=wrong-import-order
+from RPA.core.windows import WindowsElementsMixin
 from robotlibcore import DynamicCore
 
-
-from RPA.Windows.keywords import (
+from . import utils
+from .keywords import (
     ActionKeywords,
     ElementKeywords,
     LocatorKeywords,
     WindowKeywords,
 )
 
-from RPA.Windows import utils
-
-if utils.is_windows():
+if utils.IS_WINDOWS:
     # Configure comtypes to not generate DLL bindings into
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
     import comtypes.client
+    from uiautomation.uiautomation import Logger
 
     comtypes.client.gen_dir = None
 
-    import uiautomation as auto
-    from uiautomation.uiautomation import Logger
 
-
-class Windows(DynamicCore):
+# NOTE(cmiN): We use as base the robotframework `DynamicCore` this time instead of the
+#  vendorized one, like found in `RPA.core.windows.WindowsElements`.
+class Windows(WindowsElementsMixin, DynamicCore):
     # pylint: disable=anomalous-backslash-in-string
     """The `Windows` is a library that can be used for Windows desktop automation.
-
-    This library is at this moment in "BETA" stage as an alternative
-    library for `RPA.Desktop.Windows`. Main difference being that this
-    library is using `uiautomation`_ dependency instead of `pywinauto`.
-
-    .. _uiautomation: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
-
 
     **Installation**
 
@@ -162,8 +155,8 @@ class Windows(DynamicCore):
     .. code-block:: bash
 
         id:clearButton
-        type:Group and name:'Number pad' > type:Button and index:4
-        type:Group and name:'Number pad' > control:Button index:5
+        type:Group and name:"Number pad" > type:Button and index:4
+        type:Group and name:"Number pad" > control:Button index:5
         id:Units1 > name:${unit}
         class:Button offset:370,0
 
@@ -378,7 +371,11 @@ class Windows(DynamicCore):
     can be installed separately. Other options are tools `Inspect Object`_  and `UI Automation Verify`_, which
     can be accessed by installing Windows SDK.
 
-    .. _Accessibility Insights: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+    A more programmatic approach is to run `Print Tree    log_as_warnings=${True}`
+    keyword and then observe in the logs the found elements structure starting from
+    Desktop as root. (refer to keyword's documentation for more details)
+
+    .. _Accessibility Insights: https://accessibilityinsights.io/
     .. _Inspect Object: https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects
     .. _UI Automation Verify: https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify
 
@@ -392,7 +389,7 @@ class Windows(DynamicCore):
 
     .. code-block:: bash
 
-        C:\\Users\\User\\robots\\>windows-record
+        C:\\Users\\User\\robots\\>windows-record  # or >python -m RPA.Windows
         keyboard and mouse listeners started
 
         --------------------------------------------------------------------------------
@@ -400,11 +397,11 @@ class Windows(DynamicCore):
         --------------------------------------------------------------------------------
 
         Control Window    Taskbar  # Handle: 131380
-        Click   name:'Type here to search'
+        Click   name:"Type here to search"
         Control Window    Calculator  # Handle: 3411840
-        Click   name:'Five'
-        Click   name:'Eight'
-        Click   name:'Five'
+        Click   name:Five
+        Click   name:Eight
+        Click   name:Five
 
         --------------------------------------------------------------------------------
 
@@ -433,7 +430,7 @@ class Windows(DynamicCore):
             Send Keys   keys=96+4=
             ${result}=    Get Attribute    id:CalculatorResults    Name
             Log To Console    ${result}
-            ${buttons}=  Get Elements  type:Group and name:'Number pad' > type:Button
+            ${buttons}=  Get Elements  type:Group and name:"Number pad" > type:Button
             FOR  ${button}  IN  @{buttons}
                 Log To Console   ${button}
             END
@@ -455,7 +452,7 @@ class Windows(DynamicCore):
                 library.send_keys(keys="96+4=")
                 result = library.get_attribute("id:CalculatorResults", "Name")
                 print(result)
-                buttons = library.get_elements("type:Group and name:'Number pad' > type:Button")
+                buttons = library.get_elements("type:Group and name:"Number pad" > type:Button")
                 for button in buttons:
                     print(button)
             finally:
@@ -465,27 +462,24 @@ class Windows(DynamicCore):
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    SIMULATE_MOVE = False
 
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        self.wait_time = 0.5
-        self.global_timeout = auto.uiautomation.TIME_OUT_SECOND
-        self.simulate_move = False
-        self.window = None
-        self.anchor_element = None
+    def __init__(self, locators_path: Optional[str] = None):
+        self.wait_time: float = 0.5
 
-        # prevent comtypes writing lot of log messages
-        comtypelogger = logging.getLogger("comtypes")
-        comtypelogger.propagate = False
+        # Prevent comtypes writing a lot of log messages.
+        comtypes_logger = logging.getLogger("comtypes")
+        comtypes_logger.propagate = False
+        if utils.IS_WINDOWS:
+            # Disable uiautomation writing into a log file.
+            Logger.SetLogFile("")
 
-        # disable uiautomation writing a log file
-        Logger.SetLogFile("")
+        super().__init__(locators_path=locators_path)
 
-        # register keyword libraries to LibCore
-        libraries = [
+    def _get_libraries(self, locators_path: Optional[str]):
+        return [
             ActionKeywords(self),
             ElementKeywords(self),
-            LocatorKeywords(self),
+            LocatorKeywords(self, locators_path=locators_path),
             WindowKeywords(self),
         ]
-        super().__init__(libraries)

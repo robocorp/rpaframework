@@ -1,12 +1,376 @@
 Release notes
 =============
 
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- Library **RPA.PDF** (:issue:`558`, ``rpaframework-pdf`` **4.1.0**): Fix ``pages``
+  selection rationale when operating with PDFs. (bugs & documentation)
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.5.0 - 22 July 2022
+---------------------
+
+- Library **RPA.Windows** (:issue:`587`): Fix offset-based clicking. (coordinates
+  relative to the center of the element with ``offset:x,y`` locator property)
+- Library **RPA.Robocorp.WorkItems** (:issue:`538`): Automatically release the current
+  input Work Item as ``FAILED`` `Application` when the robot fails unexpectedly.
+
+15.4.0 - 13 July 2022
+---------------------
+
+- Adds ``overwrite`` parameter (default `False`) for controlling how attachment
+  download happens with the following keywords (:issue:`584`):
+
+  - **RPA.Email.ImapSmtp**:
+
+    - ``Save Attachment``
+    - ``Save Attachments``
+
+  - **RPA.Email.Exchange**: ``Save Attachments``
+  - **RPA.Outlook.Application**: ``Save Email Attachments``
+
+15.3.0 - 08 July 2022
+---------------------
+
+- Library **RPA.Excel.Application**: Fixes bug with keyword ``Run Macro`` on Excel file
+  names containing spaces or other problematic symbols. (:issue:`479`)
+- Library **RPA.Excel.Files**:
+
+  - Keyword ``Create Workbook`` supports now ``sheet_name`` parameter which sets a
+    custom name for the newly created active sheet. (:issue:`224`)
+  - Fixes a problem with Microsoft validation by stripping leading/trailing whitespace
+    from the workbook properties. (:issue:`572`)
+
+15.2.0 - 05 July 2022
+---------------------
+
+- Library **RPA.Email.Exchange** (:issue:`567`): Keyword ``Authorize`` supports OAuth2
+  Authorization Code flow. (enable it with ``is_oauth=${True}``; Portal
+  `example <https://robocorp.com/portal/robot/robocorp/example-oauth-email>`_)
+- Library **RPA.FileSystem** (:pr:`568`): Add keyword examples and type hints.
+
+15.1.4 - 23 June 2022
+---------------------
+
+- Fix *VSCode* keyword definitions in all packages (:issue:`560`). (*libspec* Python
+  modules paths)
+
+  - ``rpaframework-aws`` **3.1.1**
+  - ``rpaframework-google`` **5.0.1**
+  - ``rpaframework-pdf`` **4.0.2**
+  - ``rpaframework-windows`` **5.0.1**
+
+- Library **RPA.Desktop**: Fix docs examples returning ``Region`` elements.
+
+15.1.3 - 22 June 2022
+---------------------
+
+- Fix *VSCode* keyword definitions. (*libspec* Python modules paths)
+
+15.1.2 - 21 June 2022
+---------------------
+
+- Library **RPA.PDF** (:pr:`549`, ``rpaframework-pdf`` **4.0.1**): Extended PDF
+  examples.
+- Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete.
+- Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated.
+
+15.1.1 - 17 June 2022
+---------------------
+
+- Library **RPA.JSON** (:issue:`548`): Fix *libspec* infinite recursion on ``JSONType``
+  type.
+- Deprecate *Lab* references under documentation.
+
+15.1.0 - 15 June 2022
+---------------------
+
+- Library **RPA.Cloud.AWS** (:pr:`508`, ``rpaframework-aws`` **3.1.0**):
+
+  - New service client support for Amazon Redshift's Data API (:issue:`496`). Keyword
+    support for submitting SQL queries and obtaining results from them (can be
+    performed asynchronously, if desired).
+  - New service client support for Amazon STS and the `Assume Role` operation
+    (:issue:`498`). The `Assume role` keyword returns temporary credentials which
+    include a session token. All services updated to support using the session
+    token as part of their `Init ... client` keyword.
+
+- Library **RPA.Robocorp.WorkItems** (:pr:`536`): Expand examples for ``Release Input Work Item``
+  and fix other documentation issues.
+- Library **RPA.Outlook.Application** (:pr:`545`): Reduce logging
+
+security release (all packages) - 27 May 2022
+---------------------------------------------
+
+**Critical** Python package security update concerning ``pillow`` package which is
+a common image processing library for Python.
+
+All new release versions:
+
+    - ``rpaframework`` **15.0.0**
+    - ``rpaframework-aws`` **3.0.0**
+    - ``rpaframework-dialogs`` **3.0.0**
+    - ``rpaframework-google`` **5.0.0**
+    - ``rpaframework-pdf`` **4.0.0**
+    - ``rpaframework-recognition`` **4.0.0**
+    - ``rpaframework-windows`` **5.0.0**
+
+14.2.0 - 25 May 2022
+--------------------
+
+- Library **RPA.PDF** (:issue:`515`, ``rpaframework-pdf`` **3.0.1**): Ensures
+  checkboxes are ticked correctly with latest dependency upgrades.
+- Library **RPA.JSON** (:issue:`481`): Keyword ``Delete From JSON`` supports *filter*
+  expressions for keys removal.
+- Library **RPA.Browser.Selenium** (:pr:`502`): Automatically add URL scheme when
+  navigating, such as `https` (default) or `http`. This functionality is controlled
+  with the keyword ``Set Default URL Scheme``.
+  with the keyword `Set default URL scheme`.
+- Library **RPA.Hubspot**: Fix several bugs and improve logging (:issue:`504`,
+  :issue:`505`, :issue:`506`, and :issue:`507`).
+
+14.1.1 - 12 May 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp** (:issue:`500`): Keywords ``Authorize[ Imap/Smtp]``
+  support `is_oauth` parameter which instructs the client to authenticate through the
+  basic (`False`) or XOAUTH2 (`True`) protocol.
+- Library **RPA.Excel.Files** (:pr:`490`): Keyword examples updated to be more complete
+  and Python examples have been added to all keywords.
+
+14.1.0 - 05 May 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems** (:issue:`485`): Automatically parse into
+  ``email[body]`` payload variable the e-mail body on e-mail Process triggering with
+  "Parse email" configuration option enabled in Control Room.
+- Library **RPA.Hubspot** (:pr:`484`): Add keywords for creating and updating objects in
+  Hubspot, as well as a new batch system when creating batched inputs via keyword.
+- Library **RPA.Excel.Files** (:pr:`491`):
+
+  - Fix ``IndexError`` when removing *.xls* worksheets.
+  - Fix removing currently active worksheet.
+
+14.0.0 - 02 May 2022
+--------------------
+
+- Robot Framework 5 support, but not restricted to (:pr:`470`):
+
+  - Read **migration instructions** on `Taking Robot Framework 5 into use <https://robocorp.com/docs/languages-and-frameworks/robot-framework/robot-framework-5>`_
+  - TRY-EXCEPT-ELSE-FINALLY
+  - WHILE
+  - Inline IF-ELSE IF-ELSE
+  - BREAK and CONTINUE
+  - RETURN
+
+- Library **RPA.Email.Exchange** (:issue:`477`): Keyword ``Send Message`` supports
+  sending messages with any combination of `recipients`, `cc` and/or `bcc`.
+
+- The support for Python version 3.6 has been **REMOVED** from the ``rpaframework[-*]``
+  packages starting with the following versions (:pr:`469`):
+
+    - ``rpaframework`` **14.0.0**
+    - ``rpaframework-aws`` **2.0.0**
+    - ``rpaframework-dialogs`` **2.0.0**
+    - ``rpaframework-google`` **4.0.0**
+    - ``rpaframework-pdf`` **3.0.0**
+    - ``rpaframework-recognition`` **3.0.0**
+    - ``rpaframework-windows`` **4.0.0**
+
+13.3.1 - 15 Apr 2022
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.1**, :pr:`473`): Fix
+  documentation.
+
+13.3.0 - 14 Apr 2022
+--------------------
+
+- Library **RPA.Dialogs**: Include fix for dependency ``robocorp-dialog`` package.
+- Library **RPA.Windows** (``rpaframework-windows`` **3.1.0**, :issue:`439`):
+
+  - Keyword ``Get Elements`` returns all similar elements matching locator. (:pr:`471`)
+  - Keyword ``List Windows`` returns now extra attributes similar to the old
+    deprecated ``RPA.Desktop.Windows`` library (:issue:`408`):
+
+    - ``automation_id``
+    - ``control_type``
+    - ``class_name``
+    - ``rectangle``
+    - ``keyboard_focus``
+    - ``is_active``
+    - ``object``
+
+  - Improved locators parsing and ability to enclose values containing spaces with
+    ``"`` double-quote. (:issue:`363`)
+
+  .. warning::
+    This is a **breaking** change! If you use single-quote locator value enclosing,
+    please switch it to double-quote instead. (e.g. ``Control Window  subname:'-
+    Notepad'`` -> ``Control Window  subname:"- Notepad"``)
+
+    If you're having issues with your current robots, pin in your *conda.yaml*
+    ``rpaframework-core==7.0.1`` and stay on ``rpaframework<=13.2.0``. Once you do the
+    double-quote fix, remove the pin and upgrade to the latest ``rpaframework``.
+
+13.2.0 - 08 Apr 2022
+--------------------
+
+- New library **RPA.Hubspot**: Library support for Hubspot CRM API. Current keywords
+  primarily focus on retrieving data from Hubspot, there is currently no support for
+  updating information.
+
+13.1.0 - 07 Apr 2022
+--------------------
+
+- Library **RPA.Database**: Fix configuration value retrieval. (:pr:`456`)
+- Library **RPA.Dialogs**: Add next button to support wizard style dialogs. (:issue:`452`)
+
+13.0.3 - 05 Apr 2022
+--------------------
+
+- Library **RPA.Database**: Fix queries with ``pyodbc`` module. (affects Microsoft SQL
+  Server, :issue:`443`)
+
+13.0.2 - 04 Apr 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix handling of ``cc`` and ``bcc`` fields
+  with ``Send Message`` keyword
+- Library **RPA.Cloud.AWS**:
+
+  - Fix initializing services with Vault (broken by **13.0.1** release)
+  - The service region can also be given as a environment variable or as Vault
+    key: ``AWS_REGION``
+  - Included and available as separate package ``rpaframework-aws`` **1.0.3**
+
+13.0.1 - 01 Apr 2022
+--------------------
+
+- Library **RPA.Cloud.AWS**: Fix getting analysis result from larger PDF files
+- Library **RPA.Tables**: Fix reading table from CSV file with longer rows
+- Various updates to keyword type hinting
+- New package ``rpaframework-aws`` **1.0.2** (can be used without ``rpaframework`` package)
+
+13.0.0 - 28 Mar 2022
+--------------------
+
+- Major version upgrades for the following packages (incompatible with
+  ``rpaframework<13``):
+
+  - ``rpaframework-google`` **3.0.0**
+  - ``rpaframework-recognition`` **2.0.0**
+  - ``rpaframework-windows`` **3.0.0**
+  - ``rpaframework-dialogs`` **1.0.0**
+  - ``rpaframework-pdf`` **2.0.0**
+
+  .. warning::
+    Any optional package (`google`, `recognition`) should be upgraded at least to the
+    version above in your *conda.yaml* in order to use ``rpaframework`` **13.0.0**.
+    (if such dependencies are explicitly pinned)
+
+  .. note::
+    Package ``rpaframework-windows`` can be omitted entirely from the *conda.yaml*
+    since it's included automatically with this version.
+
+12.10.1 - 25 Mar 2022
+---------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix multiple recipients error with ``Send Message``
+
+12.10.0 - 23 Mar 2022
+---------------------
+
+- Library **RPA.Cloud.AWS**: Fix ``Download Files`` on saving objects with paths.
+- Library **RPA.HTTP**: Overriding ``RequestsLibrary`` logging to DEBUG level for
+  request and response.
+- Automatically installing ``rpaframework-windows`` **2.3.2**. (no need to specify this
+  dependency in your *conda.yaml* anymore)
+- Deprecated ``RPA.Desktop.Windows`` in favor of ``RPA.Windows``.
+
+12.9.0 - 11 Mar 2022
+--------------------
+
+- Library **RPA.Robocorp.Process**:
+
+  - Add keyword ``List Process Run Work Items``
+  - Add parameter `step_run_id` into ``Get Process Run Status``
+
+- Library **RPA.Desktop.Windows**: Fix issue with ``Get Window Elements``
+- Library **RPA.Browser.Selenium**: Fix issue of `auto_close=False` "hanging" on
+  Windows OS task teardown
+- Library **RPA.Email.ImapSmtp**:
+
+  - Add parameters `cc` and `bcc` to the ``Send Message`` keyword
+  - Fix issue with ``List Messages``
+
+- Library **RPA.Email.Exchange**:
+
+  - Add more filtering keys to the `criterion` parameter (detailed description in the
+    `library documentation <https://rpaframework.org/libraries/email_exchange/index.html>`_)
+  - The `contains` parameter has been deprecated as filtering keys now has `_contains` option, for
+    example `sender_contains:name@domain.com`
+  - Fix issue with keyword ``Wait For Message``
+
+- Resolved **Github** issues
+
+  - `RPA.Email.Exchange. Error with Wait For Message keyword filtering <https://github.com/robocorp/rpaframework/issues/418>`_
+  - `RPA.Email.Exchange Wait for Message keyword throws an error <https://github.com/robocorp/rpaframework/issues/377>`_
+  - `Email.Exchange: Add more support for email filtering <https://github.com/robocorp/rpaframework/issues/410>`_
+  - `Get Window Elements triggers NotImplementedError <https://github.com/robocorp/rpaframework/issues/344>`_
+  - `Email.ImapSmtp: Issues with filtering emails <https://github.com/robocorp/rpaframework/issues/409>`_
+
+12.8.2 - 25 Feb 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems**: Keyword ``Create Output Work Item`` supports
+  adding `variables`, `files` and saving in one go through parameters. (:issue:`392`)
+- Library **RPA.Windows** (``rpaframework-windows`` **2.2.2**): Keyword
+  ``Get Os Version`` returns proper Windows version. (:pr:`394`)
+- Library **RPA.Excel.Files**:
+
+  - Fix I/O for tables with one or no rows. (:issue:`391`)
+  - Add parameter ``data_only`` to keyword ``Open Workbook`` to read value instead of
+    formula on XLSX file.
+
+12.8.1 - 18 Feb 2022
+--------------------
+
+- Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update.
+- Package **comtypes** upgrade which fixes `Syntax Error` issues.
+- Library **RPA.core**: Add internal ``interact()`` helper for interrupting code
+  execution and spawning an interactive shell which aids REPL debugging.
+- Library **RPA.Windows** (``rpaframework-windows`` **2.2.1**):
+
+  - Add keyword ``Get Os Version`` which returns the current Windows version.
+  - Add keyword ``Close Window`` which closes any matched open window.
+  - Keyword ``Get Elements`` returns now only sibling elements similar to provided
+    `locator`.
+  - General library and tests fixes. (`COMError`, comtypes)
+
+12.8.0 - 10 Feb 2022
+--------------------
+
+- Library **RPA.Tables**: Add delimiter support to ``Write Table To CSV``
+
+12.7.0 - 10 Feb 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp**
+
+  - Add email dictionary support for all keywords with parameter ``criterion``
+  - Add `prefix` parameter to keywords ``Save Message`` and ``Save Attachment``
+
+12.6.1 - 08 Feb 2022
+--------------------
+
+- Library **RPA.Email.Exchange**: Fix saving .eml attachments from emails (:issue:`381`)
+- Library **RPA.Email.ImapSmtp**: Fix handling of folder names with spaces (:issue:`380`)
 
 12.6.0 - 27 Jan 2022
 --------------------

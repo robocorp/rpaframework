@@ -140,7 +140,7 @@ class Notifier:
         :param user: target user for the notification
         :param token: service token
         :param kwargs: see library documentation
-        :return: True is notification was success, False if not
+        :return: True if notification was successful, False if not
         """
         arguments = {
             "provider_name": "pushover",
@@ -165,7 +165,7 @@ class Notifier:
         :param channel: target channel for the notification
         :param webhook_url: Slack webhook url
         :param kwargs: see library documentation
-        :return: True is notification was success, False if not
+        :return: True if notification was successful, False if not
         """
         arguments = {
             "provider_name": "slack",
@@ -190,7 +190,7 @@ class Notifier:
         :param chat_id: target chat id for the notification
         :param token: service token
         :param kwargs: see library documentation
-        :return: True is notification was success, False if not
+        :return: True if notification was successful, False if not
         """
         arguments = {
             "provider_name": "telegram",
@@ -217,7 +217,7 @@ class Notifier:
         :param username: GMail account username
         :param password: GMail account password
         :param kwargs: see library documentation
-        :return: True is notification was success, False if not
+        :return: True if notification was successful, False if not
         """
         arguments = {
             "provider_name": "gmail",
@@ -251,7 +251,7 @@ class Notifier:
         :param port: email SMTP host port number
         :param tls: should TLS be used (default True)
         :param kwargs: see library documentation
-        :return: True is notification was success, False if not
+        :return: True if notification was successful, False if not
 
         Example.
 
@@ -297,7 +297,7 @@ class Notifier:
         :param account_sid: Twilio account SID
         :param token: Twilio account token
         :param kwargs: see library documentation
-        :return: True is notification was success, False if not
+        :return: True if notification was successful, False if not
         """
         arguments = {
             "provider_name": "twilio",
@@ -316,13 +316,13 @@ class Notifier:
 
         :param provider_name: name of the notifier service
         :param kwargs: see library documentation
-        :return: True is notification was success, False if not
+        :return: True if notification was successful, False if not
         """
         notify_arguments = {"provider_name": provider_name, **kwargs}
         response = notify(**notify_arguments)
         return self._handle_response(response)
 
-    def _handle_response(self, response):
+    def _handle_response(self, response) -> bool:
         if response.status == "Success":
             self.logger.info("Notify %s resulted in Success", response.provider)
             return True

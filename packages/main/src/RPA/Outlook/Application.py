@@ -1,17 +1,19 @@
 import atexit
-from datetime import datetime
 import logging
-from pathlib import Path
 import platform
 import struct
 import time
-from typing import Any, List
 from contextlib import contextmanager
+from datetime import datetime
+from pathlib import Path
+from typing import Any, List
+
+from RPA.Email.common import counter_duplicate_path
 
 if platform.system() == "Windows":
+    import pywintypes
     import win32api
     import win32com.client
-    import pywintypes
 else:
     logging.getLogger(__name__).warning(
         "RPA.Outlook.Application library works only on Windows platform"
@@ -44,6 +46,8 @@ def catch_com_error():
 class Application:
     # pylint: disable=C0301
     """`Outlook.Application` is a library for controlling the Outlook application.
+
+    *Note*. Library works only Windows platform.
 
     **About Email Filtering**
 
@@ -409,7 +413,6 @@ class Application:
             account_folder = self._get_account_folder(namespace, account_name)
             if account_folder:
                 folder = self._get_matching_folder(email_folder, account_folder)
-                self.logger.warning(folder)
             else:
                 raise AttributeError("Did not find account by name '%s'" % account_name)
         else:
@@ -434,27 +437,30 @@ class Application:
             folders = folder.Folders
         for f in folders:
             if folder_name == f.Name:
-                self.logger.warning("Found matching folder: %s", f.Name)
+                self.logger.debug("Found matching folder: %s", f.Name)
                 return f
             emails = self._get_matching_folder(folder_name, f)
             if emails:
                 return emails
         return None
 
-    def save_email_attachments(self, attachments: Any, attachment_folder: str) -> None:
-        """Save email attachments
+    def save_email_attachments(
+        self, attachments: Any, attachment_folder: str, overwrite: bool = False
+    ) -> None:
+        """Save email attachments.
 
         Note. Keyword "Get Emails" can be also used to save attachments.
 
         :param attachments: all attachments from email or single attachment
         :param attachment_folder: target folder where attachments are saved,
-         defaults to current directory
+            defaults to current directory
+        :param overwrite: overwrite existing file if True, defaults to False
 
         Example:
 
         .. code-block:: robotframework
 
-            ${emails}=  Get Emails
+            ${emails} =  Get Emails
             ...    email_folder=priority
             FOR  ${email}  IN   @{emails}
                 FOR  ${attachment}  IN  @{email}[Attachments]
@@ -471,14 +477,15 @@ class Application:
             END
         """
         attachment_target = Path(attachment_folder) if attachment_folder else Path(".")
-        email_attachments = []
         if isinstance(attachments, dict):
             email_attachments = [attachments["item"]]
         else:
             email_attachments = attachments
-        for at in email_attachments:
-            filename = (attachment_target / at.FileName).absolute()
-            at.SaveAsFile(filename)
+        for attachment in email_attachments:
+            file_path = (attachment_target / attachment.FileName).absolute()
+            if not overwrite:
+                file_path = counter_duplicate_path(file_path)
+            attachment.SaveAsFile(file_path)
 
     def mark_email_as_read(self, email: Any, read: bool = True) -> None:
         """Mark email 'read' property. Can be used to mark email as unread.

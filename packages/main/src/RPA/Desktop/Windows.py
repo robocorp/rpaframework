@@ -14,9 +14,10 @@ from typing import Any, Optional
 from RPA.Desktop import Desktop
 from RPA.Desktop.Clipboard import Clipboard
 from RPA.Desktop.OperatingSystem import OperatingSystem
-from RPA.core.helpers import delay, clean_filename
 from RPA.core.geometry import Region
+from RPA.core.helpers import delay, clean_filename
 from RPA.core.locators import ImageLocator
+from RPA.core.logger import deprecation
 
 
 if platform.system() == "Windows":
@@ -205,6 +206,12 @@ class Windows(OperatingSystem):
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self, backend: str = "uia") -> None:
+        deprecation(
+            "`RPA.Desktop.Windows` got deprecated and will be no longer maintained, "
+            "please use `RPA.Windows` instead "
+            "(https://robocorp.com/docs/libraries/rpa-framework/rpa-windows)"
+        )
+
         OperatingSystem.__init__(self)
         self._apps = {}
         self._app_instance_id = 0
@@ -815,7 +822,7 @@ class Windows(OperatingSystem):
             self.quit_application(aid)
             del self._apps[aid]
 
-    def quit_application(self, app_id: str = None, send_keys: bool = False) -> None:
+    def quit_application(self, app_id: int = None, send_keys: bool = False) -> None:
         """Quit an application by application id or
         active application if `app_id` is None.
 
@@ -1248,6 +1255,7 @@ class Windows(OperatingSystem):
     def wait_for_element(
         self,
         locator: str,
+        use_refreshing: bool = False,
         search_criteria: str = None,
         timeout: float = 30.0,
         interval: float = 2.0,
@@ -1258,6 +1266,8 @@ class Windows(OperatingSystem):
         `ElementNotFoundError` if element is not found within timeout.
 
         :param locator: name of the locator
+        :param use_refreshing: wait for element(s) which are not there yet e.g. listbox
+         item or popups, default False
         :param search_criteria: criteria by which element is matched
         :param timeout: defines how long to wait for element to appear,
          defaults to 30.0 seconds
@@ -1278,6 +1288,8 @@ class Windows(OperatingSystem):
         elements = None
         while time.time() < end_time:
             elements, _ = self.find_element(locator, search_criteria)
+            if use_refreshing:
+                self.refresh_window()
             if len(elements) > 0:
                 break
             if interval >= timeout:
@@ -1650,6 +1662,43 @@ class Windows(OperatingSystem):
             )
             return None
 
+        element_dict = self._prepare_element_dict(element)
+        element_info = element.element_info
+        element_attributes = [a for a in dir(element_info) if not a.startswith("_")]
+
+        for attr in element_attributes:
+            try:
+                attr_value = getattr(element_info, attr)
+                if attr == "parent":
+                    element_dict["parent"] = getattr(attr_value, "control_type", None)
+                else:
+                    element_dict[attr] = (
+                        attr_value() if callable(attr_value) else str(attr_value)
+                    )
+            except TypeError:
+                pass
+            except NotImplementedError:
+                pass
+            except COMError as ce:
+                self.logger.info("Got COM error: %s", str(ce))
+
+        return self._clean_element_dict(element_dict)
+
+    def _prepare_element_dict(self, element):
+        element_dict = {}
+
+        element_dict["object"] = element
+        try:
+            element_dict["legacy"] = (
+                element.legacy_properties()
+                if hasattr(element, "legacy_properties")
+                else None
+            )
+        except AttributeError:
+            pass
+        return element_dict
+
+    def _clean_element_dict(self, element_dict):
         attributes_to_remove = [
             # "automation_id",
             "children",
@@ -1678,43 +1727,8 @@ class Windows(OperatingSystem):
             # "visible",
         ]
 
-        element_dict = {}
-        element_info = element.element_info
-        element_attributes = [a for a in dir(element_info) if not a.startswith("_")]
-
-        for attr in element_attributes:
-            try:
-                attr_value = getattr(element_info, attr)
-                if attr == "parent":
-                    element_dict["parent"] = getattr(attr_value, "control_type", None)
-                else:
-                    element_dict[attr] = (
-                        attr_value() if callable(attr_value) else str(attr_value)
-                    )
-            except TypeError:
-                pass
-            except COMError as ce:
-                self.logger.info("Got COM error: %s", str(ce))
-
         for attr in attributes_to_remove:
             element_dict.pop(attr, None)
-
-        element_dict["legacy"] = (
-            element.legacy_properties()
-            if hasattr(element, "legacy_properties")
-            else None
-        )
-        element_dict["object"] = element
-        # child_id = (
-        #     f"[{element_dict['legacy']['ChildId']}]"
-        #     if (element_dict["legacy"] and element_dict["legacy"]["ChildId"] > 0)
-        #     else ""
-        # )
-        # element_dict[
-        #     "xpath"
-        # ] = f"/{element_dict['parent']}/{element_dict['control_type']}{child_id}"
-        # if "Window" not in element_dict["xpath"]:
-        #     element_dict["xpath"] = f"/Window{element_dict['xpath']}"
 
         return element_dict
 

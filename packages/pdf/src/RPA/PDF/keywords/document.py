@@ -1,4 +1,3 @@
-import glob
 import imghdr
 import io
 import os
@@ -6,21 +5,22 @@ import tempfile
 from pathlib import Path
 from typing import List, Tuple, Union, Optional
 
-import pdfminer
 import PyPDF2
+import pdfminer
+from PIL import Image
 from fpdf import FPDF, HTMLMixin
+from pdfminer.image import ImageWriter
+from pdfminer.layout import LTImage
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfparser import PDFParser
-from PIL import Image
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.PDF.keywords import LibraryContext, keyword
-from RPA.core.robocorp import robocorp_home
 from .model import Document, Figure
 
 
 FilePath = Union[str, Path]
-ListOrString = Union[List[int], List[str], str, None]
+PagesType = Union[int, str, List[int], List[str], None]
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
@@ -54,29 +54,10 @@ class PDF(FPDF, HTMLMixin):
         "I": ASSETS_DIR / "Inter-Italic.ttf",
         "BI": ASSETS_DIR / "Inter-BoldItalic.ttf",
     }
-    FONT_CACHE_DIR = robocorp_home() / "fonts"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.font_cache_dir = self.FONT_CACHE_DIR
-        self.font_cache_dir.mkdir(parents=True, exist_ok=True)
-
-    # pylint: disable=arguments-differ
-    def add_font(self, *args, fname, **kwargs):
-        try:
-            return super().add_font(*args, fname=fname, **kwargs)
-        # pylint: disable=broad-except
-        except Exception:
-            # Usually caching issues, like importing a *.pkl font file serialized on
-            # another OS/env.
-            unifilename = self.font_cache_dir / f"{fname.stem}.pkl"
-            if unifilename.exists():
-                os.remove(unifilename)
-            return super().add_font(*args, fname=fname, **kwargs)
 
     def add_unicode_fonts(self):
         for style, path in self.FONT_PATHS.items():
-            self.add_font("Inter", style=style, fname=path, uni=True)
+            self.add_font("Inter", style=style, fname=str(path))
         self.set_font("Inter")
 
 
@@ -106,7 +87,18 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def close_all_pdfs(self) -> None:
-        """Close all opened PDF file descriptors."""
+        """Close all opened PDF file descriptors.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Close Multiple PDFs
+                Close all pdfs
+        """
         file_paths = list(self.ctx.documents.keys())
         for filename in file_paths:
             self.close_pdf(filename)
@@ -114,6 +106,16 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def close_pdf(self, source_pdf: str = None) -> None:
         """Close PDF file descriptor for a certain file.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Close just one pdf
+                Close pdf   path/to/the/pdf/file.pdf
 
         :param source_pdf: filepath to the source pdf.
         :raises ValueError: if file descriptor for the file is not found.
@@ -146,11 +148,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Open my pdf file
                 Open PDF    /tmp/sample.pdf
 
         **Python**
@@ -201,20 +200,19 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            *** Settings ***
-            Library    RPA.PDF
-
-            *** Variables ***
-            ${TEMPLATE}    order.template
-            ${PDF}         result.pdf
-            &{DATA}        name=Robot Generated
-            ...            email=robot@domain.com
-            ...            zip=00100
-            ...            items=Item 1, Item 2
-
-            *** Tasks ***
+            *** Keywords ***
             Create PDF from HTML template
-                Template HTML to PDF   ${TEMPLATE}  ${PDF}  ${DATA}
+                ${TEMPLATE}=    Set Variable    order.template
+                ${PDF}=         Set Variable    result.pdf
+                &{DATA}=        Create Dictionary
+                ...             name=Robot Generated
+                ...             email=robot@domain.com
+                ...             zip=00100
+                ...             items=Item 1, Item 2
+                Template HTML to PDF
+                ...    template=${TEMPLATE}
+                ...    output_path=${PDF}
+                ...    variables=${DATA}
 
         **Python**
 
@@ -263,11 +261,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Create PDF from HTML
                 HTML to PDF    ${html_content_as_string}  /tmp/output.pdf
 
         .. code-block:: python
@@ -276,7 +271,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def create_pdf_from_html():
                 pdf.html_to_pdf(html_content_as_string, "/tmp/output.pdf")
 
         :param content: HTML content.
@@ -286,23 +281,14 @@ class DocumentKeywords(LibraryContext):
         output_path = self.resolve_output(output_path)
         self.logger.info("Writing output to file %s", output_path)
 
-        def _html_to_pdf():
-            fpdf = PDF()
-            # Support unicode content with a font capable of rendering it.
-            fpdf.core_fonts_encoding = encoding
-            fpdf.add_unicode_fonts()
-            fpdf.set_margin(0)
-            fpdf.add_page()
-            fpdf.write_html(content)
-            fpdf.output(name=output_path)
-
-        try:
-            _html_to_pdf()
-        except FileNotFoundError:
-            serialized_fonts = glob.glob(str(PDF.FONT_CACHE_DIR / "*.pkl"))
-            for serialized_font in serialized_fonts:
-                os.remove(serialized_font)
-            _html_to_pdf()
+        fpdf = PDF()
+        # Support unicode content with a font capable of rendering it.
+        fpdf.core_fonts_encoding = encoding
+        fpdf.add_unicode_fonts()
+        fpdf.set_margin(0)
+        fpdf.add_page()
+        fpdf.write_html(content)
+        fpdf.output(name=output_path)
 
     @keyword
     def get_pdf_info(self, source_path: str = None) -> dict:
@@ -316,12 +302,13 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Get PDF metadata
                 ${metadata}=    Get PDF Info    /tmp/sample.pdf
+
+            *** Keywords ***
+            Get metadata from an already opened PDF
+                ${metadata}=    Get PDF Info
 
         **Python**
 
@@ -331,7 +318,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def get_pdf_metadata():
                 metadata = pdf.get_pdf_info("/tmp/sample.pdf")
 
         :param source_path: filepath to the source PDF.
@@ -340,8 +327,8 @@ class DocumentKeywords(LibraryContext):
         self.switch_to_pdf(source_path)
 
         reader = self.active_pdf_document.reader
-        docinfo = reader.getDocumentInfo()
-        num_pages = reader.getNumPages()
+        docinfo = reader.metadata
+        num_pages = self.pages_count
 
         parser = PDFParser(self.active_pdf_document.fileobject)
         document = PDFDocument(parser)
@@ -379,12 +366,13 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Is PDF encrypted
                 ${is_encrypted}=    Is PDF Encrypted    /tmp/sample.pdf
+
+            *** Keywords ***
+            Is open PDF encrypted
+                ${is_encrypted}=    Is PDF Encrypted
 
         **Python**
 
@@ -413,12 +401,12 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Number of pages in PDF
                 ${page_count}=    Get Number Of Pages    /tmp/sample.pdf
+
+            Number of pages in opened PDF
+                ${page_count}=    Get Number Of Pages
 
         **Python**
 
@@ -428,7 +416,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def number_of_pages_in_pdf():
                 page_count = pdf.get_number_of_pages("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf
@@ -436,7 +424,7 @@ class DocumentKeywords(LibraryContext):
         """
         self.switch_to_pdf(source_path)
         reader = self.active_pdf_document.reader
-        return reader.getNumPages()
+        return len(reader.pages)
 
     @keyword
     def switch_to_pdf(self, source_path: Optional[FilePath] = None) -> None:
@@ -451,11 +439,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Jump to another PDF
                 Switch to PDF    /tmp/another.pdf
 
         **Python**
@@ -466,7 +451,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def jump_to_another_pdf():
                 pdf.switch_to_pdf("/tmp/sample.pdf")
 
 
@@ -495,7 +480,7 @@ class DocumentKeywords(LibraryContext):
     def get_text_from_pdf(
         self,
         source_path: str = None,
-        pages: ListOrString = None,
+        pages: PagesType = None,
         details: bool = False,
         trim: bool = True,
     ) -> dict:
@@ -509,12 +494,12 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Text extraction from PDF
                 ${text}=    Get Text From PDF    /tmp/sample.pdf
+
+            Text extraction from open PDF
+                ${text}=    Get Text From PDF
 
         **Python**
 
@@ -524,12 +509,12 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def text_extraction_from_pdf():
                 text = pdf.get_text_from_pdf("/tmp/sample.pdf")
 
 
         :param source_path: filepath to the source pdf.
-        :param pages: page numbers to get text (numbers start from 0).
+        :param pages: page numbers to get text (numbers start from 1).
         :param details: set to `True` to return textboxes, default `False`.
         :param trim: set to `False` to return raw texts, default `True`
             means whitespace is trimmed from the text
@@ -557,7 +542,7 @@ class DocumentKeywords(LibraryContext):
         self,
         source_path: str = None,
         output_path: str = None,
-        pages: ListOrString = None,
+        pages: PagesType = None,
     ) -> None:
         """Extract pages from source PDF and save to a new PDF document.
 
@@ -571,13 +556,15 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Save PDF pages to a new document
                 ${pages}=    Extract Pages From PDF
                 ...          source_path=/tmp/sample.pdf
+                ...          output_path=/tmp/output.pdf
+                ...          pages=5
+
+            Save PDF pages from open PDF to a new document
+                ${pages}=    Extract Pages From PDF
                 ...          output_path=/tmp/output.pdf
                 ...          pages=5
 
@@ -589,7 +576,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def save_pdf_pages_to_a_new_document():
                 pages = pdf.extract_pages_from_pdf(
                     source_path="/tmp/sample.pdf",
                     output_path="/tmp/output.pdf",
@@ -599,7 +586,7 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
             in the robot output directory as ``output.pdf``
-        :param pages: page numbers to extract from PDF (numbers start from 0)
+        :param pages: page numbers to extract from PDF (numbers start from 1)
             if None then extracts all pages.
         """
         self.switch_to_pdf(source_path)
@@ -608,18 +595,18 @@ class DocumentKeywords(LibraryContext):
 
         output_path = self.resolve_output(output_path)
 
-        pages = self._get_page_numbers(pages, reader)
-        for pagenum in pages:
-            writer.addPage(reader.getPage(int(pagenum) - 1))
+        pages: List[int] = self._get_page_numbers(pages, reader)  # 1-indexed
+        for page_nr in pages:
+            writer.add_page(reader.pages[page_nr - 1])
         with open(output_path, "wb") as stream:
             writer.write(stream)
 
     @keyword
     def rotate_page(
         self,
-        pages: ListOrString,
-        source_path: str = None,
-        output_path: str = None,
+        pages: PagesType,
+        source_path: Optional[str] = None,
+        output_path: Optional[str] = None,
         clockwise: bool = True,
         angle: int = 90,
     ) -> None:
@@ -633,11 +620,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            PDF page rotation
                 Rotate Page
                 ...          source_path=/tmp/sample.pdf
                 ...          output_path=/tmp/output.pdf
@@ -651,14 +635,14 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def rotate_page():
+            def pdf_page_rotation():
                 pages = pdf.rotate_page(
                     source_path="/tmp/sample.pdf",
                     output_path="/tmp/output.pdf",
                     pages=5
                 )
 
-        :param pages: page numbers to extract from PDF (numbers start from 0).
+        :param pages: page numbers to extract from PDF (numbers start from 1).
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
             in the robot output directory as ``output.pdf``
@@ -673,18 +657,16 @@ class DocumentKeywords(LibraryContext):
         output_path = self.resolve_output(output_path)
 
         pages = self._get_page_numbers(pages, reader)
-        for page in range(reader.getNumPages()):
-            source_page = reader.getPage(int(page))
-            if page in pages:
-                if clockwise:
-                    source_page.rotateClockwise(int(angle))
-                else:
-                    source_page.rotateCounterClockwise(int(angle))
-            else:
-                source_page = reader.getPage(int(page))
-            writer.addPage(source_page)
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        for page, source_page in enumerate(reader.pages):
+            if page + 1 in pages:
+                rotate_attr = (
+                    "rotateClockwise" if clockwise else "rotateCounterClockwise"
+                )
+                rotate_func = getattr(source_page, rotate_attr)
+                rotate_func(int(angle))
+            writer.add_page(source_page)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     @keyword
     def encrypt_pdf(
@@ -705,12 +687,17 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Secure this PDF
                 Encrypt PDF    /tmp/sample.pdf
+
+            Secure this PDF and set passwords
+                Encrypt PDF
+                ...    source_path=/tmp/sample.pdf
+                ...    output_path=/tmp/new/sample_encrypted.pdf
+                ...    user_pwd=complex_password_here
+                ...    owner_pwd=different_complex_password_here
+                ...    use_128bit=${TRUE}
 
         **Python**
 
@@ -720,7 +707,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def secure_this_pdf():
                 pdf.encrypt_pdf("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf.
@@ -758,11 +745,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keywords ***
+            Make PDF human readable
                 ${success}=  Decrypt PDF    /tmp/sample.pdf
 
         **Python**
@@ -773,7 +757,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def make_pdf_human_readable():
                 success = pdf.decrypt_pdf("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf.
@@ -820,12 +804,12 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
+            *** Keywords ***
+            Image fetch
+                &{figures}=  Get All Figures    /tmp/sample.pdf
 
-            ***Tasks***
-            Example Keyword
-                ${figures}=  Get All Figures    /tmp/sample.pdf
+            Image fetch from open PDF
+                &{figures}=  Get All Figures
 
         **Python**
 
@@ -835,7 +819,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def image_fetch():
                 figures = pdf.get_all_figures("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf.
@@ -866,11 +850,8 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
+            *** Keyword ***
+            Indicate approved with watermark
                 Add Watermark Image To PDF
                 ...             image_path=approved.png
                 ...             source_path=/tmp/sample.pdf
@@ -884,7 +865,7 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
+            def indicate_approved_with_watermark():
                 pdf.add_watermark_image_to_pdf(
                     image_path="approved.png"
                     source_path="/tmp/sample.pdf"
@@ -903,7 +884,7 @@ class DocumentKeywords(LibraryContext):
         input_reader = self.active_pdf_document.reader
 
         # Set image boundaries.
-        mediabox = input_reader.getPage(0).mediaBox
+        mediabox = input_reader.pages[0].mediaBox
         img_obj = Image.open(image_path)
         max_width = int(float(mediabox.getWidth()) * coverage)
         max_height = int(float(mediabox.getHeight()) * coverage)
@@ -925,14 +906,13 @@ class DocumentKeywords(LibraryContext):
             # Get image page from temporary PDF using PyPDF2. (compatible with the
             # writer)
             img_pdf_reader = PyPDF2.PdfFileReader(temp_img_pdf)
-            watermark_page = img_pdf_reader.getPage(0)
+            watermark_page = img_pdf_reader.pages[0]
 
             # Write the merged pages of source PDF into the destination one.
             output_writer = PyPDF2.PdfFileWriter()
-            for idx in range(input_reader.getNumPages()):
-                page = input_reader.getPage(idx)
+            for page in input_reader.pages:
                 page.mergePage(watermark_page)
-                output_writer.addPage(page)
+                output_writer.add_page(page)
 
             # Since the input PDF can be the same with the output, make sure we close
             #  the input stream after writing into an auxiliary buffer. (if the input
@@ -974,14 +954,34 @@ class DocumentKeywords(LibraryContext):
     ):
         """Save the contents of a PyPDF2 reader to a new file.
 
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Save changes to PDF
+                Save PDF    /tmp/output.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def save_changes_to_pdf():
+                pdf.save_pdf(output_path="output/output.pdf")
+
         :param output_path: filepath to target PDF
-        :param reader: a PyPDF2 reader.
+        :param reader: a PyPDF2 reader
         """
         writer = PyPDF2.PdfFileWriter()
-        for idx in range(reader.getNumPages()):
-            page = reader.getPage(idx)
+        for page in reader.pages:
             try:
-                writer.addPage(page)
+                writer.add_page(page)
             except Exception as exc:  # pylint: disable=W0703
                 self.logger.warning(repr(exc))
                 raise
@@ -992,11 +992,9 @@ class DocumentKeywords(LibraryContext):
 
     @staticmethod
     def _get_page_numbers(
-        pages: ListOrString = None, reader: PyPDF2.PdfFileReader = None
+        pages: PagesType = None, reader: Optional[PyPDF2.PdfFileReader] = None
     ) -> List[int]:
-        """
-        Resolve page numbers argument to a list.
-        """
+        """Resolve page numbers argument to a list of 1-indexed integer pages."""
         if not pages and not reader:
             raise ValueError("Need a reader instance or explicit page numbers")
 
@@ -1005,21 +1003,50 @@ class DocumentKeywords(LibraryContext):
         elif pages and isinstance(pages, int):
             pages = [pages]
         elif reader and not pages:
-            pages = range(1, reader.getNumPages() + 1)
+            pages = range(1, len(reader.pages) + 1)
 
         return list(map(int, pages))
 
     @keyword
     def save_figure_as_image(
         self, figure: Figure, images_folder: str = ".", file_prefix: str = ""
-    ):
+    ) -> Optional[str]:
         """Try to save the image data from Figure object, and return
         the file name, if successful.
 
         Figure needs to have byte `stream` and that needs to be recognized
         as image format for successful save.
 
-        :param figure: PDF Figure object which will be saved as an image
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Figure to Image
+                ${image_file_path} =     Save figure as image
+                ...             figure=pdf_figure_object
+                ...             images_folder=/tmp/images
+                ...             file_prefix=file_name_here
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def figure_to_image():
+                image_file_path = pdf.save_figure_as_image(
+                    figure="pdf_figure_object"
+                    images_folder="/tmp/images"
+                    file_prefix="file_name_here"
+                )
+
+        :param figure: PDF Figure object which will be saved as an image.
+         The PDF Figure object can be determined from the `Get All Figures` keyword
         :param images_folder: directory where image files will be created
         :param file_prefix: image filename prefix
         :return: image filepath or None
@@ -1036,6 +1063,15 @@ class DocumentKeywords(LibraryContext):
                 with open(imagepath, "wb") as fout:
                     fout.write(file_stream)
                     result = str(imagepath)
+            elif isinstance(lt_image, LTImage):
+                img_writer = ImageWriter(images_folder)
+                filename = img_writer.export_image(lt_image)
+                src = images_folder / filename
+                if file_prefix:
+                    dest = images_folder / f"{file_prefix}{filename}"
+                    os.rename(src, dest)
+                    src = dest
+                result = str(src)
             else:
                 self.logger.info("Unable to determine image type for a figure")
         else:
@@ -1047,19 +1083,50 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def save_figures_as_images(
         self,
-        source_path: str = None,
+        source_path: Optional[str] = None,
         images_folder: str = ".",
-        pages: str = None,
+        pages: Optional[str] = None,
         file_prefix: str = "",
-    ) -> list:
+    ) -> List[str]:
         """Save figures from given PDF document as image files.
 
         If no source path given, assumes a PDF is already opened.
 
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keyword ***
+            Figures to Images
+                ${image_filenames} =    Save figures as images
+                ...             source_path=/tmp/sample.pdf
+                ...             images_folder=/tmp/images
+                ...             pages=${4}
+                ...             file_prefix=file_name_here
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def figures_to_images():
+                image_filenames = pdf.save_figures_as_image(
+                    source_path="/tmp/sample.pdf"
+                    images_folder="/tmp/images"
+                    pages=4
+                    file_prefix="file_name_here"
+                )
+
         :param source_path: filepath to PDF document
         :param images_folder: directory where image files will be created
         :param pages: target figures in the pages, can be single page or range,
-         default `None` means that all pages are scanned for figures to save
+            default `None` means that all pages are scanned for figures to save
+            (numbers start from 1)
         :param file_prefix: image filename prefix
         :return: list of image filenames created
         """
@@ -1109,10 +1176,7 @@ class DocumentKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
+            *** Keywords ***
             Add files to pdf
                 ${files}=    Create List
                 ...    ${TESTDATA_DIR}${/}invoice.pdf
@@ -1161,18 +1225,18 @@ class DocumentKeywords(LibraryContext):
             parameters = namesplit[1] if len(namesplit) == 2 else None
             file_to_add = file_to_add.parent / basename
             image_filetype = imghdr.what(str(file_to_add))
-            self.logger.info("File %s type: %s" % (str(file_to_add), image_filetype))
+            self.logger.info("File %s type: %s", str(file_to_add), image_filetype)
             if basename.lower().endswith(".pdf"):
                 reader = PyPDF2.PdfFileReader(str(file_to_add), strict=False)
-                pagecount = reader.getNumPages()
-                pages = self._get_pages(pagecount, parameters)
-                for n in pages:
+                pages = self._get_pages(len(reader.pages), parameters)
+                for page_nr in pages:
                     try:
-                        page = reader.getPage(n - 1)
-                        writer.addPage(page)
+                        # Because is 1-offset with `_get_pages()`.
+                        page = reader.pages[page_nr - 1]
+                        writer.add_page(page)
                     except IndexError:
                         self.logger.warning(
-                            "File %s does not have page %d" % (file_to_add, n)
+                            "File %s does not have page %d", file_to_add, page_nr
                         )
             elif image_filetype in ["png", "jpg", "jpeg", "gif"]:
                 temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
@@ -1194,7 +1258,7 @@ class DocumentKeywords(LibraryContext):
                 pdf.output(name=temp_pdf)
 
                 reader = PyPDF2.PdfFileReader(temp_pdf)
-                writer.addPage(reader.getPage(0))
+                writer.add_page(reader.pages[0])
 
         with open(target_document, "wb") as f:
             writer.write(f)
@@ -1207,14 +1271,14 @@ class DocumentKeywords(LibraryContext):
             )
         else:
             reader = PyPDF2.PdfFileReader(str(target_document), strict=False)
-            pagecount = reader.getNumPages()
-            for n in range(pagecount):
-                page = reader.getPage(n)
-                self.logger.info("Adding page: %s" % n)
-                writer.addPage(page)
+            for idx, page in enumerate(reader.pages):
+                self.logger.info("Adding page: %s", idx)
+                writer.add_page(page)
 
-    def _get_pages(self, pagecount, page_reference):
-        page_reference = f"1-{pagecount}" if page_reference is None else page_reference
+    @staticmethod
+    def _get_pages(pagecount: int, page_reference: Optional[str]) -> List[int]:
+        """Returns a flattened list of pages based on provided 1-indexed ranges."""
+        page_reference = page_reference or f"1-{pagecount}"
         temp = [
             (lambda sub: range(sub[0], sub[-1] + 1))(
                 list(map(int, ele.strip().split("-")))

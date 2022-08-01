@@ -2,7 +2,7 @@ import os
 import re
 import subprocess
 from pathlib import Path
-from typing import List
+from typing import List, Union
 from RPA.Desktop import utils
 from RPA.Desktop.keywords import LibraryContext, keyword
 
@@ -18,7 +18,7 @@ def output(*args):
 class Application:
     """Container for launched application."""
 
-    def __init__(self, name: str, args: List[str], shell: bool = False):
+    def __init__(self, name: str, args: Union[List[str], str], shell: bool = False):
         self._name = name
         self._args = args
         self._shell = shell
@@ -63,7 +63,9 @@ class ApplicationKeywords(LibraryContext):
         super().__init__(ctx)
         self._apps = []
 
-    def _create_app(self, name: str, args: List[str], shell: bool = False):
+    def _create_app(
+        self, name: str, args: Union[List[str], str], shell: bool = False
+    ) -> Application:
         cmd = " ".join(args) if not isinstance(args, str) else args
         self.logger.info("Starting application: %s", cmd)
 

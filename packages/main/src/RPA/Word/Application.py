@@ -24,6 +24,8 @@ FILEFORMATS = {
 class Application:
     """`Word.Application` is a library for controlling a Word application.
 
+    *Note*. Library works only Windows platform.
+
     **Examples**
 
     **Robot Framework**

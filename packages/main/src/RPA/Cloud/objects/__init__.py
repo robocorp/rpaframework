@@ -1,1 +1,0 @@
-from .textract import TextractDocument

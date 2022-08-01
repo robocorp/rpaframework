@@ -1,11 +1,13 @@
 from pathlib import Path
-from typing import Union, Optional
+from typing import Optional
 
-from RPA.Windows.keywords import ActionNotPossible, keyword, LibraryContext
+from RPA.core.windows.locators import Locator, WindowsElement
+
 from RPA.Windows import utils
-from .locators import WindowsElement
+from RPA.Windows.keywords import keyword
+from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     import uiautomation as auto
 
 
@@ -15,9 +17,9 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action", "mouse"])
     def click(
         self,
-        locator: Union[WindowsElement, str],
-        wait_time: float = None,
-        timeout: float = None,
+        locator: Locator,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Mouse click on element matching given locator.
 
@@ -44,9 +46,9 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action", "mouse"])
     def double_click(
         self,
-        locator: Union[WindowsElement, str],
-        wait_time: float = None,
-        timeout: float = None,
+        locator: Locator,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Double mouse click on element matching given locator.
 
@@ -71,9 +73,9 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action", "mouse"])
     def right_click(
         self,
-        locator: Union[WindowsElement, str],
-        wait_time: float = None,
-        timeout: float = None,
+        locator: Locator,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Right mouse click on element matching given locator.
 
@@ -98,9 +100,9 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action", "mouse"])
     def middle_click(
         self,
-        locator: Union[WindowsElement, str],
-        wait_time: float = None,
-        timeout: float = None,
+        locator: Locator,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Right mouse click on element matching given locator.
 
@@ -122,53 +124,66 @@ class ActionKeywords(LibraryContext):
         """
         return self._mouse_click(locator, "MiddleClick", wait_time, timeout)
 
-    def _mouse_click(self, element, click_type, wait_time, timeout):
-        if timeout:
-            auto.SetGlobalSearchTimeout(timeout)
-        click_wait_time = wait_time or self.ctx.wait_time
-        try:
-            element = self.ctx.get_element(element)
-            if element.item.robocorp_click_offset:
-                self.ctx.logger.debug("Click element with offset")
-                self._click_element_coordinates(element, click_type, click_wait_time)
-            else:
-                self.ctx.logger.debug("Click element")
-                self._click_element(element, click_type, click_wait_time)
-        finally:
-            auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
+    def _mouse_click(
+        self,
+        locator: Locator,
+        click_type: str,
+        wait_time: Optional[float],
+        timeout: Optional[float],
+    ) -> WindowsElement:
+        click_wait_time: float = wait_time or self.ctx.wait_time
+        with self.set_timeout(timeout):
+            element = self.ctx.get_element(locator)
+            self._click_element(element, click_type, click_wait_time)
         return element
 
-    def _click_element_coordinates(self, element, click_type, click_wait_time):
-        callable_attribute = hasattr(element.item, click_type)
-        if callable_attribute:
-            rect = element.item.BoundingRectangle
-            offset_x, offset_y = [
-                int(v) for v in element.item.robocorp_click_offset.split(",")
-            ]
-            getattr(element.item, click_type)(
-                rect.xcenter() + offset_x,
-                rect.ycenter() + offset_y,
-                waitTime=click_wait_time,
-            )
-        else:
+    def _click_element(
+        self, element: WindowsElement, click_type: str, click_wait_time: float
+    ):
+        item = element.item
+        click_function = getattr(item, click_type, None)
+        if not click_function:
             raise ActionNotPossible(
-                "Element '%s' does not have '%s' attribute" % (element, click_type)
+                f"Element {element!r} does not have {click_type!r} attribute"
             )
 
-    def _click_element(self, element, click_type, click_wait_time):
-        attr = hasattr(element.item, click_type)
-        if attr:
-            getattr(element.item, click_type)(
-                waitTime=click_wait_time,
-                simulateMove=False,
-            )
-        else:
-            raise ActionNotPossible(
-                "Element '%s' does not have '%s' attribute" % (element, click_type)
-            )
+        # Attribute added in `RPA.core.windows.locators.LocatorMethods`.
+        offset: Optional[str] = item.robocorp_click_offset
+        offset_x: Optional[int] = None
+        offset_y: Optional[int] = None
+        log_message = f"{click_type}-ing element"
+        if offset:
+            # Get a new fresh bounding box each time, since the element might have been
+            #  moved from its initial spot.
+            rect = item.BoundingRectangle
+            # Now compute the new coordinates starting from the element center.
+            dist_x, dist_y = (int(dist.strip()) for dist in offset.split(","))
+            pos_x, pos_y = rect.xcenter() + dist_x, rect.ycenter() + dist_y
+            # If we pass the newly obtained absolute position to the clicking function
+            #  that won't work as expected. You see (`help(item.Click)`), if the passed
+            #  offset is positive then it gets relative to the left-top corner and if
+            #  is negative then the right-bottom corner is used.
+            # Let's assume we end up with a positive relative offset. (using left-top
+            #  fixed corner)
+            offset_x, offset_y = pos_x - rect.left, pos_y - rect.top
+            # If by any chance an offset is negative, it gets relative to the
+            #  right-bottom corner, therefore adjust it accordingly.
+            if offset_x < 0:
+                offset_x -= rect.width()
+            if offset_y < 0:
+                offset_y -= rect.height()
+            log_message += f" with offset: {offset_x}, {offset_y}"
+
+        self.logger.debug(log_message)
+        click_function(
+            x=offset_x,
+            y=offset_y,
+            simulateMove=self.ctx.SIMULATE_MOVE,
+            waitTime=click_wait_time,
+        )
 
     @keyword(tags=["action"])
-    def select(self, locator: Union[WindowsElement, str], value: str) -> WindowsElement:
+    def select(self, locator: Locator, value: str) -> WindowsElement:
         """Select value on Control element if action is supported.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -189,19 +204,19 @@ class ActionKeywords(LibraryContext):
             element.item.Select(value)
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have 'Select' attribute" % locator
+                f"Element {locator!r} does not have 'Select' attribute"
             )
         return element
 
     @keyword(tags=["action"])
     def send_keys(
         self,
-        locator: Optional[Union[WindowsElement, str]] = None,
-        keys: str = None,
+        locator: Optional[Locator] = None,
+        keys: Optional[str] = None,
         interval: float = 0.01,
-        wait_time: float = None,
+        wait_time: Optional[float] = None,
         send_enter: bool = False,
-    ) -> WindowsElement:
+    ):
         """Send keys to desktop, current window or to Control element
         defined by given locator.
 
@@ -228,7 +243,6 @@ class ActionKeywords(LibraryContext):
             ${element}=   Get Element   id:pass
             Send Keys  ${element}  password   send_enter=True
         """
-        element = self.ctx.window
         if locator:
             element = self.ctx.get_element(locator).item
         else:
@@ -237,16 +251,15 @@ class ActionKeywords(LibraryContext):
         if send_enter:
             keys += "{Enter}"
         if hasattr(element, "SendKeys"):
-            self.logger.info("Sending keys '%s' to element '%s'" % (keys, element))
-            # element.item.SendKeys(keys, interval=interval, waitTime=keys_wait_time)
+            self.logger.info("Sending keys %r to element %r", keys, element)
             element.SendKeys(text=keys, interval=interval, waitTime=keys_wait_time)
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have 'SendKeys' attribute" % locator
+                f"Element found with {locator!r} does not have 'SendKeys' attribute"
             )
 
     @keyword
-    def get_text(self, locator: Union[WindowsElement, str]) -> str:
+    def get_text(self, locator: Locator) -> str:
         """Get text from Control element defined by the locator.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -259,17 +272,17 @@ class ActionKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${date}=  Get Text   type:Edit name:'Date of birth'
+            ${date} =  Get Text   type:Edit name:"Date of birth"
         """
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "GetWindowText"):
             return element.item.GetWindowText()
         raise ActionNotPossible(
-            "Element '%s' does not have 'GetWindowText' attribute" % locator
+            f"Element found with {locator!r} does not have 'GetWindowText' attribute"
         )
 
     @keyword
-    def get_value(self, locator: Union[WindowsElement, str]) -> str:
+    def get_value(self, locator: Locator) -> str:
         """Get value of the element defined by the locator.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -289,14 +302,14 @@ class ActionKeywords(LibraryContext):
             value_pattern = element.item.GetValuePattern()
             return value_pattern.Value
         raise ActionNotPossible(
-            "Element '%s' does not have 'GetValuePattern' attribute" % locator,
+            f"Element found with {locator!r} does not have 'GetValuePattern' attribute"
         )
 
     @keyword(tags=["action"])
     def set_value(
         self,
-        locator: Union[WindowsElement, str] = None,
-        value: str = None,
+        locator: Optional[Locator] = None,
+        value: Optional[str] = None,
         append: bool = False,
         enter: bool = False,
         newline: bool = False,
@@ -327,15 +340,15 @@ class ActionKeywords(LibraryContext):
 
             Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
             # Press ENTER after setting the value
-            Set Value    type:Edit name:'File name:'    console.txt    enter=True
+            Set Value    type:Edit name:"File name:"    console.txt    enter=True
 
             # Add newline (manually) at the end of the string (Notepad example)
-            Set Value    name:'Text Editor'  abc\\n
+            Set Value    name:"Text Editor"  abc\\n
             # Add newline with parameter
-            Set Value    name:'Text Editor'  abc   newline=True
+            Set Value    name:"Text Editor"  abc   newline=${True}
 
             # Clear Notepad window and start appending text
-            Set Anchor  name:'Text Editor'
+            Set Anchor  name:"Text Editor"
             # all following keyword calls will use anchor element as locator
             # UNLESS they specify locator specifically or `Clear Anchor` is used
             ${time}=    Get Time
@@ -362,7 +375,7 @@ class ActionKeywords(LibraryContext):
             pattern.SetValue(f"{current_value}{value}{newline_string}")
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have value attribute to set" % locator,
+                f"Element found with {locator!r} doesn't support value setting"
             )
         if enter:
             self.send_keys(element, "{Ctrl}{End}{Enter}")
@@ -393,7 +406,7 @@ class ActionKeywords(LibraryContext):
         return old_value
 
     @keyword
-    def screenshot(self, locator: Union[WindowsElement, str], filename: str) -> str:
+    def screenshot(self, locator: Locator, filename: str) -> str:
         """Take a screenshot of the element defined by the locator.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -410,15 +423,16 @@ class ActionKeywords(LibraryContext):
             Screenshot  desktop   desktop.png
             Screenshot  subname:Notepad   notepad.png
         """
-        filepath = Path(filename).resolve()
         element = self.ctx.get_element(locator)
-        element.item.SetFocus()
-        if hasattr(element.item, "CaptureToImage"):
-            element.item.CaptureToImage(str(filepath))
-        else:
+        if not hasattr(element.item, "CaptureToImage"):
             raise ActionNotPossible(
-                "Element '%s' does not have 'CaptureToImage' attribute" % locator,
+                f"Element found with {locator!r} does not have 'CaptureToImage' "
+                "attribute"
             )
+
+        element.item.SetFocus()
+        filepath = str(Path(filename).expanduser().resolve())
+        element.item.CaptureToImage(filepath)
         return filepath
 
     @keyword

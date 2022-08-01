@@ -72,6 +72,22 @@ All elements
     &{result}=    Run dialog
     Log many    &{result}
 
+Multiple dialogs with next button
+    Add heading    1/3
+    Add text input      text-field-1
+    Add dialog next page button         label=next1
+
+    Add heading    2/3
+    Add text input      text-field-2
+    Add dialog next page button         label=next2
+
+    Add heading    3/3
+    Add text input      text-field-3
+    Add submit buttons  submit
+
+    ${result}=  Run dialog
+    Log many    &{result}
+
 Multiple dialogs
     Add heading    1/3
     Add hidden input    index  1

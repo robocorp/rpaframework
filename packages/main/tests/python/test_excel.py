@@ -1,20 +1,37 @@
+import contextlib
 import datetime
-import pytest
 from io import BytesIO
 from pathlib import Path
 
+import pytest
 from RPA.Excel.Files import Files, XlsxWorkbook, XlsWorkbook, ensure_unique
 from RPA.Tables import Table
 
+from . import RESOURCES_DIR, RESULTS_DIR
 
-@pytest.fixture(
-    params=[r"tests/resources/example.xlsx", r"tests/resources/example.xls"]
-)
-def library(request):
+
+EXCELS_DIR = RESOURCES_DIR / "excels"
+
+
+@contextlib.contextmanager
+def _library(excel_file):
     lib = Files()
-    lib.open_workbook(request.param)
+    excel_path = EXCELS_DIR / excel_file
+    lib.open_workbook(excel_path)
     yield lib
     lib.close_workbook()
+
+
+@pytest.fixture(params=["example.xlsx", "example.xls"])
+def library(request):
+    with _library(request.param) as lib:
+        yield lib
+
+
+@pytest.fixture(params=["one-row.xlsx", "one-row.xls", "empty.xlsx", "empty.xls"])
+def library_empty(request):
+    with _library(request.param) as lib:
+        yield lib
 
 
 @pytest.mark.parametrize(
@@ -53,15 +70,17 @@ def test_open_missing(filename):
 def test_wrong_extension_fallback_xlsx():
     # openpyxl does not support xls (actual format) but xlrd will succeed
     library = Files()
-    library.open_workbook("tests/resources/wrong_extension.xlsx")
+    path = str(EXCELS_DIR / "wrong_extension.xlsx")
+    library.open_workbook(path)
     assert library.workbook is not None
 
 
 def test_wrong_extension_fallback_xls():
     # openpyxl will refuse to read wrong extension and xlrd does not support xlsx
     library = Files()
+    path = str(EXCELS_DIR / "wrong_extension.xls")
     with pytest.raises(ValueError, match=".*wrong_extension.xls.*path.*extension.*"):
-        library.open_workbook("tests/resources/wrong_extension.xls")
+        library.open_workbook(path)
     assert library.workbook is None
 
 
@@ -153,6 +172,21 @@ def test_read_worksheet_header(library):
     assert len(data) == 9
     assert data[5]["Index"] == 6
     assert data[5]["Id"] == 2554
+
+
+@pytest.mark.parametrize(
+    "header, content",
+    [
+        (False, [{"A": "Single"}]),
+        (True, []),
+    ],
+)
+def test_read_worksheet_header_empty(library_empty, header, content):
+    data = library_empty.read_worksheet("Sheet", header=header)
+    excel_name = library_empty.workbook.path.stem
+    if "empty" in excel_name:
+        content = []  # there's no content at all, no matter the header switch
+    assert data == content
 
 
 def test_read_worksheet_timestamp(library):
@@ -247,8 +281,14 @@ def test_append_to_worksheet_empty_with_headers(fmt):
 
 
 def test_remove_worksheet(library):
+    library.set_active_worksheet("Second")
+
     library.remove_worksheet("Second")
     assert library.list_worksheets() == ["First"]
+    assert library.get_active_worksheet() == "First"
+
+    with pytest.raises(ValueError):
+        library.remove_worksheet("First")
 
 
 def test_rename_worksheet(library):
@@ -362,7 +402,8 @@ def test_cell_format(library):
 
 
 def test_insert_image_to_worksheet(library):
-    library.insert_image_to_worksheet(10, "B", "tests/resources/faces.jpeg", scale=4)
+    path = str(RESOURCES_DIR / "faces.jpeg")
+    library.insert_image_to_worksheet(10, "B", path, scale=4)
     library.save_workbook(BytesIO())
 
 
@@ -375,3 +416,54 @@ def test_create_workbook_default_sheet(fmt):
 
     library.create_worksheet("Test")
     assert library.list_worksheets() == ["Sheet", "Test"]
+
+
+@pytest.mark.parametrize(
+    "excel_file, data_only",
+    [
+        ("formulas.xlsx", False),
+        ("formulas.xls", False),
+        ("formulas.xlsx", True),
+        ("formulas.xls", True),
+    ],
+)
+def test_read_worksheet_with_formulas(excel_file, data_only):
+    library = Files()
+    excel_path = EXCELS_DIR / excel_file
+    library.open_workbook(excel_path, data_only=data_only)
+    assert library.get_worksheet_value(2, "A") == 1
+    assert library.get_worksheet_value(2, "B") == 3
+    if library.workbook.path.suffix == ".xlsx":
+        assert library.get_worksheet_value(2, "C") == 4 if data_only else "=A2+B2"
+    else:
+        assert library.get_worksheet_value(2, "C") == 4
+    library.close_workbook()
+
+
+@pytest.mark.parametrize("name", ["spaces.xls", "spaces.xlsx"])
+def test_invalid_whitespace_fix(name):
+    library = Files()
+    if name.endswith("xlsx"):
+        get_user = lambda book: book.properties.lastModifiedBy
+        expected_user = "cmin  "
+    else:
+        get_user = lambda book: book.user_name
+        expected_user = "cmin"
+
+    library.open_workbook(EXCELS_DIR / name)
+    assert get_user(library.workbook.book) == expected_user
+
+    library.save_workbook(RESULTS_DIR / name)
+    # Leading/trailing whitespace is stripped on save, thus not creating any unwanted
+    #  `xml:space="preserve"` tag child under workbook properties. (which breaks
+    #  validation with Microsoft)
+    assert get_user(library.workbook.book) == "cmin"
+
+
+@pytest.mark.parametrize("fmt", ["xlsx", "xls"])
+def test_create_with_sheet_name(fmt):
+    library = Files()
+    path = RESULTS_DIR / f"custom-sheet-name.{fmt}"
+    name = "CustomName"
+    library.create_workbook(path, fmt=fmt, sheet_name=name)
+    assert library.get_active_worksheet() == name

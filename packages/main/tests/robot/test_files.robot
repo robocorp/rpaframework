@@ -1,13 +1,16 @@
 *** Settings ***
-Suite Setup       Create mock files
-Library           FilePreparer
-Library           Process
-Library           RPA.FileSystem
+Library         FilePreparer
+Library         Process
+Library         RPA.FileSystem
+
+Suite Setup     Create mock files
+
 
 *** Variables ***
-${MOCK_WORKSPACE}    ${OUTPUT_DIR}${/}workspace
+${MOCK_WORKSPACE}       ${OUTPUT_DIR}${/}workspace
 
-*** Task ***
+
+*** Tasks ***
 Test Find Files
     Verify length    3    Find files    *.test
     Verify length    2    Find files    **/*.ext
@@ -207,8 +210,9 @@ Test Join Path
     ...    Join path    ${/}    home    user    folder    test    file.ext
 
 Test Absolute Path
-    Verify equal    ${MOCK_WORKSPACE}${/}subfolder${/}first${/}stuff.ext
-    ...    Absolute path    subfolder/first/stuff.ext
+    ${first_path}=    Set Variable    ${MOCK_WORKSPACE}${/}subfolder${/}first${/}stuff.ext
+    ${second_path}=    Absolute path    subfolder/first/stuff.ext
+    Should Be Equal    ${first_path}    ${second_path}    ignore_case=True
 
 Test Normalize Path
     Verify equal    subfolder${/}stuff.ext
@@ -258,6 +262,7 @@ Test Wait Until Created
     [Teardown]    Remove file    will_exist
 
 Test Wait Until Removed
+    [Tags]    posix
     Touch file    will_be_removed
     Execute deferred    rm will_be_removed    timeout=2.0
     Run keyword and expect error    *TimeoutException*    Wait until removed    will_be_removed    timeout=0.5
@@ -277,6 +282,7 @@ Test Run Keyword If File Exists
     Run keyword if file exists    sorted1.test
     ...    Set test variable    \${value}    After condition
     Should be equal    ${value}    After condition
+
 
 *** Keywords ***
 Create mock files

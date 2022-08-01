@@ -2,20 +2,22 @@ import copy
 import json
 import logging
 import os
-import pytest
 import tempfile
 from contextlib import contextmanager
+from pathlib import Path
+from unittest import mock
 
 try:
     from contextlib import nullcontext
 except ImportError:
     from contextlib import suppress as nullcontext
-from pathlib import Path
-from unittest import mock
 
+import pytest
 from requests import HTTPError
 
+from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError, set_dot_value
 from RPA.Robocorp.WorkItems import (
+    ENCODING,
     BaseAdapter,
     EmptyQueue,
     Error,
@@ -24,15 +26,16 @@ from RPA.Robocorp.WorkItems import (
     State,
     WorkItems,
 )
-from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError
 
+from . import RESOURCES_DIR, RESULTS_DIR
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
 VARIABLES_SECOND = {"username": "another", "address": "dude@company.com"}
+IN_OUT_ID = "workitem-id-out"
 VALID_DATA = {
     "workitem-id-first": VARIABLES_FIRST,
     "workitem-id-second": VARIABLES_SECOND,
-    "workitem-id-custom": [1, 2, 3],
+    IN_OUT_ID: [1, 2, 3],
 }
 VALID_FILES = {
     "workitem-id-first": {
@@ -41,21 +44,22 @@ VALID_FILES = {
         "file3.png": b"data3",
     },
     "workitem-id-second": {},
-    "workitem-id-custom": {},
+    IN_OUT_ID: {},
 }
-
 ITEMS_JSON = [{"payload": {"a-key": "a-value"}, "files": {"a-file": "file.txt"}}]
+FAILURE_ATTRIBUTES = {"status": "FAIL", "message": "The task/suite has failed"}
 
-RESOURCES_DIR = Path(__file__).resolve().parent.parent / "resources"
+OUTPUT_DIR = RESULTS_DIR / "output_dir"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 @contextmanager
-def temp_filename(content=None):
-    """Create temporary file and return filename, delete file afterwards.
+def temp_filename(content=None, **kwargs):
+    """Create temporary file and yield file relative path, then delete it afterwards.
     Needs to close file handle, since Windows won't allow multiple
     open handles to the same file.
     """
-    with tempfile.NamedTemporaryFile(delete=False) as fd:
+    with tempfile.NamedTemporaryFile(delete=False, **kwargs) as fd:
         path = fd.name
         if content:
             fd.write(content)
@@ -108,7 +112,8 @@ class MockAdapter(BaseAdapter):
         self.releases.append((item_id, state, exception))  # purely for testing purposes
 
     def create_output(self, parent_id, payload=None) -> str:
-        raise NotImplementedError
+        self.save_payload(IN_OUT_ID, payload)
+        return IN_OUT_ID
 
     def load_payload(self, item_id):
         return self.DATA[item_id]
@@ -130,8 +135,11 @@ class MockAdapter(BaseAdapter):
 
 
 class TestLibrary:
+    """Tests the library itself as a whole."""
+
+    @staticmethod
     @pytest.fixture
-    def adapter(self):
+    def adapter():
         MockAdapter.DATA = copy.deepcopy(VALID_DATA)
         MockAdapter.FILES = copy.deepcopy(VALID_FILES)
         try:
@@ -141,9 +149,46 @@ class TestLibrary:
             MockAdapter.FILES = {}
             MockAdapter.INDEX = 0
 
+    @staticmethod
     @pytest.fixture
-    def library(self, adapter):
+    def library(adapter):
         yield WorkItems(default_adapter=adapter)
+
+    @staticmethod
+    def _get_resource_data(name, binary=False):
+        path = RESOURCES_DIR / "work-items" / name
+        if binary:
+            return path.read_bytes()
+
+        return path.read_text(encoding=ENCODING)
+
+    @classmethod
+    @pytest.fixture(
+        params=[
+            ("mail-text.txt", "A message from e-mail"),
+            ("mail-json.txt", {"message": "from email"}),
+            ("mail-yaml.txt", {"message": "from email", "extra": {"value": 1}}),
+        ]
+    )
+    def raw_email_data(cls, request):
+        raw_email = cls._get_resource_data(request.param[0])
+        expected_body = request.param[1]
+        return raw_email, expected_body
+
+    @classmethod
+    @pytest.fixture(
+        params=[
+            ("email.text", False, "A message from e-mail"),
+            ("__mail.html", True, "from email"),
+        ]
+    )
+    def parsed_email_data(cls, request):
+        email_var = request.param[0]
+        parsed_email = None
+        expected_body = request.param[2]
+        if request.param[1]:
+            parsed_email = cls._get_resource_data(email_var, binary=True)
+        return email_var, parsed_email, expected_body
 
     def test_autoload(self, library):
         # Called by Robot Framework listener
@@ -160,6 +205,19 @@ class TestLibrary:
         # Called by Robot Framework listener
         library._start_suite(None, None)
         assert library._current is None
+
+    @pytest.mark.parametrize("end_hook", ["_end_test", "_end_suite"])
+    def test_autorelease(self, library, end_hook):
+        library.get_input_work_item()
+        end_method = getattr(library, end_hook)
+        end_method("My Failure Name", FAILURE_ATTRIBUTES)
+        releases = library.adapter.releases
+        assert len(releases) == 1
+        assert releases[0][2] == {
+            "type": "APPLICATION",
+            "code": None,
+            "message": "The task/suite has failed",
+        }
 
     def test_keyword_get_input_work_item(self, library):
         first = library.get_input_work_item()
@@ -485,6 +543,44 @@ class TestLibrary:
         with pytest.raises(RuntimeError):
             library.create_output_work_item()
 
+    @staticmethod
+    @pytest.fixture(
+        params=[
+            lambda *files: files,  # files provided as tuple
+            lambda *files: list(files),  # as list of paths
+            lambda *files: ", ".join(files),  # comma separated paths
+        ]
+    )
+    def out_files(request):
+        """Output work item files."""
+        with temp_filename(b"out-content-1", suffix="-1.txt") as path1, temp_filename(
+            b"out-content-2", suffix="-2.txt"
+        ) as path2:
+            func = request.param
+            yield func(path1, path2)
+
+    def test_create_output_work_item_variables_files(self, library, out_files):
+        library.get_input_work_item()
+        variables = {"my_var1": "value1", "my_var2": "value2"}
+        library.create_output_work_item(variables=variables, files=out_files, save=True)
+
+        assert library.get_work_item_variable("my_var1") == "value1"
+        assert library.get_work_item_variable("my_var2") == "value2"
+
+        # This actually "downloads" (creates) the files, so make sure we remove them
+        #  afterwards.
+        paths = library.get_work_item_files("*.txt", dirname=OUTPUT_DIR)
+        try:
+            assert len(paths) == 2
+            for path in paths:
+                with open(path) as stream:
+                    content = stream.read()
+                idx = Path(path).stem.split("-")[-1]
+                assert content == f"out-content-{idx}"
+        finally:
+            for path in paths:
+                os.remove(path)
+
     def test_custom_root(self, adapter):
         library = WorkItems(default_adapter=adapter, root="vars")
         item = library.get_input_work_item()
@@ -574,6 +670,7 @@ class TestLibrary:
         results = library.for_each_input_work_item(func)
         assert len(results) == 0
 
+    @staticmethod
     @pytest.fixture(
         params=[
             None,
@@ -610,7 +707,7 @@ class TestLibrary:
             },
         ]
     )
-    def release_exception(self, request):
+    def release_exception(request):
         exception = request.param or {}
         effect = nullcontext()
         success = True
@@ -661,26 +758,35 @@ class TestLibrary:
         assert library.current.state is None  # because the previous one has a state
         assert library.adapter.releases == [("workitem-id-first", State.DONE, None)]
 
-    @pytest.mark.parametrize(
-        "email_file,expected_body",
-        [
-            ("mail-text.txt", "A message from e-mail"),
-            ("mail-json.txt", {"message": "from email"}),
-            ("mail-yaml.txt", {"message": "from email", "extra": {"value": 1}}),
-        ],
-    )
-    def test_parse_work_item_from_email(self, library, email_file, expected_body):
-        raw_email = (RESOURCES_DIR / "work-items" / email_file).read_text()
+    def test_parse_work_item_from_raw_email(self, library, raw_email_data):
+        raw_email, expected_body = raw_email_data
         library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
 
         library.get_input_work_item()
-        body = library.get_work_item_variable("parsedEmail")["Body"]
-        assert body == expected_body
+        parsed_email = library.get_work_item_variable("parsedEmail")
+        assert parsed_email["Body"] == expected_body
+
+    def test_parse_work_item_from_parsed_email(self, library, parsed_email_data):
+        email_var, parsed_email, expected_body = parsed_email_data
+        if parsed_email:
+            library.adapter.FILES["workitem-id-first"][email_var] = parsed_email
+        else:
+            payload = library.adapter.DATA["workitem-id-first"]
+            payload["email"] = {}
+            set_dot_value(payload, email_var, value=expected_body)
+
+        library.get_input_work_item()
+        parsed_email = library.get_work_item_variable("parsedEmail")
+        email_parsed = library.get_work_item_variable("email")
+        assert parsed_email["Body"] == email_parsed["body"]
+        assert expected_body in parsed_email["Body"]
+        assert expected_body in email_parsed["body"]
 
     def test_parse_work_item_from_email_missing_content(self, library):
         library.get_input_work_item()
-        with pytest.raises(KeyError):
-            library.get_work_item_variable("parsedEmail")
+        for payload_var in ("rawEmail", "parsedEmail", "email"):
+            with pytest.raises(KeyError):
+                library.get_work_item_variable(payload_var)
 
 
 class TestFileAdapter:
@@ -713,8 +819,9 @@ class TestFileAdapter:
             monkeypatch.setenv(request.param[1], items_out)
             yield FileAdapter()
 
+    @staticmethod
     @pytest.fixture
-    def empty_adapter(self):
+    def empty_adapter():
         # No work items i/o files nor envs set.
         return FileAdapter()
 
@@ -956,8 +1063,9 @@ class TestRobocorpAdapter:
     def failing_response(self, request):
         return self._failing_response(request)
 
+    @staticmethod
     @pytest.fixture
-    def success_response(self):
+    def success_response():
         resp = mock.MagicMock()
         resp.ok = True
         return resp
