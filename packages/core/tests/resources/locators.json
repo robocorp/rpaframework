@@ -1,0 +1,8 @@
+{
+    "CONNECTION_BUTTON": {
+        "source": "https://www.lbr.lu/mjrcs/jsp/IndexActionNotSecured.action?time=1658924403296&loop=2#ANCHOR_TO_MESSAGES",
+        "strategy": "xpath",
+        "type": "browser",
+        "value": "//a[contains(text(),'Connection')]"
+    }
+}

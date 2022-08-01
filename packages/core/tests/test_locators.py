@@ -22,6 +22,8 @@ from RPA.core.locators import (
     literal,
 )
 
+from . import RESOURCES_DIR
+
 
 def to_stream(data):
     return io.StringIO(json.dumps(data))
@@ -423,6 +425,19 @@ class TestDatabase:
     def test_load_by_name_invalid_path(self):
         with pytest.raises(ValueError):
             LocatorsDatabase.load_by_name("RobotSpareBin.Password", "no-exist.json")
+
+    def test_load_by_name_custom_path(self):
+        button = LocatorsDatabase.load_by_name(
+            "CONNECTION_BUTTON", RESOURCES_DIR / "locators.json"
+        )
+        assert "Connection" in button.value
+
+    def test_load_by_name_env_path(self, monkeypatch):
+        monkeypatch.setenv(
+            "RPA_LOCATORS_DATABASE", str(RESOURCES_DIR / "locators.json")
+        )
+        button = LocatorsDatabase.load_by_name("CONNECTION_BUTTON")
+        assert "Connection" in button.value
 
     def test_load_by_name_invalid_name(self):
         with temp_cwd() as cwd:
