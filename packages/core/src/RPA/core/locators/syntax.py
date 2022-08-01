@@ -1,9 +1,10 @@
 import re
 from enum import Enum
-from typing import Callable, List, Union, NamedTuple, Optional
+from typing import Callable, List, NamedTuple, Optional, Union
 
 from RPA.core.geometry import Point, Region, Undefined
 from RPA.core.locators import literal, Locator
+
 
 Geometry = Union[Point, Region, Undefined]
 
@@ -238,8 +239,7 @@ class SyntaxParser:
 
 
 class Resolver:
-    """Parser for locator expressions and resolving them into a set of
-    final values."""
+    """Parser for locator expressions and resolving them into a set of final values."""
 
     def __init__(self, finder, database: Optional[str] = None):
         self.finder = finder

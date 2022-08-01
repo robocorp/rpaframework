@@ -342,9 +342,10 @@ class Desktop(DynamicCore):
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self, locators_path: Optional[str] = None):
+        self.locators_path = locators_path
+
         self.logger = logging.getLogger(__name__)
         self.buffer = Buffer(self.logger)
-        self.locators_path = locators_path
 
         # Register keyword libraries to LibCore
         libraries = [

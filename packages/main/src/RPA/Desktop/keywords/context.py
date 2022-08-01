@@ -6,6 +6,8 @@ try:
 except ImportError:
     HAS_RECOGNITION = False
 
+from typing import Optional
+
 
 class ElementNotFound(ValueError):
     """No matching elements were found."""
@@ -34,5 +36,5 @@ class LibraryContext:
         return self.ctx.buffer
 
     @property
-    def locators_path(self):
+    def locators_path(self) -> Optional[str]:
         return self.ctx.locators_path

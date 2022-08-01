@@ -1,5 +1,7 @@
-from typing import Union, Optional
+from typing import Optional, Union
+
 from RPA.core.locators import LocatorsDatabase, Locator, TYPES
+
 
 LocatorType = Union[str, Locator]
 
