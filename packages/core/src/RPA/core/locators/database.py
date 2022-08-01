@@ -6,7 +6,7 @@ import os
 import re
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from RPA.core.locators import BrowserLocator, ImageLocator, Locator
 
@@ -55,7 +55,7 @@ class LocatorsDatabase:
     and serializing/deserializing database file.
     """
 
-    def __init__(self, path: Optional[str] = None):
+    def __init__(self, path: Optional[Union[str, io.IOBase]] = None):
         self.logger = logging.getLogger(__name__)
         self.path = path or self.default_path
         self.locators = {}
