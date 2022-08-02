@@ -5,6 +5,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Ability to customize the locators file path through the ``RPA_LOCATORS_DATABASE``
+  environment variable. (:issue:`370`)
 - Library **RPA.PDF** (:issue:`558`, ``rpaframework-pdf`` **4.1.0**): Fix ``pages``
   selection rationale when operating with PDFs. (bugs & documentation)
 

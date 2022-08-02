@@ -6,26 +6,21 @@ import os
 import re
 from contextlib import contextmanager
 from pathlib import Path
-from RPA.core.locators import Locator, BrowserLocator, ImageLocator
+from typing import Optional, Union
+
+from RPA.core.locators import BrowserLocator, ImageLocator, Locator
 
 
 @contextmanager
-def open_stream(obj, *args, **kwargs):
+def open_stream(path_or_stream, *args, encoding="utf-8", **kwargs) -> io.IOBase:
     """Wrapper for built-in open(), which allows using
     existing IO streams.
     """
-    is_open = False
-    try:
-        if not isinstance(obj, io.IOBase):
-            # pylint: disable=consider-using-with,unspecified-encoding
-            kwargs.setdefault("encoding", "utf-8")
-            obj = open(obj, *args, **kwargs)
-            is_open = True
+    if not isinstance(path_or_stream, io.IOBase):
+        path_or_stream = open(path_or_stream, *args, encoding=encoding, **kwargs)
 
-        yield obj
-    finally:
-        if is_open:
-            obj.close()
+    with path_or_stream:  # closes the descriptor even if it errors
+        yield path_or_stream
 
 
 def sanitize_name(name):
@@ -60,7 +55,7 @@ class LocatorsDatabase:
     and serializing/deserializing database file.
     """
 
-    def __init__(self, path=None):
+    def __init__(self, path: Optional[Union[str, io.IOBase]] = None):
         self.logger = logging.getLogger(__name__)
         self.path = path or self.default_path
         self.locators = {}
@@ -68,7 +63,7 @@ class LocatorsDatabase:
         self._invalid = {}
 
     @classmethod
-    def load_by_name(cls, name, path=None) -> Locator:
+    def load_by_name(cls, name, path: Optional[str] = None) -> Locator:
         """Load locator entry from database with given name."""
         database = cls(path)
         database.load()
@@ -80,10 +75,10 @@ class LocatorsDatabase:
         return database.resolve(name)
 
     @property
-    def default_path(self):
+    def default_path(self) -> str:
         """Return default path for locators database file."""
         dirname = os.getenv("ROBOT_ROOT", "")
-        filename = "locators.json"
+        filename = os.getenv("RPA_LOCATORS_DATABASE", "").strip() or "locators.json"
         return os.path.join(dirname, filename)
 
     @property
@@ -167,8 +162,7 @@ class LocatorsDatabase:
                 data[name] = fields
 
         with open_stream(self.path, "w") as fd:
-            output = json.dumps(data, sort_keys=True, indent=4)
-            fd.write(output)
+            json.dump(data, fd, sort_keys=True, indent=4)
 
     def _load(self, data):
         """Load database content as Locator objects."""

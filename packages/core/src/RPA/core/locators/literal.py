@@ -1,5 +1,7 @@
-from typing import Union
+from typing import Optional, Union
+
 from RPA.core.locators import LocatorsDatabase, Locator, TYPES
+
 
 LocatorType = Union[str, Locator]
 
@@ -10,7 +12,7 @@ def _unquote(text):
     return text
 
 
-def parse(locator: LocatorType) -> Locator:
+def parse(locator: LocatorType, path: Optional[str] = None) -> Locator:
     """Parse locator string literal into a ``Locator`` instance.
 
     For example: "image:path/to/image.png" -> ImageLocator(path="path/to/image-png")
@@ -28,7 +30,7 @@ def parse(locator: LocatorType) -> Locator:
 
     typename = typename.strip().lower()
     if typename == "alias":
-        return LocatorsDatabase.load_by_name(_unquote(value))
+        return LocatorsDatabase.load_by_name(_unquote(value), path)
     else:
         klass = TYPES.get(typename)
         if not klass:
