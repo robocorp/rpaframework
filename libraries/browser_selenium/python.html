@@ -1991,23 +1991,31 @@ access already open browser with selenium keywords.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.print_to_pdf">
-<code class="sig-name descname">print_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">output_path: str = None</em>, <em class="sig-param">params: dict = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.print_to_pdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print the current page to a PDF document using Chromium devtools.</p>
-<p>For supported parameters see:
-<a class="reference external" href="https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF">https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF</a></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">output_path</span></code> filepath for the generated pdf. By default it is saved to</dt><dd><p>the output folder with name <cite>out.pdf</cite>.</p>
-</dd>
-</dl>
-<p><code class="docutils literal notranslate"><span class="pre">params</span></code> parameters for the Chrome print method. By default uses values:</p>
-<dl class="simple">
-<dt><a href="#id7"><span class="problematic" id="id8">``</span></a>{</dt><dd><p>“landscape”: False,
+<code class="sig-name descname">print_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">output_path: Optional[str] = None</em>, <em class="sig-param">params: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.print_to_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the current page to a PDF document using Chrome/Chromium DevTools.</p>
+<p>Attention: This works in <code class="docutils literal notranslate"><span class="pre">headless</span></code> mode only!
+For supported parameters see:
+<a class="reference external" href="https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF">https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF</a>
+Returns the output PDF file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_path</strong> – File path for the generated PDF document. By default, it is
+saved to the output folder with the name <cite>out.pdf</cite>.</p></li>
+<li><p><strong>params</strong> – <p>Parameters for the browser printing method. By default, it uses
+the following values:
+<a href="#id7"><span class="problematic" id="id8">``</span></a>{</p>
+<blockquote>
+<div><p>”landscape”: False,
 “displayHeaderFooter”: False,
 “printBackground”: True,
 “preferCSSPageSize”: True,</p>
+</div></blockquote>
+<p>}``</p>
+</p></li>
+</ul>
 </dd>
 </dl>
-<p>}``</p>
 </dd></dl>
 
 <dl class="method">

@@ -5,6 +5,10 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Browser.Selenium** (:issue:`593`): Keyword ``Print To PDF`` provides
+  better error message when trying to print in non-headless mode (which doesn't work
+  by design; same with full page screenshots).
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
