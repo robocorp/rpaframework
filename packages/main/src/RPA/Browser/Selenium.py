@@ -1943,13 +1943,14 @@ class Selenium(SeleniumLibrary):
     ) -> str:
         """Print the current page to a PDF document using Chrome/Chromium DevTools.
 
+        Attention: This works in ``headless`` mode only!
         For supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
         Returns the output PDF file path.
 
-        :param output_path: File path for the generated PDF document. By default it is
+        :param output_path: File path for the generated PDF document. By default, it is
             saved to the output folder with the name `out.pdf`.
-        :param params: Parameters for the browser printing method. By default it uses
+        :param params: Parameters for the browser printing method. By default, it uses
             the following values:
             ``{
                 "landscape": False,
