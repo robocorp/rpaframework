@@ -1938,26 +1938,28 @@ class Selenium(SeleniumLibrary):
         self.driver.execute_script(script, *elements)
 
     @keyword
-    def print_to_pdf(self, output_path: str = None, params: dict = None):
-        """
-        Print the current page to a PDF document using Chromium devtools.
+    def print_to_pdf(
+        self, output_path: Optional[str] = None, params: Optional[dict] = None
+    ) -> str:
+        """Print the current page to a PDF document using Chrome/Chromium DevTools.
 
+        Attention: This works in ``headless`` mode only!
         For supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
+        Returns the output PDF file path.
 
-        ``output_path`` filepath for the generated pdf. By default it is saved to
-          the output folder with name `out.pdf`.
-
-        ``params`` parameters for the Chrome print method. By default uses values:
-
-        ``{
-            "landscape": False,
-            "displayHeaderFooter": False,
-            "printBackground": True,
-            "preferCSSPageSize": True,
-        }``
+        :param output_path: File path for the generated PDF document. By default, it is
+            saved to the output folder with the name `out.pdf`.
+        :param params: Parameters for the browser printing method. By default, it uses
+            the following values:
+            ``{
+                "landscape": False,
+                "displayHeaderFooter": False,
+                "printBackground": True,
+                "preferCSSPageSize": True,
+            }``
         """
-        if "chrom" not in self.driver.name:
+        if not self.driver.name.lower().startswith("chrom"):
             raise NotImplementedError("PDF printing works only with Chrome/Chromium")
 
         default_params = {
@@ -1966,20 +1968,20 @@ class Selenium(SeleniumLibrary):
             "printBackground": True,
             "preferCSSPageSize": True,
         }
+        params = params or default_params
+        result = self._send_command_and_get_result("Page.printToPDF", params)
+        if isinstance(result, str) and "Printing is not available" in result:
+            raise TypeError("PDF printing works in headless mode only")
 
         try:
             output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}", "output")
         except robot.libraries.BuiltIn.RobotNotRunningError:
             output_dir = "output"
-        default_output = f"{output_dir}/out.pdf"
+        default_output = str(Path(output_dir) / "out.pdf")
         output_path = output_path or default_output
-
-        params = params or default_params
-        result = self._send_command_and_get_result("Page.printToPDF", params)
-        pdf = base64.b64decode(result["data"])
-
-        with open(output_path, "wb") as f:
-            f.write(pdf)
+        pdf_data = base64.b64decode(result["data"])
+        with open(output_path, "wb") as stream:
+            stream.write(pdf_data)
 
         return output_path
 
