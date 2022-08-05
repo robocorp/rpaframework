@@ -260,7 +260,8 @@ class Salesforce:
         """
         results = self.salesforce_query(sql_string)
         table = Table(results["records"])
-        table.delete_columns(["attributes"])
+        if table:  # evaluates as True if contains items
+            table.delete_columns(["attributes"])
         return table
 
     def set_account(self, account_name: str = "", account_id: str = "") -> bool:
