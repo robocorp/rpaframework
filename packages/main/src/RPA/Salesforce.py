@@ -1,15 +1,14 @@
-from collections import OrderedDict
-from typing import Any
-
 import json
 import logging
 import sys
-import requests
+from collections import OrderedDict
+from typing import Any, Union
 
+import requests
 from simple_salesforce import Salesforce as SimpleSalesforce
 from simple_salesforce import SFType
 
-from RPA.Tables import Tables, Table
+from RPA.Tables import Table, Tables
 
 
 class SalesforceAuthenticationError(Exception):
@@ -220,7 +219,9 @@ class Salesforce:
 
         return data
 
-    def _generate_table_from_SFDC_API_query(self, result, start=0, limit=0):
+    def _generate_table_from_SFDC_API_query(
+        self, result: dict, start: int = 0, limit: int = 0
+    ) -> Table:
         records = (
             result["records"][start:]
             if limit == 0
@@ -229,7 +230,7 @@ class Salesforce:
         if len(records) == 0:
             return Tables().create_table()
 
-        cols = [k for k, v in self._get_values(records[0])]
+        cols = [col for col, _ in self._get_values(records[0])]
         table = Tables().create_table(columns=cols)
 
         for row in records:
@@ -238,30 +239,30 @@ class Salesforce:
 
         return table
 
-    def salesforce_query(self, sql_string: str, as_table: bool = False) -> dict:
-        """Perform SQL query.
+    def salesforce_query(
+        self, sql_string: str, as_table: bool = False
+    ) -> Union[dict, Table]:
+        """Perform SQL query and return result as `dict` or `Table`.
 
-        :param sql_string: SQL clause to perform
-        :param as_table: set to `True` if result should be `RPA.Tables.Table`
-        :return: result of the SQL query
+        :param sql_string: SQL clause to perform.
+        :param as_table: Set to `True` if the result should be of `RPA.Tables.Table`
+            type. (dictionary is returned by default)
+        :returns: Result of the SQL query.
         """
         self._require_authentication()
-        result = self.sf.query_all(sql_string)
+        result: dict = self.sf.query_all(sql_string)
         if not as_table:
             return result
 
         return self._generate_table_from_SFDC_API_query(result)
 
     def salesforce_query_result_as_table(self, sql_string: str) -> Table:
-        """Perform SQL query and return result as `RPA.Table`.
+        """Shorthand for ``Salesforce Query    ${sql_string}    as_table=${True}``.
 
-        :param sql_string: SQL clause to perform
-        :return: result of the SQL query as Table
+        :param sql_string: SQL clause to perform.
+        :returns: Result of the SQL query as `RPA.Tables.Table`.
         """
-        results = self.salesforce_query(sql_string)
-        table = Table(results["records"])
-        table.delete_columns(["attributes"])
-        return table
+        return self.salesforce_query(sql_string, as_table=True)
 
     def set_account(self, account_name: str = "", account_id: str = "") -> bool:
         """Set account name and id by giving either parameter.

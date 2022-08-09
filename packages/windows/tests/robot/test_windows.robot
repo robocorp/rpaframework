@@ -1,7 +1,8 @@
 *** Settings ***
+Library           Process
 Library           RPA.Windows
 Library           String
-Library           Process
+
 Task Setup        Set Wait Time    0.7
 
 
@@ -28,6 +29,7 @@ Calculator Teardown
     Send Keys    keys={Alt}1
     Sleep    1s
 
+
 Select Temperature Unit
     [Arguments]    ${unit}    ${degrees}
     # Select Unit
@@ -37,6 +39,7 @@ Select Temperature Unit
     Log To Console    Set ${unit}: ${degrees}
     Send Keys    keys={Esc}
 
+
 Get Temperature Values
     [Arguments]    ${keys}
     ${values}=    Split String    ${keys}    ,
@@ -45,6 +48,7 @@ Get Temperature Values
         Log To Console    ${temperature}
     END
 
+
 Calculator button actions
     Control Window    Calculator type:Window
     Click    id:num9Button
@@ -52,9 +56,10 @@ Calculator button actions
     Click    id:plusButton
     Click    id:num4Button
     Click    id:equalButton
-    ${result}=    Get Attribute    id:CalculatorResults    Name
+    ${result} =    Get Attribute    id:CalculatorResults    Name
     Log To Console    \n${result}
     Send Keys    keys={Esc}
+
 
 Calculator with keys
     Control Window    Calculator
@@ -68,6 +73,7 @@ Calculator with keys
     END
     Length Should Be    ${buttons}      11      msg=From 0 to 9 and decimlar separator
 
+
 Keep open a single Notepad
     Set Global Timeout    ${TIMEOUT}
     ${closed} =     Set Variable    0
@@ -77,6 +83,7 @@ Keep open a single Notepad
     END
     Log    Closed Notepads: ${closed}
     Windows Run   Notepad
+
 
 Kill app by name
     [Arguments]     ${app_name}
@@ -92,6 +99,7 @@ Kill app by name
         END
     END
 
+
 Close Current Window And Sleep
     Close Current Window
     Sleep   1s
@@ -103,37 +111,54 @@ Windows search Calculator by clicking buttons
     Calculator button actions
     [Teardown]    Close Current Window And Sleep
 
+
 Calculator by clicking buttons already running
     [Tags]    skip      manual
     Calculator button actions
+
 
 Windows run Do some calculations
     Windows Run    calc.exe     wait_time=1
     Calculator with keys
     [Teardown]    Close Current Window And Sleep
 
+
 Windows run Do some calculations already running
     [Tags]    skip      manual
     Calculator with keys
 
+
 Play Task Calculator
+    [Documentation]     Checks if 34+6=40
+
     Windows Search    Calculator    wait_time=1
     Control Window    Calculator
     Click    id:clearButton
-    Click    type:Group and name:"Number pad" > type:Button and index:4
-    # It is optional to use "and" in the locator syntax.
+
+    ${button_locator} =     Set Variable
+    ...     type:Group and name:"Number pad" > type:Button
+    # It is optional to use "and" in the locator syntax. (only "and"s are assumed)
+    Click    ${button_locator} and index:4  # "3"
+    Click    ${button_locator} index:5 offset:0,0  # "4"
+    # NOTE(cmin764): On different Windows versions the app UI differs so the offsets.
+    #  (might be also resolution bound)
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
-        # FIXME(cmiN): On Windows 11 this offset minimizes the window. (might be resolution bound)
-        ${locator} =    Set Variable    type:Group and name:"Number pad" > type:Button index:5
+        ${offset} =    Set Variable     480,100
     ELSE
-        ${locator} =    Set Variable    type:Group and name:"Number pad" > type:Button index:5 offset:370,0
+        ${offset} =    Set Variable     370,0  # FIXME on Windows 10
     END
-    Click    ${locator}
+    # Click the "+" button relative to "4" by offset.
+    Click    ${button_locator} index:5 offset:${offset}  # "+"
     # "control" maps to same thing as "type" -> "ControlType".
-    Click    control:Group and name:"Number pad" > control:Button index:7
-    Click    id:equalButton
+    Click    control:Group and name:"Number pad" > control:Button index:7  # 6
+    Click    id:equalButton  # "="
+
+    ${result} =    Get Attribute    id:CalculatorResults    Name
+    Should Be Equal     ${result}       Display is 40
+
     [Teardown]    Close Current Window
+
 
 Play Task Temperature
     Windows Search    Calculator    wait_time=1
@@ -167,6 +192,7 @@ Play Task Temperature
 
     [Teardown]    Close Current Window
 
+
 Play Task UIDemo
     [Tags]    skip
 
@@ -199,6 +225,7 @@ Play Task UIDemo
     # TODO: Add more actions to the task: slider, checkboxes, table (get/set vals).
     [Teardown]    Close Current Window
 
+
 Resize window with Spotify
     [Tags]    skip    manual
 
@@ -218,6 +245,7 @@ Resize window with Spotify
     Restore Window
 
     [Teardown]    Close Current Window
+
 
 Notepad write text into a file
     Windows Search    notepad   wait_time=1
@@ -263,6 +291,7 @@ Notepad write text into a file
     Minimize Window    subname:"- Notepad"
     [Teardown]      Close Current Window
 
+
 Control Window by handle
     Log To Console    \nList Windows
     ${win} =    List Windows
@@ -271,6 +300,7 @@ Control Window by handle
     END
     ${win} =    Control Window    handle:${win}[0][handle]    # handle of the first window in the list
     Log To Console      Controlled window: ${win}
+
 
 Calculator result from recording
     [Tags]    skip    manual
@@ -287,6 +317,7 @@ Calculator result from recording
     Click    name:"Equals"
 
     [Teardown]    Close Current Window
+
 
 Write to Notepad in the background
     [Tags]    skip
@@ -316,6 +347,7 @@ Write to Notepad in the background
 
     [Teardown]    Close Window      subname:Notepad  # finally Notepad is closed too
 
+
 Test getting elements
     [Tags]    skip
     Clear Anchor
@@ -333,6 +365,7 @@ Test getting elements
         Log To Console    App: ${button.name}
     END
 
+
 Control window after closing linked root element
     [Setup]    Keep open a single Notepad
     ${window} =     Control Window   subname:Notepad control:WindowControl
@@ -346,6 +379,7 @@ Control window after closing linked root element
     Log    Controlling Calculator window: ${window}
 
     [Teardown]    Close Current Window  # closes Calculator (last active window)
+
 
 Tree printing and controlled anchor cleanup
     Print Tree     #capture_image_folder=output${/}controls

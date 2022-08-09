@@ -1,9 +1,23 @@
-import platform
+# -*- coding: utf-8 -*-
+
+import importlib.util
 import shutil
 import subprocess
+import sys
 from glob import glob
 from pathlib import Path
+
 from invoke import task
+
+
+# Import rpaframework/tasks_common.py module from file location.
+tasks_common_path = Path(__file__).parent.parent.parent / "tasks_common.py"
+spec = importlib.util.spec_from_file_location("tasks_common", tasks_common_path)
+tasks_common = importlib.util.module_from_spec(spec)
+sys.modules["tasks_common"] = tasks_common
+spec.loader.exec_module(tasks_common)
+
+poetry = tasks_common.poetry
 
 
 def _git_root():
@@ -27,14 +41,6 @@ CLEAN_PATTERNS = [
     "**/*.egg-info",
     "tests/output",
 ]
-
-
-def poetry(ctx, command, **kwargs):
-    kwargs.setdefault("echo", True)
-    if platform.system() != "Windows":
-        kwargs.setdefault("pty", True)
-
-    ctx.run(f"poetry {command}", **kwargs)
 
 
 @task

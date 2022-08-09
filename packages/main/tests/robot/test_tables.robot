@@ -6,7 +6,7 @@ Library           RPA.FileSystem
 Library           RPA.Excel.Files
 
 *** Variables ***
-${ORDERS_FILE}    ${CURDIR}${/}..${/}resources${/}example.xlsx
+${ORDERS_FILE}    ${CURDIR}${/}..${/}resources${/}excels${/}example.xlsx
 
 *** Tasks ***
 Create table literal

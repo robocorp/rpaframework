@@ -18,7 +18,9 @@ class WindowsElementsMixin:
 
     def __init__(self, locators_path: Optional[str] = None):
         self.logger = logging.getLogger(__name__)
-        self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
+        self.global_timeout: float = float(
+            auto.uiautomation.TIME_OUT_SECOND if IS_WINDOWS else 10
+        )
         self.window_element: Optional[Locator] = None
         self.anchor_element: Optional[Locator] = None
 

@@ -7,37 +7,34 @@ Resource          test.resource
 Task Teardown     Close all PDFs
 Suite Teardown    Empty Directory    ${WORK_DIR}
 
-
 *** Tasks ***
 Create PDF from HTML content
     HTML to PDF    ${CONTENT}    ${PDF}
     Should Exist    ${PDF}
-    ${text_dict} =   Get Text From Pdf   ${PDF}
-    RPA Should Contain    ${text_dict}[${1}]     Thank you for the order
+    ${text_dict} =    Get Text From Pdf    ${PDF}
+    RPA Should Contain    ${text_dict}[${1}]    Thank you for the order
 
 Create PDF from HTML template
     Template HTML to PDF    ${TEMPLATE_ORDER}    ${PDF}    ${VARS_ORDER}
     Should Exist    ${PDF}
-    ${text_dict} =   Get Text From Pdf   ${PDF}
-    RPA Should Contain    ${text_dict}[${1}]     ${VARS_ORDER}[zip]
+    ${text_dict} =    Get Text From Pdf    ${PDF}
+    RPA Should Contain    ${text_dict}[${1}]    ${VARS_ORDER}[zip]
 
 Unicode HTML text to PDF
-    ${header} =   Set Variable    Hyvääă yötä ja nÄkemiin
+    ${header} =    Set Variable    Hyvääă yötä ja nÄkemiin
     ${VARS_GREETING} =    Create Dictionary    header=${header}
     Template HTML to PDF    ${TEMPLATE_GREETING}    ${UNICODE_PDF}    ${VARS_GREETING}
     Should Exist    ${UNICODE_PDF}
-
     &{text} =    Get Text From PDF    ${UNICODE_PDF}    1
     RPA Should Contain    ${text}[${1}]    ${header}
 
 Get text from one page
     &{text} =    Get Text From PDF    ${VERO_PDF}    1
     RPA Should Contain    ${text}[${1}]    Omaisuus on saatu
-
     # The same, but using text boxes now.
-    &{text} =    Get Text From PDF    ${VERO_PDF}    1      details=${True}
-    @{text_boxes} =    Set Variable     ${text}[${1}]
-    RPA Should Contain     ${text_boxes[0].text}    ILMOITA VERKOSSA
+    &{text} =    Get Text From PDF    ${VERO_PDF}    1    details=${True}
+    @{text_boxes} =    Set Variable    ${text}[${1}]
+    RPA Should Contain    ${text_boxes[0].text}    ILMOITA VERKOSSA
 
 Get text from multiple pages as string parameter
     &{text} =    Get Text From PDF    ${VERO_PDF}    1,2
@@ -102,18 +99,16 @@ Get text closest to element using regexp match for value
 Get figures from PDF
     # In the PDF with images we get one figure for each page and each figure's `top`
     # value is found among the ones below.
-    @{expect_tops} =    Create List     ${817}  ${587}
-
+    @{expect_tops} =    Create List    ${817}    ${587}
     Open PDF    ${IMAGES_PDF}
     &{figures_by_page} =    Get All Figures
-
     FOR    ${page}    ${figures}    IN    &{figures_by_page}
         Log    On page: ${page}
         FOR    ${figure_id}    ${figure}    IN    &{figures}
-            Log     Figure ID: ${figure_id}
-            Log     Figure: ${figure}
-            Log     Figure bbox: ${figure.bbox}
-            List Should Contain Value   ${expect_tops}    ${figure.top}
+            Log    Figure ID: ${figure_id}
+            Log    Figure: ${figure}
+            Log    Figure bbox: ${figure.bbox}
+            List Should Contain Value    ${expect_tops}    ${figure.top}
         END
     END
 
@@ -135,34 +130,54 @@ Adding Files to PDF
     Add Files To PDF    ${files}    ${WORK_DIR}${/}composed.pdf
 
 XML Dumping And Parsing
-    ${xml} =     Dump PDF as XML    ${INVOICE_PDF}
+    ${xml} =    Dump PDF as XML    ${INVOICE_PDF}
     Should Not Be Empty    ${xml}
     ${elem} =    Parse Xml    ${xml}
     Save Xml    ${elem}    ${XML_FILE}
     Should Exist    ${XML_FILE}
     HTML to PDF    ${xml}    ${PDF}
-    ${text_dict} =   Get Text From Pdf   ${PDF}
-    RPA Should Contain    ${text_dict}[${1}]     t e s t @ t e s t . c o m
+    ${text_dict} =    Get Text From Pdf    ${PDF}
+    RPA Should Contain    ${text_dict}[${1}]    t e s t @ t e s t . c o m
 
 Find multiple anchors in multi-page PDF
     Open PDF    ${BOOK_PDF}
-
     @{all_matches} =    Create List
-    ${pages} =     Get Number Of Pages
+    ${pages} =    Get Number Of Pages
     FOR    ${page}    IN RANGE    1    ${pages + 1}
-        ${matches} =    Find Text   regex:.*Python.*    pagenum=${page}     direction=down
-        Append To List  ${all_matches}      @{matches}
+        ${matches} =    Find Text    regex:.*Python.*    pagenum=${page}    direction=down
+        Append To List    ${all_matches}    @{matches}
     END
-
     # First text below first "Python" result.
-    RPA Should Contain  ${all_matches[0].neighbours[0]}     Simple, Rapid, Effective, and Scalable
+    RPA Should Contain    ${all_matches[0].neighbours[0]}    Simple, Rapid, Effective, and Scalable
     # Second "Python" result's text.
-    RPA Should Contain  ${all_matches[1].anchor}     13. A4. Packaging and Distributing Python Projects
+    RPA Should Contain    ${all_matches[1].anchor}    13. A4. Packaging and Distributing Python Projects
     # Paragraph under the last "Python" match.
-    RPA Should Contain  ${all_matches[7].neighbours[0]}     Flask is another popular framework
+    RPA Should Contain    ${all_matches[7].neighbours[0]}    Flask is another popular framework
 
 Add watermark into PDF
     ${pdf} =    Set Variable    ${WORK_DIR}${/}receipt.pdf
     Copy File    ${RECEIPT_PDF}    ${pdf}
     Open Pdf    ${pdf}
-    Add Watermark Image to PDF    ${ROBOT_PNG}      ${pdf}
+    Add Watermark Image to PDF    ${ROBOT_PNG}    ${pdf}
+
+Figures to Images
+    ${image_filenames}=    Save figures as images
+    ...    source_path=${RESOURCE_DIR}${/}imagesandtext.pdf
+    ...    images_folder=${WORK_DIR}
+    ...    pages=${1}
+    ...    file_prefix=Energy-price-developments
+    File Should Exist    ${WORK_DIR}${/}Energy-*.bmp
+
+Figure to Image
+    Open Pdf    ${RESOURCE_DIR}${/}sparebin-receipt.pdf
+    &{figures} =    Get All Figures
+    Log Dictionary    ${figures}
+    &{figure_dict} =    Get From Dictionary    ${figures}    ${2}    # page 2
+    ${figure_obj} =    Get From Dictionary    ${figure_dict}    ${0}    # first object
+    Log To Console    ${figure_obj}
+    ${image_file_path} =    Save figure as image
+    ...    figure=${figure_obj}
+    ...    images_folder=${WORK_DIR}
+    ...    file_prefix=robot-
+    Log To Console    ${image_file_path}
+    File Should Exist    ${WORK_DIR}${/}robot-*.bmp

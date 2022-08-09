@@ -73,7 +73,7 @@ class FinderKeywords(LibraryContext):
 
     def __init__(self, ctx):
         super().__init__(ctx)
-        self._resolver = syntax.Resolver(self._find)
+        self._resolver = syntax.Resolver(self._find, self.locators_path)
 
         self.timeout = 3.0
         if HAS_RECOGNITION:
@@ -270,7 +270,7 @@ class FinderKeywords(LibraryContext):
 
             ${matches}=    Find elements    image:icon.png
             FOR    ${match}  IN  @{matches}
-                Log    Found icon at ${match.x}, ${match.y}
+                Log    Found icon at ${match.right}, ${match.top}
             END
         """
         self.logger.info("Resolving locator: %s", locator)
@@ -293,7 +293,7 @@ class FinderKeywords(LibraryContext):
         .. code-block:: robotframework
 
             ${match}=    Find element    image:logo.png
-            Log    Found logo at ${match.x}, ${match.y}
+            Log    Found logo at ${match.right}, ${match.top}
         """
         matches = self.find_elements(locator)
 
