@@ -226,6 +226,10 @@ Test Get File Name
     Verify equal    stuff.ext
     ...    Get file name    subfolder/first/stuff.ext
 
+Test Get File Stem
+    Verify equal    stuff
+    ...    Get file stem    subfolder/first/stuff.ext
+
 Test Get File Extension
     ${result}=    Get file extension    subfolder/first/stuff.ext
     Should be equal    ${result}    .ext
