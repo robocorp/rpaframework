@@ -606,7 +606,7 @@ class Files:
         name: Optional[str] = None,
         header: Optional[bool] = False,
         start: Optional[int] = None,
-    ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
+    ) -> List[dict]:
         """Read the content of a worksheet into a list of dictionaries.
 
         Each key in the dictionary will be either values from the header row,
@@ -653,7 +653,7 @@ class Files:
         header: bool = False,
         trim: bool = True,
         start: Optional[int] = None,
-    ) -> Tables:
+    ) -> Table:
         """Read the contents of a worksheet into a Table container. Allows
         sorting/filtering/manipulating using the ``RPA.Tables`` library.
 
@@ -701,7 +701,7 @@ class Files:
         name: Optional[str] = None,
         header: bool = False,
         start: Optional[int] = None,
-    ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
+    ) -> List[dict]:
         """Append values to the end of the worksheet.
 
         :param content: Rows of values to append
@@ -1159,7 +1159,7 @@ class XlsxWorkbook(BaseWorkbook):
         self._book.create_sheet(title=name)
         self.active = name
 
-    def read_worksheet(self, name=None, header=False, start=None):
+    def read_worksheet(self, name=None, header=False, start=None) -> List[dict]:
         name = self._get_sheetname(name)
         sheet = self._book[name]
         start = self._to_index(start)
@@ -1436,7 +1436,7 @@ class XlsWorkbook(BaseWorkbook):
 
         self.active = name
 
-    def read_worksheet(self, name=None, header=False, start=None):
+    def read_worksheet(self, name=None, header=False, start=None) -> List[dict]:
         name = self._get_sheetname(name)
         sheet = self._book.sheet_by_name(name)
         start = self._to_index(start)
