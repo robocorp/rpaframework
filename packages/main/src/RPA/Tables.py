@@ -1,14 +1,13 @@
-# pylint: disable=too-many-lines
-# TODO: Implement column slicing
-# TODO: Index name conflict in exports/imports
-# TODO: Return Robot Framework DotDict instead of dict?
 import copy
 import csv
 import logging
 import re
 from collections import OrderedDict, namedtuple
 from enum import Enum
+from itertools import groupby, zip_longest
 from keyword import iskeyword
+from numbers import Number
+from operator import itemgetter
 from typing import (
     Any,
     Dict,
@@ -21,14 +20,11 @@ from typing import (
     Union,
 )
 
-from itertools import groupby, zip_longest
-from numbers import Number
-from operator import itemgetter
-
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
+from RPA.core.notebook import notebook_print, notebook_table
 from RPA.core.types import is_dict_like, is_list_like, is_namedtuple
-from RPA.core.notebook import notebook_table, notebook_print
+
 
 Index = int
 Column = Union[int, str]
