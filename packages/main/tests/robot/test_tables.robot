@@ -72,7 +72,8 @@ Remove Rows With Filtering
     ...    [["One", "5/3/22 9:44"], ["Two", "5/4/22 9:25"], ["Three", "5/3/22 10:21"]]
     ...    columns=["ID", "Submit Date"]
 
-    Filter Table With Keyword    ${table}    Match Date    target=05.03.2022
+    Filter Table With Keyword    ${table}
+    ...     Match Date    target=05.03.2022  # kwarg passed as string arg
     Assert cell value    ${table}    0    ID    One
     Assert cell value    ${table}    1    ID    Three
 
