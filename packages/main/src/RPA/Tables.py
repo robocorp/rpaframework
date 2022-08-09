@@ -1592,14 +1592,14 @@ class Tables:
         table.set_cell(row, column, value)
 
     def find_table_rows(self, table: Table, column: Column, operator: str, value: Any):
-        """Find all rows in a table which match a condition for a
-        given column.
+        """Find all the rows in a table which match a condition for a given column.
 
-        :param table:    Table to find from
-        :param column:   Name of column to search
-        :param operator: Comparison operator
-        :param value:    Value to compare against
-        :return:         Table object that matches the row conditions
+        :param table: Table to search into.
+        :param column: Name or position of the column to compare with.
+        :param operator: Comparison operator used with every cell value on the
+            specified column.
+        :param value: Value to compare against.
+        :return: New `Table` object containing all the rows matching the condition.
 
         Supported operators:
 
@@ -1620,17 +1620,17 @@ class Tables:
         not in       Cell value is not in given value
         ============ ========================================
 
-        Returns the matches as a new Table instance.
+        Returns the matches as a new `Table` instance.
 
         Examples:
 
         .. code-block:: robotframework
 
             # Find all rows where price is over 200
-            @{rows}=    Find table rows    Price  >  ${200}
+            @{rows} =    Find table rows    ${table}    Price  >  ${200}
 
             # Find all rows where the status does not contain "removed"
-            @{rows}=    Find table rows    Status    not contains    removed
+            @{rows} =    Find table rows    ${table}    Status  not contains  removed
         """
         self._requires_table(table)
 
