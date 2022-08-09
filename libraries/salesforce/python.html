@@ -605,17 +605,18 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.salesforce_query">
-<code class="sig-name descname">salesforce_query</code><span class="sig-paren">(</span><em class="sig-param">sql_string: str</em>, <em class="sig-param">as_table: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform SQL query.</p>
+<code class="sig-name descname">salesforce_query</code><span class="sig-paren">(</span><em class="sig-param">sql_string: str</em>, <em class="sig-param">as_table: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[dict, RPA.Tables.Table]<a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform SQL query and return result as <cite>dict</cite> or <cite>Table</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sql_string</strong> – SQL clause to perform</p></li>
-<li><p><strong>as_table</strong> – set to <cite>True</cite> if result should be <cite>RPA.Tables.Table</cite></p></li>
+<li><p><strong>sql_string</strong> – SQL clause to perform.</p></li>
+<li><p><strong>as_table</strong> – Set to <cite>True</cite> if the result should be of <cite>RPA.Tables.Table</cite>
+type. (dictionary is returned by default)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>result of the SQL query</p>
+<dd class="field-even"><p>Result of the SQL query.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -623,13 +624,13 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.salesforce_query_result_as_table">
 <code class="sig-name descname">salesforce_query_result_as_table</code><span class="sig-paren">(</span><em class="sig-param">sql_string: str</em><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query_result_as_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform SQL query and return result as <cite>RPA.Table</cite>.</p>
+<dd><p>Shorthand for <code class="docutils literal notranslate"><span class="pre">Salesforce</span> <span class="pre">Query</span>&#160;&#160;&#160; <span class="pre">${sql_string}</span>&#160;&#160;&#160; <span class="pre">as_table=${True}</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>sql_string</strong> – SQL clause to perform</p>
+<dd class="field-odd"><p><strong>sql_string</strong> – SQL clause to perform.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>result of the SQL query as Table</p>
+<dd class="field-even"><p>Result of the SQL query as <cite>RPA.Tables.Table</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
