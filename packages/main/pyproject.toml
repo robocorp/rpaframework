@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "15.6.0"
+version = "15.6.1"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -57,7 +57,7 @@ pynput-robocorp-fork = "^4.0.0"
 python-xlib = { version = ">=0.17", platform = "linux" }
 psutil = { version = "^5.7.0", platform = "win32" }
 pyperclip = "^1.8.0"
-exchangelib = "^4.5.1"
+exchangelib = "^4.7.5"
 tzlocal = "^2.1"
 xlrd = "^2.0.1"
 xlwt = "^1.3.0"

@@ -5,13 +5,18 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Browser.Selenium** (:issue:`593`): Keyword ``Print To PDF`` provides
-  better error message when trying to print in non-headless mode (which doesn't work
-  by design; same with full page screenshots).
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.6.1 - 09 Aug 2022
+--------------------
+
+- Library **RPA.Salesforce** (:issue:`583`): Keyword
+  ``Salesforce Query Result As Table`` bugfix on empty results.
+- Library **RPA.Browser.Selenium** (:issue:`593`): Keyword ``Print To PDF`` provides
+  better error message when trying to print in non-headless mode (which doesn't work
+  by design; same with full page screenshots).
 
 15.6.0 - 02 Aug 2022
 --------------------
