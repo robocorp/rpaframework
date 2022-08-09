@@ -840,12 +840,12 @@ class FileSystem:
         return str(os.path.normpath(Path(path)))
 
     def get_file_name(self, path: PATH_TYPE) -> str:
-        """Returns only the file name portion of a path.
+        """Returns only the full file name portion of a path.
 
-        :param path:    path to file
+        :param path: path to file
         :return: filename portion of a path as a string
         """
-        return str(Path(path).name)
+        return Path(path).name
 
     def get_file_stem(self, path: PATH_TYPE) -> str:
         """Returns the name of the file without its extension.
