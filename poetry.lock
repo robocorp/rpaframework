@@ -135,14 +135,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.43"
+version = "1.24.47"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.43,<1.28.0"
+botocore = ">=1.27.47,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -151,7 +151,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.43"
+version = "1.27.47"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -316,7 +316,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "exchangelib"
-version = "4.7.4"
+version = "4.7.5"
 description = "Client for Microsoft Exchange Web Services (EWS)"
 category = "main"
 optional = false
@@ -414,7 +414,7 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.9.1"
+version = "2.10.0"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -849,7 +849,7 @@ six = "*"
 
 [[package]]
 name = "jsonschema"
-version = "4.9.0"
+version = "4.9.1"
 description = "An implementation of JSON Schema validation for Python"
 category = "main"
 optional = false
@@ -1056,14 +1056,11 @@ six = ">=1.8.0"
 
 [[package]]
 name = "overrides"
-version = "6.1.0"
+version = "6.2.0"
 description = "A decorator to automatically detect mismatch when overriding a method."
 category = "main"
 optional = false
 python-versions = ">=3.6"
-
-[package.dependencies]
-typing-utils = ">=0.0.3"
 
 [[package]]
 name = "packaging"
@@ -1688,7 +1685,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "15.6.0"
+version = "15.6.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1701,7 +1698,7 @@ click = "^8.1.2"
 comtypes = {version = "1.1.11", markers = "sys_platform == \"win32\""}
 cryptography = "^3.3.1"
 docutils = "*"
-exchangelib = "^4.5.1"
+exchangelib = "^4.7.5"
 graphviz = "^0.13.2"
 htmldocx = "^0.0.6"
 hubspot-api-client = "^4.0.6"
@@ -2179,17 +2176,6 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
-name = "typing-utils"
-version = "0.1.0"
-description = "utils to inspect Python type annotations"
-category = "main"
-optional = false
-python-versions = ">=3.6.1"
-
-[package.extras]
-test = ["pytest"]
-
-[[package]]
 name = "tzdata"
 version = "2022.1"
 description = "Provider of IANA time zone data"
@@ -2450,12 +2436,12 @@ black = [
     {file = "black-22.6.0.tar.gz", hash = "sha256:6c6d39e28aed379aec40da1c65434c77d75e65bb59a1e1c283de545fb4e7c6c9"},
 ]
 boto3 = [
-    {file = "boto3-1.24.43-py3-none-any.whl", hash = "sha256:52f16ba56e47f8393cae2d09bbfca26083958adde08027c46265bc9012f6d4bc"},
-    {file = "boto3-1.24.43.tar.gz", hash = "sha256:edcfd95c2fd8335e2228ca7876e8e3967c506e1c6b42371fb557606ce7233f5a"},
+    {file = "boto3-1.24.47-py3-none-any.whl", hash = "sha256:8fa1e0ce6e95a2b7da1d1a9992aee7b05c5478538ea9052e2753999fc46f2f97"},
+    {file = "boto3-1.24.47.tar.gz", hash = "sha256:02b30776fd1b6c0fdf2d72d1365e5adcc6f0baa6540a450946b1a02db3a5ace6"},
 ]
 botocore = [
-    {file = "botocore-1.27.43-py3-none-any.whl", hash = "sha256:3cfe585e90069e8e7b6ec10855976d974ec13a53bbf9b1a0f77193804be7cb17"},
-    {file = "botocore-1.27.43.tar.gz", hash = "sha256:ade148d0e29f633f429ea6c7ea215e173c64e8b155e574950892aa4eade969d0"},
+    {file = "botocore-1.27.47-py3-none-any.whl", hash = "sha256:262d7b10ca2194b9ba63fd972185729e3ee38f99faed518d62580f93af900ad0"},
+    {file = "botocore-1.27.47.tar.gz", hash = "sha256:160a3fa8e3062a48299a1b44ef2ec81f9a58cd3edd0da58808e5c2cc8dd9257f"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2597,8 +2583,8 @@ et-xmlfile = [
     {file = "et_xmlfile-1.1.0.tar.gz", hash = "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"},
 ]
 exchangelib = [
-    {file = "exchangelib-4.7.4-py2.py3-none-any.whl", hash = "sha256:ab78fcbe1b8e9bccbe4c0edd532ced7510a0f7d7c4f18dff655198d3dbc55404"},
-    {file = "exchangelib-4.7.4.tar.gz", hash = "sha256:d8d59fea3f8af062b3acfd4a6adeb9342a7e7eddc755d1816179161a145bbdd1"},
+    {file = "exchangelib-4.7.5-py2.py3-none-any.whl", hash = "sha256:4d71720b693731ca77d7f0987fa0057b57707667318fd31ce4524f2fbbbfb8ab"},
+    {file = "exchangelib-4.7.5.tar.gz", hash = "sha256:f37f8026666e53598ee5b25d394e8c46bc569bb378ae7ce995acb553ee291473"},
 ]
 fire = [
     {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
@@ -2620,8 +2606,8 @@ google-api-python-client = [
     {file = "google_api_python_client-2.55.0-py2.py3-none-any.whl", hash = "sha256:7837094c6d35cc8e680b60ebefe37f117ad521f3b263b0c7a6efa0b2f84cb17a"},
 ]
 google-auth = [
-    {file = "google-auth-2.9.1.tar.gz", hash = "sha256:14292fa3429f2bb1e99862554cde1ee730d6840ebae067814d3d15d8549c0888"},
-    {file = "google_auth-2.9.1-py2.py3-none-any.whl", hash = "sha256:5a7eed0cb0e3a83989fad0b59fe1329dfc8c479543039cd6fd1e01e9adf39475"},
+    {file = "google-auth-2.10.0.tar.gz", hash = "sha256:7904dbd44b745c7323fef29565adee2fe7ff48473e2d94443aced40b0404a395"},
+    {file = "google_auth-2.10.0-py2.py3-none-any.whl", hash = "sha256:1deba4a54f95ef67b4139eaf5c20eaa7047215eec9f6a2344599b8596db8863b"},
 ]
 google-auth-httplib2 = [
     {file = "google-auth-httplib2-0.1.0.tar.gz", hash = "sha256:a07c39fd632becacd3f07718dfd6021bf396978f03ad3ce4321d060015cc30ac"},
@@ -2882,8 +2868,8 @@ jsonpath-ng = [
     {file = "jsonpath_ng-1.5.3-py3-none-any.whl", hash = "sha256:292a93569d74029ba75ac2dc3d3630fc0e17b2df26119a165fa1d498ca47bf65"},
 ]
 jsonschema = [
-    {file = "jsonschema-4.9.0-py3-none-any.whl", hash = "sha256:5d0be0cd1b670438b71c3d3145b2abba1f9d197e3e91adc4c4bae4c0e114e252"},
-    {file = "jsonschema-4.9.0.tar.gz", hash = "sha256:df10e65c8f3687a48e93d0d348ce0ce5f897b5a28e9bbcbbe8f7c7eaf019e850"},
+    {file = "jsonschema-4.9.1-py3-none-any.whl", hash = "sha256:8ebad55894c002585271af2d327d99339ef566fb085d9129b69e2623867c4106"},
+    {file = "jsonschema-4.9.1.tar.gz", hash = "sha256:408c4c8ed0dede3b268f7a441784f74206380b04f93eb2d537c7befb3df3099f"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.7.1.tar.gz", hash = "sha256:d609c75b986def706743cdebe5e47553f4a5a1da9c5ff66d76013ef396b5a8a4"},
@@ -3178,8 +3164,8 @@ orderedmultidict = [
     {file = "orderedmultidict-1.0.1.tar.gz", hash = "sha256:04070bbb5e87291cc9bfa51df413677faf2141c73c61d2a5f7b26bea3cd882ad"},
 ]
 overrides = [
-    {file = "overrides-6.1.0-py3-none-any.whl", hash = "sha256:33926e018a952b06309517b3febede982112b86430e588bdd00560b80a4a800b"},
-    {file = "overrides-6.1.0.tar.gz", hash = "sha256:5ba636b73bf72d3d80550f4a5dfe3c7d04ec6e8fd246c4074bfc7ad82bd0ea3d"},
+    {file = "overrides-6.2.0-py3-none-any.whl", hash = "sha256:2f62e9dba0cd96d2cddee8c8a2bae59d6179e9e0993235466727681a6bfee789"},
+    {file = "overrides-6.2.0.tar.gz", hash = "sha256:e15c1a7d9a605999507a5e17d36505319f9e971cbcbde37b507c84346318301b"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
@@ -3785,10 +3771,6 @@ typed-ast = [
 typing-extensions = [
     {file = "typing_extensions-4.3.0-py3-none-any.whl", hash = "sha256:25642c956049920a5aa49edcdd6ab1e06d7e5d467fc00e0506c44ac86fbfca02"},
     {file = "typing_extensions-4.3.0.tar.gz", hash = "sha256:e6d2677a32f47fc7eb2795db1dd15c1f34eff616bcaf2cfb5e997f854fa1c4a6"},
-]
-typing-utils = [
-    {file = "typing_utils-0.1.0-py3-none-any.whl", hash = "sha256:6bd26f3d38a5dd526ca3a59f0a451ccb59bcee9dc829c872dd6c0aae4ec8bbef"},
-    {file = "typing_utils-0.1.0.tar.gz", hash = "sha256:8ff6b6705414b82575ad5ae0925ac414a9650fb8c5718289b1327dec61252f65"},
 ]
 tzdata = [
     {file = "tzdata-2022.1-py2.py3-none-any.whl", hash = "sha256:238e70234214138ed7b4e8a0fab0e5e13872edab3be586ab8198c407620e2ab9"},
