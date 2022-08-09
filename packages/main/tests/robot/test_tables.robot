@@ -54,25 +54,25 @@ Get Table Cell Errors
     Assert cell error    ${table}    1     Four    *Unknown column name*
     Assert cell error    ${table}    Test  0       *not a number*
 
-Map Column Values
+Convert Column Values
     ${table}=    Create table
     ...   [[1,"one","45"],[2,"two","102"],[3,"three",100]]
     ...   columns=["ID","User","Price"]
 
-    Map column values    ${table}    Price    Convert to integer
-    Map column values    ${table}    User     Find user name
+    Map Column Values    ${table}    Price    Convert to integer
+    Map Column Values    ${table}    User     Find user name
 
     Assert cell value    ${table}    0     Price    ${45}
     Assert cell value    ${table}    2     Price    ${100}
     Assert cell value    ${table}    0     User     Teppo
     Assert cell value    ${table}    2     User     Cosmin
 
-Filter With Keyword
+Remove Rows With Filtering
     ${table}=    Create table
     ...    [["One", "5/3/22 9:44"], ["Two", "5/4/22 9:25"], ["Three", "5/3/22 10:21"]]
     ...    columns=["ID", "Submit Date"]
 
-    Filter table with keyword    ${table}    Match Date    target=05.03.2022
+    Filter Table With Keyword    ${table}    Match Date    target=05.03.2022
     Assert cell value    ${table}    0    ID    One
     Assert cell value    ${table}    1    ID    Three
 
