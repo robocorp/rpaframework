@@ -1735,21 +1735,20 @@ class Tables:
         table.filter_all(condition)
         after = len(table)
 
-        self.logger.info("Removed %d rows", before - after)
+        self.logger.info("Removed %d row(s)", before - after)
 
     def map_column_values(self, table: Table, column: Column, name: str, *args):
-        """Run a keyword for each cell in a given column, and replace
-        its contents with the return value.
+        """Run a keyword for each cell in a given column, and replace its content with
+        the return value.
 
-        Can be used to easily transform column types or values in-place.
+        Can be used to easily convert column types or values in-place.
 
-        :param table:     Table to modify
-        :param column:    Column to modify
-        :param name:      Mapping keyword name
-        :param args:      Additional keyword arguments (optional)
+        :param table: Table to modify.
+        :param column: Column to modify.
+        :param name: Mapping keyword name.
+        :param args: Additional keyword arguments. (optional)
 
-        The cell value will be given as the first argument to the
-        mapping keyword.
+        The cell value will be given as the first argument to the mapping keyword.
 
         Examples:
 

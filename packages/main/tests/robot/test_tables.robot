@@ -52,7 +52,7 @@ Get Table Cell Errors
     Assert cell error    ${table}    5     0       *out of range*
     Assert cell error    ${table}    1     3       *out of range*
     Assert cell error    ${table}    1     Four    *Unknown column name*
-    Assert cell error    ${table}    Test  0       *integer*
+    Assert cell error    ${table}    Test  0       *not a number*
 
 Map Column Values
     ${table}=    Create table
