@@ -22,6 +22,8 @@ from RPA.core.locators import (
     literal,
 )
 
+from . import RESOURCES_DIR
+
 
 def to_stream(data):
     return io.StringIO(json.dumps(data))
@@ -424,6 +426,19 @@ class TestDatabase:
         with pytest.raises(ValueError):
             LocatorsDatabase.load_by_name("RobotSpareBin.Password", "no-exist.json")
 
+    def test_load_by_name_custom_path(self):
+        button = LocatorsDatabase.load_by_name(
+            "CONNECTION_BUTTON", RESOURCES_DIR / "locators.json"
+        )
+        assert "Connection" in button.value
+
+    def test_load_by_name_env_path(self, monkeypatch):
+        monkeypatch.setenv(
+            "RPA_LOCATORS_DATABASE", str(RESOURCES_DIR / "locators.json")
+        )
+        button = LocatorsDatabase.load_by_name("CONNECTION_BUTTON")
+        assert "Connection" in button.value
+
     def test_load_by_name_invalid_name(self):
         with temp_cwd() as cwd:
             path = Path(cwd) / "locators.json"
@@ -434,15 +449,17 @@ class TestDatabase:
                 LocatorsDatabase.load_by_name("RobotSpareBin.Paswerd")
 
     def test_save(self):
-        stream = to_stream(CURRENT)
-        database = LocatorsDatabase(stream)
+        in_stream = to_stream(CURRENT)
+        database = LocatorsDatabase(in_stream)
         database.load()
 
-        stream.truncate(0)
-        stream.seek(0)
+        # The current input stream got closed during content reading.
+        out_stream = to_stream(CURRENT)
+        out_stream.close = lambda: None
+        database.path = out_stream
         database.locators["RobotSpareBin.Password"].value = "paswerd"
         database.save()
 
-        data = stream.getvalue()
+        data = out_stream.getvalue()
         content = json.loads(data)
         assert content["RobotSpareBin.Password"]["value"] == "paswerd"

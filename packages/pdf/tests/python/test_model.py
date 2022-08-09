@@ -1,3 +1,5 @@
+import re
+
 import pytest
 
 from . import (
@@ -72,6 +74,22 @@ def test_set_field_value_encoding(library):
             library.get_input_fields()
         content = library.active_pdf_document.fileobject.read()
         assert new_name.encode() in content
+
+
+def test_set_field_value_checkbox(library):
+    fields = library.get_input_fields(TestFiles.alianz_pdf)
+    checkbox_name = "VeroeffentlichungInst"
+    assert fields[checkbox_name]["value"].name == "Off"
+
+    library.set_field_value(checkbox_name, "Yes")  # ticks it
+    with temp_filename(suffix=".pdf") as tmp_file:
+        library.save_field_values(output_path=tmp_file)
+        library.switch_to_pdf(tmp_file)
+        with pytest.raises(KeyError):
+            # This output can't retrieve fields after save anymore.
+            library.get_input_fields()
+        content = library.active_pdf_document.fileobject.read()
+        assert re.search(rf"{checkbox_name}[^>]+Yes".encode(), content)
 
 
 @pytest.mark.xfail(reason="Known issue: PDF won't show as having fields after saving")

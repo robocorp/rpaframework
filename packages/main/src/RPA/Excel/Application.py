@@ -382,7 +382,7 @@ class Application:
         """Run Excel macro with given name
 
         :param macro_name: macro to run
-        :param *args: arguments to pass to macro
+        :param args: arguments to pass to macro
         """
         if not self.app:
             raise ValueError("Excel application is not open")
@@ -391,7 +391,7 @@ class Application:
             raise ValueError("No workbook open")
 
         with catch_com_error():
-            self.app.Application.Run(f"{self.workbook.Name}!{macro_name}", *args)
+            self.app.Application.Run(f"'{self.workbook.Name}'!{macro_name}", *args)
 
     def export_as_pdf(self, pdf_filename: str, excel_filename: str = None):
         """Export Excel as PDF file

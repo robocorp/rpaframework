@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 import atexit
 import base64
 import importlib
@@ -7,11 +8,12 @@ import os
 import platform
 import time
 import traceback
+import urllib.parse
 from collections import OrderedDict
 from contextlib import contextmanager
 from functools import partial
 from itertools import product
-from typing import Any, Optional, List
+from typing import Any, Optional, List, Union
 from pathlib import Path
 import webbrowser
 
@@ -25,7 +27,7 @@ from SeleniumLibrary.keywords import (
     ScreenshotKeywords,
     AlertKeywords,
 )
-from selenium.webdriver import ChromeOptions
+from selenium.webdriver import ChromeOptions, FirefoxProfile
 
 from RPA.core import webdriver, notebook
 from RPA.core.locators import LocatorsDatabase, BrowserLocator
@@ -54,8 +56,73 @@ def suppress_logging():
         logger.warning, logger.error = logger_warning, logger_error
 
 
+def ensure_scheme(url: str, default: Optional[str]) -> str:
+    """Ensures that a URL has a scheme, such as `http` or `https`"""
+    if default is None:
+        return url
+
+    parts = list(urllib.parse.urlsplit(url))
+    if not parts[0]:
+        parts[0] = str(default)
+        url = urllib.parse.urlunsplit(parts)
+
+    return url
+
+
 class BrowserNotFoundError(ValueError):
     """Raised when browser can't be initialized."""
+
+
+class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
+    """Overriden keywords for browser management."""
+
+    def __init__(self, ctx):
+        super().__init__(ctx)
+        self._default_scheme = "https"
+
+    @keyword
+    def set_default_url_scheme(self, scheme: Optional[str]) -> None:
+        """Sets the default `scheme` used for URLs without a defined
+        value, such as `http` or `https`.
+
+        The feature is disabled if the value is set to `None`.
+        """
+        self._default_scheme = scheme
+
+    @keyword
+    def go_to(self, url: str) -> None:
+        url = ensure_scheme(url, self._default_scheme)
+        super().go_to(url)
+
+    go_to.__doc__ = BrowserManagementKeywords.go_to.__doc__
+
+    @keyword
+    def open_browser(
+        self,
+        url: Optional[str] = None,
+        browser: str = "firefox",
+        alias: Optional[str] = None,
+        remote_url: Union[bool, str] = False,
+        desired_capabilities: Union[dict, None, str] = None,
+        ff_profile_dir: Union[FirefoxProfile, str, None] = None,
+        options: Any = None,
+        service_log_path: Optional[str] = None,
+        executable_path: Optional[str] = None,
+    ) -> str:
+        url = ensure_scheme(url, self._default_scheme)
+        return super().open_browser(
+            url=url,
+            browser=browser,
+            alias=alias,
+            remote_url=remote_url,
+            desired_capabilities=desired_capabilities,
+            ff_profile_dir=ff_profile_dir,
+            options=options,
+            service_log_path=service_log_path,
+            executable_path=executable_path,
+        )
+
+    open_browser.__doc__ = BrowserManagementKeywords.open_browser.__doc__
 
 
 class Selenium(SeleniumLibrary):
@@ -405,6 +472,11 @@ class Selenium(SeleniumLibrary):
         kwargs["plugins"] = ",".join(plugins)
 
         SeleniumLibrary.__init__(self, *args, **kwargs)
+
+        # Add inherit/overriden library keywords
+        overrides = [BrowserManagementKeywordsOverride(self)]
+        self.add_library_components(overrides)
+
         self.logger = logging.getLogger(__name__)
         self.using_testability = bool("SeleniumTestability" in plugins)
 
@@ -1866,26 +1938,28 @@ class Selenium(SeleniumLibrary):
         self.driver.execute_script(script, *elements)
 
     @keyword
-    def print_to_pdf(self, output_path: str = None, params: dict = None):
-        """
-        Print the current page to a PDF document using Chromium devtools.
+    def print_to_pdf(
+        self, output_path: Optional[str] = None, params: Optional[dict] = None
+    ) -> str:
+        """Print the current page to a PDF document using Chrome/Chromium DevTools.
 
+        Attention: This works in ``headless`` mode only!
         For supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
+        Returns the output PDF file path.
 
-        ``output_path`` filepath for the generated pdf. By default it is saved to
-          the output folder with name `out.pdf`.
-
-        ``params`` parameters for the Chrome print method. By default uses values:
-
-        ``{
-            "landscape": False,
-            "displayHeaderFooter": False,
-            "printBackground": True,
-            "preferCSSPageSize": True,
-        }``
+        :param output_path: File path for the generated PDF document. By default, it is
+            saved to the output folder with the name `out.pdf`.
+        :param params: Parameters for the browser printing method. By default, it uses
+            the following values:
+            ``{
+                "landscape": False,
+                "displayHeaderFooter": False,
+                "printBackground": True,
+                "preferCSSPageSize": True,
+            }``
         """
-        if "chrom" not in self.driver.name:
+        if not self.driver.name.lower().startswith("chrom"):
             raise NotImplementedError("PDF printing works only with Chrome/Chromium")
 
         default_params = {
@@ -1894,20 +1968,20 @@ class Selenium(SeleniumLibrary):
             "printBackground": True,
             "preferCSSPageSize": True,
         }
+        params = params or default_params
+        result = self._send_command_and_get_result("Page.printToPDF", params)
+        if isinstance(result, str) and "Printing is not available" in result:
+            raise TypeError("PDF printing works in headless mode only")
 
         try:
             output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}", "output")
         except robot.libraries.BuiltIn.RobotNotRunningError:
             output_dir = "output"
-        default_output = f"{output_dir}/out.pdf"
+        default_output = str(Path(output_dir) / "out.pdf")
         output_path = output_path or default_output
-
-        params = params or default_params
-        result = self._send_command_and_get_result("Page.printToPDF", params)
-        pdf = base64.b64decode(result["data"])
-
-        with open(output_path, "wb") as f:
-            f.write(pdf)
+        pdf_data = base64.b64decode(result["data"])
+        with open(output_path, "wb") as stream:
+            stream.write(pdf_data)
 
         return output_path
 

@@ -9,29 +9,41 @@ from enum import Enum
 from pathlib import Path
 from shutil import copy2
 from threading import Event
-from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 import yaml
-from robot.api.deco import library, keyword
+from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn
 
-from RPA.Email.ImapSmtp import ImapSmtp
-from RPA.FileSystem import FileSystem
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
-from .utils import (
+from RPA.Email.ImapSmtp import ImapSmtp
+from RPA.FileSystem import FileSystem
+from RPA.Robocorp.utils import (
     JSONType,
     Requests,
+    get_dot_value,
     is_json_equal,
     json_dumps,
     resolve_path,
+    set_dot_value,
     truncate,
     url_join,
 )
 
 
 UNDEFINED = object()  # Undefined default value
+ENCODING = "utf-8"
+
+_STRINGS_TYPE = Union[str, Tuple[str, ...]]
+AUTO_PARSE_EMAIL_TYPE = Optional[Dict[_STRINGS_TYPE, _STRINGS_TYPE]]
+AUTO_PARSE_EMAIL_DEFAULT = {
+    # Source payload keys or file names -> destination payload keys with the parsed
+    # e-mail content.
+    ("email.text", "__mail.html"): ("email.body", "parsedEmail.Body"),
+    "rawEmail": "parsedEmail",
+}
 
 
 class State(Enum):
@@ -218,7 +230,8 @@ class RobocorpAdapter(BaseAdapter):
                 if value is None:
                     del exception[key]
             body["exception"] = exception
-        logging.info(
+        log_func = logging.error if state == State.FAILED else logging.info
+        log_func(
             "Releasing %s input work item %r into %r with exception: %s",
             state.value,
             item_id,
@@ -338,7 +351,7 @@ class RobocorpAdapter(BaseAdapter):
 
 
 class FileAdapter(BaseAdapter):
-    """Adapter for mocking work item input queues.
+    """Adapter for simulating work item input queues.
 
     Reads inputs from the given database file, and writes
     all created output items into an adjacent file
@@ -387,8 +400,9 @@ class FileAdapter(BaseAdapter):
     def release_input(
         self, item_id: str, state: State, exception: Optional[dict] = None
     ):
-        # Nothing happens for now on releasing local dev input work items.
-        logging.info(
+        # Nothing happens for now on releasing local dev input Work Items.
+        log_func = logging.error if state == State.FAILED else logging.info
+        log_func(
             "Releasing item %r with %s state and exception: %s",
             item_id,
             state.value,
@@ -453,7 +467,7 @@ class FileAdapter(BaseAdapter):
             path = self.output_path
             data = self.outputs
 
-        with open(path, "w", encoding="utf-8") as fd:
+        with open(path, "w", encoding=ENCODING) as fd:
             fd.write(json_dumps(data, indent=4))
 
         logging.info("Saved into %s file: %s", source, path)
@@ -523,7 +537,7 @@ class FileAdapter(BaseAdapter):
     def load_database(self) -> List:
         try:
             try:
-                with open(self.input_path, "r", encoding="utf-8") as infile:
+                with open(self.input_path, "r", encoding=ENCODING) as infile:
                     data = json.load(infile)
             except (TypeError, FileNotFoundError):
                 logging.warning("No input work items file found: %s", self.input_path)
@@ -738,10 +752,20 @@ class WorkItems:
     **E-mail triggering**
 
     Since a process can be started in Control Room by sending an e-mail, a body
-    in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
-    input work item with the "rawEmail" payload variable. This library automatically
-    parses the content of it and saves into "parsedEmail" the dictionary transformation
-    of the original e-mail.
+    in Text/JSON/YAML/HTML format can be sent as well and this gets attached to the
+    input work item with the ``rawEmail`` payload variable. This library automatically
+    parses the content of it and saves into ``parsedEmail`` the dictionary
+    transformation of the original e-mail.
+
+    If "Parse email" Control Room configuration option is enabled (recommended), then
+    your e-mail is automatically parsed in the work item under the ``email`` payload
+    variable, which is a dictionary containing a ``body`` holding the final parsed form
+    of the interpreted e-mail body. The payload variable ``parsedEmail`` is still
+    available for backwards compatibility reasons and holds the very same body inside
+    the ``parsedEmail[Body]``.
+
+    E-mail attachments will be added into the work item as files. Read more on:
+    https://robocorp.com/docs/control-room/attended-or-unattended/email-trigger
 
     Example:
 
@@ -757,17 +781,20 @@ class WorkItems:
 
     .. code-block:: robotframework
 
-        ${mail} =    Get Work Item Variable    parsedEmail
-        Set Work Item Variables    &{mail}[Body]
-        ${message} =     Get Work Item Variable     message
-        Log    ${message}  # will print "Hello world!"
+        *** Tasks ***
+        Using Prased Emails
+            ${mail} =    Get Work Item Variable    email
+            Set Work Item Variables    &{mail}[body]
+            ${message} =     Get Work Item Variable     message
+            Log    ${message}    # will print "Hello world!"
 
     The behaviour can be disabled by loading the library with
     ``auto_parse_email=${None}`` or altered by providing to it a dictionary with one
-    "key: value" where the key is usually "rawEmail" (the variable set by Control Room,
-    which acts as source for the raw e-mail data) and the value is "parsedEmail" by
-    default (where the parsed e-mail dictionary gets stored into), value which can be
-    customized and retrieved with ``Get Work Item Variable``.
+    "key: value" where the key is usually "email.text" (deprecated "rawEmail", the
+    variable set by Control Room, which acts as source for the parsed (deprecated raw)
+    e-mail data) and the value can be "email.body" (deprecated "parsedEmail", where the
+    parsed e-mail data gets stored into), value which can be customized and retrieved
+    with ``Get Work Item Variable``.
 
     **Creating outputs**
 
@@ -797,7 +824,7 @@ class WorkItems:
     It is recommended to defer saves until all changes have been made to prevent
     leaving work items in a half-modified state in case of failures.
 
-    **Development and mocking**
+    **Local Development**
 
     While Control Room is the default implementation, it can also be replaced
     with a custom adapter. The selection is based on either the ``default_adapter``
@@ -828,6 +855,17 @@ class WorkItems:
     with the same name, but with the extension ``.output.json``. You can specify
     through the "RPA_OUTPUT_WORKITEM_PATH" env var a different path and name for this
     file.
+
+    **Simulating the Cloud with Robocorp Code VSCode Extension**
+
+    If you are developing in VSCode with the `Robocorp Code extension`_, you can
+    utilize the built in local development features described in the
+    `Developing with work items locally`_ section of the
+    `Using work items`_ development guide.
+
+    .. _Robocorp Code extension: https://robocorp.com/docs/setup/development-environment#visual-studio-code-with-robocorp-extensions
+    .. _Developing with work items locally: https://robocorp.com/docs/development-guide/control-room/work-items#developing-with-work-items-locally
+    .. _Using work items: https://robocorp.com/docs/development-guide/control-room/work-items
 
     **Examples**
 
@@ -878,11 +916,16 @@ class WorkItems:
             variables = library.get_work_item_variables()
             for variable, value in variables.items():
                 logging.info("%s = %s", variable, value)
-    """
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 2
+
+    EMAIL_BODY_LOADERS = [
+        ("JSON", json.loads),
+        ("YAML", yaml.full_load),
+    ]
 
     def __init__(
         self,
@@ -890,7 +933,7 @@ class WorkItems:
         root: Optional[str] = None,
         default_adapter: Union[Type[BaseAdapter], str] = RobocorpAdapter,
         # pylint: disable=dangerous-default-value
-        auto_parse_email: Optional[Dict[str, str]] = {"rawEmail": "parsedEmail"},
+        auto_parse_email: AUTO_PARSE_EMAIL_TYPE = AUTO_PARSE_EMAIL_DEFAULT,
     ):
         self.ROBOT_LIBRARY_LISTENER = self
 
@@ -946,17 +989,16 @@ class WorkItems:
 
         return adapter
 
-    @staticmethod
-    def _interpret_content(body: str) -> Union[dict, str]:
-        loaders = [json.loads, yaml.full_load]
-        for loader in loaders:
+    @classmethod
+    def _interpret_content(cls, body: str) -> Union[dict, str]:
+        for name, loader in cls.EMAIL_BODY_LOADERS:
             try:
                 body = loader(body)
             except Exception as exc:  # pylint: disable=broad-except
                 logging.debug(
                     "Failed deserializing input e-mail body content with loader %r "
                     "due to: %s",
-                    loader.__name__,
+                    name,
                     exc,
                 )
             else:
@@ -964,35 +1006,38 @@ class WorkItems:
 
         return body
 
+    def _get_email_content(
+        self, variables: Dict
+    ) -> Optional[Tuple[str, bool, Tuple[str]]]:
+        # Returns the extracted e-mail [parsed] content and its payload destination.
+        to_tuple = (
+            lambda keys: keys if isinstance(keys, tuple) else (keys,)
+        )  # noqa: E731
+        file_list = self.list_work_item_files()
+        for input_keys, output_keys in self._auto_parse_email.items():
+            input_keys = to_tuple(input_keys)
+            for input_key in input_keys:
+                content = get_dot_value(variables, input_key)
+                if not content and input_key in file_list:
+                    path = Path(self.get_work_item_file(input_key))
+                    content = path.read_text(encoding=ENCODING)
+                    path.unlink()
+                if content:
+                    parsed = not input_key == "rawEmail"
+                    if not parsed:
+                        deprecation(
+                            "Legacy non-parsed e-mail trigger detected! Please enable "
+                            '"Parse email" configuration option in Control Room. (more'
+                            " details: https://robocorp.com/docs/control-room/attended"
+                            "-or-unattended/email-trigger#parse-email)"
+                        )
+                    output_keys = to_tuple(output_keys)
+                    return content, parsed, output_keys
+        return None
+
     def _parse_work_item_from_email(self):
-        """Parse and return a dictionary from the input work item of a process started
-        by e-mail trigger.
-
-        Since a process can be started in Control Room by sending an e-mail, a body
-        in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
-        input work item with the "rawEmail" payload variable. This method parses the
-        content of it and saves into "parsedEmail" the dictionary transformation of the
-        original e-mail.
-
-        Example:
-
-        After starting the process by sending an e-mail with a body like:
-
-        .. code-block:: json
-
-            {
-                "message": "Hello world!"
-            }
-
-        The robot can use the parsed e-mail body's dictionary:
-
-        .. code-block:: robotframework
-
-            ${mail} =    Get Work Item Variable    parsedEmail
-            Set Work Item Variables    &{mail}[Body]
-            ${message} =     Get Work Item Variable     message
-            Log    ${message}  # will print "Hello world!"
-        """
+        # Parse and return a dictionary from the input work item of a process started
+        #  by e-mail trigger.
         if not self._auto_parse_email:
             return  # auto e-mail parsing disabled
 
@@ -1001,38 +1046,63 @@ class WorkItems:
         except ValueError:
             return  # payload not a dictionary
 
-        for input_key, output_key in self._auto_parse_email.items():
-            raw_email = variables.get(input_key)
-            if raw_email:
-                break
-        else:
+        content_details = self._get_email_content(variables)
+        if not content_details:
             return  # no e-mail content found in the work item
 
-        # pylint: disable=no-member
-        message = email.message_from_string(raw_email)
-        body, _ = ImapSmtp().get_decoded_email_body(message)
-        body = self._interpret_content(body)
-        message_dict = dict(message.items())
-        message_dict["Body"] = body
+        content, parsed, output_keys = content_details
+        if parsed:  # With "Parse email" Control Room configuration option enabled.
+            email_data = self._interpret_content(content)
+        else:  # With "Parse email" Control Room configuration option disabled.
+            # pylint: disable=no-member
+            message = email.message_from_string(content)
+            message_dict = dict(message.items())
+            body, has_attachments = ImapSmtp().get_decoded_email_body(message)
+            message_dict["Body"] = self._interpret_content(body)
+            message_dict["Has-Attachments"] = has_attachments
+            email_data = message_dict
 
-        # pylint: disable=undefined-loop-variable
-        self.set_work_item_variable(output_key, message_dict)
+        for output_key in output_keys:
+            keys = output_key.split(".", 1)
+            parsed_email = self.get_work_item_variable(keys[0], default={})
+            if len(keys) == 2:
+                set_dot_value(parsed_email, keys[1], value=email_data)
+            else:
+                parsed_email = email_data
+            # pylint: disable=undefined-loop-variable
+            self.set_work_item_variable(keys[0], parsed_email)
 
-    def _start_suite(self, data, result):
+    def _start_suite(self, *_):
         """Robot Framework listener method, called when suite starts."""
-        # pylint: disable=unused-argument, broad-except
         if not self.autoload:
             return
 
         try:
             self.get_input_work_item()
+        # pylint: disable=broad-except
         except Exception as exc:
             logging.warning("Failed to load input work item: %s", exc)
         finally:
             self.autoload = False
 
-    def _end_suite(self, data, result):
-        """Robot Framework listener method, called when suite ends."""
+    def _release_on_failure(self, attributes):
+        """Automatically releases current input Work Item when encountering failures
+        with tasks and/or suites.
+        """
+        if attributes["status"] != "FAIL":
+            return
+
+        message = attributes["message"]
+        logging.info("Releasing FAILED input item with APPLICATION error: %s", message)
+        self.release_input_work_item(
+            state=State.FAILED,
+            exception_type=Error.APPLICATION,
+            message=message,
+            _auto_release=True,
+        )
+
+    def _end_suite(self, _, attributes):
+        """Robot Framework listener method, called when the suite ends."""
         # pylint: disable=unused-argument
         for item in self.inputs + self.outputs:
             if item.is_dirty:
@@ -1040,27 +1110,47 @@ class WorkItems:
                     "%s has unsaved changes that will be discarded", self.current
                 )
 
+        self._release_on_failure(attributes)
+
+    def _end_test(self, _, attributes):
+        """Robot Framework listener method, called when each task ends."""
+        self._release_on_failure(attributes)
+
     @keyword
     def set_current_work_item(self, item: WorkItem):
+        # pylint: disable=anomalous-backslash-in-string
         """Set the currently active work item.
 
         The current work item is used as the target by other keywords
         in this library.
 
-        Keywords ``Get Input Work Item`` and ``Create Output Work Item``
+        Keywords \`Get Input Work Item\` and \`Create Output Work Item\`
         set the active work item automatically, and return the created
         instance.
 
         With this keyword the active work item can be set manually.
 
-        Example:
+        Robot Framework Example:
 
         .. code-block:: robotframework
 
-            ${input}=    Get Input Work Item
-            ${output}=   Create Output Work Item
-            Set current work item    ${input}
-        """
+            *** Tasks ***
+            Creating outputs
+                ${input}=    Get Input Work Item
+                ${output}=   Create Output Work Item
+                Set current work item    ${input}
+
+        Python Example:
+
+        .. code-block:: python
+
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            wi = WorkItems()
+            parent_wi = wi.get_input_work_item()
+            child_wi = wi.create_output_work_item()
+            wi.set_current_work_item(parent_wi)
+        """  # noqa: W605
         self.current = item
 
     @keyword
@@ -1087,8 +1177,8 @@ class WorkItems:
         self.inputs.append(item)
         self.current = item
 
-        # Checks for raw e-mail content and parses it if present. This happens with
-        # processes triggered by e-mail.
+        # Checks for raw/parsed e-mail content and parses it if present. This happens
+        # with Processes triggered by e-mail.
         self._parse_work_item_from_email()
 
         return self.current
@@ -1122,6 +1212,7 @@ class WorkItems:
 
         .. code-block:: robotframework
 
+            *** Tasks ***
             Create output items with variables then save
                 ${customers} =  Load customer data
                 FOR     ${customer}    IN    @{customers}
@@ -1139,6 +1230,19 @@ class WorkItems:
                     Create Output Work Item     variables=${customer_vars}
                     ...     files=devdata${/}report.csv   save=${True}
                 END
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            wi = WorkItems()
+            wi.get_input_work_item()
+            customers = wi.get_work_item_variable("customers")
+            for customer in customers:
+                wi.create_output_work_item(customer, save=True)
+
         """
         if not self.inputs:
             raise RuntimeError(
@@ -1185,8 +1289,19 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Clear work item
-            Save Work Item
+            *** Tasks ***
+            Clearing a work item
+                Clear work item
+                Save work item
+
+        .. code-block:: python
+
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            wi = WorkItems()
+            wi.get_input_work_item()
+            wi.clear_work_item()
+            wi.save_work_item()
         """
         self.current.payload = {}
         self.remove_work_item_files("*")
@@ -1201,27 +1316,36 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${payload}=    Get work item payload
-            Log    Entire payload as dictionary: ${payload}
+            *** Tasks ***
+            Example task
+                ${payload}=    Get work item payload
+                Log    Entire payload as dictionary: ${payload}
         """
         return self.current.payload
 
     @keyword
     def set_work_item_payload(self, payload):
+        # pylint: disable=anomalous-backslash-in-string
         """Set the full JSON payload for a work item.
 
         :param payload: Content of payload, must be JSON-serializable
 
         **NOTE**: Most use cases should prefer higher-level keywords.
+        Using this keyword may cause errors when getting the payload via
+        the normal \`Get work item variable\` and
+        \`Get work item variables\` keywords if you do not set the payload
+        to a ``dict``.
 
         Example:
 
         .. code-block:: robotframework
 
-            ${output}=    Create dictionary    url=example.com    username=Mark
-            Set work item payload    ${output}
+            *** Tasks ***
+            Example task
+                ${output}=    Create dictionary    url=example.com    username=Mark
+                Set work item payload    ${output}
 
-        """
+        """  # noqa: W605
         self.current.payload = payload
 
     @keyword
@@ -1232,8 +1356,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${variables}=    List work item variables
-            Log    Available variables in work item: ${variables}
+            *** Tasks ***
+            Example task
+                ${variables}=    List work item variables
+                Log    Available variables in work item: ${variables}
 
         """
         return list(self.get_work_item_variables().keys())
@@ -1248,11 +1374,24 @@ class WorkItems:
         :param name: Name of variable
         :param default: Default value if key does not exist
 
-        Example:
+        Robot Framework Example:
 
         .. code-block:: robotframework
 
-            ${username}=    Get work item variable    username    default=guest
+            *** Tasks ***
+            Using a work item
+                ${username}=    Get work item variable    username    default=guest
+
+        Python Example:
+
+        .. code-block:: python
+
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            wi = WorkItems()
+            wi.get_input_work_item()
+            customers = wi.get_work_item_variable("customers")
+            print(customers)
         """
         variables = self.get_work_item_variables()
         value = variables.get(name, default)
@@ -1268,12 +1407,23 @@ class WorkItems:
         """Read all variables from the current work item and
         return their names and values as a dictionary.
 
-        Example:
+        Robot Framework Example:
 
         .. code-block:: robotframework
 
-            ${variables}=    Get work item variables
-            Log    Username: ${variables}[username], Email: ${variables}[email]
+            *** Tasks ***
+            Example task
+                ${variables}=    Get work item variables
+                Log    Username: ${variables}[username], Email: ${variables}[email]
+
+        Python Example:
+
+            from RPA.Robocorp.WorkItems import WorkItems
+            wi = WorkItems()
+            wi.get_input_work_item()
+            input_wi = wi.get_work_item_variables()
+            print(input_wi["username"])
+            print(input_wi["email"])
         """
 
         payload = self.current.payload
@@ -1294,12 +1444,25 @@ class WorkItems:
         :param name: Name of variable
         :param value: Value of variable
 
-        Example:
+        Robot Framework Example:
 
         .. code-block:: robotframework
 
-            Set work item variable    username    MarkyMark
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Set work item variable    username    MarkyMark
+                Save Work Item
+
+        Python Example:
+
+        .. code-block:: python
+
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            customers = [{"id": 1, "name": "Apple"}, {"id": 2, "name": "Microsoft"}]
+            wi = WorkItems()
+            wi.get_input_work_item()
+            wi.set_work_item_variable("customers", customers)
         """
         variables = self.get_work_item_variables()
         logging.info("%s = %s", name, value)
@@ -1315,8 +1478,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Set work item variables    username=MarkyMark    email=mark@example.com
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Set work item variables    username=MarkyMark    email=mark@example.com
+                Save Work Item
         """
         variables = self.get_work_item_variables()
         for name, value in kwargs.items():
@@ -1334,8 +1499,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Delete work item variables    username    email
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Delete work item variables    username    email
+                Save Work Item
         """
         variables = self.get_work_item_variables()
         for name in names:
@@ -1348,16 +1515,20 @@ class WorkItems:
     @keyword
     def set_task_variables_from_work_item(self):
         """Convert all variables in the current work item to
-        Robot Framework task variables.
+        Robot Framework task variables, see `variable scopes`_.
+
+        .. _variable scopes: https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#variable-scopes
 
         Example:
 
         .. code-block:: robotframework
 
-            # Work item has variable INPUT_URL
-            Set task variables from work item
-            Log    The variable is now available: ${INPUT_URL}
-        """
+            *** Tasks ***
+            Example task
+                # Work item has variable INPUT_URL
+                Set task variables from work item
+                Log    The variable is now available: ${INPUT_URL}
+        """  # noqa: E501
         variables = self.get_work_item_variables()
         for name, value in variables.items():
             BuiltIn().set_task_variable(f"${{{name}}}", value)
@@ -1370,8 +1541,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${names}=    List work item files
-            Log    Work item has files with names: ${names}
+            *** Tasks ***
+            Example task
+                ${names}=    List work item files
+                Log    Work item has files with names: ${names}
         """
         return self.current.files
 
@@ -1388,8 +1561,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${path}=    Get work item file    input.xls
-            Open workbook    ${path}
+            *** Tasks ***
+            Example task
+                ${path}=    Get work item file    input.xls
+                Open workbook    ${path}
         """
         path = self.current.get_file(name, path)
         logging.info("Downloaded file to: %s", path)
@@ -1409,8 +1584,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Add work item file    output.xls
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Add work item file    output.xls
+                Save Work Item
         """
         logging.info("Adding file: %s", path)
         return self.current.add_file(path, name=name)
@@ -1428,8 +1605,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Remove work item file    input.xls
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Remove work item file    input.xls
+                Save Work Item
         """
         logging.info("Removing file: %s", name)
         return self.current.remove_file(name, missing_ok)
@@ -1446,10 +1625,12 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${paths}=    Get work item files    customer_*.xlsx
-            FOR  ${path}  IN  @{paths}
-                Handle customer file    ${path}
-            END
+            *** Tasks ***
+            Example task
+                ${paths}=    Get work item files    customer_*.xlsx
+                FOR  ${path}  IN  @{paths}
+                    Handle customer file    ${path}
+                END
         """
         paths = []
         for name in self.list_work_item_files():
@@ -1473,8 +1654,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Add work item files    %{ROBOT_ROOT}/generated/*.csv
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Add work item files    %{ROBOT_ROOT}/generated/*.csv
+                Save Work Item
         """
         matches = FileSystem().find_files(pattern, include_dirs=False)
 
@@ -1497,8 +1680,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Remove work item files    *.xlsx
-            Save Work Item
+            *** Tasks ***
+            Example task
+                Remove work item files    *.xlsx
+                Save Work Item
         """
         names = []
 
@@ -1555,6 +1740,7 @@ class WorkItems:
 
         .. code-block:: robotframework
 
+            *** Tasks ***
             Log Payloads
                 @{lengths} =     For Each Input Work Item    Log Payload
                 Log   Payload lengths: @{lengths}
@@ -1623,10 +1809,10 @@ class WorkItems:
     def release_input_work_item(
         self,
         state: State,
-        _auto_release: bool = False,
         exception_type: Optional[Error] = None,
         code: Optional[str] = None,
         message: Optional[str] = None,
+        _auto_release: bool = False,
     ):
         """Release the lastly retrieved input work item and set its state.
 
@@ -1648,10 +1834,32 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Login into portal
-                ${user} =     Get Work Item Variable    user
-                Log     Logging in ${user}
-                Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding  # noqa
+            *** Tasks ***
+            Example task
+                Login into portal
+                    ${user} =     Get Work Item Variable    user
+                    ${doc} =    Get Work Item Variable    doc
+                    TRY
+                        Login Keyword    ${user}
+                        Upload Doc Keyword    ${doc}
+
+                    EXCEPT    Login Failed
+                        Release Input Work Item     FAILED
+                        ...    exception_type=APPLICATION
+                        ...    code=LOGIN_PORTAL_DOWN
+                        ...    message=Unable to login, retry again later.
+
+                    EXCEPT    Format Error    AS    ${err}
+                        ${message} =    Catenate
+                        ...    Document format is not correct and cannot be uploaded.
+                        ...    Correct the format in this work item and try again.
+                        ...    Full error message received: ${err}
+                        Release Input Work Item     FAILED
+                        ...    exception_type=BUSINESS
+                        ...    code=DOC_FORMAT_ERROR
+                        ...    message=${message}
+
+                    END
 
         OR
 
@@ -1724,8 +1932,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${input} =    Get Current Work Item
-            ${output} =   Create Output Work Item
-            Set Current Work Item    ${input}
+            *** Tasks ***
+            Example task
+                ${input} =    Get Current Work Item
+                ${output} =   Create Output Work Item
+                Set Current Work Item    ${input}
         """
         return self.current

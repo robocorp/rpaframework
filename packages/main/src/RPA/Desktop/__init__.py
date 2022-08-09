@@ -1,7 +1,7 @@
 import logging
 import platform
-import sys
 import warnings
+from typing import Optional
 
 if platform.system() == "Windows":
     # Configure comtypes to not generate DLL bindings into
@@ -19,7 +19,7 @@ if platform.system() == "Windows":
 
 # pylint: disable=wrong-import-position
 from robotlibcore import DynamicCore
-from RPA.Desktop.utils import Buffer, is_windows
+from RPA.Desktop.utils import Buffer
 from RPA.Desktop.keywords import (
     ElementNotFound,
     MultipleElementsFound,
@@ -154,9 +154,14 @@ class Desktop(DynamicCore):
     UI changes. Robot Framework scripts can then only contain a reference
     to a stored locator by name.
 
-    The main way to create named locators is with `Robocorp Lab`_.
+    The main way to create named locators is with `VSCode`_.
 
-    .. _Robocorp Lab: https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview
+    Read more on identifying elements and crafting locators:
+
+    - `Desktop automation and RPA <https://robocorp.com/docs/development-guide/desktop>`_
+    - `How to find user interface elements using locators and keyboard shortcuts in Windows applications <https://robocorp.com/docs/development-guide/desktop/how-to-find-user-interface-elements-using-locators-and-keyboard-shortcuts-in-windows-applications>`_
+
+    .. _VSCode: https://robocorp.com/docs/developer-tools/visual-studio-code/overview
 
     **Keyboard and mouse**
 
@@ -336,7 +341,9 @@ class Desktop(DynamicCore):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self):
+    def __init__(self, locators_path: Optional[str] = None):
+        self.locators_path = locators_path
+
         self.logger = logging.getLogger(__name__)
         self.buffer = Buffer(self.logger)
 

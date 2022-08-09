@@ -308,7 +308,7 @@ Separate installation of AWS, Dialogs, PDF and Windows libraries without main rp
        - rpaframework-windows==3.0.0 # included in the rpaframework by default
 
 
-.. note:: Python 3.6 or higher is required
+.. note:: Python 3.7 or higher is required
 
 Example
 -------
@@ -389,6 +389,7 @@ First steps to start developing:
 #. create a new Git branch or switch to correct branch or stay in master branch
 
    - some branch naming conventions **feature/name-of-feature**, **hotfix/name-of-the-issue**, **release/number-of-release**
+
 #. ``poetry install`` which install package with its dependencies into the **.venv** directory of the package, for example **packages/main/.venv**
 #. if testing against Robocorp Robot which is using **devdata/env.json**
 
@@ -398,22 +399,49 @@ First steps to start developing:
      to include it in the Robot **conda.yaml**
    - another possibility for Robocorp internal development is to use Robocorp **devpi** instance, by ``poetry publish --ci``
      and point **conda.yaml** to use rpaframework version in devpi
+
 #. ``poetry run python -m robot <ROBOT_ARGS> <TARGET_ROBOT_FILE>``
 
    - common *ROBOT_ARGS* from Robocorp Robot template: ``--report NONE --outputdir output --logtitle "Task log"``
-#. ``poetry run python <TARGET_PYTHON_FILE>``
-#. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines. It is possible and likely
-   that Github action will fail the if developer has not linted the code changes. Code formatting is based on `black`_ and `flake8`_
-   and those are run with the ``invoke lint``.
-#. the library documentation can be created in the repository root (so called "meta" package level)
 
-   - ``poetry update``
+#. ``poetry run python <TARGET_PYTHON_FILE>``
+#. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines.
+   It is possible and likely that Github action will fail the if developer has not linted the code changes. Code 
+   formatting is based on `black`_ and `flake8`_ and those are run with the ``invoke lint``.
+#. the library documentation can be created in the repository root (so called "meta" package level). The documentation is 
+   built by the docgen tools using the locally installed version of the project, local changes for the main package
+   will be reflected each time you generate the docs, but if you want to see local changes for optional packages, you must
+   utilize ``invoke install-local --package <package_name>`` using the appropriate package name (e.g., ``rpaframework-aws``). This
+   will reinstall that package as a local editable version instead of from PyPI. Multiple such packages can be added by
+   repeating the use of the ``--package`` option. In order to reset this, use ``invoke install --reset``.
+
+   - ``poetry update`` and/or ``invoke install-local --package <package name>``
    - ``make docs``
-   - open ``docs/build/html/index.html`` with the browser to view the changes
+   - open ``docs/build/html/index.html`` with the browser to view the changes or execute ``make local`` and navigate to
+     ``localhost:8000`` to view docs as a live local webpage.
+
+   .. code-block:: toml
+
+      # Before
+      [tool.poetry.dependencies]
+      python = "^3.7"
+      rpaframework = { path = "packages/main", extras = ["cv", "playwright", "aws"] }
+      rpaframework-google = "^4.0.0"
+      rpaframework-windows = "^4.0.0"
+
+      # After
+      [tool.poetry.dependencies]
+      python = "^3.7"
+      rpaframework = { path = "packages/main", extras = ["cv", "playwright"] }
+      rpaframework-aws = { path = "packages/aws" }
+      rpaframework-google = "^4.0.0"
+      rpaframework-windows = "^4.0.0"
+
 #. ``invoke test`` (this will run both Python unittests and robotframework tests defined in the packages **tests/ directory**)
 
    - to run specific Python test: ``poetry run pytest path/to/test.py::test_function``
    - to run specific Robotframework test: ``inv testrobot -r <robot_name> -t <task_name>``
+
 #. git commit changes
 #. git push changes to remote
 #. create pull request from the branch describing changes included in the description
@@ -440,6 +468,7 @@ Some recommended tools for development
    - `Robot Framework Language Server`_
    - `GitLens`_
    - `Python extension`_
+
 - `GitHub Desktop`_ will make version management less prone to errors
 
 .. _poetry: https://python-poetry.org

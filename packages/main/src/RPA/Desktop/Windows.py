@@ -1731,7 +1731,7 @@ class Windows(OperatingSystem):
             element_dict.pop(attr, None)
 
         return element_dict
-    
+
     def put_system_to_sleep(self) -> None:
         """Put Windows into sleep mode
 
