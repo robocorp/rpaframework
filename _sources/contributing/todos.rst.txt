@@ -89,9 +89,9 @@ RPA.FileSystem:
    "573", "glob support"
    "611", "Should it remove all subdirectories too?"
    "651", "glob support"
-   "864", "Convert to proper date"
-   "874", "Convert to proper date"
-   "883", "Convert to human-friendly?"
+   "872", "Convert to proper date"
+   "882", "Convert to proper date"
+   "891", "Convert to human-friendly?"
 
 RPA.JSON:
 =========

@@ -730,7 +730,7 @@ Note: Linux sets this whenever file metadata changes</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.get_file_name">
 <code class="sig-name descname">get_file_name</code><span class="sig-paren">(</span><em class="sig-param">path: Union[str, pathlib.Path]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.FileSystem.FileSystem.get_file_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns only the filename portion of a path.</p>
+<dd><p>Returns only the full file name portion of a path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – path to file</p>
@@ -765,6 +765,20 @@ Note: Linux sets this whenever file metadata changes</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>file size in bytes as an int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.get_file_stem">
+<code class="sig-name descname">get_file_stem</code><span class="sig-paren">(</span><em class="sig-param">path: Union[str, pathlib.Path]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.FileSystem.FileSystem.get_file_stem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the file without its extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>filename without its suffix as a string</p>
 </dd>
 </dl>
 </dd></dl>
