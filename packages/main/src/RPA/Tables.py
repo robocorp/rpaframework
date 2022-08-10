@@ -1,16 +1,16 @@
-# pylint: disable=too-many-lines
-# TODO: Implement column slicing
-# TODO: Index name conflict in exports/imports
-# TODO: Return Robot Framework DotDict instead of dict?
 import copy
 import csv
 import logging
 import re
 from collections import OrderedDict, namedtuple
 from enum import Enum
+from itertools import groupby, zip_longest
 from keyword import iskeyword
+from numbers import Number
+from operator import itemgetter
 from typing import (
     Any,
+    Callable,
     Dict,
     Generator,
     Iterable,
@@ -21,18 +21,18 @@ from typing import (
     Union,
 )
 
-from itertools import groupby, zip_longest
-from numbers import Number
-from operator import itemgetter
-
 from robot.api.deco import keyword
+from robot.libraries.BuiltIn import BuiltIn
+from RPA.core.notebook import notebook_print, notebook_table
 from RPA.core.types import is_dict_like, is_list_like, is_namedtuple
-from RPA.core.notebook import notebook_table, notebook_print
 
-Index = int
+
+Index = Union[int, str]
 Column = Union[int, str]
 Row = Union[Dict, List, Tuple, NamedTuple, set]
-Data = Union[Dict[Column, Row], List[Row], "Table", None]
+Data = Optional[Union[Dict[Column, Row], List[Row], "Table"]]
+CellCondition = Callable[[Any], bool]
+RowCondition = Callable[[Union[Index, Row]], bool]
 
 
 def to_list(obj: Any, size: int = 1):
@@ -59,7 +59,7 @@ def to_identifier(val: Any):
     return val
 
 
-def to_condition(operator: str, value: Any):
+def to_condition(operator: str, value: Any) -> CellCondition:
     """Convert string operator into callable condition function."""
     operator = str(operator).lower().strip()
     condition = {
@@ -233,7 +233,7 @@ class Table:
         return self._data.copy()
 
     @property
-    def size(self):
+    def size(self) -> int:
         return len(self._data)
 
     @property
@@ -349,7 +349,7 @@ class Table:
             if len(head) != len(self._columns):
                 raise ValueError("Columns length does not match data")
 
-    def index_location(self, value):
+    def index_location(self, value: Index) -> int:
         try:
             value = int(value)
         except ValueError as err:
@@ -442,25 +442,8 @@ class Table:
 
     def _slice_index(self, slicer):
         """Create list of index values from slice object."""
-        if slicer.start is not None:
-            start = slicer.start
-        else:
-            start = 0
-
-        if slicer.stop is not None:
-            end = slicer.stop
-        else:
-            end = self.size
-
-        if not isinstance(start, int) or not isinstance(end, int):
-            raise IndexError("Index slices should be integers")
-
-        if start < 0:
-            start = self.size + start
-
-        if end < 0:
-            end = self.size + end
-
+        start = self.index_location(slicer.start) if slicer.start is not None else 0
+        end = self.index_location(slicer.stop) if slicer.stop is not None else self.size
         return list(range(start, end))
 
     def copy(self):
@@ -515,7 +498,7 @@ class Table:
 
         return self._data[idx][col]
 
-    def get_row(self, index, columns=None, as_list=False):
+    def get_row(self, index: Index, columns=None, as_list=False):
         """Get column values from row.
 
         :param index:   Index for row
@@ -578,7 +561,7 @@ class Table:
         else:
             return Table(data=data, columns=columns)
 
-    def get_slice(self, start=None, end=None):
+    def get_slice(self, start: Optional[Index] = None, end: Optional[Index] = None):
         """Get a new table from rows between start and end index."""
         index = self._slice_index(slice(start, end))
         return self.get_table(index, self._columns)
@@ -700,9 +683,9 @@ class Table:
 
         self.set_column(column, values)
 
-    def delete_rows(self, indexes):
+    def delete_rows(self, indexes: Union[Index, List[Index]]):
         """Remove rows with matching indexes."""
-        indexes = to_list(indexes)
+        indexes = [self.index_location(idx) for idx in to_list(indexes)]
 
         unknown = set(indexes) - set(self.index)
         if unknown:
@@ -791,19 +774,35 @@ class Table:
 
         return result
 
-    def filter_by_column(self, column, condition):
-        """Remove rows by evaluating `condition` for all `column`
-        values. All rows where it evaluates to falsy are removed.
-
-        The filtering will be done in-place.
-        """
-        filtered = []
-        for index in self.index:
-            value = self.get_cell(index, column)
-            if not condition(value):
-                filtered.append(index)
-
+    def _filter(self, condition: RowCondition):
+        filtered = list(filter(lambda idx: not condition(idx), self.index))
         self.delete_rows(filtered)
+
+    def filter_all(self, condition: RowCondition):
+        """Remove rows by evaluating `condition` for every row.
+
+        The filtering will be done in-place and all the rows evaluating as falsy
+        through the provided condition will be removed.
+        """
+
+        def _check_row(index: int) -> bool:
+            row = self.get_row(index)
+            return condition(row)
+
+        self._filter(_check_row)
+
+    def filter_by_column(self, column: Column, condition: CellCondition):
+        """Remove rows by evaluating `condition` for cells in `column`.
+
+        The filtering will be done in-place and all the rows where it evaluates to
+        falsy are removed.
+        """
+
+        def _check_cell(index: int) -> bool:
+            cell = self.get_cell(index, column)
+            return condition(cell)
+
+        self._filter(_check_cell)
 
     def iter_lists(self, with_index=True):
         """Iterate rows with values as lists."""
@@ -1579,14 +1578,14 @@ class Tables:
         table.set_cell(row, column, value)
 
     def find_table_rows(self, table: Table, column: Column, operator: str, value: Any):
-        """Find all rows in a table which match a condition for a
-        given column.
+        """Find all the rows in a table which match a condition for a given column.
 
-        :param table:    Table to find from
-        :param column:   Name of column to search
-        :param operator: Comparison operator
-        :param value:    Value to compare against
-        :return:         Table object that matches the row conditions
+        :param table: Table to search into.
+        :param column: Name or position of the column to compare with.
+        :param operator: Comparison operator used with every cell value on the
+            specified column.
+        :param value: Value to compare against.
+        :return: New `Table` object containing all the rows matching the condition.
 
         Supported operators:
 
@@ -1607,17 +1606,17 @@ class Tables:
         not in       Cell value is not in given value
         ============ ========================================
 
-        Returns the matches as a new Table instance.
+        Returns the matches as a new `Table` instance.
 
         Examples:
 
         .. code-block:: robotframework
 
             # Find all rows where price is over 200
-            @{rows}=    Find table rows    Price  >  ${200}
+            @{rows} =    Find table rows    ${table}    Price  >  ${200}
 
             # Find all rows where the status does not contain "removed"
-            @{rows}=    Find table rows    Status    not contains    removed
+            @{rows} =    Find table rows    ${table}    Status  not contains  removed
         """
         self._requires_table(table)
 
@@ -1714,6 +1713,62 @@ class Tables:
         after = len(table)
 
         self.logger.info("Filtered %d rows", after - before)
+
+    def filter_table_with_keyword(self, table: Table, name: str, *args):
+        """Run a keyword for each row of a table, then remove all rows where the called
+        keyword returns a falsy value.
+
+        Can be used to create custom RF keyword based filters.
+
+        :param table: Table to modify.
+        :param name: Keyword name used as filter.
+        :param args: Additional keyword arguments to be passed. (optional)
+
+        The row object will be given as the first argument to the filtering keyword.
+        """
+        self._requires_table(table)
+
+        def condition(row: Row) -> bool:
+            return BuiltIn().run_keyword(name, row, *args)
+
+        before = len(table)
+        table.filter_all(condition)
+        after = len(table)
+
+        self.logger.info("Removed %d row(s)", before - after)
+
+    def map_column_values(self, table: Table, column: Column, name: str, *args):
+        """Run a keyword for each cell in a given column, and replace its content with
+        the return value.
+
+        Can be used to easily convert column types or values in-place.
+
+        :param table: Table to modify.
+        :param column: Column to modify.
+        :param name: Mapping keyword name.
+        :param args: Additional keyword arguments. (optional)
+
+        The cell value will be given as the first argument to the mapping keyword.
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Convert all columns values to a different type
+            Map column values    ${table}    Price    Convert to integer
+
+            # Look up values with a custom keyword
+            Map column values    ${table}    User     Map user ID to name
+        """
+        self._requires_table(table)
+
+        values = []
+        for index in table.index:
+            cell = table.get_cell(index, column)
+            output = BuiltIn().run_keyword(name, cell, *args)
+            values.append(output)
+
+        table.set_column(column, values)
 
     def filter_empty_rows(self, table: Table):
         """Remove all rows from a table which have only ``None`` values.
