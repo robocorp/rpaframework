@@ -5,6 +5,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Security dependency update (``lxml`` **4.9.1**) within the following packages:
+
+  - ``rpaframework-aws`` **3.1.2**
+  - ``rpaframework-dialogs`` **3.0.1**
+  - ``rpaframework-google`` **5.0.2**
+  - ``rpaframework-recognition`` **4.0.1** (``rpaframework[cv]``)
+
 - Library **RPA.Tables** (:pr:`495`):
 
   - New keywords: ``Filter Table With Keyword``, ``Map Column Values``. (:issue:`226`)

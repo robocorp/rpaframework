@@ -104,6 +104,7 @@ def _match_template(
     image = numpy.array(image)
     template = numpy.array(template)
 
+    # pylint: disable=no-member
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     template = cv2.cvtColor(template, cv2.COLOR_RGB2BGR)
 
