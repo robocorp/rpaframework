@@ -1,6 +1,7 @@
 *** Settings ***
 Library           RPA.Excel.Files
 Library           RPA.FileSystem
+Library           Collections
 Task Teardown     Close Workbook
 
 *** Variables ***
@@ -31,9 +32,9 @@ Read Rows From Worksheet
     [Return]    ${rows}
 
 Append Rows to Target
-    [Arguments]    ${rows}    ${target_filepath}    ${expected_empty_row}
+    [Arguments]    ${rows}    ${target_filepath}    ${expected_empty_row}    ${formatting}=${False}
     Open Workbook    ${target_filepath}
-    Append Rows to Worksheet    ${rows}    #formatting_as_empty=True
+    Append Rows to Worksheet    ${rows}    formatting_as_empty=${formatting}
     Save Workbook
     ${empty_row_number}=    Find Empty Row
     Should Be Equal As Integers    ${expected_empty_row}    ${empty_row_number}
@@ -49,9 +50,35 @@ Test single row sheet
     Append Content To Sheet    empty.xlsx    ${content}
     Append Content To Sheet    empty.xls    ${content}
 
-Test appending content from source files to single target
-    Copy File    ${EXCELS}${/}data_template.xlsx    ${OUTPUT_DIR}${/}target1.xlsx
+Test appending content when formatted cell is considered as empty cell
+    ${target_file}=    Set Variable    ${OUTPUT_DIR}${/}target1.xlsx
+    Copy File    ${EXCELS}${/}data_template.xlsx    ${target_file}
     ${rows1}=    Read Rows From Worksheet    data1.xlsx
-    Append Rows To Target    ${rows1}    ${OUTPUT_DIR}${/}target1.xlsx    52
-    ${rows2}=    Read Rows From Worksheet    data1.xlsx
-    Append Rows To Target    ${rows1}    ${OUTPUT_DIR}${/}target1.xlsx    62
+    Append Rows To Target    ${rows1}    ${target_file}    42    ${True}
+    ${rows2}=    Read Rows From Worksheet    data2.xlsx
+    Append Rows To Target    ${rows2}    ${target_file}    42    ${True}
+
+Test default appending content
+    ${target_file}=    Set Variable    ${OUTPUT_DIR}${/}target2.xlsx
+    Copy File    ${EXCELS}${/}data_template.xlsx    ${target_file}
+    ${rows1}=    Read Rows From Worksheet    data1.xlsx
+    Append Rows To Target    ${rows1}    ${target_file}    52
+    ${rows2}=    Read Rows From Worksheet    data2.xlsx
+    Append Rows To Target    ${rows2}    ${target_file}    62
+
+Test append rows to a target file
+    @{rows} =    Create List
+    FOR    ${counter}    IN RANGE    1    51
+        &{row} =    Create Dictionary
+        ...    Name    Cosmin
+        ...    Age    29
+        ...    E-mail    cosmin@robocorp.com
+        Append To List    ${rows}    ${row}
+    END
+    ${workbook} =    Set Variable    ${OUTPUT_DIR}${/}emails.xlsx
+    Copy File    ${EXCELS}${/}data_template.xlsx    ${workbook}
+    Open Workbook    ${workbook}
+    Append Rows to Worksheet    ${rows}    formatting_as_empty=${True}
+    ${empty_row_number}=    Find Empty Row
+    Save Workbook
+    Should Be Equal As Integers    52    ${empty_row_number}

@@ -1217,40 +1217,41 @@ class XlsxWorkbook(BaseWorkbook):
             sheet.append(columns)
 
         if formatting_as_empty:
-            self._append_on_first_empty_based_on_values(content, sheet)
+            self._append_on_first_empty_based_on_values(content, columns, sheet)
         else:
-            for row in content:
-                values = [""] * len(columns)
-                for column, value in row.items():
-                    try:
-                        index = columns.index(column)
-                        values[index] = value
-                    except ValueError:
-                        pass
-                sheet.append(values)
+            self._default_append_rows(content, columns, sheet)
 
         self.active = sheet_name
 
-    def _append_on_first_empty_based_on_values(self, content, sheet):
-        first_empty = None
-        for row in sheet.rows:
-            values = []
-            for cell in row:
-                values.append(cell.value)
-            if all(value is None for value in values):
-                if not first_empty:
-                    first_empty = row[0].row
+    def _append_on_first_empty_based_on_values(self, content, columns, sheet):
+        first_empty_row = None
+        for row_num in range(sheet.max_row, 0, -1):
+            if all(cell.value is None for cell in sheet[row_num]):
+                first_empty_row = row_num
             else:
-                first_empty = None
+                break
+        first_empty_row: int = first_empty_row or sheet.max_row
+        for row_idx, row in enumerate(content):
+            values = [""] * len(columns)
+            for column, value in row.items():
+                try:
+                    index = columns.index(column)
+                    values[index] = value
+                except ValueError:
+                    pass
+            for cell_idx, cell in enumerate(sheet[first_empty_row + row_idx]):
+                cell.value = values[cell_idx]
 
-        if first_empty:
-            for idx, src_row in enumerate(sheet.iter_rows(min_row=first_empty)):
-                row_num = src_row[0].row
-                for cell_idx, cell in enumerate(sheet[row_num]):
-                    try:
-                        cell.value = content[idx][cell_idx]
-                    except IndexError:
-                        break
+    def _default_append_rows(self, content, columns, sheet):
+        for row in content:
+            values = [""] * len(columns)
+            for column, value in row.items():
+                try:
+                    index = columns.index(column)
+                    values[index] = value
+                except ValueError:
+                    pass
+            sheet.append(values)
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)
