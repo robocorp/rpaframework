@@ -5,6 +5,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+15.7.0 - 10 Aug 2022
+--------------------
+
 - Security dependency update (``lxml`` **4.9.1**) within the following packages:
 
   - ``rpaframework-aws`` **3.1.2**
@@ -20,10 +27,6 @@ Release notes
 
 - Library **RPA.FileSystem** (:pr:`597`): New ``Get File Stem`` keyword retrieving only
   the name of a file (without its extension) from the given `path`.
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 15.6.1 - 09 Aug 2022
 --------------------

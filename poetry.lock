@@ -135,14 +135,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.47"
+version = "1.24.48"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.47,<1.28.0"
+botocore = ">=1.27.48,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -151,7 +151,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.47"
+version = "1.27.48"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -316,7 +316,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "exchangelib"
-version = "4.7.5"
+version = "4.7.6"
 description = "Client for Microsoft Exchange Web Services (EWS)"
 category = "main"
 optional = false
@@ -399,7 +399,7 @@ grpc = ["grpcio (>=1.33.2,<2.0dev)", "grpcio-status (>=1.33.2,<2.0dev)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.55.0"
+version = "2.56.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -1685,7 +1685,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "15.6.1"
+version = "15.7.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1698,7 +1698,7 @@ click = "^8.1.2"
 comtypes = {version = "1.1.11", markers = "sys_platform == \"win32\""}
 cryptography = "^3.3.1"
 docutils = "*"
-exchangelib = "^4.7.5"
+exchangelib = "^4.7.6"
 graphviz = "^0.13.2"
 htmldocx = "^0.0.6"
 hubspot-api-client = "^4.0.6"
@@ -1724,11 +1724,11 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
-rpaframework-aws = {version = "^3.1.1", optional = true}
+rpaframework-aws = {version = "^3.1.2", optional = true}
 rpaframework-core = "^9.1.0"
-rpaframework-dialogs = "^3.0.0"
+rpaframework-dialogs = "^3.0.1"
 rpaframework-pdf = "^4.1.0"
-rpaframework-recognition = {version = "^4.0.0", optional = true}
+rpaframework-recognition = {version = "^4.0.1", optional = true}
 rpaframework-windows = {version = "^5.0.2", markers = "sys_platform == \"win32\""}
 selenium = "^3.141.0"
 simple_salesforce = "^1.0.0"
@@ -1740,8 +1740,8 @@ xlutils = "^2.0.0"
 xlwt = "^1.3.0"
 
 [package.extras]
-aws = ["rpaframework-aws (>=3.1.1,<4.0.0)"]
-cv = ["rpaframework-recognition (>=4.0.0,<5.0.0)"]
+aws = ["rpaframework-aws (>=3.1.2,<4.0.0)"]
+cv = ["rpaframework-recognition (>=4.0.1,<5.0.0)"]
 playwright = ["robotframework-browser (>=13.0.0,<14.0.0)"]
 
 [package.source]
@@ -1750,7 +1750,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "3.1.1"
+version = "3.1.2"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
@@ -1781,7 +1781,7 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "3.0.0"
+version = "3.0.1"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
@@ -1794,7 +1794,7 @@ rpaframework-core = ">=9.0.0,<10.0.0"
 
 [[package]]
 name = "rpaframework-google"
-version = "5.0.1"
+version = "5.0.2"
 description = "Google library for RPA Framework"
 category = "main"
 optional = false
@@ -1834,7 +1834,7 @@ rpaframework-core = ">=9.0.0,<10.0.0"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "4.0.0"
+version = "4.0.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -2353,7 +2353,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "f0ce265034dc0fdb0b77d4f5693bd8da0df4592926d44ef3ff820d6dc1be2dbb"
+content-hash = "c012f04cceb5c838d7e4ced936da957335f4a3e46fd58deb492c0e8fc88a2471"
 
 [metadata.files]
 alabaster = [
@@ -2436,12 +2436,12 @@ black = [
     {file = "black-22.6.0.tar.gz", hash = "sha256:6c6d39e28aed379aec40da1c65434c77d75e65bb59a1e1c283de545fb4e7c6c9"},
 ]
 boto3 = [
-    {file = "boto3-1.24.47-py3-none-any.whl", hash = "sha256:8fa1e0ce6e95a2b7da1d1a9992aee7b05c5478538ea9052e2753999fc46f2f97"},
-    {file = "boto3-1.24.47.tar.gz", hash = "sha256:02b30776fd1b6c0fdf2d72d1365e5adcc6f0baa6540a450946b1a02db3a5ace6"},
+    {file = "boto3-1.24.48-py3-none-any.whl", hash = "sha256:632676a480854d7c18ae634e2e83a93dc27211b88e19340e047bbd432128819e"},
+    {file = "boto3-1.24.48.tar.gz", hash = "sha256:db27c33a7ccccbf76035ab47e92054ce8ab98b809cf49eb15a2502eedc3ba332"},
 ]
 botocore = [
-    {file = "botocore-1.27.47-py3-none-any.whl", hash = "sha256:262d7b10ca2194b9ba63fd972185729e3ee38f99faed518d62580f93af900ad0"},
-    {file = "botocore-1.27.47.tar.gz", hash = "sha256:160a3fa8e3062a48299a1b44ef2ec81f9a58cd3edd0da58808e5c2cc8dd9257f"},
+    {file = "botocore-1.27.48-py3-none-any.whl", hash = "sha256:5958ef6dd3b0f84eb1ee0aac75499ac504fcc0787fd6611be727968d51dcbfa7"},
+    {file = "botocore-1.27.48.tar.gz", hash = "sha256:8de2f4285046ed306439723a11706067d6901c3f7be418b7b104ba8e002b5638"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2583,8 +2583,8 @@ et-xmlfile = [
     {file = "et_xmlfile-1.1.0.tar.gz", hash = "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"},
 ]
 exchangelib = [
-    {file = "exchangelib-4.7.5-py2.py3-none-any.whl", hash = "sha256:4d71720b693731ca77d7f0987fa0057b57707667318fd31ce4524f2fbbbfb8ab"},
-    {file = "exchangelib-4.7.5.tar.gz", hash = "sha256:f37f8026666e53598ee5b25d394e8c46bc569bb378ae7ce995acb553ee291473"},
+    {file = "exchangelib-4.7.6-py2.py3-none-any.whl", hash = "sha256:88930ef842d173d6f04c270da4c215d65ae0052d773fac8bb997036f00171b83"},
+    {file = "exchangelib-4.7.6.tar.gz", hash = "sha256:ebfb636267da79b3d541bb990ff808d72300fafee030c0e4f7443f42103b3fca"},
 ]
 fire = [
     {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
@@ -2602,8 +2602,8 @@ google-api-core = [
     {file = "google_api_core-2.8.2-py3-none-any.whl", hash = "sha256:93c6a91ccac79079ac6bbf8b74ee75db970cc899278b97d53bc012f35908cf50"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.55.0.tar.gz", hash = "sha256:1766c700eee14809ca1f7f52868c937755153289ea77ecdfd73dea6910e9a34d"},
-    {file = "google_api_python_client-2.55.0-py2.py3-none-any.whl", hash = "sha256:7837094c6d35cc8e680b60ebefe37f117ad521f3b263b0c7a6efa0b2f84cb17a"},
+    {file = "google-api-python-client-2.56.0.tar.gz", hash = "sha256:70d33203a4752bf4144b33fc689e997a2b5ed42c696d57149e4b3f5082682436"},
+    {file = "google_api_python_client-2.56.0-py2.py3-none-any.whl", hash = "sha256:ad321cea7aefc6385ac0b2e3e4fa7c9758ca37061efe0b410b4629fffba06601"},
 ]
 google-auth = [
     {file = "google-auth-2.10.0.tar.gz", hash = "sha256:7904dbd44b745c7323fef29565adee2fe7ff48473e2d94443aced40b0404a395"},
@@ -3620,28 +3620,28 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework-aws-3.1.1.tar.gz", hash = "sha256:cad8828754b3da7a2a6c3b87f94f2a9255a347963820c3082c110057e619e86d"},
-    {file = "rpaframework_aws-3.1.1-py3-none-any.whl", hash = "sha256:32895d9b4d0166b1589872b83e74b228153964498e82b290dd21fda23a055308"},
+    {file = "rpaframework-aws-3.1.2.tar.gz", hash = "sha256:162465ea749968197d84c2bb19bdd91232b96a1972c198b1947f0bcfae2638d7"},
+    {file = "rpaframework_aws-3.1.2-py3-none-any.whl", hash = "sha256:5ce3f205450ea0623f2176bd57c870b78c91acccb5f411f1cc3d77a628f4eb4a"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-9.1.0.tar.gz", hash = "sha256:b379dade2f8217fa7ff868584fd35afbf80b6596a4f66d30a8c645b4cf7520f1"},
     {file = "rpaframework_core-9.1.0-py3-none-any.whl", hash = "sha256:8f39495a796dd41c9023c0639351867ae1a980edb3085e6ef85a0703a6523cad"},
 ]
 rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-3.0.0.tar.gz", hash = "sha256:c987bf3f4c9542530f999d11ab6b296da9a1486707dd25775f59cafdc641bc26"},
-    {file = "rpaframework_dialogs-3.0.0-py3-none-any.whl", hash = "sha256:3831b8015095523ceb5684fa7f6658fab7e494392d37838ce5686ce4aee667f3"},
+    {file = "rpaframework-dialogs-3.0.1.tar.gz", hash = "sha256:354a97f5073f64a9576abcd683985fecb2111d448484f6c198a580ba80751f4f"},
+    {file = "rpaframework_dialogs-3.0.1-py3-none-any.whl", hash = "sha256:3dd09bd3e51581e960201eef3e50e39bea356276672436dbf42e924395344e5f"},
 ]
 rpaframework-google = [
-    {file = "rpaframework-google-5.0.1.tar.gz", hash = "sha256:2fc5c1fb91100d1d880f93ba57aa5141333fbb6019d448eba65571274071f6ce"},
-    {file = "rpaframework_google-5.0.1-py3-none-any.whl", hash = "sha256:64230f2a75e350b122c5b1b57ee0edb342b9f63e9345897c00438e49f538e358"},
+    {file = "rpaframework-google-5.0.2.tar.gz", hash = "sha256:bd9c498356e9e1043b047bac2dca18a074c4e9d0826cded1739999fd179c0799"},
+    {file = "rpaframework_google-5.0.2-py3-none-any.whl", hash = "sha256:1a9f4055249e23e6085f40e975ef46166441be55a44c6d8e6c72bc11a7b08199"},
 ]
 rpaframework-pdf = [
     {file = "rpaframework-pdf-4.1.0.tar.gz", hash = "sha256:bfbf887774ab13bff9956df1342d3621b60714980baf19c070f4420b21b0fe0e"},
     {file = "rpaframework_pdf-4.1.0-py3-none-any.whl", hash = "sha256:51de0eff0f09d4785bf2401cbef697d71fdd2c7d4f41d52a77bf7cd4060016a5"},
 ]
 rpaframework-recognition = [
-    {file = "rpaframework-recognition-4.0.0.tar.gz", hash = "sha256:145524a7168eed5aceec43efe7b88d68d83e6811e1ea03c528e07ca80ada476d"},
-    {file = "rpaframework_recognition-4.0.0-py3-none-any.whl", hash = "sha256:d927361f191a09b28f95f2183284d69569a5619b3e7563ad416eb4d7fe0b60f4"},
+    {file = "rpaframework-recognition-4.0.1.tar.gz", hash = "sha256:da2e12b77de6f982e7c28836363bc469436e491789a1fb88eca66e53a75ea0da"},
+    {file = "rpaframework_recognition-4.0.1-py3-none-any.whl", hash = "sha256:5d8452372ac253418b84e7c190ba001d1a5bb21535ece4a2aebb4530127707b3"},
 ]
 rpaframework-windows = [
     {file = "rpaframework-windows-5.0.2.tar.gz", hash = "sha256:b233b83c81feb393f2329358e4483039d0e67d52c12b0b5a4bc00b5166d6808b"},
