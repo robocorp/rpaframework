@@ -121,17 +121,6 @@ RPA.Robocorp.Process:
 
    "138", "Add support for all Process API endpoints"
 
-RPA.Tables:
-===========
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "2", "Implement column slicing"
-   "3", "Index name conflict in exports/imports"
-   "4", "Return Robot Framework DotDict instead of dict?"
-
 RPA.Tasks:
 ==========
 

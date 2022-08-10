@@ -5,6 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Tables** (:pr:`495`):
+
+  - New keywords: ``Filter Table With Keyword``, ``Map Column Values``. (:issue:`226`)
+  - Improved documentation. (:issue:`220`)
+  - Improved `str`/`int` row index resolving.
+
 - Library **RPA.FileSystem** (:pr:`597`): New ``Get File Stem`` keyword retrieving only
   the name of a file (without its extension) from the given `path`.
 
