@@ -36,6 +36,8 @@ Append Rows to Target
     Open Workbook    ${target_filepath}
     Append Rows to Worksheet    ${rows}    formatting_as_empty=${formatting}
     Save Workbook
+    Close Workbook
+    Open Workbook    ${target_filepath}
     ${empty_row_number}=    Find Empty Row
     Should Be Equal As Integers    ${expected_empty_row}    ${empty_row_number}
     Close Workbook
@@ -50,7 +52,7 @@ Test single row sheet
     Append Content To Sheet    empty.xlsx    ${content}
     Append Content To Sheet    empty.xls    ${content}
 
-Test appending content when formatted cell is considered empty
+Test appending XLSX content when formatted cell is considered empty
     ${target_file}=    Set Variable    ${OUTPUT_DIR}${/}target1.xlsx
     Copy File    ${EXCELS}${/}data_template.xlsx    ${target_file}
     ${rows1}=    Read Rows From Worksheet    data1.xlsx
@@ -82,3 +84,11 @@ Test append rows to a target file
     ${empty_row_number}=    Find Empty Row
     Save Workbook
     Should Be Equal As Integers    52    ${empty_row_number}
+
+Test appending XLS content when formatted cell is considered empty
+    ${target_file}=    Set Variable    ${OUTPUT_DIR}${/}target1.xls
+    Copy File    ${EXCELS}${/}data_template.xls    ${target_file}
+    ${rows1}=    Read Rows From Worksheet    data1.xls
+    Append Rows To Target    ${rows1}    ${target_file}    12    ${True}
+    ${rows2}=    Read Rows From Worksheet    data2.xls
+    Append Rows To Target    ${rows2}    ${target_file}    22    ${True}

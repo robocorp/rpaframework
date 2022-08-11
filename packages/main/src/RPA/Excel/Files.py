@@ -712,7 +712,6 @@ class Files:
         :param start:   Start of data, NOTE: Only required when header is True
         :param formatting_as_empty: if True, the cells containing only
                         formatting (no values) are considered empty.
-                        NOTE: Only works for XLSX files.
         :return:        List of dictionaries that represents the worksheet
 
         The ``content`` argument can be of any tabular format. Typically,
@@ -1526,9 +1525,8 @@ class XlsWorkbook(BaseWorkbook):
         content=None,
         header=False,
         start=None,
-        formatting_as_empty=False,  # pylint: disable=unused-argument
+        formatting_as_empty=False,
     ):
-        # TODO: Add support for formatting_as_empty
         content = Table(content)
         if not content:
             return
@@ -1545,8 +1543,13 @@ class XlsWorkbook(BaseWorkbook):
 
         with self._book_write() as book:
             sheet_write = book.get_sheet(name)
-            start_row = sheet_read.nrows
-
+            # TODO. target worksheet cell formatting is overwritten.
+            # It would be preferable to preserve formatting in the
+            # target worksheet.
+            if formatting_as_empty:
+                start_row = self._return_first_empty_row(sheet_read)
+            else:
+                start_row = sheet_read.nrows
             if header and is_empty:
                 for column, value in enumerate(columns):
                     sheet_write.write(0, column, value)
@@ -1557,6 +1560,16 @@ class XlsWorkbook(BaseWorkbook):
                     sheet_write.write(r, columns.index(column), value)
 
         self.active = name
+
+    def _return_first_empty_row(self, sheet):
+        first_empty_row: Optional[int] = None
+        for row_num in range(sheet.nrows - 1, 0, -1):
+            if all(cell.value == "" for cell in sheet[row_num]):
+                first_empty_row = row_num
+            else:
+                break
+        first_empty_row: int = first_empty_row or sheet.nrows
+        return first_empty_row
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)
