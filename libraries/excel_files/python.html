@@ -340,7 +340,7 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.append_rows_to_worksheet">
-<code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">content: Any</em>, <em class="sig-param">name: Optional[str] = None</em>, <em class="sig-param">header: bool = False</em>, <em class="sig-param">start: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; List[dict]<a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">content: Any</em>, <em class="sig-param">name: Optional[str] = None</em>, <em class="sig-param">header: bool = False</em>, <em class="sig-param">start: Optional[int] = None</em>, <em class="sig-param">formatting_as_empty: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; List[dict]<a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append values to the end of the worksheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -350,6 +350,8 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 Defaults to the active worksheet.</p></li>
 <li><p><strong>header</strong> – Set rows according to existing header row</p></li>
 <li><p><strong>start</strong> – Start of data, NOTE: Only required when header is True</p></li>
+<li><p><strong>formatting_as_empty</strong> – if True, the cells containing only
+formatting (no values) are considered empty.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1083,7 +1085,7 @@ for documentation.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.append_worksheet">
-<code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em>, <em class="sig-param">formatting_as_empty=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1190,7 +1192,7 @@ for documentation.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.append_worksheet">
-<code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em>, <em class="sig-param">formatting_as_empty=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

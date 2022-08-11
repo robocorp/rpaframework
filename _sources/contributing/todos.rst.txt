@@ -79,6 +79,15 @@ RPA.Email.ImapSmtp:
 
    "797", "mypy should handle enum exhaustivity validation"
 
+RPA.Excel.Files:
+================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "1546", "target worksheet cell formatting is overwritten."
+
 RPA.FileSystem:
 ===============
 
