@@ -701,6 +701,7 @@ class Files:
         name: Optional[str] = None,
         header: bool = False,
         start: Optional[int] = None,
+        formatting_as_empty: Optional[bool] = False,
     ) -> List[dict]:
         """Append values to the end of the worksheet.
 
@@ -709,6 +710,8 @@ class Files:
                         Defaults to the active worksheet.
         :param header:  Set rows according to existing header row
         :param start:   Start of data, NOTE: Only required when header is True
+        :param formatting_as_empty: if True, the cells containing only
+                        formatting (no values) are considered empty.
         :return:        List of dictionaries that represents the worksheet
 
         The ``content`` argument can be of any tabular format. Typically,
@@ -763,7 +766,9 @@ class Files:
             lib.save_workbook()
         """
         assert self.workbook, "No active workbook"
-        return self.workbook.append_worksheet(name, content, header, start)
+        return self.workbook.append_worksheet(
+            name, content, header, start, formatting_as_empty
+        )
 
     def remove_worksheet(self, name: str = None) -> None:
         """Remove a worksheet from the active workbook.
@@ -1188,13 +1193,20 @@ class XlsxWorkbook(BaseWorkbook):
         self.active = name
         return data
 
-    def append_worksheet(self, name=None, content=None, header=False, start=None):
+    def append_worksheet(
+        self,
+        name=None,
+        content=None,
+        header=False,
+        start=None,
+        formatting_as_empty=False,
+    ):
         content = Table(content)
         if not content:
             return
 
-        name = self._get_sheetname(name)
-        sheet = self._book[name]
+        sheet_name = self._get_sheetname(name)
+        sheet = self._book[sheet_name]
         start = self._to_index(start)
         is_empty = self.is_sheet_empty(sheet)
 
@@ -1206,17 +1218,43 @@ class XlsxWorkbook(BaseWorkbook):
         if header and is_empty:
             sheet.append(columns)
 
-        for row in content:
-            values = [""] * len(columns)
-            for column, value in row.items():
+        if formatting_as_empty:
+            self._append_on_first_empty_based_on_values(content, columns, sheet)
+        else:
+            self._default_append_rows(content, columns, sheet)
+
+        self.active = sheet_name
+
+    def _append_on_first_empty_based_on_values(self, content, columns, sheet):
+        first_empty_row: Optional[int] = None
+        for row_num in range(sheet.max_row, 0, -1):
+            if all(cell.value is None for cell in sheet[row_num]):
+                first_empty_row = row_num
+            else:
+                break
+        first_empty_row: int = first_empty_row or sheet.max_row + 1
+        for row_idx, row in enumerate(content):
+            values = self._row_to_values(row, columns)
+            for cell_idx, cell in enumerate(sheet[first_empty_row + row_idx]):
                 try:
-                    index = columns.index(column)
-                    values[index] = value
-                except ValueError:
+                    cell.value = values[cell_idx]
+                except IndexError:
                     pass
+
+    def _default_append_rows(self, content, columns, sheet):
+        for row in content:
+            values = self._row_to_values(row, columns)
             sheet.append(values)
 
-        self.active = name
+    def _row_to_values(self, row, columns):
+        values = [""] * len(columns)
+        for column, value in row.items():
+            try:
+                index = columns.index(column)
+                values[index] = value
+            except ValueError:
+                pass
+        return values
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)
@@ -1481,7 +1519,14 @@ class XlsWorkbook(BaseWorkbook):
 
         return value
 
-    def append_worksheet(self, name=None, content=None, header=False, start=None):
+    def append_worksheet(
+        self,
+        name=None,
+        content=None,
+        header=False,
+        start=None,
+        formatting_as_empty=False,
+    ):
         content = Table(content)
         if not content:
             return
@@ -1498,8 +1543,13 @@ class XlsWorkbook(BaseWorkbook):
 
         with self._book_write() as book:
             sheet_write = book.get_sheet(name)
-            start_row = sheet_read.nrows
-
+            # TODO. target worksheet cell formatting is overwritten.
+            # It would be preferable to preserve formatting in the
+            # target worksheet.
+            if formatting_as_empty:
+                start_row = self._return_first_empty_row(sheet_read)
+            else:
+                start_row = sheet_read.nrows
             if header and is_empty:
                 for column, value in enumerate(columns):
                     sheet_write.write(0, column, value)
@@ -1510,6 +1560,16 @@ class XlsWorkbook(BaseWorkbook):
                     sheet_write.write(r, columns.index(column), value)
 
         self.active = name
+
+    def _return_first_empty_row(self, sheet):
+        first_empty_row: Optional[int] = None
+        for row_num in range(sheet.nrows - 1, 0, -1):
+            if all(cell.value == "" for cell in sheet[row_num]):
+                first_empty_row = row_num
+            else:
+                break
+        first_empty_row: int = first_empty_row or sheet.nrows
+        return first_empty_row
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)

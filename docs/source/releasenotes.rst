@@ -5,6 +5,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Excel.Files** (:pr:`599`): Add parameter `formatting_as_empty` for keyword
+  ``Append Rows To Worksheet``, which allows appending rows to sheet with formatted cells.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
