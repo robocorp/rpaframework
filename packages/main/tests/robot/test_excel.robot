@@ -50,7 +50,7 @@ Test single row sheet
     Append Content To Sheet    empty.xlsx    ${content}
     Append Content To Sheet    empty.xls    ${content}
 
-Test appending content when formatted cell is considered as empty cell
+Test appending content when formatted cell is considered empty
     ${target_file}=    Set Variable    ${OUTPUT_DIR}${/}target1.xlsx
     Copy File    ${EXCELS}${/}data_template.xlsx    ${target_file}
     ${rows1}=    Read Rows From Worksheet    data1.xlsx

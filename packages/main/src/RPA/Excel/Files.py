@@ -711,7 +711,7 @@ class Files:
         :param header:  Set rows according to existing header row
         :param start:   Start of data, NOTE: Only required when header is True
         :param formatting_as_empty: if True, the cells containing only
-                        formatting (no values) are considered as empty.
+                        formatting (no values) are considered empty.
                         NOTE: Only works for XLSX files.
         :return:        List of dictionaries that represents the worksheet
 
@@ -1227,34 +1227,35 @@ class XlsxWorkbook(BaseWorkbook):
         self.active = sheet_name
 
     def _append_on_first_empty_based_on_values(self, content, columns, sheet):
-        first_empty_row = None
+        first_empty_row: Optional[int] = None
         for row_num in range(sheet.max_row, 0, -1):
             if all(cell.value is None for cell in sheet[row_num]):
                 first_empty_row = row_num
             else:
                 break
-        first_empty_row: int = first_empty_row or sheet.max_row
+        first_empty_row: int = first_empty_row or sheet.max_row + 1
         for row_idx, row in enumerate(content):
-            values = [""] * len(columns)
-            for column, value in row.items():
-                try:
-                    index = columns.index(column)
-                    values[index] = value
-                except ValueError:
-                    pass
+            values = self._row_to_values(row, columns)
             for cell_idx, cell in enumerate(sheet[first_empty_row + row_idx]):
-                cell.value = values[cell_idx]
+                try:
+                    cell.value = values[cell_idx]
+                except IndexError:
+                    pass
 
     def _default_append_rows(self, content, columns, sheet):
         for row in content:
-            values = [""] * len(columns)
-            for column, value in row.items():
-                try:
-                    index = columns.index(column)
-                    values[index] = value
-                except ValueError:
-                    pass
+            values = self._row_to_values(row, columns)
             sheet.append(values)
+
+    def _row_to_values(self, row, columns):
+        values = [""] * len(columns)
+        for column, value in row.items():
+            try:
+                index = columns.index(column)
+                values[index] = value
+            except ValueError:
+                pass
+        return values
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)
