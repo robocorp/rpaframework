@@ -544,7 +544,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "selenium"
-version = "4.3.0"
+version = "4.4.0"
 description = ""
 category = "main"
 optional = false
@@ -738,7 +738,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "76f194b55769a696c641de34554ad595f6c491ee7c52d8cc778df5eef03e5190"
+content-hash = "e5122ec64484f6b0d8a9d0399be7329823ba84736e84822fb7d70d1d2811183e"
 
 [metadata.files]
 appdirs = []
