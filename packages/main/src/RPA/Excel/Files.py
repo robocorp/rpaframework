@@ -710,6 +710,9 @@ class Files:
                         Defaults to the active worksheet.
         :param header:  Set rows according to existing header row
         :param start:   Start of data, NOTE: Only required when header is True
+        :param formatting_as_empty: if True, the cells containing only
+                        formatting (no values) are considered as empty.
+                        NOTE: Only works for XLSX files.
         :return:        List of dictionaries that represents the worksheet
 
         The ``content`` argument can be of any tabular format. Typically,
