@@ -14,7 +14,7 @@ Release notes
 
 - Library **RPA.Excel.Files** (:pr:`599`): Add parameter `formatting_as_empty` for keyword
   ``Append Rows To Worksheet``, which allows appending rows to sheet with formatted cells.
-- Library **RPA.Notifier**: Fix how keyword parameters are forwarded
+- Library **RPA.Notifier** (:pr:`603`): Fix how keyword parameters are forwarded
 
 15.7.0 - 10 Aug 2022
 --------------------
