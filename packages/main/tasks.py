@@ -26,12 +26,18 @@ GIT_ROOT = _git_root()
 CONFIG = GIT_ROOT / "config"
 TOOLS = GIT_ROOT / "tools"
 PACKAGE_DIR = GIT_ROOT / "packages" / "main"
-TASKS_COMMON_PATH = GIT_ROOT / "tasks_common.py"
+TASKS_COMMON_PATH = TOOLS / "tasks_common.py"
 
 # Import rpaframework/tasks_common.py module from file location.
-sys.path.append(GIT_ROOT)
-print_test()
-import tools.tasks_common as tasks_common
+# Note to VSCode users, in order to eliminate Pylance import errors
+# in the IDE, you must add the following settings to your local project
+# .vscode/settings.json file:
+#
+#     "python.analysis.extraPaths": [
+#        "./tools"
+#    ]
+sys.path.append(str(TOOLS))
+import tasks_common
 
 # spec = importlib.util.spec_from_file_location("tasks_common", TASKS_COMMON_PATH)
 # tasks_common = importlib.util.module_from_spec(spec)
