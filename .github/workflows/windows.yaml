@@ -84,9 +84,8 @@ jobs:
       run: invoke install
     - name: Lint
       run: invoke lint
-    # Windows tests disabled in CI for now (require VM with UI support)
-    #- name: Test
-    #  run: invoke test
+    - name: Test
+      run: invoke test
 
   publish:
     # Only publish on master workflow runs

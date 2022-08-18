@@ -10,8 +10,95 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-15.1.4 - 23 June 2022
----------------------
+15.8.0 - 12 Aug 2022
+--------------------
+
+- Library **RPA.Excel.Files** (:pr:`599`): Add parameter `formatting_as_empty` for keyword
+  ``Append Rows To Worksheet``, which allows appending rows to sheet with formatted cells.
+- Library **RPA.Notifier** (:pr:`603`): Fix how keyword parameters are forwarded
+
+15.7.0 - 10 Aug 2022
+--------------------
+
+- Security dependency update (``lxml`` **4.9.1**) within the following packages:
+
+  - ``rpaframework-aws`` **3.1.2**
+  - ``rpaframework-dialogs`` **3.0.1**
+  - ``rpaframework-google`` **5.0.2**
+  - ``rpaframework-recognition`` **4.0.1** (``rpaframework[cv]``)
+
+- Library **RPA.Tables** (:pr:`495`):
+
+  - New keywords: ``Filter Table With Keyword``, ``Map Column Values``. (:issue:`226`)
+  - Improved documentation. (:issue:`220`)
+  - Improved `str`/`int` row index resolving.
+
+- Library **RPA.FileSystem** (:pr:`597`): New ``Get File Stem`` keyword retrieving only
+  the name of a file (without its extension) from the given `path`.
+
+15.6.1 - 09 Aug 2022
+--------------------
+
+- Library **RPA.Salesforce** (:issue:`583`): Keyword
+  ``Salesforce Query Result As Table`` bugfix on empty results.
+- Library **RPA.Browser.Selenium** (:issue:`593`): Keyword ``Print To PDF`` provides
+  better error message when trying to print in non-headless mode (which doesn't work
+  by design; same with full page screenshots).
+
+15.6.0 - 02 Aug 2022
+--------------------
+
+- Library **RPA.Desktop** (:pr:`592`): Ability to customize the locators path using the
+  ``locators_path`` parameter during library import.
+- Ability to customize the locators file path through the ``RPA_LOCATORS_DATABASE``
+  environment variable. (:issue:`370`)
+- Library **RPA.PDF** (:issue:`558`, ``rpaframework-pdf`` **4.1.0**): Fix ``pages``
+  selection rationale when operating with PDFs. (bugs & documentation)
+
+15.5.0 - 22 Jul 2022
+--------------------
+
+- Library **RPA.Windows** (:issue:`587`): Fix offset-based clicking. (coordinates
+  relative to the center of the element with ``offset:x,y`` locator property)
+- Library **RPA.Robocorp.WorkItems** (:issue:`538`): Automatically release the current
+  input Work Item as ``FAILED`` `Application` when the robot fails unexpectedly.
+
+15.4.0 - 13 Jul 2022
+--------------------
+
+- Adds ``overwrite`` parameter (default `False`) for controlling how attachment
+  download happens with the following keywords (:issue:`584`):
+
+  - **RPA.Email.ImapSmtp**:
+
+    - ``Save Attachment``
+    - ``Save Attachments``
+
+  - **RPA.Email.Exchange**: ``Save Attachments``
+  - **RPA.Outlook.Application**: ``Save Email Attachments``
+
+15.3.0 - 08 Jul 2022
+--------------------
+
+- Library **RPA.Excel.Application**: Fixes bug with keyword ``Run Macro`` on Excel file
+  names containing spaces or other problematic symbols. (:issue:`479`)
+- Library **RPA.Excel.Files**:
+
+  - Keyword ``Create Workbook`` supports now ``sheet_name`` parameter which sets a
+    custom name for the newly created active sheet. (:issue:`224`)
+  - Fixes a problem with Microsoft validation by stripping leading/trailing whitespace
+    from the workbook properties. (:issue:`572`)
+
+15.2.0 - 05 Jul 2022
+--------------------
+
+- Library **RPA.Email.Exchange** (:issue:`567`): Keyword ``Authorize`` supports OAuth2
+  Authorization Code flow. (enable it with ``is_oauth=${True}``; Portal
+  `example <https://robocorp.com/portal/robot/robocorp/example-oauth-email>`_)
+- Library **RPA.FileSystem** (:pr:`568`): Add keyword examples and type hints.
+
+15.1.4 - 23 Jun 2022
+--------------------
 
 - Fix *VSCode* keyword definitions in all packages (:issue:`560`). (*libspec* Python
   modules paths)
@@ -23,29 +110,28 @@ Release notes
 
 - Library **RPA.Desktop**: Fix docs examples returning ``Region`` elements.
 
-
-15.1.3 - 22 June 2022
----------------------
+15.1.3 - 22 Jun 2022
+--------------------
 
 - Fix *VSCode* keyword definitions. (*libspec* Python modules paths)
 
-15.1.2 - 21 June 2022
----------------------
+15.1.2 - 21 Jun 2022
+--------------------
 
 - Library **RPA.PDF** (:pr:`549`, ``rpaframework-pdf`` **4.0.1**): Extended PDF
   examples.
 - Library **RPA.Tables** (:pr:`492`): Keyword examples updated to be more complete.
 - Library **RPA.Excel.Files** (:pr:`493`): Doc strings and typehints updated.
 
-15.1.1 - 17 June 2022
----------------------
+15.1.1 - 17 Jun 2022
+--------------------
 
 - Library **RPA.JSON** (:issue:`548`): Fix *libspec* infinite recursion on ``JSONType``
   type.
 - Deprecate *Lab* references under documentation.
 
-15.1.0 - 15 June 2022
----------------------
+15.1.0 - 15 Jun 2022
+--------------------
 
 - Library **RPA.Cloud.AWS** (:pr:`508`, ``rpaframework-aws`` **3.1.0**):
 

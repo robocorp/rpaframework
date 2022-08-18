@@ -4,19 +4,21 @@ import logging
 import os
 import tempfile
 from contextlib import contextmanager
+from pathlib import Path
+from unittest import mock
 
 try:
     from contextlib import nullcontext
 except ImportError:
     from contextlib import suppress as nullcontext
-from pathlib import Path
-from unittest import mock
 
 import pytest
 from requests import HTTPError
+
+from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError, set_dot_value
 from RPA.Robocorp.WorkItems import (
-    BaseAdapter,
     ENCODING,
+    BaseAdapter,
     EmptyQueue,
     Error,
     FileAdapter,
@@ -24,10 +26,8 @@ from RPA.Robocorp.WorkItems import (
     State,
     WorkItems,
 )
-from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError, set_dot_value
 
 from . import RESOURCES_DIR, RESULTS_DIR
-
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
 VARIABLES_SECOND = {"username": "another", "address": "dude@company.com"}
@@ -47,6 +47,7 @@ VALID_FILES = {
     IN_OUT_ID: {},
 }
 ITEMS_JSON = [{"payload": {"a-key": "a-value"}, "files": {"a-file": "file.txt"}}]
+FAILURE_ATTRIBUTES = {"status": "FAIL", "message": "The task/suite has failed"}
 
 OUTPUT_DIR = RESULTS_DIR / "output_dir"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -204,6 +205,19 @@ class TestLibrary:
         # Called by Robot Framework listener
         library._start_suite(None, None)
         assert library._current is None
+
+    @pytest.mark.parametrize("end_hook", ["_end_test", "_end_suite"])
+    def test_autorelease(self, library, end_hook):
+        library.get_input_work_item()
+        end_method = getattr(library, end_hook)
+        end_method("My Failure Name", FAILURE_ATTRIBUTES)
+        releases = library.adapter.releases
+        assert len(releases) == 1
+        assert releases[0][2] == {
+            "type": "APPLICATION",
+            "code": None,
+            "message": "The task/suite has failed",
+        }
 
     def test_keyword_get_input_work_item(self, library):
         first = library.get_input_work_item()

@@ -6,15 +6,17 @@ from io import BytesIO
 from typing import List, Any, Union, Optional
 
 import openpyxl
-from openpyxl.utils import get_column_letter
-from openpyxl.utils.exceptions import InvalidFileException
-
 import xlrd
 import xlwt
-from xlutils.copy import copy as xlutils_copy
 from PIL import Image
+from openpyxl.utils import get_column_letter
+from openpyxl.utils.exceptions import InvalidFileException
+from xlutils.copy import copy as xlutils_copy
 
 from RPA.Tables import Tables, Table
+
+
+PathType = Union[str, pathlib.Path]
 
 
 def get_column_index(column: str) -> int:
@@ -202,65 +204,74 @@ class Files:
         )
 
     def create_workbook(
-        self, path: Optional[str] = None, fmt: str = "xlsx"
+        self,
+        path: Optional[str] = None,
+        fmt: str = "xlsx",
+        sheet_name: Optional[str] = None,
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Create and open a new Excel workbook.
 
-        Automatically also creates a new worksheet with the name "Sheet".
+        Automatically also creates a new worksheet with the name `sheet_name`.
+        (defaults to "Sheet")
 
         **Note:** Must be paired with the ``Save Workbook`` keyword
-        or the newly created workbook will be deleted upon Bot completion.
+        or the newly created workbook will be deleted upon robot completion.
 
-        **Note:** The filename must be set in either the ``Create Workbook`` keyword
-        or the ``Save Workbook`` keyword and must include the file extension
+        **Note:** The file name/path must be set in either the ``Create Workbook``
+        keyword or the ``Save Workbook`` keyword and must include the file extension.
 
-        :param path: Save path for workbook; defaults to robot root if not provided
-        :param fmt:  Format of workbook, i.e. xlsx or xls;
-                     Defaults to xlsx if not provided
-        :return:     Workbook object
+        :param path: Save path for workbook; defaults to robot root if not provided.
+        :param fmt: Format of workbook, i.e. xlsx or xls; Defaults to xlsx if not
+            provided.
+        :param sheet_name: Custom name for the initial sheet.
+        :return: Workbook object.
 
         Examples:
 
         .. code-block:: robotframework
 
-            # Create modern format workbook
-            Create workbook
-            Save workbook    orders.xlsx
+            # Create modern format workbook.
+            Create Workbook
+            Save Workbook    orders.xlsx
 
-            # Create modern format workbook with a path set
-            Create workbook    path=${OUTPUT_DIR}${/}orders.xlsx
-            Save workbook
+            # Create modern format workbook with custom sheet name.
+            Create Workbook  sheet_name=MyCustomSheetName
+            Save Workbook    orders.xlsx
 
-            # Create legacy format workbook
-            Create workbook    fmt=xls
-            Save workbook    orders.xls
+            # Create modern format workbook with a path set.
+            Create Workbook    path=${OUTPUT_DIR}${/}orders.xlsx
+            Save Workbook
 
-            # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword
-            # if the path argument is used
+            # Create legacy format workbook.
+            Create Workbook    fmt=xls
+            Save Workbook    orders.xls
+
+            # Create legacy format workbook with a path set.
+            # Note that the file name must be set in the `Create Workbook` keyword
+            #  if the path argument is used.
             Create Workbook    path=${OUTPUT_DIR}${/}orders.xls    fmt=xls
             Save Workbook
 
         .. code-block:: python
 
-            # Create modern format workbook with defaults
+            # Create modern format workbook with defaults.
             lib = Files()
             lib.create_workbook()
             lib.save_workbook("orders.xlsx")
 
-            # Create modern format workbook with a path set
+            # Create modern format workbook with a path set.
             lib = Files()
             lib.create_workbook(path="./output/orders.xlsx", fmt="xlsx")
             lib.save_workbook()
 
-            # Create legacy format workbook
+            # Create legacy format workbook.
             lib = Files()
             lib.create_workbook(fmt="xls")
             lib.save_workbook("orders.xls")
 
-            # Create legacy format workbook with a path set
-            # Note that the file name must be set in the Create Workbook keyword
-            # if the path is used
+            # Create legacy format workbook with a path set.
+            # Note that the file name must be set in the `Create Workbook` keyword
+            #  if the path is used.
             lib = Files()
             lib.create_workbook(path="./output/orders.xls", fmt="xls")
             lib.save_workbook()
@@ -277,6 +288,9 @@ class Files:
             raise ValueError(f"Unknown format: {fmt}")
 
         self.workbook.create()
+        if sheet_name is not None:
+            self.rename_worksheet(self.get_active_worksheet(), sheet_name)
+
         return self.workbook
 
     def open_workbook(
@@ -403,6 +417,7 @@ class Files:
                 extension,
             )
 
+        self.workbook.validate_content()
         return self.workbook.save(path)
 
     def list_worksheets(self) -> List[str]:
@@ -591,7 +606,7 @@ class Files:
         name: Optional[str] = None,
         header: Optional[bool] = False,
         start: Optional[int] = None,
-    ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
+    ) -> List[dict]:
         """Read the content of a worksheet into a list of dictionaries.
 
         Each key in the dictionary will be either values from the header row,
@@ -638,7 +653,7 @@ class Files:
         header: bool = False,
         trim: bool = True,
         start: Optional[int] = None,
-    ) -> Tables:
+    ) -> Table:
         """Read the contents of a worksheet into a Table container. Allows
         sorting/filtering/manipulating using the ``RPA.Tables`` library.
 
@@ -686,7 +701,8 @@ class Files:
         name: Optional[str] = None,
         header: bool = False,
         start: Optional[int] = None,
-    ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
+        formatting_as_empty: Optional[bool] = False,
+    ) -> List[dict]:
         """Append values to the end of the worksheet.
 
         :param content: Rows of values to append
@@ -694,6 +710,8 @@ class Files:
                         Defaults to the active worksheet.
         :param header:  Set rows according to existing header row
         :param start:   Start of data, NOTE: Only required when header is True
+        :param formatting_as_empty: if True, the cells containing only
+                        formatting (no values) are considered empty.
         :return:        List of dictionaries that represents the worksheet
 
         The ``content`` argument can be of any tabular format. Typically,
@@ -748,7 +766,9 @@ class Files:
             lib.save_workbook()
         """
         assert self.workbook, "No active workbook"
-        return self.workbook.append_worksheet(name, content, header, start)
+        return self.workbook.append_worksheet(
+            name, content, header, start, formatting_as_empty
+        )
 
     def remove_worksheet(self, name: str = None) -> None:
         """Remove a worksheet from the active workbook.
@@ -1006,15 +1026,35 @@ class Files:
         return self.set_cell_value(row, column, value, name, fmt)
 
 
-class XlsxWorkbook:
-    """Container for manipulating moden Excel files (.xlsx)"""
+class BaseWorkbook:
 
-    def __init__(self, path=None):
+    """Common logic for both .xls and .xlsx files management."""
+
+    def __init__(self, path: Optional[PathType] = None):
         self.logger = logging.getLogger(__name__)
         self.path = path
         self._book = None
         self._extension = None
         self._active = None
+
+    @property
+    def book(self):
+        return self._book
+
+    def _validate_content(self, props_obj: Any):
+        # Strips leading/trailing whitespace in Excel properties.
+        public_props = [prop for prop in dir(props_obj) if not prop.startswith("_")]
+        for prop in public_props:
+            value = getattr(props_obj, prop)
+            if value and isinstance(value, str):
+                setattr(props_obj, prop, value.strip())
+
+
+class XlsxWorkbook(BaseWorkbook):
+    """Container for manipulating modern Excel files (.xlsx)"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @staticmethod
     def is_sheet_empty(sheet):
@@ -1110,6 +1150,9 @@ class XlsxWorkbook:
         self._extension = None
         self._active = None
 
+    def validate_content(self):
+        self._validate_content(self._book.properties)
+
     def save(self, path=None):
         path = path or self.path
         if not path:
@@ -1121,7 +1164,7 @@ class XlsxWorkbook:
         self._book.create_sheet(title=name)
         self.active = name
 
-    def read_worksheet(self, name=None, header=False, start=None):
+    def read_worksheet(self, name=None, header=False, start=None) -> List[dict]:
         name = self._get_sheetname(name)
         sheet = self._book[name]
         start = self._to_index(start)
@@ -1150,13 +1193,20 @@ class XlsxWorkbook:
         self.active = name
         return data
 
-    def append_worksheet(self, name=None, content=None, header=False, start=None):
+    def append_worksheet(
+        self,
+        name=None,
+        content=None,
+        header=False,
+        start=None,
+        formatting_as_empty=False,
+    ):
         content = Table(content)
         if not content:
             return
 
-        name = self._get_sheetname(name)
-        sheet = self._book[name]
+        sheet_name = self._get_sheetname(name)
+        sheet = self._book[sheet_name]
         start = self._to_index(start)
         is_empty = self.is_sheet_empty(sheet)
 
@@ -1168,17 +1218,43 @@ class XlsxWorkbook:
         if header and is_empty:
             sheet.append(columns)
 
-        for row in content:
-            values = [""] * len(columns)
-            for column, value in row.items():
+        if formatting_as_empty:
+            self._append_on_first_empty_based_on_values(content, columns, sheet)
+        else:
+            self._default_append_rows(content, columns, sheet)
+
+        self.active = sheet_name
+
+    def _append_on_first_empty_based_on_values(self, content, columns, sheet):
+        first_empty_row: Optional[int] = None
+        for row_num in range(sheet.max_row, 0, -1):
+            if all(cell.value is None for cell in sheet[row_num]):
+                first_empty_row = row_num
+            else:
+                break
+        first_empty_row: int = first_empty_row or sheet.max_row + 1
+        for row_idx, row in enumerate(content):
+            values = self._row_to_values(row, columns)
+            for cell_idx, cell in enumerate(sheet[first_empty_row + row_idx]):
                 try:
-                    index = columns.index(column)
-                    values[index] = value
-                except ValueError:
+                    cell.value = values[cell_idx]
+                except IndexError:
                     pass
+
+    def _default_append_rows(self, content, columns, sheet):
+        for row in content:
+            values = self._row_to_values(row, columns)
             sheet.append(values)
 
-        self.active = name
+    def _row_to_values(self, row, columns):
+        values = [""] * len(columns)
+        for column, value in row.items():
+            try:
+                index = columns.index(column)
+                values[index] = value
+            except ValueError:
+                pass
+        return values
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)
@@ -1248,15 +1324,11 @@ class XlsxWorkbook:
         sheet.add_image(img)
 
 
-class XlsWorkbook:
+class XlsWorkbook(BaseWorkbook):
     """Container for manipulating legacy Excel files (.xls)"""
 
-    def __init__(self, path=None):
-        self.logger = logging.getLogger(__name__)
-        self.path = path
-        self._book = None
-        self._extension = None
-        self._active = None
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._images = []
 
     @staticmethod
@@ -1384,6 +1456,9 @@ class XlsWorkbook:
         finally:
             fd.close()
 
+    def validate_content(self):
+        self._validate_content(self._book)
+
     def save(self, path=None):
         path = path or self.path
         if not path:
@@ -1399,7 +1474,7 @@ class XlsWorkbook:
 
         self.active = name
 
-    def read_worksheet(self, name=None, header=False, start=None):
+    def read_worksheet(self, name=None, header=False, start=None) -> List[dict]:
         name = self._get_sheetname(name)
         sheet = self._book.sheet_by_name(name)
         start = self._to_index(start)
@@ -1444,7 +1519,14 @@ class XlsWorkbook:
 
         return value
 
-    def append_worksheet(self, name=None, content=None, header=False, start=None):
+    def append_worksheet(
+        self,
+        name=None,
+        content=None,
+        header=False,
+        start=None,
+        formatting_as_empty=False,
+    ):
         content = Table(content)
         if not content:
             return
@@ -1461,8 +1543,13 @@ class XlsWorkbook:
 
         with self._book_write() as book:
             sheet_write = book.get_sheet(name)
-            start_row = sheet_read.nrows
-
+            # TODO. target worksheet cell formatting is overwritten.
+            # It would be preferable to preserve formatting in the
+            # target worksheet.
+            if formatting_as_empty:
+                start_row = self._return_first_empty_row(sheet_read)
+            else:
+                start_row = sheet_read.nrows
             if header and is_empty:
                 for column, value in enumerate(columns):
                     sheet_write.write(0, column, value)
@@ -1473,6 +1560,16 @@ class XlsWorkbook:
                     sheet_write.write(r, columns.index(column), value)
 
         self.active = name
+
+    def _return_first_empty_row(self, sheet):
+        first_empty_row: Optional[int] = None
+        for row_num in range(sheet.nrows - 1, 0, -1):
+            if all(cell.value == "" for cell in sheet[row_num]):
+                first_empty_row = row_num
+            else:
+                break
+        first_empty_row: int = first_empty_row or sheet.nrows
+        return first_empty_row
 
     def remove_worksheet(self, name=None):
         name = self._get_sheetname(name)

@@ -73,7 +73,7 @@ class FinderKeywords(LibraryContext):
 
     def __init__(self, ctx):
         super().__init__(ctx)
-        self._resolver = syntax.Resolver(self._find)
+        self._resolver = syntax.Resolver(self._find, self.locators_path)
 
         self.timeout = 3.0
         if HAS_RECOGNITION:

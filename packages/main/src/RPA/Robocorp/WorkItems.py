@@ -9,15 +9,15 @@ from enum import Enum
 from pathlib import Path
 from shutil import copy2
 from threading import Event
-from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 import yaml
-from robot.api.deco import library, keyword
+from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn
+
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
-
 from RPA.Email.ImapSmtp import ImapSmtp
 from RPA.FileSystem import FileSystem
 from RPA.Robocorp.utils import (
@@ -230,7 +230,8 @@ class RobocorpAdapter(BaseAdapter):
                 if value is None:
                     del exception[key]
             body["exception"] = exception
-        logging.info(
+        log_func = logging.error if state == State.FAILED else logging.info
+        log_func(
             "Releasing %s input work item %r into %r with exception: %s",
             state.value,
             item_id,
@@ -399,8 +400,9 @@ class FileAdapter(BaseAdapter):
     def release_input(
         self, item_id: str, state: State, exception: Optional[dict] = None
     ):
-        # Nothing happens for now on releasing local dev input work items.
-        logging.info(
+        # Nothing happens for now on releasing local dev input Work Items.
+        log_func = logging.error if state == State.FAILED else logging.info
+        log_func(
             "Releasing item %r with %s state and exception: %s",
             item_id,
             state.value,
@@ -1070,27 +1072,49 @@ class WorkItems:
             # pylint: disable=undefined-loop-variable
             self.set_work_item_variable(keys[0], parsed_email)
 
-    def _start_suite(self, data, result):
+    def _start_suite(self, *_):
         """Robot Framework listener method, called when suite starts."""
-        # pylint: disable=unused-argument, broad-except
         if not self.autoload:
             return
 
         try:
             self.get_input_work_item()
+        # pylint: disable=broad-except
         except Exception as exc:
             logging.warning("Failed to load input work item: %s", exc)
         finally:
             self.autoload = False
 
-    def _end_suite(self, data, result):
-        """Robot Framework listener method, called when suite ends."""
+    def _release_on_failure(self, attributes):
+        """Automatically releases current input Work Item when encountering failures
+        with tasks and/or suites.
+        """
+        if attributes["status"] != "FAIL":
+            return
+
+        message = attributes["message"]
+        logging.info("Releasing FAILED input item with APPLICATION error: %s", message)
+        self.release_input_work_item(
+            state=State.FAILED,
+            exception_type=Error.APPLICATION,
+            message=message,
+            _auto_release=True,
+        )
+
+    def _end_suite(self, _, attributes):
+        """Robot Framework listener method, called when the suite ends."""
         # pylint: disable=unused-argument
         for item in self.inputs + self.outputs:
             if item.is_dirty:
                 logging.warning(
                     "%s has unsaved changes that will be discarded", self.current
                 )
+
+        self._release_on_failure(attributes)
+
+    def _end_test(self, _, attributes):
+        """Robot Framework listener method, called when each task ends."""
+        self._release_on_failure(attributes)
 
     @keyword
     def set_current_work_item(self, item: WorkItem):
@@ -1785,10 +1809,10 @@ class WorkItems:
     def release_input_work_item(
         self,
         state: State,
-        _auto_release: bool = False,
         exception_type: Optional[Error] = None,
         code: Optional[str] = None,
         message: Optional[str] = None,
+        _auto_release: bool = False,
     ):
         """Release the lastly retrieved input work item and set its state.
 
