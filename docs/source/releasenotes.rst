@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+15.8.1 - 19 Aug 2022
+--------------------
+
+- Library **RPA.JavaAccessBridge**: Include ``java-access-bridge-wrapper`` dependency
+  **0.9.5** fixing memory leak issue
+
 15.8.0 - 12 Aug 2022
 --------------------
 
