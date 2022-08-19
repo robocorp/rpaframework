@@ -40,7 +40,7 @@ rpaframework-aws = { version = "^3.1.2", optional = true }
 rpaframework-core = "^9.1.0"
 rpaframework-dialogs = "^3.0.1"
 rpaframework-pdf = "^4.1.0"
-rpaframework-recognition = { version = "^4.0.1", optional = true }
+rpaframework-recognition = { version = "^4.0.2", optional = true }
 rpaframework-windows = { version = "^5.0.2", platform = "win32" }
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"

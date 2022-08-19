@@ -14,6 +14,7 @@ Release notes
 
 - Library **RPA.JavaAccessBridge**: Include ``java-access-bridge-wrapper`` dependency
   **0.9.5** fixing memory leak issue
+- ``rpaframework-recognition`` **4.0.2**: Fix issue with dependency ``opencv-python-headless``
 
 15.8.0 - 12 Aug 2022
 --------------------
