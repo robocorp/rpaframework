@@ -5,6 +5,7 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Database**: Add support for new Oracle connector `oracledb <https://python-oracledb.readthedocs.io/en/latest/index.html>`_
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
