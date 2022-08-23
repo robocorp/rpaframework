@@ -149,7 +149,7 @@ class Notifier:
             "token": token,
         }
         notify_arguments = {**arguments, **kwargs}
-        response = notify(notify_arguments)
+        response = notify(**notify_arguments)
         return self._handle_response(response)
 
     def notify_slack(
@@ -174,7 +174,7 @@ class Notifier:
             "channel": channel,
         }
         notify_arguments = {**arguments, **kwargs}
-        response = notify(notify_arguments)
+        response = notify(**notify_arguments)
         return self._handle_response(response)
 
     def notify_telegram(
@@ -199,7 +199,7 @@ class Notifier:
             "token": token,
         }
         notify_arguments = {**arguments, **kwargs}
-        response = notify(notify_arguments)
+        response = notify(**notify_arguments)
         return self._handle_response(response)
 
     def notify_gmail(
@@ -227,7 +227,7 @@ class Notifier:
             "password": password,
         }
         notify_arguments = {**arguments, **kwargs}
-        response = notify(notify_arguments)
+        response = notify(**notify_arguments)
         return self._handle_response(response)
 
     def notify_email(
