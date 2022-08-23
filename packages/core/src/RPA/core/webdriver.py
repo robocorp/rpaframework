@@ -71,7 +71,7 @@ def _set_executable(path: str) -> None:
     )
 
 
-def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[Path]:
+def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
     """Download a webdriver binary for the given browser and return the path to it."""
     manager = _to_manager(browser, root)
     driver = manager.driver
