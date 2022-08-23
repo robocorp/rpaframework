@@ -3,12 +3,17 @@ import os
 import platform
 import stat
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
 from selenium import webdriver
-from webdrivermanager import AVAILABLE_DRIVERS
+from selenium.webdriver.common.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.manager import DriverManager
+from webdriver_manager.core.utils import os_name as get_os_name
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager, IEDriverManager
+from webdriver_manager.opera import OperaDriverManager
 
-from RPA.core.types import is_list_like
 from RPA.core.robocorp import robocorp_home
 
 
@@ -21,89 +26,41 @@ DRIVER_PREFERENCE = {
     "Darwin": ["Chrome", "Safari", "Firefox", "Opera"],
     "default": ["Chrome", "Firefox"],
 }
+AVAILABLE_DRIVERS = {
+    # Driver names taken from `webdrivermanager` and adapted to `webdriver_manager`.
+    "chrome": ChromeDriverManager,
+    "firefox": GeckoDriverManager,
+    "gecko": GeckoDriverManager,
+    "mozilla": GeckoDriverManager,
+    "opera": OperaDriverManager,
+    # NOTE: There's no specific `EdgeDriverManager` with this manager and the very same
+    #  `EdgeService` works for both.
+    "edge": EdgeChromiumDriverManager,
+    "chromiumedge": EdgeChromiumDriverManager,
+    "ie": IEDriverManager,
+}
 
 
-def start(browser: str, **options):
+def start(browser: str, service: Optional[Service] = None, **options):
     """Start a webdriver with the given options."""
     browser = browser.strip()
-    factory = getattr(webdriver, browser, None)
-
-    if not factory:
+    webdriver_factory = getattr(webdriver, browser, None)
+    if not webdriver_factory:
         raise ValueError(f"Unsupported browser: {browser}")
 
-    driver = factory(**options)
+    # NOTE: Is recommended to pass a `service` rather than deprecated `options`.
+    driver = webdriver_factory(service=service, **options)
     return driver
 
 
-def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[Path]:
-    """Download a webdriver binary for the given browser,
-    and return the path to it. Attempts to use "compatible" mode
-    to match browser and webdriver versions.
-    """
-    manager = _to_manager(browser, root)
-    if manager.get_driver_filename() is None:
-        return None
-
-    os.makedirs(manager.download_root, exist_ok=True)
-    _link_clean(manager)
-
-    result = manager.download_and_install("compatible", show_progress_bar=False)
-    if result is None:
-        raise RuntimeError("Failed to extract webdriver from archive")
-
-    path = result[0]
-    if platform.system() != "Windows":
-        _set_executable(path)
-
-    LOGGER.debug("Downloaded webdriver to: %s", path)
-    return path
-
-
-def cache(browser: str, root: Path = DRIVER_ROOT) -> Optional[Path]:
-    """Return path to given browser's webdriver, if binary
-    exists in cache.
-    """
-    manager = _to_manager(browser, root)
-
-    for path in _link_paths(manager):
-        if path.exists():
-            LOGGER.debug("Found cached webdriver: %s", path)
-            return path
-
-    return None
-
-
-def _to_manager(browser: str, root: Path = DRIVER_ROOT):
+def _to_manager(browser: str, root: Path = DRIVER_ROOT) -> DriverManager:
     browser = browser.strip()
-    factory = AVAILABLE_DRIVERS.get(browser.lower())
-
-    if not factory:
+    manager_factory = AVAILABLE_DRIVERS.get(browser.lower())
+    if not manager_factory:
         raise ValueError(f"Unsupported browser: {browser}")
 
-    manager = factory(download_root=root, link_path=root)
+    manager = manager_factory(path=str(root))
     return manager
-
-
-def _link_paths(manager: Any):
-    names = manager.get_driver_filename()
-
-    if names is None:
-        return []
-
-    if not is_list_like(names):
-        names = [names]
-
-    return [Path(manager.download_root) / name for name in names]
-
-
-def _link_clean(manager: Any):
-    for path in _link_paths(manager):
-        if not path.exists():
-            continue
-        try:
-            os.unlink(path)
-        except Exception as exc:  # pylint: disable=broad-except
-            LOGGER.debug("Failed to remove symlink: %s", exc)
 
 
 def _set_executable(path: str) -> None:
@@ -112,3 +69,18 @@ def _set_executable(path: str) -> None:
         path,
         st.st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IEXEC,
     )
+
+
+def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[Path]:
+    """Download a webdriver binary for the given browser and return the path to it."""
+    manager = _to_manager(browser, root)
+    driver = manager.driver
+    os_type = getattr(driver, "os_type", driver.get_os_type())
+    if get_os_name() not in os_type:
+        return None  # incompatible driver download attempt
+
+    path: str = manager.install()
+    if platform.system() != "Windows":
+        _set_executable(path)
+    LOGGER.debug("Downloaded webdriver to: %s", path)
+    return path
