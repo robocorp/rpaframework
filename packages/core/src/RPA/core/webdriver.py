@@ -7,6 +7,7 @@ from typing import Optional
 
 from selenium import webdriver
 from selenium.webdriver.common.service import Service
+from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.manager import DriverManager
 from webdriver_manager.core.utils import os_name as get_os_name
@@ -33,22 +34,21 @@ AVAILABLE_DRIVERS = {
     "gecko": GeckoDriverManager,
     "mozilla": GeckoDriverManager,
     "opera": OperaDriverManager,
-    # NOTE: There's no specific `EdgeDriverManager` with this manager and the very same
-    #  `EdgeService` works for both.
+    # NOTE: There's no specific `EdgeDriverManager` with this manager.
     "edge": EdgeChromiumDriverManager,
     "chromiumedge": EdgeChromiumDriverManager,
     "ie": IEDriverManager,
 }
 
 
-def start(browser: str, service: Optional[Service] = None, **options):
+def start(browser: str, service: Optional[Service] = None, **options) -> WebDriver:
     """Start a webdriver with the given options."""
     browser = browser.strip()
     webdriver_factory = getattr(webdriver, browser, None)
     if not webdriver_factory:
         raise ValueError(f"Unsupported browser: {browser}")
 
-    # NOTE: Is recommended to pass a `service` rather than deprecated `options`.
+    # NOTE: It is recommended to pass a `service` rather than deprecated `options`.
     driver = webdriver_factory(service=service, **options)
     return driver
 
