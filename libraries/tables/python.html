@@ -754,17 +754,16 @@ default <cite>False</cite></p></li>
 <p>See the main library documentation for more information about
 supported data types.</p>
 <p>Example:</p>
-<p>..code-block:: robotframework</p>
-<blockquote>
-<div><p># Create a new table using a Dictionary of Lists
-# Because of the dictionary keys the column names will be automatically set
-&#64;{Table_Data_name}=    Create List    Mark    John    Amy
-&#64;{Table_Data_age}=    Create List    ${58}    ${22}    ${67}
-&amp;{Table_Data}=    Create Dictionary
-…    name=${Table_Data_name}
-…    age=${Table_Data_age}
-${table}=    Create Table    ${Table_Data}</p>
-</div></blockquote>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Create a new table using a Dictionary of Lists</span>
+<span class="c"># Because of the dictionary keys the column names will be automatically set</span>
+<span class="c">@{Table_Data_name}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">Mark</span><span class="p">    </span><span class="c">John</span><span class="p">    </span><span class="c">Amy</span><span class="p"></span>
+<span class="c">@{Table_Data_age}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">${58}</span><span class="p">    </span><span class="c">${22}</span><span class="p">    </span><span class="c">${67}</span><span class="p"></span>
+<span class="c">&amp;{Table_Data}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">name=${Table_Data_name}</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">age=${Table_Data_age}</span><span class="p"></span>
+<span class="c">${table}=</span><span class="p">    </span><span class="c">Create Table</span><span class="p">    </span><span class="c">${Table_Data}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
