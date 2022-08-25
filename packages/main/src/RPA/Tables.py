@@ -1001,7 +1001,7 @@ class Tables:
 
         Example:
 
-        ..code-block:: robotframework
+        .. code-block:: robotframework
 
             # Create a new table using a Dictionary of Lists
             # Because of the dictionary keys the column names will be automatically set
