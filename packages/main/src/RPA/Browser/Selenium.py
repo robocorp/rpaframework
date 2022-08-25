@@ -954,8 +954,9 @@ class Selenium(SeleniumLibrary):
                 options["executable_path"] = str(path)
 
             lib = BrowserManagementKeywords(self)
-            # Capitalize browser name just to be sure it works if passed as lower case.
-            return lib.create_webdriver(browser.capitalize(), alias, **options)
+            # Capitalize browser name just to ensure it works if passed as lower case.
+            cap_browser = browser[0].upper() + browser[1:]
+            return lib.create_webdriver(cap_browser, alias, **options)
 
         # No download requested.
         if not download:
