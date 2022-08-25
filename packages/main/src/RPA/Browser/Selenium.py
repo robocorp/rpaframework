@@ -9,29 +9,27 @@ import platform
 import time
 import traceback
 import urllib.parse
+import webbrowser
 from collections import OrderedDict
 from contextlib import contextmanager
 from functools import partial
 from itertools import product
-from typing import Any, Optional, List, Union
 from pathlib import Path
-import webbrowser
+from typing import Any, List, Optional, Tuple, Union
 
 import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-from SeleniumLibrary import SeleniumLibrary, EMBED
-from SeleniumLibrary.base import keyword
-from SeleniumLibrary.errors import ElementNotFound
-from SeleniumLibrary.keywords import (
-    BrowserManagementKeywords,
-    ScreenshotKeywords,
-    AlertKeywords,
-)
 from selenium.webdriver import ChromeOptions, FirefoxProfile
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.options import ArgOptions
+from SeleniumLibrary import EMBED, SeleniumLibrary
+from SeleniumLibrary.base import keyword
+from SeleniumLibrary.errors import ElementNotFound
+from SeleniumLibrary.keywords import (AlertKeywords, BrowserManagementKeywords,
+                                      ScreenshotKeywords)
 
-from RPA.core import webdriver, notebook
-from RPA.core.locators import LocatorsDatabase, BrowserLocator
+from RPA.core import notebook, webdriver
+from RPA.core.locators import BrowserLocator, LocatorsDatabase
 
 
 def html_table(header, rows):
@@ -505,10 +503,9 @@ class Selenium(SeleniumLibrary):
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
     AVAILABLE_OPTIONS = {
+        # Supporting options only for a specific range of browsers.
         "chrome": "ChromeOptions",
         "firefox": "FirefoxOptions",
-        # "safari": "WebKitGTKOptions",
-        # "ie": "IeOptions",
     }
 
     def __init__(self, *args, **kwargs) -> None:
@@ -611,7 +608,7 @@ class Selenium(SeleniumLibrary):
         proxy: str = None,
         user_agent: Optional[str] = None,
         download: Any = "AUTO",
-    ) -> int:
+    ) -> str:
         # pylint: disable=C0301
         """Attempts to open a browser on the user's device from a set of
         supported browsers. Automatically downloads a corresponding webdriver
@@ -826,20 +823,16 @@ class Selenium(SeleniumLibrary):
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
-    ) -> dict:
+    ) -> Tuple[dict, Any]:
         """Get browser and webdriver arguments for given options."""
-        preferences = preferences or {}
         browser = browser.lower()
-        headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
-        kwargs = {}
-
         if browser not in self.AVAILABLE_OPTIONS:
-            return kwargs, []
+            return {}, []
 
         module = importlib.import_module("selenium.webdriver")
         factory = getattr(module, self.AVAILABLE_OPTIONS[browser])
         options = factory()
-
+        headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
         if headless:
             self._set_headless_options(browser, options)
 
@@ -849,6 +842,8 @@ class Selenium(SeleniumLibrary):
         if user_agent:
             options.add_argument(f"user-agent={user_agent}")
 
+        kwargs = {}
+        preferences = preferences or {}
         if browser != "chrome":
             kwargs["options"] = options
             if use_profile:
@@ -885,7 +880,7 @@ class Selenium(SeleniumLibrary):
 
         return kwargs, options.arguments
 
-    def _set_headless_options(self, browser: str, options: dict) -> None:
+    def _set_headless_options(self, browser: str, options: ArgOptions) -> None:
         """Set headless mode for the browser, if possible.
 
         ``browser`` string name of the browser
@@ -907,7 +902,7 @@ class Selenium(SeleniumLibrary):
 
     def _set_user_profile(
         self,
-        options: dict,
+        options: ArgOptions,
         profile_path: Optional[str] = None,
         profile_name: Optional[str] = None,
     ) -> None:
@@ -947,46 +942,29 @@ class Selenium(SeleniumLibrary):
 
     def _create_webdriver(
         self, browser: str, alias: Optional[str], download: bool, **kwargs
-    ):
+    ) -> str:
         """Create a webdriver instance with given options.
 
-        If webdriver download is requested, try using a cached
-        version first and if that fails force a re-download.
+        If webdriver download is requested, a cached version will be used if exists.
         """
-        browser = browser.lower()
 
-        def _create_driver(path=None):
+        def _create_driver(path: Optional[str] = None) -> str:
             options = dict(kwargs)
             if path is not None:
                 options["executable_path"] = str(path)
 
             lib = BrowserManagementKeywords(self)
+            # Capitalize browser name just to be sure it works if passed as lower case.
             return lib.create_webdriver(browser.capitalize(), alias, **options)
 
-        # No download requested
+        # No download requested.
         if not download:
             return _create_driver()
 
-        # Check if webdriver is available for given browser
-        if browser not in webdriver.AVAILABLE_DRIVERS:
-            raise ValueError(f"Webdriver download not available for {browser.title()}")
-
-        # Try to use webdriver already in cache
-        path_cache = webdriver.cache(browser)
-        if path_cache:
-            try:
-                return _create_driver(path_cache)
-            except Exception:  # pylint: disable=broad-except
-                pass
-
-        # Try to download webdriver
+        # Download web driver. (caching is tackled internally)
         with suppress_logging():
-            path_download = webdriver.download(browser)
-        if path_download:
-            return _create_driver(path_download)
-
-        # No webdriver required
-        return _create_driver()
+            driver_path = webdriver.download(browser)
+        return _create_driver(path=driver_path)
 
     @keyword
     def open_chrome_browser(
