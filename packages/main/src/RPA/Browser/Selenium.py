@@ -11,7 +11,6 @@ import traceback
 import urllib.parse
 import webbrowser
 from collections import OrderedDict
-from contextlib import contextmanager
 from functools import partial
 from itertools import product
 from pathlib import Path
@@ -40,19 +39,6 @@ def html_table(header, rows):
         output += "<tr>" + "".join(f"<td>{name}</td>" for name in row) + "</tr>"
     output += "</table></div>"
     return output
-
-
-@contextmanager
-def suppress_logging():
-    """Suppress webdrivermanager warnings and errors in scope."""
-    logger = logging.getLogger("webdrivermanager.misc")
-    logger_warning, logger_error = logger.warning, logger.error
-
-    try:
-        logger.warning = logger.error = logger.info
-        yield
-    finally:
-        logger.warning, logger.error = logger_warning, logger_error
 
 
 def ensure_scheme(url: str, default: Optional[str]) -> str:
@@ -963,8 +949,7 @@ class Selenium(SeleniumLibrary):
             return _create_driver()
 
         # Download web driver. (caching is tackled internally)
-        with suppress_logging():
-            driver_path = webdriver.download(browser)
+        driver_path = webdriver.download(browser)
         return _create_driver(path=driver_path)
 
     @keyword
