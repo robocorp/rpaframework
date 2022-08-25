@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import os
 import platform
@@ -37,8 +38,10 @@ AVAILABLE_DRIVERS = {
     "firefox": GeckoDriverManager,
     "gecko": GeckoDriverManager,
     "mozilla": GeckoDriverManager,
+    # NOTE: Selenium 4 dropped support for Opera.
+    #  (https://github.com/SeleniumHQ/selenium/issues/10835)
     "opera": OperaDriverManager,
-    # NOTE: There's no specific `EdgeDriverManager` with this manager.
+    # NOTE: In Selenium 4 `Edge` is the same with `ChromiumEdge`.
     "edge": EdgeChromiumDriverManager,
     "chromiumedge": EdgeChromiumDriverManager,
     "ie": IEDriverManager,
@@ -53,6 +56,18 @@ class Downloader(WDMHttpClient):
         resp = requests.get(url=url, verify=self._ssl_verify, stream=True, **kwargs)
         self.validate_response(resp)
         return resp
+
+
+@contextlib.contextmanager
+def suppress_logging():
+    """Suppress webdriver-manager logging."""
+    wdm_log = "WDM_LOG"
+    original_value = os.getenv(wdm_log, "")
+    try:
+        os.environ[wdm_log] = str(logging.NOTSET)
+        yield
+    finally:
+        os.environ[wdm_log] = original_value
 
 
 def start(browser: str, service: Optional[Service] = None, **options) -> WebDriver:
@@ -71,7 +86,9 @@ def _to_manager(browser: str, root: Path = DRIVER_ROOT) -> DriverManager:
     browser = browser.strip()
     manager_factory = AVAILABLE_DRIVERS.get(browser.lower())
     if not manager_factory:
-        raise ValueError(f"Unsupported browser: {browser}")
+        raise ValueError(
+            f"Unsupported browser {browser!r}! (choose from: {list(AVAILABLE_DRIVERS)})"
+        )
 
     download_manager = WDMDownloadManager(Downloader())
     manager = manager_factory(path=str(root), download_manager=download_manager)
@@ -97,7 +114,8 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
         )
         return None  # incompatible driver download attempt
 
-    path: str = manager.install()
+    with suppress_logging():
+        path: str = manager.install()
     if platform.system() != "Windows":
         _set_executable(path)
     LOGGER.debug("Downloaded webdriver to: %s", path)
