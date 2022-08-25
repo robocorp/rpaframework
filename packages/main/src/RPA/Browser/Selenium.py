@@ -28,6 +28,7 @@ from SeleniumLibrary.keywords import (
     AlertKeywords,
 )
 from selenium.webdriver import ChromeOptions, FirefoxProfile
+from selenium.webdriver.common.by import By
 
 from RPA.core import webdriver, notebook
 from RPA.core.locators import LocatorsDatabase, BrowserLocator
@@ -126,16 +127,22 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
 
 class Selenium(SeleniumLibrary):
-    """Browser is a web testing library for Robot Framework,
-    based on the popular SeleniumLibrary.
+    """SeleniumLibrary is a web testing library for Robot Framework.
 
-    It uses the Selenium WebDriver modules internally to
+    This document explains how to use keywords provided by SeleniumLibrary.
+    For information about installation, support, and more, please visit the
+    [https://github.com/robotframework/SeleniumLibrary|project pages].
+    For more information about Robot Framework, see http://robotframework.org.
+
+    SeleniumLibrary uses the Selenium WebDriver modules internally to
     control a web browser. See http://seleniumhq.org for more information
-    about Selenium in general.
+    about Selenium in general and SeleniumLibrary README.rst
+    [https://github.com/robotframework/SeleniumLibrary#browser-drivers|Browser drivers chapter]
+    for more details about WebDriver binary installation.
 
     = Locating elements =
 
-    All keywords in the browser library that need to interact with an element
+    All keywords in SeleniumLibrary that need to interact with an element
     on a web page take an argument typically named ``locator`` that specifies
     how to find the element. Most often the locator is given as a string
     using the locator syntax described below, but `using WebElements` is
@@ -143,7 +150,7 @@ class Selenium(SeleniumLibrary):
 
     == Locator syntax ==
 
-    Finding elements can be done using different strategies
+    SeleniumLibrary supports finding elements based on different strategies
     such as the element id, XPath expressions, or CSS selectors. The strategy
     can either be explicitly specified with a prefix or the strategy can be
     implicit.
@@ -199,6 +206,7 @@ class Selenium(SeleniumLibrary):
     | link         | Exact text a link has.              | ``link:The example``           |
     | partial link | Partial link text.                  | ``partial link:he ex``         |
     | sizzle       | Sizzle selector deprecated.         | ``sizzle:div.example``         |
+    | data         | Element ``data-*`` attribute        | ``data:id:my_id``              |
     | jquery       | jQuery expression.                  | ``jquery:div.example``         |
     | default      | Keyword specific default behavior.  | ``default:example``            |
 
@@ -228,36 +236,46 @@ class Selenium(SeleniumLibrary):
 
     *NOTE:*
 
+    - The ``strategy:value`` syntax is only supported by SeleniumLibrary 3.0
+      and newer.
     - Using the ``sizzle`` strategy or its alias ``jquery`` requires that
       the system under test contains the jQuery library.
+    - Prior to SeleniumLibrary 3.0, table related keywords only supported
+      ``xpath``, ``css`` and ``sizzle/jquery`` strategies.
+    - ``data`` strategy is conveniance locator that will construct xpath from the parameters.
+      If you have element like `<div data-automation="automation-id-2">`, you locate the element via
+      ``data:automation:automation-id-2``. This feature was added in SeleniumLibrary 5.2.0
 
     === Implicit XPath strategy ===
 
-    If the locator starts with ``//`` or ``(//``, the locator is considered
-    to be an XPath expression. In other words, using ``//div`` is equivalent
-    to using explicit ``xpath://div``.
+    If the locator starts with ``//``  or multiple opening parenthesis in front
+    of the ``//``, the locator is considered to be an XPath expression. In other
+    words, using ``//div`` is equivalent to using explicit ``xpath://div`` and
+    ``((//div))`` is equivalent to using explicit ``xpath:((//div))``
 
     Examples:
 
     | `Click Element` | //div[@id="foo"]//h1 |
     | `Click Element` | (//div)[2]           |
 
+    The support for the ``(//`` prefix is new in SeleniumLibrary 3.0.
+    Supporting multiple opening parenthesis is new in SeleniumLibrary 5.0.
+
     === Chaining locators ===
 
-    It's possible to chain multiple locators together as a single locator. Each chained locator must start
-    with a locator strategy. Chained locators must be separated with a single space, two greater than characters,
-    and followed with a space. It's also possible to mix different locator strategies, such as css or xpath.
-    Also, a list can also be used to specify multiple locators, for instance when the chaining separator
-    would conflict with the actual locator, or when an existing web element is used as a base.
+    It is possible chain multiple locators together as single locator. Each chained locator must start with locator
+    strategy. Chained locators must be separated with single space, two greater than characters and followed with
+    space. It is also possible mix different locator strategies, example css or xpath. Also a list can also be
+    used to specify multiple locators. This is useful, is some part of locator would match as the locator separator
+    but it should not. Or if there is need to existing WebElement as locator.
 
-    Although all locators support chaining, some locator strategies don't chain properly with previous values.
-    This is because some locator strategies use JavaScript to find elements and JavaScript is executed
-    for the whole browser context and not for the element found by the previous locator. Locator strategies
-    that support chaining are the ones that are based on the Selenium API, such as `xpath` or `css`, but for example
-    chaining is not supported by `sizzle` or `jquery`.
+    Although all locators support chaining, some locator strategies do not abey the chaining. This is because
+    some locator strategies use JavaScript to find elements and JavaScript is executed for the whole browser context
+    and not for the element found be the previous locator. Chaining is supported by locator strategies which
+    are based on Selenium API, like `xpath` or `css`, but example chaining is not supported by `sizzle` or `jquery
 
     Examples:
-    | `Click Element` | css:.bar >> xpath://a | # To find a link which is present inside an element with class "bar" |
+    | `Click Element` | css:.bar >> xpath://a | # To find a link which is present after an element with class "bar" |
 
     List examples:
     | ${locator_list} =             | `Create List`   | css:div#div_id            | xpath://*[text(), " >> "] |
@@ -265,6 +283,8 @@ class Selenium(SeleniumLibrary):
     | ${element} =                  | Get WebElement  | xpath://*[text(), " >> "] |                           |
     | ${locator_list} =             | `Create List`   | css:div#div_id            | ${element}                |
     | `Page Should Contain Element` | ${locator_list} |                           |                           |
+
+    Chaining locators in new in SeleniumLibrary 5.0
 
     == Using WebElements ==
 
@@ -304,7 +324,7 @@ class Selenium(SeleniumLibrary):
 
     = Browser and Window =
 
-    There is different conceptual meaning when this library talks
+    There is different conceptual meaning when SeleniumLibrary talks
     about windows or browsers. This chapter explains those differences.
 
     == Browser ==
@@ -312,7 +332,7 @@ class Selenium(SeleniumLibrary):
     When `Open Browser` or `Create WebDriver` keyword is called, it
     will create a new Selenium WebDriver instance by using the
     [https://www.seleniumhq.org/docs/03_webdriver.jsp|Selenium WebDriver]
-    API. In this library's terms, a new browser is created. It is
+    API. In SeleniumLibrary terms, a new browser is created. It is
     possible to start multiple independent browsers (Selenium Webdriver
     instances) at the same time, by calling `Open Browser` or
     `Create WebDriver` multiple times. These browsers are usually
@@ -324,7 +344,7 @@ class Selenium(SeleniumLibrary):
 
     Windows are the part of a browser that loads the web site and presents
     it to the user. All content of the site is the content of the window.
-    Windows are children of a browser. In this context a browser is a
+    Windows are children of a browser. In SeleniumLibrary browser is a
     synonym for WebDriver instance. One browser may have multiple
     windows. Windows can appear as tabs, as separate windows or pop-ups with
     different position and size. Windows belonging to the same browser
@@ -380,7 +400,7 @@ class Selenium(SeleniumLibrary):
 
     == Timeout ==
 
-    This library contains various keywords that have an optional
+    SeleniumLibrary contains various keywords that have an optional
     ``timeout`` argument that specifies how long these keywords should
     wait for certain events or actions. These keywords include, for example,
     ``Wait ...`` keywords and keywords related to alerts. Additionally
@@ -398,8 +418,8 @@ class Selenium(SeleniumLibrary):
     Implicit wait specifies the maximum time how long Selenium waits when
     searching for elements. It can be set by using the `Set Selenium Implicit
     Wait` keyword or with the ``implicit_wait`` argument when `importing`
-    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|Selenium documentation]
-    for more information about this functionality.
+    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|
+    Selenium documentation] for more information about this functionality.
 
     See `time format` below for supported syntax.
 
@@ -423,7 +443,7 @@ class Selenium(SeleniumLibrary):
 
     = Run-on-failure functionality =
 
-    This library has a handy feature that it can automatically execute
+    SeleniumLibrary has a handy feature that it can automatically execute
     a keyword if any of its own keywords fails. By default, it uses the
     `Capture Page Screenshot` keyword, but this can be changed either by
     using the `Register Keyword To Run On Failure` keyword or with the
@@ -433,6 +453,43 @@ class Selenium(SeleniumLibrary):
     The run-on-failure functionality can be disabled by using a special value
     ``NOTHING`` or anything considered false (see `Boolean arguments`)
     such as ``NONE``.
+
+    = Boolean arguments =
+
+    Starting from 5.0 SeleniumLibrary relies on Robot Framework to perform the
+    boolean conversion based on keyword arguments [https://docs.python.org/3/library/typing.html|type hint].
+    More details in Robot Framework
+    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported-conversions|user guide]
+
+    Please note SeleniumLibrary 3 and 4 did have own custom methods to covert
+    arguments to boolean values.
+
+    = EventFiringWebDriver =
+
+    The SeleniumLibrary offers support for
+    [https://seleniumhq.github.io/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.event_firing_webdriver.html#module-selenium.webdriver.support.event_firing_webdriver|EventFiringWebDriver].
+    See the Selenium and SeleniumLibrary
+    [https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending.rst#EventFiringWebDriver|EventFiringWebDriver support]
+    documentation for further details.
+
+    EventFiringWebDriver is new in SeleniumLibrary 4.0
+
+    = Thread support =
+
+    SeleniumLibrary is not thread-safe. This is mainly due because the underlying
+    [https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread-safe|
+    Selenium tool is not thread-safe] within one browser/driver instance.
+    Because of the limitation in the Selenium side, the keywords or the
+    API provided by the SeleniumLibrary is not thread-safe.
+
+    = Plugins =
+
+    SeleniumLibrary offers plugins as a way to modify and add library keywords and modify some of the internal
+    functionality without creating a new library or hacking the source code. See
+    [https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending.rst#Plugins|plugin API]
+    documentation for further details.
+
+    Plugin API is new SeleniumLibrary 4.0
 
     = Auto closing browser =
 
@@ -1930,7 +1987,7 @@ class Selenium(SeleniumLibrary):
         """Remove all highlighting made by ``Highlight Elements``."""
         attribute_name = "rpaframework-highlight"
 
-        elements = self.driver.find_elements_by_css_selector(f"[{attribute_name}]")
+        elements = self.driver.find_elements(By.CSS_SELECTOR, f"[{attribute_name}]")
         script = "".join(
             f'arguments[{idx}].removeAttribute("{attribute_name}");'
             for idx in range(len(elements))
