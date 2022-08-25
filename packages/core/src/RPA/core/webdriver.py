@@ -5,10 +5,14 @@ import stat
 from pathlib import Path
 from typing import Optional
 
+import requests
+from requests import Response
 from selenium import webdriver
 from selenium.webdriver.common.service import Service
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.download_manager import WDMDownloadManager
+from webdriver_manager.core.http import WDMHttpClient
 from webdriver_manager.core.manager import DriverManager
 from webdriver_manager.core.utils import os_name as get_os_name
 from webdriver_manager.firefox import GeckoDriverManager
@@ -41,6 +45,16 @@ AVAILABLE_DRIVERS = {
 }
 
 
+class Downloader(WDMHttpClient):
+
+    """Custom downloader which disables download progress reporting."""
+
+    def get(self, url, **kwargs) -> Response:
+        resp = requests.get(url=url, verify=self._ssl_verify, stream=True, **kwargs)
+        self.validate_response(resp)
+        return resp
+
+
 def start(browser: str, service: Optional[Service] = None, **options) -> WebDriver:
     """Start a webdriver with the given options."""
     browser = browser.strip()
@@ -59,7 +73,8 @@ def _to_manager(browser: str, root: Path = DRIVER_ROOT) -> DriverManager:
     if not manager_factory:
         raise ValueError(f"Unsupported browser: {browser}")
 
-    manager = manager_factory(path=str(root))
+    download_manager = WDMDownloadManager(Downloader())
+    manager = manager_factory(path=str(root), download_manager=download_manager)
     return manager
 
 
@@ -77,6 +92,9 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
     driver = manager.driver
     os_type = getattr(driver, "os_type", driver.get_os_type())
     if get_os_name() not in os_type:
+        LOGGER.warning(
+            "Attempting to download incompatible driver for OS %r on OS %r! Skip"
+        )
         return None  # incompatible driver download attempt
 
     path: str = manager.install()
