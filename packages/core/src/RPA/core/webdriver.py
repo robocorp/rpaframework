@@ -27,9 +27,9 @@ LOGGER = logging.getLogger(__name__)
 
 DRIVER_ROOT = robocorp_home() / "webdrivers"
 DRIVER_PREFERENCE = {
-    "Windows": ["Chrome", "Firefox", "Edge", "Ie", "Opera"],
-    "Linux": ["Chrome", "Firefox", "Opera"],
-    "Darwin": ["Chrome", "Safari", "Firefox", "Opera"],
+    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
     "default": ["Chrome", "Firefox"],
 }
 AVAILABLE_DRIVERS = {
@@ -44,6 +44,7 @@ AVAILABLE_DRIVERS = {
     # NOTE: In Selenium 4 `Edge` is the same with `ChromiumEdge`.
     "edge": EdgeChromiumDriverManager,
     "chromiumedge": EdgeChromiumDriverManager,
+    # NOTE: IE is discontinued and not supported/encouraged anymore.
     "ie": IEDriverManager,
 }
 
@@ -107,10 +108,13 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
     """Download a webdriver binary for the given browser and return the path to it."""
     manager = _to_manager(browser, root)
     driver = manager.driver
-    os_type = getattr(driver, "os_type", driver.get_os_type())
-    if get_os_name() not in os_type:
+    resolved_os = getattr(driver, "os_type", driver.get_os_type())
+    os_name = get_os_name()
+    if os_name not in resolved_os:
         LOGGER.warning(
-            "Attempting to download incompatible driver for OS %r on OS %r! Skip"
+            "Attempting to download incompatible driver for OS %r on OS %r! Skip",
+            resolved_os,
+            os_name,
         )
         return None  # incompatible driver download attempt
 
