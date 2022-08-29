@@ -492,6 +492,8 @@ class Selenium(SeleniumLibrary):
         # Supporting options only for a specific range of browsers.
         "chrome": "ChromeOptions",
         "firefox": "FirefoxOptions",
+        "edge": "EdgeOptions",
+        "chromiumedge": "EdgeOptions",
     }
 
     def __init__(self, *args, **kwargs) -> None:
@@ -513,7 +515,7 @@ class Selenium(SeleniumLibrary):
 
         SeleniumLibrary.__init__(self, *args, **kwargs)
 
-        # Add inherit/overriden library keywords
+        # Add inherit/overridden library keywords
         overrides = [BrowserManagementKeywordsOverride(self)]
         self.add_library_components(overrides)
 
@@ -880,7 +882,7 @@ class Selenium(SeleniumLibrary):
             )
             return
 
-        options.add_argument("--headless")
+        options.headless = True
         options.add_argument("--disable-gpu")
 
         if browser.lower() == "chrome":
@@ -965,7 +967,7 @@ class Selenium(SeleniumLibrary):
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
-    ) -> int:
+    ) -> str:
         """Open Chrome browser. See ``Open Available Browser`` for
         descriptions of arguments.
         """
