@@ -1,8 +1,8 @@
 from enum import Enum
 import logging
+from typing import Optional
 from pyotp import HOTP, TOTP
 from robot.api.deco import keyword
-from typing import Optional
 from RPA.Robocorp.Vault import Vault
 
 
@@ -21,17 +21,17 @@ class HOTPNotSetError(Exception):
     "Error when HOTP (HMAC One-Time Password) has not been set"
 
 
-TOTP_NOT_SET_ERROR_MSG = """TOTP (Time-based One-Time Password) can be set in library initialization, with 
+TOTP_NOT_SET_ERROR_MSG = """TOTP (Time-based One-Time Password) can be set in library initialization, with
 `Use MFA Secret From Vault` keyword or with `Set Time Based OTP` keyword."""
 
-HOTP_NOT_SET_ERROR_MSG = """HOTP (HMAC One-Time Password) can be set in library initialization, with 
+HOTP_NOT_SET_ERROR_MSG = """HOTP (HMAC One-Time Password) can be set in library initialization, with
 `Use MFA Secret From Vault` keyword or with `Set Counter Based OTP` keyword."""
 
 
 class MFA:
-    """*RPA.MFA* is a library for
+    """*RPA.MFA* is a library for generating one-time passwords (OTP).
 
-    xxx
+    Based on the Python One Time Password library - pyotp.
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
