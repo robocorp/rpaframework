@@ -27,9 +27,9 @@ LOGGER = logging.getLogger(__name__)
 
 DRIVER_ROOT = robocorp_home() / "webdrivers"
 DRIVER_PREFERENCE = {
-    "Windows": ["Chrome", "Firefox", "Edge", "Ie", "Opera"],
-    "Linux": ["Chrome", "Firefox", "Opera"],
-    "Darwin": ["Chrome", "Safari", "Firefox", "Opera"],
+    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
     "default": ["Chrome", "Firefox"],
 }
 AVAILABLE_DRIVERS = {
@@ -44,6 +44,7 @@ AVAILABLE_DRIVERS = {
     # NOTE: In Selenium 4 `Edge` is the same with `ChromiumEdge`.
     "edge": EdgeChromiumDriverManager,
     "chromiumedge": EdgeChromiumDriverManager,
+    # NOTE: IE is discontinued and not supported/encouraged anymore.
     "ie": IEDriverManager,
 }
 
