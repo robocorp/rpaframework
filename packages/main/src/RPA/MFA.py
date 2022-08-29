@@ -31,7 +31,7 @@ HOTP_NOT_SET_ERROR_MSG = """HOTP (HMAC One-Time Password) can be set in library 
 class MFA:
     """*RPA.MFA* is a library for generating one-time passwords (OTP).
 
-    Based on the Python One Time Password library - `pyotp <https://pypi.org/project/pyotp/>`_.
+    Based on the `pyotp <https://pypi.org/project/pyotp/>`_ package.
 
 
     **Robot framework example usage:**
