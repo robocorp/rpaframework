@@ -31,7 +31,35 @@ HOTP_NOT_SET_ERROR_MSG = """HOTP (HMAC One-Time Password) can be set in library 
 class MFA:
     """*RPA.MFA* is a library for generating one-time passwords (OTP).
 
-    Based on the Python One Time Password library - pyotp.
+    Based on the Python One Time Password library - `pyotp <https://pypi.org/project/pyotp/>`_.
+
+
+    **Robot framework example usage:**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library     RPA.Robocorp.Vault
+        Library     RPA.MFA
+
+
+        *** Tasks ***
+        Generate time based code
+            ${secrets}=    Get Secret   mfa
+            ${code}=    Get Time Based OTP    ${secrets}[otpsecret]
+
+
+    **Python example usage**
+
+    .. code-block:: python
+
+        from RPA.Robocorp.Vault import Vault
+        from RPA.MFA import MFA
+
+
+        def main():
+            secrets = Vault().get_secret("mfa")
+            code = MFA().get_time_based_otp(secrets["otpsecret"])
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
