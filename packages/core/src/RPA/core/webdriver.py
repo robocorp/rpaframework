@@ -108,10 +108,13 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
     """Download a webdriver binary for the given browser and return the path to it."""
     manager = _to_manager(browser, root)
     driver = manager.driver
-    os_type = getattr(driver, "os_type", driver.get_os_type())
-    if get_os_name() not in os_type:
+    resolved_os = getattr(driver, "os_type", driver.get_os_type())
+    os_name = get_os_name()
+    if os_name not in resolved_os:
         LOGGER.warning(
-            "Attempting to download incompatible driver for OS %r on OS %r! Skip"
+            "Attempting to download incompatible driver for OS %r on OS %r! Skip",
+            resolved_os,
+            os_name,
         )
         return None  # incompatible driver download attempt
 
