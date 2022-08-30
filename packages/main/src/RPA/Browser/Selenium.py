@@ -18,17 +18,25 @@ from typing import Any, List, Optional, Tuple, Union
 
 import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+from selenium import webdriver as selenium_webdriver
 from selenium.webdriver import ChromeOptions, FirefoxProfile
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from SeleniumLibrary import EMBED, SeleniumLibrary
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
-from SeleniumLibrary.keywords import (AlertKeywords, BrowserManagementKeywords,
-                                      ScreenshotKeywords)
+from SeleniumLibrary.keywords import (
+    AlertKeywords,
+    BrowserManagementKeywords,
+    ScreenshotKeywords,
+)
+from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCreator
 
-from RPA.core import notebook, webdriver
+from RPA.core import notebook
+from RPA.core import webdriver as core_webdriver
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
+
+OptionsType = Union[ArgOptions, str]
 
 
 def html_table(header, rows):
@@ -90,7 +98,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         remote_url: Union[bool, str] = False,
         desired_capabilities: Union[dict, None, str] = None,
         ff_profile_dir: Union[FirefoxProfile, str, None] = None,
-        options: Any = None,
+        options: Optional[OptionsType] = None,
         service_log_path: Optional[str] = None,
         executable_path: Optional[str] = None,
     ) -> str:
@@ -488,12 +496,24 @@ class Selenium(SeleniumLibrary):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
+    BROWSER_NAMES = {
+        **WebDriverCreator.browser_names,
+        "chromiumedge": WebDriverCreator.browser_names["edge"],
+    }
     AVAILABLE_OPTIONS = {
         # Supporting options only for a specific range of browsers.
-        "chrome": "ChromeOptions",
-        "firefox": "FirefoxOptions",
-        "edge": "EdgeOptions",
-        "chromiumedge": "EdgeOptions",
+        "chrome": selenium_webdriver.ChromeOptions,
+        "firefox": selenium_webdriver.FirefoxOptions,
+        "edge": selenium_webdriver.EdgeOptions,
+        "chromiumedge": selenium_webdriver.EdgeOptions,
+    }
+    AVAILABLE_SERVICES = {
+        # Supporting services only for a specific range of browsers.
+        "chrome": selenium_webdriver.chrome.service.Service,
+        "firefox": selenium_webdriver.firefox.service.Service,
+        "edge": selenium_webdriver.edge.service.Service,
+        "chromiumedge": selenium_webdriver.edge.service.Service,
+        "safari": selenium_webdriver.safari.service.Service,
     }
 
     def __init__(self, *args, **kwargs) -> None:
@@ -596,6 +616,7 @@ class Selenium(SeleniumLibrary):
         proxy: str = None,
         user_agent: Optional[str] = None,
         download: Any = "AUTO",
+        options: Optional[OptionsType] = None,
     ) -> str:
         # pylint: disable=C0301
         """Attempts to open a browser on the user's device from a set of
@@ -727,6 +748,7 @@ class Selenium(SeleniumLibrary):
                     preferences,
                     proxy,
                     user_agent,
+                    options,
                 )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
@@ -769,8 +791,8 @@ class Selenium(SeleniumLibrary):
     def _arg_browser_selection(self, browser_selection: Any) -> List:
         """Parse argument for browser selection."""
         if str(browser_selection).strip().lower() == "auto":
-            order = webdriver.DRIVER_PREFERENCE.get(
-                platform.system(), webdriver.DRIVER_PREFERENCE["default"]
+            order = core_webdriver.DRIVER_PREFERENCE.get(
+                platform.system(), core_webdriver.DRIVER_PREFERENCE["default"]
             )
         else:
             order = (
@@ -811,61 +833,65 @@ class Selenium(SeleniumLibrary):
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
+        options: Optional[OptionsType] = None,
     ) -> Tuple[dict, Any]:
         """Get browser and webdriver arguments for given options."""
         browser = browser.lower()
         if browser not in self.AVAILABLE_OPTIONS:
             return {}, []
 
-        module = importlib.import_module("selenium.webdriver")
-        factory = getattr(module, self.AVAILABLE_OPTIONS[browser])
-        options = factory()
+        # Normalize `options` to `<Browser>Options` instance.
+        if options:
+            options: ArgOptions = SeleniumOptions().create(
+                self.BROWSER_NAMES[browser], options
+            )
+        else:
+            options: ArgOptions = self.AVAILABLE_OPTIONS[browser]()
         headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
         if headless:
             self._set_headless_options(browser, options)
-
         if maximized:
             options.add_argument("--start-maximized")
-
         if user_agent:
             options.add_argument(f"user-agent={user_agent}")
 
         kwargs = {}
-        preferences = preferences or {}
-        if browser != "chrome":
-            kwargs["options"] = options
-            if use_profile:
-                self.logger.warning("Profiles are supported only with Chrome")
-
-        else:
+        if browser == "chrome":
+            if proxy:
+                options.add_argument(f"--proxy-server={proxy}")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-web-security")
+            options.add_argument("--allow-running-insecure-content")
+            options.add_argument("--no-sandbox")
+            # These are available only with `ChromiumOptions` based ones. (no Firefox)
             default_preferences = {
                 "safebrowsing.enabled": True,
                 "credentials_enable_service": False,
                 "profile.password_manager_enabled": False,
             }
-            if proxy:
-                options.add_argument("--proxy-server=%s" % proxy)
-            options.add_argument("--disable-dev-shm-usage")
-            options.add_argument("--disable-web-security")
-            options.add_argument("--allow-running-insecure-content")
-            options.add_argument("--no-sandbox")
             options.add_experimental_option(
                 "prefs",
-                {**default_preferences, **preferences, **self.download_preferences},
+                {
+                    **default_preferences,
+                    **(preferences or {}),
+                    **self.download_preferences,
+                },
             )
             options.add_experimental_option(
                 "excludeSwitches", ["enable-logging", "enable-automation"]
             )
-
             if use_profile:
                 self._set_user_profile(options, profile_path, profile_name)
-
             if self.logger.isEnabledFor(logging.DEBUG):
+                # Deprecated params, but no worries as they get bundled in a `Service`
+                #  instance inside of `self._create_webdriver` method.
                 kwargs["service_log_path"] = "chromedriver.log"
                 kwargs["service_args"] = ["--verbose"]
 
-            kwargs["options"] = options
+        elif use_profile:
+            self.logger.warning("Profiles are supported with Chrome only")
 
+        kwargs["options"] = options
         return kwargs, options.arguments
 
     def _set_headless_options(self, browser: str, options: ArgOptions) -> None:
@@ -937,21 +963,33 @@ class Selenium(SeleniumLibrary):
         """
 
         def _create_driver(path: Optional[str] = None) -> str:
-            options = dict(kwargs)
-            if path is not None:
-                options["executable_path"] = str(path)
+            service_kwargs = {
+                # Deprecated params if passed directly to the `WebDriver` class.
+                "service_args": None,
+                "service_log_path": None,
+            }
+            for name, default in service_kwargs.items():
+                service_kwargs[name] = kwargs.pop(name, default)
+            if path:
+                service_kwargs["executable_path"] = path
+            service_kwargs["log_path"] = service_kwargs.pop("service_log_path")
+            Service = self.AVAILABLE_SERVICES[browser.lower()]
+            if Service is selenium_webdriver.safari.service.Service:
+                service_kwargs.pop("log_path")  # not supported
+            kwargs["service"] = Service(**service_kwargs)
 
             lib = BrowserManagementKeywords(self)
             # Capitalize browser name just to ensure it works if passed as lower case.
+            # NOTE: But don't break a browser name like "ChromiumEdge".
             cap_browser = browser[0].upper() + browser[1:]
-            return lib.create_webdriver(cap_browser, alias, **options)
+            return lib.create_webdriver(cap_browser, alias, **kwargs)
 
         # No download requested.
         if not download:
             return _create_driver()
 
         # Download web driver. (caching is tackled internally)
-        driver_path = webdriver.download(browser)
+        driver_path = core_webdriver.download(browser)
         return _create_driver(path=driver_path)
 
     @keyword
