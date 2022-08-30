@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-dialogs"
-version = "3.0.1"
+version = "4.0.0"
 description = "Dialogs library of RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -12,13 +12,28 @@ homepage = "https://rpaframework.org/"
 documentation = "https://rpaframework.org/"
 repository = "https://github.com/robocorp/rpaframework"
 
+keywords = ["robotframework", "rpa", "automation", "dialogs"]
+classifiers = [
+	"License :: OSI Approved :: Apache Software License",
+	"Development Status :: 3 - Alpha",
+	"Operating System :: OS Independent",
+	"Intended Audience :: Developers",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+	"Topic :: Software Development :: Libraries",
+	"Framework :: Robot Framework :: Library",
+	"Framework :: Robot Framework",
+	"Programming Language :: Python :: 3.7",
+	"Programming Language :: Python :: 3.8",
+	"Programming Language :: Python :: 3.9",
+]
+
 packages = [
 	{ include = "RPA", from = "src" }
 ]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-rpaframework-core = "^9.0.0"
+rpaframework-core = "^10.0.0"
 robocorp-dialog = "^0.5.3"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 
@@ -34,7 +49,7 @@ pytest-cov = "^2.11.1"
 pytest-freezegun = "^0.4.2"
 
 [tool.black]
-target-version = ["py36", "py37", "py38", "py39"]
+target-version = ["py37", "py38", "py39"]
 
 [build-system]
 requires = ["poetry>=1.1.4"]
