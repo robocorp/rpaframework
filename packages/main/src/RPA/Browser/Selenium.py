@@ -1,7 +1,6 @@
 # pylint: disable=too-many-lines
 import atexit
 import base64
-import importlib
 import json
 import logging
 import os
@@ -822,6 +821,46 @@ class Selenium(SeleniumLibrary):
         else:
             return bool(headless)
 
+    def _set_chrome_options(
+        self,
+        kwargs: dict,
+        options: ArgOptions,
+        use_profile: bool = False,
+        profile_name: Optional[str] = None,
+        profile_path: Optional[str] = None,
+        preferences: Optional[dict] = None,
+        proxy: str = None,
+    ):
+        if proxy:
+            options.add_argument(f"--proxy-server={proxy}")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--allow-running-insecure-content")
+        options.add_argument("--no-sandbox")
+        default_preferences = {
+            "safebrowsing.enabled": True,
+            "credentials_enable_service": False,
+            "profile.password_manager_enabled": False,
+        }
+        options.add_experimental_option(
+            "prefs",
+            {
+                **default_preferences,
+                **(preferences or {}),
+                **self.download_preferences,
+            },
+        )
+        options.add_experimental_option(
+            "excludeSwitches", ["enable-logging", "enable-automation"]
+        )
+        if use_profile:
+            self._set_user_profile(options, profile_path, profile_name)
+        if self.logger.isEnabledFor(logging.DEBUG):
+            # Deprecated params, but no worries as they get bundled in a `Service`
+            #  instance inside of `self._create_webdriver` method.
+            kwargs["service_log_path"] = "chromedriver.log"
+            kwargs["service_args"] = ["--verbose"]
+
     def _get_driver_args(
         self,
         browser: str,
@@ -857,37 +896,14 @@ class Selenium(SeleniumLibrary):
 
         kwargs = {}
         if browser == "chrome":
-            if proxy:
-                options.add_argument(f"--proxy-server={proxy}")
-            options.add_argument("--disable-dev-shm-usage")
-            options.add_argument("--disable-web-security")
-            options.add_argument("--allow-running-insecure-content")
-            options.add_argument("--no-sandbox")
-            # These are available only with `ChromiumOptions` based ones. (no Firefox)
-            default_preferences = {
-                "safebrowsing.enabled": True,
-                "credentials_enable_service": False,
-                "profile.password_manager_enabled": False,
-            }
-            options.add_experimental_option(
-                "prefs",
-                {
-                    **default_preferences,
-                    **(preferences or {}),
-                    **self.download_preferences,
-                },
+            self._set_chrome_options(
+                kwargs,
+                options,
+                profile_name=profile_name,
+                profile_path=profile_path,
+                preferences=preferences,
+                proxy=proxy,
             )
-            options.add_experimental_option(
-                "excludeSwitches", ["enable-logging", "enable-automation"]
-            )
-            if use_profile:
-                self._set_user_profile(options, profile_path, profile_name)
-            if self.logger.isEnabledFor(logging.DEBUG):
-                # Deprecated params, but no worries as they get bundled in a `Service`
-                #  instance inside of `self._create_webdriver` method.
-                kwargs["service_log_path"] = "chromedriver.log"
-                kwargs["service_args"] = ["--verbose"]
-
         elif use_profile:
             self.logger.warning("Profiles are supported with Chrome only")
 
