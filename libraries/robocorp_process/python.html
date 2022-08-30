@@ -295,6 +295,38 @@ before starting the process (note. different start keyword than above).</p>
 <span class="p">    ...  </span><span class="s">extra_info=</span><span class="p">${</span><span class="nv">item_id</span><span class="p">}</span>
 </pre></div>
 </div>
+<p>Download from process runs artifacts all matching files</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">      </span><span class="nn">RPA.Robocorp.Process</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">      </span><span class="nn">RPA.Robocorp.Vault</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">      </span><span class="nn">RPA.HTTP</span><span class="p"></span>
+<span class="kn">Task Setup</span><span class="p">   </span><span class="nf">Set Control Room Variables</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Download Artifacts Matching</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Arguments</span><span class="p">]   ${</span><span class="nv">filematch</span><span class="p">}</span>
+<span class="p">    @{</span><span class="nv">workitems</span><span class="p">}=   </span><span class="nf">List Process Work Items</span><span class="p"></span>
+<span class="p">    FOR  ${</span><span class="nv">item</span><span class="p">}  IN  @{</span><span class="nv">workitems</span><span class="p">}</span>
+<span class="p">        @{</span><span class="nv">artifacts</span><span class="p">}=   </span><span class="nf">List Run Artifacts</span><span class="p"></span>
+<span class="p">        ...  </span><span class="s">process_run_id=</span><span class="p">${</span><span class="nv">item</span><span class="p">}[</span><span class="nv">processRunId</span><span class="p">]</span>
+<span class="p">        ...  </span><span class="s">step_run_id=</span><span class="p">${</span><span class="nv">item</span><span class="p">}[</span><span class="nv">activityRunId</span><span class="p">]</span>
+<span class="p">        FOR  ${</span><span class="nv">artifact</span><span class="p">}  IN  @{</span><span class="nv">artifacts</span><span class="p">}</span>
+<span class="p">            </span><span class="nf">IF</span><span class="p">  </span><span class="s">&quot;</span><span class="p">${</span><span class="nv">filematch</span><span class="p">}</span><span class="s">&quot;</span><span class="p">  </span><span class="s">IN</span><span class="p">   </span><span class="s">&quot;</span><span class="p">${</span><span class="nv">artifact</span><span class="p">}[</span><span class="nv">fileName</span><span class="p">]</span><span class="s">&quot;</span><span class="p"></span>
+<span class="p">                ${</span><span class="nv">download_link</span><span class="p">}=   </span><span class="nf">Get Robot Run Artifact</span><span class="p"></span>
+<span class="p">                ...  </span><span class="s">process_run_id=</span><span class="p">${</span><span class="nv">item</span><span class="p">}[</span><span class="nv">processRunId</span><span class="p">]</span>
+<span class="p">                ...  </span><span class="s">step_run_id=</span><span class="p">${</span><span class="nv">item</span><span class="p">}[</span><span class="nv">activityRunId</span><span class="p">]</span>
+<span class="p">                ...  </span><span class="s">artifact_id=</span><span class="p">${</span><span class="nv">artifact</span><span class="p">}[</span><span class="nv">id</span><span class="p">]</span>
+<span class="p">                ...  </span><span class="s">filename=</span><span class="p">${</span><span class="nv">artifact</span><span class="p">}[</span><span class="nv">fileName</span><span class="p">]</span>
+<span class="p">                </span><span class="nf">Download</span><span class="p"></span>
+<span class="p">                ...  </span><span class="s">url=</span><span class="p">${</span><span class="nv">download_link</span><span class="p">}</span>
+<span class="p">                ...  </span><span class="s">target=</span><span class="p">%{</span><span class="nv">ROBOT_ARTIFACTS</span><span class="p">}${</span><span class="nv">/</span><span class="p">}${</span><span class="nv">artifact</span><span class="p">}[</span><span class="nv">fileName</span><span class="p">]</span>
+<span class="p">                ...  </span><span class="s">overwrite=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">                ...  </span><span class="s">stream=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">            END</span>
+<span class="p">        END</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
 <p><strong>Python</strong></p>
 <p>List work items in Control Room and retry failed items.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.Process</span> <span class="kn">import</span> <span class="n">Process</span>
@@ -318,6 +350,37 @@ before starting the process (note. different start keyword than above).</p>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">retry_failed_items</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Download from process runs artifacts all “.xlsx” files</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.Process</span> <span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="nn">RPA.HTTP</span> <span class="kn">import</span> <span class="n">HTTP</span>
+
+<span class="k">def</span> <span class="nf">download_artifacts_matching</span><span class="p">(</span><span class="n">filematch</span><span class="o">=</span><span class="s2">&quot;.xlsx&quot;</span><span class="p">):</span>
+    <span class="n">work_items</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">list_process_work_items</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">work_items</span><span class="p">:</span>
+        <span class="n">artifacts</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">list_run_artifacts</span><span class="p">(</span>
+            <span class="n">process_run_id</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;processRunId&quot;</span><span class="p">],</span>
+            <span class="n">step_run_id</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;activityRunId&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">artifact</span> <span class="ow">in</span> <span class="n">artifacts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">filematch</span> <span class="ow">in</span> <span class="n">artifact</span><span class="p">[</span><span class="s2">&quot;fileName&quot;</span><span class="p">]:</span>
+                <span class="n">download_link</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">get_robot_run_artifact</span><span class="p">(</span>
+                    <span class="n">process_run_id</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;processRunId&quot;</span><span class="p">],</span>
+                    <span class="n">step_run_id</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;activityRunId&quot;</span><span class="p">],</span>
+                    <span class="n">artifact_id</span><span class="o">=</span><span class="n">artifact</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="n">artifact</span><span class="p">[</span><span class="s2">&quot;fileName&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">target_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;ROBOT_ARTIFACTS&quot;</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">artifact</span><span class="p">[</span><span class="s1">&#39;fileName&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">HTTP</span><span class="p">()</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+                    <span class="n">url</span><span class="o">=</span><span class="n">download_link</span><span class="p">,</span>
+                    <span class="n">target_file</span><span class="o">=</span><span class="n">target_filepath</span><span class="p">,</span>
+                    <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
 </pre></div>
 </div>
 <dl class="attribute">
@@ -389,6 +452,26 @@ before starting the process (note. different start keyword than above).</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the response JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.get_robot_run_artifact">
+<code class="sig-name descname">get_robot_run_artifact</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">step_run_id: str</em>, <em class="sig-param">artifact_id: str</em>, <em class="sig-param">filename: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.Process.Process.get_robot_run_artifact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a download URL for a process run artifact</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_run_id</strong> – id of the process run</p></li>
+<li><p><strong>step_run_id</strong> – id of the process step run</p></li>
+<li><p><strong>artifact_id</strong> – id of the run artifact</p></li>
+<li><p><strong>filename</strong> – filename of the run artifact</p></li>
+<li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>url for file download</p>
 </dd>
 </dl>
 </dd></dl>
@@ -500,6 +583,24 @@ the response (default False)</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the JSON data of the process runs based on the provided parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.list_run_artifacts">
+<code class="sig-name descname">list_run_artifacts</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">step_run_id: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.list_run_artifacts" title="Permalink to this definition">¶</a></dt>
+<dd><p>List Robot run artifacts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_run_id</strong> – id of the process run</p></li>
+<li><p><strong>step_run_id</strong> – id of the process step run</p></li>
+<li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the response JSON</p>
 </dd>
 </dl>
 </dd></dl>

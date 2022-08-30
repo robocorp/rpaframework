@@ -128,7 +128,7 @@ RPA.Robocorp.Process:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "138", "Add support for all Process API endpoints"
+   "205", "Add support for all Process API endpoints"
 
 RPA.Tasks:
 ==========
