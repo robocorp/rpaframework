@@ -135,14 +135,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.62"
+version = "1.24.63"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.62,<1.28.0"
+botocore = ">=1.27.63,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -151,7 +151,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.62"
+version = "1.27.63"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -861,7 +861,7 @@ six = "*"
 
 [[package]]
 name = "jsonschema"
-version = "4.14.0"
+version = "4.15.0"
 description = "An implementation of JSON Schema validation for Python"
 category = "main"
 optional = false
@@ -1083,11 +1083,11 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "pathspec"
-version = "0.9.0"
+version = "0.10.0"
 description = "Utility library for gitignore style pattern matching of file paths."
 category = "dev"
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+python-versions = ">=3.7"
 
 [[package]]
 name = "pdfminer.six"
@@ -1148,7 +1148,7 @@ python-versions = "*"
 
 [[package]]
 name = "proto-plus"
-version = "1.22.0"
+version = "1.22.1"
 description = "Beautiful, Pythonic protocol buffers."
 category = "main"
 optional = false
@@ -1298,6 +1298,14 @@ python-versions = ">=3.6"
 [package.dependencies]
 pyobjc-core = ">=7.3"
 pyobjc-framework-Cocoa = ">=7.3"
+
+[[package]]
+name = "pyotp"
+version = "2.6.0"
+description = "Python One Time Password Library"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "pyparsing"
@@ -1733,6 +1741,7 @@ openpyxl = "^3.0.9"
 pillow = "^9.1.1"
 psutil = {version = "^5.7.0", markers = "sys_platform == \"win32\""}
 pynput-robocorp-fork = "^4.0.0"
+pyotp = "^2.6.0"
 pyperclip = "^1.8.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
 python-xlib = {version = ">=0.17", markers = "sys_platform == \"linux\""}
@@ -2522,12 +2531,12 @@ black = [
     {file = "black-22.6.0.tar.gz", hash = "sha256:6c6d39e28aed379aec40da1c65434c77d75e65bb59a1e1c283de545fb4e7c6c9"},
 ]
 boto3 = [
-    {file = "boto3-1.24.62-py3-none-any.whl", hash = "sha256:84b962f18506ad495dc973aeb5168697ee882497c01430dddeba5e8339db7932"},
-    {file = "boto3-1.24.62.tar.gz", hash = "sha256:818a40b82e4f66b4bdd4fa38fcc3ed0fb26542f7d8c4d15279d4ba1d4762cd95"},
+    {file = "boto3-1.24.63-py3-none-any.whl", hash = "sha256:719bfafbe4e076055aa1a51269ffdbe9c61446679b67f31d61c237976661154c"},
+    {file = "boto3-1.24.63.tar.gz", hash = "sha256:0e6ef4b5e47b6073887961028201ecfc2024198125f20fbe5f5c00234f124543"},
 ]
 botocore = [
-    {file = "botocore-1.27.62-py3-none-any.whl", hash = "sha256:69682c874dc8ed1856bffd203786c9591fb76a1946d3dcc516bda1ee6a6989f3"},
-    {file = "botocore-1.27.62.tar.gz", hash = "sha256:8563c7d8b80e8041667cf35b397f1c399537f6c887e1c501f0064bfd7ae541ba"},
+    {file = "botocore-1.27.63-py3-none-any.whl", hash = "sha256:8567dee549430a53210c6b898dea3a8fc8ee9d7934ec1df7545c547cacbb2b8f"},
+    {file = "botocore-1.27.63.tar.gz", hash = "sha256:b97e17c930a7f45b50f94956a4474c1cd7b828e3dcd8a84dd0e3306ca6189335"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2961,8 +2970,8 @@ jsonpath-ng = [
     {file = "jsonpath_ng-1.5.3-py3-none-any.whl", hash = "sha256:292a93569d74029ba75ac2dc3d3630fc0e17b2df26119a165fa1d498ca47bf65"},
 ]
 jsonschema = [
-    {file = "jsonschema-4.14.0-py3-none-any.whl", hash = "sha256:9892b8d630a82990521a9ca630d3446bd316b5ad54dbe981338802787f3e0d2d"},
-    {file = "jsonschema-4.14.0.tar.gz", hash = "sha256:15062f4cc6f591400cd528d2c355f2cfa6a57e44c820dc783aee5e23d36a831f"},
+    {file = "jsonschema-4.15.0-py3-none-any.whl", hash = "sha256:2df0fab225abb3b41967bb3a46fd37dc74b1536b5296d0b1c2078cd072adf0f7"},
+    {file = "jsonschema-4.15.0.tar.gz", hash = "sha256:21f4979391bdceb044e502fd8e79e738c0cdfbdc8773f9a49b5769461e82fe1e"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.7.1.tar.gz", hash = "sha256:d609c75b986def706743cdebe5e47553f4a5a1da9c5ff66d76013ef396b5a8a4"},
@@ -3262,8 +3271,8 @@ packaging = [
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
 pathspec = [
-    {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
-    {file = "pathspec-0.9.0.tar.gz", hash = "sha256:e564499435a2673d586f6b2130bb5b95f04a3ba06f81b8f895b651a3c76aabb1"},
+    {file = "pathspec-0.10.0-py3-none-any.whl", hash = "sha256:aefa80ac32d5bf1f96139dca67cefb69a431beff4e6bf1168468f37d7ab87015"},
+    {file = "pathspec-0.10.0.tar.gz", hash = "sha256:01eecd304ba0e6eeed188ae5fa568e99ef10265af7fd9ab737d6412b4ee0ab85"},
 ]
 "pdfminer.six" = [
     {file = "pdfminer.six-20201018-py3-none-any.whl", hash = "sha256:d78877ba8d8bf957f3bb636c4f73f4f6f30f56c461993877ac22c39c20837509"},
@@ -3342,8 +3351,8 @@ ply = [
     {file = "ply-3.11.tar.gz", hash = "sha256:00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3"},
 ]
 proto-plus = [
-    {file = "proto-plus-1.22.0.tar.gz", hash = "sha256:c2e6693fdf68c405a6428226915a8625d21d0513793598ae3287a1210478d8ec"},
-    {file = "proto_plus-1.22.0-py3-none-any.whl", hash = "sha256:a27192d8cdc54e044f137b4c9053c9108cf5c065b46d067f1bcd389a911faf5b"},
+    {file = "proto-plus-1.22.1.tar.gz", hash = "sha256:6c7dfd122dfef8019ff654746be4f5b1d9c80bba787fe9611b508dd88be3a2fa"},
+    {file = "proto_plus-1.22.1-py3-none-any.whl", hash = "sha256:ea8982669a23c379f74495bc48e3dcb47c822c484ce8ee1d1d7beb339d4e34c5"},
 ]
 protobuf = [
     {file = "protobuf-3.20.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:3cc797c9d15d7689ed507b165cd05913acb992d78b379f6014e013f9ecb20996"},
@@ -3488,6 +3497,10 @@ pyobjc-framework-quartz = [
     {file = "pyobjc_framework_Quartz-7.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2c65456ed045dfe1711d0298734e5a3ad670f8c770f7eb3b19979256c388bdd2"},
     {file = "pyobjc_framework_Quartz-7.3-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:8ddbca6b466584c3dc0e5b701b1c2a9b5d97ddc1d79a949927499ebb1be1f210"},
     {file = "pyobjc_framework_Quartz-7.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:7aba3cd966a0768dd58a35680742820f0c5ac596a9cd11014e2057818e65b0af"},
+]
+pyotp = [
+    {file = "pyotp-2.6.0-py2.py3-none-any.whl", hash = "sha256:9d144de0f8a601d6869abe1409f4a3f75f097c37b50a36a3bf165810a6e23f28"},
+    {file = "pyotp-2.6.0.tar.gz", hash = "sha256:d28ddfd40e0c1b6a6b9da961c7d47a10261fb58f378cb00f05ce88b26df9c432"},
 ]
 pyparsing = [
     {file = "pyparsing-3.0.9-py3-none-any.whl", hash = "sha256:5026bae9a10eeaefb61dab2f09052b9f4307d44aee4eda64b309723d8d206bbc"},

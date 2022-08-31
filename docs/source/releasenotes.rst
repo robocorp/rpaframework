@@ -12,6 +12,10 @@ Release notes
 16.0.0 - 31 Aug 2022
 --------------------
 
+- New library **RPA.MFA** (:pr:`610`) adds support for one time passwords (OTP).
+  Currently supports `time` and `counter` based use cases.
+- Library **RPA.Robocorp.Process** (:pr:`611`): New keywords
+  ``List Process Run Artifacts`` and ``Get Robot Run Artifact``.
 - Library **RPA.Browser.Selenium** (:issue:`494`):
 
   - Upgraded to Selenium 4. (:pr:`602`)
