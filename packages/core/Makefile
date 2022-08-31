@@ -98,3 +98,6 @@ build: lint test ## Build distribution packages
 publish: build ## Publish package to PyPI
 	poetry publish -v
 	poetry run python $(tools)/tag.py
+
+publish-ci: build ## Publish package to DevPI
+	poetry publish -v --no-interaction --repository devpi

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-core"
-version = "9.1.0"
+version = "10.0.0"
 description = "Core utilities used by RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -22,9 +22,9 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.6",
 	"Programming Language :: Python :: 3.7",
 	"Programming Language :: Python :: 3.8",
+	"Programming Language :: Python :: 3.9",
 ]
 
 packages = [
@@ -33,8 +33,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-selenium = "^3.141.0"
-webdrivermanager = "^0.10.0"
+selenium = "^4.4.0"
+webdriver-manager = "^3.8.3"
 psutil = { version = "^5.9.0", platform = "win32" }
 pywin32 = { version = ">=300,<304", platform = "win32", python = "!=3.8.1,!=3.7.6" }
 uiautomation = { version = "^2.0.15", platform = "win32" }
@@ -50,7 +50,7 @@ mock = "^4.0.2"
 mypy = "^0.790"
 
 [tool.black]
-target-version = ["py36", "py37", "py38", "py39"]
+target-version = ["py37", "py38", "py39"]
 
 [build-system]
 requires = ["poetry>=0.12"]

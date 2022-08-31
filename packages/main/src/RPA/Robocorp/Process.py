@@ -103,6 +103,40 @@ class Process:
             ...  config_type=work_items
             ...  extra_info=${item_id}
 
+    Download from process runs artifacts all matching files
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library      RPA.Robocorp.Process
+        Library      RPA.Robocorp.Vault
+        Library      RPA.HTTP
+        Task Setup   Set Control Room Variables
+
+        *** Keywords ***
+        Download Artifacts Matching
+            [Arguments]   ${filematch}
+            @{workitems}=   List Process Work Items
+            FOR  ${item}  IN  @{workitems}
+                @{artifacts}=   List Run Artifacts
+                ...  process_run_id=${item}[processRunId]
+                ...  step_run_id=${item}[activityRunId]
+                FOR  ${artifact}  IN  @{artifacts}
+                    IF  "${filematch}"  IN   "${artifact}[fileName]"
+                        ${download_link}=   Get Robot Run Artifact
+                        ...  process_run_id=${item}[processRunId]
+                        ...  step_run_id=${item}[activityRunId]
+                        ...  artifact_id=${artifact}[id]
+                        ...  filename=${artifact}[fileName]
+                        Download
+                        ...  url=${download_link}
+                        ...  target=%{ROBOT_ARTIFACTS}${/}${artifact}[fileName]
+                        ...  overwrite=${TRUE}
+                        ...  stream=${TRUE}
+                    END
+                END
+            END
+
     **Python**
 
     List work items in Control Room and retry failed items.
@@ -130,6 +164,39 @@ class Process:
 
         if __name__ == "__main__":
             retry_failed_items()
+
+    Download from process runs artifacts all ".xlsx" files
+
+    .. code-block:: python
+
+        from RPA.Robocorp.Process import Process
+        from RPA.HTTP import HTTP
+
+        def download_artifacts_matching(filematch=".xlsx"):
+            work_items = process.list_process_work_items()
+            for item in work_items:
+                artifacts = process.list_run_artifacts(
+                    process_run_id=item["processRunId"],
+                    step_run_id=item["activityRunId"]
+                )
+                for artifact in artifacts:
+                    if filematch in artifact["fileName"]:
+                        download_link = process.get_robot_run_artifact(
+                            process_run_id=item["processRunId"],
+                            step_run_id=item["activityRunId"],
+                            artifact_id=artifact["id"],
+                            filename=artifact["fileName"]
+                        )
+                        target_filepath = os.path.join(
+                            os.getenv("ROBOT_ARTIFACTS"),
+                            f"{artifact['fileName']}"
+                        )
+                        HTTP().download(
+                            url=download_link,
+                            target_file=target_filepath,
+                            overwrite=True,
+                            stream=True
+                        )
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -564,4 +631,58 @@ class Process:
             headers=self.headers,
         )
 
+        return response.json()
+
+    @keyword(tags=["process", "get", "runs", "artifacts"])
+    def list_run_artifacts(
+        self,
+        process_run_id: str,
+        step_run_id: str,
+        process_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """List Robot run artifacts
+
+        :param process_run_id: id of the process run
+        :param step_run_id: id of the process step run
+        :param process_id: specific process to which runs belongs to
+        :return: the response JSON
+        """
+        request_url = f"{self.process_api(process_id)}/runs/{process_run_id}"
+        request_url = f"{request_url}/robotRuns/{step_run_id}/artifacts"
+        self.logger.info("GET %s", request_url)
+        response = self.http.session_less_get(
+            url=request_url,
+            headers=self.headers,
+        )
+        response.raise_for_status()
+        return response.json()
+
+    @keyword(tags=["process", "get", "runs", "artifacts"])
+    def get_robot_run_artifact(
+        self,
+        process_run_id: str,
+        step_run_id: str,
+        artifact_id: str,
+        filename: str,
+        process_id: Optional[str] = None,
+    ) -> str:
+        """Get a download URL for a process run artifact
+
+        :param process_run_id: id of the process run
+        :param step_run_id: id of the process step run
+        :param artifact_id: id of the run artifact
+        :param filename: filename of the run artifact
+        :param process_id: specific process to which runs belongs to
+        :return: url for file download
+        """
+        request_url = f"{self.process_api(process_id)}/runs/{process_run_id}"
+        request_url = (
+            f"{request_url}/robotRuns/{step_run_id}/artifacts/{artifact_id}/{filename}"
+        )
+        self.logger.info("GET %s", request_url)
+        response = self.http.session_less_get(
+            url=request_url,
+            headers=self.headers,
+        )
+        response.raise_for_status()
         return response.json()

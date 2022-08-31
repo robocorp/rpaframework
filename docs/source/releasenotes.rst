@@ -7,6 +7,7 @@ Release notes
 
 - New library **RPA.MFA** adds support for one time passwords (OTP). Currently supports `time` 
   and `counter` based use cases.
+- Library **RPA.Robocorp.Process** (:pr:`611`): New keywords ``List Process Run Artifacts`` and ``Get Robot Run Artifact``
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
