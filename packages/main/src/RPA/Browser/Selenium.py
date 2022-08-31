@@ -36,6 +36,7 @@ from RPA.core import webdriver as core_webdriver
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
 
 OptionsType = Union[ArgOptions, str]
+AliasType = Union[str, int]
 
 
 def html_table(header, rows):
@@ -123,10 +124,10 @@ class Selenium(SeleniumLibrary):
     This document explains how to use keywords provided by SeleniumLibrary.
     For information about installation, support, and more, please visit the
     [https://github.com/robotframework/SeleniumLibrary|project pages].
-    For more information about Robot Framework, see http://robotframework.org.
+    For more information about Robot Framework, see https://robotframework.org.
 
     SeleniumLibrary uses the Selenium WebDriver modules internally to
-    control a web browser. See http://seleniumhq.org for more information
+    control a web browser. See https://www.selenium.dev/ for more information
     about Selenium in general and SeleniumLibrary README.rst
     [https://github.com/robotframework/SeleniumLibrary#browser-drivers|Browser drivers chapter]
     for more details about WebDriver binary installation.
@@ -177,7 +178,7 @@ class Selenium(SeleniumLibrary):
     The explicit locator strategy is specified with a prefix using either
     syntax ``strategy:value`` or ``strategy=value``. The former syntax
     is preferred because the latter is identical to Robot Framework's
-    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax|
+    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax|
     named argument syntax] and that can cause problems. Spaces around
     the separator are ignored, so ``id:foo``, ``id: foo`` and ``id : foo``
     are all equivalent.
@@ -430,7 +431,7 @@ class Selenium(SeleniumLibrary):
     (e.g. ``0.5`` or ``42``) or in Robot Framework's time syntax
     (e.g. ``1.5 seconds`` or ``1 min 30 s``). For more information about
     the time syntax see the
-    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format|Robot Framework User Guide].
+    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format|Robot Framework User Guide].
 
     = Run-on-failure functionality =
 
@@ -450,7 +451,7 @@ class Selenium(SeleniumLibrary):
     Starting from 5.0 SeleniumLibrary relies on Robot Framework to perform the
     boolean conversion based on keyword arguments [https://docs.python.org/3/library/typing.html|type hint].
     More details in Robot Framework
-    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported-conversions|user guide]
+    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported-conversions|user guide]
 
     Please note SeleniumLibrary 3 and 4 did have own custom methods to covert
     arguments to boolean values.
@@ -616,7 +617,7 @@ class Selenium(SeleniumLibrary):
         user_agent: Optional[str] = None,
         download: Any = "AUTO",
         options: Optional[OptionsType] = None,
-    ) -> str:
+    ) -> AliasType:
         # pylint: disable=C0301
         """Attempts to open a browser on the user's device from a set of
         supported browsers. Automatically downloads a corresponding webdriver
@@ -972,13 +973,13 @@ class Selenium(SeleniumLibrary):
 
     def _create_webdriver(
         self, browser: str, alias: Optional[str], download: bool, **kwargs
-    ) -> str:
+    ) -> AliasType:
         """Create a webdriver instance with given options.
 
         If webdriver download is requested, a cached version will be used if exists.
         """
 
-        def _create_driver(path: Optional[str] = None) -> str:
+        def _create_driver(path: Optional[str] = None) -> AliasType:
             service_kwargs = {
                 # Deprecated params if passed directly to the `WebDriver` class.
                 "service_args": None,
@@ -1021,7 +1022,7 @@ class Selenium(SeleniumLibrary):
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
-    ) -> str:
+    ) -> AliasType:
         """Open Chrome browser. See ``Open Available Browser`` for
         descriptions of arguments.
         """
@@ -1040,7 +1041,9 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def attach_chrome_browser(self, port: int, alias: Optional[str] = None):
+    def attach_chrome_browser(
+        self, port: int, alias: Optional[str] = None
+    ) -> AliasType:
         """Attach to an existing instance of Chrome or Chromium.
 
         Requires that the browser was started with the command line
@@ -1064,7 +1067,7 @@ class Selenium(SeleniumLibrary):
         return create(download=True)
 
     @keyword
-    def open_headless_chrome_browser(self, url: str) -> int:
+    def open_headless_chrome_browser(self, url: str) -> AliasType:
         """Open Chrome browser in headless mode.
 
         ``url`` URL to open
@@ -1102,12 +1105,12 @@ class Selenium(SeleniumLibrary):
         default_filename_prefix = f"screenshot-{int(time.time())}"
 
         # pylint: disable=unused-private-member
-        def __save_base64_screenshot_to_file(base64_string, filename):
-            path = screenshot_keywords._get_screenshot_path(filename)
+        def __save_base64_screenshot_to_file(base64_string, fname):
+            path = screenshot_keywords._get_screenshot_path(fname)
             screenshot_keywords._create_directory(path)
-            with open(filename, "wb") as fh:
+            with open(fname, "wb") as fh:
                 fh.write(base64.b64decode(base64_string))
-                self.logger.info("Screenshot saved to file: %s", filename)
+                self.logger.info("Screenshot saved to file: %s", fname)
 
         if locator:
             element = screenshot_keywords.find_element(locator)
