@@ -168,6 +168,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `JSON`_                    | Manipulate JSON objects                      | x                      |
 +----------------------------+----------------------------------------------+------------------------+
+| `MFA`_                     | Authenticator using one-time passwords (OTP) | x                      |
++----------------------------+----------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services     | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Outlook.Application`_     | Control the Outlook desktop application      | x                      |
@@ -219,6 +221,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Images: https://rpaframework.org/libraries/images/
 .. _JavaAccessBridge: https://rpaframework.org/libraries/javaaccessbridge/
 .. _JSON: https://rpaframework.org/libraries/json/
+.. _MFA: https://rpaframework.org/libraries/mfa/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
