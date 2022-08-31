@@ -168,7 +168,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `JSON`_                    | Manipulate JSON objects                      | x                      |
 +----------------------------+----------------------------------------------+------------------------+
-| `MFA`_                     | Authenticator using one-time passwords (OTP) | x                      |
+| `MFA`_                     | Authenticate using one-time passwords (OTP)  | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services     | x                      |
 +----------------------------+----------------------------------------------+------------------------+
