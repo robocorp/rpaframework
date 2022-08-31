@@ -5,6 +5,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- New library **RPA.MFA** adds support for one time passwords (OTP). Currently supports `time` 
+  and `counter` based use cases.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
