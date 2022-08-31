@@ -5,7 +5,7 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- New library **RPA.MFA** adds support for one time passwords (OTP). Currently supports `time` 
+- New library **RPA.MFA** (:pr:`610`) adds support for one time passwords (OTP). Currently supports `time` 
   and `counter` based use cases.
 - Library **RPA.Robocorp.Process** (:pr:`611`): New keywords ``List Process Run Artifacts`` and ``Get Robot Run Artifact``
 
