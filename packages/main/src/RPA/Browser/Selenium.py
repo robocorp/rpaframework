@@ -1,7 +1,6 @@
 # pylint: disable=too-many-lines
 import atexit
 import base64
-import importlib
 import json
 import logging
 import os
@@ -9,28 +8,35 @@ import platform
 import time
 import traceback
 import urllib.parse
+import webbrowser
 from collections import OrderedDict
-from contextlib import contextmanager
 from functools import partial
 from itertools import product
-from typing import Any, Optional, List, Union
 from pathlib import Path
-import webbrowser
+from typing import Any, List, Optional, Tuple, Union
 
 import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-from SeleniumLibrary import SeleniumLibrary, EMBED
+from selenium import webdriver as selenium_webdriver
+from selenium.webdriver import ChromeOptions, FirefoxProfile
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.options import ArgOptions
+from SeleniumLibrary import EMBED, SeleniumLibrary
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
 from SeleniumLibrary.keywords import (
+    AlertKeywords,
     BrowserManagementKeywords,
     ScreenshotKeywords,
-    AlertKeywords,
 )
-from selenium.webdriver import ChromeOptions, FirefoxProfile
+from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCreator
 
-from RPA.core import webdriver, notebook
-from RPA.core.locators import LocatorsDatabase, BrowserLocator
+from RPA.core import notebook
+from RPA.core import webdriver as core_webdriver
+from RPA.core.locators import BrowserLocator, LocatorsDatabase
+
+OptionsType = Union[ArgOptions, str]
+AliasType = Union[str, int]
 
 
 def html_table(header, rows):
@@ -41,19 +47,6 @@ def html_table(header, rows):
         output += "<tr>" + "".join(f"<td>{name}</td>" for name in row) + "</tr>"
     output += "</table></div>"
     return output
-
-
-@contextmanager
-def suppress_logging():
-    """Suppress webdrivermanager warnings and errors in scope."""
-    logger = logging.getLogger("webdrivermanager.misc")
-    logger_warning, logger_error = logger.warning, logger.error
-
-    try:
-        logger.warning = logger.error = logger.info
-        yield
-    finally:
-        logger.warning, logger.error = logger_warning, logger_error
 
 
 def ensure_scheme(url: str, default: Optional[str]) -> str:
@@ -74,7 +67,7 @@ class BrowserNotFoundError(ValueError):
 
 
 class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
-    """Overriden keywords for browser management."""
+    """Overridden keywords for browser management."""
 
     def __init__(self, ctx):
         super().__init__(ctx)
@@ -105,7 +98,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         remote_url: Union[bool, str] = False,
         desired_capabilities: Union[dict, None, str] = None,
         ff_profile_dir: Union[FirefoxProfile, str, None] = None,
-        options: Any = None,
+        options: Optional[OptionsType] = None,
         service_log_path: Optional[str] = None,
         executable_path: Optional[str] = None,
     ) -> str:
@@ -126,16 +119,22 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
 
 class Selenium(SeleniumLibrary):
-    """Browser is a web testing library for Robot Framework,
-    based on the popular SeleniumLibrary.
+    """SeleniumLibrary is a web testing library for Robot Framework.
 
-    It uses the Selenium WebDriver modules internally to
-    control a web browser. See http://seleniumhq.org for more information
-    about Selenium in general.
+    This document explains how to use keywords provided by SeleniumLibrary.
+    For information about installation, support, and more, please visit the
+    [https://github.com/robotframework/SeleniumLibrary|project pages].
+    For more information about Robot Framework, see https://robotframework.org.
+
+    SeleniumLibrary uses the Selenium WebDriver modules internally to
+    control a web browser. See https://www.selenium.dev/ for more information
+    about Selenium in general and SeleniumLibrary README.rst
+    [https://github.com/robotframework/SeleniumLibrary#browser-drivers|Browser drivers chapter]
+    for more details about WebDriver binary installation.
 
     = Locating elements =
 
-    All keywords in the browser library that need to interact with an element
+    All keywords in SeleniumLibrary that need to interact with an element
     on a web page take an argument typically named ``locator`` that specifies
     how to find the element. Most often the locator is given as a string
     using the locator syntax described below, but `using WebElements` is
@@ -143,7 +142,7 @@ class Selenium(SeleniumLibrary):
 
     == Locator syntax ==
 
-    Finding elements can be done using different strategies
+    SeleniumLibrary supports finding elements based on different strategies
     such as the element id, XPath expressions, or CSS selectors. The strategy
     can either be explicitly specified with a prefix or the strategy can be
     implicit.
@@ -179,7 +178,7 @@ class Selenium(SeleniumLibrary):
     The explicit locator strategy is specified with a prefix using either
     syntax ``strategy:value`` or ``strategy=value``. The former syntax
     is preferred because the latter is identical to Robot Framework's
-    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax|
+    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax|
     named argument syntax] and that can cause problems. Spaces around
     the separator are ignored, so ``id:foo``, ``id: foo`` and ``id : foo``
     are all equivalent.
@@ -199,6 +198,7 @@ class Selenium(SeleniumLibrary):
     | link         | Exact text a link has.              | ``link:The example``           |
     | partial link | Partial link text.                  | ``partial link:he ex``         |
     | sizzle       | Sizzle selector deprecated.         | ``sizzle:div.example``         |
+    | data         | Element ``data-*`` attribute        | ``data:id:my_id``              |
     | jquery       | jQuery expression.                  | ``jquery:div.example``         |
     | default      | Keyword specific default behavior.  | ``default:example``            |
 
@@ -228,36 +228,46 @@ class Selenium(SeleniumLibrary):
 
     *NOTE:*
 
+    - The ``strategy:value`` syntax is only supported by SeleniumLibrary 3.0
+      and newer.
     - Using the ``sizzle`` strategy or its alias ``jquery`` requires that
       the system under test contains the jQuery library.
+    - Prior to SeleniumLibrary 3.0, table related keywords only supported
+      ``xpath``, ``css`` and ``sizzle/jquery`` strategies.
+    - ``data`` strategy is conveniance locator that will construct xpath from the parameters.
+      If you have element like `<div data-automation="automation-id-2">`, you locate the element via
+      ``data:automation:automation-id-2``. This feature was added in SeleniumLibrary 5.2.0
 
     === Implicit XPath strategy ===
 
-    If the locator starts with ``//`` or ``(//``, the locator is considered
-    to be an XPath expression. In other words, using ``//div`` is equivalent
-    to using explicit ``xpath://div``.
+    If the locator starts with ``//``  or multiple opening parenthesis in front
+    of the ``//``, the locator is considered to be an XPath expression. In other
+    words, using ``//div`` is equivalent to using explicit ``xpath://div`` and
+    ``((//div))`` is equivalent to using explicit ``xpath:((//div))``
 
     Examples:
 
     | `Click Element` | //div[@id="foo"]//h1 |
     | `Click Element` | (//div)[2]           |
 
+    The support for the ``(//`` prefix is new in SeleniumLibrary 3.0.
+    Supporting multiple opening parenthesis is new in SeleniumLibrary 5.0.
+
     === Chaining locators ===
 
-    It's possible to chain multiple locators together as a single locator. Each chained locator must start
-    with a locator strategy. Chained locators must be separated with a single space, two greater than characters,
-    and followed with a space. It's also possible to mix different locator strategies, such as css or xpath.
-    Also, a list can also be used to specify multiple locators, for instance when the chaining separator
-    would conflict with the actual locator, or when an existing web element is used as a base.
+    It is possible chain multiple locators together as single locator. Each chained locator must start with locator
+    strategy. Chained locators must be separated with single space, two greater than characters and followed with
+    space. It is also possible mix different locator strategies, example css or xpath. Also a list can also be
+    used to specify multiple locators. This is useful, is some part of locator would match as the locator separator
+    but it should not. Or if there is need to existing WebElement as locator.
 
-    Although all locators support chaining, some locator strategies don't chain properly with previous values.
-    This is because some locator strategies use JavaScript to find elements and JavaScript is executed
-    for the whole browser context and not for the element found by the previous locator. Locator strategies
-    that support chaining are the ones that are based on the Selenium API, such as `xpath` or `css`, but for example
-    chaining is not supported by `sizzle` or `jquery`.
+    Although all locators support chaining, some locator strategies do not abey the chaining. This is because
+    some locator strategies use JavaScript to find elements and JavaScript is executed for the whole browser context
+    and not for the element found be the previous locator. Chaining is supported by locator strategies which
+    are based on Selenium API, like `xpath` or `css`, but example chaining is not supported by `sizzle` or `jquery
 
     Examples:
-    | `Click Element` | css:.bar >> xpath://a | # To find a link which is present inside an element with class "bar" |
+    | `Click Element` | css:.bar >> xpath://a | # To find a link which is present after an element with class "bar" |
 
     List examples:
     | ${locator_list} =             | `Create List`   | css:div#div_id            | xpath://*[text(), " >> "] |
@@ -265,6 +275,8 @@ class Selenium(SeleniumLibrary):
     | ${element} =                  | Get WebElement  | xpath://*[text(), " >> "] |                           |
     | ${locator_list} =             | `Create List`   | css:div#div_id            | ${element}                |
     | `Page Should Contain Element` | ${locator_list} |                           |                           |
+
+    Chaining locators in new in SeleniumLibrary 5.0
 
     == Using WebElements ==
 
@@ -304,7 +316,7 @@ class Selenium(SeleniumLibrary):
 
     = Browser and Window =
 
-    There is different conceptual meaning when this library talks
+    There is different conceptual meaning when SeleniumLibrary talks
     about windows or browsers. This chapter explains those differences.
 
     == Browser ==
@@ -312,7 +324,7 @@ class Selenium(SeleniumLibrary):
     When `Open Browser` or `Create WebDriver` keyword is called, it
     will create a new Selenium WebDriver instance by using the
     [https://www.seleniumhq.org/docs/03_webdriver.jsp|Selenium WebDriver]
-    API. In this library's terms, a new browser is created. It is
+    API. In SeleniumLibrary terms, a new browser is created. It is
     possible to start multiple independent browsers (Selenium Webdriver
     instances) at the same time, by calling `Open Browser` or
     `Create WebDriver` multiple times. These browsers are usually
@@ -324,7 +336,7 @@ class Selenium(SeleniumLibrary):
 
     Windows are the part of a browser that loads the web site and presents
     it to the user. All content of the site is the content of the window.
-    Windows are children of a browser. In this context a browser is a
+    Windows are children of a browser. In SeleniumLibrary browser is a
     synonym for WebDriver instance. One browser may have multiple
     windows. Windows can appear as tabs, as separate windows or pop-ups with
     different position and size. Windows belonging to the same browser
@@ -380,7 +392,7 @@ class Selenium(SeleniumLibrary):
 
     == Timeout ==
 
-    This library contains various keywords that have an optional
+    SeleniumLibrary contains various keywords that have an optional
     ``timeout`` argument that specifies how long these keywords should
     wait for certain events or actions. These keywords include, for example,
     ``Wait ...`` keywords and keywords related to alerts. Additionally
@@ -398,8 +410,8 @@ class Selenium(SeleniumLibrary):
     Implicit wait specifies the maximum time how long Selenium waits when
     searching for elements. It can be set by using the `Set Selenium Implicit
     Wait` keyword or with the ``implicit_wait`` argument when `importing`
-    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|Selenium documentation]
-    for more information about this functionality.
+    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|
+    Selenium documentation] for more information about this functionality.
 
     See `time format` below for supported syntax.
 
@@ -419,11 +431,11 @@ class Selenium(SeleniumLibrary):
     (e.g. ``0.5`` or ``42``) or in Robot Framework's time syntax
     (e.g. ``1.5 seconds`` or ``1 min 30 s``). For more information about
     the time syntax see the
-    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format|Robot Framework User Guide].
+    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format|Robot Framework User Guide].
 
     = Run-on-failure functionality =
 
-    This library has a handy feature that it can automatically execute
+    SeleniumLibrary has a handy feature that it can automatically execute
     a keyword if any of its own keywords fails. By default, it uses the
     `Capture Page Screenshot` keyword, but this can be changed either by
     using the `Register Keyword To Run On Failure` keyword or with the
@@ -433,6 +445,43 @@ class Selenium(SeleniumLibrary):
     The run-on-failure functionality can be disabled by using a special value
     ``NOTHING`` or anything considered false (see `Boolean arguments`)
     such as ``NONE``.
+
+    = Boolean arguments =
+
+    Starting from 5.0 SeleniumLibrary relies on Robot Framework to perform the
+    boolean conversion based on keyword arguments [https://docs.python.org/3/library/typing.html|type hint].
+    More details in Robot Framework
+    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported-conversions|user guide]
+
+    Please note SeleniumLibrary 3 and 4 did have own custom methods to covert
+    arguments to boolean values.
+
+    = EventFiringWebDriver =
+
+    The SeleniumLibrary offers support for
+    [https://seleniumhq.github.io/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.event_firing_webdriver.html#module-selenium.webdriver.support.event_firing_webdriver|EventFiringWebDriver].
+    See the Selenium and SeleniumLibrary
+    [https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending.rst#EventFiringWebDriver|EventFiringWebDriver support]
+    documentation for further details.
+
+    EventFiringWebDriver is new in SeleniumLibrary 4.0
+
+    = Thread support =
+
+    SeleniumLibrary is not thread-safe. This is mainly due because the underlying
+    [https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread-safe|
+    Selenium tool is not thread-safe] within one browser/driver instance.
+    Because of the limitation in the Selenium side, the keywords or the
+    API provided by the SeleniumLibrary is not thread-safe.
+
+    = Plugins =
+
+    SeleniumLibrary offers plugins as a way to modify and add library keywords and modify some of the internal
+    functionality without creating a new library or hacking the source code. See
+    [https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending.rst#Plugins|plugin API]
+    documentation for further details.
+
+    Plugin API is new SeleniumLibrary 4.0
 
     = Auto closing browser =
 
@@ -447,11 +496,24 @@ class Selenium(SeleniumLibrary):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
+    BROWSER_NAMES = {
+        **WebDriverCreator.browser_names,
+        "chromiumedge": WebDriverCreator.browser_names["edge"],
+    }
     AVAILABLE_OPTIONS = {
-        "chrome": "ChromeOptions",
-        "firefox": "FirefoxOptions",
-        # "safari": "WebKitGTKOptions",
-        # "ie": "IeOptions",
+        # Supporting options only for a specific range of browsers.
+        "chrome": selenium_webdriver.ChromeOptions,
+        "firefox": selenium_webdriver.FirefoxOptions,
+        "edge": selenium_webdriver.EdgeOptions,
+        "chromiumedge": selenium_webdriver.EdgeOptions,
+    }
+    AVAILABLE_SERVICES = {
+        # Supporting services only for a specific range of browsers.
+        "chrome": selenium_webdriver.chrome.service.Service,
+        "firefox": selenium_webdriver.firefox.service.Service,
+        "edge": selenium_webdriver.edge.service.Service,
+        "chromiumedge": selenium_webdriver.edge.service.Service,
+        "safari": selenium_webdriver.safari.service.Service,
     }
 
     def __init__(self, *args, **kwargs) -> None:
@@ -473,7 +535,7 @@ class Selenium(SeleniumLibrary):
 
         SeleniumLibrary.__init__(self, *args, **kwargs)
 
-        # Add inherit/overriden library keywords
+        # Add inherit/overridden library keywords
         overrides = [BrowserManagementKeywordsOverride(self)]
         self.add_library_components(overrides)
 
@@ -554,7 +616,8 @@ class Selenium(SeleniumLibrary):
         proxy: str = None,
         user_agent: Optional[str] = None,
         download: Any = "AUTO",
-    ) -> int:
+        options: Optional[OptionsType] = None,
+    ) -> AliasType:
         # pylint: disable=C0301
         """Attempts to open a browser on the user's device from a set of
         supported browsers. Automatically downloads a corresponding webdriver
@@ -571,14 +634,20 @@ class Selenium(SeleniumLibrary):
         enabled with the argument ``maximized``, but is disabled by default.
 
         For certain applications it might also be required to force a
-        certain user-agent string for Selenium, which can be overriden
+        certain user-agent string for Selenium, which can be overridden
         with the ``user_agent`` argument.
+
+        Webdriver creation can be customized with ``options``. This accepts either a
+        class instance (e.g. ``ChromeOptions``) or being passed as string:
+        `add_argument("--incognito")`. (multiple arguments should be separated with
+        `;`)
 
         Example:
 
         | Open Available Browser | https://www.robocorp.com |
         | ${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |
         | Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |
+        | Open Available Browser | ${URL} | options=add_argument("user-data-dir=path/to/data");add_argument("--incognito") |
 
         == Browser order ==
 
@@ -590,7 +659,7 @@ class Selenium(SeleniumLibrary):
         | ``Linux``   | Chrome, Firefox, Opera           |
         | ``Darwin``  | Chrome, Safari, Firefox, Opera   |
 
-        The order can be overriden with a custom list by using the argument
+        The order can be overridden with a custom list by using the argument
         ``browser_selection``. The argument can be either a comma-separated
         string or a list object.
 
@@ -652,7 +721,7 @@ class Selenium(SeleniumLibrary):
         the path to the profiles directory and the name of the profile can
         be controlled with ``profile_path`` and ``profile_name`` respectively.
 
-        Profile preferences can be further overriden with the ``preferences``
+        Profile preferences can be further overridden with the ``preferences``
         argument by giving a dictionary of key/value pairs.
 
         Chrome can additionally connect through a ``proxy``, which
@@ -685,6 +754,7 @@ class Selenium(SeleniumLibrary):
                     preferences,
                     proxy,
                     user_agent,
+                    options,
                 )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
@@ -727,8 +797,8 @@ class Selenium(SeleniumLibrary):
     def _arg_browser_selection(self, browser_selection: Any) -> List:
         """Parse argument for browser selection."""
         if str(browser_selection).strip().lower() == "auto":
-            order = webdriver.DRIVER_PREFERENCE.get(
-                platform.system(), webdriver.DRIVER_PREFERENCE["default"]
+            order = core_webdriver.DRIVER_PREFERENCE.get(
+                platform.system(), core_webdriver.DRIVER_PREFERENCE["default"]
             )
         else:
             order = (
@@ -758,6 +828,46 @@ class Selenium(SeleniumLibrary):
         else:
             return bool(headless)
 
+    def _set_chrome_options(
+        self,
+        kwargs: dict,
+        options: ArgOptions,
+        use_profile: bool = False,
+        profile_name: Optional[str] = None,
+        profile_path: Optional[str] = None,
+        preferences: Optional[dict] = None,
+        proxy: str = None,
+    ):
+        if proxy:
+            options.add_argument(f"--proxy-server={proxy}")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--allow-running-insecure-content")
+        options.add_argument("--no-sandbox")
+        default_preferences = {
+            "safebrowsing.enabled": True,
+            "credentials_enable_service": False,
+            "profile.password_manager_enabled": False,
+        }
+        options.add_experimental_option(
+            "prefs",
+            {
+                **default_preferences,
+                **self.download_preferences,
+                **(preferences or {}),
+            },
+        )
+        options.add_experimental_option(
+            "excludeSwitches", ["enable-logging", "enable-automation"]
+        )
+        if use_profile:
+            self._set_user_profile(options, profile_path, profile_name)
+        if self.logger.isEnabledFor(logging.DEBUG):
+            # Deprecated params, but no worries as they get bundled in a `Service`
+            #  instance inside of `self._create_webdriver` method.
+            kwargs["service_log_path"] = "chromedriver.log"
+            kwargs["service_args"] = ["--verbose"]
+
     def _get_driver_args(
         self,
         browser: str,
@@ -769,66 +879,45 @@ class Selenium(SeleniumLibrary):
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
-    ) -> dict:
+        options: Optional[OptionsType] = None,
+    ) -> Tuple[dict, Any]:
         """Get browser and webdriver arguments for given options."""
-        preferences = preferences or {}
         browser = browser.lower()
-        headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
-        kwargs = {}
-
         if browser not in self.AVAILABLE_OPTIONS:
-            return kwargs, []
+            return {}, []
 
-        module = importlib.import_module("selenium.webdriver")
-        factory = getattr(module, self.AVAILABLE_OPTIONS[browser])
-        options = factory()
-
+        # Normalize `options` to `<Browser>Options` instance.
+        if options:
+            options: ArgOptions = SeleniumOptions().create(
+                self.BROWSER_NAMES[browser], options
+            )
+        else:
+            options: ArgOptions = self.AVAILABLE_OPTIONS[browser]()
+        headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
         if headless:
             self._set_headless_options(browser, options)
-
         if maximized:
             options.add_argument("--start-maximized")
-
         if user_agent:
             options.add_argument(f"user-agent={user_agent}")
 
-        if browser != "chrome":
-            kwargs["options"] = options
-            if use_profile:
-                self.logger.warning("Profiles are supported only with Chrome")
-
-        else:
-            default_preferences = {
-                "safebrowsing.enabled": True,
-                "credentials_enable_service": False,
-                "profile.password_manager_enabled": False,
-            }
-            if proxy:
-                options.add_argument("--proxy-server=%s" % proxy)
-            options.add_argument("--disable-dev-shm-usage")
-            options.add_argument("--disable-web-security")
-            options.add_argument("--allow-running-insecure-content")
-            options.add_argument("--no-sandbox")
-            options.add_experimental_option(
-                "prefs",
-                {**default_preferences, **preferences, **self.download_preferences},
+        kwargs = {}
+        if browser == "chrome":
+            self._set_chrome_options(
+                kwargs,
+                options,
+                profile_name=profile_name,
+                profile_path=profile_path,
+                preferences=preferences,
+                proxy=proxy,
             )
-            options.add_experimental_option(
-                "excludeSwitches", ["enable-logging", "enable-automation"]
-            )
+        elif use_profile:
+            self.logger.warning("Profiles are supported with Chrome only")
 
-            if use_profile:
-                self._set_user_profile(options, profile_path, profile_name)
-
-            if self.logger.isEnabledFor(logging.DEBUG):
-                kwargs["service_log_path"] = "chromedriver.log"
-                kwargs["service_args"] = ["--verbose"]
-
-            kwargs["options"] = options
-
+        kwargs["options"] = options
         return kwargs, options.arguments
 
-    def _set_headless_options(self, browser: str, options: dict) -> None:
+    def _set_headless_options(self, browser: str, options: ArgOptions) -> None:
         """Set headless mode for the browser, if possible.
 
         ``browser`` string name of the browser
@@ -842,7 +931,7 @@ class Selenium(SeleniumLibrary):
             )
             return
 
-        options.add_argument("--headless")
+        options.headless = True
         options.add_argument("--disable-gpu")
 
         if browser.lower() == "chrome":
@@ -850,7 +939,7 @@ class Selenium(SeleniumLibrary):
 
     def _set_user_profile(
         self,
-        options: dict,
+        options: ArgOptions,
         profile_path: Optional[str] = None,
         profile_name: Optional[str] = None,
     ) -> None:
@@ -890,46 +979,41 @@ class Selenium(SeleniumLibrary):
 
     def _create_webdriver(
         self, browser: str, alias: Optional[str], download: bool, **kwargs
-    ):
+    ) -> AliasType:
         """Create a webdriver instance with given options.
 
-        If webdriver download is requested, try using a cached
-        version first and if that fails force a re-download.
+        If webdriver download is requested, a cached version will be used if exists.
         """
-        browser = browser.lower()
 
-        def _create_driver(path=None):
-            options = dict(kwargs)
-            if path is not None:
-                options["executable_path"] = str(path)
+        def _create_driver(path: Optional[str] = None) -> AliasType:
+            service_kwargs = {
+                # Deprecated params if passed directly to the `WebDriver` class.
+                "service_args": None,
+                "service_log_path": None,
+            }
+            for name, default in service_kwargs.items():
+                service_kwargs[name] = kwargs.pop(name, default)
+            if path:
+                service_kwargs["executable_path"] = path
+            service_kwargs["log_path"] = service_kwargs.pop("service_log_path")
+            Service = self.AVAILABLE_SERVICES[browser.lower()]
+            if Service is selenium_webdriver.safari.service.Service:
+                service_kwargs.pop("log_path")  # not supported
+            kwargs["service"] = Service(**service_kwargs)
 
             lib = BrowserManagementKeywords(self)
-            return lib.create_webdriver(browser.capitalize(), alias, **options)
+            # Capitalize browser name just to ensure it works if passed as lower case.
+            # NOTE: But don't break a browser name like "ChromiumEdge".
+            cap_browser = browser[0].upper() + browser[1:]
+            return lib.create_webdriver(cap_browser, alias, **kwargs)
 
-        # No download requested
+        # No download requested.
         if not download:
             return _create_driver()
 
-        # Check if webdriver is available for given browser
-        if browser not in webdriver.AVAILABLE_DRIVERS:
-            raise ValueError(f"Webdriver download not available for {browser.title()}")
-
-        # Try to use webdriver already in cache
-        path_cache = webdriver.cache(browser)
-        if path_cache:
-            try:
-                return _create_driver(path_cache)
-            except Exception:  # pylint: disable=broad-except
-                pass
-
-        # Try to download webdriver
-        with suppress_logging():
-            path_download = webdriver.download(browser)
-        if path_download:
-            return _create_driver(path_download)
-
-        # No webdriver required
-        return _create_driver()
+        # Download web driver. (caching is tackled internally)
+        driver_path = core_webdriver.download(browser)
+        return _create_driver(path=driver_path)
 
     @keyword
     def open_chrome_browser(
@@ -944,7 +1028,7 @@ class Selenium(SeleniumLibrary):
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
-    ) -> int:
+    ) -> AliasType:
         """Open Chrome browser. See ``Open Available Browser`` for
         descriptions of arguments.
         """
@@ -963,7 +1047,9 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def attach_chrome_browser(self, port: int, alias: Optional[str] = None):
+    def attach_chrome_browser(
+        self, port: int, alias: Optional[str] = None
+    ) -> AliasType:
         """Attach to an existing instance of Chrome or Chromium.
 
         Requires that the browser was started with the command line
@@ -987,7 +1073,7 @@ class Selenium(SeleniumLibrary):
         return create(download=True)
 
     @keyword
-    def open_headless_chrome_browser(self, url: str) -> int:
+    def open_headless_chrome_browser(self, url: str) -> AliasType:
         """Open Chrome browser in headless mode.
 
         ``url`` URL to open
@@ -1025,12 +1111,12 @@ class Selenium(SeleniumLibrary):
         default_filename_prefix = f"screenshot-{int(time.time())}"
 
         # pylint: disable=unused-private-member
-        def __save_base64_screenshot_to_file(base64_string, filename):
-            path = screenshot_keywords._get_screenshot_path(filename)
+        def __save_base64_screenshot_to_file(base64_string, fname):
+            path = screenshot_keywords._get_screenshot_path(fname)
             screenshot_keywords._create_directory(path)
-            with open(filename, "wb") as fh:
+            with open(fname, "wb") as fh:
                 fh.write(base64.b64decode(base64_string))
-                self.logger.info("Screenshot saved to file: %s", filename)
+                self.logger.info("Screenshot saved to file: %s", fname)
 
         if locator:
             element = screenshot_keywords.find_element(locator)
@@ -1930,7 +2016,7 @@ class Selenium(SeleniumLibrary):
         """Remove all highlighting made by ``Highlight Elements``."""
         attribute_name = "rpaframework-highlight"
 
-        elements = self.driver.find_elements_by_css_selector(f"[{attribute_name}]")
+        elements = self.driver.find_elements(By.CSS_SELECTOR, f"[{attribute_name}]")
         script = "".join(
             f'arguments[{idx}].removeAttribute("{attribute_name}");'
             for idx in range(len(elements))

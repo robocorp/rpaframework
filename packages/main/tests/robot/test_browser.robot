@@ -1,15 +1,27 @@
 *** Settings ***
-Library         RPA.Browser.Selenium    locators_path=${LOCATORS}
-Library         RPA.RobotLogListener
 Library         OperatingSystem
+Library         RPA.Browser.Selenium    locators_path=${LOCATORS}
+Library         RPA.FileSystem
+Library         RPA.RobotLogListener
+
 Suite Setup     Open Available Browser  about:blank  headless=${TRUE}
 Suite Teardown  Close All Browsers
+
 Default Tags    RPA.Browser
 
+
 *** Variables ***
-${RESOURCES}    ${CURDIR}${/}..${/}resources
-${LOCATORS}     ${RESOURCES}${/}locators.json
-${ALERT_HTML}   file://${RESOURCES}${/}alert.html
+${RESOURCES}        ${CURDIR}${/}..${/}resources
+${RESULTS}          ${CURDIR}${/}..${/}results
+${BROWSER_DATA}     ${RESULTS}${/}browser
+${LOCATORS}         ${RESOURCES}${/}locators.json
+${ALERT_HTML}       file://${RESOURCES}${/}alert.html
+
+
+*** Keywords ***
+My Custom Keyword
+    Get Value    id:notexist
+
 
 *** Tasks ***
 Does alert contain
@@ -75,7 +87,27 @@ Mute browser failures
     Run keyword and expect error    *    My Custom Keyword
     Run keyword and expect error    *    Get Value    id:notexist
 
-*** Keywords ***
+Open In Incognito With Custom Options
+    Close Browser
+    ${non_windows} =    Evaluate    not sys.platform.startswith("win")    modules=sys
 
-My Custom Keyword
-    Get Value    id:notexist
+    ${options} =    Set Variable    add_argument("--incognito")
+    IF    ${non_windows}
+        ${data_dir} =   Absolute Path   ${BROWSER_DATA}
+        RPA.FileSystem.Create Directory    ${data_dir}     parents=${True}
+        ${data_dir_op} =   Set Variable     "user-data-dir=${data_dir}"
+        ${options} =    Catenate    SEPARATOR=;    ${options}
+        ...     add_argument(${data_dir_op})
+    END
+
+    Open Available Browser    https://robocorp.com    browser_selection=Chrome
+    ...     headless=${True}    options=${options}
+
+    ${visible} =    Is Element Visible      xpath://button[2]
+    Should Be True    ${visible}
+
+    Close Browser
+    IF    ${non_windows}
+        Directory Should Not Be Empty      ${data_dir}
+        RPA.FileSystem.Remove directory    ${data_dir}      recursive=${True}
+    END

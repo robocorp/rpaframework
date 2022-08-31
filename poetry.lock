@@ -8,7 +8,7 @@ python-versions = "*"
 
 [[package]]
 name = "amazon-textract-response-parser"
-version = "0.1.32"
+version = "0.1.33"
 description = "Easily parse JSON returned by Amazon Textract."
 category = "main"
 optional = false
@@ -17,14 +17,6 @@ python-versions = ">=3.6"
 [package.dependencies]
 boto3 = "*"
 marshmallow = "3.14.1"
-
-[[package]]
-name = "appdirs"
-version = "1.4.4"
-description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "astroid"
@@ -39,6 +31,14 @@ lazy-object-proxy = ">=1.4.0"
 typed-ast = {version = ">=1.4.0,<2.0", markers = "implementation_name == \"cpython\" and python_version < \"3.8\""}
 typing-extensions = {version = ">=3.10", markers = "python_version < \"3.10\""}
 wrapt = ">=1.11,<1.14"
+
+[[package]]
+name = "async-generator"
+version = "1.10"
+description = "Async generators and context managers for Python 3.5+"
+category = "main"
+optional = false
+python-versions = ">=3.5"
 
 [[package]]
 name = "attrs"
@@ -135,14 +135,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.56"
+version = "1.24.63"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.56,<1.28.0"
+botocore = ">=1.27.63,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -151,7 +151,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.56"
+version = "1.27.63"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -400,7 +400,7 @@ grpc = ["grpcio (>=1.33.2,<2.0dev)", "grpcio-status (>=1.33.2,<2.0dev)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.57.0"
+version = "2.58.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -674,6 +674,17 @@ grpcio = ">=1.47.0"
 protobuf = ">=3.12.0,<4.0dev"
 
 [[package]]
+name = "h11"
+version = "0.13.0"
+description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+typing-extensions = {version = "*", markers = "python_version < \"3.8\""}
+
+[[package]]
 name = "html2text"
 version = "2020.1.16"
 description = "Turn HTML into equivalent Markdown-structured text."
@@ -850,7 +861,7 @@ six = "*"
 
 [[package]]
 name = "jsonschema"
-version = "4.14.0"
+version = "4.15.0"
 description = "An implementation of JSON Schema validation for Python"
 category = "main"
 optional = false
@@ -1013,9 +1024,9 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.19.3", markers = "python_version >= \"3.9\" or python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\""},
-    {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
+    {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
     {version = ">=1.14.5", markers = "python_version >= \"3.7\""},
+    {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
 ]
 
 [[package]]
@@ -1041,6 +1052,17 @@ python-versions = "*"
 six = ">=1.8.0"
 
 [[package]]
+name = "outcome"
+version = "1.2.0"
+description = "Capture the outcome of Python function calls."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+attrs = ">=19.2.0"
+
+[[package]]
 name = "overrides"
 version = "6.2.0"
 description = "A decorator to automatically detect mismatch when overriding a method."
@@ -1061,11 +1083,11 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "pathspec"
-version = "0.9.0"
+version = "0.10.0"
 description = "Utility library for gitignore style pattern matching of file paths."
 category = "dev"
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+python-versions = ">=3.7"
 
 [[package]]
 name = "pdfminer.six"
@@ -1126,7 +1148,7 @@ python-versions = "*"
 
 [[package]]
 name = "proto-plus"
-version = "1.22.0"
+version = "1.22.1"
 description = "Beautiful, Pythonic protocol buffers."
 category = "main"
 optional = false
@@ -1278,6 +1300,14 @@ pyobjc-core = ">=7.3"
 pyobjc-framework-Cocoa = ">=7.3"
 
 [[package]]
+name = "pyotp"
+version = "2.6.0"
+description = "Python One Time Password Library"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
@@ -1402,6 +1432,17 @@ python-versions = "*"
 
 [package.dependencies]
 lxml = ">=2.3.2"
+
+[[package]]
+name = "python-dotenv"
+version = "0.20.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+cli = ["click (>=5.0)"]
 
 [[package]]
 name = "python-xlib"
@@ -1640,20 +1681,20 @@ robotframework = ">=2.9"
 
 [[package]]
 name = "robotframework-seleniumlibrary"
-version = "5.1.3"
+version = "6.0.0"
 description = "Web testing library for Robot Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6, <4"
 
 [package.dependencies]
-robotframework = ">=3.1.2"
-robotframework-pythonlibcore = ">=2.1.0"
-selenium = ">=3.141.0"
+robotframework = ">=3.2.2"
+robotframework-pythonlibcore = ">=2.2.1"
+selenium = ">=4.0.0"
 
 [[package]]
 name = "robotframework-seleniumtestability"
-version = "1.1.0"
+version = "2.0.0"
 description = "SeleniumTestability library that helps speed up tests withasyncronous evens"
 category = "main"
 optional = false
@@ -1674,7 +1715,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "15.9.0"
+version = "16.0.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1700,6 +1741,7 @@ openpyxl = "^3.0.9"
 pillow = "^9.1.1"
 psutil = {version = "^5.7.0", markers = "sys_platform == \"win32\""}
 pynput-robocorp-fork = "^4.0.0"
+pyotp = "^2.6.0"
 pyperclip = "^1.8.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
 python-xlib = {version = ">=0.17", markers = "sys_platform == \"linux\""}
@@ -1711,15 +1753,15 @@ robotframework-browser = {version = "^13.0.0", optional = true, markers = "pytho
 robotframework-pythonlibcore = "^3.0.0"
 robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
-robotframework-seleniumlibrary = "^5.1.0"
-robotframework-seleniumtestability = "^1.1.0"
-rpaframework-aws = {version = "^3.1.2", optional = true}
-rpaframework-core = "^9.1.0"
-rpaframework-dialogs = "^3.0.1"
-rpaframework-pdf = "^4.1.0"
-rpaframework-recognition = {version = "^4.0.2", optional = true}
-rpaframework-windows = {version = "^5.0.2", markers = "sys_platform == \"win32\""}
-selenium = "^3.141.0"
+robotframework-seleniumlibrary = "^6.0.0"
+robotframework-seleniumtestability = "^2.0.0"
+rpaframework-aws = {version = "^4.0.0", optional = true}
+rpaframework-core = "^10.0.0"
+rpaframework-dialogs = "^4.0.0"
+rpaframework-pdf = "^5.0.0"
+rpaframework-recognition = {version = "^5.0.0", optional = true}
+rpaframework-windows = {version = "^6.0.0", markers = "sys_platform == \"win32\""}
+selenium = "^4.4.0"
 simple_salesforce = "^1.0.0"
 tenacity = "^8.0.1"
 tweepy = "^3.8.0"
@@ -1729,8 +1771,8 @@ xlutils = "^2.0.0"
 xlwt = "^1.3.0"
 
 [package.extras]
-aws = ["rpaframework-aws (>=3.1.2,<4.0.0)"]
-cv = ["rpaframework-recognition (>=4.0.2,<5.0.0)"]
+aws = ["rpaframework-aws (>=4.0.0,<5.0.0)"]
+cv = ["rpaframework-recognition (>=5.0.0,<6.0.0)"]
 playwright = ["robotframework-browser (>=13.0.0,<14.0.0)"]
 
 [package.source]
@@ -1739,7 +1781,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "3.1.2"
+version = "4.0.0"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
@@ -1750,11 +1792,11 @@ amazon-textract-response-parser = ">=0.1.1,<0.2.0"
 boto3 = ">=1.13.4,<2.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=9.0.0,<10.0.0"
+rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "9.1.0"
+version = "10.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1764,13 +1806,13 @@ python-versions = ">=3.7,<4.0"
 pillow = ">=9.1.1,<10.0.0"
 psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
 pywin32 = {version = ">=300,<304", markers = "python_full_version < \"3.7.6\" and sys_platform == \"win32\" or python_full_version > \"3.7.6\" and python_full_version < \"3.8.1\" and sys_platform == \"win32\" or python_full_version > \"3.8.1\" and sys_platform == \"win32\""}
-selenium = ">=3.141.0,<4.0.0"
+selenium = ">=4.4.0,<5.0.0"
 uiautomation = {version = ">=2.0.15,<3.0.0", markers = "sys_platform == \"win32\""}
-webdrivermanager = ">=0.10.0,<0.11.0"
+webdriver-manager = ">=3.8.3,<4.0.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "3.0.1"
+version = "4.0.0"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
@@ -1779,11 +1821,11 @@ python-versions = ">=3.7,<4.0"
 [package.dependencies]
 robocorp-dialog = ">=0.5.3,<0.6.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
-rpaframework-core = ">=9.0.0,<10.0.0"
+rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-google"
-version = "5.0.2"
+version = "6.0.0"
 description = "Google library for RPA Framework"
 category = "main"
 optional = false
@@ -1803,11 +1845,11 @@ google-cloud-vision = ">=2.3.1,<3.0.0"
 grpcio = ">=1.37.0,<2.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=9.0.0,<10.0.0"
+rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "4.1.0"
+version = "5.0.0"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
@@ -1819,12 +1861,12 @@ fpdf2 = ">=2.5.2,<3.0.0"
 pypdf2 = ">=1.27.4,<1.27.10 || >1.27.10,<1.27.11 || >1.27.11,<2.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=9.0.0,<10.0.0"
+rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "4.0.2"
-description = "Core utilities used by RPA Framework"
+version = "5.0.0"
+description = "OCR capabilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
@@ -1834,11 +1876,11 @@ numpy = ">=1.19.3,<2.0.0"
 opencv-python-headless = ">=4.5.2,<4.6.0"
 pillow = ">=9.1.1,<10.0.0"
 pytesseract = ">=0.3.6,<0.4.0"
-rpaframework-core = ">=9.0.0,<10.0.0"
+rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "5.0.2"
+version = "6.0.0"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -1852,7 +1894,7 @@ pynput-robocorp-fork = ">=4.0.0,<5.0.0"
 pywin32 = {version = ">=300,<304", markers = "python_full_version < \"3.7.6\" and sys_platform == \"win32\" or python_full_version > \"3.7.6\" and python_full_version < \"3.8.1\" and sys_platform == \"win32\" or python_full_version > \"3.8.1\" and sys_platform == \"win32\""}
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=9.0.1,<10.0.0"
+rpaframework-core = ">=10.0.0,<11.0.0"
 uiautomation = ">=2.0.15,<3.0.0"
 
 [[package]]
@@ -1882,14 +1924,17 @@ crt = ["botocore[crt] (>=1.20.29,<2.0a.0)"]
 
 [[package]]
 name = "selenium"
-version = "3.141.0"
-description = "Python bindings for Selenium"
+version = "4.4.3"
+description = ""
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = "~=3.7"
 
 [package.dependencies]
-urllib3 = "*"
+certifi = ">=2021.10.8"
+trio = ">=0.17,<1.0"
+trio-websocket = ">=0.9,<1.0"
+urllib3 = {version = ">=1.26,<2.0", extras = ["socks"]}
 
 [[package]]
 name = "simple-salesforce"
@@ -1911,6 +1956,14 @@ description = "Python 2 and 3 compatibility utilities"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "sniffio"
+version = "1.2.0"
+description = "Sniff out which async library your code is running under"
+category = "main"
+optional = false
+python-versions = ">=3.5"
 
 [[package]]
 name = "snowballstemmer"
@@ -2143,6 +2196,36 @@ slack = ["slack-sdk"]
 telegram = ["requests"]
 
 [[package]]
+name = "trio"
+version = "0.21.0"
+description = "A friendly Python library for async concurrency and I/O"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+async-generator = ">=1.9"
+attrs = ">=19.2.0"
+cffi = {version = ">=1.14", markers = "os_name == \"nt\" and implementation_name != \"pypy\""}
+idna = "*"
+outcome = "*"
+sniffio = "*"
+sortedcontainers = "*"
+
+[[package]]
+name = "trio-websocket"
+version = "0.9.2"
+description = "WebSocket library for Trio"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+async-generator = ">=1.10"
+trio = ">=0.11"
+wsproto = ">=0.14"
+
+[[package]]
 name = "tweepy"
 version = "3.10.0"
 description = "Twitter library for Python"
@@ -2234,29 +2317,30 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "urllib3"
-version = "1.26.11"
+version = "1.26.12"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
 
+[package.dependencies]
+PySocks = {version = ">=1.5.6,<1.5.7 || >1.5.7,<2.0", optional = true, markers = "extra == \"socks\""}
+
 [package.extras]
 brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)", "brotlipy (>=0.6.0)"]
-secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "pyOpenSSL (>=0.14)"]
+secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "pyOpenSSL (>=0.14)", "urllib3-secure-extra"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
-name = "webdrivermanager"
-version = "0.10.0"
-description = "Module for facilitating download and deploy of WebDriver binaries."
+name = "webdriver-manager"
+version = "3.8.3"
+description = "Library provides the way to automatically manage drivers for different browsers"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 
 [package.dependencies]
-appdirs = "*"
-BeautifulSoup4 = "*"
-lxml = "*"
+python-dotenv = "*"
 requests = "*"
 tqdm = "*"
 
@@ -2267,6 +2351,17 @@ description = "Module for decorators, wrappers and monkey patching."
 category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+
+[[package]]
+name = "wsproto"
+version = "1.2.0"
+description = "WebSockets state-machine based protocol implementation"
+category = "main"
+optional = false
+python-versions = ">=3.7.0"
+
+[package.dependencies]
+h11 = ">=0.9.0,<1"
 
 [[package]]
 name = "xlrd"
@@ -2353,7 +2448,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "c012f04cceb5c838d7e4ced936da957335f4a3e46fd58deb492c0e8fc88a2471"
+content-hash = "beff6c50afbfa517c9be378aa93f62fda4d2fbbfc972dc65cc5a28feb478f28a"
 
 [metadata.files]
 alabaster = [
@@ -2361,16 +2456,16 @@ alabaster = [
     {file = "alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
 ]
 amazon-textract-response-parser = [
-    {file = "amazon-textract-response-parser-0.1.32.tar.gz", hash = "sha256:8d09c5691e929f34769378ad71fd580dc7909e46a9b5e99128a5726ba6be992d"},
-    {file = "amazon_textract_response_parser-0.1.32-py2.py3-none-any.whl", hash = "sha256:da2214b65f083a5549a2224d33dbc0027857642aa598f5f8d8b395fc27f9edb4"},
-]
-appdirs = [
-    {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
-    {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
+    {file = "amazon-textract-response-parser-0.1.33.tar.gz", hash = "sha256:814c437dca22842c2078253976be83cb3c19024d741577e7f3e939ac2a55b2ca"},
+    {file = "amazon_textract_response_parser-0.1.33-py2.py3-none-any.whl", hash = "sha256:831441c16209911e549ccabbf19911d43ec742e5978e937bf256cbc2472593e6"},
 ]
 astroid = [
     {file = "astroid-2.9.3-py3-none-any.whl", hash = "sha256:506daabe5edffb7e696ad82483ad0228245a9742ed7d2d8c9cdb31537decf9f6"},
     {file = "astroid-2.9.3.tar.gz", hash = "sha256:1efdf4e867d4d8ba4a9f6cf9ce07cd182c4c41de77f23814feb27ca93ca9d877"},
+]
+async-generator = [
+    {file = "async_generator-1.10-py3-none-any.whl", hash = "sha256:01c7bf666359b4967d2cda0000cc2e4af16a0ae098cbffcb8472fb9e8ad6585b"},
+    {file = "async_generator-1.10.tar.gz", hash = "sha256:6ebb3d106c12920aaae42ccb6f787ef5eefdcdd166ea3d628fa8476abe712144"},
 ]
 attrs = [
     {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
@@ -2436,12 +2531,12 @@ black = [
     {file = "black-22.6.0.tar.gz", hash = "sha256:6c6d39e28aed379aec40da1c65434c77d75e65bb59a1e1c283de545fb4e7c6c9"},
 ]
 boto3 = [
-    {file = "boto3-1.24.56-py3-none-any.whl", hash = "sha256:09fb94008bd1f2566ef79ec7d8dd7a233b5da67f3b2536e30432eb8e88022d4d"},
-    {file = "boto3-1.24.56.tar.gz", hash = "sha256:9fab8acec76008797be4671d514f39f1163ba044c0a0bce8d5afe8b52cbd5550"},
+    {file = "boto3-1.24.63-py3-none-any.whl", hash = "sha256:719bfafbe4e076055aa1a51269ffdbe9c61446679b67f31d61c237976661154c"},
+    {file = "boto3-1.24.63.tar.gz", hash = "sha256:0e6ef4b5e47b6073887961028201ecfc2024198125f20fbe5f5c00234f124543"},
 ]
 botocore = [
-    {file = "botocore-1.27.56-py3-none-any.whl", hash = "sha256:81df81b1a1c5608b3a7aca6a837acb27552c3ecc92584a58b171c60754b1d4eb"},
-    {file = "botocore-1.27.56.tar.gz", hash = "sha256:81101abab2013992a84019739d85a6fa8ec6f1f42fb09ad07e0bf4c8f0efce60"},
+    {file = "botocore-1.27.63-py3-none-any.whl", hash = "sha256:8567dee549430a53210c6b898dea3a8fc8ee9d7934ec1df7545c547cacbb2b8f"},
+    {file = "botocore-1.27.63.tar.gz", hash = "sha256:b97e17c930a7f45b50f94956a4474c1cd7b828e3dcd8a84dd0e3306ca6189335"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2605,8 +2700,8 @@ google-api-core = [
     {file = "google_api_core-2.8.2-py3-none-any.whl", hash = "sha256:93c6a91ccac79079ac6bbf8b74ee75db970cc899278b97d53bc012f35908cf50"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.57.0.tar.gz", hash = "sha256:ec4412545b0c5978a833bb03993a46121ad2c700f32af0cba23f8439b3f5fb02"},
-    {file = "google_api_python_client-2.57.0-py2.py3-none-any.whl", hash = "sha256:cbc39ac20322d6da3989cb54271f15ae6e58fa1ce63bf1fbb1ac1cdeebbc7b6a"},
+    {file = "google-api-python-client-2.58.0.tar.gz", hash = "sha256:3af6a181763a8cb18f2b9d973760ba32e4fe2af09e4ce06626ff6a53777c33fa"},
+    {file = "google_api_python_client-2.58.0-py2.py3-none-any.whl", hash = "sha256:8f4eeed1b46f3f445307719aa3e9678e429d90c0af4f22ada707a72ba10fe02d"},
 ]
 google-auth = [
     {file = "google-auth-2.11.0.tar.gz", hash = "sha256:ed65ecf9f681832298e29328e1ef0a3676e3732b2e56f41532d45f70a22de0fb"},
@@ -2809,6 +2904,10 @@ grpcio-tools = [
     {file = "grpcio_tools-1.47.0-cp39-cp39-win32.whl", hash = "sha256:759064fc8439bbfe5402b2fd3b0685f4ffe07d7cc6a64908c2f88a7c80449ce4"},
     {file = "grpcio_tools-1.47.0-cp39-cp39-win_amd64.whl", hash = "sha256:1a0a91941f6f2a4d97e843a5d9ad7ccccf702af2d9455932f18cf922e65af95e"},
 ]
+h11 = [
+    {file = "h11-0.13.0-py3-none-any.whl", hash = "sha256:8ddd78563b633ca55346c8cd41ec0af27d3c79931828beffb46ce70a379e7442"},
+    {file = "h11-0.13.0.tar.gz", hash = "sha256:70813c1135087a248a4d38cc0e1a0181ffab2188141a93eaf567940c3957ff06"},
+]
 html2text = [
     {file = "html2text-2020.1.16-py3-none-any.whl", hash = "sha256:c7c629882da0cf377d66f073329ccf34a12ed2adf0169b9285ae4e63ef54c82b"},
     {file = "html2text-2020.1.16.tar.gz", hash = "sha256:e296318e16b059ddb97f7a8a1d6a5c1d7af4544049a01e261731d2d5cc277bbb"},
@@ -2871,8 +2970,8 @@ jsonpath-ng = [
     {file = "jsonpath_ng-1.5.3-py3-none-any.whl", hash = "sha256:292a93569d74029ba75ac2dc3d3630fc0e17b2df26119a165fa1d498ca47bf65"},
 ]
 jsonschema = [
-    {file = "jsonschema-4.14.0-py3-none-any.whl", hash = "sha256:9892b8d630a82990521a9ca630d3446bd316b5ad54dbe981338802787f3e0d2d"},
-    {file = "jsonschema-4.14.0.tar.gz", hash = "sha256:15062f4cc6f591400cd528d2c355f2cfa6a57e44c820dc783aee5e23d36a831f"},
+    {file = "jsonschema-4.15.0-py3-none-any.whl", hash = "sha256:2df0fab225abb3b41967bb3a46fd37dc74b1536b5296d0b1c2078cd072adf0f7"},
+    {file = "jsonschema-4.15.0.tar.gz", hash = "sha256:21f4979391bdceb044e502fd8e79e738c0cdfbdc8773f9a49b5769461e82fe1e"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.7.1.tar.gz", hash = "sha256:d609c75b986def706743cdebe5e47553f4a5a1da9c5ff66d76013ef396b5a8a4"},
@@ -3159,6 +3258,10 @@ orderedmultidict = [
     {file = "orderedmultidict-1.0.1-py2.py3-none-any.whl", hash = "sha256:43c839a17ee3cdd62234c47deca1a8508a3f2ca1d0678a3bf791c87cf84adbf3"},
     {file = "orderedmultidict-1.0.1.tar.gz", hash = "sha256:04070bbb5e87291cc9bfa51df413677faf2141c73c61d2a5f7b26bea3cd882ad"},
 ]
+outcome = [
+    {file = "outcome-1.2.0-py2.py3-none-any.whl", hash = "sha256:c4ab89a56575d6d38a05aa16daeaa333109c1f96167aba8901ab18b6b5e0f7f5"},
+    {file = "outcome-1.2.0.tar.gz", hash = "sha256:6f82bd3de45da303cf1f771ecafa1633750a358436a8bb60e06a1ceb745d2672"},
+]
 overrides = [
     {file = "overrides-6.2.0-py3-none-any.whl", hash = "sha256:2f62e9dba0cd96d2cddee8c8a2bae59d6179e9e0993235466727681a6bfee789"},
     {file = "overrides-6.2.0.tar.gz", hash = "sha256:e15c1a7d9a605999507a5e17d36505319f9e971cbcbde37b507c84346318301b"},
@@ -3168,8 +3271,8 @@ packaging = [
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
 pathspec = [
-    {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
-    {file = "pathspec-0.9.0.tar.gz", hash = "sha256:e564499435a2673d586f6b2130bb5b95f04a3ba06f81b8f895b651a3c76aabb1"},
+    {file = "pathspec-0.10.0-py3-none-any.whl", hash = "sha256:aefa80ac32d5bf1f96139dca67cefb69a431beff4e6bf1168468f37d7ab87015"},
+    {file = "pathspec-0.10.0.tar.gz", hash = "sha256:01eecd304ba0e6eeed188ae5fa568e99ef10265af7fd9ab737d6412b4ee0ab85"},
 ]
 "pdfminer.six" = [
     {file = "pdfminer.six-20201018-py3-none-any.whl", hash = "sha256:d78877ba8d8bf957f3bb636c4f73f4f6f30f56c461993877ac22c39c20837509"},
@@ -3248,8 +3351,8 @@ ply = [
     {file = "ply-3.11.tar.gz", hash = "sha256:00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3"},
 ]
 proto-plus = [
-    {file = "proto-plus-1.22.0.tar.gz", hash = "sha256:c2e6693fdf68c405a6428226915a8625d21d0513793598ae3287a1210478d8ec"},
-    {file = "proto_plus-1.22.0-py3-none-any.whl", hash = "sha256:a27192d8cdc54e044f137b4c9053c9108cf5c065b46d067f1bcd389a911faf5b"},
+    {file = "proto-plus-1.22.1.tar.gz", hash = "sha256:6c7dfd122dfef8019ff654746be4f5b1d9c80bba787fe9611b508dd88be3a2fa"},
+    {file = "proto_plus-1.22.1-py3-none-any.whl", hash = "sha256:ea8982669a23c379f74495bc48e3dcb47c822c484ce8ee1d1d7beb339d4e34c5"},
 ]
 protobuf = [
     {file = "protobuf-3.20.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:3cc797c9d15d7689ed507b165cd05913acb992d78b379f6014e013f9ecb20996"},
@@ -3395,6 +3498,10 @@ pyobjc-framework-quartz = [
     {file = "pyobjc_framework_Quartz-7.3-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:8ddbca6b466584c3dc0e5b701b1c2a9b5d97ddc1d79a949927499ebb1be1f210"},
     {file = "pyobjc_framework_Quartz-7.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:7aba3cd966a0768dd58a35680742820f0c5ac596a9cd11014e2057818e65b0af"},
 ]
+pyotp = [
+    {file = "pyotp-2.6.0-py2.py3-none-any.whl", hash = "sha256:9d144de0f8a601d6869abe1409f4a3f75f097c37b50a36a3bf165810a6e23f28"},
+    {file = "pyotp-2.6.0.tar.gz", hash = "sha256:d28ddfd40e0c1b6a6b9da961c7d47a10261fb58f378cb00f05ce88b26df9c432"},
+]
 pyparsing = [
     {file = "pyparsing-3.0.9-py3-none-any.whl", hash = "sha256:5026bae9a10eeaefb61dab2f09052b9f4307d44aee4eda64b309723d8d206bbc"},
     {file = "pyparsing-3.0.9.tar.gz", hash = "sha256:2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"},
@@ -3489,6 +3596,10 @@ python-dateutil = [
 ]
 python-docx = [
     {file = "python-docx-0.8.11.tar.gz", hash = "sha256:1105d233a0956dd8dd1e710d20b159e2d72ac3c301041b95f4d4ceb3e0ebebc4"},
+]
+python-dotenv = [
+    {file = "python-dotenv-0.20.0.tar.gz", hash = "sha256:b7e3b04a59693c42c36f9ab1cc2acc46fa5df8c78e178fc33a8d4cd05c8d498f"},
+    {file = "python_dotenv-0.20.0-py3-none-any.whl", hash = "sha256:d92a187be61fe482e4fd675b6d52200e7be63a12b724abbf931a40ce4fa92938"},
 ]
 python-xlib = [
     {file = "python-xlib-0.31.tar.gz", hash = "sha256:74d83a081f532bc07f6d7afcd6416ec38403d68f68b9b9dc9e1f28fbf2d799e9"},
@@ -3604,11 +3715,12 @@ robotframework-sapguilibrary = [
     {file = "robotframework_sapguilibrary-1.1-py2-none-any.whl", hash = "sha256:c422e23623911b2c70630f9e01fcec754bb8ae16d9f8dbab29d1ee588800daf6"},
 ]
 robotframework-seleniumlibrary = [
-    {file = "robotframework-seleniumlibrary-5.1.3.tar.gz", hash = "sha256:f51a0068c6c0d8107ee1120874a3afbf2bbe751fd0782cb86a27a616d9ca30b6"},
-    {file = "robotframework_seleniumlibrary-5.1.3-py2.py3-none-any.whl", hash = "sha256:7c8211b870249db53dbb2091a5a36c09aa657f06405d112587d37d33fff7454e"},
+    {file = "robotframework-seleniumlibrary-6.0.0.tar.gz", hash = "sha256:ef6d5f1b481513cb6e3d15d78b0dcbabc53aa0866d8d23844b899ac824a0ea82"},
+    {file = "robotframework_seleniumlibrary-6.0.0-py2.py3-none-any.whl", hash = "sha256:8825aabc8d6f01525d3a005bf11d78bfb630ef01ba7d02b05fe9886b0c98e31d"},
 ]
 robotframework-seleniumtestability = [
-    {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
+    {file = "robotframework-seleniumtestability-2.0.0.tar.gz", hash = "sha256:e7914bd54371386984f756fac175365160ad252aedaa0bef276acb3d9c6072fc"},
+    {file = "robotframework_seleniumtestability-2.0.0-py3-none-any.whl", hash = "sha256:0d3a54df0f6adedbbe3af31d6c14157688f90057b951e50f1865fd725b212df5"},
 ]
 robotframeworklexer = [
     {file = "robotframeworklexer-1.1-py3-none-any.whl", hash = "sha256:b5c3aaa8012c299bbd6ff6b45c1a6b1f02eff88cefcc2a16ee0a4aa5533ce0d5"},
@@ -3616,32 +3728,32 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework-aws-3.1.2.tar.gz", hash = "sha256:162465ea749968197d84c2bb19bdd91232b96a1972c198b1947f0bcfae2638d7"},
-    {file = "rpaframework_aws-3.1.2-py3-none-any.whl", hash = "sha256:5ce3f205450ea0623f2176bd57c870b78c91acccb5f411f1cc3d77a628f4eb4a"},
+    {file = "rpaframework-aws-4.0.0.tar.gz", hash = "sha256:7159078f2a5cc5e3a30e589fdc928e617b676cfc6d1bca229e1fd627600c57ac"},
+    {file = "rpaframework_aws-4.0.0-py3-none-any.whl", hash = "sha256:0e9a5e00788ca43bac99ebb1bc25e9a783e0cfaf974b910e3e25b5570723055a"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-9.1.0.tar.gz", hash = "sha256:b379dade2f8217fa7ff868584fd35afbf80b6596a4f66d30a8c645b4cf7520f1"},
-    {file = "rpaframework_core-9.1.0-py3-none-any.whl", hash = "sha256:8f39495a796dd41c9023c0639351867ae1a980edb3085e6ef85a0703a6523cad"},
+    {file = "rpaframework-core-10.0.0.tar.gz", hash = "sha256:176b9c948f1ae19c11fa3061705fd6ed48786c49199fc5fcf027349adca630bf"},
+    {file = "rpaframework_core-10.0.0-py3-none-any.whl", hash = "sha256:f2fa719bd2a6aa5f95874214a27e26a82098809777eb80612b844e5bea4fa050"},
 ]
 rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-3.0.1.tar.gz", hash = "sha256:354a97f5073f64a9576abcd683985fecb2111d448484f6c198a580ba80751f4f"},
-    {file = "rpaframework_dialogs-3.0.1-py3-none-any.whl", hash = "sha256:3dd09bd3e51581e960201eef3e50e39bea356276672436dbf42e924395344e5f"},
+    {file = "rpaframework-dialogs-4.0.0.tar.gz", hash = "sha256:178f1ec6292421057e601298596393aa7ed177130dc9f8be3da63695aeaa4a83"},
+    {file = "rpaframework_dialogs-4.0.0-py3-none-any.whl", hash = "sha256:c9e69a1b4a3b39bff5051e400bf9bb483d8e61e1bdd8246a19991cf8219d5541"},
 ]
 rpaframework-google = [
-    {file = "rpaframework-google-5.0.2.tar.gz", hash = "sha256:bd9c498356e9e1043b047bac2dca18a074c4e9d0826cded1739999fd179c0799"},
-    {file = "rpaframework_google-5.0.2-py3-none-any.whl", hash = "sha256:1a9f4055249e23e6085f40e975ef46166441be55a44c6d8e6c72bc11a7b08199"},
+    {file = "rpaframework-google-6.0.0.tar.gz", hash = "sha256:f7c3d08c524a22d901e643a254a8b3dd0500c3934b809d6f18c9b00e51a6c6c8"},
+    {file = "rpaframework_google-6.0.0-py3-none-any.whl", hash = "sha256:e6dacca13296a04767cda740065fe75dd08252285cc9722381382f0c83f5e575"},
 ]
 rpaframework-pdf = [
-    {file = "rpaframework-pdf-4.1.0.tar.gz", hash = "sha256:bfbf887774ab13bff9956df1342d3621b60714980baf19c070f4420b21b0fe0e"},
-    {file = "rpaframework_pdf-4.1.0-py3-none-any.whl", hash = "sha256:51de0eff0f09d4785bf2401cbef697d71fdd2c7d4f41d52a77bf7cd4060016a5"},
+    {file = "rpaframework-pdf-5.0.0.tar.gz", hash = "sha256:f32078c5cd0f1a8d77ed448d22865354cbef2f3745a3baf4cdd07accca5e5a72"},
+    {file = "rpaframework_pdf-5.0.0-py3-none-any.whl", hash = "sha256:7cc6dc5e4cefe5f30561fa29f78de0c729afee0a9ad91c2f4817990032717768"},
 ]
 rpaframework-recognition = [
-    {file = "rpaframework-recognition-4.0.2.tar.gz", hash = "sha256:1ce8508b3e592fab6d8a90cd8cb4de992660dc425228f5ea2e5dd2ebba3f1a0f"},
-    {file = "rpaframework_recognition-4.0.2-py3-none-any.whl", hash = "sha256:a7ff60d8da84f76827b2ef8abe8cb391f7b525a6133abd8c4957830ab3765a3d"},
+    {file = "rpaframework-recognition-5.0.0.tar.gz", hash = "sha256:368e2e2a0e8de02c53b5f36125376b021febb3da26b11799b340bfd5bed9c920"},
+    {file = "rpaframework_recognition-5.0.0-py3-none-any.whl", hash = "sha256:2a5f3305e940de4a62b2b7ff04d49dba6548cebb1479be5fac558505dd33c1ba"},
 ]
 rpaframework-windows = [
-    {file = "rpaframework-windows-5.0.2.tar.gz", hash = "sha256:b233b83c81feb393f2329358e4483039d0e67d52c12b0b5a4bc00b5166d6808b"},
-    {file = "rpaframework_windows-5.0.2-py3-none-any.whl", hash = "sha256:b9db8182b3c64d9f0d96a14749d7ff5f4405d07f5ec1084c8c6bd4cf1a0c1f6f"},
+    {file = "rpaframework-windows-6.0.0.tar.gz", hash = "sha256:7d4c5677d0a5cfb3e4f105aac50e29c25fa9d5de1a73ea6fd2982385f273ac5d"},
+    {file = "rpaframework_windows-6.0.0-py3-none-any.whl", hash = "sha256:ee111deb95ce2d667ec193e882caf56d8368a5dceabc1c2d04bd5fe48244f16a"},
 ]
 rsa = [
     {file = "rsa-4.9-py3-none-any.whl", hash = "sha256:90260d9058e514786967344d0ef75fa8727eed8a7d2e43ce9f4bcf1b536174f7"},
@@ -3652,8 +3764,7 @@ s3transfer = [
     {file = "s3transfer-0.6.0.tar.gz", hash = "sha256:2ed07d3866f523cc561bf4a00fc5535827981b117dd7876f036b0c1aca42c947"},
 ]
 selenium = [
-    {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
-    {file = "selenium-3.141.0.tar.gz", hash = "sha256:deaf32b60ad91a4611b98d8002757f29e6f2c2d5fcaf202e1c9ad06d6772300d"},
+    {file = "selenium-4.4.3-py3-none-any.whl", hash = "sha256:ca6ed4a58a426bb40bf5aa2b027ce211cc5200f1acdcdfb8258b32b24624150c"},
 ]
 simple-salesforce = [
     {file = "simple-salesforce-1.12.1.tar.gz", hash = "sha256:15d6943e52252c9cc28e1779803354f2a36c88b72056499e07eb06cd652f149c"},
@@ -3662,6 +3773,10 @@ simple-salesforce = [
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+sniffio = [
+    {file = "sniffio-1.2.0-py3-none-any.whl", hash = "sha256:471b71698eac1c2112a40ce2752bb2f4a4814c22a54a3eed3676bc0f5ca9f663"},
+    {file = "sniffio-1.2.0.tar.gz", hash = "sha256:c4666eecec1d3f50960c6bdf61ab7bc350648da6c126e3cf6898d8cd4ddcd3de"},
 ]
 snowballstemmer = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
@@ -3738,6 +3853,14 @@ tqdm = [
     {file = "tqdm-4.64.0-py2.py3-none-any.whl", hash = "sha256:74a2cdefe14d11442cedf3ba4e21a3b84ff9a2dbdc6cfae2c34addb2a14a5ea6"},
     {file = "tqdm-4.64.0.tar.gz", hash = "sha256:40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d"},
 ]
+trio = [
+    {file = "trio-0.21.0-py3-none-any.whl", hash = "sha256:4dc0bf9d5cc78767fc4516325b6d80cc0968705a31d0eec2ecd7cdda466265b0"},
+    {file = "trio-0.21.0.tar.gz", hash = "sha256:523f39b7b69eef73501cebfe1aafd400a9aad5b03543a0eded52952488ff1c13"},
+]
+trio-websocket = [
+    {file = "trio-websocket-0.9.2.tar.gz", hash = "sha256:a3d34de8fac26023eee701ed1e7bf4da9a8326b61a62934ec9e53b64970fd8fe"},
+    {file = "trio_websocket-0.9.2-py3-none-any.whl", hash = "sha256:5b558f6e83cc20a37c3b61202476c5295d1addf57bd65543364e0337e37ed2bc"},
+]
 tweepy = [
     {file = "tweepy-3.10.0-py2.py3-none-any.whl", hash = "sha256:5e22003441a11f6f4c2ea4d05ec5532f541e9f5d874c3908270f0c28e649b53a"},
     {file = "tweepy-3.10.0.tar.gz", hash = "sha256:76e6954b806ca470dda877f57db8792fff06a0beba0ed43efc3805771e39f06a"},
@@ -3794,11 +3917,12 @@ uritemplate = [
     {file = "uritemplate-4.1.1.tar.gz", hash = "sha256:4346edfc5c3b79f694bccd6d6099a322bbeb628dbf2cd86eea55a456ce5124f0"},
 ]
 urllib3 = [
-    {file = "urllib3-1.26.11-py2.py3-none-any.whl", hash = "sha256:c33ccba33c819596124764c23a97d25f32b28433ba0dedeb77d873a38722c9bc"},
-    {file = "urllib3-1.26.11.tar.gz", hash = "sha256:ea6e8fb210b19d950fab93b60c9009226c63a28808bc8386e05301e25883ac0a"},
+    {file = "urllib3-1.26.12-py2.py3-none-any.whl", hash = "sha256:b930dd878d5a8afb066a637fbb35144fe7901e3b209d1cd4f524bd0e9deee997"},
+    {file = "urllib3-1.26.12.tar.gz", hash = "sha256:3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"},
 ]
-webdrivermanager = [
-    {file = "webdrivermanager-0.10.0.tar.gz", hash = "sha256:c313a71340f0bb7bfef8b03763a0b1b323473e1cc3945a86f3230e78529af067"},
+webdriver-manager = [
+    {file = "webdriver_manager-3.8.3-py2.py3-none-any.whl", hash = "sha256:bd156a328bac384595ab102c057be6a98f41f7e830d68ca4ac94cb0d7f96da8c"},
+    {file = "webdriver_manager-3.8.3.tar.gz", hash = "sha256:2e0fa8abc164023a8171d308a34451b50cef4867768a8f5034b88d44d82546da"},
 ]
 wrapt = [
     {file = "wrapt-1.13.3-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:e05e60ff3b2b0342153be4d1b597bbcfd8330890056b9619f4ad6b8d5c96a81a"},
@@ -3852,6 +3976,10 @@ wrapt = [
     {file = "wrapt-1.13.3-cp39-cp39-win32.whl", hash = "sha256:0a017a667d1f7411816e4bf214646d0ad5b1da2c1ea13dec6c162736ff25a374"},
     {file = "wrapt-1.13.3-cp39-cp39-win_amd64.whl", hash = "sha256:81bd7c90d28a4b2e1df135bfbd7c23aee3050078ca6441bead44c42483f9ebfb"},
     {file = "wrapt-1.13.3.tar.gz", hash = "sha256:1fea9cd438686e6682271d36f3481a9f3636195578bab9ca3382e2f5f01fc185"},
+]
+wsproto = [
+    {file = "wsproto-1.2.0-py3-none-any.whl", hash = "sha256:b9acddd652b585d75b20477888c56642fdade28bdfd3579aa24a4d2c037dd736"},
+    {file = "wsproto-1.2.0.tar.gz", hash = "sha256:ad565f26ecb92588a3e43bc3d96164de84cd9902482b130d0ddbaa9664a85065"},
 ]
 xlrd = [
     {file = "xlrd-2.0.1-py2.py3-none-any.whl", hash = "sha256:6a33ee89877bd9abc1158129f6e94be74e2679636b8a205b43b85206c3f0bbdd"},
