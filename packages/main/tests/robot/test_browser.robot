@@ -1,15 +1,31 @@
 *** Settings ***
-Library         RPA.Browser.Selenium    locators_path=${LOCATORS}
-Library         RPA.RobotLogListener
 Library         OperatingSystem
+Library         RPA.Browser.Selenium    locators_path=${LOCATORS}
+Library         RPA.FileSystem
+Library         RPA.RobotLogListener
+
 Suite Setup     Open Available Browser  about:blank  headless=${TRUE}
-Suite Teardown  Close All Browsers
+Suite Teardown  Close Browsers And Cleanup
+
 Default Tags    RPA.Browser
+
 
 *** Variables ***
 ${RESOURCES}    ${CURDIR}${/}..${/}resources
+${RESULTS}      ${CURDIR}${/}..${/}results
+${BROWSER}      ${RESULTS}${/}browser
 ${LOCATORS}     ${RESOURCES}${/}locators.json
 ${ALERT_HTML}   file://${RESOURCES}${/}alert.html
+
+
+*** Keywords ***
+My Custom Keyword
+    Get Value    id:notexist
+
+Close Browsers And Cleanup
+    Close All Browsers
+    Remove directory    ${BROWSER}      recursive=${True}
+
 
 *** Tasks ***
 Does alert contain
@@ -75,7 +91,14 @@ Mute browser failures
     Run keyword and expect error    *    My Custom Keyword
     Run keyword and expect error    *    Get Value    id:notexist
 
-*** Keywords ***
+Open In Incognito
+    Close Browser
+    ${data_dir} =   Absolute Path   ${BROWSER}
+    ${data_dir_op} =   Set Variable     "user-data-dir=${data_dir}"
+    Open Available Browser    https://robocorp.com    browser_selection=Chrome
+    ...     headless=${True}
+    ...     options=add_argument(${data_dir_op});add_argument("--incognito")
 
-My Custom Keyword
-    Get Value    id:notexist
+    ${visible} =    Is Element Visible      xpath://button[2]
+    Should Be True    ${visible}
+    Directory Should Exist      ${data_dir}

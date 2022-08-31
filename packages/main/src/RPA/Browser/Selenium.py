@@ -67,7 +67,7 @@ class BrowserNotFoundError(ValueError):
 
 
 class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
-    """Overriden keywords for browser management."""
+    """Overridden keywords for browser management."""
 
     def __init__(self, ctx):
         super().__init__(ctx)
@@ -634,14 +634,20 @@ class Selenium(SeleniumLibrary):
         enabled with the argument ``maximized``, but is disabled by default.
 
         For certain applications it might also be required to force a
-        certain user-agent string for Selenium, which can be overriden
+        certain user-agent string for Selenium, which can be overridden
         with the ``user_agent`` argument.
+
+        Webdriver creation can be customized with ``options``. This accepts either a
+        class instance (e.g. ``ChromeOptions``) or being passed as string:
+        `add_argument("--incognito")`. (multiple arguments should be separated with
+        `;`)
 
         Example:
 
         | Open Available Browser | https://www.robocorp.com |
         | ${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |
         | Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |
+        | Open Available Browser | ${URL} | options=add_argument("user-data-dir=path/to/data");add_argument("--incognito") |
 
         == Browser order ==
 
@@ -653,7 +659,7 @@ class Selenium(SeleniumLibrary):
         | ``Linux``   | Chrome, Firefox, Opera           |
         | ``Darwin``  | Chrome, Safari, Firefox, Opera   |
 
-        The order can be overriden with a custom list by using the argument
+        The order can be overridden with a custom list by using the argument
         ``browser_selection``. The argument can be either a comma-separated
         string or a list object.
 
@@ -715,7 +721,7 @@ class Selenium(SeleniumLibrary):
         the path to the profiles directory and the name of the profile can
         be controlled with ``profile_path`` and ``profile_name`` respectively.
 
-        Profile preferences can be further overriden with the ``preferences``
+        Profile preferences can be further overridden with the ``preferences``
         argument by giving a dictionary of key/value pairs.
 
         Chrome can additionally connect through a ``proxy``, which
@@ -847,8 +853,8 @@ class Selenium(SeleniumLibrary):
             "prefs",
             {
                 **default_preferences,
-                **(preferences or {}),
                 **self.download_preferences,
+                **(preferences or {}),
             },
         )
         options.add_experimental_option(
