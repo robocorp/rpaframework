@@ -617,6 +617,7 @@ class Selenium(SeleniumLibrary):
         user_agent: Optional[str] = None,
         download: Any = "AUTO",
         options: Optional[OptionsType] = None,
+        port: Optional[int] = None,
     ) -> AliasType:
         # pylint: disable=C0301
         """Attempts to open a browser on the user's device from a set of
@@ -642,12 +643,17 @@ class Selenium(SeleniumLibrary):
         `add_argument("--incognito")`. (multiple arguments should be separated with
         `;`)
 
+        A custom ``port`` can be provided to start the browser without a random one.
+        Make sure you provide every time a unique system-available local port if you
+        plan to have multiple such browsers running in parallel.
+
         Example:
 
         | Open Available Browser | https://www.robocorp.com |
         | ${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |
         | Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |
         | Open Available Browser | ${URL} | options=add_argument("user-data-dir=path/to/data");add_argument("--incognito") |
+        | Open Available Browser | ${URL} | port=${8888} |
 
         == Browser order ==
 
@@ -755,6 +761,7 @@ class Selenium(SeleniumLibrary):
                     proxy,
                     user_agent,
                     options,
+                    port,
                 )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
@@ -880,6 +887,7 @@ class Selenium(SeleniumLibrary):
         proxy: str = None,
         user_agent: Optional[str] = None,
         options: Optional[OptionsType] = None,
+        port: Optional[int] = None,
     ) -> Tuple[dict, Any]:
         """Get browser and webdriver arguments for given options."""
         browser = browser.lower()
@@ -902,6 +910,8 @@ class Selenium(SeleniumLibrary):
             options.add_argument(f"user-agent={user_agent}")
 
         kwargs = {}
+        if port:
+            kwargs["port"] = int(port)
         if browser == "chrome":
             self._set_chrome_options(
                 kwargs,
@@ -990,12 +1000,13 @@ class Selenium(SeleniumLibrary):
                 # Deprecated params if passed directly to the `WebDriver` class.
                 "service_args": None,
                 "service_log_path": None,
+                "port": 0,
             }
             for name, default in service_kwargs.items():
                 service_kwargs[name] = kwargs.pop(name, default)
+            service_kwargs["log_path"] = service_kwargs.pop("service_log_path")
             if path:
                 service_kwargs["executable_path"] = path
-            service_kwargs["log_path"] = service_kwargs.pop("service_log_path")
             Service = self.AVAILABLE_SERVICES[browser.lower()]
             if Service is selenium_webdriver.safari.service.Service:
                 service_kwargs.pop("log_path")  # not supported
