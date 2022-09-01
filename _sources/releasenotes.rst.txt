@@ -5,14 +5,18 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Browser.Selenium** (:issue:`615`): Keyword ``Open Available Browser``
-  supports passing a custom `port` to open the browser on.
-- Library **RPA.Windows** (:issue:`609`): Fix clicking sibling elements retrieved with
-  keyword ``Get Elements``. (previous bug with `robocorp_click_offset`)
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+16.1.0 - 01 Sep 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`615`): Keyword ``Open Available Browser``
+  supports passing a custom `port` to open the browser on.
+- Library **RPA.Windows** (``rpaframework-windows`` **6.0.1**, :issue:`609`): Fix
+  clicking sibling elements retrieved with keyword ``Get Elements``. (previous bug with
+  `robocorp_click_offset`)
 
 16.0.0 - 31 Aug 2022
 --------------------
