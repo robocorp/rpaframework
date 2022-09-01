@@ -1918,7 +1918,7 @@ Fail if element does not exist</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Any = 'AUTO'</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em>, <em class="sig-param">user_agent: Optional[str] = None</em>, <em class="sig-param">download: Any = 'AUTO'</em>, <em class="sig-param">options: Union[selenium.webdriver.common.options.ArgOptions</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span> &#x2192; Union[str, int]<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Any = 'AUTO'</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em>, <em class="sig-param">user_agent: Optional[str] = None</em>, <em class="sig-param">download: Any = 'AUTO'</em>, <em class="sig-param">options: Union[selenium.webdriver.common.options.ArgOptions</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">port: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; Union[str, int]<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to open a browser on the user’s device from a set of
 supported browsers. Automatically downloads a corresponding webdriver
 if none is already installed.</p>
@@ -1936,12 +1936,16 @@ with the <code class="docutils literal notranslate"><span class="pre">user_agent
 class instance (e.g. <code class="docutils literal notranslate"><span class="pre">ChromeOptions</span></code>) or being passed as string:
 <cite>add_argument(“–incognito”)</cite>. (multiple arguments should be separated with
 <cite>;</cite>)</p>
+<p>A custom <code class="docutils literal notranslate"><span class="pre">port</span></code> can be provided to start the browser without a random one.
+Make sure you provide every time a unique system-available local port if you
+plan to have multiple such browsers running in parallel.</p>
 <p>Example:</p>
 <div class="line-block">
 <div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> |</div>
 <div class="line">${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |</div>
 <div class="line">Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |</div>
 <div class="line">Open Available Browser | ${URL} | options=add_argument(“user-data-dir=path/to/data”);add_argument(“–incognito”) |</div>
+<div class="line">Open Available Browser | ${URL} | port=${8888} |</div>
 </div>
 <p>== Browser order ==</p>
 <p>The default order of supported browsers is based on the operating system
