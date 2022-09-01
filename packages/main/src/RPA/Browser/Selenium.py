@@ -653,7 +653,7 @@ class Selenium(SeleniumLibrary):
         | ${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |
         | Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |
         | Open Available Browser | ${URL} | options=add_argument("user-data-dir=path/to/data");add_argument("--incognito") |
-        | Open Available Browser | ${URL} | port=8888 |
+        | Open Available Browser | ${URL} | port=${8888} |
 
         == Browser order ==
 
@@ -911,7 +911,7 @@ class Selenium(SeleniumLibrary):
 
         kwargs = {}
         if port:
-            kwargs["port"] = port
+            kwargs["port"] = int(port)
         if browser == "chrome":
             self._set_chrome_options(
                 kwargs,
