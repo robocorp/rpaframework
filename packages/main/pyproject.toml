@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "16.0.0"
+version = "16.1.0"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -41,7 +41,7 @@ rpaframework-core = "^10.0.0"
 rpaframework-dialogs = "^4.0.0"
 rpaframework-pdf = "^5.0.0"
 rpaframework-recognition = { version = "^5.0.0", optional = true }
-rpaframework-windows = { version = "^6.0.0", platform = "win32" }
+rpaframework-windows = { version = "^6.0.1", platform = "win32" }
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
