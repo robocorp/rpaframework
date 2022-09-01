@@ -395,3 +395,17 @@ Tree printing and controlled anchor cleanup
     #  should get the Desktop element only.
     ${elem} =    Get Element
     Should Be Equal     ${elem.name}     Desktop 1
+
+
+Click Buttons With Offset
+    [Documentation]     Clicks all the numeric buttons in Calculator
+
+    Windows Run   Calc
+    Control Window      subname:Calc
+    @{buttons} =    Get Elements    id:NumberPad > class:Button
+    FOR     ${button}   IN      @{buttons}
+        ${is_numeric} =     Evaluate    "num" in "${button.item.AutomationId}"
+        IF    ${is_numeric}
+            Click   ${button}   wait_time=0.2
+        END
+    END

@@ -7,6 +7,8 @@ Release notes
 
 - Library **RPA.Browser.Selenium** (:issue:`615`): Keyword ``Open Available Browser``
   supports passing a custom `port` to open the browser on.
+- Library **RPA.Windows** (:issue:`609`): Fix clicking sibling elements retrieved with
+  keyword ``Get Elements``. (previous bug with `robocorp_click_offset`)
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
