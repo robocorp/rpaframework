@@ -101,7 +101,7 @@ Open In Incognito With Custom Options
     END
 
     Open Available Browser    https://robocorp.com    browser_selection=Chrome
-    ...     headless=${True}    options=${options}
+    ...     headless=${True}    options=${options}  port=${18888}
 
     ${visible} =    Is Element Visible      xpath://button[2]
     Should Be True    ${visible}

@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+16.1.0 - 01 Sep 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`615`): Keyword ``Open Available Browser``
+  supports passing a custom `port` to open the browser on.
+
 16.0.0 - 31 Aug 2022
 --------------------
 
