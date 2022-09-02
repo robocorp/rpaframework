@@ -5,7 +5,7 @@ import shutil
 from invoke import task, Collection
 
 from invocations import shell, config
-from invocations.util import REPO_ROOT
+from invocations.util import REPO_ROOT, MAIN_PACKAGE, safely_load_config
 
 EXCLUDES = [
     "RPA.scripts*",
@@ -81,33 +81,31 @@ def build_docs(ctx):
     ``docs.target``, if they are missing, they are set to default.
     """
     if getattr(ctx, "is_meta", False):
-        try:
-            docs_source = Path(ctx.docs.source)
-        except AttributeError:
-            docs_source = DOCS_SOURCE_DIR
-        try:
-            docs_target = Path(ctx.docs.target)
-        except AttributeError:
-            docs_target = DOCS_BUILD_DIR
+        docs_source = Path(safely_load_config(ctx, "ctx.docs.source", DOCS_SOURCE_DIR))
+        docs_target = Path(safely_load_config(ctx, "ctx.docs.target", DOCS_BUILD_DIR))
+        main_package = Path(safely_load_config(ctx, "ctx.main_package", MAIN_PACKAGE))
         shell.sphinx(ctx, f"-M clean {docs_source} {docs_target}")
         shell.meta_tool(
-            ctx, "todos", "packages/main/src", "docs/source/contributing/todos.rst"
+            ctx,
+            "todos",
+            main_package / "src",
+            docs_source / "contributing" / "todos.rst",
         )
         shell.meta_tool(
             ctx,
             "merge",
-            "docs/source/json/",
-            "docs/source/include/latest.json",
+            docs_source / "json",
+            docs_source / "include" / "latest.json",
         )
         shell.sphinx(ctx, f"-b html -j auto {DOCS_SOURCE_DIR} {DOCS_BUILD_DIR}")
         shell.meta_tool(ctx, "rss")
 
 
-@task(aliases=["local_docs"])
+@task(aliases=["local_docs", "host", "local"])
 def host_local_docs(ctx):
     """Hosts library documentation on a local http server. Navigate to
     localhost:8000 to browse."""
-    shell.run_in_venv(ctx, "python -m http.server -d docs/build/html/")
+    shell.run_in_venv(ctx, "python", "-m http.server -d docs/build/html/")
 
 
 @task(aliases=["changelog"])

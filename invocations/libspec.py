@@ -37,8 +37,9 @@ def _modify_libspec_files(package_dir: Path):
         Path(outfilename).rename(target_file)
 
 
-@task(aliases=["build"])
+@task(aliases=["build"], default=True)
 def build_libspec(ctx, package_dir=None):
+    """Create library spec files for the package with docgen."""
     if getattr(ctx, "is_meta", False):
         shell.invoke_each(ctx, "build_libspec")
     else:
@@ -46,15 +47,16 @@ def build_libspec(ctx, package_dir=None):
             package_dir = Path(ctx.package_dir)
         exclude_strings = " ".join(DOCGEN_EXCLUDES)
         command = (
-            "run docgen --no-patches --relative-source --format libspec --output src "
+            "--no-patches --relative-source --format libspec --output src "
             f"{exclude_strings} rpaframework"
         )
-        shell.poetry(ctx, command)
+        shell.run_in_venv(ctx, "docgen", command)
         _modify_libspec_files(package_dir)
 
 
 @task(aliases=["clean"])
 def clean_libspec(ctx, package_dir=None):
+    """Remove all generated ``*.libspec`` files."""
     if getattr(ctx, "is_meta", False):
         shell.invoke_each(ctx, "clean_libspec")
     else:

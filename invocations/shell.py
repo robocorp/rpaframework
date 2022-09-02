@@ -1,7 +1,8 @@
 import os
 import platform
 from pathlib import Path
-from invoke import Context
+import re
+from invoke import Context, PlatformError
 from colorama import Fore, Style
 
 from invocations.util import REPO_ROOT, get_package_paths, remove_blank_lines
@@ -51,9 +52,10 @@ def sphinx(ctx: Context, command: str, **kwargs):
     return run_in_venv(ctx, SPHINX, command, **kwargs)
 
 
-def docgen(ctx: Context, command: str, **kwargs):
+def docgen(ctx: Context, command: str, *flags, **kwargs):
     """Execute a docgen command using the venv"""
-    return run_in_venv(ctx, DOCGEN, command, **kwargs)
+    cmd = f"{' '.join(flags)} {command}"
+    return run_in_venv(ctx, DOCGEN, cmd, **kwargs)
 
 
 def git(ctx: Context, command: str, **kwargs):
@@ -75,7 +77,7 @@ def meta_tool(ctx: Context, tool: str, *args, command: str = None, **kwargs):
     return run_in_venv(
         ctx,
         PYTHON_EXECUTOR,
-        f"{tool_path} {' '.join(args) if args else command}",
+        f"{tool_path} {' '.join([str(a) for a in args]) if args else command}",
         **kwargs,
     )
 
@@ -103,7 +105,7 @@ def invoke_each(ctx: Context, command, **kwargs):
         result = promise.join()
         print(Fore.BLUE + f"Results from 'invoke {command}' for package '{package}':")
         print(Style.RESET_ALL + remove_blank_lines(result.stdout))
-        if result.stderr:
+        if hasattr(result, "stderr"):
             print(remove_blank_lines(result.stderr))
         print(os.linesep)
         results.append(result)

@@ -6,25 +6,42 @@ import platform
 from invoke import Collection
 from invocations import analysis, build, config, docs, libspec
 
-# NAMESPACE CONSTRUCTION
-# ROOT NAMESPACE
-ns = Collection()
-# configure root namespace
-ns.configure({"run": {"echo": True}})
+DEFAULT_NS_CONFIGURATION = {"run": {"echo": True}}
 if platform.system() != "Windows":
-    ns.configure({"run": {"pty": True}})
+    DEFAULT_NS_CONFIGURATION["run"]["pty"] = True
 
-# INSTALL NAMESPACE
-ns.add_collection(Collection.from_module(config, "install"))
 
-# DOCS NAMESPACE
-ns.add_collection(Collection.from_module(docs))
+def create_namespace(is_meta=False):
+    """Creates the standard namespace used throughout this meta-package.
 
-# LIBSPEC NAMESPACE
-ns.add_collection(Collection.from_module(libspec))
+    This function should be used in a ``tasks.py`` at the root of
+    your package, for an example, please review the file
+    ``/packages/main/tasks.py``.
 
-# CODE NAMESPACE
-ns.add_collection(Collection.from_module(analysis, "code"))
+    Alternate namespace setups can be created by importing the
+    individual modules and/or task as necessary and settings them
+    to a namespace created in your ``tasks.py``.
+    """
+    # NAMESPACE CONSTRUCTION
+    # ROOT NAMESPACE
+    ns = Collection()
+    # configure root namespace
+    ns.configure(DEFAULT_NS_CONFIGURATION)
 
-# BUILD NAMESPACE
-ns.add_collection(Collection.from_module(build))
+    # INSTALL NAMESPACE
+    ns.add_collection(Collection.from_module(config, "install"))
+
+    # DOCS NAMESPACE
+    if is_meta:
+        ns.add_collection(Collection.from_module(docs))
+
+    # LIBSPEC NAMESPACE
+    ns.add_collection(Collection.from_module(libspec))
+
+    # CODE NAMESPACE
+    ns.add_collection(Collection.from_module(analysis, "code"))
+
+    # BUILD NAMESPACE
+    ns.add_collection(Collection.from_module(build))
+
+    return ns

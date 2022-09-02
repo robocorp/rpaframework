@@ -2,12 +2,14 @@
 of the code base.
 """
 import platform
+import os
 from pathlib import Path
+from colorama import Fore, Style
 
 from invoke import task, call, ParseError, Collection
 
 from invocations import shell, config
-from invocations.util import REPO_ROOT
+from invocations.util import REPO_ROOT, safely_load_config, remove_blank_lines
 
 CONFIG = REPO_ROOT / "config"
 FLAKE8_CONFIG = CONFIG / "flake8"
@@ -30,14 +32,12 @@ def lint(ctx):
     if getattr(ctx, "is_meta", False):
         shell.invoke_each(ctx, "lint")
     else:
-        try:
-            flake8_config = Path(ctx.linters.flake8)
-        except AttributeError:
-            flake8_config = FLAKE8_CONFIG
-        try:
-            pylint_config = Path(ctx.linters.pylint)
-        except AttributeError:
-            pylint_config = PYLINT_CONFIG
+        flake8_config = Path(
+            safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG)
+        )
+        pylint_config = Path(
+            safely_load_config(ctx, "ctx.linters.pylint", PYLINT_CONFIG)
+        )
 
         shell.poetry(ctx, "run black --diff --check src")
         shell.poetry(ctx, f"run flake8 --config {flake8_config} src")
@@ -50,42 +50,39 @@ def format_code(ctx):
     if getattr(ctx, "is_meta", False):
         shell.invoke_each(ctx, "format-code")
     else:
-        shell.run_in_venv(ctx, "black src")
+        shell.run_in_venv(ctx, "black", "src")
 
 
 @task(config.install, aliases=["typecheck"])
 def type_check(ctx, strict=False):
     """Run static type checks"""
-    shell.run_in_venv(ctx, f"mypy src{' --strict' if strict else ''}")
+    shell.run_in_venv(ctx, "mypy", f"src{' --strict' if strict else ''}")
 
 
 @task(config.install, aliases=["testpython"])
-def test_python(ctx, asynchronous=None):
+def test_python(ctx, _asynchronous=None):
     """Executes unit tests using pytest."""
-    try:
-        python_test_source = Path(ctx.tests.python.source)
-    except AttributeError:
-        python_test_source = PYTHON_TEST_SOURCE
+    python_test_source = Path(
+        safely_load_config(ctx, "ctx.tests.python.source", PYTHON_TEST_SOURCE)
+    )
     return shell.run_in_venv(
-        ctx, "pytest", python_test_source, asynchronous=asynchronous
+        ctx, "pytest", python_test_source, asynchronous=_asynchronous
     )
 
 
 @task(config.install, aliases=["testrobot"])
-def test_robot(ctx, robot=None, task=None, asynchronous=None):
+def test_robot(ctx, robot=None, task=None, _asynchronous=None):
     """Run Robot Framework tests."""
-    try:
-        robot_test_source = Path(ctx.tests.robot.source)
-    except AttributeError:
-        robot_test_source = ROBOT_TEST_SOURCE
-    try:
-        robot_test_output = Path(ctx.tests.robot.output)
-    except AttributeError:
-        robot_test_output = ROBOT_TEST_OUTPUT
-    try:
-        robot_test_resources = Path(ctx.tests.robot.resources)
-    except AttributeError:
-        robot_test_resources = ROBOT_TEST_RESOURCES
+    # TODO: consider running robot tests using rcc, robot.yaml and conda.yaml.
+    robot_test_source = Path(
+        safely_load_config(ctx, "ctx.tests.robot.source", ROBOT_TEST_SOURCE)
+    )
+    robot_test_output = Path(
+        safely_load_config(ctx, "ctx.tests.robot.output", ROBOT_TEST_OUTPUT)
+    )
+    robot_test_resources = Path(
+        safely_load_config(ctx, "ctx.tests.robot.resources", ROBOT_TEST_RESOURCES)
+    )
 
     exclude_list = EXCLUDE_ROBOT_TASKS[:]  # copy of the original list
     if task:
@@ -100,21 +97,36 @@ def test_robot(ctx, robot=None, task=None, asynchronous=None):
     if robot:
         robot_test_source /= f"test_{robot}.robot"
     cmds = f"{arguments} {exclude_str}{robot_task}{robot_test_source}"
-    return shell.run_in_venv(ctx, "robot", cmds, asynchronous=asynchronous)
+    return shell.run_in_venv(ctx, "robot", cmds, asynchronous=_asynchronous)
+
+
+def _test_async(ctx, python=True, robot=True):
+    promises = {}
+    results = {}
+    if python:
+        promises["Python"] = test_python(ctx, _asynchronous=True)
+    if robot:
+        promises["Robot"] = test_robot(ctx, _asynchronous=True)
+    print("\nTests started asynchronously, please wait for them to finish...\n")
+    for test, promise in promises.items():
+        results[test] = promise.join()
+    for test, result in results.items():
+        print(Fore.BLUE + f"Results from {test} tests:")
+        print(Style.RESET_ALL + remove_blank_lines(result.stdout))
+        if hasattr(result, "stderr"):
+            print(remove_blank_lines(result.stderr))
+        print(os.linesep)
 
 
 @task(config.install, default=True)
-def test(ctx, python=True, robot=True, asynchronous=None):
+def test(ctx, python=True, robot=True, asynchronous=False):
     """Run Python unit tests and Robot Framework tests, flags can
     be used to disable either set of tests. Tests can be ran
     in parallel by setting ``--asynchronous`` or by configuration.
     """
-    try:
-        run_async = bool(ctx.tests.asynchronous)
-    except AttributeError:
-        run_async = bool(asynchronous) or False
+    run_async = bool(safely_load_config(ctx, "ctx.tests.asynchronous", asynchronous))
 
-    if getattr(ctx, "is_meta", False):
+    if safely_load_config(ctx, "is_meta"):
         args = (
             "--python" if python else "--no-python",
             "--robot" if robot else "--no-robot",
@@ -122,13 +134,7 @@ def test(ctx, python=True, robot=True, asynchronous=None):
         shell.invoke_each(ctx, f"test {' '.join(args)}")
 
     elif run_async:
-        test_promises = []
-        if python:
-            test_promises.append(test_python(ctx, asynchronous=True))
-        if robot:
-            test_promises.append(test_robot(ctx, asynchronous=True))
-        for promise in test_promises:
-            promise.join()
+        _test_async(ctx, python, robot)
 
     else:
         if python:

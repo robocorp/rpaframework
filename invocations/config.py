@@ -2,6 +2,7 @@
 environment.
 """
 
+from cgitb import reset
 import platform
 import os
 import re
@@ -13,7 +14,12 @@ import toml
 from invoke import task, call, ParseError, Collection
 
 from invocations import shell
-from invocations.util import REPO_ROOT, get_package_paths
+from invocations.util import (
+    MAIN_PACKAGE,
+    REPO_ROOT,
+    get_package_paths,
+    safely_load_config,
+)
 
 VENV_CLEAN_PATTERNS = [
     ".venv",
@@ -43,7 +49,6 @@ PACKAGE_VENV_CLEAN_PATTERNS = [
     "**/*.egg-info",
 ]
 
-
 EXPECTED_POETRY_CONFIG = {
     "virtualenvs": {"in-project": True, "create": True, "path": "null"},
     "experimental": {"new-installer": True},
@@ -65,6 +70,18 @@ def is_poetry_configured(config_path: Path) -> bool:
         )
     except FileNotFoundError:
         return False
+
+
+def get_poetry_config_path(ctx):
+    """Gets a path to the poetry configuration file depending on
+    if context is_meta or not.
+    """
+    if safely_load_config(ctx, "is_meta", False):
+        return REPO_ROOT / "poetry.toml"
+    else:
+        return (
+            Path(safely_load_config(ctx, "package_dir", MAIN_PACKAGE)) / "poetry.toml"
+        )
 
 
 @task
@@ -114,22 +131,25 @@ def clean(ctx, venv=True, build=True, test=True, docs=False, all=False):
 @task
 def setup_poetry(
     ctx,
+    devpi_url=None,
     username=None,
     password=None,
     token=None,
-    devpi_url=None,
 ):
     """Configure local poetry installation for development.
-    If you provide ``username`` and ``password``, you can
-    also configure your pypi access. Our version of poetry
-    uses ``keyring`` so the password is not stored in the
-    clear.
 
-    Alternatively, you can set ``token`` to use a pypi token, be sure
+    You can configure a dev PyPI repository if you provide
+    it via argument ``--devpi-url``. If doing so, you must
+    also provide credentials either as ``--username`` and
+    ``--password`` or ``--token``. Poetry uses ``keyring`` so
+    the password is not stored in the clear.
+
+    When setting ``--token`` to use a pypi token, be sure
     to include the ``pypi-`` prefix in the token.
 
-    NOTE: Robocorp developers can use ``https://devpi.robocorp.cloud/ci/test``
-    as the devpi_url and obtain credentials from the Robocorp internal
+    NOTE: Internal Robocorp developers can use
+    ``https://devpi.robocorp.cloud/ci/test`` as the devpi_url
+    and obtain credentials from the Robocorp internal
     documentation.
     """
     shell.poetry(ctx, "config -n --local virtualenvs.in-project true")
@@ -138,33 +158,53 @@ def setup_poetry(
     shell.poetry(ctx, "config -n --local experimental.new-installer true")
     shell.poetry(ctx, "config -n --local installer.parallel true")
     if devpi_url:
+        if username and password and token:
+            raise ParseError(
+                "You cannot specify username-password combination and token simultaneously"
+            )
+        if username and password:
+            shell.poetry(ctx, f"config -n http-basic.pypi {username} {password}")
+        else:
+            raise ParseError("You must specify both username and password")
+        if token:
+            shell.poetry(ctx, f"config -n pypi-token.pypi {token}")
+        current_config = toml.load(get_poetry_config_path(ctx))
+        if current_config.get("repositories", {}).get("devpi", {}).get("url"):
+            shell.poetry(ctx, "config -n --local --unset repositories.devpi.url")
         shell.poetry(
             ctx,
             f"config -n --local repositories.devpi.url '{devpi_url}'",
         )
-    if username and password and token:
-        raise ParseError(
-            "You cannot specify username-password combination and token simultaneously"
-        )
-    if username and password:
-        shell.poetry(ctx, f"config -n http-basic.pypi {username} {password}")
     else:
-        raise ParseError("You must specify both username and password")
-    if token:
-        shell.poetry(ctx, f"config -n pypi-token.pypi {token}")
+        print(
+            "WARNING: Dev PyPI repository not configured, invoke "
+            "setup-poetry with the --devpi-url and --username and "
+            "--password or --token parameters to configure."
+        )
 
 
-@task(default=True)
-def install(ctx, reset=False):
+@task(default=True, iterable=["extra"])
+def install(ctx, reset=False, extra=None, all_extras=False):
     """Install development environment. If ``reset`` is set,
     poetry will remove untracked packages, reverting the
-    .venv to the lock file.
+    .venv to the lock file. You can install package extras
+    as defined in the ``pyproject.toml`` with the ``--extra``
+    parameter. You can repeat this parameter for each extra
+    you wish to install. Alternatively, you can specify
+    ``--all-extras`` to install with all extras.
 
     If ``reset`` is attempted before an initial install, it
     is ignored.
     """
-    if not is_poetry_configured(REPO_ROOT / "poetry.toml"):
+    poetry_config_path = get_poetry_config_path(ctx)
+    if not is_poetry_configured(poetry_config_path):
         call(setup_poetry)
+    if all_extras:
+        extras_cmd = f" --all-extras"
+    elif extra:
+        extras_cmd = f" --extras \"{' '.join(extra)}\""
+    else:
+        extras_cmd = ""
     if reset:
         our_packages = get_package_paths()
         with ctx.prefix(shell.ACTIVATE):
@@ -182,16 +222,17 @@ def install(ctx, reset=False):
             )
             for local_package in local_packages:
                 shell.pip(ctx, f"uninstall {local_package} -y")
-        shell.poetry(ctx, "install --remove-untracked")
+        shell.poetry(ctx, f"install --remove-untracked{extras_cmd}")
     else:
-        shell.poetry(ctx, "install")
+        shell.poetry(ctx, f"install{extras_cmd}")
 
 
-@task(pre=[call(install, reset=True)], iterable=["package"])
-def install_local(ctx, package):
-    """Installs local environment with provided package in local
-    editable form instead of from PyPi. This task always resets
-    the virtual environment first.
+@task(iterable=["package", "extra'"], aliases=["local"])
+def install_local(ctx, package, extra=None, all_extras=False):
+    """Installs local environment with packages in local editable form
+    instead of from PyPi. This task always resets the virtual
+    environment first. You can install package extras as well,
+    see help for ``invoke install`` for further documentation.
 
     Package must exist as a sub-folder module in ``./packages``,
     see those packages' ``pyproject.toml`` for package names.
@@ -209,6 +250,7 @@ def install_local(ctx, package):
     that is a cross between all local packages requested. It may
     not be stable.
     """
+    call(install, reset=True, extra=extra)
     valid_packages = get_package_paths()
     if not package:
         package = valid_packages.keys()
@@ -221,15 +263,15 @@ def install_local(ctx, package):
                 shell.poetry(ctx, "install")
 
 
-@task
+@task(aliases=["node"])
 def install_node(ctx):
     """Installs and configures a node instance in the poetry .venv.
     Primarily used for ``Playwright`` tasks.
     """
-    shell.run_in_venv(ctx, "rfbrowser init --skip-browsers")
+    shell.run_in_venv(ctx, "rfbrowser", "init --skip-browsers")
 
 
-@task
+@task(aliases=["hooks"])
 def install_hooks(ctx):
     """Installs standard git hooks."""
     shell.git(ctx, f"config core.hooksPath {GIT_HOOKS_DIR}")
