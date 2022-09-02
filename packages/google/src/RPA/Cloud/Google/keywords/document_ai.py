@@ -1,14 +1,12 @@
-from multiprocessing.sharedctypes import Value
-from typing import Dict, Optional
+from typing import Optional
 from google.api_core.client_options import ClientOptions
 from google.cloud import documentai_v1 as documentai
-from RPA.core.helpers import required_param
 
 from . import LibraryContext, keyword
 
 
 class DocumentAIKeywords(LibraryContext):
-    """Keywords for Google Cloud Natural Language API"""
+    """Keywords for Google Cloud Document AI API"""
 
     def __init__(self, ctx):
         super().__init__(ctx)
