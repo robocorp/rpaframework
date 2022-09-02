@@ -7,6 +7,7 @@ from robotlibcore import DynamicCore
 from .keywords import (
     AppsScriptKeywords,
     BaseKeywords,
+    DocumentAIKeywords,
     DriveKeywords,
     GmailKeywords,
     NaturalLanguageKeywords,
@@ -256,6 +257,7 @@ class Google(DynamicCore):
         libraries = [
             AppsScriptKeywords(self),
             BaseKeywords(self),
+            DocumentAIKeywords(self),
             DriveKeywords(self),
             GmailKeywords(self),
             NaturalLanguageKeywords(self),
