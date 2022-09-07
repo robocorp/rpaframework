@@ -13,7 +13,7 @@ from collections import OrderedDict
 from functools import partial
 from itertools import product
 from pathlib import Path
-from typing import Any, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -35,7 +35,8 @@ from RPA.core import notebook
 from RPA.core import webdriver as core_webdriver
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
 
-OptionsType = Union[ArgOptions, str]
+
+OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List, Dict]]]
 AliasType = Union[str, int]
 
 
@@ -103,6 +104,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         executable_path: Optional[str] = None,
     ) -> str:
         url = ensure_scheme(url, self._default_scheme)
+        options: ArgOptions = self.ctx.normalize_options(options, browser=browser)
         return super().open_browser(
             url=url,
             browser=browser,
@@ -638,10 +640,11 @@ class Selenium(SeleniumLibrary):
         certain user-agent string for Selenium, which can be overridden
         with the ``user_agent`` argument.
 
-        Webdriver creation can be customized with ``options``. This accepts either a
-        class instance (e.g. ``ChromeOptions``) or being passed as string:
-        `add_argument("--incognito")`. (multiple arguments should be separated with
-        `;`)
+        WebDriver creation can be customized with ``options``. This accepts a class
+        instance (e.g. ``ChromeOptions``), a string like
+        `add_argument("--incognito");set_capability("acceptInsecureCerts", True)` or
+        even a simple dictionary like:
+        `{"arguments": ["--incognito"], "capabilities": {"acceptInsecureCerts": True}}`
 
         A custom ``port`` can be provided to start the browser without a random one.
         Make sure you provide every time a unique system-available local port if you
@@ -875,7 +878,62 @@ class Selenium(SeleniumLibrary):
             kwargs["service_log_path"] = "chromedriver.log"
             kwargs["service_args"] = ["--verbose"]
 
-    def _get_driver_args(
+    def _set_option(
+        self, name: str, values: Union[str, List, Dict], *, method: Callable
+    ):
+        if name == "arguments":
+            if isinstance(values, str):
+                values = [value.strip() for value in values.split(",")]
+            for value in values:
+                self.logger.debug("Setting argument: %s", value)
+                method(value)
+        elif name == "capabilities":
+            if isinstance(values, str):
+                values, _values = {}, values
+                for item in _values.split(","):
+                    key, val = item.strip().split(":")
+                    values[key.strip()] = val.strip()
+            for key, val in values.items():
+                self.logger.debug("Setting capability: %s=%s", key, val)
+                method(key, val)
+        elif name == "binary_location":
+            self.logger.debug("Setting binary location: %s", values)
+            method(values)
+
+    def normalize_options(
+        self, options: Optional[OptionsType], *, browser: str
+    ) -> ArgOptions:
+        """Normalize `options` to `<Browser>Options` instance."""
+        browser = browser.lower()
+        options_obj = self.AVAILABLE_OPTIONS[browser]()
+        if not options:
+            # Empty options object.
+            return options_obj
+
+        if isinstance(options, dict):
+            option_method_map = {
+                "arguments": options_obj.add_argument,
+                "capabilities": options_obj.set_capability,
+                "binary_location": lambda path: setattr(
+                    options_obj, "binary_location", path
+                ),
+            }
+            for name, values in options.items():
+                if name not in option_method_map:
+                    raise TypeError(
+                        f"Option type {name!r} not supported, choose from "
+                        f"{list(option_method_map)} or try providing them as string "
+                        "or object"
+                    )
+                method = option_method_map[name]
+                self._set_option(name, values, method=method)
+
+            return options_obj
+
+        # String or object based provided options.
+        return SeleniumOptions().create(self.BROWSER_NAMES[browser], options)
+
+    def _get_driver_args(  # noqa: C901
         self,
         browser: str,
         headless: bool = False,
@@ -894,13 +952,7 @@ class Selenium(SeleniumLibrary):
         if browser not in self.AVAILABLE_OPTIONS:
             return {}, []
 
-        # Normalize `options` to `<Browser>Options` instance.
-        if options:
-            options: ArgOptions = SeleniumOptions().create(
-                self.BROWSER_NAMES[browser], options
-            )
-        else:
-            options: ArgOptions = self.AVAILABLE_OPTIONS[browser]()
+        options: ArgOptions = self.normalize_options(options, browser=browser)
         headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
         if headless:
             self._set_headless_options(browser, options)
@@ -923,6 +975,18 @@ class Selenium(SeleniumLibrary):
             )
         elif use_profile:
             self.logger.warning("Profiles are supported with Chrome only")
+
+        try:
+            path = options.binary_location or None
+        except AttributeError:
+            path = None
+        if path:
+            self.logger.warning(
+                f"The custom provided browser ({path}) might be "
+                "incompatible with the default downloaded webdriver. Use "
+                "``Open Browser`` with these `options` and a compatible "
+                "`executable_path` if running into issues."
+            )
 
         kwargs["options"] = options
         return kwargs, options.arguments
