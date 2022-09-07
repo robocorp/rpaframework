@@ -641,8 +641,8 @@ class Selenium(SeleniumLibrary):
         with the ``user_agent`` argument.
 
         WebDriver creation can be customized with ``options``. This accepts a class
-        instance (e.g. ``ChromeOptions``) a string like
-        `add_argument("--incognito");set_capability('acceptInsecureCerts', True)` or
+        instance (e.g. ``ChromeOptions``), a string like
+        `add_argument("--incognito");set_capability("acceptInsecureCerts", True)` or
         even a simple dictionary like:
         `{"arguments": ["--incognito"], "capabilities": {"acceptInsecureCerts": True}}`
 
