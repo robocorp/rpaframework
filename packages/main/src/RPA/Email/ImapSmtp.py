@@ -3,13 +3,13 @@ import logging
 import os
 import re
 import time
-
 # email package declares these properties in the __all__ definition but
 # pylint ignores that
 from email import encoders, message_from_bytes  # pylint: disable=E0611
 from email.charset import QP, add_charset  # pylint: disable=E0611
 from email.generator import Generator  # pylint: disable=E0611
-from email.header import Header, decode_header, make_header  # pylint: disable=E0611
+from email.header import (Header, decode_header,  # pylint: disable=E0611
+                          make_header)
 from email.message import Message  # pylint: disable=E0611
 from email.mime.base import MIMEBase  # pylint: disable=E0611
 from email.mime.image import MIMEImage  # pylint: disable=E0611
@@ -20,14 +20,8 @@ from functools import wraps
 from imaplib import IMAP4_SSL
 from io import StringIO
 from pathlib import Path
-from smtplib import (
-    SMTP,
-    SMTP_SSL,
-    SMTPConnectError,
-    SMTPNotSupportedError,
-    SMTPServerDisconnected,
-    ssl,
-)
+from smtplib import (SMTP, SMTP_SSL, SMTPConnectError, SMTPNotSupportedError,
+                     SMTPServerDisconnected, ssl)
 from typing import Any, BinaryIO, List, Optional, Tuple, Union
 
 from htmldocx import HtmlToDocx
@@ -455,6 +449,7 @@ class ImapSmtp:
         :param images: list of filepaths for inline images
         :param cc: list of email addresses for email 'cc' field
         :param bcc: list of email addresses for email 'bcc' field
+        :param attachment_position: content position for attachment, default `top`
 
         Valid sender values:
 
@@ -471,6 +466,13 @@ class ImapSmtp:
             ...           subject=Greetings Software Robot Developer
             ...           body=${email_body}
             ...           attachments=${CURDIR}${/}report.pdf
+
+            # Fixing attachments to the bottom of the content
+            Send Message  sender@domain.com  recipient@domain.com
+            ...           subject=Greetings Software Robot Developer
+            ...           body=${email_body}
+            ...           attachments=${CURDIR}${/}report.pdf        
+            ...           attachment_position=bottom
         """
         evaluated_attachment_position = to_attachment_position(attachment_position)
         add_charset(self.encoding, QP, QP, self.encoding)
