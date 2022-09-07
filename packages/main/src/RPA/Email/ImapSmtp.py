@@ -32,12 +32,29 @@ from typing import Any, BinaryIO, List, Optional, Tuple, Union
 
 from htmldocx import HtmlToDocx
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-
 from RPA.Email.common import counter_duplicate_path
 from RPA.RobotLogListener import RobotLogListener
 
-
 FilePath = Union[str, Path]
+
+
+class AttachmentPosition(Enum):
+    """Possible attachment positions in the message content."""
+
+    TOP = 1  # Default
+    BOTTOM = 2
+
+
+def to_attachment_position(value):
+    """Convert value to AttachmentPosition enum."""
+    if isinstance(value, AttachmentPosition):
+        return value
+
+    sanitized = str(value).upper().strip().replace(" ", "_")
+    try:
+        return AttachmentPosition[sanitized]
+    except KeyError as err:
+        raise ValueError(f"Unknown AttachmentPosition: {value}") from err
 
 
 class Action(Enum):
@@ -425,6 +442,7 @@ class ImapSmtp:
         images: Optional[Union[List[str], str]] = None,
         cc: Optional[Union[List[str], str]] = None,
         bcc: Optional[Union[List[str], str]] = None,
+        attachment_position: Optional[AttachmentPosition] = AttachmentPosition.TOP,
     ) -> bool:
         """Send SMTP email
 
@@ -437,6 +455,7 @@ class ImapSmtp:
         :param images: list of filepaths for inline images
         :param cc: list of email addresses for email 'cc' field
         :param bcc: list of email addresses for email 'bcc' field
+        :param attachment_position: content position for attachment, default `top`
 
         Valid sender values:
 
@@ -453,14 +472,23 @@ class ImapSmtp:
             ...           subject=Greetings Software Robot Developer
             ...           body=${email_body}
             ...           attachments=${CURDIR}${/}report.pdf
+
+            # Fixing attachments to the bottom of the content
+            Send Message  sender@domain.com  recipient@domain.com
+            ...           subject=Greetings Software Robot Developer
+            ...           body=${email_body}
+            ...           attachments=${CURDIR}${/}report.pdf
+            ...           attachment_position=bottom
         """
+        evaluated_attachment_position = to_attachment_position(attachment_position)
         add_charset(self.encoding, QP, QP, self.encoding)
         to, attachments, images = self._handle_message_parameters(
             recipients, attachments, images
         )
         msg = MIMEMultipart()
 
-        self._add_attachments_to_msg(attachments, msg)
+        if evaluated_attachment_position == AttachmentPosition.TOP:
+            self._add_attachments_to_msg(attachments, msg)
 
         sender = sender.encode("idna").decode("ascii")
         msg_to = ",".join(to).encode("idna").decode("ascii")
@@ -473,6 +501,25 @@ class ImapSmtp:
             recipients += cc if isinstance(cc, list) else cc.split(",")
         if bcc:
             recipients += bcc if isinstance(bcc, list) else bcc.split(",")
+
+        self._add_message_content(html, images, body, msg)
+
+        if evaluated_attachment_position == AttachmentPosition.BOTTOM:
+            self._add_attachments_to_msg(attachments, msg)
+
+        # Create a generator and flatten message object to 'file’
+        str_io = StringIO()
+        g = Generator(str_io, False)
+        g.flatten(msg)
+        try:
+            if self.smtp_conn is None:
+                self.authorize_smtp()
+            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
+        except Exception as err:
+            raise ValueError(f"Send Message failed: {err}") from err
+        return True
+
+    def _add_message_content(self, html, images, body, msg):
         if html:
             for im in images:
                 im = im.strip()
@@ -497,18 +544,6 @@ class ImapSmtp:
                         f"inline; filename= {imname}",
                     )
                     msg.attach(img)
-
-        # Create a generator and flatten message object to 'file’
-        str_io = StringIO()
-        g = Generator(str_io, False)
-        g.flatten(msg)
-        try:
-            if self.smtp_conn is None:
-                self.authorize_smtp()
-            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
-        except Exception as err:
-            raise ValueError(f"Send Message failed: {err}") from err
-        return True
 
     def _handle_message_parameters(self, recipients, attachments, images):
         if attachments is None:
