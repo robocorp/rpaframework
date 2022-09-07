@@ -640,10 +640,11 @@ class Selenium(SeleniumLibrary):
         certain user-agent string for Selenium, which can be overridden
         with the ``user_agent`` argument.
 
-        Webdriver creation can be customized with ``options``. This accepts either a
-        class instance (e.g. ``ChromeOptions``) or being passed as string:
-        `add_argument("--incognito")`. (multiple arguments should be separated with
-        `;`)
+        WebDriver creation can be customized with ``options``. This accepts a class
+        instance (e.g. ``ChromeOptions``) a string like
+        `add_argument("--incognito");set_capability('acceptInsecureCerts', True)` or
+        even a simple dictionary like:
+        `{"arguments": ["--incognito"], "capabilities": {"acceptInsecureCerts": True}}`
 
         A custom ``port`` can be provided to start the browser without a random one.
         Make sure you provide every time a unique system-available local port if you
@@ -877,7 +878,7 @@ class Selenium(SeleniumLibrary):
             kwargs["service_log_path"] = "chromedriver.log"
             kwargs["service_args"] = ["--verbose"]
 
-    def _set_options(
+    def _set_option(
         self, name: str, values: Union[str, List, Dict], *, method: Callable
     ):
         if name == "arguments":
@@ -895,6 +896,9 @@ class Selenium(SeleniumLibrary):
             for key, val in values.items():
                 self.logger.debug("Setting capability: %s=%s", key, val)
                 method(key, val)
+        elif name == "binary_location":
+            self.logger.debug("Setting binary location: %s", values)
+            method(values)
 
     def normalize_options(
         self, options: Optional[OptionsType], *, browser: str
@@ -910,6 +914,9 @@ class Selenium(SeleniumLibrary):
             option_method_map = {
                 "arguments": options_obj.add_argument,
                 "capabilities": options_obj.set_capability,
+                "binary_location": lambda path: setattr(
+                    options_obj, "binary_location", path
+                ),
             }
             for name, values in options.items():
                 if name not in option_method_map:
@@ -919,14 +926,14 @@ class Selenium(SeleniumLibrary):
                         "or object"
                     )
                 method = option_method_map[name]
-                self._set_options(name, values, method=method)
+                self._set_option(name, values, method=method)
 
             return options_obj
 
         # String or object based provided options.
         return SeleniumOptions().create(self.BROWSER_NAMES[browser], options)
 
-    def _get_driver_args(
+    def _get_driver_args(  # noqa: C901
         self,
         browser: str,
         headless: bool = False,
@@ -968,6 +975,18 @@ class Selenium(SeleniumLibrary):
             )
         elif use_profile:
             self.logger.warning("Profiles are supported with Chrome only")
+
+        try:
+            path = options.binary_location or None
+        except AttributeError:
+            path = None
+        if path:
+            self.logger.warning(
+                f"The custom provided browser ({path}) might be "
+                "incompatible with the default downloaded webdriver. Use "
+                "``Open Browser`` with these `options` and a compatible "
+                "`executable_path` if running into issues."
+            )
 
         kwargs["options"] = options
         return kwargs, options.arguments
