@@ -533,7 +533,7 @@ and <code class="docutils literal notranslate"><span class="pre">NONE</span></co
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.open_browser">
-<code class="sig-name descname">open_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None</em>, <em class="sig-param">browser: str = 'firefox'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">remote_url: Union[bool</em>, <em class="sig-param">str] = False</em>, <em class="sig-param">desired_capabilities: Union[dict</em>, <em class="sig-param">None</em>, <em class="sig-param">str] = None</em>, <em class="sig-param">ff_profile_dir: Union[selenium.webdriver.firefox.firefox_profile.FirefoxProfile</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">options: Union[selenium.webdriver.common.options.ArgOptions</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">service_log_path: Optional[str] = None</em>, <em class="sig-param">executable_path: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.open_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None, browser: str = 'firefox', alias: Optional[str] = None, remote_url: Union[bool, str] = False, desired_capabilities: Union[dict, None, str] = None, ff_profile_dir: Union[selenium.webdriver.firefox.firefox_profile.FirefoxProfile, str, None] = None, options: Union[selenium.webdriver.common.options.ArgOptions, str, Dict[str, Union[str, List, Dict]], None] = None, service_log_path: Optional[str] = None, executable_path: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.open_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens a new browser instance to the optional <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">browser</span></code> argument specifies which browser to use. The
 supported browsers are listed in the table below. The browser names
@@ -1917,8 +1917,14 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Selenium.Selenium.normalize_options">
+<code class="sig-name descname">normalize_options</code><span class="sig-paren">(</span><em class="sig-param">options: Union[selenium.webdriver.common.options.ArgOptions, str, Dict[str, Union[str, List, Dict]], None], *, browser: str</em><span class="sig-paren">)</span> &#x2192; selenium.webdriver.common.options.ArgOptions<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.normalize_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize <cite>options</cite> to <cite>&lt;Browser&gt;Options</cite> instance.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Any = 'AUTO'</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em>, <em class="sig-param">user_agent: Optional[str] = None</em>, <em class="sig-param">download: Any = 'AUTO'</em>, <em class="sig-param">options: Union[selenium.webdriver.common.options.ArgOptions</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">port: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; Union[str, int]<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None, use_profile: bool = False, headless: Any = 'AUTO', maximized: bool = False, browser_selection: Any = 'AUTO', alias: Optional[str] = None, profile_name: Optional[str] = None, profile_path: Optional[str] = None, preferences: Optional[dict] = None, proxy: str = None, user_agent: Optional[str] = None, download: Any = 'AUTO', options: Union[selenium.webdriver.common.options.ArgOptions, str, Dict[str, Union[str, List, Dict]], None] = None, port: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; Union[str, int]<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to open a browser on the user’s device from a set of
 supported browsers. Automatically downloads a corresponding webdriver
 if none is already installed.</p>
@@ -1932,10 +1938,11 @@ enabled with the argument <code class="docutils literal notranslate"><span class
 <p>For certain applications it might also be required to force a
 certain user-agent string for Selenium, which can be overridden
 with the <code class="docutils literal notranslate"><span class="pre">user_agent</span></code> argument.</p>
-<p>Webdriver creation can be customized with <code class="docutils literal notranslate"><span class="pre">options</span></code>. This accepts either a
-class instance (e.g. <code class="docutils literal notranslate"><span class="pre">ChromeOptions</span></code>) or being passed as string:
-<cite>add_argument(“–incognito”)</cite>. (multiple arguments should be separated with
-<cite>;</cite>)</p>
+<p>WebDriver creation can be customized with <code class="docutils literal notranslate"><span class="pre">options</span></code>. This accepts a class
+instance (e.g. <code class="docutils literal notranslate"><span class="pre">ChromeOptions</span></code>), a string like
+<cite>add_argument(“–incognito”);set_capability(“acceptInsecureCerts”, True)</cite> or
+even a simple dictionary like:
+<cite>{“arguments”: [“–incognito”], “capabilities”: {“acceptInsecureCerts”: True}}</cite></p>
 <p>A custom <code class="docutils literal notranslate"><span class="pre">port</span></code> can be provided to start the browser without a random one.
 Make sure you provide every time a unique system-available local port if you
 plan to have multiple such browsers running in parallel.</p>
