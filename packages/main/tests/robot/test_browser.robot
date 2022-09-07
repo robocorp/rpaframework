@@ -113,7 +113,7 @@ Open In Incognito With Custom Options
     END
 
 Open Browser With Dict Options
-    @{args} =   Create List     #--headless
+    @{args} =   Create List     --headless
     &{caps} =   Create Dictionary   acceptInsecureCerts     ${True}
     &{options} =    Create Dictionary   arguments   ${args}     capabilities    ${caps}
 

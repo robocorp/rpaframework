@@ -36,7 +36,7 @@ from RPA.core import webdriver as core_webdriver
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
 
 
-OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List[str]]]]
+OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List, Dict]]]
 AliasType = Union[str, int]
 
 
@@ -914,8 +914,9 @@ class Selenium(SeleniumLibrary):
             for name, values in options.items():
                 if name not in option_method_map:
                     raise TypeError(
-                        f"Option type {name!r} not supported, try providing them as "
-                        "string or object"
+                        f"Option type {name!r} not supported, choose from "
+                        f"{list(option_method_map)} or try providing them as string "
+                        "or object"
                     )
                 method = option_method_map[name]
                 self._set_options(name, values, method=method)
