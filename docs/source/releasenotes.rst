@@ -15,6 +15,11 @@ Release notes
 - Library **RPA.Browser.Selenium** (:issue:`618`): Simplified dict-like `options`
   passing to keywords ``Open Available Browser`` and ``Open Browser``.
 
+16.2.0 - 07 Sep 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp** (:pr:`622`): Add parameter `attachment_position` for keyword ``Send Message``
+
 16.1.0 - 01 Sep 2022
 --------------------
 
