@@ -39,7 +39,9 @@ FilePath = Union[str, Path]
 
 
 class AttachmentPosition(Enum):
-    TOP = 1
+    """Possible attachment positions in the message content."""
+
+    TOP = 1  # Default
     BOTTOM = 2
 
 
@@ -491,6 +493,25 @@ class ImapSmtp:
             recipients += cc if isinstance(cc, list) else cc.split(",")
         if bcc:
             recipients += bcc if isinstance(bcc, list) else bcc.split(",")
+
+        self._add_message_content(html, images, body, msg)
+
+        if evaluated_attachment_position == AttachmentPosition.BOTTOM:
+            self._add_attachments_to_msg(attachments, msg)
+
+        # Create a generator and flatten message object to 'file’
+        str_io = StringIO()
+        g = Generator(str_io, False)
+        g.flatten(msg)
+        try:
+            if self.smtp_conn is None:
+                self.authorize_smtp()
+            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
+        except Exception as err:
+            raise ValueError(f"Send Message failed: {err}") from err
+        return True
+
+    def _add_message_content(self, html, images, body, msg):
         if html:
             for im in images:
                 im = im.strip()
@@ -515,21 +536,6 @@ class ImapSmtp:
                         f"inline; filename= {imname}",
                     )
                     msg.attach(img)
-
-        if evaluated_attachment_position == AttachmentPosition.BOTTOM:
-            self._add_attachments_to_msg(attachments, msg)
-
-        # Create a generator and flatten message object to 'file’
-        str_io = StringIO()
-        g = Generator(str_io, False)
-        g.flatten(msg)
-        try:
-            if self.smtp_conn is None:
-                self.authorize_smtp()
-            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
-        except Exception as err:
-            raise ValueError(f"Send Message failed: {err}") from err
-        return True
 
     def _handle_message_parameters(self, recipients, attachments, images):
         if attachments is None:
