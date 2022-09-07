@@ -298,6 +298,23 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="RPA.Email.ImapSmtp.AttachmentPosition">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">AttachmentPosition</code><a class="headerlink" href="#RPA.Email.ImapSmtp.AttachmentPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Possible attachment positions in the message content.</p>
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.AttachmentPosition.BOTTOM">
+<code class="sig-name descname">BOTTOM</code><em class="property"> = 2</em><a class="headerlink" href="#RPA.Email.ImapSmtp.AttachmentPosition.BOTTOM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.AttachmentPosition.TOP">
+<code class="sig-name descname">TOP</code><em class="property"> = 1</em><a class="headerlink" href="#RPA.Email.ImapSmtp.AttachmentPosition.TOP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = 993</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">encoding: str = 'utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -1012,7 +1029,7 @@ exception if folder does not exist on the server.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str, recipients: Union[List[str], str], subject: str = '', body: str = '', attachments: Union[List[str], str, None] = None, html: bool = False, images: Union[List[str], str, None] = None, cc: Union[List[str], str, None] = None, bcc: Union[List[str], str, None] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str, recipients: Union[List[str], str], subject: str = '', body: str = '', attachments: Union[List[str], str, None] = None, html: bool = False, images: Union[List[str], str, None] = None, cc: Union[List[str], str, None] = None, bcc: Union[List[str], str, None] = None, attachment_position: Optional[RPA.Email.ImapSmtp.AttachmentPosition] = &lt;AttachmentPosition.TOP: 1&gt;</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send SMTP email</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1026,6 +1043,7 @@ exception if folder does not exist on the server.</p>
 <li><p><strong>images</strong> – list of filepaths for inline images</p></li>
 <li><p><strong>cc</strong> – list of email addresses for email ‘cc’ field</p></li>
 <li><p><strong>bcc</strong> – list of email addresses for email ‘bcc’ field</p></li>
+<li><p><strong>attachment_position</strong> – content position for attachment, default <cite>top</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -1041,6 +1059,13 @@ exception if folder does not exist on the server.</p>
 <span class="c">...</span><span class="p">           </span><span class="c">subject=Greetings Software Robot Developer</span><span class="p"></span>
 <span class="c">...</span><span class="p">           </span><span class="c">body=${email_body}</span><span class="p"></span>
 <span class="c">...</span><span class="p">           </span><span class="c">attachments=${CURDIR}${/}report.pdf</span><span class="p"></span>
+
+<span class="c"># Fixing attachments to the bottom of the content</span>
+<span class="c">Send Message</span><span class="p">  </span><span class="c">sender@domain.com</span><span class="p">  </span><span class="c">recipient@domain.com</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">subject=Greetings Software Robot Developer</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">body=${email_body}</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">attachments=${CURDIR}${/}report.pdf</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">attachment_position=bottom</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1133,6 +1158,12 @@ exception if folder does not exist on the server.</p>
 <dt id="RPA.Email.ImapSmtp.to_action">
 <code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">to_action</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.to_action" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert value to Action enum.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Email.ImapSmtp.to_attachment_position">
+<code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">to_attachment_position</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.to_attachment_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert value to AttachmentPosition enum.</p>
 </dd></dl>
 
 </div>
