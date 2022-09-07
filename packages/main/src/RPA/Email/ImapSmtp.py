@@ -32,12 +32,27 @@ from typing import Any, BinaryIO, List, Optional, Tuple, Union
 
 from htmldocx import HtmlToDocx
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-
 from RPA.Email.common import counter_duplicate_path
 from RPA.RobotLogListener import RobotLogListener
 
-
 FilePath = Union[str, Path]
+
+
+class AttachmentPosition(Enum):
+    TOP = 1
+    BOTTOM = 2
+
+
+def to_attachment_position(value):
+    """Convert value to AttachmentPosition enum."""
+    if isinstance(value, AttachmentPosition):
+        return value
+
+    sanitized = str(value).upper().strip().replace(" ", "_")
+    try:
+        return AttachmentPosition[sanitized]
+    except KeyError as err:
+        raise ValueError(f"Unknown AttachmentPosition: {value}") from err
 
 
 class Action(Enum):
@@ -425,6 +440,7 @@ class ImapSmtp:
         images: Optional[Union[List[str], str]] = None,
         cc: Optional[Union[List[str], str]] = None,
         bcc: Optional[Union[List[str], str]] = None,
+        attachment_position: Optional[AttachmentPosition] = AttachmentPosition.TOP,
     ) -> bool:
         """Send SMTP email
 
@@ -454,13 +470,15 @@ class ImapSmtp:
             ...           body=${email_body}
             ...           attachments=${CURDIR}${/}report.pdf
         """
+        evaluated_attachment_position = to_attachment_position(attachment_position)
         add_charset(self.encoding, QP, QP, self.encoding)
         to, attachments, images = self._handle_message_parameters(
             recipients, attachments, images
         )
         msg = MIMEMultipart()
 
-        self._add_attachments_to_msg(attachments, msg)
+        if evaluated_attachment_position == AttachmentPosition.TOP:
+            self._add_attachments_to_msg(attachments, msg)
 
         sender = sender.encode("idna").decode("ascii")
         msg_to = ",".join(to).encode("idna").decode("ascii")
@@ -497,6 +515,9 @@ class ImapSmtp:
                         f"inline; filename= {imname}",
                     )
                     msg.attach(img)
+
+        if evaluated_attachment_position == AttachmentPosition.BOTTOM:
+            self._add_attachments_to_msg(attachments, msg)
 
         # Create a generator and flatten message object to 'file’
         str_io = StringIO()
