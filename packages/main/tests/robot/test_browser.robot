@@ -111,3 +111,14 @@ Open In Incognito With Custom Options
         Directory Should Not Be Empty      ${data_dir}
         RPA.FileSystem.Remove directory    ${data_dir}      recursive=${True}
     END
+
+Open Browser With Dict Options
+    @{args} =   Create List     --headless
+    &{caps} =   Create Dictionary   acceptInsecureCerts     ${True}
+    &{options} =    Create Dictionary   arguments   ${args}     capabilities    ${caps}
+
+    ${driver_path} =   Evaluate    RPA.core.webdriver.download("Chrome")
+    ...     modules=RPA.core.webdriver
+    Log To Console      Downloaded webdriver path: ${driver_path}
+    Open Browser    https://robocorp.com    browser=Chrome      options=${options}
+    ...     executable_path=${driver_path}

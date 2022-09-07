@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+16.3.0 - 07 Sep 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`618`): Simplified dict-like `options`
+  passing to keywords ``Open Available Browser`` and ``Open Browser``.
+
 16.2.0 - 07 Sep 2022
 --------------------
 
