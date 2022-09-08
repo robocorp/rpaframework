@@ -30,7 +30,7 @@ else:
 def lint(ctx):
     """Run format checks and static analysis"""
     if getattr(ctx, "is_meta", False):
-        shell.invoke_each(ctx, "lint")
+        shell.invoke_each(ctx, "code.lint")
     else:
         flake8_config = Path(
             safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG)
@@ -48,7 +48,7 @@ def lint(ctx):
 def format_code(ctx):
     """Run code formatter on source files"""
     if getattr(ctx, "is_meta", False):
-        shell.invoke_each(ctx, "format-code")
+        shell.invoke_each(ctx, "code.format-code")
     else:
         shell.run_in_venv(ctx, "black", "src")
 
@@ -60,18 +60,24 @@ def format_code(ctx):
 )
 def type_check(ctx, strict=False):
     """Run static type checks"""
-    shell.run_in_venv(ctx, "mypy", f"src{' --strict' if strict else ''}")
+    if getattr(ctx, "is_meta", False):
+        shell.invoke_each(ctx, f"code.type-check{' --scrict' if strict else ''}")
+    else:
+        shell.run_in_venv(ctx, "mypy", f"src{' --strict' if strict else ''}")
 
 
 @task(config.install, aliases=["testpython"])
-def test_python(ctx, _asynchronous=None):
+def test_python(ctx, asynchronous=None):
     """Executes unit tests using pytest."""
-    python_test_source = Path(
-        safely_load_config(ctx, "ctx.tests.python.source", PYTHON_TEST_SOURCE)
-    )
-    return shell.run_in_venv(
-        ctx, "pytest", python_test_source, asynchronous=_asynchronous
-    )
+    if getattr(ctx, "is_meta", False):
+        shell.invoke_each(ctx, f"code.test-python{' -a' if asynchronous else ''}")
+    else:
+        python_test_source = Path(
+            safely_load_config(ctx, "ctx.tests.python.source", PYTHON_TEST_SOURCE)
+        )
+        return shell.run_in_venv(
+            ctx, "pytest", python_test_source, asynchronous=asynchronous
+        )
 
 
 @task(
@@ -87,33 +93,36 @@ def test_python(ctx, _asynchronous=None):
         ),
     },
 )
-def test_robot(ctx, robot=None, test_name=None, _asynchronous=None):
+def test_robot(ctx, robot=None, test_name=None, asynchronous=None):
     """Run Robot Framework tests."""
-    # TODO: consider running robot tests using rcc, robot.yaml and conda.yaml.
-    robot_test_source = Path(
-        safely_load_config(ctx, "ctx.tests.robot.source", ROBOT_TEST_SOURCE)
-    )
-    robot_test_output = Path(
-        safely_load_config(ctx, "ctx.tests.robot.output", ROBOT_TEST_OUTPUT)
-    )
-    robot_test_resources = Path(
-        safely_load_config(ctx, "ctx.tests.robot.resources", ROBOT_TEST_RESOURCES)
-    )
-
-    exclude_list = EXCLUDE_ROBOT_TESTS[:]  # copy of the original list
-    if test_name:
-        # Run specific explicit task without exclusion. (during development)
-        exclude_list.clear()
-        robot_test = f' --test "{test_name}" '
+    if getattr(ctx, "is_meta", False):
+        shell.invoke_each(ctx, f"code.test-robot{' -a' if asynchronous else ''}")
     else:
-        # Run all tasks and take into account exclusions. (during CI)
-        robot_test = " "
-    exclude_str = " ".join(f"--exclude {tag}" for tag in exclude_list)
-    arguments = f"--loglevel TRACE --outputdir {robot_test_output} --pythonpath {robot_test_resources}"
-    if robot:
-        robot_test_source /= f"test_{robot}.robot"
-    cmds = f"{arguments} {exclude_str}{robot_test}{robot_test_source}"
-    return shell.run_in_venv(ctx, "robot", cmds, asynchronous=_asynchronous)
+        # TODO: consider running robot tests using rcc, robot.yaml and conda.yaml.
+        robot_test_source = Path(
+            safely_load_config(ctx, "ctx.tests.robot.source", ROBOT_TEST_SOURCE)
+        )
+        robot_test_output = Path(
+            safely_load_config(ctx, "ctx.tests.robot.output", ROBOT_TEST_OUTPUT)
+        )
+        robot_test_resources = Path(
+            safely_load_config(ctx, "ctx.tests.robot.resources", ROBOT_TEST_RESOURCES)
+        )
+
+        exclude_list = EXCLUDE_ROBOT_TESTS[:]  # copy of the original list
+        if test_name:
+            # Run specific explicit task without exclusion. (during development)
+            exclude_list.clear()
+            robot_test = f' --test "{test_name}" '
+        else:
+            # Run all tasks and take into account exclusions. (during CI)
+            robot_test = " "
+        exclude_str = " ".join(f"--exclude {tag}" for tag in exclude_list)
+        arguments = f"--loglevel TRACE --outputdir {robot_test_output} --pythonpath {robot_test_resources}"
+        if robot:
+            robot_test_source /= f"test_{robot}.robot"
+        cmds = f"{arguments} {exclude_str}{robot_test}{robot_test_source}"
+        return shell.run_in_venv(ctx, "robot", cmds, asynchronous=asynchronous)
 
 
 def _test_async(ctx, python=True, robot=True):
@@ -157,8 +166,9 @@ def test(ctx, python=True, robot=True, asynchronous=False):
         args = (
             "--python" if python else "--no-python",
             "--robot" if robot else "--no-robot",
+            "--asynchronous" if run_async else "--no-asynchronous",
         )
-        shell.invoke_each(ctx, f"test {' '.join(args)}")
+        shell.invoke_each(ctx, f"code.test {' '.join(args)}")
 
     elif run_async:
         _test_async(ctx, python, robot)
@@ -173,7 +183,12 @@ def test(ctx, python=True, robot=True, asynchronous=False):
 @task(aliases=["todo"])
 def print_todo(ctx):
     """Print all TODO/FIXME comments"""
-    shell.run_in_venv(ctx, "pylint", "--disable=all --enable=fixme --exit-zero src/")
+    if getattr(ctx, "is_meta", False):
+        shell.invoke_each(ctx, "code.print-todo")
+    else:
+        shell.run_in_venv(
+            ctx, "pylint", "--disable=all --enable=fixme --exit-zero src/"
+        )
 
 
 # Configure how this namespace will be loaded

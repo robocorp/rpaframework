@@ -27,12 +27,15 @@ def build(ctx, test=True):
     can set ``--no-test`` to disable this behaviour, but that argument
     should only be used for CI publishing.
     """
-    if test:
-        shell.invoke("code.lint", echo=False)
-        shell.invoke("code.test -a", echo=False)
-    shell.poetry(ctx, "build -vv -f sdist")
-    shell.poetry(ctx, "build -vv -f wheel")
-    libspec.clean_libspec(ctx)
+    if getattr(ctx, "is_meta", False):
+        shell.invoke_each(ctx, "build")
+    else:
+        if test:
+            shell.invoke("code.lint", echo=False)
+            shell.invoke("code.test -a", echo=False)
+        shell.poetry(ctx, "build -vv -f sdist")
+        shell.poetry(ctx, "build -vv -f wheel")
+        libspec.clean_libspec(ctx)
 
 
 @task(
@@ -106,7 +109,6 @@ def publish(ctx, ci=False, clean=True, test=True, build_=True, version=None):
       bump rules: ``patch``, ``minor``, ``major``, ``prepatch``,
       ``preminor``, ``premajor``, ``prerelease``.
     """
-    needs_rebuild = False
     if (not clean or not build_) and not ci:
         raise ParseError(
             "You cannot disable clean or build for production publishing tasks."
@@ -115,6 +117,8 @@ def publish(ctx, ci=False, clean=True, test=True, build_=True, version=None):
         raise ParseError(
             "You cannot disable tests when you are not rebuilding packages."
         )
+
+    needs_rebuild = False
     if version:
         shell.invoke(ctx, f"build.version --version {version}", echo=False)
     if clean:

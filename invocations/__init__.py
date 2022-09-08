@@ -6,7 +6,7 @@ import platform
 from invoke import Collection
 from invocations import analysis, build, config, docs, libspec
 
-DEFAULT_NS_CONFIGURATION = {"run": {"echo": True}}
+DEFAULT_NS_CONFIGURATION = {"run": {"echo": True}, "is_ci_cd": False}
 if platform.system() != "Windows":
     DEFAULT_NS_CONFIGURATION["run"]["pty"] = True
 
@@ -42,6 +42,11 @@ def create_namespace(is_meta=False):
     ns.add_collection(Collection.from_module(analysis, "code"))
 
     # BUILD NAMESPACE
-    ns.add_collection(Collection.from_module(build))
+    if not is_meta:
+        ns.add_collection(Collection.from_module(build))
+    else:
+        bd = Collection("build")
+        bd.add_task(build.build, name="build-all", aliases=["build"], default=True)
+        ns.add_collection(bd)
 
     return ns

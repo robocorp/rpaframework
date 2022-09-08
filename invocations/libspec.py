@@ -6,7 +6,7 @@ from pathlib import Path
 
 from invoke import task, Collection
 
-from invocations import shell
+from invocations import shell, config
 from invocations.docs import DOCGEN_EXCLUDES
 
 
@@ -38,6 +38,7 @@ def _modify_libspec_files(package_dir: Path):
 
 
 @task(
+    pre=[config.install],
     aliases=["build"],
     default=True,
     help={
@@ -49,9 +50,11 @@ def _modify_libspec_files(package_dir: Path):
     },
 )
 def build_libspec(ctx, package_dir=None):
-    """Create library spec files for the package with docgen."""
+    """Create library spec files for the package with docgen. If
+    ran at the meta-package level, builds libspecs for all pacakges.
+    """
     if getattr(ctx, "is_meta", False):
-        shell.invoke_each(ctx, "build_libspec")
+        shell.invoke_each(ctx, "libspec.build")
     else:
         if package_dir is None:
             package_dir = Path(ctx.package_dir)
@@ -77,7 +80,7 @@ def build_libspec(ctx, package_dir=None):
 def clean_libspec(ctx, package_dir=None):
     """Remove all generated ``*.libspec`` files."""
     if getattr(ctx, "is_meta", False):
-        shell.invoke_each(ctx, "clean_libspec")
+        shell.invoke_each(ctx, "libspec.clean")
     else:
         if package_dir is None:
             package_dir = Path(ctx.package_dir)

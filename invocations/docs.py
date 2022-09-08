@@ -29,7 +29,7 @@ DOCS_SOURCE_DIR = DOCS_ROOT / "source"
 DOCS_BUILD_DIR = DOCS_ROOT / "build" / "html"
 
 
-@task(pre=[config.install])
+@task(pre=[config.install], aliases=["libdocs"])
 def build_libdocs(ctx):
     """Generates library specification and documentation using ``docgen``"""
     libspec_promise = shell.docgen(

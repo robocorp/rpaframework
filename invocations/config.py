@@ -149,38 +149,43 @@ def clean(ctx, venv=True, build=True, test=True, docs=False, all=False):
 
 @task(
     help={
-        "devpi-url": (
-            "Provide a dev PyPi repositry URL to configure it for use "
-            "with the task 'publish --ci'."
-        ),
         "username": (
-            "Must be provided with '--devpi-url'. The user name will "
-            "be stored by Poetry in the system keyring."
+            "Configures credentials for PyPI or a devpi repository. "
+            "The username will be stored by Poetry in the system keyring."
         ),
         "password": (
-            "Must be provided with '--devpi-url'. The user name will "
-            "be stored by Poetry in the system keyring."
+            "Configures credentials for PyPI or a devpi repository. "
+            "The password will be stored by Poetry in the system keyring."
         ),
         "token": (
             "Can be used in place of '--username' and '--password', "
             "the token must be prefixed by 'pypi-'."
         ),
+        "devpi-url": (
+            "Provide a dev PyPi repositry URL to configure it for use "
+            "with the task 'publish --ci'."
+        ),
     }
 )
 def setup_poetry(
     ctx,
-    devpi_url=None,
     username=None,
     password=None,
     token=None,
+    devpi_url=None,
 ):
     """Configure local poetry installation for development.
+
+    You may provide credentials to the production PyPI
+    repository through the use of the ``--username`` and
+    ``--password`` or ``--token`` arguments. Poetry uses
+    the system ``keyring`` so the password is not stored
+    in the clear.
 
     You can configure a dev PyPI repository if you provide
     it via argument ``--devpi-url``. If doing so, you must
     also provide credentials either as ``--username`` and
-    ``--password`` or ``--token``. Poetry uses ``keyring`` so
-    the password is not stored in the clear.
+    ``--password`` or ``--token``.
 
     When setting ``--token`` to use a pypi token, be sure
     to include the ``pypi-`` prefix in the token.
@@ -190,28 +195,48 @@ def setup_poetry(
     and obtain credentials from the Robocorp internal
     documentation.
     """
-    shell.poetry(ctx, "config -n --local virtualenvs.in-project true")
-    shell.poetry(ctx, "config -n --local virtualenvs.create true")
-    shell.poetry(ctx, "config -n --local virtualenvs.path null")
-    shell.poetry(ctx, "config -n --local experimental.new-installer true")
-    shell.poetry(ctx, "config -n --local installer.parallel true")
-    if devpi_url:
-        if username and password and token:
-            raise ParseError(
-                "You cannot specify username-password combination and token simultaneously"
-            )
-        if username and password:
-            shell.poetry(ctx, f"config -n http-basic.pypi {username} {password}")
-        else:
-            raise ParseError("You must specify both username and password")
-        if token:
-            shell.poetry(ctx, f"config -n pypi-token.pypi {token}")
-        current_config = toml.load(get_poetry_config_path(ctx))
-        if current_config.get("repositories", {}).get("devpi", {}).get("url"):
-            shell.poetry(ctx, "config -n --local --unset repositories.devpi.url")
+    if (
+        (username is not None and password is not None and token is not None)
+        or (username is not None and password is None)
+        or (username is None and password is not None)
+    ):
+        raise ParseError("You must specify a username-password combination or token.")
+    is_ci_cd = safely_load_config(ctx, "ctx.is_ci_cd", False)
+    repository = "pypi" if devpi_url is None else "devpi"
+
+    if not is_ci_cd:
+        shell.poetry(ctx, "config --no-interaction --local virtualenvs.in-project true")
+        shell.poetry(ctx, "config --no-interaction --local virtualenvs.create true")
+        shell.poetry(ctx, "config --no-interaction --local virtualenvs.path null")
+        shell.poetry(
+            ctx, "config --no-interaction --local experimental.new-installer true"
+        )
+        shell.poetry(ctx, "config --no-interaction --local installer.parallel true")
+
+    if username is not None:
+        print(f"Setting username and password for repository '{repository}'.")
         shell.poetry(
             ctx,
-            f"config -n --local repositories.devpi.url '{devpi_url}'",
+            f"config --no-interaction http-basic.{repository} {username} {password}",
+            echo=False,
+        )
+    elif token is not None:
+        print(f"Setting token for repository '{repository}'.")
+        shell.poetry(
+            ctx, f"config --no-interaction pypi-token.{repository} {token}", echo=False
+        )
+    else:
+        print(
+            "WARNING: PyPI credentials not configured, invoke "
+            "setup-poetry with the --username and --password "
+            "or --token parameters to configure."
+        )
+
+    if devpi_url is not None:
+        clear_poetry_devpi(ctx)
+        shell.poetry(
+            ctx,
+            f"config --no-interaction --local repositories.devpi '{devpi_url}'",
         )
     else:
         print(
@@ -219,6 +244,17 @@ def setup_poetry(
             "setup-poetry with the --devpi-url and --username and "
             "--password or --token parameters to configure."
         )
+
+
+def clear_poetry_devpi(ctx):
+    """Removes any devpi configurations in the current Poetry context."""
+    current_config = toml.load(get_poetry_config_path(ctx))
+    if current_config.get("repositories", {}).get("devpi", {}).get("url"):
+        shell.poetry(
+            ctx, "config --no-interaction --local --unset repositories.devpi.url"
+        )
+    if current_config.get("repositories", {}).get("devpi", {}):
+        shell.poetry(ctx, "config --no-interaction --local --unset repositories.devpi")
 
 
 @task(
@@ -237,7 +273,7 @@ def setup_poetry(
             "--extra aws'."
         ),
         "all-extras": (
-            "If Poetry v1.2 is installed on the system, all extra can "
+            "If Poetry v1.2 is installed on the system, all extras can "
             "be installed with this flag."
         ),
     },
@@ -256,7 +292,7 @@ def install(ctx, reset=False, extra=None, all_extras=False):
     """
     poetry_config_path = get_poetry_config_path(ctx)
     if not is_poetry_configured(poetry_config_path):
-        shell.invoke(ctx, "setup_poetry", echo=False)
+        shell.invoke(ctx, "install.setup-poetry", echo=False)
     if all_extras:
         if shell.is_poetry_version_2(ctx):
             extras_cmd = f" --all-extras"
@@ -315,7 +351,7 @@ def install(ctx, reset=False, extra=None, all_extras=False):
             "--extra aws'."
         ),
         "all-extras": (
-            "If Poetry v1.2 is installed on the system, all extra can "
+            "If Poetry v1.2 is installed on the system, all extras can "
             "be installed with this flag."
         ),
     },
@@ -348,7 +384,7 @@ def install_local(ctx, package, extra=None, all_extras=False):
     if not all_extras:
         extras_arg = " ".join([f"-e {e}" for e in extra])
     else:
-        extras_arg = "--all-extras" if all_extras else "--no-all-extras"
+        extras_arg = "--all-extras" if all_extras else "---no-interactiono-all-extras"
     shell.invoke(ctx, f"install --reset {extras_arg}", echo=False)
     valid_packages = get_package_paths()
     if not package:
