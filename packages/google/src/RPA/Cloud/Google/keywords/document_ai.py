@@ -1,4 +1,6 @@
+import mimetypes
 from typing import Optional
+
 from google.api_core.client_options import ClientOptions
 from google.cloud import documentai_v1 as documentai
 
@@ -48,21 +50,30 @@ class DocumentAIKeywords(LibraryContext):
     def process_document(
         self,
         project_id: str,
-        location: str,
+        region: str,
         processor_id: str,
         file_path: str,
-        mime_type: str,
+        mime_type: str = None,
     ):
-        name = self.service.processor_path(project_id, location, processor_id)
+        """_summary_
+
+        :param project_id: _description_
+        :param region: _description_
+        :param processor_id: _description_
+        :param file_path: _description_
+        :param mime_type: _description_
+        :return: _description_
+        """
+        name = self.service.processor_path(project_id, region, processor_id)
 
         # Read the file into memory
-        with open(file_path, "rb") as image:
-            image_content = image.read()
+        with open(file_path, "rb") as binary:
+            binary_content = binary.read()
 
+        mime = mime_type or mimetypes.guess_type(file_path)[0]
+        self.logger.info(f"Processing document '{file_path}' with mimetype '{mime}'")
         # Load Binary Data into Document AI RawDocument Object
-        raw_document = documentai.RawDocument(
-            content=image_content, mime_type=mime_type
-        )
+        raw_document = documentai.RawDocument(content=binary_content, mime_type=mime)
 
         # Configure the process request
         request = documentai.ProcessRequest(name=name, raw_document=raw_document)
@@ -72,5 +83,42 @@ class DocumentAIKeywords(LibraryContext):
         # For a full list of Document object attributes, please reference this page:
         # https://cloud.google.com/python/docs/reference/documentai/latest/google.cloud.documentai_v1.types.Document
         document = result.document
-
         return document
+
+    @keyword(tags=["document ai"])
+    def parse_document_response(self, document):
+        """_summary_
+
+        :param document: _description_
+        :return: _description_
+        """
+        entities = []
+        for ent in document.entities:
+            entities.append(
+                {
+                    "id": ent.id,
+                    "type": ent.type,
+                    "text": ent.mention_text,
+                }
+            )
+        return entities
+
+    @keyword(tags=["document ai"])
+    def list_processors(self, project_id: str, region: str):
+        """List document AI processors.
+
+        Requires `documentai.processors.list` permission.
+
+        :param project_id: _description_
+        :param region: _description_
+        :return: _description_
+        """
+        parent_value = f"projects/{project_id}/locations/{region}"
+        # Initialize request argument(s)
+        request = documentai.ListProcessorsRequest(
+            parent=parent_value,
+        )
+
+        # Make the request
+        page_result = self.service.list_processors(request=request)
+        return page_result
