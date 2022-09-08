@@ -37,7 +37,17 @@ def _modify_libspec_files(package_dir: Path):
         Path(outfilename).rename(target_file)
 
 
-@task(aliases=["build"], default=True)
+@task(
+    aliases=["build"],
+    default=True,
+    help={
+        "package-dir": (
+            "You can set a specific path to use as the package "
+            "directory. This is normally set automatically as part "
+            "of this invocation collection."
+        )
+    },
+)
 def build_libspec(ctx, package_dir=None):
     """Create library spec files for the package with docgen."""
     if getattr(ctx, "is_meta", False):
@@ -54,7 +64,16 @@ def build_libspec(ctx, package_dir=None):
         _modify_libspec_files(package_dir)
 
 
-@task(aliases=["clean"])
+@task(
+    aliases=["clean"],
+    help={
+        "package-dir": (
+            "You can set a specific path to use as the package "
+            "directory. This is normally set automatically as part "
+            "of this invocation collection."
+        )
+    },
+)
 def clean_libspec(ctx, package_dir=None):
     """Remove all generated ``*.libspec`` files."""
     if getattr(ctx, "is_meta", False):

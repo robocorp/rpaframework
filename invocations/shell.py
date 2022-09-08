@@ -2,7 +2,8 @@ import os
 import platform
 from pathlib import Path
 import re
-from invoke import Context, PlatformError
+from typing import Union
+from invoke import Context
 from colorama import Fore, Style
 
 from invocations.util import REPO_ROOT, get_package_paths, remove_blank_lines
@@ -15,14 +16,29 @@ PYTHON_EXECUTOR = "python"
 INVOKE = "invoke"
 GIT = "git"
 
+SEMANTIC_VERSION_PATTERN = re.compile(
+    r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(\-((0|[1-9A-Za-z-]+)((\.(0|[1-9A-Za-z-]+))+)?))?(\+(([0-9A-Za-z-]+)((\.([0-9A-Za-z-]+))+)?))?"  # noqa
+)
+
 TOOLS_DIR = REPO_ROOT / "tools"
 
 if platform.system() != "Windows":
-    ACTIVATE_PATH = REPO_ROOT / ".venv" / "bin" / "activate"
-    ACTIVATE = f"source {ACTIVATE_PATH}"
+    REL_ACTIVATE_PATH = Path(".venv") / "bin" / "activate"
+    ACTIVATE_TEMPLATE = "source {}"
 else:
-    ACTIVATE_PATH = REPO_ROOT / ".venv" / "Scripts" / "activate"
-    ACTIVATE = f"{ACTIVATE_PATH}.bat"
+    REL_ACTIVATE_PATH = Path(".venv") / "Scripts" / "activate"
+    ACTIVATE_TEMPLATE = "{}.bat"
+
+
+def get_venv_activate_cmd(is_meta: bool, package_dir: Union[str, Path] = None) -> str:
+    """Determines and returns the path to the package's .venv
+    activation scripts based on configuration values passed in.
+    """
+    if is_meta:
+        abs_activate_path = REPO_ROOT / REL_ACTIVATE_PATH
+    else:
+        abs_activate_path = Path(package_dir) / REL_ACTIVATE_PATH
+    return ACTIVATE_TEMPLATE.format(abs_activate_path)
 
 
 def run(ctx: Context, app: str, command: str, **kwargs):
@@ -61,6 +77,11 @@ def docgen(ctx: Context, command: str, *flags, **kwargs):
 def git(ctx: Context, command: str, **kwargs):
     """Executes a git command on the shell"""
     return run(ctx, GIT, command, **kwargs)
+
+
+def invoke(ctx: Context, command: str, **kwargs):
+    """Executes an invoke command within the current context."""
+    return run(ctx, INVOKE, command, **kwargs)
 
 
 def meta_tool(ctx: Context, tool: str, *args, command: str = None, **kwargs):
@@ -111,3 +132,14 @@ def invoke_each(ctx: Context, command, **kwargs):
         results.append(result)
     print(f"Invocations complete.")
     return results
+
+
+def is_poetry_version_2(ctx: Context) -> bool:
+    """Determins if the version of Poetry available in the
+    provided context is version 2 and returns True if so.
+    """
+    results = poetry(ctx, "--version", hide=True)
+    poetry_version = (
+        re.search(SEMANTIC_VERSION_PATTERN, results.stdout).group().split(".")
+    )
+    return poetry_version[0] == "2"

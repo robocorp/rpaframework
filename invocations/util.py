@@ -1,3 +1,7 @@
+"""Utility functions used throughout the invocations package.
+This module should not be added to any package invoke collections.
+"""
+
 from functools import reduce
 import os
 import subprocess
