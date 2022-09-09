@@ -4,7 +4,13 @@ of the code base.
 import platform
 import os
 from pathlib import Path
-from colorama import Fore, Style
+
+try:
+    from colorama import Fore, Style
+
+    color = True
+except ModuleNotFoundError:
+    color = False
 
 from invoke import task, Collection
 
@@ -136,8 +142,14 @@ def _test_async(ctx, python=True, robot=True):
     for test, promise in promises.items():
         results[test] = promise.join()
     for test, result in results.items():
-        print(Fore.BLUE + f"Results from {test} tests:")
-        print(Style.RESET_ALL + remove_blank_lines(result.stdout))
+        if color:
+            result_header = Fore.BLUE + f"Results from {test} tests:"
+            result_msg = Style.RESET_ALL + remove_blank_lines(result.stdout)
+        else:
+            result_header = f"*** Results from {test} tests:"
+            result_msg = remove_blank_lines(result.stdout)
+        print(result_header)
+        print(result_msg)
         if hasattr(result, "stderr"):
             print(remove_blank_lines(result.stderr))
         print(os.linesep)
