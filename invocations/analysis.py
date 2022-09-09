@@ -114,30 +114,41 @@ def test_robot(ctx, robot=None, test_name=None, asynchronous=None):
         robot_test_resources = Path(
             safely_load_config(ctx, "ctx.tests.robot.resources", ROBOT_TEST_RESOURCES)
         )
-
-        exclude_list = EXCLUDE_ROBOT_TESTS[:]  # copy of the original list
-        if test_name:
-            # Run specific explicit task without exclusion. (during development)
-            exclude_list.clear()
-            robot_test = f' --test "{test_name}" '
+        if robot_test_source.exists():
+            exclude_list = EXCLUDE_ROBOT_TESTS[:]  # copy of the original list
+            if test_name:
+                # Run specific explicit task without exclusion. (during development)
+                exclude_list.clear()
+                robot_test = f' --test "{test_name}" '
+            else:
+                # Run all tasks and take into account exclusions. (during CI)
+                robot_test = " "
+            exclude_str = " ".join(f"--exclude {tag}" for tag in exclude_list)
+            arguments = (
+                f"--runemptysuite --loglevel TRACE --outputdir {robot_test_output} "
+                f"--pythonpath {robot_test_resources}"
+            )
+            if robot:
+                robot_test_source /= f"test_{robot}.robot"
+            cmds = f"{arguments} {exclude_str}{robot_test}{robot_test_source}"
+            return shell.run_in_venv(ctx, "robot", cmds, asynchronous=asynchronous)
         else:
-            # Run all tasks and take into account exclusions. (during CI)
-            robot_test = " "
-        exclude_str = " ".join(f"--exclude {tag}" for tag in exclude_list)
-        arguments = f"--loglevel TRACE --outputdir {robot_test_output} --pythonpath {robot_test_resources}"
-        if robot:
-            robot_test_source /= f"test_{robot}.robot"
-        cmds = f"{arguments} {exclude_str}{robot_test}{robot_test_source}"
-        return shell.run_in_venv(ctx, "robot", cmds, asynchronous=asynchronous)
+            return shell.run(
+                ctx,
+                "echo",
+                "Robot tests path does not exist, skipping robot tests.",
+                echo=False,
+                asynchronous=asynchronous,
+            )
 
 
 def _test_async(ctx, python=True, robot=True):
     promises = {}
     results = {}
     if python:
-        promises["Python"] = test_python(ctx, _asynchronous=True)
+        promises["Python"] = test_python(ctx, asynchronous=True)
     if robot:
-        promises["Robot"] = test_robot(ctx, _asynchronous=True)
+        promises["Robot"] = test_robot(ctx, asynchronous=True)
     print("\nTests started asynchronously, please wait for them to finish...\n")
     for test, promise in promises.items():
         results[test] = promise.join()
@@ -178,7 +189,7 @@ def test(ctx, python=True, robot=True, asynchronous=False):
         args = (
             "--python" if python else "--no-python",
             "--robot" if robot else "--no-robot",
-            "--asynchronous" if run_async else "--no-asynchronous",
+            "--asynchronous" if run_async else "",
         )
         shell.invoke_each(ctx, f"code.test {' '.join(args)}")
 

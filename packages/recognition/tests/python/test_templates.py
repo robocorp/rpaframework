@@ -5,7 +5,7 @@ from RPA.recognition import templates
 from RPA.core.geometry import Region
 
 
-IMAGES = Path(__file__).resolve().parent / "images"
+IMAGES = Path(__file__).resolve().parent.parent / "images"
 
 TEMPLATES = (
     ((26, 994, 274, 1115), "locator_Calculator_ctrl_One.jpg"),
