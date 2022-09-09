@@ -48,6 +48,8 @@ pytest = "^6.1.2"
 pytest-cov = "^2.10.1"
 mock = "^4.0.2"
 mypy = "^0.790"
+toml = "^0.10.2"
+colorama = "^0.4.5"
 
 [tool.black]
 target-version = ["py37", "py38", "py39"]

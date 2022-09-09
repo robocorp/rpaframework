@@ -2,6 +2,7 @@
 environment.
 """
 
+import json
 import os
 import re
 import shutil
@@ -294,43 +295,33 @@ def install(ctx, reset=False, extra=None, all_extras=False):
     if not is_poetry_configured(poetry_config_path):
         shell.invoke(ctx, "install.setup-poetry", echo=False)
     if all_extras:
-        if shell.is_poetry_version_2(ctx):
-            extras_cmd = f" --all-extras"
-        else:
-            raise ParseError(
-                "Argument 'all-extras' is only available with Poetry 1.2. "
-                "Please select specific extras when using Poetry 1.1."
-            )
+        extras_cmd = f" --all-extras"
     elif extra:
         extras_cmd = f" --extras \"{' '.join(extra)}\""
     else:
         extras_cmd = ""
     if reset:
-        our_packages = get_package_paths()
         with ctx.prefix(
             shell.get_venv_activate_cmd(
                 safely_load_config(ctx, "is_meta"),
                 safely_load_config(ctx, "package_dir"),
             )
         ):
-            pip_freeze = shell.pip(ctx, "freeze", echo=False, hide="out")
+            pip_freeze = shell.pip(ctx, "list --format json", echo=False, hide="out")
             # Identifies locally installed packages in development mode.
             #  (not from PyPI)
-            package_exprs = [
-                rf"{name}(?=={{2}})" for name in our_packages if name != "rpaframework"
+            installed_pkgs = json.loads(pip_freeze.stdout)
+            local_pkgs = [
+                pkg
+                for pkg in installed_pkgs
+                if pkg["name"] != "rpaframework"
+                and pkg.get("editable_project_location", False)
             ]
-            pattern = "|".join(package_exprs)
-            local_packages = re.findall(
-                pattern,
-                pip_freeze.stdout,
-                re.MULTILINE | re.IGNORECASE,
-            )
-            for local_package in local_packages:
-                shell.pip(ctx, f"uninstall {local_package} -y")
-        if shell.is_poetry_version_2(ctx):
-            shell.poetry(ctx, f"install --sync{extras_cmd}")
-        else:
-            shell.poetry(ctx, f"install --remove-untracked{extras_cmd}")
+            for local_pkg in local_pkgs:
+                shell.pip(ctx, f"uninstall {local_pkg['name']} -y")
+
+        shell.poetry(ctx, f"install --sync{extras_cmd}")
+        
     else:
         shell.poetry(ctx, f"install{extras_cmd}")
 
@@ -384,7 +375,7 @@ def install_local(ctx, package, extra=None, all_extras=False):
     if not all_extras:
         extras_arg = " ".join([f"-e {e}" for e in extra])
     else:
-        extras_arg = "--all-extras" if all_extras else "---no-interactiono-all-extras"
+        extras_arg = "--all-extras" if all_extras else "--no-all-extras"
     shell.invoke(ctx, f"install --reset {extras_arg}", echo=False)
     valid_packages = get_package_paths()
     if not package:

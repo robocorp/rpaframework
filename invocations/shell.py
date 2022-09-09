@@ -152,10 +152,11 @@ def invoke_each(ctx: Context, command, **kwargs):
 
 def is_poetry_version_2(ctx: Context) -> bool:
     """Determins if the version of Poetry available in the
-    provided context is version 2 and returns True if so.
+    provided context is version 1.2 and returns True if so.
     """
     results = poetry(ctx, "--version", hide=True)
     poetry_version = (
         re.search(SEMANTIC_VERSION_PATTERN, results.stdout).group().split(".")
     )
-    return poetry_version[0] == "2"
+    return poetry_version[0] >= "1" and poetry_version[1] >= "2"
+

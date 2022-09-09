@@ -47,6 +47,8 @@ PyYAML = "^5.4.1"
 mypy = "^0.800"
 pytest-cov = "^2.11.1"
 pytest-freezegun = "^0.4.2"
+toml = "^0.10.2"
+colorama = "^0.4.5"
 
 [tool.black]
 target-version = ["py37", "py38", "py39"]

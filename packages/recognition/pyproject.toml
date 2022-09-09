@@ -46,6 +46,8 @@ pylint = "^2.4.4, <2.13"
 pytest = "^6.1.2"
 mock = "^4.0.2"
 pytest-cov = "^2.10.1"
+toml = "^0.10.2"
+colorama = "^0.4.5"
 
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]
