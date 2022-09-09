@@ -98,7 +98,7 @@ jobs:
     - name: Lint
       run: invoke code.lint
     - name: Test
-      run: invoke code.test
+      run: invoke code.test -a
 
   publish:
     # Only publish on master workflow runs

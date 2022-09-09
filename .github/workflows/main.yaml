@@ -112,7 +112,7 @@ jobs:
       shell: bash
     - name: Test (non-linux)
       if: matrix.os != 'ubuntu-latest'
-      run: invoke code.test
+      run: invoke code.test -a
     - name: Test (linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
