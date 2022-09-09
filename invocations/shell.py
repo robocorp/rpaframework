@@ -4,9 +4,15 @@ from pathlib import Path
 import re
 from typing import Union
 from invoke import Context
-from colorama import Fore, Style
 
 from invocations.util import REPO_ROOT, get_package_paths, remove_blank_lines
+
+try:
+    from colorama import Fore, Style
+
+    color = True
+except ModuleNotFoundError:
+    color = False
 
 POETRY = "poetry"
 PIP = "pip"
@@ -124,8 +130,18 @@ def invoke_each(ctx: Context, command, **kwargs):
     results = []
     for package, promise in promises.items():
         result = promise.join()
-        print(Fore.BLUE + f"Results from 'invoke {command}' for package '{package}':")
-        print(Style.RESET_ALL + remove_blank_lines(result.stdout))
+        if color:
+            result_header = (
+                Fore.BLUE + f"Results from 'invoke {command}' for package '{package}':"
+            )
+            result_msg = Style.RESET_ALL + remove_blank_lines(result.stdout)
+        else:
+            result_header = (
+                f"*** Results from 'invoke {command}' for package '{package}':"
+            )
+            result_msg = remove_blank_lines(result.stdout)
+        print(result_header)
+        print(result_msg)
         if hasattr(result, "stderr"):
             print(remove_blank_lines(result.stderr))
         print(os.linesep)

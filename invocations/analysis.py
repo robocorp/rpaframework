@@ -5,17 +5,17 @@ import platform
 import os
 from pathlib import Path
 
+from invoke import task, Collection
+
+from invocations import shell, config
+from invocations.util import REPO_ROOT, safely_load_config, remove_blank_lines
+
 try:
     from colorama import Fore, Style
 
     color = True
 except ModuleNotFoundError:
     color = False
-
-from invoke import task, Collection
-
-from invocations import shell, config
-from invocations.util import REPO_ROOT, safely_load_config, remove_blank_lines
 
 CONFIG = REPO_ROOT / "config"
 FLAKE8_CONFIG = CONFIG / "flake8"
