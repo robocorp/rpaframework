@@ -295,7 +295,7 @@ class Database:
                 "",
                 "",
             )
-        elif module_name == "cx_Oracle":
+        elif module_name in ("cx_Oracle", "oracledb"):
             self.config.set_default_port(1521)
             oracle_dsn = dbmodule.makedsn(
                 host=self.config.get("host"),
@@ -368,7 +368,7 @@ class Database:
         params = params or []
         cur = None
         try:
-            if self.db_api_module_name == "cx_Oracle":
+            if self.db_api_module_name in ("cx_Oracle", "oracledb"):
                 cur = self._dbconnection.cursor()
             else:
                 cur = self._dbconnection.cursor(as_dict=False)

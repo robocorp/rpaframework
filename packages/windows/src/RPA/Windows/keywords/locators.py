@@ -97,6 +97,9 @@ class LocatorKeywords(LocatorMethods):
             if next_control:
                 element = WindowsElement(next_control, locator)
                 if initial_element.is_sibling(element):
+                    element.item.robocorp_click_offset = (
+                        initial_element.item.robocorp_click_offset
+                    )
                     elements.append(element)
             else:
                 break

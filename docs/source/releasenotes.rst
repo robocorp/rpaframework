@@ -10,6 +10,64 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+16.3.0 - 07 Sep 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`618`): Simplified dict-like `options`
+  passing to keywords ``Open Available Browser`` and ``Open Browser``.
+
+16.2.0 - 07 Sep 2022
+--------------------
+
+- Library **RPA.Email.ImapSmtp** (:pr:`622`): Add parameter `attachment_position` for keyword ``Send Message``
+
+16.1.0 - 01 Sep 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`615`): Keyword ``Open Available Browser``
+  supports passing a custom `port` to open the browser on.
+- Library **RPA.Windows** (``rpaframework-windows`` **6.0.1**, :issue:`609`): Fix
+  clicking sibling elements retrieved with keyword ``Get Elements``. (previous bug with
+  `robocorp_click_offset`)
+
+16.0.0 - 31 Aug 2022
+--------------------
+
+- New library **RPA.MFA** (:pr:`610`) adds support for one time passwords (OTP).
+  Currently supports `time` and `counter` based use cases.
+- Library **RPA.Robocorp.Process** (:pr:`611`): New keywords
+  ``List Process Run Artifacts`` and ``Get Robot Run Artifact``.
+- Library **RPA.Browser.Selenium** (:issue:`494`):
+
+  - Upgraded to Selenium 4. (:pr:`602`)
+  - Using the new `webdriver-manager <https://pypi.org/project/webdriver-manager/>`_
+    for an improved download and cache of the driver. (:issue:`607`)
+  - Keyword ``Open Available Browser`` supports ``options`` parameter allowing to
+    customize the browser run. (desired capabilities got deprecated; :issue:`385`)
+
+.. warning::
+  This is a **breaking** change! The library works with the following major version
+  upgrades given any dependent package:
+
+  - ``rpaframework-aws`` **4.0.0**
+  - ``rpaframework-dialogs`` **4.0.0**
+  - ``rpaframework-google`` **6.0.0**
+  - ``rpaframework-pdf`` **5.0.0**
+  - ``rpaframework-recognition`` **5.0.0**
+  - ``rpaframework-windows`` **6.0.0**
+
+15.9.0 - 22 Aug 2022
+--------------------
+
+- Library **RPA.Database**: Add support for new Oracle connector `oracledb <https://python-oracledb.readthedocs.io/en/latest/index.html>`_
+
+15.8.1 - 19 Aug 2022
+--------------------
+
+- Library **RPA.JavaAccessBridge**: Include ``java-access-bridge-wrapper`` dependency
+  **0.9.5** fixing memory leak issue
+- ``rpaframework-recognition`` **4.0.2**: Fix issue with dependency ``opencv-python-headless``
+
 15.8.0 - 12 Aug 2022
 --------------------
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-aws"
-version = "3.1.2"
+version = "4.0.0"
 description = "AWS library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -20,9 +20,9 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.6",
 	"Programming Language :: Python :: 3.7",
 	"Programming Language :: Python :: 3.8",
+	"Programming Language :: Python :: 3.9",
 ]
 
 include = ["*.libspec"]
@@ -31,7 +31,7 @@ packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-rpaframework-core = "^9.0.0"
+rpaframework-core = "^10.0.0"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-pythonlibcore = "^3.0.0"
 boto3 = "^1.13.4"
@@ -55,7 +55,7 @@ docutils = "0.16"
 moto = "3.1.8"
 
 [tool.black]
-target-version = ["py36", "py37", "py38", "py39"]
+target-version = ["py37", "py38", "py39"]
 
 [build-system]
 requires = ["poetry>=0.12"]

@@ -1,14 +1,25 @@
+import contextlib
 import logging
 import os
 import platform
 import stat
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
+import requests
+from requests import Response
 from selenium import webdriver
-from webdrivermanager import AVAILABLE_DRIVERS
+from selenium.webdriver.common.service import Service
+from selenium.webdriver.remote.webdriver import WebDriver
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.download_manager import WDMDownloadManager
+from webdriver_manager.core.http import WDMHttpClient
+from webdriver_manager.core.manager import DriverManager
+from webdriver_manager.core.utils import os_name as get_os_name
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager, IEDriverManager
+from webdriver_manager.opera import OperaDriverManager
 
-from RPA.core.types import is_list_like
 from RPA.core.robocorp import robocorp_home
 
 
@@ -16,94 +27,73 @@ LOGGER = logging.getLogger(__name__)
 
 DRIVER_ROOT = robocorp_home() / "webdrivers"
 DRIVER_PREFERENCE = {
-    "Windows": ["Chrome", "Firefox", "Edge", "Ie", "Opera"],
-    "Linux": ["Chrome", "Firefox", "Opera"],
-    "Darwin": ["Chrome", "Safari", "Firefox", "Opera"],
+    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
     "default": ["Chrome", "Firefox"],
+}
+AVAILABLE_DRIVERS = {
+    # Driver names taken from `webdrivermanager` and adapted to `webdriver_manager`.
+    "chrome": ChromeDriverManager,
+    "firefox": GeckoDriverManager,
+    "gecko": GeckoDriverManager,
+    "mozilla": GeckoDriverManager,
+    # NOTE: Selenium 4 dropped support for Opera.
+    #  (https://github.com/SeleniumHQ/selenium/issues/10835)
+    "opera": OperaDriverManager,
+    # NOTE: In Selenium 4 `Edge` is the same with `ChromiumEdge`.
+    "edge": EdgeChromiumDriverManager,
+    "chromiumedge": EdgeChromiumDriverManager,
+    # NOTE: IE is discontinued and not supported/encouraged anymore.
+    "ie": IEDriverManager,
 }
 
 
-def start(browser: str, **options):
+class Downloader(WDMHttpClient):
+
+    """Custom downloader which disables download progress reporting."""
+
+    def get(self, url, **kwargs) -> Response:
+        resp = requests.get(url=url, verify=self._ssl_verify, stream=True, **kwargs)
+        self.validate_response(resp)
+        return resp
+
+
+@contextlib.contextmanager
+def suppress_logging():
+    """Suppress webdriver-manager logging."""
+    wdm_log = "WDM_LOG"
+    original_value = os.getenv(wdm_log, "")
+    try:
+        os.environ[wdm_log] = str(logging.NOTSET)
+        yield
+    finally:
+        os.environ[wdm_log] = original_value
+
+
+def start(browser: str, service: Optional[Service] = None, **options) -> WebDriver:
     """Start a webdriver with the given options."""
     browser = browser.strip()
-    factory = getattr(webdriver, browser, None)
-
-    if not factory:
+    webdriver_factory = getattr(webdriver, browser, None)
+    if not webdriver_factory:
         raise ValueError(f"Unsupported browser: {browser}")
 
-    driver = factory(**options)
+    # NOTE: It is recommended to pass a `service` rather than deprecated `options`.
+    driver = webdriver_factory(service=service, **options)
     return driver
 
 
-def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[Path]:
-    """Download a webdriver binary for the given browser,
-    and return the path to it. Attempts to use "compatible" mode
-    to match browser and webdriver versions.
-    """
-    manager = _to_manager(browser, root)
-    if manager.get_driver_filename() is None:
-        return None
-
-    os.makedirs(manager.download_root, exist_ok=True)
-    _link_clean(manager)
-
-    result = manager.download_and_install("compatible", show_progress_bar=False)
-    if result is None:
-        raise RuntimeError("Failed to extract webdriver from archive")
-
-    path = result[0]
-    if platform.system() != "Windows":
-        _set_executable(path)
-
-    LOGGER.debug("Downloaded webdriver to: %s", path)
-    return path
-
-
-def cache(browser: str, root: Path = DRIVER_ROOT) -> Optional[Path]:
-    """Return path to given browser's webdriver, if binary
-    exists in cache.
-    """
-    manager = _to_manager(browser, root)
-
-    for path in _link_paths(manager):
-        if path.exists():
-            LOGGER.debug("Found cached webdriver: %s", path)
-            return path
-
-    return None
-
-
-def _to_manager(browser: str, root: Path = DRIVER_ROOT):
+def _to_manager(browser: str, root: Path = DRIVER_ROOT) -> DriverManager:
     browser = browser.strip()
-    factory = AVAILABLE_DRIVERS.get(browser.lower())
+    manager_factory = AVAILABLE_DRIVERS.get(browser.lower())
+    if not manager_factory:
+        raise ValueError(
+            f"Unsupported browser {browser!r}! (choose from: {list(AVAILABLE_DRIVERS)})"
+        )
 
-    if not factory:
-        raise ValueError(f"Unsupported browser: {browser}")
-
-    manager = factory(download_root=root, link_path=root)
+    download_manager = WDMDownloadManager(Downloader())
+    manager = manager_factory(path=str(root), download_manager=download_manager)
     return manager
-
-
-def _link_paths(manager: Any):
-    names = manager.get_driver_filename()
-
-    if names is None:
-        return []
-
-    if not is_list_like(names):
-        names = [names]
-
-    return [Path(manager.download_root) / name for name in names]
-
-
-def _link_clean(manager: Any):
-    for path in _link_paths(manager):
-        if not path.exists():
-            continue
-        try:
-            os.unlink(path)
-        except Exception as exc:  # pylint: disable=broad-except
-            LOGGER.debug("Failed to remove symlink: %s", exc)
 
 
 def _set_executable(path: str) -> None:
@@ -112,3 +102,25 @@ def _set_executable(path: str) -> None:
         path,
         st.st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IEXEC,
     )
+
+
+def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
+    """Download a webdriver binary for the given browser and return the path to it."""
+    manager = _to_manager(browser, root)
+    driver = manager.driver
+    resolved_os = getattr(driver, "os_type", driver.get_os_type())
+    os_name = get_os_name()
+    if os_name not in resolved_os:
+        LOGGER.warning(
+            "Attempting to download incompatible driver for OS %r on OS %r! Skip",
+            resolved_os,
+            os_name,
+        )
+        return None  # incompatible driver download attempt
+
+    with suppress_logging():
+        path: str = manager.install()
+    if platform.system() != "Windows":
+        _set_executable(path)
+    LOGGER.debug("Downloaded webdriver to: %s", path)
+    return path
