@@ -86,7 +86,7 @@ class DocumentAIKeywords(LibraryContext):
         return document
 
     @keyword(tags=["document ai"])
-    def parse_document_response(self, document):
+    def get_document_entities(self, document):
         """_summary_
 
         :param document: _description_
