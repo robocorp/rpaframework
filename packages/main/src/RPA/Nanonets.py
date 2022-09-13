@@ -3,8 +3,10 @@ import json
 import logging
 import mimetypes
 import re
-from typing import Any, List, Optional, Union
+from typing import Any, Dict, Hashable, List, Optional, Union
 
+JSONValue = Optional[Union[str, int, float, bool]]
+JSONType = Union[Dict[Hashable, JSONValue], List[JSONValue], JSONValue]
 import requests
 
 from RPA.RobotLogListener import RobotLogListener
@@ -101,3 +103,68 @@ class Nanonets:
 
         response.raise_for_status()
         return response.json()
+
+    def predict_file(self, file_path: str, model_id: str):
+        """_summary_
+
+        :param file_path: _description_
+        :type file_path: str
+        :param model_id: _description_
+        :type model_id: str
+        :return: _description_
+        :rtype: _type_
+        """
+
+        url = f"{self.base_url}/OCR/Model/{model_id}/LabelFile/"
+
+        data = {"file": open(file_path, "rb")}
+
+        response = requests.post(
+            url, auth=requests.auth.HTTPBasicAuth(self.api_key, ""), files=data
+        )
+
+        response.raise_for_status()
+        return response.json()
+
+    def get_fields_from_prediction_result(self, prediction: JSONType) -> List:
+        """_summary_
+
+        :param prediction: _description_
+        :type prediction: JSONType
+        :return: _description_
+        :rtype: List
+        """
+        return [
+            item
+            for item in prediction["result"][0]["prediction"]
+            if "type" in item.keys() and item["type"] == "field"
+        ]
+
+    def get_tables_from_prediction_result(self, prediction: JSONType) -> List:
+        """_summary_
+
+        :param prediction: _description_
+        :type prediction: JSONType
+        :return: _description_
+        :rtype: List
+        """
+        tables = [
+            item
+            for item in prediction["result"][0]["prediction"]
+            if "type" in item.keys() and item["type"] == "table"
+        ]
+        # arrange cell items into list of lists
+        for table in tables:
+            table["rows"] = []
+            row = []
+            last_row = 1
+            for cell in table["cells"]:
+                if len(row) == 0 or last_row == cell["row"]:
+                    row.append(cell)
+                elif last_row != cell["row"]:
+                    table["rows"].append(row)
+                    row = [cell]
+                last_row = cell["row"]
+            if len(row) > 0:
+                table["rows"].append(row)
+        return tables
