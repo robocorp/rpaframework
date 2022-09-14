@@ -5,7 +5,12 @@ import re
 from typing import Union
 from invoke import Context
 
-from invocations.util import REPO_ROOT, get_package_paths, remove_blank_lines
+from invocations.util import (
+    REPO_ROOT,
+    get_package_paths,
+    remove_blank_lines,
+    safely_load_config,
+)
 
 try:
     from colorama import Fore, Style
@@ -36,15 +41,17 @@ else:
     ACTIVATE_TEMPLATE = "{}.bat"
 
 
-def get_venv_activate_cmd(is_meta: bool, package_dir: Union[str, Path] = None) -> str:
+def get_venv_activate_cmd(ctx: Context) -> str:
     """Determines and returns the path to the package's .venv
-    activation scripts based on configuration values passed in.
+    activation scripts based on the context passed in.
     """
-    if is_meta:
+    if safely_load_config(ctx, "is_meta"):
         abs_activate_path = REPO_ROOT / REL_ACTIVATE_PATH
     else:
-        abs_activate_path = Path(package_dir) / REL_ACTIVATE_PATH
-    return ACTIVATE_TEMPLATE.format(abs_activate_path)
+        abs_activate_path = (
+            Path(safely_load_config(ctx, "package_dir")) / REL_ACTIVATE_PATH
+        )
+    return ACTIVATE_TEMPLATE.format(abs_activate_path.resolve())
 
 
 def run(ctx: Context, app: str, command: str, **kwargs):
@@ -159,4 +166,3 @@ def is_poetry_version_2(ctx: Context) -> bool:
         re.search(SEMANTIC_VERSION_PATTERN, results.stdout).group().split(".")
     )
     return poetry_version[0] >= "1" and poetry_version[1] >= "2"
-

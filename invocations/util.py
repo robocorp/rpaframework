@@ -44,6 +44,18 @@ def get_package_paths():
     return package_paths
 
 
+def get_current_package_name(ctx: Context):
+    """Returns the name of the current package being operated on by
+    the provided context.
+    """
+    if safely_load_config(ctx, "is_meta", False):
+        pkg_dir = REPO_ROOT
+    else:
+        pkg_dir = safely_load_config(ctx, "package_dir", None)
+    project_config = toml.load(pkg_dir / "pyproject.toml")
+    return project_config["tool"]["poetry"]["name"]
+
+
 def remove_blank_lines(text):
     return os.linesep.join([s for s in text.splitlines() if s])
 

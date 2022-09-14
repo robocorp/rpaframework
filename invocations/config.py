@@ -16,6 +16,7 @@ from invocations import shell
 from invocations.util import (
     MAIN_PACKAGE,
     REPO_ROOT,
+    get_current_package_name,
     get_package_paths,
     safely_load_config,
 )
@@ -300,13 +301,10 @@ def install(ctx, reset=False, extra=None, all_extras=False):
         extras_cmd = f" --extras \"{' '.join(extra)}\""
     else:
         extras_cmd = ""
-    if reset:
-        with ctx.prefix(
-            shell.get_venv_activate_cmd(
-                safely_load_config(ctx, "is_meta"),
-                safely_load_config(ctx, "package_dir"),
-            )
-        ):
+    venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
+    if reset and Path(venv_activation_cmd).exists():
+        our_pkg_name = get_current_package_name(ctx)
+        with ctx.prefix(venv_activation_cmd):
             pip_freeze = shell.pip(ctx, "list --format json", echo=False, hide="out")
             # Identifies locally installed packages in development mode.
             #  (not from PyPI)
@@ -314,14 +312,14 @@ def install(ctx, reset=False, extra=None, all_extras=False):
             local_pkgs = [
                 pkg
                 for pkg in installed_pkgs
-                if pkg["name"] != "rpaframework"
+                if pkg["name"] != our_pkg_name
                 and pkg.get("editable_project_location", False)
             ]
             for local_pkg in local_pkgs:
                 shell.pip(ctx, f"uninstall {local_pkg['name']} -y")
 
         shell.poetry(ctx, f"install --sync{extras_cmd}")
-        
+
     else:
         shell.poetry(ctx, f"install{extras_cmd}")
 
@@ -381,17 +379,18 @@ def install_local(ctx, package, extra=None, all_extras=False):
     if not package:
         package = valid_packages.keys()
     for pkg in package:
-        with ctx.prefix(
-            shell.get_venv_activate_cmd(
-                safely_load_config(ctx, "is_meta"),
-                safely_load_config(ctx, "package_dir"),
-            )
-        ):
+        with ctx.prefix(shell.get_venv_activate_cmd(ctx)):
             # Installs our package in development mode under the
             # currently active venv. (local package)
             shell.pip(ctx, f"uninstall {pkg} -y")
             with ctx.cd(valid_packages[pkg]):
                 shell.poetry(ctx, "install")
+    if "rpaframework" in package:
+        # If we installed the main package, our own
+        # package was likely uninstalled as it might be
+        # an extra defined in the main package, so it
+        # needs to be reinstalled.
+        shell.poetry(ctx, "install")
 
 
 @task(aliases=["update"])
