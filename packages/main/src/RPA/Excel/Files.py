@@ -3,18 +3,16 @@ import pathlib
 from collections import defaultdict
 from contextlib import contextmanager
 from io import BytesIO
-from typing import List, Any, Union, Optional
+from typing import Any, List, Optional, Union
 
 import openpyxl
 import xlrd
 import xlwt
-from PIL import Image
 from openpyxl.utils import get_column_letter
 from openpyxl.utils.exceptions import InvalidFileException
+from PIL import Image
+from RPA.Tables import Table, Tables
 from xlutils.copy import copy as xlutils_copy
-
-from RPA.Tables import Tables, Table
-
 
 PathType = Union[str, pathlib.Path]
 
@@ -173,6 +171,7 @@ class Files:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.workbook = None
+        self.read_only = False
 
     def _load_workbook(
         self, path: str, data_only: bool
@@ -182,7 +181,7 @@ class Files:
 
         try:
             book = XlsxWorkbook(path)
-            book.open(data_only=data_only)
+            book.open(data_only=data_only, read_only=self.read_only)
             return book
         except InvalidFileException as exc:
             self.logger.debug(exc)  # Unsupported extension, silently try xlrd
@@ -294,7 +293,10 @@ class Files:
         return self.workbook
 
     def open_workbook(
-        self, path: str, data_only: Optional[bool] = False
+        self,
+        path: str,
+        data_only: Optional[bool] = False,
+        read_only: Optional[bool] = False,
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         """Open an existing Excel workbook.
 
@@ -335,6 +337,7 @@ class Files:
         if self.workbook:
             self.close_workbook()
 
+        self.read_only = read_only
         self.workbook = self._load_workbook(path, data_only)
         self.logger.info("Opened workbook: %s", self.workbook)
         return self.workbook
@@ -1055,13 +1058,26 @@ class XlsxWorkbook(BaseWorkbook):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._read_only = False
 
     @staticmethod
     def is_sheet_empty(sheet):
         # Maximum rows/columns are always 1 or more, even when the sheet doesn't
         #  contain cells at all. (https://stackoverflow.com/a/37673211/4766178)
+        # _cells does not exist for the ReadOnlyWorksheet, no way of knowing
+        # is there data or not
         # pylint: disable=protected-access
-        return not sheet._cells  # there's no public API for this
+        is_readonly = isinstance(sheet, openpyxl.worksheet._read_only.ReadOnlyWorksheet)
+        logging.warning(dir(sheet))
+        logging.warning(sheet.calculate_dimension())
+        logging.warning(sheet.sheet_state)
+        logging.warning(help(sheet.cell))
+        # value = sheet.cell(":A1")
+
+        # logging.warning(value)
+        return (
+            False if is_readonly else not sheet._cells
+        )  # there's no public API for this
 
     @property
     def sheetnames(self):
@@ -1087,6 +1103,10 @@ class XlsxWorkbook(BaseWorkbook):
     @property
     def extension(self):
         return self._extension
+
+    @property
+    def read_only(self):
+        return self._read_only
 
     def _get_sheetname(self, name=None):
         if not self.sheetnames:
@@ -1119,6 +1139,7 @@ class XlsxWorkbook(BaseWorkbook):
         self._extension = None
 
     def open(self, path=None, read_only=False, write_only=False, data_only=False):
+        self._read_only = read_only
         path = path or self.path
         if not path:
             raise ValueError("No path defined for workbook")
@@ -1169,6 +1190,8 @@ class XlsxWorkbook(BaseWorkbook):
         sheet = self._book[name]
         start = self._to_index(start)
 
+        self.logger.warning(f"read_only: {self.read_only}")
+        self.logger.warning(f"type of sheet: {type(sheet)}")
         if start > sheet.max_row or self.is_sheet_empty(sheet):
             return []
 
