@@ -2,6 +2,7 @@
 environment.
 """
 
+import errno
 import json
 import os
 import re
@@ -10,7 +11,7 @@ from glob import glob
 from pathlib import Path
 import toml
 
-from invoke import task, ParseError, Collection
+from invoke import task, call, ParseError, Collection
 
 from invocations import shell
 from invocations.util import (
@@ -278,9 +279,9 @@ def clear_poetry_devpi(ctx):
 )
 def install(ctx, reset=False, extra=None, all_extras=False):
     """Install development environment. If ``reset`` is set,
-    poetry will remove untracked packages, reverting the
-    .venv to the lock file. You can install package extras
-    as defined in the ``pyproject.toml`` with the ``--extra``
+    poetry will revert changes caused by ``install.local``.
+    You can install package extras as defined in the
+    ``pyproject.toml`` with the ``--extra``
     parameter. You can repeat this parameter for each extra
     you wish to install. Alternatively, you can specify
     ``--all-extras`` to install with all extras.
@@ -292,9 +293,9 @@ def install(ctx, reset=False, extra=None, all_extras=False):
     if not is_poetry_configured(poetry_config_path):
         shell.invoke(ctx, "install.setup-poetry", echo=False)
     if all_extras:
-        extras_cmd = f" --all-extras"
+        extras_cmd = f"--all-extras"
     elif extra:
-        extras_cmd = f" --extras \"{' '.join(extra)}\""
+        extras_cmd = f"--extras \"{' '.join(extra)}\""
     else:
         extras_cmd = ""
     venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
@@ -313,11 +314,16 @@ def install(ctx, reset=False, extra=None, all_extras=False):
             ]
             for local_pkg in local_pkgs:
                 shell.pip(ctx, f"uninstall {local_pkg['name']} -y")
+        try:
+            restore_dependency_files(ctx)
+        except FileNotFoundError:
+            print("Reset not possible, exiting.")
+            exit(1)
 
-        shell.poetry(ctx, f"install --sync{extras_cmd}")
+        shell.poetry(ctx, f"install --sync {extras_cmd}")
 
     else:
-        shell.poetry(ctx, f"install{extras_cmd}")
+        shell.poetry(ctx, f"install {extras_cmd}")
 
 
 @task(
@@ -326,8 +332,9 @@ def install(ctx, reset=False, extra=None, all_extras=False):
     help={
         "package": (
             "Mandatory argument which specifies the local package to "
-            "install. You must use the package's name as defined in "
-            "its own pyproject.toml."
+            "install. You can use either the package name as defined "
+            "in the package's pyproject.toml or you can use the "
+            "directory name the package exists in."
         ),
         "extra": (
             "A repeatable argument to have project-defined extras "
@@ -343,10 +350,17 @@ def install(ctx, reset=False, extra=None, all_extras=False):
 )
 def install_local(ctx, package, extra=None, all_extras=False):
     """Installs local environment with packages in local editable form
-    instead of from PyPi. This task always resets the virtual
-    environment first. You can install current package extras
+    instead of from PyPi. You can install current package extras
     as well, see help for ``invoke install`` for further
-    documentation.
+    documentation. If this has already been run for the current package
+    a backup of the poetry files will not be done and the provided
+    package will be added in to the current development environment.
+
+    NOTE: This temporarily modifies the project's ``pyproject.toml`` and
+    ``poetry.lock`` files. Backups is retained at
+    ``.pyproject.original`` and ``.poetrylock.original`` and should not
+    be modified while the environment is in this state. If it removed,
+    you will need to restore them via git.
 
     You should not select an extra you are also installing with
     the ``--package`` argument as it may be installed in non-editable
@@ -367,10 +381,7 @@ def install_local(ctx, package, extra=None, all_extras=False):
 
         invoke install-local --package rpaframework-aws --package rpaframework-pdf
     """
-    if not all_extras:
-        extras_arg = " ".join([f"--extras {e}" for e in extra])
-    else:
-        extras_arg = "--all-extras" if all_extras else "--no-all-extras"
+    backup_dependency_files(ctx)
     valid_packages = get_package_paths()
     if not package:
         package = valid_packages.keys()
@@ -382,9 +393,72 @@ def install_local(ctx, package, extra=None, all_extras=False):
             pkg_name = "main"
         else:
             pkg_name = pkg
-        opt_dependencies.append(f"local-{pkg_name}")
-        with_arg = f"--with {','.join(opt_dependencies)}"
-    shell.poetry(ctx, f"install --sync {with_arg} {extras_arg}")
+        opt_dependencies.append(f"../{pkg_name}")
+        add_arg = " ".join(opt_dependencies)
+    shell.poetry(ctx, f"add --editable {add_arg}")
+
+
+def get_dependency_paths(ctx, backup=True):
+    if safely_load_config(ctx, "is_meta"):
+        package_dir = REPO_ROOT
+    else:
+        package_dir = Path(safely_load_config(ctx, "package_dir"))
+
+    spec_orig = package_dir / "pyproject.toml"
+    spec_backup = package_dir / ".pyproject.original"
+    lock_orig = package_dir / "poetry.lock"
+    lock_backup = package_dir / ".poetrylock.original"
+    if backup:
+        return spec_orig, spec_backup, lock_orig, lock_backup
+    else:
+        return spec_backup, spec_orig, lock_backup, lock_orig
+
+
+def backup_dependency_files(ctx):
+    spec_src_path, spec_dest_path, lock_src_path, lock_dest_path = get_dependency_paths(
+        ctx
+    )
+    if spec_dest_path.exists() or lock_dest_path.exists():
+        print("Backup files exist, no backup will be completed.")
+    else:
+        print("Attempting to backup pyproject.toml and poetry.lock")
+        shutil.copyfile(spec_src_path, spec_dest_path)
+        if lock_src_path.exists():
+            shutil.copyfile(lock_src_path, lock_dest_path)
+            was_lock = True
+        else:
+            was_lock = False
+        print(
+            f"WARNING: Original pyproject.toml {'and poetry.lock' if was_lock else ''} "
+            f"backed up at .pyproject.original {'and .poetrylock.original' if was_lock else ''}. "
+            f"Do not modify or remove without calling invoke install --reset"
+        )
+
+
+def restore_dependency_files(ctx):
+    spec_src_path, spec_dest_path, lock_src_path, lock_dest_path = get_dependency_paths(
+        ctx, backup=False
+    )
+    print("Attempting to restore pyproject.toml and poetry.lock")
+    if spec_src_path.exists():
+        shutil.copyfile(spec_src_path, spec_dest_path)
+        os.remove(spec_src_path)
+        print("Package pyproject.toml file restored")
+    else:
+        print(
+            f"The file {spec_src_path.name} does not exist and cannot be restored. "
+            "You must restore manually."
+        )
+        raise FileNotFoundError(
+            errno.ENOENT, os.strerror(errno.ENOENT), spec_src_path.name
+        )
+
+    if lock_src_path.exists():
+        shutil.copyfile(lock_src_path, lock_dest_path)
+        os.remove(lock_src_path)
+        print("Lock file restored successfully.")
+    else:
+        print("No lock file existed to be restored.")
 
 
 @task(aliases=["update"])
