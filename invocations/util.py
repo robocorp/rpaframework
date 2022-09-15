@@ -30,17 +30,24 @@ MAIN_PACKAGE = PACKAGES_ROOT / "main"
 
 def get_package_paths():
     """Returns a dictionary of package names available within the
-    meta repository where the key of each item is the package name as
-    defined in its respective ``pyproject.toml`` and the value is
-    the absolute path to that package directory.
+    meta repository where the key of each item is the local package
+    short hand name (e.g., the parent directory name, so ``main`` for
+    ``./packages/main``) and the value is another dictionary containing
+    two keys:
+
+    * ``name``: the package name as defined in that package's
+      ``pyproject.toml``
+    * ``path``: the resolved path to that package.
     """
     project_tomls = glob(str(PACKAGES_ROOT / "**/pyproject.toml"), recursive=True)
     package_paths = {}
     for project_toml in project_tomls:
-        project_config = toml.load(project_toml)
-        package_paths[str(project_config["tool"]["poetry"]["name"])] = Path(
-            project_toml
-        ).parent.resolve()
+        toml_path = Path(project_toml)
+        project_config = toml.load(toml_path)
+        package_paths[toml_path.parent.name] = {
+            "name": str(project_config["tool"]["poetry"]["name"]),
+            "path": toml_path.parent.resolve(),
+        }
     return package_paths
 
 

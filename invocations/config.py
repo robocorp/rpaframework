@@ -33,6 +33,7 @@ BUILD_CLEAN_PATTERNS = [
 ]
 TEST_CLEAN_PATTERNS = [
     "coverage",
+    ".coverage",
     ".pytest_cache",
     "tests/results",
 ]
@@ -51,7 +52,6 @@ PACKAGE_VENV_CLEAN_PATTERNS = [
 
 EXPECTED_POETRY_CONFIG = {
     "virtualenvs": {"in-project": True, "create": True, "path": "null"},
-    "experimental": {"new-installer": True},
     "installer": {"parallel": True},
 }
 ROBOCORP_DEVPI_URL = "https://devpi.robocorp.cloud/ci/test"
@@ -203,16 +203,12 @@ def setup_poetry(
         or (username is None and password is not None)
     ):
         raise ParseError("You must specify a username-password combination or token.")
-    is_ci_cd = safely_load_config(ctx, "ctx.is_ci_cd", False)
     repository = "pypi" if devpi_url is None else "devpi"
 
-    if not is_ci_cd:
+    if not safely_load_config(ctx, "ctx.is_ci_cd", False):
         shell.poetry(ctx, "config --no-interaction --local virtualenvs.in-project true")
         shell.poetry(ctx, "config --no-interaction --local virtualenvs.create true")
         shell.poetry(ctx, "config --no-interaction --local virtualenvs.path null")
-        shell.poetry(
-            ctx, "config --no-interaction --local experimental.new-installer true"
-        )
         shell.poetry(ctx, "config --no-interaction --local installer.parallel true")
 
     if username is not None:
@@ -348,14 +344,19 @@ def install(ctx, reset=False, extra=None, all_extras=False):
 def install_local(ctx, package, extra=None, all_extras=False):
     """Installs local environment with packages in local editable form
     instead of from PyPi. This task always resets the virtual
-    environment first. You can install package extras as well,
-    see help for ``invoke install`` for further documentation.
+    environment first. You can install current package extras
+    as well, see help for ``invoke install`` for further
+    documentation.
 
     You should not select an extra you are also installing with
-    the ``--package`` argument.
+    the ``--package`` argument as it may be installed in non-editable
+    form.
 
     Package must exist as a sub-folder module in ``./packages``,
-    see those packages' ``pyproject.toml`` for package names.
+    see those packages' ``pyproject.toml`` for package names and
+    local dependency groups must be defined (for new projects,
+    see ``main`` configuration for example).
+
     If ran with no packages, all optional packages will be installed
     locally.
 
@@ -365,32 +366,25 @@ def install_local(ctx, package, extra=None, all_extras=False):
     .. code-block:: shell
 
         invoke install-local --package rpaframework-aws --package rpaframework-pdf
-
-    **WARNING**: This essentially produces a dirty virtual environment
-    that is a cross between all local packages requested. It may
-    not be stable.
     """
     if not all_extras:
-        extras_arg = " ".join([f"-e {e}" for e in extra])
+        extras_arg = " ".join([f"--extras {e}" for e in extra])
     else:
         extras_arg = "--all-extras" if all_extras else "--no-all-extras"
-    shell.invoke(ctx, f"install --reset {extras_arg}", echo=False)
     valid_packages = get_package_paths()
     if not package:
         package = valid_packages.keys()
+    opt_dependencies = []
     for pkg in package:
-        with ctx.prefix(shell.get_venv_activate_cmd(ctx)):
-            # Installs our package in development mode under the
-            # currently active venv. (local package)
-            shell.pip(ctx, f"uninstall {pkg} -y")
-            with ctx.cd(valid_packages[pkg]):
-                shell.poetry(ctx, "install")
-    if "rpaframework" in package:
-        # If we installed the main package, our own
-        # package was likely uninstalled as it might be
-        # an extra defined in the main package, so it
-        # needs to be reinstalled.
-        shell.poetry(ctx, "install")
+        if "rpaframework-" in pkg:
+            pkg_name = re.search(r"(?<=-).*$", pkg).group(0)
+        elif pkg == "rpaframework":
+            pkg_name = "main"
+        else:
+            pkg_name = pkg
+        opt_dependencies.append(f"local-{pkg_name}")
+        with_arg = f"--with {','.join(opt_dependencies)}"
+    shell.poetry(ctx, f"install --sync {with_arg} {extras_arg}")
 
 
 @task(aliases=["update"])

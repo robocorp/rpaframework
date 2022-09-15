@@ -55,6 +55,48 @@ docutils = "0.16"
 moto = "3.1.8"
 colorama = "^0.4.5"
 
+# Groups starting with 'local-' are used by
+# invocations to install other local packages
+# in editable mode when needed by developers.
+[tool.poetry.group.local-main]
+optional = true
+
+[tool.poetry.group.local-main.dependencies]
+rpaframework = { path = "../main", develop = true }
+rpaframework-pdf = { path = "../pdf", develop = true }
+rpaframework-dialogs = { path = "../dialogs", develop = true }
+rpaframework-windows = { path = "../windows", develop = true }
+
+[tool.poetry.group.local-dialogs]
+optional = true
+
+[tool.poetry.group.local-dialogs.dependencies]
+rpaframework-dialogs = { path = "../dialogs", develop = true }
+
+[tool.poetry.group.local-google]
+optional = true
+
+[tool.poetry.group.local-google.dependencies]
+rpaframework-google = { path = "../google", develop = true }
+
+[tool.poetry.group.local-pdf]
+optional = true
+
+[tool.poetry.group.local-pdf.dependencies]
+rpaframework-pdf = { path = "../pdf", develop = true }
+
+[tool.poetry.group.local-recognition]
+optional = true
+
+[tool.poetry.group.local-recognition.dependencies]
+rpaframework-recognition = { path = "../recognition", develop = true }
+
+[tool.poetry.group.local-windows]
+optional = true
+
+[tool.poetry.group.local-windows.dependencies]
+rpaframework-windows = { path = "../windows", develop = true }
+
 [tool.black]
 target-version = ["py37", "py38", "py39"]
 

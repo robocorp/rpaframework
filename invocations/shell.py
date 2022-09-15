@@ -128,23 +128,25 @@ def invoke_each(ctx: Context, command, **kwargs):
     #       pass the actual task object.
     our_packages = get_package_paths()
     promises = {}
-    for package, path in our_packages.items():
-        print(f"Starting asyncronous task 'invoke {command}' for package '{package}'")
-        promises[package] = package_invoke(
-            ctx, path, command, asynchronous=True, warn=True, **kwargs
+    for _, pkg in our_packages.items():
+        print(
+            f"Starting asyncronous task 'invoke {command}' for package '{pkg['name']}'"
+        )
+        promises[pkg["name"]] = package_invoke(
+            ctx, pkg["path"], command, asynchronous=True, warn=True, **kwargs
         )
     print("\nPlease wait for invocations to finish...\n")
     results = []
-    for package, promise in promises.items():
+    for pkg_name, promise in promises.items():
         result = promise.join()
         if color:
             result_header = (
-                Fore.BLUE + f"Results from 'invoke {command}' for package '{package}':"
+                Fore.BLUE + f"Results from 'invoke {command}' for package '{pkg_name}':"
             )
             result_msg = Style.RESET_ALL + remove_blank_lines(result.stdout)
         else:
             result_header = (
-                f"*** Results from 'invoke {command}' for package '{package}':"
+                f"*** Results from 'invoke {command}' for package '{pkg_name}':"
             )
             result_msg = remove_blank_lines(result.stdout)
         print(result_header)
