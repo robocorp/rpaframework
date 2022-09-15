@@ -1068,13 +1068,6 @@ class XlsxWorkbook(BaseWorkbook):
         # is there data or not
         # pylint: disable=protected-access
         is_readonly = isinstance(sheet, openpyxl.worksheet._read_only.ReadOnlyWorksheet)
-        logging.warning(dir(sheet))
-        logging.warning(sheet.calculate_dimension())
-        logging.warning(sheet.sheet_state)
-        logging.warning(help(sheet.cell))
-        # value = sheet.cell(":A1")
-
-        # logging.warning(value)
         return (
             False if is_readonly else not sheet._cells
         )  # there's no public API for this
@@ -1190,8 +1183,6 @@ class XlsxWorkbook(BaseWorkbook):
         sheet = self._book[name]
         start = self._to_index(start)
 
-        self.logger.warning(f"read_only: {self.read_only}")
-        self.logger.warning(f"type of sheet: {type(sheet)}")
         if start > sheet.max_row or self.is_sheet_empty(sheet):
             return []
 
