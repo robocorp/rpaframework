@@ -2,7 +2,7 @@ import json
 import logging
 import sys
 from collections import OrderedDict
-from typing import Any, Optional, Union
+from typing import Any, Union
 
 import requests
 from simple_salesforce import Salesforce as SimpleSalesforce
@@ -17,6 +17,7 @@ class SalesforceAuthenticationError(Exception):
 
 class SalesforceDataNotAnDictionary(Exception):
     "Error when parameter is not dictionary as expected."
+
 
 class SalesforceDomainChangeError(Exception):
     "Error when changing domains while a session is active."
@@ -129,7 +130,7 @@ class Salesforce:
         *** Tasks ***
         # Sets the domain for a sandbox environment
         Set Domain    sandbox
-        
+
         # Sets the domain to a Salseforce My domain
         Set Domain    robocorp
 
@@ -215,10 +216,12 @@ class Salesforce:
     def _require_authentication(self) -> None:
         if self.sf is None:
             raise SalesforceAuthenticationError("Authentication is not completed")
-    
+
     def _require_no_session(self) -> None:
         if self.session_id is not None or self.instance is not None:
-            raise SalesforceDomainChangeError("Domains cannot be changed while a session is active")
+            raise SalesforceDomainChangeError(
+                "Domains cannot be changed while a session is active"
+            )
 
     @property
     def session_id(self):
@@ -238,7 +241,7 @@ class Salesforce:
          if no argument provided defaults to "login"
         """
         self._require_no_session()
-        self.domain = "test" if domain.lower()=="sandbox" else domain 
+        self.domain = "test" if domain.lower() == "sandbox" else domain
 
     def auth_with_token(self, username: str, password: str, api_token: str) -> None:
         """Authorize to Salesforce with security token, username
