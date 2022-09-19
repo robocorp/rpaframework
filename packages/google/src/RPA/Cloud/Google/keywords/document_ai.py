@@ -41,9 +41,9 @@ class DocumentAIKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
 
-        Example:
-
         Robot Framework example:
+
+        .. code-block:: robotframework
 
             # Init using Service Account from a file
             Init Document AI   ${CURDIR}${/}service_account.json  region=eu
@@ -105,9 +105,9 @@ class DocumentAIKeywords(LibraryContext):
          if not given it is auto detected
         :return: processed document response object
 
-        Example:
-
         Robot Framework example:
+
+        .. code-block:: robotframework
 
             ${document}=    Process Document
             ...    project_id=${GOOGLE_PROJECT_ID}
