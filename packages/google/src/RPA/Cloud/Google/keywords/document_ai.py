@@ -26,7 +26,7 @@ class DocumentAIKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword(tags=["init", "document ai"])
+    @keyword(name="Init Document AI", tags=["init", "document ai"])
     def init_document_ai(
         self,
         service_account: Optional[str] = None,
