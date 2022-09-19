@@ -1,7 +1,4 @@
-from . import (
-    LibraryContext,
-    keyword,
-)
+from . import LibraryContext, keyword
 
 
 class BaseKeywords(LibraryContext):
@@ -17,6 +14,7 @@ class BaseKeywords(LibraryContext):
         """Set Robocorp Vault name and secret key name
         :param vault_name: Robocorp Vault name
         :param vault_secret_key: Robocorp Vault secret key name
+        :param auth_type: either `serviceaccount` or `token`
         """
         if vault_name:
             self.ctx.robocorp_vault_name = vault_name
