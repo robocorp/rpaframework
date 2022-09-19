@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-google"
-version = "6.0.0"
+version = "6.1.0"
 description = "Google library for RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -48,7 +48,7 @@ google-cloud-texttospeech = "^2.12.1"
 google-cloud-translate = "^3.8.1"
 google-cloud-videointelligence = "^2.8.1"
 google-cloud-vision = "^3.1.1"
-google-cloud-documentai = "^2.0.0"
+google-cloud-documentai = "^2.0.1"
 grpcio = "^1.48.1"
 
 [tool.poetry.dev-dependencies]

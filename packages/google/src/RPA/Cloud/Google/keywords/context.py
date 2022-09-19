@@ -1,9 +1,9 @@
 import base64
 import json
 import os
-from pathlib import Path
 import pickle
 import tempfile
+from pathlib import Path
 
 from apiclient import discovery
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -68,7 +68,7 @@ class LibraryContext:
             raise KeyError(
                 "Both 'robocorp_vault_name' and 'robocorp_vault_secret_key' "
                 "are required to access Robocorp Vault. Set them in library "
-                "init or with `set_robocloud_vault` keyword."
+                "init or with `set_robocorp_vault` keyword."
             )
 
         vault_items = self.ctx.secrets_library().get_secret(
@@ -100,7 +100,7 @@ class LibraryContext:
         """Initialize Google Service
 
         :param service_account: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param use_robocorp_vault: use json stored into `Robocorp Vault`
         """
         service = None
         credentials = None
@@ -165,14 +165,14 @@ class LibraryContext:
     ):
         service = None
         if use_robocorp_vault is not None:
-            robocloud = bool(use_robocorp_vault)
+            robocorp_vault = bool(use_robocorp_vault)
         else:
-            robocloud = self.ctx.use_robocorp_vault
+            robocorp_vault = self.ctx.use_robocorp_vault
 
         cloud_auth_type = auth_type or self.ctx.cloud_auth_type
-        if robocloud:
+        if robocorp_vault:
             service = self.get_service_from_robocorp_vault(
-                client_object, cloud_auth_type, service_account_file
+                client_object, cloud_auth_type, service_account_file, **kwargs
             )
         elif service_account_file:
             self.logger.info("Authenticating with service account file")
