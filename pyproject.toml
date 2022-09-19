@@ -11,7 +11,7 @@ rpaframework = { path = "packages/main", extras = [
 	"playwright",
 	"aws",
 ], develop = true }
-rpaframework-google = "^6.1.0"
+rpaframework-google = "^6.1.1"
 rpaframework-windows = "^6.0.1"
 
 [tool.poetry.dev-dependencies]
