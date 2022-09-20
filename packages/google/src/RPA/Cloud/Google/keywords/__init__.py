@@ -13,6 +13,7 @@ from .enums import TextType, to_texttype, UpdateAction, VideoFeature, to_feature
 from .base import BaseKeywords
 
 from .apps_script import AppsScriptKeywords
+from .document_ai import DocumentAIKeywords
 from .drive import DriveKeywords
 from .gmail import GmailKeywords
 from .natural_language import NaturalLanguageKeywords
