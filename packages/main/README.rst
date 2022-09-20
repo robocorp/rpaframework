@@ -122,6 +122,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `Archive`_                 | Archiving TAR and ZIP files                  | x                      |
 +----------------------------+----------------------------------------------+------------------------+
+| `Base64AI`_                | Intelligent Document Processing service      | x                      |
++----------------------------+----------------------------------------------+------------------------+
 | `Browser.Selenium`_        | Control browsers and automate the web        | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Browser.Playwright`_      | Newer way to control browsers                | special (more below)   |
@@ -170,6 +172,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `MFA`_                     | Authenticate using one-time passwords (OTP)  | x                      |
 +----------------------------+----------------------------------------------+------------------------+
+| `Nanonets`_                | Intelligent Document Processing service      | x                      |
++----------------------------+----------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services     | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Outlook.Application`_     | Control the Outlook desktop application      | x                      |
@@ -198,6 +202,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 
 .. _Archive: https://rpaframework.org/libraries/archive/
+.. _Base64AI: https://rpaframework.org/libraries/base64ai/
 .. _Browser.Playwright: https://rpaframework.org/libraries/browser_playwright/
 .. _Browser.Selenium: https://rpaframework.org/libraries/browser_selenium/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
@@ -222,6 +227,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _JavaAccessBridge: https://rpaframework.org/libraries/javaaccessbridge/
 .. _JSON: https://rpaframework.org/libraries/json/
 .. _MFA: https://rpaframework.org/libraries/mfa/
+.. _Nanonets: https://rpaframework.org/libraries/nanonets/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
