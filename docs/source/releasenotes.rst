@@ -20,7 +20,7 @@ Release notes
 - New library **RPA.Nanonets** (:pr:`639`): Supports `Nanonets <https://nanonets.com/>`_  IDP service
 - Library **RPA.Cloud.Google** (:pr:`619`): 
   
-  - Add support for `Document AI <https://cloud.google.com/document-ai/>`_  service
+  - Add support for `Document AI <https://cloud.google.com/document-ai/>`_  IDP service
   - Released in `rpaframework-google==6.1.1``
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
