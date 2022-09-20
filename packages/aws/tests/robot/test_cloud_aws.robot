@@ -3,7 +3,7 @@ Library         RPA.Cloud.AWS
 Force Tags      skip
 
 *** Variables ***
-${S3_BUCKET_NAME}    %{AWS_BUCKET=testresources}
+${S3_BUCKET_NAME}  %{AWS_BUCKET=testresources}
 ${RESOURCES}    ${CURDIR}${/}..${/}resources
 
 *** Keywords ***
@@ -36,7 +36,7 @@ Analyze File in S3 storage
     #END
   END
 
-*** Tasks ***
+*** Test Cases ***
 Start Textract Document Text Detection Job
   Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
   ${jobid}=  Start Document Text Detection  ${S3_BUCKET_NAME}  document.pdf

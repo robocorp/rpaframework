@@ -29,15 +29,10 @@ DEFAULT_REGION = "eu-west-1"
 
 
 def import_vault():
-    """Try to import Vault/Secrets library, with old and new name."""
+    """Try to import Vault library."""
     try:
         module = importlib.import_module("RPA.Robocorp.Vault")
         return getattr(module, "Vault")
-    except ModuleNotFoundError:
-        pass
-    try:
-        module = importlib.import_module("RPA.Robocloud.Secrets")
-        return getattr(module, "Secrets")
     except ModuleNotFoundError:
         pass
     return None
@@ -62,8 +57,8 @@ def aws_dependency_required(f):
     def wrapper(*args, **kwargs):
         if not HAS_BOTO3:
             raise ValueError(
-                "Please install optional `aws` package, "
-                "`pip install rpaframework[aws]` to use RPA.Cloud.AWS library"
+                "Please install the `aws` package, "
+                "`pip install rpaframework-aws` to use RPA.Cloud.AWS library"
             )
         return f(*args, **kwargs)
 
@@ -81,7 +76,7 @@ class AWSBase:
     services: list = []
     clients: dict = {}
     region: Optional[str] = None
-    robocloud_vault_name: Optional[str] = None
+    robocorp_vault_name: Optional[str] = None
 
     def _get_client_for_service(self, service_name: Optional[str] = None):
         """Return client instance for servive if it has been initialized.
@@ -107,10 +102,10 @@ class AWSBase:
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ):
-        if use_robocloud_vault:
+        if use_robocorp_vault:
             aws_key_id, aws_key, region = self._get_secrets_from_cloud()
         else:
             if aws_key_id is None or aws_key_id.strip() == "":
@@ -137,13 +132,13 @@ class AWSBase:
         client = boto3.client(service_name, region_name=region, **auth_params)
         self._set_service(service_name, client)
 
-    def set_robocloud_vault(self, vault_name):
-        """Set Robocloud Vault name
+    def set_robocorp_vault(self, vault_name):
+        """Set Robocorp Vault name
 
-        :param vault_name: Robocloud Vault name
+        :param vault_name: Robocorp Vault name
         """
         if vault_name:
-            self.robocloud_vault_name = vault_name
+            self.robocorp_vault_name = vault_name
 
     def _get_secrets_from_cloud(self):
         vault = import_vault()
@@ -152,11 +147,11 @@ class AWSBase:
                 "RPA.Robocorp.Vault library is required to use Vault"
                 " with RPA.Cloud.AWS library"
             )
-        if not self.robocloud_vault_name:
+        if not self.robocorp_vault_name:
             raise KeyError(
-                "Please set Vault secret name with " "Set_Robocloud_Vault keyword"
+                "Please set Vault secret name with 'Set Robocorp Vault' keyword"
             )
-        vault_items = vault().get_secret(self.robocloud_vault_name)
+        vault_items = vault().get_secret(self.robocorp_vault_name)
         vault_items = {k.upper(): v for (k, v) in vault_items.items()}
         try:
             aws_key_id = vault_items["AWS_KEY_ID"]
@@ -166,7 +161,7 @@ class AWSBase:
         except KeyError as err:
             raise KeyError(
                 "Secrets 'AWS_KEY_ID' and 'AWS_KEY' need to exist in the Vault '%s'"
-                % self.robocloud_vault_name
+                % self.robocorp_vault_name
             ) from err
 
 
@@ -182,7 +177,7 @@ class ServiceS3(AWSBase):
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS S3 client
@@ -190,25 +185,35 @@ class ServiceS3(AWSBase):
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored in `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "s3", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+            "s3", aws_key_id, aws_key, region, use_robocorp_vault, session_token
         )
 
     @aws_dependency_required
-    def create_bucket(self, bucket_name: Optional[str] = None) -> bool:
+    def create_bucket(self, bucket_name: Optional[str] = None, **kwargs) -> bool:
         """Create S3 bucket with name
+
+        .. note:: This keyword accepts additional parameters in key=value format
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.create_bucket/>`_.
 
         :param bucket_name: name for the bucket
         :return: boolean indicating status of operation
-        """
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            Create Bucket  public-bucket   ACL=public-read-write
+        """  # noqa: E501
         required_param(bucket_name, "create_bucket")
         client = self._get_client_for_service("s3")
         try:
-            response = client.create_bucket(Bucket=bucket_name)
+            response = client.create_bucket(Bucket=bucket_name, **kwargs)
             return response["ResponseMetadata"]["HTTPStatusCode"] == 204
         except ClientError as e:
             self.logger.error(e)
@@ -242,14 +247,18 @@ class ServiceS3(AWSBase):
 
     @aws_dependency_required
     def delete_files(
-        self, bucket_name: Optional[str] = None, files: Optional[list] = None
+        self, bucket_name: Optional[str] = None, files: Optional[list] = None, **kwargs
     ):
         """Delete files in the bucket
+
+        .. note:: This keyword accepts additional parameters in key=value format
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.delete_objects/>`_.
 
         :param bucket_name: name for the bucket
         :param files: list of files to delete
         :return: number of files deleted or `False`
-        """
+        """  # noqa: E501
         required_param(bucket_name, "delete_files")
         if not files:
             self.logger.warning(
@@ -261,36 +270,43 @@ class ServiceS3(AWSBase):
         client = self._get_client_for_service("s3")
         try:
             objects = {"Objects": [{"Key": f} for f in files]}
-            response = client.delete_objects(Bucket=bucket_name, Delete=objects)
+            response = client.delete_objects(
+                Bucket=bucket_name, Delete=objects, **kwargs
+            )
             return len(response["Deleted"]) if "Deleted" in response else 0
         except ClientError as e:
             self.logger.error(e)
             return False
 
     @aws_dependency_required
-    def list_files(self, bucket_name) -> list:
+    def list_files(self, bucket_name: str, **kwargs) -> list:
         """List files in the bucket
+
+        .. note:: This keyword accepts additional parameters in key=value format
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2/>`_.
 
         :param bucket_name: name for the bucket
         :return: list of files
-        """
+        """  # noqa: E501
         required_param(bucket_name, "list_files")
         client = self._get_client_for_service("s3")
         files = []
         try:
-            response = client.list_objects_v2(Bucket=bucket_name)
+
+            response = client.list_objects_v2(Bucket=bucket_name, **kwargs)
             files = response["Contents"] if "Contents" in response else []
         except ClientError as e:
             self.logger.error(e)
         return files
 
     @aws_dependency_required
-    def _s3_upload_file(self, bucket_name, filename, object_name):
+    def _s3_upload_file(self, bucket_name, filename, object_name, **kwargs):
         client = self._get_client_for_service("s3")
         uploaded = False
         error = None
         try:
-            client.upload_file(filename, bucket_name, object_name)
+            client.upload_file(filename, bucket_name, object_name, **kwargs)
             uploaded = True
         except ClientError as e:
             error = str(e)
@@ -309,6 +325,7 @@ class ServiceS3(AWSBase):
         bucket_name: Optional[str] = None,
         filename: Optional[str] = None,
         object_name: Optional[str] = None,
+        **kwargs,
     ) -> tuple:
         """Upload single file into bucket
 
@@ -319,15 +336,30 @@ class ServiceS3(AWSBase):
 
         If `object_name` is not given then basename of the file is
         used as `object_name`.
-        """
+
+        .. note:: This keyword accepts additional parameters in key=value format (see below code example).
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/>`_.
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            &{extras}=    Evaluate    {'ContentType': 'image/png'}
+            ${uploaded}    ${error}=    Upload File
+            ...    mybucket
+            ...    ${CURDIR}${/}image.png
+            ...    image.png
+            ...    ExtraArgs=${extras}
+        """  # noqa: E501
         required_param([bucket_name, filename], "upload_file")
         if object_name is None:
             object_name = Path(filename).name
-        return self._s3_upload_file(bucket_name, filename, object_name)
+        return self._s3_upload_file(bucket_name, filename, object_name, **kwargs)
 
     @aws_dependency_required
     def upload_files(
-        self, bucket_name: Optional[str] = None, files: Optional[list] = None
+        self, bucket_name: Optional[str] = None, files: Optional[list] = None, **kwargs
     ) -> list:
         """Upload multiple files into bucket
 
@@ -339,29 +371,50 @@ class ServiceS3(AWSBase):
             ['/path/to/file1.txt', '/path/to/file2.txt']
 
         Giving files as list of dictionaries (including filepath and object name):
-            [{'filepath':'/path/to/file1.txt', 'object_name': 'file1.txt'},
-            {'filepath': '/path/to/file2.txt', 'object_name': 'file2.txt'}]
-        """
+            [{'filename':'/path/to/file1.txt', 'object_name': 'file1.txt'},
+            {'filename': '/path/to/file2.txt', 'object_name': 'file2.txt'}]
+
+        .. note:: This keyword accepts additional parameters in key=value format (see below code example).
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/>`_.
+
+        Python example (passing ExtraArgs):
+
+        .. code-block:: python
+
+            upload_files = [
+                {
+                    "filename": "./image.png",
+                    "object_name": "image.png",
+                    "ExtraArgs": {"ContentType": "image/png", "Metadata": {"importance": "1"}},
+                },
+                {
+                    "filename": "./doc.pdf",
+                    "object_name": "doc.pdf",
+                    "ExtraArgs": {"ContentType": "application/pdf"},
+                },
+            ]
+            awslibrary.upload_files("mybucket", files=upload_files)
+        """  # noqa: E501
         required_param([bucket_name, files], "upload_files")
         upload_count = 0
         for _, item in enumerate(files):
-            filepath = None
-            object_name = None
+            # filepath = None
+            # object_name = None
+            parameters = {"filename": None, "object_name": None}
             if isinstance(item, dict):
-                filepath = item["filepath"]
-                object_name = item["object_name"]
+                # filepath = item["filepath"]
+                # object_name = item["object_name"]
+                parameters = item
             elif isinstance(item, str):
-                filepath = item
-                object_name = Path(item).name
+                parameters["filename"] = item
+                parameters["object_name"] = Path(item).name
             else:
                 error = "incorrect input format for files"
 
-            if filepath and object_name:
-                uploaded, error = self._s3_upload_file(
-                    bucket_name, filepath, object_name
-                )
-                if uploaded:
-                    upload_count += 1
+            uploaded, error = self._s3_upload_file(bucket_name, **parameters, **kwargs)
+            if uploaded:
+                upload_count += 1
             if error:
                 self.logger.warning("File upload failed with error: %s", error)
         return upload_count
@@ -372,15 +425,20 @@ class ServiceS3(AWSBase):
         bucket_name: Optional[str] = None,
         files: Optional[list] = None,
         target_directory: Optional[str] = None,
+        **kwargs,
     ) -> list:
         """Download files from bucket to local filesystem
+
+        .. note:: This keyword accepts additional parameters in key=value format.
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.download_file/>`_.
 
         :param bucket_name: name for the bucket
         :param files: list of S3 object names
         :param target_directory: location for the downloaded files, default
             current directory
         :return: number of files downloaded
-        """
+        """  # noqa: E501
         required_param([bucket_name, files, target_directory], "download_files")
         client = self._get_client_for_service("s3")
         download_count = 0
@@ -389,7 +447,9 @@ class ServiceS3(AWSBase):
             try:
                 object_as_path = Path(object_name)
                 download_path = str(Path(target_directory) / object_as_path.name)
-                response = client.download_file(bucket_name, object_name, download_path)
+                response = client.download_file(
+                    bucket_name, object_name, download_path, **kwargs
+                )
                 if response is None:
                     download_count += 1
             except ClientError as e:
@@ -415,7 +475,7 @@ class ServiceTextract(AWSBase):
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ):
         """Initialize AWS Textract client
@@ -423,12 +483,12 @@ class ServiceTextract(AWSBase):
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored in `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "textract", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+            "textract", aws_key_id, aws_key, region, use_robocorp_vault, session_token
         )
 
     @aws_dependency_required
@@ -881,7 +941,7 @@ class ServiceComprehend(AWSBase):
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ):
         """Initialize AWS Comprehend client
@@ -889,7 +949,7 @@ class ServiceComprehend(AWSBase):
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored in `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
@@ -898,7 +958,7 @@ class ServiceComprehend(AWSBase):
             aws_key_id,
             aws_key,
             region,
-            use_robocloud_vault,
+            use_robocorp_vault,
             session_token,
         )
 
@@ -948,7 +1008,7 @@ class ServiceSQS(AWSBase):
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
         queue_url: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ):
         """Initialize AWS SQS client
@@ -957,12 +1017,12 @@ class ServiceSQS(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param queue_url: SQS queue url
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored into `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "sqs", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+            "sqs", aws_key_id, aws_key, region, use_robocorp_vault, session_token
         )
         self.queue_url = queue_url
 
@@ -1061,7 +1121,7 @@ class ServiceRedshiftData(AWSBase):
         database: Optional[str] = None,
         database_user: Optional[str] = None,
         secret_arn: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS Redshift Data API client
@@ -1081,7 +1141,7 @@ class ServiceRedshiftData(AWSBase):
         :param secret_arn: The name or ARN of the secret that enables access
             to the database. This parameter is required when authenticating
             using Secrets Manager.
-        :param use_robocloud_vault: use secret stored into ``Robocloud Vault``
+        :param use_robocorp_vault: use secret stored in ``Robocorp Vault``
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
@@ -1092,7 +1152,7 @@ class ServiceRedshiftData(AWSBase):
             aws_key_id,
             aws_key,
             region,
-            use_robocloud_vault,
+            use_robocorp_vault,
             session_token,
         )
         self.cluster_identifier = cluster_identifier
@@ -1583,7 +1643,7 @@ class ServiceSTS(AWSBase):
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS STS client.
@@ -1591,12 +1651,12 @@ class ServiceSTS(AWSBase):
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored in `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "sts", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+            "sts", aws_key_id, aws_key, region, use_robocorp_vault, session_token
         )
 
     @aws_dependency_required
@@ -1718,12 +1778,12 @@ class AWS(
 
     - Method 1 as environment variables, ``AWS_KEY_ID`` and ``AWS_KEY``.
     - Method 2 as keyword parameters to ``Init Textract Client`` for example.
-    - Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
-      with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
+    - Method 3 as Robocorp vault secret. The vault name needs to be given in library init or
+      with keyword ``Set Robocorp Vault``. Secret keys are expected to match environment variable
       names.
 
     **Note.** Starting from `rpaframework-aws` **1.0.3** `region` can be given as environment
-    variable ``AWS_REGION`` or include as Robocloud Vault secret with the same key name.
+    variable ``AWS_REGION`` or include as Robocorp Vault secret with the same key name.
 
     **Redshift Data authentication:** Depending on the authorization method, use
     one of the following combinations of request parameters, which can only
@@ -1771,18 +1831,18 @@ class AWS(
         Init AWS services
             Init S3 Client  aws_key_id=${AWS_KEY_ID}  aws_key=${AWS_KEY}
 
-    Method 3. setting Robocloud Vault in the library init
+    Method 3. setting Robocorp Vault in the library init
 
     .. code-block:: robotframework
 
         *** Settings ***
-        Library   RPA.Cloud.AWS  robocloud_vault_name=aws
+        Library   RPA.Cloud.AWS  robocorp_vault_name=aws
 
         *** Tasks ***
         Init AWS services
-            Init S3 Client  use_robocloud_vault=${TRUE}
+            Init S3 Client  use_robocorp_vault=${TRUE}
 
-    Method 3. setting Robocloud Vault with keyword
+    Method 3. setting Robocorp Vault with keyword
 
     .. code-block:: robotframework
 
@@ -1791,8 +1851,8 @@ class AWS(
 
         *** Tasks ***
         Init AWS services
-            Set Robocloud Vault     vault_name=aws
-            Init Textract Client    use_robocloud_vault=${TRUE}
+            Set Robocorp Vault     vault_name=aws
+            Init Textract Client    use_robocorp_vault=${TRUE}
 
     **Requirements**
 
@@ -1857,9 +1917,9 @@ class AWS(
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(
-        self, region: str = DEFAULT_REGION, robocloud_vault_name: Optional[str] = None
+        self, region: str = DEFAULT_REGION, robocorp_vault_name: Optional[str] = None
     ):
-        self.set_robocloud_vault(robocloud_vault_name)
+        self.set_robocorp_vault(robocorp_vault_name)
         self.logger = logging.getLogger(__name__)
         super().__init__()
         self.region = region
