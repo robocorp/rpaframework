@@ -5,7 +5,7 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-17.0.0 - 20 Sep 2022
+17.0.0 - 21 Sep 2022
 --------------------
 
 - Library **RPA.Cloud.AWS** (:pr:`637`)
