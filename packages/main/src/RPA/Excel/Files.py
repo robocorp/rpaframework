@@ -11,8 +11,9 @@ import xlwt
 from openpyxl.utils import get_column_letter
 from openpyxl.utils.exceptions import InvalidFileException
 from PIL import Image
-from RPA.Tables import Table, Tables
 from xlutils.copy import copy as xlutils_copy
+from RPA.Tables import Table, Tables
+
 
 PathType = Union[str, pathlib.Path]
 
