@@ -16,6 +16,7 @@ Release notes
   - Add possibility to pass extra parameters for some S3 keywords
 
 - Library **RPA.Cloud.Google** (:pr:`619`): Add support for `Document AI <https://cloud.google.com/document-ai/>`_  service
+- Library **RPA.Excel.Files** (:pr:`638`): Add support for opening .xlsx files in ``read_only`` mode
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
