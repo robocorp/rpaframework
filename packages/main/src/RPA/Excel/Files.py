@@ -171,17 +171,16 @@ class Files:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.workbook = None
-        self.read_only = False
 
     def _load_workbook(
-        self, path: str, data_only: bool
+        self, path: str, data_only: bool, read_only: bool
     ) -> Union["XlsWorkbook", "XlsxWorkbook"]:
         # pylint: disable=broad-except
         path = pathlib.Path(path).resolve(strict=True)
 
         try:
             book = XlsxWorkbook(path)
-            book.open(data_only=data_only, read_only=self.read_only)
+            book.open(data_only=data_only, read_only=read_only)
             return book
         except InvalidFileException as exc:
             self.logger.debug(exc)  # Unsupported extension, silently try xlrd
@@ -337,8 +336,7 @@ class Files:
         if self.workbook:
             self.close_workbook()
 
-        self.read_only = read_only
-        self.workbook = self._load_workbook(path, data_only)
+        self.workbook = self._load_workbook(path, data_only, read_only)
         self.logger.info("Opened workbook: %s", self.workbook)
         return self.workbook
 
