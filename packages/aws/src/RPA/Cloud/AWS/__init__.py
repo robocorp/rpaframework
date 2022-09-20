@@ -194,16 +194,26 @@ class ServiceS3(AWSBase):
         )
 
     @aws_dependency_required
-    def create_bucket(self, bucket_name: Optional[str] = None) -> bool:
+    def create_bucket(self, bucket_name: Optional[str] = None, **kwargs) -> bool:
         """Create S3 bucket with name
+
+        .. note:: This keyword accepts additional parameters in key=value format
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.create_bucket/>`_.
 
         :param bucket_name: name for the bucket
         :return: boolean indicating status of operation
-        """
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            Create Bucket  public-bucket   ACL=public-read-write
+        """  # noqa: E501
         required_param(bucket_name, "create_bucket")
         client = self._get_client_for_service("s3")
         try:
-            response = client.create_bucket(Bucket=bucket_name)
+            response = client.create_bucket(Bucket=bucket_name, **kwargs)
             return response["ResponseMetadata"]["HTTPStatusCode"] == 204
         except ClientError as e:
             self.logger.error(e)
@@ -237,14 +247,18 @@ class ServiceS3(AWSBase):
 
     @aws_dependency_required
     def delete_files(
-        self, bucket_name: Optional[str] = None, files: Optional[list] = None
+        self, bucket_name: Optional[str] = None, files: Optional[list] = None, **kwargs
     ):
         """Delete files in the bucket
+
+        .. note:: This keyword accepts additional parameters in key=value format
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.delete_objects/>`_.
 
         :param bucket_name: name for the bucket
         :param files: list of files to delete
         :return: number of files deleted or `False`
-        """
+        """  # noqa: E501
         required_param(bucket_name, "delete_files")
         if not files:
             self.logger.warning(
@@ -256,36 +270,43 @@ class ServiceS3(AWSBase):
         client = self._get_client_for_service("s3")
         try:
             objects = {"Objects": [{"Key": f} for f in files]}
-            response = client.delete_objects(Bucket=bucket_name, Delete=objects)
+            response = client.delete_objects(
+                Bucket=bucket_name, Delete=objects, **kwargs
+            )
             return len(response["Deleted"]) if "Deleted" in response else 0
         except ClientError as e:
             self.logger.error(e)
             return False
 
     @aws_dependency_required
-    def list_files(self, bucket_name) -> list:
+    def list_files(self, bucket_name: str, **kwargs) -> list:
         """List files in the bucket
+
+        .. note:: This keyword accepts additional parameters in key=value format
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2/>`_.
 
         :param bucket_name: name for the bucket
         :return: list of files
-        """
+        """  # noqa: E501
         required_param(bucket_name, "list_files")
         client = self._get_client_for_service("s3")
         files = []
         try:
-            response = client.list_objects_v2(Bucket=bucket_name)
+
+            response = client.list_objects_v2(Bucket=bucket_name, **kwargs)
             files = response["Contents"] if "Contents" in response else []
         except ClientError as e:
             self.logger.error(e)
         return files
 
     @aws_dependency_required
-    def _s3_upload_file(self, bucket_name, filename, object_name):
+    def _s3_upload_file(self, bucket_name, filename, object_name, **kwargs):
         client = self._get_client_for_service("s3")
         uploaded = False
         error = None
         try:
-            client.upload_file(filename, bucket_name, object_name)
+            client.upload_file(filename, bucket_name, object_name, **kwargs)
             uploaded = True
         except ClientError as e:
             error = str(e)
@@ -304,6 +325,7 @@ class ServiceS3(AWSBase):
         bucket_name: Optional[str] = None,
         filename: Optional[str] = None,
         object_name: Optional[str] = None,
+        **kwargs,
     ) -> tuple:
         """Upload single file into bucket
 
@@ -314,15 +336,30 @@ class ServiceS3(AWSBase):
 
         If `object_name` is not given then basename of the file is
         used as `object_name`.
-        """
+
+        .. note:: This keyword accepts additional parameters in key=value format (see below code example).
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/>`_.
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            &{extras}=    Evaluate    {'ContentType': 'image/png'}
+            ${uploaded}    ${error}=    Upload File
+            ...    mybucket
+            ...    ${CURDIR}${/}image.png
+            ...    image.png
+            ...    ExtraArgs=${extras}
+        """  # noqa: E501
         required_param([bucket_name, filename], "upload_file")
         if object_name is None:
             object_name = Path(filename).name
-        return self._s3_upload_file(bucket_name, filename, object_name)
+        return self._s3_upload_file(bucket_name, filename, object_name, **kwargs)
 
     @aws_dependency_required
     def upload_files(
-        self, bucket_name: Optional[str] = None, files: Optional[list] = None
+        self, bucket_name: Optional[str] = None, files: Optional[list] = None, **kwargs
     ) -> list:
         """Upload multiple files into bucket
 
@@ -334,29 +371,50 @@ class ServiceS3(AWSBase):
             ['/path/to/file1.txt', '/path/to/file2.txt']
 
         Giving files as list of dictionaries (including filepath and object name):
-            [{'filepath':'/path/to/file1.txt', 'object_name': 'file1.txt'},
-            {'filepath': '/path/to/file2.txt', 'object_name': 'file2.txt'}]
-        """
+            [{'filename':'/path/to/file1.txt', 'object_name': 'file1.txt'},
+            {'filename': '/path/to/file2.txt', 'object_name': 'file2.txt'}]
+
+        .. note:: This keyword accepts additional parameters in key=value format (see below code example).
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/>`_.
+
+        Python example (passing ExtraArgs):
+
+        .. code-block:: python
+
+            upload_files = [
+                {
+                    "filename": "./image.png",
+                    "object_name": "image.png",
+                    "ExtraArgs": {"ContentType": "image/png", "Metadata": {"importance": "1"}},
+                },
+                {
+                    "filename": "./doc.pdf",
+                    "object_name": "doc.pdf",
+                    "ExtraArgs": {"ContentType": "application/pdf"},
+                },
+            ]
+            awslibrary.upload_files("mybucket", files=upload_files)
+        """  # noqa: E501
         required_param([bucket_name, files], "upload_files")
         upload_count = 0
         for _, item in enumerate(files):
-            filepath = None
-            object_name = None
+            # filepath = None
+            # object_name = None
+            parameters = {"filename": None, "object_name": None}
             if isinstance(item, dict):
-                filepath = item["filepath"]
-                object_name = item["object_name"]
+                # filepath = item["filepath"]
+                # object_name = item["object_name"]
+                parameters = item
             elif isinstance(item, str):
-                filepath = item
-                object_name = Path(item).name
+                parameters["filename"] = item
+                parameters["object_name"] = Path(item).name
             else:
                 error = "incorrect input format for files"
 
-            if filepath and object_name:
-                uploaded, error = self._s3_upload_file(
-                    bucket_name, filepath, object_name
-                )
-                if uploaded:
-                    upload_count += 1
+            uploaded, error = self._s3_upload_file(bucket_name, **parameters, **kwargs)
+            if uploaded:
+                upload_count += 1
             if error:
                 self.logger.warning("File upload failed with error: %s", error)
         return upload_count
@@ -367,15 +425,20 @@ class ServiceS3(AWSBase):
         bucket_name: Optional[str] = None,
         files: Optional[list] = None,
         target_directory: Optional[str] = None,
+        **kwargs,
     ) -> list:
         """Download files from bucket to local filesystem
+
+        .. note:: This keyword accepts additional parameters in key=value format.
+
+        More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.download_file/>`_.
 
         :param bucket_name: name for the bucket
         :param files: list of S3 object names
         :param target_directory: location for the downloaded files, default
             current directory
         :return: number of files downloaded
-        """
+        """  # noqa: E501
         required_param([bucket_name, files, target_directory], "download_files")
         client = self._get_client_for_service("s3")
         download_count = 0
@@ -384,7 +447,9 @@ class ServiceS3(AWSBase):
             try:
                 object_as_path = Path(object_name)
                 download_path = str(Path(target_directory) / object_as_path.name)
-                response = client.download_file(bucket_name, object_name, download_path)
+                response = client.download_file(
+                    bucket_name, object_name, download_path, **kwargs
+                )
                 if response is None:
                     download_count += 1
             except ClientError as e:
