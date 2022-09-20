@@ -698,7 +698,7 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.open_workbook">
-<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">data_only: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">data_only: Optional[bool] = False</em>, <em class="sig-param">read_only: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Excel.Files.XlsWorkbook, RPA.Excel.Files.XlsxWorkbook]<a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open an existing Excel workbook.</p>
 <p>Opens the workbook in memory and sets it as the active workbook.
 <strong>This library can only have one workbook open at a time, and
@@ -1244,6 +1244,11 @@ for documentation.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.open">
 <code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">read_only=False</em>, <em class="sig-param">write_only=False</em>, <em class="sig-param">data_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.open" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.read_only">
+<em class="property">property </em><code class="sig-name descname">read_only</code><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.read_only" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
