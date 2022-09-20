@@ -29,15 +29,10 @@ DEFAULT_REGION = "eu-west-1"
 
 
 def import_vault():
-    """Try to import Vault/Secrets library, with old and new name."""
+    """Try to import Vault library."""
     try:
         module = importlib.import_module("RPA.Robocorp.Vault")
         return getattr(module, "Vault")
-    except ModuleNotFoundError:
-        pass
-    try:
-        module = importlib.import_module("RPA.Robocloud.Secrets")
-        return getattr(module, "Secrets")
     except ModuleNotFoundError:
         pass
     return None
@@ -62,8 +57,8 @@ def aws_dependency_required(f):
     def wrapper(*args, **kwargs):
         if not HAS_BOTO3:
             raise ValueError(
-                "Please install optional `aws` package, "
-                "`pip install rpaframework[aws]` to use RPA.Cloud.AWS library"
+                "Please install the `aws` package, "
+                "`pip install rpaframework-aws` to use RPA.Cloud.AWS library"
             )
         return f(*args, **kwargs)
 
@@ -81,7 +76,7 @@ class AWSBase:
     services: list = []
     clients: dict = {}
     region: Optional[str] = None
-    robocloud_vault_name: Optional[str] = None
+    robocorp_vault_name: Optional[str] = None
 
     def _get_client_for_service(self, service_name: Optional[str] = None):
         """Return client instance for servive if it has been initialized.
@@ -107,10 +102,10 @@ class AWSBase:
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ):
-        if use_robocloud_vault:
+        if use_robocorp_vault:
             aws_key_id, aws_key, region = self._get_secrets_from_cloud()
         else:
             if aws_key_id is None or aws_key_id.strip() == "":
@@ -137,13 +132,13 @@ class AWSBase:
         client = boto3.client(service_name, region_name=region, **auth_params)
         self._set_service(service_name, client)
 
-    def set_robocloud_vault(self, vault_name):
-        """Set Robocloud Vault name
+    def set_robocorp_vault(self, vault_name):
+        """Set Robocorp Vault name
 
-        :param vault_name: Robocloud Vault name
+        :param vault_name: Robocorp Vault name
         """
         if vault_name:
-            self.robocloud_vault_name = vault_name
+            self.robocorp_vault_name = vault_name
 
     def _get_secrets_from_cloud(self):
         vault = import_vault()
@@ -152,11 +147,11 @@ class AWSBase:
                 "RPA.Robocorp.Vault library is required to use Vault"
                 " with RPA.Cloud.AWS library"
             )
-        if not self.robocloud_vault_name:
+        if not self.robocorp_vault_name:
             raise KeyError(
-                "Please set Vault secret name with " "Set_Robocloud_Vault keyword"
+                "Please set Vault secret name with 'Set Robocorp Vault' keyword"
             )
-        vault_items = vault().get_secret(self.robocloud_vault_name)
+        vault_items = vault().get_secret(self.robocorp_vault_name)
         vault_items = {k.upper(): v for (k, v) in vault_items.items()}
         try:
             aws_key_id = vault_items["AWS_KEY_ID"]
@@ -166,7 +161,7 @@ class AWSBase:
         except KeyError as err:
             raise KeyError(
                 "Secrets 'AWS_KEY_ID' and 'AWS_KEY' need to exist in the Vault '%s'"
-                % self.robocloud_vault_name
+                % self.robocorp_vault_name
             ) from err
 
 
@@ -182,7 +177,7 @@ class ServiceS3(AWSBase):
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS S3 client
@@ -190,12 +185,12 @@ class ServiceS3(AWSBase):
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored in `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "s3", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+            "s3", aws_key_id, aws_key, region, use_robocorp_vault, session_token
         )
 
     @aws_dependency_required
@@ -415,7 +410,7 @@ class ServiceTextract(AWSBase):
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ):
         """Initialize AWS Textract client
@@ -423,12 +418,12 @@ class ServiceTextract(AWSBase):
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored in `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "textract", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+            "textract", aws_key_id, aws_key, region, use_robocorp_vault, session_token
         )
 
     @aws_dependency_required
@@ -881,7 +876,7 @@ class ServiceComprehend(AWSBase):
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ):
         """Initialize AWS Comprehend client
@@ -889,7 +884,7 @@ class ServiceComprehend(AWSBase):
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored in `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
@@ -898,7 +893,7 @@ class ServiceComprehend(AWSBase):
             aws_key_id,
             aws_key,
             region,
-            use_robocloud_vault,
+            use_robocorp_vault,
             session_token,
         )
 
@@ -948,7 +943,7 @@ class ServiceSQS(AWSBase):
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
         queue_url: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ):
         """Initialize AWS SQS client
@@ -957,12 +952,12 @@ class ServiceSQS(AWSBase):
         :param aws_key: secret access key
         :param region: AWS region
         :param queue_url: SQS queue url
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored into `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "sqs", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+            "sqs", aws_key_id, aws_key, region, use_robocorp_vault, session_token
         )
         self.queue_url = queue_url
 
@@ -1061,7 +1056,7 @@ class ServiceRedshiftData(AWSBase):
         database: Optional[str] = None,
         database_user: Optional[str] = None,
         secret_arn: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS Redshift Data API client
@@ -1081,7 +1076,7 @@ class ServiceRedshiftData(AWSBase):
         :param secret_arn: The name or ARN of the secret that enables access
             to the database. This parameter is required when authenticating
             using Secrets Manager.
-        :param use_robocloud_vault: use secret stored into ``Robocloud Vault``
+        :param use_robocorp_vault: use secret stored in ``Robocorp Vault``
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
@@ -1092,7 +1087,7 @@ class ServiceRedshiftData(AWSBase):
             aws_key_id,
             aws_key,
             region,
-            use_robocloud_vault,
+            use_robocorp_vault,
             session_token,
         )
         self.cluster_identifier = cluster_identifier
@@ -1583,7 +1578,7 @@ class ServiceSTS(AWSBase):
         aws_key_id: Optional[str] = None,
         aws_key: Optional[str] = None,
         region: Optional[str] = None,
-        use_robocloud_vault: bool = False,
+        use_robocorp_vault: bool = False,
         session_token: Optional[str] = None,
     ) -> None:
         """Initialize AWS STS client.
@@ -1591,12 +1586,12 @@ class ServiceSTS(AWSBase):
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocorp_vault: use secret stored in `Robocorp Vault`
         :param session_token: a session token associated with temporary
             credentials, such as from ``Assume Role``.
         """
         self._init_client(
-            "sts", aws_key_id, aws_key, region, use_robocloud_vault, session_token
+            "sts", aws_key_id, aws_key, region, use_robocorp_vault, session_token
         )
 
     @aws_dependency_required
@@ -1718,12 +1713,12 @@ class AWS(
 
     - Method 1 as environment variables, ``AWS_KEY_ID`` and ``AWS_KEY``.
     - Method 2 as keyword parameters to ``Init Textract Client`` for example.
-    - Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
-      with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
+    - Method 3 as Robocorp vault secret. The vault name needs to be given in library init or
+      with keyword ``Set Robocorp Vault``. Secret keys are expected to match environment variable
       names.
 
     **Note.** Starting from `rpaframework-aws` **1.0.3** `region` can be given as environment
-    variable ``AWS_REGION`` or include as Robocloud Vault secret with the same key name.
+    variable ``AWS_REGION`` or include as Robocorp Vault secret with the same key name.
 
     **Redshift Data authentication:** Depending on the authorization method, use
     one of the following combinations of request parameters, which can only
@@ -1771,18 +1766,18 @@ class AWS(
         Init AWS services
             Init S3 Client  aws_key_id=${AWS_KEY_ID}  aws_key=${AWS_KEY}
 
-    Method 3. setting Robocloud Vault in the library init
+    Method 3. setting Robocorp Vault in the library init
 
     .. code-block:: robotframework
 
         *** Settings ***
-        Library   RPA.Cloud.AWS  robocloud_vault_name=aws
+        Library   RPA.Cloud.AWS  robocorp_vault_name=aws
 
         *** Tasks ***
         Init AWS services
-            Init S3 Client  use_robocloud_vault=${TRUE}
+            Init S3 Client  use_robocorp_vault=${TRUE}
 
-    Method 3. setting Robocloud Vault with keyword
+    Method 3. setting Robocorp Vault with keyword
 
     .. code-block:: robotframework
 
@@ -1791,8 +1786,8 @@ class AWS(
 
         *** Tasks ***
         Init AWS services
-            Set Robocloud Vault     vault_name=aws
-            Init Textract Client    use_robocloud_vault=${TRUE}
+            Set Robocorp Vault     vault_name=aws
+            Init Textract Client    use_robocorp_vault=${TRUE}
 
     **Requirements**
 
@@ -1857,9 +1852,9 @@ class AWS(
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(
-        self, region: str = DEFAULT_REGION, robocloud_vault_name: Optional[str] = None
+        self, region: str = DEFAULT_REGION, robocorp_vault_name: Optional[str] = None
     ):
-        self.set_robocloud_vault(robocloud_vault_name)
+        self.set_robocorp_vault(robocorp_vault_name)
         self.logger = logging.getLogger(__name__)
         super().__init__()
         self.region = region
