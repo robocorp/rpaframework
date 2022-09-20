@@ -1,22 +1,22 @@
 import base64
-import json
 import logging
 import mimetypes
-import re
-from typing import Any, Dict, Hashable, List, Optional, Union
+from typing import Dict, Hashable, List, Optional, Union
 
-JSONValue = Optional[Union[str, int, float, bool]]
-JSONType = Union[Dict[Hashable, JSONValue], List[JSONValue], JSONValue]
 import requests
 
 from RPA.RobotLogListener import RobotLogListener
 
+JSONValue = Optional[Union[str, int, float, bool]]
+JSONType = Union[Dict[Hashable, JSONValue], List[JSONValue], JSONValue]
+
 
 class Nanonets:
-    """Library to support `nanonets <https://nanonets.com/>`_ service for intelligent document processing (IDP).
+    """Library to support `nanonets <https://nanonets.com/>`_ service for intelligent
+    document processing (IDP).
 
-    Service supports identifying fields in the documents, which can be given to the service in multiple
-    different file formats and via URL.
+    Service supports identifying fields in the documents, which can be given to the
+    service in multiple different file formats and via URL.
 
     **Robot Framework example usage**
 
@@ -42,7 +42,7 @@ class Nanonets:
 
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.base_url = "https://app.nanonets.com/api/v2"
         self._request_headers = {"Content-Type": "application/json"}
@@ -57,23 +57,25 @@ class Nanonets:
             encoded_content = base64.b64encode(image_file.read())
         return encoded_content.decode("utf-8"), mimetypes.guess_type(file_path)[0]
 
-    def set_nanonets_authorization(self, api_key: str):
-        """_summary_
+    def set_nanonets_authorization(self, api_key: str) -> None:
+        """Set Nanonets request headers with key related to API.
 
-        :param api_key: _description_
-        :type api_key: str
+        :param api_key: key related to the API
         """
         self.api_key = api_key
 
-    def ocr_fulltext(self, filename: str, file_path: str):
-        """_summary_
+    def ocr_fulltext(self, filename: str, file_path: str) -> List:
+        """OCR fulltext a given file. Returns words and full text.
 
-        :param file_path: _description_
-        :type file_path: str
+        Filename and file_path needs to be given separately.
+
+        :param filename: name of the file
+        :param file_path: path of the file
+        :return: the result in a list format
         """
-        base64string, mime = self._get_file_base64_and_mimetype(file_path)
+        _, mime = self._get_file_base64_and_mimetype(file_path)
 
-        # payload = {"urls": ["MY_IMAGE_URL"]}
+        # pylint: disable=R1732
         files = [("file", (filename, open(file_path, "rb"), mime))]
 
         headers = {}
@@ -81,7 +83,6 @@ class Nanonets:
             "POST",
             f"{self.base_url}/OCR/FullText",
             headers=headers,
-            # data=payload,
             files=files,
             auth=requests.auth.HTTPBasicAuth(self.api_key, ""),
         )
@@ -89,11 +90,10 @@ class Nanonets:
         response.raise_for_status()
         return response.json()["results"]
 
-    def get_all_models(self):
-        """_summary_
+    def get_all_models(self) -> Dict:
+        """Get all available models related to the API key.
 
-        :return: _description_
-        :rtype: _type_
+        :return: object containing available models
         """
         response = requests.request(
             "GET",
@@ -104,19 +104,17 @@ class Nanonets:
         response.raise_for_status()
         return response.json()
 
-    def predict_file(self, file_path: str, model_id: str):
-        """_summary_
+    def predict_file(self, file_path: str, model_id: str) -> Dict:
+        """Get prediction result for a file by a given model id.
 
-        :param file_path: _description_
-        :type file_path: str
-        :param model_id: _description_
-        :type model_id: str
-        :return: _description_
-        :rtype: _type_
+        :param file_path: filepath to the file
+        :param model_id: id of the Nanonets model to categorize a file
+        :return: the result in a list format
         """
 
         url = f"{self.base_url}/OCR/Model/{model_id}/LabelFile/"
 
+        # pylint: disable=R1732
         data = {"file": open(file_path, "rb")}
 
         response = requests.post(
@@ -127,12 +125,10 @@ class Nanonets:
         return response.json()
 
     def get_fields_from_prediction_result(self, prediction: JSONType) -> List:
-        """_summary_
+        """Helper keyword to get found fields from a prediction result.
 
-        :param prediction: _description_
-        :type prediction: JSONType
-        :return: _description_
-        :rtype: List
+        :param prediction: prediction result file
+        :return: list of found fields
         """
         return [
             item
@@ -141,12 +137,10 @@ class Nanonets:
         ]
 
     def get_tables_from_prediction_result(self, prediction: JSONType) -> List:
-        """_summary_
+        """Helper keyword to get found tables from a prediction result.
 
-        :param prediction: _description_
-        :type prediction: JSONType
-        :return: _description_
-        :rtype: List
+        :param prediction: prediction result file
+        :return: list of found tables
         """
         tables = [
             item
