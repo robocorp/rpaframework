@@ -10,7 +10,9 @@ Release notes
 
 - Library **RPA.Cloud.AWS** (:pr:`637`)
 
-  - All references to `Robocloud.Vault` changed to `Robocorp.Vault` (parameters and documentation)
+  - All references to `Robocloud.Vault` changed to `Robocorp.Vault` (parameters and documentation).
+    This is **breaking** for this library, which leads to **major** version bump also for ``rpaframework``, 
+    because this library can be also installed with ``rpaframework[aws]`` instead of ``rpaframework-aws``.
   - Add possibility to pass extra parameters for some S3 keywords
 
 - Library **RPA.Cloud.Google** (:pr:`619`): Add support for `Document AI <https://cloud.google.com/document-ai/>`_  service
