@@ -1583,15 +1583,15 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-aws"
-version = "4.0.0"
+version = "5.0.0"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = true
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-amazon-textract-response-parser = ">=0.1.1,<0.2.0"
-boto3 = ">=1.13.4,<2.0.0"
+amazon-textract-response-parser = ">=0.1.33,<0.2.0"
+boto3 = ">=1.24.76,<2.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
 rpaframework-core = ">=10.0.0,<11.0.0"
@@ -2215,7 +2215,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "cac5e1810fb4fe7d4a411f52c33ef52b80ff10b1a69e10c37d462e9c635addf7"
+content-hash = "2537b91e37bd0cd6cc70c6d1f95fcd98b56163eb5cb032bd14cc03414e60e85d"
 
 [metadata.files]
 alabaster = [
@@ -3433,8 +3433,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework_seleniumtestability-2.0.0-py3-none-any.whl", hash = "sha256:0d3a54df0f6adedbbe3af31d6c14157688f90057b951e50f1865fd725b212df5"},
 ]
 rpaframework-aws = [
-    {file = "rpaframework-aws-4.0.0.tar.gz", hash = "sha256:7159078f2a5cc5e3a30e589fdc928e617b676cfc6d1bca229e1fd627600c57ac"},
-    {file = "rpaframework_aws-4.0.0-py3-none-any.whl", hash = "sha256:0e9a5e00788ca43bac99ebb1bc25e9a783e0cfaf974b910e3e25b5570723055a"},
+    {file = "rpaframework-aws-5.0.0.tar.gz", hash = "sha256:9e2b51ac438b4213522dd748a2dc3ac1da24056d9af88b4c46eea7ad1ceba91a"},
+    {file = "rpaframework_aws-5.0.0-py3-none-any.whl", hash = "sha256:e49198ca5fc419ed49fffa97b972fd431859cd49930cc7b093cca1e4ee0eac91"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-10.0.0.tar.gz", hash = "sha256:176b9c948f1ae19c11fa3061705fd6ed48786c49199fc5fcf027349adca630bf"},
