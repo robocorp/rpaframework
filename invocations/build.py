@@ -116,11 +116,12 @@ def publish(ctx, ci=False, build_=True, version=None, all=False):
         shell.invoke(ctx, f"build.version --version {version}", echo=False)
     if not ci:
         shell.invoke(ctx, "install.clean", echo=False)
+        shell.invoke(ctx, "install -r", echo=False)
     if build_:
         test_arg = "--no-test" if ci else ""
         shell.invoke(
             ctx,
-            f"install.clean --no-venv --build {test_arg}",
+            f"install.clean --no-venv {test_arg}",
             echo=False,
         )
         shell.invoke(ctx, f"build {test_arg}", echo=False)

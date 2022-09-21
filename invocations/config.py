@@ -115,10 +115,10 @@ def clean(ctx, venv=True, build=True, test=True, docs=False, all=False):
     artifacts, but you can use flags to modify default as described
     below:
 
-    * ``--venv`` (enabled by default): Removes the .venv directory and
+    * ``--no-venv``: Disables removing the .venv directory and
       all caches (e.g., ``__pycache__``).
-    * ``--build`` (enabled by default): Removes all build artifacts.
-    * ``--test`` (enabled by default): Removes all test artifacts and
+    * ``--no-build``: Disables removing all build artifacts.
+    * ``--no-test``: Disables removing all test artifacts and
       any related caches.
     * ``--docs`` (disabled by default): When invoked from the meta
       package level, the build artifacts for local documentation will
