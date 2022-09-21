@@ -38,7 +38,6 @@ class Nanonets:
             END
             ${tables}=    Get Tables From Prediction Result    ${result}
             FOR    ${table}    IN    @{tables}
-                Log To Console    \nTABLE
                 FOR    ${rows}    IN    ${table}[rows]
                     FOR    ${row}    IN    @{rows}
                         ${cells}=    Evaluate    [cell['text'] for cell in $row]
@@ -64,7 +63,6 @@ class Nanonets:
             print(f"Label: {field['label']} Text: {field['ocr_text']}")
         tables = nanolib.get_tables_from_prediction_result(result)
         for table in tables:
-            print("\nTABLE")
             rpatable = Tables().create_table(table["rows"])
             for row in table["rows"]:
                 cells = [cell["text"] for cell in row]
@@ -208,7 +206,6 @@ class Nanonets:
             END
             ${tables}=    Get Tables From Prediction Result    ${result}
             FOR    ${table}    IN    @{tables}
-                Log To Console    \nTABLE
                 FOR    ${rows}    IN    ${table}[rows]
                     FOR    ${row}    IN    @{rows}
                         ${cells}=    Evaluate    [cell['text'] for cell in $row]
@@ -227,7 +224,6 @@ class Nanonets:
                 print(f"Label: {field['label']} Text: {field['ocr_text']}")
             tables = nanolib.get_tables_from_prediction_result(result)
             for table in tables:
-                print("\nTABLE")
                 for row in table["rows"]:
                     cells = [cell["text"] for cell in row]
                     print(f"ROW: {' | '.join(cells)}")
