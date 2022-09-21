@@ -61,6 +61,9 @@ class Base64AI:
             print(f"Text (OCR): {r['ocr']}")
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.base_url = "https://base64.ai/api"

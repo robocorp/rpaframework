@@ -1754,7 +1754,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "17.0.0"
+version = "17.0.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1794,7 +1794,7 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
-rpaframework-aws = {version = "^4.0.0", optional = true}
+rpaframework-aws = {version = "^5.0.0", optional = true}
 rpaframework-core = "^10.0.0"
 rpaframework-dialogs = "^4.0.0"
 rpaframework-pdf = "^5.0.0"
@@ -1810,7 +1810,7 @@ xlutils = "^2.0.0"
 xlwt = "^1.3.0"
 
 [package.extras]
-aws = ["rpaframework-aws (>=4.0.0,<5.0.0)"]
+aws = ["rpaframework-aws (>=5.0.0,<6.0.0)"]
 cv = ["rpaframework-recognition (>=5.0.0,<6.0.0)"]
 playwright = ["robotframework-browser (>=13.0.0,<14.0.0)"]
 
@@ -1820,15 +1820,15 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "4.0.0"
+version = "5.0.0"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-amazon-textract-response-parser = ">=0.1.1,<0.2.0"
-boto3 = ">=1.13.4,<2.0.0"
+amazon-textract-response-parser = ">=0.1.33,<0.2.0"
+boto3 = ">=1.24.76,<2.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
 rpaframework-core = ">=10.0.0,<11.0.0"
@@ -3804,8 +3804,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework-aws-4.0.0.tar.gz", hash = "sha256:7159078f2a5cc5e3a30e589fdc928e617b676cfc6d1bca229e1fd627600c57ac"},
-    {file = "rpaframework_aws-4.0.0-py3-none-any.whl", hash = "sha256:0e9a5e00788ca43bac99ebb1bc25e9a783e0cfaf974b910e3e25b5570723055a"},
+    {file = "rpaframework-aws-5.0.0.tar.gz", hash = "sha256:9e2b51ac438b4213522dd748a2dc3ac1da24056d9af88b4c46eea7ad1ceba91a"},
+    {file = "rpaframework_aws-5.0.0-py3-none-any.whl", hash = "sha256:e49198ca5fc419ed49fffa97b972fd431859cd49930cc7b093cca1e4ee0eac91"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-10.0.0.tar.gz", hash = "sha256:176b9c948f1ae19c11fa3061705fd6ed48786c49199fc5fcf027349adca630bf"},

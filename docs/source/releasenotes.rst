@@ -9,7 +9,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-17.0.0 - 21 Sep 2022
+17.0.1 - 21 Sep 2022
 --------------------
 
 - Library **RPA.Cloud.AWS** (:pr:`637`)
