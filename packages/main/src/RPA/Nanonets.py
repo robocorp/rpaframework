@@ -12,8 +12,7 @@ JSONType = Union[Dict[Hashable, JSONValue], List[JSONValue], JSONValue]
 
 
 class Nanonets:
-    """Library to support `nanonets <https://nanonets.com/>`_ service for intelligent
-    document processing (IDP).
+    """Library to support `Nanonets <https://nanonets.com/>`_ service for intelligent document processing (IDP).
 
     Service supports identifying fields in the documents, which can be given to the
     service in multiple different file formats and via URL.
@@ -70,7 +69,7 @@ class Nanonets:
             for row in table["rows"]:
                 cells = [cell["text"] for cell in row]
                 print(f"ROW: {' | '.join(cells)}")
-    """
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
