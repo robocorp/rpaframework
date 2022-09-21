@@ -255,12 +255,12 @@ Minimum required conda.yaml to install Playwright:
    channels:
      - conda-forge
    dependencies:
-     - python=3.7.5
-     - pip=20.1
+     - python=3.9.13
+     - pip=22.1.2
      - nodejs=16.4.2
      - pip:
-       - rpaframework==13.0.0
-       - robotframework-browser==12.2.0
+       - robotframework-browser==13.3.0
+       - rpaframework==17.0.1
    rccPostInstall:
      - rfbrowser init
 
@@ -276,10 +276,10 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
    channels:
      - conda-forge
    dependencies:
-     - python=3.7.5
-     - pip=20.1
+     - python=3.9.13
+     - pip=22.1.2
      - pip:
-       - rpaframework==13.0.0
+       - rpaframework==17.0.1
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -288,16 +288,16 @@ To install all extra packages (including Playwright dependencies), you can use:
    channels:
      - conda-forge
    dependencies:
-     - python=3.7.5
+     - python=3.9.13
      - tesseract=4.1.1
-     - pip=20.1
+     - pip=22.1.2
      - nodejs=16.14.2
      - pip:
-       - rpaframework==13.0.0   # rpaframework[aws]==13.0.0
-       - rpaframework-aws==1.0.0
-       - rpaframework-google==3.0.0
-       - rpaframework-recognition==2.0.0
-       - robotframework-browser==12.2.0
+       - robotframework-browser==13.3.0
+       - rpaframework==17.0.1   # rpaframework[aws]==13.0.0
+       - rpaframework-aws==5.0.0
+       - rpaframework-google==6.1.1
+       - rpaframework-recognition==5.0.0
    rccPostInstall:
      - rfbrowser init
 
@@ -308,13 +308,13 @@ Separate installation of AWS, Dialogs, PDF and Windows libraries without main rp
    channels:
      - conda-forge
    dependencies:
-     - python=3.7.5
-     - pip=20.1
+     - python=3.9.13
+     - pip=22.1.2
      - pip:
-       - rpaframework-aws==1.0.0 # included in the rpaframework as an extra
-       - rpaframework-dialogs==1.0.0  # included in the rpaframework by default
-       - rpaframework-pdf==3.0.0  # included in the rpaframework by default
-       - rpaframework-windows==3.0.0 # included in the rpaframework by default
+       - rpaframework-aws==5.0.0 # included in the rpaframework as an extra
+       - rpaframework-dialogs==4.0.0  # included in the rpaframework by default
+       - rpaframework-pdf==5.0.0  # included in the rpaframework by default
+       - rpaframework-windows==6.0.1 # included in the rpaframework by default
 
 
 .. note:: Python 3.7 or higher is required
