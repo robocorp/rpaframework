@@ -16,7 +16,11 @@ PACKAGE_DIR = REPO_ROOT / "packages" / "main"
 sys.path.append(str(REPO_ROOT))
 import invocations
 
-CONFIG = {"is_meta": False, "package_dir": PACKAGE_DIR}
+CONFIG = {
+    "is_meta": False,
+    "package_dir": PACKAGE_DIR,
+    "build_strategy": invocations.ROBOT_BUILD_STRATEGY,
+}
 
 ns: Collection = invocations.create_namespace(is_meta=False)
 ns.configure(CONFIG)

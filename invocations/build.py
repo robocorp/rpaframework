@@ -3,15 +3,18 @@ packages.
 """
 from invoke import task, Collection, ParseError
 
-from invocations import shell, config, libspec, util
+from invocations import (
+    shell,
+    config,
+    libspec,
+)
+from invocations.util import require_package, safely_load_config, ROBOT_BUILD_STRATEGY
 
 
 @task(
     pre=[
-        util.require_package,
+        require_package,
         config.install,
-        libspec.clean_libspec,
-        libspec.build_libspec,
     ],
     default=True,
     help={
@@ -30,12 +33,19 @@ def build(ctx, test=True):
     if getattr(ctx, "is_meta", False):
         shell.invoke_each(ctx, "build")
     else:
+        is_robot_build = (
+            safely_load_config(ctx, "build_strategy") == ROBOT_BUILD_STRATEGY
+        )
         if test:
             shell.invoke(ctx, "code.lint", echo=False)
             shell.invoke(ctx, "code.test -a", echo=False)
+        if is_robot_build:
+            libspec.clean_libspec(ctx)
+            libspec.build_libspec(ctx)
         shell.poetry(ctx, "build -vv -f sdist")
         shell.poetry(ctx, "build -vv -f wheel")
-        libspec.clean_libspec(ctx)
+        if is_robot_build:
+            libspec.clean_libspec(ctx)
 
 
 @task(
@@ -60,7 +70,7 @@ def version(ctx, version=None):
 
 @task(
     pre=[
-        util.require_package,
+        require_package,
     ],
     help={
         "ci": (
@@ -176,7 +186,7 @@ def publish_all(ctx, ci=False, build_=True, version=None):
       ``major``, ``prepatch``, ``preminor``, ``premajor``,
       ``prerelease``.
     """
-    if not util.safely_load_config(ctx, "is_meta", False):
+    if not safely_load_config(ctx, "is_meta", False):
         raise ParseError("You must execute this task at the meta-package level")
     args = [
         "--ci" if ci else "",

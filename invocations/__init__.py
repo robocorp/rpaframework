@@ -8,6 +8,7 @@ from invoke import Collection
 
 try:
     from invocations import analysis, build, config, docs, libspec, bootstrap
+    from invocations.util import ROBOT_BUILD_STRATEGY, PYTHON_BUILD_STRATEGY
 
     bootstrap_mode = False
     if not bootstrap.check_dependancy_versions():

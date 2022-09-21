@@ -27,6 +27,9 @@ REPO_ROOT = _get_package_root()
 PACKAGES_ROOT = REPO_ROOT / "packages"
 MAIN_PACKAGE = PACKAGES_ROOT / "main"
 
+ROBOT_BUILD_STRATEGY = "robot"
+PYTHON_BUILD_STRATEGY = "python"
+
 
 def get_package_paths():
     """Returns a dictionary of package names available within the
