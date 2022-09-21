@@ -5,10 +5,13 @@ to review all available tasks.
 import platform
 from invoke import Collection
 
+# Exportable config options must be defined before invocation imports
+# to prevent circular import errors.
+ROBOT_BUILD_STRATEGY = "robot"
+PYTHON_BUILD_STRATEGY = "python"
 
 try:
     from invocations import analysis, build, config, docs, libspec, bootstrap
-    from invocations.util import ROBOT_BUILD_STRATEGY, PYTHON_BUILD_STRATEGY
 
     bootstrap_mode = False
     if not bootstrap.check_dependancy_versions():

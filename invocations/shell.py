@@ -2,6 +2,7 @@ import os
 import platform
 from pathlib import Path
 import re
+from colorama import Fore, Style
 from invoke import Context
 
 from invocations.util import (
@@ -10,13 +11,6 @@ from invocations.util import (
     remove_blank_lines,
     safely_load_config,
 )
-
-try:
-    from colorama import Fore, Style
-
-    color = True
-except ModuleNotFoundError:
-    color = False
 
 POETRY = "poetry"
 PIP = "pip"
@@ -123,8 +117,6 @@ def package_invoke(ctx: Context, directory: Path, command: str, **kwargs):
 
 def invoke_each(ctx: Context, command, **kwargs):
     """Runs invoke within each package"""
-    # TODO: consider that since this is one invocation package, you could
-    #       pass the actual task object.
     our_packages = get_package_paths()
     promises = {}
     for _, pkg in our_packages.items():
@@ -138,23 +130,23 @@ def invoke_each(ctx: Context, command, **kwargs):
     results = []
     for pkg_name, promise in promises.items():
         result = promise.join()
-        if color:
-            result_header = (
-                Fore.BLUE + f"Results from 'invoke {command}' for package '{pkg_name}':"
-            )
-            result_msg = Style.RESET_ALL + remove_blank_lines(result.stdout)
-        else:
-            result_header = (
-                f"*** Results from 'invoke {command}' for package '{pkg_name}':"
-            )
-            result_msg = remove_blank_lines(result.stdout)
+        result_header = (
+            Fore.BLUE + f"Results from 'invoke {command}' for package '{pkg_name}':"
+        )
+        result_msg = Style.RESET_ALL + remove_blank_lines(result.stdout)
         print(result_header)
         print(result_msg)
         if hasattr(result, "stderr"):
             print(remove_blank_lines(result.stderr))
         print(os.linesep)
         results.append(result)
-    print(f"Invocations complete.")
+    total_errors = [r.ok for r in results].count(False)
+    color = Fore.RED if total_errors > 0 else Fore.GREEN
+    print(
+        color + "Invocations complete." + f" {total_errors} tasks failed."
+        if total_errors
+        else "" + Style.RESET_ALL
+    )
     return results
 
 

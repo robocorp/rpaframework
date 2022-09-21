@@ -3,12 +3,8 @@ packages.
 """
 from invoke import task, Collection, ParseError
 
-from invocations import (
-    shell,
-    config,
-    libspec,
-)
-from invocations.util import require_package, safely_load_config, ROBOT_BUILD_STRATEGY
+from invocations import shell, config, libspec, ROBOT_BUILD_STRATEGY
+from invocations.util import require_package, safely_load_config
 
 
 @task(
