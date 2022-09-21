@@ -63,22 +63,18 @@ def version(ctx, version=None):
         util.require_package,
     ],
     help={
-        "ci": "Publish package to devpi instead of PyPI",
-        "clean": (
-            "Toggles pre-cleaning, leaving the current ``.venv`` "
-            "in place. Defaults to True, can only be disabled "
-            "with ``--ci``. Setting this will enable ``--build``."
+        "ci": (
+            "publishes to the devpi repository as configured via the "
+            "install.setup-poetry task. This will disable cleaning and "
+            "testing. If you want to run cleaning and testing before "
+            "publishing to CI, please chain those tasks via invoke "
+            "manually."
         ),
         "build": (
             "Toggles rebuilding distributable packages and "
             "attempts to publish currently existing packages. "
             "Defaults to True, can only be disabled "
             "with ``--ci``."
-        ),
-        "test": (
-            "Disables running unit tests during build."
-            "Defaults to True, can only be disabled "
-            "with ``--ci`` and ``--build``."
         ),
         "version": (
             "Bumps the package version as part of "
@@ -87,17 +83,20 @@ def version(ctx, version=None):
     },
     aliases=["pub"],
 )
-def publish(ctx, ci=False, clean=True, test=True, build_=True, version=None):
+def publish(ctx, ci=False, build_=True, version=None):
     """Publish python package. By default, this task will completely
     clean the dev environment, rebuild the distributable packages and
     then publish to the public production PyPI repository. Arguments can
     be used to modify this behavior:
 
     * ``--ci``: publishes to the devpi repository as configured via the
-      ``install.setup-poetry`` task.
+      ``install.setup-poetry`` task. This will disable cleaning and
+      testing. If you want to run cleaning and testing before publishing
+      to CI, please chain those tasks via invoke manually.
     * ``--no-clean``: Disables pre-cleaning, leaving the current
-      ``.venv`` in place. Can only be used with ``--ci``. Note: this
-      will set ``--build``.
+      ``.venv`` in place. Can only be used with ``--ci``. Note: if this
+      it not set (e.g., the ``.venv`` is cleaned), ``--build`` will be
+      set.
     * ``--no-test``: Disables running unit tests during build. Can only be
       used with ``--ci`` and ``--build``.
     * ``--no-build``: Disables rebuilding distributable packages and
@@ -109,23 +108,15 @@ def publish(ctx, ci=False, clean=True, test=True, build_=True, version=None):
       ``major``, ``prepatch``, ``preminor``, ``premajor``,
       ``prerelease``.
     """
-    if (not clean or not build_) and not ci:
-        raise ParseError(
-            "You cannot disable clean or build for production publishing tasks."
-        )
-    if not test and not build_:
-        raise ParseError(
-            "You cannot disable tests when you are not rebuilding packages."
-        )
+    if not build_ and not ci:
+        raise ParseError("You cannot disable build when publishing to production.")
 
-    needs_rebuild = False
     if version:
         shell.invoke(ctx, f"build.version --version {version}", echo=False)
-    if clean:
+    if not ci:
         shell.invoke(ctx, "install.clean", echo=False)
-        needs_rebuild = True
-    if build_ or needs_rebuild:
-        test_arg = f"--{'' if test else 'no-'}test"
+    if build_:
+        test_arg = "--no-test" if ci else ""
         shell.invoke(
             ctx,
             f"install.clean --no-venv --build {test_arg}",
