@@ -232,8 +232,7 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Nanonets.</code><code class="sig-name descname">Nanonets</code><a class="headerlink" href="#RPA.Nanonets.Nanonets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Library to support <a class="reference external" href="https://nanonets.com/">Nanonets</a> service for intelligent document processing (IDP).</p>
-<blockquote>
-<div><p>Service supports identifying fields in the documents, which can be given to the
+<p>Service supports identifying fields in the documents, which can be given to the
 service in multiple different file formats and via URL.</p>
 <p><strong>Robot Framework example usage</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
@@ -253,26 +252,15 @@ service in multiple different file formats and via URL.</p>
 <span class="p">    END</span>
 <span class="p">    ${</span><span class="nv">tables</span><span class="p">}=    </span><span class="nf">Get Tables From Prediction Result</span><span class="p">    ${</span><span class="nv">result</span><span class="p">}</span>
 <span class="p">    FOR    ${</span><span class="nv">table</span><span class="p">}    IN    @{</span><span class="nv">tables</span><span class="p">}</span>
-<span class="p">        </span><span class="nf">Log To Console</span><span class="p">    </span>
+<span class="p">        FOR    ${</span><span class="nv">rows</span><span class="p">}    IN    ${</span><span class="nv">table</span><span class="p">}[</span><span class="nv">rows</span><span class="p">]</span>
+<span class="p">            FOR    ${</span><span class="nv">row</span><span class="p">}    IN    @{</span><span class="nv">rows</span><span class="p">}</span>
+<span class="p">                ${</span><span class="nv">cells</span><span class="p">}=    </span><span class="nf">Evaluate</span><span class="p">    </span><span class="s">[cell[&#39;text&#39;] for cell in $row]</span><span class="p"></span>
+<span class="p">                </span><span class="nf">Log To Console</span><span class="p">    </span><span class="s">ROW:</span><span class="p">${</span><span class="nv">{&quot; | &quot;.join($cells)</span><span class="p">}</span><span class="s">}</span><span class="p"></span>
+<span class="p">            END</span>
+<span class="p">        END</span>
+<span class="p">    END</span>
 </pre></div>
 </div>
-</div></blockquote>
-<dl>
-<dt>TABLE</dt><dd><blockquote>
-<div><blockquote>
-<div><dl>
-<dt>FOR    ${rows}    IN    ${table}[rows]</dt><dd><dl class="simple">
-<dt>FOR    ${row}    IN    &#64;{rows}</dt><dd><p>${cells}=    Evaluate    [cell[‘text’] for cell in $row]
-Log To Console    ROW:${{” | “.join($cells)}}</p>
-</dd>
-</dl>
-<p>END</p>
-</dd>
-</dl>
-<p>END</p>
-</div></blockquote>
-<p>END</p>
-</div></blockquote>
 <p><strong>Python example usage</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Nanonets</span> <span class="kn">import</span> <span class="n">Nanonets</span>
 <span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
@@ -286,18 +274,12 @@ Log To Console    ROW:${{” | “.join($cells)}}</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Label: </span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> Text: </span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">&#39;ocr_text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">tables</span> <span class="o">=</span> <span class="n">nanolib</span><span class="o">.</span><span class="n">get_tables_from_prediction_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span>
+    <span class="n">rpatable</span> <span class="o">=</span> <span class="n">Tables</span><span class="p">()</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="s2">&quot;rows&quot;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;rows&quot;</span><span class="p">]:</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="p">[</span><span class="n">cell</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ROW: </span><span class="si">{</span><span class="s1">&#39; | &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd>
-<dt>TABLE”)</dt><dd><p>rpatable = Tables().create_table(table[“rows”])
-for row in table[“rows”]:</p>
-<blockquote>
-<div><p>cells = [cell[“text”] for cell in row]
-print(f”ROW: {‘ | ‘.join(cells)}”)</p>
-</div></blockquote>
-</dd>
-</dl>
 <dl class="attribute">
 <dt id="RPA.Nanonets.Nanonets.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Nanonets.Nanonets.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
@@ -426,16 +408,15 @@ print(f”ROW: {‘ | ‘.join(cells)}”)</p>
 <dt id="RPA.Nanonets.Nanonets.predict_file">
 <code class="sig-name descname">predict_file</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em>, <em class="sig-param">model_id: str</em><span class="sig-paren">)</span> &#x2192; Dict<a class="headerlink" href="#RPA.Nanonets.Nanonets.predict_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get prediction result for a file by a given model id.</p>
-<blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">param filepath</dt>
-<dd class="field-odd"><p>filepath to the file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> – filepath to the file</p></li>
+<li><p><strong>model_id</strong> – id of the Nanonets model to categorize a file</p></li>
+</ul>
 </dd>
-<dt class="field-even">param model_id</dt>
-<dd class="field-even"><p>id of the Nanonets model to categorize a file</p>
-</dd>
-<dt class="field-odd">return</dt>
-<dd class="field-odd"><p>the result in a list format</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the result in a list format</p>
 </dd>
 </dl>
 <p>Robot Framework example:</p>
@@ -446,26 +427,15 @@ print(f”ROW: {‘ | ‘.join(cells)}”)</p>
 <span class="c">END</span><span class="p"></span>
 <span class="c">${tables}=</span><span class="p">    </span><span class="c">Get Tables From Prediction Result</span><span class="p">    </span><span class="c">${result}</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">    </span><span class="c">${table}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{tables}</span><span class="p"></span>
-<span class="p">    </span><span class="c">Log To Console</span><span class="p">    </span>
+<span class="p">    </span><span class="c">FOR</span><span class="p">    </span><span class="c">${rows}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">${table}[rows]</span><span class="p"></span>
+<span class="p">        </span><span class="c">FOR</span><span class="p">    </span><span class="c">${row}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{rows}</span><span class="p"></span>
+<span class="p">            </span><span class="c">${cells}=</span><span class="p">    </span><span class="c">Evaluate</span><span class="p">    </span><span class="c">[cell[&#39;text&#39;] for cell in $row]</span><span class="p"></span>
+<span class="p">            </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">ROW:${{&quot; | &quot;.join($cells)}}</span><span class="p"></span>
+<span class="p">        </span><span class="c">END</span><span class="p"></span>
+<span class="p">    </span><span class="c">END</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
 </pre></div>
 </div>
-</div></blockquote>
-<dl>
-<dt>TABLE</dt><dd><blockquote>
-<div><blockquote>
-<div><dl>
-<dt>FOR    ${rows}    IN    ${table}[rows]</dt><dd><dl class="simple">
-<dt>FOR    ${row}    IN    &#64;{rows}</dt><dd><p>${cells}=    Evaluate    [cell[‘text’] for cell in $row]
-Log To Console    ROW:${{” | “.join($cells)}}</p>
-</dd>
-</dl>
-<p>END</p>
-</dd>
-</dl>
-<p>END</p>
-</div></blockquote>
-<p>END</p>
-</div></blockquote>
 <p>Python example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">nanolib</span><span class="o">.</span><span class="n">predict_file</span><span class="p">(</span><span class="s2">&quot;./docu.pdf&quot;</span><span class="p">,</span> <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;receipts-model-id&quot;</span><span class="p">])</span>
 <span class="n">fields</span> <span class="o">=</span> <span class="n">nanolib</span><span class="o">.</span><span class="n">get_fields_from_prediction_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -473,17 +443,11 @@ Log To Console    ROW:${{” | “.join($cells)}}</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Label: </span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> Text: </span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">&#39;ocr_text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">tables</span> <span class="o">=</span> <span class="n">nanolib</span><span class="o">.</span><span class="n">get_tables_from_prediction_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;rows&quot;</span><span class="p">]:</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="p">[</span><span class="n">cell</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ROW: </span><span class="si">{</span><span class="s1">&#39; | &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd>
-<dt>TABLE”)</dt><dd><dl class="simple">
-<dt>for row in table[“rows”]:</dt><dd><p>cells = [cell[“text”] for cell in row]
-print(f”ROW: {‘ | ‘.join(cells)}”)</p>
-</dd>
-</dl>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
