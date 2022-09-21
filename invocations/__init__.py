@@ -74,6 +74,7 @@ def create_namespace(is_meta=False):
         else:
             bd = Collection("build")
             bd.add_task(build.build, name="build-all", aliases=["build"], default=True)
+            bd.add_task(build.publish_all, name="publish-all", aliases=["puball"])
             ns.add_collection(bd)
 
         # SELF NAMESPACE
