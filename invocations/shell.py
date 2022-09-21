@@ -143,9 +143,10 @@ def invoke_each(ctx: Context, command, **kwargs):
     total_errors = [r.ok for r in results].count(False)
     color = Fore.RED if total_errors > 0 else Fore.GREEN
     print(
-        color + "Invocations complete." + f" {total_errors} tasks failed."
-        if total_errors
-        else "" + Style.RESET_ALL
+        color
+        + "Invocations complete."
+        + (f" {total_errors} tasks failed." if total_errors else "")
+        + Style.RESET_ALL
     )
     return results
 

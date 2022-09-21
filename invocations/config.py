@@ -151,7 +151,7 @@ def clean(ctx, venv=True, build=True, test=True, docs=False, all=False):
             except OSError:
                 pass
     if is_meta and all:
-        shell.invoke_each(ctx, "clean")
+        shell.invoke_each(ctx, "install.clean")
 
 
 @task(
