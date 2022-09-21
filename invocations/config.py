@@ -492,12 +492,23 @@ def restore_dependency_files(ctx):
         print("No lock file existed to be restored.")
 
 
-@task(aliases=["update"])
-def install_updates(ctx):
+@task(
+    aliases=["update"],
+    help={
+        "all": (
+            "If this flag is used at the meta package level, all "
+            "packages will be updated."
+        )
+    },
+)
+def install_updates(ctx, all=False):
     """Checks for package dependency updates and rewrites the Poetry
     lock file.
     """
-    shell.poetry(ctx, "update")
+    if all and safely_load_config(ctx, "is_meta", False):
+        shell.invoke_each(ctx, "install.update")
+    else:
+        shell.poetry(ctx, "update")
 
 
 @task(aliases=["node"])
