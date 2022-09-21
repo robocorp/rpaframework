@@ -27,7 +27,7 @@ class Base64AI:
         *** Tasks ***
         Identify document
             ${secrets}=   Get Secret  base64ai-auth
-            Set Base64AI Authorization  ${secrets}[email-address]   ${secrets}[apikey]
+            Set Authorization  ${secrets}[email-address]   ${secrets}[apikey]
             ${results}=  Scan Document File
             ...   ${CURDIR}${/}invoice.pdf
             model_types=finance/check/usa,finance/invoice/usa
@@ -38,6 +38,27 @@ class Base64AI:
                 Log To Console  Fields: ${result}[fields]
                 Log To Console  Text (OCR): ${result}[ocr]
             END
+
+
+    **Python example usage**
+
+    .. code-block:: python
+
+        from RPA.Base64AI import Base64AI
+        from RPA.Robocorp.Vault import Vault
+
+        secrets = Vault().get_secret("base64ai-auth")
+        baselib = Base64AI()
+        baselib.set_authorization(secrets["email-address"], secrets["apikey"])
+        result = baselib.scan_document_file(
+            "invoice.pdf",
+            model_types="finance/invoice,finance/check/usa",
+        )
+        for r in result:
+            print(f"Model: {r['model']}")
+            for key, props in r["fields"].items():
+                print(f"FIELD {key}: {props['value']}")
+            print(f"Text (OCR): {r['ocr']}")
     """
 
     def __init__(self):
@@ -45,20 +66,33 @@ class Base64AI:
         self.base_url = "https://base64.ai/api"
         self._request_headers = {"Content-Type": "application/json"}
         listener = RobotLogListener()
-        listener.register_protected_keywords(
-            ["RPA.Base64AI.set_base64ai_authorization"]
-        )
+        listener.register_protected_keywords(["RPA.Base64AI.set_authorization"])
 
     def _get_file_base64_and_mimetype(self, file_path: str):
         with open(file_path, "rb") as image_file:
             encoded_content = base64.b64encode(image_file.read())
         return encoded_content.decode("utf-8"), mimetypes.guess_type(file_path)[0]
 
-    def set_base64ai_authorization(self, api_email: str, api_key: str) -> None:
+    def set_authorization(self, api_email: str, api_key: str) -> None:
         """Set Base64 AI request headers with email and key related to API.
 
         :param api_email: email address related to the API
         :param api_key: key related to the API
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${secrets}=   Get Secret  base64ai-auth
+            Set Authorization    ${secrets}[email-address]    ${secrets}[apikey]
+
+        Python example:
+
+        .. code-block:: python
+
+            secrets = Vault().get_secret("base64ai-auth")
+            baselib = Base64AI()
+            baselib.set_authorization(secrets["email-address"], secrets["apikey"])
         """
         self._request_headers["Authorization"] = f"ApiKey {api_email}:{api_key}"
 
@@ -75,8 +109,35 @@ class Base64AI:
         :param model_types: single model type or list of model types
         :param mock: set to True to use /mock/scan endpoint instead of /scan
         :return: result of the document scan
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${results}=    Scan Document File
+            ...    ${CURDIR}${/}files${/}IMG_8277.jpeg
+            ...    model_types=finance/check/usa,finance/invoice
+            FOR    ${result}    IN    @{results}
+                Log To Console    Model: ${result}[model]
+                Log To Console    Fields: ${result}[fields]
+                Log To Console    Text (OCR): ${result}[ocr]
+            END
+
+        Python example:
+
+        .. code-block:: python
+
+            result = baselib.scan_document_file(
+                "./files/Invoice-1120.pdf",
+                model_types="finance/invoice,finance/check/usa",
+            )
+            for r in result:
+                print(f"Model: {r['model']}")
+                for key, val in r["fields"].items():
+                    print(f"{key}: {val['value']}")
+                print(f"Text (OCR): {r['ocr']}")
         """
-        scan = "mock/scan" if "mock" in mock else "scan"
+        scan = "mock/scan" if mock else "scan"
         scan_endpoint = f"{self.base_url}/{scan}"
         self.logger.info(f"endpoint {scan_endpoint} is set for scanning")
         base64string, mime = self._get_file_base64_and_mimetype(file_path)
@@ -109,8 +170,33 @@ class Base64AI:
         :param model_types: single model type or list of model types
         :param mock: set to True to use /mock/scan endpoint instead of /scan
         :return: result of the document scan
-        """
-        scan = "mock/scan" if "mock" in mock else "scan"
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${results}=    Scan Document URL
+            ...    https://base64.ai/static/content/features/data-extraction/models//2.png
+            FOR    ${result}    IN    @{results}
+                Log To Console    Model: ${result}[model]
+                Log To Console    Fields: ${result}[fields]
+                Log To Console    Text (OCR): ${result}[ocr]
+            END
+
+        Python example:
+
+        .. code-block:: python
+
+            result = baselib.scan_document_url(
+                "https://base64.ai/static/content/features/data-extraction/models//2.png"
+            )
+            for r in result:
+                print(f"Model: {r['model']}")
+                for key, props in r["fields"].items():
+                    print(f"FIELD {key}: {props['value']}")
+                print(f"Text (OCR): {r['ocr']}")
+        """  # noqa: E501
+        scan = "mock/scan" if mock else "scan"
         scan_endpoint = f"{self.base_url}/{scan}"
         self.logger.info(f"endpoint {scan_endpoint} is set for scanning")
         payload = {"url": url}
@@ -130,24 +216,46 @@ class Base64AI:
         self.logger.warning(response.text)
         return response.json()
 
-    def get_document_model_fields_and_text(self, document: List) -> List:
-        """Helper keyword to get model, fields and text for a scan a result.
-
-        :param document: scan result object
-        :return: results in a list
-        """
-        response = []
-        for dt in document:
-            response.append(
-                {key: dt[key] for key in dt.keys() & {"model", "fields", "ocr"}}
-            )
-        return response
-
     def get_user_data(self) -> Dict:
         """Get user data including details on credits used and credits remaining
         for the Base64 service.
 
+        Returned user data contains following keys:
+
+            - givenName
+            - familyName
+            - email
+            - hasWorkEmail
+            - companyName
+            - numberOfCredits
+            - numberOfPages
+            - numberOfUploads
+            - numberOfCreditsSpentOnDocuments (visible if used)
+            - numberOfCreditsSpentOnFaceDetection (visible if used)
+            - numberOfCreditsSpentOnFaceRecognition (visible if used)
+            - hasActiveAwsContract
+            - subscriptionType
+            - subscriptionPeriod
+            - tags
+            - ccEmails
+            - status
+            - remainingCredits (calculated by the keyword)
+
         :return: object containing details on the API user
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${userdata}=   Get User Data
+            Log To Console  I have still ${userdata}[remainingCredits] credits left
+
+        Python example:
+
+        .. code-block:: python
+
+            userdata = baselib.get_user_data()
+            print(f"I have still {userdata['remainingCredits']} credits left")
         """
         response = requests.request(
             "GET",
