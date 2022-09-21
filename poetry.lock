@@ -441,7 +441,7 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.11.0"
+version = "2.11.1"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -474,7 +474,7 @@ six = "*"
 
 [[package]]
 name = "google-auth-oauthlib"
-version = "0.4.6"
+version = "0.5.3"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -501,6 +501,19 @@ google-auth = ">=1.25.0,<3.0dev"
 
 [package.extras]
 grpc = ["grpcio (>=1.38.0,<2.0dev)"]
+
+[[package]]
+name = "google-cloud-documentai"
+version = "2.0.1"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+google-api-core = {version = ">=1.32.0,<2.0.0 || >=2.8.0,<3.0.0dev", extras = ["grpc"]}
+proto-plus = ">=1.22.0,<2.0.0dev"
+protobuf = ">=3.19.0,<5.0.0dev"
 
 [[package]]
 name = "google-cloud-language"
@@ -533,20 +546,21 @@ libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-storage"
-version = "1.44.0"
+version = "2.5.0"
 description = "Google Cloud Storage API client library"
 category = "main"
 optional = false
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
+python-versions = ">=3.7"
 
 [package.dependencies]
-google-api-core = {version = ">=1.29.0,<3.0dev", markers = "python_version >= \"3.6\""}
-google-auth = {version = ">=1.25.0,<3.0dev", markers = "python_version >= \"3.6\""}
-google-cloud-core = {version = ">=1.6.0,<3.0dev", markers = "python_version >= \"3.6\""}
-google-resumable-media = {version = ">=1.3.0,<3.0dev", markers = "python_version >= \"3.6\""}
-protobuf = {version = "*", markers = "python_version >= \"3.6\""}
+google-api-core = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev"
+google-auth = ">=1.25.0,<3.0dev"
+google-cloud-core = ">=2.3.0,<3.0dev"
+google-resumable-media = ">=2.3.2"
 requests = ">=2.18.0,<3.0.0dev"
-six = "*"
+
+[package.extras]
+protobuf = ["protobuf (<5.0.0dev)"]
 
 [[package]]
 name = "google-cloud-texttospeech"
@@ -593,7 +607,7 @@ libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-vision"
-version = "2.8.0"
+version = "3.1.2"
 description = "Cloud Vision API API client library"
 category = "main"
 optional = false
@@ -601,8 +615,8 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 google-api-core = {version = ">=1.32.0,<2.0.0 || >=2.8.0,<3.0.0dev", extras = ["grpc"]}
-proto-plus = ">=1.15.0,<2.0.0dev"
-protobuf = ">=3.19.0,<4.0.0dev"
+proto-plus = ">=1.22.0,<2.0.0dev"
+protobuf = ">=3.19.0,<5.0.0dev"
 
 [package.extras]
 libcst = ["libcst (>=0.2.5)"]
@@ -1066,9 +1080,9 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
-    {version = ">=1.14.5", markers = "python_version >= \"3.7\""},
+    {version = ">=1.19.3", markers = "python_version >= \"3.9\" or python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\""},
     {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
+    {version = ">=1.14.5", markers = "python_version >= \"3.7\""},
 ]
 
 [[package]]
@@ -1757,7 +1771,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "16.3.0"
+version = "17.0.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1797,7 +1811,7 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
-rpaframework-aws = {version = "^4.0.0", optional = true}
+rpaframework-aws = {version = "^5.0.0", optional = true}
 rpaframework-core = "^10.0.0"
 rpaframework-dialogs = "^4.0.0"
 rpaframework-pdf = "^5.0.0"
@@ -1813,7 +1827,7 @@ xlutils = "^2.0.0"
 xlwt = "^1.3.0"
 
 [package.extras]
-aws = ["rpaframework-aws (>=4.0.0,<5.0.0)"]
+aws = ["rpaframework-aws (>=5.0.0,<6.0.0)"]
 cv = ["rpaframework-recognition (>=5.0.0,<6.0.0)"]
 playwright = ["robotframework-browser (>=13.0.0,<14.0.0)"]
 
@@ -1823,15 +1837,15 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "4.0.0"
+version = "5.0.0"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-amazon-textract-response-parser = ">=0.1.1,<0.2.0"
-boto3 = ">=1.13.4,<2.0.0"
+amazon-textract-response-parser = ">=0.1.33,<0.2.0"
+boto3 = ">=1.24.76,<2.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
 rpaframework-core = ">=10.0.0,<11.0.0"
@@ -1867,24 +1881,25 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-google"
-version = "6.0.0"
+version = "6.1.1"
 description = "Google library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-google-api-python-client = ">=2.2.0,<3.0.0"
+google-api-python-client = ">=2.58.0,<3.0.0"
 google-auth-httplib2 = ">=0.1.0,<0.2.0"
-google-auth-oauthlib = ">=0.4.4,<0.5.0"
-google-cloud-language = ">=2.0.0,<3.0.0"
-google-cloud-speech = ">=2.3.0,<3.0.0"
-google-cloud-storage = ">=1.37.1,<2.0.0"
-google-cloud-texttospeech = ">=2.3.0,<3.0.0"
-google-cloud-translate = ">=3.1.0,<4.0.0"
-google-cloud-videointelligence = ">=2.1.0,<3.0.0"
-google-cloud-vision = ">=2.3.1,<3.0.0"
-grpcio = ">=1.37.0,<2.0.0"
+google-auth-oauthlib = ">=0.5.2,<0.6.0"
+google-cloud-documentai = ">=2.0.1,<3.0.0"
+google-cloud-language = ">=2.5.2,<3.0.0"
+google-cloud-speech = ">=2.15.1,<3.0.0"
+google-cloud-storage = ">=2.5.0,<3.0.0"
+google-cloud-texttospeech = ">=2.12.1,<3.0.0"
+google-cloud-translate = ">=3.8.1,<4.0.0"
+google-cloud-videointelligence = ">=2.8.1,<3.0.0"
+google-cloud-vision = ">=3.1.1,<4.0.0"
+grpcio = ">=1.48.1,<2.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
 rpaframework-core = ">=10.0.0,<11.0.0"
@@ -2201,7 +2216,7 @@ test = ["Pillow", "pytest", "pytest-cov"]
 
 [[package]]
 name = "tenacity"
-version = "8.0.1"
+version = "8.1.0"
 description = "Retry code until it succeeds"
 category = "main"
 optional = false
@@ -2767,20 +2782,24 @@ google-api-python-client = [
     {file = "google_api_python_client-2.61.0-py2.py3-none-any.whl", hash = "sha256:8b5ab5bc3301c88fd4aab12927246bb31355946686b89c4dc9e53b400c070111"},
 ]
 google-auth = [
-    {file = "google-auth-2.11.0.tar.gz", hash = "sha256:ed65ecf9f681832298e29328e1ef0a3676e3732b2e56f41532d45f70a22de0fb"},
-    {file = "google_auth-2.11.0-py2.py3-none-any.whl", hash = "sha256:be62acaae38d0049c21ca90f27a23847245c9f161ff54ede13af2cb6afecbac9"},
+    {file = "google-auth-2.11.1.tar.gz", hash = "sha256:516e6623038b81430dd062a1a25ecd24f173d7c15cdf4e48a9e78bc87e97aeec"},
+    {file = "google_auth-2.11.1-py2.py3-none-any.whl", hash = "sha256:53bdc0c2b4e25895575779caef4cfb3a6bdff1b7b32dc38a654d71aba35bb5f8"},
 ]
 google-auth-httplib2 = [
     {file = "google-auth-httplib2-0.1.0.tar.gz", hash = "sha256:a07c39fd632becacd3f07718dfd6021bf396978f03ad3ce4321d060015cc30ac"},
     {file = "google_auth_httplib2-0.1.0-py2.py3-none-any.whl", hash = "sha256:31e49c36c6b5643b57e82617cb3e021e3e1d2df9da63af67252c02fa9c1f4a10"},
 ]
 google-auth-oauthlib = [
-    {file = "google-auth-oauthlib-0.4.6.tar.gz", hash = "sha256:a90a072f6993f2c327067bf65270046384cda5a8ecb20b94ea9a687f1f233a7a"},
-    {file = "google_auth_oauthlib-0.4.6-py2.py3-none-any.whl", hash = "sha256:3f2a6e802eebbb6fb736a370fbf3b055edcb6b52878bf2f26330b5e041316c73"},
+    {file = "google-auth-oauthlib-0.5.3.tar.gz", hash = "sha256:307d21918d61a0741882ad1fd001c67e68ad81206451d05fc4d26f79de56fc90"},
+    {file = "google_auth_oauthlib-0.5.3-py2.py3-none-any.whl", hash = "sha256:9e8ff4ed2b21c174a2d6cc2172c698dbf0b1f686509774c663a83c495091fe09"},
 ]
 google-cloud-core = [
     {file = "google-cloud-core-2.3.2.tar.gz", hash = "sha256:b9529ee7047fd8d4bf4a2182de619154240df17fbe60ead399078c1ae152af9a"},
     {file = "google_cloud_core-2.3.2-py2.py3-none-any.whl", hash = "sha256:8417acf6466be2fa85123441696c4badda48db314c607cf1e5d543fa8bdc22fe"},
+]
+google-cloud-documentai = [
+    {file = "google-cloud-documentai-2.0.1.tar.gz", hash = "sha256:7deb98d4baa10747de591b846c77e702610cb039c82ecd6da7e39e195e32a80a"},
+    {file = "google_cloud_documentai-2.0.1-py2.py3-none-any.whl", hash = "sha256:b3ae15009064c499ce75546f75596f698f4954bf187b533629aa09ce112db60a"},
 ]
 google-cloud-language = [
     {file = "google-cloud-language-2.5.2.tar.gz", hash = "sha256:3239a3ec1fdfdcc1808fa2572dea859cc8617e62b863204f15f19d7a69b8d49d"},
@@ -2791,8 +2810,8 @@ google-cloud-speech = [
     {file = "google_cloud_speech-2.15.1-py2.py3-none-any.whl", hash = "sha256:408198864773aceb1521215831e70dcf5c0f41146b9c3b019c00bd9347ed89df"},
 ]
 google-cloud-storage = [
-    {file = "google-cloud-storage-1.44.0.tar.gz", hash = "sha256:29edbfeedd157d853049302bf5d104055c6f0cb7ef283537da3ce3f730073001"},
-    {file = "google_cloud_storage-1.44.0-py2.py3-none-any.whl", hash = "sha256:cd4a223e9c18d771721a85c98a9c01b97d257edddff833ba63b7b1f0b9b4d6e9"},
+    {file = "google-cloud-storage-2.5.0.tar.gz", hash = "sha256:382f34b91de2212e3c2e7b40ec079d27ee2e3dbbae99b75b1bcd8c63063ce235"},
+    {file = "google_cloud_storage-2.5.0-py2.py3-none-any.whl", hash = "sha256:19a26c66c317ce542cea0830b7e787e8dac2588b6bfa4d3fd3b871ba16305ab0"},
 ]
 google-cloud-texttospeech = [
     {file = "google-cloud-texttospeech-2.12.1.tar.gz", hash = "sha256:256c189f3d76139e86ad4483a1ab41f296d2f92f42dd948fb310d6db919f0e10"},
@@ -2807,8 +2826,8 @@ google-cloud-videointelligence = [
     {file = "google_cloud_videointelligence-2.8.1-py2.py3-none-any.whl", hash = "sha256:c95d7b389ddcff0772fc22f1759fd1486aeecc46a25d0f71d7673884adc5ce41"},
 ]
 google-cloud-vision = [
-    {file = "google-cloud-vision-2.8.0.tar.gz", hash = "sha256:2ce19fbf3eb5170e90347f379457bc4f02376bbd9f1cb79314572a33d40bdd06"},
-    {file = "google_cloud_vision-2.8.0-py2.py3-none-any.whl", hash = "sha256:a1d76d14eb2bdf7033a4a42ebeabe57de70bea9bc87014703460bbb9e9a29a78"},
+    {file = "google-cloud-vision-3.1.2.tar.gz", hash = "sha256:64fb8a13618d5160f6ea747e765280543a50562093085cb1fbc5bfe38f0c817e"},
+    {file = "google_cloud_vision-3.1.2-py2.py3-none-any.whl", hash = "sha256:1d5204806391bee7dd4b0d8cdd2ce1173de76621bc717f643db11b9261102bfe"},
 ]
 google-crc32c = [
     {file = "google-crc32c-1.5.0.tar.gz", hash = "sha256:89284716bc6a5a415d4eaa11b1726d2d60a0cd12aadf5439828353662ede9dd7"},
@@ -3823,8 +3842,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework-aws-4.0.0.tar.gz", hash = "sha256:7159078f2a5cc5e3a30e589fdc928e617b676cfc6d1bca229e1fd627600c57ac"},
-    {file = "rpaframework_aws-4.0.0-py3-none-any.whl", hash = "sha256:0e9a5e00788ca43bac99ebb1bc25e9a783e0cfaf974b910e3e25b5570723055a"},
+    {file = "rpaframework-aws-5.0.0.tar.gz", hash = "sha256:9e2b51ac438b4213522dd748a2dc3ac1da24056d9af88b4c46eea7ad1ceba91a"},
+    {file = "rpaframework_aws-5.0.0-py3-none-any.whl", hash = "sha256:e49198ca5fc419ed49fffa97b972fd431859cd49930cc7b093cca1e4ee0eac91"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-10.0.0.tar.gz", hash = "sha256:176b9c948f1ae19c11fa3061705fd6ed48786c49199fc5fcf027349adca630bf"},
@@ -3835,8 +3854,8 @@ rpaframework-dialogs = [
     {file = "rpaframework_dialogs-4.0.0-py3-none-any.whl", hash = "sha256:c9e69a1b4a3b39bff5051e400bf9bb483d8e61e1bdd8246a19991cf8219d5541"},
 ]
 rpaframework-google = [
-    {file = "rpaframework-google-6.0.0.tar.gz", hash = "sha256:f7c3d08c524a22d901e643a254a8b3dd0500c3934b809d6f18c9b00e51a6c6c8"},
-    {file = "rpaframework_google-6.0.0-py3-none-any.whl", hash = "sha256:e6dacca13296a04767cda740065fe75dd08252285cc9722381382f0c83f5e575"},
+    {file = "rpaframework-google-6.1.1.tar.gz", hash = "sha256:83a81b6465b6ca4ed6c4c403280c0876c7d71a3216234b6ec3990ca55cc89e3a"},
+    {file = "rpaframework_google-6.1.1-py3-none-any.whl", hash = "sha256:39c5fa9b2041a4c75d554370e04f56329b8a2f1c1618326d9ff4d3184238f8c2"},
 ]
 rpaframework-pdf = [
     {file = "rpaframework-pdf-5.0.0.tar.gz", hash = "sha256:f32078c5cd0f1a8d77ed448d22865354cbef2f3745a3baf4cdd07accca5e5a72"},
@@ -3934,8 +3953,8 @@ sphinxcontrib-serializinghtml = [
     {file = "svg.path-6.2.tar.gz", hash = "sha256:1a2159f9db898df93c4637cfd3ccaf7da1fd073f59fa9a5950c73e46d4aa1aca"},
 ]
 tenacity = [
-    {file = "tenacity-8.0.1-py3-none-any.whl", hash = "sha256:f78f4ea81b0fabc06728c11dc2a8c01277bfc5181b321a4770471902e3eb844a"},
-    {file = "tenacity-8.0.1.tar.gz", hash = "sha256:43242a20e3e73291a28bcbcacfd6e000b02d3857a9a9fff56b297a27afdc932f"},
+    {file = "tenacity-8.1.0-py3-none-any.whl", hash = "sha256:35525cd47f82830069f0d6b73f7eb83bc5b73ee2fff0437952cedf98b27653ac"},
+    {file = "tenacity-8.1.0.tar.gz", hash = "sha256:e48c437fdf9340f5666b92cd7990e96bc5fc955e1298baf4a907e3972067a445"},
 ]
 termcolor = [
     {file = "termcolor-2.0.1-py3-none-any.whl", hash = "sha256:7e597f9de8e001a3208c4132938597413b9da45382b6f1d150cff8d062b7aaa3"},

@@ -64,7 +64,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "authlib"
-version = "1.0.1"
+version = "1.1.0"
 description = "The ultimate Python library in building OAuth and OpenID Connect servers and clients."
 category = "main"
 optional = false
@@ -143,14 +143,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.67"
+version = "1.24.77"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.67,<1.28.0"
+botocore = ">=1.27.77,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -159,7 +159,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.67"
+version = "1.27.77"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -183,7 +183,7 @@ python-versions = "*"
 
 [[package]]
 name = "certifi"
-version = "2022.6.15"
+version = "2022.9.14"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -380,8 +380,30 @@ pycodestyle = ">=2.7.0,<2.8.0"
 pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
+name = "fonttools"
+version = "4.37.3"
+description = "Tools to manipulate font files"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+all = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "fs (>=2.2.0,<3)", "lxml (>=4.0,<5)", "lz4 (>=1.7.4.2)", "matplotlib", "munkres", "scipy", "skia-pathops (>=0.5.0)", "sympy", "uharfbuzz (>=0.23.0)", "unicodedata2 (>=14.0.0)", "xattr", "zopfli (>=0.1.4)"]
+graphite = ["lz4 (>=1.7.4.2)"]
+interpolatable = ["munkres", "scipy"]
+lxml = ["lxml (>=4.0,<5)"]
+pathops = ["skia-pathops (>=0.5.0)"]
+plot = ["matplotlib"]
+repacker = ["uharfbuzz (>=0.23.0)"]
+symfont = ["sympy"]
+type1 = ["xattr"]
+ufo = ["fs (>=2.2.0,<3)"]
+unicode = ["unicodedata2 (>=14.0.0)"]
+woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
+
+[[package]]
 name = "fpdf2"
-version = "2.5.6"
+version = "2.5.7"
 description = "Simple & fast PDF generation for Python"
 category = "main"
 optional = false
@@ -389,6 +411,7 @@ python-versions = "*"
 
 [package.dependencies]
 defusedxml = "*"
+fonttools = "*"
 Pillow = ">=6.2.2"
 "svg.path" = "*"
 
@@ -493,7 +516,7 @@ dev = ["pytest", "black"]
 
 [[package]]
 name = "idna"
-version = "3.3"
+version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
 category = "main"
 optional = false
@@ -628,7 +651,7 @@ six = "*"
 
 [[package]]
 name = "jsonschema"
-version = "4.15.0"
+version = "4.16.0"
 description = "An implementation of JSON Schema validation for Python"
 category = "main"
 optional = false
@@ -790,7 +813,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "oauthlib"
-version = "3.2.0"
+version = "3.2.1"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
 category = "main"
 optional = false
@@ -822,9 +845,9 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
-    {version = ">=1.14.5", markers = "python_version >= \"3.7\""},
+    {version = ">=1.19.3", markers = "python_version >= \"3.9\" or python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\""},
     {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
+    {version = ">=1.14.5", markers = "python_version >= \"3.7\""},
 ]
 
 [[package]]
@@ -1117,11 +1140,11 @@ pyobjc-framework-Cocoa = ">=7.3"
 
 [[package]]
 name = "pyotp"
-version = "2.6.0"
+version = "2.7.0"
 description = "Python One Time Password Library"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 
 [[package]]
 name = "pyparsing"
@@ -1136,7 +1159,7 @@ diagrams = ["railroad-diagrams", "jinja2"]
 
 [[package]]
 name = "pypdf2"
-version = "1.28.5"
+version = "1.28.6"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
@@ -1510,7 +1533,7 @@ robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
 
 [[package]]
 name = "robotframework-browser"
-version = "13.5.0"
+version = "13.6.0"
 description = "Robot Framework Browser library powered by Playwright. Aiming for speed, reliability and visibility."
 category = "main"
 optional = true
@@ -1602,15 +1625,15 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-aws"
-version = "4.0.0"
+version = "5.0.0"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = true
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-amazon-textract-response-parser = ">=0.1.1,<0.2.0"
-boto3 = ">=1.13.4,<2.0.0"
+amazon-textract-response-parser = ">=0.1.33,<0.2.0"
+boto3 = ">=1.24.76,<2.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
 rpaframework-core = ">=10.0.0,<11.0.0"
@@ -1724,7 +1747,7 @@ urllib3 = {version = ">=1.26,<2.0", extras = ["socks"]}
 
 [[package]]
 name = "simple-salesforce"
-version = "1.12.1"
+version = "1.12.2"
 description = "A basic Salesforce.com REST API client."
 category = "main"
 optional = false
@@ -1931,7 +1954,7 @@ test = ["pillow", "pytest", "pytest-cov"]
 
 [[package]]
 name = "tenacity"
-version = "8.0.1"
+version = "8.1.0"
 description = "Retry code until it succeeds"
 category = "main"
 optional = false
@@ -1942,11 +1965,14 @@ doc = ["reno", "sphinx", "tornado (>=4.5)"]
 
 [[package]]
 name = "termcolor"
-version = "1.1.0"
-description = "ANSII Color formatting for output in terminal."
+version = "2.0.1"
+description = "ANSI color formatting for output in terminal"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
+
+[package.extras]
+tests = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "toml"
@@ -2247,8 +2273,8 @@ async-generator = []
 atomicwrites = []
 attrs = []
 authlib = [
-    {file = "Authlib-1.0.1-py2.py3-none-any.whl", hash = "sha256:1286e2d5ef5bfe5a11cc2d0a0d1031f0393f6ce4d61f5121cfe87fa0054e98bd"},
-    {file = "Authlib-1.0.1.tar.gz", hash = "sha256:6e74a4846ac36dfc882b3cc2fbd3d9eb410a627f2f2dc11771276655345223b1"},
+    {file = "Authlib-1.1.0-py2.py3-none-any.whl", hash = "sha256:be4b6a1dea51122336c210a6945b27a105b9ac572baffd15b07bcff4376c1523"},
+    {file = "Authlib-1.1.0.tar.gz", hash = "sha256:0a270c91409fc2b7b0fbee6996e09f2ee3187358762111a9a4225c874b94e891"},
 ]
 babel = [
     {file = "Babel-2.10.3-py3-none-any.whl", hash = "sha256:ff56f4892c1c4bf0d814575ea23471c230d544203c7748e8c68f0089478d48eb"},
@@ -2288,8 +2314,8 @@ cached-property = [
     {file = "cached_property-1.5.2-py2.py3-none-any.whl", hash = "sha256:df4f613cf7ad9a588cc381aaf4a512d26265ecebd5eb9e1ba12f1319eb85a6a0"},
 ]
 certifi = [
-    {file = "certifi-2022.6.15-py3-none-any.whl", hash = "sha256:fe86415d55e84719d75f8b69414f6438ac3547d2078ab91b67e779ef69378412"},
-    {file = "certifi-2022.6.15.tar.gz", hash = "sha256:84c85a9078b11105f04f3036a9482ae10e4621616db313fe045dd24743a0820d"},
+    {file = "certifi-2022.9.14-py3-none-any.whl", hash = "sha256:e232343de1ab72c2aa521b625c80f699e356830fd0e2c620b465b304b17b0516"},
+    {file = "certifi-2022.9.14.tar.gz", hash = "sha256:36973885b9542e6bd01dea287b2b4b3b21236307c56324fcc3f1160f2d655ed5"},
 ]
 cffi = []
 chardet = [
@@ -2418,8 +2444,8 @@ hubspot-api-client = [
     {file = "hubspot_api_client-4.0.6-py3-none-any.whl", hash = "sha256:45d693b273d5b8fe146f78c80f9aca8191eadf24767269f23a222805196ca539"},
 ]
 idna = [
-    {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
-    {file = "idna-3.3.tar.gz", hash = "sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"},
+    {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
+    {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
 ]
 imagesize = []
 importlib-metadata = []
@@ -2625,8 +2651,8 @@ numpy = [
     {file = "numpy-1.21.1.zip", hash = "sha256:dff4af63638afcc57a3dfb9e4b26d434a7a602d225b42d746ea7fe2edf1342fd"},
 ]
 oauthlib = [
-    {file = "oauthlib-3.2.0-py3-none-any.whl", hash = "sha256:6db33440354787f9b7f3a6dbd4febf5d0f93758354060e802f6c06cb493022fe"},
-    {file = "oauthlib-3.2.0.tar.gz", hash = "sha256:23a8208d75b902797ea29fd31fa80a15ed9dc2c6c16fe73f5d346f83f6fa27a2"},
+    {file = "oauthlib-3.2.1-py3-none-any.whl", hash = "sha256:88e912ca1ad915e1dcc1c06fc9259d19de8deacd6fd17cc2df266decc2e49066"},
+    {file = "oauthlib-3.2.1.tar.gz", hash = "sha256:1565237372795bf6ee3e5aba5e2a85bd5a65d0e2aa5c628b9a97b7d7a0da3721"},
 ]
 opencv-python-headless = [
     {file = "opencv-python-headless-4.5.3.56.tar.gz", hash = "sha256:3308d22efec8a69932709fc76456ef7e0d1cd9eb2272d94b7e5df0674d3e324f"},
@@ -3072,11 +3098,12 @@ sphinxcontrib-serializinghtml = [
 ]
 "svg.path" = []
 tenacity = [
-    {file = "tenacity-8.0.1-py3-none-any.whl", hash = "sha256:f78f4ea81b0fabc06728c11dc2a8c01277bfc5181b321a4770471902e3eb844a"},
-    {file = "tenacity-8.0.1.tar.gz", hash = "sha256:43242a20e3e73291a28bcbcacfd6e000b02d3857a9a9fff56b297a27afdc932f"},
+    {file = "tenacity-8.1.0-py3-none-any.whl", hash = "sha256:35525cd47f82830069f0d6b73f7eb83bc5b73ee2fff0437952cedf98b27653ac"},
+    {file = "tenacity-8.1.0.tar.gz", hash = "sha256:e48c437fdf9340f5666b92cd7990e96bc5fc955e1298baf4a907e3972067a445"},
 ]
 termcolor = [
-    {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
+    {file = "termcolor-2.0.1-py3-none-any.whl", hash = "sha256:7e597f9de8e001a3208c4132938597413b9da45382b6f1d150cff8d062b7aaa3"},
+    {file = "termcolor-2.0.1.tar.gz", hash = "sha256:6b2cf769e93364a2676e1de56a7c0cff2cf5bd07f37e9cc80b0dd6320ebfe388"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},

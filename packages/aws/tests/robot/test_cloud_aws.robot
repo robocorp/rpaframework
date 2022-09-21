@@ -5,8 +5,8 @@ Force Tags      skip
 
 
 *** Variables ***
-${S3_BUCKET_NAME}       %{AWS_BUCKET=testresources}
-${RESOURCES}            ${CURDIR}${/}..${/}resources
+${S3_BUCKET_NAME}  %{AWS_BUCKET=testresources}
+${RESOURCES}    ${CURDIR}${/}..${/}resources
 
 
 *** Test Cases ***
@@ -63,3 +63,27 @@ Analyze File in S3 storage
         #    Log    ${page.form}
         #END
     END
+
+*** Test Cases ***
+Start Textract Document Text Detection Job
+  Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
+  ${jobid}=  Start Document Text Detection  ${S3_BUCKET_NAME}  document.pdf
+  FOR  ${i}  IN RANGE  50
+    ${response}  Get Document Text Detection  ${jobid}
+    Exit For Loop If  "${response}[JobStatus]" == "SUCCEEDED"
+    Sleep  1s
+  END
+
+Start Textract Document Analysis Job
+  Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
+  ${jobid}=  Start Document Analysis  ${S3_BUCKET_NAME}  document.pdf
+  FOR  ${i}  IN RANGE  50
+    ${response}  Get Document Analysis  ${jobid}
+    Exit For Loop If  "${response}[JobStatus]" == "SUCCEEDED"
+    Sleep  1s
+  END
+
+Longer Textract Document Analysis Job
+  Init AWS Services
+  Upload Local File To S3  ${analysis_bucket}  ${RESOURCES}${/}NASDAQ_AAPL_2019.pdf  nasdaq_aapl
+  Analyze File in S3 storage  ${analysis_bucket}  nasdaq_aapl
