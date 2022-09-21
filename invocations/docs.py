@@ -101,11 +101,28 @@ def build_docs(ctx):
         shell.meta_tool(ctx, "rss")
 
 
-@task(aliases=["local_docs", "host", "local"])
-def host_local_docs(ctx):
+@task(
+    aliases=["local_docs", "host", "local"],
+    help={
+        "disown": (
+            "Starts the HTTP server and disowns the thread, "
+            "letting it continue to run and returning to the shell."
+        )
+    },
+)
+def host_local_docs(ctx, disown=False):
     """Hosts library documentation on a local http server. Navigate to
     localhost:8000 to browse."""
-    shell.run_in_venv(ctx, "python", "-m http.server -d docs/build/html/")
+    print(
+        "Starting documentation server, navigate to "
+        + "http://localhost:8000/ to browse. "
+        + "Send a Keyboard Interrupt to exit."
+        if not disown
+        else ""
+    )
+    shell.run_in_venv(
+        ctx, "python", "-u -m http.server -d docs/build/html/", disown=disown
+    )
 
 
 @task(aliases=["changelog"])
