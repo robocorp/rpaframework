@@ -5,6 +5,10 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 17.0.0 - 21 Sep 2022
 --------------------
 
@@ -12,8 +16,9 @@ Release notes
 
   - All references to `Robocloud.Vault` changed to `Robocorp.Vault` (parameters and documentation).
     This is **breaking** for this library, which leads to **major** version bump also for ``rpaframework``, 
-    because this library can be also installed with ``rpaframework[aws]`` instead of ``rpaframework-aws==5.0.0``.
-  - Add possibility to pass extra parameters for some S3 keywords
+    because this library can be also installed with ``rpaframework[aws]`` instead of ``rpaframework-aws``.
+  - Add possibility to pass extra parameters for some S3 keywords, for example. metadata and content type.
+  - Released in ``rpaframework-aws`` **5.0.0**
 
 - Library **RPA.Excel.Files** (:pr:`638`): Add support for opening .xlsx files in ``read_only`` mode
 - New library **RPA.Base64AI** (:pr:`639`): Supports `Base64 AI <https://base64.ai/>`_  IDP service
@@ -21,10 +26,7 @@ Release notes
 - Library **RPA.Cloud.Google** (:pr:`619`): 
   
   - Add support for `Document AI <https://cloud.google.com/document-ai/>`_  IDP service
-  - Released in `rpaframework-google==6.1.1``
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  - Released in ``rpaframework-google`` **6.1.1**
 
 16.3.0 - 07 Sep 2022
 --------------------
