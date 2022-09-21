@@ -300,6 +300,14 @@ def install(ctx, reset=False, extra=None, all_extras=False):
         extras_cmd = ""
     venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
     if reset and Path(venv_activation_cmd).exists():
+        try:
+            restore_dependency_files(ctx)
+        except FileNotFoundError:
+            print(
+                "Original dependency files cannot be restored. "
+                "Reset not possible, exiting."
+            )
+            exit(1)
         our_pkg_name = [
             get_current_package_name(ctx),
             "rpaframework" if safely_load_config(ctx, "is_meta", False) else None,
@@ -317,11 +325,6 @@ def install(ctx, reset=False, extra=None, all_extras=False):
             ]
             for local_pkg in local_pkgs:
                 shell.pip(ctx, f"uninstall {local_pkg['name']} -y")
-        try:
-            restore_dependency_files(ctx)
-        except FileNotFoundError:
-            print("Reset not possible, exiting.")
-            exit(1)
 
         shell.poetry(ctx, f"install --sync {extras_cmd}")
 
