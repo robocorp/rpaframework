@@ -46,7 +46,7 @@ def create_namespace(is_meta=False):
     """
     if bootstrap_mode:
         ns = Collection()
-        ns.add_task(bootstrap.install_invocations)
+        ns.add_task(bootstrap.install_invocations, name=["install"], default=True)
         ns.configure(DEFAULT_NS_CONFIGURATION)
     else:
         # NAMESPACE CONSTRUCTION
