@@ -2,7 +2,6 @@ import os
 import platform
 from pathlib import Path
 import re
-from typing import Union
 from invoke import Context
 
 from invocations.util import (

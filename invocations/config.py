@@ -10,12 +10,14 @@ import shutil
 from glob import glob
 from pathlib import Path
 import toml
+from colorama import Fore, Style
 
-from invoke import task, call, ParseError, Collection
+from invoke import task, ParseError, Collection
 
 from invocations import shell
 from invocations.util import (
     MAIN_PACKAGE,
+    PACKAGES_ROOT,
     REPO_ROOT,
     get_current_package_name,
     get_package_paths,
@@ -261,9 +263,9 @@ def clear_poetry_devpi(ctx):
     iterable=["extra"],
     help={
         "reset": (
-            "Setting this will remove untracked packages, reverting the "
-            ".venv to the lock file. If Poetry v1.2 is installed, the "
-            "'--sync' command is used instead."
+            "Will reset the environment and restore backed up versions "
+            "of pyproject.toml and poetry.lock. It will then sync the "
+            "environment to that original lock file."
         ),
         "extra": (
             "A repeatable argument to have project-defined extras "
@@ -271,10 +273,7 @@ def clear_poetry_devpi(ctx):
             "this argument flag for each, e.g. '--extra playwright "
             "--extra aws'."
         ),
-        "all-extras": (
-            "If Poetry v1.2 is installed on the system, all extras can "
-            "be installed with this flag."
-        ),
+        "all-extras": "All extras can be installed with this flag.",
     },
 )
 def install(ctx, reset=False, extra=None, all_extras=False):
@@ -287,7 +286,8 @@ def install(ctx, reset=False, extra=None, all_extras=False):
     ``--all-extras`` to install with all extras.
 
     If ``reset`` is attempted before an initial install, it
-    is ignored.
+    is ignored. The reset command will fail if backup files
+    do not exist from the ``install.local`` command.
     """
     poetry_config_path = get_poetry_config_path(ctx)
     if not is_poetry_configured(poetry_config_path):
@@ -300,7 +300,10 @@ def install(ctx, reset=False, extra=None, all_extras=False):
         extras_cmd = ""
     venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
     if reset and Path(venv_activation_cmd).exists():
-        our_pkg_name = get_current_package_name(ctx)
+        our_pkg_name = [
+            get_current_package_name(ctx),
+            "rpaframework" if safely_load_config(ctx, "is_meta", False) else None,
+        ]
         with ctx.prefix(venv_activation_cmd):
             pip_freeze = shell.pip(ctx, "list --format json", echo=False, hide="out")
             # Identifies locally installed packages in development mode.
@@ -309,7 +312,7 @@ def install(ctx, reset=False, extra=None, all_extras=False):
             local_pkgs = [
                 pkg
                 for pkg in installed_pkgs
-                if pkg["name"] != our_pkg_name
+                if pkg["name"] not in our_pkg_name
                 and pkg.get("editable_project_location", False)
             ]
             for local_pkg in local_pkgs:
@@ -393,16 +396,43 @@ def install_local(ctx, package, extra=None, all_extras=False):
             pkg_name = "main"
         else:
             pkg_name = pkg
-        opt_dependencies.append(f"../{pkg_name}")
+        pkg_root = get_current_package_root(ctx)
+        dependency_path = PACKAGES_ROOT / pkg_name
+        opt_dependencies.append(str(relative_path(pkg_root, dependency_path)))
         add_arg = " ".join(opt_dependencies)
     shell.poetry(ctx, f"add --editable {add_arg}")
 
 
-def get_dependency_paths(ctx, backup=True):
-    if safely_load_config(ctx, "is_meta"):
-        package_dir = REPO_ROOT
+def relative_path(first_path: Path, second_path: Path) -> Path:
+    """Returns a relative path to second_path from first_path.
+    The paths must have a common set of parents in their tree.
+
+    Note: using this function iterates through all contents of
+    parent directories of ``first_path`` and thus my hinder
+    performance if it must traverse the tree up more than one
+    or two levels.
+    """
+    if second_path.is_relative_to(first_path):
+        return second_path.relative_to(first_path)
     else:
-        package_dir = Path(safely_load_config(ctx, "package_dir"))
+        for dir in first_path.parent.iterdir():
+            if dir.is_dir() and dir == second_path:
+                return Path("..") / dir.stem
+        return Path("..") / relative_path(first_path.parent, second_path)
+
+
+def get_current_package_root(ctx) -> Path:
+    """Returns the root of the package the current context is
+    operating in as a Path.
+    """
+    if safely_load_config(ctx, "is_meta"):
+        return REPO_ROOT
+    else:
+        return Path(safely_load_config(ctx, "package_dir"))
+
+
+def get_dependency_paths(ctx, backup=True):
+    package_dir = get_current_package_root(ctx)
 
     spec_orig = package_dir / "pyproject.toml"
     spec_backup = package_dir / ".pyproject.original"
@@ -428,11 +458,12 @@ def backup_dependency_files(ctx):
             was_lock = True
         else:
             was_lock = False
-        print(
+        warn_msg = (
             f"WARNING: Original pyproject.toml {'and poetry.lock' if was_lock else ''} "
             f"backed up at .pyproject.original {'and .poetrylock.original' if was_lock else ''}. "
             f"Do not modify or remove without calling invoke install --reset"
         )
+        print(Fore.RED + warn_msg + Style.RESET_ALL)
 
 
 def restore_dependency_files(ctx):

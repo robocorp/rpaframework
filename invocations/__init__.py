@@ -12,7 +12,7 @@ try:
     bootstrap_mode = False
     if not bootstrap.check_dependancy_versions():
         print(
-            "Bootstrap mode activated,please check requirements and "
+            "Bootstrap mode activated, please check requirements and "
             "use 'invoke install' to update your system."
         )
         bootstrap_mode = True

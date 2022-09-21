@@ -104,10 +104,10 @@ def publish(ctx, ci=False, clean=True, test=True, build_=True, version=None):
       attempts to publish currently existing packages. Can only be
       used with ``--ci``.
     * ``--version``: You can bump the version of the package by
-      providing a valid bump rule to the argument ``version_bump``.
-      You can provide a valid ``semver`` version number or one of these
-      bump rules: ``patch``, ``minor``, ``major``, ``prepatch``,
-      ``preminor``, ``premajor``, ``prerelease``.
+      providing a valid bump rule. You can provide a valid ``semver``
+      version number or one of these bump rules: ``patch``, ``minor``,
+      ``major``, ``prepatch``, ``preminor``, ``premajor``,
+      ``prerelease``.
     """
     if (not clean or not build_) and not ci:
         raise ParseError(
