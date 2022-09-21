@@ -112,8 +112,9 @@ def get_poetry_config_path(ctx):
 def clean(ctx, venv=True, build=True, test=True, docs=False, all=False):
     """Cleans the virtual development environment depending on parameters
     supplied. Default is to clean the .venv and all build and test
-    artifacts, but you can use flags to modify default as described
-    below:
+    artifacts, but you can use flags to modify default. If the venv
+    is selected to be cleaned, the local packages are reset as well, see
+    documentation for ``install.reset-local`` for more information.
 
     * ``--no-venv``: Disables removing the .venv directory and
       all caches (e.g., ``__pycache__``).
@@ -129,6 +130,7 @@ def clean(ctx, venv=True, build=True, test=True, docs=False, all=False):
     """
     union_clean_patterns = []
     if venv:
+        reset_local(ctx)
         union_clean_patterns.extend(VENV_CLEAN_PATTERNS)
     if build:
         union_clean_patterns.extend(BUILD_CLEAN_PATTERNS)
@@ -286,8 +288,7 @@ def install(ctx, reset=False, extra=None, all_extras=False):
     ``--all-extras`` to install with all extras.
 
     If ``reset`` is attempted before an initial install, it
-    is ignored. The reset command will fail if backup files
-    do not exist from the ``install.local`` command.
+    is ignored.
     """
     poetry_config_path = get_poetry_config_path(ctx)
     if not is_poetry_configured(poetry_config_path):
@@ -298,8 +299,25 @@ def install(ctx, reset=False, extra=None, all_extras=False):
         extras_cmd = f"--extras \"{' '.join(extra)}\""
     else:
         extras_cmd = ""
+    if reset:
+        reset_local(ctx)
+        shell.poetry(ctx, f"install --sync {extras_cmd}")
+
+    else:
+        shell.poetry(ctx, f"install {extras_cmd}")
+
+
+@task(aliases=["reset"])
+def reset_local(ctx):
+    """Revert changes caused by ``install.local``. This task
+    only restores dependency files and uninstalls editable
+    versions of local packages.
+
+    If ``reset`` is attempted before an initial install, it
+    is ignored.
+    """
     venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
-    if reset and Path(venv_activation_cmd).exists():
+    if Path(venv_activation_cmd).exists():
         try:
             restore_dependency_files(ctx)
         except FileNotFoundError:
@@ -324,11 +342,8 @@ def install(ctx, reset=False, extra=None, all_extras=False):
             ]
             for local_pkg in local_pkgs:
                 shell.pip(ctx, f"uninstall {local_pkg['name']} -y")
-
-        shell.poetry(ctx, f"install --sync {extras_cmd}")
-
     else:
-        shell.poetry(ctx, f"install {extras_cmd}")
+        print("No .venv exists to reset, exiting.")
 
 
 @task(
@@ -463,7 +478,7 @@ def backup_dependency_files(ctx):
         warn_msg = (
             f"WARNING: Original pyproject.toml {'and poetry.lock' if was_lock else ''} "
             f"backed up at .pyproject.original {'and .poetrylock.original' if was_lock else ''}. "
-            f"Do not modify or remove without calling invoke install --reset"
+            f"Do not modify or remove without calling invoke install.reset"
         )
         print(Fore.RED + warn_msg + Style.RESET_ALL)
 
@@ -478,10 +493,7 @@ def restore_dependency_files(ctx):
         os.remove(spec_src_path)
         print("Package pyproject.toml file restored")
     else:
-        print(
-            f"The file {spec_src_path.name} does not exist and cannot be restored. "
-            "You must restore manually."
-        )
+        print(f"The file {spec_src_path.name} does not exist and cannot be restored.")
         raise FileNotFoundError(
             errno.ENOENT, os.strerror(errno.ENOENT), spec_src_path.name
         )

@@ -31,8 +31,8 @@ def build(ctx, test=True):
         shell.invoke_each(ctx, "build")
     else:
         if test:
-            shell.invoke("code.lint", echo=False)
-            shell.invoke("code.test -a", echo=False)
+            shell.invoke(ctx, "code.lint", echo=False)
+            shell.invoke(ctx, "code.test -a", echo=False)
         shell.poetry(ctx, "build -vv -f sdist")
         shell.poetry(ctx, "build -vv -f wheel")
         libspec.clean_libspec(ctx)
@@ -116,7 +116,6 @@ def publish(ctx, ci=False, build_=True, version=None, all=False):
         shell.invoke(ctx, f"build.version --version {version}", echo=False)
     if not ci:
         shell.invoke(ctx, "install.clean", echo=False)
-        shell.invoke(ctx, "install -r", echo=False)
     if build_:
         test_arg = "--no-test" if ci else ""
         shell.invoke(
