@@ -23,7 +23,7 @@ except ModuleNotFoundError as e:
     print(
         "Some dependencies are missing, tasks are in bootstrap mode. "
         "Use invoke install to install system dependencies and then try "
-        "again."
+        "again. "
         f'The error encountered was "{e}"'
     )
 
@@ -46,8 +46,8 @@ def create_namespace(is_meta=False):
     """
     if bootstrap_mode:
         ns = Collection()
-        ns.add_task(bootstrap.install_invocations, name=["install"], default=True)
         ns.configure(DEFAULT_NS_CONFIGURATION)
+        ns.add_task(bootstrap.install_invocations)
     else:
         # NAMESPACE CONSTRUCTION
         # ROOT NAMESPACE

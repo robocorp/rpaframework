@@ -8,7 +8,9 @@ from invoke import task
 REQUIREMENTS = (Path(__file__).parent / "requirements.txt").resolve()
 
 
-@task(help={"force": "Forces reinstall of the package dependencies."})
+@task(
+    help={"force": "Forces reinstall of the package dependencies."}, aliases=["install"]
+)
 def install_invocations(ctx, force=False):
     """Installs invocation dependencies directly into the system Python
     installation used to invoke this command via Pip and the requirements.txt
