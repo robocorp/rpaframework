@@ -304,10 +304,9 @@ def install(ctx, reset=False, extra=None, all_extras=False):
             restore_dependency_files(ctx)
         except FileNotFoundError:
             print(
-                "Original dependency files cannot be restored. "
-                "Reset not possible, exiting."
+                Fore.RED + "Original dependency files cannot be restored. "
+                "Please restore manually if required." + Style.RESET_ALL
             )
-            exit(1)
         our_pkg_name = [
             get_current_package_name(ctx),
             "rpaframework" if safely_load_config(ctx, "is_meta", False) else None,
