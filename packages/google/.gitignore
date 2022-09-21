@@ -21,3 +21,5 @@ tests/output
 tests/temp
 tests/*.html
 tests/*.xml
+
+*.log
