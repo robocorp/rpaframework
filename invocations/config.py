@@ -343,7 +343,7 @@ def reset_local(ctx):
             for local_pkg in local_pkgs:
                 shell.pip(ctx, f"uninstall {local_pkg['name']} -y")
     else:
-        print("No .venv exists to reset, exiting.")
+        print("No .venv exists to reset.")
 
 
 @task(

@@ -86,17 +86,10 @@ def version(ctx, version=None):
             "Bumps the package version as part of "
             "publishing if a valid bump rule is provided."
         ),
-        "all": (
-            "If ran from the meta package, this will execute the "
-            "publish command for all packages. If also providing "
-            "--version, only use a bump rule as it will be applied "
-            "to all packages, so if a version number is provided, it "
-            "will set them all."
-        ),
     },
     aliases=["pub"],
 )
-def publish(ctx, ci=False, build_=True, version=None, all=False):
+def publish(ctx, ci=False, build_=True, version=None):
     """Publish python package. By default, this task will completely
     clean the dev environment, rebuild the distributable packages and
     then publish to the public production PyPI repository. Arguments can
@@ -119,7 +112,7 @@ def publish(ctx, ci=False, build_=True, version=None, all=False):
         raise ParseError("You cannot disable build when publishing to production.")
 
     if version:
-        shell.invoke(ctx, f"build.version --version {version}", echo=False)
+        shell.invoke(ctx, f"build.version --version={version}", echo=False)
     if not ci:
         shell.invoke(ctx, "install.clean", echo=False)
     if build_:

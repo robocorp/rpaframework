@@ -20,7 +20,7 @@ import invocations
 CONFIG = {
     "is_meta": False,
     "package_dir": PACKAGE_DIR,
-    "build_strategy": invocations.ROBOT_BUILD_STRATEGY,
+    "build_strategy": invocations.PYTHON_BUILD_STRATEGY,
 }
 ns: Collection = invocations.create_namespace(is_meta=False)
 ns.configure(CONFIG)
