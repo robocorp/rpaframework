@@ -23,3 +23,6 @@ tests/*.html
 tests/*.xml
 
 *.log
+
+# invoke config
+invoke.yaml

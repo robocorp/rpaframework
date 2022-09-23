@@ -26,3 +26,6 @@ tests/*.xml
 
 # FPDF fonts
 *.pkl
+
+# invoke config
+invoke.yaml

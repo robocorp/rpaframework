@@ -1,10 +1,14 @@
 """Collection of tasks associated with building and publishing 
 packages.
 """
-from invoke import task, Collection, ParseError
+import keyring
+import yaml
+from keyring.errors import KeyringError
+from pathlib import Path
+from invoke import task, Collection, ParseError, Context, config as inv_config
 
 from invocations import shell, config, libspec, ROBOT_BUILD_STRATEGY
-from invocations.util import require_package, safely_load_config
+from invocations.util import require_package, safely_load_config, REPO_ROOT
 
 
 @task(
@@ -198,6 +202,63 @@ def publish_all(ctx, ci=False, build_=True, version=None):
         f"--version={version}" if version is not None else "",
     ]
     shell.invoke_each(ctx, f"build.publish {' '.join(args)}")
+
+
+@task(
+    help={
+        "apikey": "The releasenotes.io apikey to be saved to the system keyring.",
+        "project_id": "The releasenotes.io project ID where notes will be posted.",
+        "allow_insecure": "Allow tokens to be stored in plaintext config files.",
+    }
+)
+def setup_releasenotes(ctx, apikey, project_id, allow_insecure=False):
+    """Configures releasenotes.io used as part of the publish tasks
+    to publish release notes. By default, this saves tokens to the
+    system keyring. Upon failure, if ``--allow-insecure`` is set, it
+    will save settings and credentials in plaintext to to the
+    invoke.yaml configuration file.
+
+    * ``--apikey`` (required): The releasenotes.io apikey to be saved
+      to the system keyring.
+    * ``--project_id``: The releasenotes.io project ID where notes will
+      be posted.
+    """
+    config = {"releasenotes": {}}
+    try:
+        keyring.set_password("releasenotes", "apikey", apikey)
+        config["releasenotes"]["apikey"] = "keyring"
+    except KeyringError:
+        if allow_insecure:
+            config["releasenotes"]["apikey"] = apikey
+    config["releasenotes"]["project_id"] = project_id
+    if safely_load_config(ctx, "is_meta", False):
+        config_file = REPO_ROOT / "invoke.yaml"
+    else:
+        config_file = (
+            Path(safely_load_config(ctx, "package_dir", ctx.cwd)) / "invoke.yaml"
+        )
+    try:
+        with config_file.open("r") as c:
+            current_config = yaml.load(c, Loader=yaml.FullLoader)
+            current_config.update(config)
+            config = current_config
+    except (yaml.error.YAMLError, AttributeError, FileNotFoundError):
+        pass
+    with config_file.open("w") as c:
+        yaml.dump(config, c)
+
+
+def get_releasenotes_config(ctx: Context) -> inv_config.DataProxy:
+    """Attempts to retreive the releasenotes configuration from
+    the system keyring and invoke configuration in ctx.
+
+    Returns a dictionary representing the complete
+    configuration obtained from both keyring and config.
+    """
+    config = safely_load_config(ctx, "releasenotes")
+    if config["apikey"] == "keyring":
+        config["apikey"] = keyring.get_password("releasenotes", "apikey")
+    return config
 
 
 # Configure how this namespace will be loaded.

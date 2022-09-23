@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "17.0.1"
+version = "17.1.0a5"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -102,6 +102,8 @@ robotframework-docgen = "^0.15.0"
 sphinx-issues = "^1.2.0"
 docutils = "0.16"
 colorama = "^0.4.5"
+keyring = "^23.9.0"
+PyYAML = "^5.4.1"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
