@@ -86,10 +86,14 @@ def version(ctx, version=None):
             "Bumps the package version as part of "
             "publishing if a valid bump rule is provided."
         ),
+        "yes_to_all": (
+            "Turns off confirmation prompts before publishing to "
+            "the remote package repository."
+        ),
     },
     aliases=["pub"],
 )
-def publish(ctx, ci=False, build_=True, version=None):
+def publish(ctx, ci=False, build_=True, version=None, yes_to_all=False):
     """Publish python package. By default, this task will completely
     clean the dev environment, rebuild the distributable packages and
     then publish to the public production PyPI repository. Arguments can
@@ -107,6 +111,8 @@ def publish(ctx, ci=False, build_=True, version=None):
       version number or one of these bump rules: ``patch``, ``minor``,
       ``major``, ``prepatch``, ``preminor``, ``premajor``,
       ``prerelease``.
+    * ``--yes-to-all``: You can deactivate the confirmation prompts
+      displayed before publishing to the remote package repository.
     """
     if not build_ and not ci:
         raise ParseError("You cannot disable build when publishing to production.")
@@ -123,11 +129,20 @@ def publish(ctx, ci=False, build_=True, version=None):
             echo=False,
         )
         shell.invoke(ctx, f"build {test_arg}", echo=False)
-    if ci:
-        shell.poetry(ctx, "publish -v --no-interaction --repository devpi")
+    if not yes_to_all:
+        confirm = input(
+            f"Do you wish to publish to the '{'devpi' if ci else 'PyPI'}' repository? (y/N) "
+        )
+        confirm = confirm.lower() in ["y", "yes", "true", "continue"]
     else:
+        confirm = True
+    if ci and confirm:
+        shell.poetry(ctx, "publish -v --no-interaction --repository devpi")
+    elif confirm:
         shell.poetry(ctx, "publish -v")
         shell.meta_tool(ctx, "tag")
+    else:
+        print("Aborting publish...")
 
 
 @task(
