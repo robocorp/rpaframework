@@ -11,6 +11,9 @@ from . import LibraryContext, keyword
 class DocumentAIKeywords(LibraryContext):
     """Keywords for Google Cloud Document AI service.
 
+    Added on **rpaframework-google** version: 6.1.1
+    Included as extra in **rpaframework[google]** version: 17.0.1
+
     Google Document AI provides processors for intelligent
     document processing (IDP).
 

@@ -14,6 +14,8 @@ JSONType = Union[Dict[Hashable, JSONValue], List[JSONValue], JSONValue]
 class Nanonets:
     """Library to support `Nanonets <https://nanonets.com/>`_ service for intelligent document processing (IDP).
 
+    Added on **rpaframework** version: 17.0.1
+
     Service supports identifying fields in the documents, which can be given to the
     service in multiple different file formats and via URL.
 
