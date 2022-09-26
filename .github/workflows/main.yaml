@@ -69,6 +69,7 @@ jobs:
             os: macos-latest
     env:
       SETUPTOOLS_USE_DISTUTILS: stdlib
+      INVOKE_IS_CI_CD: 1
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python }}
@@ -96,10 +97,12 @@ jobs:
         key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
     - name: Install invoke
       run: python -m pip install invoke
+    - name: Install invocation package
+      run: invoke install-invocations
     - name: Install dependencies
       run: invoke install
     - name: Lint
-      run: invoke lint
+      run: invoke code.lint
     - name: Create RPA.Hubspot testvars.py file
       env:
         HUBSPOT_TESTVARS : ${{ secrets.HUBSPOT_TESTVARS }}
@@ -109,12 +112,12 @@ jobs:
       shell: bash
     - name: Test (non-linux)
       if: matrix.os != 'ubuntu-latest'
-      run: invoke test
+      run: invoke code.test -a
     - name: Test (linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
         export XDG_SESSION_TYPE=x11
-        xvfb-run --server-args="-screen 0 1280x720x24" invoke test
+        xvfb-run --server-args="-screen 0 1280x720x24" invoke code.test
     - uses: actions/upload-artifact@v1
       if: success() || failure()
       with:
@@ -126,24 +129,27 @@ jobs:
     if: github.ref == 'refs/heads/master'
     needs: test
     runs-on: ubuntu-latest
+    env:
+      INVOKE_IS_CI_CD: 1
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: '3.7'
+        python-version: '3.9'
     - name: Upgrade pip
       run: python -m pip install --upgrade pip
     - name: Install poetry
       run: pip install poetry
     - name: Install invoke
       run: pip install invoke
+    - name: Install invocation package
+      run: invoke install-invocations
     - name: Install dependencies
       run: invoke install
     - name: Build and publish package
       if: success()
       run: |
-        poetry config repositories.devpi ${{ secrets.devpiUrl }}
-        poetry config http-basic.devpi ci ${{ secrets.devpiPassword }}
-        poetry publish --no-interaction --build --repository devpi
+        invoke install.setup-poetry --devpi-url ${{ secrets.devpiUrl }} --username ci --password ${{ secrets.devpiPassword }}
+        invoke build.publish --ci --version=prerelease

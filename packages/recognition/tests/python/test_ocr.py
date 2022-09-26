@@ -11,7 +11,7 @@ from RPA.recognition import ocr
 from RPA.core.geometry import Region
 
 
-IMAGES = Path(__file__).resolve().parent / "images"
+IMAGES = Path(__file__).resolve().parent.parent / "images"
 DATA = {
     "Standard": ("source.png", "Standard"),
     "Calculator": ("source.png", "Calculator"),

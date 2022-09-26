@@ -20,7 +20,7 @@ sphinx = "^2.3.1"
 sphinx_rtd_theme = "^0.4.3"
 jinja2 = ">=2.2,<3.0"
 markupsafe = "~2.0.1"
-toml = "^0.10.1"
+toml = "^0.10.2"
 sphinx-markdown-builder = "^0.5.4"
 robotframework-docgen = "^0.15.0"
 pylint = "^2.4.4, <2.13"
@@ -29,6 +29,8 @@ docutils = "0.16"
 black = "^22.3.0"
 invoke = "^1.6.0"
 colorama = "^0.4.5"
+keyring = "^23.9.0"
+PyYAML = "^5.4.1"
 
 
 [build-system]

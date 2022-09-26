@@ -1,10 +1,8 @@
 [tool.poetry]
 name = "rpaframework-core"
-version = "10.0.0"
+version = "10.1.0a5"
 description = "Core utilities used by RPA Framework"
-authors = [
-	"RPA Framework <rpafw@robocorp.com>",
-]
+authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
 readme = "README.rst"
 
@@ -27,9 +25,7 @@ classifiers = [
 	"Programming Language :: Python :: 3.9",
 ]
 
-packages = [
-	{ include = "RPA", from = "src" }
-]
+packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -48,6 +44,10 @@ pytest = "^6.1.2"
 pytest-cov = "^2.10.1"
 mock = "^4.0.2"
 mypy = "^0.790"
+toml = "^0.10.2"
+colorama = "^0.4.5"
+keyring = "^23.9.0"
+PyYAML = "^5.4.1"
 
 [tool.black]
 target-version = ["py37", "py38", "py39"]

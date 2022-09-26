@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "17.0.1"
+version = "17.1.0a5"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -96,11 +96,14 @@ setuptools = "^65.3.0"
 invoke = "^1.6.0"
 sphinx = "^2.3.1"
 sphinx_rtd_theme = "^0.4.3"
-toml = "^0.10.1"
+toml = "^0.10.2"
 sphinx-markdown-builder = "^0.5.4"
 robotframework-docgen = "^0.15.0"
 sphinx-issues = "^1.2.0"
 docutils = "0.16"
+colorama = "^0.4.5"
+keyring = "^23.9.0"
+PyYAML = "^5.4.1"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
