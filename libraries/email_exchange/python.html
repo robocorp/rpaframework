@@ -229,7 +229,7 @@
 <span id="exchange"></span><h2>Exchange<a class="headerlink" href="#module-RPA.Email.Exchange" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Email.Exchange.Exchange">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">Exchange</code><a class="headerlink" href="#RPA.Email.Exchange.Exchange" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">Exchange</code><span class="sig-paren">(</span><em class="sig-param">vault_name: Optional[str] = None</em>, <em class="sig-param">vault_token_key: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p><cite>Exchange</cite> is a library for sending, reading, and deleting emails.
 <cite>Exchange</cite> is interfacing with Exchange Web Services (EWS).</p>
@@ -298,6 +298,22 @@
     <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Message from RPA Python&quot;</span><span class="p">,</span>
     <span class="n">body</span><span class="o">=</span><span class="s2">&quot;RPA Python message body&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>OAuth2</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Email.Exchange</span><span class="p"></span>
+<span class="p">...     </span><span class="s">vault_name=email_oauth_microsoft</span><span class="p">    </span><span class="s">vault_token_key=token</span><span class="p"></span>
+
+<span class="kn">Task Setup</span><span class="p">      </span><span class="nf">Authorize</span><span class="p">   </span><span class="s">username=</span><span class="p">${</span><span class="nv">ACCOUNT</span><span class="p">}</span>
+<span class="p">...    </span><span class="s">autodiscover=</span><span class="p">${</span><span class="nv">False</span><span class="p">}    </span><span class="s">server=outlook.office365.com</span><span class="p"></span>
+<span class="p">...    </span><span class="s">is_oauth=</span><span class="p">${</span><span class="nv">True</span><span class="p">}  </span><span class="c"># use the OAuth2 auth code flow</span>
+<span class="c"># With secrets retrieved from the Vault by using ``Get Secret`` and set</span>
+<span class="c">#  globally into `${SECRETS}`.</span>
+<span class="p">...    </span><span class="err">client_id=${SECRETS}[client_id]</span><span class="p">  </span><span class="c"># app ID</span>
+<span class="p">...    </span><span class="s">client_secret=</span><span class="p">${</span><span class="nv">SECRETS</span><span class="p">}[</span><span class="nv">client_secret</span><span class="p">]  </span><span class="c"># app password</span>
+<span class="c"># The entire token structure auto refreshes when it expires.</span>
+<span class="p">...    </span><span class="err">token=${SECRETS}[token]</span><span class="p">  </span><span class="c"># token dict (access, refresh, scopes etc.)</span>
 </pre></div>
 </div>
 <p><strong>About criterion parameter</strong></p>
