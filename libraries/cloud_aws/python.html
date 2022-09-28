@@ -396,7 +396,7 @@ removed in the future major release of <cite>rpaframework</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.assume_role">
-<code class="sig-name descname">assume_role</code><span class="sig-paren">(</span><em class="sig-param">role_arn: str</em>, <em class="sig-param">role_session_name: str</em>, <em class="sig-param">policy_arns: Optional[List[Dict]] = None</em>, <em class="sig-param">policy: Optional[str] = None</em>, <em class="sig-param">duration: int = 900</em>, <em class="sig-param">tags: Optional[List[Dict]] = None</em>, <em class="sig-param">transitive_tag_keys: Optional[List[str]] = None</em>, <em class="sig-param">external_id: Optional[str] = None</em>, <em class="sig-param">serial_number: Optional[str] = None</em>, <em class="sig-param">token_code: Optional[str] = None</em>, <em class="sig-param">source_identity: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.assume_role" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">assume_role</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.assume_role" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a set of temporary security credentials that you can
 use to access Amazon Web Services resources that you might not
 normally have access to. These temporary credentials consist of
@@ -548,7 +548,7 @@ which has following structure:</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.create_redshift_statement_parameters">
-<code class="sig-name descname">create_redshift_statement_parameters</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; List[Dict[str, str]]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.create_redshift_statement_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_redshift_statement_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.create_redshift_statement_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a formatted dictionary to be used in
 Redshift Data Api SQL statements.</p>
 <p><strong>Example:</strong></p>
@@ -635,7 +635,7 @@ Redshift Data Api SQL statements.</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.describe_redshift_table">
-<code class="sig-name descname">describe_redshift_table</code><span class="sig-paren">(</span><em class="sig-param">database: str</em>, <em class="sig-param">schema: Optional[str] = None</em>, <em class="sig-param">table: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[Dict, List[Dict]]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.describe_redshift_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">describe_redshift_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.describe_redshift_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Describes the detailed information about a table from metadata
 in the cluster. The information includes its columns.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">schema</span></code> and/or <code class="docutils literal notranslate"><span class="pre">table</span></code> is not provided, the API searches
@@ -1130,14 +1130,14 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.list_redshift_databases">
-<code class="sig-name descname">list_redshift_databases</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_databases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_redshift_databases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_databases" title="Permalink to this definition">¶</a></dt>
 <dd><p>List the databases in a cluster.</p>
 <p>Database names are returned as a list of strings.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.list_redshift_schemas">
-<code class="sig-name descname">list_redshift_schemas</code><span class="sig-paren">(</span><em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">schema_pattern: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[Dict]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_schemas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_redshift_schemas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_schemas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lists the schemas in a database.</p>
 <p>Schema names are returned as a list of strings.</p>
 <dl class="field-list simple">
@@ -1157,7 +1157,7 @@ If <code class="docutils literal notranslate"><span class="pre">schema_pattern</
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.list_redshift_tables">
-<code class="sig-name descname">list_redshift_tables</code><span class="sig-paren">(</span><em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">schema_pattern: Optional[str] = None</em>, <em class="sig-param">table_pattern: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[Dict]<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_redshift_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_redshift_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>List the tables in a database. If neither <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> nor
 <code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are specified, then all tables in the database
 are returned.</p>
@@ -1556,7 +1556,7 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceRedshiftData.create_redshift_statement_parameters">
-<code class="sig-name descname">create_redshift_statement_parameters</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span> &#x2192; List[Dict[str, str]]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.create_redshift_statement_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_redshift_statement_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.create_redshift_statement_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a formatted dictionary to be used in
 Redshift Data Api SQL statements.</p>
 <p><strong>Example:</strong></p>
@@ -1579,7 +1579,7 @@ Redshift Data Api SQL statements.</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceRedshiftData.describe_redshift_table">
-<code class="sig-name descname">describe_redshift_table</code><span class="sig-paren">(</span><em class="sig-param">database: str</em>, <em class="sig-param">schema: Optional[str] = None</em>, <em class="sig-param">table: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[Dict, List[Dict]]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.describe_redshift_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">describe_redshift_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.describe_redshift_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Describes the detailed information about a table from metadata
 in the cluster. The information includes its columns.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">schema</span></code> and/or <code class="docutils literal notranslate"><span class="pre">table</span></code> is not provided, the API searches
@@ -1766,14 +1766,14 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_databases">
-<code class="sig-name descname">list_redshift_databases</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_databases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_redshift_databases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_databases" title="Permalink to this definition">¶</a></dt>
 <dd><p>List the databases in a cluster.</p>
 <p>Database names are returned as a list of strings.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_schemas">
-<code class="sig-name descname">list_redshift_schemas</code><span class="sig-paren">(</span><em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">schema_pattern: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[Dict]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_schemas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_redshift_schemas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_schemas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lists the schemas in a database.</p>
 <p>Schema names are returned as a list of strings.</p>
 <dl class="field-list simple">
@@ -1793,7 +1793,7 @@ If <code class="docutils literal notranslate"><span class="pre">schema_pattern</
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_tables">
-<code class="sig-name descname">list_redshift_tables</code><span class="sig-paren">(</span><em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">schema_pattern: Optional[str] = None</em>, <em class="sig-param">table_pattern: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[Dict]<a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_redshift_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceRedshiftData.list_redshift_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>List the tables in a database. If neither <code class="docutils literal notranslate"><span class="pre">schema_pattern</span></code> nor
 <code class="docutils literal notranslate"><span class="pre">table_pattern</span></code> are specified, then all tables in the database
 are returned.</p>
@@ -2254,7 +2254,7 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 <p>Class for AWS STS Service.</p>
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceSTS.assume_role">
-<code class="sig-name descname">assume_role</code><span class="sig-paren">(</span><em class="sig-param">role_arn: str</em>, <em class="sig-param">role_session_name: str</em>, <em class="sig-param">policy_arns: Optional[List[Dict]] = None</em>, <em class="sig-param">policy: Optional[str] = None</em>, <em class="sig-param">duration: int = 900</em>, <em class="sig-param">tags: Optional[List[Dict]] = None</em>, <em class="sig-param">transitive_tag_keys: Optional[List[str]] = None</em>, <em class="sig-param">external_id: Optional[str] = None</em>, <em class="sig-param">serial_number: Optional[str] = None</em>, <em class="sig-param">token_code: Optional[str] = None</em>, <em class="sig-param">source_identity: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.assume_role" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">assume_role</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSTS.assume_role" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a set of temporary security credentials that you can
 use to access Amazon Web Services resources that you might not
 normally have access to. These temporary credentials consist of

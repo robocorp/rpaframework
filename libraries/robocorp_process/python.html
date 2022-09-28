@@ -443,7 +443,7 @@ before starting the process (note. different start keyword than above).</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.get_process_run_status">
-<code class="sig-name descname">get_process_run_status</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">step_run_id: Optional[str] = None</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_run_status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_process_run_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_run_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a process run status by run id</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -481,7 +481,7 @@ before starting the process (note. different start keyword than above).</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.get_work_item">
-<code class="sig-name descname">get_work_item</code><span class="sig-paren">(</span><em class="sig-param">workitem_id: str</em>, <em class="sig-param">include_data: bool = False</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.get_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get work item from Control Room</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -578,7 +578,7 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.list_processes">
-<code class="sig-name descname">list_processes</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.list_processes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_processes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_processes" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all processes in a workspace</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -592,7 +592,7 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.list_run_artifacts">
-<code class="sig-name descname">list_run_artifacts</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">step_run_id: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.list_run_artifacts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_run_artifacts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_run_artifacts" title="Permalink to this definition">¶</a></dt>
 <dd><p>List Robot run artifacts</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -615,12 +615,12 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.register_file_upload">
-<code class="sig-name descname">register_file_upload</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em>, <em class="sig-param">workitem_filename: str</em>, <em class="sig-param">workitem_id: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Tuple[str, Dict[str, Any]]<a class="headerlink" href="#RPA.Robocorp.Process.Process.register_file_upload" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">register_file_upload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.register_file_upload" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.retry_work_item">
-<code class="sig-name descname">retry_work_item</code><span class="sig-paren">(</span><em class="sig-param">work_item_id: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.retry_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">retry_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.retry_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retry processing of work item in FAILED state</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -703,7 +703,7 @@ the response (default False)</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.start_process">
-<code class="sig-name descname">start_process</code><span class="sig-paren">(</span><em class="sig-param">work_items: Union[Dict, List[Dict], None] = None, batch: bool = False, process_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#RPA.Robocorp.Process.Process.start_process" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">start_process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.start_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start a Control Room process</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -763,7 +763,7 @@ values.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.upload_file_to_s3">
-<code class="sig-name descname">upload_file_to_s3</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em>, <em class="sig-param">workitem_filename: str</em>, <em class="sig-param">data: Any</em><span class="sig-paren">)</span> &#x2192; Tuple[str, str]<a class="headerlink" href="#RPA.Robocorp.Process.Process.upload_file_to_s3" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">upload_file_to_s3</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.upload_file_to_s3" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

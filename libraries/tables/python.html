@@ -251,7 +251,7 @@
 
 <dl class="class">
 <dt id="RPA.Tables.Table">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param">data: Union[Dict[Union[int, str], Union[Dict, List, Tuple, NamedTuple, set]], List[Union[Dict, List, Tuple, NamedTuple, set]], Table, None] = None, columns: Optional[List[str]] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">Table</code><a class="headerlink" href="#RPA.Tables.Table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Container class for tabular data.</p>
 <p>Supported data formats:</p>
@@ -329,7 +329,7 @@
 
 <dl class="method">
 <dt id="RPA.Tables.Table.delete_rows">
-<code class="sig-name descname">delete_rows</code><span class="sig-paren">(</span><em class="sig-param">indexes: Union[int, str, List[Union[str, int]]]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.delete_rows" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_rows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.delete_rows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove rows with matching indexes.</p>
 </dd></dl>
 
@@ -448,7 +448,7 @@ falsy are removed.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Table.iter_dicts">
-<code class="sig-name descname">iter_dicts</code><span class="sig-paren">(</span><em class="sig-param">with_index=True</em><span class="sig-paren">)</span> &#x2192; Generator[Dict[Union[int, str], Any], None, None]<a class="headerlink" href="#RPA.Tables.Table.iter_dicts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">iter_dicts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.iter_dicts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate rows with values as dicts.</p>
 </dd></dl>
 
@@ -737,7 +737,7 @@ which is <code class="docutils literal notranslate"><span class="pre">None</span
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.create_table">
-<code class="sig-name descname">create_table</code><span class="sig-paren">(</span><em class="sig-param">data: Union[Dict[Union[int, str], Union[Dict, List, Tuple, NamedTuple, set]], List[Union[Dict, List, Tuple, NamedTuple, set]], Table, None] = None, trim: bool = False, columns: List[str] = None</em><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.Tables.Tables.create_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.create_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Table object from data.</p>
 <p>Data can be a combination of various iterable containers, e.g.
 list of lists, list of dicts, dict of lists.</p>
@@ -992,7 +992,7 @@ specified column.</p></li>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.get_table_dimensions">
-<code class="sig-name descname">get_table_dimensions</code><span class="sig-paren">(</span><em class="sig-param">table: RPA.Tables.Table</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int]<a class="headerlink" href="#RPA.Tables.Tables.get_table_dimensions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_table_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_dimensions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return table dimensions, as (rows, columns).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1038,7 +1038,7 @@ of rows and columns</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.get_table_slice">
-<code class="sig-name descname">get_table_slice</code><span class="sig-paren">(</span><em class="sig-param">table: RPA.Tables.Table</em>, <em class="sig-param">start: Union[int</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">end: Union[int</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Tables.Table, List[List]]<a class="headerlink" href="#RPA.Tables.Tables.get_table_slice" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_table_slice</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_slice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a new Table from a range of given Table rows.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1069,7 +1069,7 @@ If <code class="docutils literal notranslate"><span class="pre">end</span></code
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.group_table_by_column">
-<code class="sig-name descname">group_table_by_column</code><span class="sig-paren">(</span><em class="sig-param">table: RPA.Tables.Table, column: Union[int, str]</em><span class="sig-paren">)</span> &#x2192; List[RPA.Tables.Table]<a class="headerlink" href="#RPA.Tables.Tables.group_table_by_column" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">group_table_by_column</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.group_table_by_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Group a table by <code class="docutils literal notranslate"><span class="pre">column</span></code> and return a list of grouped Tables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1255,7 +1255,7 @@ instead of appending multiple copies of the same name.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.read_table_from_csv">
-<code class="sig-name descname">read_table_from_csv</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">header: Optional[bool] = None</em>, <em class="sig-param">columns: Optional[List[str]] = None</em>, <em class="sig-param">dialect: Optional[RPA.Tables.Dialect] = None</em>, <em class="sig-param">delimiters: Optional[str] = None</em>, <em class="sig-param">column_unknown: str = 'Unknown'</em>, <em class="sig-param">encoding: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.Tables.Tables.read_table_from_csv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_table_from_csv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.read_table_from_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a CSV file as a table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1301,7 +1301,7 @@ given by <code class="docutils literal notranslate"><span class="pre">column_unk
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.rename_table_columns">
-<code class="sig-name descname">rename_table_columns</code><span class="sig-paren">(</span><em class="sig-param">table: RPA.Tables.Table, names: List[Optional[str]], strict: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.rename_table_columns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rename_table_columns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.rename_table_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Renames columns in the Table with given values. Columns with
 name as <code class="docutils literal notranslate"><span class="pre">None</span></code> will use the previous value.</p>
 <dl class="field-list simple">
@@ -1461,7 +1461,7 @@ keys are discarded.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.table_head">
-<code class="sig-name descname">table_head</code><span class="sig-paren">(</span><em class="sig-param">table: RPA.Tables.Table</em>, <em class="sig-param">count: int = 5</em>, <em class="sig-param">as_list: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Tables.Table, List[List]]<a class="headerlink" href="#RPA.Tables.Tables.table_head" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">table_head</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.table_head" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first <code class="docutils literal notranslate"><span class="pre">count</span></code> rows from a table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1484,7 +1484,7 @@ keys are discarded.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.table_tail">
-<code class="sig-name descname">table_tail</code><span class="sig-paren">(</span><em class="sig-param">table: RPA.Tables.Table</em>, <em class="sig-param">count: int = 5</em>, <em class="sig-param">as_list: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[RPA.Tables.Table, List[List]]<a class="headerlink" href="#RPA.Tables.Tables.table_tail" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">table_tail</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.table_tail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return last <code class="docutils literal notranslate"><span class="pre">count</span></code> rows from a table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

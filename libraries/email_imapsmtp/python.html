@@ -710,7 +710,7 @@ content</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body">
-<code class="sig-name descname">get_decoded_email_body</code><span class="sig-paren">(</span><em class="sig-param">message</em>, <em class="sig-param">html_first: bool = False</em><span class="sig-paren">)</span> &#x2192; Tuple[str, bool]<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_decoded_email_body</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decodes email body and extracts its text/html content.</p>
 <p>Automatically detects character set if the header is not set.</p>
 <dl class="field-list simple">
@@ -919,7 +919,7 @@ source folder</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_attachment">
-<code class="sig-name descname">save_attachment</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, email.message.Message], target_folder: Optional[str], overwrite: bool, prefix: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_attachment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save mail attachment of a single given email on the local disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -954,7 +954,7 @@ default</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_attachments">
-<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: Optional[str] = None</em>, <em class="sig-param">overwrite: bool = False</em>, <em class="sig-param">prefix: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save mail attachments of emails matching criterion on the local disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1031,7 +1031,7 @@ exception if folder does not exist on the server.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str, recipients: Union[List[str], str], subject: str = '', body: str = '', attachments: Union[List[str], str, None] = None, html: bool = False, images: Union[List[str], str, None] = None, cc: Union[List[str], str, None] = None, bcc: Union[List[str], str, None] = None, attachment_position: Optional[RPA.Email.ImapSmtp.AttachmentPosition] = &lt;AttachmentPosition.TOP: 1&gt;</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send SMTP email</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

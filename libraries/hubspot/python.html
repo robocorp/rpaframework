@@ -236,7 +236,7 @@ for a Hubspot Batch Input process and then used to generate the
 final object to be passed to the Hubspot API client.</p>
 <dl class="method">
 <dt id="RPA.Hubspot.BatchInputFactory.add_input">
-<code class="sig-name descname">add_input</code><span class="sig-paren">(</span><em class="sig-param">properties: Dict[str, str], object_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.add_input" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.add_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add the provided dictionary of Hubspot properties as an input
 to this batch’s <code class="docutils literal notranslate"><span class="pre">inputs</span></code> property. If <code class="docutils literal notranslate"><span class="pre">object_id</span></code> is provided, the
 input will be considered an <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode input.</p>
@@ -255,7 +255,7 @@ than 100, which requires batches to be batch due to API restrictions).</p>
 
 <dl class="method">
 <dt id="RPA.Hubspot.BatchInputFactory.extend_inputs">
-<code class="sig-name descname">extend_inputs</code><span class="sig-paren">(</span><em class="sig-param">properties: List[Dict[str, str]], ids: List[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.extend_inputs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">extend_inputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.extend_inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extends this batch’s <code class="docutils literal notranslate"><span class="pre">inputs</span></code> based on the provided list of
 <code class="docutils literal notranslate"><span class="pre">properties</span></code> and <code class="docutils literal notranslate"><span class="pre">ids</span></code>. If <code class="docutils literal notranslate"><span class="pre">ids</span></code> is provided, it will be
 zipped with the provided <code class="docutils literal notranslate"><span class="pre">properties</span></code>. <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode is assumed
@@ -949,7 +949,7 @@ object. Read-only or nonexistent properties will be ignored.</p></li>
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.execute_batch">
-<code class="sig-name descname">execute_batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[hubspot.crm.objects.models.simple_public_object.SimplePublicObject]<a class="headerlink" href="#RPA.Hubspot.Hubspot.execute_batch" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execute_batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.execute_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends the current batch input to the Hubspot API.</p>
 <p>Keyword will only fail if all inputs resulted in error. Partial
 failures are reported as warnings.</p>
@@ -965,7 +965,7 @@ input API.</p>
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.extend_batch_with_inputs">
-<code class="sig-name descname">extend_batch_with_inputs</code><span class="sig-paren">(</span><em class="sig-param">properties: List[Dict[str, str]], ids: List[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.Hubspot.extend_batch_with_inputs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">extend_batch_with_inputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.extend_batch_with_inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extends the current batch input with the provided lists of
 Hubspot <code class="docutils literal notranslate"><span class="pre">properties</span></code> and Hubspot object <code class="docutils literal notranslate"><span class="pre">ids</span></code>. The <code class="docutils literal notranslate"><span class="pre">ids</span></code>
 parameter must be provided when extending an <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> batch.
@@ -1004,7 +1004,7 @@ input API.</p>
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.get_current_batch_inputs">
-<code class="sig-name descname">get_current_batch_inputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[Dict[str, Dict[str, str]]]<a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch_inputs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_current_batch_inputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch_inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the inputs in the current batch. The returned list will
 be a list of dictionaries each with either 1 or 2 keys depending
 on if the batch is in <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> or <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode. If in <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>
@@ -1022,7 +1022,7 @@ input API.</p>
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.get_current_stage_of_object">
-<code class="sig-name descname">get_current_stage_of_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">object_id: str</em>, <em class="sig-param">id_property: Optional[str] = None</em>, <em class="sig-param">label_as_key: bool = True</em>, <em class="sig-param">use_cache: bool = True</em><span class="sig-paren">)</span> &#x2192; Tuple[str, Dict]<a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_stage_of_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_current_stage_of_object</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_stage_of_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the current pipeline stage for the object as a tuple of
 the stage label and that stage’s associated metadata as a dictionary.
 If you want the label to be returned as the numerical API ID, set
@@ -1057,7 +1057,7 @@ current stage and index 1 is associated data.</p>
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.get_object">
-<code class="sig-name descname">get_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str, object_id: Union[str, List[str]], id_property: Optional[str] = None, properties: Union[List[str], str, None] = None, associations: Union[List[str], str, None] = None</em><span class="sig-paren">)</span> &#x2192; Union[hubspot.crm.objects.models.simple_public_object.SimplePublicObject, hubspot.crm.objects.models.simple_public_object_with_associations.SimplePublicObjectWithAssociations, List[hubspot.crm.objects.models.simple_public_object.SimplePublicObject]]<a class="headerlink" href="#RPA.Hubspot.Hubspot.get_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_object</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads objects of <code class="docutils literal notranslate"><span class="pre">object_type</span></code> from HubSpot with the
 provided <code class="docutils literal notranslate"><span class="pre">object_id</span></code>. The objects can be found using an
 alternate ID by providing the name of that HubSpot property
@@ -1194,7 +1194,7 @@ the system to recache the pipelines from Hubspot.</p></li>
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.get_pipeline_stages">
-<code class="sig-name descname">get_pipeline_stages</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">pipeline_id: str</em>, <em class="sig-param">label_as_key: bool = True</em>, <em class="sig-param">use_cache: bool = True</em><span class="sig-paren">)</span> &#x2192; Dict[str, Dict]<a class="headerlink" href="#RPA.Hubspot.Hubspot.get_pipeline_stages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_pipeline_stages</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_pipeline_stages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary representing the stages available in the
 requested pipeline. Only pipelines for <code class="docutils literal notranslate"><span class="pre">object_type</span></code> are searched
 using the <code class="docutils literal notranslate"><span class="pre">pipeline_id</span></code> as the label or Hubspot API identifier code.</p>
@@ -1268,7 +1268,7 @@ owners database.</p>
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.list_associations">
-<code class="sig-name descname">list_associations</code><span class="sig-paren">(</span><em class="sig-param">object_type: str, object_id: Union[str, List[str]], to_object_type: str</em><span class="sig-paren">)</span> &#x2192; Union[List[hubspot.crm.associations.models.associated_id.AssociatedId], Dict[str, List[hubspot.crm.associations.models.associated_id.AssociatedId]]]<a class="headerlink" href="#RPA.Hubspot.Hubspot.list_associations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_associations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.list_associations" title="Permalink to this definition">¶</a></dt>
 <dd><p>List associations of an object by type, you must define the <code class="docutils literal notranslate"><span class="pre">object_type</span></code>
 with its <code class="docutils literal notranslate"><span class="pre">object_id</span></code>. You must also provide the associated objects with
 <code class="docutils literal notranslate"><span class="pre">to_object_type</span></code>. The API will return a list of dictionaries with
@@ -1297,7 +1297,7 @@ The associated objects are returned as <code class="docutils literal notranslate
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.list_pipelines">
-<code class="sig-name descname">list_pipelines</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">archived: bool = False</em>, <em class="sig-param">use_cache: bool = True</em><span class="sig-paren">)</span> &#x2192; List[hubspot.crm.pipelines.models.pipeline.Pipeline]<a class="headerlink" href="#RPA.Hubspot.Hubspot.list_pipelines" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_pipelines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.list_pipelines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of all pipelines configured in Hubspot for the
 provided <code class="docutils literal notranslate"><span class="pre">object_type</span></code>. By default only active, unarchived pipelines
 are returned.</p>
@@ -1334,7 +1334,7 @@ associated with the provided <code class="docutils literal notranslate"><span cl
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.search_for_objects">
-<code class="sig-name descname">search_for_objects</code><span class="sig-paren">(</span><em class="sig-param">object_type: str, *natural_search, search: Optional[List[Dict]] = None, string_query: str = '', properties: Union[List[str], str, None] = None, max_results: int = 1000</em><span class="sig-paren">)</span> &#x2192; List[hubspot.crm.objects.models.simple_public_object.SimplePublicObject]<a class="headerlink" href="#RPA.Hubspot.Hubspot.search_for_objects" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search_for_objects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.search_for_objects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of objects of the specified <code class="docutils literal notranslate"><span class="pre">type</span></code> based on the
 provided <code class="docutils literal notranslate"><span class="pre">search</span></code> criteria. The following types are supported:</p>
 <ul class="simple">
@@ -1560,7 +1560,7 @@ the `Get current batch` keyword.</p>
 
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.update_object">
-<code class="sig-name descname">update_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str, object_id: Union[str, List[str]], id_property: Optional[str] = None, **properties</em><span class="sig-paren">)</span> &#x2192; hubspot.crm.objects.models.simple_public_object.SimplePublicObject<a class="headerlink" href="#RPA.Hubspot.Hubspot.update_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_object</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot.update_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a partial update of an Object identified by
 <code class="docutils literal notranslate"><span class="pre">object_type</span></code> and <code class="docutils literal notranslate"><span class="pre">object_id</span></code> with the provided properties
 in Hubspot. The objects can be found using an
@@ -1589,12 +1589,12 @@ object. Read-only or nonexistent properties will be ignored.</p></li>
 
 <dl class="class">
 <dt id="RPA.Hubspot.SearchLexer">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Hubspot.</code><code class="sig-name descname">SearchLexer</code><span class="sig-paren">(</span><em class="sig-param">search_terms: List[str] = None</em>, <em class="sig-param">logger: logging.Logger = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.SearchLexer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Hubspot.</code><code class="sig-name descname">SearchLexer</code><a class="headerlink" href="#RPA.Hubspot.SearchLexer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class for analyzing a natural search list for <code class="docutils literal notranslate"><span class="pre">RPA.Hubspot</span></code></p>
 <dl class="method">
 <dt id="RPA.Hubspot.SearchLexer.create_search_object">
-<code class="sig-name descname">create_search_object</code><span class="sig-paren">(</span><em class="sig-param">words: List[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.SearchLexer.create_search_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_search_object</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.SearchLexer.create_search_object" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

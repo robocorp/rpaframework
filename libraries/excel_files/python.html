@@ -343,7 +343,7 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.append_rows_to_worksheet">
-<code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">content: Any</em>, <em class="sig-param">name: Optional[str] = None</em>, <em class="sig-param">header: bool = False</em>, <em class="sig-param">start: Optional[int] = None</em>, <em class="sig-param">formatting_as_empty: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; List[dict]<a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append values to the end of the worksheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -676,7 +676,7 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.list_worksheets">
-<code class="sig-name descname">list_worksheets</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Excel.Files.Files.list_worksheets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_worksheets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.list_worksheets" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all names of worksheets in the given workbook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -742,7 +742,7 @@ read the sheet (True). Affects only <code class="docutils literal notranslate"><
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.read_worksheet">
-<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name: Optional[str] = None</em>, <em class="sig-param">header: Optional[bool] = False</em>, <em class="sig-param">start: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; List[dict]<a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the content of a worksheet into a list of dictionaries.</p>
 <p>Each key in the dictionary will be either values from the header row,
 or Excel-style column letters.</p>
@@ -1143,7 +1143,7 @@ for documentation.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.read_worksheet">
-<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span> &#x2192; List[dict]<a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.read_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.read_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1255,7 +1255,7 @@ for documentation.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.read_worksheet">
-<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span> &#x2192; List[dict]<a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.read_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.read_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1297,7 +1297,7 @@ for documentation.</p>
 
 <dl class="function">
 <dt id="RPA.Excel.Files.ensure_unique">
-<code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">ensure_unique</code><span class="sig-paren">(</span><em class="sig-param">values: Any</em><span class="sig-paren">)</span> &#x2192; List[Any]<a class="headerlink" href="#RPA.Excel.Files.ensure_unique" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">ensure_unique</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.ensure_unique" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ensures that each string value in the list is unique.
 Adds a suffix to each value that has duplicates,
 e.g. [Banana, Apple, Lemon, Apple] -&gt; [Banana, Apple, Lemon, Apple_2]</p>

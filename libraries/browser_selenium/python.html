@@ -343,7 +343,7 @@ and <cite>required</cite> is true.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.find_elements">
-<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">tag: Optional[str] = None</em>, <em class="sig-param">parent: selenium.webdriver.remote.webelement.WebElement = None</em><span class="sig-paren">)</span> &#x2192; List[selenium.webdriver.remote.webelement.WebElement]<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.find_elements" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.find_elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find all elements matching <cite>locator</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -366,7 +366,7 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_aliases">
-<code class="sig-name descname">get_browser_aliases</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_aliases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_browser_aliases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_aliases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns aliases of all active browser that has an alias as NormalizedDict.
 The dictionary contains the aliases as keys and the index as value.
 This can be accessed as dictionary <code class="docutils literal notranslate"><span class="pre">${aliases.key}</span></code> or as list <code class="docutils literal notranslate"><span class="pre">&#64;{aliases}[0]</span></code>.</p>
@@ -384,7 +384,7 @@ This can be accessed as dictionary <code class="docutils literal notranslate"><s
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_ids">
-<code class="sig-name descname">get_browser_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_ids" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_browser_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns index of all active browser as list.</p>
 <p>Example:
 | &#64;{browser_ids}= | Get Browser Ids   |                   |                |
@@ -535,7 +535,7 @@ and <code class="docutils literal notranslate"><span class="pre">NONE</span></co
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.open_browser">
-<code class="sig-name descname">open_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None, browser: str = 'firefox', alias: Optional[str] = None, remote_url: Union[bool, str] = False, desired_capabilities: Union[dict, None, str] = None, ff_profile_dir: Union[selenium.webdriver.firefox.firefox_profile.FirefoxProfile, str, None] = None, options: Union[selenium.webdriver.common.options.ArgOptions, str, Dict[str, Union[str, List, Dict]], None] = None, service_log_path: Optional[str] = None, executable_path: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.open_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_browser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.open_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens a new browser instance to the optional <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">browser</span></code> argument specifies which browser to use. The
 supported browsers are listed in the table below. The browser names
@@ -1597,7 +1597,7 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.find_elements">
-<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">parent: selenium.webdriver.remote.webelement.WebElement = None</em><span class="sig-paren">)</span> &#x2192; List[selenium.webdriver.remote.webelement.WebElement]<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_elements" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find all elements matching <cite>locator</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1920,13 +1920,13 @@ Fail if element does not exist</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.normalize_options">
-<code class="sig-name descname">normalize_options</code><span class="sig-paren">(</span><em class="sig-param">options: Union[selenium.webdriver.common.options.ArgOptions, str, Dict[str, Union[str, List, Dict]], None], *, browser: str</em><span class="sig-paren">)</span> &#x2192; selenium.webdriver.common.options.ArgOptions<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.normalize_options" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">normalize_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.normalize_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize <cite>options</cite> to <cite>&lt;Browser&gt;Options</cite> instance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None, use_profile: bool = False, headless: Any = 'AUTO', maximized: bool = False, browser_selection: Any = 'AUTO', alias: Optional[str] = None, profile_name: Optional[str] = None, profile_path: Optional[str] = None, preferences: Optional[dict] = None, proxy: str = None, user_agent: Optional[str] = None, download: Any = 'AUTO', options: Union[selenium.webdriver.common.options.ArgOptions, str, Dict[str, Union[str, List, Dict]], None] = None, port: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; Union[str, int]<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to open a browser on the user’s device from a set of
 supported browsers. Automatically downloads a corresponding webdriver
 if none is already installed.</p>

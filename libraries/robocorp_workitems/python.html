@@ -238,7 +238,7 @@
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.BaseAdapter.create_output">
-<em class="property">abstract </em><code class="sig-name descname">create_output</code><span class="sig-paren">(</span><em class="sig-param">parent_id: str, payload: Union[Dict[str, Any], List[Any], str, int, float, bool, None] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.create_output" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">create_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.create_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new output for work item, and return created ID.</p>
 </dd></dl>
 
@@ -250,13 +250,13 @@
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.BaseAdapter.list_files">
-<em class="property">abstract </em><code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.list_files" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">list_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List attached files in work item.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.BaseAdapter.load_payload">
-<em class="property">abstract </em><code class="sig-name descname">load_payload</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.load_payload" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">load_payload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.load_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load JSON payload from work item.</p>
 </dd></dl>
 
@@ -280,7 +280,7 @@
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.BaseAdapter.save_payload">
-<em class="property">abstract </em><code class="sig-name descname">save_payload</code><span class="sig-paren">(</span><em class="sig-param">item_id: str, payload: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.save_payload" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">save_payload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.save_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save JSON payload to work item.</p>
 </dd></dl>
 
@@ -346,7 +346,7 @@ folder as the given input database.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.create_output">
-<code class="sig-name descname">create_output</code><span class="sig-paren">(</span><em class="sig-param">_: str, payload: Union[Dict[str, Any], List[Any], str, int, float, bool, None] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.create_output" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.create_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new output for work item, and return created ID.</p>
 </dd></dl>
 
@@ -363,7 +363,7 @@ folder as the given input database.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.list_files">
-<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.list_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List attached files in work item.</p>
 </dd></dl>
 
@@ -374,7 +374,7 @@ folder as the given input database.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.load_payload">
-<code class="sig-name descname">load_payload</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.load_payload" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_payload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.load_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load JSON payload from work item.</p>
 </dd></dl>
 
@@ -403,7 +403,7 @@ folder as the given input database.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.save_payload">
-<code class="sig-name descname">save_payload</code><span class="sig-paren">(</span><em class="sig-param">item_id: str, payload: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.save_payload" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_payload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.save_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save JSON payload to work item.</p>
 </dd></dl>
 
@@ -434,7 +434,7 @@ folder as the given input database.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.create_output">
-<code class="sig-name descname">create_output</code><span class="sig-paren">(</span><em class="sig-param">parent_id: str, payload: Union[Dict[str, Any], List[Any], str, int, float, bool, None] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.create_output" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.create_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new output for work item, and return created ID.</p>
 </dd></dl>
 
@@ -451,13 +451,13 @@ folder as the given input database.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.list_files">
-<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.list_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List attached files in work item.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.load_payload">
-<code class="sig-name descname">load_payload</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.load_payload" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_payload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.load_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load JSON payload from work item.</p>
 </dd></dl>
 
@@ -481,7 +481,7 @@ folder as the given input database.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.save_payload">
-<code class="sig-name descname">save_payload</code><span class="sig-paren">(</span><em class="sig-param">item_id: str, payload: Union[Dict[str, Any], List[Any], str, int, float, bool, None]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.save_payload" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_payload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.save_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save JSON payload to work item.</p>
 </dd></dl>
 
@@ -615,7 +615,7 @@ until <code class="docutils literal notranslate"><span class="pre">save()</span>
 
 <dl class="class">
 <dt id="RPA.Robocorp.WorkItems.WorkItems">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">WorkItems</code><span class="sig-paren">(</span><em class="sig-param">autoload: bool = True, root: Optional[str] = None, default_adapter: Union[Type[RPA.Robocorp.WorkItems.BaseAdapter], str] = &lt;class 'RPA.Robocorp.WorkItems.RobocorpAdapter'&gt;, auto_parse_email: Optional[Dict[Union[str, Tuple[str, ...]], Union[str, Tuple[str, ...]]]] = {('email.text', '__mail.html'): ('email.body', 'parsedEmail.Body'), 'rawEmail': 'parsedEmail'}</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">WorkItems</code><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A library for interacting with Control Room work items.</p>
 <p>Work items are used for managing data that go through multiple
@@ -859,7 +859,7 @@ of local file is used.</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.create_output_work_item">
-<code class="sig-name descname">create_output_work_item</code><span class="sig-paren">(</span><em class="sig-param">variables: Optional[dict] = None, files: Union[str, List[str], None] = None, save: bool = False</em><span class="sig-paren">)</span> &#x2192; RPA.Robocorp.WorkItems.WorkItem<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.create_output_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_output_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.create_output_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new output work item with optional variables and files.</p>
 <p>An output work item is always created as a child for an input item, therefore
 a non-released input is required to be loaded first.
@@ -943,7 +943,7 @@ output work item.</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item">
-<code class="sig-name descname">for_each_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">keyword_or_func: Union[str, Callable], *args, items_limit: int = 0, return_results: bool = True, **kwargs</em><span class="sig-paren">)</span> &#x2192; List[Any]<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">for_each_input_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a keyword or function for each work item in the input queue.</p>
 <p>Automatically collects and returns a list of results, switch
 <code class="docutils literal notranslate"><span class="pre">return_results</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> for avoiding this.</p>
@@ -1054,7 +1054,7 @@ working directory is used.</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_files">
-<code class="sig-name descname">get_work_item_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">dirname=None</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_work_item_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get files attached to work item that match given pattern.
 Returns a list of absolute paths to the downloaded files.</p>
 <dl class="field-list simple">
