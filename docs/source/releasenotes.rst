@@ -9,13 +9,20 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17.1.0 - 28 Sep 2022
+--------------------
+
+- Library **RPA.Email.Exchange** (:issue:`641`): Add support for OAuth2 auto token
+  refresh in Vault with `vault_name` and `vault_token_key` parameters during library
+  import.
+
 17.0.1 - 21 Sep 2022
 --------------------
 
 - Library **RPA.Cloud.AWS** (:pr:`637`)
 
   - All references to `Robocloud.Vault` changed to `Robocorp.Vault` (parameters and documentation).
-    This is **breaking** for this library, which leads to **major** version bump also for ``rpaframework``, 
+    This is **breaking** for this library, which leads to **major** version bump also for ``rpaframework``,
     because this library can be also installed with ``rpaframework[aws]`` instead of ``rpaframework-aws``.
   - Add possibility to pass extra parameters for some S3 keywords, for example. metadata and content type.
   - Released in ``rpaframework-aws`` **5.0.0**
@@ -23,8 +30,8 @@ Release notes
 - Library **RPA.Excel.Files** (:pr:`638`): Add support for opening .xlsx files in ``read_only`` mode
 - New library **RPA.Base64AI** (:pr:`639`): Supports `Base64 AI <https://base64.ai/>`_  IDP service
 - New library **RPA.Nanonets** (:pr:`639`): Supports `Nanonets <https://nanonets.com/>`_  IDP service
-- Library **RPA.Cloud.Google** (:pr:`619`): 
-  
+- Library **RPA.Cloud.Google** (:pr:`619`):
+
   - Add support for `Document AI <https://cloud.google.com/document-ai/>`_  IDP service
   - Released in ``rpaframework-google`` **6.1.1**
 

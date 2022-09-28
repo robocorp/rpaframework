@@ -30,6 +30,7 @@ from exchangelib.folders import Inbox
 from oauthlib.oauth2 import OAuth2Token
 
 from RPA.Email.common import counter_duplicate_path
+from RPA.Robocorp.Vault import Vault
 
 
 EMAIL_CRITERIA_KEYS = {
@@ -46,6 +47,8 @@ EMAIL_CRITERIA_KEYS = {
     "category_contains": "categories__contains",
     "importance": "importance",
 }
+
+lib_vault = Vault()
 
 
 def mailbox_to_email_address(mailbox):
@@ -67,9 +70,12 @@ class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
 
     def __init__(self, *args, on_token_refresh: Callable, **kwargs):
         super().__init__(*args, **kwargs)
+        # Additional behaviour to trigger during token refresh (when it expires), like
+        #  saving the newly generated structure in the Vault.
         self._on_token_refresh = on_token_refresh
 
     def on_token_auto_refreshed(self, access_token: OAuth2Token):
+        super().on_token_auto_refreshed(access_token)
         self._on_token_refresh(access_token)
 
 
@@ -150,6 +156,24 @@ class Exchange:
             body="RPA Python message body",
         )
 
+    **OAuth2**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library     RPA.Email.Exchange
+        ...     vault_name=email_oauth_microsoft    vault_token_key=token
+
+        Task Setup      Authorize   username=${ACCOUNT}
+        ...    autodiscover=${False}    server=outlook.office365.com
+        ...    is_oauth=${True}  # use the OAuth2 auth code flow
+        # With secrets retrieved from the Vault by using ``Get Secret`` and set
+        #  globally into `${SECRETS}`.
+        ...    client_id=${SECRETS}[client_id]  # app ID
+        ...    client_secret=${SECRETS}[client_secret]  # app password
+        # The entire token structure auto refreshes when it expires.
+        ...    token=${SECRETS}[token]  # token dict (access, refresh, scopes etc.)
+
     **About criterion parameter**
 
     Following table shows possible criterion keys that can be used to filter emails.
@@ -207,20 +231,38 @@ class Exchange:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self) -> None:
+    def __init__(
+        self, vault_name: Optional[str] = None, vault_token_key: Optional[str] = None
+    ) -> None:
         self.logger = logging.getLogger(__name__)
         self.credentials = None
         self.config = None
         self.account = None
         self._saved_attachments = []
 
+        self._vault_name = vault_name
+        self._vault_token_key = vault_token_key
+
     def on_token_refresh(self, token: OAuth2Token):
         """Callable you can override in order to save the newly obtained token in a
         safe place.
         """
-        self.logger.info(
-            "OAuth2 token was refreshed. (new expiry: %d)", token["expires_at"]
-        )
+        if self._vault_name and self._vault_token_key:
+            secret = lib_vault.get_secret(self._vault_name)
+            secret[self._vault_token_key] = dict(token)
+            lib_vault.set_secret(secret)
+            self.logger.info(
+                "OAuth2 token was refreshed in Vault %r as %r. (new expiry: %d)",
+                self._vault_name,
+                self._vault_token_key,
+                token["expires_at"],
+            )
+        else:
+            self.logger.warning(
+                "OAuth2 token was refreshed but didn't get saved in Vault as well."
+                " (import the library with `vault_name` and `vault_token_key` set in"
+                " order to avoid this)"
+            )
 
     def authorize(
         self,
