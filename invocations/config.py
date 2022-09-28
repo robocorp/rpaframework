@@ -210,7 +210,8 @@ def setup_poetry(
         raise ParseError("You must specify a username-password combination or token.")
     repository = "pypi" if devpi_url is None else "devpi"
 
-    #if not safely_load_config(ctx, "ctx.is_ci_cd", False):
+    # if not safely_load_config(ctx, "ctx.is_ci_cd", False):
+    # TODO. the config --no-interaction --local virtualenvs.in-project true is needed by the Docs run
     shell.poetry(ctx, "config --no-interaction --local virtualenvs.in-project true")
     shell.poetry(ctx, "config --no-interaction --local virtualenvs.create true")
     shell.poetry(ctx, "config --no-interaction --local virtualenvs.path null")
