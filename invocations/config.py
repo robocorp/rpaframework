@@ -533,7 +533,8 @@ def install_node(ctx):
     works when the extra "playwright" is defined in the project's
     ``pyproject.toml``.
     """
-    shell.invoke(ctx, 'install --extra "playwright"', echo=False)
+    if not safely_load_config(ctx, "is_meta", False):
+        shell.invoke(ctx, 'install --extra "playwright"', echo=False)
     shell.run_in_venv(ctx, "rfbrowser", "init --skip-browsers")
 
 
