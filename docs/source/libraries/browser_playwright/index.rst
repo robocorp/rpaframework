@@ -17,7 +17,7 @@ The Playwright based browser library uses bundled browser executables as part of
 browser version conflicts and to enable browser patches to maximize automation possibilities. In practice
 this means that some extra steps are required to install it for use in a project.
 
-conda.yaml (RCC, VSCode and Robocorp Lab (deprecated))
+conda.yaml
 ------------------------------------------------------
 Ensure you're using python 3.7 or newer.
 
@@ -31,12 +31,12 @@ Example ``conda.yaml``:
     - conda-forge
 
   dependencies:
-    - python=3.7.5
-    - pip=20.1
-    - nodejs=14.15.4
+    - python=3.9.13
+    - pip=22.1.2
+    - nodejs=16.14.2
     - pip:
-      - robotframework-browser==11.1.0
-      - rpaframework==10.2.0
+      - robotframework-browser==14.1.0
+      - rpaframework==17.0.1
   rccPostInstall:
     - rfbrowser init
 
