@@ -9,7 +9,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-17.1.0 - 27 Sep 2022
+17.1.0 - 28 Sep 2022
 --------------------
 
 - Library **RPA.Email.Exchange** (:issue:`641`): Add support for OAuth2 auto token
