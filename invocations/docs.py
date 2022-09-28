@@ -80,6 +80,7 @@ def build_docs(ctx):
     Expects an invoke configuration item at ``docs.source`` and
     ``docs.target``, if they are missing, they are set to default.
     """
+    shell.poetry(ctx, "run rfbrowser init --skip-browsers")
     if getattr(ctx, "is_meta", False):
         docs_source = Path(safely_load_config(ctx, "ctx.docs.source", DOCS_SOURCE_DIR))
         docs_target = Path(safely_load_config(ctx, "ctx.docs.target", DOCS_BUILD_DIR))
