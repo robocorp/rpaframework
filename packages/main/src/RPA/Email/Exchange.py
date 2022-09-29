@@ -301,7 +301,11 @@ class Exchange:
         """
         kwargs = {}
         kwargs["autodiscover"] = autodiscover
-        access_type = access_type if isinstance(access_type, AccessType) else AccessType(access_type.lower())
+        access_type = (
+            access_type
+            if isinstance(access_type, AccessType)
+            else AccessType(access_type.lower())
+        )
         kwargs["access_type"] = access_type.value
         kwargs["primary_smtp_address"] = (
             primary_smtp_address if primary_smtp_address else username
