@@ -4,6 +4,7 @@ import logging
 import re
 import time
 from email import policy  # pylint: disable=no-name-in-module
+from enum import Enum
 from multiprocessing import AuthenticationError
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -58,6 +59,13 @@ def mailbox_to_email_address(mailbox):
         if hasattr(mailbox, "email_address")
         else "",
     }
+
+
+class AccessType(Enum):
+    """Authorization access type."""
+
+    DELEGATE = DELEGATE
+    IMPERSONATION = IMPERSONATION
 
 
 class NoRecipientsError(ValueError):
@@ -268,8 +276,8 @@ class Exchange:
         self,
         username: str,
         password: Optional[str] = None,
-        autodiscover: Optional[bool] = True,
-        access_type: Optional[str] = "DELEGATE",
+        autodiscover: bool = True,
+        access_type: Union[AccessType, str] = AccessType.DELEGATE,
         server: Optional[str] = None,
         primary_smtp_address: Optional[str] = None,
         is_oauth: bool = False,
@@ -293,9 +301,12 @@ class Exchange:
         """
         kwargs = {}
         kwargs["autodiscover"] = autodiscover
-        kwargs["access_type"] = (
-            DELEGATE if access_type.upper() == "DELEGATE" else IMPERSONATION
+        access_type = (
+            access_type
+            if isinstance(access_type, AccessType)
+            else AccessType(access_type.lower())
         )
+        kwargs["access_type"] = access_type.value
         kwargs["primary_smtp_address"] = (
             primary_smtp_address if primary_smtp_address else username
         )

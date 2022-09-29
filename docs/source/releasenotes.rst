@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17.1.1 - 29 Sep 2022
+--------------------
+
+- Library **RPA.Email.Exchange** (:pr:`643`): Fix `access_type` parameter usage in
+  keyword ``Authorize`` with "delegate" & "impersonation" accepted values.
+
 17.1.0 - 28 Sep 2022
 --------------------
 
