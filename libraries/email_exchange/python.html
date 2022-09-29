@@ -228,6 +228,23 @@
 <div class="section" id="module-RPA.Email.Exchange">
 <span id="exchange"></span><h2>Exchange<a class="headerlink" href="#module-RPA.Email.Exchange" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="RPA.Email.Exchange.AccessType">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">AccessType</code><a class="headerlink" href="#RPA.Email.Exchange.AccessType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Authorization access type.</p>
+<dl class="attribute">
+<dt id="RPA.Email.Exchange.AccessType.DELEGATE">
+<code class="sig-name descname">DELEGATE</code><em class="property"> = 'delegate'</em><a class="headerlink" href="#RPA.Email.Exchange.AccessType.DELEGATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.Exchange.AccessType.IMPERSONATION">
+<code class="sig-name descname">IMPERSONATION</code><em class="property"> = 'impersonation'</em><a class="headerlink" href="#RPA.Email.Exchange.AccessType.IMPERSONATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="RPA.Email.Exchange.Exchange">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">Exchange</code><span class="sig-paren">(</span><em class="sig-param">vault_name: Optional[str] = None</em>, <em class="sig-param">vault_token_key: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -402,7 +419,7 @@ only against <cite>new</cite> not <cite>new year</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: Optional[str] = None</em>, <em class="sig-param">autodiscover: Optional[bool] = True</em>, <em class="sig-param">access_type: Optional[str] = 'DELEGATE'</em>, <em class="sig-param">server: Optional[str] = None</em>, <em class="sig-param">primary_smtp_address: Optional[str] = None</em>, <em class="sig-param">is_oauth: bool = False</em>, <em class="sig-param">client_id: Optional[str] = None</em>, <em class="sig-param">client_secret: Optional[str] = None</em>, <em class="sig-param">token: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.Exchange.Exchange.authorize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: Optional[str] = None</em>, <em class="sig-param">autodiscover: bool = True</em>, <em class="sig-param">access_type: Union[RPA.Email.Exchange.AccessType</em>, <em class="sig-param">str] = &lt;AccessType.DELEGATE: 'delegate'&gt;</em>, <em class="sig-param">server: Optional[str] = None</em>, <em class="sig-param">primary_smtp_address: Optional[str] = None</em>, <em class="sig-param">is_oauth: bool = False</em>, <em class="sig-param">client_id: Optional[str] = None</em>, <em class="sig-param">client_secret: Optional[str] = None</em>, <em class="sig-param">token: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.Exchange.Exchange.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to Exchange account</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
