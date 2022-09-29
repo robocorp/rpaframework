@@ -129,4 +129,4 @@ jobs:
       if: success()
       run: |
         invoke install.setup-poetry --devpi-url ${{ secrets.devpiUrl }} --username ci --password ${{ secrets.devpiPassword }}
-        invoke build.publish --ci --no-clean --no-test
+        invoke build.publish --ci --version=prerelease --yes-to-all
