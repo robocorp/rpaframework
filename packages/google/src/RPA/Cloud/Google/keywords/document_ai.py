@@ -51,7 +51,7 @@ class DocumentAIKeywords(LibraryContext):
             # Init using Service Account from a file
             Init Document AI   ${CURDIR}${/}service_account.json  region=eu
             # Init using OAuth token from a file and default "us" region
-            Init Document AI   ${CURDIR}${/}token.json
+            Init Document AI   token_file=${CURDIR}${/}token.json
             # Init using service account file from the Robocorp Vault
             Set Robocorp Vault
             ...         vault_name=DocumentAI
@@ -226,14 +226,12 @@ class DocumentAIKeywords(LibraryContext):
             try:
                 document = pickle.load(response_file)
             except pickle.UnpicklingError as err:
-                raise ValueError from err(
-                    "The file '%s' is not 'documentai.Document' type" % filepath
-                )
+                raise ValueError(
+                    f"The file {filepath} is not of 'documentai.Document' type"
+                ) from err
 
         if not isinstance(document, documentai.Document):
-            raise ValueError(
-                "The file '%s' is not 'documentai.Document' type" % filepath
-            )
+            raise ValueError(f"The file {filepath} is not 'documentai.Document' type")
         return document
 
     @keyword(tags=["document ai", "get"])
