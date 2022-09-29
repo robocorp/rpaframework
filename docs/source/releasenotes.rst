@@ -12,7 +12,7 @@ Release notes
 17.1.1 - 29 Sep 2022
 --------------------
 
-- Library **RPA.Email.Exchange** (:pr:`xx`): Fix `access_type` parameter usage in
+- Library **RPA.Email.Exchange** (:pr:`643`): Fix `access_type` parameter usage in
   keyword ``Authorize`` with "delegate" & "impersonation" accepted values.
 
 17.1.0 - 28 Sep 2022
