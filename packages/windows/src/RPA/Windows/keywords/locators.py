@@ -89,7 +89,7 @@ class LocatorKeywords(LocatorMethods):
         """
         elements = []
         initial_element = element = self.get_element(
-            locator, search_depth, root_element
+            locator, search_depth, root_element, timeout=timeout
         )
         elements.append(initial_element)
         while True:
