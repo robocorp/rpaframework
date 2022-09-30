@@ -457,6 +457,39 @@ class ServiceS3(AWSBase):
 
         return download_count
 
+    @aws_dependency_required
+    def generate_presigned_url(
+        self,
+        bucket_name: str,
+        object_name: str,
+        expires_in: Optional[int] = None,
+        **extra_params,
+    ) -> tuple:
+        """Generate presigned URL for the file.
+
+        :param bucket_name: name for the bucket
+        :param object_name: name of the file in the bucket
+        :param expires_in: optional expiration time for the url (in seconds).
+         The default expiration time is 3600 seconds (one hour).
+        :param **extra_params: allows setting any extra `Params`
+        :return: URL for accessing the file
+        """
+        client = self._get_client_for_service("s3")
+        response = None
+        try:
+            request_params = {
+                "Params": {"Bucket": bucket_name, "Key": object_name, **extra_params}
+            }
+            if expires_in:
+                request_params["ExpiresIn"] = int(expires_in)
+            response = client.generate_presigned_url(
+                "get_object",
+                **request_params,
+            )
+        except ClientError as e:
+            self.logger.error("Client request error: %s", str(e))
+        return response
+
 
 class ServiceTextract(AWSBase):
     """Class for AWS Textract service"""
