@@ -5,6 +5,14 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+30 Sep 2022
+-----------
+
+- Library `RPA.Windows` (:pr:`647`): 
+
+  - Add new keywords ``Drag and Drop`` and ``Set Focus``
+  - Released in ``rpaframework-windows`` **6.1.0**
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -25,7 +33,7 @@ Release notes
 17.0.1 - 21 Sep 2022
 --------------------
 
-- Library **RPA.Cloud.AWS** (:pr:`637`)
+- Library **RPA.Cloud.AWS** (:pr:`637`):
 
   - All references to `Robocloud.Vault` changed to `Robocorp.Vault` (parameters and documentation).
     This is **breaking** for this library, which leads to **major** version bump also for ``rpaframework``,
