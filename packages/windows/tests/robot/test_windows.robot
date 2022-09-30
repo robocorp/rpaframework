@@ -1,29 +1,26 @@
 *** Settings ***
-Library         Process
-Library         RPA.Windows
-Library         String
-
-Task Setup      Set Wait Time    0.7
-
+Library           Process
+Library           RPA.Windows
+Library           String
+Task Setup        Set Wait Time    0.7
 
 *** Variables ***
 # Not used as vars, but make sure you have these in PATH.
-${EXE_UIDEMO}               uidemo.exe
-${EXE_CALCULATOR}           calc.exe
-${EXE_NOTEPAD}              notepad.exe
-${EXE_SPOTIFY}              Spotify.exe
-${EXE_SAGE50}               sage.exe
-
-${SPOTIFY_PLAYCONTROL}      name:"Player controls" > control:ButtonControl and name:
-${SPOTIFY_PLAY}             ${SPOTIFY_PLAYCONTROL}Play
-${SPOTIFY_PAUSE}            ${SPOTIFY_PLAYCONTROL}Pause
-${SPOTIFY_NEXT}             ${SPOTIFY_PLAYCONTROL}Next
-${SPOTIFY_Prev}             ${SPOTIFY_PLAYCONTROL}Prev
-${TIMEOUT}                  1
-
+${EXE_UIDEMO}     uidemo.exe
+${EXE_CALCULATOR}    calc.exe
+${EXE_NOTEPAD}    notepad.exe
+${EXE_SPOTIFY}    Spotify.exe
+${EXE_SAGE50}     sage.exe
+${SPOTIFY_PLAYCONTROL}    name:"Player controls" > control:ButtonControl and name:
+${SPOTIFY_PLAY}    ${SPOTIFY_PLAYCONTROL}Play
+${SPOTIFY_PAUSE}    ${SPOTIFY_PLAYCONTROL}Pause
+${SPOTIFY_NEXT}    ${SPOTIFY_PLAYCONTROL}Next
+${SPOTIFY_Prev}    ${SPOTIFY_PLAYCONTROL}Prev
+${TIMEOUT}        1
 
 *** Test Cases ***
 Windows search Calculator by clicking buttons
+    [Tags]    skip    manual
     Windows Search    Calculator    wait_time=1
     Calculator button actions
     [Teardown]    Close Current Window And Sleep
@@ -33,6 +30,7 @@ Calculator by clicking buttons already running
     Calculator button actions
 
 Windows run Do some calculations
+    [Tags]    skip    manual
     Windows Run    calc.exe    wait_time=1
     Calculator with keys
     [Teardown]    Close Current Window And Sleep
@@ -43,11 +41,10 @@ Windows run Do some calculations already running
 
 Play Task Calculator
     [Documentation]    Checks if 34+6=40
-
+    [Tags]    skip    manual
     Windows Search    Calculator    wait_time=1
     Control Window    Calculator
     Click    id:clearButton
-
     ${button_locator} =    Set Variable
     ...    type:Group and name:"Number pad" > type:Button
     # It is optional to use "and" in the locator syntax. (only "and"s are assumed)
@@ -66,13 +63,12 @@ Play Task Calculator
     # "control" maps to same thing as "type" -> "ControlType".
     Click    control:Group and name:"Number pad" > control:Button index:7    # 6
     Click    id:equalButton    # "="
-
     ${result} =    Get Attribute    id:CalculatorResults    Name
     Should Be Equal    ${result}    Display is 40
-
     [Teardown]    Close Current Window
 
 Play Task Temperature
+    [Tags]    skip    manual
     Windows Search    Calculator    wait_time=1
     Control Window    Calculator
     # Go to Temperature Converter view.
@@ -84,7 +80,6 @@ Play Task Temperature
         ${temp} =    Set Variable    name:"Temperature Converter"
     END
     Click    ${temp}
-
     Log To Console    \nGet temperatures
     Select Temperature Unit    Kelvin    225
     Get Temperature Values    Fahrenheit
@@ -92,7 +87,6 @@ Play Task Temperature
     Get Temperature Values    Kelvin
     Select Temperature Unit    Celsius    225
     Get Temperature Values    Kelvin,Fahrenheit
-
     # Go back to Standard Calculator view.
     Click    id:TogglePaneButton
     Send Keys    keys={PAGEUP}    wait_time=0.1    # to see the Standard view
@@ -101,18 +95,15 @@ Play Task Temperature
         ${std} =    Set Variable    name:"Standard Calculator"
     END
     Click    ${std}
-
     [Teardown]    Close Current Window
 
 Play Task UIDemo
-    [Tags]    skip
-
+    [Tags]    skip    manual
     Windows Run    UIDemo.exe
     Control Window    UiDemo
     Send Keys    id:user    admin
     Send Keys    id:pass    password
     Click    class:Button
-
     Control Window    UIDemo
     Set Anchor    id:DataGrid    10.0
     ${headers} =    Get Elements    type:HeaderItem
@@ -128,7 +119,6 @@ Play Task UIDemo
     Screenshot    ${element}    ${OUTPUT_DIR}${/}element${element.name}.png
     ${name} =    Get Attribute    ${element}    Name
     Log To Console    Attribute: ${name}
-
     # Clears set anchor above so the clicks would work on the current active window.
     Clear Anchor
     Control Window    UIDemo    # Handle: 5901414
@@ -140,7 +130,6 @@ Play Task UIDemo
 
 Resize window with Spotify
     [Tags]    skip    manual
-
     Windows Run    Spotify.exe
     ${window} =    Control Window    executable:Spotify.exe
     Log To Console    Spotify window: ${window}
@@ -155,13 +144,12 @@ Resize window with Spotify
     Sleep    2s
     Foreground Window
     Restore Window
-
     [Teardown]    Close Current Window
 
 Notepad write text into a file
+    [Tags]    skip    manual
     Windows Run    notepad
     Control Window    subname:"- Notepad"
-
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
         Click    Edit    wait_time=0.5
@@ -180,11 +168,9 @@ Notepad write text into a file
         Select    type:ComboBox id:1138    28
         Click    type:Button name:OK
     END
-
     Control Window    subname:"- Notepad"
     Send Keys    keys={Ctrl}a{Del}
     Send Keys    keys=Lets add some text to the notepad
-
     Control Window    subname:"- Notepad"
     IF    "${ver}" == "11"
         Click    File    wait_time=0.3
@@ -203,6 +189,7 @@ Notepad write text into a file
     [Teardown]    Close Current Window
 
 Control Window by handle
+    [Tags]    skip    manual
     Log To Console    \nList Windows
     ${win} =    List Windows
     FOR    ${w}    IN    @{win}
@@ -214,7 +201,6 @@ Control Window by handle
 Calculator result from recording
     [Tags]    skip    manual
     Windows Run    Calc
-
     Control Window    Calculator    # Handle: 4066848
     Click    name:"Seven"
     Click    name:"Eight"
@@ -224,14 +210,12 @@ Calculator result from recording
     Click    name:"Two"
     Click    name:"Three"
     Click    name:"Equals"
-
     [Teardown]    Close Current Window
 
 Write to Notepad in the background
-    [Tags]    skip
+    [Tags]    skip    manual
     Windows Run    Notepad
     Windows Run    Calc
-
     Clear Anchor
     Control Window    subname:"- Notepad"    foreground=${False}
     # All the following keyword calls will use the set anchor element as root locator,
@@ -242,7 +226,6 @@ Write to Notepad in the background
         ${text_edit} =    Set Variable    name:"RichEdit Control"
     END
     Set Anchor    ${text_edit}
-
     # Write in Notepad while having Calculator as active window.
     Control Window    Calculator
     # Clear Notepad edit window by writing initial text, then append rest of the text.
@@ -252,13 +235,11 @@ Write to Notepad in the background
     Set Value    value=this will appear on the 2nd line    append=True
     Set Value    value=${EMPTY}    append=True    enter=True
     Close Current Window    # this closes Calculator first (as active window)
-
     [Teardown]    Close Window    subname:Notepad    # finally Notepad is closed too
 
 Test getting elements
-    [Tags]    skip
+    [Tags]    skip    manual
     Clear Anchor
-
     ${ver} =    Get OS Version
     ${desktop} =    Get Element
     IF    "${ver}" == "11"
@@ -273,28 +254,25 @@ Test getting elements
     END
 
 Control window after closing linked root element
+    [Tags]    skip    manual
     [Setup]    Keep open a single Notepad
     ${window} =    Control Window    subname:Notepad control:WindowControl
     Log    Controlling Notepad window: ${window}
-
     Kill app by name    Notepad
-
     Windows Run    Calc
     # Tests against `COMError` fixes.
     ${window} =    Control Window    subname:Calc    main=${False}
     Log    Controlling Calculator window: ${window}
-
     [Teardown]    Close Current Window    # closes Calculator (last active window)
 
 Tree printing and controlled anchor cleanup
+    [Tags]    skip    manual
     Print Tree    #capture_image_folder=output${/}controls
-
     Windows Run    Calc
     ${win} =    Control Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
     Set Anchor    ${win}
     ${elem} =    Get Element    # pulls the anchor
     Should Be Equal    ${elem.name}    Calculator
-
     Close Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
     # With the controlled Calculator closed and active window/anchor cleaned up, we
     #    should get the Desktop element only.
@@ -302,8 +280,8 @@ Tree printing and controlled anchor cleanup
     Should Be Equal    ${elem.name}    Desktop 1
 
 Click Buttons With Offset
+    [Tags]    skip    manual
     [Documentation]    Clicks all the numeric buttons in Calculator
-
     Windows Run    Calc
     Control Window    subname:Calc
     @{buttons} =    Get Elements    id:NumberPad > class:Button
@@ -313,7 +291,6 @@ Click Buttons With Offset
             Click    ${button}    wait_time=0.2
         END
     END
-
 
 *** Keywords ***
 Calculator Teardown
@@ -374,11 +351,9 @@ Keep open a single Notepad
 
 Kill app by name
     [Arguments]    ${app_name}
-
     ${window_list} =    List Windows
     FOR    ${win}    IN    @{window_list}
         ${exists} =    Evaluate    re.match(".*${app_name}.*", """${win}[title]""")
-
         IF    ${exists}
             ${command} =    Set Variable    os.kill($win["pid"], signal.SIGTERM)
             Log    Killing app: ${win}[title] (PID: $win["pid"])
