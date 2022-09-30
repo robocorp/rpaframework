@@ -208,7 +208,7 @@ class ActionKeywords(LibraryContext):
             )
         return element
 
-    @keyword(tags=["action"])
+    @keyword(tags=["action", "keyboard"])
     def send_keys(
         self,
         locator: Optional[Locator] = None,
@@ -258,7 +258,7 @@ class ActionKeywords(LibraryContext):
                 f"Element found with {locator!r} does not have 'SendKeys' attribute"
             )
 
-    @keyword
+    @keyword(tags=["action"])
     def get_text(self, locator: Locator) -> str:
         """Get text from Control element defined by the locator.
 
@@ -281,7 +281,7 @@ class ActionKeywords(LibraryContext):
             f"Element found with {locator!r} does not have 'GetWindowText' attribute"
         )
 
-    @keyword
+    @keyword(tags=["action"])
     def get_value(self, locator: Locator) -> str:
         """Get value of the element defined by the locator.
 
@@ -381,7 +381,7 @@ class ActionKeywords(LibraryContext):
             self.send_keys(element, "{Ctrl}{End}{Enter}")
         return element
 
-    @keyword
+    @keyword(tags=["action"])
     def set_wait_time(self, wait_time: float) -> float:
         """Set library wait time for action keywords.
 
@@ -405,7 +405,7 @@ class ActionKeywords(LibraryContext):
         self.ctx.wait_time = wait_time
         return old_value
 
-    @keyword
+    @keyword(tags=["action"])
     def screenshot(self, locator: Locator, filename: str) -> str:
         """Take a screenshot of the element defined by the locator.
 
@@ -435,7 +435,7 @@ class ActionKeywords(LibraryContext):
         element.item.CaptureToImage(filepath)
         return filepath
 
-    @keyword
+    @keyword(tags=["action"])
     def set_global_timeout(self, timeout: float) -> float:
         """Set global timeout for element search. Applies also
         to ``Control Window`` keyword.
@@ -456,3 +456,86 @@ class ActionKeywords(LibraryContext):
         self.ctx.global_timeout = timeout
         auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
         return previous_timeout
+
+    @keyword(tags=["action"])
+    def set_focus(self, locator: Locator) -> None:
+        """Set view focus to the element defined by the locator.
+
+        :param locator: string locator or Control element
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Set Focus  name:Buy type:Button
+        """
+        element = self.ctx.get_element(locator)
+        if not hasattr(element.item, "SetFocus"):
+            raise ActionNotPossible(
+                f"Element found with {locator!r} does not have 'SetFocus' attribute"
+            )
+        element.item.SetFocus()
+
+    @keyword(tags=["action", "mouse"])
+    def drag_and_drop(
+        self,
+        source_element: Locator,
+        target_element: Locator,
+        speed: Optional[float] = 1.0,
+        copy: Optional[bool] = False,
+        wait_time: Optional[float] = 1.0,
+    ):
+        """Drag and drop the source element into target element.
+        ​
+        :param source: source element for the operation
+        :param target: target element for the operation
+        :param speed: adjust speed of operation, bigger value means more speed
+        :param copy: on True does copy drag and drop, defaults to move
+        :param wait_time: time to wait after drop, default 1.0 seconds
+
+        Example:
+
+        .. code-block:: robotframework
+
+            # copying a file, report.html, from source (File Explorer) window
+            # into a target (File Explorer) Window
+            # locator
+            Drag And Drop
+            ...    name:C:\\temp type:Windows > name:report.html type:ListItem
+            ...    name:%{USERPROFILE}\\Documents\\artifacts type:Windows > name:"Items View"
+            ...    copy=True
+
+        Example:
+
+        .. code-block:: robotframework
+
+            # moving *.txt files into subfolder within one (File Explorer) window
+            ${source_dir}=    Set Variable    %{USERPROFILE}\\Documents\\test
+            Control Window    name:${source_dir}
+            ${files}=    Find Files    ${source_dir}${/}*.txt
+            # first copy files to folder2
+            FOR    ${file}    IN    @{files}
+                Drag And Drop    name:${file.name}    name:folder2 type:ListItem    copy=True
+            END
+            # second move files to folder1
+            FOR    ${file}    IN    @{files}
+                Drag And Drop    name:${file.name}    name:folder1 type:ListItem
+            END
+        """  # noqa: E501
+        source = self.ctx.get_element(source_element)
+        target = self.ctx.get_element(target_element)
+        try:
+            if copy:
+                auto.PressKey(auto.Keys.VK_CONTROL)
+            auto.DragDrop(
+                source.xcenter,
+                source.ycenter,
+                target.xcenter,
+                target.ycenter,
+                moveSpeed=speed,
+                waitTime=wait_time,
+            )
+        finally:
+            if copy:
+                self.click(source)
+                auto.ReleaseKey(auto.Keys.VK_CONTROL)
