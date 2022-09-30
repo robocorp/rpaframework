@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-aws"
-version = "5.1.0a6"
+version = "5.1.0"
 description = "AWS library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
