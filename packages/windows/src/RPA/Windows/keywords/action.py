@@ -486,7 +486,7 @@ class ActionKeywords(LibraryContext):
         wait_time: Optional[float] = 1.0,
     ):
         """Drag and drop the source element into target element.
-        ​
+
         :param source: source element for the operation
         :param target: target element for the operation
         :param speed: adjust speed of operation, bigger value means more speed

@@ -471,7 +471,7 @@ class ServiceS3(AWSBase):
         :param object_name: name of the file in the bucket
         :param expires_in: optional expiration time for the url (in seconds).
          The default expiration time is 3600 seconds (one hour).
-        :param **extra_params: allows setting any extra `Params`
+        :param extra_params: allows setting any extra `Params`
         :return: URL for accessing the file
         """
         client = self._get_client_for_service("s3")
