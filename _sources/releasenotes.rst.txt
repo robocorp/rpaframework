@@ -5,7 +5,11 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-30 Sep 2022
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+17.2.0 - 30 Sep 2022
 -----------
 
 - Library `RPA.Cloud.AWS` (:pr:`648`): 
@@ -17,10 +21,6 @@ Release notes
 
   - Add new keywords ``Drag and Drop`` and ``Set Focus``
   - Released in ``rpaframework-windows`` **6.1.0**
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 17.1.1 - 29 Sep 2022
 --------------------

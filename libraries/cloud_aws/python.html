@@ -839,6 +839,27 @@ to the Amazon EventBridge event bus after the SQL statement runs.</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.generate_presigned_url">
+<code class="sig-name descname">generate_presigned_url</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">object_name: str</em>, <em class="sig-param">expires_in: Optional[int] = None</em>, <em class="sig-param">**extra_params</em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#RPA.Cloud.AWS.AWS.generate_presigned_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate presigned URL for the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>object_name</strong> – name of the file in the bucket</p></li>
+<li><p><strong>expires_in</strong> – optional expiration time for the url (in seconds).
+The default expiration time is 3600 seconds (one hour).</p></li>
+<li><p><strong>**extra_params</strong> – <p>allows setting any extra <cite>Params</cite></p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>URL for accessing the file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.get_cells">
 <code class="sig-name descname">get_cells</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_cells" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parsed cells from the response</p>
@@ -1951,6 +1972,27 @@ current directory</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>number of files downloaded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.generate_presigned_url">
+<code class="sig-name descname">generate_presigned_url</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">object_name: str</em>, <em class="sig-param">expires_in: Optional[int] = None</em>, <em class="sig-param">**extra_params</em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.generate_presigned_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate presigned URL for the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>object_name</strong> – name of the file in the bucket</p></li>
+<li><p><strong>expires_in</strong> – optional expiration time for the url (in seconds).
+The default expiration time is 3600 seconds (one hour).</p></li>
+<li><p><strong>**extra_params</strong> – <p>allows setting any extra <cite>Params</cite></p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>URL for accessing the file</p>
 </dd>
 </dl>
 </dd></dl>
