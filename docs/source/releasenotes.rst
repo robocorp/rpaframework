@@ -13,7 +13,7 @@ Release notes
 17.3.0 - 02 Oct 2022
 --------------------
 
-- Library **RPA.Database**: Add support for new `Psycopg 3 <https://anaconda.org/conda-forge/psycopg/>`_ PostgreSQL database adapter
+- Library **RPA.Database** (:pr:`649`): Add support for new `Psycopg 3 <https://anaconda.org/conda-forge/psycopg/>`_ PostgreSQL database adapter
 
 17.2.0 - 30 Sep 2022
 --------------------
