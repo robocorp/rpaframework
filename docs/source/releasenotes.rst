@@ -10,14 +10,14 @@ Release notes
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 17.2.0 - 30 Sep 2022
------------
+--------------------
 
-- Library `RPA.Cloud.AWS` (:pr:`648`): 
+- Library **RPA.Cloud.AWS** (:pr:`648`):
 
   - Add new keyword ``Generate Presigned URL`` for S3
   - Released in ``rpaframework-aws`` **5.1.0**
 
-- Library `RPA.Windows` (:pr:`647`): 
+- Library **RPA.Windows** (:pr:`647`):
 
   - Add new keywords ``Drag and Drop`` and ``Set Focus``
   - Released in ``rpaframework-windows`` **6.1.0**
