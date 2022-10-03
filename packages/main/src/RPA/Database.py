@@ -227,7 +227,7 @@ class Database:
                 port=self.config.get("port"),
                 charset=self.config.get("charset"),
             )
-        elif module_name == "psycopg2":
+        elif module_name.startswith("psycopg"):
             self.config.set_default_port(5432)
             self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
