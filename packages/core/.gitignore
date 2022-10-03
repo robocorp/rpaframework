@@ -19,3 +19,6 @@ tests/results
 tests/temp
 tests/*.html
 tests/*.xml
+
+# invoke config
+invoke.yaml

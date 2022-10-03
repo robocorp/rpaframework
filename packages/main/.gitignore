@@ -20,8 +20,12 @@ testvars.py
 
 # Robot Framework
 tests/results
+tests/output
 tests/temp
 tests/*.html
 tests/*.xml
 
 *.log
+
+# invoke config
+invoke.yaml

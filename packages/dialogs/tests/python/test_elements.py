@@ -9,7 +9,7 @@ import pytest
 from RPA.Dialogs import Dialogs
 
 
-RESOURCES = Path(__file__).parent / "resources"
+RESOURCES = Path(__file__).parent.parent / "resources"
 
 
 @pytest.fixture
@@ -174,7 +174,7 @@ def test_add_drop_down(library):
         (datetime.utcnow(), does_not_raise()),
         (datetime.utcnow().date(), does_not_raise()),
         (True, pytest.raises(ValueError)),  # unexpected value
-    ]
+    ],
 )
 @pytest.mark.freeze_time("2021-09-06")
 def test_add_date_input(library, default, expect):
@@ -233,13 +233,12 @@ def test_add_submit_buttons(library):
         "default": None,
     }
 
+
 def test_add_dialog_next_page_button(library):
     library.add_dialog_next_page_button(label="next button")
     assert len(library.elements) == 1
-    assert library.elements[0] == {
-        "type": "next",
-        "label": "next button"
-    }
+    assert library.elements[0] == {"type": "next", "label": "next button"}
+
 
 def test_clear_elements(library):
     library.add_heading("Whatever")

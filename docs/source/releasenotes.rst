@@ -5,23 +5,56 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
--Library **RPA.Salesforce** (:issue:`570`): Added new keyword ``Set Domain``. Enhanced
+- Library **RPA.Salesforce** (:issue:`570`): Added new keyword ``Set Domain``. Enhanced
   documentation around the different ways to set a domain.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-17.0.0 - 20 Sep 2022
+17.2.0 - 30 Sep 2022
 --------------------
 
-- Library **RPA.Cloud.AWS** (:pr:`637`)
+- Library **RPA.Cloud.AWS** (:pr:`648`):
+
+  - Add new keyword ``Generate Presigned URL`` for S3
+  - Released in ``rpaframework-aws`` **5.1.0**
+
+- Library **RPA.Windows** (:pr:`647`):
+
+  - Add new keywords ``Drag and Drop`` and ``Set Focus``
+  - Released in ``rpaframework-windows`` **6.1.0**
+
+17.1.1 - 29 Sep 2022
+--------------------
+
+- Library **RPA.Email.Exchange** (:pr:`643`): Fix `access_type` parameter usage in
+  keyword ``Authorize`` with "delegate" & "impersonation" accepted values.
+
+17.1.0 - 28 Sep 2022
+--------------------
+
+- Library **RPA.Email.Exchange** (:issue:`641`): Add support for OAuth2 auto token
+  refresh in Vault with `vault_name` and `vault_token_key` parameters during library
+  import.
+
+17.0.1 - 21 Sep 2022
+--------------------
+
+- Library **RPA.Cloud.AWS** (:pr:`637`):
 
   - All references to `Robocloud.Vault` changed to `Robocorp.Vault` (parameters and documentation).
-    This is **breaking** for this library, which leads to **major** version bump also for ``rpaframework``, 
-    because this library can be also installed with ``rpaframework[aws]`` instead of ``rpaframework-aws==5.0.0``.
-  - Add possibility to pass extra parameters for some S3 keywords
+    This is **breaking** for this library, which leads to **major** version bump also for ``rpaframework``,
+    because this library can be also installed with ``rpaframework[aws]`` instead of ``rpaframework-aws``.
+  - Add possibility to pass extra parameters for some S3 keywords, for example. metadata and content type.
+  - Released in ``rpaframework-aws`` **5.0.0**
 
-- Library **RPA.Cloud.Google** (:pr:`619`): Add support for `Document AI <https://cloud.google.com/document-ai/>`_  service
+- Library **RPA.Excel.Files** (:pr:`638`): Add support for opening .xlsx files in ``read_only`` mode
+- New library **RPA.Base64AI** (:pr:`639`): Supports `Base64 AI <https://base64.ai/>`_  IDP service
+- New library **RPA.Nanonets** (:pr:`639`): Supports `Nanonets <https://nanonets.com/>`_  IDP service
+- Library **RPA.Cloud.Google** (:pr:`619`):
+
+  - Add support for `Document AI <https://cloud.google.com/document-ai/>`_  IDP service
+  - Released in ``rpaframework-google`` **6.1.1**
 
 16.3.0 - 07 Sep 2022
 --------------------

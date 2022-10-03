@@ -122,6 +122,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `Archive`_                 | Archiving TAR and ZIP files                  | x                      |
 +----------------------------+----------------------------------------------+------------------------+
+| `Base64AI`_                | Intelligent Document Processing service      | x                      |
++----------------------------+----------------------------------------------+------------------------+
 | `Browser.Selenium`_        | Control browsers and automate the web        | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Browser.Playwright`_      | Newer way to control browsers                | special (more below)   |
@@ -170,6 +172,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `MFA`_                     | Authenticate using one-time passwords (OTP)  | x                      |
 +----------------------------+----------------------------------------------+------------------------+
+| `Nanonets`_                | Intelligent Document Processing service      | x                      |
++----------------------------+----------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services     | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Outlook.Application`_     | Control the Outlook desktop application      | x                      |
@@ -198,6 +202,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 
 .. _Archive: https://rpaframework.org/libraries/archive/
+.. _Base64AI: https://rpaframework.org/libraries/base64ai/
 .. _Browser.Playwright: https://rpaframework.org/libraries/browser_playwright/
 .. _Browser.Selenium: https://rpaframework.org/libraries/browser_selenium/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
@@ -222,6 +227,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _JavaAccessBridge: https://rpaframework.org/libraries/javaaccessbridge/
 .. _JSON: https://rpaframework.org/libraries/json/
 .. _MFA: https://rpaframework.org/libraries/mfa/
+.. _Nanonets: https://rpaframework.org/libraries/nanonets/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
@@ -249,12 +255,12 @@ Minimum required conda.yaml to install Playwright:
    channels:
      - conda-forge
    dependencies:
-     - python=3.7.5
-     - pip=20.1
+     - python=3.9.13
+     - pip=22.1.2
      - nodejs=16.4.2
      - pip:
-       - rpaframework==13.0.0
-       - robotframework-browser==12.2.0
+       - robotframework-browser==13.3.0
+       - rpaframework==17.0.1
    rccPostInstall:
      - rfbrowser init
 
@@ -270,10 +276,10 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
    channels:
      - conda-forge
    dependencies:
-     - python=3.7.5
-     - pip=20.1
+     - python=3.9.13
+     - pip=22.1.2
      - pip:
-       - rpaframework==13.0.0
+       - rpaframework==17.0.1
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -282,16 +288,16 @@ To install all extra packages (including Playwright dependencies), you can use:
    channels:
      - conda-forge
    dependencies:
-     - python=3.7.5
+     - python=3.9.13
      - tesseract=4.1.1
-     - pip=20.1
+     - pip=22.1.2
      - nodejs=16.14.2
      - pip:
-       - rpaframework==13.0.0   # rpaframework[aws]==13.0.0
-       - rpaframework-aws==1.0.0
-       - rpaframework-google==3.0.0
-       - rpaframework-recognition==2.0.0
-       - robotframework-browser==12.2.0
+       - robotframework-browser==13.3.0
+       - rpaframework==17.0.1   # rpaframework[aws]==13.0.0
+       - rpaframework-aws==5.0.0
+       - rpaframework-google==6.1.1
+       - rpaframework-recognition==5.0.0
    rccPostInstall:
      - rfbrowser init
 
@@ -302,13 +308,13 @@ Separate installation of AWS, Dialogs, PDF and Windows libraries without main rp
    channels:
      - conda-forge
    dependencies:
-     - python=3.7.5
-     - pip=20.1
+     - python=3.9.13
+     - pip=22.1.2
      - pip:
-       - rpaframework-aws==1.0.0 # included in the rpaframework as an extra
-       - rpaframework-dialogs==1.0.0  # included in the rpaframework by default
-       - rpaframework-pdf==3.0.0  # included in the rpaframework by default
-       - rpaframework-windows==3.0.0 # included in the rpaframework by default
+       - rpaframework-aws==5.0.0 # included in the rpaframework as an extra
+       - rpaframework-dialogs==4.0.0  # included in the rpaframework by default
+       - rpaframework-pdf==5.0.0  # included in the rpaframework by default
+       - rpaframework-windows==6.0.1 # included in the rpaframework by default
 
 
 .. note:: Python 3.7 or higher is required
