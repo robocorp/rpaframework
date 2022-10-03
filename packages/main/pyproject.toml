@@ -81,6 +81,7 @@ tenacity = "^8.0.1"
 htmldocx = "^0.0.6"
 hubspot-api-client = "^4.0.6"
 pyotp = "^2.6.0"
+importlib-metadata = "^4.13.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
