@@ -228,7 +228,7 @@ class Salesforce:
     def instance(self):
         return self.sf.sf_instance if self.sf else None
 
-    def set_domain(self, domain: str = "login"):
+    def set_domain(self, domain: str = "login") -> None:
         """Used to set the domain the `Auth With Token` keyword will use. To set
         the domain to 'test' or if using a sandbox environment use "sandbox" as the
         domain. If you have a Salsesforce My domain you may also input that name. If
@@ -239,6 +239,13 @@ class Salesforce:
         """
         self._require_no_session()
         self.domain = "test" if domain.lower() == "sandbox" else domain
+
+    def get_domain(self) -> str:
+        """Used to determine the current domain that has been set
+
+        :returns: string of the currently set domain
+        """
+        return self.domain
 
     def auth_with_token(self, username: str, password: str, api_token: str) -> None:
         """Authorize to Salesforce with security token, username
