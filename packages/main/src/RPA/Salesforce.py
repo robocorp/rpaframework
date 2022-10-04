@@ -204,10 +204,7 @@ class Salesforce:
     def __init__(self, sandbox: bool = False, domain: str = "login") -> None:
         self.logger = logging.getLogger(__name__)
         self.sf = None
-        if sandbox:
-            self.set_domain("sandbox")
-        else:
-            self.set_domain(domain)
+        self.set_domain("sandbox" if sandbox else domain)
         self.session = None
         self.pricebook_name = None
         self.dataloader_success = []
