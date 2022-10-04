@@ -229,7 +229,7 @@
 <span id="salesforce"></span><h2>Salesforce<a class="headerlink" href="#module-RPA.Salesforce" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Salesforce.Salesforce">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">Salesforce</code><span class="sig-paren">(</span><em class="sig-param">sandbox: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">Salesforce</code><span class="sig-paren">(</span><em class="sig-param">sandbox: bool = False</em>, <em class="sig-param">domain: str = 'login'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p><cite>Salesforce</cite> is a library for accessing Salesforce using REST API.
 The library extends <a class="reference external" href="https://github.com/simple-salesforce/simple-salesforce">simple-salesforce library</a>.</p>
@@ -288,6 +288,33 @@ input object is mapped into <cite>Tilaaja__c</cite> attribute of <cite>Tilaus__c
 <li><p>Get Salesforce Object Metadata</p></li>
 <li><p>Describe Salesforce Object</p></li>
 </ul>
+<p>There are two ways to set the Salesforce domain. You can set the domain at time of
+library import or using the <cite>Set Domain</cite> keyword.</p>
+<p>There are several ways to declare a domain at time of library import:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Salesforce</span><span class="p">    </span><span class="s">sandbox=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Or using the domain to your Salesforce My domain:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Salesforce</span><span class="p">    </span><span class="s">domain=&quot;robocorp&quot;</span><span class="p"></span>
+</pre></div>
+</div>
+<p>The domain can also be set using the keyword <cite>Set Domain</cite>:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Salesforce</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="c"># Sets the domain for a sandbox environment</span>
+<span class="gu">Set Domain</span><span class="p">    </span><span class="nf">sandbox</span><span class="p"></span>
+
+<span class="c"># Sets the domain to a Salseforce My domain</span>
+<span class="gu">Set Domain</span><span class="p">    </span><span class="nf">robocorp</span><span class="p"></span>
+
+<span class="c"># Sets to domain to the default of &#39;login&#39;</span>
+<span class="gu">Set Domain</span><span class="p"></span>
+</pre></div>
+</div>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
@@ -503,6 +530,17 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_domain">
+<code class="sig-name descname">get_domain</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to determine the current domain that has been set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string of the currently set domain</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_opportunity_id">
 <code class="sig-name descname">get_opportunity_id</code><span class="sig-paren">(</span><em class="sig-param">opportunity_name: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_opportunity_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get ID of an Opportunity linked to set account.</p>
@@ -668,6 +706,21 @@ type. (dictionary is returned by default)</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Salesforce.Salesforce.set_domain">
+<code class="sig-name descname">set_domain</code><span class="sig-paren">(</span><em class="sig-param">domain: str = 'login'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Salesforce.Salesforce.set_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to set the domain the <cite>Auth With Token</cite> keyword will use. To set
+the domain to ‘test’ or if using a sandbox environment use “sandbox” as the
+domain. If you have a Salsesforce My domain you may also input that name. If
+the <cite>domain</cite> argument is not used the default domain is “login”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>domain</strong> – “sandbox” or the name of the Salesforce My domain;
+if no argument provided defaults to “login”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Salesforce.Salesforce.set_pricebook">
 <code class="sig-name descname">set_pricebook</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Salesforce.Salesforce.set_pricebook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets Pricebook to be used in Salesforce operations.</p>
@@ -754,6 +807,25 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="method">
 <dt id="RPA.Salesforce.SalesforceDataNotAnDictionary.with_traceback">
 <code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.SalesforceDataNotAnDictionary.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Salesforce.SalesforceDomainChangeError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">SalesforceDomainChangeError</code><a class="headerlink" href="#RPA.Salesforce.SalesforceDomainChangeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error when changing domains while a session is active.</p>
+<dl class="attribute">
+<dt id="RPA.Salesforce.SalesforceDomainChangeError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Salesforce.SalesforceDomainChangeError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.SalesforceDomainChangeError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.SalesforceDomainChangeError.with_traceback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
