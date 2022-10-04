@@ -218,7 +218,7 @@ class Salesforce:
             raise SalesforceAuthenticationError("Authentication is not completed")
 
     def _require_no_session(self) -> None:
-        if self.session_id is not None or self.instance is not None:
+        if self.session_id or self.instance:
             raise SalesforceDomainChangeError(
                 "Domains cannot be changed while a session is active"
             )
