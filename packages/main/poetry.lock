@@ -144,14 +144,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.84"
+version = "1.24.86"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.84,<1.28.0"
+botocore = ">=1.27.86,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -160,7 +160,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.84"
+version = "1.27.86"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -339,7 +339,7 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "exchangelib"
-version = "4.7.6"
+version = "4.8.0"
 description = "Client for Microsoft Exchange Web Services (EWS)"
 category = "main"
 optional = false
@@ -879,6 +879,23 @@ optional = true
 python-versions = ">=3.7"
 
 [[package]]
+name = "O365"
+version = "2.0.17"
+description = "Microsoft Graph and Office 365 API made easy"
+category = "main"
+optional = false
+python-versions = ">=3.4"
+
+[package.dependencies]
+beautifulsoup4 = ">=4.0.0"
+python-dateutil = ">=2.7"
+pytz = ">=2018.5"
+requests = ">=2.18.0"
+requests-oauthlib = ">=1.2.0"
+stringcase = ">=1.2.0"
+tzlocal = ">=1.5.0,<3"
+
+[[package]]
 name = "oauthlib"
 version = "3.2.1"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
@@ -1368,6 +1385,20 @@ python-versions = "*"
 
 [package.dependencies]
 pytest = ">=2.6.0"
+
+[[package]]
+name = "pytest-mock"
+version = "3.9.0"
+description = "Thin-wrapper around the mock package for easier use with pytest"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+pytest = ">=5.0"
+
+[package.extras]
+dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "python-dateutil"
@@ -2016,6 +2047,14 @@ lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
 
 [[package]]
+name = "stringcase"
+version = "1.2.0"
+description = "String case converter."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "svg.path"
 version = "6.2"
 description = "SVG path objects and parser"
@@ -2332,7 +2371,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "edca244a26e299ab6e0fe72a9aae8950efcacd06d06f4a2533bc5f46b599ebb6"
+content-hash = "2817ef591a113d7070d7819d0fd3d58dec08891ea4a93c16b06ae768a31b85a1"
 
 [metadata.files]
 alabaster = [
@@ -2418,12 +2457,12 @@ black = [
     {file = "black-22.8.0.tar.gz", hash = "sha256:792f7eb540ba9a17e8656538701d3eb1afcb134e3b45b71f20b25c77a8db7e6e"},
 ]
 boto3 = [
-    {file = "boto3-1.24.84-py3-none-any.whl", hash = "sha256:be151711bbb4db53e85dd5bbe506002ce6f2f21fc4e45fcf6d2cf356d32cc4c6"},
-    {file = "boto3-1.24.84.tar.gz", hash = "sha256:6194763348545bb1669ce8d03ba104be1ba822daa184613aa10b9303a6a79017"},
+    {file = "boto3-1.24.86-py3-none-any.whl", hash = "sha256:c1d4e5d73d7720402c6538965efd6df5807492db8a71f30221dc11355d06db05"},
+    {file = "boto3-1.24.86.tar.gz", hash = "sha256:59e9c39c867b5fd0575a50d8fafdf72c823c5510254a8615dff24f1584408121"},
 ]
 botocore = [
-    {file = "botocore-1.27.84-py3-none-any.whl", hash = "sha256:da15026329706caf83323d84996f5ff5c527837347633fca9b3b1be0efa60841"},
-    {file = "botocore-1.27.84.tar.gz", hash = "sha256:11f05d2acdf9a5f722856704b7b951b180647fb4340e1b5048b27273dc323909"},
+    {file = "botocore-1.27.86-py3-none-any.whl", hash = "sha256:830359c8bf22f2a386431825060ff9666519c032f2ccd4a69f1a702f7195f6c0"},
+    {file = "botocore-1.27.86.tar.gz", hash = "sha256:dcfe1825b84d17cf11653f8bb4bc77c2f172dcec1dc68eee932d68e5e6ed89d5"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2620,8 +2659,8 @@ exceptiongroup = [
     {file = "exceptiongroup-1.0.0rc9.tar.gz", hash = "sha256:9086a4a21ef9b31c72181c77c040a074ba0889ee56a7b289ff0afb0d97655f96"},
 ]
 exchangelib = [
-    {file = "exchangelib-4.7.6-py2.py3-none-any.whl", hash = "sha256:88930ef842d173d6f04c270da4c215d65ae0052d773fac8bb997036f00171b83"},
-    {file = "exchangelib-4.7.6.tar.gz", hash = "sha256:ebfb636267da79b3d541bb990ff808d72300fafee030c0e4f7443f42103b3fca"},
+    {file = "exchangelib-4.8.0-py2.py3-none-any.whl", hash = "sha256:4916c345f13d576b4fd2e17980993fcb4b735097ffed4d886ee640bd42135e00"},
+    {file = "exchangelib-4.8.0.tar.gz", hash = "sha256:a1f8f7b97c08f08f2a57785dc262f4cc6a115b0db3f06afa1c8b71454fb8bce7"},
 ]
 fire = [
     {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
@@ -3067,6 +3106,10 @@ numpy = [
     {file = "numpy-1.21.1-pp37-pypy37_pp73-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:2d4d1de6e6fb3d28781c73fbde702ac97f03d79e4ffd6598b880b2d95d62ead4"},
     {file = "numpy-1.21.1.zip", hash = "sha256:dff4af63638afcc57a3dfb9e4b26d434a7a602d225b42d746ea7fe2edf1342fd"},
 ]
+O365 = [
+    {file = "O365-2.0.17-py3-none-any.whl", hash = "sha256:f787052ccc3eee54810bdc9e94d00be0a3470b7c162ecb4428b89a8b4512d61e"},
+    {file = "O365-2.0.17.tar.gz", hash = "sha256:f775d503c84fed3aea6c52e595d2e1946c1ebcded785d7217ceec5a9404716b8"},
+]
 oauthlib = [
     {file = "oauthlib-3.2.1-py3-none-any.whl", hash = "sha256:88e912ca1ad915e1dcc1c06fc9259d19de8deacd6fd17cc2df266decc2e49066"},
     {file = "oauthlib-3.2.1.tar.gz", hash = "sha256:1565237372795bf6ee3e5aba5e2a85bd5a65d0e2aa5c628b9a97b7d7a0da3721"},
@@ -3444,6 +3487,10 @@ pytest-cov = [
 pytest-env = [
     {file = "pytest-env-0.6.2.tar.gz", hash = "sha256:7e94956aef7f2764f3c147d216ce066bf6c42948bb9e293169b1b1c880a580c2"},
 ]
+pytest-mock = [
+    {file = "pytest-mock-3.9.0.tar.gz", hash = "sha256:c899a0dcc8a5f22930acd020b500abd5f956911f326864a3b979e4866e14da82"},
+    {file = "pytest_mock-3.9.0-py3-none-any.whl", hash = "sha256:1a1b9264224d026932d6685a0f9cef3b61d91563c3e74af9fe5afb2767e13812"},
+]
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
@@ -3682,6 +3729,9 @@ sphinxcontrib-qthelp = [
 sphinxcontrib-serializinghtml = [
     {file = "sphinxcontrib-serializinghtml-1.1.5.tar.gz", hash = "sha256:aa5f6de5dfdf809ef505c4895e51ef5c9eac17d0f287933eb49ec495280b6952"},
     {file = "sphinxcontrib_serializinghtml-1.1.5-py2.py3-none-any.whl", hash = "sha256:352a9a00ae864471d3a7ead8d7d79f5fc0b57e8b3f95e9867eb9eb28999b92fd"},
+]
+stringcase = [
+    {file = "stringcase-1.2.0.tar.gz", hash = "sha256:48a06980661908efe8d9d34eab2b6c13aefa2163b3ced26972902e3bdfd87008"},
 ]
 "svg.path" = [
     {file = "svg.path-6.2-py2.py3-none-any.whl", hash = "sha256:c3b12e6d372771b466078837252eb13b655ea2658437c426cc67fc6262433dc8"},
