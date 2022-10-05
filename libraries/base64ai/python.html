@@ -247,7 +247,7 @@ service in multiple different file formats and via URL.</p>
 <span class="p">    </span><span class="nf">Set Authorization</span><span class="p">  ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">email-address</span><span class="p">]   ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">apikey</span><span class="p">]</span>
 <span class="p">    ${</span><span class="nv">results</span><span class="p">}=  </span><span class="nf">Scan Document File</span><span class="p"></span>
 <span class="p">    ...   ${</span><span class="nv">CURDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">invoice.pdf</span><span class="p"></span>
-<span class="p">    </span><span class="nf">model_types=finance/check/usa,finance/invoice/usa</span><span class="p"></span>
+<span class="p">    ...   </span><span class="s">model_types=finance/check/usa,finance/invoice/usa</span><span class="p"></span>
 <span class="p">    </span><span class="c"># Scan response contains list of detected models in the document</span>
 <span class="p">    FOR  ${</span><span class="nv">result</span><span class="p">}  IN  @{</span><span class="nv">results</span><span class="p">}</span>
 <span class="p">        </span><span class="nf">Log To Console</span><span class="p">  </span><span class="s">Model: </span><span class="p">${</span><span class="nv">result</span><span class="p">}[</span><span class="nv">model</span><span class="p">]</span>
