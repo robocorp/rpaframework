@@ -880,7 +880,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "O365"
-version = "2.0.17"
+version = "2.0.21"
 description = "Microsoft Graph and Office 365 API made easy"
 category = "main"
 optional = false
@@ -893,7 +893,7 @@ pytz = ">=2018.5"
 requests = ">=2.18.0"
 requests-oauthlib = ">=1.2.0"
 stringcase = ">=1.2.0"
-tzlocal = ">=1.5.0,<3"
+tzlocal = ">=4.0"
 
 [[package]]
 name = "oauthlib"
@@ -1451,6 +1451,18 @@ description = "World timezone definitions, modern and historical"
 category = "main"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "pytz-deprecation-shim"
+version = "0.1.0.post0"
+description = "Shims to make deprecation of pytz easier"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
+
+[package.dependencies]
+"backports.zoneinfo" = {version = "*", markers = "python_version >= \"3.6\" and python_version < \"3.9\""}
+tzdata = {version = "*", markers = "python_version >= \"3.6\""}
 
 [[package]]
 name = "pywebview"
@@ -2194,14 +2206,20 @@ python-versions = ">=2"
 
 [[package]]
 name = "tzlocal"
-version = "2.1"
+version = "4.2"
 description = "tzinfo object for the local timezone"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 
 [package.dependencies]
-pytz = "*"
+"backports.zoneinfo" = {version = "*", markers = "python_version < \"3.9\""}
+pytz-deprecation-shim = "*"
+tzdata = {version = "*", markers = "platform_system == \"Windows\""}
+
+[package.extras]
+devenv = ["black", "pyroma", "pytest-cov", "zest.releaser"]
+test = ["pytest (>=4.3)", "pytest-mock (>=3.3)"]
 
 [[package]]
 name = "uiautomation"
@@ -2371,7 +2389,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "2817ef591a113d7070d7819d0fd3d58dec08891ea4a93c16b06ae768a31b85a1"
+content-hash = "b177619f9265ce57e2a770852a2cce6b9cf751b331a5eaa24737e33715141961"
 
 [metadata.files]
 alabaster = [
@@ -3107,8 +3125,8 @@ numpy = [
     {file = "numpy-1.21.1.zip", hash = "sha256:dff4af63638afcc57a3dfb9e4b26d434a7a602d225b42d746ea7fe2edf1342fd"},
 ]
 O365 = [
-    {file = "O365-2.0.17-py3-none-any.whl", hash = "sha256:f787052ccc3eee54810bdc9e94d00be0a3470b7c162ecb4428b89a8b4512d61e"},
-    {file = "O365-2.0.17.tar.gz", hash = "sha256:f775d503c84fed3aea6c52e595d2e1946c1ebcded785d7217ceec5a9404716b8"},
+    {file = "O365-2.0.21-py3-none-any.whl", hash = "sha256:972f13f3f2e4732686251deafbf1ffac382b218333cf1e450b3123607e87b5b9"},
+    {file = "O365-2.0.21.tar.gz", hash = "sha256:67c1b7af0429c3e10720aa4122b662dc4e9262d01bf01d11f21cb07c7b87ee16"},
 ]
 oauthlib = [
     {file = "oauthlib-3.2.1-py3-none-any.whl", hash = "sha256:88e912ca1ad915e1dcc1c06fc9259d19de8deacd6fd17cc2df266decc2e49066"},
@@ -3510,6 +3528,10 @@ pytz = [
     {file = "pytz-2022.4-py2.py3-none-any.whl", hash = "sha256:2c0784747071402c6e99f0bafdb7da0fa22645f06554c7ae06bf6358897e9c91"},
     {file = "pytz-2022.4.tar.gz", hash = "sha256:48ce799d83b6f8aab2020e369b627446696619e79645419610b9facd909b3174"},
 ]
+pytz-deprecation-shim = [
+    {file = "pytz_deprecation_shim-0.1.0.post0-py2.py3-none-any.whl", hash = "sha256:8314c9692a636c8eb3bda879b9f119e350e93223ae83e70e80c31675a0fdc1a6"},
+    {file = "pytz_deprecation_shim-0.1.0.post0.tar.gz", hash = "sha256:af097bae1b616dde5c5744441e2ddc69e74dfdcb0c263129610d85b87445a59d"},
+]
 pywebview = [
     {file = "pywebview-3.6.3-py3-none-any.whl", hash = "sha256:4316aec32801a48a7a1ec6f70575c0b69854d76b090033530b70581ed3d545d7"},
     {file = "pywebview-3.6.3.tar.gz", hash = "sha256:edc82f0ce79f6514411c32f7057b2d5f99f1e9f6b15a373c3c1bf403b327b093"},
@@ -3810,8 +3832,8 @@ tzdata = [
     {file = "tzdata-2022.4.tar.gz", hash = "sha256:ada9133fbd561e6ec3d1674d3fba50251636e918aa97bd59d63735bef5a513bb"},
 ]
 tzlocal = [
-    {file = "tzlocal-2.1-py2.py3-none-any.whl", hash = "sha256:e2cb6c6b5b604af38597403e9852872d7f534962ae2954c7f35efcb1ccacf4a4"},
-    {file = "tzlocal-2.1.tar.gz", hash = "sha256:643c97c5294aedc737780a49d9df30889321cbe1204eac2c2ec6134035a92e44"},
+    {file = "tzlocal-4.2-py3-none-any.whl", hash = "sha256:89885494684c929d9191c57aa27502afc87a579be5cdd3225c77c463ea043745"},
+    {file = "tzlocal-4.2.tar.gz", hash = "sha256:ee5842fa3a795f023514ac2d801c4a81d1743bbe642e3940143326b3a00addd7"},
 ]
 uiautomation = [
     {file = "uiautomation-2.0.17-py3-none-any.whl", hash = "sha256:def4aeefa3b7d19d5d7fb87c6a89d078e3bb3355dc1076444c2cc998b11c0359"},
