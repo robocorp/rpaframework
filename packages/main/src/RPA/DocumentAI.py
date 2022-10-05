@@ -109,6 +109,9 @@ class DocumentAI:
         elif secret_value:
             # Vault not used, therefore the provided secret is a file path pointing to
             #  a service account or token JSON file.
+            assert isinstance(
+                secret_value, Path
+            ), f"secret {secret_value!r} not supported, a file path is needed"
             if (auth_type or "serviceaccount") == "serviceaccount":
                 secret_type = "service_account"
             else:
@@ -124,21 +127,39 @@ class DocumentAI:
         self._engines[EngineName.GOOGLE] = engine
 
     @staticmethod
-    def _secret_value_to_params(secret_value: str) -> Tuple[str]:
-        return tuple(part.strip() for part in secret_value.split(","))
+    def _secret_value_to_params(secret_value: SecretType) -> Tuple[Tuple, Dict]:
+        args, kwargs = (), {}
+        if isinstance(secret_value, list):
+            args = secret_value
+        elif isinstance(secret_value, dict):
+            kwargs = secret_value
+        elif isinstance(secret_value, str):
+            for part in secret_value.split(","):
+                part = part.strip()
+                if ":" in part:
+                    key, value = part.split(":", 1)
+                    kwargs[key] = value
+                else:
+                    args += (part,)
+        else:
+            raise TypeError(f"not supported secret type {type(secret_value)}")
+
+        return args, kwargs
 
     def _init_base64(self, secret_value: SecretType):
         from RPA.Base64AI import Base64AI
 
         engine = Base64AI()
-        engine.set_authorization(*self._secret_value_to_params(secret_value))
+        args, kwargs = self._secret_value_to_params(secret_value)
+        engine.set_authorization(*args, **kwargs)
         self._engines[EngineName.BASE64] = engine
 
     def _init_nanonets(self, secret_value: SecretType):
         from RPA.Nanonets import Nanonets
 
         engine = Nanonets()
-        engine.set_authorization(*self._secret_value_to_params(secret_value))
+        args, kwargs = self._secret_value_to_params(secret_value)
+        engine.set_authorization(*args, **kwargs)
         self._engines[EngineName.NANONETS] = engine
 
     @keyword
@@ -173,12 +194,11 @@ class DocumentAI:
             logging.warning("No `secret` or `vault` provided, relying on env vars.")
 
         init_map = {
-            # Google library needs to be Vault aware too due to its internal way of
-            #  handling secrets from there.
+            # Google library needs to be Vault aware due to its internal way of
+            #  handling secrets directly from there. (without our parsing)
             EngineName.GOOGLE: functools.partial(self._init_google, vault=vault),
-            # Rest of the engines have a normalized way of picking up secrets either
-            #  provided directly (as string or file path) either through Vault (
-            #  dictionary of parameters).
+            # Rest of the engines have a normalized way of picking up secrets. They can
+            #  be provided directly (string, file path, list or dict) or through Vault.
             EngineName.BASE64: self._init_base64,
             EngineName.NANONETS: self._init_nanonets,
         }
