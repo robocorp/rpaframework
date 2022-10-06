@@ -227,8 +227,13 @@ class RobocorpAdapter(BaseAdapter):
         body = {"workItemId": item_id, "state": state.value}
         if exception:
             for key, value in list(exception.items()):
-                if value is None:
+                # All values are (and should be) strings.
+                if value:
+                    exception[key] = value.strip()
+                else:
+                    # Exclude None & empty string values.
                     del exception[key]
+
             body["exception"] = exception
         log_func = logging.error if state == State.FAILED else logging.info
         log_func(
@@ -1092,7 +1097,7 @@ class WorkItems:
         if attributes["status"] != "FAIL":
             return
 
-        message = attributes["message"] or None
+        message = attributes["message"]
         logging.info("Releasing FAILED input item with APPLICATION error: %s", message)
         self.release_input_work_item(
             state=State.FAILED,
