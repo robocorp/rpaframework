@@ -1092,7 +1092,7 @@ class WorkItems:
         if attributes["status"] != "FAIL":
             return
 
-        message = attributes["message"]
+        message = attributes["message"] or None
         logging.info("Releasing FAILED input item with APPLICATION error: %s", message)
         self.release_input_work_item(
             state=State.FAILED,
