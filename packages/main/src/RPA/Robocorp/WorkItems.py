@@ -1903,7 +1903,14 @@ class WorkItems:
         assert last_input.parent_id is None, "set state on output item"
         assert last_input.id is not None, "set state on input item with null ID"
 
-        state: State = state if isinstance(state, State) else State(state.upper())
+        # RF automatically converts string "DONE" to State.DONE object if only `State`
+        #  type annotation is used in the keyword definition.
+        if not isinstance(state, State):
+            # But since we support strings as well now, to stay compatible with Python
+            #  behaviour, a "COMPLETE" value is expected instead of "DONE".
+            state: str = state.upper()
+            state: str = State.DONE.value if state == "DONE" else state
+            state: State = State(state)
         exception = None
         if state is State.FAILED:
             if exception_type:
