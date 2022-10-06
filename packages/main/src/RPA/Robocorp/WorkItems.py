@@ -233,8 +233,8 @@ class RobocorpAdapter(BaseAdapter):
                 else:
                     # Exclude None & empty string values.
                     del exception[key]
-
             body["exception"] = exception
+
         log_func = logging.error if state == State.FAILED else logging.info
         log_func(
             "Releasing %s input work item %r into %r with exception: %s",
