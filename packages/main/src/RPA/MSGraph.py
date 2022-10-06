@@ -8,7 +8,7 @@ from O365 import (
     MSGraphProtocol,
     FileSystemTokenBackend,
     directory,
-    drive,
+    drive as drive_module,
     sharepoint,
 )
 from O365.utils import Token, BaseTokenBackend
@@ -19,24 +19,15 @@ from O365.utils.utils import (  # noqa: F401 pylint: disable=unused-import
     SITES_RESOURCE,
 )
 from robot.api.deco import keyword
+from RPA.Tables import Table
 
 
 DEFAULT_REDIRECT_URI = "https://login.microsoftonline.com/common/oauth2/nativeclient"
 DEFAULT_TOKEN_PATH = Path("/temp")
 DEFAULT_PROTOCOL = MSGraphProtocol()
 
-
-def import_table():
-    """Try to import `RPA.Tables.Table`"""
-    try:
-        module = importlib.import_module("RPA.Tables")
-        return getattr(module, "Table")
-    except ModuleNotFoundError:
-        return None
-
-
-Table = import_table()
-DataTable = Table if Table else list[Dict]
+DriveType = Union[drive_module.Drive, str]
+PathType = Union[Path, str]
 
 
 class MSGraphAuthenticationError(Exception):
@@ -51,7 +42,7 @@ class RobocorpVaultTokenBackend(BaseTokenBackend):
     "A simple Token backend that saves to Robocorp vault"
 
 
-class SharedItem(drive.File):
+class SharedItem(drive_module.File):
     """Simple class to add support for shared items.
     Inherits File only to bypass checks in the library.
     """  # pylint: disable=super-init-not-called
@@ -90,8 +81,6 @@ class MSGraph:
     - Has relevant permissions enabled, check the `Microsoft Graph permissions reference`_
     for a list of permissions available to MS Graph apps.
 
-    .. TODO: Determine bundles of permissions needed for each keyword in the library.
-
     .. _O365 package: https://pypi.org/project/O365
     .. _OAuth Graph Example Bot: https://robocorp.com/portal/
     .. _register an app: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade
@@ -100,7 +89,7 @@ class MSGraph:
 
     """  # noqa: E501
 
-    ROBOT_LIBRARY_SCOPE = "Global"
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(
@@ -117,9 +106,20 @@ class MSGraph:
         """When importing the library to Robot Framework, you can set the
         ``client_id`` and ``client_secret``.
 
-        :param client_id: Application client id.
+        :param client_id: Application client ID.
         :param client_secret: Application client secret.
-
+        :param token: Not implemented. Will support providing the
+         authorization token object directly.
+        :param refresh_token: Authorization refresh token obtained from
+         prior OAuth flows.
+        :param redirect_uri: Must be provided with client ID and client
+         secret if not using the default.
+        :param vault_backend: Not implemented. Will support using the
+         Control Room vault directly for authorization token management.
+        :param vault_secret: Not implemented. Will support using the
+         Control Room vault directly for authorization token management.
+        :param file_backend_path: Indicate a path where the tokens will
+         be stored within the robot, the default is ``/temp``.
         """
         self.logger = logging.getLogger(__name__)
         # TODO: Implement a `TokenBackend` that uses Robocorp vault,
@@ -167,46 +167,97 @@ class MSGraph:
         except AttributeError:
             return None
 
-    def _get_drive_instance(
+    @keyword
+    def get_drive_instance(
         self, resource: Optional[str] = None, drive_id: Optional[str] = None
-    ) -> drive.Drive:
-        """Returns the specified drive if any or the default one if none."""
+    ) -> drive_module.Drive:
+        """Returns the specified drive from the specified resource. If
+        either is not provided, defaults are returned.
+
+        :param resource: Name of the resource if not using default.
+        :param drive_id: The Drive ID as a string.
+        :return: The requested Drive object.
+
+        .. code-block: robotframework
+
+            *** Tasks ***
+            Get default drive
+                ${default_drive}=    Get drive instance
+                Log    ${default_drive.Name}
+        """
         storage = self.client.storage(resource=resource)
         if drive_id:
             return storage.get_drive(drive_id)
         else:
             return storage.get_default_drive()
 
-    def _get_folder_instance(
-        self,
-        drive_instance: drive.Drive,
-        folder: Union[drive.Folder, str, None] = None,
-    ) -> drive.Folder:
-        """Get folder from OneDrive."""
-        if isinstance(folder, drive.DriveItem):
-            if isinstance(folder, drive.Folder):
-                return folder
-            else:
-                raise TypeError("The folder argument is not of Folder type.")
-        elif folder in [None, "/", "\\", "root", "ROOT", ""]:
-            return drive_instance.get_root_folder()
+    def _parse_drive_param(self, drive: DriveType) -> drive_module.Drive:
+        """Helper function which parses the drive parameter given
+        from a robot.
+        """
+        if isinstance(drive, drive_module.Drive):
+            return drive
         else:
-            return drive_instance.get_item_by_path(folder)
+            return self.get_drive_instance(drive)
 
-    def _get_file_instance(
-        self, target_file: Union[drive.File, str], drive_instance: drive.Drive
-    ) -> drive.File:
-        if isinstance(target_file, str):
-            return drive_instance.get_item_by_path(target_file)
-        elif isinstance(target_file, drive.File):
-            return drive_instance.get_item(target_file.object_id)
+    @keyword
+    def get_folder_instance(
+        self,
+        drive: Optional[DriveType] = None,
+        folder: Optional[Union[drive_module.Folder, str]] = None,
+    ) -> drive_module.Folder:
+        """Returns a folder object from the provided drive. If a folder
+        object is provided, it is reobtained from the API.
+
+        :param drive: A Drive object or Drive ID as a string. If not
+         provided, will use the default drive.
+        :param folder: A Folder object or folder path as a string.
+
+        .. code-block: robotframework
+
+            *** Tasks ***
+            Get folder from OneDrive
+                ${folder}=    Get folder instance    /path/to/folder
+        """
+        drive = self._parse_drive_param(drive)
+        if isinstance(folder, drive_module.Folder):
+            return drive.get_item(folder.object_id)
+        elif isinstance(folder, drive_module.DriveItem):
+            raise TypeError("The provided DriveItem is not a Folder")
+        elif folder in [None, "/", "\\", "root", "ROOT", ""]:
+            return drive.get_root_folder()
+        else:
+            return drive.get_item_by_path(folder)
+
+    @keyword
+    def get_file_instance(
+        self,
+        drive: DriveType,
+        file: Union[drive_module.File, str],
+    ) -> drive_module.File:
+        """Returns a file object from the provided drive. If a File
+        object is provided, it is reobtained from the API.
+
+        :param drive: A Drive object or Drive ID as a string. If not
+         provided, will use the default drive.
+        :param file_path: A Folder object or folder path as a string.
+
+        .. code-block: robotframework
+
+            *** Tasks ***
+            Get file from OneDrive
+                ${folder}=    Get file instance    /path/to/file
+        """
+        drive = self._parse_drive_param(drive)
+        if isinstance(file, str):
+            return drive.get_item_by_path(file)
+        elif isinstance(file, drive_module.File):
+            return drive.get_item(file.object_id)
         else:
             raise TypeError("Target file is not any of the expected types.")
 
-    def _encode_share_url(self, file_url: str) -> str:
-        """Encodes the OneDrive file share link to a format supported
-        by the Graph API.
-        """
+    def _encode_url(self, file_url: str) -> str:
+        """Encodes a link to a format supported by the Graph API."""
         base64_bytes = base64.b64encode(bytes(file_url, "utf-8"))
         base64_string = (
             base64_bytes.decode("utf-8")
@@ -218,60 +269,58 @@ class MSGraph:
 
     def _download_file(
         self,
-        file_instance: drive.File,
-        to_path: Union[Path, str, None] = None,
+        file: drive_module.File,
+        to_path: Optional[PathType] = None,
         name: Optional[str] = None,
     ) -> Path:
-        """Downloads the file and return the destination path.
+        """Downloads the file and returns the destination path.
         The O365 library returns only a boolean, so it was necessary
         to define the destination path the same way the library does it.
         """
-        if not isinstance(file_instance, drive.File):
+        if not isinstance(file, drive_module.File):
             raise MSGraphDownloadError("Drive item is not a file.")
-
         if to_path is None:
             to_path = Path()
         else:
-            if not isinstance(to_path, Path):
-                to_path = Path(to_path)
-
+            to_path = Path(to_path)
+        # TODO: Does this fail when we define a path we want?
         if not to_path.exists():
             raise FileNotFoundError("{} does not exist".format(to_path))
-
-        if name and not Path(name).suffix and file_instance.name:
-            name = name + Path(file_instance.name).suffix
-
-        name = name or file_instance.name
+        if name and not Path(name).suffix and file.name:
+            name = name + Path(file.name).suffix
+        name = name or file.name
         downloaded_file = to_path / name
-
-        success = file_instance.download(to_path=to_path, name=name)
+        success = file.download(to_path=to_path, name=name)
         if not success:
             raise MSGraphDownloadError("Downloading file failed.")
         return downloaded_file
 
     def _download_folder(
-        self, folder_instance: drive.Folder, to_folder: Union[Path, str, None] = None
+        self,
+        folder: drive_module.Folder,
+        to_folder: Optional[PathType] = None,
     ) -> Path:
         """Downloads the content of the folder recursively.
         The O365 library returns only a boolean, so it was necessary to define
         the destination path the same way the O365 library does it.
         """
-        if not isinstance(folder_instance, drive.Folder):
+        if not isinstance(folder, drive_module.Folder):
             raise MSGraphDownloadError("Drive item is not a folder.")
         if to_folder is None:
-            downloaded_folder = Path() / folder_instance.name
+            downloaded_folder = Path() / folder.name
         else:
             downloaded_folder = Path() / to_folder
         # Method download_contents has no return value.
-        folder_instance.download_contents(to_folder=to_folder)
+        folder.download_contents(to_folder=downloaded_folder)
         return downloaded_folder
 
     def _get_sharepoint_drive(
-        self, site: sharepoint.Site, drive_id: str = None
-    ) -> drive.Drive:
+        self, site: sharepoint.Site, drive: Optional[DriveType] = None
+    ) -> drive_module.Drive:
         """Returns the specified SharePoint drive if any or the default one if none."""
-        if drive_id:
-            return site.get_document_library(drive_id)
+        drive = self._parse_drive_param(drive)
+        if drive:
+            return site.get_document_library(drive.object_id)
         else:
             return site.get_default_document_library()
 
@@ -295,16 +344,27 @@ class MSGraph:
         client_id: str,
         client_secret: str,
         refresh_token: Optional[str] = None,
-        redirect_uri: str = DEFAULT_REDIRECT_URI,
+        redirect_uri: Optional[str] = None,
     ) -> Union[str, None]:
         """Configures the MS Graph client. If a refresh token is
         known, it can be provided to obtain a current user token
         to authenticate with. A new refresh token is returned
         if one is provided.
+
+        :param client_id: Application client ID.
+        :param client_secret: Application client secret.
+        :param refresh_token: Authorization refresh token obtained from
+         prior OAuth flows.
+        :param redirect_uri: Must be provided with client ID and client
+         secret if not using the default.
+        :return: A new refresh token if one was provided, or ``None``.
         """
         credentials = (client_id, client_secret)
         self.client = Account(credentials, token_backend=self.token_backend)
-        self.redirect_uri = redirect_uri
+        if redirect_uri is not None:
+            self.redirect_uri = redirect_uri
+        else:
+            self.redirect_uri = DEFAULT_REDIRECT_URI
         if refresh_token:
             return self.refresh_oauth_token(refresh_token)
         return None
@@ -343,6 +403,11 @@ class MSGraph:
         * ``tasks``
         * ``tasks_all``
         * ``presence``
+
+        :param scopes: Scopes requested. If left empty, all scopes
+         will be returned.
+        :return: A list of Scopes which can be passed to authorization
+         keywords.
         """  # noqa: W605
         if len(scopes) == 0:
             return DEFAULT_PROTOCOL.get_scopes_for(None)
@@ -357,14 +422,23 @@ class MSGraph:
         self,
         client_id: Optional[str] = None,
         client_secret: Optional[str] = None,
-        redirect_uri: str = None,
-        scopes: list = None,
+        redirect_uri: Optional[str] = None,
+        scopes: Optional[list] = None,
     ) -> str:
         # pylint: disable=anomalous-backslash-in-string
         """Generates an authorization URL which must be opened
         by the user to complete the OAuth flow. If no scopes
         are provided, the default scope is used which is all
-        scopes defined in the \`Get Scopes\` keyword
+        scopes defined in the \`Get Scopes\` keyword.
+
+        :param client_id: Application client ID.
+        :param client_secret: Application client secret.
+        :param redirect_uri: Can be provided with client ID and client
+         secret if not using the default.
+        :param scopes: A list of scopes in the form required by the
+         API. Use the helper function ``G
+        :return: The URL the user must follow to complete their portion
+         of the OAuth flow.
         """  # noqa: W605
         if redirect_uri is None:
             redirect_uri = (
@@ -391,6 +465,11 @@ class MSGraph:
         library maintains the user access token for current requests
         and returns the refresh token to be stored in a secure location
         (e.g., the Robocorp Control Room Vault).
+
+        :param authorization_url: The full URL retrieved by the user
+         after completing authorization to Microsoft.
+        :return: A refresh token which should be stored securely for
+         future sessions.
         """  # noqa: W605
         self._require_client()
         if self.client.connection.request_token(
@@ -410,6 +489,11 @@ class MSGraph:
         refresh token is returned. If no token is provided, this keyword
         assumes the Robocorp Vault is being used as a backend and attempts
         to refresh it based on that backend.
+
+        :param refresh_token: The refresh token to use to refresh the
+         session.
+        :return: A refresh token which should be stored securely for
+         future sessions.
         """
         self._require_client()
         if refresh_token:
@@ -493,17 +577,17 @@ class MSGraph:
     @keyword
     def list_files_in_onedrive_folder(
         self,
-        target_folder: Union[drive.Folder, str, None] = None,
+        target_folder: Union[drive_module.Folder, str, None] = None,
         include_folders: Optional[bool] = False,
         resource: Optional[str] = None,
         drive_id: Optional[str] = None,
-    ) -> list[drive.DriveItem]:
+    ) -> list[drive_module.DriveItem]:
         """Returns a list of files from the specified OneDrive folder.
 
         The files returned are DriveItem objects and they have additional
         properties that can be accessed with dot-notation.
 
-        :param target_folder: Path of the folder in OneDrive.
+        :param target_folder: Path of the folder in Onedrive_module.
         :param include_folders: Boolean indicating if should return folders as well.
         :param resource: Name of the resource if not using default.
         :param drive_id: Drive ID if not using default.
@@ -529,8 +613,8 @@ class MSGraph:
                 END
         """
         self._require_authentication()
-        drive_instance = self._get_drive_instance(resource, drive_id)
-        folder = self._get_folder_instance(drive_instance, target_folder)
+        drive_instance = self.get_drive_instance(resource, drive_id)
+        folder = self.get_folder_instance(drive_instance, target_folder)
         items = folder.get_items()
         if include_folders:
             return items
@@ -539,19 +623,19 @@ class MSGraph:
     @keyword
     def download_file_from_onedrive(
         self,
-        target_file: Union[drive.File, str],
-        to_path: Union[Path, str, None] = None,
+        target_file: Union[drive_module.File, str],
+        to_path: Optional[PathType] = None,
         name: Optional[str] = None,
         resource: Optional[str] = None,
         drive_id: Optional[str] = None,
     ) -> Path:
-        """Downloads a file from OneDrive.
+        """Downloads a file from Onedrive_module.
 
         The downloaded file will be saved to a local path.
 
         :param target_file: `DriveItem` or file path of the desired file.
         :param to_path: Destination folder of the downloaded file,
-                defaults to the current directory.
+         defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
         :param resource: Name of the resource if not using default.
         :param drive_id: Drive ID if not using default.
@@ -573,15 +657,15 @@ class MSGraph:
                 ...    Report.pdf
         """
         self._require_authentication()
-        drive_instance = self._get_drive_instance(resource, drive_id)
-        file_instance = self._get_file_instance(target_file, drive_instance)
+        drive_instance = self.get_drive_instance(resource, drive_id)
+        file_instance = self.get_file_instance(drive_instance, target_file)
         return self._download_file(file_instance, to_path, name)
 
     @keyword
     def download_folder_from_onedrive(
         self,
-        target_folder: Union[drive.Folder, str],
-        to_path: Union[Path, str, None] = None,
+        target_folder: Union[drive_module.Folder, str],
+        to_path: Optional[PathType] = None,
         resource: Optional[str] = None,
         drive_id: Optional[str] = None,
     ) -> Path:
@@ -593,7 +677,7 @@ class MSGraph:
 
         :param target_folder: `DriveItem` or path of the desired folder.
         :param to_path: Destination folder where the download will be saved to,
-                defaults to the current directory.
+         defaults to the current directory.
         :param resource: Name of the resource if not using default.
         :param drive_id: Drive ID if not using default.
         :return: Path to the downloaded folder.
@@ -612,19 +696,19 @@ class MSGraph:
                 ...    /path/to/local/folder
         """
         self._require_authentication()
-        drive_instance = self._get_drive_instance(resource, drive_id)
-        folder_instance = self._get_folder_instance(drive_instance, target_folder)
+        drive_instance = self.get_drive_instance(resource, drive_id)
+        folder_instance = self.get_folder_instance(drive_instance, target_folder)
         return self._download_folder(folder_instance, to_path)
 
     @keyword
     def find_onedrive_file(
         self,
         search_string: str,
-        target_folder: Union[drive.Folder, str, None] = None,
+        target_folder: Optional[Union[drive_module.Folder, str]] = None,
         include_folders: Optional[bool] = False,
         resource: Optional[str] = None,
         drive_id: Optional[str] = None,
-    ) -> list[drive.DriveItem]:
+    ) -> list[drive_module.DriveItem]:
         # pylint: disable=anomalous-backslash-in-string
         """Returns a list of files found in OneDrive based on the search string.
         If a folder is not specified, the search is done in the entire drive and
@@ -635,7 +719,7 @@ class MSGraph:
         properties that can be accessed with dot-notation, see
         \`List Files In Onedrive Folder\` for details.
 
-        :param search_string: String used to search for file in OneDrive.
+        :param search_string: String used to search for file in Onedrive_module.
          Values may be matched across several fields including filename,
          metadata, and file content.
         :param target_folder: Folder where to search for files.
@@ -651,9 +735,9 @@ class MSGraph:
                 ${files}=    Find Onedrive File    Report.xlsx
         """  # noqa: W605
         self._require_authentication()
-        drive_instance = self._get_drive_instance(resource, drive_id)
+        drive_instance = self.get_drive_instance(resource, drive_id)
         if target_folder:
-            folder = self._get_folder_instance(drive_instance, target_folder)
+            folder = self.get_folder_instance(drive_instance, target_folder)
             items = folder.search(search_string)
         else:
             items = drive_instance.search(search_string)
@@ -665,7 +749,7 @@ class MSGraph:
     def download_file_from_share_link(
         self,
         share_url: str,
-        to_path: Union[Path, str, None] = None,
+        to_path: Optional[PathType] = None,
         name: Optional[str] = None,
     ) -> Path:
         """Downloads file from the share link.
@@ -674,7 +758,7 @@ class MSGraph:
 
         :param share_url: URL of the shared file
         :param to_path: Destination folder of the downloaded file,
-                defaults to the current directory.
+         defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
 
         .. code-block: robotframework
@@ -691,7 +775,7 @@ class MSGraph:
         # O365 doesn't support getting items from shared links yet
         base_url = self.client.protocol.service_url
         base_url = base_url[:-1] if base_url.endswith("/") else base_url
-        encoded_url = self._encode_share_url(share_url)
+        encoded_url = self._encode_url(share_url)
         endpoint = "/shares/{id}/driveItem"
         direct_url = "{}{}".format(base_url, endpoint.format(id=encoded_url))
 
@@ -707,10 +791,10 @@ class MSGraph:
     def upload_file_to_onedrive(
         self,
         file_path: str,
-        target_folder: Union[drive.Folder, str, None] = None,
+        target_folder: Optional[Union[drive_module.Folder, str]] = None,
         resource: Optional[str] = None,
         drive_id: Optional[str] = None,
-    ) -> drive.DriveItem:
+    ) -> drive_module.DriveItem:
         # pylint: disable=anomalous-backslash-in-string
         """Uploads a file to the specified OneDrive folder.
 
@@ -719,7 +803,7 @@ class MSGraph:
         \`List Files In Onedrive Folder\` for details.
 
         :param file_path: Path of the local file being uploaded.
-        :param target_folder: Path of the folder in OneDrive.
+        :param target_folder: Path of the folder in Onedrive_module.
         :param resource: Name of the resource if not using default.
         :param drive_id: Drive ID if not using default.
 
@@ -732,8 +816,8 @@ class MSGraph:
                 ...    /path/to/folder
         """  # noqa: W605
         self._require_authentication()
-        drive_instance = self._get_drive_instance(resource, drive_id)
-        folder = self._get_folder_instance(drive_instance, target_folder)
+        drive_instance = self.get_drive_instance(resource, drive_id)
+        folder = self.get_folder_instance(drive_instance, target_folder)
         return folder.upload_file(item=file_path)
 
     @keyword
@@ -742,22 +826,38 @@ class MSGraph:
     ) -> sharepoint.Site:
         """Returns a SharePoint site.
 
-        :param args: It accepts multiple ways of retrieving a site. See below.
-
-         get_site(host_name): the host_name e.g. 'contoso.sharepoint.com'
-         or 'root'.
-
-         get_site(site_id): the site_id is a comma separated string of
-         (host_name, site_collection_id, site_id).
-
-         get_site(host_name, path_to_site): host_name e.g. 'contoso.
-         sharepoint.com' and path_to_site is a url path (with a leading slash).
-
-         get_site(host_name, site_collection_id, site_id): a collection of
-         (host_name, site_collection_id, site_id).
-
+        :param args: The SharePoint site to retrieve, see documentation
+         for different methods of defining the site.
         :param resource: Name of the resource if not using default.
         :return: SharePoint Site instance.
+
+        There are multiple ways of retrieving a SharePoint site:
+
+        .. code-block: robotframework
+
+            *** Tasks ***
+            Get SharePoint site with host name
+                [Documentnation]    Use the host_name e.g.
+                ...    'contoso.sharepoint.com' or 'root'.
+                Get SharePoint site    contoso.sharepoint.com
+
+            Get SharePoint site with site ID
+                [Documentnation]    the site_id is a comma separated string
+                ...    of (host_name, site_collection_id, site_id).
+                Get SharePoint site
+                ...    contoso.sharepoint.com, 1234-1234, 5678-5678
+
+            Get SharePoint site with path to Site
+                [Documentnation]    host_name e.g. 'contoso.sharepoint.com'
+                ...    and path_to_site is a url path (with a leading slash).
+                Get SharePoint site    contoso.sharepoint.com
+                ...    /path/to/site
+
+            Get SharePoint site with separate ID args
+                [Documentnation]    the site ID broken into separate args
+                Get SharePoint site    contoso.sharepoint.com
+                ...    1234-1234
+                ...    5678-5678
 
         The return is of type Site and it has additional properties
         that can be accessed with dot-notation. See examples below.
@@ -782,14 +882,10 @@ class MSGraph:
         self,
         list_name: str,
         site: sharepoint.Site,
-    ) -> DataTable:
+    ) -> Table:
         # pylint: disable=anomalous-backslash-in-string
-        """Returns the items on a SharePoint list. The list is found
-        by it's display name.
-
-        This keyword tries to return the SharePoint list it as a table
-        (see ``RPA.Tables``), if ``RPA.Tables`` is not available in the
-        keyword's scope, the data will be returned as a list of dictionaries.
+        """Returns the items on a SharePoint list as a table. The list
+        is found by it's display name.
 
         :param list_name: Display name of the SharePoint list.
         :param site: Site instance obtained from \`Get Sharepoint Site\`.
@@ -806,12 +902,7 @@ class MSGraph:
         sp_items = sp_list.get_items(expand_fields=True)
         items = self._sharepoint_items_into_dict_list(sp_items)
 
-        if not Table:
-            self.logger.info(
-                "Tables in the response will be in a `dictionary` type, "
-                "because `RPA.Tables` library is not available in the scope."
-            )
-        return DataTable(items) if Table else items
+        return Table(items)
 
     @keyword
     def create_sharepoint_list(
@@ -851,7 +942,9 @@ class MSGraph:
         return site.create_list(list_data)
 
     @keyword
-    def list_sharepoint_site_drives(self, site: sharepoint.Site) -> list[drive.Drive]:
+    def list_sharepoint_site_drives(
+        self, site: sharepoint.Site
+    ) -> list[drive_module.Drive]:
         # pylint: disable=anomalous-backslash-in-string
         """Get a list of Drives available in the SharePoint Site.
 
@@ -880,9 +973,9 @@ class MSGraph:
         site: sharepoint.Site,
         include_folders: Optional[bool] = False,
         drive_id: Optional[str] = None,
-    ) -> list[drive.DriveItem]:
+    ) -> list[drive_module.DriveItem]:
         # pylint: disable=anomalous-backslash-in-string
-        """List files in the SharePoint Site drive.
+        """List files in the SharePoint Site drive_module.
 
         If the drive_id is not informed, the default Document Library will be used.
         The drive_id can be obtained from the keyword \`List Sharepoint Site Drives\`.
@@ -893,8 +986,8 @@ class MSGraph:
 
         :param site: Site instance obtained from \`Get Sharepoint Site\`.
         :param include_folders: Boolean indicating if should return folders as well.
-        :param drive_id: ID of the desired drive.
-        :return: List of DriveItems present in the Site Drive.
+        :param drive_id: ID of the desired drive_module.
+        :return: List of DriveItems present in the Site drive_module.
 
         .. code-block: robotframework
 
@@ -905,7 +998,7 @@ class MSGraph:
         """  # noqa: W605
         self._require_authentication()
         sp_drive = self._get_sharepoint_drive(site, drive_id)
-        folder = self._get_folder_instance(sp_drive)
+        folder = self.get_folder_instance(sp_drive)
         items = folder.get_items()
         if include_folders:
             return items
@@ -914,9 +1007,9 @@ class MSGraph:
     @keyword
     def download_file_from_sharepoint(
         self,
-        target_file: Union[drive.File, str],
+        target_file: Union[drive_module.File, str],
         site: sharepoint.Site,
-        to_path: Union[Path, str, None] = None,
+        to_path: Optional[PathType] = None,
         name: Optional[str] = None,
         drive_id: Optional[str] = None,
     ) -> Path:
@@ -928,7 +1021,7 @@ class MSGraph:
         :param target_file: `DriveItem` or file path of the desired file.
         :param site: Site instance obtained from \`Get Sharepoint Site\`.
         :param to_path: Destination folder of the downloaded file,
-                defaults to the current directory.
+         defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
         :param drive_id: Drive ID if not using default.
         :return: Path to the downloaded file.
@@ -952,5 +1045,5 @@ class MSGraph:
         """  # noqa: W605
         self._require_authentication()
         sp_drive = self._get_sharepoint_drive(site, drive_id)
-        file_instance = self._get_file_instance(target_file, sp_drive)
+        file_instance = self.get_file_instance(sp_drive, target_file)
         return self._download_file(file_instance, to_path, name)
