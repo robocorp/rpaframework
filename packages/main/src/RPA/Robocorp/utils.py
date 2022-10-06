@@ -6,7 +6,7 @@ import time
 import urllib.parse as urlparse
 from json import JSONDecodeError  # pylint: disable=no-name-in-module
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 import requests
@@ -103,7 +103,7 @@ class RequestsHTTPError(HTTPError):
 class Requests:
     """Wrapper over `requests` 3rd-party with error handling and retrying support."""
 
-    def __init__(self, route_prefix: str, default_headers: dict = None):
+    def __init__(self, route_prefix: str, default_headers: Optional[dict] = None):
         self._route_prefix = route_prefix
         self._default_headers = default_headers
 
@@ -213,9 +213,9 @@ class Requests:
         verb: Callable[..., requests.Response],
         url: str,
         *args,
-        _handle_error: Callable[[requests.Response], None] = None,
+        _handle_error: Optional[Callable[[requests.Response], None]] = None,
         _sensitive: bool = False,
-        headers: dict = None,
+        headers: Optional[dict] = None,
         **kwargs,
     ) -> requests.Response:
         # Absolute URLs override the prefix, so they are safe to be sent as they'll be
