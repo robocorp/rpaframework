@@ -705,6 +705,11 @@ class TestLibrary:
                 "code": "",
                 "message": "Not empty",
             },
+            {
+                "exception_type": "application",
+                "code": None,
+                "message": " ",  # gets discarded during API request
+            },
         ]
     )
     def release_exception(request):
@@ -731,7 +736,7 @@ class TestLibrary:
 
         exception_type = (exception or {}).pop("exception_type", None)
         if exception_type:
-            exception["type"] = Error(exception_type).value
+            exception["type"] = Error(exception_type.upper()).value
             exception.setdefault("code", None)
             exception.setdefault("message", None)
         else:

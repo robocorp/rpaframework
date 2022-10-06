@@ -5,6 +5,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Robocorp.WorkItems** (:pr:`655`): Fix behaviour when releasing FAILED
+  items with empty string `code` or `message`.
 - Library **RPA.Salesforce** (:issue:`570`): Added two new keyword ``Set Domain`` and
  ``Get Domain``. Enhanced documentation around the different ways to set a domain.
 
