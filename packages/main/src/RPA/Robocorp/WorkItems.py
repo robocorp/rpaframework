@@ -227,9 +227,15 @@ class RobocorpAdapter(BaseAdapter):
         body = {"workItemId": item_id, "state": state.value}
         if exception:
             for key, value in list(exception.items()):
-                if value is None:
+                # All values are (and should be) strings (if not `None`).
+                value = value.strip() if value else value
+                if value:
+                    exception[key] = value  # keep the stripped string value
+                else:
+                    # Exclude `None` & empty string values.
                     del exception[key]
             body["exception"] = exception
+
         log_func = logging.error if state == State.FAILED else logging.info
         log_func(
             "Releasing %s input work item %r into %r with exception: %s",
@@ -1808,8 +1814,8 @@ class WorkItems:
     @keyword
     def release_input_work_item(
         self,
-        state: State,
-        exception_type: Optional[Error] = None,
+        state: Union[State, str],
+        exception_type: Optional[Union[Error, str]] = None,
         code: Optional[str] = None,
         message: Optional[str] = None,
         _auto_release: bool = False,
@@ -1897,20 +1903,30 @@ class WorkItems:
         assert last_input.parent_id is None, "set state on output item"
         assert last_input.id is not None, "set state on input item with null ID"
 
+        # RF automatically converts string "DONE" to State.DONE object if only `State`
+        #  type annotation is used in the keyword definition.
         if not isinstance(state, State):
-            state = State(state)
+            # But since we support strings as well now, to stay compatible with Python
+            #  behaviour, a "COMPLETE" value is expected instead of "DONE".
+            state: str = state.upper()
+            state: str = State.DONE.value if state == "DONE" else state
+            state: State = State(state)
         exception = None
         if state is State.FAILED:
             if exception_type:
+                exception_type: Error = (
+                    exception_type
+                    if isinstance(exception_type, Error)
+                    else Error(exception_type.upper())
+                )
                 exception = {
-                    "type": Error(exception_type).value,
+                    "type": exception_type.value,
                     "code": code,
                     "message": message,
                 }
-            else:
-                if code or message:
-                    exc_types = ", ".join(list(Error.__members__))
-                    raise RuntimeError(f"Must specify failure type from: {exc_types}")
+            elif code or message:
+                exc_types = ", ".join(list(Error.__members__))
+                raise RuntimeError(f"Must specify failure type from: {exc_types}")
 
         self.adapter.release_input(last_input.id, state, exception=exception)
         last_input.state = state
