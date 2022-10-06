@@ -231,7 +231,7 @@ class RobocorpAdapter(BaseAdapter):
                 if value:
                     exception[key] = value.strip()
                 else:
-                    # Exclude None & empty string values.
+                    # Exclude `None` & empty string values.
                     del exception[key]
             body["exception"] = exception
 
