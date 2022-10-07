@@ -180,7 +180,7 @@ class DocumentAI:
         self,
         name: Union[EngineName, str],
         secret: Optional[str] = None,
-        vault: Optional[Dict] = None,
+        vault: Optional[Union[Dict, str]] = None,
         **kwargs,
     ):
         """<summary>
@@ -192,6 +192,9 @@ class DocumentAI:
             raise ValueError("choose between `secret` and `vault`")
         elif not (secret or vault):
             logging.warning("No `secret` or `vault` provided, relying on env vars.")
+        if isinstance(vault, str):
+            vault_name, vault_secret_key = vault.split(":")
+            vault = {vault_name: vault_secret_key}
 
         init_map = {
             # Google library needs to be Vault aware due to its internal way of
