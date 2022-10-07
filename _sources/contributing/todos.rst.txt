@@ -121,6 +121,16 @@ RPA.JavaAccessBridge:
    "360", "add keyword for taking screenshots of elements and window"
    "361", "implement proper XPath syntax support"
 
+RPA.MSGraph:
+============
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "124", "Implement a `TokenBackend` that uses Robocorp vault,"
+   "285", "Does this fail when we define a path we want?"
+
 RPA.Robocorp.Process:
 =====================
 

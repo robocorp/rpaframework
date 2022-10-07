@@ -1,0 +1,1282 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/iframeResizer.min.js"></script>
+        <script src="../../_static/custom.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Nanonets" href="../nanonets/index.html" />
+    <link rel="prev" title="MSGraph" href="index.html" />
+	<!-- Cookie consent -->
+<link async rel="stylesheet" type="text/css" href="../../_static/cookie.css"/>
+<script async src="../../_static/cookie.js"></script>
+<!-- Robocorp banner -->
+<link async rel="stylesheet" type="text/css" href="../../_static/robocorp.css"/>
+<script async src="../../_static/robocorp.js"></script>
+<!--            -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../base64ai/index.html">Base64AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_playwright/index.html">Browser.Playwright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_selenium/index.html">Browser.Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hubspot/index.html">HubSpot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../javaaccessbridge/index.html">JavaAccessBridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mfa/index.html">MFA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">MSGraph</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nanonets/index.html">Nanonets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_process/index.html">Robocorp.Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_vault/index.html">Robocorp.Vault</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_workitems/index.html">Robocorp.WorkItems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows/index.html">Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/todos.html">TODO</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">MSGraph</a> &raquo;</li>
+        
+      <li>Python API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/msgraph/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+	
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.MSGraph">
+<span id="msgraph"></span><h2>MSGraph<a class="headerlink" href="#module-RPA.MSGraph" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.MSGraph.MSGraph">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.MSGraph.</code><code class="sig-name descname">MSGraph</code><span class="sig-paren">(</span><em class="sig-param">client_id: Optional[str] = None</em>, <em class="sig-param">client_secret: Optional[str] = None</em>, <em class="sig-param">token: Optional[O365.utils.token.Token] = None</em>, <em class="sig-param">refresh_token: Optional[str] = None</em>, <em class="sig-param">redirect_uri: Optional[str] = None</em>, <em class="sig-param">vault_backend: bool = False</em>, <em class="sig-param">vault_secret: Optional[str] = None</em>, <em class="sig-param">file_backend_path: Optional[pathlib.Path] = WindowsPath('/temp')</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The <em>MSGraph</em> library wraps the <a class="reference external" href="https://pypi.org/project/O365">O365 package</a>, giving robots
+the ability to access the Microsoft Graph API programmatically.</p>
+<p>Graph’s API primarily authenticates via the OAuth 2.0 authorization code grant
+flow or OpenID Connect. This library exposes the OAuth 2.0 flow for robots to
+authenticate on behalf of users. A user must complete an initial authentication
+flow with the help of our <a class="reference external" href="https://robocorp.com/portal/">OAuth Graph Example Bot</a>.</p>
+<p>For best results, <a class="reference external" href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade">register an app</a> in Azure AD and configure it as so:</p>
+<ul class="simple">
+<li><p>The type is “Web App”.</p></li>
+<li><p>Redirect URI should be <code class="docutils literal notranslate"><span class="pre">https://login.microsoftonline.com/common/oauth2/nativeclient</span></code></p></li>
+<li><p>The app should be a multi-tenant app.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Accounts</span> <span class="pre">in</span> <span class="pre">any</span> <span class="pre">organizational</span> <span class="pre">directory</span></code> is checked.</p></li>
+<li><p>Has relevant permissions enabled, check the <a class="reference external" href="https://docs.microsoft.com/en-us/graph/permissions-reference">Microsoft Graph permissions reference</a>
+for a list of permissions available to MS Graph apps.</p></li>
+</ul>
+<dl class="attribute">
+<dt id="RPA.MSGraph.MSGraph.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.MSGraph.MSGraph.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.MSGraph.MSGraph.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.MSGraph.MSGraph.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.authorize_and_get_token">
+<code class="sig-name descname">authorize_and_get_token</code><span class="sig-paren">(</span><em class="sig-param">authorization_url: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.MSGraph.MSGraph.authorize_and_get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exchanges the OAuth authorization URL obtained from
+`Generate OAuth Authorization URL` for an access token. This
+library maintains the user access token for current requests
+and returns the refresh token to be stored in a secure location
+(e.g., the Robocorp Control Room Vault).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>authorization_url</strong> – The full URL retrieved by the user
+after completing authorization to Microsoft.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A refresh token which should be stored securely for
+future sessions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.configure_msgraph_client">
+<code class="sig-name descname">configure_msgraph_client</code><span class="sig-paren">(</span><em class="sig-param">client_id: str</em>, <em class="sig-param">client_secret: str</em>, <em class="sig-param">refresh_token: Optional[str] = None</em>, <em class="sig-param">redirect_uri: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Optional[str]<a class="headerlink" href="#RPA.MSGraph.MSGraph.configure_msgraph_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures the MS Graph client. If a refresh token is
+known, it can be provided to obtain a current user token
+to authenticate with. A new refresh token is returned
+if one is provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_id</strong> – Application client ID.</p></li>
+<li><p><strong>client_secret</strong> – Application client secret.</p></li>
+<li><p><strong>refresh_token</strong> – Authorization refresh token obtained from
+prior OAuth flows.</p></li>
+<li><p><strong>redirect_uri</strong> – Must be provided with client ID and client
+secret if not using the default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new refresh token if one was provided, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.create_sharepoint_list">
+<code class="sig-name descname">create_sharepoint_list</code><span class="sig-paren">(</span><em class="sig-param">list_data: dict</em>, <em class="sig-param">site: O365.sharepoint.Site</em><span class="sig-paren">)</span> &#x2192; O365.sharepoint.SharepointList<a class="headerlink" href="#RPA.MSGraph.MSGraph.create_sharepoint_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a sharepoint list and returns the instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_data</strong> – Dictionary with the data for the new list.</p></li>
+<li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>SharePoint List that was created.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">SharepointList</span></code> objects have additional properties that can be accessed
+with dot-notation, see examples below.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.download_file_from_onedrive">
+<code class="sig-name descname">download_file_from_onedrive</code><span class="sig-paren">(</span><em class="sig-param">target_file: Union[O365.drive.File, str], to_path: Union[str, pathlib.Path, None] = None, name: Optional[str] = None, resource: Optional[str] = None, drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_file_from_onedrive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a file from Onedrive_module.</p>
+<p>The downloaded file will be saved to a local path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_file</strong> – <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> or file path of the desired file.</p></li>
+<li><p><strong>to_path</strong> – Destination folder of the downloaded file,
+defaults to the current directory.</p></li>
+<li><p><strong>name</strong> – New name for the downloaded file, with or without extension.</p></li>
+<li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
+<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the downloaded file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.download_file_from_share_link">
+<code class="sig-name descname">download_file_from_share_link</code><span class="sig-paren">(</span><em class="sig-param">share_url: str</em>, <em class="sig-param">to_path: Union[str</em>, <em class="sig-param">pathlib.Path</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_file_from_share_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads file from the share link.</p>
+<p>The downloaded file will be saved to a local path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>share_url</strong> – URL of the shared file</p></li>
+<li><p><strong>to_path</strong> – Destination folder of the downloaded file,
+defaults to the current directory.</p></li>
+<li><p><strong>name</strong> – New name for the downloaded file, with or without extension.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.download_file_from_sharepoint">
+<code class="sig-name descname">download_file_from_sharepoint</code><span class="sig-paren">(</span><em class="sig-param">target_file: Union[O365.drive.File, str], site: O365.sharepoint.Site, to_path: Union[str, pathlib.Path, None] = None, name: Optional[str] = None, drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_file_from_sharepoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads file from SharePoint.</p>
+<p>The downloaded file will be saved to a local folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_file</strong> – <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> or file path of the desired file.</p></li>
+<li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
+<li><p><strong>to_path</strong> – Destination folder of the downloaded file,
+defaults to the current directory.</p></li>
+<li><p><strong>name</strong> – New name for the downloaded file, with or without extension.</p></li>
+<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the downloaded file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.download_folder_from_onedrive">
+<code class="sig-name descname">download_folder_from_onedrive</code><span class="sig-paren">(</span><em class="sig-param">target_folder: Union[O365.drive.Folder, str], to_path: Union[str, pathlib.Path, None] = None, resource: Optional[str] = None, drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_folder_from_onedrive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a folder from OneDrive with all of its contents,
+including subfolders.</p>
+<p>Caution when downloading big folder structures. The downloaded
+folder will be saved to a local path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_folder</strong> – <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> or path of the desired folder.</p></li>
+<li><p><strong>to_path</strong> – Destination folder where the download will be saved to,
+defaults to the current directory.</p></li>
+<li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
+<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the downloaded folder.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.find_onedrive_file">
+<code class="sig-name descname">find_onedrive_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraph.find_onedrive_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of files found in OneDrive based on the search string.
+If a folder is not specified, the search is done in the entire drive and
+may include items that were shared with the user. It is possible to pass
+`root` as the target folder in order to avoid this behavior.</p>
+<p>The files returned are <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> objects and they have additional
+properties that can be accessed with dot-notation, see
+`List Files In Onedrive Folder` for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>search_string</strong> – String used to search for file in Onedrive_module.
+Values may be matched across several fields including filename,
+metadata, and file content.</p></li>
+<li><p><strong>target_folder</strong> – Folder where to search for files.</p></li>
+<li><p><strong>include_folders</strong> – Boolean indicating if should return folders as well.</p></li>
+<li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
+<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of DriveItems found based on the search string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.generate_oauth_authorization_url">
+<code class="sig-name descname">generate_oauth_authorization_url</code><span class="sig-paren">(</span><em class="sig-param">client_id: Optional[str] = None</em>, <em class="sig-param">client_secret: Optional[str] = None</em>, <em class="sig-param">redirect_uri: Optional[str] = None</em>, <em class="sig-param">scopes: Optional[list] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.MSGraph.MSGraph.generate_oauth_authorization_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates an authorization URL which must be opened
+by the user to complete the OAuth flow. If no scopes
+are provided, the default scope is used which is all
+scopes defined in the `Get Scopes` keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_id</strong> – Application client ID.</p></li>
+<li><p><strong>client_secret</strong> – Application client secret.</p></li>
+<li><p><strong>redirect_uri</strong> – Can be provided with client ID and client
+secret if not using the default.</p></li>
+<li><p><strong>scopes</strong> – A list of scopes in the form required by the
+API. Use the helper function `Get scopes`.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL the user must follow to complete their portion
+of the OAuth flow.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.get_drive_instance">
+<code class="sig-name descname">get_drive_instance</code><span class="sig-paren">(</span><em class="sig-param">resource: Optional[str] = None</em>, <em class="sig-param">drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; O365.drive.Drive<a class="headerlink" href="#RPA.MSGraph.MSGraph.get_drive_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the specified drive from the specified resource. If
+either is not provided, defaults are returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
+<li><p><strong>drive_id</strong> – The Drive ID as a string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The requested <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.get_file_instance">
+<code class="sig-name descname">get_file_instance</code><span class="sig-paren">(</span><em class="sig-param">drive: Union[O365.drive.Drive, str], file: Union[O365.drive.File, str]</em><span class="sig-paren">)</span> &#x2192; O365.drive.File<a class="headerlink" href="#RPA.MSGraph.MSGraph.get_file_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <code class="docutils literal notranslate"><span class="pre">File</span></code> object from the provided drive. If a <code class="docutils literal notranslate"><span class="pre">File</span></code>
+object is provided, it is reobtained from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
+provided, will use the default drive.</p></li>
+<li><p><strong>file_path</strong> – A <code class="docutils literal notranslate"><span class="pre">File</span></code> object or path as a string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.get_folder_instance">
+<code class="sig-name descname">get_folder_instance</code><span class="sig-paren">(</span><em class="sig-param">drive: Union[O365.drive.Drive</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">folder: Union[O365.drive.Folder</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span> &#x2192; O365.drive.Folder<a class="headerlink" href="#RPA.MSGraph.MSGraph.get_folder_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a folder object from the provided drive. If a folder
+object is provided, it is reobtained from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
+provided, will use the default drive.</p></li>
+<li><p><strong>folder</strong> – A <code class="docutils literal notranslate"><span class="pre">Folder</span></code> object or folder path as a string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.get_items_from_sharepoint_list">
+<code class="sig-name descname">get_items_from_sharepoint_list</code><span class="sig-paren">(</span><em class="sig-param">list_name: str</em>, <em class="sig-param">site: O365.sharepoint.Site</em><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.MSGraph.MSGraph.get_items_from_sharepoint_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the items on a SharePoint list as a table. The list
+is found by it’s display name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_name</strong> – Display name of the SharePoint list.</p></li>
+<li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Table or list of dicts of the items.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.get_me">
+<code class="sig-name descname">get_me</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; O365.directory.User<a class="headerlink" href="#RPA.MSGraph.MSGraph.get_me" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the MS Graph object representing the currently logged
+in user. A <code class="docutils literal notranslate"><span class="pre">User</span></code> object is returned. Properties of the user can
+be accessed like so:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.get_scopes">
+<code class="sig-name descname">get_scopes</code><span class="sig-paren">(</span><em class="sig-param">*scopes: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.MSGraph.MSGraph.get_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the proper scope definitions based on the
+provided “scope helpers”, which are enumerated below.
+You can pass none to get all scopes. Basic is included
+in all other scopes. The provided object can be passed
+to the <code class="docutils literal notranslate"><span class="pre">scopes</span></code> parameter when calling
+`Generate OAuth Authorization URL`.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">basic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mailbox</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mailbox_shared</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message_send</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message_send_shared</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message_all</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message_all_shared</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address_book</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address_book_shared</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address_book_all</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address_book_all_shared</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calendar</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calendar_shared</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calendar_all</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calendar_shared_all</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">users</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">onedrive</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">onedrive_all</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sharepoint</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sharepoint_dl</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">settings_all</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tasks</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tasks_all</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">presence</span></code></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – Scopes requested. If left empty, all scopes
+will be returned.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of Scopes which can be passed to authorization
+keywords.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.get_sharepoint_site">
+<code class="sig-name descname">get_sharepoint_site</code><span class="sig-paren">(</span><em class="sig-param">*args: str</em>, <em class="sig-param">resource: Optional[str] = ''</em><span class="sig-paren">)</span> &#x2192; O365.sharepoint.Site<a class="headerlink" href="#RPA.MSGraph.MSGraph.get_sharepoint_site" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a SharePoint site.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – The SharePoint site to retrieve, see documentation
+for different methods of defining the site.</p></li>
+<li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>SharePoint Site instance.</p>
+</dd>
+</dl>
+<p>There are multiple ways of retrieving a SharePoint site:</p>
+<p>The return is of type Site and it has additional properties
+that can be accessed with dot-notation. See examples below.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.list_files_in_onedrive_folder">
+<code class="sig-name descname">list_files_in_onedrive_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraph.list_files_in_onedrive_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of files from the specified OneDrive folder.</p>
+<p>The files returned are <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> objects and they have additional
+properties that can be accessed with dot-notation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_folder</strong> – Path of the folder in Onedrive_module.</p></li>
+<li><p><strong>include_folders</strong> – Boolean indicating if should return folders as well.</p></li>
+<li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
+<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of DriveItems in the folder.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.list_files_in_sharepoint_site_drive">
+<code class="sig-name descname">list_files_in_sharepoint_site_drive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraph.list_files_in_sharepoint_site_drive" title="Permalink to this definition">¶</a></dt>
+<dd><p>List files in the SharePoint Site drive_module.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">drive_id</span></code> is not set, the default Document Library
+will be used. The <code class="docutils literal notranslate"><span class="pre">drive_id</span></code> can be obtained from the keyword
+`List Sharepoint Site Drives`.</p>
+<p>The files returned are <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> objects and they have additional
+properties that can be accessed with dot-notation, see
+`List Files In Onedrive Folder` for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
+<li><p><strong>include_folders</strong> – Boolean indicating if should return folders
+as well.</p></li>
+<li><p><strong>drive_id</strong> – ID of the desired drive_module.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of DriveItems present in the Site drive_module.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.list_sharepoint_site_drives">
+<code class="sig-name descname">list_sharepoint_site_drives</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraph.list_sharepoint_site_drives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of Drives available in the SharePoint Site.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of Drives present in the SharePoint Site.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.refresh_oauth_token">
+<code class="sig-name descname">refresh_oauth_token</code><span class="sig-paren">(</span><em class="sig-param">refresh_token: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.MSGraph.MSGraph.refresh_oauth_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refreshes the user token using the provided <code class="docutils literal notranslate"><span class="pre">refresh_token</span></code>.
+The user token is retained in the library and a new
+refresh token is returned. If no token is provided, this keyword
+assumes the Robocorp Vault is being used as a backend and attempts
+to refresh it based on that backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>refresh_token</strong> – The refresh token to use to refresh the
+session.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A refresh token which should be stored securely for
+future sessions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.search_for_users">
+<code class="sig-name descname">search_for_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraph.search_for_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of <code class="docutils literal notranslate"><span class="pre">User</span></code> objects from the Active Directory
+based on the provided search string.</p>
+<p><code class="docutils literal notranslate"><span class="pre">User</span></code> objects have additional properties that can be accessed
+with dot-notation, see `Get Me` for additional details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>search_string</strong> – Text to search for.</p></li>
+<li><p><strong>search_field</strong> – Where to search. Defaults to display name.</p></li>
+<li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraph.upload_file_to_onedrive">
+<code class="sig-name descname">upload_file_to_onedrive</code><span class="sig-paren">(</span><em class="sig-param">file_path: str</em>, <em class="sig-param">target_folder: Union[O365.drive.Folder</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">resource: Optional[str] = None</em>, <em class="sig-param">drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; O365.drive.DriveItem<a class="headerlink" href="#RPA.MSGraph.MSGraph.upload_file_to_onedrive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uploads a file to the specified OneDrive folder.</p>
+<p>The uploaded file is returned as a <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> object and it has
+additional properties that can be accessed with dot-notation, see
+`List Files In Onedrive Folder` for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – Path of the local file being uploaded.</p></li>
+<li><p><strong>target_folder</strong> – Path of the folder in Onedrive_module.</p></li>
+<li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
+<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.MSGraph.MSGraphAuthenticationError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.MSGraph.</code><code class="sig-name descname">MSGraphAuthenticationError</code><a class="headerlink" href="#RPA.MSGraph.MSGraphAuthenticationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error when authentication fails.</p>
+<dl class="attribute">
+<dt id="RPA.MSGraph.MSGraphAuthenticationError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.MSGraph.MSGraphAuthenticationError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraphAuthenticationError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraphAuthenticationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.MSGraph.MSGraphDownloadError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.MSGraph.</code><code class="sig-name descname">MSGraphDownloadError</code><a class="headerlink" href="#RPA.MSGraph.MSGraphDownloadError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error when download fails.</p>
+<dl class="attribute">
+<dt id="RPA.MSGraph.MSGraphDownloadError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.MSGraph.MSGraphDownloadError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.MSGraphDownloadError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraphDownloadError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.MSGraph.</code><code class="sig-name descname">RobocorpVaultTokenBackend</code><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">O365.utils.token.BaseTokenBackend</span></code></p>
+<p>A simple Token backend that saves to Robocorp vault</p>
+<dl class="method">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.check_token">
+<code class="sig-name descname">check_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.check_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional Abstract method to check for the token existence</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.delete_token">
+<code class="sig-name descname">delete_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.delete_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional Abstract method to delete the token</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.get_token">
+<code class="sig-name descname">get_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the token, stores it in the token property and returns it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.load_token">
+<em class="property">abstract </em><code class="sig-name descname">load_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.load_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method that will retrieve the oauth token</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.save_token">
+<em class="property">abstract </em><code class="sig-name descname">save_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.save_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method that will save the oauth token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.serializer">
+<code class="sig-name descname">serializer</code><em class="property"> = &lt;module 'json' from 'C:\\hostedtoolcache\\windows\\Python\\3.9.13\\x64\\lib\\json\\__init__.py'&gt;</em><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.serializer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.should_refresh_token">
+<code class="sig-name descname">should_refresh_token</code><span class="sig-paren">(</span><em class="sig-param">con=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.should_refresh_token" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This method is intended to be implemented for environments</dt><dd><p>where multiple Connection instances are running on parallel.</p>
+</dd>
+</dl>
+<p>This method should check if it’s time to refresh the token or not.
+The chosen backend can store a flag somewhere to answer this question.
+This can avoid race conditions between different instances trying to</p>
+<blockquote>
+<div><p>refresh the token at once, when only one should make the refresh.</p>
+</div></blockquote>
+<p>&gt; This is an example of how to achieve this:
+&gt; 1) Along with the token store a Flag
+&gt; 2) The first to see the Flag as True must transacionally update it
+&gt;     to False. This method then returns True and therefore the
+&gt;     connection will refresh the token.
+&gt; 3) The save_token method should be rewrited to also update the flag
+&gt;     back to True always.
+&gt; 4) Meanwhile between steps 2 and 3, any other token backend checking
+&gt;     for this method should get the flag with a False value.
+&gt;     This method should then wait and check again the flag.
+&gt;     This can be implemented as a call with an incremental backoff
+&gt;     factor to avoid too many calls to the database.
+&gt;     At a given point in time, the flag will return True.
+&gt;     Then this method should load the token and finally return False
+&gt;     signaling there is no need to refresh the token.</p>
+<p>If this returns True, then the Connection will refresh the token.
+If this returns False, then the Connection will NOT refresh the token.
+If this returns None, then this method already executed the refresh and therefore</p>
+<blockquote>
+<div><p>the Connection does not have to.</p>
+</div></blockquote>
+<p>By default this always returns True</p>
+<p>There is an example of this in the examples folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>con</strong> (<em>Connection</em>) – the connection that calls this method. This
+is passed because maybe the locking mechanism needs to refresh the
+token within the lock applied in this method.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool or None</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>True if the Connection can refresh the token
+False if the Connection should not refresh the token
+None if the token was refreshed and therefore the</p>
+<blockquote>
+<div><p>Connection should do nothing.</p>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.token">
+<em class="property">property </em><code class="sig-name descname">token</code><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.token" title="Permalink to this definition">¶</a></dt>
+<dd><p>The stored Token dict</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.MSGraph.RobocorpVaultTokenBackend.token_constructor">
+<code class="sig-name descname">token_constructor</code><a class="headerlink" href="#RPA.MSGraph.RobocorpVaultTokenBackend.token_constructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">O365.utils.token.Token</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.MSGraph.SharedItem">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.MSGraph.</code><code class="sig-name descname">SharedItem</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">url</em>, <em class="sig-param">con</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">O365.drive.File</span></code></p>
+<p>Simple class to add support for shared items.
+Inherits File only to bypass checks in the library.</p>
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.build_base_url">
+<code class="sig-name descname">build_base_url</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.build_base_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds the base url of this ApiComponent
+:param str resource: the resource to build the base url</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.build_url">
+<code class="sig-name descname">build_url</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.build_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discard arguments since we already have the correct URL.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">target=None</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asynchronously creates a copy of this DriveItem and all it’s
+child elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> (<em>drive.Folder</em><em> or </em><em>Drive</em>) – target location to move to.
+If it’s a drive the item will be moved to the root folder.</p></li>
+<li><p><strong>name</strong> – a new name for the copy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>CopyOperation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves this item to the Recycle Bin</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Success / Failure</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.download">
+<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">to_path=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">chunk_size='auto'</em>, <em class="sig-param">convert_to_pdf=False</em>, <em class="sig-param">output=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads this file to the local drive. Can download the
+file in chunks with multiple requests to the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>to_path</strong> (<em>str</em><em> or </em><em>Path</em>) – a path to store the downloaded file</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – the name you want the stored file to have.</p></li>
+<li><p><strong>chunk_size</strong> (<em>int</em>) – number of bytes to retrieve from
+each api call to the server. if auto, files bigger than
+SIZE_THERSHOLD will be chunked (into memory, will be
+however only 1 request)</p></li>
+<li><p><strong>convert_to_pdf</strong> (<em>bool</em>) – will try to download the converted pdf
+if file extension in ALLOWED_PDF_EXTENSIONS</p></li>
+<li><p><strong>output</strong> (<em>RawIOBase</em>) – (optional) an opened io object to write to.
+if set, the to_path and name will be ignored</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Success / Failure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#RPA.MSGraph.SharedItem.extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.get_drive">
+<code class="sig-name descname">get_drive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.get_drive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this item drive
+:return: Drive of this item
+:rtype: Drive or None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.get_parent">
+<code class="sig-name descname">get_parent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.get_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>the parent of this DriveItem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Parent of this item</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Drive or drive.Folder</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.get_permissions">
+<code class="sig-name descname">get_permissions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.get_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of DriveItemPermissions with the
+permissions granted for this DriveItem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of Permissions</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[DriveItemPermission]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.get_thumbnails">
+<code class="sig-name descname">get_thumbnails</code><span class="sig-paren">(</span><em class="sig-param">size=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.get_thumbnails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns this Item Thumbnails. Thumbnails are not supported on
+SharePoint Server 2016.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> – request only the specified size: ej: “small”,
+Custom 300x400 px: “c300x400”, Crop: “c300x400_Crop”</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Thumbnail Data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.get_version">
+<code class="sig-name descname">get_version</code><span class="sig-paren">(</span><em class="sig-param">version_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.get_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a version for specified id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a version object of specified id</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>DriveItemVersion</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.get_versions">
+<code class="sig-name descname">get_versions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.get_versions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of available versions for this item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of versions</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[DriveItemVersion]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.is_file">
+<em class="property">property </em><code class="sig-name descname">is_file</code><a class="headerlink" href="#RPA.MSGraph.SharedItem.is_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns if this DriveItem is a File</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.is_folder">
+<em class="property">property </em><code class="sig-name descname">is_folder</code><a class="headerlink" href="#RPA.MSGraph.SharedItem.is_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns if this DriveItem is a Folder</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.is_image">
+<em class="property">property </em><code class="sig-name descname">is_image</code><a class="headerlink" href="#RPA.MSGraph.SharedItem.is_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns if this DriveItem is a Image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.is_photo">
+<em class="property">property </em><code class="sig-name descname">is_photo</code><a class="headerlink" href="#RPA.MSGraph.SharedItem.is_photo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns if this DriveItem is a Photo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.move">
+<code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param">target</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves this DriveItem to another Folder.
+Can’t move between different Drives.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>target</strong> (<em>drive.Folder</em><em> or </em><em>DriveItem</em><em> or </em><em>str</em>) – a Folder, Drive item or Item Id string.
+If it’s a drive the item will be moved to the root folder.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Success / Failure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.new_query">
+<code class="sig-name descname">new_query</code><span class="sig-paren">(</span><em class="sig-param">attribute=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.new_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new query to filter results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>attribute</strong> (<em>str</em>) – attribute to apply the query for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new Query</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Query</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.q">
+<code class="sig-name descname">q</code><span class="sig-paren">(</span><em class="sig-param">attribute=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new query to filter results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>attribute</strong> (<em>str</em>) – attribute to apply the query for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new Query</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Query</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.set_base_url">
+<code class="sig-name descname">set_base_url</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.set_base_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the base urls for this ApiComponent
+:param str resource: the resource to build the base url</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.share_with_invite">
+<code class="sig-name descname">share_with_invite</code><span class="sig-paren">(</span><em class="sig-param">recipients</em>, <em class="sig-param">require_sign_in=True</em>, <em class="sig-param">send_email=True</em>, <em class="sig-param">message=None</em>, <em class="sig-param">share_type='view'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.share_with_invite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends an invitation to access or edit this DriveItem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>recipients</strong> (<em>list</em><em>[</em><em>str</em><em>] or </em><em>list</em><em>[</em><em>Contact</em><em>] or </em><em>str</em><em> or </em><em>Contact</em>) – a string or Contact or a list of the former
+representing recipients of this invitation</p></li>
+<li><p><strong>require_sign_in</strong> (<em>bool</em>) – if True the recipients
+invited will need to log in to view the contents</p></li>
+<li><p><strong>send_email</strong> (<em>bool</em>) – if True an email will be send to the recipients</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – the body text of the message emailed</p></li>
+<li><p><strong>share_type</strong> (<em>str</em>) – ‘view’: will allow to read the contents.
+‘edit’ will allow to modify the contents</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>link to share</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DriveItemPermission</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.share_with_link">
+<code class="sig-name descname">share_with_link</code><span class="sig-paren">(</span><em class="sig-param">share_type='view'</em>, <em class="sig-param">share_scope='anonymous'</em>, <em class="sig-param">share_password=None</em>, <em class="sig-param">share_expiration_date=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.share_with_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates or returns a link you can share with others</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>share_type</strong> (<em>str</em>) – ‘view’ to allow only view access,
+‘edit’ to allow editions, and
+‘embed’ to allow the DriveItem to be embedded</p></li>
+<li><p><strong>share_scope</strong> (<em>str</em>) – ‘anonymous’: anyone with the link can access.
+‘organization’ Only organization members can access</p></li>
+<li><p><strong>share_password</strong> (<em>str</em>) – sharing link password that is set by the creator. Optional.</p></li>
+<li><p><strong>share_expiration_date</strong> (<em>str</em>) – format of yyyy-MM-dd (e.g., 2022-02-14) that indicates the expiration date of the permission. Optional.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>link to share</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DriveItemPermission</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.MSGraph.SharedItem.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.SharedItem.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates this item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – all the properties to be updated.
+only name and description are allowed at the moment.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Success / Failure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+	<div id="cookieConsentContainer">
+  <div class="cookieDesc">
+    <p>
+      This website uses cookies to enhance the user experience.
+      By using the website you accept the use of cookies.
+      You can check our <a href="https://robocorp.com/privacy-policy">Privacy Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookieButton">
+    <a onClick="cookieDismiss();">
+      I understand
+    </a>
+  </div>
+</div>
+	<div id="robocorpBanner">
+  <div id="bannerContent">
+    <div id="bannerDismiss">
+      <a onClick="bannerDismiss();">
+        <img src="/_static/icon_cross.svg"/>
+      </a>
+    </div>
+    <a href="https://robocorp.com">
+      <img id="bannerLogo" src="https://cdn.robocorp.com/brand/Logo/Negative logo transparent/Negative logo transparent.svg"/>
+    </a>
+    <span id="bannerText">
+      The automation stack for RPA Framework.
+    </span>
+    <a id="bannerButton" href="https://robocorp.com/get-started">
+      Get started <img src="/_static/icon_arrow.svg"/>
+    </a>
+  </div>
+</div>
+
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../nanonets/index.html" class="btn btn-neutral float-right" title="Nanonets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="MSGraph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

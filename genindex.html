@@ -128,6 +128,7 @@
 <li class="toctree-l1"><a class="reference internal" href="libraries/javaaccessbridge/index.html">JavaAccessBridge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/json/index.html">JSON</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/mfa/index.html">MFA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/msgraph/index.html">MSGraph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/nanonets/index.html">Nanonets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/netsuite/index.html">Netsuite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/notifier/index.html">Notifier</a></li>
@@ -367,8 +368,6 @@
 </li>
       <li><a href="libraries/archive/python.html#RPA.Archive.Archive.archive_folder_with_zip">archive_folder_with_zip() (RPA.Archive.Archive method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserNotFoundError.args">args (RPA.Browser.Selenium.BrowserNotFoundError attribute)</a>
 
       <ul>
@@ -416,6 +415,10 @@
 </li>
         <li><a href="libraries/mfa/python.html#RPA.MFA.TOTPNotSetError.args">(RPA.MFA.TOTPNotSetError attribute)</a>
 </li>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraphAuthenticationError.args">(RPA.MSGraph.MSGraphAuthenticationError attribute)</a>
+</li>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraphDownloadError.args">(RPA.MSGraph.MSGraphDownloadError attribute)</a>
+</li>
         <li><a href="libraries/netsuite/python.html#RPA.Netsuite.NetsuiteAuthenticationError.args">(RPA.Netsuite.NetsuiteAuthenticationError attribute)</a>
 </li>
         <li><a href="libraries/robocorp_vault/python.html#RPA.Robocorp.Vault.RobocorpVaultError.args">(RPA.Robocorp.Vault.RobocorpVaultError attribute)</a>
@@ -429,6 +432,8 @@
         <li><a href="libraries/salesforce/python.html#RPA.Salesforce.SalesforceDomainChangeError.args">(RPA.Salesforce.SalesforceDomainChangeError attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.assert_page_contains">assert_page_contains() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.assert_page_not_contains">assert_page_not_contains() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
@@ -465,6 +470,8 @@
         <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.authorize">(RPA.Twitter.Twitter method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.authorize_and_get_token">authorize_and_get_token() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap">authorize_imap() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp">authorize_smtp() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
@@ -531,6 +538,10 @@
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserNotFoundError">BrowserNotFoundError</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.build_base_url">build_base_url() (RPA.MSGraph.SharedItem method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.build_url">build_url() (RPA.MSGraph.SharedItem method)</a>
+</li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.BUILTIN_PLURAL_MAP">BUILTIN_PLURAL_MAP (RPA.Hubspot.Hubspot attribute)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.BUILTIN_SINGULAR_MAP">BUILTIN_SINGULAR_MAP (RPA.Hubspot.Hubspot attribute)</a>
@@ -556,6 +567,8 @@
 </li>
       </ul></li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.change_file_extension">change_file_extension() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.check_token">check_token() (RPA.MSGraph.RobocorpVaultTokenBackend method)</a>
 </li>
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.JavaElement.checked">checked (RPA.JavaAccessBridge.JavaElement attribute)</a>
 </li>
@@ -659,6 +672,8 @@
 </li>
       <li><a href="libraries/robocorp_process/python.html#RPA.Robocorp.Process.ConfigurationType">ConfigurationType (class in RPA.Robocorp.Process)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.configure_msgraph_client">configure_msgraph_client() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.connect">connect() (RPA.FTP.FTP method)</a>
 
       <ul>
@@ -689,8 +704,12 @@
         <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.convert_textract_response_to_model">(RPA.Cloud.AWS.ServiceTextract method)</a>
 </li>
       </ul></li>
-      <li><a href="libraries/tables/python.html#RPA.Tables.Table.copy">copy() (RPA.Tables.Table method)</a>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.copy">copy() (RPA.MSGraph.SharedItem method)</a>
+
+      <ul>
+        <li><a href="libraries/tables/python.html#RPA.Tables.Table.copy">(RPA.Tables.Table method)</a>
 </li>
+      </ul></li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.copy_directory">copy_directory() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.copy_file">copy_file() (RPA.FileSystem.FileSystem method)</a>
@@ -787,6 +806,8 @@
 </li>
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.create_session">create_session() (RPA.HTTP.HTTP method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.create_sharepoint_list">create_sharepoint_list() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.create_table">create_table() (RPA.Tables.Tables method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.create_webdriver">create_webdriver() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
@@ -838,7 +859,11 @@
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.AccessType.DELEGATE">DELEGATE (RPA.Email.Exchange.AccessType attribute)</a>
 </li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.delete">delete() (RPA.FTP.FTP method)</a>
+
+      <ul>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.delete">(RPA.MSGraph.SharedItem method)</a>
 </li>
+      </ul></li>
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.delete_all_sessions">delete_all_sessions() (RPA.HTTP.HTTP method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.delete_bucket">delete_bucket() (RPA.Cloud.AWS.AWS method)</a>
@@ -887,6 +912,8 @@
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.delete_salesforce_object">delete_salesforce_object() (RPA.Salesforce.Salesforce method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.delete_token">delete_token() (RPA.MSGraph.RobocorpVaultTokenBackend method)</a>
+</li>
       <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.delete_work_item_variables">delete_work_item_variables() (RPA.Robocorp.WorkItems.WorkItems method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.describe_redshift_table">describe_redshift_table() (RPA.Cloud.AWS.AWS method)</a>
@@ -921,14 +948,14 @@
 </li>
       <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceTextAnalytics.detect_language">detect_language() (RPA.Cloud.Azure.ServiceTextAnalytics method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.detect_sentiment">detect_sentiment() (RPA.Cloud.AWS.AWS method)</a>
 
       <ul>
         <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend.detect_sentiment">(RPA.Cloud.AWS.ServiceComprehend method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Dialect">Dialect (class in RPA.Tables)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.dimensions">dimensions() (RPA.Tables.Table property)</a>
@@ -1002,13 +1029,23 @@
       <ul>
         <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.download">(RPA.HTTP.HTTP method)</a>
 </li>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.download">(RPA.MSGraph.SharedItem method)</a>
+</li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.download_file_from_onedrive">download_file_from_onedrive() (RPA.MSGraph.MSGraph method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.download_file_from_share_link">download_file_from_share_link() (RPA.MSGraph.MSGraph method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.download_file_from_sharepoint">download_file_from_sharepoint() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.download_files">download_files() (RPA.Cloud.AWS.AWS method)</a>
 
       <ul>
         <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.download_files">(RPA.Cloud.AWS.ServiceS3 method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.download_folder_from_onedrive">download_folder_from_onedrive() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.drag_and_drop">drag_and_drop() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.driver">driver() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride property)</a>
@@ -1065,10 +1102,10 @@
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.event_firing_webdriver">event_firing_webdriver() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Dialect.Excel">Excel (RPA.Tables.Dialect attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Dialect.ExcelTab">ExcelTab (RPA.Tables.Dialect attribute)</a>
 </li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange">Exchange (class in RPA.Email.Exchange)</a>
@@ -1109,6 +1146,8 @@
 
       <ul>
         <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.extension">(RPA.Excel.Files.XlsxWorkbook property)</a>
+</li>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.extension">(RPA.MSGraph.SharedItem property)</a>
 </li>
       </ul></li>
       <li><a href="libraries/archive/python.html#RPA.Archive.Archive.extract_archive">extract_archive() (RPA.Archive.Archive method)</a>
@@ -1191,6 +1230,8 @@
 </li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.find_first_available_row">find_first_available_row() (RPA.Excel.Application.Application method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.find_onedrive_file">find_onedrive_file() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/json/python.html#RPA.JSON.RPAFilter.find_or_create">find_or_create() (RPA.JSON.RPAFilter method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.find_table_rows">find_table_rows() (RPA.Tables.Tables method)</a>
@@ -1226,6 +1267,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/crypto/python.html#RPA.Crypto.Crypto.generate_key">generate_key() (RPA.Crypto.Crypto method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.generate_oauth_authorization_url">generate_oauth_authorization_url() (RPA.MSGraph.MSGraph method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.generate_presigned_url">generate_presigned_url() (RPA.Cloud.AWS.AWS method)</a>
 
@@ -1333,6 +1376,10 @@
       </ul></li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.get_domain">get_domain() (RPA.Salesforce.Salesforce method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.get_drive">get_drive() (RPA.MSGraph.SharedItem method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.get_drive_instance">get_drive_instance() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_element">get_element() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions">get_element_actions() (RPA.JavaAccessBridge.JavaAccessBridge method)</a>
@@ -1373,6 +1420,8 @@
 </li>
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.get_file_for_streaming_upload">get_file_for_streaming_upload() (RPA.HTTP.HTTP static method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.get_file_instance">get_file_instance() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.get_file_modified_date">get_file_modified_date() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.get_file_name">get_file_name() (RPA.FileSystem.FileSystem method)</a>
@@ -1383,9 +1432,13 @@
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.get_file_stem">get_file_stem() (RPA.FileSystem.FileSystem method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.get_folder_instance">get_folder_instance() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.get_folder_list">get_folder_list() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.get_input_work_item">get_input_work_item() (RPA.Robocorp.WorkItems.WorkItems method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.get_items_from_sharepoint_list">get_items_from_sharepoint_list() (RPA.MSGraph.MSGraph method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.Selenium.get_keyword_arguments">get_keyword_arguments() (RPA.Browser.Selenium.Selenium method)</a>
 
@@ -1471,8 +1524,12 @@
         <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_machine_name">(RPA.Desktop.Windows.Windows method)</a>
 </li>
       </ul></li>
-      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.get_me">get_me() (RPA.Twitter.Twitter method)</a>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.get_me">get_me() (RPA.MSGraph.MSGraph method)</a>
+
+      <ul>
+        <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.get_me">(RPA.Twitter.Twitter method)</a>
 </li>
+      </ul></li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_memory_stats">get_memory_stats() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 
       <ul>
@@ -1499,7 +1556,11 @@
         <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.get_pages_and_text">(RPA.Cloud.AWS.ServiceTextract method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.get_parent">get_parent() (RPA.MSGraph.SharedItem method)</a>
+</li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.get_part_filename">get_part_filename() (in module RPA.Email.ImapSmtp)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.get_permissions">get_permissions() (RPA.MSGraph.SharedItem method)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.get_pipeline">get_pipeline() (RPA.Hubspot.Hubspot method)</a>
 </li>
@@ -1541,6 +1602,8 @@
 </li>
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.get_scaled_coordinate">get_scaled_coordinate() (in module RPA.JavaAccessBridge)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.get_scopes">get_scopes() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP.get_scroll_position">get_scroll_position() (RPA.SAP.SAP method)</a>
 </li>
       <li><a href="libraries/robocorp_vault/python.html#RPA.Robocorp.Vault.BaseSecretManager.get_secret">get_secret() (RPA.Robocorp.Vault.BaseSecretManager method)</a>
@@ -1560,6 +1623,8 @@
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_timeout">get_selenium_timeout() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_session_id">get_session_id() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.get_sharepoint_site">get_sharepoint_site() (RPA.MSGraph.MSGraph method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_slice">get_slice() (RPA.Tables.Table method)</a>
 </li>
@@ -1591,11 +1656,15 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_text">get_text() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.get_thumbnails">get_thumbnails() (RPA.MSGraph.SharedItem method)</a>
+</li>
       <li><a href="libraries/mfa/python.html#RPA.MFA.MFA.get_time_based_otp">get_time_based_otp() (RPA.MFA.MFA method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_timeout">get_timeout() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_title">get_title() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.get_token">get_token() (RPA.MSGraph.RobocorpVaultTokenBackend method)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.get_user">get_user() (RPA.Hubspot.Hubspot method)</a>
 </li>
@@ -1621,7 +1690,11 @@
 </li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.get_vendors">get_vendors() (RPA.Netsuite.Netsuite method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.get_version">get_version() (RPA.MSGraph.SharedItem method)</a>
+</li>
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.JavaAccessBridge.get_version_info">get_version_info() (RPA.JavaAccessBridge.JavaAccessBridge method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.get_versions">get_versions() (RPA.MSGraph.SharedItem method)</a>
 </li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.get_welcome_message">get_welcome_message() (RPA.FTP.FTP method)</a>
 </li>
@@ -1835,10 +1908,10 @@
         <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.insert_image">(RPA.Excel.Files.XlsxWorkbook method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.insert_image_to_worksheet">insert_image_to_worksheet() (RPA.Excel.Files.Files method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.instance">instance() (RPA.Salesforce.Salesforce property)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.BatchMode.INVALID">INVALID (RPA.Hubspot.BatchMode attribute)</a>
@@ -1879,15 +1952,23 @@
         <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.is_element_visible">(RPA.Desktop.Windows.Windows method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.is_file">is_file() (RPA.MSGraph.SharedItem property)</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_file_empty">is_file_empty() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_file_not_empty">is_file_not_empty() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.is_folder">is_folder() (RPA.MSGraph.SharedItem property)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.is_image">is_image() (RPA.MSGraph.SharedItem property)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.Selenium.is_list_selected">is_list_selected() (RPA.Browser.Selenium.Selenium method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.Selenium.is_list_selection">is_list_selection() (RPA.Browser.Selenium.Selenium method)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.Selenium.is_location">is_location() (RPA.Browser.Selenium.Selenium method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.is_photo">is_photo() (RPA.MSGraph.SharedItem property)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.Selenium.is_radio_button_selected">is_radio_button_selected() (RPA.Browser.Selenium.Selenium method)</a>
 </li>
@@ -2007,6 +2088,10 @@
         <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.list_files_in_directory">(RPA.FileSystem.FileSystem method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.list_files_in_onedrive_folder">list_files_in_onedrive_folder() (RPA.MSGraph.MSGraph method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.list_files_in_sharepoint_site_drive">list_files_in_sharepoint_site_drive() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange.list_messages">list_messages() (RPA.Email.Exchange.Exchange method)</a>
 
       <ul>
@@ -2045,14 +2130,16 @@
       </ul></li>
       <li><a href="libraries/robocorp_process/python.html#RPA.Robocorp.Process.Process.list_run_artifacts">list_run_artifacts() (RPA.Robocorp.Process.Process method)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.list_sharepoint_site_drives">list_sharepoint_site_drives() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech.list_supported_voices">list_supported_voices() (RPA.Cloud.Azure.ServiceSpeech method)</a>
 </li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange.list_unread_messages">list_unread_messages() (RPA.Email.Exchange.Exchange method)</a>
 </li>
-      <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.list_work_item_files">list_work_item_files() (RPA.Robocorp.WorkItems.WorkItems method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.list_work_item_files">list_work_item_files() (RPA.Robocorp.WorkItems.WorkItems method)</a>
+</li>
       <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.list_work_item_variables">list_work_item_variables() (RPA.Robocorp.WorkItems.WorkItems method)</a>
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.list_worksheets">list_worksheets() (RPA.Excel.Files.Files method)</a>
@@ -2075,6 +2162,8 @@
         <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.RobocorpAdapter.load_payload">(RPA.Robocorp.WorkItems.RobocorpAdapter method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.load_token">load_token() (RPA.MSGraph.RobocorpVaultTokenBackend method)</a>
+</li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.Selenium.location">location() (RPA.Browser.Selenium.Selenium property)</a>
 </li>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.location_should_be">location_should_be() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
@@ -2171,10 +2260,12 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_image">mouse_click_image() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.move">move() (RPA.MSGraph.SharedItem method)</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.move_directory">move_directory() (RPA.FileSystem.FileSystem method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/outlook_application/python.html#RPA.Outlook.Application.Application.move_emails">move_emails() (RPA.Outlook.Application.Application method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.move_file">move_file() (RPA.FileSystem.FileSystem method)</a>
@@ -2213,6 +2304,12 @@
 </li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_unread">msg_unread (RPA.Email.ImapSmtp.Action attribute)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph">MSGraph (class in RPA.MSGraph)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraphAuthenticationError">MSGraphAuthenticationError</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraphDownloadError">MSGraphDownloadError</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File.mtime">mtime (RPA.FileSystem.File attribute)</a>
 </li>
   </ul></td>
@@ -2249,6 +2346,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.new_query">new_query() (RPA.MSGraph.SharedItem method)</a>
+</li>
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.JavaElement.node">node (RPA.JavaAccessBridge.JavaElement attribute)</a>
 </li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.NoRecipientsError">NoRecipientsError</a>
@@ -2513,10 +2612,14 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.q">q() (RPA.MSGraph.SharedItem method)</a>
+</li>
       <li><a href="libraries/database/python.html#RPA.Database.Database.query">query() (RPA.Database.Database method)</a>
 </li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.quit">quit() (RPA.FTP.FTP method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.quit_application">quit_application() (RPA.Desktop.Windows.Windows method)</a>
 
       <ul>
@@ -2568,6 +2671,8 @@
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.RedshiftDatabaseError">RedshiftDatabaseError</a>
 </li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.OAuth2Creds.refresh">refresh() (RPA.Email.Exchange.OAuth2Creds method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.refresh_oauth_token">refresh_oauth_token() (RPA.MSGraph.MSGraph method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.refresh_window">refresh_window() (RPA.Desktop.Windows.Windows method)</a>
 </li>
@@ -2705,6 +2810,8 @@
 </li>
       <li><a href="libraries/robocorp_vault/python.html#RPA.Robocorp.Vault.RobocorpVaultError">RobocorpVaultError</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend">RobocorpVaultTokenBackend (class in RPA.MSGraph)</a>
+</li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.ROBOT_AUTO_KEYWORDS">ROBOT_AUTO_KEYWORDS (RPA.Hubspot.Hubspot attribute)</a>
 
       <ul>
@@ -2763,6 +2870,8 @@
         <li><a href="libraries/json/python.html#RPA.JSON.JSON.ROBOT_LIBRARY_DOC_FORMAT">(RPA.JSON.JSON attribute)</a>
 </li>
         <li><a href="libraries/mfa/python.html#RPA.MFA.MFA.ROBOT_LIBRARY_DOC_FORMAT">(RPA.MFA.MFA attribute)</a>
+</li>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.ROBOT_LIBRARY_DOC_FORMAT">(RPA.MSGraph.MSGraph attribute)</a>
 </li>
         <li><a href="libraries/nanonets/python.html#RPA.Nanonets.Nanonets.ROBOT_LIBRARY_DOC_FORMAT">(RPA.Nanonets.Nanonets attribute)</a>
 </li>
@@ -2843,6 +2952,8 @@
         <li><a href="libraries/json/python.html#RPA.JSON.JSON.ROBOT_LIBRARY_SCOPE">(RPA.JSON.JSON attribute)</a>
 </li>
         <li><a href="libraries/mfa/python.html#RPA.MFA.MFA.ROBOT_LIBRARY_SCOPE">(RPA.MFA.MFA attribute)</a>
+</li>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.ROBOT_LIBRARY_SCOPE">(RPA.MSGraph.MSGraph attribute)</a>
 </li>
         <li><a href="libraries/nanonets/python.html#RPA.Nanonets.Nanonets.ROBOT_LIBRARY_SCOPE">(RPA.Nanonets.Nanonets attribute)</a>
 </li>
@@ -2934,6 +3045,8 @@
       <li><a href="libraries/json/python.html#module-RPA.JSON">RPA.JSON (module)</a>
 </li>
       <li><a href="libraries/mfa/python.html#module-RPA.MFA">RPA.MFA (module)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#module-RPA.MSGraph">RPA.MSGraph (module)</a>
 </li>
       <li><a href="libraries/nanonets/python.html#module-RPA.Nanonets">RPA.Nanonets (module)</a>
 </li>
@@ -3051,6 +3164,8 @@
         <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.RobocorpAdapter.save_payload">(RPA.Robocorp.WorkItems.RobocorpAdapter method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.save_token">save_token() (RPA.MSGraph.RobocorpVaultTokenBackend method)</a>
+</li>
       <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.save_work_item">save_work_item() (RPA.Robocorp.WorkItems.WorkItems method)</a>
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.save_workbook">save_workbook() (RPA.Excel.Files.Files method)</a>
@@ -3074,6 +3189,8 @@
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP.scroll">scroll() (RPA.SAP.SAP method)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.search_for_objects">search_for_objects() (RPA.Hubspot.Hubspot method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.search_for_users">search_for_users() (RPA.MSGraph.MSGraph method)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.SearchLexer">SearchLexer (class in RPA.Hubspot)</a>
 </li>
@@ -3130,6 +3247,8 @@
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP.send_vkey">send_vkey() (RPA.SAP.SAP method)</a>
 </li>
       <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceTextAnalytics.sentiment_analyze">sentiment_analyze() (RPA.Cloud.Azure.ServiceTextAnalytics method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.serializer">serializer (RPA.MSGraph.RobocorpVaultTokenBackend attribute)</a>
 </li>
       <li><a href="libraries/robocorp_vault/python.html#RPA.Robocorp.Vault.FileSecrets.SERIALIZERS">SERIALIZERS (RPA.Robocorp.Vault.FileSecrets attribute)</a>
 </li>
@@ -3218,6 +3337,8 @@
       <li><a href="libraries/database/python.html#RPA.Database.Database.set_auto_commit">set_auto_commit() (RPA.Database.Database method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.set_automation_speed">set_automation_speed() (RPA.Desktop.Windows.Windows method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.set_base_url">set_base_url() (RPA.MSGraph.SharedItem method)</a>
 </li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.set_binary_mode">set_binary_mode() (RPA.FTP.FTP method)</a>
 </li>
@@ -3369,12 +3490,20 @@
 </li>
       <li><a href="libraries/crypto/python.html#RPA.Crypto.Hash.SHA512_256">SHA512_256 (RPA.Crypto.Hash attribute)</a>
 </li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.share_with_invite">share_with_invite() (RPA.MSGraph.SharedItem method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.share_with_link">share_with_link() (RPA.MSGraph.SharedItem method)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem">SharedItem (class in RPA.MSGraph)</a>
+</li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.sheetnames">sheetnames() (RPA.Excel.Files.XlsWorkbook property)</a>
 
       <ul>
         <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.sheetnames">(RPA.Excel.Files.XlsxWorkbook property)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.should_refresh_token">should_refresh_token() (RPA.MSGraph.RobocorpVaultTokenBackend method)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.show_region_in_image">show_region_in_image() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.JavaAccessBridge.shutdown_jab">shutdown_jab() (RPA.JavaAccessBridge.JavaAccessBridge method)</a>
@@ -3489,14 +3618,14 @@
 </li>
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.to_json">to_json() (RPA.HTTP.HTTP method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.to_list">to_list() (in module RPA.Tables)</a>
 
       <ul>
         <li><a href="libraries/tables/python.html#RPA.Tables.Table.to_list">(RPA.Tables.Table method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.to_speed">to_speed() (in module RPA.Desktop.Windows)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.ExtendedFilter.to_str">to_str() (RPA.Hubspot.ExtendedFilter method)</a>
@@ -3504,6 +3633,10 @@
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down">toggle_drop_down() (RPA.JavaAccessBridge.JavaAccessBridge method)</a>
 </li>
       <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.token">token (RPA.Cloud.Azure.AzureBase attribute)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.token">token() (RPA.MSGraph.RobocorpVaultTokenBackend property)</a>
+</li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.token_constructor">token_constructor (RPA.MSGraph.RobocorpVaultTokenBackend attribute)</a>
 </li>
       <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.TOKEN_LIFESPAN">TOKEN_LIFESPAN (RPA.Cloud.Azure.AzureBase attribute)</a>
 </li>
@@ -3568,6 +3701,8 @@
       <li><a href="libraries/json/python.html#RPA.JSON.RPAFilter.update">update() (RPA.JSON.RPAFilter method)</a>
 
       <ul>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.update">(RPA.MSGraph.SharedItem method)</a>
+</li>
         <li><a href="libraries/robocorp_vault/python.html#RPA.Robocorp.Vault.Secret.update">(RPA.Robocorp.Vault.Secret method)</a>
 </li>
       </ul></li>
@@ -3591,6 +3726,8 @@
         <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.upload_file">(RPA.Cloud.AWS.ServiceS3 method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.upload_file_to_onedrive">upload_file_to_onedrive() (RPA.MSGraph.MSGraph method)</a>
+</li>
       <li><a href="libraries/robocorp_process/python.html#RPA.Robocorp.Process.Process.upload_file_to_s3">upload_file_to_s3() (RPA.Robocorp.Process.Process method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.upload_files">upload_files() (RPA.Cloud.AWS.AWS method)</a>
@@ -3731,6 +3868,10 @@
         <li><a href="libraries/mfa/python.html#RPA.MFA.HOTPNotSetError.with_traceback">(RPA.MFA.HOTPNotSetError method)</a>
 </li>
         <li><a href="libraries/mfa/python.html#RPA.MFA.TOTPNotSetError.with_traceback">(RPA.MFA.TOTPNotSetError method)</a>
+</li>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraphAuthenticationError.with_traceback">(RPA.MSGraph.MSGraphAuthenticationError method)</a>
+</li>
+        <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraphDownloadError.with_traceback">(RPA.MSGraph.MSGraphDownloadError method)</a>
 </li>
         <li><a href="libraries/netsuite/python.html#RPA.Netsuite.NetsuiteAuthenticationError.with_traceback">(RPA.Netsuite.NetsuiteAuthenticationError method)</a>
 </li>
