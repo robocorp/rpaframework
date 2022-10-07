@@ -79,7 +79,7 @@ class MSGraph:
     - The app should be a multi-tenant app.
     - ``Accounts in any organizational directory`` is checked.
     - Has relevant permissions enabled, check the `Microsoft Graph permissions reference`_
-    for a list of permissions available to MS Graph apps.
+      for a list of permissions available to MS Graph apps.
 
     .. _O365 package: https://pypi.org/project/O365
     .. _OAuth Graph Example Bot: https://robocorp.com/portal/
@@ -176,7 +176,7 @@ class MSGraph:
 
         :param resource: Name of the resource if not using default.
         :param drive_id: The Drive ID as a string.
-        :return: The requested Drive object.
+        :return: The requested ``Drive`` object.
 
         .. code-block: robotframework
 
@@ -209,9 +209,9 @@ class MSGraph:
         """Returns a folder object from the provided drive. If a folder
         object is provided, it is reobtained from the API.
 
-        :param drive: A Drive object or Drive ID as a string. If not
+        :param drive: A ``Drive`` object or Drive ID as a string. If not
          provided, will use the default drive.
-        :param folder: A Folder object or folder path as a string.
+        :param folder: A ``Folder`` object or folder path as a string.
 
         .. code-block: robotframework
 
@@ -235,12 +235,12 @@ class MSGraph:
         drive: DriveType,
         file: Union[drive_module.File, str],
     ) -> drive_module.File:
-        """Returns a file object from the provided drive. If a File
+        """Returns a ``File`` object from the provided drive. If a ``File``
         object is provided, it is reobtained from the API.
 
-        :param drive: A Drive object or Drive ID as a string. If not
+        :param drive: A ``Drive`` object or Drive ID as a string. If not
          provided, will use the default drive.
-        :param file_path: A Folder object or folder path as a string.
+        :param file_path: A ``File`` object or path as a string.
 
         .. code-block: robotframework
 
@@ -436,7 +436,7 @@ class MSGraph:
         :param redirect_uri: Can be provided with client ID and client
          secret if not using the default.
         :param scopes: A list of scopes in the form required by the
-         API. Use the helper function ``G
+         API. Use the helper function \`Get scopes\`.
         :return: The URL the user must follow to complete their portion
          of the OAuth flow.
         """  # noqa: W605
@@ -508,7 +508,7 @@ class MSGraph:
     @keyword
     def get_me(self) -> directory.User:
         """Returns the MS Graph object representing the currently logged
-        in user. A User object is returned. Properties of the user can
+        in user. A ``User`` object is returned. Properties of the user can
         be accessed like so:
 
         .. code-block: robotframework
@@ -541,10 +541,10 @@ class MSGraph:
         resource: str = USERS_RESOURCE,
     ) -> list[directory.User]:
         # pylint: disable=anomalous-backslash-in-string
-        """Returns a list of user objects from the Active Directory
+        """Returns a list of ``User`` objects from the Active Directory
         based on the provided search string.
 
-        User objects have additional properties that can be accessed
+        ``User`` objects have additional properties that can be accessed
         with dot-notation, see \`Get Me\` for additional details.
 
         :param search_string: Text to search for.
@@ -584,7 +584,7 @@ class MSGraph:
     ) -> list[drive_module.DriveItem]:
         """Returns a list of files from the specified OneDrive folder.
 
-        The files returned are DriveItem objects and they have additional
+        The files returned are ``DriveItem`` objects and they have additional
         properties that can be accessed with dot-notation.
 
         :param target_folder: Path of the folder in Onedrive_module.
@@ -633,7 +633,7 @@ class MSGraph:
 
         The downloaded file will be saved to a local path.
 
-        :param target_file: `DriveItem` or file path of the desired file.
+        :param target_file: ``DriveItem`` or file path of the desired file.
         :param to_path: Destination folder of the downloaded file,
          defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
@@ -669,13 +669,13 @@ class MSGraph:
         resource: Optional[str] = None,
         drive_id: Optional[str] = None,
     ) -> Path:
-        """Downloads a folder from OneDrive with all of it's contents,
+        """Downloads a folder from OneDrive with all of its contents,
         including subfolders.
 
         Caution when downloading big folder structures. The downloaded
         folder will be saved to a local path.
 
-        :param target_folder: `DriveItem` or path of the desired folder.
+        :param target_folder: ``DriveItem`` or path of the desired folder.
         :param to_path: Destination folder where the download will be saved to,
          defaults to the current directory.
         :param resource: Name of the resource if not using default.
@@ -715,7 +715,7 @@ class MSGraph:
         may include items that were shared with the user. It is possible to pass
         \`root\` as the target folder in order to avoid this behavior.
 
-        The files returned are DriveItem objects and they have additional
+        The files returned are ``DriveItem`` objects and they have additional
         properties that can be accessed with dot-notation, see
         \`List Files In Onedrive Folder\` for details.
 
@@ -798,7 +798,7 @@ class MSGraph:
         # pylint: disable=anomalous-backslash-in-string
         """Uploads a file to the specified OneDrive folder.
 
-        The uploaded file is returned as a DriveItem object and it has
+        The uploaded file is returned as a ``DriveItem`` object and it has
         additional properties that can be accessed with dot-notation, see
         \`List Files In Onedrive Folder\` for details.
 
@@ -917,7 +917,7 @@ class MSGraph:
         :param site: Site instance obtained from \`Get Sharepoint Site\`.
         :return: SharePoint List that was created.
 
-        List objects have additional properties that can be accessed
+        ``SharepointList`` objects have additional properties that can be accessed
         with dot-notation, see examples below.
 
         .. code-block: robotframework
@@ -977,15 +977,17 @@ class MSGraph:
         # pylint: disable=anomalous-backslash-in-string
         """List files in the SharePoint Site drive_module.
 
-        If the drive_id is not informed, the default Document Library will be used.
-        The drive_id can be obtained from the keyword \`List Sharepoint Site Drives\`.
+        If the ``drive_id`` is not set, the default Document Library
+        will be used. The ``drive_id`` can be obtained from the keyword
+        \`List Sharepoint Site Drives\`.
 
-        The files returned are DriveItem objects and they have additional
+        The files returned are ``DriveItem`` objects and they have additional
         properties that can be accessed with dot-notation, see
         \`List Files In Onedrive Folder\` for details.
 
         :param site: Site instance obtained from \`Get Sharepoint Site\`.
-        :param include_folders: Boolean indicating if should return folders as well.
+        :param include_folders: Boolean indicating if should return folders
+         as well.
         :param drive_id: ID of the desired drive_module.
         :return: List of DriveItems present in the Site drive_module.
 
@@ -1018,7 +1020,7 @@ class MSGraph:
 
         The downloaded file will be saved to a local folder.
 
-        :param target_file: `DriveItem` or file path of the desired file.
+        :param target_file: ``DriveItem`` or file path of the desired file.
         :param site: Site instance obtained from \`Get Sharepoint Site\`.
         :param to_path: Destination folder of the downloaded file,
          defaults to the current directory.

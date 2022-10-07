@@ -10,6 +10,14 @@ Release notes
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+17.4.0 - 07 Oct 2022
+--------------------
+
+- New library **RPA.MSGraph** (:issue:`176`, :pr:`653`): This library wraps the 
+  `O365 package`_, giving robots the ability to access the Microsoft Graph API programmatically.
+
+.. _O365 package: https://pypi.org/project/O365
+
 17.3.0 - 03 Oct 2022
 --------------------
 
