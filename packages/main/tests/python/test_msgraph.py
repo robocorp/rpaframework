@@ -1,6 +1,6 @@
 from json.encoder import JSONEncoder
 import time
-from typing import Union
+from typing import List
 from urllib.parse import parse_qs, urlencode, urlparse
 from mock import MagicMock, ANY
 import pytest
@@ -106,7 +106,7 @@ def _patch_graph_response(
 
 
 def _patch_multiple_graph_responses(
-    library: MSGraph, mocker: MockerFixture, mocked_responses: list[MagicMock]
+    library: MSGraph, mocker: MockerFixture, mocked_responses: List[MagicMock]
 ) -> MagicMock:
     config = {"side_effect": mocked_responses}
 
@@ -333,7 +333,7 @@ def test_listing_files_onedrive_folder(
     authorized_lib: MSGraph,
     mocker: MockerFixture,
     folder_path: str,
-    responses: list[dict],
+    responses: List[dict],
 ) -> None:
     mocked_responses = [_create_graph_json_response(r) for r in responses]
     _patch_multiple_graph_responses(authorized_lib, mocker, mocked_responses)
@@ -368,7 +368,7 @@ def test_downloading_file_from_onedrive(
     authorized_lib: MSGraph,
     mocker: MockerFixture,
     file_path: str,
-    responses: list[dict],
+    responses: List[dict],
 ) -> None:
     mocked_responses = []
     mocked_responses.append(_create_graph_json_response(responses[0]))
@@ -432,7 +432,7 @@ def test_downloading_folder_from_onedrive(
     authorized_lib: MSGraph,
     mocker: MockerFixture,
     file_path: str,
-    responses: list[dict],
+    responses: List[dict],
 ) -> None:
     mocked_responses = [
         _create_graph_json_response(r) for r in (responses[0], responses[1])
@@ -518,7 +518,7 @@ def test_downloading_from_share_link(
     authorized_lib: MSGraph,
     mocker: MockerFixture,
     share_url: str,
-    responses: list[dict],
+    responses: List[dict],
 ) -> None:
     mocked_responses = []
     mocked_responses.append(_create_graph_json_response(responses[0]))
@@ -582,7 +582,7 @@ def test_uploading_file_to_onedrive(
     mocker: MockerFixture,
     file_path: str,
     folder_path: str,
-    responses: list[dict],
+    responses: List[dict],
 ) -> None:
     mocked_responses = [_create_graph_json_response(r) for r in responses]
     _patch_multiple_graph_responses(authorized_lib, mocker, mocked_responses)
@@ -933,7 +933,7 @@ def test_download_file_from_sharepoint(
     drive_id: str,
     file_path: str,
     target_directory: str,
-    responses: list[dict],
+    responses: List[dict],
 ) -> None:
     mocked_responses = []
     mocked_responses.append(_create_graph_json_response(responses[0]))
