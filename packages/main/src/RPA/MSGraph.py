@@ -1,6 +1,6 @@
 import base64
 import logging
-from typing import Optional, Union
+from typing import List, Optional, Union
 from pathlib import Path
 from O365 import (
     Account,
@@ -324,8 +324,8 @@ class MSGraph:
             return site.get_default_document_library()
 
     def _sharepoint_items_into_dict_list(
-        self, items_instance: list[sharepoint.SharepointListItem]
-    ) -> list[dict]:
+        self, items_instance: List[sharepoint.SharepointListItem]
+    ) -> List[dict]:
         """Turns a list of SharePointListItem into a list of dictionaries.
         This improves the Robot Developer experience, since the inspection
         of attributes isn't easy in Robot Framework.
@@ -538,7 +538,7 @@ class MSGraph:
         search_string: str,
         search_field: str = "displayName",
         resource: str = USERS_RESOURCE,
-    ) -> list[directory.User]:
+    ) -> List[directory.User]:
         # pylint: disable=anomalous-backslash-in-string
         """Returns a list of ``User`` objects from the Active Directory
         based on the provided search string.
@@ -580,7 +580,7 @@ class MSGraph:
         include_folders: Optional[bool] = False,
         resource: Optional[str] = None,
         drive_id: Optional[str] = None,
-    ) -> list[drive_module.DriveItem]:
+    ) -> List[drive_module.DriveItem]:
         """Returns a list of files from the specified OneDrive folder.
 
         The files returned are ``DriveItem`` objects and they have additional
@@ -707,7 +707,7 @@ class MSGraph:
         include_folders: Optional[bool] = False,
         resource: Optional[str] = None,
         drive_id: Optional[str] = None,
-    ) -> list[drive_module.DriveItem]:
+    ) -> List[drive_module.DriveItem]:
         # pylint: disable=anomalous-backslash-in-string
         """Returns a list of files found in OneDrive based on the search string.
         If a folder is not specified, the search is done in the entire drive and
@@ -943,7 +943,7 @@ class MSGraph:
     @keyword
     def list_sharepoint_site_drives(
         self, site: sharepoint.Site
-    ) -> list[drive_module.Drive]:
+    ) -> List[drive_module.Drive]:
         # pylint: disable=anomalous-backslash-in-string
         """Get a list of Drives available in the SharePoint Site.
 
@@ -972,7 +972,7 @@ class MSGraph:
         site: sharepoint.Site,
         include_folders: Optional[bool] = False,
         drive_id: Optional[str] = None,
-    ) -> list[drive_module.DriveItem]:
+    ) -> List[drive_module.DriveItem]:
         # pylint: disable=anomalous-backslash-in-string
         """List files in the SharePoint Site drive_module.
 
