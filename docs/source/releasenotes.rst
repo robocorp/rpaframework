@@ -9,6 +9,14 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17.5.0 - 07 Oct 2022
+--------------------
+
+- New library **RPA.MSGraph** (:issue:`176`, :pr:`653`): This library wraps the 
+  `O365 package`_, giving robots the ability to access the Microsoft Graph API programmatically.
+
+.. _O365 package: https://pypi.org/project/O365
+
 17.4.0 - 06 Oct 2022
 --------------------
 
@@ -16,14 +24,6 @@ Release notes
   items with empty string `code` or `message`.
 - Library **RPA.Salesforce** (:issue:`570`): Added two new keywords: ``Set Domain`` and
   ``Get Domain``. Enhanced documentation around the different ways to set a domain.
-
-17.4.0 - 07 Oct 2022
---------------------
-
-- New library **RPA.MSGraph** (:issue:`176`, :pr:`653`): This library wraps the 
-  `O365 package`_, giving robots the ability to access the Microsoft Graph API programmatically.
-
-.. _O365 package: https://pypi.org/project/O365
 
 17.3.0 - 03 Oct 2022
 --------------------

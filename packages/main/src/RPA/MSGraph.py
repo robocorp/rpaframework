@@ -1,7 +1,6 @@
 import base64
 import logging
-import importlib
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 from pathlib import Path
 from O365 import (
     Account,
