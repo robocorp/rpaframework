@@ -32,7 +32,7 @@ class Base64AI:
             Set Authorization  ${secrets}[email-address]   ${secrets}[apikey]
             ${results}=  Scan Document File
             ...   ${CURDIR}${/}invoice.pdf
-            model_types=finance/check/usa,finance/invoice/usa
+            ...   model_types=finance/check/usa,finance/invoice/usa
             # Scan response contains list of detected models in the document
             FOR  ${result}  IN  @{results}
                 Log To Console  Model: ${result}[model]

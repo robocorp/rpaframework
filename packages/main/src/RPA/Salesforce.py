@@ -19,6 +19,10 @@ class SalesforceDataNotAnDictionary(Exception):
     "Error when parameter is not dictionary as expected."
 
 
+class SalesforceDomainChangeError(Exception):
+    "Error when changing domains while a session is active."
+
+
 class Salesforce:
     """`Salesforce` is a library for accessing Salesforce using REST API.
     The library extends `simple-salesforce library`_.
@@ -99,6 +103,40 @@ class Salesforce:
     * Get Salesforce Object Metadata
     * Describe Salesforce Object
 
+    There are two ways to set the Salesforce domain. You can set the domain at time of
+    library import or using the `Set Domain` keyword.
+
+    There are several ways to declare a domain at time of library import:
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library     RPA.Salesforce    sandbox=${TRUE}
+
+    Or using the domain to your Salesforce My domain:
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library     RPA.Salesforce    domain="robocorp"
+
+    The domain can also be set using the keyword `Set Domain`:
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library     RPA.Salesforce
+
+        *** Tasks ***
+        # Sets the domain for a sandbox environment
+        Set Domain    sandbox
+
+        # Sets the domain to a Salseforce My domain
+        Set Domain    robocorp
+
+        # Sets to domain to the default of 'login'
+        Set Domain
+
     **Examples**
 
     **Robot Framework**
@@ -163,10 +201,10 @@ class Salesforce:
 
     account = {"Name": None, "Id": None}
 
-    def __init__(self, sandbox: bool = False) -> None:
+    def __init__(self, sandbox: bool = False, domain: str = "login") -> None:
         self.logger = logging.getLogger(__name__)
         self.sf = None
-        self.domain = "test" if sandbox else "login"
+        self.set_domain("sandbox" if sandbox else domain)
         self.session = None
         self.pricebook_name = None
         self.dataloader_success = []
@@ -176,6 +214,12 @@ class Salesforce:
         if self.sf is None:
             raise SalesforceAuthenticationError("Authentication is not completed")
 
+    def _require_no_session(self) -> None:
+        if self.session_id or self.instance:
+            raise SalesforceDomainChangeError(
+                "Domains cannot be changed while a session is active"
+            )
+
     @property
     def session_id(self):
         return self.sf.session_id if self.sf else None
@@ -183,6 +227,25 @@ class Salesforce:
     @property
     def instance(self):
         return self.sf.sf_instance if self.sf else None
+
+    def set_domain(self, domain: str = "login") -> None:
+        """Used to set the domain the `Auth With Token` keyword will use. To set
+        the domain to 'test' or if using a sandbox environment use "sandbox" as the
+        domain. If you have a Salsesforce My domain you may also input that name. If
+        the `domain` argument is not used the default domain is "login".
+
+        :param domain: "sandbox" or the name of the Salesforce My domain;
+         if no argument provided defaults to "login"
+        """
+        self._require_no_session()
+        self.domain = "test" if domain.lower() == "sandbox" else domain
+
+    def get_domain(self) -> str:
+        """Used to determine the current domain that has been set
+
+        :returns: string of the currently set domain
+        """
+        return self.domain
 
     def auth_with_token(self, username: str, password: str, api_token: str) -> None:
         """Authorize to Salesforce with security token, username

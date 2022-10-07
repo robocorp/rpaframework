@@ -9,6 +9,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17.4.0 - 06 Oct 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems** (:pr:`655`): Fix behaviour when releasing FAILED
+  items with empty string `code` or `message`.
+- Library **RPA.Salesforce** (:issue:`570`): Added two new keywords: ``Set Domain`` and
+  ``Get Domain``. Enhanced documentation around the different ways to set a domain.
 
 17.4.0 - 07 Oct 2022
 --------------------

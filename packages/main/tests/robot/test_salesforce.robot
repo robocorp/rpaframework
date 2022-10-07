@@ -1,5 +1,5 @@
 *** Settings ***
-Library           RPA.Salesforce
+Library           RPA.Salesforce    domain=CustomDomainHere
 Force Tags        salesforce
 
 *** Variables ***
@@ -60,3 +60,12 @@ Incorrect credentials
     ...    username=notexisting@notexisting.com
     ...    password=secretpassword
     ...    api_token=324daqewjjsakjshh333
+
+Confirm current domain
+    ${domain}=    Get Domain
+    Should Be Equal As Strings    ${domain}    CustomDomainHere
+
+Set domain
+    Set Domain    Sandbox
+    ${domain}=    Get Domain
+    Should Be Equal As Strings    ${domain}    test
