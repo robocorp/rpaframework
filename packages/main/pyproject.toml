@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "17.4.0"
+version = "17.5.0"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -58,7 +58,7 @@ python-xlib = { version = ">=0.17", platform = "linux" }
 psutil = { version = "^5.7.0", platform = "win32" }
 pyperclip = "^1.8.0"
 exchangelib = "^4.7.6"
-tzlocal = "^2.1"
+tzlocal = "^4.2"
 xlrd = "^2.0.1"
 xlwt = "^1.3.0"
 xlutils = "^2.0.0"
@@ -82,6 +82,7 @@ htmldocx = "^0.0.6"
 hubspot-api-client = "^4.0.6"
 pyotp = "^2.6.0"
 importlib-metadata = "^4.13.0"
+O365 = "^2.0.21"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
@@ -89,6 +90,7 @@ flake8 = "^3.7.9"
 pylint = "^2.4.4, <2.13"
 pytest = "^6.2.5"
 pytest-cov = "^2.10.1"
+pytest-mock = "^3.8.2"
 mock = "^4.0.2"
 mypy = "^0.910"
 python-docx = "^0.8.11"
