@@ -2,9 +2,11 @@ import os
 import platform
 from pathlib import Path
 import re
+from typing import Optional
 from colorama import Fore, Style
 from invoke import Context
 
+from invocations.errors import WrongBranchError
 from invocations.util import (
     REPO_ROOT,
     get_package_paths,
@@ -160,3 +162,19 @@ def is_poetry_version_2(ctx: Context) -> bool:
         re.search(SEMANTIC_VERSION_PATTERN, results.stdout).group().split(".")
     )
     return poetry_version[0] >= "1" and poetry_version[1] >= "2"
+
+
+def require_git_branch(ctx: Context, expected_branch: Optional[str] = None) -> None:
+    """Checks if the current git branch matched the ``expected_branch``,
+    which defaults to the ``master`` branch. You can also set this via
+    context config item ``master_branch_name``.
+    """
+    if expected_branch is None:
+        master_branch_name = safely_load_config(ctx, "ctx.master_branch_name", "master")
+    else:
+        master_branch_name = expected_branch
+    branch = git(
+        ctx, "rev-parse --abbrev-ref HEAD", echo=False, hide=True
+    ).stdout.strip()
+    if branch != expected_branch:
+        raise WrongBranchError(branch, master_branch_name)
