@@ -1131,7 +1131,7 @@ class Selenium(SeleniumLibrary):
         option ``--remote-debugging-port=<port>``, where port is any
         4-digit number not being used by other applications.
 
-        **Note.** The first Chrome instance on the system needs to be
+        *Note.* The first Chrome instance on the system needs to be
         started with this command line option or this won't have an effect.
 
         That port can then be used to connect using this keyword.
