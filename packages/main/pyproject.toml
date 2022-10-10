@@ -117,6 +117,10 @@ aws = ["rpaframework-aws"]
 cv = ["rpaframework-recognition"]
 playwright = ["robotframework-browser"]
 
+[tool.poetry.group.dev.dependencies]
+flake8-docstrings = "^1.6.0"
+flake8-rst-docstrings = "^0.2.7"
+
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]
 

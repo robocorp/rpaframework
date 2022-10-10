@@ -32,11 +32,17 @@ else:
     EXCLUDE_ROBOT_TESTS.append("windows")
 
 
-@task(config.install)
-def lint(ctx):
-    """Run format checks and static analysis"""
+@task(config.install, help={"docstrings": "Also check docstring format."})
+def lint(ctx, docstrings=False):
+    """Run format checks and static analysis."""
+    if docstrings:
+        ignore_codes_cmd = ""
+        all_docstrings_cmd = "--docstrings"
+    else:
+        ignore_codes_cmd = "--extend-ignore D,RST"
+        all_docstrings_cmd = ""
     if getattr(ctx, "is_meta", False):
-        shell.invoke_each(ctx, "code.lint")
+        shell.invoke_each(ctx, f"code.lint {all_docstrings_cmd}")
     else:
         flake8_config = Path(
             safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG)
@@ -46,7 +52,7 @@ def lint(ctx):
         )
 
         shell.poetry(ctx, "run black --diff --check src")
-        shell.poetry(ctx, f"run flake8 --config {flake8_config} src")
+        shell.poetry(ctx, f"run flake8 --config {flake8_config} {ignore_codes_cmd} src")
         shell.poetry(ctx, f"run pylint --rcfile {pylint_config} src")
 
 

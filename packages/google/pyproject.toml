@@ -69,6 +69,10 @@ PyYAML = "^5.4.1"
 [tool.poetry.scripts]
 rpa-google-oauth = 'RPA.scripts.google_authenticate:main'
 
+[tool.poetry.group.dev.dependencies]
+flake8-docstrings = "^1.6.0"
+flake8-rst-docstrings = "^0.2.7"
+
 [tool.black]
 target-version = ["py37", "py38", "py39"]
 

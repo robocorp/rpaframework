@@ -392,6 +392,31 @@ pycodestyle = ">=2.7.0,<2.8.0"
 pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
+name = "flake8-docstrings"
+version = "1.6.0"
+description = "Extension for flake8 which uses pydocstyle to check docstrings"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+flake8 = ">=3"
+pydocstyle = ">=2.1"
+
+[[package]]
+name = "flake8-rst-docstrings"
+version = "0.2.7"
+description = "Python docstring reStructuredText (RST) validator"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+flake8 = ">=3.0.0"
+pygments = "*"
+restructuredtext-lint = "*"
+
+[[package]]
 name = "fonttools"
 version = "4.37.4"
 description = "Tools to manipulate font files"
@@ -1144,6 +1169,20 @@ python-versions = ">=3.6"
 dev = ["Sphinx", "black", "build", "coverage", "docformatter", "flake8", "flake8-black", "flake8-bugbear", "flake8-isort", "invoke", "isort", "pylint", "pytest", "pytest-cov", "sphinx-rtd-theme", "tox", "twine", "wheel"]
 
 [[package]]
+name = "pydocstyle"
+version = "6.1.1"
+description = "Python docstring style checker"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+snowballstemmer = "*"
+
+[package.extras]
+toml = ["toml"]
+
+[[package]]
 name = "pyflakes"
 version = "2.3.1"
 description = "passive checker of Python programs"
@@ -1588,6 +1627,17 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.dependencies]
 requests = ">=2.0.1,<3.0.0"
+
+[[package]]
+name = "restructuredtext-lint"
+version = "1.4.0"
+description = "reStructuredText linter"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "robocorp-dialog"
@@ -2389,7 +2439,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "8cf610b0f7ac05c8dd076008bc32411539c8123adfcb61f12e64e927193d07b5"
+content-hash = "4e81b90d5f9e6b8db547f3edc1c809d299c1999bfbf2d1efec711cfcc0bb0f27"
 
 [metadata.files]
 alabaster = [
@@ -2675,6 +2725,14 @@ fire = [
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
+]
+flake8-docstrings = [
+    {file = "flake8-docstrings-1.6.0.tar.gz", hash = "sha256:9fe7c6a306064af8e62a055c2f61e9eb1da55f84bb39caef2b84ce53708ac34b"},
+    {file = "flake8_docstrings-1.6.0-py2.py3-none-any.whl", hash = "sha256:99cac583d6c7e32dd28bbfbef120a7c0d1b6dde4adb5a9fd441c4227a6534bde"},
+]
+flake8-rst-docstrings = [
+    {file = "flake8-rst-docstrings-0.2.7.tar.gz", hash = "sha256:2740067ab9237559dd45a3434d8c987792c7b259ca563621a3b95efe201f5382"},
+    {file = "flake8_rst_docstrings-0.2.7-py3-none-any.whl", hash = "sha256:5d56075dce360bcc9c6775bfe7cb431aa395de600ca7e8d40580a28d50b2a803"},
 ]
 fonttools = [
     {file = "fonttools-4.37.4-py3-none-any.whl", hash = "sha256:afae1b39555f9c3f0ad1f0f1daf678e5ad157e38c8842ecb567951bf1a9b9fd7"},
@@ -3344,6 +3402,10 @@ pydash = [
     {file = "pydash-5.1.1-py3-none-any.whl", hash = "sha256:1f677bc1b3e3d734fedfeec6ef379b3abca4466dd83ede2bcc2a783c40dc8325"},
     {file = "pydash-5.1.1.tar.gz", hash = "sha256:6147c295bdba57004e38e57d8522e0b55c30a468ae7770d598de6ccbb064798a"},
 ]
+pydocstyle = [
+    {file = "pydocstyle-6.1.1-py3-none-any.whl", hash = "sha256:6987826d6775056839940041beef5c08cc7e3d71d63149b48e36727f70144dc4"},
+    {file = "pydocstyle-6.1.1.tar.gz", hash = "sha256:1d41b7c459ba0ee6c345f2eb9ae827cab14a7533a88c5c6f7e94923f72df92dc"},
+]
 pyflakes = [
     {file = "pyflakes-2.3.1-py2.py3-none-any.whl", hash = "sha256:7893783d01b8a89811dd72d7dfd4d84ff098e5eed95cfa8905b22bbffe52efc3"},
     {file = "pyflakes-2.3.1.tar.gz", hash = "sha256:f5bc8ecabc05bb9d291eb5203d6810b49040f6ff446a756326104746cc00c1db"},
@@ -3359,6 +3421,7 @@ pylint = [
 pynput-robocorp-fork = [
     {file = "pynput-robocorp-fork-4.0.0.tar.gz", hash = "sha256:92131856267268d57ca2d7861aa692eecefa0827408940091321b14606d3c04c"},
     {file = "pynput_robocorp_fork-4.0.0-py2.py3-none-any.whl", hash = "sha256:b26719535048853d018836a242f5d300a8bcc4ba4fed19df7f9732e6d29b7282"},
+    {file = "pynput_robocorp_fork-4.0.0-py3.7.egg", hash = "sha256:3df8c7f0cac96e1e7649d882bf9ea39b0406e8e451b4b65e0bb27003e9d63b4d"},
 ]
 pyobjc-core = [
     {file = "pyobjc-core-7.3.tar.gz", hash = "sha256:5081aedf8bb40aac1a8ad95adac9e44e148a882686ded614adf46bb67fd67574"},
@@ -3596,6 +3659,9 @@ requests-oauthlib = [
 requests-toolbelt = [
     {file = "requests-toolbelt-0.10.0.tar.gz", hash = "sha256:f695d6207931200b46c8ef6addbc8a921fb5d77cc4cd209c2e7d39293fcd2b30"},
     {file = "requests_toolbelt-0.10.0-py2.py3-none-any.whl", hash = "sha256:64c6b8c51b515d123f9f708a29743f44eb70c4479440641ed2df8c4dea56d985"},
+]
+restructuredtext-lint = [
+    {file = "restructuredtext_lint-1.4.0.tar.gz", hash = "sha256:1b235c0c922341ab6c530390892eb9e92f90b9b75046063e047cacfb0f050c45"},
 ]
 robocorp-dialog = [
     {file = "robocorp-dialog-0.5.3.tar.gz", hash = "sha256:bad97f722fe546e0d15ff91a111c0bb674c614c50557fdc0265c8cab9cd14fcf"},
