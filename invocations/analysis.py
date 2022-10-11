@@ -44,9 +44,10 @@ else:
     help={
         "docstrings": "Also check docstring format.",
         "all": "Run linting against all packages as well.",
+        "exit_on_failure": "Causes task to exit when checks fail. Used for publish and build.",
     },
 )
-def lint(ctx, docstrings=False, all=False):
+def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
     """Run format checks and static analysis.
 
     When ran at the meta package level, this task runs linters against
@@ -64,28 +65,32 @@ def lint(ctx, docstrings=False, all=False):
         all_docstrings_cmd = ""
     if getattr(ctx, "is_meta", False):
         shell.poetry(
-            ctx, f"run py -m sphinxlint {docs.DOCS_SOURCE_DIR} {MAIN_README}", warn=True
+            ctx,
+            f"run py -m sphinxlint {docs.DOCS_SOURCE_DIR} {MAIN_README}",
+            warn=exit_on_failure,
         )
         shell.sphinx(
             ctx,
             f"-b dummy -a -n --keep-going {docs.DOCS_SOURCE_DIR} {docs.DOCS_BUILD_DIR}",
-            warn=True,
+            warn=exit_on_failure,
         )
         shell.poetry(
             ctx,
             f"run flake8 --config {flake8_config} {docs.DOCS_SOURCE_DIR}",
-            warn=True,
+            warn=exit_on_failure,
         )
         if all:
             shell.invoke_each(ctx, f"code.lint {all_docstrings_cmd}")
     else:
-        shell.poetry(ctx, "run black --diff --check src", warn=True)
+        shell.poetry(ctx, "run black --diff --check src", warn=exit_on_failure)
         shell.poetry(
             ctx,
             f"run flake8 --config {flake8_config} {ignore_codes_cmd} src",
-            warn=True,
+            warn=exit_on_failure,
         )
-        shell.poetry(ctx, f"run pylint --rcfile {pylint_config} src", warn=True)
+        shell.poetry(
+            ctx, f"run pylint --rcfile {pylint_config} src", warn=exit_on_failure
+        )
 
 
 @task(config.install, aliases=["pretty"])

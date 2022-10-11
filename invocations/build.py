@@ -7,7 +7,7 @@ from keyring.errors import KeyringError
 from pathlib import Path
 from invoke import task, Collection, ParseError, Context, config as inv_config
 
-from invocations import shell, config, libspec, ROBOT_BUILD_STRATEGY, errors
+from invocations import shell, config, libspec, ROBOT_BUILD_STRATEGY
 from invocations.util import require_package, safely_load_config, REPO_ROOT
 
 
@@ -37,7 +37,7 @@ def build(ctx, test=True):
             safely_load_config(ctx, "build_strategy") == ROBOT_BUILD_STRATEGY
         )
         if test:
-            shell.invoke(ctx, "code.lint", echo=False)
+            shell.invoke(ctx, "code.lint -e", echo=False)
             shell.invoke(ctx, "code.test -a", echo=False)
         if is_robot_build:
             libspec.clean_libspec(ctx)
