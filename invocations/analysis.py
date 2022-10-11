@@ -7,8 +7,13 @@ from pathlib import Path
 
 from invoke import task, Collection
 
-from invocations import shell, config
-from invocations.util import REPO_ROOT, safely_load_config, remove_blank_lines
+from invocations import shell, config, docs
+from invocations.util import (
+    REPO_ROOT,
+    MAIN_PACKAGE,
+    safely_load_config,
+    remove_blank_lines,
+)
 
 try:
     from colorama import Fore, Style
@@ -25,6 +30,8 @@ ROBOT_TEST_SOURCE = Path("tests/robot")
 ROBOT_TEST_OUTPUT = Path("tests/results")
 ROBOT_TEST_RESOURCES = Path("tests/resources")
 
+MAIN_README = MAIN_PACKAGE / "README.rst"
+
 EXCLUDE_ROBOT_TESTS = ["skip"]
 if platform.system() == "Windows":
     EXCLUDE_ROBOT_TESTS.append("posix")
@@ -32,9 +39,23 @@ else:
     EXCLUDE_ROBOT_TESTS.append("windows")
 
 
-@task(config.install, help={"docstrings": "Also check docstring format."})
-def lint(ctx, docstrings=False):
-    """Run format checks and static analysis."""
+@task(
+    config.install,
+    help={
+        "docstrings": "Also check docstring format.",
+        "all": "Run linting against all packages as well.",
+    },
+)
+def lint(ctx, docstrings=False, all=False):
+    """Run format checks and static analysis.
+
+    When ran at the meta package level, this task runs linters against
+    documentation and does a dummy build of the Sphinx docs. You can
+    also have it run the lint command for all packages by setting
+    ``--all``.
+    """
+    flake8_config = Path(safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG))
+    pylint_config = Path(safely_load_config(ctx, "ctx.linters.pylint", PYLINT_CONFIG))
     if docstrings:
         ignore_codes_cmd = ""
         all_docstrings_cmd = "--docstrings"
@@ -42,18 +63,29 @@ def lint(ctx, docstrings=False):
         ignore_codes_cmd = "--extend-ignore D,RST"
         all_docstrings_cmd = ""
     if getattr(ctx, "is_meta", False):
-        shell.invoke_each(ctx, f"code.lint {all_docstrings_cmd}")
+        shell.poetry(
+            ctx, f"run py -m sphinxlint {docs.DOCS_SOURCE_DIR} {MAIN_README}", warn=True
+        )
+        shell.sphinx(
+            ctx,
+            f"-b dummy -a -n --keep-going {docs.DOCS_SOURCE_DIR} {docs.DOCS_BUILD_DIR}",
+            warn=True,
+        )
+        shell.poetry(
+            ctx,
+            f"run flake8 --config {flake8_config} {docs.DOCS_SOURCE_DIR}",
+            warn=True,
+        )
+        if all:
+            shell.invoke_each(ctx, f"code.lint {all_docstrings_cmd}")
     else:
-        flake8_config = Path(
-            safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG)
+        shell.poetry(ctx, "run black --diff --check src", warn=True)
+        shell.poetry(
+            ctx,
+            f"run flake8 --config {flake8_config} {ignore_codes_cmd} src",
+            warn=True,
         )
-        pylint_config = Path(
-            safely_load_config(ctx, "ctx.linters.pylint", PYLINT_CONFIG)
-        )
-
-        shell.poetry(ctx, "run black --diff --check src")
-        shell.poetry(ctx, f"run flake8 --config {flake8_config} {ignore_codes_cmd} src")
-        shell.poetry(ctx, f"run pylint --rcfile {pylint_config} src")
+        shell.poetry(ctx, f"run pylint --rcfile {pylint_config} src", warn=True)
 
 
 @task(config.install, aliases=["pretty"])
