@@ -968,6 +968,7 @@ class Selenium(SeleniumLibrary):
             self._set_chrome_options(
                 kwargs,
                 options,
+                use_profile=use_profile,
                 profile_name=profile_name,
                 profile_path=profile_path,
                 preferences=preferences,
