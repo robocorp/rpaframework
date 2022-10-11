@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Optional
 
 import requests
+from packaging import version
 from requests import Response
 from selenium import webdriver
 from selenium.webdriver.common.service import Service
@@ -53,7 +54,17 @@ class Downloader(WDMHttpClient):
 
     """Custom downloader which disables download progress reporting."""
 
+    def __int__(self, *args, **kwargs):
+        super().__int__(*args, **kwargs)
+        self.driver = None
+
     def get(self, url, **kwargs) -> Response:
+        if "m1" in self.driver.get_os_type():
+            # FIXME(cmin764): Remove this when the issue below gets closed
+            #  https://github.com/SergeyPirogov/webdriver_manager/issues/446
+            browser_version = self.driver.get_version()
+            if version.parse(browser_version) >= version.parse("106.0.5249.61"):
+                url = url.replace("mac64_m1", "mac_arm64")
         resp = requests.get(url=url, verify=self._ssl_verify, stream=True, **kwargs)
         self.validate_response(resp)
         return resp
@@ -91,8 +102,10 @@ def _to_manager(browser: str, root: Path = DRIVER_ROOT) -> DriverManager:
             f"Unsupported browser {browser!r}! (choose from: {list(AVAILABLE_DRIVERS)})"
         )
 
-    download_manager = WDMDownloadManager(Downloader())
+    downloader = Downloader()
+    download_manager = WDMDownloadManager(downloader)
     manager = manager_factory(path=str(root), download_manager=download_manager)
+    downloader.driver = manager.driver
     return manager
 
 
