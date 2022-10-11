@@ -728,7 +728,18 @@ class Selenium(SeleniumLibrary):
 
         If a custom profile is stored somewhere outside of the default location,
         the path to the profiles directory and the name of the profile can
-        be controlled with ``profile_path`` and ``profile_name`` respectively.
+        be controlled with ``profile_path`` and ``profile_name`` respectively. Keep in
+        mind that the ``profile_path`` ends usually in "Chrome", "User Data" or
+        "google-chrome" and the ``profile_name`` is a directory relative to
+        ``profile_path``, usually named "Profile 1", "Profile 2" etc. (and not as your
+        visible name in the Chrome browser)
+
+        Examples:
+
+        | Open Available Browser | https://www.robocorp.com | use_profile=${True} |
+        | Open Available Browser | https://www.robocorp.com | use_profile=${True} | profile_name=Default |
+        | Open Available Browser | https://www.robocorp.com | use_profile=${True} | profile_name=Profile 2 |
+        | Open Available Browser | https://www.robocorp.com | use_profile=${True} | profile_name=Profile 1 | profile_path=path/to/custom/user_data_dir |
 
         Profile preferences can be further overridden with the ``preferences``
         argument by giving a dictionary of key/value pairs.
@@ -968,6 +979,7 @@ class Selenium(SeleniumLibrary):
             self._set_chrome_options(
                 kwargs,
                 options,
+                use_profile=use_profile,
                 profile_name=profile_name,
                 profile_path=profile_path,
                 preferences=preferences,
