@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 from collections import OrderedDict
 import importlib
 import json
@@ -279,7 +280,14 @@ class ServiceS3(AWSBase):
             return False
 
     @aws_dependency_required
-    def list_files(self, bucket_name: str, **kwargs) -> list:
+    def list_files(
+        self,
+        bucket_name: str,
+        limit: Optional[int] = None,
+        search: Optional[str] = None,
+        prefix: Optional[str] = None,
+        **kwargs,
+    ) -> list:
         """List files in the bucket
 
         .. note:: This keyword accepts additional parameters in key=value format
@@ -287,15 +295,86 @@ class ServiceS3(AWSBase):
         More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2/>`_.
 
         :param bucket_name: name for the bucket
+        :param limit: limits the response to maximum number of items
+        :param search: `JMESPATH <https://jmespath.org/>`_ expression to filter
+         objects
+        :param prefix: limits the response to keys that begin with the
+         specified prefix
+        :param kwargs: allows setting all extra parameters for
+         `list_objects_v2` method
         :return: list of files
+
+        **Python examples**
+
+        .. code:: python
+
+            # List all files in a bucket
+            files = AWSlibrary.list_files("bucket_name")
+
+            # List files in a bucket matching `.yaml`
+            files = AWSlibrary.list_files(
+                "bucket_name", search="Contents[?contains(Key, '.yaml')]"
+            )
+
+            # List files in a bucket matching `.png` and limit results to max 3
+            files = AWSlibrary.list_files(
+                "bucket_name", limit=3, search="Contents[?contains(Key, '.png')]"
+            )
+
+            # List files in a bucket prefixed with `special` and get only 1
+            files = AWSlibrary.list_files(
+                "bucket_name", prefix="special", limit=1
+            )
+
+        **Robot Framework examples**
+
+        .. code:: robotframework
+
+            # List all files in a bucket
+            @{files}=   List Files   bucket-name
+
+            # List files in a bucket matching `.yaml`
+            @{files}=   List Files
+            ...    bucket-name
+            ...    filter=Contents[?contains(Key, '.yaml')]
+
+            # List files in a bucket matching `.png` and limit results to max 3
+            @{files}=  List Files
+            ...   bucket-name
+            ...   limit=3
+            ...   search=Contents[?contains(Key, '.png')]
+
+            # List files in a bucket prefixed with `special` and get only 1
+            @{files}=   List Files
+            ...   bucket-name
+            ...   prefix=special
+            ...   limit=1
+            )
         """  # noqa: E501
-        required_param(bucket_name, "list_files")
         client = self._get_client_for_service("s3")
+        paginator = client.get_paginator("list_objects_v2")
+        max_keys = min(limit or 1001, 1000)
+
+        if prefix:
+            kwargs["Prefix"] = prefix
+        if limit and limit < 1000:
+            kwargs["MaxKeys"] = limit
+
         files = []
         try:
+            paginated = paginator.paginate(Bucket=bucket_name, **kwargs)
+            if search:
+                filtered = paginated.search(search)
+                for index, page in enumerate(filtered, start=1):
+                    files.append(page)
+                    if limit and limit == index:
+                        break
+            else:
+                for index, page in enumerate(paginated, start=1):
+                    if limit and (index * max_keys) > limit:
+                        break
+                    files.extend(page["Contents"] if "Contents" in page else [])
 
-            response = client.list_objects_v2(Bucket=bucket_name, **kwargs)
-            files = response["Contents"] if "Contents" in response else []
         except ClientError as e:
             self.logger.error(e)
         return files
