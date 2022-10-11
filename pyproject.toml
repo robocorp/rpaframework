@@ -8,9 +8,9 @@ authors = ["RPA Framework <rpafw@robocorp.com>"]
 python = "^3.7"
 rpaframework = { path = "packages/main", extras = [
 	"cv",
-	"playwright",
-	"aws",
+	"playwright"
 ], develop = true }
+rpaframework-aws = "^5.2.0"
 rpaframework-google = "^6.1.1"
 rpaframework-windows = "^6.1.0"
 
