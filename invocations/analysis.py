@@ -48,13 +48,15 @@ else:
     },
 )
 def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
-    """Run format checks and static analysis.
+    """Run format checks and static analysis. By default this task does
+    not exit when checks fail.
 
     When ran at the meta package level, this task runs linters against
     documentation and does a dummy build of the Sphinx docs. You can
     also have it run the lint command for all packages by setting
     ``--all``.
     """
+    warn_setting = not exit_on_failure
     flake8_config = Path(safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG))
     pylint_config = Path(safely_load_config(ctx, "ctx.linters.pylint", PYLINT_CONFIG))
     if docstrings:
@@ -67,30 +69,28 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
         shell.poetry(
             ctx,
             f"run py -m sphinxlint {docs.DOCS_SOURCE_DIR} {MAIN_README}",
-            warn=exit_on_failure,
+            warn=warn_setting,
         )
         shell.sphinx(
             ctx,
             f"-b dummy -a -n --keep-going {docs.DOCS_SOURCE_DIR} {docs.DOCS_BUILD_DIR}",
-            warn=exit_on_failure,
+            warn=warn_setting,
         )
         shell.poetry(
             ctx,
             f"run flake8 --config {flake8_config} {docs.DOCS_SOURCE_DIR}",
-            warn=exit_on_failure,
+            warn=warn_setting,
         )
         if all:
             shell.invoke_each(ctx, f"code.lint {all_docstrings_cmd}")
     else:
-        shell.poetry(ctx, "run black --diff --check src", warn=exit_on_failure)
+        shell.poetry(ctx, "run black --diff --check src", warn=warn_setting)
         shell.poetry(
             ctx,
             f"run flake8 --config {flake8_config} {ignore_codes_cmd} src",
-            warn=exit_on_failure,
+            warn=warn_setting,
         )
-        shell.poetry(
-            ctx, f"run pylint --rcfile {pylint_config} src", warn=exit_on_failure
-        )
+        shell.poetry(ctx, f"run pylint --rcfile {pylint_config} src", warn=warn_setting)
 
 
 @task(config.install, aliases=["pretty"])
