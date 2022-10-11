@@ -2016,7 +2016,18 @@ uses a new profile for each session, but it can use an existing
 one by enabling the <code class="docutils literal notranslate"><span class="pre">use_profile</span></code> argument.</p>
 <p>If a custom profile is stored somewhere outside of the default location,
 the path to the profiles directory and the name of the profile can
-be controlled with <code class="docutils literal notranslate"><span class="pre">profile_path</span></code> and <code class="docutils literal notranslate"><span class="pre">profile_name</span></code> respectively.</p>
+be controlled with <code class="docutils literal notranslate"><span class="pre">profile_path</span></code> and <code class="docutils literal notranslate"><span class="pre">profile_name</span></code> respectively. Keep in
+mind that the <code class="docutils literal notranslate"><span class="pre">profile_path</span></code> ends usually in “Chrome”, “User Data” or
+“google-chrome” and the <code class="docutils literal notranslate"><span class="pre">profile_name</span></code> is a directory relative to
+<code class="docutils literal notranslate"><span class="pre">profile_path</span></code>, usually named “Profile 1”, “Profile 2” etc. (and not as your
+visible name in the Chrome browser)</p>
+<p>Examples:</p>
+<div class="line-block">
+<div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | use_profile=${True} |</div>
+<div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | use_profile=${True} | profile_name=Default |</div>
+<div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | use_profile=${True} | profile_name=Profile 2 |</div>
+<div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | use_profile=${True} | profile_name=Profile 1 | profile_path=path/to/custom/user_data_dir |</div>
+</div>
 <p>Profile preferences can be further overridden with the <code class="docutils literal notranslate"><span class="pre">preferences</span></code>
 argument by giving a dictionary of key/value pairs.</p>
 <p>Chrome can additionally connect through a <code class="docutils literal notranslate"><span class="pre">proxy</span></code>, which

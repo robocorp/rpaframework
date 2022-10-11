@@ -9,10 +9,17 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17.5.1 - 11 Oct 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`660`): Ensure `use_profile` parameter is
+  working as expected when set true. Affecting the ``Open Available Browser`` and
+  ``Open Chrome Browser`` keywords.
+
 17.5.0 - 07 Oct 2022
 --------------------
 
-- New library **RPA.MSGraph** (:issue:`176`, :pr:`653`): This library wraps the 
+- New library **RPA.MSGraph** (:issue:`176`, :pr:`653`): This library wraps the
   `O365 package`_, giving robots the ability to access the Microsoft Graph API programmatically.
 
 .. _O365 package: https://pypi.org/project/O365
