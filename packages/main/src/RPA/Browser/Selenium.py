@@ -739,7 +739,7 @@ class Selenium(SeleniumLibrary):
         | Open Available Browser | https://www.robocorp.com | use_profile=${True} |
         | Open Available Browser | https://www.robocorp.com | use_profile=${True} | profile_name=Default |
         | Open Available Browser | https://www.robocorp.com | use_profile=${True} | profile_name=Profile 2 |
-        | Open Available Browser | https://www.robocorp.com | use_profile=${True} | profile_name=Custom | profile_path=path/to/custom/user_data_dir |
+        | Open Available Browser | https://www.robocorp.com | use_profile=${True} | profile_name=Profile 1 | profile_path=path/to/custom/user_data_dir |
 
         Profile preferences can be further overridden with the ``preferences``
         argument by giving a dictionary of key/value pairs.
