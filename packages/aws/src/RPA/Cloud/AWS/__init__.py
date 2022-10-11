@@ -336,7 +336,7 @@ class ServiceS3(AWSBase):
             # List files in a bucket matching `.yaml`
             @{files}=   List Files
             ...    bucket-name
-            ...    filter=Contents[?contains(Key, '.yaml')]
+            ...    search=Contents[?contains(Key, '.yaml')]
 
             # List files in a bucket matching `.png` and limit results to max 3
             @{files}=  List Files
