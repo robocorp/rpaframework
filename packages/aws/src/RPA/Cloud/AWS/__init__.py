@@ -198,7 +198,7 @@ class ServiceS3(AWSBase):
     def create_bucket(self, bucket_name: Optional[str] = None, **kwargs) -> bool:
         """Create S3 bucket with name
 
-        .. note:: This keyword accepts additional parameters in key=value format
+        **note** This keyword accepts additional parameters in key=value format
 
         More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.create_bucket/>`_.
 
@@ -252,7 +252,7 @@ class ServiceS3(AWSBase):
     ):
         """Delete files in the bucket
 
-        .. note:: This keyword accepts additional parameters in key=value format
+        **note** This keyword accepts additional parameters in key=value format
 
         More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.delete_objects/>`_.
 
@@ -290,7 +290,7 @@ class ServiceS3(AWSBase):
     ) -> list:
         """List files in the bucket
 
-        .. note:: This keyword accepts additional parameters in key=value format
+        **note** This keyword accepts additional parameters in key=value format
 
         More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2/>`_.
 
@@ -416,7 +416,7 @@ class ServiceS3(AWSBase):
         If `object_name` is not given then basename of the file is
         used as `object_name`.
 
-        .. note:: This keyword accepts additional parameters in key=value format (see below code example).
+        **note** This keyword accepts additional parameters in key=value format (see below code example).
 
         More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/>`_.
 
@@ -453,7 +453,7 @@ class ServiceS3(AWSBase):
             [{'filename':'/path/to/file1.txt', 'object_name': 'file1.txt'},
             {'filename': '/path/to/file2.txt', 'object_name': 'file2.txt'}]
 
-        .. note:: This keyword accepts additional parameters in key=value format (see below code example).
+        **note** This keyword accepts additional parameters in key=value format (see below code example).
 
         More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/>`_.
 
@@ -508,7 +508,7 @@ class ServiceS3(AWSBase):
     ) -> list:
         """Download files from bucket to local filesystem
 
-        .. note:: This keyword accepts additional parameters in key=value format.
+        **note** This keyword accepts additional parameters in key=value format.
 
         More info on `additional parameters <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.download_file/>`_.
 
