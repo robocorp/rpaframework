@@ -850,8 +850,7 @@ to the Amazon EventBridge event bus after the SQL statement runs.</p></li>
 <li><p><strong>object_name</strong> – name of the file in the bucket</p></li>
 <li><p><strong>expires_in</strong> – optional expiration time for the url (in seconds).
 The default expiration time is 3600 seconds (one hour).</p></li>
-<li><p><strong>**extra_params</strong> – <p>allows setting any extra <cite>Params</cite></p>
-</p></li>
+<li><p><strong>extra_params</strong> – allows setting any extra <cite>Params</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1133,7 +1132,7 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.list_files">
-<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">limit: Optional[int] = None</em>, <em class="sig-param">search: Optional[str] = None</em>, <em class="sig-param">prefix: Optional[str] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List files in the bucket</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1142,12 +1141,64 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>limit</strong> – limits the response to maximum number of items</p></li>
+<li><p><strong>search</strong> – <a class="reference external" href="https://jmespath.org/">JMESPATH</a> expression to filter
+objects</p></li>
+<li><p><strong>prefix</strong> – limits the response to keys that begin with the
+specified prefix</p></li>
+<li><p><strong>kwargs</strong> – allows setting all extra parameters for
+<cite>list_objects_v2</cite> method</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of files</p>
 </dd>
 </dl>
+<p><strong>Python examples</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all files in a bucket</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">AWSlibrary</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span><span class="s2">&quot;bucket_name&quot;</span><span class="p">)</span>
+
+<span class="c1"># List files in a bucket matching `.yaml`</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">AWSlibrary</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span>
+    <span class="s2">&quot;bucket_name&quot;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="s2">&quot;Contents[?contains(Key, &#39;.yaml&#39;)]&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># List files in a bucket matching `.png` and limit results to max 3</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">AWSlibrary</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span>
+    <span class="s2">&quot;bucket_name&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="s2">&quot;Contents[?contains(Key, &#39;.png&#39;)]&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># List files in a bucket prefixed with `special` and get only 1</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">AWSlibrary</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span>
+    <span class="s2">&quot;bucket_name&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;special&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Robot Framework examples</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># List all files in a bucket</span>
+<span class="c">@{files}=</span><span class="p">   </span><span class="c">List Files</span><span class="p">   </span><span class="c">bucket-name</span><span class="p"></span>
+
+<span class="c"># List files in a bucket matching `.yaml`</span>
+<span class="c">@{files}=</span><span class="p">   </span><span class="c">List Files</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">bucket-name</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">filter=Contents[?contains(Key, &#39;.yaml&#39;)]</span><span class="p"></span>
+
+<span class="c"># List files in a bucket matching `.png` and limit results to max 3</span>
+<span class="c">@{files}=</span><span class="p">  </span><span class="c">List Files</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">bucket-name</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">limit=3</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">search=Contents[?contains(Key, &#39;.png&#39;)]</span><span class="p"></span>
+
+<span class="c"># List files in a bucket prefixed with `special` and get only 1</span>
+<span class="c">@{files}=</span><span class="p">   </span><span class="c">List Files</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">bucket-name</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">prefix=special</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">limit=1</span><span class="p"></span>
+<span class="c">)</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -1988,8 +2039,7 @@ current directory</p></li>
 <li><p><strong>object_name</strong> – name of the file in the bucket</p></li>
 <li><p><strong>expires_in</strong> – optional expiration time for the url (in seconds).
 The default expiration time is 3600 seconds (one hour).</p></li>
-<li><p><strong>**extra_params</strong> – <p>allows setting any extra <cite>Params</cite></p>
-</p></li>
+<li><p><strong>extra_params</strong> – allows setting any extra <cite>Params</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2029,7 +2079,7 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceS3.list_files">
-<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.list_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">limit: Optional[int] = None</em>, <em class="sig-param">search: Optional[str] = None</em>, <em class="sig-param">prefix: Optional[str] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List files in the bucket</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -2038,12 +2088,65 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>limit</strong> – limits the response to maximum number of items</p></li>
+<li><p><strong>search</strong> – <p><a class="reference external" href="https://jmespath.org/">JMESPATH</a> expression to filter
+objects</p>
+</p></li>
+<li><p><strong>prefix</strong> – limits the response to keys that begin with the
+specified prefix</p></li>
+<li><p><strong>kwargs</strong> – allows setting all extra parameters for
+<cite>list_objects_v2</cite> method</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of files</p>
 </dd>
 </dl>
+<p><strong>Python examples</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all files in a bucket</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">AWSlibrary</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span><span class="s2">&quot;bucket_name&quot;</span><span class="p">)</span>
+
+<span class="c1"># List files in a bucket matching `.yaml`</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">AWSlibrary</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span>
+    <span class="s2">&quot;bucket_name&quot;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="s2">&quot;Contents[?contains(Key, &#39;.yaml&#39;)]&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># List files in a bucket matching `.png` and limit results to max 3</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">AWSlibrary</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span>
+    <span class="s2">&quot;bucket_name&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="s2">&quot;Contents[?contains(Key, &#39;.png&#39;)]&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># List files in a bucket prefixed with `special` and get only 1</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">AWSlibrary</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span>
+    <span class="s2">&quot;bucket_name&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;special&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Robot Framework examples</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># List all files in a bucket</span>
+<span class="c">@{files}=</span><span class="p">   </span><span class="c">List Files</span><span class="p">   </span><span class="c">bucket-name</span><span class="p"></span>
+
+<span class="c"># List files in a bucket matching `.yaml`</span>
+<span class="c">@{files}=</span><span class="p">   </span><span class="c">List Files</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">bucket-name</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">filter=Contents[?contains(Key, &#39;.yaml&#39;)]</span><span class="p"></span>
+
+<span class="c"># List files in a bucket matching `.png` and limit results to max 3</span>
+<span class="c">@{files}=</span><span class="p">  </span><span class="c">List Files</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">bucket-name</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">limit=3</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">search=Contents[?contains(Key, &#39;.png&#39;)]</span><span class="p"></span>
+
+<span class="c"># List files in a bucket prefixed with `special` and get only 1</span>
+<span class="c">@{files}=</span><span class="p">   </span><span class="c">List Files</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">bucket-name</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">prefix=special</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">limit=1</span><span class="p"></span>
+<span class="c">)</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="attribute">
