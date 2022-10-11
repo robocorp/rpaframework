@@ -176,5 +176,5 @@ def require_git_branch(ctx: Context, expected_branch: Optional[str] = None) -> N
     branch = git(
         ctx, "rev-parse --abbrev-ref HEAD", echo=False, hide=True
     ).stdout.strip()
-    if branch != expected_branch:
+    if branch != master_branch_name:
         raise WrongBranchError(branch, master_branch_name)
