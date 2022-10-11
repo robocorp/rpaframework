@@ -360,9 +360,9 @@ class ServiceS3(AWSBase):
         if limit and limit < 1000:
             kwargs["MaxKeys"] = limit
 
-        paginated = paginator.paginate(Bucket=bucket_name, **kwargs)
         files = []
         try:
+            paginated = paginator.paginate(Bucket=bucket_name, **kwargs)
             if search:
                 filtered = paginated.search(search)
                 for index, page in enumerate(filtered, start=1):
