@@ -25,7 +25,7 @@ from invocations.util import (
 )
 
 VENV_CLEAN_PATTERNS = [
-    # ".venv",
+    ".venv",
     ".cache",
     ".mypy_cache",
 ]
