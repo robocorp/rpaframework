@@ -9,7 +9,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-17.5.2 - 12 Oct 2022
+17.6.0 - 12 Oct 2022
 --------------------
 
 - Library **RPA.Browser.Selenium** (:issue:`661`): Downloads correctly Mac arm64 web
