@@ -54,17 +54,23 @@ class Downloader(WDMHttpClient):
 
     """Custom downloader which disables download progress reporting."""
 
-    def __int__(self, *args, **kwargs):
-        super().__int__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.driver = None
 
+    def _fix_mac_arm_url(self, url) -> str:
+        if "m1" not in self.driver.get_os_type():
+            return url
+
+        # FIXME(cmin764): Remove this when the issue below gets closed
+        #  https://github.com/SergeyPirogov/webdriver_manager/issues/446
+        browser_version = self.driver.get_version()
+        if version.parse(browser_version) >= version.parse("106.0.5249.61"):
+            url = url.replace("mac64_m1", "mac_arm64")
+        return url
+
     def get(self, url, **kwargs) -> Response:
-        if "m1" in self.driver.get_os_type():
-            # FIXME(cmin764): Remove this when the issue below gets closed
-            #  https://github.com/SergeyPirogov/webdriver_manager/issues/446
-            browser_version = self.driver.get_version()
-            if version.parse(browser_version) >= version.parse("106.0.5249.61"):
-                url = url.replace("mac64_m1", "mac_arm64")
+        url = self._fix_mac_arm_url(url)
         resp = requests.get(url=url, verify=self._ssl_verify, stream=True, **kwargs)
         self.validate_response(resp)
         return resp
