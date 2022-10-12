@@ -1,4 +1,4 @@
-import atexit
+# import atexit
 import glob
 import logging
 import time
@@ -9,7 +9,11 @@ from typing import Dict, List, Optional, Union, Any, Generator
 from robot.api.deco import library, keyword  # type: ignore
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError  # type: ignore
 
-from .dialog import Dialog, TimeoutException
+import flet
+from flet import IconButton, Page, Row, Semantics, Text, TextField, icons
+from flet.page import KeyboardEvent
+
+# from .dialog import Dialog, TimeoutException
 from .dialog_types import Elements, Result, Options, Size, Icon
 from .utils import to_options, optional_str, optional_int, int_or_auto, is_input
 
@@ -111,8 +115,10 @@ class Dialogs:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
+        flet_logger = logging.getLogger("flet")
+        flet_logger.setLevel(logging.CRITICAL)
         self.elements: Elements = []
-        self.dialogs: List[Dialog] = []
+        # self.dialogs: List[Dialog] = []
 
         try:
             # Prevent logging from keywords that return results
@@ -954,7 +960,7 @@ class Dialogs:
         on_top: bool = False,
         clear: bool = True,
         debug: bool = False,
-    ) -> Dialog:
+    ) -> None:
         """Create a new dialog with all the defined elements, and show
         it to the user. Does not block, but instead immediately returns
         a new ``Dialog`` instance.
@@ -1003,28 +1009,81 @@ class Dialogs:
             Open browser to form page
             ${result}=    Wait dialog    ${dialog}
             Insert user information      ${result.username}  ${result.address}
-        """
+        """  # pylint: disable=unused-argument
         height = int_or_auto(height)
-        dialog = Dialog(
-            self.elements,
-            title=title,
-            height=height,
-            width=width,
-            on_top=on_top,
-            debug=debug,
-        )
+        # dialog = Dialog(
+        #    self.elements,
+        #    title=title,
+        #    height=height,
+        #    width=width,
+        #    on_top=on_top,
+        #    debug=debug,
+        # )
 
+        def build_page(
+            page: Page,
+        ):
+            page.title = "Flet counter example"
+            page.vertical_alignment = "center"
+            page.horizontal_alignment = "center"
+            page.spacing = 50
+
+            def on_keyboard(e: KeyboardEvent):
+                print(e)
+                if e.key == "S" and e.ctrl:
+                    page.show_semantics_debugger = not page.show_semantics_debugger
+                    page.update()
+
+            page.on_keyboard_event = on_keyboard
+
+            txt_number = TextField(
+                label="Number", value="0", text_align="right", width=100
+            )
+            sem = Semantics(txt_number, label="Current number: 0")
+
+            def button_click(e):
+                txt_number.value = int(txt_number.value) + (
+                    1 if e.control.data == "+" else -1
+                )
+                sem.label = f"Current number: {txt_number.value}"
+                page.update()
+
+            page.add(
+                Row(
+                    [
+                        IconButton(
+                            icons.REMOVE,
+                            tooltip="Decrement",
+                            on_click=button_click,
+                            data="-",
+                        ),
+                        sem,
+                        IconButton(
+                            icons.ADD,
+                            tooltip="Increment",
+                            on_click=button_click,
+                            data="+",
+                        ),
+                    ],
+                    alignment="center",
+                ),
+                Text("Press CTRL+S to toggle semantics debugger"),
+            )
+            for e in self.elements:
+                page.add(Text(str(e)))
+
+        flet.app(target=build_page)
         if clear:
             self.clear_elements()
 
-        dialog.start()
-        self.dialogs.append(dialog)
-        atexit.register(dialog.stop)
+        # dialog.start()
+        # self.dialogs.append([])
+        # atexit.register()
 
-        return dialog
+        # return dialog
 
     @keyword("Wait dialog", tags=["dialog"])
-    def wait_dialog(self, dialog: Dialog, timeout: int = 300) -> Result:
+    def wait_dialog(self, dialog: Any, timeout: int = 300) -> Result:
         """Wait for a dialog to complete that has been created with the
         keyword ``Show dialog``.
 
@@ -1081,21 +1140,22 @@ class Dialogs:
             FOR    ${result}    IN    @{results}
                 Log many    &{result}
             END
-        """
+        """  # pylint: disable=unused-argument
         # Filter dialogs that have been handled already
-        pending = [dialog for dialog in self.dialogs if dialog.is_pending]
+        # pending = [dialog for dialog in self.dialogs if dialog.is_pending]
 
         results = []
-        for dialog in self.wait_dialogs_as_completed(*pending, timeout=timeout):
-            results.append((dialog, dialog.result()))
+        # for dialog in self.wait_dialogs_as_completed(*pending, timeout=timeout):
+        #    results.append((dialog, dialog.result()))
 
         # Sort by dialog creation timestamp
-        results.sort(key=lambda t: t[0].timestamp)
+        # results.sort(key=lambda t: t[0].timestamp)
 
-        return [result for _, result in results]
+        # return [result for _, result in results]
+        return results
 
     @keyword("Close dialog", tags=["dialog"])
-    def close_dialog(self, dialog: Dialog) -> None:
+    def close_dialog(self, dialog: Any) -> None:
         """Close a dialog that has been created with the keyword
         ``Show dialog``.
 
@@ -1140,12 +1200,13 @@ class Dialogs:
             # Close all dialogs without knowing which have been created
             [Teardown]    Close all dialogs
         """
-        for dialog in self.dialogs:
-            dialog.stop()
+        self.logger.info("pass")
+        # for dialog in self.dialogs:
+        #    dialog.stop()
 
     def wait_dialogs_as_completed(
-        self, *dialogs: Dialog, timeout: int = 300
-    ) -> Generator[Dialog, None, None]:
+        self, *dialogs: Any, timeout: int = 300
+    ) -> Generator[Any, None, None]:
         """Create a generator that yields dialogs as they complete.
 
         :param dialogs: Dialogs to wait
@@ -1174,4 +1235,4 @@ class Dialogs:
 
             time.sleep(0.1)
 
-        raise TimeoutException("Reached timeout while waiting for dialogs")
+        raise TimeoutError("Reached timeout while waiting for dialogs")

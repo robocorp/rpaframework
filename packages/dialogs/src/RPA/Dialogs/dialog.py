@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 from typing import Any, Union, Optional
 
-import robocorp_dialog  # type: ignore
+# import robocorp_dialog  # type: ignore
 from robot.utils import DotDict  # type: ignore
 from .dialog_types import Element, Elements, Result
 from .utils import is_input, is_submit
@@ -36,6 +36,7 @@ class Dialog:
     ):
         self.logger = logging.getLogger(__name__)
         self.timestamp = time.time()
+        self.app = None
 
         auto_height = height == "AUTO"
         if auto_height:
@@ -63,29 +64,32 @@ class Dialog:
         return self._is_pending
 
     def start(self) -> None:
-        if self._process is not None:
+        if self.app is not None:
             raise RuntimeError("Process already started")
 
-        cmd = [
-            robocorp_dialog.executable(),
-            json.dumps(self._elements),
-        ]
+        # cmd = [
+        #     robocorp_dialog.executable(),
+        #     json.dumps(self._elements),
+        # ]
 
-        for option, value in self._options.items():
-            cmd.append(f"--{option}")
-            cmd.append(str(value))
+        # for option, value in self._options.items():
+        #     cmd.append(f"--{option}")
+        #     cmd.append(str(value))
 
-        for flag, value in self._flags.items():
-            if value:
-                cmd.append(f"--{flag}")
+        # for flag, value in self._flags.items():
+        #     if value:
+        #         cmd.append(f"--{flag}")
 
-        # pylint: disable=consider-using-with
-        self._process = subprocess.Popen(
-            cmd,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
+        # # pylint: disable=consider-using-with
+        # self._process = subprocess.Popen(
+        #     cmd,
+        #     stdin=subprocess.PIPE,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE,
+        # )
+        #
+        # self.app = flet.app(main_loop)
+        #
 
     def stop(self, timeout: int = 15) -> None:
         if self._process is None:

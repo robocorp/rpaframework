@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.9.13 on win32)" generated="20221012 15:58:30.987" rpa="false" schemaversion="3">
+<suite id="s1" name="Test Flet" source="C:\koodi\repos\rpaframework\packages\dialogs\tests\robot\test_flet.robot">
+<test id="s1-t1" name="Failure dialog" line="10">
+<kw name="Add checkbox" library="RPA.Dialogs">
+<arg>checkbox-field-2</arg>
+<arg>Checkbox label</arg>
+<arg>default=True</arg>
+<tag>input</tag>
+<doc>Add a checkbox element</doc>
+<status status="PASS" starttime="20221012 15:58:31.499" endtime="20221012 15:58:31.499"/>
+</kw>
+<kw name="Add submit buttons" library="RPA.Dialogs">
+<arg>one,two</arg>
+<tag>input</tag>
+<doc>Add custom submit buttons</doc>
+<status status="PASS" starttime="20221012 15:58:31.500" endtime="20221012 15:58:31.500"/>
+</kw>
+<kw name="Run dialog" library="RPA.Dialogs">
+<tag>dialog</tag>
+<doc>Create a dialog from all the defined elements and block
+until the user has handled it.</doc>
+<msg timestamp="20221012 15:58:31.501" level="INFO">Protecting keyword: RPA.Dialogs.Run dialog</msg>
+<msg timestamp="20221012 15:58:50.170" level="INFO">Log level changed from NONE to INFO.</msg>
+<status status="FAIL" starttime="20221012 15:58:31.501" endtime="20221012 15:58:50.169"/>
+</kw>
+<tag>skip</tag>
+<status status="FAIL" starttime="20221012 15:58:31.498" endtime="20221012 15:58:50.171">AttributeError: 'NoneType' object has no attribute 'wait'</status>
+</test>
+<status status="FAIL" starttime="20221012 15:58:30.988" endtime="20221012 15:58:50.173"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="0" fail="1" skip="0">skip</stat>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Test Flet">Test Flet</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
