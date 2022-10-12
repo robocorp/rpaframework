@@ -1915,7 +1915,6 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
-rpaframework-aws = {version = "^5.1.0", optional = true}
 rpaframework-core = "^10.0.0"
 rpaframework-dialogs = "^4.0.0"
 rpaframework-pdf = "^5.0.0"
@@ -1941,7 +1940,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "5.1.0"
+version = "5.2.0"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
@@ -2653,7 +2652,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "270875d70e2ff4025de61b24de3a7963e8703ecb36dfa28a6aa8d02242ae9fa3"
+content-hash = "a1eedb547549805b3fcb03f80d7e432b9924c821542a006ca54fb034263a58ea"
 
 [metadata.files]
 alabaster = [
@@ -3980,8 +3979,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework-aws-5.1.0.tar.gz", hash = "sha256:c6e21868d0723283e47676131a6ccedf891a8c35a34757846612bc2af80f9bb7"},
-    {file = "rpaframework_aws-5.1.0-py3-none-any.whl", hash = "sha256:8e42bf2627624a18684484b949743af1fd319bc656d1263538af6c311e43f024"},
+    {file = "rpaframework-aws-5.2.0.tar.gz", hash = "sha256:500793002c5b069bf33cafd89727742c8b2ac3436041ba38ae68a54010633982"},
+    {file = "rpaframework_aws-5.2.0-py3-none-any.whl", hash = "sha256:96b90c55b6f10c13a2f0cdaed450350aa7eb1fde85b1ef4d81f03873bb17f57d"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-10.0.0.tar.gz", hash = "sha256:176b9c948f1ae19c11fa3061705fd6ed48786c49199fc5fcf027349adca630bf"},
