@@ -1873,7 +1873,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "17.5.1"
+version = "17.5.2"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1915,7 +1915,7 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
-rpaframework-core = "^10.0.0"
+rpaframework-core = "^10.0.1"
 rpaframework-dialogs = "^4.0.0"
 rpaframework-pdf = "^5.0.0"
 rpaframework-recognition = {version = "^5.0.0", optional = true}
@@ -1955,13 +1955,14 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.0.0"
+version = "10.0.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
+packaging = ">=21.3,<22.0"
 pillow = ">=9.1.1,<10.0.0"
 psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
 pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
@@ -3983,8 +3984,8 @@ rpaframework-aws = [
     {file = "rpaframework_aws-5.2.0-py3-none-any.whl", hash = "sha256:96b90c55b6f10c13a2f0cdaed450350aa7eb1fde85b1ef4d81f03873bb17f57d"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-10.0.0.tar.gz", hash = "sha256:176b9c948f1ae19c11fa3061705fd6ed48786c49199fc5fcf027349adca630bf"},
-    {file = "rpaframework_core-10.0.0-py3-none-any.whl", hash = "sha256:f2fa719bd2a6aa5f95874214a27e26a82098809777eb80612b844e5bea4fa050"},
+    {file = "rpaframework-core-10.0.1.tar.gz", hash = "sha256:26790ba877c8ad347f51fe4abd882d92f25794006b4bb9442649cc05f214ab83"},
+    {file = "rpaframework_core-10.0.1-py3-none-any.whl", hash = "sha256:d027255abac02f84307f5e1f9d48e575d4e190a4c01fbf876b1eb1a77b9fbe7a"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework-dialogs-4.0.0.tar.gz", hash = "sha256:178f1ec6292421057e601298596393aa7ed177130dc9f8be3da63695aeaa4a83"},

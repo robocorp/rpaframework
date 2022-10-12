@@ -5,10 +5,16 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Cloud.AWS** (:pr:`663`): Add more options for ``List Files`` keyword.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+17.5.2 - 12 Oct 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`661`): Downloads correctly Mac arm64 web
+  drivers. (due to ``rpaframework-core`` **10.0.1**)
+- Library **RPA.Cloud.AWS** (:pr:`663`): Add more options for ``List Files`` keyword.
 
 17.5.1 - 11 Oct 2022
 --------------------
