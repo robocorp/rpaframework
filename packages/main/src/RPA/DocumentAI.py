@@ -12,7 +12,7 @@ import functools
 import logging
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from robot.api.deco import keyword, library
 
@@ -24,6 +24,7 @@ from RPA.Robocorp.Vault import Vault
 
 lib_vault = Vault()
 
+PathType = Union[Path, str]
 SecretType = Optional[Union[str, Path]]
 
 
@@ -51,32 +52,59 @@ class DocumentAI:
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self):
-        self._engines: Dict[EngineName, Any] = {}
+        self.logger = logging.getLogger(__name__)
         self._active_engine: Optional[EngineName] = None
+        self._engines: Dict[EngineName, Any] = {}
+        self._results: Dict[EngineName, Any] = {}
 
-    @staticmethod
-    def _get_secret_value(secret: Optional[str], vault: Optional[Dict]) -> SecretType:
+    def _check_engine(self):
+        if not self._active_engine:
+            raise RuntimeError(
+                "can't execute without an engine set, please run"
+                " `Init Engine    <name>    ...` first"
+            )
+
+    @property
+    def engine(self) -> Any:
+        self._check_engine()
+        return self._engines[self._active_engine]
+
+    @property
+    def result(self) -> Any:
+        self._check_engine()
+        result = self._results.get(self._active_engine)
+        if not result:
+            raise RuntimeError(
+                "there's no result obtained yet, please run"
+                " `Predict    <location>    ...` first"
+            )
+
+        return result
+
+    def _get_secret_value(
+        self, secret: Optional[str], vault: Optional[Dict]
+    ) -> SecretType:
         if vault:
             assert (
                 len(vault) == 1
             ), "`vault` should contain one key (Vault name) and one value (secret key)"
             name, key = list(vault.items())[0]
             secrets = lib_vault.get_secret(name)
-            logging.debug("Using secret from the Vault.")
+            self.logger.debug("Using secret from the Vault.")
             return secrets[key]
 
         if not secret:
-            logging.debug("Using secret implicitly from environment variable(s).")
+            self.logger.debug("Using secret implicitly from environment variable(s).")
             return None
 
         secret_path = Path(secret).expanduser().resolve()
         if secret_path.exists():
             # File-based secret, don't return its content, but its file location
             #  as object instead. (the engine itself knows how to use it from there)
-            logging.debug("Using secret from local file path at: %s", secret_path)
+            self.logger.debug("Using secret from local file path at: %s", secret_path)
             return secret_path
 
-        logging.debug("Using secret as provided.")
+        self.logger.debug("Using secret as provided.")
         return secret  # secret in plain text
 
     def _init_google(
@@ -191,7 +219,7 @@ class DocumentAI:
         if secret and vault:
             raise ValueError("choose between `secret` and `vault`")
         elif not (secret or vault):
-            logging.warning("No `secret` or `vault` provided, relying on env vars.")
+            self.logger.warning("No `secret` or `vault` provided, relying on env vars.")
         if isinstance(vault, str):
             vault_name, vault_secret_key = vault.split(":")
             vault = {vault_name: vault_secret_key}
@@ -215,22 +243,59 @@ class DocumentAI:
         init_map[name](secret_value, **kwargs)
         self.switch_engine(name)
 
-    def _check_engine(self):
-        if not self._active_engine:
-            raise RuntimeError(
-                "can't execute without an engine set, please run"
-                " `Init Engine    <name>    ...` first"
-            )
-
     @keyword
-    def predict(self, location, model=None, **kwargs):
+    def predict(
+        self,
+        location: PathType,
+        model: Optional[Union[str, List[str]]] = None,
+        **kwargs,
+    ):
         """<summary>
 
         <params>
         <example>
         """
-        self._check_engine()
-        # TODO: Run adequate prediction keyword.
+        location_file = Path(location).expanduser().resolve()
+        if location_file.exists():
+            location_url = None
+            self.logger.info("Using file path based location: %s", location_file)
+        else:
+            location_url = location
+            location_file = None
+            self.logger.info("Using URL address based location: %s", location_url)
+            if self._active_engine in (EngineName.GOOGLE, EngineName.NANONETS):
+                self.logger.warning(
+                    f"Engine {self._active_engine} isn't supporting URL input at the moment!"
+                )
+        if not model and self._active_engine in (
+            EngineName.GOOGLE,
+            EngineName.NANONETS,
+        ):
+            self.logger.warning(
+                f"Engine {self._active_engine} requires a specific `model` passed in!"
+            )
+
+        process_map = {
+            EngineName.GOOGLE: functools.partial(
+                self.engine.process_document,
+                processor_id=model,
+                file_path=location_file,
+            ),
+            EngineName.BASE64: functools.partial(
+                self.engine.scan_document_file,
+                file_path=location_file,
+                model_types=model,
+            )
+            if location_file
+            else functools.partial(
+                self.engine.scan_document_url, url=location_url, model_types=model
+            ),
+            EngineName.NANONETS: functools.partial(
+                self.engine.predict_file, filepath=location_file, model_id=model
+            ),
+        }
+        result = process_map[self._active_engine](**kwargs)
+        self._results[self._active_engine] = result
 
     @keyword
     def get_result(self) -> JSONType:
@@ -238,6 +303,9 @@ class DocumentAI:
 
         <example>
         """
-        self._check_engine()
-        # TODO: Run adequate result retrieval keyword.
-        return {}
+        result_map = {
+            EngineName.GOOGLE: self.engine.get_document_entities,
+            EngineName.BASE64: lambda result: result,
+            EngineName.NANONETS: lambda result: result,
+        }
+        return result_map[self._active_engine](self.result)

@@ -226,9 +226,7 @@ class DocumentAIKeywords(LibraryContext):
             try:
                 document = pickle.load(response_file)
             except pickle.UnpicklingError as err:
-                raise ValueError from err(
-                    "The file '%s' is not 'documentai.Document' type" % filepath
-                )
+                raise ValueError(f"The file {filepath!r} is not 'documentai.Document' type") from err
 
         if not isinstance(document, documentai.Document):
             raise ValueError(
@@ -283,7 +281,7 @@ class DocumentAIKeywords(LibraryContext):
         return languages
 
     @keyword(tags=["document ai"])
-    def list_processors(self, project_id: str, region: str):
+    def list_processors(self, project_id: str, region: str) -> List:
         """List existing document AI processors from given project and region.
 
         Requires `documentai.processors.list` permission.
