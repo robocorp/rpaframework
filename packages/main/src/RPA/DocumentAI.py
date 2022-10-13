@@ -276,25 +276,19 @@ class DocumentAI:
             )
 
         process_map = {
-            EngineName.GOOGLE: functools.partial(
-                self.engine.process_document,
-                processor_id=model,
-                file_path=location_file,
+            EngineName.GOOGLE: lambda: self.engine.process_document(
+                file_path=location_file, processor_id=model, **kwargs
             ),
-            EngineName.BASE64: functools.partial(
-                self.engine.scan_document_file,
-                file_path=location_file,
-                model_types=model,
-            )
-            if location_file
-            else functools.partial(
-                self.engine.scan_document_url, url=location_url, model_types=model
-            ),
-            EngineName.NANONETS: functools.partial(
-                self.engine.predict_file, filepath=location_file, model_id=model
+            EngineName.BASE64: lambda: (
+                self.engine.scan_document_file
+                if location_file
+                else self.engine.scan_document_url
+            )(location_file or location_url, model_types=model, **kwargs),
+            EngineName.NANONETS: lambda: self.engine.predict_file(
+                filepath=location_file, model_id=model
             ),
         }
-        result = process_map[self._active_engine](**kwargs)
+        result = process_map[self._active_engine]()
         self._results[self._active_engine] = result
 
     @keyword
@@ -304,7 +298,7 @@ class DocumentAI:
         <example>
         """
         result_map = {
-            EngineName.GOOGLE: self.engine.get_document_entities,
+            EngineName.GOOGLE: lambda result: self.engine.get_document_entities(result),
             EngineName.BASE64: lambda result: result,
             EngineName.NANONETS: lambda result: result,
         }
