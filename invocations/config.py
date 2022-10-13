@@ -318,7 +318,7 @@ def reset_local(ctx):
     is ignored.
     """
     venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
-    if Path(venv_activation_cmd).exists():
+    if Path(venv_activation_cmd.rsplit(" ", 1)[-1]).exists():
         try:
             restore_dependency_files(ctx)
         except FileNotFoundError:
@@ -334,6 +334,7 @@ def reset_local(ctx):
             pip_freeze = shell.pip(ctx, "list --format json", echo=False, hide="out")
             # Identifies locally installed packages in development mode.
             #  (not from PyPI)
+            print(pip_freeze.stdout)
             installed_pkgs = json.loads(pip_freeze.stdout)
             local_pkgs = [
                 pkg
