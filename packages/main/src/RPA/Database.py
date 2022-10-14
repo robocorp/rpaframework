@@ -192,6 +192,28 @@ class Database:
     ) -> None:
         """Connect to database using DB API 2.0 module.
 
+        **Note.** The SSL support had been added for `mysql`
+        module in `rpaframework==17.7.0`. The extra configuration
+        parameters can be given via configuration file. Extra
+        parameters are:
+
+        - ssl_ca
+        - ssl_cert
+        - ssl_key
+        - client_flags
+
+        Example configuration file:
+
+        .. code-block:: none
+
+            [default]
+            host=hostname.mysql.database.azure.com
+            port=3306
+            username=username@hostname
+            database=databasename
+            client_flags=SSL,FOUND_ROWS
+            ssl_ca=.\DigiCertGlobalRootG2.crt.pem
+
         :param module_name: database module to use
         :param database: name of the database
         :param username: of the user accessing the database
@@ -208,6 +230,12 @@ class Database:
 
             Connect To Database  pymysql  database  username  password  host  port
             Connect To Database  ${CURDIR}${/}resources${/}dbconfig.cfg
+
+            ${secrets}=    Get Secret    azuredb
+            Connect To Database
+            ...    mysql.connector
+            ...    password=${secrets}[password]
+            ...    config_file=${CURDIR}${/}azure.cfg
 
         """
         # TODO. take autocommit into use for all database modules
