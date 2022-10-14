@@ -1,5 +1,6 @@
 import importlib
 import logging
+from sqlite3 import NotSupportedError
 import sys
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -42,6 +43,9 @@ class Configuration:
         config.read([config_file])
 
         self.configuration = {}
+        if "default" in config.keys():
+            for key in config["default"]:
+                self.configuration[key] = config.get("default", key)
         self.module_name = module_name or (
             config.get("default", "module_name")
             if config.has_option("default", "module_name")
@@ -216,17 +220,22 @@ class Database:
         else:
             self.db_api_module_name = self.config.module_name
             dbmodule = importlib.import_module(self.config.module_name)
-        if module_name in ["MySQLdb", "pymysql"]:
+        if module_name in ["MySQLdb", "pymysql", "mysql.connector"]:
             self.config.set_default_port(3306)
             self.logger.info(self.config.get_connection_parameters_as_string())
-            self._dbconnection = dbmodule.connect(
-                db=self.config.get("database"),
-                user=self.config.get("username"),
-                passwd=self.config.get("password"),
-                host=self.config.get("host"),
-                port=self.config.get("port"),
-                charset=self.config.get("charset"),
-            )
+            parameters = {
+                "db": self.config.get("database"),
+                "user": self.config.get("username"),
+                "passwd": self.config.get("password"),
+                "host": self.config.get("host"),
+                "port": self.config.get("port"),
+            }
+            self._add_to_parameters_íf_not_none(parameters, "charset")
+            self._add_to_parameters_íf_not_none(parameters, "ssl_ca")
+            self._add_to_parameters_íf_not_none(parameters, "ssl_cert")
+            self._add_to_parameters_íf_not_none(parameters, "ssl_key")
+            self._set_mysql_client_flags(module_name, parameters)
+            self._dbconnection = dbmodule.connect(**parameters)
         elif module_name.startswith("psycopg"):
             self.config.set_default_port(5432)
             self.logger.info(self.config.get_connection_parameters_as_string())
@@ -342,6 +351,11 @@ class Database:
             self._dbconnection = dbmodule.connect(**conf)
             if module_name == "sqlite3":
                 self._dbconnection.isolation_level = None if autocommit else "IMMEDIATE"
+
+    def _add_to_parameters_íf_not_none(self, parameters, config_key):
+        config_value = self.config.get(config_key)
+        if config_value:
+            parameters[config_key] = config_value
 
     def call_stored_procedure(
         self,
@@ -682,3 +696,49 @@ class Database:
             "SELECT COUNT(*) FROM %s%s" % (table, where_cond), as_table=False
         )
         return result[0][0]
+
+    def _set_mysql_client_flags(self, module_name, parameters):
+        client_flags = self.config.get("client_flags")
+        if module_name == "MySQLdb":
+            raise NotSupportedError(
+                "Setting client_flags for MySQLdb module is not supported"
+            )
+        if client_flags:
+            flag_attributes_by_module = {
+                "pymysql": {"property": "CLIENT", "param": "client_flag"},
+                "mysql.connector": {
+                    "property": "ClientFlag",
+                    "param": "client_flags",
+                },
+            }
+            try:
+                flag_property = flag_attributes_by_module[module_name]["property"]
+                connection_param = flag_attributes_by_module[module_name]["param"]
+                constants = importlib.import_module(f"{module_name}.constants")
+                client_flag_obj = getattr(constants, flag_property)
+                flags_to_set = []
+                for flag in client_flags.split(","):
+                    try:
+                        flags_to_set.append(getattr(client_flag_obj, flag))
+                    except AttributeError:
+                        self.logger.warning(
+                            f"Could not set a client flag '{flag}', "
+                            f"'{flag_property}' "
+                            f"property for module '{module_name}'"
+                        )
+
+                if flags_to_set:
+                    # pymysql supports only 1 value for 'client_flag'
+                    # taking 1st from the list
+                    parameters[connection_param] = (
+                        int(flags_to_set[0])
+                        if module_name in ["pymysql"]
+                        else flags_to_set
+                    )
+            except Exception as err:
+                self.logger.error(str(err))
+                # noqa: E501
+                raise AttributeError(
+                    f"Could not set client flags '{flag_property}' "
+                    f"property for module '{module_name}'"
+                ) from err
