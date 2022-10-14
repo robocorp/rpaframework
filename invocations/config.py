@@ -9,6 +9,7 @@ import re
 import shutil
 from glob import glob
 from pathlib import Path
+from typing import Dict, List, Union
 import toml
 from colorama import Fore, Style
 
@@ -307,6 +308,14 @@ def install(ctx, reset=False, extra=None, all_extras=False):
     else:
         shell.poetry(ctx, f"install {extras_cmd}")
 
+def _extract_json_payload(stdout: str) -> Union[List, Dict, None]:
+    """Extracts a JSON payload from somewhere in the provided string."""
+    pattern = r"[\[{].+[}\]]"
+    matches = re.search(pattern, stdout)
+    try:
+        return json.loads(matches[0])
+    except TypeError:
+        return None
 
 @task(aliases=["reset"])
 def reset_local(ctx):
@@ -331,11 +340,10 @@ def reset_local(ctx):
             "rpaframework" if safely_load_config(ctx, "is_meta", False) else None,
         ]
         with ctx.prefix(venv_activation_cmd):
-            pip_freeze = shell.pip(ctx, "list -q --format json", echo=False, hide="out")
+            pip_freeze = shell.pip(ctx, "list --format json", echo=False, hide="out")
             # Identifies locally installed packages in development mode.
             #  (not from PyPI)
-            print(pip_freeze.stdout)
-            installed_pkgs = json.loads(pip_freeze.stdout)
+            installed_pkgs = _extract_json_payload(pip_freeze.stdout)
             local_pkgs = [
                 pkg
                 for pkg in installed_pkgs
