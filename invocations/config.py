@@ -331,7 +331,7 @@ def reset_local(ctx):
             "rpaframework" if safely_load_config(ctx, "is_meta", False) else None,
         ]
         with ctx.prefix(venv_activation_cmd):
-            pip_freeze = shell.pip(ctx, "list --format json", echo=False, hide="out")
+            pip_freeze = shell.pip(ctx, "list -q --format json", echo=False, hide="out")
             # Identifies locally installed packages in development mode.
             #  (not from PyPI)
             print(pip_freeze.stdout)
