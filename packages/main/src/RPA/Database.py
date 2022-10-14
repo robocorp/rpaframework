@@ -204,7 +204,7 @@ class Database:
 
         Example configuration file:
 
-        .. code-block:: none
+        .. code-block:: ini
 
             [default]
             host=hostname.mysql.database.azure.com
