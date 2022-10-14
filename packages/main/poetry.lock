@@ -144,14 +144,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.24.89"
+version = "1.24.90"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.89,<1.28.0"
+botocore = ">=1.27.90,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -160,7 +160,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.89"
+version = "1.27.90"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -984,7 +984,7 @@ attrs = ">=19.2.0"
 
 [[package]]
 name = "overrides"
-version = "7.0.0"
+version = "7.1.0"
 description = "A decorator to automatically detect mismatch when overriding a method."
 category = "main"
 optional = true
@@ -2199,7 +2199,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "tzdata"
-version = "2022.4"
+version = "2022.5"
 description = "Provider of IANA time zone data"
 category = "main"
 optional = false
@@ -2474,12 +2474,12 @@ black = [
     {file = "black-22.10.0.tar.gz", hash = "sha256:f513588da599943e0cde4e32cc9879e825d58720d6557062d1098c5ad80080e1"},
 ]
 boto3 = [
-    {file = "boto3-1.24.89-py3-none-any.whl", hash = "sha256:346f8f0d101a4261dac146a959df18d024feda6431e1d9d84f94efd24d086cae"},
-    {file = "boto3-1.24.89.tar.gz", hash = "sha256:d0d8ffcdc10821c4562bc7f935cdd840033bbc342ac0e14b6bdd348b3adf4c04"},
+    {file = "boto3-1.24.90-py3-none-any.whl", hash = "sha256:2a058a86989d88e27c79dd3e17218b3b167070d8738e20844d49363a3dd64281"},
+    {file = "boto3-1.24.90.tar.gz", hash = "sha256:83c2bc50f762ba87471fc73ec3eefd86626883b38533e98d7993259450c043db"},
 ]
 botocore = [
-    {file = "botocore-1.27.89-py3-none-any.whl", hash = "sha256:238f1dfdb8d8d017c2aea082609a3764f3161d32745900f41bcdcf290d95a048"},
-    {file = "botocore-1.27.89.tar.gz", hash = "sha256:621f5413be8f97712b7e36c1b075a8791d1d1b9971a7ee060cdcdf5e2debf6c1"},
+    {file = "botocore-1.27.90-py3-none-any.whl", hash = "sha256:2a934e713e83ae7f4dde1dd013be280538e3c4a3825c5f5a2727a1956d4cd82c"},
+    {file = "botocore-1.27.90.tar.gz", hash = "sha256:4ecc149d1dd36d32ba222de135c2e147731107ae444440b12714282dc00f88a4"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3184,8 +3184,8 @@ outcome = [
     {file = "outcome-1.2.0.tar.gz", hash = "sha256:6f82bd3de45da303cf1f771ecafa1633750a358436a8bb60e06a1ceb745d2672"},
 ]
 overrides = [
-    {file = "overrides-7.0.0-py3-none-any.whl", hash = "sha256:f6e4696acba91e5d4fd8ebb6e05cc9fc4d49c7b0ea4064cc0a1f64a1e09861c8"},
-    {file = "overrides-7.0.0.tar.gz", hash = "sha256:49754f440f29de43975e27838942331adcc7521e6f552fdbb434dd5b4f895b3d"},
+    {file = "overrides-7.1.0-py3-none-any.whl", hash = "sha256:037921cc66674f3c9436baeac4ad14101e7e673e70ea8b87f31f76d65174cf16"},
+    {file = "overrides-7.1.0.tar.gz", hash = "sha256:6c005eb5ecdf67b27df689f35deda5493af52a813da50cf0f6591bb8b4a3b400"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
@@ -3826,8 +3826,8 @@ typing-extensions = [
     {file = "typing_extensions-4.4.0.tar.gz", hash = "sha256:1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa"},
 ]
 tzdata = [
-    {file = "tzdata-2022.4-py2.py3-none-any.whl", hash = "sha256:74da81ecf2b3887c94e53fc1d466d4362aaf8b26fc87cda18f22004544694583"},
-    {file = "tzdata-2022.4.tar.gz", hash = "sha256:ada9133fbd561e6ec3d1674d3fba50251636e918aa97bd59d63735bef5a513bb"},
+    {file = "tzdata-2022.5-py2.py3-none-any.whl", hash = "sha256:323161b22b7802fdc78f20ca5f6073639c64f1a7227c40cd3e19fd1d0ce6650a"},
+    {file = "tzdata-2022.5.tar.gz", hash = "sha256:e15b2b3005e2546108af42a0eb4ccab4d9e225e2dfbf4f77aad50c70a4b1f3ab"},
 ]
 tzlocal = [
     {file = "tzlocal-4.2-py3-none-any.whl", hash = "sha256:89885494684c929d9191c57aa27502afc87a579be5cdd3225c77c463ea043745"},
