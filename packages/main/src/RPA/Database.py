@@ -212,7 +212,7 @@ class Database:
             username=username@hostname
             database=databasename
             client_flags=SSL,FOUND_ROWS
-            ssl_ca=.\DigiCertGlobalRootG2.crt.pem
+            ssl_ca=DigiCertGlobalRootG2.crt.pem
 
         :param module_name: database module to use
         :param database: name of the database
