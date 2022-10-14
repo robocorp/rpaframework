@@ -222,29 +222,18 @@ class Application:
 
         mailto = ";".join(recipients)
 
-        mail = self.app.CreateItem(0)
-        mail.To = mailto
-        mail.Subject = subject
-
-        if html_body:
-            mail.HTMLBody = body
-        else:
-            mail.Body = body
-
-        # Add attachments
-        if len(attachments) > 0:
-            filepath = None
-            try:
-                for attachment in attachments:
-                    filepath = Path(attachment).absolute()
-                    mail.Attachments.Add(str(filepath))
-            except pywintypes.com_error:
-                self.logger.error(
-                    "Attachment error - problem with filepath: %s", filepath
-                )
-                return False
-
         try:
+            mail = self.app.CreateItem(0)
+            mail.To = mailto
+            mail.Subject = subject
+
+            if html_body:
+                mail.HTMLBody = body
+            else:
+                mail.Body = body
+
+            self._add_attachments(mail, attachments)
+
             if save_as_draft:
                 mail.Save()
                 self.logger.debug("Email draft saved")
@@ -255,6 +244,15 @@ class Application:
             self.logger.error("Mail action failed: %s", str(e))
             return False
         return True
+
+    def _add_attachments(self, email, attachments):
+        # Add attachments
+        if len(attachments) > 0:
+            filepath = None
+
+        for attachment in attachments:
+            filepath = Path(attachment).absolute()
+            email.Attachments.Add(str(filepath))
 
     def _is_email_too_old(self, email):
         now = datetime.now().timestamp()
