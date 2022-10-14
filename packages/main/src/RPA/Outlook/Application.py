@@ -200,7 +200,7 @@ class Application:
         :param body: email body
         :param html_body: True if body contains HTML, defaults to False
         :param attachments: list of filepaths to include in the email, defaults to []
-        :param save_as_draft: email is saved as draft on True
+        :param save_as_draft: email is saved as draft when `True`
         :return: `True` if there were no errors
 
         Example:
