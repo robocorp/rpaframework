@@ -345,9 +345,110 @@ The possible expected values depend on the type of element (see usage).</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.SAP.SAP.focus_and_click">
+<code class="sig-name descname">focus_and_click</code><span class="sig-paren">(</span><em class="sig-param">element_id: str</em>, <em class="sig-param">wait_time: Optional[float] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.focus_and_click" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set focus into the element and click it.</p>
+<p>Note. The default library wait time can be adjusted using <cite>Set Explicit Wait</cite>
+keyword. Library’s <cite>explicit_wait</cite> will be used if <cite>wait_time</cite> parameter
+is not set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element_id</strong> – locator for the element</p></li>
+<li><p><strong>wait_time</strong> – the wait time after the action</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.SAP.SAP.focus_and_input_text">
+<code class="sig-name descname">focus_and_input_text</code><span class="sig-paren">(</span><em class="sig-param">element_id: str</em>, <em class="sig-param">text: str</em>, <em class="sig-param">wait_time: Optional[float] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.focus_and_input_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set focus into the element and input text into it.</p>
+<p>Note. The default library wait time can be adjusted using <cite>Set Explicit Wait</cite>
+keyword. Library’s <cite>explicit_wait</cite> will be used if <cite>wait_time</cite> parameter
+is not set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element_id</strong> – locator for the element</p></li>
+<li><p><strong>text</strong> – text to be inputted</p></li>
+<li><p><strong>wait_time</strong> – the wait time after the action</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.SAP.SAP.generic_click_element">
+<code class="sig-name descname">generic_click_element</code><span class="sig-paren">(</span><em class="sig-param">element_id</em>, <em class="sig-param">click_type='press'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.generic_click_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a single click on a given element.</p>
+<p>Differs from <cite>Click Element</cite> keyword so that element type is ignored, instead
+<cite>click_type</cite> (either <cite>press</cite> or <cite>select</cite>) is performed on the element if
+possible.</p>
+<p>In case you want to change a value of an element like checkboxes of selecting
+an option in dropdown lists, use <cite>select checkbox</cite> or
+<cite>select from list by label</cite> instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element_id</strong> – locator for the element</p></li>
+<li><p><strong>click_type</strong> – either <code class="docutils literal notranslate"><span class="pre">press</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">select</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.SAP.SAP.generic_input_password">
+<code class="sig-name descname">generic_input_password</code><span class="sig-paren">(</span><em class="sig-param">element_id</em>, <em class="sig-param">password</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.generic_input_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts the given password into the text field identified by locator.</p>
+<p>This keyword does NOT depend on the type of the element. Will set
+password to the element’s ‘text’ attribute if possible.</p>
+<p>The password is not recorded in the log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element_id</strong> – locator for the element</p></li>
+<li><p><strong>password</strong> – password to be inputted</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.SAP.SAP.generic_input_text">
+<code class="sig-name descname">generic_input_text</code><span class="sig-paren">(</span><em class="sig-param">element_id</em>, <em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.generic_input_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts the given text into the text field identified by locator.
+Use keyword <cite>input password</cite> to insert a password in a text field.</p>
+<p>This keyword does NOT depend on the type of the element. Will set
+text to the element’s ‘text’ attribute if possible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element_id</strong> – locator for the element</p></li>
+<li><p><strong>text</strong> – text to be inputted</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.SAP.SAP.get_cell_value">
 <code class="sig-name descname">get_cell_value</code><span class="sig-paren">(</span><em class="sig-param">table_id</em>, <em class="sig-param">row_num</em>, <em class="sig-param">col_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.get_cell_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the cell value for the specified cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_id</strong> – locator for the table element</p></li>
+<li><p><strong>row_num</strong> – table row number</p></li>
+<li><p><strong>col_id</strong> – table cell id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>text in the specified cell</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -363,6 +464,20 @@ The possible expected values depend on the type of element (see usage).</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.SAP.SAP.get_element_type_of_object">
+<code class="sig-name descname">get_element_type_of_object</code><span class="sig-paren">(</span><em class="sig-param">element</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.get_element_type_of_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Sap element type for the given element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>element</strong> – SAP element</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>type of the SAP element</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.SAP.SAP.get_row_count">
 <code class="sig-name descname">get_row_count</code><span class="sig-paren">(</span><em class="sig-param">table_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.get_row_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the number of rows found in the specified table.</p>
@@ -372,6 +487,21 @@ The possible expected values depend on the type of element (see usage).</p>
 <dt id="RPA.SAP.SAP.get_scroll_position">
 <code class="sig-name descname">get_scroll_position</code><span class="sig-paren">(</span><em class="sig-param">element_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.SAP.SAP.get_scroll_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the scroll position of the scrollbar of an element ‘element_id’ that is contained within a shell object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.SAP.SAP.get_statusbar_type">
+<code class="sig-name descname">get_statusbar_type</code><span class="sig-paren">(</span><em class="sig-param">window: Optional[str] = 'wnd[0]'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.SAP.SAP.get_statusbar_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the messageType in the statusbar the given window.</p>
+<p>Takes screenshot on error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>window</strong> – locator for the statusbar, default ‘wnd[0]’</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>messageType of the /sbar element or empty string</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
