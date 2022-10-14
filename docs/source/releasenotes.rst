@@ -5,6 +5,10 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Outlook.Application** (:pr:`666`): Add parameter ``save_as_draft`` parameter 
+  to ``Send Message`` / ``Send Email`` keywords. Will save the email instead of sending.
+- Library **RPA.Database** (:pr:`667`): Add SSL support for MySQL modules (``pymysql`` and
+  ``mysql.connector``). 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
