@@ -241,7 +241,7 @@ class Application:
                 mail.Send()
                 self.logger.debug("Email sent")
         except pywintypes.com_error as e:
-            self.logger.error("Mail action failed: %s", str(e))
+            self.logger.error(f"Mail {'saving' if save_as_draft else 'sending'} failed: %s", e)
             return False
         return True
 
