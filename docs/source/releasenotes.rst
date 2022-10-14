@@ -5,12 +5,42 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Salesforce** (:issue:`570`): Added two new keyword ``Set Domain`` and
- ``Get Domain``. Enhanced documentation around the different ways to set a domain.
+- Library **RPA.Outlook.Application** (:pr:`666`): Add parameter ``save_as_draft`` parameter 
+  to ``Send Message`` / ``Send Email`` keywords. Will save the email instead of sending.
+  
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17.6.0 - 12 Oct 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`661`): Downloads correctly Mac arm64 web
+  drivers. (due to ``rpaframework-core`` **10.0.1**)
+- Library **RPA.Cloud.AWS** (:pr:`663`): Add more options for ``List Files`` keyword.
+
+17.5.1 - 11 Oct 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`660`): Ensure `use_profile` parameter is
+  working as expected when set true. Affecting the ``Open Available Browser`` and
+  ``Open Chrome Browser`` keywords.
+
+17.5.0 - 07 Oct 2022
+--------------------
+
+- New library **RPA.MSGraph** (:issue:`176`, :pr:`653`): This library wraps the
+  `O365 package`_, giving robots the ability to access the Microsoft Graph API programmatically.
+
+.. _O365 package: https://pypi.org/project/O365
+
+17.4.0 - 06 Oct 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems** (:pr:`655`): Fix behaviour when releasing FAILED
+  items with empty string `code` or `message`.
+- Library **RPA.Salesforce** (:issue:`570`): Added two new keywords: ``Set Domain`` and
+  ``Get Domain``. Enhanced documentation around the different ways to set a domain.
 
 17.3.0 - 03 Oct 2022
 --------------------

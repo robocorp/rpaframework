@@ -7,7 +7,7 @@ from keyring.errors import KeyringError
 from pathlib import Path
 from invoke import task, Collection, ParseError, Context, config as inv_config
 
-from invocations import shell, config, libspec, ROBOT_BUILD_STRATEGY
+from invocations import shell, config, libspec, ROBOT_BUILD_STRATEGY, errors
 from invocations.util import require_package, safely_load_config, REPO_ROOT
 
 
@@ -100,8 +100,9 @@ def version(ctx, version=None):
 def publish(ctx, ci=False, build_=True, version=None, yes_to_all=False):
     """Publish python package. By default, this task will completely
     clean the dev environment, rebuild the distributable packages and
-    then publish to the public production PyPI repository. Arguments can
-    be used to modify this behavior:
+    then publish to the public production PyPI repository. It will
+    fail to publish to production PyPI if the current branch is not
+    ``master``. Arguments can be used to modify behavior:
 
     * ``--ci``: publishes to the devpi repository as configured via the
       ``install.setup-poetry`` task. This will disable cleaning and
@@ -120,7 +121,7 @@ def publish(ctx, ci=False, build_=True, version=None, yes_to_all=False):
     """
     if not build_ and not ci:
         raise ParseError("You cannot disable build when publishing to production.")
-
+    shell.require_git_branch(ctx)
     if version:
         shell.invoke(ctx, f"build.version --version={version}", echo=False)
     if not ci:
