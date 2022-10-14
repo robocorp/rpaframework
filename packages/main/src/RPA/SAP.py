@@ -94,6 +94,9 @@ class SAP(SapGuiLibrary):
         password to the element's 'text' attribute if possible.
 
         The password is not recorded in the log.
+
+        :param element_id: locator for the element
+        :param password: password to be inputted
         """
         self._generic_input(element_id, password, False)
 
@@ -103,11 +106,18 @@ class SAP(SapGuiLibrary):
 
         This keyword does NOT depend on the type of the element. Will set
         text to the element's 'text' attribute if possible.
+
+        :param element_id: locator for the element
+        :param text: text to be inputted
         """
         self._generic_input(element_id, text)
 
     def get_element_type_of_object(self, element):
-        """Returns the Sap element type for the given element."""
+        """Returns the Sap element type for the given element.
+
+        :param element: SAP element
+        :return: type of the SAP element
+        """
         try:
             return element.type
         except COMError as ex:
@@ -143,6 +153,9 @@ class SAP(SapGuiLibrary):
         In case you want to change a value of an element like checkboxes of selecting
         an option in dropdown lists, use `select checkbox` or
         `select from list by label` instead.
+
+        :param element_id: locator for the element
+        :param click_type: either ``press`` (default) or ``select``
         """
         element = self.session.findById(element_id)
         element_type = self.get_element_type_of_object(element)
@@ -160,7 +173,13 @@ class SAP(SapGuiLibrary):
         time.sleep(self.explicit_wait)
 
     def get_cell_value(self, table_id, row_num, col_id):
-        """Returns the cell value for the specified cell."""
+        """Returns the cell value for the specified cell.
+
+        :param table_id: locator for the table element
+        :param row_num: table row number
+        :param col_id: table cell id
+        :return: text in the specified cell
+        """
         self.element_should_be_present(table_id)
 
         try:
