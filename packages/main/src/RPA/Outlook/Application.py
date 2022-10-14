@@ -163,6 +163,7 @@ class Application:
         body: str,
         html_body: bool = False,
         attachments: Any = None,
+        save_as_draft: bool = False,
     ) -> bool:
         """Send message with Outlook
 
@@ -171,6 +172,7 @@ class Application:
         :param body: email body
         :param html_body: True if body contains HTML, defaults to False
         :param attachments: list of filepaths to include in the email, defaults to []
+        :param save_as_draft: message is saved as draft on True
         :return: `True` if there were no errors
         """
         self.logger.warning(
@@ -178,7 +180,9 @@ class Application:
             "and will be removed in a future version."
             "Use 'Send Email' instead."
         )
-        return self.send_email(recipients, subject, body, html_body, attachments)
+        return self.send_email(
+            recipients, subject, body, html_body, attachments, save_as_draft
+        )
 
     def send_email(
         self,
@@ -187,6 +191,7 @@ class Application:
         body: str,
         html_body: bool = False,
         attachments: Any = None,
+        save_as_draft: bool = False,
     ) -> bool:
         """Send email with Outlook
 
@@ -195,6 +200,7 @@ class Application:
         :param body: email body
         :param html_body: True if body contains HTML, defaults to False
         :param attachments: list of filepaths to include in the email, defaults to []
+        :param save_as_draft: email is saved as draft on True
         :return: `True` if there were no errors
 
         Example:
@@ -238,12 +244,15 @@ class Application:
                 )
                 return False
 
-        # Send the email
         try:
-            mail.Send()
-            self.logger.debug("Email sent")
+            if save_as_draft:
+                mail.Save()
+                self.logger.debug("Email draft saved")
+            else:
+                mail.Send()
+                self.logger.debug("Email sent")
         except pywintypes.com_error as e:
-            self.logger.error("Mail send failed: %s", str(e))
+            self.logger.error("Mail action failed: %s", str(e))
             return False
         return True
 
