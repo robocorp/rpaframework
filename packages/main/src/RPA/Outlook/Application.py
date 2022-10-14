@@ -172,7 +172,8 @@ class Application:
         :param body: email body
         :param html_body: True if body contains HTML, defaults to False
         :param attachments: list of filepaths to include in the email, defaults to []
-        :param save_as_draft: message is saved as draft when `True` instead (and not sent)
+        :param save_as_draft: message is saved as draft when `True`
+         instead (and not sent)
         :return: `True` if there were no errors
         """
         self.logger.warning(
@@ -241,15 +242,13 @@ class Application:
                 mail.Send()
                 self.logger.debug("Email sent")
         except pywintypes.com_error as e:
-            self.logger.error(f"Mail {'saving' if save_as_draft else 'sending'} failed: %s", e)
+            self.logger.error(
+                f"Mail {'saving' if save_as_draft else 'sending'} failed: %s", e
+            )
             return False
         return True
 
     def _add_attachments(self, email, attachments):
-        # Add attachments
-        if len(attachments) > 0:
-            filepath = None
-
         for attachment in attachments:
             filepath = Path(attachment).absolute()
             email.Attachments.Add(str(filepath))
