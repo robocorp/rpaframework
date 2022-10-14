@@ -351,6 +351,26 @@ rollback if such additional action was detected. (turned off by default)</p></li
 <dt id="RPA.Database.Database.connect_to_database">
 <code class="sig-name descname">connect_to_database</code><span class="sig-paren">(</span><em class="sig-param">module_name: Optional[str] = None</em>, <em class="sig-param">database: Optional[str] = None</em>, <em class="sig-param">username: Optional[str] = None</em>, <em class="sig-param">password: Optional[str] = None</em>, <em class="sig-param">host: Optional[str] = None</em>, <em class="sig-param">port: Optional[int] = None</em>, <em class="sig-param">charset: Optional[str] = None</em>, <em class="sig-param">config_file: Optional[str] = 'db.cfg'</em>, <em class="sig-param">autocommit: Optional[bool] = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Database.Database.connect_to_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to database using DB API 2.0 module.</p>
+<p><strong>Note.</strong> The SSL support had been added for <cite>mysql</cite>
+module in <cite>rpaframework==17.7.0</cite>. The extra configuration
+parameters can be given via configuration file. Extra
+parameters are:</p>
+<ul class="simple">
+<li><p>ssl_ca</p></li>
+<li><p>ssl_cert</p></li>
+<li><p>ssl_key</p></li>
+<li><p>client_flags</p></li>
+</ul>
+<p>Example configuration file:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[default]
+host=hostname.mysql.database.azure.com
+port=3306
+username=username@hostname
+database=databasename
+client_flags=SSL,FOUND_ROWS
+ssl_ca=DigiCertGlobalRootG2.crt.pem
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -369,6 +389,12 @@ rollback if such additional action was detected. (turned off by default)</p></li
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Connect To Database</span><span class="p">  </span><span class="c">pymysql</span><span class="p">  </span><span class="c">database</span><span class="p">  </span><span class="c">username</span><span class="p">  </span><span class="c">password</span><span class="p">  </span><span class="c">host</span><span class="p">  </span><span class="c">port</span><span class="p"></span>
 <span class="c">Connect To Database</span><span class="p">  </span><span class="c">${CURDIR}${/}resources${/}dbconfig.cfg</span><span class="p"></span>
+
+<span class="c">${secrets}=</span><span class="p">    </span><span class="c">Get Secret</span><span class="p">    </span><span class="c">azuredb</span><span class="p"></span>
+<span class="c">Connect To Database</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">mysql.connector</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">password=${secrets}[password]</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">config_file=${CURDIR}${/}azure.cfg</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
