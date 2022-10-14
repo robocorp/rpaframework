@@ -1,6 +1,6 @@
 import importlib
 import logging
-from sqlite3 import NotSupportedError
+
 import sys
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -728,7 +728,7 @@ class Database:
     def _set_mysql_client_flags(self, module_name, parameters):
         client_flags = self.config.get("client_flags")
         if module_name == "MySQLdb":
-            raise NotSupportedError(
+            raise NotImplementedError(
                 "Setting client_flags for MySQLdb module is not supported"
             )
         if client_flags:
