@@ -2,7 +2,8 @@ import base64
 import json
 import logging
 import mimetypes
-from typing import List, Optional, Union, Dict
+import urllib.parse as urlparse
+from typing import Dict, List, Optional, Union
 
 import requests
 
@@ -66,12 +67,17 @@ class Base64AI:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
+    BASE_URL = "https://base64.ai"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.base_url = "https://base64.ai/api"
         self._request_headers = {"Content-Type": "application/json"}
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.Base64AI.set_authorization"])
+
+    @classmethod
+    def _to_endpoint(cls, part: str, mock: bool = False) -> str:
+        return urlparse.urljoin(cls.BASE_URL, f"{'mock' if mock else 'api'}/{part.strip('/')}")
 
     def _get_file_base64_and_mimetype(self, file_path: str):
         with open(file_path, "rb") as image_file:
@@ -142,8 +148,7 @@ class Base64AI:
                     print(f"{key}: {val['value']}")
                 print(f"Text (OCR): {r['ocr']}")
         """
-        scan = "mock/scan" if mock else "scan"
-        scan_endpoint = f"{self.base_url}/{scan}"
+        scan_endpoint = self._to_endpoint("scan", mock=mock)
         self.logger.info(f"endpoint {scan_endpoint} is set for scanning")
         base64string, mime = self._get_file_base64_and_mimetype(file_path)
         payload = {"image": f"data:{mime};base64,{base64string}"}
@@ -201,8 +206,7 @@ class Base64AI:
                     print(f"FIELD {key}: {props['value']}")
                 print(f"Text (OCR): {r['ocr']}")
         """  # noqa: E501
-        scan = "mock/scan" if mock else "scan"
-        scan_endpoint = f"{self.base_url}/{scan}"
+        scan_endpoint = self._to_endpoint("scan", mock=mock)
         self.logger.info(f"endpoint {scan_endpoint} is set for scanning")
         payload = {"url": url}
         if model_types:
@@ -218,7 +222,6 @@ class Base64AI:
             data=json.dumps(payload),
         )
         response.raise_for_status()
-        self.logger.warning(response.text)
         return response.json()
 
     def get_user_data(self) -> Dict:
@@ -264,7 +267,7 @@ class Base64AI:
         """
         response = requests.request(
             "GET",
-            f"{self.base_url}/auth/user",
+            self._to_endpoint("/auth/user"),
             headers=self._request_headers,
         )
         response.raise_for_status()
