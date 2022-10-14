@@ -9,6 +9,7 @@ Release notes
   to ``Send Message`` / ``Send Email`` keywords. Will save the email instead of sending.
 - Library **RPA.Database** (:pr:`667`): Add SSL support for MySQL modules (``pymysql`` and
   ``mysql.connector``). 
+- Library **RPA.SAP** (:pr:`656`): Add new keywords.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
