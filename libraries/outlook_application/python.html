@@ -459,7 +459,7 @@ defaults to current directory</p></li>
 
 <dl class="method">
 <dt id="RPA.Outlook.Application.Application.send_email">
-<code class="sig-name descname">send_email</code><span class="sig-paren">(</span><em class="sig-param">recipients: Any</em>, <em class="sig-param">subject: str</em>, <em class="sig-param">body: str</em>, <em class="sig-param">html_body: bool = False</em>, <em class="sig-param">attachments: Any = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Outlook.Application.Application.send_email" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_email</code><span class="sig-paren">(</span><em class="sig-param">recipients: Any</em>, <em class="sig-param">subject: str</em>, <em class="sig-param">body: str</em>, <em class="sig-param">html_body: bool = False</em>, <em class="sig-param">attachments: Any = None</em>, <em class="sig-param">save_as_draft: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Outlook.Application.Application.send_email" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send email with Outlook</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -469,6 +469,7 @@ defaults to current directory</p></li>
 <li><p><strong>body</strong> – email body</p></li>
 <li><p><strong>html_body</strong> – True if body contains HTML, defaults to False</p></li>
 <li><p><strong>attachments</strong> – list of filepaths to include in the email, defaults to []</p></li>
+<li><p><strong>save_as_draft</strong> – email is saved as draft when <cite>True</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -487,7 +488,7 @@ defaults to current directory</p></li>
 
 <dl class="method">
 <dt id="RPA.Outlook.Application.Application.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: Any</em>, <em class="sig-param">subject: str</em>, <em class="sig-param">body: str</em>, <em class="sig-param">html_body: bool = False</em>, <em class="sig-param">attachments: Any = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Outlook.Application.Application.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: Any</em>, <em class="sig-param">subject: str</em>, <em class="sig-param">body: str</em>, <em class="sig-param">html_body: bool = False</em>, <em class="sig-param">attachments: Any = None</em>, <em class="sig-param">save_as_draft: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Outlook.Application.Application.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send message with Outlook</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -497,6 +498,8 @@ defaults to current directory</p></li>
 <li><p><strong>body</strong> – email body</p></li>
 <li><p><strong>html_body</strong> – True if body contains HTML, defaults to False</p></li>
 <li><p><strong>attachments</strong> – list of filepaths to include in the email, defaults to []</p></li>
+<li><p><strong>save_as_draft</strong> – message is saved as draft when <cite>True</cite>
+instead (and not sent)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
