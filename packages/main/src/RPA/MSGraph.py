@@ -190,21 +190,6 @@ class MSGraph:
         else:
             return storage.get_default_drive()
 
-    def _combine_drive_params(
-        self, drive_id: Optional[str] = None, drive: Optional[DriveType] = None
-    ) -> DriveType:
-        """Function to be removed once ``drive_id`` is fully deprecated."""
-        if drive_id is not None:
-            raise DeprecationWarning(
-                "The drive_id paramater has been deprecated and will be removed in "
-                "upcoming versions, please use the drive parameter."
-            )
-        if drive_id is not None and drive is not None:
-            raise ValueError(
-                "You cannot specify both drive and drive_id simultaneously"
-            )
-        return drive_id or drive
-
     def _parse_drive_param(
         self,
         drive: Optional[DriveType] = None,
@@ -598,7 +583,6 @@ class MSGraph:
         target_folder: Union[drive_module.Folder, str, None] = None,
         include_folders: Optional[bool] = False,
         resource: Optional[str] = None,
-        drive_id: Optional[str] = None,
         drive: Optional[DriveType] = None,
     ) -> List[drive_module.DriveItem]:
         """Returns a list of files from the specified OneDrive folder.
@@ -610,8 +594,6 @@ class MSGraph:
          provided, will return files from the root of Onedrive.
         :param include_folders: Boolean indicating if should return folders as well.
         :param resource: Name of the resource if not using default.
-        :param drive_id: This parameter is deprecated, use ``drive`` instead.
-         The Drive ID as a string.
         :param drive: A ``Drive`` object or Drive ID as a string. If not
          provided, will use the default drive.
         :return: List of DriveItems in the folder.
@@ -635,8 +617,6 @@ class MSGraph:
                     Log    ${file.web_url}
                 END
         """
-        # TODO: remove call to function once drive_id is removed.
-        drive = self._combine_drive_params(drive_id, drive)
         self._require_authentication()
         drive_instance = self._parse_drive_param(drive, resource=resource)
         folder = self.get_folder_instance(drive_instance, target_folder)
@@ -652,7 +632,6 @@ class MSGraph:
         to_path: Optional[PathType] = None,
         name: Optional[str] = None,
         resource: Optional[str] = None,
-        drive_id: Optional[str] = None,
         drive: Optional[DriveType] = None,
     ) -> Path:
         """Downloads a file from Onedrive.
@@ -664,8 +643,6 @@ class MSGraph:
          defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
         :param resource: Name of the resource if not using default.
-        :param drive_id: This parameter is deprecated, use ``drive`` instead.
-         The Drive ID as a string.
         :param drive: A ``Drive`` object or Drive ID as a string. If not
          provided, will use the default drive.
         :return: Path to the downloaded file.
@@ -685,10 +662,8 @@ class MSGraph:
                 ...    /path/to/local/folder
                 ...    Report.pdf
         """
-        # TODO: remove call to function once drive_id is removed.
-        drive = self._combine_drive_params(drive_id, drive)
         self._require_authentication()
-        drive_instance = self._parse_drive_param(drive_id, resource=resource)
+        drive_instance = self._parse_drive_param(drive, resource=resource)
         file_instance = self.get_file_instance(drive_instance, target_file)
         return self._download_file(file_instance, to_path, name)
 
@@ -698,7 +673,6 @@ class MSGraph:
         target_folder: Union[drive_module.Folder, str],
         to_path: Optional[PathType] = None,
         resource: Optional[str] = None,
-        drive_id: Optional[str] = None,
         drive: Optional[DriveType] = None,
     ) -> Path:
         """Downloads a folder from OneDrive with all of its contents,
@@ -711,8 +685,6 @@ class MSGraph:
         :param to_path: Destination folder where the download will be saved to,
          defaults to the current directory.
         :param resource: Name of the resource if not using default.
-        :param drive_id: This parameter is deprecated, use ``drive`` instead.
-         The Drive ID as a string.
         :param drive: A ``Drive`` object or Drive ID as a string. If not
          provided, will use the default drive.
         :return: Path to the downloaded folder.
@@ -730,10 +702,8 @@ class MSGraph:
                 ...    ${drive_item}
                 ...    /path/to/local/folder
         """
-        # TODO: remove call to function once drive_id is removed.
-        drive = self._combine_drive_params(drive_id, drive)
         self._require_authentication()
-        drive_instance = self._parse_drive_param(drive_id, resource=resource)
+        drive_instance = self._parse_drive_param(drive, resource=resource)
         folder_instance = self.get_folder_instance(drive_instance, target_folder)
         return self._download_folder(folder_instance, to_path)
 
@@ -744,7 +714,6 @@ class MSGraph:
         target_folder: Optional[Union[drive_module.Folder, str]] = None,
         include_folders: Optional[bool] = False,
         resource: Optional[str] = None,
-        drive_id: Optional[str] = None,
         drive: Optional[DriveType] = None,
     ) -> List[drive_module.DriveItem]:
         # pylint: disable=anomalous-backslash-in-string
@@ -763,8 +732,6 @@ class MSGraph:
         :param target_folder: Folder where to search for files.
         :param include_folders: Boolean indicating if should return folders as well.
         :param resource: Name of the resource if not using default.
-        :param drive_id: This parameter is deprecated, use ``drive`` instead.
-         The Drive ID as a string.
         :param drive: A ``Drive`` object or Drive ID as a string. If not
          provided, will use the default drive.
         :return: List of DriveItems found based on the search string.
@@ -775,10 +742,8 @@ class MSGraph:
             Find file
                 ${files}=    Find Onedrive File    Report.xlsx
         """  # noqa: W605
-        # TODO: remove call to function once drive_id is removed.
-        drive = self._combine_drive_params(drive_id, drive)
         self._require_authentication()
-        drive_instance = self._parse_drive_param(drive_id, resource=resource)
+        drive_instance = self._parse_drive_param(drive, resource=resource)
         if target_folder:
             folder = self.get_folder_instance(drive_instance, target_folder)
             items = folder.search(search_string)
@@ -837,7 +802,6 @@ class MSGraph:
         file_path: str,
         target_folder: Optional[Union[drive_module.Folder, str]] = None,
         resource: Optional[str] = None,
-        drive_id: Optional[str] = None,
         drive: Optional[DriveType] = None,
     ) -> drive_module.DriveItem:
         # pylint: disable=anomalous-backslash-in-string
@@ -850,8 +814,6 @@ class MSGraph:
         :param file_path: Path of the local file being uploaded.
         :param target_folder: Path of the folder in Onedrive.
         :param resource: Name of the resource if not using default.
-        :param drive_id: This parameter is deprecated, use ``drive`` instead.
-         The Drive ID as a string.
         :param drive: A ``Drive`` object or Drive ID as a string. If not
          provided, will use the default drive.
         :return: The newly created DriveItem.
@@ -864,10 +826,8 @@ class MSGraph:
                 ...    /path/to/file.txt
                 ...    /path/to/folder
         """  # noqa: W605
-        # TODO: remove call to function once drive_id is removed.
-        drive = self._combine_drive_params(drive_id, drive)
         self._require_authentication()
-        drive_instance = self._parse_drive_param(drive_id, resource=resource)
+        drive_instance = self._parse_drive_param(drive, resource=resource)
         folder = self.get_folder_instance(drive_instance, target_folder)
         return folder.upload_file(item=file_path)
 
@@ -1023,7 +983,6 @@ class MSGraph:
         self,
         site: sharepoint.Site,
         include_folders: Optional[bool] = False,
-        drive_id: Optional[str] = None,
         drive: Optional[DriveType] = None,
         target_folder: Union[drive_module.Folder, str, None] = None,
     ) -> List[drive_module.DriveItem]:
@@ -1041,8 +1000,6 @@ class MSGraph:
         :param site: Site instance obtained from \`Get Sharepoint Site\`.
         :param include_folders: Boolean indicating if should return folders
          as well.
-        :param drive_id: This parameter is deprecated, use ``drive`` instead.
-         The Drive ID as a string.
         :param drive: A ``Drive`` object or Drive ID as a string. If not
          provided, will use the default drive.
         :param target_folder: Path of the folder in the Sharepoint drive.
@@ -1056,8 +1013,6 @@ class MSGraph:
             List files in SharePoint drive
                 ${files}    List Files In Sharepoint Site Drive    ${site}
         """  # noqa: W605
-        # TODO: remove call to function once drive_id is removed.
-        drive = self._combine_drive_params(drive_id, drive)
         self._require_authentication()
         drive = self._parse_drive_param(drive, site=site)
         folder = self.get_folder_instance(drive, target_folder)
@@ -1073,7 +1028,6 @@ class MSGraph:
         site: sharepoint.Site,
         to_path: Optional[PathType] = None,
         name: Optional[str] = None,
-        drive_id: Optional[str] = None,
         drive: Optional[DriveType] = None,
     ) -> Path:
         # pylint: disable=anomalous-backslash-in-string
@@ -1086,8 +1040,6 @@ class MSGraph:
         :param to_path: Destination folder of the downloaded file,
          defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
-        :param drive_id: This parameter is deprecated, use ``drive`` instead.
-         The Drive ID as a string.
         :param drive: A ``Drive`` object or a Drive ID as a string.
         :return: Path to the downloaded file.
 
@@ -1108,8 +1060,6 @@ class MSGraph:
                 ...    /path/to/local/folder
                 ...    Report.pdf
         """  # noqa: W605
-        # TODO: remove call to function once drive_id is removed.
-        drive = self._combine_drive_params(drive_id, drive)
         self._require_authentication()
         drive = self._parse_drive_param(drive, site=site)
         file_instance = self.get_file_instance(drive, target_file)
