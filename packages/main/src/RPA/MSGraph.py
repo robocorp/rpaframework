@@ -610,7 +610,10 @@ class MSGraph:
          provided, will return files from the root of Onedrive.
         :param include_folders: Boolean indicating if should return folders as well.
         :param resource: Name of the resource if not using default.
-        :param drive_id: Drive ID if not using default.
+        :param drive_id: This parameter is deprecated, use ``drive`` instead.
+         The Drive ID as a string.
+        :param drive: A ``Drive`` object or Drive ID as a string. If not
+         provided, will use the default drive.
         :return: List of DriveItems in the folder.
 
         .. code-block: robotframework
@@ -661,7 +664,10 @@ class MSGraph:
          defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
         :param resource: Name of the resource if not using default.
-        :param drive_id: Drive ID if not using default.
+        :param drive_id: This parameter is deprecated, use ``drive`` instead.
+         The Drive ID as a string.
+        :param drive: A ``Drive`` object or Drive ID as a string. If not
+         provided, will use the default drive.
         :return: Path to the downloaded file.
 
         .. code-block: robotframework
@@ -705,7 +711,10 @@ class MSGraph:
         :param to_path: Destination folder where the download will be saved to,
          defaults to the current directory.
         :param resource: Name of the resource if not using default.
-        :param drive_id: Drive ID if not using default.
+        :param drive_id: This parameter is deprecated, use ``drive`` instead.
+         The Drive ID as a string.
+        :param drive: A ``Drive`` object or Drive ID as a string. If not
+         provided, will use the default drive.
         :return: Path to the downloaded folder.
 
         .. code-block: robotframework
@@ -754,7 +763,10 @@ class MSGraph:
         :param target_folder: Folder where to search for files.
         :param include_folders: Boolean indicating if should return folders as well.
         :param resource: Name of the resource if not using default.
-        :param drive_id: Drive ID if not using default.
+        :param drive_id: This parameter is deprecated, use ``drive`` instead.
+         The Drive ID as a string.
+        :param drive: A ``Drive`` object or Drive ID as a string. If not
+         provided, will use the default drive.
         :return: List of DriveItems found based on the search string.
 
         .. code-block: robotframework
@@ -791,6 +803,7 @@ class MSGraph:
         :param to_path: Destination folder of the downloaded file,
          defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
+        :return: The Path to the downloaded file.
 
         .. code-block: robotframework
 
@@ -837,7 +850,11 @@ class MSGraph:
         :param file_path: Path of the local file being uploaded.
         :param target_folder: Path of the folder in Onedrive.
         :param resource: Name of the resource if not using default.
-        :param drive_id: Drive ID if not using default.
+        :param drive_id: This parameter is deprecated, use ``drive`` instead.
+         The Drive ID as a string.
+        :param drive: A ``Drive`` object or Drive ID as a string. If not
+         provided, will use the default drive.
+        :return: The newly created DriveItem.
 
         .. code-block: robotframework
 
@@ -1013,8 +1030,8 @@ class MSGraph:
         # pylint: disable=anomalous-backslash-in-string
         """List files in the SharePoint Site drive.
 
-        If the ``drive_id`` is not set, the default Document Library
-        will be used. The ``drive_id`` can be obtained from the keyword
+        If the ``drive`` is not set, the default Document Library
+        will be used. The ``drive`` can be obtained from the keyword
         \`List Sharepoint Site Drives\`.
 
         The files returned are ``DriveItem`` objects and they have additional
@@ -1024,7 +1041,10 @@ class MSGraph:
         :param site: Site instance obtained from \`Get Sharepoint Site\`.
         :param include_folders: Boolean indicating if should return folders
          as well.
-        :param drive_id: ID of the desired drive.
+        :param drive_id: This parameter is deprecated, use ``drive`` instead.
+         The Drive ID as a string.
+        :param drive: A ``Drive`` object or Drive ID as a string. If not
+         provided, will use the default drive.
         :param target_folder: Path of the folder in the Sharepoint drive.
          If none is provided, will return files from the root of the drive.
         :return: List of DriveItems present in the Site drive.
@@ -1066,7 +1086,9 @@ class MSGraph:
         :param to_path: Destination folder of the downloaded file,
          defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
-        :param drive_id: Drive ID if not using default.
+        :param drive_id: This parameter is deprecated, use ``drive`` instead.
+         The Drive ID as a string.
+        :param drive: A ``Drive`` object or a Drive ID as a string.
         :return: Path to the downloaded file.
 
         .. code-block: robotframework
