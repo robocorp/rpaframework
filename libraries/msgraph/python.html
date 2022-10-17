@@ -322,8 +322,8 @@ with dot-notation, see examples below.</p>
 
 <dl class="method">
 <dt id="RPA.MSGraph.MSGraph.download_file_from_onedrive">
-<code class="sig-name descname">download_file_from_onedrive</code><span class="sig-paren">(</span><em class="sig-param">target_file: Union[O365.drive.File, str], to_path: Union[str, pathlib.Path, None] = None, name: Optional[str] = None, resource: Optional[str] = None, drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_file_from_onedrive" title="Permalink to this definition">¶</a></dt>
-<dd><p>Downloads a file from Onedrive_module.</p>
+<code class="sig-name descname">download_file_from_onedrive</code><span class="sig-paren">(</span><em class="sig-param">target_file: Union[O365.drive.File, str], to_path: Union[str, pathlib.Path, None] = None, name: Optional[str] = None, resource: Optional[str] = None, drive: Union[O365.drive.Drive, str, None] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_file_from_onedrive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a file from Onedrive.</p>
 <p>The downloaded file will be saved to a local path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -333,7 +333,8 @@ with dot-notation, see examples below.</p>
 defaults to the current directory.</p></li>
 <li><p><strong>name</strong> – New name for the downloaded file, with or without extension.</p></li>
 <li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
-<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
+provided, will use the default drive.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -356,12 +357,15 @@ defaults to the current directory.</p></li>
 <li><p><strong>name</strong> – New name for the downloaded file, with or without extension.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Path to the downloaded file.</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.MSGraph.MSGraph.download_file_from_sharepoint">
-<code class="sig-name descname">download_file_from_sharepoint</code><span class="sig-paren">(</span><em class="sig-param">target_file: Union[O365.drive.File, str], site: O365.sharepoint.Site, to_path: Union[str, pathlib.Path, None] = None, name: Optional[str] = None, drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_file_from_sharepoint" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">download_file_from_sharepoint</code><span class="sig-paren">(</span><em class="sig-param">target_file: Union[O365.drive.File, str], site: O365.sharepoint.Site, to_path: Union[str, pathlib.Path, None] = None, name: Optional[str] = None, drive: Union[O365.drive.Drive, str, None] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_file_from_sharepoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads file from SharePoint.</p>
 <p>The downloaded file will be saved to a local folder.</p>
 <dl class="field-list simple">
@@ -372,7 +376,7 @@ defaults to the current directory.</p></li>
 <li><p><strong>to_path</strong> – Destination folder of the downloaded file,
 defaults to the current directory.</p></li>
 <li><p><strong>name</strong> – New name for the downloaded file, with or without extension.</p></li>
-<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or a Drive ID as a string.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -383,7 +387,7 @@ defaults to the current directory.</p></li>
 
 <dl class="method">
 <dt id="RPA.MSGraph.MSGraph.download_folder_from_onedrive">
-<code class="sig-name descname">download_folder_from_onedrive</code><span class="sig-paren">(</span><em class="sig-param">target_folder: Union[O365.drive.Folder, str], to_path: Union[str, pathlib.Path, None] = None, resource: Optional[str] = None, drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_folder_from_onedrive" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">download_folder_from_onedrive</code><span class="sig-paren">(</span><em class="sig-param">target_folder: Union[O365.drive.Folder, str], to_path: Union[str, pathlib.Path, None] = None, resource: Optional[str] = None, drive: Union[O365.drive.Drive, str, None] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="headerlink" href="#RPA.MSGraph.MSGraph.download_folder_from_onedrive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads a folder from OneDrive with all of its contents,
 including subfolders.</p>
 <p>Caution when downloading big folder structures. The downloaded
@@ -395,7 +399,8 @@ folder will be saved to a local path.</p>
 <li><p><strong>to_path</strong> – Destination folder where the download will be saved to,
 defaults to the current directory.</p></li>
 <li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
-<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
+provided, will use the default drive.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -417,13 +422,14 @@ properties that can be accessed with dot-notation, see
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>search_string</strong> – String used to search for file in Onedrive_module.
+<li><p><strong>search_string</strong> – String used to search for file in Onedrive.
 Values may be matched across several fields including filename,
 metadata, and file content.</p></li>
 <li><p><strong>target_folder</strong> – Folder where to search for files.</p></li>
 <li><p><strong>include_folders</strong> – Boolean indicating if should return folders as well.</p></li>
 <li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
-<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
+provided, will use the default drive.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -610,10 +616,12 @@ properties that can be accessed with dot-notation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>target_folder</strong> – Path of the folder in Onedrive_module.</p></li>
+<li><p><strong>target_folder</strong> – Path of the folder in Onedrive. If none is
+provided, will return files from the root of Onedrive.</p></li>
 <li><p><strong>include_folders</strong> – Boolean indicating if should return folders as well.</p></li>
 <li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
-<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
+provided, will use the default drive.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -625,9 +633,9 @@ properties that can be accessed with dot-notation.</p>
 <dl class="method">
 <dt id="RPA.MSGraph.MSGraph.list_files_in_sharepoint_site_drive">
 <code class="sig-name descname">list_files_in_sharepoint_site_drive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MSGraph.MSGraph.list_files_in_sharepoint_site_drive" title="Permalink to this definition">¶</a></dt>
-<dd><p>List files in the SharePoint Site drive_module.</p>
-<p>If the <code class="docutils literal notranslate"><span class="pre">drive_id</span></code> is not set, the default Document Library
-will be used. The <code class="docutils literal notranslate"><span class="pre">drive_id</span></code> can be obtained from the keyword
+<dd><p>List files in the SharePoint Site drive.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">drive</span></code> is not set, the default Document Library
+will be used. The <code class="docutils literal notranslate"><span class="pre">drive</span></code> can be obtained from the keyword
 `List Sharepoint Site Drives`.</p>
 <p>The files returned are <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> objects and they have additional
 properties that can be accessed with dot-notation, see
@@ -638,11 +646,14 @@ properties that can be accessed with dot-notation, see
 <li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
 <li><p><strong>include_folders</strong> – Boolean indicating if should return folders
 as well.</p></li>
-<li><p><strong>drive_id</strong> – ID of the desired drive_module.</p></li>
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
+provided, will use the default drive.</p></li>
+<li><p><strong>target_folder</strong> – Path of the folder in the Sharepoint drive.
+If none is provided, will return files from the root of the drive.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of DriveItems present in the Site drive_module.</p>
+<dd class="field-even"><p>List of DriveItems present in the Site drive.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -701,7 +712,7 @@ with dot-notation, see `Get Me` for additional details.</p>
 
 <dl class="method">
 <dt id="RPA.MSGraph.MSGraph.upload_file_to_onedrive">
-<code class="sig-name descname">upload_file_to_onedrive</code><span class="sig-paren">(</span><em class="sig-param">file_path: str</em>, <em class="sig-param">target_folder: Union[O365.drive.Folder</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">resource: Optional[str] = None</em>, <em class="sig-param">drive_id: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; O365.drive.DriveItem<a class="headerlink" href="#RPA.MSGraph.MSGraph.upload_file_to_onedrive" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">upload_file_to_onedrive</code><span class="sig-paren">(</span><em class="sig-param">file_path: str</em>, <em class="sig-param">target_folder: Union[O365.drive.Folder</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">resource: Optional[str] = None</em>, <em class="sig-param">drive: Union[O365.drive.Drive</em>, <em class="sig-param">str</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span> &#x2192; O365.drive.DriveItem<a class="headerlink" href="#RPA.MSGraph.MSGraph.upload_file_to_onedrive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uploads a file to the specified OneDrive folder.</p>
 <p>The uploaded file is returned as a <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> object and it has
 additional properties that can be accessed with dot-notation, see
@@ -710,10 +721,14 @@ additional properties that can be accessed with dot-notation, see
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_path</strong> – Path of the local file being uploaded.</p></li>
-<li><p><strong>target_folder</strong> – Path of the folder in Onedrive_module.</p></li>
+<li><p><strong>target_folder</strong> – Path of the folder in Onedrive.</p></li>
 <li><p><strong>resource</strong> – Name of the resource if not using default.</p></li>
-<li><p><strong>drive_id</strong> – Drive ID if not using default.</p></li>
+<li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
+provided, will use the default drive.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The newly created DriveItem.</p>
 </dd>
 </dl>
 </dd></dl>
