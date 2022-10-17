@@ -10,6 +10,15 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17.7.1 - 17 Oct 2022
+--------------------
+
+- Library **RPA.MSGraph** (:issue:`669`): Fix bugs in listing SharePoint files and in
+  keywords not supporting Drive objects. Keyword ``List files in SharePoint site drive``
+  now returns files from Sharepoint instead of OneDrive. Most keywords that accept a
+  ``drive_id`` parameter now accept ``drive``, which can be a Drive object or string.
+  The ``drive_id`` parameter will be removed in the future.
+
 17.7.0 - 14 Oct 2022
 --------------------
 
