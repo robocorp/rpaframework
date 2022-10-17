@@ -208,7 +208,7 @@ class MSGraph:
     def _parse_drive_param(
         self,
         drive: Optional[DriveType] = None,
-        site: sharepoint.Site = None,
+        site: Optional[sharepoint.Site] = None,
         resource: Optional[str] = None,
     ) -> drive_module.Drive:
         """Helper function which parses the drive parameter given
@@ -633,7 +633,7 @@ class MSGraph:
                 END
         """
         # TODO: remove call to function once drive_id is removed.
-        drive = self._combine_drive_params(drive, drive_id)
+        drive = self._combine_drive_params(drive_id, drive)
         self._require_authentication()
         drive_instance = self._parse_drive_param(drive, resource=resource)
         folder = self.get_folder_instance(drive_instance, target_folder)
