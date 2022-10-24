@@ -109,6 +109,29 @@ class Base64AI:
         """
         self._request_headers["Authorization"] = f"ApiKey {api_email}:{api_key}"
 
+    def _scan_document(
+        self,
+        payload: Dict,
+        model_types: Optional[Union[str, List[str]]] = None,
+        mock: bool = False,
+    ) -> Dict:
+        scan_endpoint = self._to_endpoint("scan", mock=mock)
+        self.logger.info(f"Endpoint {scan_endpoint!r} is set for scanning.")
+        if model_types:
+            req_model_types = (
+                model_types if isinstance(model_types, list) else model_types.split(",")
+            )
+            payload["modelTypes"] = req_model_types
+
+        response = requests.request(
+            "POST",
+            scan_endpoint,
+            headers=self._request_headers,
+            data=json.dumps(payload),
+        )
+        response.raise_for_status()
+        return response.json()
+
     def scan_document_file(
         self,
         file_path: str,
@@ -150,24 +173,9 @@ class Base64AI:
                     print(f"{key}: {val['value']}")
                 print(f"Text (OCR): {r['ocr']}")
         """
-        scan_endpoint = self._to_endpoint("scan", mock=mock)
-        self.logger.info(f"endpoint {scan_endpoint} is set for scanning")
         base64string, mime = self._get_file_base64_and_mimetype(file_path)
         payload = {"image": f"data:{mime};base64,{base64string}"}
-        if model_types:
-            req_model_types = (
-                model_types if isinstance(model_types, list) else model_types.split(",")
-            )
-            payload["modelTypes"] = req_model_types
-
-        response = requests.request(
-            "POST",
-            scan_endpoint,
-            headers=self._request_headers,
-            data=json.dumps(payload),
-        )
-        response.raise_for_status()
-        return response.json()
+        return self._scan_document(payload, model_types=model_types, mock=mock)
 
     def scan_document_url(
         self,
@@ -208,23 +216,8 @@ class Base64AI:
                     print(f"FIELD {key}: {props['value']}")
                 print(f"Text (OCR): {r['ocr']}")
         """  # noqa: E501
-        scan_endpoint = self._to_endpoint("scan", mock=mock)
-        self.logger.info(f"endpoint {scan_endpoint} is set for scanning")
         payload = {"url": url}
-        if model_types:
-            req_model_types = (
-                model_types if isinstance(model_types, list) else model_types.split(",")
-            )
-            payload["modelTypes"] = req_model_types
-
-        response = requests.request(
-            "POST",
-            scan_endpoint,
-            headers=self._request_headers,
-            data=json.dumps(payload),
-        )
-        response.raise_for_status()
-        return response.json()
+        return self._scan_document(payload)
 
     def get_user_data(self) -> Dict:
         """Get user data including details on credits used and credits remaining
