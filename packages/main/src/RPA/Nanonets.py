@@ -251,7 +251,7 @@ class Nanonets:
 
         For example. see ``Predict File`` keyword
 
-        :param prediction: prediction result file
+        :param prediction: prediction result dictionary
         :return: list of found fields
         """
         return [
@@ -265,7 +265,7 @@ class Nanonets:
 
         For another example. see ``Predict File`` keyword
 
-        :param prediction: prediction result file
+        :param prediction: prediction result dictionary
         :return: list of found tables
 
         Robot Framework example:

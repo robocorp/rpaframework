@@ -1,4 +1,5 @@
 import base64
+import itertools
 import json
 import logging
 import mimetypes
@@ -217,7 +218,18 @@ class Base64AI:
                 print(f"Text (OCR): {r['ocr']}")
         """  # noqa: E501
         payload = {"url": url}
-        return self._scan_document(payload)
+        return self._scan_document(payload, model_types=model_types, mock=mock)
+
+    def get_fields_from_prediction_result(self, prediction: Dict) -> List:
+        """Helper keyword to get found fields from a prediction result.
+        For example see ``Scan Document File`` keyword.
+
+        :param prediction: prediction result dictionary
+        :return: list of found fields
+        """
+        return list(
+            itertools.chain(*(list(item["fields"].values()) for item in prediction))
+        )
 
     def get_user_data(self) -> Dict:
         """Get user data including details on credits used and credits remaining

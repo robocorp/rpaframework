@@ -298,10 +298,12 @@ class DocumentAI:
         <example>
         """
         result_map = {
-            EngineName.GOOGLE: lambda result: self.engine.get_document_entities(result),
-            EngineName.BASE64: lambda result: result,
-            EngineName.NANONETS: lambda result: self.engine.get_fields_from_prediction_result(
-                result
+            EngineName.GOOGLE: lambda: self.engine.get_document_entities(self.result),
+            EngineName.BASE64: lambda: self.engine.get_fields_from_prediction_result(
+                self.result
+            ),
+            EngineName.NANONETS: lambda: self.engine.get_fields_from_prediction_result(
+                self.result
             ),
         }
-        return result_map[self._active_engine](self.result)
+        return result_map[self._active_engine]()
