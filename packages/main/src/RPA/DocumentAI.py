@@ -300,6 +300,8 @@ class DocumentAI:
         result_map = {
             EngineName.GOOGLE: lambda result: self.engine.get_document_entities(result),
             EngineName.BASE64: lambda result: result,
-            EngineName.NANONETS: lambda result: result,
+            EngineName.NANONETS: lambda result: self.engine.get_fields_from_prediction_result(
+                result
+            ),
         }
         return result_map[self._active_engine](self.result)

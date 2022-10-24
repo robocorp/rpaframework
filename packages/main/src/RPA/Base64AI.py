@@ -77,7 +77,9 @@ class Base64AI:
 
     @classmethod
     def _to_endpoint(cls, part: str, mock: bool = False) -> str:
-        return urlparse.urljoin(cls.BASE_URL, f"{'mock' if mock else 'api'}/{part.strip('/')}")
+        return urlparse.urljoin(
+            cls.BASE_URL, f"{'mock' if mock else 'api'}/{part.strip('/')}"
+        )
 
     def _get_file_base64_and_mimetype(self, file_path: str):
         with open(file_path, "rb") as image_file:
