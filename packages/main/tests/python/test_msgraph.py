@@ -901,7 +901,7 @@ def test_list_files_in_sharepoint_drive(
     _patch_multiple_graph_responses(authorized_lib, mocker, mocked_responses)
 
     sp_files = authorized_lib.list_files_in_sharepoint_site_drive(
-        sharepoint_site, drive_id=drive_id
+        sharepoint_site, drive=drive_id
     )
 
     for file in sp_files:
@@ -947,7 +947,7 @@ def test_download_file_from_sharepoint(
     _patch_multiple_graph_responses(authorized_lib, mocker, mocked_responses)
 
     downloaded_file = authorized_lib.download_file_from_sharepoint(
-        file_path, sharepoint_site, target_directory, drive_id
+        file_path, sharepoint_site, target_directory, drive=drive_id
     )
 
     assert downloaded_file

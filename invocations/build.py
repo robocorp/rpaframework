@@ -121,11 +121,11 @@ def publish(ctx, ci=False, build_=True, version=None, yes_to_all=False):
     """
     if not build_ and not ci:
         raise ParseError("You cannot disable build when publishing to production.")
-    shell.require_git_branch(ctx)
+    if not ci:
+        shell.require_git_branch(ctx)
+        shell.invoke(ctx, "install.clean", echo=False)
     if version:
         shell.invoke(ctx, f"build.version --version={version}", echo=False)
-    if not ci:
-        shell.invoke(ctx, "install.clean", echo=False)
     if build_:
         test_arg = "--no-test" if ci else ""
         shell.invoke(
