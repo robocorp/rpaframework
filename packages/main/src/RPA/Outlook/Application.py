@@ -163,6 +163,7 @@ class Application:
         body: str,
         html_body: bool = False,
         attachments: Any = None,
+        save_as_draft: bool = False,
     ) -> bool:
         """Send message with Outlook
 
@@ -171,6 +172,8 @@ class Application:
         :param body: email body
         :param html_body: True if body contains HTML, defaults to False
         :param attachments: list of filepaths to include in the email, defaults to []
+        :param save_as_draft: message is saved as draft when `True`
+         instead (and not sent)
         :return: `True` if there were no errors
         """
         self.logger.warning(
@@ -178,7 +181,9 @@ class Application:
             "and will be removed in a future version."
             "Use 'Send Email' instead."
         )
-        return self.send_email(recipients, subject, body, html_body, attachments)
+        return self.send_email(
+            recipients, subject, body, html_body, attachments, save_as_draft
+        )
 
     def send_email(
         self,
@@ -187,6 +192,7 @@ class Application:
         body: str,
         html_body: bool = False,
         attachments: Any = None,
+        save_as_draft: bool = False,
     ) -> bool:
         """Send email with Outlook
 
@@ -195,6 +201,7 @@ class Application:
         :param body: email body
         :param html_body: True if body contains HTML, defaults to False
         :param attachments: list of filepaths to include in the email, defaults to []
+        :param save_as_draft: email is saved as draft when `True`
         :return: `True` if there were no errors
 
         Example:
@@ -216,36 +223,35 @@ class Application:
 
         mailto = ";".join(recipients)
 
-        mail = self.app.CreateItem(0)
-        mail.To = mailto
-        mail.Subject = subject
-
-        if html_body:
-            mail.HTMLBody = body
-        else:
-            mail.Body = body
-
-        # Add attachments
-        if len(attachments) > 0:
-            filepath = None
-            try:
-                for attachment in attachments:
-                    filepath = Path(attachment).absolute()
-                    mail.Attachments.Add(str(filepath))
-            except pywintypes.com_error:
-                self.logger.error(
-                    "Attachment error - problem with filepath: %s", filepath
-                )
-                return False
-
-        # Send the email
         try:
-            mail.Send()
-            self.logger.debug("Email sent")
+            mail = self.app.CreateItem(0)
+            mail.To = mailto
+            mail.Subject = subject
+
+            if html_body:
+                mail.HTMLBody = body
+            else:
+                mail.Body = body
+
+            self._add_attachments(mail, attachments)
+
+            if save_as_draft:
+                mail.Save()
+                self.logger.debug("Email draft saved")
+            else:
+                mail.Send()
+                self.logger.debug("Email sent")
         except pywintypes.com_error as e:
-            self.logger.error("Mail send failed: %s", str(e))
+            self.logger.error(
+                f"Mail {'saving' if save_as_draft else 'sending'} failed: %s", e
+            )
             return False
         return True
+
+    def _add_attachments(self, email, attachments):
+        for attachment in attachments:
+            filepath = Path(attachment).absolute()
+            email.Attachments.Add(str(filepath))
 
     def _is_email_too_old(self, email):
         now = datetime.now().timestamp()
