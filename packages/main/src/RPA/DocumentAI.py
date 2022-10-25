@@ -20,12 +20,10 @@ from RPA.JSON import JSONType
 from RPA.Robocorp.Vault import Vault
 
 
-# FIXME: Type annotations globally.
-
 lib_vault = Vault()
 
 PathType = Union[Path, str]
-SecretType = Optional[Union[str, Path]]
+SecretType = Optional[Union[str, Path, Tuple, List, Dict]]
 
 
 class EngineName(Enum):
@@ -38,14 +36,66 @@ class EngineName(Enum):
 
 @library
 class DocumentAI:
-    """<summary>
+    """Wrapper library offering generic keywords for initializing, scanning and
+    retrieving results as fields from documents (PDF, PNG etc.).
 
-    <details>
-    <engines examples>
-    <extra requirements>
-    <about models/processors>
-    <input and output>
-    <service setup>
+    This is a helper facade for the following libraries:
+
+    - RPA.Cloud.Google
+    - RPA.Base64AI
+    - RPA.Nanonets
+
+    Where the following steps are required:
+
+    1. Engine initialization: ``Init Engine``
+    2. Document scan: ``Predict``
+    3. Result retrieval: ``Get Result``
+
+    So no matter the engine you're using, the very same keywords can be used, as only
+    the passed parameters will differ (please check the docs on each library for
+    particularities). Once initialized, you can jump between the engines with
+    ``Switch Engine``. Before scanning documents, you must configure the service first,
+    with a model to scan the files with and an API key for authorizing the access.
+
+    See Portal example: https://robocorp.com/portal/robot/robocorp/example-document-ai
+
+    **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library    RPA.DocumentAI
+
+            *** Tasks ***
+            Scan Documents
+                Init Engine    base64ai    vault=document_ai:base64ai
+                Init Engine    nanonets    vault=document_ai:nanonets
+
+                Switch Engine   base64ai
+                Predict    invoice.png
+                ${data} =    Get Result
+                Log List    ${data}
+
+                Switch Engine   nanonets
+                Predict    invoice.png      model=858e4b37-6679-4552-9481-d5497dfc0b4a
+                ${data} =    Get Result
+                Log List    ${data}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.DocumentAI import DocumentAI, EngineName
+
+            lib_docai = DocumentAI()
+            lib_docai.init_engine(
+                EngineName.GOOGLE, vault="document_ai:serviceaccount", region="eu"
+            )
+            lib_docai.predict(
+                "invoice.pdf", model="df1d166771005ff4",
+                project_id="complete-agency-347912", region="eu"
+            )
+            print(lib_docai.get_result())
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -82,7 +132,7 @@ class DocumentAI:
         return result
 
     def _get_secret_value(
-        self, secret: Optional[str], vault: Optional[Dict]
+        self, secret: SecretType, vault: Optional[Dict]
     ) -> SecretType:
         if vault:
             assert (
@@ -97,15 +147,17 @@ class DocumentAI:
             self.logger.debug("Using secret implicitly from environment variable(s).")
             return None
 
-        secret_path = Path(secret).expanduser().resolve()
-        if secret_path.exists():
+        secret_path = (
+            Path(secret).expanduser().resolve() if isinstance(secret, str) else None
+        )
+        if secret_path and secret_path.exists():
             # File-based secret, don't return its content, but its file location
             #  as object instead. (the engine itself knows how to use it from there)
             self.logger.debug("Using secret from local file path at: %s", secret_path)
             return secret_path
 
         self.logger.debug("Using secret as provided.")
-        return secret  # secret in plain text
+        return secret  # secret in plain text or object
 
     def _init_google(
         self,
@@ -157,8 +209,8 @@ class DocumentAI:
     @staticmethod
     def _secret_value_to_params(secret_value: SecretType) -> Tuple[Tuple, Dict]:
         args, kwargs = (), {}
-        if isinstance(secret_value, list):
-            args = secret_value
+        if isinstance(secret_value, (tuple, list)):
+            args = tuple(secret_value)
         elif isinstance(secret_value, dict):
             kwargs = secret_value
         elif isinstance(secret_value, str):
@@ -192,6 +244,38 @@ class DocumentAI:
 
     @keyword
     def switch_engine(self, name: Union[EngineName, str]):
+        (
+            f"""Switch between already initialized engines.
+
+        Use this to jump between engines when scanning with multiple of them.
+
+        :param name: Name of the engine to be set as active.
+            (choose between: {', '.join([engine.value for engine in EngineName])})
+        """
+            """
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Document AI All
+                @{engines} =    Create List     base64ai    nanonets
+                FOR    ${engine}    IN    @{engines}
+                    Switch Engine    ${engine}
+                    Log    Scanning with engine: ${engine}...
+                    Predict    invoice.png
+                    ${data} =    Get Result
+                    Log List    ${data}
+                END
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            lib_docai.switch_engine("base64ai")
+            lib_docai.predict("invoice.png")
+        """
+        )
         name: EngineName = (
             name if isinstance(name, EngineName) else EngineName(name.lower())
         )
@@ -207,14 +291,43 @@ class DocumentAI:
     def init_engine(
         self,
         name: Union[EngineName, str],
-        secret: Optional[str] = None,
+        secret: SecretType = None,
         vault: Optional[Union[Dict, str]] = None,
         **kwargs,
     ):
-        """<summary>
+        """Initialize the engine you want to scan documents with.
 
-        <params>
-        <example>
+        This is required before being able to run ``Predict``. Once initialized, you
+        don't need to run this again, simply use ``Switch Engine`` to jump between
+        the engines. The final secret value (passed directly with `secret` or picked up
+        automatically from the Vault with `vault`) will be split into authorization
+        args and kwargs or just passed as it is to the wrapped library. Keep in mind
+        that some engines are expecting API keys where others tokens or private keys.
+        Any optional keyword argument will be passed further in the wrapped library.
+
+        :param name: Name of the engine.
+        :param secret: Authenticate with a string/file/object secret directly.
+        :param vault: Specify the Vault storage `name` and secret `key` in order to
+            authenticate. ('name:key' or {name: key} formats are supported)
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Init Base64
+                Init Engine    base64ai    vault=document_ai:base64ai
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.DocumentAI import DocumentAI
+            from RPA.Robocorp.Vault import Vault
+
+            lib_docai = DocumentAI()
+            mail_apikey = Vault().get_secret("document_ai")["base64ai"]
+            lib_docai.init_engine("base64ai", secret=mail_apikey)
         """
         if secret and vault:
             raise ValueError("choose between `secret` and `vault`")
@@ -250,10 +363,33 @@ class DocumentAI:
         model: Optional[Union[str, List[str]]] = None,
         **kwargs,
     ):
-        """<summary>
+        """Scan a document with the currently active engine and store the result
+        internally for a later retrieval.
 
-        <params>
-        <example>
+        Based on the selected engine, this wraps a chain of libraries until calling a
+        service API in the end, where the passed file is analyzed. Any optional keyword
+        argument will be passed further in the wrapped library. (some engines require
+        mandatory parameters like project ID or region)
+
+        :param location: Path to a local file or URL address of a remote one. (not all
+            engines work with URLs)
+        :param model: Model name(s) to scan with. (some engines guess the model if
+            not specified)
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Document AI Base64
+                [Setup]    Init Base64
+                Predict    https://site.com/path/to/invoice.png
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            lib_docai.predict("local/path/to/invoice.png", model="finance/invoice")
         """
         location_file = Path(location).expanduser().resolve()
         if location_file.exists():
@@ -293,9 +429,30 @@ class DocumentAI:
 
     @keyword
     def get_result(self) -> JSONType:
-        """<summary>
+        """Retrieve the result data previously obtained with ``Predict``.
 
-        <example>
+        The stored raw result is usually pre-processed with a library specific keyword
+        prior the return.
+
+        :returns: Usually a list of fields detected in the document.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Scan With Base64
+                Document AI Base64
+                ${data} =    Get Result
+                Log List    ${data}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            result = lib_docai.get_result()
+            for field in result:
+                print(field)
         """
         result_map = {
             EngineName.GOOGLE: lambda: self.engine.get_document_entities(self.result),
