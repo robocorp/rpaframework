@@ -22,7 +22,7 @@ class Nanonets:
     .. code-block:: robotframework
 
         *** Settings ***
-        Library   RPA.Nanonets
+        Library   RPA.DocumentAI.Nanonets
         Library   RPA.Robocorp.Vault
 
         *** Tasks ***
@@ -51,7 +51,7 @@ class Nanonets:
 
     .. code-block:: python
 
-        from RPA.Nanonets import Nanonets
+        from RPA.DocumentAI.Nanonets import Nanonets
         from RPA.Robocorp.Vault import Vault
 
         secrets = Vault().get_secret("nanonets-auth")
@@ -78,7 +78,9 @@ class Nanonets:
         self._request_headers = {"Content-Type": "application/json"}
         self.apikey = None
         listener = RobotLogListener()
-        listener.register_protected_keywords(["RPA.Nanonets.set_authorization"])
+        listener.register_protected_keywords(
+            ["RPA.DocumentAI.Nanonets.set_authorization"]
+        )
 
     def _get_file_base64_and_mimetype(self, file_path: str):
         with open(file_path, "rb") as image_file:

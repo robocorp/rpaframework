@@ -416,7 +416,8 @@ class DocumentAI:
             self.logger.info("Using URL address based location: %s", location_url)
             if self._active_engine in (EngineName.GOOGLE, EngineName.NANONETS):
                 self.logger.warning(
-                    f"Engine {self._active_engine} isn't supporting URL input at the moment!"
+                    f"Engine {self._active_engine} isn't supporting URL input at the "
+                    "moment!"
                 )
         if not model and self._active_engine in (
             EngineName.GOOGLE,

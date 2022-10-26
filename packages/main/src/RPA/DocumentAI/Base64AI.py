@@ -25,7 +25,7 @@ class Base64AI:
     .. code-block:: robotframework
 
         *** Settings ***
-        Library   RPA.Base64AI
+        Library   RPA.DocumentAI.Base64AI
         Library   RPA.Robocorp.Vault
 
         *** Tasks ***
@@ -48,7 +48,7 @@ class Base64AI:
 
     .. code-block:: python
 
-        from RPA.Base64AI import Base64AI
+        from RPA.DocumentAI.Base64AI import Base64AI
         from RPA.Robocorp.Vault import Vault
 
         secrets = Vault().get_secret("base64ai-auth")
@@ -74,7 +74,9 @@ class Base64AI:
         self.logger = logging.getLogger(__name__)
         self._request_headers = {"Content-Type": "application/json"}
         listener = RobotLogListener()
-        listener.register_protected_keywords(["RPA.Base64AI.set_authorization"])
+        listener.register_protected_keywords(
+            ["RPA.DocumentAI.Base64AI.set_authorization"]
+        )
 
     def set_authorization(self, api_email: str, api_key: str) -> None:
         """Set Base64 AI request headers with email and key related to API.
