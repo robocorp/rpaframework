@@ -15,7 +15,7 @@ class Base64AI:
     """Library to support `Base64.ai <https://base64.ai/>`_ service for intelligent
     document processing (IDP).
 
-    Added on **rpaframework** version: 17.0.1
+    Added with `rpaframework` version **17.0.1**.
 
     Service supports identifying fields in the documents, which can be given to the
     service in multiple different file formats and via URL.
@@ -76,17 +76,6 @@ class Base64AI:
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.Base64AI.set_authorization"])
 
-    @classmethod
-    def _to_endpoint(cls, part: str, mock: bool = False) -> str:
-        return urlparse.urljoin(
-            cls.BASE_URL, f"{'mock' if mock else 'api'}/{part.strip('/')}"
-        )
-
-    def _get_file_base64_and_mimetype(self, file_path: str):
-        with open(file_path, "rb") as image_file:
-            encoded_content = base64.b64encode(image_file.read())
-        return encoded_content.decode("utf-8"), mimetypes.guess_type(file_path)[0]
-
     def set_authorization(self, api_email: str, api_key: str) -> None:
         """Set Base64 AI request headers with email and key related to API.
 
@@ -110,6 +99,12 @@ class Base64AI:
         """
         self._request_headers["Authorization"] = f"ApiKey {api_email}:{api_key}"
 
+    @classmethod
+    def _to_endpoint(cls, part: str, mock: bool = False) -> str:
+        return urlparse.urljoin(
+            cls.BASE_URL, f"{'mock' if mock else 'api'}/{part.strip('/')}"
+        )
+
     def _scan_document(
         self,
         payload: Dict,
@@ -132,6 +127,12 @@ class Base64AI:
         )
         response.raise_for_status()
         return response.json()
+
+    @staticmethod
+    def _get_file_base64_and_mimetype(file_path: str):
+        with open(file_path, "rb") as image_file:
+            encoded_content = base64.b64encode(image_file.read())
+        return encoded_content.decode("utf-8"), mimetypes.guess_type(file_path)[0]
 
     def scan_document_file(
         self,
@@ -222,7 +223,7 @@ class Base64AI:
 
     def get_fields_from_prediction_result(self, prediction: Dict) -> List:
         """Helper keyword to get found fields from a prediction result.
-        For example see ``Scan Document File`` keyword.
+        For example see ``Scan Document File`` or ``Scan Document URL`` keyword.
 
         :param prediction: prediction result dictionary
         :return: list of found fields
@@ -279,20 +280,12 @@ class Base64AI:
         )
         response.raise_for_status()
         json_response = response.json()
-        spent_on_documents = (
-            json_response["numberOfCreditsSpentOnDocuments"]
-            if "numberOfCreditsSpentOnDocuments" in json_response.keys()
-            else 0
+        spent_on_documents = json_response.get("numberOfCreditsSpentOnDocuments", 0)
+        spent_on_face_detection = json_response.get(
+            "numberOfCreditsSpentOnFaceDetection", 0
         )
-        spent_on_face_detection = (
-            json_response["numberOfCreditsSpentOnFaceDetection"]
-            if "numberOfCreditsSpentOnFaceDetection" in json_response.keys()
-            else 0
-        )
-        spent_on_face_recognition = (
-            json_response["numberOfCreditsSpentOnFaceRecognition"]
-            if "numberOfCreditsSpentOnFaceRecognition" in json_response.keys()
-            else 0
+        spent_on_face_recognition = json_response.get(
+            "numberOfCreditsSpentOnFaceRecognition", 0
         )
         remainingCredits = (
             json_response["numberOfCredits"]

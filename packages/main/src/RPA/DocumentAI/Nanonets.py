@@ -1,20 +1,18 @@
 import base64
 import logging
 import mimetypes
-from typing import Dict, Hashable, List, Optional, Union
+from typing import Dict, List
 
 import requests
 
+from RPA.JSON import JSONType
 from RPA.RobotLogListener import RobotLogListener
-
-JSONValue = Optional[Union[str, int, float, bool]]
-JSONType = Union[Dict[Hashable, JSONValue], List[JSONValue], JSONValue]
 
 
 class Nanonets:
     """Library to support `Nanonets <https://nanonets.com/>`_ service for intelligent document processing (IDP).
 
-    Added on **rpaframework** version: 17.0.1
+    Added with `rpaframework` version **17.0.1**.
 
     Service supports identifying fields in the documents, which can be given to the
     service in multiple different file formats and via URL.

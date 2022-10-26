@@ -18,12 +18,21 @@ from robot.api.deco import keyword, library
 
 from RPA.JSON import JSONType
 from RPA.Robocorp.Vault import Vault
+from RPA.RobotLogListener import RobotLogListener
 
 
 lib_vault = Vault()
 
 PathType = Union[Path, str]
 SecretType = Optional[Union[str, Path, Tuple, List, Dict]]
+ResultType = JSONType
+
+try:
+    from google.cloud import documentai_v1 as documentai
+except ImportError:
+    pass
+else:
+    ResultType = Union[ResultType, documentai.Document]
 
 
 class EngineName(Enum):
@@ -39,11 +48,13 @@ class DocumentAI:
     """Wrapper library offering generic keywords for initializing, scanning and
     retrieving results as fields from documents (PDF, PNG etc.).
 
+    Added with `rpaframework` version **19.0.0**.
+
     This is a helper facade for the following libraries:
 
     - RPA.Cloud.Google
-    - RPA.Base64AI
-    - RPA.Nanonets
+    - RPA.DocumentAI.Base64AI
+    - RPA.DocumentAI.Nanonets
 
     Where the following steps are required:
 
@@ -61,51 +72,54 @@ class DocumentAI:
 
     **Example: Robot Framework**
 
-        .. code-block:: robotframework
+    .. code-block:: robotframework
 
-            *** Settings ***
-            Library    RPA.DocumentAI
+        *** Settings ***
+        Library    RPA.DocumentAI
 
-            *** Tasks ***
-            Scan Documents
-                Init Engine    base64ai    vault=document_ai:base64ai
-                Init Engine    nanonets    vault=document_ai:nanonets
+        *** Tasks ***
+        Scan Documents
+            Init Engine    base64ai    vault=document_ai:base64ai
+            Init Engine    nanonets    vault=document_ai:nanonets
 
-                Switch Engine   base64ai
-                Predict    invoice.png
-                ${data} =    Get Result
-                Log List    ${data}
+            Switch Engine   base64ai
+            Predict    invoice.png
+            ${data} =    Get Result
+            Log List    ${data}
 
-                Switch Engine   nanonets
-                Predict    invoice.png      model=858e4b37-6679-4552-9481-d5497dfc0b4a
-                ${data} =    Get Result
-                Log List    ${data}
+            Switch Engine   nanonets
+            Predict    invoice.png      model=858e4b37-6679-4552-9481-d5497dfc0b4a
+            ${data} =    Get Result
+            Log List    ${data}
 
-        **Example: Python**
+    **Example: Python**
 
-        .. code-block:: python
+    .. code-block:: python
 
-            from RPA.DocumentAI import DocumentAI, EngineName
+        from RPA.DocumentAI import DocumentAI, EngineName
 
-            lib_docai = DocumentAI()
-            lib_docai.init_engine(
-                EngineName.GOOGLE, vault="document_ai:serviceaccount", region="eu"
-            )
-            lib_docai.predict(
-                "invoice.pdf", model="df1d166771005ff4",
-                project_id="complete-agency-347912", region="eu"
-            )
-            print(lib_docai.get_result())
+        lib_docai = DocumentAI()
+        lib_docai.init_engine(
+            EngineName.GOOGLE, vault="document_ai:serviceaccount", region="eu"
+        )
+        lib_docai.predict(
+            "invoice.pdf", model="df1d166771005ff4",
+            project_id="complete-agency-347912", region="eu"
+        )
+        print(lib_docai.get_result())
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self):
+        listener = RobotLogListener()
+        listener.register_protected_keywords(["RPA.DocumentAI.init_engine"])
         self.logger = logging.getLogger(__name__)
+
         self._active_engine: Optional[EngineName] = None
         self._engines: Dict[EngineName, Any] = {}
-        self._results: Dict[EngineName, Any] = {}
+        self._results: Dict[EngineName, ResultType] = {}
 
     def _check_engine(self):
         if not self._active_engine:
@@ -120,7 +134,7 @@ class DocumentAI:
         return self._engines[self._active_engine]
 
     @property
-    def result(self) -> Any:
+    def result(self) -> ResultType:
         self._check_engine()
         result = self._results.get(self._active_engine)
         if not result:
@@ -166,6 +180,7 @@ class DocumentAI:
         auth_type: Optional[str] = None,
         region: Optional[str] = None,
     ):
+        # pylint: disable=import-outside-toplevel
         try:
             from RPA.Cloud.Google import Google
         except ImportError as exc:
@@ -227,7 +242,8 @@ class DocumentAI:
         return args, kwargs
 
     def _init_base64(self, secret_value: SecretType):
-        from RPA.Base64AI import Base64AI
+        # pylint: disable=import-outside-toplevel
+        from RPA.DocumentAI.Base64AI import Base64AI
 
         engine = Base64AI()
         args, kwargs = self._secret_value_to_params(secret_value)
@@ -235,7 +251,8 @@ class DocumentAI:
         self._engines[EngineName.BASE64] = engine
 
     def _init_nanonets(self, secret_value: SecretType):
-        from RPA.Nanonets import Nanonets
+        # pylint: disable=import-outside-toplevel
+        from RPA.DocumentAI.Nanonets import Nanonets
 
         engine = Nanonets()
         args, kwargs = self._secret_value_to_params(secret_value)
@@ -244,15 +261,12 @@ class DocumentAI:
 
     @keyword
     def switch_engine(self, name: Union[EngineName, str]):
-        (
-            f"""Switch between already initialized engines.
+        """Switch between already initialized engines.
 
         Use this to jump between engines when scanning with multiple of them.
 
-        :param name: Name of the engine to be set as active.
-            (choose between: {', '.join([engine.value for engine in EngineName])})
-        """
-            """
+        :param name: Name of the engine to be set as active. (choose between: %s)
+
         **Example: Robot Framework**
 
         .. code-block:: robotframework
@@ -275,7 +289,6 @@ class DocumentAI:
             lib_docai.switch_engine("base64ai")
             lib_docai.predict("invoice.png")
         """
-        )
         name: EngineName = (
             name if isinstance(name, EngineName) else EngineName(name.lower())
         )
@@ -286,6 +299,8 @@ class DocumentAI:
             )
 
         self._active_engine = name
+
+    switch_engine.__doc__ %= ", ".join([engine.value for engine in EngineName])
 
     @keyword
     def init_engine(
@@ -428,12 +443,14 @@ class DocumentAI:
         self._results[self._active_engine] = result
 
     @keyword
-    def get_result(self) -> JSONType:
+    def get_result(self, extended: bool = False) -> ResultType:
         """Retrieve the result data previously obtained with ``Predict``.
 
         The stored raw result is usually pre-processed with a library specific keyword
         prior the return.
 
+        :param extended: Get all the details inside the result data. (main fields only
+            by default)
         :returns: Usually a list of fields detected in the document.
 
         **Example: Robot Framework**
@@ -454,6 +471,9 @@ class DocumentAI:
             for field in result:
                 print(field)
         """
+        if extended:
+            return self.result
+
         result_map = {
             EngineName.GOOGLE: lambda: self.engine.get_document_entities(self.result),
             EngineName.BASE64: lambda: self.engine.get_fields_from_prediction_result(
