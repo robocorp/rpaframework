@@ -193,6 +193,9 @@ class Application:
         html_body: bool = False,
         attachments: Any = None,
         save_as_draft: bool = False,
+        recipients_cc: Any = None,
+        recipients_bcc: Any = None,
+        send_on_behalf_of_address: str = None,
     ) -> bool:
         """Send email with Outlook
 
@@ -216,18 +219,16 @@ class Application:
         """
         # pylint: disable=no-member
         attachments = attachments or []
-        if not isinstance(recipients, list):
-            recipients = recipients.split(",")
-        if not isinstance(attachments, list):
-            attachments = str(attachments).split(",")
-
-        mailto = ";".join(recipients)
 
         try:
-            mail = self.app.CreateItem(0)
-            mail.To = mailto
-            mail.Subject = subject
+            mail = self._create_mail_item(
+                recipients,
+                recipients_cc,
+                recipients_bcc,
+                send_on_behalf_of_address,
+            )
 
+            mail.Subject = subject
             if html_body:
                 mail.HTMLBody = body
             else:
@@ -248,7 +249,41 @@ class Application:
             return False
         return True
 
+    def _create_mail_item(
+        self,
+        recipients,
+        recipients_cc,
+        recipients_bcc,
+        send_on_behalf_of_address,
+    ):
+        if not isinstance(recipients, list):
+            recipients = recipients.split(",")
+        if recipients_cc and not isinstance(recipients_cc, list):
+            recipients_cc = recipients_cc.split(",")
+        if recipients_bcc and not isinstance(recipients_bcc, list):
+            recipients_bcc = recipients_bcc.split(",")
+
+        mail = self.app.CreateItem(0)
+        mail.To = ";".join(recipients)
+        if recipients_cc:
+            mail.CC = ";".join(recipients_cc)
+        if recipients_cc:
+            mail.BCC = ";".join(recipients_bcc)
+        if send_on_behalf_of_address:
+            accounts = self.app.Session.Accounts
+            for index in range(1, accounts.Count + 1):
+                account = accounts.Item(index)
+                if (
+                    send_on_behalf_of_address
+                    and send_on_behalf_of_address.lower() == account.SmtpAddress.lower()
+                ):
+                    mail.SentOnBehalfOfName = account.SmtpAddress
+                    break
+        return mail
+
     def _add_attachments(self, email, attachments):
+        if not isinstance(attachments, list):
+            attachments = str(attachments).split(",")
         for attachment in attachments:
             filepath = Path(attachment).absolute()
             email.Attachments.Add(str(filepath))
