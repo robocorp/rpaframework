@@ -190,7 +190,7 @@ class Nanonets:
         response.raise_for_status()
         return response.json()
 
-    def predict_file(self, filepath: str, model_id: str) -> Dict:
+    def predict_file(self, filepath: str, model_id: str) -> JSONType:
         """Get prediction result for a file by a given model id.
 
         :param filepath: filepath to the file

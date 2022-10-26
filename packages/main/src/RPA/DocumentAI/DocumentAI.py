@@ -260,7 +260,7 @@ class DocumentAI:
         self._engines[EngineName.NANONETS] = engine
 
     @keyword
-    def switch_engine(self, name: Union[EngineName, str]):
+    def switch_engine(self, name: Union[EngineName, str]) -> None:
         """Switch between already initialized engines.
 
         Use this to jump between engines when scanning with multiple of them.
@@ -309,7 +309,7 @@ class DocumentAI:
         secret: SecretType = None,
         vault: Optional[Union[Dict, str]] = None,
         **kwargs,
-    ):
+    ) -> None:
         """Initialize the engine you want to scan documents with.
 
         This is required before being able to run ``Predict``. Once initialized, you
@@ -377,7 +377,7 @@ class DocumentAI:
         location: PathType,
         model: Optional[Union[str, List[str]]] = None,
         **kwargs,
-    ):
+    ) -> None:
         """Scan a document with the currently active engine and store the result
         internally for a later retrieval.
 

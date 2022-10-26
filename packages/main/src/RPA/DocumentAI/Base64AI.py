@@ -4,10 +4,11 @@ import json
 import logging
 import mimetypes
 import urllib.parse as urlparse
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import requests
 
+from RPA.JSON import JSONType
 from RPA.RobotLogListener import RobotLogListener
 
 
@@ -112,7 +113,7 @@ class Base64AI:
         payload: Dict,
         model_types: Optional[Union[str, List[str]]] = None,
         mock: bool = False,
-    ) -> Dict:
+    ) -> JSONType:
         scan_endpoint = self._to_endpoint("scan", mock=mock)
         self.logger.info(f"Endpoint {scan_endpoint!r} is set for scanning.")
         if model_types:
@@ -131,7 +132,7 @@ class Base64AI:
         return response.json()
 
     @staticmethod
-    def _get_file_base64_and_mimetype(file_path: str):
+    def _get_file_base64_and_mimetype(file_path: str) -> Tuple[str, str]:
         with open(file_path, "rb") as image_file:
             encoded_content = base64.b64encode(image_file.read())
         return encoded_content.decode("utf-8"), mimetypes.guess_type(file_path)[0]
@@ -141,7 +142,7 @@ class Base64AI:
         file_path: str,
         model_types: Optional[Union[str, List[str]]] = None,
         mock: bool = False,
-    ) -> Dict:
+    ) -> JSONType:
         """Scan a document file. Can be given a ``model_types`` to
         specifically target certain models.
 
@@ -186,7 +187,7 @@ class Base64AI:
         url: str,
         model_types: Optional[Union[str, List[str]]] = None,
         mock: bool = False,
-    ) -> Dict:
+    ) -> JSONType:
         """Scan a document URL. Can be given a ``model_types`` to
         specifically target certain models.
 
@@ -223,7 +224,7 @@ class Base64AI:
         payload = {"url": url}
         return self._scan_document(payload, model_types=model_types, mock=mock)
 
-    def get_fields_from_prediction_result(self, prediction: Dict) -> List:
+    def get_fields_from_prediction_result(self, prediction: JSONType) -> List:
         """Helper keyword to get found fields from a prediction result.
         For example see ``Scan Document File`` or ``Scan Document URL`` keyword.
 
