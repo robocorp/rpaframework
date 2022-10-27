@@ -1,11 +1,14 @@
 import base64
+import itertools
 import json
 import logging
 import mimetypes
-from typing import List, Optional, Union, Dict
+import urllib.parse as urlparse
+from typing import Dict, List, Optional, Tuple, Union
 
 import requests
 
+from RPA.JSON import JSONType
 from RPA.RobotLogListener import RobotLogListener
 
 
@@ -13,7 +16,7 @@ class Base64AI:
     """Library to support `Base64.ai <https://base64.ai/>`_ service for intelligent
     document processing (IDP).
 
-    Added on **rpaframework** version: 17.0.1
+    Added with `rpaframework` version **17.0.1**.
 
     Service supports identifying fields in the documents, which can be given to the
     service in multiple different file formats and via URL.
@@ -23,7 +26,7 @@ class Base64AI:
     .. code-block:: robotframework
 
         *** Settings ***
-        Library   RPA.Base64AI
+        Library   RPA.DocumentAI.Base64AI
         Library   RPA.Robocorp.Vault
 
         *** Tasks ***
@@ -46,7 +49,7 @@ class Base64AI:
 
     .. code-block:: python
 
-        from RPA.Base64AI import Base64AI
+        from RPA.DocumentAI.Base64AI import Base64AI
         from RPA.Robocorp.Vault import Vault
 
         secrets = Vault().get_secret("base64ai-auth")
@@ -66,17 +69,15 @@ class Base64AI:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
+    BASE_URL = "https://base64.ai"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.base_url = "https://base64.ai/api"
         self._request_headers = {"Content-Type": "application/json"}
         listener = RobotLogListener()
-        listener.register_protected_keywords(["RPA.Base64AI.set_authorization"])
-
-    def _get_file_base64_and_mimetype(self, file_path: str):
-        with open(file_path, "rb") as image_file:
-            encoded_content = base64.b64encode(image_file.read())
-        return encoded_content.decode("utf-8"), mimetypes.guess_type(file_path)[0]
+        listener.register_protected_keywords(
+            ["RPA.DocumentAI.Base64AI.set_authorization"]
+        )
 
     def set_authorization(self, api_email: str, api_key: str) -> None:
         """Set Base64 AI request headers with email and key related to API.
@@ -101,12 +102,47 @@ class Base64AI:
         """
         self._request_headers["Authorization"] = f"ApiKey {api_email}:{api_key}"
 
+    @classmethod
+    def _to_endpoint(cls, part: str, mock: bool = False) -> str:
+        return urlparse.urljoin(
+            cls.BASE_URL, f"{'mock' if mock else 'api'}/{part.strip('/')}"
+        )
+
+    def _scan_document(
+        self,
+        payload: Dict,
+        model_types: Optional[Union[str, List[str]]] = None,
+        mock: bool = False,
+    ) -> JSONType:
+        scan_endpoint = self._to_endpoint("scan", mock=mock)
+        self.logger.info(f"Endpoint {scan_endpoint!r} is set for scanning.")
+        if model_types:
+            req_model_types = (
+                model_types if isinstance(model_types, list) else model_types.split(",")
+            )
+            payload["modelTypes"] = req_model_types
+
+        response = requests.request(
+            "POST",
+            scan_endpoint,
+            headers=self._request_headers,
+            data=json.dumps(payload),
+        )
+        response.raise_for_status()
+        return response.json()
+
+    @staticmethod
+    def _get_file_base64_and_mimetype(file_path: str) -> Tuple[str, str]:
+        with open(file_path, "rb") as image_file:
+            encoded_content = base64.b64encode(image_file.read())
+        return encoded_content.decode("utf-8"), mimetypes.guess_type(file_path)[0]
+
     def scan_document_file(
         self,
         file_path: str,
         model_types: Optional[Union[str, List[str]]] = None,
         mock: bool = False,
-    ) -> Dict:
+    ) -> JSONType:
         """Scan a document file. Can be given a ``model_types`` to
         specifically target certain models.
 
@@ -142,32 +178,16 @@ class Base64AI:
                     print(f"{key}: {val['value']}")
                 print(f"Text (OCR): {r['ocr']}")
         """
-        scan = "mock/scan" if mock else "scan"
-        scan_endpoint = f"{self.base_url}/{scan}"
-        self.logger.info(f"endpoint {scan_endpoint} is set for scanning")
         base64string, mime = self._get_file_base64_and_mimetype(file_path)
         payload = {"image": f"data:{mime};base64,{base64string}"}
-        if model_types:
-            req_model_types = (
-                model_types if isinstance(model_types, list) else model_types.split(",")
-            )
-            payload["modelTypes"] = req_model_types
-
-        response = requests.request(
-            "POST",
-            scan_endpoint,
-            headers=self._request_headers,
-            data=json.dumps(payload),
-        )
-        response.raise_for_status()
-        return response.json()
+        return self._scan_document(payload, model_types=model_types, mock=mock)
 
     def scan_document_url(
         self,
         url: str,
         model_types: Optional[Union[str, List[str]]] = None,
         mock: bool = False,
-    ) -> Dict:
+    ) -> JSONType:
         """Scan a document URL. Can be given a ``model_types`` to
         specifically target certain models.
 
@@ -201,25 +221,19 @@ class Base64AI:
                     print(f"FIELD {key}: {props['value']}")
                 print(f"Text (OCR): {r['ocr']}")
         """  # noqa: E501
-        scan = "mock/scan" if mock else "scan"
-        scan_endpoint = f"{self.base_url}/{scan}"
-        self.logger.info(f"endpoint {scan_endpoint} is set for scanning")
         payload = {"url": url}
-        if model_types:
-            req_model_types = (
-                model_types if isinstance(model_types, list) else model_types.split(",")
-            )
-            payload["modelTypes"] = req_model_types
+        return self._scan_document(payload, model_types=model_types, mock=mock)
 
-        response = requests.request(
-            "POST",
-            scan_endpoint,
-            headers=self._request_headers,
-            data=json.dumps(payload),
+    def get_fields_from_prediction_result(self, prediction: JSONType) -> List:
+        """Helper keyword to get found fields from a prediction result.
+        For example see ``Scan Document File`` or ``Scan Document URL`` keyword.
+
+        :param prediction: prediction result dictionary
+        :return: list of found fields
+        """
+        return list(
+            itertools.chain(*(list(item["fields"].values()) for item in prediction))
         )
-        response.raise_for_status()
-        self.logger.warning(response.text)
-        return response.json()
 
     def get_user_data(self) -> Dict:
         """Get user data including details on credits used and credits remaining
@@ -264,25 +278,17 @@ class Base64AI:
         """
         response = requests.request(
             "GET",
-            f"{self.base_url}/auth/user",
+            self._to_endpoint("/auth/user"),
             headers=self._request_headers,
         )
         response.raise_for_status()
         json_response = response.json()
-        spent_on_documents = (
-            json_response["numberOfCreditsSpentOnDocuments"]
-            if "numberOfCreditsSpentOnDocuments" in json_response.keys()
-            else 0
+        spent_on_documents = json_response.get("numberOfCreditsSpentOnDocuments", 0)
+        spent_on_face_detection = json_response.get(
+            "numberOfCreditsSpentOnFaceDetection", 0
         )
-        spent_on_face_detection = (
-            json_response["numberOfCreditsSpentOnFaceDetection"]
-            if "numberOfCreditsSpentOnFaceDetection" in json_response.keys()
-            else 0
-        )
-        spent_on_face_recognition = (
-            json_response["numberOfCreditsSpentOnFaceRecognition"]
-            if "numberOfCreditsSpentOnFaceRecognition" in json_response.keys()
-            else 0
+        spent_on_face_recognition = json_response.get(
+            "numberOfCreditsSpentOnFaceRecognition", 0
         )
         remainingCredits = (
             json_response["numberOfCredits"]
