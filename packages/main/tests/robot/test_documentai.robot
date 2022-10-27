@@ -27,7 +27,7 @@ Init Engines
 
 *** Tasks ***
 Predict With Multiple Engines
-    Init Engines
+    [Setup]   Init Engines
 
     Switch Engine    base64ai
     Predict    ${INVOICE_PNG}   mock=${True}
