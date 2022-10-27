@@ -27,6 +27,8 @@ Release notes
   - ``Predict``
   - ``Get Result``
 
+  Portal example: https://github.com/robocorp/example-document-ai
+
 18.0.0 - 17 Oct 2022
 --------------------
 
