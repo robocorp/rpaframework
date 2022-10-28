@@ -663,10 +663,10 @@ class Selenium(SeleniumLibrary):
         The default order of supported browsers is based on the operating system
         and is as follows:
 
-        | Platform    | Default order                    |
-        | ``Windows`` | Chrome, Firefox, Edge, IE, Opera |
-        | ``Linux``   | Chrome, Firefox, Opera           |
-        | ``Darwin``  | Chrome, Safari, Firefox, Opera   |
+        | Platform    | Default order                         |
+        | ``Windows`` | Chrome, Firefox, ChromiumEdge         |
+        | ``Linux``   | Chrome, Firefox, ChromiumEdge         |
+        | ``Darwin``  | Chrome, Firefox, ChromiumEdge, Safari |
 
         The order can be overridden with a custom list by using the argument
         ``browser_selection``. The argument can be either a comma-separated

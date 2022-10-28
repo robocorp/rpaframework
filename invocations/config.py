@@ -7,12 +7,12 @@ import json
 import os
 import re
 import shutil
+import toml
 from glob import glob
 from pathlib import Path
 from typing import Dict, List, Union
-import toml
-from colorama import Fore, Style
 
+from colorama import Fore, Style
 from invoke import task, ParseError, Collection
 
 from invocations import shell
@@ -317,6 +317,16 @@ def _extract_json_payload(stdout: str) -> Union[List, Dict, None]:
     except TypeError:
         return None
 
+def _extract_json_payload(stdout: str) -> Union[List, Dict, None]:
+    """Extracts a JSON payload from somewhere in the provided string."""
+    pattern = r"[\[{].+[}\]]"
+    matches = re.search(pattern, stdout)
+    try:
+        return json.loads(matches[0])
+    except TypeError:
+        return None
+
+
 @task(aliases=["reset"])
 def reset_local(ctx):
     """Revert changes caused by ``install.local``. This task
@@ -327,7 +337,8 @@ def reset_local(ctx):
     is ignored.
     """
     venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
-    if Path(venv_activation_cmd.rsplit(" ", 1)[-1]).exists():
+    activate_path = venv_activation_cmd.replace("source", "").lstrip(". ")
+    if Path(activate_path).exists():
         try:
             restore_dependency_files(ctx)
         except FileNotFoundError:

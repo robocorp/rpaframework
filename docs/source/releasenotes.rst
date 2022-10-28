@@ -9,6 +9,49 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+19.0.0 - 27 Oct 2022
+--------------------
+
+- New Intelligent Document Processing library **RPA.DocumentAI**, which is a convenient
+  wrapper over the existing libraries (:issue:`557`):
+
+  - **RPA.Cloud.Google** (needs ``rpaframework-google`` installed)
+  - **RPA.DocumentAI.Base64AI** (moved from ``RPA.Base64AI``)
+  - **RPA.DocumentAI.Nanonets** (moved from ``RPA.Nanonets``)
+
+  Provides the following generic keywords capable of working with all the engines
+  above:
+
+  - ``Init Engine``
+  - ``Switch Engine``
+  - ``Predict``
+  - ``Get Result``
+
+  Portal example: https://robocorp.com/portal/robot/robocorp/example-document-ai
+
+.. warning::
+  This is a **breaking** change! Two `DocumentAI` related libraries have moved, thus
+  the importing location is changed now:
+
+  - ``RPA.Base64AI`` -> ``RPA.DocumentAI.Base64AI``
+  - ``RPA.Nanonets`` -> ``RPA.DocumentAI.Nanonets``
+
+18.0.0 - 17 Oct 2022
+--------------------
+
+- Library **RPA.MSGraph** (:issue:`669`): Fix bugs in listing SharePoint files and in
+  keywords not supporting Drive objects. Replace parameter ``drive_id`` with ``drive``
+  throughout library, this is a **breaking** change for this library.
+
+17.7.0 - 14 Oct 2022
+--------------------
+
+- Library **RPA.Outlook.Application** (:pr:`666`): Add parameter ``save_as_draft`` parameter
+  to ``Send Message`` / ``Send Email`` keywords. Will save the email instead of sending.
+- Library **RPA.Database** (:pr:`667`): Add SSL support for MySQL modules (``pymysql`` and
+  ``mysql.connector``).
+- Library **RPA.SAP** (:pr:`656`): Add new keywords.
+
 17.6.0 - 12 Oct 2022
 --------------------
 

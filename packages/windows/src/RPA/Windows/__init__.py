@@ -452,7 +452,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
                 library.send_keys(keys="96+4=")
                 result = library.get_attribute("id:CalculatorResults", "Name")
                 print(result)
-                buttons = library.get_elements("type:Group and name:"Number pad" > type:Button")
+                buttons = library.get_elements('type:Group and name:"Number pad" > type:Button')
                 for button in buttons:
                     print(button)
             finally:

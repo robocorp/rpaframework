@@ -92,7 +92,7 @@ def invoke(ctx: Context, command: str, **kwargs):
     return run(ctx, INVOKE, command, **kwargs)
 
 
-def meta_tool(ctx: Context, tool: str, *args, command: str = None, **kwargs):
+def meta_tool(ctx: Context, tool: str, *args, command: str = "", **kwargs):
     """Runs a python script within the tools directory at the
     root of the repository. If supplied, args will be joined with a
     space on the terminal and ``command`` will be ignored. Alternatively,
@@ -106,7 +106,7 @@ def meta_tool(ctx: Context, tool: str, *args, command: str = None, **kwargs):
     return run_in_venv(
         ctx,
         PYTHON_EXECUTOR,
-        f"{tool_path} {' '.join([str(a) for a in args]) if args else command}",
+        f"{tool_path} {' '.join([str(a) for a in args]) if args else command}".strip(),
         **kwargs,
     )
 

@@ -1,20 +1,18 @@
 import base64
 import logging
 import mimetypes
-from typing import Dict, Hashable, List, Optional, Union
+from typing import Dict, List
 
 import requests
 
+from RPA.JSON import JSONType
 from RPA.RobotLogListener import RobotLogListener
-
-JSONValue = Optional[Union[str, int, float, bool]]
-JSONType = Union[Dict[Hashable, JSONValue], List[JSONValue], JSONValue]
 
 
 class Nanonets:
     """Library to support `Nanonets <https://nanonets.com/>`_ service for intelligent document processing (IDP).
 
-    Added on **rpaframework** version: 17.0.1
+    Added with `rpaframework` version **17.0.1**.
 
     Service supports identifying fields in the documents, which can be given to the
     service in multiple different file formats and via URL.
@@ -24,7 +22,7 @@ class Nanonets:
     .. code-block:: robotframework
 
         *** Settings ***
-        Library   RPA.Nanonets
+        Library   RPA.DocumentAI.Nanonets
         Library   RPA.Robocorp.Vault
 
         *** Tasks ***
@@ -53,7 +51,7 @@ class Nanonets:
 
     .. code-block:: python
 
-        from RPA.Nanonets import Nanonets
+        from RPA.DocumentAI.Nanonets import Nanonets
         from RPA.Robocorp.Vault import Vault
 
         secrets = Vault().get_secret("nanonets-auth")
@@ -80,7 +78,9 @@ class Nanonets:
         self._request_headers = {"Content-Type": "application/json"}
         self.apikey = None
         listener = RobotLogListener()
-        listener.register_protected_keywords(["RPA.Nanonets.set_authorization"])
+        listener.register_protected_keywords(
+            ["RPA.DocumentAI.Nanonets.set_authorization"]
+        )
 
     def _get_file_base64_and_mimetype(self, file_path: str):
         with open(file_path, "rb") as image_file:
@@ -190,7 +190,7 @@ class Nanonets:
         response.raise_for_status()
         return response.json()
 
-    def predict_file(self, filepath: str, model_id: str) -> Dict:
+    def predict_file(self, filepath: str, model_id: str) -> JSONType:
         """Get prediction result for a file by a given model id.
 
         :param filepath: filepath to the file
@@ -251,7 +251,7 @@ class Nanonets:
 
         For example. see ``Predict File`` keyword
 
-        :param prediction: prediction result file
+        :param prediction: prediction result dictionary
         :return: list of found fields
         """
         return [
@@ -265,7 +265,7 @@ class Nanonets:
 
         For another example. see ``Predict File`` keyword
 
-        :param prediction: prediction result file
+        :param prediction: prediction result dictionary
         :return: list of found tables
 
         Robot Framework example:

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "17.6.0"
+version = "19.0.0"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -116,6 +116,10 @@ use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 aws = ["rpaframework-aws"]
 cv = ["rpaframework-recognition"]
 playwright = ["robotframework-browser"]
+
+[tool.poetry.group.dev.dependencies]
+flake8-docstrings = "^1.6.0"
+flake8-rst-docstrings = "^0.2.7"
 
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]
