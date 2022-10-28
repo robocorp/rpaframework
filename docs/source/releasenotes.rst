@@ -13,7 +13,7 @@ Release notes
 --------------------
 
 - New Intelligent Document Processing library **RPA.DocumentAI**, which is a convenient
-  wrapper over the existing libraries:
+  wrapper over the existing libraries (:issue:`557`):
 
   - **RPA.Cloud.Google** (needs ``rpaframework-google`` installed)
   - **RPA.DocumentAI.Base64AI** (moved from ``RPA.Base64AI``)
@@ -27,7 +27,14 @@ Release notes
   - ``Predict``
   - ``Get Result``
 
-  Portal example: https://github.com/robocorp/example-document-ai
+  Portal example: https://robocorp.com/portal/robot/robocorp/example-document-ai
+
+.. warning::
+  This is a **breaking** change! Two `DocumentAI` related libraries have moved, thus
+  the importing location is changed now:
+
+  - ``RPA.Base64AI`` -> ``RPA.DocumentAI.Base64AI``
+  - ``RPA.Nanonets`` -> ``RPA.DocumentAI.Nanonets``
 
 18.0.0 - 17 Oct 2022
 --------------------
