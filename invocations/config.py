@@ -329,7 +329,8 @@ def reset_local(ctx):
     is ignored.
     """
     venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
-    if Path(venv_activation_cmd.split()[-1]).exists():
+    activate_path = venv_activation_cmd.replace("source", "").lstrip(". ")
+    if Path(activate_path).exists():
         try:
             restore_dependency_files(ctx)
         except FileNotFoundError:
