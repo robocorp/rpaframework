@@ -7,11 +7,12 @@ import json
 import os
 import re
 import shutil
+import toml
 from glob import glob
 from pathlib import Path
-import toml
-from colorama import Fore, Style
+from typing import Dict, List, Union
 
+from colorama import Fore, Style
 from invoke import task, ParseError, Collection
 
 from invocations import shell
@@ -308,6 +309,16 @@ def install(ctx, reset=False, extra=None, all_extras=False):
         shell.poetry(ctx, f"install {extras_cmd}")
 
 
+def _extract_json_payload(stdout: str) -> Union[List, Dict, None]:
+    """Extracts a JSON payload from somewhere in the provided string."""
+    pattern = r"[\[{].+[}\]]"
+    matches = re.search(pattern, stdout)
+    try:
+        return json.loads(matches[0])
+    except TypeError:
+        return None
+
+
 @task(aliases=["reset"])
 def reset_local(ctx):
     """Revert changes caused by ``install.local``. This task
@@ -318,7 +329,7 @@ def reset_local(ctx):
     is ignored.
     """
     venv_activation_cmd = shell.get_venv_activate_cmd(ctx)
-    if Path(venv_activation_cmd).exists():
+    if Path(venv_activation_cmd.split()[-1]).exists():
         try:
             restore_dependency_files(ctx)
         except FileNotFoundError:
@@ -334,7 +345,7 @@ def reset_local(ctx):
             pip_freeze = shell.pip(ctx, "list --format json", echo=False, hide="out")
             # Identifies locally installed packages in development mode.
             #  (not from PyPI)
-            installed_pkgs = json.loads(pip_freeze.stdout)
+            installed_pkgs = _extract_json_payload(pip_freeze.stdout)
             local_pkgs = [
                 pkg
                 for pkg in installed_pkgs

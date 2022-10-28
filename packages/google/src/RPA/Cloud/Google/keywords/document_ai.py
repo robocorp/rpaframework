@@ -226,7 +226,9 @@ class DocumentAIKeywords(LibraryContext):
             try:
                 document = pickle.load(response_file)
             except pickle.UnpicklingError as err:
-                raise ValueError(f"The file {filepath!r} is not 'documentai.Document' type") from err
+                raise ValueError(
+                    f"The file {filepath!r} is not 'documentai.Document' type"
+                ) from err
 
         if not isinstance(document, documentai.Document):
             raise ValueError(
