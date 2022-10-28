@@ -136,14 +136,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.25.2"
+version = "1.25.3"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.28.2,<1.29.0"
+botocore = ">=1.28.3,<1.29.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -152,7 +152,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.28.2"
+version = "1.28.3"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -2081,7 +2081,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-google"
-version = "6.1.1"
+version = "6.1.2"
 description = "Google library for RPA Framework"
 category = "main"
 optional = false
@@ -2761,7 +2761,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "fef874bf1c8806f5957676e4ab02c3baa4aa7b08a7a722281488c83de3c40541"
+content-hash = "06e95daedfde345ae345910ea0e7d83328dadd9ba6987ce3145888d0115faa91"
 
 [metadata.files]
 alabaster = [
@@ -2842,12 +2842,12 @@ black = [
     {file = "black-22.10.0.tar.gz", hash = "sha256:f513588da599943e0cde4e32cc9879e825d58720d6557062d1098c5ad80080e1"},
 ]
 boto3 = [
-    {file = "boto3-1.25.2-py3-none-any.whl", hash = "sha256:bc711ab94f90af40a52ddb56c4ef9d997edfbeae9fe39c76a802574fab92ccd9"},
-    {file = "boto3-1.25.2.tar.gz", hash = "sha256:43a93f8cecd882cccb2815cd76fc07a73b076027ab092a1c7cede89cb9b075f8"},
+    {file = "boto3-1.25.3-py3-none-any.whl", hash = "sha256:2284a107d43f73b6007c7c8b946a8fd6f9baa6c97b5c956edc67d9be864def58"},
+    {file = "boto3-1.25.3.tar.gz", hash = "sha256:7ddc2c5622dd006502d72f9b7b53eaca3da6f699ada4ec57f4ef1db9d2023e2f"},
 ]
 botocore = [
-    {file = "botocore-1.28.2-py3-none-any.whl", hash = "sha256:cedc8e76cf4baa411fa6af62eec1fc569053b5f9c059e0f2ac074c649039200a"},
-    {file = "botocore-1.28.2.tar.gz", hash = "sha256:9890005735652555d1183b44bad729603d26922dc08e261e1e0a35a7bf26ba38"},
+    {file = "botocore-1.28.3-py3-none-any.whl", hash = "sha256:4ea45626d8c5875c12e5767aa637388ce81871162f494eaf7b3888e875de84b7"},
+    {file = "botocore-1.28.3.tar.gz", hash = "sha256:2c2604262e5ab35ea83e9d5cf8be267e7fcdab6c815a432cfe15f23d92ce723d"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -4207,8 +4207,8 @@ rpaframework-dialogs = [
     {file = "rpaframework_dialogs-4.0.0-py3-none-any.whl", hash = "sha256:c9e69a1b4a3b39bff5051e400bf9bb483d8e61e1bdd8246a19991cf8219d5541"},
 ]
 rpaframework-google = [
-    {file = "rpaframework-google-6.1.1.tar.gz", hash = "sha256:83a81b6465b6ca4ed6c4c403280c0876c7d71a3216234b6ec3990ca55cc89e3a"},
-    {file = "rpaframework_google-6.1.1-py3-none-any.whl", hash = "sha256:39c5fa9b2041a4c75d554370e04f56329b8a2f1c1618326d9ff4d3184238f8c2"},
+    {file = "rpaframework-google-6.1.2.tar.gz", hash = "sha256:0722019260f94fb076caa5a7a95881332222b56db3f71ab940a6443777c51466"},
+    {file = "rpaframework_google-6.1.2-py3-none-any.whl", hash = "sha256:0fb41af3de980c6da61e8a859bb6c823cb68d0d0eb12f986bc25928cbb73ce35"},
 ]
 rpaframework-pdf = [
     {file = "rpaframework-pdf-5.0.0.tar.gz", hash = "sha256:f32078c5cd0f1a8d77ed448d22865354cbef2f3745a3baf4cdd07accca5e5a72"},
