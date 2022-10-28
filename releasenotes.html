@@ -230,7 +230,7 @@
 <h3>19.0.0 - 27 Oct 2022<a class="headerlink" href="#oct-2022" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p>New Intelligent Document Processing library <strong>RPA.DocumentAI</strong>, which is a convenient
-wrapper over the existing libraries:</p>
+wrapper over the existing libraries (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/557">#557</a>):</p>
 <ul class="simple">
 <li><p><strong>RPA.Cloud.Google</strong> (needs <code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> installed)</p></li>
 <li><p><strong>RPA.DocumentAI.Base64AI</strong> (moved from <code class="docutils literal notranslate"><span class="pre">RPA.Base64AI</span></code>)</p></li>
@@ -244,9 +244,18 @@ above:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Predict</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Result</span></code></p></li>
 </ul>
-<p>Portal example: <a class="reference external" href="https://github.com/robocorp/example-document-ai">https://github.com/robocorp/example-document-ai</a></p>
+<p>Portal example: <a class="reference external" href="https://robocorp.com/portal/robot/robocorp/example-document-ai">https://robocorp.com/portal/robot/robocorp/example-document-ai</a></p>
 </li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is a <strong>breaking</strong> change! Two <cite>DocumentAI</cite> related libraries have moved, thus
+the importing location is changed now:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Base64AI</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">RPA.DocumentAI.Base64AI</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Nanonets</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">RPA.DocumentAI.Nanonets</span></code></p></li>
+</ul>
+</div>
 </div>
 <div class="section" id="id3">
 <h3>18.0.0 - 17 Oct 2022<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
