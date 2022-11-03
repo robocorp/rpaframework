@@ -1,6 +1,7 @@
 # pylint: disable=C0411,C0412,C0413
 import logging
 from pathlib import Path
+import re
 from typing import Any, Optional, Union
 from urllib.parse import urlparse
 
@@ -258,3 +259,39 @@ class HTTP(RequestsLibrary):
         self._create_or_overwrite_target_file(dirname / filename, response, overwrite)
 
         return response
+
+    def check_vulnerabilities(self):
+        """Check for possible Python vulnerabilities in the installed
+        runtime environment packages.
+
+        Currently will check only for OpenSSL version and outputs warning message on any
+        discovered vulnerability.
+
+        :return: list of all check results
+        """
+        all_messages = []
+        vulnerable, message = self._check_openssl_vulnerabilities()
+        all_messages.append(message)
+        if vulnerable:
+            self.logger.warning(message)
+        return all_messages
+
+    def _check_openssl_vulnerabilities(self):
+        message = "No OpenSSL detected"
+        try:
+            import ssl  # pylint: disable=C0415
+
+            open_ssl_version = re.match(
+                r"OpenSSL (\d+)\.(\d+)\.(\d+).*", ssl.OPENSSL_VERSION
+            )
+            if open_ssl_version and len(open_ssl_version.groups()) == 3:
+                major, minor, fix = [int(val) for val in open_ssl_version.groups()]
+                if major == 3 and minor == 0 and (0 <= fix <= 6):
+                    return True, (
+                        rf"Dependency with HIGH severity vulnerability detected: '{ssl.OPENSSL_VERSION}'.\n"  # noqa: E501
+                        "For more information see https://robocorp.com/docs/faq/openssl-cve-2022-11-01"  # noqa: E501
+                    )
+            message = ssl.OPENSSL_VERSION
+        except ImportError:
+            pass
+        return False, message
