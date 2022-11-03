@@ -4,7 +4,7 @@ import logging
 import time
 from datetime import date, datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Union, Any, Generator
+from typing import Dict, List, Optional, Tuple, Union, Any, Generator
 
 from robot.api.deco import library, keyword  # type: ignore
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError  # type: ignore
@@ -14,16 +14,26 @@ from .dialog_types import Elements, Result, Options, Size, Icon
 from .utils import to_options, optional_str, optional_int, int_or_auto, is_input
 
 import flet
-from flet import Text, Checkbox, Control, Page, TextField, app
+from flet import (
+    Image,
+    Markdown,
+    Text,
+    Checkbox,
+    Control,
+    Page,
+    TextField,
+    app,
+    icons,
+    colors,
+)
 
 
-class FletEvent():
+class FletEvent:
     target: str
     name: str
     data: str
     control: Control
     page: Page
-
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -123,14 +133,13 @@ class AssistantUI:
 
     def make_flet_event_handler(self, name: str):
         def change_listener(e: FletEvent):
-            self.form_elements[name] = e.control
             e.page.update()
-        return change_listener
 
+        return change_listener
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
-        self.form_elements: Dict[str, Control]= {}
+        self.form_elements: Dict[str, Control] = {}
 
         try:
             # Prevent logging from keywords that return results
@@ -147,6 +156,7 @@ class AssistantUI:
         except RobotNotRunningError:
             pass
 
+    # TODO: delete / replace with _add_flet_element behaviour
     def add_element(self, element: Dict[str, Any]) -> None:
         if is_input(element):
             name = element["name"]
@@ -161,6 +171,15 @@ class AssistantUI:
                 raise ValueError("Input name 'submit' is not allowed")
 
         self.elements.append(element)
+
+    def _add_flet_element(self, element: flet.Control, name=None):
+        # FIXME: register elements on the page
+        # page.add(element)
+        if name is not None:
+            self.form_elements[name] = element
+
+            # FIXME: is on_change the right trigger
+            element._add_event_handler("on_change", self.make_flet_event_handler(name))
 
     @keyword("Clear elements")
     def clear_elements(self) -> None:
@@ -179,6 +198,7 @@ class AssistantUI:
             END
             Clear elements
         """
+        # FIXME: implement with flet
         self.elements = []
 
     @keyword("Add heading")
@@ -207,13 +227,12 @@ class AssistantUI:
         if not isinstance(size, Size):
             size = Size(size)
 
-        element = {
-            "type": "heading",
-            "value": str(heading),
-            "size": size.value,
-        }
-
-        self.add_element(element)
+        if size == Size.Small:
+            self._add_flet_element(element=Text(heading, style="headlineSmall"))
+        elif size == Size.Medium:
+            self._add_flet_element(element=Text(heading, style="headlineMedium"))
+        elif size == Size.Large:
+            self._add_flet_element(element=Text(heading, style="headlineLarge"))
 
     @keyword("Add text")
     def add_text(
@@ -241,13 +260,12 @@ class AssistantUI:
         if not isinstance(size, Size):
             size = Size(size)
 
-        element = {
-            "type": "text",
-            "value": str(text),
-            "size": size.value,
-        }
-
-        self.add_element(element)
+        if size == Size.Small:
+            self._add_flet_element(element=Text(text, style="bodySmall"))
+        elif size == Size.Medium:
+            self._add_flet_element(element=Text(text, style="bodyMedium"))
+        elif size == Size.Large:
+            self._add_flet_element(element=Text(text, style="bodyLarge"))
 
     @keyword("Add link")
     def add_link(
@@ -273,13 +291,9 @@ class AssistantUI:
             Add link       https://robocorp.com/docs    label=Troubleshooting
             Run dialog
         """
-        element = {
-            "type": "link",
-            "value": str(url),
-            "label": optional_str(label),
-        }
-
-        self.add_element(element)
+        if not label:
+            label = url
+        self._add_flet_element(Markdown(f"[{label}]({url})"))
 
     @keyword("Add image")
     def add_image(
@@ -312,14 +326,8 @@ class AssistantUI:
             Add submit buttons    Continue
             Run dialog
         """
-        element = {
-            "type": "image",
-            "value": str(url_or_path),
-            "width": optional_int(width),
-            "height": optional_int(height),
-        }
-
-        self.add_element(element)
+        # TODO: confirm the url_or_path works with local paths with flet
+        self._add_flet_element(Image(src=url_or_path, width=width, height=height))
 
     @keyword("Add file")
     def add_file(
@@ -361,6 +369,7 @@ class AssistantUI:
         }
 
         self.add_element(element)
+        asd
 
     @keyword("Add files")
     def add_files(
@@ -442,13 +451,14 @@ class AssistantUI:
         if not isinstance(variant, Icon):
             variant = Icon(variant)
 
-        element = {
-            "type": "icon",
-            "variant": variant.value,
-            "size": int(size),
+        flet_icon_conversions: Dict[Icon, Tuple[str, str]] = {
+            Icon.Success: (icons.CHECK, colors.GREEN_50),
+            Icon.Warning: (icons.WARNING, colors.YELLOW_50),
+            Icon.Failure: (icons.CLOSE, colors.RED_50),
         }
+        flet_icon, color = flet_icon_conversions[variant]
 
-        self.add_element(element)
+        self._add_flet_element(flet.Icon(name=flet_icon, color=color, size=size))
 
     @keyword("Add text input", tags=["input"])
     def add_text_input(
@@ -488,9 +498,7 @@ class AssistantUI:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        TextField(label=label, on_change=self.make_flet_event_handler(name=name), value=placeholder)
-
-
+        self._add_flet_element(name, TextField(label=label, value=placeholder))
 
     @keyword("Add password input", tags=["input"])
     def add_password_input(
@@ -522,18 +530,9 @@ class AssistantUI:
             ${result}=    Run dialog
             Change user password    ${result.username}  ${result.password}
         """
-        self.field_names[name] = 
-        t = Text()
-        tb1 = TextField(optional_str(label))
-
-        element = {
-            "type": "input-password",
-            "name": str(name),
-            "label": optional_str(label),
-            "placeholder": optional_str(placeholder),
-        }
-
-        self.add_element(element)
+        self._add_flet_element(
+            name=name, element=TextField(label=label, value=placeholder, password=True)
+        )
 
     @keyword("Add hidden input", tags=["input"])
     def add_hidden_input(
@@ -562,6 +561,7 @@ class AssistantUI:
             ${result}=         Run dialog
             Enter user information    ${result.user_id}    ${result.username}
         """
+        # FIXME: figure out how to do this with flet
         element = {
             "type": "input-hidden",
             "name": str(name),
@@ -960,7 +960,9 @@ class AssistantUI:
             Log    The username is: ${result.username}
         """
         # FIXME: add async here to support itmeout
-        app(view=flet.WEB_BROWSER, )
+        app(
+            view=flet.WEB_BROWSER,
+        )
 
         dialog = self.show_dialog(**options)
         return self.wait_dialog(dialog, timeout)
