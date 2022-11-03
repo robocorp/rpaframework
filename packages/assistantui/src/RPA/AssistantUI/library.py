@@ -9,9 +9,21 @@ from typing import Dict, List, Optional, Union, Any, Generator
 from robot.api.deco import library, keyword  # type: ignore
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError  # type: ignore
 
-from .dialog import Dialog, TimeoutException
+# from .dialog import Dialog, TimeoutException
 from .dialog_types import Elements, Result, Options, Size, Icon
 from .utils import to_options, optional_str, optional_int, int_or_auto, is_input
+
+import flet
+from flet import Text, Checkbox, Control, Page, TextField, app
+
+
+class FletEvent():
+    target: str
+    name: str
+    data: str
+    control: Control
+    page: Page
+
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -109,10 +121,16 @@ class AssistantUI:
             Close dialog   ${dialog}
     """
 
+    def make_flet_event_handler(self, name: str):
+        def change_listener(e: FletEvent):
+            self.form_elements[name] = e.control
+            e.page.update()
+        return change_listener
+
+
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
-        self.elements: Elements = []
-        self.dialogs: List[Dialog] = []
+        self.form_elements: Dict[str, Control]= {}
 
         try:
             # Prevent logging from keywords that return results
@@ -470,15 +488,9 @@ class AssistantUI:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        element = {
-            "type": "input-text",
-            "name": str(name),
-            "label": optional_str(label),
-            "placeholder": optional_str(placeholder),
-            "rows": optional_int(rows),
-        }
+        TextField(label=label, on_change=self.make_flet_event_handler(name=name), value=placeholder)
 
-        self.add_element(element)
+
 
     @keyword("Add password input", tags=["input"])
     def add_password_input(
@@ -510,6 +522,10 @@ class AssistantUI:
             ${result}=    Run dialog
             Change user password    ${result.username}  ${result.password}
         """
+        self.field_names[name] = 
+        t = Text()
+        tb1 = TextField(optional_str(label))
+
         element = {
             "type": "input-password",
             "name": str(name),
@@ -554,6 +570,7 @@ class AssistantUI:
 
         self.add_element(element)
 
+    # SPLIT
     @keyword("Add file input", tags=["input"])
     def add_file_input(
         self,
@@ -942,6 +959,9 @@ class AssistantUI:
             ${result}=      Run dialog
             Log    The username is: ${result.username}
         """
+        # FIXME: add async here to support itmeout
+        app(view=flet.WEB_BROWSER, )
+
         dialog = self.show_dialog(**options)
         return self.wait_dialog(dialog, timeout)
 
@@ -1004,6 +1024,7 @@ class AssistantUI:
             ${result}=    Wait dialog    ${dialog}
             Insert user information      ${result.username}  ${result.address}
         """
+        # FIXME: how to return app object
         height = int_or_auto(height)
         dialog = Dialog(
             self.elements,

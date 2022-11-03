@@ -5,7 +5,6 @@ import time
 from datetime import datetime
 from typing import Any, Union, Optional
 
-import robocorp_dialog  # type: ignore
 from robot.utils import DotDict  # type: ignore
 from .dialog_types import Element, Elements, Result
 from .utils import is_input, is_submit
@@ -15,7 +14,7 @@ class TimeoutException(RuntimeError):
     """Timeout while waiting for dialog to finish."""
 
 
-class Dialog:
+class Flet:
     """Container for a dialog running in a separate subprocess."""
 
     # Post-process received result's values.
