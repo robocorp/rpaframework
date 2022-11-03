@@ -301,7 +301,7 @@ class HTTP(RequestsLibrary):
                 major, minor, fix = [int(val) for val in open_ssl_version.groups()]
                 if major == 3 and minor == 0 and (0 <= fix <= 6):
                     return True, (
-                        rf"Dependency with HIGH severity vulnerability detected: '{ssl.OPENSSL_VERSION}'.\n"  # noqa: E501
+                        rf"Dependency with HIGH severity vulnerability detected: '{ssl.OPENSSL_VERSION}'. "  # noqa: E501
                         "For more information see https://robocorp.com/docs/faq/openssl-cve-2022-11-01"  # noqa: E501
                     )
             message = ssl.OPENSSL_VERSION
