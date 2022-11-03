@@ -514,10 +514,7 @@ which has following structure:</p>
 <dt id="RPA.Cloud.AWS.AWS.create_bucket">
 <code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.create_bucket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create S3 bucket with name</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.create_bucket/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -588,10 +585,7 @@ Redshift Data Api SQL statements.</p>
 <dt id="RPA.Cloud.AWS.AWS.delete_files">
 <code class="sig-name descname">delete_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete files in the bucket</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.delete_objects/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -734,10 +728,7 @@ that 5,000 bytes of UTF-8 encoded characters</p></li>
 <dt id="RPA.Cloud.AWS.AWS.download_files">
 <code class="sig-name descname">download_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em>, <em class="sig-param">target_directory: Optional[str] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.download_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download files from bucket to local filesystem</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format.</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format.</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.download_file/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1134,10 +1125,7 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 <dt id="RPA.Cloud.AWS.AWS.list_files">
 <code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">limit: Optional[int] = None</em>, <em class="sig-param">search: Optional[str] = None</em>, <em class="sig-param">prefix: Optional[str] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List files in the bucket</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1183,7 +1171,7 @@ specified prefix</p></li>
 <span class="c"># List files in a bucket matching `.yaml`</span>
 <span class="c">@{files}=</span><span class="p">   </span><span class="c">List Files</span><span class="p"></span>
 <span class="c">...</span><span class="p">    </span><span class="c">bucket-name</span><span class="p"></span>
-<span class="c">...</span><span class="p">    </span><span class="c">filter=Contents[?contains(Key, &#39;.yaml&#39;)]</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">search=Contents[?contains(Key, &#39;.yaml&#39;)]</span><span class="p"></span>
 
 <span class="c"># List files in a bucket matching `.png` and limit results to max 3</span>
 <span class="c">@{files}=</span><span class="p">  </span><span class="c">List Files</span><span class="p"></span>
@@ -1401,10 +1389,7 @@ be overridden by giving parameter <code class="docutils literal notranslate"><sp
 </dl>
 <p>If <cite>object_name</cite> is not given then basename of the file is
 used as <cite>object_name</cite>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format (see below code example).</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format (see below code example).</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/">additional parameters</a>.</p>
 <p>Robot Framework example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{extras}=</span><span class="p">    </span><span class="c">Evaluate</span><span class="p">    </span><span class="c">{&#39;ContentType&#39;: &#39;image/png&#39;}</span><span class="p"></span>
@@ -1439,10 +1424,7 @@ used as <cite>object_name</cite>.</p>
 {‘filename’: ‘/path/to/file2.txt’, ‘object_name’: ‘file2.txt’}]</p>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format (see below code example).</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format (see below code example).</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/">additional parameters</a>.</p>
 <p>Python example (passing ExtraArgs):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">upload_files</span> <span class="o">=</span> <span class="p">[</span>
@@ -1949,10 +1931,7 @@ match <code class="docutils literal notranslate"><span class="pre">schema_patter
 <dt id="RPA.Cloud.AWS.ServiceS3.create_bucket">
 <code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.create_bucket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create S3 bucket with name</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.create_bucket/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1986,10 +1965,7 @@ match <code class="docutils literal notranslate"><span class="pre">schema_patter
 <dt id="RPA.Cloud.AWS.ServiceS3.delete_files">
 <code class="sig-name descname">delete_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.delete_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete files in the bucket</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.delete_objects/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2008,10 +1984,7 @@ match <code class="docutils literal notranslate"><span class="pre">schema_patter
 <dt id="RPA.Cloud.AWS.ServiceS3.download_files">
 <code class="sig-name descname">download_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: Optional[str] = None</em>, <em class="sig-param">files: Optional[list] = None</em>, <em class="sig-param">target_directory: Optional[str] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.download_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download files from bucket to local filesystem</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format.</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format.</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.download_file/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2081,10 +2054,7 @@ credentials, such as from <code class="docutils literal notranslate"><span class
 <dt id="RPA.Cloud.AWS.ServiceS3.list_files">
 <code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">limit: Optional[int] = None</em>, <em class="sig-param">search: Optional[str] = None</em>, <em class="sig-param">prefix: Optional[str] = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List files in the bucket</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2/">additional parameters</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2131,7 +2101,7 @@ specified prefix</p></li>
 <span class="c"># List files in a bucket matching `.yaml`</span>
 <span class="c">@{files}=</span><span class="p">   </span><span class="c">List Files</span><span class="p"></span>
 <span class="c">...</span><span class="p">    </span><span class="c">bucket-name</span><span class="p"></span>
-<span class="c">...</span><span class="p">    </span><span class="c">filter=Contents[?contains(Key, &#39;.yaml&#39;)]</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">search=Contents[?contains(Key, &#39;.yaml&#39;)]</span><span class="p"></span>
 
 <span class="c"># List files in a bucket matching `.png` and limit results to max 3</span>
 <span class="c">@{files}=</span><span class="p">  </span><span class="c">List Files</span><span class="p"></span>
@@ -2198,10 +2168,7 @@ specified prefix</p></li>
 </dl>
 <p>If <cite>object_name</cite> is not given then basename of the file is
 used as <cite>object_name</cite>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format (see below code example).</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format (see below code example).</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/">additional parameters</a>.</p>
 <p>Robot Framework example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{extras}=</span><span class="p">    </span><span class="c">Evaluate</span><span class="p">    </span><span class="c">{&#39;ContentType&#39;: &#39;image/png&#39;}</span><span class="p"></span>
@@ -2236,10 +2203,7 @@ used as <cite>object_name</cite>.</p>
 {‘filename’: ‘/path/to/file2.txt’, ‘object_name’: ‘file2.txt’}]</p>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This keyword accepts additional parameters in key=value format (see below code example).</p>
-</div>
+<p><strong>note</strong> This keyword accepts additional parameters in key=value format (see below code example).</p>
 <p>More info on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.upload_file/">additional parameters</a>.</p>
 <p>Python example (passing ExtraArgs):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">upload_files</span> <span class="o">=</span> <span class="p">[</span>
