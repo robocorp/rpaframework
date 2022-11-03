@@ -10,7 +10,7 @@ rpaframework = { path = "packages/main", extras = [
 	"cv",
 	"playwright"
 ], develop = true }
-rpaframework-aws = "^5.2.0"
+rpaframework-aws = "^5.2.1"
 rpaframework-google = "^6.1.2"
 rpaframework-windows = "^6.1.0"
 
