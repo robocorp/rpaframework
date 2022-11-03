@@ -2,6 +2,9 @@ import atexit
 import glob
 import logging
 import time
+import platform
+import subprocess
+import os
 from datetime import date, datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union, Any, Generator
@@ -17,10 +20,13 @@ import flet
 from flet import (
     Image,
     Markdown,
+    Row,
     Text,
     Checkbox,
     Control,
     Page,
+    ElevatedButton,
+    TextButton,
     TextField,
     app,
     icons,
@@ -370,14 +376,19 @@ class AssistantUI:
         if not resolved.exists():
             self.logger.warning("File does not exist: %s", resolved)
 
-        element = {
-            "type": "file",
-            "value": str(resolved),
-            "label": optional_str(label),
-        }
+        def open_file(e):
+            if platform.system() == "Windows":
+                os.startfile(resolved)  # type: ignore # pylint: disable=no-member
+            elif platform.system() == "Darwin":
+                subprocess.call(["open", resolved])
+            else:
+                subprocess.call(["xdg-open", resolved])
 
-        self.add_element(element)
-        asd
+        self.add_element(
+            element=ElevatedButton(
+                text=(label or str(resolved)), icon=icons.FILE_OPEN, on_click=open_file
+            )
+        )
 
     @keyword("Add files")
     def add_files(

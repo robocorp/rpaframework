@@ -12,6 +12,10 @@ assistant.add_text_input("txt_input", placeholder="placeholder")
 assistant.add_password_input("pw_input")
 assistant.add_checkbox("checkbox", "test_checkbox")
 
+assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
+
+assistant.add_text("List python files")
+assistant.add_files("**/*.py")
 
 assistant.add_image(
     "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
@@ -20,8 +24,6 @@ assistant.add_image(
 # not implemented yet
 """
 assistant.clear_elements()
-assistant.add_file()
-assistant.add_files()
 assistant.add_file_input()
 assistant.add_drop_down()
 assistant.add_date_input()
