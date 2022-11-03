@@ -261,8 +261,8 @@ class HTTP(RequestsLibrary):
         return response
 
     def check_vulnerabilities(self) -> List:
-        """Check for possible Python vulnerabilities in the installed
-        runtime environment packages.
+        """Check for possible vulnerabilities in the installed runtime
+        environment packages.
 
         Currently will check only for OpenSSL version and outputs warning message on any
         discovered vulnerability.
