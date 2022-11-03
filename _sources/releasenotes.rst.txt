@@ -5,6 +5,10 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.HTTP** (:pr:`685`): Add keyword ``Check Vulnerabilities`` which will now just
+  check for ``OpenSSL`` vulnerable versions. 
+
+  Related article: https://robocorp.com/docs/faq/openssl-cve-2022-11-01
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
