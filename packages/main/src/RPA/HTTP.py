@@ -1,7 +1,8 @@
 # pylint: disable=C0411,C0412,C0413
 import logging
 from pathlib import Path
-from typing import Any, Optional, Union
+import re
+from typing import Any, Optional, Union, List
 from urllib.parse import urlparse
 
 import RequestsLibrary.log
@@ -258,3 +259,52 @@ class HTTP(RequestsLibrary):
         self._create_or_overwrite_target_file(dirname / filename, response, overwrite)
 
         return response
+
+    def check_vulnerabilities(self) -> List:
+        """Check for possible vulnerabilities in the installed runtime
+        environment packages.
+
+        Currently will check only for OpenSSL version and outputs warning message on any
+        discovered vulnerability.
+
+        :return: list of all check results
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Vulnerability Check
+                ${results}=    Check Vulnerabilities
+                FOR    ${result}    IN    @{results}
+                    Log To Console    TYPE: ${result}[type]
+                    Log To Console    VULNERABLE: ${result}[vulnerable]
+                    Log To Console    MESSAGE: ${result}[message]
+                END
+        """
+        all_results = []
+        vulnerable, message = self._check_openssl_vulnerabilities()
+        all_results.append(
+            {"type": "OpenSSL", "vulnerable": vulnerable, "message": message}
+        )
+        if vulnerable:
+            self.logger.warning(message)
+        return all_results
+
+    def _check_openssl_vulnerabilities(self):
+        message = "No OpenSSL detected"
+        try:
+            import ssl  # pylint: disable=C0415
+
+            open_ssl_version = re.match(
+                r"OpenSSL (\d+)\.(\d+)\.(\d+).*", ssl.OPENSSL_VERSION
+            )
+            if open_ssl_version and len(open_ssl_version.groups()) == 3:
+                major, minor, fix = [int(val) for val in open_ssl_version.groups()]
+                if major == 3 and minor == 0 and (0 <= fix <= 6):
+                    return True, (
+                        rf"Dependency with HIGH severity vulnerability detected: '{ssl.OPENSSL_VERSION}'. "  # noqa: E501
+                        "For more information see https://robocorp.com/docs/faq/openssl-cve-2022-11-01"  # noqa: E501
+                    )
+            message = ssl.OPENSSL_VERSION
+        except ImportError:
+            pass
+        return False, message
