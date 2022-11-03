@@ -2,7 +2,7 @@
 import logging
 from pathlib import Path
 import re
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, List
 from urllib.parse import urlparse
 
 import RequestsLibrary.log
@@ -260,7 +260,7 @@ class HTTP(RequestsLibrary):
 
         return response
 
-    def check_vulnerabilities(self):
+    def check_vulnerabilities(self) -> List:
         """Check for possible Python vulnerabilities in the installed
         runtime environment packages.
 
@@ -268,13 +268,26 @@ class HTTP(RequestsLibrary):
         discovered vulnerability.
 
         :return: list of all check results
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Vulnerability Check
+                ${results}=    Check Vulnerabilities
+                FOR    ${result}    IN    @{results}
+                    Log To Console    TYPE: ${result}[type]
+                    Log To Console    VULNERABLE: ${result}[vulnerable]
+                    Log To Console    MESSAGE: ${result}[message]
+                END
         """
-        all_messages = []
+        all_results = []
         vulnerable, message = self._check_openssl_vulnerabilities()
-        all_messages.append(message)
+        all_results.append(
+            {"type": "OpenSSL", "vulnerable": vulnerable, "message": message}
+        )
         if vulnerable:
             self.logger.warning(message)
-        return all_messages
+        return all_results
 
     def _check_openssl_vulnerabilities(self):
         message = "No OpenSSL detected"
