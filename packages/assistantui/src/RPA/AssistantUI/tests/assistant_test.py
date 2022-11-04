@@ -13,10 +13,12 @@ assistant.add_password_input("pw_input")
 assistant.add_checkbox("checkbox", "test_checkbox")
 
 assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
+
+assistant.add_dialog_next_page_button("Next page")
+
+assistant.add_text_input("txt_input_2", placeholder="placeholder")
 assistant.add_text("List python files")
 assistant.add_files("**/*.py")
-
-# Goes to a bit weird location
 assistant.add_image(
     "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
 )
@@ -26,7 +28,6 @@ assistant.add_image(
 
 # not implemented yet
 """
-assistant.add_dialog_next_page_button()
 
 assistant.add_file_input()
 assistant.add_drop_down()

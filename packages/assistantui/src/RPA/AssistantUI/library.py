@@ -1,4 +1,5 @@
 import atexit
+from dataclasses import dataclass
 import glob
 import logging
 import time
@@ -21,6 +22,7 @@ from flet import (
     Image,
     Markdown,
     Row,
+    TemplateRoute,
     Text,
     Checkbox,
     Control,
@@ -141,11 +143,15 @@ class AssistantUI:
             Close dialog   ${dialog}
     """
 
+    @property
+    def current_elements(self):
+        return self.elements[self._pagination]
+
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
-        self.input_elements: Dict[str, Control] = {}
-        self.all_elements: List[Control] = []
+        self.elements: List[List[Control]] = [[]]
         self.results: Result = {}
+        self._pagination = 0
 
         try:
             # Prevent logging from keywords that return results
@@ -187,10 +193,9 @@ class AssistantUI:
         return change_listener
 
     def add_element(self, element: flet.Control, name: Optional[str] = None):
-        self.all_elements.append(element)
+        # TODO: validate that element "name" is unique
+        self.elements[-1].append(element)
         if name is not None:
-            self.input_elements[name] = element
-
             # TODO: might be necessary to check that it doesn't already have change handler
             element.on_change = self._make_flet_event_handler(name)
             # element._add_event_handler("change", self._make_flet_event_handler(name))
@@ -225,8 +230,10 @@ class AssistantUI:
             END
             Clear elements
         """
-        self.all_elements = []
-        self.input_elements = {}
+        if self.page:
+            self.page.controls.clear()
+            self.page.update()
+        self.elements[self._pagination] = []
         return
 
     @keyword("Add heading")
@@ -903,12 +910,18 @@ class AssistantUI:
             Send feedback message    ${result.email}  ${result.message}
             Run dialog
         """
-        element = {
-            "type": "next",
-            "label": str(label),
-        }
 
-        self.add_element(element)
+        def next_page(e):
+            """Clear elements, increment pagination, make elements of next page visible"""
+            self.clear_elements()
+            self._pagination += 1
+            for element in self.current_elements:
+                self.page.add(element)
+            self.page.update(*self.current_elements)
+
+        self.add_element(ElevatedButton(text=str(label), on_click=next_page))
+        # Add a new "page" of elements
+        self.elements.append([])
 
     @keyword("Add submit buttons", tags=["input"])
     def add_submit_buttons(
@@ -993,8 +1006,9 @@ class AssistantUI:
         # FIXME: support options
 
         def run(page: Page):
-            for element in self.all_elements:
+            for element in self.current_elements:
                 page.add(element)
+            self.page = page
             page.update()
 
         app(view=flet.FLET_APP, target=run)
