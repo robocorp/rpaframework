@@ -44,8 +44,8 @@ Links
 
 ------------
 
-.. image:: https://img.shields.io/github/workflow/status/robocorp/rpaframework/master?style=for-the-badge
-   :target: https://github.com/robocorp/rpaframework/actions?query=workflow%3Amaster
+.. image:: https://img.shields.io/github/workflow/status/robocorp/rpaframework/rpaframework?style=for-the-badge
+   :target: https://github.com/robocorp/rpaframework/actions?query=workflow%3Arpaframework
    :alt: Status
 
 .. image:: https://img.shields.io/pypi/dw/rpaframework?style=for-the-badge
