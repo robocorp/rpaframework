@@ -19,8 +19,12 @@ from .utils import to_options, optional_str, optional_int, int_or_auto, is_input
 
 import flet
 from flet import (
+    Column,
+    Dropdown,
     Image,
     Markdown,
+    Radio,
+    RadioGroup,
     Row,
     TemplateRoute,
     Text,
@@ -34,6 +38,7 @@ from flet import (
     icons,
     colors,
 )
+from flet.dropdown import Option
 
 # TODO: delete, just a placeholder until we change all the dialog keywords
 class Dialog:
@@ -728,15 +733,12 @@ class AssistantUI:
         """
         options, default = to_options(options, default)
 
-        element = {
-            "type": "input-dropdown",
-            "name": str(name),
-            "options": options,
-            "default": default,
-            "label": optional_str(label),
-        }
+        options: List[Control] = list(map(Option, options))
 
-        self.add_element(element)
+        dropdown = Dropdown(options=options, value=default)
+
+        self.add_element(Text(value=label))
+        self.add_element(dropdown, name=str(name))
 
     @keyword("Add Date Input", tags=["input"])
     def add_date_input(
@@ -827,16 +829,13 @@ class AssistantUI:
             Log    User type should be: ${result.user_type}
         """
         options, default = to_options(options, default)
+        radios: List[Control] = list(
+            map(lambda option: Radio(value=option, label=option), options)
+        )
+        radio_group = RadioGroup(content=Column(radios), value=default)
 
-        element = {
-            "type": "input-radio",
-            "name": str(name),
-            "options": options,
-            "default": default,
-            "label": optional_str(label),
-        }
-
-        self.add_element(element)
+        self.add_element(Text(value=label))
+        self.add_element(radio_group, name=str(name))
 
     @keyword("Add checkbox", tags=["input"])
     def add_checkbox(
