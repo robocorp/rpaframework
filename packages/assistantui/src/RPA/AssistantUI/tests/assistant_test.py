@@ -11,7 +11,8 @@ assistant.add_icon(Icon.Success)
 assistant.add_text_input("txt_input", placeholder="placeholder")
 assistant.add_password_input("pw_input")
 assistant.add_checkbox("checkbox", "test_checkbox")
-
+assistant.add_file_input("file")
+assistant.add_hidden_input("Hidden", "value")
 assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
 
 assistant.add_radio_buttons(
@@ -43,8 +44,6 @@ assistant.add_image(
 
 # not implemented yet
 """
-
-assistant.add_file_input()
 assistant.add_date_input()
 assistant.add_submit_buttons()
 

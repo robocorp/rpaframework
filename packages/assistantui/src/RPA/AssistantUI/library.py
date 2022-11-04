@@ -21,6 +21,8 @@ import flet
 from flet import (
     Column,
     Dropdown,
+    FilePicker,
+    FilePickerResultEvent,
     Image,
     Markdown,
     Radio,
@@ -152,9 +154,14 @@ class AssistantUI:
     def current_elements(self):
         return self.elements[self._pagination]
 
+    @property
+    def current_invisible_elements(self):
+        return self.invisible_elements[self._pagination]
+
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self.elements: List[List[Control]] = [[]]
+        self.invisible_elements: List[List[Control]] = [[]]
         self.results: Result = {}
         self._pagination = 0
 
@@ -205,6 +212,11 @@ class AssistantUI:
             element.on_change = self._make_flet_event_handler(name)
             # element._add_event_handler("change", self._make_flet_event_handler(name))
 
+    def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
+        self.invisible_elements[-1].append(element)
+        if name is not None:
+            element.on_change = self._make_flet_event_handler(name)
+
     """
     def _collect_results(self) -> Result:
         result: Dict[str, Any] = {}
@@ -237,8 +249,10 @@ class AssistantUI:
         """
         if self.page:
             self.page.controls.clear()
+            self.page.overlay.clear()
             self.page.update()
         self.elements[self._pagination] = []
+        self.invisible_elements[self._pagination] = []
         return
 
     @keyword("Add heading")
@@ -607,15 +621,8 @@ class AssistantUI:
             ${result}=         Run dialog
             Enter user information    ${result.user_id}    ${result.username}
         """
-        # FIXME: figure out how to do this with flet
-        """element = {
-            "type": "input-hidden",
-            "name": str(name),
-            "value": str(value),
-        }
-
-        self.add_element(element)
-        """
+        # FIXME: confirm that this works as expected with multi-page forms
+        self.results[name] = value
 
     # SPLIT
     @keyword("Add file input", tags=["input"])
@@ -682,17 +689,28 @@ class AssistantUI:
                 Log    Selected file: ${path}
             END
         """
+
+        def on_pick_result(e: FilePickerResultEvent):
+            if e.files:
+                self.results[str(name)] = list(map(lambda f: f.path, e.files))
+
+        file_picker = FilePicker(on_result=on_pick_result)
+        self.add_invisible_element(file_picker)
+
         element = {
-            "type": "input-file",
-            "name": str(name),
-            "label": optional_str(label),
             "source": optional_str(source),
             "destination": optional_str(destination),
             "file_type": optional_str(file_type),
-            "multiple": bool(multiple),
         }
 
-        self.add_element(element)
+        self.add_element(
+            ElevatedButton(
+                label or "Choose files...",
+                on_click=lambda _: file_picker.pick_files(
+                    allow_multiple=bool(multiple)
+                ),
+            )
+        )
 
     @keyword("Add drop-down", tags=["input"])
     def add_drop_down(
@@ -1007,6 +1025,8 @@ class AssistantUI:
         def run(page: Page):
             for element in self.current_elements:
                 page.add(element)
+            for element in self.current_invisible_elements:
+                page.overlay.append(element)
             self.page = page
             page.update()
 
