@@ -11,8 +11,8 @@ from typing import Any, List
 from RPA.Email.common import counter_duplicate_path
 
 if platform.system() == "Windows":
-    import pywintypes
     import win32api
+    import pywintypes
     import win32com.client
 else:
     logging.getLogger(__name__).warning(
