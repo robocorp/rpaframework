@@ -8,6 +8,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+19.1.1 - 04 Nov 2022
+--------------------
+
+- Library **RPA.Outlook.RPA** (:pr:`687`): Fix ``pywintypesXX.dll`` errors.
+
+
 19.1.0 - 03 Nov 2022
 --------------------
 
