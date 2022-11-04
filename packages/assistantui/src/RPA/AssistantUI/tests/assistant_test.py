@@ -13,10 +13,10 @@ assistant.add_password_input("pw_input")
 assistant.add_checkbox("checkbox", "test_checkbox")
 
 assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
-
 assistant.add_text("List python files")
 assistant.add_files("**/*.py")
 
+# Goes to a bit weird location
 assistant.add_image(
     "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
 )
@@ -39,5 +39,8 @@ assistant.close_all_dialogs()
 assistant.wait_dialogs_as_completed()
 
 """
-assistant.run_dialog()
-# FIXME: enable extracting of data from dialog
+
+assistant.add_submit()
+results = assistant.run_dialog()
+print(results)
+# FIXME: add a submit button to the dialog

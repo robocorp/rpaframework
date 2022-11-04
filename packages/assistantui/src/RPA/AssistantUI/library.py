@@ -145,6 +145,7 @@ class AssistantUI:
         self.logger = logging.getLogger(__name__)
         self.input_elements: Dict[str, Control] = {}
         self.all_elements: List[Control] = []
+        self.results: Result = {}
 
         try:
             # Prevent logging from keywords that return results
@@ -178,20 +179,34 @@ class AssistantUI:
         self.elements.append(element)
     """
 
-    def make_flet_event_handler(self, name: str):
+    def _make_flet_event_handler(self, name: str):
         def change_listener(e: FletEvent):
+            self.results[name] = e.data
             e.page.update()
 
         return change_listener
 
     def add_element(self, element: flet.Control, name: Optional[str] = None):
-        # FIXME: register elements on the page
         self.all_elements.append(element)
         if name is not None:
             self.input_elements[name] = element
 
             # TODO: might be necessary to check that it doesn't already have change handler
-            # element._add_event_handler("change", self.make_flet_event_handler(name))
+            element.on_change = self._make_flet_event_handler(name)
+            # element._add_event_handler("change", self._make_flet_event_handler(name))
+
+    """
+    def _collect_results(self) -> Result:
+        result: Dict[str, Any] = {}
+        for key, value in self.input_elements.items():
+            result[key] = value.data
+        return result
+    """
+
+    @keyword("Add Submit")
+    def add_submit(self) -> None:
+        # FIXME: implement closing
+        self.add_element(ElevatedButton("Submit", on_click="close"))
 
     @keyword("Clear elements")
     def clear_elements(self) -> None:
@@ -983,6 +998,8 @@ class AssistantUI:
             page.update()
 
         app(view=flet.FLET_APP, target=run)
+
+        return self.results
 
         # FIXME: add timeout support to this by supporting below behaviour
         # dialog = self.show_dialog(**options)
