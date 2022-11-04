@@ -55,7 +55,7 @@ PACKAGE_VENV_CLEAN_PATTERNS = [
 ]
 
 EXPECTED_POETRY_CONFIG = {
-    "virtualenvs": {"in-project": True, "create": True, "path": "null"},
+    "virtualenvs": {"in-project": True, "create": True, "path": "null", "prefer-active-python": True},
     "installer": {"parallel": True},
 }
 ROBOCORP_DEVPI_URL = "https://devpi.robocorp.cloud/ci/test"
@@ -216,6 +216,7 @@ def setup_poetry(
     shell.poetry(ctx, "config --no-interaction --local virtualenvs.in-project true")
     shell.poetry(ctx, "config --no-interaction --local virtualenvs.create true")
     shell.poetry(ctx, "config --no-interaction --local virtualenvs.path null")
+    shell.poetry(ctx, "config --no-interaction --local virtualenvs.prefer-active-python true")
     shell.poetry(ctx, "config --no-interaction --local installer.parallel true")
 
     if username is not None:
