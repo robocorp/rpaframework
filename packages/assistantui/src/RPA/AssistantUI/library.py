@@ -225,8 +225,8 @@ class AssistantUI:
             END
             Clear elements
         """
-        # FIXME: implement with flet
-        # self.elements = []
+        self.all_elements = []
+        self.input_elements = {}
         return
 
     @keyword("Add heading")

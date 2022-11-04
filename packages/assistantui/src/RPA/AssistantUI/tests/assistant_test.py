@@ -21,14 +21,17 @@ assistant.add_image(
     "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
 )
 
+# assistant.clear_elements()
+# assistant.add_icon(Icon.Failure)
+
 # not implemented yet
 """
-assistant.clear_elements()
+assistant.add_dialog_next_page_button()
+
 assistant.add_file_input()
 assistant.add_drop_down()
 assistant.add_date_input()
 assistant.add_radio_buttons()
-assistant.add_dialog_next_page_button()
 assistant.add_submit_buttons()
 
 assistant.show_dialog()
@@ -40,7 +43,6 @@ assistant.wait_dialogs_as_completed()
 
 """
 
-assistant.add_submit()
 results = assistant.run_dialog()
 print(results)
 # FIXME: add a submit button to the dialog
