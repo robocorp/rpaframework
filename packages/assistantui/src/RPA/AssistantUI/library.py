@@ -164,6 +164,7 @@ class AssistantUI:
         self.invisible_elements: List[List[Control]] = [[]]
         self.results: Result = {}
         self._pagination = 0
+        self._is_open : bool = False
 
         try:
             # Prevent logging from keywords that return results
@@ -1022,12 +1023,22 @@ class AssistantUI:
 
         # FIXME: support options
 
+        def close_event(e: flet.Event):
+            # TODO: because of docs:
+            # "If the user submitted the dialog, returns a result object.
+            # If the user closed the dialog window or ``timeout`` was reached,
+            # raises an exception."
+            # this needs to make a distinction between close and submit
+            self._is_open = False
+
         def run(page: Page):
             for element in self.current_elements:
                 page.add(element)
             for element in self.current_invisible_elements:
                 page.overlay.append(element)
+            page.on_disconnect = close_event  # disconnect seems to be for close and on_close for timeouts
             self.page = page
+            self._is_open = True
             page.update()
 
         app(view=flet.FLET_APP, target=run)
@@ -1142,8 +1153,11 @@ class AssistantUI:
             ${result}=    Wait dialog    ${dialog}
             Insert user information      ${result.username}  ${result.address}
         """
-        dialog.wait(timeout)
-        return dialog.result()
+        for _ in range(1, timeout):
+            if not self._is_open:
+                return dialog.result()
+            time.sleep(1)
+        raise TimeoutError("dialog didn't close in time")
 
     @keyword("Close dialog", tags=["dialog"])
     def close_dialog(self, dialog: Dialog) -> None:
