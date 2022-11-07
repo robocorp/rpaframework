@@ -1112,7 +1112,6 @@ class AssistantUI:
             self.clear_elements()
 
         dialog.start()
-        self.dialogs.append(dialog)
         atexit.register(dialog.stop)
 
         return dialog
@@ -1146,48 +1145,6 @@ class AssistantUI:
         dialog.wait(timeout)
         return dialog.result()
 
-    @keyword("Wait all dialogs", tags=["dialog"])
-    def wait_all_dialogs(self, timeout: int = 300) -> List[Result]:
-        """Wait for all opened dialogs to be handled by the user.
-
-        :param timeout: Time to wait for dialogs to complete, in seconds
-
-        Returns a list of results from all dialogs that have not been handled
-        before calling this keyword, in the order the dialogs
-        were originally created.
-
-        If any dialog fails, this keyword throws the corresponding exception
-        immediately and doesn't keep waiting for further results.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            # Create multiple dialogs
-            Show dialog    title=One
-            Show dialog    title=Two
-            Show dialog    title=Three
-
-            # Wait for all of them to complete
-            @{results}=    Wait all dialogs
-
-            # Loop through results
-            FOR    ${result}    IN    @{results}
-                Log many    &{result}
-            END
-        """
-        # Filter dialogs that have been handled already
-        pending = [dialog for dialog in self.dialogs if dialog.is_pending]
-
-        results = []
-        for dialog in self.wait_dialogs_as_completed(*pending, timeout=timeout):
-            results.append((dialog, dialog.result()))
-
-        # Sort by dialog creation timestamp
-        results.sort(key=lambda t: t[0].timestamp)
-
-        return [result for _, result in results]
-
     @keyword("Close dialog", tags=["dialog"])
     def close_dialog(self, dialog: Dialog) -> None:
         """Close a dialog that has been created with the keyword
@@ -1213,59 +1170,3 @@ class AssistantUI:
             Close dialog    ${dialog}
         """
         dialog.stop()
-
-    @keyword("Close all dialogs", tags=["dialog"])
-    def close_all_dialogs(self) -> None:
-        """Close all dialogs opened by this library.
-
-        See the keyword ``Close dialog`` for further information
-        about usage and implications.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            ${dialog1}=    Show dialog
-            A keyword which runs during the dialog
-
-            ${dialog2}=    Show dialog
-            A keyword that fails during the dialog
-
-            # Close all dialogs without knowing which have been created
-            [Teardown]    Close all dialogs
-        """
-        for dialog in self.dialogs:
-            dialog.stop()
-
-    def wait_dialogs_as_completed(
-        self, *dialogs: Dialog, timeout: int = 300
-    ) -> Generator[Dialog, None, None]:
-        """Create a generator that yields dialogs as they complete.
-
-        :param dialogs: Dialogs to wait
-        :param timeout: Time in seconds to wait for all dialogs
-        """
-        if not dialogs:
-            return
-
-        index = list(range(len(dialogs)))
-
-        end = time.time() + timeout
-        while time.time() <= end:
-            if not index:
-                return
-
-            for idx in list(index):
-                dialog = dialogs[idx]
-                if dialog.poll():
-                    self.logger.info(
-                        "Dialog completed (%s/%s)",
-                        len(dialogs) - len(index) + 1,
-                        len(dialogs),
-                    )
-                    yield dialog
-                    index.remove(idx)
-
-            time.sleep(0.1)
-
-        raise TimeoutException("Reached timeout while waiting for dialogs")
