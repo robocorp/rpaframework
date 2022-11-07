@@ -163,7 +163,6 @@ class AssistantUI:
         self.elements: List[List[Control]] = [[]]
         self.invisible_elements: List[List[Control]] = [[]]
         self.results: Result = {}
-        self.pages = List[flet.Page]
         self._pagination = 0
 
         try:
@@ -248,10 +247,10 @@ class AssistantUI:
             END
             Clear elements
         """
-        for page in self.pages:
-            page.controls.clear()
-            page.overlay.clear()
-            page.update()
+        if self.page:
+            self.page.controls.clear()
+            self.page.overlay.clear()
+            self.page.update()
         self.elements[self._pagination] = []
         self.invisible_elements[self._pagination] = []
         return
@@ -934,7 +933,6 @@ class AssistantUI:
             self.clear_elements()
             self._pagination += 1
             for element in self.current_elements:
-                # FIXME: need to properly define multiple windows and kw's like this on what window they apply
                 self.page.add(element)
             self.page.update(*self.current_elements)
 
@@ -1029,7 +1027,7 @@ class AssistantUI:
                 page.add(element)
             for element in self.current_invisible_elements:
                 page.overlay.append(element)
-            self.pages.append(page)
+            self.page = page
             page.update()
 
         app(view=flet.FLET_APP, target=run)
@@ -1236,8 +1234,8 @@ class AssistantUI:
             # Close all dialogs without knowing which have been created
             [Teardown]    Close all dialogs
         """
-        for page in self.pages:
-            page.window_close()
+        for dialog in self.dialogs:
+            dialog.stop()
 
     def wait_dialogs_as_completed(
         self, *dialogs: Dialog, timeout: int = 300
