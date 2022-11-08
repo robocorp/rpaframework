@@ -13,7 +13,7 @@ assistant.add_password_input("pw_input")
 assistant.add_checkbox("checkbox", "test_checkbox")
 assistant.add_file_input("file")
 assistant.add_hidden_input("Hidden", "value")
-assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
+# assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
 
 assistant.add_radio_buttons(
     name="user_type_radio",

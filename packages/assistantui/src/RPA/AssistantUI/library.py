@@ -1,46 +1,41 @@
 import atexit
 from dataclasses import dataclass
+from datetime import date, datetime
 import glob
 import logging
-import time
+import os
+from pathlib import Path
 import platform
 import subprocess
-import os
-from datetime import date, datetime
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union, Any, Generator
-
-from robot.api.deco import library, keyword  # type: ignore
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError  # type: ignore
-
-# from .dialog import Dialog, TimeoutException
-from .dialog_types import Elements, Result, Options, Size, Icon
-from .utils import to_options, optional_str, optional_int, int_or_auto, is_input
+import time
+from typing import Any, Dict, Generator, List, Optional, Tuple, Union
 
 import flet
 from flet import (
+    Checkbox,
     Column,
+    Control,
     Dropdown,
+    ElevatedButton,
     FilePicker,
     FilePickerResultEvent,
     Image,
     Markdown,
+    Page,
     Radio,
     RadioGroup,
-    Row,
-    TemplateRoute,
     Text,
-    Checkbox,
-    Control,
-    Page,
-    ElevatedButton,
-    TextButton,
     TextField,
     app,
-    icons,
     colors,
+    icons,
 )
 from flet.dropdown import Option
+from robot.api.deco import keyword, library
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+
+from .dialog_types import Elements, Icon, Options, Result, Size
+from .utils import int_or_auto, is_input, optional_int, optional_str, to_options
 
 # TODO: delete, just a placeholder until we change all the dialog keywords
 class Dialog:
@@ -698,6 +693,7 @@ class AssistantUI:
         file_picker = FilePicker(on_result=on_pick_result)
         self.add_invisible_element(file_picker)
 
+        # TODO: use these inputs in some way
         element = {
             "source": optional_str(source),
             "destination": optional_str(destination),
@@ -1032,6 +1028,7 @@ class AssistantUI:
             self._is_open = False
 
         def run(page: Page):
+            # page.theme_mode = "light"
             for element in self.current_elements:
                 page.add(element)
             for element in self.current_invisible_elements:
