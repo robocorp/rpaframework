@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/iframeResizer.min.js"></script>
+        <script src="../../_static/custom.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DocumentAI.Nanonets" href="../documentai_nanonets/index.html" />
+    <link rel="prev" title="DocumentAI.Base64AI" href="index.html" />
+	<!-- Cookie consent -->
+<link async rel="stylesheet" type="text/css" href="../../_static/cookie.css"/>
+<script async src="../../_static/cookie.js"></script>
+<!-- Robocorp banner -->
+<link async rel="stylesheet" type="text/css" href="../../_static/robocorp.css"/>
+<script async src="../../_static/robocorp.js"></script>
+<!--            -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_playwright/index.html">Browser.Playwright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_selenium/index.html">Browser.Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai/index.html">DocumentAI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">DocumentAI.Base64AI</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai_nanonets/index.html">DocumentAI.Nanonets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hubspot/index.html">HubSpot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../javaaccessbridge/index.html">JavaAccessBridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mfa/index.html">MFA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../msgraph/index.html">MSGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_process/index.html">Robocorp.Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_vault/index.html">Robocorp.Vault</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_workitems/index.html">Robocorp.WorkItems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows/index.html">Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/todos.html">TODO</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">DocumentAI.Base64AI</a> &raquo;</li>
+        
+      <li>Python API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/documentai_base64ai/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+	
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.DocumentAI.Base64AI">
+<span id="base64ai"></span><h2>Base64AI<a class="headerlink" href="#module-RPA.DocumentAI.Base64AI" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.DocumentAI.Base64AI.</code><code class="sig-name descname">Base64AI</code><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Library to support <a class="reference external" href="https://base64.ai/">Base64.ai</a> service for intelligent
+document processing (IDP).</p>
+<p>Added with <cite>rpaframework</cite> version <strong>17.0.1</strong>.</p>
+<p>Service supports identifying fields in the documents, which can be given to the
+service in multiple different file formats and via URL.</p>
+<p><strong>Robot Framework example usage</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.DocumentAI.Base64AI</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Robocorp.Vault</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Identify document</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=   </span><span class="nf">Get Secret</span><span class="p">  </span><span class="s">base64ai-auth</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Authorization</span><span class="p">  ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">email-address</span><span class="p">]   ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">apikey</span><span class="p">]</span>
+<span class="p">    ${</span><span class="nv">results</span><span class="p">}=  </span><span class="nf">Scan Document File</span><span class="p"></span>
+<span class="p">    ...   ${</span><span class="nv">CURDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">invoice.pdf</span><span class="p"></span>
+<span class="p">    ...   </span><span class="s">model_types=finance/check/usa,finance/invoice/usa</span><span class="p"></span>
+<span class="p">    </span><span class="c"># Scan response contains list of detected models in the document</span>
+<span class="p">    FOR  ${</span><span class="nv">result</span><span class="p">}  IN  @{</span><span class="nv">results</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log To Console</span><span class="p">  </span><span class="s">Model: </span><span class="p">${</span><span class="nv">result</span><span class="p">}[</span><span class="nv">model</span><span class="p">]</span>
+<span class="p">        </span><span class="nf">Log To Console</span><span class="p">  </span><span class="s">Field keys: </span><span class="p">${</span><span class="nv">{&#39;,&#39;.join($result[&#39;fields&#39;].keys())</span><span class="p">}</span><span class="s">}</span><span class="p"></span>
+<span class="p">        </span><span class="nf">Log To Console</span><span class="p">  </span><span class="s">Fields: </span><span class="p">${</span><span class="nv">result</span><span class="p">}[</span><span class="nv">fields</span><span class="p">]</span>
+<span class="p">        </span><span class="nf">Log To Console</span><span class="p">  </span><span class="s">Text (OCR): </span><span class="p">${</span><span class="nv">result</span><span class="p">}[</span><span class="nv">ocr</span><span class="p">]</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<p><strong>Python example usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.DocumentAI.Base64AI</span> <span class="kn">import</span> <span class="n">Base64AI</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
+
+<span class="n">secrets</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;base64ai-auth&quot;</span><span class="p">)</span>
+<span class="n">baselib</span> <span class="o">=</span> <span class="n">Base64AI</span><span class="p">()</span>
+<span class="n">baselib</span><span class="o">.</span><span class="n">set_authorization</span><span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;email-address&quot;</span><span class="p">],</span> <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;apikey&quot;</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">baselib</span><span class="o">.</span><span class="n">scan_document_file</span><span class="p">(</span>
+    <span class="s2">&quot;invoice.pdf&quot;</span><span class="p">,</span>
+    <span class="n">model_types</span><span class="o">=</span><span class="s2">&quot;finance/invoice,finance/check/usa&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">props</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FIELD </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">props</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Text (OCR): </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;ocr&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI.BASE_URL">
+<code class="sig-name descname">BASE_URL</code><em class="property"> = 'https://base64.ai'</em><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.BASE_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI.get_fields_from_prediction_result">
+<code class="sig-name descname">get_fields_from_prediction_result</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.get_fields_from_prediction_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper keyword to get found fields from a prediction result.
+For example see <code class="docutils literal notranslate"><span class="pre">Scan</span> <span class="pre">Document</span> <span class="pre">File</span></code> or <code class="docutils literal notranslate"><span class="pre">Scan</span> <span class="pre">Document</span> <span class="pre">URL</span></code> keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prediction</strong> – prediction result dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of found fields</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI.get_user_data">
+<code class="sig-name descname">get_user_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict<a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.get_user_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get user data including details on credits used and credits remaining
+for the Base64 service.</p>
+<p>Returned user data contains following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>givenName</p></li>
+<li><p>familyName</p></li>
+<li><p>email</p></li>
+<li><p>hasWorkEmail</p></li>
+<li><p>companyName</p></li>
+<li><p>numberOfCredits</p></li>
+<li><p>numberOfPages</p></li>
+<li><p>numberOfUploads</p></li>
+<li><p>numberOfCreditsSpentOnDocuments (visible if used)</p></li>
+<li><p>numberOfCreditsSpentOnFaceDetection (visible if used)</p></li>
+<li><p>numberOfCreditsSpentOnFaceRecognition (visible if used)</p></li>
+<li><p>hasActiveAwsContract</p></li>
+<li><p>subscriptionType</p></li>
+<li><p>subscriptionPeriod</p></li>
+<li><p>tags</p></li>
+<li><p>ccEmails</p></li>
+<li><p>status</p></li>
+<li><p>remainingCredits (calculated by the keyword)</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>object containing details on the API user</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${userdata}=</span><span class="p">   </span><span class="c">Get User Data</span><span class="p"></span>
+<span class="c">Log To Console</span><span class="p">  </span><span class="c">I have still ${userdata}[remainingCredits] credits left</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">userdata</span> <span class="o">=</span> <span class="n">baselib</span><span class="o">.</span><span class="n">get_user_data</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;I have still </span><span class="si">{</span><span class="n">userdata</span><span class="p">[</span><span class="s1">&#39;remainingCredits&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> credits left&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI.scan_document_file">
+<code class="sig-name descname">scan_document_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.scan_document_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scan a document file. Can be given a <code class="docutils literal notranslate"><span class="pre">model_types</span></code> to
+specifically target certain models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – filepath to the file</p></li>
+<li><p><strong>model_types</strong> – single model type or list of model types</p></li>
+<li><p><strong>mock</strong> – set to True to use /mock/scan endpoint instead of /scan</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result of the document scan</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${results}=</span><span class="p">    </span><span class="c">Scan Document File</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">${CURDIR}${/}files${/}IMG_8277.jpeg</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">model_types=finance/check/usa,finance/invoice</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${result}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{results}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">Model: ${result}[model]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">Fields: ${result}[fields]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">Text (OCR): ${result}[ocr]</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">baselib</span><span class="o">.</span><span class="n">scan_document_file</span><span class="p">(</span>
+    <span class="s2">&quot;./files/Invoice-1120.pdf&quot;</span><span class="p">,</span>
+    <span class="n">model_types</span><span class="o">=</span><span class="s2">&quot;finance/invoice,finance/check/usa&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">val</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Text (OCR): </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;ocr&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI.scan_document_url">
+<code class="sig-name descname">scan_document_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.scan_document_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scan a document URL. Can be given a <code class="docutils literal notranslate"><span class="pre">model_types</span></code> to
+specifically target certain models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – valid url to a file</p></li>
+<li><p><strong>model_types</strong> – single model type or list of model types</p></li>
+<li><p><strong>mock</strong> – set to True to use /mock/scan endpoint instead of /scan</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result of the document scan</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${results}=</span><span class="p">    </span><span class="c">Scan Document URL</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">https://base64.ai/static/content/features/data-extraction/models//2.png</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${result}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{results}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">Model: ${result}[model]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">Fields: ${result}[fields]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">    </span><span class="c">Text (OCR): ${result}[ocr]</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">baselib</span><span class="o">.</span><span class="n">scan_document_url</span><span class="p">(</span>
+    <span class="s2">&quot;https://base64.ai/static/content/features/data-extraction/models//2.png&quot;</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">props</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FIELD </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">props</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Text (OCR): </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;ocr&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.Base64AI.Base64AI.set_authorization">
+<code class="sig-name descname">set_authorization</code><span class="sig-paren">(</span><em class="sig-param">api_email: str</em>, <em class="sig-param">api_key: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.set_authorization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Base64 AI request headers with email and key related to API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api_email</strong> – email address related to the API</p></li>
+<li><p><strong>api_key</strong> – key related to the API</p></li>
+</ul>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${secrets}=</span><span class="p">   </span><span class="c">Get Secret</span><span class="p">  </span><span class="c">base64ai-auth</span><span class="p"></span>
+<span class="c">Set Authorization</span><span class="p">    </span><span class="c">${secrets}[email-address]</span><span class="p">    </span><span class="c">${secrets}[apikey]</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">secrets</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;base64ai-auth&quot;</span><span class="p">)</span>
+<span class="n">baselib</span> <span class="o">=</span> <span class="n">Base64AI</span><span class="p">()</span>
+<span class="n">baselib</span><span class="o">.</span><span class="n">set_authorization</span><span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;email-address&quot;</span><span class="p">],</span> <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;apikey&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+	<div id="cookieConsentContainer">
+  <div class="cookieDesc">
+    <p>
+      This website uses cookies to enhance the user experience.
+      By using the website you accept the use of cookies.
+      You can check our <a href="https://robocorp.com/privacy-policy">Privacy Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookieButton">
+    <a onClick="cookieDismiss();">
+      I understand
+    </a>
+  </div>
+</div>
+	<div id="robocorpBanner">
+  <div id="bannerContent">
+    <div id="bannerDismiss">
+      <a onClick="bannerDismiss();">
+        <img src="/_static/icon_cross.svg"/>
+      </a>
+    </div>
+    <a href="https://robocorp.com">
+      <img id="bannerLogo" src="https://cdn.robocorp.com/brand/Logo/Negative logo transparent/Negative logo transparent.svg"/>
+    </a>
+    <span id="bannerText">
+      The automation stack for RPA Framework.
+    </span>
+    <a id="bannerButton" href="https://robocorp.com/get-started">
+      Get started <img src="/_static/icon_arrow.svg"/>
+    </a>
+  </div>
+</div>
+
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../documentai_nanonets/index.html" class="btn btn-neutral float-right" title="DocumentAI.Nanonets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="DocumentAI.Base64AI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

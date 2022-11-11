@@ -1,0 +1,562 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/iframeResizer.min.js"></script>
+        <script src="../../_static/custom.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DocumentAI.Base64AI" href="../documentai_base64ai/index.html" />
+    <link rel="prev" title="DocumentAI" href="index.html" />
+	<!-- Cookie consent -->
+<link async rel="stylesheet" type="text/css" href="../../_static/cookie.css"/>
+<script async src="../../_static/cookie.js"></script>
+<!-- Robocorp banner -->
+<link async rel="stylesheet" type="text/css" href="../../_static/robocorp.css"/>
+<script async src="../../_static/robocorp.js"></script>
+<!--            -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_playwright/index.html">Browser.Playwright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_selenium/index.html">Browser.Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">DocumentAI</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai_base64ai/index.html">DocumentAI.Base64AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai_nanonets/index.html">DocumentAI.Nanonets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hubspot/index.html">HubSpot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../javaaccessbridge/index.html">JavaAccessBridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mfa/index.html">MFA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../msgraph/index.html">MSGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_process/index.html">Robocorp.Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_vault/index.html">Robocorp.Vault</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_workitems/index.html">Robocorp.WorkItems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows/index.html">Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/todos.html">TODO</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">DocumentAI</a> &raquo;</li>
+        
+      <li>Python API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/documentai/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+	
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.DocumentAI.DocumentAI">
+<span id="documentai"></span><h2>DocumentAI<a class="headerlink" href="#module-RPA.DocumentAI.DocumentAI" title="Permalink to this headline">¶</a></h2>
+<p>Generic Intelligent Document Processing generic keywords capable of working with
+various engines.</p>
+<p>Currently, supporting the following:
+- Google Document AI
+- Base64
+- Nanonets</p>
+<dl class="class">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.DocumentAI.DocumentAI.</code><code class="sig-name descname">DocumentAI</code><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper library offering generic keywords for initializing, scanning and
+retrieving results as fields from documents (PDF, PNG etc.).</p>
+<p>Added with <cite>rpaframework</cite> version <strong>19.0.0</strong>.</p>
+<p>This is a helper facade for the following libraries:</p>
+<ul class="simple">
+<li><p>RPA.Cloud.Google</p></li>
+<li><p>RPA.DocumentAI.Base64AI</p></li>
+<li><p>RPA.DocumentAI.Nanonets</p></li>
+</ul>
+<p>Where the following steps are required:</p>
+<ol class="arabic simple">
+<li><p>Engine initialization: <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Engine</span></code></p></li>
+<li><p>Document scan: <code class="docutils literal notranslate"><span class="pre">Predict</span></code></p></li>
+<li><p>Result retrieval: <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Result</span></code></p></li>
+</ol>
+<p>So no matter the engine you’re using, the very same keywords can be used, as only
+the passed parameters will differ (please check the docs on each library for
+particularities). Once initialized, you can jump between the engines with
+<code class="docutils literal notranslate"><span class="pre">Switch</span> <span class="pre">Engine</span></code>. Before scanning documents, you must configure the service first,
+with a model to scan the files with and an API key for authorizing the access.</p>
+<p>See Portal example: <a class="reference external" href="https://robocorp.com/portal/robot/robocorp/example-document-ai">https://robocorp.com/portal/robot/robocorp/example-document-ai</a></p>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.DocumentAI</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Scan Documents</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Engine</span><span class="p">    </span><span class="s">base64ai</span><span class="p">    </span><span class="s">vault=document_ai:base64ai</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Engine</span><span class="p">    </span><span class="s">nanonets</span><span class="p">    </span><span class="s">vault=document_ai:nanonets</span><span class="p"></span>
+
+<span class="p">    </span><span class="nf">Switch Engine</span><span class="p">   </span><span class="s">base64ai</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Predict</span><span class="p">    </span><span class="s">invoice.png</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">data</span><span class="p">} =    </span><span class="nf">Get Result</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log List</span><span class="p">    ${</span><span class="nv">data</span><span class="p">}</span>
+
+<span class="p">    </span><span class="nf">Switch Engine</span><span class="p">   </span><span class="s">nanonets</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Predict</span><span class="p">    </span><span class="s">invoice.png</span><span class="p">      </span><span class="s">model=858e4b37-6679-4552-9481-d5497dfc0b4a</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">data</span><span class="p">} =    </span><span class="nf">Get Result</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log List</span><span class="p">    ${</span><span class="nv">data</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.DocumentAI</span> <span class="kn">import</span> <span class="n">DocumentAI</span><span class="p">,</span> <span class="n">EngineName</span>
+
+<span class="n">lib_docai</span> <span class="o">=</span> <span class="n">DocumentAI</span><span class="p">()</span>
+<span class="n">lib_docai</span><span class="o">.</span><span class="n">init_engine</span><span class="p">(</span>
+    <span class="n">EngineName</span><span class="o">.</span><span class="n">GOOGLE</span><span class="p">,</span> <span class="n">vault</span><span class="o">=</span><span class="s2">&quot;document_ai:serviceaccount&quot;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s2">&quot;eu&quot;</span>
+<span class="p">)</span>
+<span class="n">lib_docai</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+    <span class="s2">&quot;invoice.pdf&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;df1d166771005ff4&quot;</span><span class="p">,</span>
+    <span class="n">project_id</span><span class="o">=</span><span class="s2">&quot;complete-agency-347912&quot;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="s2">&quot;eu&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lib_docai</span><span class="o">.</span><span class="n">get_result</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.ROBOT_AUTO_KEYWORDS">
+<code class="sig-name descname">ROBOT_AUTO_KEYWORDS</code><em class="property"> = False</em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.engine">
+<em class="property">property </em><code class="sig-name descname">engine</code><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.engine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.get_result">
+<code class="sig-name descname">get_result</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.get_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the result data previously obtained with <code class="docutils literal notranslate"><span class="pre">Predict</span></code>.</p>
+<p>The stored raw result is usually pre-processed with a library specific keyword
+prior the return.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>extended</strong> – Get all the details inside the result data. (main fields only
+by default)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Usually a list of fields detected in the document.</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Scan With Base64</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Document AI Base64</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">data</span><span class="p">} =    </span><span class="nf">Get Result</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log List</span><span class="p">    ${</span><span class="nv">data</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">lib_docai</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.init_engine">
+<code class="sig-name descname">init_engine</code><span class="sig-paren">(</span><em class="sig-param">name: Union[RPA.DocumentAI.DocumentAI.EngineName, str], secret: Union[str, pathlib.Path, Tuple, List, Dict, None] = None, vault: Union[Dict, str, None] = None, **kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.init_engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the engine you want to scan documents with.</p>
+<p>This is required before being able to run <code class="docutils literal notranslate"><span class="pre">Predict</span></code>. Once initialized, you
+don’t need to run this again, simply use <code class="docutils literal notranslate"><span class="pre">Switch</span> <span class="pre">Engine</span></code> to jump between
+the engines. The final secret value (passed directly with <cite>secret</cite> or picked up
+automatically from the Vault with <cite>vault</cite>) will be split into authorization
+args and kwargs or just passed as it is to the wrapped library. Keep in mind
+that some engines are expecting API keys where others tokens or private keys.
+Any optional keyword argument will be passed further in the wrapped library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of the engine.</p></li>
+<li><p><strong>secret</strong> – Authenticate with a string/file/object secret directly.</p></li>
+<li><p><strong>vault</strong> – Specify the Vault storage <cite>name</cite> and secret <cite>key</cite> in order to
+authenticate. (‘name:key’ or {name: key} formats are supported)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Init Base64</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Engine</span><span class="p">    </span><span class="s">base64ai</span><span class="p">    </span><span class="s">vault=document_ai:base64ai</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.DocumentAI</span> <span class="kn">import</span> <span class="n">DocumentAI</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
+
+<span class="n">lib_docai</span> <span class="o">=</span> <span class="n">DocumentAI</span><span class="p">()</span>
+<span class="n">mail_apikey</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;document_ai&quot;</span><span class="p">)[</span><span class="s2">&quot;base64ai&quot;</span><span class="p">]</span>
+<span class="n">lib_docai</span><span class="o">.</span><span class="n">init_engine</span><span class="p">(</span><span class="s2">&quot;base64ai&quot;</span><span class="p">,</span> <span class="n">secret</span><span class="o">=</span><span class="n">mail_apikey</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scan a document with the currently active engine and store the result
+internally for a later retrieval.</p>
+<p>Based on the selected engine, this wraps a chain of libraries until calling a
+service API in the end, where the passed file is analyzed. Any optional keyword
+argument will be passed further in the wrapped library. (some engines require
+mandatory parameters like project ID or region)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> – Path to a local file or URL address of a remote one. (not all
+engines work with URLs)</p></li>
+<li><p><strong>model</strong> – Model name(s) to scan with. (some engines guess the model if
+not specified)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Document AI Base64</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]    </span><span class="nf">Init Base64</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Predict</span><span class="p">    </span><span class="s">https://site.com/path/to/invoice.png</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib_docai</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;local/path/to/invoice.png&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;finance/invoice&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.result">
+<em class="property">property </em><code class="sig-name descname">result</code><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.DocumentAI.DocumentAI.DocumentAI.switch_engine">
+<code class="sig-name descname">switch_engine</code><span class="sig-paren">(</span><em class="sig-param">name: Union[RPA.DocumentAI.DocumentAI.EngineName, str]</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.switch_engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch between already initialized engines.</p>
+<p>Use this to jump between engines when scanning with multiple of them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – Name of the engine to be set as active. (choose between: google, base64ai, nanonets)</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Document AI All</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">engines</span><span class="p">} =    </span><span class="nf">Create List</span><span class="p">     </span><span class="s">base64ai</span><span class="p">    </span><span class="s">nanonets</span><span class="p"></span>
+<span class="p">    FOR    ${</span><span class="nv">engine</span><span class="p">}    IN    @{</span><span class="nv">engines</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Switch Engine</span><span class="p">    ${</span><span class="nv">engine</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">    </span><span class="s">Scanning with engine: </span><span class="p">${</span><span class="nv">engine</span><span class="p">}</span><span class="s">...</span><span class="p"></span>
+<span class="p">        </span><span class="nf">Predict</span><span class="p">    </span><span class="s">invoice.png</span><span class="p"></span>
+<span class="p">        ${</span><span class="nv">data</span><span class="p">} =    </span><span class="nf">Get Result</span><span class="p"></span>
+<span class="p">        </span><span class="nf">Log List</span><span class="p">    ${</span><span class="nv">data</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib_docai</span><span class="o">.</span><span class="n">switch_engine</span><span class="p">(</span><span class="s2">&quot;base64ai&quot;</span><span class="p">)</span>
+<span class="n">lib_docai</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;invoice.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.DocumentAI.DocumentAI.EngineName">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.DocumentAI.DocumentAI.</code><code class="sig-name descname">EngineName</code><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.EngineName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Supported engines to process documents with.</p>
+<dl class="attribute">
+<dt id="RPA.DocumentAI.DocumentAI.EngineName.BASE64">
+<code class="sig-name descname">BASE64</code><em class="property"> = 'base64ai'</em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.EngineName.BASE64" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.DocumentAI.DocumentAI.EngineName.GOOGLE">
+<code class="sig-name descname">GOOGLE</code><em class="property"> = 'google'</em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.EngineName.GOOGLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.DocumentAI.DocumentAI.EngineName.NANONETS">
+<code class="sig-name descname">NANONETS</code><em class="property"> = 'nanonets'</em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.EngineName.NANONETS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+	<div id="cookieConsentContainer">
+  <div class="cookieDesc">
+    <p>
+      This website uses cookies to enhance the user experience.
+      By using the website you accept the use of cookies.
+      You can check our <a href="https://robocorp.com/privacy-policy">Privacy Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookieButton">
+    <a onClick="cookieDismiss();">
+      I understand
+    </a>
+  </div>
+</div>
+	<div id="robocorpBanner">
+  <div id="bannerContent">
+    <div id="bannerDismiss">
+      <a onClick="bannerDismiss();">
+        <img src="/_static/icon_cross.svg"/>
+      </a>
+    </div>
+    <a href="https://robocorp.com">
+      <img id="bannerLogo" src="https://cdn.robocorp.com/brand/Logo/Negative logo transparent/Negative logo transparent.svg"/>
+    </a>
+    <span id="bannerText">
+      The automation stack for RPA Framework.
+    </span>
+    <a id="bannerButton" href="https://robocorp.com/get-started">
+      Get started <img src="/_static/icon_arrow.svg"/>
+    </a>
+  </div>
+</div>
+
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../documentai_base64ai/index.html" class="btn btn-neutral float-right" title="DocumentAI.Base64AI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="DocumentAI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
