@@ -122,8 +122,6 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `Archive`_                 | Archiving TAR and ZIP files                  | x                      |
 +----------------------------+----------------------------------------------+------------------------+
-| `Base64AI`_                | Intelligent Document Processing service      | x                      |
-+----------------------------+----------------------------------------------+------------------------+
 | `Browser.Selenium`_        | Control browsers and automate the web        | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Browser.Playwright`_      | Newer way to control browsers                | special (more below)   |
@@ -148,6 +146,12 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `Dialogs`_                 | Request user input during executions         | x,dialogs              |
 +----------------------------+----------------------------------------------+------------------------+
+| `DocumentAI`_              | Intelligent Document Processing wrapper      | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `DocumentAI.Base64AI`_     | Intelligent Document Processing service      | x                      |
++----------------------------+----------------------------------------------+------------------------+
+| `DocumentAI.Nanonets`_     | Intelligent Document Processing service      | x                      |
++----------------------------+----------------------------------------------+------------------------+
 | `Email.Exchange`_          | E-Mail operations (Exchange protocol)        | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Email.ImapSmtp`_          | E-Mail operations (IMAP & SMTP)              | x                      |
@@ -171,8 +175,6 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 | `JSON`_                    | Manipulate JSON objects                      | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `MFA`_                     | Authenticate using one-time passwords (OTP)  | x                      |
-+----------------------------+----------------------------------------------+------------------------+
-| `Nanonets`_                | Intelligent Document Processing service      | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services     | x                      |
 +----------------------------+----------------------------------------------+------------------------+
@@ -202,7 +204,6 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 
 .. _Archive: https://rpaframework.org/libraries/archive/
-.. _Base64AI: https://rpaframework.org/libraries/base64ai/
 .. _Browser.Playwright: https://rpaframework.org/libraries/browser_playwright/
 .. _Browser.Selenium: https://rpaframework.org/libraries/browser_selenium/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
@@ -215,6 +216,9 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
 .. _Desktop.Windows: https://rpaframework.org/libraries/desktop_windows/
 .. _Dialogs: https://rpaframework.org/libraries/dialogs/
+.. _DocumentAI: https://rpaframework.org/libraries/documentai
+.. _DocumentAI.Base64AI: https://rpaframework.org/libraries/documentai_base64ai/
+.. _DocumentAI.Nanonets: https://rpaframework.org/libraries/documentai_nanonets/
 .. _Email.Exchange: https://rpaframework.org/libraries/email_exchange/
 .. _Email.ImapSmtp: https://rpaframework.org/libraries/email_imapsmtp/
 .. _Excel.Application: https://rpaframework.org/libraries/excel_application/
@@ -227,7 +231,6 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _JavaAccessBridge: https://rpaframework.org/libraries/javaaccessbridge/
 .. _JSON: https://rpaframework.org/libraries/json/
 .. _MFA: https://rpaframework.org/libraries/mfa/
-.. _Nanonets: https://rpaframework.org/libraries/nanonets/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
@@ -415,9 +418,9 @@ First steps to start developing:
 
 #. ``poetry run python <TARGET_PYTHON_FILE>``
 #. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines.
-   It is possible and likely that Github action will fail the if developer has not linted the code changes. Code 
+   It is possible and likely that Github action will fail the if developer has not linted the code changes. Code
    formatting is based on `black`_ and `flake8`_ and those are run with the ``invoke lint``.
-#. the library documentation can be created in the repository root (so called "meta" package level). The documentation is 
+#. the library documentation can be created in the repository root (so called "meta" package level). The documentation is
    built by the docgen tools using the locally installed version of the project, local changes for the main package
    will be reflected each time you generate the docs, but if you want to see local changes for optional packages, you must
    utilize ``invoke install-local --package <package_name>`` using the appropriate package name (e.g., ``rpaframework-aws``). This
