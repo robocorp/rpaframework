@@ -5,6 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Windows** (:pr:`693`):
+
+  - Keyword ``Get Value`` returns `None` when there's no value to retrieve at all.
+  - Fix sibling element searching in keyword ``Get Elements`` when there's no
+    comparison strategy identified.
+
 - Library **RPA.Robocorp.WorkItems** (:pr:`692`): Allow `email` input Work Item
   variable in the absence of the Control Room controlled one during e-mail triggering.
 
