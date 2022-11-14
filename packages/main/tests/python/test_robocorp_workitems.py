@@ -793,6 +793,20 @@ class TestLibrary:
             with pytest.raises(KeyError):
                 library.get_work_item_variable(payload_var)
 
+    @pytest.mark.parametrize(
+        "source_var, value",
+        [
+            ("email", "no e-mail here"),
+            ("email", {}),
+            ("email", {"field": "something"}),
+        ],
+    )
+    def test_email_var_no_parse(self, library, source_var, value):
+        library.adapter.DATA["workitem-id-first"][source_var] = value
+
+        library.get_input_work_item()  # auto-parsing should pass without errors
+        assert library.get_work_item_variable(source_var) == value  # left untouched
+
 
 class TestFileAdapter:
     """Tests the local dev env `FileAdapter` on Work Items."""

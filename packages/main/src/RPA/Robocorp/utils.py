@@ -74,8 +74,6 @@ def get_dot_value(source: Dict, key: str) -> Any:
     keys = key.split(".")
     value = source
     for _key in keys:
-        if not isinstance(value, dict):
-            return value
         value = value.get(_key)
     return value
 
