@@ -102,8 +102,8 @@ class WindowsElement:
                 strategy_regex = strategy
             if strategy_regex.search(last_locator_part):
                 cmp_attrs.append(attr_or_func)
-        # Name is assumed by default if no strategies are found at all.
-        cmp_attrs = cmp_attrs or [self._WINDOW_SIBLING_COMPARE["name"]]
+        # Name comparison is assumed by default if no strategies are found at all.
+        cmp_attrs = cmp_attrs or ["name"]
         for attr_or_func in cmp_attrs:
             if isinstance(attr_or_func, str):
                 status = getattr(self, attr_or_func) == getattr(win_elem, attr_or_func)

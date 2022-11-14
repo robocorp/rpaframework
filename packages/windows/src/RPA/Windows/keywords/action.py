@@ -282,7 +282,7 @@ class ActionKeywords(LibraryContext):
         )
 
     @keyword(tags=["action"])
-    def get_value(self, locator: Locator) -> str:
+    def get_value(self, locator: Locator) -> Optional[str]:
         """Get value of the element defined by the locator.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -300,7 +300,8 @@ class ActionKeywords(LibraryContext):
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "GetValuePattern"):
             value_pattern = element.item.GetValuePattern()
-            return value_pattern.Value
+            return value_pattern.Value if value_pattern else None
+
         raise ActionNotPossible(
             f"Element found with {locator!r} does not have 'GetValuePattern' attribute"
         )
