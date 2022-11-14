@@ -108,7 +108,9 @@ class WindowsElement:
             if isinstance(attr_or_func, str):
                 status = getattr(self, attr_or_func) == getattr(win_elem, attr_or_func)
             else:
-                status = attr_or_func(win_elem, locator=last_locator_part)
+                status = attr_or_func(  # pylint: disable=not-callable
+                    win_elem, locator=last_locator_part
+                )
             if not status:
                 return False
 
