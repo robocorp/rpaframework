@@ -1,3 +1,4 @@
+import asyncio
 import atexit
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -1038,13 +1039,15 @@ class AssistantUI:
             self._is_open = True
             page.update()
 
-        app(view=flet.FLET_APP, target=run)
+        async def exec_flet():
+            app(view=flet.FLET_APP, target=run)
+
+        async def timeout_wrap():
+            await asyncio.wait_for(exec_flet(), timeout=float(timeout))
+
+        asyncio.run(timeout_wrap)
 
         return self.results
-
-        # FIXME: add timeout support to this by supporting below behaviour
-        # dialog = self.show_dialog(**options)
-        # return self.wait_dialog(dialog, timeout)
 
     @keyword("Show dialog", tags=["dialog"])
     def show_dialog(
@@ -1057,8 +1060,7 @@ class AssistantUI:
         debug: bool = False,
     ) -> Dialog:
         """Create a new dialog with all the defined elements, and show
-        it to the user. Does not block, but instead immediately returns
-        a new ``Dialog`` instance.
+        it to the user. Does not block, but instead immediately returns.
 
         The return value can later be used to wait for
         the user to close the dialog and inspect the results.
@@ -1105,24 +1107,36 @@ class AssistantUI:
             ${result}=    Wait dialog    ${dialog}
             Insert user information      ${result.username}  ${result.address}
         """
-        # FIXME: how to return app object
-        height = int_or_auto(height)
-        dialog = Dialog(
-            self.elements,
-            title=title,
-            height=height,
-            width=width,
-            on_top=on_top,
-            debug=debug,
-        )
+        # FIXME: support options
 
-        if clear:
-            self.clear_elements()
+        def close_event(e: flet.Event):
+            # TODO: because of docs:
+            # "If the user submitted the dialog, returns a result object.
+            # If the user closed the dialog window or ``timeout`` was reached,
+            # raises an exception."
+            # this needs to make a distinction between close and submit
+            self._is_open = False
 
-        dialog.start()
-        atexit.register(dialog.stop)
+        def run(page: Page):
+            # page.theme_mode = "light"
+            for element in self.current_elements:
+                page.add(element)
+            for element in self.current_invisible_elements:
+                page.overlay.append(element)
+            page.on_disconnect = close_event  # disconnect seems to be for close and on_close for timeouts
+            self.page = page
+            self._is_open = True
+            page.update()
 
-        return dialog
+        async def exec_flet():
+            app(view=flet.FLET_APP, target=run)
+
+        async def timeout_wrap():
+            await asyncio.wait_for(exec_flet())
+
+        asyncio.run(timeout_wrap)
+
+        return self.results
 
     @keyword("Wait dialog", tags=["dialog"])
     def wait_dialog(self, dialog: Dialog, timeout: int = 300) -> Result:
