@@ -5,6 +5,10 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Robocorp.WorkItems** (:pr:`692`): Allow `email` input Work Item
+  variable in the absence of the Control Room controlled one during e-mail triggering.
+
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -20,9 +24,9 @@ Release notes
 - Library **RPA.Cloud.AWS** (:issue:`683`): Fix S3 ``List Files`` empty list response.
   Released in ``rpaframework-aws`` version ``5.2.1``.
 - Library **RPA.HTTP** (:pr:`685`): Add keyword ``Check Vulnerabilities`` which will now just
-  check for ``OpenSSL`` vulnerable versions. 
+  check for ``OpenSSL`` vulnerable versions.
 
-  Related article: https://robocorp.com/docs/faq/openssl-cve-2022-11-01  
+  Related article: https://robocorp.com/docs/faq/openssl-cve-2022-11-01
 
 19.0.0 - 27 Oct 2022
 --------------------
