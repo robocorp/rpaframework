@@ -136,6 +136,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+----------------------------------------------+------------------------+
 | `Database`_                | Interact with databases                      | x                      |
 +----------------------------+----------------------------------------------+------------------------+
+| `DateTime`_                | For date and time manipulations              | x                      |
++----------------------------+----------------------------------------------+------------------------+
 | `Desktop`_                 | Cross-platform desktop automation            | x                      |
 +----------------------------+----------------------------------------------+------------------------+
 | `Desktop.Clipboard`_       | Interact with the system clipboard           | x                      |
@@ -211,6 +213,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Cloud.Google: https://rpaframework.org/libraries/cloud_google/
 .. _Crypto: https://rpaframework.org/libraries/crypto/
 .. _Database: https://rpaframework.org/libraries/database/
+.. _DateTime: https://rpaframework.org/libraries/datetime/
 .. _Desktop: https://rpaframework.org/libraries/desktop/
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
 .. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
