@@ -183,7 +183,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "exceptiongroup"
-version = "1.0.2"
+version = "1.0.4"
 description = "Backport of PEP 654 (exception groups)"
 category = "main"
 optional = false
@@ -818,7 +818,7 @@ python-versions = ">=3.6, <4"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.0.2"
+version = "10.0.3"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1240,7 +1240,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "357587eefa28f4450624ca1b441c8ea0746e20630ce0eb7df3bb561ba72ebd93"
+content-hash = "d07c14ddb57bfc41983c4d41f56d043ef6eb53458605e40048505da03f809713"
 
 [metadata.files]
 alabaster = [
@@ -1460,8 +1460,8 @@ docutils = [
     {file = "docutils-0.16.tar.gz", hash = "sha256:c2de3a60e9e7d07be26b7f2b00ca0309c207e06c100f9cc2a94931fc75a478fc"},
 ]
 exceptiongroup = [
-    {file = "exceptiongroup-1.0.2-py3-none-any.whl", hash = "sha256:c22f11ec6a10d2b453871c5c5fe887436c4d1961324ce9090f2ca6ddc4180c27"},
-    {file = "exceptiongroup-1.0.2.tar.gz", hash = "sha256:a31cd183c3dea02e617aab5153588d5f7258a77b51f0ef41b3815ae8a0d0f695"},
+    {file = "exceptiongroup-1.0.4-py3-none-any.whl", hash = "sha256:542adf9dea4055530d6e1279602fa5cb11dab2395fa650b8674eaec35fc4a828"},
+    {file = "exceptiongroup-1.0.4.tar.gz", hash = "sha256:bd14967b79cd9bdb54d97323216f8fdf533e278df937aa2a90089e7d6e06e5ec"},
 ]
 fire = [
     {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
@@ -1868,8 +1868,8 @@ robotframework-pythonlibcore = [
     {file = "robotframework_pythonlibcore-3.0.0-py2.py3-none-any.whl", hash = "sha256:af10c2403cd38834988c4ce68ffb6ec6f9b14bd2cd39ecf836d443377c59b7c4"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-10.0.2.tar.gz", hash = "sha256:e459428706c2adb9f7578d418092ce6d74994c5b50420791f90d93d0c8b20090"},
-    {file = "rpaframework_core-10.0.2-py3-none-any.whl", hash = "sha256:778999f71444e0dee9a3315b970a5d4f47023f37e1b5b4b18fc949c5ba458a49"},
+    {file = "rpaframework-core-10.0.3.tar.gz", hash = "sha256:8c1bd7edc5690fd0bf770ddd8c2dfd53356a9e8b14b95339e7ed053df56cc987"},
+    {file = "rpaframework_core-10.0.3-py3-none-any.whl", hash = "sha256:7eeeaa52c4c995b46ab7d71450646d183adc4280acc4a1eaabbb8c5e0dda7d31"},
 ]
 SecretStorage = [
     {file = "SecretStorage-3.3.3-py3-none-any.whl", hash = "sha256:f356e6628222568e3af06f2eba8df495efa13b3b63081dafd4f7d9a7b7bc9f99"},
