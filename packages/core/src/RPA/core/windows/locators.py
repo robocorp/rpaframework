@@ -26,28 +26,6 @@ Locator = Union["WindowsElement", str]
 class WindowsElement:
     """Represent Control as dataclass"""
 
-    # pylint: disable=no-self-argument
-    def _cmp_subname(win_elem: "WindowsElement", *, locator: str) -> bool:
-        subname = None
-        # pylint: disable=not-an-iterable
-        for loc in MatchObject.parse_locator(locator).locators:
-            if loc[0] == "SubName":
-                subname = loc[1]
-                break
-
-        assert subname, f"couldn't find 'SubName' in parsed sub-locator {locator!r}"
-        return subname in win_elem.name
-
-    _WINDOW_SIBLING_COMPARE = {
-        # <locator_strategy>: <element_attribute>
-        "id": "automation_id",
-        re.compile(r"(?<!sub)name:"): "name",
-        "subname": _cmp_subname,
-        "class": "class_name",
-        "control": "control_type",
-        "type": "control_type",
-    }
-
     item: "Control"
     locator: Optional[Locator] = None
     name: str = ""
@@ -82,6 +60,39 @@ class WindowsElement:
             self.xcenter = rect.xcenter()
             self.ycenter = rect.ycenter()
 
+        self._sibling_element_compare = {
+            # <locator_strategy>: <element_attribute>
+            "id": "automation_id",
+            "automationid": "automation_id",
+            re.compile(r"(?<!sub)name:"): "name",
+            "subname": self._cmp_subname,
+            "regex": self._cmp_regex,
+            "class": "class_name",
+            "control": "control_type",
+            "type": "control_type",
+        }
+
+    @staticmethod
+    def _get_locator_value(locator: str, strategy: str) -> str:
+        # pylint: disable=not-an-iterable
+        for loc in MatchObject.parse_locator(locator).locators:
+            if loc[0] == strategy:
+                return loc[1]
+
+        raise ValueError(
+            f"couldn't find {strategy!r} in parsed final sub-locator: {locator}"
+        )
+
+    @classmethod
+    def _cmp_subname(cls, win_elem: "WindowsElement", *, locator: str) -> bool:
+        subname = cls._get_locator_value(locator, "SubName")
+        return subname in win_elem.name
+
+    @classmethod
+    def _cmp_regex(cls, win_elem: "WindowsElement", *, locator: str) -> bool:
+        pattern = cls._get_locator_value(locator, "RegexName")
+        return bool(re.match(pattern, win_elem.name))
+
     def is_sibling(self, win_elem: "WindowsElement") -> bool:
         """Returns `True` if the provided window element is a sibling."""
         locator: Optional[Locator] = win_elem.locator
@@ -95,7 +106,7 @@ class WindowsElement:
 
         last_locator_part = locator.split(MatchObject.TREE_SEP)[-1]
         cmp_attrs = []
-        for strategy, attr_or_func in self._WINDOW_SIBLING_COMPARE.items():
+        for strategy, attr_or_func in self._sibling_element_compare.items():
             if isinstance(strategy, str):
                 strategy_regex = re.compile(rf"{strategy}:")
             else:
