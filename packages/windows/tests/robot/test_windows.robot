@@ -1,4 +1,5 @@
 *** Settings ***
+Library           Collections
 Library           Process
 Library           RPA.Windows
 Library           String
@@ -279,9 +280,10 @@ Tree printing and controlled anchor cleanup
     ${elem} =    Get Element
     Should Be Equal    ${elem.name}    Desktop 1
 
-Click Buttons With Offset
-    [Tags]    skip    manual
+Click Calculator Numeric Buttons
     [Documentation]    Clicks all the numeric buttons in Calculator
+    [Tags]    skip    manual
+
     Windows Run    Calc
     Control Window    subname:Calc
     @{buttons} =    Get Elements    id:NumberPad > class:Button
@@ -291,6 +293,22 @@ Click Buttons With Offset
             Click    ${button}    wait_time=0.2
         END
     END
+
+Log All Calculator Buttons Matching Expression
+    [Documentation]    Logs all the buttons in the controlled window if they contain
+    ...     an 'o' in their name.
+    [Tags]    skip
+    [Setup]   Windows Run    Calc
+
+    Control Window    subname:Calc
+    @{buttons} =    Get Elements    class:Button regex:.*o.*
+    ...     siblings_only=${False}  # this will search globally for such buttons
+    Log List    ${buttons}
+    ${length} =     Get Length      ${buttons}
+    Log To Console      Number of buttons: ${length}
+
+    [Teardown]  Close Current Window
+
 
 *** Keywords ***
 Calculator Teardown

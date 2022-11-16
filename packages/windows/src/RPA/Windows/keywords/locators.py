@@ -160,6 +160,15 @@ class LocatorKeywords(LocatorMethods):
                 FOR    ${element}    IN    @{elements}
                     Log To Console    ${element.name}
                 END
+
+            Get All Calculator Buttons Matching Expression
+                Windows Run    Calc
+                Control Window    subname:Calc
+                @{buttons} =    Get Elements    class:Button regex:.*o.*
+                ...     siblings_only=${False}
+                Log List    ${buttons}
+                ${length} =     Get Length      ${buttons}
+                Log To Console      Number of buttons: ${length}
         """
         initial_element = self.get_element(
             locator, search_depth, root_element, timeout=timeout
