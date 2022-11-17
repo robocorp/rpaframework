@@ -15,18 +15,20 @@ Release notes
   - Fix sibling element searching in keyword ``Get Elements`` when there's no
     comparison strategy identified.
 
-- Library **RPA.Robocorp.WorkItems** (:pr:`692`): Allow `email` input Work Item
-  variable in the absence of the Control Room controlled one during e-mail triggering.
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+19.1.2 - 17 Nov 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems** (:pr:`692`): Allow `email` input Work Item
+  variable in the absence of the Control Room controlled one during e-mail triggering.
 
 19.1.1 - 04 Nov 2022
 --------------------
 
 - Library **RPA.Outlook.RPA** (:pr:`687`): Fix ``pywintypesXX.dll`` errors.
-
 
 19.1.0 - 03 Nov 2022
 --------------------

@@ -144,14 +144,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.7"
+version = "1.26.11"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.29.7,<1.30.0"
+botocore = ">=1.29.11,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -160,7 +160,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.7"
+version = "1.29.11"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -328,7 +328,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "exceptiongroup"
-version = "1.0.1"
+version = "1.0.4"
 description = "Backport of PEP 654 (exception groups)"
 category = "main"
 optional = false
@@ -1028,7 +1028,7 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "pathspec"
-version = "0.10.1"
+version = "0.10.2"
 description = "Utility library for gitignore style pattern matching of file paths."
 category = "dev"
 optional = false
@@ -1073,7 +1073,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "platformdirs"
-version = "2.5.3"
+version = "2.5.4"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "main"
 optional = false
@@ -1781,7 +1781,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.0.1"
+version = "10.0.3"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -2320,13 +2320,14 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "webdriver-manager"
-version = "3.8.4"
+version = "3.8.5"
 description = "Library provides the way to automatically manage drivers for different browsers"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
+packaging = "*"
 python-dotenv = "*"
 requests = "*"
 tqdm = "*"
@@ -2524,12 +2525,12 @@ black = [
     {file = "black-22.10.0.tar.gz", hash = "sha256:f513588da599943e0cde4e32cc9879e825d58720d6557062d1098c5ad80080e1"},
 ]
 boto3 = [
-    {file = "boto3-1.26.7-py3-none-any.whl", hash = "sha256:2ee2fe24b71e83e13fba673f2abfa25f066b47477be01b6a0f4d1fedc157995c"},
-    {file = "boto3-1.26.7.tar.gz", hash = "sha256:a3a923d7086fee6df9cbd019dddbf6fd922cc0fd0fa898c6ef47b1e6d0aab80c"},
+    {file = "boto3-1.26.11-py3-none-any.whl", hash = "sha256:3309d04e47490a1b46aa8ae7bcf4845a8dae2ed419a505c770895773ba7455dc"},
+    {file = "boto3-1.26.11.tar.gz", hash = "sha256:f8f7268afe62e3b34b7d0e1b4d8a804148e713f35b0e6dbc736346b28b3c6549"},
 ]
 botocore = [
-    {file = "botocore-1.29.7-py3-none-any.whl", hash = "sha256:32b2bfce1d6340f2af5c113358cc307839b1758991e4ee2bab150137fb30202c"},
-    {file = "botocore-1.29.7.tar.gz", hash = "sha256:de553225b203dd4f1c991b9543f3232b08adb3da873ad05996f81928838ec813"},
+    {file = "botocore-1.29.11-py3-none-any.whl", hash = "sha256:a86d7e558074e849933983bc2c4cc6ae6bbed3aef3f5fb4d4689cd19331e4399"},
+    {file = "botocore-1.29.11.tar.gz", hash = "sha256:97532c8a571017891ad4afee7951bea95c9f0bfe96a6f38fdca9062cd6067ec1"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2722,8 +2723,8 @@ et-xmlfile = [
     {file = "et_xmlfile-1.1.0.tar.gz", hash = "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"},
 ]
 exceptiongroup = [
-    {file = "exceptiongroup-1.0.1-py3-none-any.whl", hash = "sha256:4d6c0aa6dd825810941c792f53d7b8d71da26f5e5f84f20f9508e8f2d33b140a"},
-    {file = "exceptiongroup-1.0.1.tar.gz", hash = "sha256:73866f7f842ede6cb1daa42c4af078e2035e5f7607f0e2c762cc51bb31bbe7b2"},
+    {file = "exceptiongroup-1.0.4-py3-none-any.whl", hash = "sha256:542adf9dea4055530d6e1279602fa5cb11dab2395fa650b8674eaec35fc4a828"},
+    {file = "exceptiongroup-1.0.4.tar.gz", hash = "sha256:bd14967b79cd9bdb54d97323216f8fdf533e278df937aa2a90089e7d6e06e5ec"},
 ]
 exchangelib = [
     {file = "exchangelib-4.8.0-py2.py3-none-any.whl", hash = "sha256:4916c345f13d576b4fd2e17980993fcb4b735097ffed4d886ee640bd42135e00"},
@@ -3232,8 +3233,8 @@ packaging = [
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
 pathspec = [
-    {file = "pathspec-0.10.1-py3-none-any.whl", hash = "sha256:46846318467efc4556ccfd27816e004270a9eeeeb4d062ce5e6fc7a87c573f93"},
-    {file = "pathspec-0.10.1.tar.gz", hash = "sha256:7ace6161b621d31e7902eb6b5ae148d12cfd23f4a249b9ffb6b9fee12084323d"},
+    {file = "pathspec-0.10.2-py3-none-any.whl", hash = "sha256:88c2606f2c1e818b978540f73ecc908e13999c6c3a383daf3705652ae79807a5"},
+    {file = "pathspec-0.10.2.tar.gz", hash = "sha256:8f6bf73e5758fd365ef5d58ce09ac7c27d2833a8d7da51712eac6e27e35141b0"},
 ]
 "pdfminer.six" = [
     {file = "pdfminer.six-20201018-py3-none-any.whl", hash = "sha256:d78877ba8d8bf957f3bb636c4f73f4f6f30f56c461993877ac22c39c20837509"},
@@ -3307,8 +3308,8 @@ pkgutil_resolve_name = [
     {file = "pkgutil_resolve_name-1.3.10.tar.gz", hash = "sha256:357d6c9e6a755653cfd78893817c0853af365dd51ec97f3d358a819373bbd174"},
 ]
 platformdirs = [
-    {file = "platformdirs-2.5.3-py3-none-any.whl", hash = "sha256:0cb405749187a194f444c25c82ef7225232f11564721eabffc6ec70df83b11cb"},
-    {file = "platformdirs-2.5.3.tar.gz", hash = "sha256:6e52c21afff35cb659c6e52d8b4d61b9bd544557180440538f255d9382c8cbe0"},
+    {file = "platformdirs-2.5.4-py3-none-any.whl", hash = "sha256:af0276409f9a02373d540bf8480021a048711d572745aef4b7842dad245eba10"},
+    {file = "platformdirs-2.5.4.tar.gz", hash = "sha256:1006647646d80f16130f052404c6b901e80ee4ed6bef6792e1f238a8969106f7"},
 ]
 pluggy = [
     {file = "pluggy-1.0.0-py2.py3-none-any.whl", hash = "sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3"},
@@ -3685,8 +3686,8 @@ rpaframework-aws = [
     {file = "rpaframework_aws-5.2.1-py3-none-any.whl", hash = "sha256:5759ee82c56df0cbd247761413849fbca2543632b98f7dc61487080b592a1763"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-10.0.1.tar.gz", hash = "sha256:26790ba877c8ad347f51fe4abd882d92f25794006b4bb9442649cc05f214ab83"},
-    {file = "rpaframework_core-10.0.1-py3-none-any.whl", hash = "sha256:d027255abac02f84307f5e1f9d48e575d4e190a4c01fbf876b1eb1a77b9fbe7a"},
+    {file = "rpaframework-core-10.0.3.tar.gz", hash = "sha256:8c1bd7edc5690fd0bf770ddd8c2dfd53356a9e8b14b95339e7ed053df56cc987"},
+    {file = "rpaframework_core-10.0.3-py3-none-any.whl", hash = "sha256:7eeeaa52c4c995b46ab7d71450646d183adc4280acc4a1eaabbb8c5e0dda7d31"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework-dialogs-4.0.0.tar.gz", hash = "sha256:178f1ec6292421057e601298596393aa7ed177130dc9f8be3da63695aeaa4a83"},
@@ -3880,8 +3881,8 @@ urllib3 = [
     {file = "urllib3-1.26.12.tar.gz", hash = "sha256:3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"},
 ]
 webdriver-manager = [
-    {file = "webdriver_manager-3.8.4-py2.py3-none-any.whl", hash = "sha256:1a0fb9f12ebaa0e6b86aa38cef8a02c97c69e379f23e27c581eeef3115f6ef9e"},
-    {file = "webdriver_manager-3.8.4.tar.gz", hash = "sha256:56855847fbf5b524b5722be5a2095378666768e2e9d438c5122fe623446c7a38"},
+    {file = "webdriver_manager-3.8.5-py2.py3-none-any.whl", hash = "sha256:2d807ec270d2d990022b86efabd4096053e0a1e7a34c6174f9937320dfdc6826"},
+    {file = "webdriver_manager-3.8.5.tar.gz", hash = "sha256:e671f3b738af52351341d6df6674c2f0b959db0fe978e9a7135cfa36d1ad9560"},
 ]
 wrapt = [
     {file = "wrapt-1.13.3-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:e05e60ff3b2b0342153be4d1b597bbcfd8330890056b9619f4ad6b8d5c96a81a"},
