@@ -17,7 +17,7 @@ if utils.IS_WINDOWS:
 
 
 class LocatorKeywords(LocatorMethods):
-    """Keywords for handling Windows locators"""
+    """Keywords for handling Windows locators."""
 
     @keyword
     @with_timeout
@@ -28,27 +28,27 @@ class LocatorKeywords(LocatorMethods):
         root_element: Optional[WindowsElement] = None,
         timeout: Optional[float] = None,
     ) -> WindowsElement:
-        """Get Control element defined by the locator.
+        """Get a Control Windows element defined by the locator.
 
-        Returned element can be used instead of a locator string for
-        keywords accepting `locator`.
-
+        The returned element can be used instead of a locator string for other keywords
+        accepting the `locator` parameter.
         Keyword ``Get Attribute`` can be used to read element attribute values.
 
-        If `locator` is *None* then returned `element` will be in order of preference:
+        If `locator` is *None* then returned element will be in this priority:
 
-            1. anchor element if that has been set with `Set Anchor`
-            2. current active window if that has been set with `Control Window`
-            3. final option is the `Desktop`
+            1. `root_element` if provided.
+            2. Anchor element if that has been previously set with ``Set Anchor``.
+            3. Current active window if that has been set with ``Control Window``.
+            4. Last resort is the "Desktop" element.
 
-        :param locator: locator as a string or as an element
-        :param search_depth: how deep the element search will traverse (default 8)
-        :param root_element: can be used to set search root element
-        :param timeout: float value in seconds, see keyword
-         ``Set Global Timeout``
-        :return: WindowsElement object
+        :param locator: Locator as a string or as an element object.
+        :param search_depth: How deep the element search will traverse. (default 8)
+        :param root_element: Will be used as search root element object if provided.
+        :param timeout: After how many seconds (float) to give up on search. (see
+            keyword ``Set Global Timeout``)
+        :returns: The identified `WindowsElement` object.
 
-        Example:
+        **Example: Robot Framework**
 
         .. code-block:: robotframework
 
@@ -159,6 +159,8 @@ class LocatorKeywords(LocatorMethods):
         By default, only the siblings (similar elements on the same level) are taken
         into account. In order to search globally, turn `siblings_only` off, but be
         aware that this will take more time to process.
+        For more details on the rest of parameters, take a look at the ``Get Element``
+        keyword.
 
         :param locator: Locator as a string or as an element object.
         :param search_depth: How deep the element search will traverse. (default 8)
@@ -167,7 +169,7 @@ class LocatorKeywords(LocatorMethods):
             keyword ``Set Global Timeout``)
         :param siblings_only: Filter for elements on the same level as the initially
             found one. Turn it off for a global search. (`True` by default)
-        :returns: A list of `WindowsElement` objects.
+        :returns: A list of matching `WindowsElement` objects.
 
         **Example: Robot Framework**
 
