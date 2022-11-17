@@ -5,6 +5,16 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Windows** (:pr:`693`):
+
+  - Keyword ``Get Elements`` supports now parameter `siblings_only` which filters for
+    elements found on the same level with the first match. This is ON by default; set
+    it to `False` for a global search, which retrieves all the found elements matching
+    the criteria instead.
+  - Keyword ``Get Value`` returns `None` when there's no value to retrieve at all.
+  - Fix sibling element searching in keyword ``Get Elements`` when there's no
+    comparison strategy identified.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

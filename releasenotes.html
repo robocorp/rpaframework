@@ -224,6 +224,19 @@
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Library <strong>RPA.Windows</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/693">#693</a>):</p>
+<ul>
+<li><p>Keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Elements</span></code> supports now parameter <cite>siblings_only</cite> which filters for
+elements found on the same level with the first match. This is ON by default; set
+it to <cite>False</cite> for a global search, which retrieves all the found elements matching
+the criteria instead.</p></li>
+<li><p>Keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Value</span></code> returns <cite>None</cite> when there’s no value to retrieve at all.</p></li>
+<li><p>Fix sibling element searching in keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Elements</span></code> when there’s no
+comparison strategy identified.</p></li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="id2">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
