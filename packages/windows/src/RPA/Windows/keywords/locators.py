@@ -19,6 +19,10 @@ if utils.IS_WINDOWS:
 class LocatorKeywords(LocatorMethods):
     """Keywords for handling Windows locators."""
 
+    # NOTE(cmin764): Timeout is automatically set to `None` in the upper calls by the
+    #  `with_timeout` decorator, so we alter the behaviour (context timeout
+    #  setting) on the first call only.
+
     @keyword
     @with_timeout
     def get_element(
@@ -52,12 +56,13 @@ class LocatorKeywords(LocatorMethods):
 
         .. code-block:: robotframework
 
-            ${element} =    Get Element    name:"RichEdit Control"
-            Set Value    ${element}    note to myself
+            *** Tasks ***
+            Set Text Into Notepad Window
+                Windows Run    Notepad
+                Control Window      subname:Notepad
+                ${element} =    Get Element    regex:"Text (E|e)ditor"
+                Set Value    ${element}    note to myself
         """
-        # NOTE(cmiN): Timeout is automatically set to `None` in the upper call by the
-        #  `with_timeout` decorator, so we alter the behaviour (context timeout
-        #  setting) at this level only.
         return super().get_element(
             locator=locator,
             search_depth=search_depth,
