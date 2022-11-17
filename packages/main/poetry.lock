@@ -905,7 +905,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "O365"
-version = "2.0.21"
+version = "2.0.22"
 description = "Microsoft Graph and Office 365 API made easy"
 category = "main"
 optional = false
@@ -1781,7 +1781,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.0.3"
+version = "10.0.4"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1842,7 +1842,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "6.1.0"
+version = "6.2.0"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -1856,7 +1856,7 @@ pynput-robocorp-fork = ">=4.0.0,<5.0.0"
 pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
-rpaframework-core = ">=10.0.0,<11.0.0"
+rpaframework-core = ">=10.0.4,<11.0.0"
 uiautomation = ">=2.0.15,<3.0.0"
 
 [[package]]
@@ -2441,7 +2441,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "cf48357fdf2b03240b78db94ad0c6a80b61968ca541d4540a49797f8b0d03b86"
+content-hash = "08bae04d1c95f4027fe70fde5691889a7d0a9df222ebea447f3c8bf70fad4196"
 
 [metadata.files]
 alabaster = [
@@ -3165,8 +3165,8 @@ numpy = [
     {file = "numpy-1.21.1.zip", hash = "sha256:dff4af63638afcc57a3dfb9e4b26d434a7a602d225b42d746ea7fe2edf1342fd"},
 ]
 O365 = [
-    {file = "O365-2.0.21-py3-none-any.whl", hash = "sha256:972f13f3f2e4732686251deafbf1ffac382b218333cf1e450b3123607e87b5b9"},
-    {file = "O365-2.0.21.tar.gz", hash = "sha256:67c1b7af0429c3e10720aa4122b662dc4e9262d01bf01d11f21cb07c7b87ee16"},
+    {file = "O365-2.0.22-py3-none-any.whl", hash = "sha256:cbcc1ab51737dea443aa64c3fe595762719764f6547ba9f6d293f2b506137694"},
+    {file = "O365-2.0.22.tar.gz", hash = "sha256:ff6152b9fe98f5f751cea9ba36ab7df7776e88a13de01cfc37587d4bccc460cf"},
 ]
 oauthlib = [
     {file = "oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca"},
@@ -3463,6 +3463,10 @@ PyQt5-sip = [
     {file = "PyQt5_sip-12.11.0-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:4031547dfb679be309094bfa79254f5badc5ddbe66b9ad38e319d84a7d612443"},
     {file = "PyQt5_sip-12.11.0-cp310-cp310-win32.whl", hash = "sha256:ad21ca0ee8cae2a41b61fc04949dccfab6fe008749627d94e8c7078cb7a73af1"},
     {file = "PyQt5_sip-12.11.0-cp310-cp310-win_amd64.whl", hash = "sha256:3126c84568ab341c12e46ded2230f62a9a78752a70fdab13713f89a71cd44f73"},
+    {file = "PyQt5_sip-12.11.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:bd733667098cac70e89279d9c239106d543fb480def62a44e6366ccb8f68510b"},
+    {file = "PyQt5_sip-12.11.0-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:ec1d8ce50be76c5c1d1c86c6dc0ccacc2446172dde98b663a17871f532f9bd44"},
+    {file = "PyQt5_sip-12.11.0-cp311-cp311-win32.whl", hash = "sha256:43dfe6dd409e713edeb67019b85419a7a0dc9923bfc451d6cf3778471c122532"},
+    {file = "PyQt5_sip-12.11.0-cp311-cp311-win_amd64.whl", hash = "sha256:afa4ffffc54e306669bf2b66ea37abbc56c5cdda4f3f474d20324e3634302b12"},
     {file = "PyQt5_sip-12.11.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:0f77655c62ec91d47c2c99143f248624d44dd2d8a12d016e7c020508ad418aca"},
     {file = "PyQt5_sip-12.11.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:ec5e9ef78852e1f96f86d7e15c9215878422b83dde36d44f1539a3062942f19c"},
     {file = "PyQt5_sip-12.11.0-cp37-cp37m-win32.whl", hash = "sha256:d12b81c3a08abf7657a2ebc7d3649852a1f327eb2146ebadf45930486d32e920"},
@@ -3686,8 +3690,8 @@ rpaframework-aws = [
     {file = "rpaframework_aws-5.2.1-py3-none-any.whl", hash = "sha256:5759ee82c56df0cbd247761413849fbca2543632b98f7dc61487080b592a1763"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-10.0.3.tar.gz", hash = "sha256:8c1bd7edc5690fd0bf770ddd8c2dfd53356a9e8b14b95339e7ed053df56cc987"},
-    {file = "rpaframework_core-10.0.3-py3-none-any.whl", hash = "sha256:7eeeaa52c4c995b46ab7d71450646d183adc4280acc4a1eaabbb8c5e0dda7d31"},
+    {file = "rpaframework-core-10.0.4.tar.gz", hash = "sha256:6a9c896276d11474edb9b20c40112aa2e045a5fedf7635513b7e4cf325709971"},
+    {file = "rpaframework_core-10.0.4-py3-none-any.whl", hash = "sha256:2abc9c2395da3d26018df660dd7462b94076c5bd3495a89acfb89df2e260da16"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework-dialogs-4.0.0.tar.gz", hash = "sha256:178f1ec6292421057e601298596393aa7ed177130dc9f8be3da63695aeaa4a83"},
@@ -3702,8 +3706,8 @@ rpaframework-recognition = [
     {file = "rpaframework_recognition-5.0.0-py3-none-any.whl", hash = "sha256:2a5f3305e940de4a62b2b7ff04d49dba6548cebb1479be5fac558505dd33c1ba"},
 ]
 rpaframework-windows = [
-    {file = "rpaframework-windows-6.1.0.tar.gz", hash = "sha256:06889ffccfdd9eac781648eeabf2afdad5ce998baf5fb8e101ae72728feceea6"},
-    {file = "rpaframework_windows-6.1.0-py3-none-any.whl", hash = "sha256:03a372c0569a4c998b6a0882f27ed804ca9d5b661d04f6d89fc16af6021c0dda"},
+    {file = "rpaframework-windows-6.2.0.tar.gz", hash = "sha256:e32e08126ab8fc71a002b1eebd738fdb7f1a697e5420a96d694e7736d2dafaeb"},
+    {file = "rpaframework_windows-6.2.0-py3-none-any.whl", hash = "sha256:33b87a9ba55be12e61457e58db5ae35779939d30266acc526772a8b677b76e64"},
 ]
 s3transfer = [
     {file = "s3transfer-0.6.0-py3-none-any.whl", hash = "sha256:06176b74f3a15f61f1b4f25a1fc29a4429040b7647133a463da8fa5bd28d5ecd"},
