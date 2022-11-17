@@ -3,6 +3,7 @@ from typing import List, Optional
 from RPA.core.windows.locators import (
     Locator,
     LocatorMethods,
+    MatchObject,
     WindowsElement,
 )
 
@@ -78,6 +79,8 @@ class LocatorKeywords(LocatorMethods):
 
             element = WindowsElement(next_control, locator)
             if initial_element.is_sibling(element):
+                # Every newly found matching element will inherit the offset set in the
+                #  original initially found element.
                 element.item.robocorp_click_offset = (
                     initial_element.item.robocorp_click_offset
                 )
@@ -104,9 +107,21 @@ class LocatorKeywords(LocatorMethods):
             element = WindowsElement(ctrl, locator)
             return initial_element.is_sibling(element)
 
-        top_element = root_element or self.get_element(
-            None, search_depth, root_element, timeout
+        # Take all the elements (no matter their level) starting from a parent as
+        #  search tree root.
+        parent_locator = None
+        if locator:
+            branches = locator.rsplit(MatchObject.TREE_SEP, 1)
+            if len(branches) == 2:
+                # Full locator's parent becomes the root for the search.
+                parent_locator = branches[0]
+        top_element = self.get_element(
+            # If the locator doesn't have a parent (null `parent_locator`) then simply
+            #  rely on the resulting root resolution: root > anchor > window > Desktop.
+            parent_locator, search_depth, root_element, timeout
         )
+        # Explore the entire subtree of elements starting with the resulted root above
+        #  and keep only the ones matching the strategies in the last locator branch.
         tree_generator = auto.WalkTree(
             top_element.item,
             getFirstChild=get_first_child,
@@ -118,6 +133,8 @@ class LocatorKeywords(LocatorMethods):
         elements = []
         for control, _ in tree_generator:
             element = WindowsElement(control, locator)
+            # Every newly found matching element will inherit the offset set in the
+            #  original initially found element.
             element.item.robocorp_click_offset = (
                 initial_element.item.robocorp_click_offset
             )
@@ -171,7 +188,7 @@ class LocatorKeywords(LocatorMethods):
                 Log To Console      Number of buttons: ${length}
         """
         initial_element = self.get_element(
-            locator, search_depth, root_element, timeout=timeout
+            locator, search_depth, root_element, timeout
         )
 
         if siblings_only:

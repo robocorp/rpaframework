@@ -32,7 +32,7 @@ ROBOT_TEST_RESOURCES = Path("tests/resources")
 
 MAIN_README = MAIN_PACKAGE / "README.rst"
 
-EXCLUDE_ROBOT_TESTS = ["skip"]
+EXCLUDE_ROBOT_TESTS = ["skip", "manual"]
 if platform.system() == "Windows":
     EXCLUDE_ROBOT_TESTS.append("posix")
 else:
@@ -134,16 +134,20 @@ def test_python(ctx, asynchronous=None):
     aliases=["testrobot"],
     help={
         "robot": (
-            "Only run a specific .robot file, any selected file "
-            "must have the format 'test_<robot name>.robot'."
+            "Only run a specific .robot file, any selected file must have the format "
+            "'test_<robot name>.robot'. (excludes 'manual' tag only)"
         ),
         "test-name": (
-            "Run only a specific test from the available test suites or robot file."
+            "Run only a specific test from the available test suites or robot file. "
+            "(no exclusions)"
         ),
     },
 )
 def test_robot(ctx, robot=None, test_name=None, asynchronous=None):
-    """Run Robot Framework tests."""
+    """Run Robot Framework tests.
+
+    Skips the following tags by default: skip, manual. (usually with GH CI runs)
+    """
     if getattr(ctx, "is_meta", False):
         shell.invoke_each(ctx, f"code.test-robot{' -a' if asynchronous else ''}")
     else:
@@ -159,22 +163,27 @@ def test_robot(ctx, robot=None, test_name=None, asynchronous=None):
         )
         if robot_test_source.exists():
             exclude_list = EXCLUDE_ROBOT_TESTS[:]  # copy of the original list
+            if robot:
+                # Run even skipped tests (but not manual ones) when specifying a test
+                #  robot file explicitly. (during development only)
+                robot_test_source /= f"test_{robot}.robot"
+                exclude_list.remove("skip")
             if test_name:
-                # Run specific explicit task without exclusion. (during development)
+                # Run specific explicit test case without any exclusion. (during
+                #  development only)
+                robot_test = f'--test "{test_name}"'
                 exclude_list.clear()
-                robot_test = f' --test "{test_name}" '
             else:
-                # Run all tasks and take into account exclusions. (during CI)
-                robot_test = " "
+                # Run all tasks and take into account remaining exclusions. (during CI
+                #  gate in GitHub flow)
+                robot_test = ""
             exclude_str = " ".join(f"--exclude {tag}" for tag in exclude_list)
             arguments = (
                 f"--runemptysuite --loglevel TRACE --outputdir {robot_test_output} "
                 f"--pythonpath {robot_test_resources}"
             )
-            if robot:
-                robot_test_source /= f"test_{robot}.robot"
-            cmds = f"{arguments} {exclude_str}{robot_test}{robot_test_source}"
-            return shell.run_in_venv(ctx, "robot", cmds, asynchronous=asynchronous)
+            command = f"{arguments} {exclude_str} {robot_test} {robot_test_source}"
+            return shell.run_in_venv(ctx, "robot", command, asynchronous=asynchronous)
         else:
             return shell.run(
                 ctx,

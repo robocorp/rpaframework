@@ -10,7 +10,7 @@ Release notes
   - Keyword ``Get Elements`` supports now parameter `siblings_only` which filters for
     elements found on the same level with the first match. This is ON by default; set
     it to `False` for a global search, which retrieves all the found elements matching
-    criteria.
+    the criteria instead.
   - Keyword ``Get Value`` returns `None` when there's no value to retrieve at all.
   - Fix sibling element searching in keyword ``Get Elements`` when there's no
     comparison strategy identified.
