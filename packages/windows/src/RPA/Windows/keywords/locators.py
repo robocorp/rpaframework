@@ -20,8 +20,8 @@ class LocatorKeywords(LocatorMethods):
     """Keywords for handling Windows locators."""
 
     # NOTE(cmin764): Timeout is automatically set to `None` in the upper calls by the
-    #  `with_timeout` decorator, so we alter the behaviour (context timeout
-    #  setting) on the first call only.
+    #  `with_timeout` decorator, so we alter the behaviour (context timeout setting)
+    #  on the first call only.
 
     @keyword
     @with_timeout
@@ -38,7 +38,7 @@ class LocatorKeywords(LocatorMethods):
         accepting the `locator` parameter.
         Keyword ``Get Attribute`` can be used to read element attribute values.
 
-        If `locator` is *None* then returned element will be in this priority:
+        If `locator` is `None`, then the returned element will be in this priority:
 
             1. `root_element` if provided.
             2. Anchor element if that has been previously set with ``Set Anchor``.
