@@ -118,7 +118,10 @@ class LocatorKeywords(LocatorMethods):
         top_element = self.get_element(
             # If the locator doesn't have a parent (null `parent_locator`) then simply
             #  rely on the resulting root resolution: root > anchor > window > Desktop.
-            parent_locator, search_depth, root_element, timeout
+            parent_locator,
+            search_depth,
+            root_element,
+            timeout,
         )
         # Explore the entire subtree of elements starting with the resulted root above
         #  and keep only the ones matching the strategies in the last locator branch.
@@ -187,9 +190,7 @@ class LocatorKeywords(LocatorMethods):
                 ${length} =     Get Length      ${buttons}
                 Log To Console      Number of buttons: ${length}
         """
-        initial_element = self.get_element(
-            locator, search_depth, root_element, timeout
-        )
+        initial_element = self.get_element(locator, search_depth, root_element, timeout)
 
         if siblings_only:
             return self._search_siblings(initial_element, locator=locator)
