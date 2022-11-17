@@ -1,77 +1,30 @@
 *** Settings ***
+Library           Collections
 Library           Process
 Library           RPA.Windows
 Library           String
-Task Setup        Set Wait Time    0.7
+
+Force Tags      skip
+Test Setup      Set Wait Time    0.7
+
 
 *** Variables ***
 # Not used as vars, but make sure you have these in PATH.
-${EXE_UIDEMO}     uidemo.exe
-${EXE_CALCULATOR}    calc.exe
-${EXE_NOTEPAD}    notepad.exe
-${EXE_SPOTIFY}    Spotify.exe
-${EXE_SAGE50}     sage.exe
-${SPOTIFY_PLAYCONTROL}    name:"Player controls" > control:ButtonControl and name:
-${SPOTIFY_PLAY}    ${SPOTIFY_PLAYCONTROL}Play
-${SPOTIFY_PAUSE}    ${SPOTIFY_PLAYCONTROL}Pause
-${SPOTIFY_NEXT}    ${SPOTIFY_PLAYCONTROL}Next
-${SPOTIFY_Prev}    ${SPOTIFY_PLAYCONTROL}Prev
+${EXE_UIDEMO}       UIDemo.exe
+${EXE_CALCULATOR}   calc.exe
+${EXE_SPOTIFY}      Spotify.exe
+
 ${TIMEOUT}        1
 
-*** Test Cases ***
-Windows search Calculator by clicking buttons
-    [Tags]    skip    manual
-    Windows Search    Calculator    wait_time=1
-    Calculator button actions
-    [Teardown]    Close Current Window And Sleep
 
-Calculator by clicking buttons already running
-    [Tags]    skip    manual
-    Calculator button actions
+*** Keywords ***
+Calculator Teardown
+    Send Keys    keys={Esc}
+    Sleep    1s
+    Send Keys    keys={Alt}1
+    Sleep    1s
 
-Windows run Do some calculations
-    [Tags]    skip    manual
-    Windows Run    calc.exe    wait_time=1
-    Calculator with keys
-    [Teardown]    Close Current Window And Sleep
-
-Windows run Do some calculations already running
-    [Tags]    skip    manual
-    Calculator with keys
-
-Play Task Calculator
-    [Documentation]    Checks if 34+6=40
-    [Tags]    skip    manual
-    Windows Search    Calculator    wait_time=1
-    Control Window    Calculator
-    Click    id:clearButton
-    ${button_locator} =    Set Variable
-    ...    type:Group and name:"Number pad" > type:Button
-    # It is optional to use "and" in the locator syntax. (only "and"s are assumed)
-    Click    ${button_locator} and index:4    # "3"
-    Click    ${button_locator} index:5 offset:0,0    # "4"
-    # NOTE(cmin764): On different Windows versions the app UI differs so the offsets.
-    #    (might be also resolution bound)
-    ${ver} =    Get OS Version
-    IF    "${ver}" == "11"
-        ${offset} =    Set Variable    480,100
-    ELSE
-        ${offset} =    Set Variable    370,0    # FIXME on Windows 10
-    END
-    # Click the "+" button relative to "4" by offset.
-    Click    ${button_locator} index:5 offset:${offset}    # "+"
-    # "control" maps to same thing as "type" -> "ControlType".
-    Click    control:Group and name:"Number pad" > control:Button index:7    # 6
-    Click    id:equalButton    # "="
-    ${result} =    Get Attribute    id:CalculatorResults    Name
-    Should Be Equal    ${result}    Display is 40
-    [Teardown]    Close Current Window
-
-Play Task Temperature
-    [Tags]    skip    manual
-    Windows Search    Calculator    wait_time=1
-    Control Window    Calculator
-    # Go to Temperature Converter view.
+Calculator Temperature Converter View
     Click    id:TogglePaneButton
     Send Keys    keys={PAGEDOWN}    wait_time=0.1    # to see the Temperature view
     ${temp} =    Set Variable    id:Temperature    # works on Windows 10 and lower
@@ -80,224 +33,16 @@ Play Task Temperature
         ${temp} =    Set Variable    name:"Temperature Converter"
     END
     Click    ${temp}
-    Log To Console    \nGet temperatures
-    Select Temperature Unit    Kelvin    225
-    Get Temperature Values    Fahrenheit
-    Select Temperature Unit    Fahrenheit    225
-    Get Temperature Values    Kelvin
-    Select Temperature Unit    Celsius    225
-    Get Temperature Values    Kelvin,Fahrenheit
-    # Go back to Standard Calculator view.
+
+Calculator Standard View
     Click    id:TogglePaneButton
     Send Keys    keys={PAGEUP}    wait_time=0.1    # to see the Standard view
     ${std} =    Set Variable    id:Standard
+    ${ver} =    Get OS Version
     IF    "${ver}" == "11"
         ${std} =    Set Variable    name:"Standard Calculator"
     END
     Click    ${std}
-    [Teardown]    Close Current Window
-
-Play Task UIDemo
-    [Tags]    skip    manual
-    Windows Run    UIDemo.exe
-    Control Window    UiDemo
-    Send Keys    id:user    admin
-    Send Keys    id:pass    password
-    Click    class:Button
-    Control Window    UIDemo
-    Set Anchor    id:DataGrid    10.0
-    ${headers} =    Get Elements    type:HeaderItem
-    Log To Console    Headers: ${headers}
-    ${rows} =    Get Elements    class:DataGridRow name:"UiDemo.DepositControl+LineOfTable"
-    FOR    ${row}    IN    @{rows}
-        ${columns} =    Get Elements    class:DataGridCell    root_element=${row}
-        FOR    ${col}    IN    @{columns}
-            Log To Console    Cell value: ${col.name}
-        END
-    END
-    ${element} =    Get Element    type:HeaderItem
-    Screenshot    ${element}    ${OUTPUT_DIR}${/}element${element.name}.png
-    ${name} =    Get Attribute    ${element}    Name
-    Log To Console    Attribute: ${name}
-    # Clears set anchor above so the clicks would work on the current active window.
-    Clear Anchor
-    Control Window    UIDemo    # Handle: 5901414
-    Click
-    ...    type:ButtonControl and class:Button and name:Exit > type:TextControl and class:TextBlock and name:Exit
-    ...    timeout=1
-    # TODO: Add more actions to the task: slider, checkboxes, table (get/set vals).
-    [Teardown]    Close Current Window
-
-Resize window with Spotify
-    [Tags]    skip    manual
-    Windows Run    Spotify.exe
-    ${window} =    Control Window    executable:Spotify.exe
-    Log To Console    Spotify window: ${window}
-    Maximize Window
-    FOR    ${_}    IN RANGE    3
-        Click    ${SPOTIFY_NEXT}
-        Sleep    3s
-    END
-    Minimize Window
-    Sleep    1s
-    Maximize Window
-    Sleep    2s
-    Foreground Window
-    Restore Window
-    [Teardown]    Close Current Window
-
-Notepad write text into a file
-    [Tags]    skip    manual
-    Windows Run    notepad
-    Control Window    subname:"- Notepad"
-    ${ver} =    Get OS Version
-    IF    "${ver}" == "11"
-        Click    Edit    wait_time=0.5
-        Click    Font    wait_time=0.5    # for some reason this only highlitghts the button
-        Click    Font    wait_time=2    # and this finally clicks it
-        Click    id:FontFamilyComboBox
-        Click    name:"Lucida Sans Unicode"    wait_time=0.5
-        Click    id:FontSizeComboBox
-        Click    name:"26"    wait_time=0.5
-        Click    name:"Back"
-    ELSE
-        Control Window    Font
-        Click    type:MenuBar name:Application > name:Format
-        Click    name:Font...
-        Select    type:ComboBox id:1136    Trebuchet MS
-        Select    type:ComboBox id:1138    28
-        Click    type:Button name:OK
-    END
-    Control Window    subname:"- Notepad"
-    Send Keys    keys={Ctrl}a{Del}
-    Send Keys    keys=Lets add some text to the notepad
-    Control Window    subname:"- Notepad"
-    IF    "${ver}" == "11"
-        Click    File    wait_time=0.3
-        Click    Save as
-        Click    Save as    wait_time=1.5
-    ELSE
-        Click    type:MenuBar name:Application > name:File
-        Click    type:MenuItem subname:"Save As"
-    END
-    Send Keys    keys=best-win-auto.txt{Enter}    interval=0.05
-    ${run} =    Run Keyword And Ignore Error    Control Window    Confirm Save As    timeout=0.5
-    IF    "${run}[0]" == "PASS"
-        Click    Yes    wait_time=0.3
-    END
-    Minimize Window    subname:"- Notepad"
-    [Teardown]    Close Current Window
-
-Control Window by handle
-    [Tags]    skip    manual
-    Log To Console    \nList Windows
-    ${win} =    List Windows
-    FOR    ${w}    IN    @{win}
-        Log To Console    ${w}
-    END
-    ${win} =    Control Window    handle:${win}[0][handle]    # handle of the first window in the list
-    Log To Console    Controlled window: ${win}
-
-Calculator result from recording
-    [Tags]    skip    manual
-    Windows Run    Calc
-    Control Window    Calculator    # Handle: 4066848
-    Click    name:"Seven"
-    Click    name:"Eight"
-    Click    name:"Nine"
-    Click    name:"Plus"
-    Click    name:"One"
-    Click    name:"Two"
-    Click    name:"Three"
-    Click    name:"Equals"
-    [Teardown]    Close Current Window
-
-Write to Notepad in the background
-    [Tags]    skip    manual
-    Windows Run    Notepad
-    Windows Run    Calc
-    Clear Anchor
-    Control Window    subname:"- Notepad"    foreground=${False}
-    # All the following keyword calls will use the set anchor element as root locator,
-    #    UNLESS they specify a locator explicitly or `Clear Anchor` is used.
-    ${text_edit} =    Set Variable    name:"Text Editor"
-    ${ver} =    Get OS Version
-    IF    "${ver}" == "11"
-        ${text_edit} =    Set Variable    name:"RichEdit Control"
-    END
-    Set Anchor    ${text_edit}
-    # Write in Notepad while having Calculator as active window.
-    Control Window    Calculator
-    # Clear Notepad edit window by writing initial text, then append rest of the text.
-    ${time} =    Get Time
-    Set Value    value=time now is ${time}    # clears when append=False (default)
-    Set Value    value= and it's task run time    append=True    newline=True
-    Set Value    value=this will appear on the 2nd line    append=True
-    Set Value    value=${EMPTY}    append=True    enter=True
-    Close Current Window    # this closes Calculator first (as active window)
-    [Teardown]    Close Window    subname:Notepad    # finally Notepad is closed too
-
-Test getting elements
-    [Tags]    skip    manual
-    Clear Anchor
-    ${ver} =    Get OS Version
-    ${desktop} =    Get Element
-    IF    "${ver}" == "11"
-        ${buttons} =    Get Elements    id:TaskbarFrameRepeater > type:Button    root_element=${desktop}
-    ELSE
-        ${buttons} =    Get Elements    name:"Running applications" > type:Button    root_element=${desktop}
-    END
-    Log To Console    \nList Taskbar applications\n
-    Log To Console    Desktop: ${desktop}
-    FOR    ${button}    IN    @{buttons}
-        Log To Console    App: ${button.name}
-    END
-
-Control window after closing linked root element
-    [Tags]    skip    manual
-    [Setup]    Keep open a single Notepad
-    ${window} =    Control Window    subname:Notepad control:WindowControl
-    Log    Controlling Notepad window: ${window}
-    Kill app by name    Notepad
-    Windows Run    Calc
-    # Tests against `COMError` fixes.
-    ${window} =    Control Window    subname:Calc    main=${False}
-    Log    Controlling Calculator window: ${window}
-    [Teardown]    Close Current Window    # closes Calculator (last active window)
-
-Tree printing and controlled anchor cleanup
-    [Tags]    skip    manual
-    Print Tree    #capture_image_folder=output${/}controls
-    Windows Run    Calc
-    ${win} =    Control Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
-    Set Anchor    ${win}
-    ${elem} =    Get Element    # pulls the anchor
-    Should Be Equal    ${elem.name}    Calculator
-    Close Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
-    # With the controlled Calculator closed and active window/anchor cleaned up, we
-    #    should get the Desktop element only.
-    ${elem} =    Get Element
-    Should Be Equal    ${elem.name}    Desktop 1
-
-Click Buttons With Offset
-    [Tags]    skip    manual
-    [Documentation]    Clicks all the numeric buttons in Calculator
-    Windows Run    Calc
-    Control Window    subname:Calc
-    @{buttons} =    Get Elements    id:NumberPad > class:Button
-    FOR    ${button}    IN    @{buttons}
-        ${is_numeric} =    Evaluate    "num" in "${button.item.AutomationId}"
-        IF    ${is_numeric}
-            Click    ${button}    wait_time=0.2
-        END
-    END
-
-*** Keywords ***
-Calculator Teardown
-    Send Keys    keys={Esc}
-    Sleep    1s
-    Send Keys    keys={Alt}1
-    Sleep    1s
 
 Select Temperature Unit
     [Arguments]    ${unit}    ${degrees}
@@ -364,3 +109,292 @@ Kill app by name
 Close Current Window And Sleep
     Close Current Window
     Sleep    1s
+
+
+*** Test Cases ***
+Windows search Calculator by clicking buttons
+    Windows Search    Calculator    wait_time=1
+    Calculator button actions
+    [Teardown]    Close Current Window And Sleep
+
+Calculator by clicking buttons already running
+    [Tags]  manual
+    Calculator button actions
+
+Windows run Do some calculations
+    Windows Run    ${EXE_CALCULATOR}    wait_time=1
+    Calculator with keys
+    [Teardown]    Close Current Window And Sleep
+
+Windows run Do some calculations already running
+    [Tags]  manual
+    Calculator with keys
+
+Play Task Calculator
+    [Documentation]    Checks if 34+6=40
+    Windows Search    Calculator    wait_time=1
+    Control Window    Calculator
+    Click    id:clearButton
+    ${button_locator} =    Set Variable
+    ...    type:Group and name:"Number pad" > type:Button
+    # It is optional to use "and" in the locator syntax. (only "and"s are assumed)
+    Click    ${button_locator} and index:4    # "3"
+    Click    ${button_locator} index:5 offset:0,0    # "4"
+    # NOTE(cmin764): On different Windows versions the app UI differs so the offsets.
+    #    (might be also resolution bound)
+    ${ver} =    Get OS Version
+    IF    "${ver}" == "11"
+        ${offset} =    Set Variable    480,100
+    ELSE
+        ${offset} =    Set Variable    370,0    # FIXME on Windows 10
+    END
+    # Click the "+" button relative to "4" by offset.
+    Click    ${button_locator} index:5 offset:${offset}    # "+"
+    # "control" maps to same thing as "type" -> "ControlType".
+    Click    control:Group and name:"Number pad" > control:Button index:7    # 6
+    Click    id:equalButton    # "="
+    ${result} =    Get Attribute    id:CalculatorResults    Name
+    Should Be Equal    ${result}    Display is 40
+    [Teardown]    Close Current Window
+
+Play Task Temperature
+    Windows Search    Calculator    wait_time=1
+    Control Window    Calculator
+
+    Calculator Temperature Converter View
+    Log To Console    \nGet temperatures
+    Select Temperature Unit    Kelvin    225
+    Get Temperature Values    Fahrenheit
+    Select Temperature Unit    Fahrenheit    225
+    Get Temperature Values    Kelvin
+    Select Temperature Unit    Celsius    225
+    Get Temperature Values    Kelvin,Fahrenheit
+
+    Calculator Standard View
+    [Teardown]    Close Current Window
+
+Play Task UIDemo
+    Windows Run    ${EXE_UIDEMO}
+    Control Window    UiDemo
+    Send Keys    id:user    admin
+    Send Keys    id:pass    password
+    Click    class:Button
+    Control Window    UIDemo
+    Set Anchor    id:DataGrid    10.0
+    ${headers} =    Get Elements    type:HeaderItem
+    Log To Console    Headers: ${headers}
+    ${rows} =    Get Elements    class:DataGridRow name:"UiDemo.DepositControl+LineOfTable"
+    FOR    ${row}    IN    @{rows}
+        ${columns} =    Get Elements    class:DataGridCell    root_element=${row}
+        FOR    ${col}    IN    @{columns}
+            Log To Console    Cell value: ${col.name}
+        END
+    END
+    ${element} =    Get Element    type:HeaderItem
+    Screenshot    ${element}    ${OUTPUT_DIR}${/}element${element.name}.png
+    ${name} =    Get Attribute    ${element}    Name
+    Log To Console    Attribute: ${name}
+    # Clears set anchor above so the clicks would work on the current active window.
+    Clear Anchor
+    Control Window    UIDemo    # Handle: 5901414
+    Click
+    ...    type:ButtonControl and class:Button and name:Exit > type:TextControl and class:TextBlock and name:Exit
+    ...    timeout=1
+    # TODO: Add more actions to the task: slider, checkboxes, table (get/set vals).
+    [Teardown]    Close Current Window
+
+Resize window with Spotify
+    [Tags]  manual
+
+    Windows Run    ${EXE_SPOTIFY}
+    ${window} =    Control Window    executable:${EXE_SPOTIFY}
+    Log To Console    Spotify window: ${window}
+
+    Maximize Window
+    ${spotify_playcontrol} =    Set Variable
+    ...     name:"Player controls" > control:ButtonControl and name:
+    ${spotify_next} =   Set Variable    ${spotify_playcontrol}Next
+    FOR    ${_}    IN RANGE    3
+        Click    ${SPOTIFY_NEXT}
+        Sleep    3s
+    END
+
+    Minimize Window
+    Sleep    1s
+    Maximize Window
+    Sleep    2s
+    Foreground Window
+    Restore Window
+
+    [Teardown]    Close Current Window
+
+Notepad write text into a file
+    Windows Run    notepad
+    Control Window    subname:"- Notepad"
+    ${ver} =    Get OS Version
+    IF    "${ver}" == "11"
+        Click    Edit    wait_time=0.5
+        Click    Font    wait_time=0.5    # for some reason this only highlitghts the button
+        Click    Font    wait_time=2    # and this finally clicks it
+        Click    id:FontFamilyComboBox
+        Click    name:"Lucida Sans Unicode"    wait_time=0.5
+        Click    id:FontSizeComboBox
+        Click    name:"26"    wait_time=0.5
+        Click    name:"Back"
+    ELSE
+        Control Window    Font
+        Click    type:MenuBar name:Application > name:Format
+        Click    name:Font...
+        Select    type:ComboBox id:1136    Trebuchet MS
+        Select    type:ComboBox id:1138    28
+        Click    type:Button name:OK
+    END
+    Control Window    subname:"- Notepad"
+    Send Keys    keys={Ctrl}a{Del}
+    Send Keys    keys=Lets add some text to the notepad
+    Control Window    subname:"- Notepad"
+    IF    "${ver}" == "11"
+        Click    File    wait_time=0.3
+        Click    Save as
+        Click    Save as    wait_time=1.5
+    ELSE
+        Click    type:MenuBar name:Application > name:File
+        Click    type:MenuItem subname:"Save As"
+    END
+    Send Keys    keys=best-win-auto.txt{Enter}    interval=0.05
+    ${run} =    Run Keyword And Ignore Error    Control Window    Confirm Save As    timeout=0.5
+    IF    "${run}[0]" == "PASS"
+        Click    Yes    wait_time=0.3
+    END
+    Minimize Window    subname:"- Notepad"
+    [Teardown]    Close Current Window
+
+Control Window by handle
+    Log To Console    \nList Windows
+    ${win} =    List Windows
+    FOR    ${w}    IN    @{win}
+        Log To Console    ${w}
+    END
+    ${win} =    Control Window    handle:${win}[0][handle]    # handle of the first window in the list
+    Log To Console    Controlled window: ${win}
+
+Calculator result from recording
+    Windows Run    Calc
+    Control Window    Calculator    # Handle: 4066848
+
+    Calculator Standard View
+    Click    name:"Seven"
+    Click    name:"Eight"
+    Click    name:"Nine"
+    Click    name:"Plus"
+    Click    name:"One"
+    Click    name:"Two"
+    Click    name:"Three"
+    Click    name:"Equals"
+
+    [Teardown]    Close Current Window
+
+Write to Notepad in the background
+    [Setup]     Windows Run    Notepad
+
+    Windows Run    Calc
+    Clear Anchor
+    Control Window    subname:"- Notepad"    foreground=${False}
+    # All the following keyword calls will use the set anchor element as root locator,
+    #  UNLESS they specify a locator / root element explicitly or `Clear Anchor` is
+    #  used.
+    ${text_edit} =    Set Variable    regex:"Text (E|e)ditor"
+    Set Anchor    ${text_edit}
+
+    # Write in Notepad while having Calculator as active window.
+    Control Window    Calculator
+    # Clear Notepad edit window by writing initial text, then append rest of the text.
+    ${time} =    Get Time
+    Set Value    value=time now is ${time}    # clears when append=${False} (default)
+    Set Value    value= and it's task run time    append=${True}    newline=${True}
+    Set Value    value=this will appear on the 2nd line    append=${True}
+    Set Value    value=${EMPTY}    append=${True}    enter=${True}
+
+    Close Current Window    # this closes Calculator first (as active window)
+    [Teardown]    Close Window    subname:Notepad    # finally Notepad is closed too
+
+Test getting elements
+    Clear Anchor
+    ${ver} =    Get OS Version
+    ${desktop} =    Get Element
+    IF    "${ver}" == "11"
+        ${buttons} =    Get Elements    id:TaskbarFrameRepeater > type:Button    root_element=${desktop}
+    ELSE
+        ${buttons} =    Get Elements    name:"Running applications" > type:Button    root_element=${desktop}
+    END
+    Log To Console    \nList Taskbar applications\n
+    Log To Console    Desktop: ${desktop}
+    FOR    ${button}    IN    @{buttons}
+        Log To Console    App: ${button.name}
+    END
+
+Control window after closing linked root element
+    [Setup]    Keep open a single Notepad
+    ${window} =    Control Window    subname:Notepad control:WindowControl
+    Log    Controlling Notepad window: ${window}
+    Kill app by name    Notepad
+    Windows Run    Calc
+    # Tests against `COMError` fixes.
+    ${window} =    Control Window    subname:Calc    main=${False}
+    Log    Controlling Calculator window: ${window}
+    [Teardown]    Close Current Window    # closes Calculator (last active window)
+
+Tree printing and controlled anchor cleanup
+    Print Tree
+    Windows Run    Calc
+    ${win} =    Control Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
+    Set Anchor    ${win}
+    ${elem} =    Get Element    # pulls the anchor
+    Should Be Equal    ${elem.name}    Calculator
+    Close Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
+    # With the controlled Calculator closed and active window/anchor cleaned up, we
+    #    should get the Desktop element only.
+    ${elem} =    Get Element
+    Should Be Equal    ${elem.name}    Desktop 1
+
+Click Calculator Numeric Buttons
+    [Documentation]    Clicks all the numeric buttons in Calculator
+
+    Windows Run    Calc
+    Control Window    subname:Calc
+    @{buttons} =    Get Elements    id:NumberPad > class:Button
+    FOR    ${button}    IN    @{buttons}
+        ${is_numeric} =    Evaluate    "num" in "${button.item.AutomationId}"
+        IF    ${is_numeric}
+            Click    ${button}    wait_time=0.2
+        END
+    END
+
+    [Teardown]  Close Current Window
+
+Log All Calculator Buttons Matching Expression
+    [Documentation]    Logs all the buttons in the controlled window if they contain
+    ...     an 'o' in their name.
+    [Setup]   Windows Run    Calc
+
+    Control Window    subname:Calc
+    @{buttons} =    Get Elements    class:Button regex:.*o.*
+    ...     siblings_only=${False}  # this will search globally for such buttons
+    Log List    ${buttons}
+    ${length} =     Get Length      ${buttons}
+    Log To Console      Number of buttons: ${length}
+
+    [Teardown]  Close Current Window
+
+Retrieve Nested Notepad Elements
+    [Documentation]     Try to unfold menu items until being able to retrieve a deep
+    ...     element inside the tree as soon as it becomes visible.
+    [Setup]   Windows Run    Notepad
+
+    Control Window      subname:Notepad
+    Click   View
+    Click   Zoom
+    ${zoom_in} =   Get Element     Zoom in
+    Log To Console      "Zoom in" item: ${zoom_in}
+
+    [Teardown]  Close Current Window

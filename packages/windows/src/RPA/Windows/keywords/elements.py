@@ -80,7 +80,6 @@ class ElementKeywords(LibraryContext):
 
         :param locator: string locator or Control element
         :param max_depth: maximum depth level (defaults to 8)
-        :param encoding: defaults to "utf-8"
         :param capture_image_folder: if None images are not captured
         :param log_as_warnings: if set log messages are visible on the console
         """
