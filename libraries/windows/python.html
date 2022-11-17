@@ -935,7 +935,7 @@ Click   name:Five
 <span class="p">        </span><span class="c">library.send_keys(keys=&quot;96+4=&quot;)</span><span class="p"></span>
 <span class="p">        </span><span class="c">result = library.get_attribute(&quot;id:CalculatorResults&quot;, &quot;Name&quot;)</span><span class="p"></span>
 <span class="p">        </span><span class="c">print(result)</span><span class="p"></span>
-<span class="p">        </span><span class="c">buttons = library.get_elements(&quot;type:Group and name:&quot;Number pad&quot; &gt; type:Button&quot;)</span><span class="p"></span>
+<span class="p">        </span><span class="c">buttons = library.get_elements(&#39;type:Group and name:&quot;Number pad&quot; &gt; type:Button&#39;)</span><span class="p"></span>
 <span class="p">        </span><span class="c">for button in buttons:</span><span class="p"></span>
 <span class="p">            </span><span class="c">print(button)</span><span class="p"></span>
 <span class="p">    </span><span class="c">finally:</span><span class="p"></span>
