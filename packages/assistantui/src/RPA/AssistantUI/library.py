@@ -937,6 +937,7 @@ class AssistantUI:
         self.add_element(ElevatedButton(text=str(label), on_click=next_page))
         # Add a new "page" of elements
         self.elements.append([])
+        self.invisible_elements.append([])
 
     @keyword("Add submit buttons", tags=["input"])
     def add_submit_buttons(
