@@ -1046,7 +1046,7 @@ class AssistantUI:
         async def timeout_wrap():
             await asyncio.wait_for(exec_flet(), timeout=float(timeout))
 
-        asyncio.run(timeout_wrap)
+        asyncio.run(timeout_wrap())
 
         return self.results
 
