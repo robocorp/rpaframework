@@ -160,7 +160,8 @@ class AssistantUI:
         self.invisible_elements: List[List[Control]] = [[]]
         self.results: Result = {}
         self._pagination = 0
-        self._is_open : bool = False
+        self._is_open: bool = False
+        self.page: Optional[Page] = None
 
         try:
             # Prevent logging from keywords that return results
