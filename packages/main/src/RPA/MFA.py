@@ -191,7 +191,7 @@ class MFA:
         return authorization_url
 
     @keyword
-    def authorize_and_get_token(
+    def get_oauth_token(
         self, token_url: str, *, client_secret: str, auth_code: str
     ) -> dict:
         """Exchanges the code obtained previously with `Generate OAuth URL` for a
