@@ -446,7 +446,7 @@ class Exchange:
         )
         if not recipients and not cc and not bcc:
             raise NoRecipientsError(
-                "Atleast one address is required for 'recipients', 'cc' or 'bcc' parameter"  # noqa: E501
+                "At least one address is required for 'recipients', 'cc' or 'bcc' parameter"  # noqa: E501
             )
         self.logger.info("Sending message to %s", ",".join(recipients))
 

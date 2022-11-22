@@ -1,37 +1,55 @@
-from enum import Enum
 import logging
-from typing import Optional
+from enum import Enum
+from typing import List, Optional
+
+import jwt
 from pyotp import HOTP, TOTP
+from requests_oauthlib import OAuth2Session
 from robot.api.deco import keyword
+
 from RPA.Robocorp.Vault import Vault
 
 
 class OTPMode(Enum):
-    """Enumeration for type of TOP to use"""
+    """Enumeration for type of OTP to use."""
 
     TIME = "TIME"
     COUNTER = "COUNTER"
 
 
 class TOTPNotSetError(Exception):
-    "Error when TOTP (Time-based One-Time Password) has not been set"
+    """Raised when TOTP (Time-based One-Time Password) has not been set."""
+
+    ERROR_MSG = (
+        "TOTP (Time-based One-Time Password) can be set during the library "
+        "initialization. With `Use MFA Secret From Vault` keyword or with "
+        "`Set Time Based OTP` keyword."
+    )
 
 
 class HOTPNotSetError(Exception):
-    "Error when HOTP (HMAC One-Time Password) has not been set"
+    """Raised when HOTP (HMAC One-Time Password) has not been set."""
+
+    ERROR_MSG = (
+        "HOTP (HMAC One-Time Password) can be set during the library "
+        "initialization. With `Use MFA Secret From Vault` keyword or with "
+        "`Set Counter Based OTP` keyword."
+    )
 
 
-TOTP_NOT_SET_ERROR_MSG = """TOTP (Time-based One-Time Password) can be set in library initialization, with
-`Use MFA Secret From Vault` keyword or with `Set Time Based OTP` keyword."""
+class OAuth2NotSetError(Exception):
+    """Raised when OAuth2 session object isn't initialized but used."""
 
-HOTP_NOT_SET_ERROR_MSG = """HOTP (HMAC One-Time Password) can be set in library initialization, with
-`Use MFA Secret From Vault` keyword or with `Set Counter Based OTP` keyword."""
+    ERROR_MSG = (
+        "OAuth2 session required but not initialized, please call the "
+        "`Generate OAuth URL` keyword first."
+    )
 
 
 class MFA:
-    """*RPA.MFA* is a library for generating one-time passwords (OTP).
+    """*RPA.MFA* is a library intended mainly for generating one-time passwords (OTP).
 
-    Added on **rpaframework** version: 16.0.0
+    Added on **rpaframework** version: 19.3.0
 
     Based on the `pyotp <https://pypi.org/project/pyotp/>`_ package.
 
@@ -83,10 +101,11 @@ class MFA:
         mode: Optional[OTPMode] = OTPMode.TIME,
     ):
         self.logger = logging.getLogger(__name__)
-        self._hotp = None
-        self._totp = None
+        self._hotp: Optional[HOTP] = None
+        self._totp: Optional[TOTP] = None
         if vault_name and vault_key:
             self.use_mfa_secret_from_vault(vault_name, vault_key, mode)
+        self._oauth: Optional[OAuth2Session] = None
 
     @keyword
     def use_mfa_secret_from_vault(
@@ -130,7 +149,7 @@ class MFA:
         if otp_passcode:
             self.set_time_based_otp(otp_passcode)
         if not self._totp:
-            raise TOTPNotSetError(TOTP_NOT_SET_ERROR_MSG)
+            raise TOTPNotSetError(TOTPNotSetError.ERROR_MSG)
         return self._totp.now()
 
     @keyword
@@ -149,5 +168,36 @@ class MFA:
         if otp_passcode:
             self.set_counter_based_otp(otp_passcode)
         if not self._hotp:
-            raise HOTPNotSetError(HOTP_NOT_SET_ERROR_MSG)
+            raise HOTPNotSetError(HOTPNotSetError.ERROR_MSG)
         return self._hotp.at(counter)
+
+    @property
+    def oauth(self) -> OAuth2Session:
+        if not self._oauth:
+            raise OAuth2NotSetError(OAuth2NotSetError.ERROR_MSG)
+
+        return self._oauth
+
+    @keyword
+    def generate_oauth_url(
+        self, auth_url: str, *, client_id: str, redirect_uri: str, scope: str
+    ) -> str:
+        """Generates an authorization URL which must be opened by the user to start the
+        OAuth2 flow and obtain an authorization code as response.
+        """
+        scopes: List[str] = scope.split()
+        self._oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=scopes)
+        authorization_url, _ = self.oauth.authorization_url(auth_url)
+        return authorization_url
+
+    @keyword
+    def authorize_and_get_token(
+        self, token_url: str, *, client_secret: str, auth_code: str
+    ) -> dict:
+        """Exchanges the code obtained previously with `Generate OAuth URL` for a
+        token.
+        """
+        token = self.oauth.fetch_token(
+            token_url, client_secret=client_secret, code=auth_code
+        )
+        return token
