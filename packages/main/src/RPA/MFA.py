@@ -2,7 +2,6 @@ import logging
 from enum import Enum
 from typing import List, Optional
 
-import jwt
 from pyotp import HOTP, TOTP
 from requests_oauthlib import OAuth2Session
 from robot.api.deco import keyword
