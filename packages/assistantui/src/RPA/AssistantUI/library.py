@@ -160,7 +160,6 @@ class AssistantUI:
         self.invisible_elements: List[List[Control]] = [[]]
         self.results: Result = {}
         self._pagination = 0
-        self._is_open: bool = False
         self.page: Optional[Page] = None
 
         try:
@@ -1022,23 +1021,13 @@ class AssistantUI:
 
         # FIXME: support options
 
-        def close_event(e: flet.Event):
-            # TODO: because of docs:
-            # "If the user submitted the dialog, returns a result object.
-            # If the user closed the dialog window or ``timeout`` was reached,
-            # raises an exception."
-            # this needs to make a distinction between close and submit
-            self._is_open = False
-
         def run(page: Page):
             # page.theme_mode = "light"
             for element in self.current_elements:
                 page.add(element)
             for element in self.current_invisible_elements:
                 page.overlay.append(element)
-            page.on_disconnect = close_event  # disconnect seems to be for close and on_close for timeouts
             self.page = page
-            self._is_open = True
             page.update()
 
         async def exec_flet():
@@ -1050,150 +1039,3 @@ class AssistantUI:
         asyncio.run(timeout_wrap())
 
         return self.results
-
-    @keyword("Show dialog", tags=["dialog"])
-    def show_dialog(
-        self,
-        title: str = "Dialog",
-        height: Union[int, str] = "AUTO",
-        width: int = 480,
-        on_top: bool = False,
-        clear: bool = True,
-        debug: bool = False,
-    ) -> Dialog:
-        """Create a new dialog with all the defined elements, and show
-        it to the user. Does not block, but instead immediately returns.
-
-        The return value can later be used to wait for
-        the user to close the dialog and inspect the results.
-
-        :param title:  Title of dialog
-        :param height: Height of dialog (in pixels or 'AUTO')
-        :param width:  Width of dialog (in pixels)
-        :param on_top: Show dialog always on top of other windows
-        :param clear:  Remove all defined elements
-        :param debug:  Allow opening developer tools in Dialog window
-
-        By default the window has the title ``Dialog``, but it can be changed
-        with the argument ``title`` to any string.
-
-        The ``height`` argument accepts a static number in pixels, but
-        defaults to the string value ``AUTO``. In this mode the Dialog window
-        tries to automatically resize itself to fit the defined content.
-
-        In comparison, the ``width`` argument only accepts pixel values, as all
-        element types by default resize to fit the given window width.
-
-        With the ``clear`` argument it's possible to control if defined elements
-        should be cleared after the dialog has been created. It can be set
-        to ``False`` if the same content should be shown multiple times.
-
-        In certain applications it's useful to have the dialog always be
-        on top of already opened applications. This can be set with the
-        argument ``on_top``, which is disabled by default.
-
-        For development purposes the ``debug`` agument can be enabled to
-        allow opening browser developer tools.
-
-        If the dialog is still open when the execution ends, it's closed
-        automatically.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Add text input    name=username    label=Username
-            Add text input    name=address     label=Address
-            ${dialog}=    Show dialog    title=Input form
-            Open browser to form page
-            ${result}=    Wait dialog    ${dialog}
-            Insert user information      ${result.username}  ${result.address}
-        """
-        # FIXME: support options
-
-        def close_event(e: flet.Event):
-            # TODO: because of docs:
-            # "If the user submitted the dialog, returns a result object.
-            # If the user closed the dialog window or ``timeout`` was reached,
-            # raises an exception."
-            # this needs to make a distinction between close and submit
-            self._is_open = False
-
-        def run(page: Page):
-            # page.theme_mode = "light"
-            for element in self.current_elements:
-                page.add(element)
-            for element in self.current_invisible_elements:
-                page.overlay.append(element)
-            page.on_disconnect = close_event  # disconnect seems to be for close and on_close for timeouts
-            self.page = page
-            self._is_open = True
-            page.update()
-
-        async def exec_flet():
-            app(view=flet.FLET_APP, target=run)
-
-        async def timeout_wrap():
-            await asyncio.wait_for(exec_flet())
-
-        asyncio.run(timeout_wrap)
-
-        return self.results
-
-    @keyword("Wait dialog", tags=["dialog"])
-    def wait_dialog(self, dialog: Dialog, timeout: int = 300) -> Result:
-        """Wait for a dialog to complete that has been created with the
-        keyword ``Show dialog``.
-
-        :param dialog:  An instance of a Dialog
-        :param timeout: Time to wait for dialog to complete, in seconds
-
-        Blocks until a user has closed the dialog or until ``timeout``
-        amount of seconds has been reached.
-
-        If the user submitted the dialog, returns a result object.
-        If the user closed the dialog window or ``timeout`` was reached,
-        raises an exception.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Add text input    name=username    label=Username
-            Add text input    name=address     label=Address
-            ${dialog}=    Show dialog    title=Input form
-            Open browser to form page
-            ${result}=    Wait dialog    ${dialog}
-            Insert user information      ${result.username}  ${result.address}
-        """
-        for _ in range(1, timeout):
-            if not self._is_open:
-                return dialog.result()
-            time.sleep(1)
-        raise TimeoutError("dialog didn't close in time")
-
-    @keyword("Close dialog", tags=["dialog"])
-    def close_dialog(self, dialog: Dialog) -> None:
-        """Close a dialog that has been created with the keyword
-        ``Show dialog``.
-
-        :param dialog: An instance of a Dialog
-
-        Calling this keyword is not required if the user correctly
-        submits a dialog or closes it manually. However, it can be used
-        to forcefully hide a dialog if the result is no longer relevant.
-
-        If a forcefully closed dialog is waited, it will throw
-        an exception to indicate that it was closed before receiving
-        a valid result.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            # Display notification dialog while operation runs
-            ${dialog}=    Show dialog    title=Please wait
-            Run process that takes a while
-            Close dialog    ${dialog}
-        """
-        dialog.stop()
