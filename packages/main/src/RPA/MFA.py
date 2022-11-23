@@ -191,12 +191,12 @@ class MFA:
 
     @keyword
     def get_oauth_token(
-        self, token_url: str, *, client_secret: str, auth_code: str
+        self, token_url: str, *, client_secret: str, auth_code: str, **kwargs
     ) -> dict:
         """Exchanges the code obtained previously with `Generate OAuth URL` for a
         token.
         """
         token = self.oauth.fetch_token(
-            token_url, client_secret=client_secret, code=auth_code
+            token_url, client_secret=client_secret, code=auth_code, **kwargs
         )
         return token

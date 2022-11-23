@@ -31,6 +31,7 @@ from exchangelib.folders import Inbox
 from oauthlib.oauth2 import OAuth2Token
 
 from RPA.Email.common import counter_duplicate_path
+from RPA.MFA import MFA
 from RPA.Robocorp.Vault import Vault
 
 
@@ -50,6 +51,7 @@ EMAIL_CRITERIA_KEYS = {
 }
 
 lib_vault = Vault()
+lib_mfa = MFA()
 
 
 def mailbox_to_email_address(mailbox):
@@ -238,6 +240,11 @@ class Exchange:
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
+    OAUTH_AUTH_URL = "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize"
+    OAUTH_REDIRECT_URI = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    OAUTH_SCOPE = "offline_access https://outlook.office365.com/.default"
+    OAUTH_TOKEN_URL = "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token"
 
     def __init__(
         self, vault_name: Optional[str] = None, vault_token_key: Optional[str] = None
@@ -993,3 +1000,26 @@ class Exchange:
             raise ValueError("Filename extension needs to be '.eml'")
         with open(absolute_filepath, "wb") as message_out:
             message_out.write(message["mime_content"])
+
+    def generate_oauth_url(self, client_id: str, tenant: str = "common") -> str:
+        """Generates an authorization URL which must be opened by the user to start the
+        OAuth2 flow and obtain an authorization code as response.
+        """
+        auth_url = self.OAUTH_AUTH_URL.format(tenant=tenant)
+        return lib_mfa.generate_oauth_url(
+            auth_url,
+            client_id=client_id,
+            redirect_uri=self.OAUTH_REDIRECT_URI,
+            scope=self.OAUTH_SCOPE
+        )
+
+    def get_oauth_token(
+        self, client_secret: str, auth_code: str, tenant: str = "common"
+    ) -> dict:
+        """Exchanges the code obtained previously with `Generate OAuth URL` for a
+        token.
+        """
+        token_url = self.OAUTH_TOKEN_URL.format(tenant=tenant)
+        return lib_mfa.get_oauth_token(
+            token_url, client_secret=client_secret, auth_code=auth_code, include_client_id=True
+        )
