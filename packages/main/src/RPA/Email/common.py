@@ -1,7 +1,41 @@
 """Common utilities shared by any e-mail related library."""
 
 
+from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
+
+
+class OAuthProvider(Enum):
+    """OAuth2 tested providers."""
+
+    GOOGLE = "google"
+    MICROSOFT = "microsoft"
+
+
+@dataclass
+class OAuthConfig:
+
+    auth_url: str
+    redirect_uri: str
+    scope: str
+    token_url: str
+
+
+OAUTH_PROVIDERS = {
+    OAuthProvider.GOOGLE: OAuthConfig(
+        auth_url="https://accounts.google.com/o/oauth2/auth",
+        redirect_uri="urn:ietf:wg:oauth:2.0:oob",
+        scope="https://mail.google.com",
+        token_url="https://accounts.google.com/o/oauth2/token",
+    ),
+    OAuthProvider.MICROSOFT: OAuthConfig(
+        auth_url="https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize",
+        redirect_uri="https://login.microsoftonline.com/common/oauth2/nativeclient",
+        scope="offline_access https://outlook.office365.com/.default",
+        token_url="https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",
+    ),
+}
 
 
 def counter_duplicate_path(file_path: Path) -> Path:

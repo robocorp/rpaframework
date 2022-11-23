@@ -7,6 +7,7 @@ from requests_oauthlib import OAuth2Session
 from robot.api.deco import keyword
 
 from RPA.Robocorp.Vault import Vault
+from RPA.RobotLogListener import RobotLogListener
 
 
 class OTPMode(Enum):
@@ -99,6 +100,9 @@ class MFA:
         vault_key: Optional[str] = None,
         mode: Optional[OTPMode] = OTPMode.TIME,
     ):
+        listener = RobotLogListener()
+        listener.register_protected_keywords(["RPA.MFA.get_oauth_token"])
+
         self.logger = logging.getLogger(__name__)
         self._hotp: Optional[HOTP] = None
         self._totp: Optional[TOTP] = None
@@ -191,12 +195,30 @@ class MFA:
 
     @keyword
     def get_oauth_token(
-        self, token_url: str, *, client_secret: str, auth_code: str, **kwargs
+        self, token_url: str, *, client_secret: str, response_url: str, **kwargs
     ) -> dict:
         """Exchanges the code obtained previously with `Generate OAuth URL` for a
         token.
         """
         token = self.oauth.fetch_token(
-            token_url, client_secret=client_secret, code=auth_code, **kwargs
+            token_url,
+            client_secret=client_secret,
+            authorization_response=response_url,
+            **kwargs,
         )
-        return token
+        return dict(token)
+
+    @keyword
+    def refresh_oauth_token(
+        self,
+        token_url: str,
+        *,
+        client_id: Optional[str] = None,
+        client_secret: str,
+        refresh_token: Optional[str] = None,
+    ) -> dict:
+        self._oauth = self._oauth or OAuth2Session(client_id)
+        token = self.oauth.refresh_token(
+            token_url, client_secret=client_secret, refresh_token=refresh_token
+        )
+        return dict(token)
