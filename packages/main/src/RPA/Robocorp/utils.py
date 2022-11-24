@@ -7,10 +7,10 @@ import urllib.parse as urlparse
 from json import JSONDecodeError  # pylint: disable=no-name-in-module
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 import requests
 from requests.exceptions import HTTPError
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from tenacity import (
     before_sleep_log,
     retry,
@@ -18,6 +18,8 @@ from tenacity import (
     stop_after_attempt,
     wait_random_exponential,
 )
+
+from RPA.RobotLogListener import RobotLogListener
 
 
 JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
@@ -249,3 +251,10 @@ class Requests:
     # DELETE
     def delete(self, *args, **kwargs) -> requests.Response:
         return self._request(requests.delete, *args, **kwargs)
+
+
+def protect_keywords(base: str, keywords: List[str]):
+    """Protects from logging a list of `keywords` relative to `base`."""
+    to_protect = [f"{base}.{keyword}" for keyword in keywords]
+    listener = RobotLogListener()
+    listener.register_protected_keywords(to_protect)

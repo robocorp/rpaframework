@@ -31,9 +31,8 @@ from exchangelib.folders import Inbox
 from oauthlib.oauth2 import OAuth2Token
 
 from RPA.Email.common import OAuthMixin, OAuthProvider, counter_duplicate_path
-from RPA.MFA import MFA
 from RPA.Robocorp.Vault import Vault
-from RPA.RobotLogListener import RobotLogListener
+from RPA.Robocorp.utils import protect_keywords
 
 
 EMAIL_CRITERIA_KEYS = {
@@ -52,7 +51,6 @@ EMAIL_CRITERIA_KEYS = {
 }
 
 lib_vault = Vault()
-lib_mfa = MFA()
 
 
 def mailbox_to_email_address(mailbox):
@@ -242,20 +240,20 @@ class Exchange(OAuthMixin):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
+    TO_PROTECT = ["authorize"] + OAuthMixin.TO_PROTECT
+
     def __init__(
         self,
         vault_name: Optional[str] = None,
         vault_token_key: Optional[str] = None,
         tenant: Optional[str] = None,
     ) -> None:
-        listener = RobotLogListener()
-        listener.register_protected_keywords(
-            ["RPA.Email.Exchange.authorize", "RPA.Email.Exchange.get_oauth_token"]
-        )
+        # Init the OAuth2 support. (mandatory usage)
+        super().__init__(OAuthProvider.MICROSOFT, tenant=tenant or "common")
+
+        protect_keywords("RPA.Email.Exchange", self.TO_PROTECT)
         self.logger = logging.getLogger(__name__)
 
-        # Init the OAuth2 support.
-        super().__init__(OAuthProvider.MICROSOFT, tenant=tenant or "common")
         self._vault_name = vault_name
         self._vault_token_key = vault_token_key
 

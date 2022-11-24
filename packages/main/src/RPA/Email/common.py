@@ -35,7 +35,7 @@ class OAuthConfig:
 OAUTH_PROVIDERS = {
     OAuthProvider.GOOGLE: OAuthConfig(
         auth_url="https://accounts.google.com/o/oauth2/auth",
-        redirect_uri="urn:ietf:wg:oauth:2.0:oob",
+        redirect_uri="https://developers.google.com/oauthplayground",
         scope="https://mail.google.com",
         token_url="https://accounts.google.com/o/oauth2/token",
     ),
@@ -50,6 +50,12 @@ OAUTH_PROVIDERS = {
 
 class OAuthMixin:
     """Common keywords for the Email libraries, enabling OAuth2 support."""
+
+    TO_PROTECT = [
+        "get_oauth_token",
+        "refresh_oauth_token",
+        "generate_oauth_string",
+    ]
 
     def __init__(self, provider: OAuthProviderType, tenant: Optional[str]):
         self._oauth_provider = OAUTH_PROVIDERS[OAuthProvider(provider)]
@@ -71,6 +77,8 @@ class OAuthMixin:
             client_id=client_id,
             redirect_uri=self._oauth_provider.redirect_uri,
             scope=self._oauth_provider.scope,
+            access_type="offline",
+            prompt="consent",
         )
 
     def get_oauth_token(self, client_secret: str, response_url: str) -> dict:

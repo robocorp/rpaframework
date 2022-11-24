@@ -38,7 +38,7 @@ from RPA.Email.common import (
     OAuthProviderType,
     counter_duplicate_path,
 )
-from RPA.RobotLogListener import RobotLogListener
+from RPA.Robocorp.utils import protect_keywords
 
 
 FilePath = Union[str, Path]
@@ -218,6 +218,8 @@ class ImapSmtp(OAuthMixin):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
+    TO_PROTECT = ["authorize", "set_credentials"] + OAuthMixin.TO_PROTECT
+
     def __init__(
         self,
         smtp_server: Optional[str] = None,
@@ -230,24 +232,23 @@ class ImapSmtp(OAuthMixin):
         provider: OAuthProviderType = OAuthProvider.GOOGLE,
         tenant: Optional[str] = None,
     ) -> None:
-        listener = RobotLogListener()
-        listener.register_protected_keywords(
-            ["RPA.Email.ImapSmtp.authorize", "RPA.Email.ImapSmtp.set_credentials"]
-        )
-
-        # Init the OAuth2 support.
+        # Init the OAuth2 support. (ready if used)
         super().__init__(provider, tenant=tenant)
 
+        protect_keywords("RPA.Email.ImapSmtp", self.TO_PROTECT)
         self.logger = logging.getLogger(__name__)
+
         self.smtp_server = smtp_server
         self.imap_server = imap_server if imap_server else smtp_server
         self.smtp_port = int(smtp_port)
         self.imap_port = int(imap_port)
+        self.encoding = encoding
+        self.account = self.password = None
         self.set_credentials(account, password)
+
         self.smtp_conn = None
         self.imap_conn = None
         self.selected_folder = None
-        self.encoding = encoding
 
     def __del__(self) -> None:
         if self.smtp_conn:
@@ -266,7 +267,9 @@ class ImapSmtp(OAuthMixin):
                 pass
             self.imap_conn = None
 
-    def set_credentials(self, account: str = None, password: str = None) -> None:
+    def set_credentials(
+        self, account: Optional[str] = None, password: Optional[str] = None
+    ) -> None:
         """Set credentials
 
         :param account: user account as string, defaults to None
@@ -279,7 +282,6 @@ class ImapSmtp(OAuthMixin):
             Set Credentials   ${username}   ${password}
             Authorize
         """
-
         self.account = account
         self.password = password
 
