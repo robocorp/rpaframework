@@ -41,10 +41,10 @@ class Windows(WindowsElementsMixin, DynamicCore):
         channels:
           - conda-forge
         dependencies:
-          - python=3.7.5
-          - pip=20.1
+          - python=3.9.13
+          - pip=22.1.2
           - pip:
-            - rpaframework-windows==2.0.0
+            - rpaframework-windows==6.2.0
 
 
     **About terminology**
