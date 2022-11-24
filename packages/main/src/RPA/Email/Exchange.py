@@ -1,7 +1,6 @@
 import datetime
 import email
 import logging
-import os
 import re
 import time
 from email import policy  # pylint: disable=no-name-in-module
@@ -31,7 +30,7 @@ from exchangelib import (
 from exchangelib.folders import Inbox
 from oauthlib.oauth2 import OAuth2Token
 
-from RPA.Email.common import OAUTH_PROVIDERS, OAuthProvider, counter_duplicate_path
+from RPA.Email.common import OAuthMixin, OAuthProvider, counter_duplicate_path
 from RPA.MFA import MFA
 from RPA.Robocorp.Vault import Vault
 from RPA.RobotLogListener import RobotLogListener
@@ -91,7 +90,7 @@ class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
         self._on_token_refresh(access_token)
 
 
-class Exchange:
+class Exchange(OAuthMixin):
     """`Exchange` is a library for sending, reading, and deleting emails.
     `Exchange` is interfacing with Exchange Web Services (EWS).
 
@@ -243,27 +242,27 @@ class Exchange:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    OAUTH_PROVIDER = OAUTH_PROVIDERS[OAuthProvider.MICROSOFT]
-
     def __init__(
-        self, vault_name: Optional[str] = None, vault_token_key: Optional[str] = None
+        self,
+        vault_name: Optional[str] = None,
+        vault_token_key: Optional[str] = None,
+        tenant: Optional[str] = None,
     ) -> None:
         listener = RobotLogListener()
         listener.register_protected_keywords(
             ["RPA.Email.Exchange.authorize", "RPA.Email.Exchange.get_oauth_token"]
         )
-
         self.logger = logging.getLogger(__name__)
+
+        # Init the OAuth2 support.
+        super().__init__(OAuthProvider.MICROSOFT, tenant=tenant or "common")
+        self._vault_name = vault_name
+        self._vault_token_key = vault_token_key
+
         self.credentials = None
         self.config = None
         self.account = None
         self._saved_attachments = []
-
-        # OAuth2 related.
-        self._vault_name = vault_name
-        self._vault_token_key = vault_token_key
-        # NOTE(cmin764): https://github.com/requests/requests-oauthlib/issues/387#issuecomment-1325131664
-        os.environ["OAUTHLIB_RELAX_TOKEN_SCOPE"] = "1"
 
     def on_token_refresh(self, token: OAuth2Token):
         """Callable you can override in order to save the newly obtained token in a
@@ -1007,29 +1006,3 @@ class Exchange:
             raise ValueError("Filename extension needs to be '.eml'")
         with open(absolute_filepath, "wb") as message_out:
             message_out.write(message["mime_content"])
-
-    def generate_oauth_url(self, client_id: str, tenant: str = "common") -> str:
-        """Generates an authorization URL which must be opened by the user to start the
-        OAuth2 flow and obtain an authorization code as response.
-        """
-        auth_url = self.OAUTH_PROVIDER.auth_url.format(tenant=tenant)
-        return lib_mfa.generate_oauth_url(
-            auth_url,
-            client_id=client_id,
-            redirect_uri=self.OAUTH_PROVIDER.redirect_uri,
-            scope=self.OAUTH_PROVIDER.scope,
-        )
-
-    def get_oauth_token(
-        self, client_secret: str, response_url: str, tenant: str = "common"
-    ) -> dict:
-        """Exchanges the code obtained previously with `Generate OAuth URL` for a
-        token.
-        """
-        token_url = self.OAUTH_PROVIDER.token_url.format(tenant=tenant)
-        return lib_mfa.get_oauth_token(
-            token_url,
-            client_secret=client_secret,
-            response_url=response_url,
-            include_client_id=True,
-        )

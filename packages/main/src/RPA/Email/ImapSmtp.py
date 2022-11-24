@@ -32,21 +32,22 @@ from typing import Any, BinaryIO, List, Optional, Tuple, Union
 
 from htmldocx import HtmlToDocx
 
-from RPA.Email.common import OAUTH_PROVIDERS, OAuthProvider, counter_duplicate_path
-from RPA.MFA import MFA
+from RPA.Email.common import (
+    OAuthMixin,
+    OAuthProvider,
+    OAuthProviderType,
+    counter_duplicate_path,
+)
 from RPA.RobotLogListener import RobotLogListener
 
 
 FilePath = Union[str, Path]
-ProviderType = Union[OAuthProvider, str]
 
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
 FLAG_DELETED = "\\Deleted"
 FLAG_SEEN = "\\Seen"
 FLAG_FLAGGED = "\\Flagged"
 FLAG_TRASH = "\\Trash"
-
-lib_mfa = MFA()
 
 
 class AttachmentPosition(Enum):
@@ -129,7 +130,7 @@ def smtp_connection(f):
     return wrapper
 
 
-class ImapSmtp:
+class ImapSmtp(OAuthMixin):
     """`ImapSmtp` is a library for sending, reading, and deleting emails.
     `ImapSmtp` is interfacing with SMTP and IMAP protocols.
 
@@ -219,19 +220,23 @@ class ImapSmtp:
 
     def __init__(
         self,
-        smtp_server: str = None,
+        smtp_server: Optional[str] = None,
         smtp_port: int = 587,
-        imap_server: str = None,
+        imap_server: Optional[str] = None,
         imap_port: int = 993,
-        account: str = None,
-        password: str = None,
+        account: Optional[str] = None,
+        password: Optional[str] = None,
         encoding: str = "utf-8",
-        provider: ProviderType = OAuthProvider.GOOGLE,
+        provider: OAuthProviderType = OAuthProvider.GOOGLE,
+        tenant: Optional[str] = None,
     ) -> None:
         listener = RobotLogListener()
         listener.register_protected_keywords(
             ["RPA.Email.ImapSmtp.authorize", "RPA.Email.ImapSmtp.set_credentials"]
         )
+
+        # Init the OAuth2 support.
+        super().__init__(provider, tenant=tenant)
 
         self.logger = logging.getLogger(__name__)
         self.smtp_server = smtp_server
@@ -243,7 +248,6 @@ class ImapSmtp:
         self.imap_conn = None
         self.selected_folder = None
         self.encoding = encoding
-        self.oauth_provider = OAUTH_PROVIDERS[OAuthProvider(provider)]
 
     def __del__(self) -> None:
         if self.smtp_conn:
@@ -1804,39 +1808,3 @@ class ImapSmtp:
         self.logger.info("Writing converted document into: %s", output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         docx.save(output_path)
-
-    def generate_oauth_url(self, client_id: str) -> str:
-        """Generates an authorization URL which must be opened by the user to start the
-        OAuth2 flow and obtain an authorization code as response.
-        """
-        return lib_mfa.generate_oauth_url(
-            self.oauth_provider.auth_url,
-            client_id=client_id,
-            redirect_uri=self.oauth_provider.redirect_uri,
-            scope=self.oauth_provider.scope,
-        )
-
-    def get_oauth_token(self, client_secret: str, response_url: str) -> dict:
-        """Exchanges the code obtained previously with `Generate OAuth URL` for a
-        token.
-        """
-        return lib_mfa.get_oauth_token(
-            self.oauth_provider.token_url,
-            client_secret=client_secret,
-            response_url=response_url,
-            include_client_id=True,
-        )
-
-    def refresh_oauth_token(
-        self, client_id: str, client_secret: str, token: dict
-    ) -> dict:
-        return lib_mfa.refresh_oauth_token(
-            self.oauth_provider.token_url,
-            client_id=client_id,
-            client_secret=client_secret,
-            refresh_token=token["refresh_token"],
-        )
-
-    def generate_oauth_string(self, username: str, access_token: str) -> str:
-        auth_string = f"user={username}\1auth=Bearer {access_token}\1\1"
-        return base64.b64encode(auth_string.encode()).decode()
