@@ -161,6 +161,7 @@ class AssistantUI:
         self.results: Result = {}
         self._pagination = 0
         self.page: Optional[Page] = None
+        self._conn = self._preload_flet()
 
         try:
             # Prevent logging from keywords that return results
@@ -193,6 +194,36 @@ class AssistantUI:
 
         self.elements.append(element)
     """
+
+    def _preload_flet(self):
+        return flet.flet._connect_internal(
+            page_name="",
+            host=None,
+            port=0,
+            is_app=True,
+            permissions=None,
+            assets_dir=None,
+            upload_dir=None,
+            web_renderer="canvaskit",
+            route_url_strategy="hash",
+        )
+
+    def _show_flet(self, target):
+        def on_session_created(conn, session_data):
+            page = Page(conn, session_data.sessionID)
+            conn.sessions[session_data.sessionID] = page
+            try:
+                assert target is not None
+                target(page)
+            except Exception as e:
+                page.error(f"There was an error while rendering the page: {e}")
+    
+        self._conn.on_session_created = on_session_created
+        fvp = flet.flet._open_flet_view(self._conn.page_url, False)
+        try:
+            fvp.wait()
+        except Exception:
+            pass
 
     def _make_flet_event_handler(self, name: str):
         def change_listener(e: FletEvent):
@@ -1030,12 +1061,6 @@ class AssistantUI:
             self.page = page
             page.update()
 
-        async def exec_flet():
-            app(view=flet.FLET_APP, target=run)
-
-        async def timeout_wrap():
-            await asyncio.wait_for(exec_flet(), timeout=float(timeout))
-
-        asyncio.run(timeout_wrap())
+        self._show_flet(run)
 
         return self.results
