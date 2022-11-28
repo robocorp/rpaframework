@@ -7,6 +7,23 @@ Release notes
 
 - Library **RPA.Slack** (:issue:`711`): New keyword ``Slack Raw Message`` adds support for 
   ``blocks`` message property by allowing user to set message dictionary.
+- Library **RPA.Excel.Files** (:pr:`712`): Add new keywords for the library. 
+  List of new keywords:
+
+  - Set Cell Formula
+  - Copy Cell Values
+  - Delete Columns
+  - Delete Rows
+  - Insert Rows Before
+  - Insert Rows After
+  - Insert Columns After
+  - Insert Columns Before
+  - Move Range
+  - Clear Cell Range
+  - Set Styles
+  - Auto Size Columns
+  - Hide Columns
+  - Show Columns
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

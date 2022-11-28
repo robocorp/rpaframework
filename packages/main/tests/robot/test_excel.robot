@@ -42,6 +42,12 @@ Append Rows to Target
     Should Be Equal As Integers    ${expected_empty_row}    ${empty_row_number}
     Close Workbook
 
+Create Extended Test Excel
+    [Arguments]    ${target_filename}
+    ${target_file}=    Set Variable    ${OUTPUT_DIR}${/}${target_filename}
+    Copy File    ${EXCELS}${/}extended.xlsx    ${target_file}
+    [Return]    ${target_file}
+
 *** Tasks ***
 Test single row sheet
     # "Single" in this case acts like header for a 1x1 table.
@@ -92,3 +98,101 @@ Test appending XLS content when formatted cell is considered empty
     Append Rows To Target    ${rows1}    ${target_file}    12    ${True}
     ${rows2}=    Read Rows From Worksheet    data2.xls
     Append Rows To Target    ${rows2}    ${target_file}    22    ${True}
+
+Test Clear Cell Ranges
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_clear_cells.xlsx
+    Open Workbook    ${testfile}
+    Clear Cell Range    A2
+    Clear Cell Range    B3:C3
+    Save Workbook
+
+Test Styles
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_styles.xlsx
+    Open Workbook    ${testfile}
+    Set Styles    A1:G4
+    ...    bold=True
+    ...    cell_fill=lightblue
+    ...    align_horizontal=center
+    ...    number_format=h:mm
+    ...    font_name=Arial
+    ...    size=24
+    Save Workbook
+
+Test Auto Size
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_autosize.xlsx
+    Open Workbook    ${testfile}
+    Auto Size Columns    B    D    16
+    Auto Size Columns    A    width=32
+    Save Workbook
+
+Test Delete Rows
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_delete_rows.xlsx
+    Open Workbook    ${testfile}
+    Delete Rows    2
+    Save Workbook
+
+Test Insert Column
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_insert_column.xlsx
+    Open Workbook    ${testfile}
+    Insert Columns After    C    2
+    Insert Columns Before    C    2
+    Save Workbook
+
+Test Copy Cell Values
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_copy_cells.xlsx
+    Open Workbook    ${testfile}
+    Copy Cell Values    A1:D4    J5
+    Save Workbook
+
+Test Hide Columns
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_hidden.xlsx
+    Open Workbook    ${testfile}
+    Hide Columns    B
+    Save Workbook
+
+Test Unhide Columns
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_unhidden.xlsx
+    Open Workbook    ${testfile}
+    Unhide Columns    B
+    Save Workbook
+
+Test Set Cell Formula
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_formulas_transpose_true.xlsx
+    Open Workbook    ${testfile}
+    Set Cell Formula    E2:E10    =B2+5    True
+    Save Workbook
+    ${testfile}=    Create Extended Test Excel    test_formulas_transpose_false.xlsx
+    Open Workbook    ${testfile}
+    Set Cell Formula    E2:E10    =B2+5
+    Save Workbook
+
+Test Delete Columns
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_delete_columns.xlsx
+    Open Workbook    ${testfile}
+    Delete Columns    G
+    Save Workbook
+
+Test Insert Rows
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_insert_rows.xlsx
+    Open Workbook    ${testfile}
+    Insert Rows Before    1    3
+    Insert Rows After    1    3
+    Save Workbook
+
+Test Move Range
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_move_range.xlsx
+    Open Workbook    ${testfile}
+    Move Range    A1:D4    3
+    Save Workbook

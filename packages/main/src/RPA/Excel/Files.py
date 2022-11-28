@@ -1,5 +1,7 @@
+# pylint: disable=too-many-lines
 import logging
 import pathlib
+import re
 from collections import defaultdict
 from contextlib import contextmanager
 from io import BytesIO
@@ -8,10 +10,16 @@ from typing import Any, List, Optional, Union
 import openpyxl
 import xlrd
 import xlwt
-from openpyxl.utils import get_column_letter
-from openpyxl.utils.exceptions import InvalidFileException
-from PIL import Image
+
+from PIL import Image, ImageColor
 from xlutils.copy import copy as xlutils_copy
+from openpyxl.worksheet.cell_range import CellRange
+from openpyxl.utils import get_column_letter, column_index_from_string
+from openpyxl.utils import cell as utils_cell
+from openpyxl.utils.exceptions import InvalidFileException
+from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl.styles.colors import Color as xlsColor
+from openpyxl.formula.translate import Translator
 from RPA.Tables import Table, Tables
 
 
@@ -172,6 +180,13 @@ class Files:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.workbook = None
+
+    def require_open_xlsx_workbook(self, keyword_name: str):
+        assert self.workbook, "No active workbook"
+        if isinstance(self.workbook, XlsWorkbook):
+            raise NotImplementedError(
+                f"Keyword '{keyword_name}' does not support XLS files"
+            )
 
     def _load_workbook(
         self, path: str, data_only: bool, read_only: bool
@@ -1004,14 +1019,13 @@ class Files:
 
         self.workbook.insert_image(row, column, image, name)
 
-    # Old keyword names, deprecate at some point:
-
     def get_worksheet_value(
         self, row: int, column: Union[str, int], name: Optional[str] = None
     ) -> Any:
         """Alias for keyword ``Get cell value``, see the original keyword
         for documentation.
         """
+        # Old keyword name, deprecate at some point
         return self.get_cell_value(row, column, name)
 
     def set_worksheet_value(
@@ -1025,7 +1039,572 @@ class Files:
         """Alias for keyword ``Set cell value``, see the original keyword
         for documentation.
         """
+        # Old keyword name, deprecate at some point
         return self.set_cell_value(row, column, value, name, fmt)
+
+    def clear_cell_range(
+        self,
+        range_string: str,
+    ):
+        """Clear cell values for a given range.
+
+        :param range_string: single cell or range of cells
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # area of cells
+            Clear Cell Range    A9:A100
+            # single cell
+            Clear Cell Range    A2
+
+        .. code-block:: python
+
+            lib.clear_cell_range("A1")
+            lib.clear_cell_range("B2:B50")
+        """
+        self.require_open_xlsx_workbook("clear_cell_range")
+        cr = CellRange(range_string=range_string)
+        for row, acell in list(cr.cells):
+            self.workbook.book.active.cell(row, acell).value = None
+
+    def delete_rows(self, start: int, end: Optional[int] = None):
+        """Delete row or rows beginning from start row number to
+        possible end row number.
+
+        :param start: row number to start deletion from
+        :param end: optional row number for last row to delete
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Delete Rows   2       # delete row 2
+            Delete Rows   5  10   # delete rows 5-10
+
+        .. code-block:: python
+
+            lib.delete_rows(2)
+            lib.delete_rows(5,10)
+        """
+        self.require_open_xlsx_workbook("delete_rows")
+        amount = (end - start + 1) if end else 1
+        self.workbook.book.active.delete_rows(start, amount)
+
+    def delete_columns(
+        self, start: Union[int, str], end: Optional[Union[int, str]] = None
+    ):
+        """Delete column or columns beginning from start column number/name to
+        possible end column number/name.
+
+        :param start: column number or name to start deletion from
+        :param end: optional column number or name for last column to delete
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Delete Columns   C       # delete column C
+            Delete Columns   3       # delete column 3 (same as C)
+            Delete Columns   E  AA   # delete rows E-AA
+
+        .. code-block:: python
+
+            lib.delete_columns("D")
+            lib.delete_rows(1, "JJ")
+        """
+        self.require_open_xlsx_workbook("delete_columns")
+        start_column_index = (
+            start if isinstance(start, int) else column_index_from_string(start)
+        )
+        amount = 1
+        if end:
+            end_column_index = (
+                end if isinstance(end, int) else column_index_from_string(end)
+            )
+            amount = end_column_index - start_column_index + 1
+        self.workbook.book.active.delete_cols(start_column_index, amount)
+
+    def insert_columns_before(self, column: Union[int, str], amount: int = 1):
+        """Insert column or columns before a column number/name.
+
+        :param column: insert before this column
+        :param amount: number of columns to insert, default 1
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Insert Columns Before   C      # insert 1 column before column C
+            Insert Columns Before   A  3   # insert 3 columns before column A
+
+        .. code-block:: python
+
+            lib.insert_columns_before("C")
+            lib.insert_columns_before("A", 3)
+        """
+        self.require_open_xlsx_workbook("insert_columns_before")
+
+        column_index = (
+            column_index_from_string(column) if isinstance(column, str) else column
+        )
+        self.workbook.book.active.insert_cols(column_index, amount)
+
+    def insert_columns_after(self, column: Union[int, str], amount: int = 1):
+        """Insert column or columns after a column number/name.
+
+        :param column: insert after this column
+        :param amount: number of columns to insert, default 1
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Insert Columns After   C      # insert 1 column after column C
+            Insert Columns Before   A  3   # insert 3 columns after column A
+
+        .. code-block:: python
+
+            lib.insert_columns_after("C")
+            lib.insert_columns_after("A", 3)
+        """
+        self.require_open_xlsx_workbook("insert_columns_after")
+
+        column_index = (
+            column_index_from_string(column) if isinstance(column, str) else column
+        )
+        self.workbook.book.active.insert_cols(column_index + amount - 1, amount)
+
+    def insert_rows_before(self, row: int, amount: int = 1):
+        """Insert row or rows before a row number.
+
+        :param row: insert before this row
+        :param amount: number of rows to insert, default 1
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Insert Rows Before   3      # insert 1 row before row 3
+            Insert Rows Before   1  3   # insert 3 rows before row 1
+
+        .. code-block:: python
+
+            lib.insert_rows_before(1)
+            lib.insert_rows_before(1, 3)
+        """
+        self.require_open_xlsx_workbook("insert_rows_before")
+
+        self.workbook.book.active.insert_rows(row, amount)
+
+    def insert_rows_after(self, row: int, amount: int = 1):
+        """Insert row or rows after a row number.
+
+        :param row: insert after this row
+        :param amount: number of rows to insert, default 1
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Insert Rows After   3      # insert 1 row after row 3
+            Insert Rows After   1  3   # insert 3 rows after row 1
+
+        .. code-block:: python
+
+            lib.insert_rows_after(1)
+            lib.insert_rows_after(1, 3)
+        """
+        self.require_open_xlsx_workbook("insert_rows_after")
+
+        self.workbook.book.active.insert_rows(row + amount - 1, amount)
+
+    def copy_cell_values(self, source_range: str, target: str):
+        """Copy cells from source to target.
+
+        :param source_range: single cell or range of cells
+        :param target: copy to this cell
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Copy Cell Values   A1:D4   G10
+
+        .. code-block:: python
+
+            lib.copy_cell_values("A1:D4", "G10")
+        """
+        self.require_open_xlsx_workbook("copy_cell_values")
+
+        cr = CellRange(range_string=source_range)
+        cells = list(cr.cells)
+        target_cell_unpacked = utils_cell.coordinate_from_string(target)
+        target_column = column_index_from_string(target_cell_unpacked[0])
+        target_row = target_cell_unpacked[1]
+
+        last_row = None
+        column_index = 0
+        for row, column in cells:
+            if not last_row:
+                last_row = row
+            if last_row != row:
+                target_row += 1
+                last_row = row
+                column_index = 0
+            target_cell = self.workbook.book.active.cell(
+                target_row, target_column + column_index
+            )
+            source_cell = self.workbook.book.active.cell(row, column)
+            target_cell.value = source_cell.value
+            column_index += 1
+
+    def set_styles(
+        self,
+        range_string: str,
+        font_name: str = None,
+        family: str = None,
+        size: int = None,
+        bold: bool = False,
+        italic: bool = False,
+        underline: bool = False,
+        strikethrough: bool = False,
+        cell_fill: str = None,
+        color: str = None,
+        align_horizontal: str = None,
+        align_vertical: str = None,
+        number_format: str = None,
+    ):
+        """Set styles for range of cells.
+
+        Possible values for the `align_horizontal`:
+
+            - general
+            - left
+            - center
+            - right
+            - fill
+            - justify
+            - centerContinuous
+            - distributed
+
+        Possible values for the `align_vertical`:
+
+            - top
+            - center
+            - bottom
+            - justify
+            - distributed
+
+        Some examples for `number_formats`:
+
+            - General
+            - 0
+            - 0.00
+            - #,##0
+            - #,##0.00
+            - "$"#,##0_);("$"#,##0)
+            - "$"#,##0_);[Red]("$"#,##0)
+            - 0%
+            - 0.00%
+            - 0.00E+00
+            - # ?/?
+            - # ??/??
+            - mm-dd-yy
+            - d-mmm-yy
+            - d-mmm
+            - h:mm AM/PM
+            - h:mm:ss AM/PM
+            - h:mm
+            - h:mm:ss
+            - m/d/yy h:mm
+
+        :param range_string: single cell or range of cells
+        :param font_name: name of the font
+        :param family: font family name
+        :param size: size for the font
+        :param bold: font style bold
+        :param italic: font style italics
+        :param underline: font style underline
+        :param strikethrough: font style strikethrough
+        :param cell_fill: cell fill color, in hex or color name
+        :param color: font color, in hex or color name
+        :param align_horizontal: cell horizontal alignment
+        :param align_vertical: cell vertical alignment
+        :param number_format: cell number format
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Set Styles    A1:D4
+            ...  bold=True
+            ...  cell_fill=lightblue
+            ...  align_horizontal=center
+            ...  number_format=h:mm AM/PM
+
+            Set Styles    E2
+            ...  strikethrough=True
+            ...  color=FF0000
+
+        .. code-block:: python
+
+            lib.set_styles("A1:D4", bold=True, font_name="Arial", size=24)
+        """
+        self.require_open_xlsx_workbook("set_styles")
+
+        cr = CellRange(range_string=range_string)
+        font_parameters = {}
+        self._set_font_param_if_given(font_parameters, "name", font_name)
+        self._set_font_param_if_given(font_parameters, "family", family)
+        self._set_font_param_if_given(font_parameters, "sz", size)
+        self._set_font_param_if_given(font_parameters, "b", bold)
+        self._set_font_param_if_given(font_parameters, "i", italic)
+        self._set_font_param_if_given(font_parameters, "u", underline)
+        self._set_font_param_if_given(font_parameters, "strike", strikethrough)
+        self._set_color_if_given(font_parameters, color)
+
+        for row, column in list(cr.cells):
+            active_cell = self.workbook.book.active.cell(row, column)
+            active_cell.font = Font(**font_parameters)
+            self._set_fill_color(active_cell, cell_fill)
+            self._set_cell_alignments(active_cell, align_horizontal, align_vertical)
+            self._set_cell_number_format(active_cell, number_format)
+
+    def _set_font_param_if_given(self, parameters, param_name, value):
+        if value:
+            parameters[param_name] = value
+
+    def _set_color_if_given(self, parameters, value):
+        if value:
+            match = re.search(r"^(?:[0-9a-fA-F]{3}){2}$", value)
+            if match:
+                color_hex = value
+            else:
+                color = ImageColor.getrgb(value)
+                color_hex = "%02x%02x%02x" % color
+            parameters["color"] = xlsColor(color_hex)
+
+    def _set_fill_color(self, active_cell, value):
+        if value:
+            match = re.search(r"^(?:[0-9a-fA-F]{3}){2}$", value)
+            if match:
+                color_hex = value
+            else:
+                color = ImageColor.getrgb(value)
+                color_hex = "%02x%02x%02x" % color
+            active_cell.fill = PatternFill("solid", color_hex, color_hex)
+
+    def _set_cell_alignments(self, active_cell, horizontal, vertical):
+        if horizontal or vertical:
+            active_cell.alignment = Alignment(horizontal=horizontal, vertical=vertical)
+
+    def _set_cell_number_format(self, active_cell, number_format):
+        if number_format:
+            active_cell.number_format = number_format
+
+    def auto_size_columns(
+        self,
+        start_column: Union[int, str],
+        end_column: Optional[Union[int, str]] = None,
+        width: Optional[int] = None,
+    ):
+        """Auto size column widths.
+
+        Note. non-default font sizes might cause auto sizing issues
+
+        :param start_column: column number or name to start from
+        :param end_column: optional column number or name for last column
+        :param width: if given will resize columns to this size, otherwise
+         will auto_size
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Auto Size Columns   A   D    # will try auto size
+            Auto Size Columns   B   D   16  # will set A-D columns sizes to 16
+            Auto Size Columns   A   width=24  # will set column A size to 24
+
+        .. code-block:: python
+
+            lib.auto_size_columns("A", "D")
+            lib.auto_size_columns("C", width=40)
+        """
+        self.require_open_xlsx_workbook("auto_size_columns")
+        start_index = (
+            column_index_from_string(start_column)
+            if isinstance(start_column, str)
+            else start_column
+        )
+        end_index = start_index
+        if end_column:
+            end_index = (
+                column_index_from_string(end_column)
+                if isinstance(end_column, str)
+                else end_column
+            )
+
+        for col in range(start_index, end_index + 1):
+            col_letter = get_column_letter(col)
+            if width:
+                self.workbook.book.active.column_dimensions[col_letter].width = width
+            else:
+                self.workbook.book.active.column_dimensions[col_letter].auto_size = True
+
+    def hide_columns(
+        self,
+        start_column: Union[int, str],
+        end_column: Optional[Union[int, str]] = None,
+    ):
+        """Hide column or columns in worksheet.
+
+        :param start_column: column number or name to start from
+        :param end_column: optional column number or name for last column
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Hide Columns   A   D    # hide columns A-D
+            Hide Columns   A        # hide column A
+
+        .. code-block:: python
+
+            lib.hide_columns("A", "D")
+            lib.hide_columns("A")
+        """
+        self.require_open_xlsx_workbook("hide_columns")
+
+        self._set_column_hidden(True, start_column, end_column)
+
+    def unhide_columns(
+        self,
+        start_column: Union[int, str],
+        end_column: Optional[Union[int, str]] = None,
+    ):
+        """Unhide column or columns in worksheet.
+
+        :param start_column: column number or name to start from
+        :param end_column: optional column number or name for last column
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Unhide Columns   A   D    # unhide columns A-D
+            Unhide Columns   A        # unhide column A
+
+        .. code-block:: python
+
+            lib.unhide_columns("A", "D")
+            lib.unhide_columns("A")
+        """
+        self.require_open_xlsx_workbook("unhide_columns")
+
+        self._set_column_hidden(False, start_column, end_column)
+
+    def _set_column_hidden(self, hidden: bool, start_column, end_column):
+        start_index = (
+            column_index_from_string(start_column)
+            if isinstance(start_column, str)
+            else start_column
+        )
+        end_index = start_index
+        if end_column:
+            end_index = (
+                column_index_from_string(end_column)
+                if isinstance(end_column, str)
+                else end_column
+            )
+
+        for col in range(start_index, end_index + 1):
+            col_letter = get_column_letter(col)
+            self.workbook.book.active.column_dimensions[col_letter].hidden = hidden
+
+    def set_cell_formula(
+        self, range_string: str, formula: str, transpose: bool = False
+    ):
+        """Set cell formula for given range of cells.
+
+        If `transpose` is set then formula is set for first cell of the
+        range and the rest of cells will transpose the function to match
+        to that cell.
+
+        Otherwise (by default) all cells will get the same formula.
+
+        :param range_string: cell range
+        :param formula: formula for the cell
+        :param transpose: on True the cell formulas will be transposed
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # all cells will have same formula
+            Set Cell Formula   E2:E10    =B2+5
+            # cells will have transposed formulas
+            # E2 will have =B2+5
+            # E3 will have =B3+5
+            # etc
+            Set Cell Formula   E2:E10    =B2+5   True
+
+        .. code-block:: python
+
+            lib.set_cell_formula("E2:E10", "=B2+5")
+            lib.set_cell_formula("E2:E10", "=B2+5", True)
+        """
+        self.require_open_xlsx_workbook("set_cell_formula")
+
+        cr = CellRange(range_string=range_string)
+        start_col, start_row, _, _ = cr.bounds
+        start_col_str = f"{get_column_letter(start_col)}{start_row}"
+        cells = list(cr.cells)
+
+        for index, acell in enumerate(cells):
+            row, column = acell
+            col_str = f"{get_column_letter(column)}{row}"
+            if (transpose and index == 0) or not transpose:
+                self.workbook.book.active[col_str].value = formula
+            elif transpose and index > 0:
+                self.workbook.book.active[col_str] = Translator(
+                    formula, origin=start_col_str
+                ).translate_formula(col_str)
+
+    def move_range(
+        self, range_string: str, rows: int = 0, columns: int = 0, translate: bool = True
+    ):
+        """Move range of cells by given amount of rows and columns.
+
+        Formulas are translated to match new location by default.
+
+        *Note*. There is a bug in the openpyxl on moving negative rows/columns.
+
+        :param range_string: cell range
+        :param rows: number of rows to move
+        :param columns: number of columns to move
+        :param translate: are formulas translated for a new location
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # move range 4 rows down
+            Move Range   E2:E10    rows=4
+            # move range 2 rows down, 2 columns right
+            Move Range   E2:E10    rows=2  columns=2
+
+        .. code-block:: python
+
+            lib.move_range("E2:E10", rows=4)
+            lib.move_range("E2:E10", rows=2, columns=2)
+        """
+        self.require_open_xlsx_workbook("move_range")
+
+        self.workbook.book.active.move_range(
+            range_string, rows=rows, cols=columns, translate=translate
+        )
 
 
 class BaseWorkbook:
@@ -1197,10 +1776,10 @@ class XlsxWorkbook(BaseWorkbook):
         data = []
         for cells in sheet.iter_rows(min_row=start):
             row = {}
-            for c, cell in enumerate(cells):
+            for c, acell in enumerate(cells):
                 column = columns[c]
                 if column is not None:
-                    row[column] = cell.value
+                    row[column] = acell.value
             data.append(row)
 
         self.active = name
@@ -1248,9 +1827,9 @@ class XlsxWorkbook(BaseWorkbook):
         first_empty_row: int = first_empty_row or sheet.max_row + 1
         for row_idx, row in enumerate(content):
             values = self._row_to_values(row, columns)
-            for cell_idx, cell in enumerate(sheet[first_empty_row + row_idx]):
+            for cell_idx, acell in enumerate(sheet[first_empty_row + row_idx]):
                 try:
-                    cell.value = values[cell_idx]
+                    acell.value = values[cell_idx]
                 except IndexError:
                     pass
 
