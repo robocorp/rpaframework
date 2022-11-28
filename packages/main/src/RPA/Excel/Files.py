@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 import logging
 import pathlib
 import re
@@ -9,15 +10,18 @@ from typing import Any, List, Optional, Union
 import openpyxl
 import xlrd
 import xlwt
-from openpyxl.worksheet.cell_range import CellRange
-from openpyxl.utils import get_column_letter, column_index_from_string, cell
-from openpyxl.utils.exceptions import InvalidFileException
+
 from PIL import Image, ImageColor
 from xlutils.copy import copy as xlutils_copy
-from RPA.Tables import Table, Tables
+from openpyxl.worksheet.cell_range import CellRange
+from openpyxl.utils import get_column_letter, column_index_from_string
+from openpyxl.utils import cell as utils_cell
+from openpyxl.utils.exceptions import InvalidFileException
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.styles.colors import Color as xlsColor
 from openpyxl.formula.translate import Translator
+from RPA.Tables import Table, Tables
+
 
 PathType = Union[str, pathlib.Path]
 
@@ -1062,8 +1066,8 @@ class Files:
         """
         self.require_open_xlsx_workbook("clear_cell_range")
         cr = CellRange(range_string=range_string)
-        for row, cell in list(cr.cells):
-            self.workbook.book.active.cell(row, cell).value = None
+        for row, acell in list(cr.cells):
+            self.workbook.book.active.cell(row, acell).value = None
 
     def delete_rows(self, start: int, end: Optional[int] = None):
         """Delete row or rows beginning from start row number to
@@ -1236,7 +1240,7 @@ class Files:
 
         cr = CellRange(range_string=source_range)
         cells = list(cr.cells)
-        target_cell_unpacked = cell.coordinate_from_string(target)
+        target_cell_unpacked = utils_cell.coordinate_from_string(target)
         target_column = column_index_from_string(target_cell_unpacked[0])
         target_row = target_cell_unpacked[1]
 
@@ -1346,7 +1350,7 @@ class Files:
 
         .. code-block:: python
 
-            lib.set_styles("A1:D4", underline=True, bold=True, font_name="Arial", size=24)
+            lib.set_styles("A1:D4", bold=True, font_name="Arial", size=24)
         """
         self.require_open_xlsx_workbook("set_styles")
 
@@ -1399,28 +1403,6 @@ class Files:
     def _set_cell_number_format(self, active_cell, number_format):
         if number_format:
             active_cell.number_format = number_format
-
-    def sheet_dimensions(self):
-        """Return the minimum bounding range for all cells containing data (ex. 'A1:M24')
-
-        :return: minimum column, minimum_row, max column, max row
-        """
-        self.require_open_xlsx_workbook("sheet_dimensions")
-
-        if self._cells:
-            rows = set()
-            cols = set()
-            for row, col in self._cells:
-                rows.add(row)
-                cols.add(col)
-            max_row = max(rows)
-            max_col = max(cols)
-            min_col = min(cols)
-            min_row = min(rows)
-        else:
-            return 1, 1, 1, 1
-
-        return min_col, min_row, max_col, max_row
 
     def auto_size_columns(
         self,
@@ -1794,10 +1776,10 @@ class XlsxWorkbook(BaseWorkbook):
         data = []
         for cells in sheet.iter_rows(min_row=start):
             row = {}
-            for c, cell in enumerate(cells):
+            for c, acell in enumerate(cells):
                 column = columns[c]
                 if column is not None:
-                    row[column] = cell.value
+                    row[column] = acell.value
             data.append(row)
 
         self.active = name
@@ -1845,9 +1827,9 @@ class XlsxWorkbook(BaseWorkbook):
         first_empty_row: int = first_empty_row or sheet.max_row + 1
         for row_idx, row in enumerate(content):
             values = self._row_to_values(row, columns)
-            for cell_idx, cell in enumerate(sheet[first_empty_row + row_idx]):
+            for cell_idx, acell in enumerate(sheet[first_empty_row + row_idx]):
                 try:
-                    cell.value = values[cell_idx]
+                    acell.value = values[cell_idx]
                 except IndexError:
                     pass
 
