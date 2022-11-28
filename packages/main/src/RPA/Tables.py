@@ -38,7 +38,7 @@ RowCondition = Callable[[Union[Index, Row]], bool]
 def return_table_as_raw_list(table, heading=False):
     raw_list = []
     if heading:
-        raw_list.append(table._columns)
+        raw_list.append(table.columns)
     for index in table.index:
         row = []
         for column in table.columns:

@@ -1062,7 +1062,7 @@ class Files:
             Clear Cell Range    A2
 
         Python example.
-        
+
         .. code-block:: python
 
             lib.clear_cell_range("A1")
