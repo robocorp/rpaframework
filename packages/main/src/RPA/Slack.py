@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import Optional, Union
 import requests
 
 
@@ -18,7 +19,7 @@ class Slack:
         channel: str,
         sender: str,
         text: str,
-        icon_emoji: str = None,
+        icon_emoji: Optional[str] = None,
     ):
         """Send message to Slack channel using webhook.
 
@@ -37,4 +38,26 @@ class Slack:
         if icon_emoji:
             payload["icon_emoji"] = icon_emoji
         response = requests.post(webhook_url, headers=headers, data=json.dumps(payload))
+        self.logger.debug(response.status_code)
+
+    def slack_raw_message(
+        self,
+        webhook: str,
+        message: Union[str, dict],
+        channel: Optional[str] = None,
+    ):
+        """Send Slack message by custom JSON content.
+
+        :param webhook_url: needs to be configured for the Slack server
+        :param message: dictionary or string defining message content and structure
+        :param channel: can be used to set channel into message structure
+        """
+        headers = {"Content-Type": "application/json"}
+        if channel and isinstance(message, dict):
+            message["channel"] = channel
+        elif channel:
+            self.logger.warning("Can't set channel as 'json_data' is a string.")
+            return
+        data_for_message = message if isinstance(message, str) else json.dumps(message)
+        response = requests.post(webhook, headers=headers, data=data_for_message)
         self.logger.debug(response.status_code)
