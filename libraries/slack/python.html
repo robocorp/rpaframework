@@ -246,7 +246,7 @@
 
 <dl class="method">
 <dt id="RPA.Slack.Slack.slack_message_using_webhook">
-<code class="sig-name descname">slack_message_using_webhook</code><span class="sig-paren">(</span><em class="sig-param">webhook_url: str</em>, <em class="sig-param">channel: str</em>, <em class="sig-param">sender: str</em>, <em class="sig-param">text: str</em>, <em class="sig-param">icon_emoji: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Slack.Slack.slack_message_using_webhook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">slack_message_using_webhook</code><span class="sig-paren">(</span><em class="sig-param">webhook_url: str</em>, <em class="sig-param">channel: str</em>, <em class="sig-param">sender: str</em>, <em class="sig-param">text: str</em>, <em class="sig-param">icon_emoji: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Slack.Slack.slack_message_using_webhook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send message to Slack channel using webhook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -256,6 +256,21 @@
 <li><p><strong>sender</strong> – shown in the message post as sender</p></li>
 <li><p><strong>text</strong> – text for the message post</p></li>
 <li><p><strong>icon_emoji</strong> – icon for the message post, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Slack.Slack.slack_raw_message">
+<code class="sig-name descname">slack_raw_message</code><span class="sig-paren">(</span><em class="sig-param">webhook: str, message: Union[str, dict], channel: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Slack.Slack.slack_raw_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send Slack message by custom JSON content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>webhook_url</strong> – needs to be configured for the Slack server</p></li>
+<li><p><strong>message</strong> – dictionary or string defining message content and structure</p></li>
+<li><p><strong>channel</strong> – can be used to set channel into message structure</p></li>
 </ul>
 </dd>
 </dl>
