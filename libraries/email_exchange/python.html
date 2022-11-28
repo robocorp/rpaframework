@@ -728,6 +728,16 @@ set self.__traceback__ to tb and return self.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exchangelib.credentials.OAuth2AuthorizationCodeCredentials</span></code></p>
 <p>OAuth2 auth code flow credentials wrapper supporting token state on refresh.</p>
 <dl class="method">
+<dt id="RPA.Email.Exchange.OAuth2Creds.access_token">
+<em class="property">property </em><code class="sig-name descname">access_token</code><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.access_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.Exchange.OAuth2Creds.client">
+<code class="sig-name descname">client</code><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.Exchange.OAuth2Creds.lock">
 <em class="property">property </em><code class="sig-name descname">lock</code><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.lock" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -749,8 +759,8 @@ super() method.</p>
 <dl class="method">
 <dt id="RPA.Email.Exchange.OAuth2Creds.refresh">
 <code class="sig-name descname">refresh</code><span class="sig-paren">(</span><em class="sig-param">session</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.refresh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Obtain a new set of valid credentials. This is mostly intended to support OAuth token refreshing, which can
-happen in long- running applications or those that cache access tokens and so might start with a token close to
+<dd><p>Obtain a new set of valid credentials. This is intended to support OAuth token refreshing, which can
+happen in long-running applications or those that cache access tokens and so might start with a token close to
 expiration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -765,7 +775,14 @@ expiration.</p>
 <dl class="method">
 <dt id="RPA.Email.Exchange.OAuth2Creds.scope">
 <em class="property">property </em><code class="sig-name descname">scope</code><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.scope" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The scope we ask for the token to have</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.OAuth2Creds.session_params">
+<code class="sig-name descname">session_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.session_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extra parameters to use when creating the session</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.OAuth2Creds.sig">
@@ -773,9 +790,16 @@ expiration.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.Exchange.OAuth2Creds.token_params">
+<code class="sig-name descname">token_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.token_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extra parameters when requesting the token</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.Exchange.OAuth2Creds.token_url">
 <em class="property">property </em><code class="sig-name descname">token_url</code><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.token_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The URL to request tokens from</p>
+</dd></dl>
 
 </dd></dl>
 

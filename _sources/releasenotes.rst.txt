@@ -5,10 +5,18 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+19.3.0 - 28 Nov 2022
+--------------------
+
 - Library **RPA.Slack** (:issue:`711`): New keyword ``Slack Raw Message`` adds support for 
   ``blocks`` message property by allowing user to set message dictionary.
 - Library **RPA.Excel.Files** (:pr:`712`): Add new keywords for the library. 
-  List of new keywords:
+
+  List of new `RPA.Excel.Files` keywords:
 
   - Set Cell Formula
   - Copy Cell Values
@@ -24,9 +32,7 @@ Release notes
   - Auto Size Columns
   - Hide Columns
   - Show Columns
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  - Set Cell Values
 
 19.2.0 - 17 Nov 2022
 --------------------

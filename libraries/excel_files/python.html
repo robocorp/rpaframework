@@ -426,11 +426,13 @@ will auto_size</p></li>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Auto Size Columns</span><span class="p">   </span><span class="c">A</span><span class="p">   </span><span class="c">D</span><span class="p">    </span><span class="c"># will try auto size</span>
 <span class="c">Auto Size Columns</span><span class="p">   </span><span class="c">B</span><span class="p">   </span><span class="c">D</span><span class="p">   </span><span class="c">16</span><span class="p">  </span><span class="c"># will set A-D columns sizes to 16</span>
 <span class="c">Auto Size Columns</span><span class="p">   </span><span class="c">A</span><span class="p">   </span><span class="c">width=24</span><span class="p">  </span><span class="c"># will set column A size to 24</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">auto_size_columns</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">auto_size_columns</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
 </pre></div>
@@ -447,12 +449,14 @@ will auto_size</p></li>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># area of cells</span>
 <span class="c">Clear Cell Range</span><span class="p">    </span><span class="c">A9:A100</span><span class="p"></span>
 <span class="c"># single cell</span>
 <span class="c">Clear Cell Range</span><span class="p">    </span><span class="c">A2</span><span class="p"></span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">clear_cell_range</span><span class="p">(</span><span class="s2">&quot;A1&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">clear_cell_range</span><span class="p">(</span><span class="s2">&quot;B2:B50&quot;</span><span class="p">)</span>
 </pre></div>
@@ -487,9 +491,11 @@ will auto_size</p></li>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Copy Cell Values</span><span class="p">   </span><span class="c">A1:D4</span><span class="p">   </span><span class="c">G10</span><span class="p"></span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">copy_cell_values</span><span class="p">(</span><span class="s2">&quot;A1:D4&quot;</span><span class="p">,</span> <span class="s2">&quot;G10&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -654,11 +660,13 @@ possible end column number/name.</p>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete Columns</span><span class="p">   </span><span class="c">C</span><span class="p">       </span><span class="c"># delete column C</span>
 <span class="c">Delete Columns</span><span class="p">   </span><span class="c">3</span><span class="p">       </span><span class="c"># delete column 3 (same as C)</span>
 <span class="c">Delete Columns</span><span class="p">   </span><span class="c">E</span><span class="p">  </span><span class="c">AA</span><span class="p">   </span><span class="c"># delete rows E-AA</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">delete_columns</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">delete_rows</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;JJ&quot;</span><span class="p">)</span>
 </pre></div>
@@ -679,10 +687,12 @@ possible end row number.</p>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete Rows</span><span class="p">   </span><span class="c">2</span><span class="p">       </span><span class="c"># delete row 2</span>
 <span class="c">Delete Rows</span><span class="p">   </span><span class="c">5</span><span class="p">  </span><span class="c">10</span><span class="p">   </span><span class="c"># delete rows 5-10</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">delete_rows</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">delete_rows</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
@@ -780,10 +790,12 @@ for documentation.</p>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Hide Columns</span><span class="p">   </span><span class="c">A</span><span class="p">   </span><span class="c">D</span><span class="p">    </span><span class="c"># hide columns A-D</span>
 <span class="c">Hide Columns</span><span class="p">   </span><span class="c">A</span><span class="p">        </span><span class="c"># hide column A</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">hide_columns</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">hide_columns</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
 </pre></div>
@@ -803,10 +815,12 @@ for documentation.</p>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Insert Columns After</span><span class="p">   </span><span class="c">C</span><span class="p">      </span><span class="c"># insert 1 column after column C</span>
 <span class="c">Insert Columns Before</span><span class="p">   </span><span class="c">A</span><span class="p">  </span><span class="c">3</span><span class="p">   </span><span class="c"># insert 3 columns after column A</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">insert_columns_after</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">insert_columns_after</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
@@ -826,10 +840,12 @@ for documentation.</p>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Insert Columns Before</span><span class="p">   </span><span class="c">C</span><span class="p">      </span><span class="c"># insert 1 column before column C</span>
 <span class="c">Insert Columns Before</span><span class="p">   </span><span class="c">A</span><span class="p">  </span><span class="c">3</span><span class="p">   </span><span class="c"># insert 3 columns before column A</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">insert_columns_before</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">insert_columns_before</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
@@ -877,10 +893,12 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Insert Rows After</span><span class="p">   </span><span class="c">3</span><span class="p">      </span><span class="c"># insert 1 row after row 3</span>
 <span class="c">Insert Rows After</span><span class="p">   </span><span class="c">1</span><span class="p">  </span><span class="c">3</span><span class="p">   </span><span class="c"># insert 3 rows after row 1</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">insert_rows_after</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">insert_rows_after</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
@@ -900,10 +918,12 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Insert Rows Before</span><span class="p">   </span><span class="c">3</span><span class="p">      </span><span class="c"># insert 1 row before row 3</span>
 <span class="c">Insert Rows Before</span><span class="p">   </span><span class="c">1</span><span class="p">  </span><span class="c">3</span><span class="p">   </span><span class="c"># insert 3 rows before row 1</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">insert_rows_before</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">insert_rows_before</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
@@ -951,12 +971,14 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># move range 4 rows down</span>
 <span class="c">Move Range</span><span class="p">   </span><span class="c">E2:E10</span><span class="p">    </span><span class="c">rows=4</span><span class="p"></span>
 <span class="c"># move range 2 rows down, 2 columns right</span>
 <span class="c">Move Range</span><span class="p">   </span><span class="c">E2:E10</span><span class="p">    </span><span class="c">rows=2</span><span class="p">  </span><span class="c">columns=2</span><span class="p"></span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">move_range</span><span class="p">(</span><span class="s2">&quot;E2:E10&quot;</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">move_range</span><span class="p">(</span><span class="s2">&quot;E2:E10&quot;</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -1297,6 +1319,7 @@ to that cell.</p>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># all cells will have same formula</span>
 <span class="c">Set Cell Formula</span><span class="p">   </span><span class="c">E2:E10</span><span class="p">    </span><span class="c">=B2+5</span><span class="p"></span>
 <span class="c"># cells will have transposed formulas</span>
@@ -1306,6 +1329,7 @@ to that cell.</p>
 <span class="c">Set Cell Formula</span><span class="p">   </span><span class="c">E2:E10</span><span class="p">    </span><span class="c">=B2+5</span><span class="p">   </span><span class="c">True</span><span class="p"></span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">set_cell_formula</span><span class="p">(</span><span class="s2">&quot;E2:E10&quot;</span><span class="p">,</span> <span class="s2">&quot;=B2+5&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">set_cell_formula</span><span class="p">(</span><span class="s2">&quot;E2:E10&quot;</span><span class="p">,</span> <span class="s2">&quot;=B2+5&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -1342,6 +1366,49 @@ to that cell.</p>
 
 <span class="c1"># Set a value with cell formatting</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">set_cell_value</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;0%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.Files.set_cell_values">
+<code class="sig-name descname">set_cell_values</code><span class="sig-paren">(</span><em class="sig-param">start_cell: str, values: Union[list, RPA.Tables.Table], table_heading: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set cell values given as list of lists or as a <cite>RPA.Tables.Table</cite>.</p>
+<p><em>Note.</em> Will overwrite cells if table structure causes cells to overlap.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_cell</strong> – starting cell in a string</p></li>
+<li><p><strong>values</strong> – list of lists or a Table</p></li>
+<li><p><strong>table_heading</strong> – if values are given as a Table, this parameter
+defines if Table headings should be inserted as a row</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples:</p>
+<p>Robot Framework example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{all_rows}=</span><span class="p">    </span><span class="c">Create List</span><span class="p"></span>
+<span class="c">${headers}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">first</span><span class="p">    </span><span class="c">second</span><span class="p">   </span><span class="c">third</span><span class="p">  </span><span class="c">fourth</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${num}</span><span class="p">    </span><span class="c">IN RANGE</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">2000</span><span class="p"></span>
+<span class="p">    </span><span class="c">@{row}=</span><span class="p">    </span><span class="c">Create List</span><span class="p">    </span><span class="c">${num}</span><span class="p">    </span><span class="c">${num+1}</span><span class="p">    </span><span class="c">${num*2}</span><span class="p">    </span><span class="c">${num*4}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Append To List</span><span class="p">    </span><span class="c">${all_rows}</span><span class="p">    </span><span class="c">${row}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+<span class="c">#  Set Cell Values from Table (include headers)</span>
+<span class="c">${table}=</span><span class="p">    </span><span class="c">Create Table</span><span class="p">    </span><span class="c">${all_rows}</span><span class="p">    </span><span class="c">columns=${headers}</span><span class="p"></span>
+<span class="c">Set Cell Values</span><span class="p">   </span><span class="c">G1</span><span class="p">   </span><span class="c">${table}</span><span class="p">   </span><span class="c">True</span><span class="p"></span>
+<span class="c">#  Set Cell Values from a list of lists</span>
+<span class="c"># uncomment if headings should be added</span>
+<span class="c"># Append To List  ${all_rows}   ${headers}</span>
+<span class="c">Set Cell Values</span><span class="p">   </span><span class="c">M1</span><span class="p">   </span><span class="c">${all_rows}</span><span class="p"></span>
+
+<span class="c"># Simplest form of adding values</span>
+<span class="c">@{values}=</span><span class="p">    </span><span class="c">Evaluate</span><span class="p">    </span><span class="c">[[1,2,3],[4,5,6],[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;]]</span><span class="p"></span>
+<span class="c">Set Cell Values</span><span class="p">   </span><span class="c">A1</span><span class="p">   </span><span class="c">${values}</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span>  <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]]</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">set_cell_values</span><span class="p">(</span><span class="s2">&quot;E2&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1418,6 +1485,7 @@ to that cell.</p>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set Styles</span><span class="p">    </span><span class="c">A1:D4</span><span class="p"></span>
 <span class="c">...</span><span class="p">  </span><span class="c">bold=True</span><span class="p"></span>
 <span class="c">...</span><span class="p">  </span><span class="c">cell_fill=lightblue</span><span class="p"></span>
@@ -1429,6 +1497,7 @@ to that cell.</p>
 <span class="c">...</span><span class="p">  </span><span class="c">color=FF0000</span><span class="p"></span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">set_styles</span><span class="p">(</span><span class="s2">&quot;A1:D4&quot;</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">font_name</span><span class="o">=</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1454,10 +1523,12 @@ for documentation.</p>
 </dd>
 </dl>
 <p>Examples:</p>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Unhide Columns</span><span class="p">   </span><span class="c">A</span><span class="p">   </span><span class="c">D</span><span class="p">    </span><span class="c"># unhide columns A-D</span>
 <span class="c">Unhide Columns</span><span class="p">   </span><span class="c">A</span><span class="p">        </span><span class="c"># unhide column A</span>
 </pre></div>
 </div>
+<p>Python example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span><span class="o">.</span><span class="n">unhide_columns</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">unhide_columns</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
 </pre></div>
