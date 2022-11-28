@@ -1886,7 +1886,7 @@ jeepney = ">=0.6"
 
 [[package]]
 name = "selenium"
-version = "4.6.1"
+version = "4.5.0"
 description = ""
 category = "main"
 optional = false
@@ -2429,7 +2429,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "08bae04d1c95f4027fe70fde5691889a7d0a9df222ebea447f3c8bf70fad4196"
+content-hash = "480b2d97050b88407cce0dbd59597673a0e1487dc3c2a89da552f49431007b0e"
 
 [metadata.files]
 alabaster = [
@@ -3387,7 +3387,6 @@ pylint = [
 pynput-robocorp-fork = [
     {file = "pynput-robocorp-fork-4.0.0.tar.gz", hash = "sha256:92131856267268d57ca2d7861aa692eecefa0827408940091321b14606d3c04c"},
     {file = "pynput_robocorp_fork-4.0.0-py2.py3-none-any.whl", hash = "sha256:b26719535048853d018836a242f5d300a8bcc4ba4fed19df7f9732e6d29b7282"},
-    {file = "pynput_robocorp_fork-4.0.0-py3.7.egg", hash = "sha256:3df8c7f0cac96e1e7649d882bf9ea39b0406e8e451b4b65e0bb27003e9d63b4d"},
 ]
 pyobjc-core = [
     {file = "pyobjc-core-7.3.tar.gz", hash = "sha256:5081aedf8bb40aac1a8ad95adac9e44e148a882686ded614adf46bb67fd67574"},
@@ -3707,7 +3706,7 @@ SecretStorage = [
     {file = "SecretStorage-3.3.3.tar.gz", hash = "sha256:2403533ef369eca6d2ba81718576c5e0f564d5cca1b58f73a8b23e7d4eeebd77"},
 ]
 selenium = [
-    {file = "selenium-4.6.1-py3-none-any.whl", hash = "sha256:2384829279d41c7f5b338ce87453cc4e120099b6c093318207376c19f5d2c254"},
+    {file = "selenium-4.5.0-py3-none-any.whl", hash = "sha256:a733dd77d3171b846893f4d51b18967d809313f547a10974e26579f9ce797462"},
 ]
 setuptools = [
     {file = "setuptools-65.6.3-py3-none-any.whl", hash = "sha256:57f6f22bde4e042978bcd50176fdb381d7c21a9efa4041202288d3737a0c6a54"},

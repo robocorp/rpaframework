@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "19.3.0"
+version = "19.3.1"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -73,7 +73,7 @@ cryptography = "^37.0.4"
 mss = "^6.0.0"
 chardet = "^3.0.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
-selenium = "^4.4.0"
+selenium = "^4.4.0,<4.6.0"
 click = "^8.1.2"
 java-access-bridge-wrapper = "^0.9.5"
 PyYAML = "^5.4.1"
