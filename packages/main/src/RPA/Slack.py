@@ -42,24 +42,22 @@ class Slack:
 
     def slack_raw_message(
         self,
-        webhook_url: str,
-        json_data: Union[str, dict],
+        webhook: str,
+        message: Union[str, dict],
         channel: Optional[str] = None,
     ):
         """Send Slack message by custom JSON content.
 
         :param webhook_url: needs to be configured for the Slack server
-        :param json_data: dictionary defining message content and structure
+        :param message: dictionary or string defining message content and structure
         :param channel: can be used to set channel into message structure
         """
         headers = {"Content-Type": "application/json"}
-        if channel and isinstance(json_data, dict):
-            json_data["channel"] = channel
+        if channel and isinstance(message, dict):
+            message["channel"] = channel
         elif channel:
             self.logger.warning("Can't set channel as 'json_data' is a string.")
             return
-        data_for_message = (
-            json_data if isinstance(json_data, str) else json.dumps(json_data)
-        )
-        response = requests.post(webhook_url, headers=headers, data=data_for_message)
+        data_for_message = message if isinstance(message, str) else json.dumps(message)
+        response = requests.post(webhook, headers=headers, data=data_for_message)
         self.logger.debug(response.status_code)
