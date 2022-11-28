@@ -86,7 +86,7 @@ RPA.Excel.Files:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "1559", "target worksheet cell formatting is overwritten."
+   "2138", "target worksheet cell formatting is overwritten."
 
 RPA.FileSystem:
 ===============
