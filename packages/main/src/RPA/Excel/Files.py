@@ -20,7 +20,7 @@ from openpyxl.utils.exceptions import InvalidFileException
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.styles.colors import Color as xlsColor
 from openpyxl.formula.translate import Translator
-from RPA.Tables import Table, Tables
+from RPA.Tables import Table, Tables, return_table_as_raw_list
 
 
 PathType = Union[str, pathlib.Path]
@@ -1052,6 +1052,8 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             # area of cells
@@ -1059,6 +1061,8 @@ class Files:
             # single cell
             Clear Cell Range    A2
 
+        Python example.
+        
         .. code-block:: python
 
             lib.clear_cell_range("A1")
@@ -1078,10 +1082,14 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Delete Rows   2       # delete row 2
             Delete Rows   5  10   # delete rows 5-10
+
+        Python example.
 
         .. code-block:: python
 
@@ -1103,11 +1111,15 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Delete Columns   C       # delete column C
             Delete Columns   3       # delete column 3 (same as C)
             Delete Columns   E  AA   # delete rows E-AA
+
+        Python example.
 
         .. code-block:: python
 
@@ -1134,10 +1146,14 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Insert Columns Before   C      # insert 1 column before column C
             Insert Columns Before   A  3   # insert 3 columns before column A
+
+        Python example.
 
         .. code-block:: python
 
@@ -1159,10 +1175,14 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Insert Columns After   C      # insert 1 column after column C
             Insert Columns Before   A  3   # insert 3 columns after column A
+
+        Python example.
 
         .. code-block:: python
 
@@ -1184,10 +1204,14 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Insert Rows Before   3      # insert 1 row before row 3
             Insert Rows Before   1  3   # insert 3 rows before row 1
+
+        Python example.
 
         .. code-block:: python
 
@@ -1206,10 +1230,14 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Insert Rows After   3      # insert 1 row after row 3
             Insert Rows After   1  3   # insert 3 rows after row 1
+
+        Python example.
 
         .. code-block:: python
 
@@ -1228,9 +1256,13 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Copy Cell Values   A1:D4   G10
+
+        Python example.
 
         .. code-block:: python
 
@@ -1336,6 +1368,8 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Set Styles    A1:D4
@@ -1347,6 +1381,8 @@ class Files:
             Set Styles    E2
             ...  strikethrough=True
             ...  color=FF0000
+
+        Python example.
 
         .. code-block:: python
 
@@ -1421,11 +1457,15 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Auto Size Columns   A   D    # will try auto size
             Auto Size Columns   B   D   16  # will set A-D columns sizes to 16
             Auto Size Columns   A   width=24  # will set column A size to 24
+
+        Python example.
 
         .. code-block:: python
 
@@ -1465,10 +1505,14 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Hide Columns   A   D    # hide columns A-D
             Hide Columns   A        # hide column A
+
+        Python example.
 
         .. code-block:: python
 
@@ -1491,10 +1535,14 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             Unhide Columns   A   D    # unhide columns A-D
             Unhide Columns   A        # unhide column A
+
+        Python example.
 
         .. code-block:: python
 
@@ -1540,6 +1588,8 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             # all cells will have same formula
@@ -1549,6 +1599,8 @@ class Files:
             # E3 will have =B3+5
             # etc
             Set Cell Formula   E2:E10    =B2+5   True
+
+        Python example.
 
         .. code-block:: python
 
@@ -1588,12 +1640,16 @@ class Files:
 
         Examples:
 
+        Robot Framework example.
+
         .. code-block:: robotframework
 
             # move range 4 rows down
             Move Range   E2:E10    rows=4
             # move range 2 rows down, 2 columns right
             Move Range   E2:E10    rows=2  columns=2
+
+        Python example.
 
         .. code-block:: python
 
@@ -1605,6 +1661,71 @@ class Files:
         self.workbook.book.active.move_range(
             range_string, rows=rows, cols=columns, translate=translate
         )
+
+    def set_cell_values(
+        self, start_cell: str, values: Union[list, Table], table_heading: bool = False
+    ):
+        """Set cell values given as list of lists or as a `RPA.Tables.Table`.
+
+        *Note.* Will overwrite cells if table structure causes cells to overlap.
+
+        :param start_cell: starting cell in a string
+        :param values: list of lists or a Table
+        :param table_heading: if values are given as a Table, this parameter
+         defines if Table headings should be inserted as a row
+
+        Examples:
+
+        Robot Framework example.
+
+        .. code-block:: robotframework
+
+            @{all_rows}=    Create List
+            ${headers}=    Create List    first    second   third  fourth
+            FOR    ${num}    IN RANGE    1    2000
+                @{row}=    Create List    ${num}    ${num+1}    ${num*2}    ${num*4}
+                Append To List    ${all_rows}    ${row}
+            END
+            #  Set Cell Values from Table (include headers)
+            ${table}=    Create Table    ${all_rows}    columns=${headers}
+            Set Cell Values   G1   ${table}   True
+            #  Set Cell Values from a list of lists
+            # uncomment if headings should be added
+            # Append To List  ${all_rows}   ${headers}
+            Set Cell Values   M1   ${all_rows}
+
+            # Simplest form of adding values
+            @{values}=    Evaluate    [[1,2,3],[4,5,6],['a','b','c','d']]
+            Set Cell Values   A1   ${values}
+
+        Python example.
+
+        .. code-block:: python
+
+            data =  [[1,2,3],[4,5,6],['a','b','c','d']]
+            lib.set_cell_values("E2", data)
+        """
+        self.require_open_xlsx_workbook("set_cell_values")
+        if isinstance(values, Table):
+            data_values = return_table_as_raw_list(values, table_heading)
+        else:
+            data_values = values
+        cr = CellRange(range_string=start_cell)
+        start_col, start_row, _, _ = cr.bounds
+        for row_index, row in enumerate(data_values):
+            if isinstance(row, list):
+                for col_index, col in enumerate(row):
+                    column = start_col + col_index
+                    row = start_row + row_index
+                    self.workbook.book.active[
+                        f"{get_column_letter(column)}{row}"
+                    ].value = col
+            else:
+                column = start_col + row_index
+                row = start_row
+                self.workbook.book.active[
+                    f"{get_column_letter(column)}{row}"
+                ].value = row
 
 
 class BaseWorkbook:

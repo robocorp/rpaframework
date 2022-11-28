@@ -35,6 +35,18 @@ CellCondition = Callable[[Any], bool]
 RowCondition = Callable[[Union[Index, Row]], bool]
 
 
+def return_table_as_raw_list(table, heading=False):
+    raw_list = []
+    if heading:
+        raw_list.append(table._columns)
+    for index in table.index:
+        row = []
+        for column in table.columns:
+            row.append(table.get_cell(index, column))
+        raw_list.append(row)
+    return raw_list
+
+
 def to_list(obj: Any, size: int = 1):
     """Convert (possibly scalar) value to list of `size`."""
     if not is_list_like(obj):

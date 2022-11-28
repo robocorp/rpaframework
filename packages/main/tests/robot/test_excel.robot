@@ -1,6 +1,7 @@
 *** Settings ***
 Library           RPA.Excel.Files
 Library           RPA.FileSystem
+Library           RPA.Tables
 Library           Collections
 Task Teardown     Close Workbook
 
@@ -195,4 +196,20 @@ Test Move Range
     ${testfile}=    Create Extended Test Excel    test_move_range.xlsx
     Open Workbook    ${testfile}
     Move Range    A1:D4    3
+    Save Workbook
+
+Test Set Cell Values
+    [Tags]    release-19.3.0
+    ${testfile}=    Create Extended Test Excel    test_set_values.xlsx
+    Open Workbook    ${testfile}
+    @{all_rows}=    Create List
+    ${headers}=    Create List    first    second    third    fourth
+    FOR    ${num}    IN RANGE    1    20
+        @{row}=    Create List    ${num}    ${num+1}    ${num*2}    ${num*4}
+        Append To List    ${all_rows}    ${row}
+    END
+    ${table}=    Create Table    ${all_rows}    columns=${headers}
+    @{values}=    Evaluate    [[1,2,3],[4,5,6],['a','b','c','d']]
+    Set Cell Values    JJ1    ${values}
+    Set Cell Values    G1    ${table}    True
     Save Workbook
