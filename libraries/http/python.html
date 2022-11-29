@@ -245,7 +245,7 @@ required if you use the underlying session keywords, e.g.,
 <code class="docutils literal notranslate"><span class="pre">*</span> <span class="pre">On</span> <span class="pre">Session</span></code>.</p>
 <dl class="attribute">
 <dt id="RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST">
-<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['DELETE', 'GET', 'PUT', 'OPTIONS', 'TRACE', 'HEAD']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['OPTIONS', 'PUT', 'TRACE', 'DELETE', 'GET', 'HEAD']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -284,7 +284,7 @@ discovered vulnerability.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_client_cert_session">
-<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'GET', 'PUT', 'OPTIONS', 'TRACE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'TRACE', 'DELETE', 'GET', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -322,7 +322,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_custom_session">
-<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'GET', 'PUT', 'OPTIONS', 'TRACE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'TRACE', 'DELETE', 'GET', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -363,7 +363,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_digest_session">
-<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'GET', 'PUT', 'OPTIONS', 'TRACE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'TRACE', 'DELETE', 'GET', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -401,7 +401,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_ntlm_session">
-<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'GET', 'PUT', 'OPTIONS', 'TRACE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'TRACE', 'DELETE', 'GET', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -439,7 +439,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_session">
-<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'GET', 'PUT', 'OPTIONS', 'TRACE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'TRACE', 'DELETE', 'GET', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
