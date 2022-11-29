@@ -136,14 +136,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.17"
+version = "1.26.18"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.29.17,<1.30.0"
+botocore = ">=1.29.18,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -152,7 +152,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.17"
+version = "1.29.18"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -1968,7 +1968,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "19.3.1"
+version = "19.4.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -2003,6 +2003,7 @@ python-xlib = {version = ">=0.17", markers = "sys_platform == \"linux\""}
 pywin32 = {version = ">=302,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 pywinauto = {version = "^0.6.8", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 PyYAML = "^5.4.1"
+requests-oauthlib = "^1.3.1"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-browser = {version = "^13.0.0", optional = true, markers = "python_version >= \"3.7\" and python_version < \"4.0\""}
 robotframework-pythonlibcore = "^3.0.0"
@@ -2831,12 +2832,12 @@ black = [
     {file = "black-22.10.0.tar.gz", hash = "sha256:f513588da599943e0cde4e32cc9879e825d58720d6557062d1098c5ad80080e1"},
 ]
 boto3 = [
-    {file = "boto3-1.26.17-py3-none-any.whl", hash = "sha256:c39b7e87b27b00dcf452b2fc80252d311e275036f3d48464af34d0123077f985"},
-    {file = "boto3-1.26.17.tar.gz", hash = "sha256:bb40a9788dd2234851cdd1110eec0e3f6b3af6b98280924fa44c25199ced5737"},
+    {file = "boto3-1.26.18-py3-none-any.whl", hash = "sha256:933c88b189112a5fdd82d49ef00f95b9dd649d195e557a81aecb773a3e01c517"},
+    {file = "boto3-1.26.18.tar.gz", hash = "sha256:3c7315da16eb0b41823965e5ce55f99cb07e94680e0ed7830c581f505fb5bd15"},
 ]
 botocore = [
-    {file = "botocore-1.29.17-py3-none-any.whl", hash = "sha256:d4bab7d42acdb18effa33fee53d137b8b1bdedc2da196428a2d1e04a123778bc"},
-    {file = "botocore-1.29.17.tar.gz", hash = "sha256:4be7ca8c581dbc6e8584876c4347dcc4f4bc6aa6e6e8131901fc11816fc8151b"},
+    {file = "botocore-1.29.18-py3-none-any.whl", hash = "sha256:2aba44433b6eac6d3a12cf93f2985e2d7a843307c1a527042fc48dd09b273992"},
+    {file = "botocore-1.29.18.tar.gz", hash = "sha256:26e86fce95049f6cc18b5611901549943c4c22522fa8a3b6b265404f673977b2"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
