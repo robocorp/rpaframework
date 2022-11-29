@@ -1,7 +1,6 @@
 """Common utilities shared by any e-mail related library."""
 
 
-import base64
 import os
 from dataclasses import dataclass
 from enum import Enum
@@ -25,6 +24,7 @@ class OAuthProvider(Enum):
 
 @dataclass
 class OAuthConfig:
+    """OAuth2 Authorization Code Flow provider settings."""
 
     auth_url: str
     redirect_uri: str
@@ -65,7 +65,8 @@ class OAuthMixin:
                     tenant=tenant
                 )
                 setattr(self._oauth_provider, url_attr, formatted)
-        # NOTE(cmin764): https://github.com/requests/requests-oauthlib/issues/387#issuecomment-1325131664
+        # NOTE(cmin764):
+        #  https://github.com/requests/requests-oauthlib/issues/387#issuecomment-1325131664
         os.environ["OAUTHLIB_RELAX_TOKEN_SCOPE"] = "1"
 
     def generate_oauth_url(self, client_id: str) -> str:

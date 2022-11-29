@@ -5,6 +5,20 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Added native OAuth2 support (:pr:`706`) with the following keywords:
+
+  - ``Generate OAuth URL``
+  - ``Get OAuth Token``
+  - ``Refresh OAuth Token``
+
+  Available in libraries:
+
+    - **RPA.Email.Exchange** (:issue:`604`)
+    - **RPA.Email.ImapSmtp** (additional keyword ``Generate OAuth String``)
+    - **RPA.MFA** (:issue:`658`)
+
+  Check updated Portal example on: https://robocorp.com/portal/robot/robocorp/example-oauth-email
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

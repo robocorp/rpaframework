@@ -146,9 +146,11 @@ class ImapSmtp(OAuthMixin):
     **Troubleshooting**
 
     - Authentication error with Gmail - "Application-specific password required"
-        see. https://support.google.com/mail/answer/185833?hl=en
-    - More secure apps (XOAUTH2 protocol): Check
-        `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_
+        See: https://support.google.com/mail/answer/185833?hl=en
+    - More secure apps (XOAUTH2 protocol): Use the OAuth2 flow as in this Portal robot
+      `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_
+        Make sure to specify a `provider` (and optionally a `tenant`) when importing
+        the library and planning to use this flow.
 
     **Examples**
 
@@ -170,7 +172,7 @@ class ImapSmtp(OAuthMixin):
 
         *** Variables ***
         ${GMAIL_ACCOUNT}        ACCOUNT_NAME
-        ${GMAIL_PASSWORD}       ACCOUNT_PASSWORD
+        ${GMAIL_PASSWORD}       APP_PASSWORD
         ${RECIPIENT_ADDRESS}    RECIPIENT
         ${BODY_IMG1}            ${IMAGEDIR}${/}approved.png
         ${BODY_IMG2}            ${IMAGEDIR}${/}invoice.png
@@ -202,8 +204,7 @@ class ImapSmtp(OAuthMixin):
         from RPA.Email.ImapSmtp import ImapSmtp
 
         gmail_account = "ACCOUNT_NAME"
-        gmail_password = "ACCOUNT_PASSWORD"
-        sender = gmail_account
+        gmail_password = "APP_PASSWORD"
 
         mail = ImapSmtp(smtp_server="smtp.gmail.com", smtp_port=587)
         mail.authorize(account=gmail_account, password=gmail_password)
