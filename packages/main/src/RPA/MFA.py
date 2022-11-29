@@ -268,7 +268,7 @@ class MFA:
                 ${token} =      Get OAuth Token
                 ...     https://accounts.google.com/o/oauth2/token
                 ...     client_secret=GOCSPX-******mqZAW89
-                ...     response_url=${resp_url}  # redirect of ``Generate OAuth URL``
+                ...     response_url=${resp_url}  # redirect of `Generate OAuth URL`
 
         **Example: Python**
 

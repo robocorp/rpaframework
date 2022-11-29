@@ -51,11 +51,7 @@ OAUTH_PROVIDERS = {
 class OAuthMixin:
     """Common keywords for the Email libraries, enabling OAuth2 support."""
 
-    TO_PROTECT = [
-        "get_oauth_token",
-        "refresh_oauth_token",
-        "generate_oauth_string",
-    ]
+    TO_PROTECT = ["get_oauth_token", "refresh_oauth_token"]
 
     def __init__(self, provider: OAuthProviderType, tenant: Optional[str]):
         self._oauth_provider = OAUTH_PROVIDERS[OAuthProvider(provider)]

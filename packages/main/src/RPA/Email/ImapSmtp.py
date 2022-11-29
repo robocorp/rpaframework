@@ -219,7 +219,13 @@ class ImapSmtp(OAuthMixin):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    TO_PROTECT = ["authorize", "set_credentials"] + OAuthMixin.TO_PROTECT
+    TO_PROTECT = [
+        "authorize",
+        "authorize_imap",
+        "authorize_smtp",
+        "set_credentials",
+        "generate_oauth_string",
+    ] + OAuthMixin.TO_PROTECT
 
     def __init__(
         self,
