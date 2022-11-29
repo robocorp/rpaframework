@@ -320,8 +320,8 @@
 
 <dl class="class">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = 993</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">encoding: str = 'utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: Optional[str] = None</em>, <em class="sig-param">smtp_port: int = 587</em>, <em class="sig-param">imap_server: Optional[str] = None</em>, <em class="sig-param">imap_port: int = 993</em>, <em class="sig-param">account: Optional[str] = None</em>, <em class="sig-param">password: Optional[str] = None</em>, <em class="sig-param">encoding: str = 'utf-8'</em>, <em class="sig-param">provider: Union[OAuthProvider</em>, <em class="sig-param">str] = &lt;OAuthProvider.GOOGLE: 'google'&gt;</em>, <em class="sig-param">tenant: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Email.common.OAuthMixin</span></code></p>
 <p><cite>ImapSmtp</cite> is a library for sending, reading, and deleting emails.
 <cite>ImapSmtp</cite> is interfacing with SMTP and IMAP protocols.</p>
 <p><strong>*About criteria argument*</strong></p>
@@ -331,16 +331,18 @@ to given criteria.</p>
 <p>Syntax needs to according to specification and more information about that
 can be read from <a class="reference external" href="https://robocorp.com/docs/development-guide/email/sending-emails-with-gmail-smtp#listing-email-messages-by-criteria">https://robocorp.com/docs/development-guide/email/sending-emails-with-gmail-smtp#listing-email-messages-by-criteria</a></p>
 <p><strong>Troubleshooting</strong></p>
-<ul class="simple">
+<ul>
 <li><dl class="simple">
-<dt>Authentication error with Gmail - “Application-specific password required”</dt><dd><p>see. <a class="reference external" href="https://support.google.com/mail/answer/185833?hl=en">https://support.google.com/mail/answer/185833?hl=en</a></p>
+<dt>Authentication error with Gmail - “Application-specific password required”</dt><dd><p>See: <a class="reference external" href="https://support.google.com/mail/answer/185833?hl=en">https://support.google.com/mail/answer/185833?hl=en</a></p>
 </dd>
 </dl>
 </li>
-<li><dl class="simple">
-<dt>More secure apps (XOAUTH2 protocol): Check</dt><dd><p><a class="reference external" href="https://github.com/robocorp/example-oauth-email">example-oauth-email</a></p>
-</dd>
-</dl>
+<li><p>More secure apps (XOAUTH2 protocol): Use the OAuth2 flow as in this Portal robot
+<a class="reference external" href="https://github.com/robocorp/example-oauth-email">example-oauth-email</a></p>
+<blockquote>
+<div><p>Make sure to specify a <cite>provider</cite> (and optionally a <cite>tenant</cite>) when importing
+the library and planning to use this flow.</p>
+</div></blockquote>
 </li>
 </ul>
 <p><strong>Examples</strong></p>
@@ -357,7 +359,7 @@ the base image name given with the <code class="docutils literal notranslate"><s
 
 <span class="gh">*** Variables ***</span><span class="p"></span>
 <span class="p">${</span><span class="nv">GMAIL_ACCOUNT</span><span class="p">}        </span><span class="s">ACCOUNT_NAME</span><span class="p"></span>
-<span class="p">${</span><span class="nv">GMAIL_PASSWORD</span><span class="p">}       </span><span class="s">ACCOUNT_PASSWORD</span><span class="p"></span>
+<span class="p">${</span><span class="nv">GMAIL_PASSWORD</span><span class="p">}       </span><span class="s">APP_PASSWORD</span><span class="p"></span>
 <span class="p">${</span><span class="nv">RECIPIENT_ADDRESS</span><span class="p">}    </span><span class="s">RECIPIENT</span><span class="p"></span>
 <span class="p">${</span><span class="nv">BODY_IMG1</span><span class="p">}            ${</span><span class="nv">IMAGEDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">approved.png</span><span class="p"></span>
 <span class="p">${</span><span class="nv">BODY_IMG2</span><span class="p">}            ${</span><span class="nv">IMAGEDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">invoice.png</span><span class="p"></span>
@@ -387,8 +389,7 @@ the base image name given with the <code class="docutils literal notranslate"><s
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Email.ImapSmtp</span> <span class="kn">import</span> <span class="n">ImapSmtp</span>
 
 <span class="n">gmail_account</span> <span class="o">=</span> <span class="s2">&quot;ACCOUNT_NAME&quot;</span>
-<span class="n">gmail_password</span> <span class="o">=</span> <span class="s2">&quot;ACCOUNT_PASSWORD&quot;</span>
-<span class="n">sender</span> <span class="o">=</span> <span class="n">gmail_account</span>
+<span class="n">gmail_password</span> <span class="o">=</span> <span class="s2">&quot;APP_PASSWORD&quot;</span>
 
 <span class="n">mail</span> <span class="o">=</span> <span class="n">ImapSmtp</span><span class="p">(</span><span class="n">smtp_server</span><span class="o">=</span><span class="s2">&quot;smtp.gmail.com&quot;</span><span class="p">,</span> <span class="n">smtp_port</span><span class="o">=</span><span class="mi">587</span><span class="p">)</span>
 <span class="n">mail</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="n">account</span><span class="o">=</span><span class="n">gmail_account</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">gmail_password</span><span class="p">)</span>
@@ -408,6 +409,11 @@ the base image name given with the <code class="docutils literal notranslate"><s
 <dl class="attribute">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.ROBOT_LIBRARY_SCOPE">
 <code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.TO_PROTECT">
+<code class="sig-name descname">TO_PROTECT</code><em class="property"> = ['authorize', 'set_credentials', 'get_oauth_token', 'refresh_oauth_token', 'generate_oauth_string']</em><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.TO_PROTECT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -711,6 +717,60 @@ content</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.generate_oauth_string">
+<code class="sig-name descname">generate_oauth_string</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">access_token: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.generate_oauth_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate and return an OAuth2 string compatible with the IMAP/POP/SMTP
+XOAUTH2 protocol.</p>
+<p>This string usually gets passed to the <code class="docutils literal notranslate"><span class="pre">Authorize</span></code> keyword as <cite>password</cite> when
+<cite>is_oauth=${True}</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – The e-mail address you’re going to send the e-mail with.</p></li>
+<li><p><strong>access_token</strong> – Access token string found in the dictionary obtained with
+<code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">OAuth</span> <span class="pre">Token</span></code> or <code class="docutils literal notranslate"><span class="pre">Refresh</span> <span class="pre">OAuth</span> <span class="pre">Token</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Base64 encoded string packing these credentials and replacing the
+legacy <cite>password</cite> when enabling the OAuth2 flow.</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Authorize ImapSmtp</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">password</span><span class="p">} =   </span><span class="nf">Generate OAuth String</span><span class="p">    ${</span><span class="nv">username</span><span class="p">}</span>
+<span class="p">    ...    ${</span><span class="nv">token</span><span class="p">}[</span><span class="nv">access_token</span><span class="p">]</span>
+<span class="p">    </span><span class="nf">Authorize</span><span class="p">    </span><span class="s">account=</span><span class="p">${</span><span class="nv">username</span><span class="p">}    </span><span class="s">is_oauth=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    ...     </span><span class="s">password=</span><span class="p">${</span><span class="nv">password</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.generate_oauth_url">
+<code class="sig-name descname">generate_oauth_url</code><span class="sig-paren">(</span><em class="sig-param">client_id: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.generate_oauth_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates an authorization URL which must be opened by the user to start the
+OAuth2 flow and obtain an authorization code as response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client_id</strong> – Client app ID. (generated by the provider)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Authorization URL string not containing any sensitive info in it.</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Start OAuth Flow</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">auth_url</span><span class="p">} =    </span><span class="nf">Generate OAuth URL</span><span class="p"></span>
+<span class="p">    ...     </span><span class="s">client_id=810482312368-19htmcgcj*******googleusercontent.com</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">     </span><span class="s">Start OAuth2 flow: </span><span class="p">${</span><span class="nv">auth_url</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body">
 <code class="sig-name descname">get_decoded_email_body</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decodes email body and extracts its text/html content.</p>
@@ -749,6 +809,34 @@ has attachments</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{folders}</span><span class="p">  </span><span class="c">Get Folder List</span><span class="p"></span>
 <span class="c">@{folders}</span><span class="p">  </span><span class="c">Get Folder List</span><span class="p">  </span><span class="c">pattern=important</span><span class="p"></span>
 <span class="c">@{folders}</span><span class="p">  </span><span class="c">Get Folder List</span><span class="p">  </span><span class="c">subdirectory=sub</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.get_oauth_token">
+<code class="sig-name descname">get_oauth_token</code><span class="sig-paren">(</span><em class="sig-param">client_secret: str</em>, <em class="sig-param">response_url: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_oauth_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exchanges the code obtained previously with <code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">OAuth</span> <span class="pre">URL</span></code> for a
+token.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_secret</strong> – Client app secret. (generated by the provider)</p></li>
+<li><p><strong>response_url</strong> – The final URL containing the authorization <cite>code</cite> found in
+the address bar after authenticating and authorizing the Client app
+through the authorization URL.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary containing the access &amp; refresh token, plus metadata.</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Finish OAuth Flow</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">token</span><span class="p">} =      </span><span class="nf">Get OAuth Token</span><span class="p"></span>
+<span class="p">    ...     </span><span class="s">client_secret=GOCSPX-******mqZAW89</span><span class="p"></span>
+<span class="p">    ...     </span><span class="s">response_url=</span><span class="p">${</span><span class="nv">resp_url</span><span class="p">}  </span><span class="c"># redirect of ``Generate OAuth URL``</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -871,6 +959,36 @@ is <cite>HEADER Message-ID</cite> search</p></li>
 <dd class="field-even"><p>True if all move operations succeeded, False if not</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.refresh_oauth_token">
+<code class="sig-name descname">refresh_oauth_token</code><span class="sig-paren">(</span><em class="sig-param">client_id: str</em>, <em class="sig-param">client_secret: str</em>, <em class="sig-param">token: dict</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.refresh_oauth_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refreshes the token as the access one usually expires after 1h and the
+refresh one never expires. (as long as it doesn’t get revoked)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client_id</strong> – Client app ID. (generated by the provider)</p></li>
+<li><p><strong>client_secret</strong> – Client app secret. (generated by the provider)</p></li>
+<li><p><strong>token</strong> – Full token dictionary previously obtained with
+<code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">OAuth</span> <span class="pre">Token</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A token dictionary containing a new access token and updated
+metadata.</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Refresh OAuth Flow</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">token</span><span class="p">} =      </span><span class="nf">Refresh OAuth Token</span><span class="p"></span>
+<span class="p">    ...     </span><span class="s">client_id=810482312368-19htmcgcj*******googleusercontent.com</span><span class="p"></span>
+<span class="p">    ...     </span><span class="s">client_secret=GOCSPX-******mqZAW89</span><span class="p"></span>
+<span class="p">    ...     </span><span class="s">token=</span><span class="p">${</span><span class="nv">token</span><span class="p">}  </span><span class="c"># from ``Get OAuth Token``</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -1083,7 +1201,7 @@ exception if folder does not exist on the server.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.set_credentials">
-<code class="sig-name descname">set_credentials</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.set_credentials" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_credentials</code><span class="sig-paren">(</span><em class="sig-param">account: Optional[str] = None</em>, <em class="sig-param">password: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.set_credentials" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set credentials</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
