@@ -1810,3 +1810,30 @@ class ImapSmtp(OAuthMixin):
         self.logger.info("Writing converted document into: %s", output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         docx.save(output_path)
+
+    def generate_oauth_string(self, username: str, access_token: str) -> str:
+        """Generate and return an OAuth2 string compatible with the IMAP/POP/SMTP
+        XOAUTH2 protocol.
+
+        This string usually gets passed to the ``Authorize`` keyword as `password` when
+        `is_oauth=${True}`.
+
+        :param username: The e-mail address you're going to send the e-mail with.
+        :param access_token: Access token string found in the dictionary obtained with
+             ``Get OAuth Token`` or ``Refresh OAuth Token``.
+        :returns: Base64 encoded string packing these credentials and replacing the
+            legacy `password` when enabling the OAuth2 flow.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Authorize ImapSmtp
+                ${password} =   Generate OAuth String    ${username}
+                ...    ${token}[access_token]
+                Authorize    account=${username}    is_oauth=${True}
+                ...     password=${password}
+        """
+        auth_string = f"user={username}\1auth=Bearer {access_token}\1\1"
+        return base64.b64encode(auth_string.encode()).decode()
