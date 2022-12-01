@@ -31,11 +31,23 @@ from smtplib import (
 from typing import Any, BinaryIO, List, Optional, Tuple, Union
 
 from htmldocx import HtmlToDocx
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-from RPA.Email.common import counter_duplicate_path
-from RPA.RobotLogListener import RobotLogListener
+
+from RPA.Email.common import (
+    OAuthMixin,
+    OAuthProvider,
+    OAuthProviderType,
+    counter_duplicate_path,
+)
+from RPA.Robocorp.utils import protect_keywords
+
 
 FilePath = Union[str, Path]
+
+IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
+FLAG_DELETED = "\\Deleted"
+FLAG_SEEN = "\\Seen"
+FLAG_FLAGGED = "\\Flagged"
+FLAG_TRASH = "\\Trash"
 
 
 class AttachmentPosition(Enum):
@@ -98,18 +110,6 @@ def get_part_filename(msg: Message) -> Optional[str]:
     return filename.replace("\r", "").replace("\n", "")
 
 
-IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
-FLAG_DELETED = "\\Deleted"
-FLAG_SEEN = "\\Seen"
-FLAG_FLAGGED = "\\Flagged"
-FLAG_TRASH = "\\Trash"
-
-try:
-    BuiltIn().import_library("RPA.RobotLogListener")
-except RobotNotRunningError:
-    pass
-
-
 def imap_connection(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
@@ -130,7 +130,7 @@ def smtp_connection(f):
     return wrapper
 
 
-class ImapSmtp:
+class ImapSmtp(OAuthMixin):
     """`ImapSmtp` is a library for sending, reading, and deleting emails.
     `ImapSmtp` is interfacing with SMTP and IMAP protocols.
 
@@ -146,9 +146,11 @@ class ImapSmtp:
     **Troubleshooting**
 
     - Authentication error with Gmail - "Application-specific password required"
-        see. https://support.google.com/mail/answer/185833?hl=en
-    - More secure apps (XOAUTH2 protocol): Check
-        `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_
+        See: https://support.google.com/mail/answer/185833?hl=en
+    - More secure apps (XOAUTH2 protocol): Use the OAuth2 flow as in this Portal robot
+      `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_
+        Make sure to specify a `provider` (and optionally a `tenant`) when importing
+        the library and planning to use this flow.
 
     **Examples**
 
@@ -170,7 +172,7 @@ class ImapSmtp:
 
         *** Variables ***
         ${GMAIL_ACCOUNT}        ACCOUNT_NAME
-        ${GMAIL_PASSWORD}       ACCOUNT_PASSWORD
+        ${GMAIL_PASSWORD}       APP_PASSWORD
         ${RECIPIENT_ADDRESS}    RECIPIENT
         ${BODY_IMG1}            ${IMAGEDIR}${/}approved.png
         ${BODY_IMG2}            ${IMAGEDIR}${/}invoice.png
@@ -202,8 +204,7 @@ class ImapSmtp:
         from RPA.Email.ImapSmtp import ImapSmtp
 
         gmail_account = "ACCOUNT_NAME"
-        gmail_password = "ACCOUNT_PASSWORD"
-        sender = gmail_account
+        gmail_password = "APP_PASSWORD"
 
         mail = ImapSmtp(smtp_server="smtp.gmail.com", smtp_port=587)
         mail.authorize(account=gmail_account, password=gmail_password)
@@ -218,31 +219,37 @@ class ImapSmtp:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
+    TO_PROTECT = ["authorize", "set_credentials"] + OAuthMixin.TO_PROTECT
+
     def __init__(
         self,
-        smtp_server: str = None,
+        smtp_server: Optional[str] = None,
         smtp_port: int = 587,
-        imap_server: str = None,
+        imap_server: Optional[str] = None,
         imap_port: int = 993,
-        account: str = None,
-        password: str = None,
+        account: Optional[str] = None,
+        password: Optional[str] = None,
         encoding: str = "utf-8",
+        provider: OAuthProviderType = OAuthProvider.GOOGLE,
+        tenant: Optional[str] = None,
     ) -> None:
-        listener = RobotLogListener()
-        listener.register_protected_keywords(
-            ["RPA.Email.ImapSmtp.authorize", "RPA.Email.ImapSmtp.set_credentials"]
-        )
+        # Init the OAuth2 support. (ready if used)
+        super().__init__(provider, tenant=tenant)
 
+        protect_keywords("RPA.Email.ImapSmtp", self.TO_PROTECT)
         self.logger = logging.getLogger(__name__)
+
         self.smtp_server = smtp_server
         self.imap_server = imap_server if imap_server else smtp_server
         self.smtp_port = int(smtp_port)
         self.imap_port = int(imap_port)
+        self.encoding = encoding
+        self.account = self.password = None
         self.set_credentials(account, password)
+
         self.smtp_conn = None
         self.imap_conn = None
         self.selected_folder = None
-        self.encoding = encoding
 
     def __del__(self) -> None:
         if self.smtp_conn:
@@ -261,7 +268,9 @@ class ImapSmtp:
                 pass
             self.imap_conn = None
 
-    def set_credentials(self, account: str = None, password: str = None) -> None:
+    def set_credentials(
+        self, account: Optional[str] = None, password: Optional[str] = None
+    ) -> None:
         """Set credentials
 
         :param account: user account as string, defaults to None
@@ -274,7 +283,6 @@ class ImapSmtp:
             Set Credentials   ${username}   ${password}
             Authorize
         """
-
         self.account = account
         self.password = password
 
@@ -1803,3 +1811,30 @@ class ImapSmtp:
         self.logger.info("Writing converted document into: %s", output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         docx.save(output_path)
+
+    def generate_oauth_string(self, username: str, access_token: str) -> str:
+        """Generate and return an OAuth2 string compatible with the IMAP/POP/SMTP
+        XOAUTH2 protocol.
+
+        This string usually gets passed to the ``Authorize`` keyword as `password` when
+        `is_oauth=${True}`.
+
+        :param username: The e-mail address you're going to send the e-mail with.
+        :param access_token: Access token string found in the dictionary obtained with
+             ``Get OAuth Token`` or ``Refresh OAuth Token``.
+        :returns: Base64 encoded string packing these credentials and replacing the
+            legacy `password` when enabling the OAuth2 flow.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Authorize ImapSmtp
+                ${password} =   Generate OAuth String    ${username}
+                ...    ${token}[access_token]
+                Authorize    account=${username}    is_oauth=${True}
+                ...     password=${password}
+        """
+        auth_string = f"user={username}\1auth=Bearer {access_token}\1\1"
+        return base64.b64encode(auth_string.encode()).decode()

@@ -141,9 +141,13 @@ def test_python(ctx, asynchronous=None):
             "Run only a specific test from the available test suites or robot file. "
             "(no exclusions)"
         ),
+        "tag-name": (
+            "Run only a tests with a specific tag from the available test suites or robot file. "
+            "(no exclusions)"
+        ),
     },
 )
-def test_robot(ctx, robot=None, test_name=None, asynchronous=None):
+def test_robot(ctx, robot=None, test_name=None, tag_name=None, asynchronous=None):
     """Run Robot Framework tests.
 
     Skips the following tags by default: skip, manual. (usually with GH CI runs)
@@ -163,6 +167,7 @@ def test_robot(ctx, robot=None, test_name=None, asynchronous=None):
         )
         if robot_test_source.exists():
             exclude_list = EXCLUDE_ROBOT_TESTS[:]  # copy of the original list
+            include_str = ""
             if robot:
                 # Run even skipped tests (but not manual ones) when specifying a test
                 #  robot file explicitly. (during development only)
@@ -177,12 +182,14 @@ def test_robot(ctx, robot=None, test_name=None, asynchronous=None):
                 # Run all tasks and take into account remaining exclusions. (during CI
                 #  gate in GitHub flow)
                 robot_test = ""
+            if tag_name:
+                include_str = f'--include "{tag_name}"'
             exclude_str = " ".join(f"--exclude {tag}" for tag in exclude_list)
             arguments = (
                 f"--runemptysuite --loglevel TRACE --outputdir {robot_test_output} "
                 f"--pythonpath {robot_test_resources}"
             )
-            command = f"{arguments} {exclude_str} {robot_test} {robot_test_source}"
+            command = f"{arguments} {exclude_str} {include_str} {robot_test} {robot_test_source}"
             return shell.run_in_venv(ctx, "robot", command, asynchronous=asynchronous)
         else:
             return shell.run(

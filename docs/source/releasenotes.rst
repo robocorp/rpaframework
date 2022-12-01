@@ -5,9 +5,55 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Added native OAuth2 support (:pr:`706`) with the following keywords:
+
+  - ``Generate OAuth URL``
+  - ``Get OAuth Token``
+  - ``Refresh OAuth Token``
+
+  Available in libraries:
+
+    - **RPA.Email.Exchange** (:issue:`604`)
+    - **RPA.Email.ImapSmtp** (additional keyword ``Generate OAuth String``)
+    - **RPA.MFA** (:issue:`658`)
+
+  Check updated Portal example on: https://robocorp.com/portal/robot/robocorp/example-oauth-email
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+19.3.1 - 29 Nov 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`710`): Fix bug with `auto_close=${False}`
+  param when importing the library, which still had the browser closed at the end of
+  the session. (now it's left open if such parameter is set to `False`)
+
+19.3.0 - 28 Nov 2022
+--------------------
+
+- Library **RPA.Slack** (:issue:`711`): New keyword ``Slack Raw Message`` adds support for
+  ``blocks`` message property by allowing user to set message dictionary.
+- Library **RPA.Excel.Files** (:pr:`712`): Add new keywords for the library.
+
+  List of new `RPA.Excel.Files` keywords:
+
+  - Set Cell Formula
+  - Copy Cell Values
+  - Delete Columns
+  - Delete Rows
+  - Insert Rows Before
+  - Insert Rows After
+  - Insert Columns After
+  - Insert Columns Before
+  - Move Range
+  - Clear Cell Range
+  - Set Styles
+  - Auto Size Columns
+  - Hide Columns
+  - Show Columns
+  - Set Cell Values
 
 19.2.0 - 17 Nov 2022
 --------------------
