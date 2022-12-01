@@ -33,8 +33,8 @@ class Windows(WindowsElementsMixin, DynamicCore):
 
     This library, ``RPA.Windows`` is available via **rpaframework-windows** package. This
     package is first available as a separate package installation from **rpaframework** package.
-    In the next stage this is integrated into **rpaframework** package. Ultimately this library
-    will replace current library ``RPA.Desktop.Windows`` if seen as approriate.
+    In the next stage this is integrated into **rpaframework** package. This library replaces 
+    the deprecated ``RPA.Desktop.Windows``, please use ``RPA.Windows`` instead.
 
     .. code-block:: yaml
 
@@ -44,7 +44,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
           - python=3.9.13
           - pip=22.1.2
           - pip:
-            - rpaframework-windows==6.2.0
+            - rpaframework-windows==6.2.0 # stand alone Windows library (`rpaframework` includes this library)
 
 
     **About terminology**
