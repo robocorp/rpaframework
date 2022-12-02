@@ -30,9 +30,12 @@ from flet import (
     app,
     colors,
     icons,
+    ScrollMode
 )
 from flet.control_event import ControlEvent
 from flet.dropdown import Option
+from .date_picker import DatePicker
+
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
@@ -256,8 +259,9 @@ class AssistantUI:
 
     @keyword("Add Submit")
     def add_submit(self) -> None:
-        # FIXME: implement closing
-        self.add_element(ElevatedButton("Submit", on_click="close"))
+        def close(e):
+            self.page.window_destroy()
+        self.add_element(ElevatedButton("Submit", on_click=close))
 
     @keyword("Clear elements")
     def clear_elements(self) -> None:
@@ -821,28 +825,30 @@ class AssistantUI:
         """
 
         # TODO(cmin764): Be flexible on date formats. (provide it as parameter)
-        py_date_format = "%Y-%m-%d"
-        js_date_format = "yyyy-MM-dd"
-        default = default or datetime.utcnow().date()
-        if isinstance(default, date):  # recognizes both `date` and `datetime`
-            default = default.strftime(py_date_format)
-        else:
-            try:
-                datetime.strptime(default, py_date_format)
-            except Exception as exc:
-                raise ValueError(
-                    f"Invalid default date with value {default!r}"
-                ) from exc
+        # py_date_format = "%Y-%m-%d"
+        # js_date_format = "yyyy-MM-dd"
+        # default = default or datetime.utcnow().date()
+        # if isinstance(default, date):  # recognizes both `date` and `datetime`
+        #     default = default.strftime(py_date_format)
+        # else:
+        #     try:
+        #         datetime.strptime(default, py_date_format)
+        #     except Exception as exc:
+        #         raise ValueError(
+        #             f"Invalid default date with value {default!r}"
+        #         ) from exc
 
-        element = {
-            "type": "input-datepicker",
-            "name": str(name),
-            "_format": py_date_format,
-            "format": js_date_format,
-            "default": optional_str(default),
-            "label": optional_str(label),
-        }
-        self.add_element(element)
+        # element = {
+        #     "type": "input-datepicker",
+        #     "name": str(name),
+        #     "_format": py_date_format,
+        #     "format": js_date_format,
+        #     "default": optional_str(default),
+        #     "label": optional_str(label),
+        # }
+        # self.add_element(element)
+
+        self.add_element(name=str(name), element=DatePicker())
 
     @keyword("Add radio buttons", tags=["input"])
     def add_radio_buttons(
@@ -1063,6 +1069,7 @@ class AssistantUI:
                 page.add(element)
             for element in self.current_invisible_elements:
                 page.overlay.append(element)
+            page.scroll = ScrollMode.AUTO
             self.page = page
             page.update()
 

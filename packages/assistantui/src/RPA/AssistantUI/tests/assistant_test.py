@@ -39,25 +39,18 @@ assistant.add_files("**/*.py")
 assistant.add_image(
     "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
 )
-
+assistant.add_date_input("date")
+assistant.add_submit()
 
 # assistant.clear_elements()
 # assistant.add_icon(Icon.Failure)
 
 # not implemented yet
 """
-assistant.add_date_input()
-assistant.add_submit_buttons()
 
-assistant.show_dialog()
-assistant.wait_dialog()
-assistant.wait_all_dialogs()
-assistant.close_dialog()
-assistant.close_all_dialogs()
-assistant.wait_dialogs_as_completed()
+assistant.add_submit_buttons()
 
 """
 
 results = assistant.run_dialog()
 print(results)
-# FIXME: add a submit button to the dialog
