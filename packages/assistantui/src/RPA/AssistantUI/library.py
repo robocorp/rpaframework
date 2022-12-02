@@ -586,6 +586,10 @@ class AssistantUI:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
+        # TODO: Do this in a cleaner way. Workaround because we use on_change
+        # handlers to record values, so default value otherwise will be missed
+        self.results[name] = placeholder
+
         self.add_element(name=name, element=TextField(label=label, value=placeholder))
 
     @keyword("Add password input", tags=["input"])
