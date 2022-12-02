@@ -2,6 +2,8 @@ import RPA.AssistantUI
 from RPA.AssistantUI.dialog_types import Icon
 
 assistant = RPA.AssistantUI.AssistantUI()
+assistant.add_interactive_button("python button", print, "asd")
+assistant.add_interactive_button("robot button", "Log", "asd")
 assistant.add_heading("Heading test")
 assistant.add_text("Test")
 assistant.add_link("https://robocorp.com")

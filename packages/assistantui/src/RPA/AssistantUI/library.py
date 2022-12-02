@@ -9,7 +9,7 @@ from pathlib import Path
 import platform
 import subprocess
 import time
-from typing import Any, Dict, Generator, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, Generator, List, Optional, Tuple, Union
 
 import flet
 from flet import (
@@ -31,6 +31,7 @@ from flet import (
     colors,
     icons,
 )
+from flet.control_event import ControlEvent
 from flet.dropdown import Option
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -217,7 +218,7 @@ class AssistantUI:
                 target(page)
             except Exception as e:
                 page.error(f"There was an error while rendering the page: {e}")
-    
+
         self._conn.on_session_created = on_session_created
         fvp = flet.flet._open_flet_view(self._conn.page_url, False)
         try:
@@ -1068,3 +1069,28 @@ class AssistantUI:
         self._show_flet(run)
 
         return self.results
+
+    @keyword("Add Interactive Button", tags=["dialog"])
+    def add_interactive_button(
+        self, label: str, function: Union[Callable, str], *args, **kwargs
+    ) -> None:
+        """
+        ``function`` should be a python function or a Robot keyword name, args and kwargs should be valid arguments for it.
+        """
+
+        # TODO: use logger.err and logger.debug
+        def on_click(event: ControlEvent):
+            if isinstance(function, Callable):
+                try:
+                    function(*args, **kwargs)
+                except Exception as err:
+                    print(f"on_click error with button labeled {label}")
+                    print(err)
+            else:
+                try:
+                    BuiltIn().run_keyword(function, *args, **kwargs)
+                except Exception as err:
+                    print(f"on_click error with button labeled {label}")
+                    print(err)
+
+        self.add_element(ElevatedButton(label, on_click=on_click))
