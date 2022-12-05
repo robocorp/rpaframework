@@ -1,20 +1,20 @@
 import asyncio
 import atexit
-from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date
 import glob
 import logging
 import os
 from pathlib import Path
 import platform
 import subprocess
-import time
-from typing import Any, Callable, Dict, Generator, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+import signal
 
 import flet
 from flet import (
     Checkbox,
     Column,
+    Connection,
     Control,
     Dropdown,
     ElevatedButton,
@@ -34,6 +34,7 @@ from flet import (
 )
 from flet.control_event import ControlEvent
 from flet.dropdown import Option
+from flet.utils import is_windows
 from .date_picker import DatePicker
 
 from robot.api.deco import keyword, library
@@ -234,9 +235,9 @@ class AssistantUI:
                 page.error(f"There was an error while rendering the page: {e}")
 
         self._conn.on_session_created = on_session_created
-        fvp = flet.flet._open_flet_view(self._conn.page_url, False)
+        self._fvp = flet.flet._open_flet_view(self._conn.page_url, False)
         try:
-            fvp.wait()
+            self._fvp.wait()
         except Exception:
             pass
 
