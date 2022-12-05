@@ -166,6 +166,7 @@ class AssistantUI:
         self._pagination = 0
         self.page: Optional[Page] = None
         self._conn = self._preload_flet()
+        atexit.register(self._cleanup)
 
         try:
             # Prevent logging from keywords that return results
@@ -181,6 +182,16 @@ class AssistantUI:
             listener.register_protected_keywords(keywords)
         except RobotNotRunningError:
             pass
+
+    def _cleanup(self) -> None:
+        # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146
+        self._conn.close()
+        if self._fvp is not None and not is_windows():
+            try:
+                logging.debug(f"Flet View process {self._fvp.pid}")
+                os.kill(self._fvp.pid + 1, signal.SIGKILL)
+            except:
+                pass
 
     """ TODO: delete, old implementation code
     def add_element(self, element: Dict[str, Any]) -> None:
@@ -199,7 +210,7 @@ class AssistantUI:
         self.elements.append(element)
     """
 
-    def _preload_flet(self):
+    def _preload_flet(self) -> Connection:
         return flet.flet._connect_internal(
             page_name="",
             host=None,
