@@ -1,4 +1,3 @@
-import asyncio
 import atexit
 from datetime import date
 import glob
@@ -30,7 +29,7 @@ from flet import (
     app,
     colors,
     icons,
-    ScrollMode
+    ScrollMode,
 )
 from flet.control_event import ControlEvent
 from flet.dropdown import Option
@@ -1041,6 +1040,15 @@ class AssistantUI:
 
         self.add_element(element)
 
+    def _update_elements(self, page):
+        for element in self.current_elements:
+            page.add(element)
+        for element in self.current_invisible_elements:
+            page.overlay.append(element)
+        page.scroll = ScrollMode.AUTO
+        self.page = page
+        page.update()
+
     @keyword("Run dialog", tags=["dialog"])
     def run_dialog(self, timeout: int = 180, **options: Any) -> Result:
         """Create a dialog from all the defined elements and block
@@ -1076,18 +1084,20 @@ class AssistantUI:
         # FIXME: support options
 
         def run(page: Page):
+            self._update_elements(page)
             # page.theme_mode = "light"
-            for element in self.current_elements:
-                page.add(element)
-            for element in self.current_invisible_elements:
-                page.overlay.append(element)
-            page.scroll = ScrollMode.AUTO
-            self.page = page
-            page.update()
 
         self._show_flet(run)
 
         return self.results
+
+    @keyword("Refresh", tags=["dialog"])
+    def refresh(self):
+        """Can be used to update UI elements when adding elements while dialog is running"""
+        if self.page:
+            self._update_elements(self.page)
+        else:
+            raise Exception("No dialog open")
 
     @keyword("Add Interactive Button", tags=["dialog"])
     def add_interactive_button(
