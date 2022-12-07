@@ -282,8 +282,10 @@ class Exchange(OAuthMixin):
         safe place.
         """
         if self._vault_name and self._vault_token_key:
+            token = dict(token)
+            self._sync_token_metadata(token)
             secret = lib_vault.get_secret(self._vault_name)
-            secret[self._vault_token_key] = dict(token)
+            secret[self._vault_token_key] = token
             lib_vault.set_secret(secret)
             self.logger.info(
                 "OAuth2 token was refreshed in Vault %r as %r. (new expiry: %d)",
