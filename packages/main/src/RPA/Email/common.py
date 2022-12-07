@@ -7,6 +7,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional, Union
 
+import jwt
+
 from RPA.MFA import MFA
 
 
@@ -51,16 +53,12 @@ OAUTH_PROVIDERS = {
 class OAuthMixin:
     """Common keywords for the Email libraries, enabling OAuth2 support."""
 
-    TO_PROTECT = [
-        "get_oauth_token",
-        "refresh_oauth_token",
-        "generate_oauth_string",
-    ]
+    TO_PROTECT = ["get_oauth_token", "refresh_oauth_token"]
 
     def __init__(self, provider: OAuthProviderType, tenant: Optional[str]):
         self._oauth_provider = OAUTH_PROVIDERS[OAuthProvider(provider)]
         if tenant:
-            for url_attr in ("auth_url", "token_url"):
+            for url_attr in ("auth_url", "redirect_uri", "token_url"):
                 formatted = getattr(self._oauth_provider, url_attr).format(
                     tenant=tenant
                 )
@@ -95,6 +93,20 @@ class OAuthMixin:
             prompt="consent",
         )
 
+    def _sync_token_metadata(self, token: dict):
+        # Ensures that the issued expiry time in the access token is in sync with the
+        #  one we have stored in the token dictionary. So `exchangelib` will know for
+        #  sure when to refresh a potentially expired token.
+        try:
+            access_token = jwt.decode(
+                token["access_token"], options={"verify_signature": False}
+            )
+        except jwt.exceptions.DecodeError:
+            # Logger object declared in every derived class.
+            self.logger.debug("Couldn't decode access token or token isn't valid JWT")
+        else:
+            token["expires_at"] = access_token["exp"]
+
     def get_oauth_token(self, client_secret: str, response_url: str) -> dict:
         """Exchanges the code obtained previously with ``Generate OAuth URL`` for a
         token.
@@ -115,12 +127,14 @@ class OAuthMixin:
                 ...     client_secret=GOCSPX-******mqZAW89
                 ...     response_url=${resp_url}  # redirect of ``Generate OAuth URL``
         """
-        return lib_mfa.get_oauth_token(
+        token = lib_mfa.get_oauth_token(
             self._oauth_provider.token_url,
             client_secret=client_secret,
             response_url=response_url,
             include_client_id=True,
         )
+        self._sync_token_metadata(token)
+        return token
 
     def refresh_oauth_token(
         self, client_id: str, client_secret: str, token: dict
@@ -146,12 +160,14 @@ class OAuthMixin:
                 ...     client_secret=GOCSPX-******mqZAW89
                 ...     token=${token}  # from ``Get OAuth Token``
         """
-        return lib_mfa.refresh_oauth_token(
+        token = lib_mfa.refresh_oauth_token(
             self._oauth_provider.token_url,
             client_id=client_id,
             client_secret=client_secret,
             refresh_token=token["refresh_token"],
         )
+        self._sync_token_metadata(token)
+        return token
 
 
 def counter_duplicate_path(file_path: Path) -> Path:
