@@ -2443,7 +2443,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "0a7791a1e4c438fa4d5bb0a4c1e87f76510d1c4923577eb6d0b2545c7cff7e4c"
+content-hash = "836b3e493a2d8440500e7fb784665bcf0192b14e27beaf1025e3e1771d2804a7"
 
 [metadata.files]
 alabaster = [
