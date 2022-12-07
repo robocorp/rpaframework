@@ -1,4 +1,3 @@
-import atexit
 from datetime import date
 import glob
 import logging
@@ -7,13 +6,12 @@ from pathlib import Path
 import platform
 import subprocess
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
-import signal
+from RPA.AssistantUI.flet_client import FletClient
 
 import flet
 from flet import (
     Checkbox,
     Column,
-    Connection,
     Control,
     Dropdown,
     ElevatedButton,
@@ -26,21 +24,19 @@ from flet import (
     RadioGroup,
     Text,
     TextField,
-    app,
     colors,
     icons,
     ScrollMode,
 )
 from flet.control_event import ControlEvent
 from flet.dropdown import Option
-from flet.utils import is_windows
 from .date_picker import DatePicker
 
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
-from .dialog_types import Elements, Icon, Options, Result, Size
-from .utils import int_or_auto, is_input, optional_int, optional_str, to_options
+from .dialog_types import Icon, Options, Result, Size
+from .utils import optional_str, to_options
 
 # TODO: delete, just a placeholder until we change all the dialog keywords
 class Dialog:
@@ -150,30 +146,14 @@ class AssistantUI:
             Close dialog   ${dialog}
     """
 
-    @property
-    def current_elements(self):
-        return self.elements[self._pagination]
-
-    @property
-    def current_invisible_elements(self):
-        return self.invisible_elements[self._pagination]
-
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
-        self.elements: List[List[Control]] = [[]]
-        self.invisible_elements: List[List[Control]] = [[]]
-        self.results: Result = {}
-        self._pagination = 0
-        self.page: Optional[Page] = None
-        self._conn = self._preload_flet()
-        atexit.register(self._cleanup)
+        self._client = FletClient()
 
         try:
             # Prevent logging from keywords that return results
             keywords = [
                 "Run dialog",
-                "Wait dialog",
-                "Wait all dialogs",
             ]
             BuiltIn().import_library(
                 "RPA.core.logger.RobotLogListener", "WITH NAME", "RPA.RobotLogListener"
@@ -183,15 +163,7 @@ class AssistantUI:
         except RobotNotRunningError:
             pass
 
-    def _cleanup(self) -> None:
-        # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146
-        self._conn.close()
-        if self._fvp is not None and not is_windows():
-            try:
-                logging.debug(f"Flet View process {self._fvp.pid}")
-                os.kill(self._fvp.pid + 1, signal.SIGKILL)
-            except:
-                pass
+
 
     """ TODO: delete, old implementation code
     def add_element(self, element: Dict[str, Any]) -> None:
@@ -210,56 +182,6 @@ class AssistantUI:
         self.elements.append(element)
     """
 
-    def _preload_flet(self) -> Connection:
-        return flet.flet._connect_internal(
-            page_name="",
-            host=None,
-            port=0,
-            is_app=True,
-            permissions=None,
-            assets_dir=None,
-            upload_dir=None,
-            web_renderer="canvaskit",
-            route_url_strategy="hash",
-        )
-
-    def _show_flet(self, target):
-        def on_session_created(conn, session_data):
-            page = Page(conn, session_data.sessionID)
-            conn.sessions[session_data.sessionID] = page
-            try:
-                assert target is not None
-                target(page)
-            except Exception as e:
-                page.error(f"There was an error while rendering the page: {e}")
-
-        self._conn.on_session_created = on_session_created
-        self._fvp = flet.flet._open_flet_view(self._conn.page_url, False)
-        try:
-            self._fvp.wait()
-        except Exception:
-            pass
-
-    def _make_flet_event_handler(self, name: str):
-        def change_listener(e: FletEvent):
-            self.results[name] = e.data
-            e.page.update()
-
-        return change_listener
-
-    def add_element(self, element: flet.Control, name: Optional[str] = None):
-        # TODO: validate that element "name" is unique
-        self.elements[-1].append(element)
-        if name is not None:
-            # TODO: might be necessary to check that it doesn't already have change handler
-            element.on_change = self._make_flet_event_handler(name)
-            # element._add_event_handler("change", self._make_flet_event_handler(name))
-
-    def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
-        self.invisible_elements[-1].append(element)
-        if name is not None:
-            element.on_change = self._make_flet_event_handler(name)
-
     """
     def _collect_results(self) -> Result:
         result: Dict[str, Any] = {}
@@ -271,8 +193,8 @@ class AssistantUI:
     @keyword("Add Submit")
     def add_submit(self) -> None:
         def close(e):
-            self.page.window_destroy()
-        self.add_element(ElevatedButton("Submit", on_click=close))
+            self._client.page.window_destroy()
+        self._client.add_element(ElevatedButton("Submit", on_click=close))
 
     @keyword("Clear elements")
     def clear_elements(self) -> None:
@@ -291,13 +213,7 @@ class AssistantUI:
             END
             Clear elements
         """
-        if self.page:
-            self.page.controls.clear()
-            self.page.overlay.clear()
-            self.page.update()
-        self.elements[self._pagination] = []
-        self.invisible_elements[self._pagination] = []
-        return
+        self._client.clear_elements()
 
     @keyword("Add heading")
     def add_heading(
@@ -326,11 +242,11 @@ class AssistantUI:
             size = Size(size)
 
         if size == Size.Small:
-            self.add_element(element=Text(heading, style="headlineSmall"))
+            self._client.add_element(element=Text(heading, style="headlineSmall"))
         elif size == Size.Medium:
-            self.add_element(element=Text(heading, style="headlineMedium"))
+            self._client.add_element(element=Text(heading, style="headlineMedium"))
         elif size == Size.Large:
-            self.add_element(element=Text(heading, style="headlineLarge"))
+            self._client.add_element(element=Text(heading, style="headlineLarge"))
 
     @keyword("Add text")
     def add_text(
@@ -359,11 +275,11 @@ class AssistantUI:
             size = Size(size)
 
         if size == Size.Small:
-            self.add_element(element=Text(text, style="bodySmall"))
+            self._client.add_element(element=Text(text, style="bodySmall"))
         elif size == Size.Medium:
-            self.add_element(element=Text(text, style="bodyMedium"))
+            self._client.add_element(element=Text(text, style="bodyMedium"))
         elif size == Size.Large:
-            self.add_element(element=Text(text, style="bodyLarge"))
+            self._client.add_element(element=Text(text, style="bodyLarge"))
 
     @keyword("Add link")
     def add_link(
@@ -391,7 +307,7 @@ class AssistantUI:
         """
         if not label:
             label = url
-        self.add_element(Markdown(f"[{label}]({url})"))
+        self._client.add_element(Markdown(f"[{label}]({url})"))
 
     @keyword("Add image")
     def add_image(
@@ -426,7 +342,7 @@ class AssistantUI:
         """
         # TODO: confirm the url_or_path works with local paths with flet
         # FIXME: the image goes to a bit random location
-        self.add_element(Image(src=url_or_path, width=width, height=height))
+        self._client.add_element(Image(src=url_or_path, width=width, height=height))
 
     @keyword("Add file")
     def add_file(
@@ -469,7 +385,7 @@ class AssistantUI:
             else:
                 subprocess.call(["xdg-open", resolved])
 
-        self.add_element(
+        self._client.add_element(
             element=ElevatedButton(
                 text=(label or str(resolved)), icon=icons.FILE_OPEN, on_click=open_file
             )
@@ -562,7 +478,7 @@ class AssistantUI:
         }
         flet_icon, color = flet_icon_conversions[variant]
 
-        self.add_element(flet.Icon(name=flet_icon, color=color, size=size))
+        self._client.add_element(flet.Icon(name=flet_icon, color=color, size=size))
 
     @keyword("Add text input", tags=["input"])
     def add_text_input(
@@ -604,9 +520,9 @@ class AssistantUI:
         """
         # TODO: Do this in a cleaner way. Workaround because we use on_change
         # handlers to record values, so default value otherwise will be missed
-        self.results[name] = placeholder
+        self._client.results[name] = placeholder
 
-        self.add_element(name=name, element=TextField(label=label, value=placeholder))
+        self._client.add_element(name=name, element=TextField(label=label, value=placeholder))
 
     @keyword("Add password input", tags=["input"])
     def add_password_input(
@@ -638,7 +554,7 @@ class AssistantUI:
             ${result}=    Run dialog
             Change user password    ${result.username}  ${result.password}
         """
-        self.add_element(
+        self._client.add_element(
             name=name, element=TextField(label=label, value=placeholder, password=True)
         )
 
@@ -670,7 +586,7 @@ class AssistantUI:
             Enter user information    ${result.user_id}    ${result.username}
         """
         # FIXME: confirm that this works as expected with multi-page forms
-        self.results[name] = value
+        self._client.results[name] = value
 
     # SPLIT
     @keyword("Add file input", tags=["input"])
@@ -740,10 +656,10 @@ class AssistantUI:
 
         def on_pick_result(e: FilePickerResultEvent):
             if e.files:
-                self.results[str(name)] = list(map(lambda f: f.path, e.files))
+                self._client.results[str(name)] = list(map(lambda f: f.path, e.files))
 
         file_picker = FilePicker(on_result=on_pick_result)
-        self.add_invisible_element(file_picker)
+        self._client.add_invisible_element(file_picker)
 
         # TODO: use these inputs in some way
         element = {
@@ -752,7 +668,7 @@ class AssistantUI:
             "file_type": optional_str(file_type),
         }
 
-        self.add_element(
+        self._client.add_element(
             ElevatedButton(
                 label or "Choose files...",
                 on_click=lambda _: file_picker.pick_files(
@@ -804,8 +720,8 @@ class AssistantUI:
 
         dropdown = Dropdown(options=options, value=default)
 
-        self.add_element(Text(value=label))
-        self.add_element(dropdown, name=str(name))
+        self._client.add_element(Text(value=label))
+        self._client.add_element(dropdown, name=str(name))
 
     @keyword("Add Date Input", tags=["input"])
     def add_date_input(
@@ -857,9 +773,9 @@ class AssistantUI:
         #     "default": optional_str(default),
         #     "label": optional_str(label),
         # }
-        # self.add_element(element)
+        # self._client.add_element(element)
 
-        self.add_element(name=str(name), element=DatePicker())
+        self._client.add_element(name=str(name), element=DatePicker())
 
     @keyword("Add radio buttons", tags=["input"])
     def add_radio_buttons(
@@ -903,8 +819,8 @@ class AssistantUI:
         )
         radio_group = RadioGroup(content=Column(radios), value=default)
 
-        self.add_element(Text(value=label))
-        self.add_element(radio_group, name=str(name))
+        self._client.add_element(Text(value=label))
+        self._client.add_element(radio_group, name=str(name))
 
     @keyword("Add checkbox", tags=["input"])
     def add_checkbox(
@@ -939,7 +855,7 @@ class AssistantUI:
                 Enable vault
             END
         """
-        self.add_element(
+        self._client.add_element(
             name=str(name), element=Checkbox(label=str(label), value=bool(default))
         )
 
@@ -982,15 +898,15 @@ class AssistantUI:
         def next_page(e):
             """Clear elements, increment pagination, make elements of next page visible"""
             self.clear_elements()
-            self._pagination += 1
-            for element in self.current_elements:
-                self.page.add(element)
-            self.page.update(*self.current_elements)
+            self._client._pagination += 1
+            for element in self._client.current_elements:
+                self._client.page.add(element)
+            self._client.page.update(*self._client.current_elements)
 
-        self.add_element(ElevatedButton(text=str(label), on_click=next_page))
+        self._client.add_element(ElevatedButton(text=str(label), on_click=next_page))
         # Add a new "page" of elements
-        self.elements.append([])
-        self.invisible_elements.append([])
+        self._client.elements.append([])
+        self._client.invisible_elements.append([])
 
     @keyword("Add submit buttons", tags=["input"])
     def add_submit_buttons(
@@ -1038,16 +954,7 @@ class AssistantUI:
             "default": default,
         }
 
-        self.add_element(element)
-
-    def _update_elements(self, page):
-        for element in self.current_elements:
-            page.add(element)
-        for element in self.current_invisible_elements:
-            page.overlay.append(element)
-        page.scroll = ScrollMode.AUTO
-        self.page = page
-        page.update()
+        self._client.add_element(element)
 
     @keyword("Run dialog", tags=["dialog"])
     def run_dialog(self, timeout: int = 180, **options: Any) -> Result:
@@ -1083,19 +990,14 @@ class AssistantUI:
 
         # FIXME: support options
 
-        def run(page: Page):
-            self._update_elements(page)
-            # page.theme_mode = "light"
-
-        self._show_flet(run)
-
-        return self.results
+        self._client.display_flet_window()
+        return self._client.results
 
     @keyword("Refresh", tags=["dialog"])
     def refresh(self):
         """Can be used to update UI elements when adding elements while dialog is running"""
-        if self.page:
-            self._update_elements(self.page)
+        if self._client.page:
+            self._client.update_elements(self._client.page)
         else:
             raise Exception("No dialog open")
 
@@ -1122,4 +1024,42 @@ class AssistantUI:
                     print(f"on_click error with button labeled {label}")
                     print(err)
 
-        self.add_element(ElevatedButton(label, on_click=on_click))
+        self._client.add_element(ElevatedButton(label, on_click=on_click))
+
+    @keyword("Ask User", tags=["dialog"])
+    def ask_user(self, timeout: int = 180, **options: Any) -> Result:
+        """Create a dialog from all the defined elements and block
+        until the user has handled it.
+
+        :param timeout: Time to wait for dialog to complete, in seconds
+        :param options: Options for the dialog
+
+        Returns a result object with all input values.
+        This keyword is a shorthand for the following expression:
+
+        .. code-block:: robotframework
+
+            Run dialog
+                [Arguments]  ${timeout}=180  &{options}
+                ${dialog}=   Show dialog     &{options}
+                ${result}=   Wait dialog     ${dialog}  timeout=${timeout}
+                [Return]     ${result}
+
+        For more information about possible options for opening the dialog,
+        see the documentation for the keyword ``Show dialog``.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add heading     Please enter your username
+            Add text input  name=username
+            ${result}=      Run dialog
+            Log    The username is: ${result.username}
+        """
+
+        # FIXME: support options
+
+        self._client.display_flet_window()
+
+        return self._client.results
