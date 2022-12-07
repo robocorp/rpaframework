@@ -43,7 +43,7 @@ OAUTH_PROVIDERS = {
     ),
     OAuthProvider.MICROSOFT: OAuthConfig(
         auth_url="https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize",
-        redirect_uri="https://login.microsoftonline.com/{tenant}/oauth2/nativeclient",
+        redirect_uri="https://login.microsoftonline.com/common/oauth2/nativeclient",
         scope="offline_access https://outlook.office365.com/.default",
         token_url="https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",
     ),
