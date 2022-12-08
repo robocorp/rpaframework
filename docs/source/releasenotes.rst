@@ -9,7 +9,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-19.4.0 - 07 Dec 2022
+19.4.0 - 08 Dec 2022
 --------------------
 
 - Added native OAuth2 support (:pr:`706`) with the following keywords:
