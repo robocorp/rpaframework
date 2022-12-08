@@ -100,7 +100,7 @@ class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
     @property
     def token_url(self) -> str:
         """Custom token URL coming from the OAuth2 provider settings."""
-        return self._token_url.format(tenant=self.tenant_id)
+        return self._token_url
 
     @property
     def scope(self) -> List[str]:
