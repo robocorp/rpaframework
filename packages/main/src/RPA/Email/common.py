@@ -125,7 +125,7 @@ class OAuthMixin:
             Finish OAuth Flow
                 ${token} =      Get OAuth Token
                 ...     client_secret=GOCSPX-******mqZAW89
-                ...     response_url=${resp_url}  # redirect of ``Generate OAuth URL``
+                ...     response_url=${resp_url}  # redirect of `Generate OAuth URL`
         """
         token = lib_mfa.get_oauth_token(
             self._oauth_provider.token_url,
@@ -158,7 +158,7 @@ class OAuthMixin:
                 ${token} =      Refresh OAuth Token
                 ...     client_id=810482312368-19htmcgcj*******googleusercontent.com
                 ...     client_secret=GOCSPX-******mqZAW89
-                ...     token=${token}  # from ``Get OAuth Token``
+                ...     token=${token}  # from `Get OAuth Token`
         """
         token = lib_mfa.refresh_oauth_token(
             self._oauth_provider.token_url,
