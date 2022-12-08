@@ -26,7 +26,6 @@ from flet import (
     RadioGroup,
     Text,
     TextField,
-    app,
     colors,
     icons,
     ScrollMode,
@@ -179,6 +178,7 @@ class AssistantUI:
                 "RPA.core.logger.RobotLogListener", "WITH NAME", "RPA.RobotLogListener"
             )
             listener = BuiltIn().get_library_instance("RPA.RobotLogListener")
+            # useful to comment out when debugging
             listener.register_protected_keywords(keywords)
         except RobotNotRunningError:
             pass
@@ -272,6 +272,7 @@ class AssistantUI:
     def add_submit(self) -> None:
         def close(e):
             self.page.window_destroy()
+
         self.add_element(ElevatedButton("Submit", on_click=close))
 
     @keyword("Clear elements")
@@ -1107,6 +1108,10 @@ class AssistantUI:
         ``function`` should be a python function or a Robot keyword name, args and kwargs should be valid arguments for it.
         """
 
+        # FIXME: add some progress bar
+        # TODO: either optional or mandatory feature to block other button function calls while one is
+        # being processed (perhaps by making the button disabled during execution?)
+
         # TODO: use logger.err and logger.debug
         def on_click(event: ControlEvent):
             if isinstance(function, Callable):
@@ -1118,6 +1123,48 @@ class AssistantUI:
             else:
                 try:
                     BuiltIn().run_keyword(function, *args, **kwargs)
+                except Exception as err:
+                    print(f"on_click error with button labeled {label}")
+                    print(err)
+
+        self.add_element(ElevatedButton(label, on_click=on_click))
+
+    @keyword("Add Next Ui Button", tags=["dialog"])
+    def add_next_ui_button(self, label: str, function: Union[Callable, str]):
+        """Create a button that leads to the next UI page, calling the passed
+        keyword or function, and passing current form results as first positional argument to it.
+
+        Example:
+            *** Keywords ***
+            Retrieve User Data
+                # Retrieves advanced data that needs to be displayed
+
+            Main Form
+                Add Heading  Username input
+                Add Text Input  name=username_1  placeholder=username
+                Add Next Ui Button        Show customer details  Customer Details
+
+            Customer Details
+                [Arguments]  ${form}
+                ${user_data}=  Retrieve User Data  ${form}[username_1]
+                Add Heading  Retrieved Data
+                Add Text  ${user_data}[phone_number]
+                Add Text  ${user_data}[address]
+
+
+        """
+        # FIXME: perhaps replace next_page with this
+
+        def on_click(event: ControlEvent):
+            if isinstance(function, Callable):
+                try:
+                    function(self.results)
+                except Exception as err:
+                    print(f"on_click error with button labeled {label}")
+                    print(err)
+            else:
+                try:
+                    BuiltIn().run_keyword(function, self.results)
                 except Exception as err:
                     print(f"on_click error with button labeled {label}")
                     print(err)

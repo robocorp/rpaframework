@@ -1,9 +1,18 @@
 import RPA.AssistantUI
 from RPA.AssistantUI.dialog_types import Icon
 
+
+def next_ui(results):
+    assistant.clear_elements()
+    assistant.add_text(str(results))
+    assistant.add_text("asdf")
+    assistant.refresh()
+
+
 assistant = RPA.AssistantUI.AssistantUI()
 assistant.add_interactive_button("python button", print, "asd")
 assistant.add_interactive_button("robot button", "Log", "asd")
+assistant.add_next_ui_button("different form button", next_ui)
 assistant.add_heading("Heading test")
 assistant.add_text("Test")
 assistant.add_link("https://robocorp.com")
@@ -31,7 +40,7 @@ assistant.add_drop_down(
 )
 
 
-assistant.add_dialog_next_page_button("Next page")
+# assistant.add_dialog_next_page_button("Next page")
 
 assistant.add_text_input("txt_input_2", placeholder="placeholder")
 assistant.add_text("List python files")
@@ -41,6 +50,7 @@ assistant.add_image(
 )
 assistant.add_date_input("date")
 assistant.add_submit()
+# assistant.add_submit_buttons(["close"], "close")
 
 # assistant.clear_elements()
 # assistant.add_icon(Icon.Failure)
