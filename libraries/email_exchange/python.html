@@ -553,7 +553,7 @@ through the authorization URL.</p></li>
 <span class="gu">Finish OAuth Flow</span><span class="p"></span>
 <span class="p">    ${</span><span class="nv">token</span><span class="p">} =      </span><span class="nf">Get OAuth Token</span><span class="p"></span>
 <span class="p">    ...     </span><span class="s">client_secret=GOCSPX-******mqZAW89</span><span class="p"></span>
-<span class="p">    ...     </span><span class="s">response_url=</span><span class="p">${</span><span class="nv">resp_url</span><span class="p">}  </span><span class="c"># redirect of ``Generate OAuth URL``</span>
+<span class="p">    ...     </span><span class="s">response_url=</span><span class="p">${</span><span class="nv">resp_url</span><span class="p">}  </span><span class="c"># redirect of `Generate OAuth URL`</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -684,7 +684,7 @@ metadata.</p>
 <span class="p">    ${</span><span class="nv">token</span><span class="p">} =      </span><span class="nf">Refresh OAuth Token</span><span class="p"></span>
 <span class="p">    ...     </span><span class="s">client_id=810482312368-19htmcgcj*******googleusercontent.com</span><span class="p"></span>
 <span class="p">    ...     </span><span class="s">client_secret=GOCSPX-******mqZAW89</span><span class="p"></span>
-<span class="p">    ...     </span><span class="s">token=</span><span class="p">${</span><span class="nv">token</span><span class="p">}  </span><span class="c"># from ``Get OAuth Token``</span>
+<span class="p">    ...     </span><span class="s">token=</span><span class="p">${</span><span class="nv">token</span><span class="p">}  </span><span class="c"># from `Get OAuth Token`</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -824,7 +824,7 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="class">
 <dt id="RPA.Email.Exchange.OAuth2Creds">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">OAuth2Creds</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">on_token_refresh: Callable</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">OAuth2Creds</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">on_token_refresh: Callable</em>, <em class="sig-param">oauth_provider: RPA.Email.common.OAuthConfig</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exchangelib.credentials.OAuth2AuthorizationCodeCredentials</span></code></p>
 <p>OAuth2 auth code flow credentials wrapper supporting token state on refresh.</p>
 <dl class="method">
@@ -845,15 +845,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="method">
 <dt id="RPA.Email.Exchange.OAuth2Creds.on_token_auto_refreshed">
 <code class="sig-name descname">on_token_auto_refreshed</code><span class="sig-paren">(</span><em class="sig-param">access_token: oauthlib.oauth2.rfc6749.tokens.OAuth2Token</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.on_token_auto_refreshed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the access_token. Called after the access token is refreshed (requests-oauthlib can automatically
-refresh tokens if given an OAuth client ID and secret, so this is how our copy of the token stays up-to-date).
-Applications that cache access tokens can override this to store the new token - just remember to call the
-super() method.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>access_token</strong> – New token obtained by refreshing</p>
-</dd>
-</dl>
+<dd><p>Saves the newly obtained token internally and in the Vault.</p>
 </dd></dl>
 
 <dl class="method">
@@ -875,7 +867,7 @@ expiration.</p>
 <dl class="method">
 <dt id="RPA.Email.Exchange.OAuth2Creds.scope">
 <em class="property">property </em><code class="sig-name descname">scope</code><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.scope" title="Permalink to this definition">¶</a></dt>
-<dd><p>The scope we ask for the token to have</p>
+<dd><p>Custom permissions list coming from the OAuth2 provider settings.</p>
 </dd></dl>
 
 <dl class="method">
@@ -898,7 +890,7 @@ expiration.</p>
 <dl class="method">
 <dt id="RPA.Email.Exchange.OAuth2Creds.token_url">
 <em class="property">property </em><code class="sig-name descname">token_url</code><a class="headerlink" href="#RPA.Email.Exchange.OAuth2Creds.token_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>The URL to request tokens from</p>
+<dd><p>Custom token URL coming from the OAuth2 provider settings.</p>
 </dd></dl>
 
 </dd></dl>

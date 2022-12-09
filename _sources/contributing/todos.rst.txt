@@ -68,7 +68,7 @@ RPA.Email.Exchange:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "498", "The exchangelib does not seem to provide any straightforward way of"
+   "521", "The exchangelib does not seem to provide any straightforward way of"
 
 RPA.Email.ImapSmtp:
 ===================
