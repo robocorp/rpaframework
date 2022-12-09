@@ -62,5 +62,5 @@ assistant.add_submit_buttons()
 
 """
 
-results = assistant.run_dialog()
+results = assistant.ask_user()
 print(results)

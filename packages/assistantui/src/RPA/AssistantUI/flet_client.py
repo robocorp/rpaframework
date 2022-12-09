@@ -54,16 +54,18 @@ class FletClient:
             except:
                 pass
 
-    def _execute(self) -> Callable[[Page], NoneType]:
-        def inner_execute(page: Page):
+    def _execute(self, page: Optional[Page] = None) -> Callable[[Optional[Page]], NoneType]:
+        def inner_execute(inner_page: Optional[Page] = None):
+            if page:
+                inner_page = page
             for element in self.current_elements:
-                page.add(element)
+                inner_page.add(element)
             for element in self.current_invisible_elements:
-                page.overlay.append(element)
+                inner_page.overlay.append(element)
             # self.add
-            page.scroll = ScrollMode.AUTO
-            self.page = page
-            page.update()
+            inner_page.scroll = ScrollMode.AUTO
+            self.page = inner_page
+            inner_page.update()
 
         return inner_execute
 

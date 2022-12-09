@@ -188,12 +188,15 @@ class AssistantUI:
         return result
     """
 
-    @keyword("Add Submit")
-    def add_submit(self) -> None:
+    def _add_closing_button(self, label="Submit") -> None:
         def close(e):
             self._client.page.window_destroy()
 
-        self._client.add_element(ElevatedButton("Submit", on_click=close))
+        self._client.add_element(ElevatedButton(label, on_click=close))
+
+    @keyword("Add Submit")
+    def add_submit(self, label="Submit") -> None:
+        self._add_closing_button(label)
 
     @keyword("Clear elements")
     def clear_elements(self) -> None:
@@ -947,15 +950,8 @@ class AssistantUI:
                 Delete user    ${username}
             END
         """
-        buttons, _ = to_options(buttons, default)
-
-        element = {
-            "type": "submit",
-            "buttons": buttons,
-            "default": default,
-        }
-
-        self._client.add_element(element)
+        for button in buttons:
+            self._add_closing_button(button)
 
     @keyword("Run dialog", tags=["dialog"])
     def run_dialog(self, timeout: int = 180, **options: Any) -> Result:
@@ -1036,8 +1032,8 @@ class AssistantUI:
 
         # FIXME: support options
 
+        self.add_submit_buttons(["Submit", "Close"], "Submit")
         self._client.display_flet_window()
-
         return self._client.results
 
     @keyword("Add Interactive Button", tags=["dialog"])
