@@ -30,7 +30,12 @@ from exchangelib import (
 from exchangelib.folders import Inbox
 from oauthlib.oauth2 import OAuth2Token
 
-from RPA.Email.common import OAuthMixin, OAuthProvider, counter_duplicate_path
+from RPA.Email.common import (
+    OAuthConfig,
+    OAuthMixin,
+    OAuthProvider,
+    counter_duplicate_path,
+)
 from RPA.Robocorp.Vault import Vault
 from RPA.Robocorp.utils import protect_keywords
 
@@ -77,15 +82,30 @@ class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
 
     """OAuth2 auth code flow credentials wrapper supporting token state on refresh."""
 
-    def __init__(self, *args, on_token_refresh: Callable, **kwargs):
+    def __init__(
+        self, *args, on_token_refresh: Callable, oauth_provider: OAuthConfig, **kwargs
+    ):
         super().__init__(*args, **kwargs)
         # Additional behaviour to trigger during token refresh (when it expires), like
         #  saving the newly generated structure in the Vault.
         self._on_token_refresh = on_token_refresh
+        self._token_url = oauth_provider.token_url
+        self._scope = oauth_provider.scope
 
     def on_token_auto_refreshed(self, access_token: OAuth2Token):
+        """Saves the newly obtained token internally and in the Vault."""
         super().on_token_auto_refreshed(access_token)
         self._on_token_refresh(access_token)
+
+    @property
+    def token_url(self) -> str:
+        """Custom token URL coming from the OAuth2 provider settings."""
+        return self._token_url
+
+    @property
+    def scope(self) -> List[str]:
+        """Custom permissions list coming from the OAuth2 provider settings."""
+        return self._scope.split()
 
 
 class Exchange(OAuthMixin):
@@ -264,7 +284,8 @@ class Exchange(OAuthMixin):
         tenant: Optional[str] = None,
     ) -> None:
         # Init the OAuth2 support. (mandatory usage)
-        super().__init__(OAuthProvider.MICROSOFT, tenant=tenant or "common")
+        self._tenant = tenant or "common"
+        super().__init__(OAuthProvider.MICROSOFT, tenant=self._tenant)
 
         protect_keywords("RPA.Email.Exchange", self.TO_PROTECT)
         self.logger = logging.getLogger(__name__)
@@ -341,6 +362,8 @@ class Exchange(OAuthMixin):
         if is_oauth:
             self.credentials = OAuth2Creds(
                 on_token_refresh=self.on_token_refresh,
+                oauth_provider=self._oauth_provider,
+                tenant_id=self._tenant,
                 identity=Identity(upn=username),
                 client_id=client_id,
                 client_secret=client_secret,

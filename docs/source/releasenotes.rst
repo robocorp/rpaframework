@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+19.4.1 - 09 Dec 2022
+--------------------
+
+- Library **RPA.Email.Exchange** (:issue:`736`): Fix token auto-refresh for
+  single-tenant Client apps.
+
 19.4.0 - 08 Dec 2022
 --------------------
 
