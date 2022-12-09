@@ -6,8 +6,8 @@ from pathlib import Path
 import platform
 import subprocess
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
-from RPA.AssistantUI.flet_client import FletClient
 
+from RPA.AssistantUI.flet_client import FletClient
 import flet
 from flet import (
     Checkbox,
@@ -29,11 +29,10 @@ from flet import (
 )
 from flet.control_event import ControlEvent
 from flet.dropdown import Option
-from .date_picker import DatePicker
-
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
+from .date_picker import DatePicker
 from .dialog_types import Icon, Options, Result, Size
 from .utils import optional_str, to_options
 
