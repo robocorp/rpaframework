@@ -136,14 +136,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.25"
+version = "1.26.26"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.29.25,<1.30.0"
+botocore = ">=1.29.26,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -152,7 +152,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.25"
+version = "1.29.26"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -475,7 +475,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0dev)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.68.0"
+version = "2.69.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -1982,7 +1982,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "19.4.0"
+version = "19.4.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -2847,12 +2847,12 @@ black = [
     {file = "black-22.10.0.tar.gz", hash = "sha256:f513588da599943e0cde4e32cc9879e825d58720d6557062d1098c5ad80080e1"},
 ]
 boto3 = [
-    {file = "boto3-1.26.25-py3-none-any.whl", hash = "sha256:7048335b099473816240046753d77ef0953ce5a037b93b2848477dcf036d3849"},
-    {file = "boto3-1.26.25.tar.gz", hash = "sha256:e0ba3620feb430e31926270ea3dc0bb94df55a0fd2b209bd91f7904f2f2166ef"},
+    {file = "boto3-1.26.26-py3-none-any.whl", hash = "sha256:b1d2521bd2239c4d2d8ee2a79d932bc64bf4779521ecc60c1074ae8a5d88adaa"},
+    {file = "boto3-1.26.26.tar.gz", hash = "sha256:a2349d436db6f6aa1e0def5501e4884572eb6f008f35063a359a6fa8ba3539b7"},
 ]
 botocore = [
-    {file = "botocore-1.29.25-py3-none-any.whl", hash = "sha256:cb489ca8fbc043cd9bf901e3e105f0dec316ed438ee883e55c9f9c77bd0f6a2d"},
-    {file = "botocore-1.29.25.tar.gz", hash = "sha256:a204140c9d7adadf3919d8024d79278f1865a20c869e4f216eaea599ca3a1743"},
+    {file = "botocore-1.29.26-py3-none-any.whl", hash = "sha256:2ca26983156fe0846a87b9325205af6bc56268fb99b8b4b9decccf50203ff3b4"},
+    {file = "botocore-1.29.26.tar.gz", hash = "sha256:f71220fe5a5d393c391ed81a291c0d0985f147568c56da236453043f93727a34"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3036,8 +3036,8 @@ google-api-core = [
     {file = "google_api_core-2.10.1-py3-none-any.whl", hash = "sha256:92d17123cfe399b5ef7e026c63babf978d8475e1ac877919eb7933e25dea2273"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.68.0.tar.gz", hash = "sha256:19177411b7dcf8fcd66bff085c6838ecea5fd6b598998d594be1f7290dfc34b4"},
-    {file = "google_api_python_client-2.68.0-py2.py3-none-any.whl", hash = "sha256:d4d317ccd365118f96d8d4b6a61aaba8fd414cf1a8617cb229386f2094013cea"},
+    {file = "google-api-python-client-2.69.0.tar.gz", hash = "sha256:03624a28b5ba94f3c3d44761081f5dbf8cabaa20c5c3a96c046457c5713efb9b"},
+    {file = "google_api_python_client-2.69.0-py2.py3-none-any.whl", hash = "sha256:bc2447a7479006d98927fb20faa74d892d3758ff68e99b621367632bc42b8af8"},
 ]
 google-auth = [
     {file = "google-auth-2.15.0.tar.gz", hash = "sha256:72f12a6cfc968d754d7bdab369c5c5c16032106e52d32c6dfd8484e4c01a6d1f"},

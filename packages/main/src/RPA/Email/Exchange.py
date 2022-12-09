@@ -104,6 +104,7 @@ class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
 
     @property
     def scope(self) -> List[str]:
+        """Custom permissions list coming from the OAuth2 provider settings."""
         return self._scope.split()
 
 
