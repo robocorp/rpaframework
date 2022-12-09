@@ -196,6 +196,7 @@ class AssistantUI:
 
     @keyword("Add Submit")
     def add_submit(self, label="Submit") -> None:
+        """FIXME: write docs"""
         self._add_closing_button(label)
 
     @keyword("Clear elements")

@@ -6,11 +6,7 @@ from types import NoneType
 from typing import Callable, List, Optional
 
 import flet
-from flet import (
-    Control,
-    Page,
-    ScrollMode
-)
+from flet import Control, Page, ScrollMode
 from flet.utils import is_windows
 
 from .dialog_types import Result
@@ -25,7 +21,6 @@ class FletEvent:
 
 
 class FletClient:
-
     def __init__(self) -> None:
         self._conn = self._preload_flet()
         self.elements: List[List[Control]] = [[]]
@@ -54,7 +49,9 @@ class FletClient:
             except:
                 pass
 
-    def _execute(self, page: Optional[Page] = None) -> Callable[[Optional[Page]], NoneType]:
+    def _execute(
+        self, page: Optional[Page] = None
+    ) -> Callable[[Optional[Page]], NoneType]:
         def inner_execute(inner_page: Optional[Page] = None):
             if page:
                 inner_page = page
