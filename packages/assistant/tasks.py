@@ -4,7 +4,7 @@ from pathlib import Path
 from invoke import Collection
 
 REPO_ROOT = Path(__file__).parents[2].resolve()
-PACKAGE_DIR = REPO_ROOT / "packages" / "assistantui"
+PACKAGE_DIR = REPO_ROOT / "packages" / "assistant"
 
 # Note to VSCode users, in order to eliminate Pylance import errors
 # in the IDE, you must add the following settings to your local project

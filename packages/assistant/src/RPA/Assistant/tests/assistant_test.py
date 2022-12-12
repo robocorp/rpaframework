@@ -1,5 +1,5 @@
-import RPA.AssistantUI
-from RPA.AssistantUI.dialog_types import Icon
+import RPA.Assistant
+from RPA.Assistant.dialog_types import Icon
 
 
 def next_ui(results):
@@ -9,7 +9,7 @@ def next_ui(results):
     assistant.refresh()
 
 
-assistant = RPA.AssistantUI.AssistantUI()
+assistant = RPA.Assistant.Assistant()
 assistant.add_interactive_button("python button", print, "asd")
 assistant.add_interactive_button("robot button", "Log", "asd")
 assistant.add_next_ui_button("different form button", next_ui)

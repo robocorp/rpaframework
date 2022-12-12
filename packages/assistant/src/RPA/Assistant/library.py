@@ -7,7 +7,7 @@ import platform
 import subprocess
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-from RPA.AssistantUI.flet_client import FletClient
+from RPA.Assistant.flet_client import FletClient
 import flet
 from flet import (
     Checkbox,
@@ -50,7 +50,7 @@ class FletEvent:
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
-class AssistantUI:
+class Assistant:
     """The `Dialogs` library provides a way to display information to a user
     and request input while a robot is running. It allows building processes
     that require human interaction.
@@ -863,55 +863,6 @@ class AssistantUI:
             name=str(name), element=Checkbox(label=str(label), value=bool(default))
         )
 
-    @keyword
-    def add_dialog_next_page_button(
-        self,
-        label: str,
-    ) -> None:
-        """Add a next page button
-
-        :param label: The text displayed on the button
-
-        The next page button will delimit the next elements of
-        the dialog in a separate view, so that they will only be displayed after
-        pressing the button, creating a wizard experience in the dialog.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Add heading       Send feedback
-            Add text input    email             label=E-mail address
-            Add dialog next page button         label=next
-            Add text input    name              label=Name
-            Add dialog next page button         label=next
-            Add checkbox      name=contact
-            ...     label=Do you want us to contact you?
-            ...     default=True
-            Add dialog next page button         label=next
-            Add text input    message
-            ...    label=Feedback
-            ...    placeholder=Enter feedback here
-            ...    rows=5
-            Add submit buttons  buttons=submit
-            ${result}=    Run dialog
-            Send feedback message    ${result.email}  ${result.message}
-            Run dialog
-        """
-
-        def next_page(e):
-            """Clear elements, increment pagination, make elements of next page visible"""
-            self.clear_elements()
-            self._client._pagination += 1
-            for element in self._client.current_elements:
-                self._client.page.add(element)
-            self._client.page.update(*self._client.current_elements)
-
-        self._client.add_element(ElevatedButton(text=str(label), on_click=next_page))
-        # Add a new "page" of elements
-        self._client.elements.append([])
-        self._client.invisible_elements.append([])
-
     @keyword("Add submit buttons", tags=["input"])
     def add_submit_buttons(
         self,
@@ -950,6 +901,7 @@ class AssistantUI:
                 Delete user    ${username}
             END
         """
+        buttons, default = to_options(buttons, default)
         for button in buttons:
             self._add_closing_button(button)
 
@@ -1089,7 +1041,6 @@ class AssistantUI:
 
 
         """
-        # FIXME: perhaps replace next_page with this
 
         def on_click(event: ControlEvent):
             if isinstance(function, Callable):
