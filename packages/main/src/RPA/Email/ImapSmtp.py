@@ -145,10 +145,11 @@ class ImapSmtp(OAuthMixin):
 
     **Troubleshooting**
 
-    - Authentication error with Gmail - "Application-specific password required"
+    - Authentication error with GMail - "Application-specific password required"
         See: https://support.google.com/mail/answer/185833?hl=en
-    - More secure apps (XOAUTH2 protocol): Use the OAuth2 flow as in this Portal robot
-      `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_
+    - More secure apps (XOAUTH2 protocol) - Use the OAuth2 flow as in this Portal robot:
+        `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_
+
         Make sure to specify a `provider` (and optionally a `tenant`) when importing
         the library and planning to use this flow.
 
