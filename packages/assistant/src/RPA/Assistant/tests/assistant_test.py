@@ -10,8 +10,8 @@ def next_ui(results):
 
 
 assistant = RPA.Assistant.Assistant()
-assistant.add_interactive_button("python button", print, "asd")
-assistant.add_interactive_button("robot button", "Log", "asd")
+assistant.add_button("python button", print, "asd")
+assistant.add_button("robot button", "Log", "asd")
 assistant.add_next_ui_button("different form button", next_ui)
 assistant.add_heading("Heading test")
 assistant.add_text("Test")

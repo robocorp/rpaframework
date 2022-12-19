@@ -36,18 +36,6 @@ from .date_picker import DatePicker
 from .dialog_types import Icon, Options, Result, Size
 from .utils import optional_str, to_options
 
-# TODO: delete, just a placeholder until we change all the dialog keywords
-class Dialog:
-    pass
-
-
-class FletEvent:
-    target: str
-    name: str
-    data: str
-    control: Control
-    page: Page
-
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class Assistant:
@@ -650,7 +638,7 @@ class Assistant:
                 on_click=lambda _: file_picker.pick_files(
                     allow_multiple=bool(multiple),
                     initial_directory=options["destination"],
-                    allowed_extensions=options["file_type"]
+                    allowed_extensions=options["file_type"],
                 ),
             )
         )
@@ -929,8 +917,8 @@ class Assistant:
         else:
             raise Exception("No dialog open")
 
-    @keyword("Add Interactive Button", tags=["dialog"])
-    def add_interactive_button(
+    @keyword("Add Button", tags=["dialog"])
+    def add_button(
         self, label: str, function: Union[Callable, str], *args, **kwargs
     ) -> None:
         """
