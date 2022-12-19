@@ -49,8 +49,7 @@ assistant.add_image(
     "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
 )
 assistant.add_date_input("date")
-assistant.add_submit()
-# assistant.add_submit_buttons(["close"], "close")
+assistant.add_submit_buttons(["second submit"], "second submit")
 
 # assistant.clear_elements()
 # assistant.add_icon(Icon.Failure)

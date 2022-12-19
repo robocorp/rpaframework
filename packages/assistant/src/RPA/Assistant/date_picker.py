@@ -1,50 +1,86 @@
-from flet import Dropdown, UserControl, Container, Row, Icon
+from flet import Dropdown, UserControl, Container, Row, Icon, PopupMenuButton, PopupMenuItem, Text
 from flet.dropdown import Option
-from flet.icons import CALENDAR_MONTH
-from datetime import datetime
+from flet.icons import CALENDAR_MONTH, ARROW_BACK_ROUNDED, ARROW_FORWARD_ROUNDED
+from flet import MainAxisAlignment
+from datetime import datetime, date
+from calendar import monthrange
 
 
 class DatePicker(UserControl):
+
+    def _year_increment(self, e):
+        self.selected_year += 1
+        self.year_element.value = self.selected_year
+        self.update()
+
+    def _year_decrement(self, e):
+        self.selected_year -= 1
+        self.year_element.value = self.selected_year
+        self.update()
+    
+    def _select_month(self, e):
+        months = (("Jan", "Feb", "Mar", "Apr"), ("May", "Jun", "Jul", "Aug"), ("Sep", "Oct", "Nov", "Dec"))
+        selected_month = e.control._Control__previous_children[0].value
+        self.selected_month = sum(months, ()).index(selected_month) + 1
+        self.render_day_picker()
+
+    def _select_day(self, e):
+        self.selected_day = e.control._Control__previous_children[0].value
+        self.selected_date = date(
+            year=int(self.selected_year),
+            month=int(self.selected_month),
+            day=int(self.selected_day),
+        )
+        self.pb.value = Text(self.selected_date)
+        self.update()
+
+    def render_day_picker(self):
+        element = []
+        current_row = []
+        number_of_days = monthrange(self.selected_year, self.selected_month)[1]
+        for day in range(number_of_days):
+            if day % 7 == 0 and day != 0:
+                element.append(PopupMenuItem(content=Row(current_row, alignment=MainAxisAlignment.SPACE_BETWEEN)))
+                current_row = []
+            else:
+                current_row.append(Container(content=Text(day+1), on_click=self._select_day))
+        self.view.content.items = element
+        self.update()
+
     def __init__(self):
-        self.day_dropdown = Dropdown(
-            options=[Option(day) for day in range(1, 32)],
-            width=50,
-        )
-
-        self.month_dropdown = Dropdown(
-            options=[Option(month) for month in range(1, 13)],
-            width=50,
-        )
-
-        self.year_dropdown = Dropdown(
-            options=[Option(year) for year in range(1900, 2100)],
-            width=100,
-        )
-
-        self.view = Container(
-            content=Row(
-                [
-                    Icon(
-                        CALENDAR_MONTH,
-                    ),
-                    self.day_dropdown,
-                    self.month_dropdown,
-                    self.year_dropdown,
-                ],
-                alignment="center",
-            ),
-            padding=10,
-        )
-
+        # initialise default values
+        self.selected_year = datetime.now().year
+        self.selected_month = datetime.now().month
+        self.selected_day = datetime.now().day
+        self.selected_date = None
         super().__init__(self)
 
-    def build(self):
-        return self.view
+    def render(self):
+        months = (("Jan", "Feb", "Mar", "Apr"), ("May", "Jun", "Jul", "Aug"), ("Sep", "Oct", "Nov", "Dec"))
+        self.year_element = Text(self.selected_year)
+        month_picker = []
+        for row in months:
+            temp = PopupMenuItem(content=Row([Container(content=Text(i), on_click=self._select_month) for i in row], alignment=MainAxisAlignment.SPACE_BETWEEN))
+            month_picker.append(temp)
 
-    def get_date(self) -> datetime.date:
-        date = datetime.date(
-            year=int(self.year_dropdown.value),
-            month=int(self.month_dropdown.value),
-            day=int(self.day_dropdown.value),
+        self.pb = PopupMenuButton(
+            icon=CALENDAR_MONTH,
+            items=[
+                # Top row for year display and selection
+                PopupMenuItem(
+                    content=Row([
+                        Container(content=Icon(ARROW_BACK_ROUNDED), on_click=self._year_decrement),
+                        Container(content=self.year_element),
+                        Container(content=Icon(ARROW_FORWARD_ROUNDED), on_click=self._year_increment)
+                        ],
+                        alignment=MainAxisAlignment.SPACE_BETWEEN)
+                ),
+                PopupMenuItem(),  # divider
+                *month_picker,
+            ],
         )
-        return date
+        self.view = Container(content=self.pb)
+
+    def build(self):
+        self.render()
+        return self.view

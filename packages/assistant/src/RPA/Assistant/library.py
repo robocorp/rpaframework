@@ -51,9 +51,11 @@ class FletEvent:
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class Assistant:
-    """The `Dialogs` library provides a way to display information to a user
+    """The `Assistant` library provides a way to display information to a user
     and request input while a robot is running. It allows building processes
-    that require human interaction.
+    that require human interaction. Also it offers capabilities of running
+    other robots inside the current one and determine what to display to the
+    user based on his previous responses.
 
     Some examples of use-cases could be the following:
 
@@ -162,41 +164,11 @@ class Assistant:
         except RobotNotRunningError:
             pass
 
-    """ TODO: delete, old implementation code
-    def add_element(self, element: Dict[str, Any]) -> None:
-        if is_input(element):
-            name = element["name"]
-            names = [
-                el["name"] for el in self.elements if el["type"].startswith("input-")
-            ]
-
-            if name in names:
-                raise ValueError(f"Input with name '{name}' already exists")
-
-            if name == "submit":
-                raise ValueError("Input name 'submit' is not allowed")
-
-        self.elements.append(element)
-    """
-
-    """
-    def _collect_results(self) -> Result:
-        result: Dict[str, Any] = {}
-        for key, value in self.input_elements.items():
-            result[key] = value.data
-        return result
-    """
-
     def _add_closing_button(self, label="Submit") -> None:
         def close(e):
             self._client.page.window_destroy()
 
         self._client.add_element(ElevatedButton(label, on_click=close))
-
-    @keyword("Add Submit")
-    def add_submit(self, label="Submit") -> None:
-        """FIXME: write docs"""
-        self._add_closing_button(label)
 
     @keyword("Clear elements")
     def clear_elements(self) -> None:
@@ -589,10 +561,8 @@ class Assistant:
             ${result}=         Run dialog
             Enter user information    ${result.user_id}    ${result.username}
         """
-        # FIXME: confirm that this works as expected with multi-page forms
         self._client.results[name] = value
 
-    # SPLIT
     @keyword("Add file input", tags=["input"])
     def add_file_input(
         self,
@@ -665,18 +635,22 @@ class Assistant:
         file_picker = FilePicker(on_result=on_pick_result)
         self._client.add_invisible_element(file_picker)
 
-        # TODO: use these inputs in some way
-        element = {
+        options = {
             "source": optional_str(source),
             "destination": optional_str(destination),
             "file_type": optional_str(file_type),
         }
 
+        if not options["source"]:
+            options["source"] = os.path.expanduser("~")
+
         self._client.add_element(
             ElevatedButton(
                 label or "Choose files...",
                 on_click=lambda _: file_picker.pick_files(
-                    allow_multiple=bool(multiple)
+                    allow_multiple=bool(multiple),
+                    initial_directory=options["destination"],
+                    allowed_extensions=options["file_type"]
                 ),
             )
         )
@@ -754,30 +728,6 @@ class Assistant:
             ${result} =       Run dialog
             Log To Console    User birthdate year should be: ${result.birthdate.year}
         """
-
-        # TODO(cmin764): Be flexible on date formats. (provide it as parameter)
-        # py_date_format = "%Y-%m-%d"
-        # js_date_format = "yyyy-MM-dd"
-        # default = default or datetime.utcnow().date()
-        # if isinstance(default, date):  # recognizes both `date` and `datetime`
-        #     default = default.strftime(py_date_format)
-        # else:
-        #     try:
-        #         datetime.strptime(default, py_date_format)
-        #     except Exception as exc:
-        #         raise ValueError(
-        #             f"Invalid default date with value {default!r}"
-        #         ) from exc
-
-        # element = {
-        #     "type": "input-datepicker",
-        #     "name": str(name),
-        #     "_format": py_date_format,
-        #     "format": js_date_format,
-        #     "default": optional_str(default),
-        #     "label": optional_str(label),
-        # }
-        # self._client.add_element(element)
 
         self._client.add_element(name=str(name), element=DatePicker())
 
@@ -906,26 +856,25 @@ class Assistant:
             self._add_closing_button(button)
 
     @keyword("Run dialog", tags=["dialog"])
-    def run_dialog(self, timeout: int = 180, **options: Any) -> Result:
+    def run_dialog(
+        self,
+        timeout: int = 180,
+        title: str = "Dialog",
+        height: Union[int, str] = "AUTO",
+        width: int = 480,
+        on_top: bool = False,
+    ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
 
         :param timeout: Time to wait for dialog to complete, in seconds
-        :param options: Options for the dialog
+        :param title:  Title of dialog
+        :param height: Height of dialog (in pixels or 'AUTO')
+        :param width:  Width of dialog (in pixels)
+        :param on_top: Show dialog always on top of other windows
+
 
         Returns a result object with all input values.
-        This keyword is a shorthand for the following expression:
-
-        .. code-block:: robotframework
-
-            Run dialog
-                [Arguments]  ${timeout}=180  &{options}
-                ${dialog}=   Show dialog     &{options}
-                ${result}=   Wait dialog     ${dialog}  timeout=${timeout}
-                [Return]     ${result}
-
-        For more information about possible options for opening the dialog,
-        see the documentation for the keyword ``Show dialog``.
 
         Example:
 
@@ -937,9 +886,39 @@ class Assistant:
             Log    The username is: ${result.username}
         """
 
-        # FIXME: support options
+        # FIXME: support timeout
 
-        self._client.display_flet_window()
+        self._client.display_flet_window(title, height, width, on_top)
+        return self._client.results
+
+    @keyword("Ask User", tags=["dialog"])
+    def ask_user(self, timeout: int = 180, **options: Any) -> Result:
+        """Same as ``Run Dialog`` it will create a dialog from all the defined
+        elements and block until the user has handled it. It will also add
+        by default a submit and close buttons.
+
+        :param timeout: Time to wait for dialog to complete, in seconds
+        :param options: Options for the dialog
+
+        Returns a result object with all input values.
+
+        For more information about possible options for opening the dialog,
+        see the documentation for the keyword ``Run Dialog``.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add heading     Please enter your username
+            Add text input  name=username
+            ${result}=      Ask User
+            Log    The username is: ${result.username}
+        """
+
+        # FIXME: support timeout
+
+        self.add_submit_buttons(["Submit", "Close"], "Submit")
+        self._client.display_flet_window(**options)
         return self._client.results
 
     @keyword("Refresh", tags=["dialog"])
@@ -949,44 +928,6 @@ class Assistant:
             self._client.update_elements(self._client.page)
         else:
             raise Exception("No dialog open")
-
-    @keyword("Ask User", tags=["dialog"])
-    def ask_user(self, timeout: int = 180, **options: Any) -> Result:
-        """Create a dialog from all the defined elements and block
-        until the user has handled it.
-
-        :param timeout: Time to wait for dialog to complete, in seconds
-        :param options: Options for the dialog
-
-        Returns a result object with all input values.
-        This keyword is a shorthand for the following expression:
-
-        .. code-block:: robotframework
-
-            Run dialog
-                [Arguments]  ${timeout}=180  &{options}
-                ${dialog}=   Show dialog     &{options}
-                ${result}=   Wait dialog     ${dialog}  timeout=${timeout}
-                [Return]     ${result}
-
-        For more information about possible options for opening the dialog,
-        see the documentation for the keyword ``Show dialog``.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Add heading     Please enter your username
-            Add text input  name=username
-            ${result}=      Run dialog
-            Log    The username is: ${result.username}
-        """
-
-        # FIXME: support options
-
-        self.add_submit_buttons(["Submit", "Close"], "Submit")
-        self._client.display_flet_window()
-        return self._client.results
 
     @keyword("Add Interactive Button", tags=["dialog"])
     def add_interactive_button(

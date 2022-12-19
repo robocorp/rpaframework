@@ -3,7 +3,7 @@ import logging
 import os
 import signal
 from types import NoneType
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Union
 
 import flet
 from flet import Control, Page, ScrollMode
@@ -79,9 +79,21 @@ class FletClient:
             route_url_strategy="hash",
         )
 
-    def _show_flet(self, target):
+    def _show_flet(
+        self,
+        target,
+        title: str = "Dialog",
+        height: Union[int, str] = "AUTO",
+        width: int = 480 ,
+        on_top: bool = False
+    ):
         def on_session_created(conn, session_data):
             page = Page(conn, session_data.sessionID)
+            page.title = title
+            if height != "AUTO":
+                page.window_height = height
+            page.window_width = width
+            page.window_always_on_top = on_top
             conn.sessions[session_data.sessionID] = page
             try:
                 assert target is not None
@@ -116,8 +128,14 @@ class FletClient:
         if name is not None:
             element.on_change = self._make_flet_event_handler(name)
 
-    def display_flet_window(self):
-        self._show_flet(self._execute())
+    def display_flet_window(
+        self,
+        title: str = "Dialog",
+        height: Union[int, str] = "AUTO",
+        width: int = 480 ,
+        on_top: bool = False
+    ):
+        self._show_flet(self._execute(), title, height, width, on_top)
 
     def clear_elements(self):
         if self.page:
