@@ -870,12 +870,13 @@ mode and has any inputs already.</p></li>
 <dl class="method">
 <dt id="RPA.Hubspot.Hubspot.auth_with_api_key">
 <code class="sig-name descname">auth_with_api_key</code><span class="sig-paren">(</span><em class="sig-param">api_key: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Hubspot.Hubspot.auth_with_api_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Authorize to HubSpot with an account-wide API key. This
+<dd><p>Deprecated! Use <code class="docutils literal notranslate"><span class="pre">Auth</span> <span class="pre">With</span> <span class="pre">Token</span></code> instead.</p>
+<p>Authorize to HubSpot with an account-wide API key. This
 keyword verifies the provided credentials by retrieving the
 custom object schema from the API.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>api_key</strong> – The API key for the account to autheniticate to.</p>
+<dd class="field-odd"><p><strong>api_key</strong> – The API key for the account to authenticate to.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -886,6 +887,8 @@ custom object schema from the API.</p>
 <dd><p>Authorize to HubSpot with Private App access token. This
 keyword verifies the provided credentials by retrieving the
 custom object schema from the API.</p>
+<p>Learn more about Private Apps:
+<a class="reference external" href="https://developers.hubspot.com/docs/api/private-apps">https://developers.hubspot.com/docs/api/private-apps</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>access_token</strong> – The access token created for the Private App
