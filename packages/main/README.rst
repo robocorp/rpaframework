@@ -7,7 +7,7 @@ REQUEST for user input!
 We are looking at improving our keyword usage to cover situations where developer might be
 struggling to smoothly write task for a Robot. Describe the situation where your **implementation speed slows** due to the lack of easier syntax.
 
-`Comment HERE <a href="https://github.com/robocorp/rpaframework/issues/738">`_
+`Comment HERE <https://github.com/robocorp/rpaframework/issues/738>`_
 
 .. contents:: Table of Contents
    :local:
