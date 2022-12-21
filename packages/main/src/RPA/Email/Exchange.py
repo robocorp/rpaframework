@@ -30,8 +30,14 @@ from exchangelib import (
 from exchangelib.folders import Inbox
 from oauthlib.oauth2 import OAuth2Token
 
-from RPA.Email.common import counter_duplicate_path
+from RPA.Email.common import (
+    OAuthConfig,
+    OAuthMixin,
+    OAuthProvider,
+    counter_duplicate_path,
+)
 from RPA.Robocorp.Vault import Vault
+from RPA.Robocorp.utils import protect_keywords
 
 
 EMAIL_CRITERIA_KEYS = {
@@ -76,18 +82,33 @@ class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
 
     """OAuth2 auth code flow credentials wrapper supporting token state on refresh."""
 
-    def __init__(self, *args, on_token_refresh: Callable, **kwargs):
+    def __init__(
+        self, *args, on_token_refresh: Callable, oauth_provider: OAuthConfig, **kwargs
+    ):
         super().__init__(*args, **kwargs)
         # Additional behaviour to trigger during token refresh (when it expires), like
         #  saving the newly generated structure in the Vault.
         self._on_token_refresh = on_token_refresh
+        self._token_url = oauth_provider.token_url
+        self._scope = oauth_provider.scope
 
     def on_token_auto_refreshed(self, access_token: OAuth2Token):
+        """Saves the newly obtained token internally and in the Vault."""
         super().on_token_auto_refreshed(access_token)
         self._on_token_refresh(access_token)
 
+    @property
+    def token_url(self) -> str:
+        """Custom token URL coming from the OAuth2 provider settings."""
+        return self._token_url
 
-class Exchange:
+    @property
+    def scope(self) -> List[str]:
+        """Custom permissions list coming from the OAuth2 provider settings."""
+        return self._scope.split()
+
+
+class Exchange(OAuthMixin):
     """`Exchange` is a library for sending, reading, and deleting emails.
     `Exchange` is interfacing with Exchange Web Services (EWS).
 
@@ -102,14 +123,24 @@ class Exchange:
 
         *** Settings ***
         Library     RPA.Email.Exchange
-        Task Setup  Authorize  username=${ACCOUNT}  password=${PASSWORD}
+        ...     vault_name=email_oauth_microsoft    vault_token_key=token
+        ...     tenant=ztzvn.onmicrosoft.com  # your custom tenant here
+        Task Setup      Ensure Auth
 
         *** Variables ***
         ${ACCOUNT}              ACCOUNT_NAME
-        ${PASSWORD}             ACCOUNT_PASSWORD
         ${RECIPIENT_ADDRESS}    RECIPIENT
         ${IMAGES}               myimage.png
         ${ATTACHMENTS}          C:${/}files${/}mydocument.pdf
+
+        *** Keywords ***
+        Ensure Auth
+            ${secrets} =    Get Secret    email_oauth_microsoft
+            RPA.Email.Exchange.Authorize    ${ACCOUNT}
+            ...    is_oauth=${True}  # use the OAuth2 auth code flow (required)
+            ...    client_id=${secrets}[client_id]  # app ID
+            ...    client_secret=${secrets}[client_secret]  # app password
+            ...    token=${secrets}[token]  # token dict (access, refresh, scope etc.)
 
         *** Tasks ***
         Task of sending email
@@ -152,12 +183,24 @@ class Exchange:
     .. code-block:: python
 
         from RPA.Email.Exchange import Exchange
+        from RPA.Robocorp.Vault import Vault
 
+        vault_name = "email_oauth_microsoft"
+        secrets = Vault().get_secret(vault_name)
         ex_account = "ACCOUNT_NAME"
-        ex_password = "ACCOUNT_PASSWORD"
 
-        mail = Exchange()
-        mail.authorize(username=ex_account, password=ex_password)
+        mail = Exchange(
+            vault_name=vault_name,
+            vault_token_key="token",
+            tenant="ztzvn.onmicrosoft.com"
+        )
+        mail.authorize(
+            username=ex_account,
+            is_oauth=True,
+            client_id=secrets["client_id"],
+            client_secret=secrets["client_secret"],
+            token=secrets["token"]
+        )
         mail.send_message(
             recipients="RECIPIENT",
             subject="Message from RPA Python",
@@ -166,21 +209,14 @@ class Exchange:
 
     **OAuth2**
 
-    .. code-block:: robotframework
+    The OAuth2 flow is the only way of authorizing at the moment as Microsoft disabled
+    entirely the usage of passwords, even App Passwords. And since you have to work
+    with tokens now and because this library has the capability to automatically
+    refresh an expired token, please don't forget to initialize the library with the
+    following parameters: `vault_name`, `vault_token_key` and `tenant`.
 
-        *** Settings ***
-        Library     RPA.Email.Exchange
-        ...     vault_name=email_oauth_microsoft    vault_token_key=token
-
-        Task Setup      Authorize   username=${ACCOUNT}
-        ...    autodiscover=${False}    server=outlook.office365.com
-        ...    is_oauth=${True}  # use the OAuth2 auth code flow
-        # With secrets retrieved from the Vault by using ``Get Secret`` and set
-        #  globally into `${SECRETS}`.
-        ...    client_id=${SECRETS}[client_id]  # app ID
-        ...    client_secret=${SECRETS}[client_secret]  # app password
-        # The entire token structure auto refreshes when it expires.
-        ...    token=${SECRETS}[token]  # token dict (access, refresh, scopes etc.)
+    Learn more on how to use the OAuth2 flow in this Portal robot
+    `example-oauth-email <https://github.com/robocorp/example-oauth-email>`_.
 
     **About criterion parameter**
 
@@ -239,25 +275,38 @@ class Exchange:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
+    TO_PROTECT = ["authorize"] + OAuthMixin.TO_PROTECT
+
     def __init__(
-        self, vault_name: Optional[str] = None, vault_token_key: Optional[str] = None
+        self,
+        vault_name: Optional[str] = None,
+        vault_token_key: Optional[str] = None,
+        tenant: Optional[str] = None,
     ) -> None:
+        # Init the OAuth2 support. (mandatory usage)
+        self._tenant = tenant or "common"
+        super().__init__(OAuthProvider.MICROSOFT, tenant=self._tenant)
+
+        protect_keywords("RPA.Email.Exchange", self.TO_PROTECT)
         self.logger = logging.getLogger(__name__)
+
+        self._vault_name = vault_name
+        self._vault_token_key = vault_token_key
+
         self.credentials = None
         self.config = None
         self.account = None
         self._saved_attachments = []
-
-        self._vault_name = vault_name
-        self._vault_token_key = vault_token_key
 
     def on_token_refresh(self, token: OAuth2Token):
         """Callable you can override in order to save the newly obtained token in a
         safe place.
         """
         if self._vault_name and self._vault_token_key:
+            token = dict(token)
+            self._sync_token_metadata(token)
             secret = lib_vault.get_secret(self._vault_name)
-            secret[self._vault_token_key] = dict(token)
+            secret[self._vault_token_key] = token
             lib_vault.set_secret(secret)
             self.logger.info(
                 "OAuth2 token was refreshed in Vault %r as %r. (new expiry: %d)",
@@ -313,6 +362,8 @@ class Exchange:
         if is_oauth:
             self.credentials = OAuth2Creds(
                 on_token_refresh=self.on_token_refresh,
+                oauth_provider=self._oauth_provider,
+                tenant_id=self._tenant,
                 identity=Identity(upn=username),
                 client_id=client_id,
                 client_secret=client_secret,
@@ -446,7 +497,7 @@ class Exchange:
         )
         if not recipients and not cc and not bcc:
             raise NoRecipientsError(
-                "Atleast one address is required for 'recipients', 'cc' or 'bcc' parameter"  # noqa: E501
+                "At least one address is required for 'recipients', 'cc' or 'bcc' parameter"  # noqa: E501
             )
         self.logger.info("Sending message to %s", ",".join(recipients))
 

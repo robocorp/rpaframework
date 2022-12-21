@@ -9,6 +9,95 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+19.4.1 - 09 Dec 2022
+--------------------
+
+- Library **RPA.Email.Exchange** (:issue:`736`): Fix token auto-refresh for
+  single-tenant Client apps.
+
+19.4.0 - 08 Dec 2022
+--------------------
+
+- Added native OAuth2 support (:pr:`706`) with the following keywords:
+
+  - ``Generate OAuth URL``
+  - ``Get OAuth Token``
+  - ``Refresh OAuth Token``
+
+  Available in libraries:
+
+    - **RPA.Email.Exchange** (:issue:`604`)
+    - **RPA.Email.ImapSmtp** (additional keyword ``Generate OAuth String``)
+    - **RPA.MFA** (:issue:`658`)
+
+  Check the updated OAuth2 E-mail sending Portal example on: https://robocorp.com/portal/robot/robocorp/example-oauth-email
+
+19.3.1 - 29 Nov 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`710`): Fix bug with `auto_close=${False}`
+  param when importing the library, which still had the browser closed at the end of
+  the session. (now it's left open if such parameter is set to `False`)
+
+19.3.0 - 28 Nov 2022
+--------------------
+
+- Library **RPA.Slack** (:issue:`711`): New keyword ``Slack Raw Message`` adds support for
+  ``blocks`` message property by allowing user to set message dictionary.
+- Library **RPA.Excel.Files** (:pr:`712`): Add new keywords for the library.
+
+  List of new `RPA.Excel.Files` keywords:
+
+  - Set Cell Formula
+  - Copy Cell Values
+  - Delete Columns
+  - Delete Rows
+  - Insert Rows Before
+  - Insert Rows After
+  - Insert Columns After
+  - Insert Columns Before
+  - Move Range
+  - Clear Cell Range
+  - Set Styles
+  - Auto Size Columns
+  - Hide Columns
+  - Show Columns
+  - Set Cell Values
+
+19.2.0 - 17 Nov 2022
+--------------------
+
+- Library **RPA.Windows** (:pr:`693`):
+
+  - Keyword ``Get Elements`` supports now parameter `siblings_only` which filters for
+    elements found on the same level with the first match. This is ON by default; set
+    it to `False` for a global search, which retrieves all the found elements matching
+    the criteria instead.
+  - Keyword ``Get Value`` returns `None` when there's no value to retrieve at all.
+  - Fix sibling element searching in keyword ``Get Elements`` when there's no
+    comparison strategy identified.
+
+19.1.2 - 17 Nov 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems** (:pr:`692`): Allow `email` input Work Item
+  variable in the absence of the Control Room controlled one during e-mail triggering.
+
+19.1.1 - 04 Nov 2022
+--------------------
+
+- Library **RPA.Outlook.RPA** (:pr:`687`): Fix ``pywintypesXX.dll`` errors.
+
+19.1.0 - 03 Nov 2022
+--------------------
+
+- Library **RPA.Cloud.AWS** (:issue:`683`): Fix S3 ``List Files`` empty list response.
+  Released in ``rpaframework-aws`` version ``5.2.1``.
+- Library **RPA.HTTP** (:pr:`685`): Add keyword ``Check Vulnerabilities`` which will now just
+  check for ``OpenSSL`` vulnerable versions.
+
+  Related article: https://robocorp.com/docs/faq/openssl-cve-2022-11-01
+
 19.0.0 - 27 Oct 2022
 --------------------
 

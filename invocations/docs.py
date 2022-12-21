@@ -1,4 +1,5 @@
 """Common documentation related tasks"""
+
 from pathlib import Path
 import shutil
 
@@ -7,20 +8,22 @@ from invoke import task, Collection
 from invocations import shell, config
 from invocations.util import REPO_ROOT, MAIN_PACKAGE, safely_load_config
 
+
 EXCLUDES = [
-    "RPA.scripts*",
-    "RPA.core*",
-    "RPA.recognition*",
+    "RPA.Cloud.AWS.textract*",
+    "RPA.Cloud.Google.keywords*",
+    "RPA.Cloud.objects*",
     "RPA.Desktop.keywords*",
     "RPA.Desktop.utils*",
-    "RPA.PDF.keywords*",
-    "RPA.Cloud.objects*",
-    "RPA.Cloud.Google.keywords*",
-    "RPA.Robocorp.utils*",
     "RPA.Dialogs.*",
+    "RPA.Email.common*",
+    "RPA.PDF.keywords*",
+    "RPA.Robocorp.utils*",
     "RPA.Windows.keywords*",
     "RPA.Windows.utils*",
-    "RPA.Cloud.AWS.textract*",
+    "RPA.core*",
+    "RPA.recognition*",
+    "RPA.scripts*",
 ]
 DOCGEN_EXCLUDES = [f"--exclude {package}" for package in EXCLUDES]
 

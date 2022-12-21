@@ -2,11 +2,11 @@
 Python API
 ##########
 
-********
-Nanonets
-********
+**********
+DocumentAI
+**********
 
-.. automodule:: RPA.Nanonets
+.. automodule:: RPA.DocumentAI.DocumentAI
    :members:
    :inherited-members:
    :undoc-members:

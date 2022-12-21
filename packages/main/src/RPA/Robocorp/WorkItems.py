@@ -1023,7 +1023,10 @@ class WorkItems:
         for input_keys, output_keys in self._auto_parse_email.items():
             input_keys = to_tuple(input_keys)
             for input_key in input_keys:
-                content = get_dot_value(variables, input_key)
+                try:
+                    content = get_dot_value(variables, input_key)
+                except AttributeError:
+                    content = None  # couldn't reach final destination
                 if not content and input_key in file_list:
                     path = Path(self.get_work_item_file(input_key))
                     content = path.read_text(encoding=ENCODING)

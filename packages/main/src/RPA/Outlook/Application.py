@@ -11,9 +11,9 @@ from typing import Any, List
 from RPA.Email.common import counter_duplicate_path
 
 if platform.system() == "Windows":
-    import pywintypes
     import win32api
     import win32com.client
+    import pywintypes
 else:
     logging.getLogger(__name__).warning(
         "RPA.Outlook.Application library works only on Windows platform"

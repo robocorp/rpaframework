@@ -355,29 +355,36 @@ class ServiceS3(AWSBase):
         paginator = client.get_paginator("list_objects_v2")
         max_keys = min(limit or 1001, 1000)
 
-        if prefix:
-            kwargs["Prefix"] = prefix
-        if limit and limit < 1000:
-            kwargs["MaxKeys"] = limit
+        new_params = self._set_list_files_arguments(prefix, limit)
+        request_params = {**kwargs, **new_params}
 
         files = []
         try:
-            paginated = paginator.paginate(Bucket=bucket_name, **kwargs)
+            paginated = paginator.paginate(Bucket=bucket_name, **request_params)
             if search:
                 filtered = paginated.search(search)
                 for index, page in enumerate(filtered, start=1):
-                    files.append(page)
+                    if page:
+                        files.append(page)
                     if limit and limit == index:
                         break
             else:
                 for index, page in enumerate(paginated, start=1):
                     if limit and (index * max_keys) > limit:
                         break
-                    files.extend(page["Contents"] if "Contents" in page else [])
+                    files.extend(page["Contents"] if "Contents" in page.keys() else [])
 
         except ClientError as e:
             self.logger.error(e)
         return files
+
+    def _set_list_files_arguments(self, prefix=None, limit=None):
+        kwargs = {}
+        if prefix:
+            kwargs["Prefix"] = prefix
+        if limit and limit < 1000:
+            kwargs["MaxKeys"] = limit
+        return kwargs
 
     @aws_dependency_required
     def _s3_upload_file(self, bucket_name, filename, object_name, **kwargs):

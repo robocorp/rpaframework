@@ -26,28 +26,6 @@ Locator = Union["WindowsElement", str]
 class WindowsElement:
     """Represent Control as dataclass"""
 
-    # pylint: disable=no-self-argument
-    def _cmp_subname(win_elem: "WindowsElement", *, locator: str) -> bool:
-        subname = None
-        # pylint: disable=not-an-iterable
-        for loc in MatchObject.parse_locator(locator).locators:
-            if loc[0] == "SubName":
-                subname = loc[1]
-                break
-
-        assert subname, f"couldn't find 'SubName' in parsed sub-locator {locator!r}"
-        return subname in win_elem.name
-
-    _WINDOW_SIBLING_COMPARE = {
-        # <locator_strategy>: <element_attribute>
-        "id": "automation_id",
-        re.compile(r"(?<!sub)name:"): "name",
-        "subname": _cmp_subname,
-        "class": "class_name",
-        "control": "control_type",
-        "type": "control_type",
-    }
-
     item: "Control"
     locator: Optional[Locator] = None
     name: str = ""
@@ -82,6 +60,39 @@ class WindowsElement:
             self.xcenter = rect.xcenter()
             self.ycenter = rect.ycenter()
 
+        self._sibling_element_compare = {
+            # <locator_strategy>: <element_attribute>
+            "id": "automation_id",
+            "automationid": "automation_id",
+            re.compile(r"(?<!sub)name:"): "name",
+            "subname": self._cmp_subname,
+            "regex": self._cmp_regex,
+            "class": "class_name",
+            "control": "control_type",
+            "type": "control_type",
+        }
+
+    @staticmethod
+    def _get_locator_value(locator: str, strategy: str) -> str:
+        # pylint: disable=not-an-iterable
+        for loc in MatchObject.parse_locator(locator).locators:
+            if loc[0] == strategy:
+                return loc[1]
+
+        raise ValueError(
+            f"couldn't find {strategy!r} in parsed final sub-locator: {locator}"
+        )
+
+    @classmethod
+    def _cmp_subname(cls, win_elem: "WindowsElement", *, locator: str) -> bool:
+        subname = cls._get_locator_value(locator, "SubName")
+        return subname in win_elem.name
+
+    @classmethod
+    def _cmp_regex(cls, win_elem: "WindowsElement", *, locator: str) -> bool:
+        pattern = cls._get_locator_value(locator, "RegexName")
+        return bool(re.match(pattern, win_elem.name))
+
     def is_sibling(self, win_elem: "WindowsElement") -> bool:
         """Returns `True` if the provided window element is a sibling."""
         locator: Optional[Locator] = win_elem.locator
@@ -95,20 +106,22 @@ class WindowsElement:
 
         last_locator_part = locator.split(MatchObject.TREE_SEP)[-1]
         cmp_attrs = []
-        for strategy, attr_or_func in self._WINDOW_SIBLING_COMPARE.items():
+        for strategy, attr_or_func in self._sibling_element_compare.items():
             if isinstance(strategy, str):
                 strategy_regex = re.compile(rf"{strategy}:")
             else:
                 strategy_regex = strategy
             if strategy_regex.search(last_locator_part):
                 cmp_attrs.append(attr_or_func)
-        # Name is assumed by default if no strategies are found at all.
-        cmp_attrs = cmp_attrs or [self._WINDOW_SIBLING_COMPARE["name"]]
+        # Name comparison is assumed by default if no strategies are found at all.
+        cmp_attrs = cmp_attrs or ["name"]
         for attr_or_func in cmp_attrs:
             if isinstance(attr_or_func, str):
                 status = getattr(self, attr_or_func) == getattr(win_elem, attr_or_func)
             else:
-                status = attr_or_func(win_elem, locator=last_locator_part)
+                status = attr_or_func(  # pylint: disable=not-callable
+                    win_elem, locator=last_locator_part
+                )
             if not status:
                 return False
 
@@ -222,8 +235,8 @@ class LocatorMethods(WindowsContext):
     """Keywords for finding Windows GUI elements"""
 
     def __init__(self, ctx, locators_path: Optional[str] = None):
-        self._locators_path = locators_path
         super().__init__(ctx)
+        self._locators_path = locators_path
 
     @staticmethod
     def _get_control_from_params(
@@ -294,32 +307,37 @@ class LocatorMethods(WindowsContext):
 
         return criteria
 
+    def _resolve_root(self, root_element: Optional[WindowsElement]) -> WindowsElement:
+        # Explicit root element > set anchor > active window > Desktop.
+        root = (
+            self._window_or_none(root_element)
+            or self.anchor
+            or self.window
+            or WindowsElement(auto.GetRootControl(), None)
+        )
+        self.logger.info("Resulted root element: %s", root)
+        return root
+
     def _get_element_by_locator_string(
         self, locator: str, search_depth: int, root_element: Optional[WindowsElement]
     ) -> WindowsElement:
-        root = root_element.item if self._window_or_none(root_element) else None
-        anchor = self.anchor.item if self.anchor else None
-        window = self.window.item if self.window else None
-        self.logger.debug("argument root = %s", root)
-        self.logger.debug("active anchor = %s", anchor)
-        self.logger.debug("active window = %s", window)
-        root_result = root or anchor or window or auto.GetRootControl()
-        self.logger.debug("resulting root = %s", root_result)
+        root_control = self._resolve_root(root_element).item
+        locator_parts = locator.split(MatchObject.TREE_SEP)
+        assert locator_parts, "empty locator"
 
-        locators = locator.split(MatchObject.TREE_SEP)
         try:
-            for loc in locators:
-                self.logger.info("Root element: %r", root_result)
+            for locator_part in locator_parts:
+                self.logger.debug("Active root element: %r", root_control)
                 control = self._get_control_with_locator_part(
-                    loc, search_depth, root_result
+                    locator_part, search_depth, root_control
                 )
-                root_result = control
+                root_control = control
         except LookupError as err:
             raise ElementNotFound(
                 f"Element not found with locator {locator!r}"
             ) from err
 
-        # If we get here, then we have a `control` no matter what.
+        # If we get here, a `control` item was found.
         return WindowsElement(control, locator)
 
     @method
@@ -335,11 +353,7 @@ class LocatorMethods(WindowsContext):
             locator = self._load_by_alias(locator)
         self.logger.info("Getting element with locator: %s", locator)
         if not locator:
-            element = (
-                self.ctx.anchor_element
-                or self.ctx.window_element
-                or WindowsElement(auto.GetRootControl(), None)
-            )
+            return self._resolve_root(root_element)
         elif isinstance(locator, str):
             element = self._get_element_by_locator_string(
                 locator, search_depth, root_element
