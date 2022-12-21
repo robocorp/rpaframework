@@ -70,6 +70,7 @@ jobs:
     env:
       SETUPTOOLS_USE_DISTUTILS: stdlib
       INVOKE_IS_CI_CD: 1
+      HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python }}
@@ -103,13 +104,6 @@ jobs:
       run: invoke install
     - name: Lint
       run: invoke code.lint
-    - name: Create RPA.Hubspot testvars.py file
-      env:
-        HUBSPOT_TESTVARS : ${{ secrets.HUBSPOT_TESTVARS }}
-      run: |
-        pwd
-        echo "$HUBSPOT_TESTVARS" | base64 -d >> tests/robot/hubspot_testvars.py
-      shell: bash
     - name: Test (non-linux)
       if: matrix.os != 'ubuntu-latest'
       run: invoke code.test -a
