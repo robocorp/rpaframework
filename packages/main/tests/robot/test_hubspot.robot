@@ -66,12 +66,18 @@ Force Tags          hubspot
 *** Variables ***
 ${NOT_AUTHENTICATED_ERROR}      STARTS:HubSpotAuthenticationError:
 ${AUTHENTICATION_FAILED}        HubSpotAuthenticationError: Authentication was not successful.
-${HUBSPOT_TYPE_ERROR}           STARTS:HubSpotObjectTypeError:
 
 
 *** Keywords ***
 Token Auth
-    Auth With Token    ${ACCESS_TOKEN}
+    IF   "${ACCESS_TOKEN}" == "not-set"
+        Skip    No token set, please provide it with 'HUBSPOT_TOKEN' env var.
+    END
+    ${status}   ${ret} =    Run Keyword And Ignore Error
+    ...     Auth With Token    ${ACCESS_TOKEN}
+    IF    "${status}" == "FAIL"
+        Skip    Can't authenticate with the provided token.
+    END
 
 Generate random name and description
     ${random_name}=    Generate random string    8    [LETTERS]
@@ -81,19 +87,19 @@ Generate random name and description
 
 *** Tasks ***
 Search for objects should fail without authentication
-    [Setup]     Log To Console    No auth
+    [Setup]     Log To Console    No auth required
 
     Run Keyword And Expect Error    ${NOT_AUTHENTICATED_ERROR}
     ...    Search for objects    object_type=CONTACTS
 
 List associations should fail without authentication
-    [Setup]     Log To Console    No auth
+    [Setup]     Log To Console    No auth required
 
     Run Keyword And Expect Error    ${NOT_AUTHENTICATED_ERROR}
     ...    List associations    object_type=contact    object_id=123    to_object_type=company
 
 Get object should fail without authentication
-    [Setup]     Log To Console    No auth
+    [Setup]     Log To Console    No auth required
 
     Run Keyword And Expect Error    ${NOT_AUTHENTICATED_ERROR}
     ...    Get object    object_type=contact    object_id=123
