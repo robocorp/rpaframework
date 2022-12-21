@@ -1,4 +1,3 @@
-from datetime import date
 import glob
 import logging
 import os
@@ -12,6 +11,7 @@ import flet
 from flet import (
     Checkbox,
     Column,
+    Container,
     Control,
     Dropdown,
     ElevatedButton,
@@ -19,7 +19,6 @@ from flet import (
     FilePickerResultEvent,
     Image,
     Markdown,
-    Page,
     Radio,
     RadioGroup,
     Text,
@@ -36,7 +35,6 @@ from .date_picker import DatePicker
 from .dialog_types import Icon, Options, Result, Size
 from .utils import optional_str, to_options
 
-
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class Assistant:
     """The `Assistant` library provides a way to display information to a user
@@ -50,6 +48,8 @@ class Assistant:
     - Displaying generated files after an execution is finished
     - Displaying dynamic and user-friendly error messages
     - Requesting passwords or other personal information
+    - Running Keywords based on user's actions
+    - Displaying dynamic content based on user's actions
     - Automating based on files created by the user
 
     **Workflow**
@@ -302,9 +302,8 @@ class Assistant:
             Add submit buttons    Continue
             Run dialog
         """
-        # TODO: confirm the url_or_path works with local paths with flet
-        # FIXME: the image goes to a bit random location
-        self._client.add_element(Image(src=url_or_path, width=width, height=height))
+
+        self._client.add_element(Container(content=Image(src=url_or_path, width=width, height=height)))
 
     @keyword("Add file")
     def add_file(
@@ -689,35 +688,36 @@ class Assistant:
         self._client.add_element(Text(value=label))
         self._client.add_element(dropdown, name=str(name))
 
-    @keyword("Add Date Input", tags=["input"])
-    def add_date_input(
-        self,
-        name: str,
-        default: Optional[Union[date, str]] = None,
-        label: Optional[str] = None,
-    ) -> None:
-        """Add a date input element
+    # FIXME: Add keyword back when fixed
+    # @keyword("Add Date Input", tags=["input"])
+    # def add_date_input(
+    #     self,
+    #     name: str,
+    #     default: Optional[Union[date, str]] = None,
+    #     label: Optional[str] = None,
+    # ) -> None:
+    #     """Add a date input element
 
-        :param name:    Name of the result field
-        :param default: The default set date
-        :param label:   Label for the date input field
+    #     :param name:    Name of the result field
+    #     :param default: The default set date
+    #     :param label:   Label for the date input field
 
-        Displays a date input widget. The selection the user makes will be available
-        as a ``date`` object in the ``name`` field of the result.
-        The ``default`` argument can be a pre-set date as object or string in
-        "YYYY-MM-DD" format, otherwise the current date is used.
+    #     Displays a date input widget. The selection the user makes will be available
+    #     as a ``date`` object in the ``name`` field of the result.
+    #     The ``default`` argument can be a pre-set date as object or string in
+    #     "YYYY-MM-DD" format, otherwise the current date is used.
 
-        Example:
+    #     Example:
 
-        .. code-block:: robotframework
+    #     .. code-block:: robotframework
 
-            Add heading       Enter your birthdate
-            Add Date Input    birthdate    default=1993-04-26
-            ${result} =       Run dialog
-            Log To Console    User birthdate year should be: ${result.birthdate.year}
-        """
+    #         Add heading       Enter your birthdate
+    #         Add Date Input    birthdate    default=1993-04-26
+    #         ${result} =       Run dialog
+    #         Log To Console    User birthdate year should be: ${result.birthdate.year}
+    #     """
 
-        self._client.add_element(name=str(name), element=DatePicker())
+    #     self._client.add_element(name=str(name), element=DatePicker())
 
     @keyword("Add radio buttons", tags=["input"])
     def add_radio_buttons(
