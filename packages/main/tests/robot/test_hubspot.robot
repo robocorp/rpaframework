@@ -1,71 +1,20 @@
 *** Settings ***
-Documentation       API keys and variables must be provided in ``./testvars.py``. These should use a live or
-...                 sandbox Hubspot environment to test the API, there is no mocking function.
-...
-...                 The ``testvars.py`` should be built like so (example values provided, these will
-...                 need to be replaced with IDs and data from HubSpot):
-...
-...                 |    # API key for all tests.
-...                 |    API_KEY = "not-a-real-hubspot-api-key"
-...                 |    ACCESS_TOKEN = "pat-na1-not-a-real-hubspot-auth-token"
-...                 |
-...                 |    # Contact/object lookup tests.
-...                 |    FIRST_NAME = "John"
-...                 |    LAST_NAME = "Smith"
-...                 |    FIRST_NAME_2 = "Alice"
-...                 |    CONTACT_EMAILS = ["john@example.com", "alice@example.com"]
-...                 |    CONTACT_ID = "1234"
-...                 |
-...                 |    # Get One Object test
-...                 |    OBJECT_ID = 4567
-...                 |    COMPANY_ID = 123456789
-...                 |
-...                 |    # Batch tests
-...                 |    OBJECT_IDS = [4567, 987654]
-...                 |    EXPECTED_ASSOCIATION_MAP = {"4567": "123456789", "65478": "987654321"}
-...                 |    EXPECTED_EMAILS = ["john@example.com", "alice@example.com"]
-...                 |
-...                 |    # Get Custom Object with Custom ID property test
-...                 |    CUSTOM_OBJ_ID = "123456-8ef6-4af3-9c10-8798a532f"
-...                 |    ID_PROPERTY = "organization_id"
-...                 |    CUSTOM_OBJECT_TYPE = "Organization"
-...                 |
-...                 |    # Pipeline tests.
-...                 |    PIPELINE_LABEL = "Self-Service Pipeline"
-...                 |    EXPECTED_STAGE_ORDER = (
-...                 |    "Free",
-...                 |    "Pro",
-...                 |    "Closed lost",
-...                 |    )
-...                 |    TEST_DEAL = 123456789
-...                 |    EXPECTED_STAGE = "Contract Signed"
-...                 |
-...                 |    # User provisioning tests.
-...                 |    USER_ID = "2456789"
-...                 |    USER_EMAIL = "john@example.com"
-...                 |
-...                 |    # Owner lookup tests.
-...                 |    OWNER_ID = "123654987"
-...                 |    OWNER_EMAIL = "john@example.com"
-...                 |    COMPANY_WITH_OWNER_ID = "123456789"
-...                 |    EXPECTED_COMPANY_OWNER = "987456123"
-...                 |
-...                 |    CUSTOM_OWNER_PROPERTY = "customer_success_contact"
-...                 |    COMPANY_ID_WITH_CUSTOM_OWNER = "123456789"
-...                 |    EXPECTED_CUSTOM_OWNER = "123654987"
+Documentation       Run real tests in a libe HubSpot sandbox as there's no mocking
+...     functionality available. Tests configuration is placed under the
+...     HubspotTestvars.py variables file, which relies on a 'HUBSPOT_TOKEN' env var to
+...     be set in order to get authorized into the API.
 
 Library             Collections
 Library             RPA.Hubspot
 Library             String
 
 Variables           ../resources/config/HubspotTestvars.py
-Task Setup     Token Auth
+Task Setup          Token Auth
 Force Tags          hubspot
 
 
 *** Variables ***
 ${NOT_AUTHENTICATED_ERROR}      STARTS:HubSpotAuthenticationError:
-${AUTHENTICATION_FAILED}        HubSpotAuthenticationError: Authentication was not successful.
 
 
 *** Keywords ***
@@ -76,7 +25,7 @@ Token Auth
     ${status}   ${ret} =    Run Keyword And Ignore Error
     ...     Auth With Token    ${ACCESS_TOKEN}
     IF    "${status}" == "FAIL"
-        Skip    Can't authenticate with the provided token.
+        Skip    Can't authorize with the provided token.
     END
 
 Generate random name and description
@@ -104,9 +53,11 @@ Get object should fail without authentication
     Run Keyword And Expect Error    ${NOT_AUTHENTICATED_ERROR}
     ...    Get object    object_type=contact    object_id=123
 
-#Authentication fails with bad API key
-#    Run Keyword And Expect Error    ${AUTHENTICATION_FAILED}
-#    ...    Auth with API key    api_key=123
+Authentication fails with API key
+    [Setup]     Log To Console    No auth required
+
+    Run Keyword And Expect Error    ${NOT_AUTHENTICATED_ERROR}
+    ...     Auth with API key    api_key=123
 
 Search for Contact by First Name Returns Contacts
     ${search_object}=    Evaluate
