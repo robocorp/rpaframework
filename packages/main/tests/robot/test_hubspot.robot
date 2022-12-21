@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation       Run real tests in a libe HubSpot sandbox as there's no mocking
+Documentation       Run real tests in a live HubSpot sandbox as there's no mocking
 ...     functionality available. Tests configuration is placed under the
 ...     HubspotTestvars.py variables file, which relies on a 'HUBSPOT_TOKEN' env var to
 ...     be set in order to get authorized into the API.
@@ -57,7 +57,7 @@ Authentication fails with API key
     [Setup]     Log To Console    No auth required
 
     Run Keyword And Expect Error    ${NOT_AUTHENTICATED_ERROR}
-    ...     Auth with API key    api_key=123
+    ...     Auth With API Key    api_key=123
 
 Search for Contact by First Name Returns Contacts
     ${search_object}=    Evaluate

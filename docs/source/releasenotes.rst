@@ -9,6 +9,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+19.4.2 - 21 Dec 2022
+--------------------
+
+- Library **RPA.Hubspot** (:issue:`740`): Deprecate keyword ``Auth With API Key`` in
+  favor to ``Auth With Token``. (read how to generate one with
+  `Private Apps <https://developers.hubspot.com/docs/api/private-apps>`_)
+
 19.4.1 - 09 Dec 2022
 --------------------
 
