@@ -15,8 +15,9 @@ from flet import (
 from flet.dropdown import Option
 from flet.icons import ARROW_BACK_ROUNDED, ARROW_FORWARD_ROUNDED, CALENDAR_MONTH
 
-
+# FIXME: This doesn't render the components properly so it can't be used right now
 class DatePicker(UserControl):
+
     def _year_increment(self, e):
         self.selected_year += 1
         self.header_element[1].value = self.selected_year
