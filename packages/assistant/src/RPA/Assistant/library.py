@@ -1,12 +1,11 @@
 import glob
 import logging
 import os
-from pathlib import Path
 import platform
 import subprocess
+from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-from RPA.Assistant.flet_client import FletClient
 import flet
 from flet import (
     Checkbox,
@@ -30,10 +29,11 @@ from flet.control_event import ControlEvent
 from flet.dropdown import Option
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+from RPA.Assistant.flet_client import FletClient
 
-from .date_picker import DatePicker
 from .dialog_types import Icon, Options, Result, Size
 from .utils import optional_str, to_options
+
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class Assistant:
@@ -303,7 +303,9 @@ class Assistant:
             Run dialog
         """
 
-        self._client.add_element(Container(content=Image(src=url_or_path, width=width, height=height)))
+        self._client.add_element(
+            Container(content=Image(src=url_or_path, width=width, height=height))
+        )
 
     @keyword("Add file")
     def add_file(

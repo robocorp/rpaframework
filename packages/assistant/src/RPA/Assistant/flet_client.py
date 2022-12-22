@@ -84,8 +84,8 @@ class FletClient:
         target,
         title: str = "Dialog",
         height: Union[int, str] = "AUTO",
-        width: int = 480 ,
-        on_top: bool = False
+        width: int = 480,
+        on_top: bool = False,
     ):
         def on_session_created(conn, session_data):
             page = Page(conn, session_data.sessionID)
@@ -132,8 +132,8 @@ class FletClient:
         self,
         title: str = "Dialog",
         height: Union[int, str] = "AUTO",
-        width: int = 480 ,
-        on_top: bool = False
+        width: int = 480,
+        on_top: bool = False,
     ):
         self._show_flet(self._execute(), title, height, width, on_top)
 

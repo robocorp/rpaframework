@@ -1,13 +1,22 @@
-from flet import Dropdown, UserControl, Container, Row, Icon, PopupMenuButton, PopupMenuItem, Text
-from flet.dropdown import Option
-from flet.icons import CALENDAR_MONTH, ARROW_BACK_ROUNDED, ARROW_FORWARD_ROUNDED
-from flet import MainAxisAlignment
-from datetime import datetime, date
 from calendar import monthrange
+from datetime import date, datetime
+
+from flet import (
+    Container,
+    Dropdown,
+    Icon,
+    MainAxisAlignment,
+    PopupMenuButton,
+    PopupMenuItem,
+    Row,
+    Text,
+    UserControl,
+)
+from flet.dropdown import Option
+from flet.icons import ARROW_BACK_ROUNDED, ARROW_FORWARD_ROUNDED, CALENDAR_MONTH
 
 
 class DatePicker(UserControl):
-
     def _year_increment(self, e):
         self.selected_year += 1
         self.header_element[1].value = self.selected_year
@@ -17,11 +26,10 @@ class DatePicker(UserControl):
         self.selected_year -= 1
         self.header_element[1].value = self.selected_year
         self.update()
-    
+
     def _select_month(self, e):
-        months = (("Jan", "Feb", "Mar", "Apr"), ("May", "Jun", "Jul", "Aug"), ("Sep", "Oct", "Nov", "Dec"))
         selected_month = e.control._Control__previous_children[0].value
-        self.selected_month = sum(months, ()).index(selected_month) + 1
+        self.selected_month = sum(self.months_list, ()).index(selected_month) + 1
         self.header_element[0].content = None
         self.header_element[2].content = None
         self.header_element[1].value = selected_month
@@ -47,8 +55,12 @@ class DatePicker(UserControl):
                 # self.body_element[0].content = Row(current_row, alignment=MainAxisAlignment.SPACE_BETWEEN)
                 current_row = []
             else:
-                current_row.append(Container(content=Text(day+1), on_click=self._select_day))
-        self.body_element[0].content = Row([Container(Text("el"))], alignment=MainAxisAlignment.SPACE_BETWEEN)
+                current_row.append(
+                    Container(content=Text(day + 1), on_click=self._select_day)
+                )
+        self.body_element[0].content = Row(
+            [Container(Text("el"))], alignment=MainAxisAlignment.SPACE_BETWEEN
+        )
         # self.body_element = element
         self.update()
 
@@ -58,15 +70,29 @@ class DatePicker(UserControl):
         self.selected_month = datetime.now().month
         self.selected_day = datetime.now().day
         self.selected_date = None
-        months = (("Jan", "Feb", "Mar", "Apr"), ("May", "Jun", "Jul", "Aug"), ("Sep", "Oct", "Nov", "Dec"))
+        self.months_list = (
+            ("Jan", "Feb", "Mar", "Apr"),
+            ("May", "Jun", "Jul", "Aug"),
+            ("Sep", "Oct", "Nov", "Dec"),
+        )
         self.header_element = [
             Container(content=Icon(ARROW_BACK_ROUNDED), on_click=self._year_decrement),
             Text(self.selected_year),
-            Container(content=Icon(ARROW_FORWARD_ROUNDED), on_click=self._year_increment)
+            Container(
+                content=Icon(ARROW_FORWARD_ROUNDED), on_click=self._year_increment
+            ),
         ]
         self.body_element = []
-        for row in months:
-            temp = PopupMenuItem(content=Row([Container(content=Text(i), on_click=self._select_month) for i in row], alignment=MainAxisAlignment.SPACE_BETWEEN))
+        for row in self.months_list:
+            temp = PopupMenuItem(
+                content=Row(
+                    [
+                        Container(content=Text(i), on_click=self._select_month)
+                        for i in row
+                    ],
+                    alignment=MainAxisAlignment.SPACE_BETWEEN,
+                )
+            )
             self.body_element.append(temp)
         super().__init__(self)
 
@@ -75,7 +101,11 @@ class DatePicker(UserControl):
             icon=CALENDAR_MONTH,
             items=[
                 # Top row for year display and selection
-                PopupMenuItem(content=Row(self.header_element, alignment=MainAxisAlignment.SPACE_BETWEEN)),
+                PopupMenuItem(
+                    content=Row(
+                        self.header_element, alignment=MainAxisAlignment.SPACE_BETWEEN
+                    )
+                ),
                 PopupMenuItem(),  # divider
                 *self.body_element,
             ],
