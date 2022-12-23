@@ -37,7 +37,8 @@ from .utils import optional_str, to_options
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class Assistant:
-    """The `Assistant` library provides a way to display information to a user
+    """This library is still in Beta and needs more testing and features.
+    The `Assistant` library provides a way to display information to a user
     and request input while a robot is running. It allows building processes
     that require human interaction. Also it offers capabilities of running
     other robots inside the current one and determine what to display to the
