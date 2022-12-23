@@ -2,7 +2,6 @@ import atexit
 import logging
 import os
 import signal
-from types import NoneType
 from typing import Callable, List, Optional, Union
 
 import flet
@@ -51,7 +50,7 @@ class FletClient:
 
     def _execute(
         self, page: Optional[Page] = None
-    ) -> Callable[[Optional[Page]], NoneType]:
+    ) -> Callable[[Optional[Page]], None]:
         def inner_execute(inner_page: Optional[Page] = None):
             if page:
                 inner_page = page
