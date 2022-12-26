@@ -755,9 +755,7 @@ class Assistant:
             Log    User type should be: ${result.user_type}
         """
         options, default = to_options(options, default)
-        radios: List[Control] = list(
-            map(lambda option: Radio(value=option, label=option), options)
-        )
+        radios: List[Control] = [Radio(value=option, label=option) for option in options]
         radio_group = RadioGroup(content=Column(radios), value=default)
 
         self._client.add_element(Text(value=label))
@@ -908,13 +906,13 @@ class Assistant:
         self._client.display_flet_window(**options)
         return self._client.results
 
-    @keyword("Refresh", tags=["dialog"])
-    def refresh(self):
+    @keyword("Refresh Dialog", tags=["dialog"])
+    def refresh_dialog(self):
         """Can be used to update UI elements when adding elements while dialog is running"""
         if self._client.page:
             self._client.update_elements(self._client.page)
         else:
-            raise Exception("No dialog open")
+            raise RuntimeError("No dialog open")
 
     @keyword("Add Button", tags=["dialog"])
     def add_button(
