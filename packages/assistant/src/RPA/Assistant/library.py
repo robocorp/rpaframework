@@ -210,7 +210,7 @@ class Assistant:
             Size.Large: "headlineLarge",
         }
 
-        self._client.add_element(element=Text(heading, style=size_dict[[size]]))
+        self._client.add_element(element=Text(heading, style=size_dict[size]))
 
     @keyword("Add text")
     def add_text(
