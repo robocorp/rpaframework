@@ -31,12 +31,12 @@ def to_options(
     return opts, default
 
 
-def optional_str(val: Any) -> Union[str, None]:
+def optional_str(val: Any) -> Optional[str]:
     """Convert value to string, but keep NoneType"""
     return str(val) if val is not None else val
 
 
-def optional_int(val: Any) -> Union[int, None]:
+def optional_int(val: Any) -> Optional[int]:
     """Convert value to int, but keep NoneType"""
     return int(val) if val is not None else val
 

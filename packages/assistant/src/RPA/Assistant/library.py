@@ -154,7 +154,7 @@ class Assistant:
             pass
 
     def _add_closing_button(self, label="Submit") -> None:
-        def close(e):
+        def close(*_):
             self._client.page.window_destroy()
 
         self._client.add_element(ElevatedButton(label, on_click=close))
@@ -204,12 +204,13 @@ class Assistant:
         if not isinstance(size, Size):
             size = Size(size)
 
-        if size == Size.Small:
-            self._client.add_element(element=Text(heading, style="headlineSmall"))
-        elif size == Size.Medium:
-            self._client.add_element(element=Text(heading, style="headlineMedium"))
-        elif size == Size.Large:
-            self._client.add_element(element=Text(heading, style="headlineLarge"))
+        size_dict = {
+            Size.Small: "headlineSmall",
+            Size.Medium: "headlineMedium",
+            Size.Large: "headlineLarge",
+        }
+
+        self._client.add_element(element=Text(heading, style=size_dict[[size]]))
 
     @keyword("Add text")
     def add_text(
@@ -341,7 +342,7 @@ class Assistant:
         if not resolved.exists():
             self.logger.warning("File does not exist: %s", resolved)
 
-        def open_file(e):
+        def open_file(*_):
             if platform.system() == "Windows":
                 os.startfile(resolved)  # type: ignore # pylint: disable=no-member
             elif platform.system() == "Darwin":
@@ -450,14 +451,12 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        rows: Optional[int] = None,
     ) -> None:
         """Add a text input element
 
         :param name:        Name of result field
         :param label:       Label for field
         :param placeholder: Placeholder text in input field
-        :param rows:        Number of input rows
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -465,9 +464,6 @@ class Assistant:
         For customizing the look of the input, the ``label`` text can be given
         to add a descriptive label and the ``placholder`` text can be given
         to act as an example of the input value.
-
-        If the ``rows`` argument is given as a number, the input is converted
-        into a larger text area input with the given amount of rows by default.
 
         Example:
 
@@ -478,12 +474,12 @@ class Assistant:
             Add text input    message
             ...    label=Feedback
             ...    placeholder=Enter feedback here
-            ...    rows=5
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
         # TODO: Do this in a cleaner way. Workaround because we use on_change
         # handlers to record values, so default value otherwise will be missed
+        # TODO: Implement the rows support
         self._client.results[name] = placeholder
 
         self._client.add_element(
@@ -618,9 +614,9 @@ class Assistant:
             END
         """
 
-        def on_pick_result(e: FilePickerResultEvent):
-            if e.files:
-                self._client.results[str(name)] = list(map(lambda f: f.path, e.files))
+        def on_pick_result(event: FilePickerResultEvent):
+            if event.files:
+                self._client.results[str(name)] = [f.path for f in event.files]
 
         file_picker = FilePicker(on_result=on_pick_result)
         self._client.add_invisible_element(file_picker)
@@ -925,15 +921,17 @@ class Assistant:
         self, label: str, function: Union[Callable, str], *args, **kwargs
     ) -> None:
         """
-        ``function`` should be a python function or a Robot keyword name, args and kwargs should be valid arguments for it.
+        ``function`` should be a python function or a Robot keyword name,
+        args and kwargs should be valid arguments for it.
         """
 
         # FIXME: add some progress bar
-        # TODO: either optional or mandatory feature to block other button function calls while one is
-        # being processed (perhaps by making the button disabled during execution?)
+        # TODO: either optional or mandatory feature to block other button function
+        # calls while one is being processed
+        # (perhaps by making the button disabled during execution?)
 
         # TODO: use logger.err and logger.debug
-        def on_click(event: ControlEvent):
+        def on_click(_):
             if isinstance(function, Callable):
                 try:
                     function(*args, **kwargs)
@@ -974,7 +972,7 @@ class Assistant:
 
         """
 
-        def on_click(event: ControlEvent):
+        def on_click(_):
             if isinstance(function, Callable):
                 try:
                     function(self._client.results)
