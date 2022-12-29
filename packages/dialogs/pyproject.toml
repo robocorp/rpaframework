@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-dialogs"
-version = "4.1.0a8"
+version = "4.0.1"
 description = "Dialogs library of RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
