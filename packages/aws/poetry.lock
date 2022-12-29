@@ -895,7 +895,7 @@ python-versions = ">=3.6, <4"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.0.4"
+version = "10.0.5"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1959,8 +1959,8 @@ robotframework-pythonlibcore = [
     {file = "robotframework_pythonlibcore-3.0.0-py2.py3-none-any.whl", hash = "sha256:af10c2403cd38834988c4ce68ffb6ec6f9b14bd2cd39ecf836d443377c59b7c4"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-10.0.4.tar.gz", hash = "sha256:6a9c896276d11474edb9b20c40112aa2e045a5fedf7635513b7e4cf325709971"},
-    {file = "rpaframework_core-10.0.4-py3-none-any.whl", hash = "sha256:2abc9c2395da3d26018df660dd7462b94076c5bd3495a89acfb89df2e260da16"},
+    {file = "rpaframework_core-10.0.5-py3-none-any.whl", hash = "sha256:a3764c9e676a9c1c39e6ea123e1e620a91a9189ec8197d6886d45353b88e4b74"},
+    {file = "rpaframework_core-10.0.5.tar.gz", hash = "sha256:f8beaa5a75d146595e168d476d3b3bfb7511ed610d34a91f6a0621d3ff3fe6bc"},
 ]
 s3transfer = [
     {file = "s3transfer-0.6.0-py3-none-any.whl", hash = "sha256:06176b74f3a15f61f1b4f25a1fc29a4429040b7647133a463da8fa5bd28d5ecd"},
