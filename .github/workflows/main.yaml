@@ -71,6 +71,7 @@ jobs:
       SETUPTOOLS_USE_DISTUTILS: stdlib
       INVOKE_IS_CI_CD: 1
       HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_TOKEN }}
+      SYSTEM_VERSION_COMPAT: "0"
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python }}
@@ -125,7 +126,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       INVOKE_IS_CI_CD: 1
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
