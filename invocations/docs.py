@@ -2,10 +2,13 @@
 
 from pathlib import Path
 import shutil
+from datetime import datetime, date
+
+from jinja2 import Environment, FileSystemLoader
 
 from invoke import task, Collection
 
-from invocations import shell, config
+from invocations import shell, config, build
 from invocations.util import REPO_ROOT, MAIN_PACKAGE, safely_load_config
 
 
@@ -136,3 +139,34 @@ def print_changelog(ctx):
 
 # Configure how this namespace will be loaded
 ns = Collection("docs")
+
+
+@task(iterable=["note"])
+def new_release_note(ctx, version=None, release_date=None, note=None):
+    """Creates a new release note based on the jinja template.
+
+    You can supply the version number and release date or the
+    current project version number and current date will be used.
+
+    Release date must be provided in the format DD-MM-YYY, e.g.
+    ``31-12-2022``. If your string fails to be parsed, the current
+    date will be used.
+
+    You can supply information about the notes by supplying a
+    json dictionary string to the ``note`` parameter. The string
+    must have the following keys defined:
+
+    - ``name``: the name of the library the note relates to.
+    - ``issue_type``: either ``pr`` or ``issue`` representing
+      the GitHub PR or issue this note references.
+    - ``issue_num``: the number of the GitHub PR or Issue referenced.
+    - ``note``: the text of the note.
+
+    If any key is not defined, a blank string will be used instead.
+    """
+    if version is None:
+        version = build.version(ctx)
+    if release_date is None:
+        release_date = date.today()
+    else:
+        release_date = datetime.strptime(release_date, "%d-%m-%Y")
