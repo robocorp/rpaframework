@@ -9,18 +9,10 @@ try:
 except ImportError:
     # Python =3.6
     from re import _pattern_type as Pattern
-from typing import (
-    Callable,
-    Dict,
-    List,
-    Optional,
-    Union,
-)
 
-from RPA.PDF.keywords import (
-    LibraryContext,
-    keyword,
-)
+from typing import Callable, Dict, List, Optional, Union
+
+from RPA.PDF.keywords import LibraryContext, keyword
 from RPA.PDF.keywords.model import BaseElement, TextBox
 
 

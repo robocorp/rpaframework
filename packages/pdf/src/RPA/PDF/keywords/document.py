@@ -3,20 +3,20 @@ import io
 import os
 import tempfile
 from pathlib import Path
-from typing import List, Tuple, Union, Optional
+from typing import List, Optional, Tuple, Union
 
-import PyPDF2
 import pdfminer
-from PIL import Image
+import pypdf
 from fpdf import FPDF, HTMLMixin
 from pdfminer.image import ImageWriter
 from pdfminer.layout import LTImage
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfparser import PDFParser
+from PIL import Image
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.PDF.keywords import LibraryContext, keyword
-from .model import Document, Figure
+from RPA.PDF.keywords.model import Document, Figure, RobocorpPdfReader
 
 
 FilePath = Union[str, Path]
@@ -387,7 +387,7 @@ class DocumentKeywords(LibraryContext):
         """
         self.switch_to_pdf(source_path)
         reader = self.active_pdf_document.reader
-        return reader.isEncrypted
+        return reader.is_encrypted
 
     @keyword
     def get_number_of_pages(self, source_path: str = None) -> int:
@@ -591,7 +591,7 @@ class DocumentKeywords(LibraryContext):
         """
         self.switch_to_pdf(source_path)
         reader = self.active_pdf_document.reader
-        writer = PyPDF2.PdfFileWriter()
+        writer = pypdf.PdfWriter()
 
         output_path = self.resolve_output(output_path)
 
@@ -652,18 +652,15 @@ class DocumentKeywords(LibraryContext):
         # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
         reader = self.active_pdf_document.reader
-        writer = PyPDF2.PdfFileWriter()
+        writer = pypdf.PdfWriter()
 
         output_path = self.resolve_output(output_path)
 
+        angle = int(angle) * (1 if clockwise else -1)
         pages = self._get_page_numbers(pages, reader)
         for page, source_page in enumerate(reader.pages):
             if page + 1 in pages:
-                rotate_attr = (
-                    "rotateClockwise" if clockwise else "rotateCounterClockwise"
-                )
-                rotate_func = getattr(source_page, rotate_attr)
-                rotate_func(int(angle))
+                source_page.rotate(angle)
             writer.add_page(source_page)
         with open(output_path, "wb") as stream:
             writer.write(stream)
@@ -727,8 +724,8 @@ class DocumentKeywords(LibraryContext):
 
         if owner_pwd is None:
             owner_pwd = user_pwd
-        writer = PyPDF2.PdfFileWriter()
-        writer.appendPagesFromReader(reader)
+        writer = pypdf.PdfWriter()
+        writer.append_pages_from_reader(reader)
         writer.encrypt(user_pwd, owner_pwd, use_128bit)
         with open(output_path, "wb") as f:
             writer.write(f)
@@ -884,10 +881,10 @@ class DocumentKeywords(LibraryContext):
         input_reader = self.active_pdf_document.reader
 
         # Set image boundaries.
-        mediabox = input_reader.pages[0].mediaBox
+        mediabox = input_reader.pages[0].mediabox
         img_obj = Image.open(image_path)
-        max_width = int(float(mediabox.getWidth()) * coverage)
-        max_height = int(float(mediabox.getHeight()) * coverage)
+        max_width = int(float(mediabox.width) * coverage)
+        max_height = int(float(mediabox.height) * coverage)
         img_width, img_height = self.fit_dimensions_to_box(
             *img_obj.size, max_width, max_height
         )
@@ -903,15 +900,15 @@ class DocumentKeywords(LibraryContext):
             pdf.image(name=image_path, x=40, y=60, w=img_width, h=img_height)
             pdf.output(name=temp_img_pdf)
 
-            # Get image page from temporary PDF using PyPDF2. (compatible with the
+            # Get image page from temporary PDF using pypdf. (compatible with the
             # writer)
-            img_pdf_reader = PyPDF2.PdfFileReader(temp_img_pdf)
+            img_pdf_reader = RobocorpPdfReader(temp_img_pdf)
             watermark_page = img_pdf_reader.pages[0]
 
             # Write the merged pages of source PDF into the destination one.
-            output_writer = PyPDF2.PdfFileWriter()
+            output_writer = pypdf.PdfWriter()
             for page in input_reader.pages:
-                page.mergePage(watermark_page)
+                page.merge_page(watermark_page)
                 output_writer.add_page(page)
 
             # Since the input PDF can be the same with the output, make sure we close
@@ -950,9 +947,9 @@ class DocumentKeywords(LibraryContext):
     def save_pdf(
         self,
         output_path: str,
-        reader: PyPDF2.PdfFileReader,
+        reader: RobocorpPdfReader,
     ):
-        """Save the contents of a PyPDF2 reader to a new file.
+        """Save the contents of a pypdf reader to a new file.
 
         **Examples**
 
@@ -976,9 +973,9 @@ class DocumentKeywords(LibraryContext):
                 pdf.save_pdf(output_path="output/output.pdf")
 
         :param output_path: filepath to target PDF
-        :param reader: a PyPDF2 reader
+        :param reader: a pypdf reader
         """
-        writer = PyPDF2.PdfFileWriter()
+        writer = pypdf.PdfWriter()
         for page in reader.pages:
             try:
                 writer.add_page(page)
@@ -992,7 +989,7 @@ class DocumentKeywords(LibraryContext):
 
     @staticmethod
     def _get_page_numbers(
-        pages: PagesType = None, reader: Optional[PyPDF2.PdfFileReader] = None
+        pages: PagesType = None, reader: Optional[RobocorpPdfReader] = None
     ) -> List[int]:
         """Resolve page numbers argument to a list of 1-indexed integer pages."""
         if not pages and not reader:
@@ -1213,7 +1210,7 @@ class DocumentKeywords(LibraryContext):
         :param target_document: filepath of target PDF
         :param append: appends files to existing document if `append` is `True`
         """
-        writer = PyPDF2.PdfFileWriter()
+        writer = pypdf.PdfWriter()
 
         if append:
             self._add_pages_to_writer(writer, target_document)
@@ -1227,7 +1224,7 @@ class DocumentKeywords(LibraryContext):
             image_filetype = imghdr.what(str(file_to_add))
             self.logger.info("File %s type: %s", str(file_to_add), image_filetype)
             if basename.lower().endswith(".pdf"):
-                reader = PyPDF2.PdfFileReader(str(file_to_add), strict=False)
+                reader = RobocorpPdfReader(str(file_to_add), strict=False)
                 pages = self._get_pages(len(reader.pages), parameters)
                 for page_nr in pages:
                     try:
@@ -1257,7 +1254,7 @@ class DocumentKeywords(LibraryContext):
                 )
                 pdf.output(name=temp_pdf)
 
-                reader = PyPDF2.PdfFileReader(temp_pdf)
+                reader = RobocorpPdfReader(temp_pdf)
                 writer.add_page(reader.pages[0])
 
         with open(target_document, "wb") as f:
@@ -1270,7 +1267,7 @@ class DocumentKeywords(LibraryContext):
                 "Creating document instead." % target_document
             )
         else:
-            reader = PyPDF2.PdfFileReader(str(target_document), strict=False)
+            reader = RobocorpPdfReader(str(target_document), strict=False)
             for idx, page in enumerate(reader.pages):
                 self.logger.info("Adding page: %s", idx)
                 writer.add_page(page)
