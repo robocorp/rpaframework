@@ -2,12 +2,8 @@ import re
 
 import pytest
 
-from . import (
-    # noqa
-    library,  # for the fixture to work
-    temp_filename,
-    TestFiles,
-)
+from . import library  # for the fixture to work
+from . import TestFiles, temp_filename  # noqa
 
 
 @pytest.mark.parametrize(
@@ -79,9 +75,12 @@ def test_set_field_value_encoding(library):
 def test_set_field_value_checkbox(library):
     fields = library.get_input_fields(TestFiles.alianz_pdf)
     checkbox_name = "VeroeffentlichungInst"
-    assert fields[checkbox_name]["value"].name == "Off"
+    value_obj = fields[checkbox_name]["value"]
+    assert value_obj.name == "Off"  # checkbox not checked yet
 
-    library.set_field_value(checkbox_name, "Yes")  # ticks it
+    # Tick the checkbox and save the new state of it.
+    library.set_field_value(checkbox_name, "/Yes")
+
     with temp_filename(suffix=".pdf") as tmp_file:
         library.save_field_values(output_path=tmp_file)
         library.switch_to_pdf(tmp_file)

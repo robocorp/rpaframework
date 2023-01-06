@@ -2,44 +2,33 @@ import re
 import sys
 import typing
 from collections import OrderedDict
-from typing import (
-    Any,
-    Set,
-    Iterable,
-    Optional,
-    Tuple,
-    Union,
-)
+from typing import Any, Iterable, Optional, Set, Tuple, Union, cast
 
-import PyPDF2
 import pdfminer
+import pypdf
 from pdfminer.converter import PDFConverter
 from pdfminer.layout import (
-    LTPage,
-    LTText,
-    LTTextBox,
-    LTLine,
-    LTRect,
+    LTChar,
     LTCurve,
     LTFigure,
-    LTTextLine,
-    LTTextBoxVertical,
-    LTChar,
     LTImage,
+    LTLine,
+    LTPage,
+    LTRect,
+    LTText,
+    LTTextBox,
+    LTTextBoxVertical,
     LTTextGroup,
+    LTTextLine,
 )
 from pdfminer.pdfdocument import PDFDocument
-from pdfminer.pdfparser import PDFParser
-from pdfminer.utils import enc, bbox2str
+from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
-from pdfminer.pdfinterp import (
-    PDFResourceManager,
-)
+from pdfminer.pdfparser import PDFParser
+from pdfminer.utils import bbox2str, enc
+from pypdf._utils import logger_warning, skip_over_whitespace
 
-from RPA.PDF.keywords import (
-    LibraryContext,
-    keyword,
-)
+from RPA.PDF.keywords import LibraryContext, keyword
 
 
 Coords = Tuple[int, ...]
@@ -49,6 +38,86 @@ def iterable_items_to_ints(bbox: Optional[Iterable]) -> Coords:
     if bbox is None:
         return ()
     return tuple(map(int, bbox))
+
+
+class RobocorpPdfReader(pypdf.PdfReader):
+    """Custom PDF reader class patching the one from the `pypdf` library."""
+
+    def __get_object(
+        self, indirect_reference: Union[int, pypdf.generic.IndirectObject]
+    ) -> Optional[pypdf.generic.PdfObject]:
+        retval = None
+        if hasattr(self.stream, "getbuffer"):
+            buf = bytes(self.stream.getbuffer())  # type: ignore
+        else:
+            p = self.stream.tell()
+            self.stream.seek(0, 0)
+            buf = self.stream.read(-1)
+            self.stream.seek(p, 0)
+        m = re.search(
+            # NOTE(cmin764): Here we fixed the regex in order to be able to find the
+            #  object.
+            (
+                rf"\s*{indirect_reference.idnum}\s+"
+                rf"{indirect_reference.generation}\s+obj"
+            ).encode(),
+            buf,
+        )
+        if m is not None:
+            logger_warning(
+                f"Object {indirect_reference.idnum} {indirect_reference.generation} "
+                f"found",
+                __name__,
+            )
+            if indirect_reference.generation not in self.xref:
+                self.xref[indirect_reference.generation] = {}
+            self.xref[indirect_reference.generation][indirect_reference.idnum] = (
+                m.start(0) + 1
+            )
+            self.stream.seek(m.end(0) + 1)
+            skip_over_whitespace(self.stream)
+            self.stream.seek(-1, 1)
+            retval = pypdf.generic.read_object(self.stream, self)  # type: ignore
+
+            # override encryption is used for the /Encrypt dictionary
+            if not self._override_encryption and self._encryption is not None:
+                # if we don't have the encryption key:
+                if not self._encryption.is_decrypted():
+                    raise pypdf.errors.FileNotDecryptedError(
+                        "File has not been decrypted"
+                    )
+                # otherwise, decrypt here...
+                retval = cast(pypdf.generic.PdfObject, retval)
+                retval = self._encryption.decrypt_object(
+                    retval, indirect_reference.idnum, indirect_reference.generation
+                )
+        else:
+            logger_warning(
+                f"Object {indirect_reference.idnum} {indirect_reference.generation} "
+                f"not defined.",
+                __name__,
+            )
+            if self.strict:
+                raise pypdf.errors.PdfReadError("Could not find object.")
+
+        self.cache_indirect_object(
+            indirect_reference.generation, indirect_reference.idnum, retval
+        )
+        return retval
+
+    def get_object(self, *args, **kwargs) -> Optional[pypdf.generic.PdfObject]:
+        """Patched object retrieval compatible with various flavours of PDF data."""
+        try:
+            retval = super().get_object(*args, **kwargs)
+        except pypdf.errors.PdfReadError:
+            if not self.strict:
+                raise
+            retval = None
+
+        if retval:
+            return retval
+
+        return self.__get_object(*args, **kwargs)
 
 
 class BaseElement:
@@ -200,9 +269,9 @@ class Document:
         return self._fileobject
 
     @property
-    def reader(self) -> PyPDF2.PdfFileReader:
+    def reader(self) -> RobocorpPdfReader:
         """Get a PyPDF reader instance for the PDF."""
-        return PyPDF2.PdfFileReader(self.fileobject, strict=False)
+        return RobocorpPdfReader(self.fileobject, strict=False)
 
     def add_page(self, page: Page) -> None:
         self._pages[page.pageid] = page
@@ -666,9 +735,9 @@ class ModelKeywords(LibraryContext):
     @keyword
     def save_field_values(
         self,
-        source_path: str = None,
-        output_path: str = None,
-        newvals: dict = None,
+        source_path: Optional[str] = None,
+        output_path: Optional[str] = None,
+        newvals: Optional[dict] = None,
         use_appearances_writer: bool = False,
     ) -> None:
         """Save field values in PDF if it has fields.
@@ -731,12 +800,12 @@ class ModelKeywords(LibraryContext):
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
                 {
-                    PyPDF2.generic.NameObject(
+                    pypdf.generic.NameObject(
                         "/NeedAppearances"
-                    ): PyPDF2.generic.BooleanObject(True)
+                    ): pypdf.generic.BooleanObject(True)
                 }
             )
-        writer = PyPDF2.PdfFileWriter()
+        writer = pypdf.PdfWriter()
         if use_appearances_writer:
             writer = self._set_need_appearances_writer(writer)
 
@@ -756,7 +825,7 @@ class ModelKeywords(LibraryContext):
         for page in reader.pages:
             if updated_fields:
                 try:
-                    writer.updatePageFormFieldValues(page, fields=updated_fields)
+                    writer.update_page_form_field_values(page, fields=updated_fields)
                 except Exception as exc:  # pylint: disable=W0703
                     self.logger.warning(repr(exc))
             writer.add_page(page)
@@ -766,7 +835,7 @@ class ModelKeywords(LibraryContext):
         with open(output_path, "wb") as stream:
             writer.write(stream)
 
-    def _set_need_appearances_writer(self, writer: PyPDF2.PdfFileWriter):
+    def _set_need_appearances_writer(self, writer: pypdf.PdfWriter):
         # See 12.7.2 and 7.7.2 for more information:
         # http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
         try:
@@ -775,16 +844,16 @@ class ModelKeywords(LibraryContext):
             if "/AcroForm" not in catalog:
                 catalog.update(
                     {
-                        PyPDF2.generic.NameObject(
+                        pypdf.generic.NameObject(
                             "/AcroForm"
-                        ): PyPDF2.generic.IndirectObject(
+                        ): pypdf.generic.IndirectObject(
                             len(writer._objects), 0, writer  # pylint: disable=W0212
                         )
                     }
                 )
 
-            need_appearances = PyPDF2.generic.NameObject("/NeedAppearances")
-            catalog["/AcroForm"][need_appearances] = PyPDF2.generic.BooleanObject(True)
+            need_appearances = pypdf.generic.NameObject("/NeedAppearances")
+            catalog["/AcroForm"][need_appearances] = pypdf.generic.BooleanObject(True)
             return writer
 
         except Exception:  # pylint: disable=broad-except

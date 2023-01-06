@@ -3,9 +3,12 @@ Library           Collections
 Library           OperatingSystem
 Library           RPA.PDF
 Library           XML
+
 Resource          test.resource
+
 Task Teardown     Close all PDFs
 Suite Teardown    Empty Directory    ${WORK_DIR}
+
 
 *** Tasks ***
 Create PDF from HTML content

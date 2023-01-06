@@ -2,11 +2,7 @@ import re
 
 import pytest
 
-from . import (
-    library,
-    temp_filename,
-    TestFiles,
-)
+from . import TestFiles, library
 
 
 @pytest.mark.parametrize(
