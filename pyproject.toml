@@ -6,17 +6,16 @@ authors = ["RPA Framework <rpafw@robocorp.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-rpaframework = { path = "packages/main", extras = [
-	"cv",
-	"playwright"
-], develop = true }
+robotframework-browser = { version = "^14.3.0", python = ">=3.7,<4.0" }
+rpaframework = { path = "packages/main", develop = true }
 rpaframework-aws = "^5.2.1"
 rpaframework-google = "^6.1.2"
+rpaframework-recognition = "^5.0.0"
 rpaframework-windows = "^7.0.0"
 
 [tool.poetry.dev-dependencies]
 robotframeworklexer = "^1.1"
-sphinx = "^2.3.1"
+sphinx = "^5.3.0"
 sphinx_rtd_theme = "^0.4.3"
 jinja2 = ">=2.2,<3.0"
 markupsafe = "~2.0.1"
