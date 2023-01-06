@@ -8,7 +8,7 @@ authors = ["RPA Framework <rpafw@robocorp.com>"]
 python = "^3.7"
 rpaframework = { path = "packages/main", extras = [
 	"cv",
-	"playwright"
+	"playwright",
 ], develop = true }
 rpaframework-aws = "^5.2.1"
 rpaframework-google = "^6.1.2"
@@ -16,9 +16,6 @@ rpaframework-windows = "^6.2.0"
 
 [tool.poetry.dev-dependencies]
 robotframeworklexer = "^1.1"
-sphinx = "^2.3.1"
-sphinx_rtd_theme = "^0.4.3"
-jinja2 = ">=2.2,<3.0"
 markupsafe = "~2.0.1"
 toml = "^0.10.2"
 sphinx-markdown-builder = "^0.5.4"
@@ -37,6 +34,9 @@ PyYAML = "^5.4.1"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.7"
 sphinx-lint = "^0.6.6"
+Jinja2 = "^3.1.2"
+Sphinx = "^5.3.0"
+sphinx-rtd-theme = "^1.1.1"
 
 [build-system]
 requires = ["setuptools", "poetry>=0.12"]
