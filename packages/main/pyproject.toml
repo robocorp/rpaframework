@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "19.4.2"
+version = "20.0.0"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -35,24 +35,21 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.7"
 docutils = "*"
-rpaframework-aws = { version = "^5.2.1", optional = true }
 rpaframework-core = "^10.0.1"
 rpaframework-dialogs = "^4.0.0"
-rpaframework-pdf = "^5.0.0"
-rpaframework-recognition = { version = "^5.0.0", optional = true }
-rpaframework-windows = { version = "^6.2.0", platform = "win32" }
+rpaframework-pdf = "^6.0.1"
+rpaframework-windows = { version = "^7.0.2", platform = "win32" }
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
 robotframework-requests = "^0.9.1"
-robotframework-browser = { version = "^13.0.0", optional = true, python = ">=3.7,<4.0" }
 pywinauto = { version = "^0.6.8", platform = "win32", python = "!=3.8.1,!=3.7.6" }
 pywin32 = { version = ">=302,<304", platform = "win32", python = "!=3.8.1,!=3.7.6" }
-comtypes = { version = "1.1.11", platform = "win32" }
-robotframework-pythonlibcore = "^3.0.0"
-pynput-robocorp-fork = "^4.0.0"
+comtypes = { version = "^1.1.11", platform = "win32" }
+robotframework-pythonlibcore = "^4.0.0"
+pynput-robocorp-fork = "^5.0.0"
 python-xlib = { version = ">=0.17", platform = "linux" }
 psutil = { version = "^5.7.0", platform = "win32" }
 pyperclip = "^1.8.0"
@@ -82,6 +79,8 @@ hubspot-api-client = "^4.0.6"
 pyotp = "^2.6.0"
 importlib-metadata = "^4.13.0"
 O365 = "^2.0.21"
+requests = "^2.28.1"
+oauthlib = "^3.2.2"
 requests-oauthlib = "^1.3.1"
 PyJWT = "^2.6.0"
 
@@ -89,21 +88,21 @@ PyJWT = "^2.6.0"
 black = "^22.3.0"
 flake8 = "^3.7.9"
 pylint = "^2.4.4, <2.13"
-pytest = "^6.2.5"
-pytest-cov = "^2.10.1"
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
 pytest-mock = "^3.8.2"
-mock = "^4.0.2"
+mock = "^5.0.0"
 mypy = "^0.910"
 python-docx = "^0.8.11"
 pytest-env = "^0.6.2"
 setuptools = "^65.3.0"
 invoke = "^1.6.0"
-sphinx = "^2.3.1"
-sphinx_rtd_theme = "^0.4.3"
+sphinx = "^5.3.0"
+sphinx-rtd-theme = "^1.1.1"
 toml = "^0.10.2"
 sphinx-markdown-builder = "^0.5.4"
 robotframework-docgen = "^0.15.0"
-sphinx-issues = "^1.2.0"
+sphinx-issues = "^3.0.1"
 docutils = "0.16"
 colorama = "^0.4.5"
 keyring = "^23.9.0"
@@ -112,11 +111,6 @@ PyYAML = "^5.4.1"
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
 use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
-
-[tool.poetry.extras]
-aws = ["rpaframework-aws"]
-cv = ["rpaframework-recognition"]
-playwright = ["robotframework-browser"]
 
 [tool.poetry.group.dev.dependencies]
 flake8-docstrings = "^1.6.0"

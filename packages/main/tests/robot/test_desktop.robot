@@ -66,9 +66,8 @@ Test Mouse keywords
 Test keyboard keywords
     [Documentation]  Skipped for now because testing these would require mocks to not get inconsistent failures when keyboard is used during test
     [Tags]  skip
-    Press Keys
-    Type Text
-    Type Text Into
+    Press Keys  cmd  f
+    Type Text   test
 
 Test Define Region
     ${region}=          Define Region  100  100  300  300
