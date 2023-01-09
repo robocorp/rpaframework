@@ -34,7 +34,8 @@ Release notes
     - ``rpaframework[playwright]`` -> ``robotframework-browser==14.4.1``
     - And of course, don't forget about ``rpaframework==20.0.0``.
 
-  - **RPA.Desktop** may behave differently due to its ``pynput`` recent upgrade.
+  - **RPA.Desktop** keywords related to mouse and keyboard may behave differently due
+    to their ``pynput`` dependency recent upgrade.
   - Extra dependencies are pinned to the following minimum versions:
 
     - ``requests = "^2.28.1"``
