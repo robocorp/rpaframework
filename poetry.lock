@@ -2046,7 +2046,7 @@ pywinauto = {version = "^0.6.8", markers = "python_full_version != \"3.7.6\" and
 PyYAML = "^5.4.1"
 requests = "^2.28.1"
 requests-oauthlib = "^1.3.1"
-robotframework = ">=4.0.0,<6.0.0"
+robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-pythonlibcore = "^4.0.0"
 robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
@@ -2071,7 +2071,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-aws"
-version = "5.2.4"
+version = "5.2.5"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
@@ -2791,7 +2791,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "1343d7852f27f4866be20c2fcec382a8188a526a171cfe2e7afe00435ef11f0e"
+content-hash = "8ccfaa1f7942cd9daa628baadcddb181caca51df4d688a0ae37aa1a01c761613"
 
 [metadata.files]
 alabaster = [
@@ -4194,8 +4194,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-aws = [
-    {file = "rpaframework_aws-5.2.4-py3-none-any.whl", hash = "sha256:605e0dffdb834d25417e22b7d0d5ce2c9c26fa0e6bee5d85ec5bff7971dcf5fc"},
-    {file = "rpaframework_aws-5.2.4.tar.gz", hash = "sha256:f44d9ae03e17b6a3abd42ec6309f86b6d010a7ff8368d0c5e85db78af4801646"},
+    {file = "rpaframework_aws-5.2.5-py3-none-any.whl", hash = "sha256:11b6aa1f8fae7f1a8c0c9ce99891dbbfbd09a489118bba4cee033f092479154e"},
+    {file = "rpaframework_aws-5.2.5.tar.gz", hash = "sha256:14a27f1f051ccb9fbca17ce26264bf53717a9e0d9f673d6172ac2641c0b10dbb"},
 ]
 rpaframework-core = [
     {file = "rpaframework_core-10.0.5-py3-none-any.whl", hash = "sha256:a3764c9e676a9c1c39e6ea123e1e620a91a9189ec8197d6886d45353b88e4b74"},

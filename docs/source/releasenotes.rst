@@ -16,7 +16,7 @@ Release notes
   (:pr:`767`)
 - Other affected sub-libraries:
 
-  - ``rpaframework-aws`` **5.2.4** (no API change, just dev & docs 3rd-party package
+  - ``rpaframework-aws`` **5.2.5** (no API change, just dev & docs 3rd-party package
     upgrades)
   - ``rpaframework-google`` **6.1.5** (no API change, just dev & docs 3rd-party package
     upgrades)
