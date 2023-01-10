@@ -173,9 +173,9 @@ the same interfaces that are available to human users.</p>
 control work with a default <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> install.</p>
 <p>Advanced computer-vision features such as image template matching and
 OCR require an additional library called <code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code>.</p>
-<p>The dependency can be either added separately or through additional
-extras with <code class="docutils literal notranslate"><span class="pre">rpaframework[cv]</span></code>. If installing recognition through
-<code class="docutils literal notranslate"><span class="pre">pip</span></code> instead of <code class="docutils literal notranslate"><span class="pre">conda</span></code>, the OCR feature also requires <code class="docutils literal notranslate"><span class="pre">tesseract</span></code>.</p>
+<p>The dependency should be added separately by specifing it in your <em>conda.yaml</em>
+as <code class="docutils literal notranslate"><span class="pre">rpaframework-recognition==5.0.1</span></code> for example. If installing recognition
+through <code class="docutils literal notranslate"><span class="pre">pip</span></code> instead of <code class="docutils literal notranslate"><span class="pre">conda</span></code>, the OCR feature also requires <code class="docutils literal notranslate"><span class="pre">tesseract</span></code>.</p>
 <p><strong>Locating elements</strong></p>
 <p>To automate actions on the desktop, a robot needs to interact with various
 graphical elements such as buttons or input fields. The locations of these

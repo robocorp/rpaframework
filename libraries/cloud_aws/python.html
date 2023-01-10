@@ -245,18 +245,6 @@ Remember to check latest versions from <a class="reference external" href="https
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==1.0.3</span>
 </pre></div>
 </div>
-<p>Following declaration, <cite>rpaframework[aws]</cite>, will install all rpaframework libraries
-plus <cite>RPA.Cloud.AWS</cite> as an optional package. The extras support is deprecated and will be
-removed in the future major release of <cite>rpaframework</cite>.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
-<span class="nt">dependencies</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]==13.0.2</span>
-</pre></div>
-</div>
 <p><strong>Example</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
 <span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">   </span><span class="s">region=us-east-1</span>
