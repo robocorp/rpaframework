@@ -9,6 +9,17 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+20.0.2 - 10 Jan 2023
+--------------------
+
+- Security dependency fix given the bump of ``cryptography`` package to version **38**.
+  (:pr:`773`)
+
+20.0.1 - 10 Jan 2023
+--------------------
+
+- Fix docs given the dropped support for extras under library dependencies. (:pr:`772`)
+
 20.0.0 - 09 Jan 2023
 --------------------
 
