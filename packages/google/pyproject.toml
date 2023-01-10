@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-google"
-version = "6.1.5"
+version = "6.1.6"
 description = "Google library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"

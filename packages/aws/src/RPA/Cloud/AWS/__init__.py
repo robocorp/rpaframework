@@ -1993,20 +1993,6 @@ class AWS(
             - rpaframework==13.0.2
             - rpaframework-aws==1.0.3
 
-    Following declaration, `rpaframework[aws]`, will install all rpaframework libraries
-    plus `RPA.Cloud.AWS` as an optional package. The extras support is deprecated and will be
-    removed in the future major release of `rpaframework`.
-
-    .. code-block:: yaml
-
-        channels:
-          - conda-forge
-        dependencies:
-          - python=3.7.5
-          - pip=20.1
-          - pip:
-            - rpaframework[aws]==13.0.2
-
     .. _boto3:
         https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
     .. _rpaframework Github repository:
