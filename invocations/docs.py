@@ -3,12 +3,13 @@
 from pathlib import Path
 import shutil
 from datetime import datetime, date
+from itertools import zip_longest
 
 from jinja2 import Environment, FileSystemLoader
 
 from invoke import task, Collection
 
-from invocations import shell, config, build
+from invocations import shell, config
 from invocations.util import REPO_ROOT, MAIN_PACKAGE, safely_load_config
 
 
@@ -33,6 +34,10 @@ DOCGEN_EXCLUDES = [f"--exclude {package}" for package in EXCLUDES]
 DOCS_ROOT = REPO_ROOT / "docs"
 DOCS_SOURCE_DIR = DOCS_ROOT / "source"
 DOCS_BUILD_DIR = DOCS_ROOT / "build" / "html"
+JINJA_TEMPLATE_DIR = DOCS_SOURCE_DIR / "template" / "jinja"
+NOTES_DIR = DOCS_SOURCE_DIR / "releasenotes"
+UPCOMING_NOTES_DIR = NOTES_DIR / "upcoming"
+RELEASED_NOTES_DIR = NOTES_DIR / "released"
 
 
 @task(pre=[config.install, config.install_node], aliases=["libdocs"])
@@ -141,9 +146,19 @@ def print_changelog(ctx):
 ns = Collection("docs")
 
 
-@task(iterable=["note"])
-def new_release_note(ctx, version=None, release_date=None, note=None):
-    """Creates a new release note based on the jinja template.
+@task(
+    aliases=["new_note", "note"], iterable=["name", "note", "issue_type", "issue_num"]
+)
+def new_release_note(
+    ctx,
+    version=None,
+    release_date=None,
+    name=None,
+    note=None,
+    issue_type=None,
+    issue_num=None,
+):
+    """Creates a new release note based on a jinja template.
 
     You can supply the version number and release date or the
     current project version number and current date will be used.
@@ -152,21 +167,45 @@ def new_release_note(ctx, version=None, release_date=None, note=None):
     ``31-12-2022``. If your string fails to be parsed, the current
     date will be used.
 
-    You can supply information about the notes by supplying a
-    json dictionary string to the ``note`` parameter. The string
-    must have the following keys defined:
+    You can supply information about the notes by using the following
+    parameters. Each can be repeated and the order is maintained, e.g.,
+    the first ``name`` will be paired with the first ``note``.
 
     - ``name``: the name of the library the note relates to.
+    - ``note``: the text of the note.
     - ``issue_type``: either ``pr`` or ``issue`` representing
       the GitHub PR or issue this note references.
     - ``issue_num``: the number of the GitHub PR or Issue referenced.
-    - ``note``: the text of the note.
 
     If any key is not defined, a blank string will be used instead.
     """
+    # only needed in this task
+    from invocations import build
+
     if version is None:
         version = build.version(ctx)
     if release_date is None:
         release_date = date.today()
     else:
         release_date = datetime.strptime(release_date, "%d-%m-%Y")
+    libraries = []
+    for item in zip_longest(name, note, issue_type, issue_num):
+        libraries.append(
+            {
+                "name": item[0],
+                "note": item[1],
+                "issue_type": item[2],
+                "issue_num": item[3],
+            }
+        )
+
+    env = Environment(loader=FileSystemLoader(JINJA_TEMPLATE_DIR))
+    note_template = env.get_template("new_note.rst.jinja")
+    new_note = note_template.render(
+        version=version, release_date=release_date, libraries=libraries
+    )
+    filename = f"{release_date.strftime('%Y%m%d')}_new_releasenote.rst"
+    new_file = NOTES_DIR / filename
+    with new_file.open("w") as file:
+        file.write(new_note)
+    print(f"New file created at {new_file}, please check output before parsing")

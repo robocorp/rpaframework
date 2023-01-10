@@ -1,0 +1,29 @@
+{#
+This template is used to create a release note for the dev.
+Expected variables in the context are:
+
+* version: a string representing the version number or an object that
+renders to such a string when `str()` is called on it.
+* release_date: a `datetime` object representing the release date.
+* libraries: a list of dictionaries, each with the following keys:
+
+    ** name: the name of the library this note relates to.
+    ** note: the contents of the note for this library.
+    ** issue_type: either `issue` or `pr
+    ** issue_num: an integer matching the GitHub reference for the issue
+-#}
+..
+  This note was automatically generated and should be checked and modified
+  before parsing into the release note folder. Once complete, use
+  ``invoke docs.parse-release-note``
+
+{% set title = version ~ ' - ' ~ release_date.strftime('%d %b %Y') -%}
+{{ title }}
+{{ '-' * title|length }}
+{% for library in libraries -%}
+{%- set reference = ' (:{}:`{}`)'.format(library.issue_type, library.issue_num) if library.issue_type else '' -%}
+{%- set lib_item %}
+- Library **{{library.name}}**{{ reference }}: {{library.note}}
+{%- endset %}
+{{ lib_item | wordwrap(width=88) | indent(width=2) | trim }}
+{%- endfor %}
