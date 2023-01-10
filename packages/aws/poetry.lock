@@ -92,14 +92,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.45"
+version = "1.26.46"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.29.45,<1.30.0"
+botocore = ">=1.29.46,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -108,7 +108,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.45"
+version = "1.29.46"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -478,7 +478,7 @@ python-versions = "*"
 
 [[package]]
 name = "mock"
-version = "5.0.0"
+version = "5.0.1"
 description = "Rolling backport of unittest.mock for all Pythons"
 category = "dev"
 optional = false
@@ -1399,12 +1399,12 @@ black = [
     {file = "black-22.12.0.tar.gz", hash = "sha256:229351e5a18ca30f447bf724d007f890f97e13af070bb6ad4c0a441cd7596a2f"},
 ]
 boto3 = [
-    {file = "boto3-1.26.45-py3-none-any.whl", hash = "sha256:b1bc7db503dc49bdccf5dada080077056a32af9982afdde84578a109cd741d05"},
-    {file = "boto3-1.26.45.tar.gz", hash = "sha256:cc7f652df93e1ce818413fd82ffd645d4f92a64fec67c72946212d3750eaa80f"},
+    {file = "boto3-1.26.46-py3-none-any.whl", hash = "sha256:96055651f7be882175aa334ad46528e1ad79fb8ca33fa9c3998cc1d985b34eab"},
+    {file = "boto3-1.26.46.tar.gz", hash = "sha256:e24d65c31780c208768ebcd152d8a0181591c9c8e7d971e23f318d7f41910ba1"},
 ]
 botocore = [
-    {file = "botocore-1.29.45-py3-none-any.whl", hash = "sha256:a5c0e13f266ee9a74335a1e5d3e377f2baae27226ae23d78f023bae0d18f3161"},
-    {file = "botocore-1.29.45.tar.gz", hash = "sha256:62ae03e591ff25555854aa338da35190ffe18c0b1be2ebf5cfb277164233691f"},
+    {file = "botocore-1.29.46-py3-none-any.whl", hash = "sha256:dbac2fde265f13beb9191ec3ff63b90b515e9ed63875edc3afbd72c5f585e48b"},
+    {file = "botocore-1.29.46.tar.gz", hash = "sha256:78bf25933e35eb6354a9e80fe156f86dce4d346a92afe364dfce25c17ab0639f"},
 ]
 certifi = [
     {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
@@ -1735,8 +1735,8 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 mock = [
-    {file = "mock-5.0.0-py3-none-any.whl", hash = "sha256:335ef0bf9bcd27505c0c1720d4eac2783f18d07d6f45ac49542b57885a1996dd"},
-    {file = "mock-5.0.0.tar.gz", hash = "sha256:fd552787228eb2ab8352f270470fa93c9ad8b9cbc565c5558ee3faed8edb3853"},
+    {file = "mock-5.0.1-py3-none-any.whl", hash = "sha256:c41cfb1e99ba5d341fbcc5308836e7d7c9786d302f995b2c271ce2144dece9eb"},
+    {file = "mock-5.0.1.tar.gz", hash = "sha256:e3ea505c03babf7977fd21674a69ad328053d414f05e6433c30d8fa14a534a6b"},
 ]
 more-itertools = [
     {file = "more-itertools-9.0.0.tar.gz", hash = "sha256:5a6257e40878ef0520b1803990e3e22303a41b5714006c32a3fd8304b26ea1ab"},

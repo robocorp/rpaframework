@@ -58,9 +58,9 @@ class Desktop(DynamicCore):
     Advanced computer-vision features such as image template matching and
     OCR require an additional library called ``rpaframework-recognition``.
 
-    The dependency can be either added separately or through additional
-    extras with ``rpaframework[cv]``. If installing recognition through
-    ``pip`` instead of ``conda``, the OCR feature also requires ``tesseract``.
+    The dependency should be added separately by specifing it in your *conda.yaml*
+    as ``rpaframework-recognition==5.0.1`` for example. If installing recognition
+    through ``pip`` instead of ``conda``, the OCR feature also requires ``tesseract``.
 
     **Locating elements**
 

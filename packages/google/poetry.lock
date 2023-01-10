@@ -279,7 +279,7 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.15.0"
+version = "2.16.0"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -296,6 +296,7 @@ aiohttp = ["aiohttp (>=3.6.2,<4.0.0dev)", "requests (>=2.20.0,<3.0.0dev)"]
 enterprise-cert = ["cryptography (==36.0.2)", "pyopenssl (==22.0.0)"]
 pyopenssl = ["cryptography (>=38.0.3)", "pyopenssl (>=20.0.0)"]
 reauth = ["pyu2f (>=0.1.5)"]
+requests = ["requests (>=2.20.0,<3.0.0dev)"]
 
 [[package]]
 name = "google-auth-httplib2"
@@ -481,7 +482,7 @@ requests = ["requests (>=2.18.0,<3.0.0dev)"]
 
 [[package]]
 name = "googleapis-common-protos"
-version = "1.57.1"
+version = "1.58.0"
 description = "Common protobufs used in Google APIs"
 category = "main"
 optional = false
@@ -713,7 +714,7 @@ python-versions = "*"
 
 [[package]]
 name = "mock"
-version = "5.0.0"
+version = "5.0.1"
 description = "Rolling backport of unittest.mock for all Pythons"
 category = "dev"
 optional = false
@@ -827,7 +828,7 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "proto-plus"
-version = "1.22.1"
+version = "1.22.2"
 description = "Beautiful, Pythonic protocol buffers."
 category = "main"
 optional = false
@@ -1796,8 +1797,8 @@ google-api-python-client = [
     {file = "google_api_python_client-2.71.0-py2.py3-none-any.whl", hash = "sha256:a4ea351db2bb2a9b1a7e96d8fa8de0fcbc31d9e237b724f4a07b243c2d63e9a4"},
 ]
 google-auth = [
-    {file = "google-auth-2.15.0.tar.gz", hash = "sha256:72f12a6cfc968d754d7bdab369c5c5c16032106e52d32c6dfd8484e4c01a6d1f"},
-    {file = "google_auth-2.15.0-py2.py3-none-any.whl", hash = "sha256:6897b93556d8d807ad70701bb89f000183aea366ca7ed94680828b37437a4994"},
+    {file = "google-auth-2.16.0.tar.gz", hash = "sha256:ed7057a101af1146f0554a769930ac9de506aeca4fd5af6543ebe791851a9fbd"},
+    {file = "google_auth-2.16.0-py2.py3-none-any.whl", hash = "sha256:5045648c821fb72384cdc0e82cc326df195f113a33049d9b62b74589243d2acc"},
 ]
 google-auth-httplib2 = [
     {file = "google-auth-httplib2-0.1.0.tar.gz", hash = "sha256:a07c39fd632becacd3f07718dfd6021bf396978f03ad3ce4321d060015cc30ac"},
@@ -1918,8 +1919,8 @@ google-resumable-media = [
     {file = "google_resumable_media-2.4.0-py2.py3-none-any.whl", hash = "sha256:2aa004c16d295c8f6c33b2b4788ba59d366677c0a25ae7382436cb30f776deaa"},
 ]
 googleapis-common-protos = [
-    {file = "googleapis-common-protos-1.57.1.tar.gz", hash = "sha256:e877f2f041b640b4888b6917dde4f44515ab938bf744c4dbc06f11f0e8ed56b5"},
-    {file = "googleapis_common_protos-1.57.1-py2.py3-none-any.whl", hash = "sha256:2672d6b3a7b6188b70a5a4c70def7ddbb9000852dfbf49daf52fc7306c09db0c"},
+    {file = "googleapis-common-protos-1.58.0.tar.gz", hash = "sha256:c727251ec025947d545184ba17e3578840fc3a24a0516a020479edab660457df"},
+    {file = "googleapis_common_protos-1.58.0-py2.py3-none-any.whl", hash = "sha256:ca3befcd4580dab6ad49356b46bf165bb68ff4b32389f028f1abd7c10ab9519a"},
 ]
 grpcio = [
     {file = "grpcio-1.51.1-cp310-cp310-linux_armv7l.whl", hash = "sha256:cc2bece1737b44d878cc1510ea04469a8073dbbcdd762175168937ae4742dfb3"},
@@ -2113,8 +2114,8 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 mock = [
-    {file = "mock-5.0.0-py3-none-any.whl", hash = "sha256:335ef0bf9bcd27505c0c1720d4eac2783f18d07d6f45ac49542b57885a1996dd"},
-    {file = "mock-5.0.0.tar.gz", hash = "sha256:fd552787228eb2ab8352f270470fa93c9ad8b9cbc565c5558ee3faed8edb3853"},
+    {file = "mock-5.0.1-py3-none-any.whl", hash = "sha256:c41cfb1e99ba5d341fbcc5308836e7d7c9786d302f995b2c271ce2144dece9eb"},
+    {file = "mock-5.0.1.tar.gz", hash = "sha256:e3ea505c03babf7977fd21674a69ad328053d414f05e6433c30d8fa14a534a6b"},
 ]
 more-itertools = [
     {file = "more-itertools-9.0.0.tar.gz", hash = "sha256:5a6257e40878ef0520b1803990e3e22303a41b5714006c32a3fd8304b26ea1ab"},
@@ -2221,8 +2222,8 @@ pluggy = [
     {file = "pluggy-1.0.0.tar.gz", hash = "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159"},
 ]
 proto-plus = [
-    {file = "proto-plus-1.22.1.tar.gz", hash = "sha256:6c7dfd122dfef8019ff654746be4f5b1d9c80bba787fe9611b508dd88be3a2fa"},
-    {file = "proto_plus-1.22.1-py3-none-any.whl", hash = "sha256:ea8982669a23c379f74495bc48e3dcb47c822c484ce8ee1d1d7beb339d4e34c5"},
+    {file = "proto-plus-1.22.2.tar.gz", hash = "sha256:0e8cda3d5a634d9895b75c573c9352c16486cb75deb0e078b5fda34db4243165"},
+    {file = "proto_plus-1.22.2-py3-none-any.whl", hash = "sha256:de34e52d6c9c6fcd704192f09767cb561bb4ee64e70eede20b0834d841f0be4d"},
 ]
 protobuf = [
     {file = "protobuf-4.21.12-cp310-abi3-win32.whl", hash = "sha256:b135410244ebe777db80298297a97fbb4c862c881b4403b71bac9d4107d61fd1"},
