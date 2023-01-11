@@ -295,6 +295,10 @@ class LocatorMethods(WindowsContext):
                 search_params, param_type="handle", win_type="handle"
             )
 
+        control = self._get_control_from_params(search_params)
+        if auto.ControlsAreSame(control, root_control):
+            return Control.CreateControlFromControl(root_control)
+
         return self._get_control_from_params(search_params, root_control=root_control)
 
     def _load_by_alias(self, criteria: str) -> str:
