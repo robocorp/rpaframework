@@ -216,7 +216,7 @@ def setup_releasenotes(ctx, apikey, project_id, allow_insecure=False):
     """Configures releasenotes.io used as part of the publish tasks
     to publish release notes. By default, this saves tokens to the
     system keyring. Upon failure, if ``--allow-insecure`` is set, it
-    will save settings and credentials in plaintext to to the
+    will save settings and credentials in plaintext to the
     invoke.yaml configuration file.
 
     * ``--apikey`` (required): The releasenotes.io apikey to be saved

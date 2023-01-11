@@ -27,6 +27,25 @@ REPO_ROOT = _get_package_root()
 PACKAGES_ROOT = REPO_ROOT / "packages"
 MAIN_PACKAGE = PACKAGES_ROOT / "main"
 
+# Documentation exclusions
+EXCLUDES = [
+    "RPA.Cloud.AWS.textract*",
+    "RPA.Cloud.Google.keywords*",
+    "RPA.Cloud.objects*",
+    "RPA.Desktop.keywords*",
+    "RPA.Desktop.utils*",
+    "RPA.Dialogs.*",
+    "RPA.Email.common*",
+    "RPA.PDF.keywords*",
+    "RPA.Robocorp.utils*",
+    "RPA.Windows.keywords*",
+    "RPA.Windows.utils*",
+    "RPA.core*",
+    "RPA.recognition*",
+    "RPA.scripts*",
+]
+DOCGEN_EXCLUDES = [f"--exclude {package}" for package in EXCLUDES]
+
 
 def get_package_paths():
     """Returns a dictionary of package names available within the

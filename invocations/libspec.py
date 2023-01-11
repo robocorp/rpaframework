@@ -7,7 +7,7 @@ from pathlib import Path
 from invoke import task, Collection
 
 from invocations import shell, config
-from invocations.docs import DOCGEN_EXCLUDES
+from invocations.util import DOCGEN_EXCLUDES
 
 
 def _replace_source(match: re.Match):

@@ -4,32 +4,21 @@ from pathlib import Path
 import shutil
 from datetime import datetime, date
 from itertools import zip_longest
+import requests
 
 from jinja2 import Environment, FileSystemLoader
 
+
 from invoke import task, Collection
 
-from invocations import shell, config
-from invocations.util import REPO_ROOT, MAIN_PACKAGE, safely_load_config
+from invocations import shell, config, build
+from invocations.util import (
+    REPO_ROOT,
+    MAIN_PACKAGE,
+    safely_load_config,
+    DOCGEN_EXCLUDES,
+)
 
-
-EXCLUDES = [
-    "RPA.Cloud.AWS.textract*",
-    "RPA.Cloud.Google.keywords*",
-    "RPA.Cloud.objects*",
-    "RPA.Desktop.keywords*",
-    "RPA.Desktop.utils*",
-    "RPA.Dialogs.*",
-    "RPA.Email.common*",
-    "RPA.PDF.keywords*",
-    "RPA.Robocorp.utils*",
-    "RPA.Windows.keywords*",
-    "RPA.Windows.utils*",
-    "RPA.core*",
-    "RPA.recognition*",
-    "RPA.scripts*",
-]
-DOCGEN_EXCLUDES = [f"--exclude {package}" for package in EXCLUDES]
 
 DOCS_ROOT = REPO_ROOT / "docs"
 DOCS_SOURCE_DIR = DOCS_ROOT / "source"
@@ -38,6 +27,9 @@ JINJA_TEMPLATE_DIR = DOCS_SOURCE_DIR / "template" / "jinja"
 NOTES_DIR = DOCS_SOURCE_DIR / "releasenotes"
 UPCOMING_NOTES_DIR = NOTES_DIR / "upcoming"
 RELEASED_NOTES_DIR = NOTES_DIR / "released"
+
+# Release note URLs
+RELEASES_API = "https://api.releasenotes.io/api/v1/projects/{project_id}/releases"
 
 
 @task(pre=[config.install, config.install_node], aliases=["libdocs"])
@@ -142,10 +134,6 @@ def print_changelog(ctx):
     shell.meta_tool(ctx, "changelog")
 
 
-# Configure how this namespace will be loaded
-ns = Collection("docs")
-
-
 @task(
     aliases=["new_note", "note"], iterable=["name", "note", "issue_type", "issue_num"]
 )
@@ -179,9 +167,6 @@ def new_release_note(
 
     If any key is not defined, a blank string will be used instead.
     """
-    # only needed in this task
-    from invocations import build
-
     if version is None:
         version = build.version(ctx)
     if release_date is None:
@@ -209,3 +194,39 @@ def new_release_note(
     with new_file.open("w") as file:
         file.write(new_note)
     print(f"New file created at {new_file}, please check output before parsing")
+
+
+@task
+def upload_release_note(ctx, name, upcoming=True):
+    """Uploads the given release note based on its file name from the
+    ``docs/source/releasenotes`` folder. It searches the ``upcoming``
+    folder first to avoid ambiguity. if you want it to first search
+    in ``released`` pass ``--no-upcoming``.
+
+    """
+    config = build.get_releasenotes_config(ctx)
+
+
+@task
+def parse_release_note(ctx, path=None, upload=True):
+    """Parses a new release note at ``path``. If ``path`` is not
+    provided, new release documents will be searched for in
+    ``docs/source/releasenotes``. When searching for new notes, only
+    those notes with the file name containing ``new_releasenote.rst``
+    will be parsed. If you need to parse a specific file name, it must
+    be provided.
+
+    This task will attempt to upload the new release notes as new
+    draft release notes at releasenotes.io based on the configuration
+    set by ``install.setup-releasenotes``. If you do not want this
+    task to upload the new note, pass ``--no-upload``.
+
+    """
+    # convert release note to md?
+    # add release note to main index?
+    ## do we need a json database of each release note?
+    # upload
+
+
+# Configure how this namespace will be loaded
+ns = Collection("docs")

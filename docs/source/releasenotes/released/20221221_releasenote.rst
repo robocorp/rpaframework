@@ -1,13 +1,5 @@
-Release notes
-=============
-
-
-`Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+..
+    These are the original release notes from before individual release note files were used.
 
 19.4.2 - 21 Dec 2022
 --------------------
