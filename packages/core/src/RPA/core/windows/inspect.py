@@ -50,8 +50,8 @@ class ElementInspector:
             )
             child_properties = cls._get_element_key_properties(control, verbose=verbose)
 
-            parent_locator = parent_properties or "N/A"
-            child_locator = child_properties or "N/A"
+            parent_locator = " and ".join(parent_properties) or "N/A"
+            child_locator = " and ".join(child_properties) or "N/A"
 
             locator_path = f"{parent_locator} > {child_locator}"
             if "name:" in child_locator or "id:" in child_locator:
