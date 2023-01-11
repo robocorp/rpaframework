@@ -138,6 +138,7 @@ class Assistant:
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self._client = FletClient()
+        self._validations: Dict[str, Callable] = {}
 
         try:
             # Prevent logging from keywords that return results
@@ -154,10 +155,24 @@ class Assistant:
             pass
 
     def _add_closing_button(self, label="Submit") -> None:
-        def close(*_):
-            self._client.page.window_destroy()
+        def validate_and_close(*_):
+            should_close = True
+            if not self._validations:
+                self._client.page.window_destroy()
+            for field_name, validation in self._validations.items():
+                if not validation:
+                    continue
+                error_message = validation(self._client.results[field_name])
+                if error_message:
+                    should_close = False
+                    self._client.page.add(Text(
+                        f"Error on field named '{field_name}: {error_message}",
+                        color=flet.colors.RED))
+                    self._client.page.update()
+            if should_close:
+                self._client.page.window_destroy()
 
-        self._client.add_element(ElevatedButton(label, on_click=close))
+        self._client.add_element(ElevatedButton(label, on_click=validate_and_close))
 
     @keyword("Clear elements")
     def clear_elements(self) -> None:
@@ -451,6 +466,7 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
+        validation: Union[Callable, str] = None
     ) -> None:
         """Add a text input element
 
@@ -481,6 +497,7 @@ class Assistant:
         # handlers to record values, so default value otherwise will be missed
         # TODO: Implement the rows support
         self._client.results[name] = placeholder
+        self._validations[name] = validation
 
         self._client.add_element(
             name=name, element=TextField(label=label, value=placeholder)
@@ -802,7 +819,7 @@ class Assistant:
     def add_submit_buttons(
         self,
         buttons: Options,
-        default: Optional[str] = None,
+        default: Optional[str] = None
     ) -> None:
         """Add custom submit buttons
 
