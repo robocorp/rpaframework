@@ -1,7 +1,8 @@
-from typing import List, Tuple, Optional, Union, Any
+from typing import Any, List, Optional, Tuple, Union
 
 from RPA.core.types import is_list_like  # type: ignore
-from .dialog_types import Options, Element
+
+from RPA.Assistant.dialog_types import Element, Options
 
 
 def to_options(

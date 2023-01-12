@@ -8,7 +8,7 @@ import flet
 from flet import Control, Page, ScrollMode
 from flet.utils import is_windows
 
-from .dialog_types import Result
+from RPA.Assistant.dialog_types import Result
 
 
 class FletEvent:
@@ -48,9 +48,7 @@ class FletClient:
             except:
                 pass
 
-    def _execute(
-        self, page: Optional[Page] = None
-    ) -> Callable[[Optional[Page]], None]:
+    def _execute(self, page: Optional[Page] = None) -> Callable[[Optional[Page]], None]:
         def inner_execute(inner_page: Optional[Page] = None):
             if page:
                 inner_page = page

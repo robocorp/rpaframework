@@ -11,11 +11,45 @@ from flet import (
     Text,
     UserControl,
 )
-from flet.dropdown import Option
 from flet.icons import ARROW_BACK_ROUNDED, ARROW_FORWARD_ROUNDED, CALENDAR_MONTH
 
-# FIXME: This doesn't render the components properly so it can't be used right now
+
+# FIXME: This doesn't render the components properly so it can't be used right now.
 class DatePicker(UserControl):
+    """Date picking widget."""
+
+    def __init__(self):
+        # initialise default values
+        self.selected_year = datetime.now().year
+        self.selected_month = datetime.now().month
+        self.selected_day = datetime.now().day
+        self.selected_date = None
+        self.months_list = (
+            ("Jan", "Feb", "Mar", "Apr"),
+            ("May", "Jun", "Jul", "Aug"),
+            ("Sep", "Oct", "Nov", "Dec"),
+        )
+        self.header_element = [
+            Container(content=Icon(ARROW_BACK_ROUNDED), on_click=self._year_decrement),
+            Text(self.selected_year),
+            Container(
+                content=Icon(ARROW_FORWARD_ROUNDED), on_click=self._year_increment
+            ),
+        ]
+        self.body_element = []
+        for row in self.months_list:
+            temp = PopupMenuItem(
+                content=Row(
+                    [
+                        Container(content=Text(i), on_click=self._select_month)
+                        for i in row
+                    ],
+                    alignment=MainAxisAlignment.SPACE_BETWEEN,
+                )
+            )
+            self.body_element.append(temp)
+        super().__init__(self)
+
     def _year_increment(self, e):
         self.selected_year += 1
         self.header_element[1].value = self.selected_year
@@ -62,38 +96,6 @@ class DatePicker(UserControl):
         )
         # self.body_element = element
         self.update()
-
-    def __init__(self):
-        # initialise default values
-        self.selected_year = datetime.now().year
-        self.selected_month = datetime.now().month
-        self.selected_day = datetime.now().day
-        self.selected_date = None
-        self.months_list = (
-            ("Jan", "Feb", "Mar", "Apr"),
-            ("May", "Jun", "Jul", "Aug"),
-            ("Sep", "Oct", "Nov", "Dec"),
-        )
-        self.header_element = [
-            Container(content=Icon(ARROW_BACK_ROUNDED), on_click=self._year_decrement),
-            Text(self.selected_year),
-            Container(
-                content=Icon(ARROW_FORWARD_ROUNDED), on_click=self._year_increment
-            ),
-        ]
-        self.body_element = []
-        for row in self.months_list:
-            temp = PopupMenuItem(
-                content=Row(
-                    [
-                        Container(content=Text(i), on_click=self._select_month)
-                        for i in row
-                    ],
-                    alignment=MainAxisAlignment.SPACE_BETWEEN,
-                )
-            )
-            self.body_element.append(temp)
-        super().__init__(self)
 
     def render(self):
         self.pb = PopupMenuButton(

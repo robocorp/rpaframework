@@ -25,14 +25,14 @@ from flet import (
     colors,
     icons,
 )
-from flet.control_event import ControlEvent
 from flet.dropdown import Option
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+
 from RPA.Assistant.flet_client import FletClient
 
-from .dialog_types import Icon, Options, Result, Size
-from .utils import optional_str, to_options
+from RPA.Assistant.dialog_types import Icon, Options, Result, Size
+from RPA.Assistant.utils import optional_str, to_options
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -165,9 +165,12 @@ class Assistant:
                 error_message = validation(self._client.results[field_name])
                 if error_message:
                     should_close = False
-                    self._client.page.add(Text(
-                        f"Error on field named '{field_name}: {error_message}",
-                        color=flet.colors.RED))
+                    self._client.page.add(
+                        Text(
+                            f"Error on field named '{field_name}: {error_message}",
+                            color=flet.colors.RED,
+                        )
+                    )
                     self._client.page.update()
             if should_close:
                 self._client.page.window_destroy()
@@ -466,7 +469,7 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Union[Callable, str] = None
+        validation: Union[Callable, str] = None,
     ) -> None:
         """Add a text input element
 
@@ -772,7 +775,9 @@ class Assistant:
             Log    User type should be: ${result.user_type}
         """
         options, default = to_options(options, default)
-        radios: List[Control] = [Radio(value=option, label=option) for option in options]
+        radios: List[Control] = [
+            Radio(value=option, label=option) for option in options
+        ]
         radio_group = RadioGroup(content=Column(radios), value=default)
 
         self._client.add_element(Text(value=label))
@@ -817,9 +822,7 @@ class Assistant:
 
     @keyword("Add submit buttons", tags=["input"])
     def add_submit_buttons(
-        self,
-        buttons: Options,
-        default: Optional[str] = None
+        self, buttons: Options, default: Optional[str] = None
     ) -> None:
         """Add custom submit buttons
 
