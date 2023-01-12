@@ -298,7 +298,7 @@ class Exchange(OAuthMixin):
         self.account = None
         self._saved_attachments = []
 
-    def on_token_refresh(self, token: OAuth2Token):
+    def _on_token_refresh(self, token: OAuth2Token):
         """Callable you can override in order to save the newly obtained token in a
         safe place.
         """
@@ -361,7 +361,7 @@ class Exchange(OAuthMixin):
         )
         if is_oauth:
             self.credentials = OAuth2Creds(
-                on_token_refresh=self.on_token_refresh,
+                on_token_refresh=self._on_token_refresh,
                 oauth_provider=self._oauth_provider,
                 tenant_id=self._tenant,
                 identity=Identity(upn=username),

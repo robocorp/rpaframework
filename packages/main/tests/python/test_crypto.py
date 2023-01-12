@@ -170,7 +170,7 @@ def test_set_key_vault_no_key():
     mock_vault.get_secret.return_value = Secret("MockSecret", "", {"key": key})
 
     lib.use_encryption_key_from_vault("SomeKeyValue")
-    assert mock_vault.get_secret.called_once_with("SomeKeyValue")
+    mock_vault.get_secret.assert_called_once_with("SomeKeyValue")
     assert lib._key is not None
 
 
@@ -184,7 +184,7 @@ def test_set_key_vault_key():
     )
 
     lib.use_encryption_key_from_vault("SomeKeyValue", "second")
-    assert mock_vault.get_secret.called_once_with("SomeKeyValue")
+    mock_vault.get_secret.assert_called_once_with("SomeKeyValue")
     assert lib._key is not None
 
 
@@ -199,7 +199,7 @@ def test_set_key_vault_error_multiple():
 
     with pytest.raises(ValueError):
         lib.use_encryption_key_from_vault("SomeKeyValue")
-    assert mock_vault.get_secret.called_once_with("SomeKeyValue")
+    mock_vault.get_secret.assert_called_once_with("SomeKeyValue")
     assert lib._key is None
 
 
@@ -212,5 +212,5 @@ def test_set_key_vault_error_empty():
 
     with pytest.raises(ValueError):
         lib.use_encryption_key_from_vault("SomeKeyValue")
-    assert mock_vault.get_secret.called_once_with("SomeKeyValue")
+    mock_vault.get_secret.assert_called_once_with("SomeKeyValue")
     assert lib._key is None

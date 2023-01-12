@@ -9,6 +9,60 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+20.0.2 - 10 Jan 2023
+--------------------
+
+- Security dependency fix given the bump of ``cryptography`` package to version **38**.
+  (:pr:`773`)
+
+20.0.1 - 10 Jan 2023
+--------------------
+
+- Fix docs given the dropped support for extras under library dependencies. (:pr:`772`)
+
+20.0.0 - 09 Jan 2023
+--------------------
+
+- Global package & sub-library updates adding security and documentation fixes.
+  (:pr:`767`)
+- Other affected sub-libraries:
+
+  - ``rpaframework-aws`` **5.2.5** (no API change, just dev & docs 3rd-party package
+    upgrades)
+  - ``rpaframework-google`` **6.1.5** (no API change, just dev & docs 3rd-party package
+    upgrades)
+  - ``rpaframework-pdf`` **6.0.1** (no API change, but behaviour may be different)
+  - ``rpaframework-windows`` **7.0.2** (no API change, but locators recording may act
+    differently)
+
+.. warning::
+  This is a **breaking** change!
+
+  - We don't support *optional* packages anymore. Migrate your *conda.yaml* if needed:
+
+    - ``rpaframework[aws]`` -> ``rpaframework-aws==5.2.4``
+    - ``rpaframework[cv]`` -> ``rpaframework-recognition==5.0.1``
+    - ``rpaframework[playwright]`` -> ``robotframework-browser==14.4.1``
+    - And of course, don't forget about ``rpaframework==20.0.0``.
+
+  - **RPA.Desktop** keywords related to mouse and keyboard may behave differently due
+    to their ``pynput`` dependency recent upgrade.
+  - Extra dependencies are pinned to the following minimum versions:
+
+    - ``requests = "^2.28.1"``
+    - ``oauthlib = "^3.2.2"``
+    - ``requests-oauthlib = "^1.3.1"``
+
+  - Misleading keyword ``On Token Refresh`` was removed from the **RPA.Email.Exchange**
+    library. (wasn't meant to be a keyword at all)
+
+19.4.2 - 21 Dec 2022
+--------------------
+
+- Library **RPA.Hubspot** (:issue:`740`): Deprecate keyword ``Auth With API Key`` in
+  favor to ``Auth With Token``. (read how to generate one with
+  `Private Apps <https://developers.hubspot.com/docs/api/private-apps>`_)
+
 19.4.1 - 09 Dec 2022
 --------------------
 

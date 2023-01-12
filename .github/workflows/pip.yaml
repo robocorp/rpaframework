@@ -28,7 +28,7 @@ jobs:
         run: python -m pip install --force-reinstall pip==${{matrix.pip-version}} wheel
       - name: install rpafw
         run: |
-          python -m pip install rpaframework[cv,playwright]
+          python -m pip install rpaframework-recognition robotframework-browser
           python -m pip install rpaframework-aws
           python -m pip install rpaframework-google
       - name: test install is correct
