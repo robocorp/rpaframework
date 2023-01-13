@@ -3,6 +3,7 @@ import logging
 import os
 import platform
 import subprocess
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
@@ -30,7 +31,7 @@ from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.Assistant.flet_client import FletClient
-
+from RPA.Assistant.date_picker import DatePicker
 from RPA.Assistant.dialog_types import Icon, Options, Result, Size
 from RPA.Assistant.utils import optional_str, to_options
 
@@ -707,36 +708,37 @@ class Assistant:
         self._client.add_element(Text(value=label))
         self._client.add_element(dropdown, name=str(name))
 
-    # FIXME: Add keyword back when fixed
-    # @keyword("Add Date Input", tags=["input"])
-    # def add_date_input(
-    #     self,
-    #     name: str,
-    #     default: Optional[Union[date, str]] = None,
-    #     label: Optional[str] = None,
-    # ) -> None:
-    #     """Add a date input element
+    @keyword("Add Date Input", tags=["input"])
+    def add_date_input(
+        self,
+        name: str,
+        default: Optional[Union[datetime, str]] = None,
+        label: Optional[str] = None,
+    ) -> None:
+        """Add a date input element.
 
-    #     :param name:    Name of the result field
-    #     :param default: The default set date
-    #     :param label:   Label for the date input field
+        :param name:    Name of the result field
+        :param default: The default set date
+        :param label:   Label for the date input field
 
-    #     Displays a date input widget. The selection the user makes will be available
-    #     as a ``date`` object in the ``name`` field of the result.
-    #     The ``default`` argument can be a pre-set date as object or string in
-    #     "YYYY-MM-DD" format, otherwise the current date is used.
+        Displays a date input widget. The selection the user makes will be available
+        as a ``date`` object in the ``name`` field of the result.
+        The ``default`` argument can be a pre-set date as object or string in
+        "YYYY-MM-DD" format, otherwise the current date is used.
 
-    #     Example:
+        Example:
 
-    #     .. code-block:: robotframework
+        .. code-block:: robotframework
 
-    #         Add heading       Enter your birthdate
-    #         Add Date Input    birthdate    default=1993-04-26
-    #         ${result} =       Run dialog
-    #         Log To Console    User birthdate year should be: ${result.birthdate.year}
-    #     """
-
-    #     self._client.add_element(name=str(name), element=DatePicker())
+            Add heading       Enter your birthdate
+            Add Date Input    birthdate    default=1993-04-26
+            ${result} =       Run dialog
+            Log To Console    User birthdate year should be: ${result.birthdate.year}
+        """
+        # See Issue #775.
+        raise NotImplementedError("date picking is not available at the moment")
+        self._client.add_element(Text(value=label))
+        self._client.add_element(name=str(name), element=DatePicker(default=default))
 
     @keyword("Add radio buttons", tags=["input"])
     def add_radio_buttons(

@@ -1,5 +1,6 @@
 from calendar import monthrange
 from datetime import date, datetime
+from typing import Optional
 
 from flet import (
     Container,
@@ -14,15 +15,17 @@ from flet import (
 from flet.icons import ARROW_BACK_ROUNDED, ARROW_FORWARD_ROUNDED, CALENDAR_MONTH
 
 
-# FIXME: This doesn't render the components properly so it can't be used right now.
+# FIXME: This widget will be used once it will be capable of rendering the components
+#  correctly. (#775)
 class DatePicker(UserControl):
     """Date picking widget."""
 
-    def __init__(self):
-        # initialise default values
-        self.selected_year = datetime.now().year
-        self.selected_month = datetime.now().month
-        self.selected_day = datetime.now().day
+    def __init__(self, *args, default: Optional[datetime] = None, **kwargs):
+        # Set date to provided default or current date.
+        default = default or datetime.now()
+        self.selected_year = default.year
+        self.selected_month = default.month
+        self.selected_day = default.day
         self.selected_date = None
         self.months_list = (
             ("Jan", "Feb", "Mar", "Apr"),
@@ -31,7 +34,7 @@ class DatePicker(UserControl):
         )
         self.header_element = [
             Container(content=Icon(ARROW_BACK_ROUNDED), on_click=self._year_decrement),
-            Text(self.selected_year),
+            Text(str(self.selected_year)),
             Container(
                 content=Icon(ARROW_FORWARD_ROUNDED), on_click=self._year_increment
             ),
@@ -48,7 +51,8 @@ class DatePicker(UserControl):
                 )
             )
             self.body_element.append(temp)
-        super().__init__(self)
+
+        super().__init__(*args, **kwargs)
 
     def _year_increment(self, e):
         self.selected_year += 1
@@ -75,26 +79,34 @@ class DatePicker(UserControl):
             month=int(self.selected_month),
             day=int(self.selected_day),
         )
-        self.pb.value = Text(self.selected_date)
+        self.pb.value = Text(str(self.selected_date))
         self.update()
 
     def render_day_picker(self):
         element = []
         current_row = []
         number_of_days = monthrange(self.selected_year, self.selected_month)[1]
-        for day in range(number_of_days):
-            if day % 7 == 0 and day != 0:
-                # element.append(PopupMenuItem(content=Row(current_row, alignment=MainAxisAlignment.SPACE_BETWEEN)))
-                # self.body_element[0].content = Row(current_row, alignment=MainAxisAlignment.SPACE_BETWEEN)
-                current_row = []
-            else:
-                current_row.append(
-                    Container(content=Text(day + 1), on_click=self._select_day)
+
+        def _add_week():
+            element.append(
+                PopupMenuItem(
+                    content=Row(current_row, alignment=MainAxisAlignment.SPACE_BETWEEN)
                 )
-        self.body_element[0].content = Row(
-            [Container(Text("el"))], alignment=MainAxisAlignment.SPACE_BETWEEN
-        )
-        # self.body_element = element
+            )
+            current_row.clear()
+
+        for day in range(1, number_of_days + 1):
+            current_row.append(
+                Container(content=Text(str(day)), on_click=self._select_day)
+            )
+            if not day % 7:
+                # Week as row of days is complete.
+                _add_week()
+
+        if current_row:
+            _add_week()
+
+        self.body_element = element
         self.update()
 
     def render(self):

@@ -15,6 +15,7 @@ def length_greater_3(value):
 
 
 assistant = RPA.Assistant.Assistant()
+# assistant.add_date_input("my_date", label="My Date")
 assistant.add_button("python button", print, "asd")
 assistant.add_button("robot button", "Log", "asd")
 assistant.add_next_ui_button("different form button", next_ui)
