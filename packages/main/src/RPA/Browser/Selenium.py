@@ -104,7 +104,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         executable_path: Optional[str] = None,
     ) -> str:
         url = ensure_scheme(url, self._default_scheme)
-        options: ArgOptions = self.ctx.normalize_options(options, browser=browser)
+        if options:
+            options: ArgOptions = self.ctx.normalize_options(options, browser=browser)
         return super().open_browser(
             url=url,
             browser=browser,
@@ -508,6 +509,7 @@ class Selenium(SeleniumLibrary):
         "firefox": selenium_webdriver.FirefoxOptions,
         "edge": selenium_webdriver.EdgeOptions,
         "chromiumedge": selenium_webdriver.EdgeOptions,
+        "ie": selenium_webdriver.IeOptions,
     }
     AVAILABLE_SERVICES = {
         # Supporting services only for a specific range of browsers.
@@ -516,6 +518,7 @@ class Selenium(SeleniumLibrary):
         "edge": selenium_webdriver.edge.service.Service,
         "chromiumedge": selenium_webdriver.edge.service.Service,
         "safari": selenium_webdriver.safari.service.Service,
+        "ie": selenium_webdriver.ie.service.Service,
     }
 
     def __init__(self, *args, **kwargs) -> None:
@@ -914,13 +917,20 @@ class Selenium(SeleniumLibrary):
     def normalize_options(
         self, options: Optional[OptionsType], *, browser: str
     ) -> ArgOptions:
-        """Normalize `options` to `<Browser>Options` instance."""
+        """Normalize provided `options` to a `<Browser>Options` instance."""
         browser = browser.lower()
-        options_obj = self.AVAILABLE_OPTIONS[browser]()
-        if not options:
-            # Empty options object.
-            return options_obj
 
+        # String or object based provided options, solved by the wrapped library.
+        if isinstance(options, (ArgOptions, str)):
+            return SeleniumOptions().create(self.BROWSER_NAMES[browser], options)
+
+        BrowserOptions = self.AVAILABLE_OPTIONS.get(browser)
+        if not BrowserOptions:
+            raise ValueError(
+                f"{browser!r} browser options other than string/object aren't supported"
+            )
+
+        options_obj = BrowserOptions()
         if isinstance(options, dict):
             option_method_map = {
                 "arguments": options_obj.add_argument,
@@ -939,10 +949,7 @@ class Selenium(SeleniumLibrary):
                 method = option_method_map[name]
                 self._set_option(name, values, method=method)
 
-            return options_obj
-
-        # String or object based provided options.
-        return SeleniumOptions().create(self.BROWSER_NAMES[browser], options)
+        return options_obj
 
     def _get_driver_args(  # noqa: C901
         self,

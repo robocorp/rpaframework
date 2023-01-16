@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+20.1.0 - 17 Jan 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`745`): Ability to run Edge in IE
+  compatibility mode.
+
 20.0.2 - 10 Jan 2023
 --------------------
 
