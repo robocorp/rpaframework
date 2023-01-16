@@ -58,6 +58,13 @@ class WindowMethods(WindowsContext):
             Path(icon_path).unlink()
         return image_string
 
+    @staticmethod
+    def get_fullpath(pid: int) -> str:
+        handle = win32api.OpenProcess(
+            win32con.PROCESS_QUERY_LIMITED_INFORMATION, False, pid
+        )
+        return win32process.GetModuleFileNameEx(handle, 0)
+
     @method
     def list_windows(
         self, icons: bool = False, icon_save_directory: Optional[str] = None
@@ -69,10 +76,7 @@ class WindowMethods(WindowsContext):
             pid = win.ProcessId
             fullpath = None
             try:
-                handle = win32api.OpenProcess(
-                    win32con.PROCESS_QUERY_LIMITED_INFORMATION, False, pid
-                )
-                fullpath = win32process.GetModuleFileNameEx(handle, 0)
+                fullpath = self.get_fullpath(pid)
             except Exception as err:  # pylint: disable=broad-except
                 self.logger.info("Open process error in `List Windows`: %s", err)
             handle = win.NativeWindowHandle

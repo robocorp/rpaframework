@@ -3,12 +3,10 @@ from typing import Dict, List, Optional, Union
 
 from RPA.core.windows.helpers import IS_WINDOWS, is_numeric
 from RPA.core.windows.locators import MatchObject
+from RPA.core.windows.window import WindowMethods
 
 if IS_WINDOWS:
     import uiautomation as auto
-    import win32process
-    import win32api
-    import win32con
 
     RecordElement = Dict[str, Optional[Union[float, str, auto.Control, List[str]]]]
 
@@ -46,12 +44,7 @@ class ElementInspector:
                 top_level_name = top_level_control.Name
                 top_level_handle = top_level_control.NativeWindowHandle
                 try:
-                    handle = win32api.OpenProcess(
-                        win32con.PROCESS_QUERY_LIMITED_INFORMATION,
-                        False,
-                        top_level_control.ProcessId,
-                    )
-                    exec_path = win32process.GetModuleFileNameEx(handle, 0)
+                    exec_path = WindowMethods.get_fullpath(top_level_control.ProcessId)
                 except Exception:  # pylint: disable=broad-except
                     exec_path = ""
 
