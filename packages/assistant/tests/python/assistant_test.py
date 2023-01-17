@@ -61,12 +61,5 @@ assistant.add_submit_buttons(["second submit"], "second submit")
 # assistant.clear_elements()
 # assistant.add_icon(Icon.Failure)
 
-# not implemented yet
-"""
-
-assistant.add_submit_buttons()
-
-"""
-
 results = assistant.ask_user()
 print(results)

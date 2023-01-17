@@ -174,6 +174,7 @@ class Assistant:
                     )
                     self._client.page.update()
             if should_close:
+                self._client.results["submit"] = label
                 self._client.page.window_destroy()
 
         self._client.add_element(ElevatedButton(label, on_click=validate_and_close))
