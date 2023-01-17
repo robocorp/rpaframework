@@ -56,7 +56,6 @@ class FletClient:
                 inner_page.add(element)
             for element in self.current_invisible_elements:
                 inner_page.overlay.append(element)
-            # self.add
             inner_page.scroll = ScrollMode.AUTO
             self.page = inner_page
             inner_page.update()
@@ -70,7 +69,7 @@ class FletClient:
             port=0,
             is_app=True,
             permissions=None,
-            assets_dir=None,
+            assets_dir="/",
             upload_dir=None,
             web_renderer="canvaskit",
             route_url_strategy="hash",
