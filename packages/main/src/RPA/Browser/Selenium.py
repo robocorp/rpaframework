@@ -34,6 +34,7 @@ from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCr
 
 from RPA.core import notebook
 from RPA.core import webdriver as core_webdriver
+from RPA.core.robocorp import browser_preferences
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
 
 
@@ -843,8 +844,9 @@ class Selenium(SeleniumLibrary):
     def _arg_browser_selection(self, browser_selection: Any) -> List:
         """Parse argument for browser selection."""
         if str(browser_selection).strip().lower() == "auto":
-            order = core_webdriver.DRIVER_PREFERENCE.get(
-                platform.system(), core_webdriver.DRIVER_PREFERENCE["default"]
+            driver_preferences = browser_preferences()
+            order = driver_preferences.get(
+                platform.system(), driver_preferences["default"]
             )
         else:
             order = (
