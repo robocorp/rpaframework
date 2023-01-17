@@ -79,7 +79,7 @@ jobs:
     - name: Install poetry
       run: pip install poetry
     - name: Install invoke
-      run: python -m pip install invoke
+      run: pip install -U "invoke>=1.6.0,<2.0.0"
     - name: Get python version
       id: full-python-version
       shell: bash
@@ -118,7 +118,7 @@ jobs:
     - name: Install poetry
       run: pip install poetry
     - name: Install invoke
-      run: pip install invoke
+      run: pip install -U "invoke>=1.6.0,<2.0.0"
     - name: Install invocation package
       run: invoke install-invocations
     - name: Install dependencies

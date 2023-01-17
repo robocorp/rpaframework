@@ -50,7 +50,6 @@ toml = "^0.10.2"
 colorama = "^0.4.5"
 keyring = "^23.9.0"
 PyYAML = "^5.4.1"
-invoke = "^1.6.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8-docstrings = "^1.6.0"
