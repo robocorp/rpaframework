@@ -1,12 +1,14 @@
+from pathlib import Path
 from typing import Dict, List, Optional, Union
 
 from RPA.core.windows.helpers import IS_WINDOWS, is_numeric
 from RPA.core.windows.locators import MatchObject
+from RPA.core.windows.window import WindowMethods
 
 if IS_WINDOWS:
     import uiautomation as auto
 
-    RecordElement = Dict[str, Optional[Union[float, str, auto.Control]]]
+    RecordElement = Dict[str, Optional[Union[float, str, auto.Control, List[str]]]]
 
 
 class ElementInspector:
@@ -41,17 +43,27 @@ class ElementInspector:
             else:
                 top_level_name = top_level_control.Name
                 top_level_handle = top_level_control.NativeWindowHandle
+                try:
+                    exec_path = WindowMethods.get_fullpath(top_level_control.ProcessId)
+                except Exception:  # pylint: disable=broad-except
+                    exec_path = ""
 
-            parent_locator = (
-                cls._get_element_key_properties(parent_control, verbose=verbose)
-                or "N/A"
+            top_properties = cls._get_element_key_properties(
+                top_level_control, verbose=verbose
             )
-            child_locator = (
-                cls._get_element_key_properties(control, verbose=verbose) or "N/A"
+
+            parent_properties = cls._get_element_key_properties(
+                parent_control, verbose=verbose
             )
+            child_properties = cls._get_element_key_properties(control, verbose=verbose)
+
+            parent_locator = " and ".join(parent_properties) or "N/A"
+            child_locator = " and ".join(child_properties) or "N/A"
+
             locator_path = f"{parent_locator} > {child_locator}"
             if "name:" in child_locator or "id:" in child_locator:
                 locator_path = child_locator
+
             if control_window:
                 output.append(f"Control Window  {top_level_name}")
             if action:
@@ -63,10 +75,15 @@ class ElementInspector:
                 recording.append(
                     {
                         "type": "locator",
+                        "exec_path": exec_path,
+                        "exec": Path(exec_path).name,
                         "top": top_level_name,
                         "top_handle": top_level_handle,
                         "x": top_level_control,
                         "locator": locator_path,
+                        "top_props": top_properties,
+                        "parent_props": parent_properties,
+                        "props": child_properties,
                         "name": parent_control.Name if parent_control else None,
                         "control": parent_control,
                     }
@@ -77,10 +94,10 @@ class ElementInspector:
     @staticmethod
     def _get_element_key_properties(
         element, *, verbose: bool, regex_limit: int = 300
-    ) -> Optional[str]:
+    ) -> List[str]:
         if not element:
             print("Got null element!")
-            return None
+            return []
 
         name = element.Name.strip()
         automation_id = element.AutomationId
@@ -105,7 +122,7 @@ class ElementInspector:
         if locators:
             if not verbose:
                 locators = locators[:1]
-            return " and ".join(locators)
+            return locators
 
         print("Was unable to construct locator for the control!")
-        return None
+        return []
