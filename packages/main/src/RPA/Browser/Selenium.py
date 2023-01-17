@@ -18,7 +18,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
-from selenium.webdriver import ChromeOptions, FirefoxProfile
+from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from SeleniumLibrary import EMBED, SeleniumLibrary
@@ -779,6 +779,7 @@ class Selenium(SeleniumLibrary):
                     user_agent,
                     options,
                     port,
+                    url,
                 )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
@@ -855,7 +856,7 @@ class Selenium(SeleniumLibrary):
     def _set_chrome_options(
         self,
         kwargs: dict,
-        options: ArgOptions,
+        options: ChromeOptions,
         use_profile: bool = False,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
@@ -887,10 +888,19 @@ class Selenium(SeleniumLibrary):
         if use_profile:
             self._set_user_profile(options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
-            # Deprecated params, but no worries as they get bundled in a `Service`
-            #  instance inside of `self._create_webdriver` method.
+            # Deprecated params, but no worries as they get popped then bundled in a
+            #  `Service` instance inside of the `self._create_webdriver` method.
             kwargs["service_log_path"] = "chromedriver.log"
             kwargs["service_args"] = ["--verbose"]
+
+    def _set_ie_options(self, options: IeOptions, *, url: Optional[str]):
+        binary_location = getattr(options, "binary_location", None)
+        if binary_location:
+            options.edge_executable_path = binary_location
+        # An invalid default URL will make the automation freeze.
+        options.initial_browser_url = (
+            options.initial_browser_url or url or "https://robocorp.com/"
+        )
 
     def _set_option(
         self, name: str, values: Union[str, List, Dict], *, method: Callable
@@ -964,6 +974,7 @@ class Selenium(SeleniumLibrary):
         user_agent: Optional[str] = None,
         options: Optional[OptionsType] = None,
         port: Optional[int] = None,
+        url: Optional[str] = None,
     ) -> Tuple[dict, Any]:
         """Get browser and webdriver arguments for given options."""
         browser = browser.lower()
@@ -981,6 +992,7 @@ class Selenium(SeleniumLibrary):
 
         kwargs = {}
         if port:
+            # Deprecated kwarg which will be transferred into a service instance.
             kwargs["port"] = int(port)
         if browser == "chrome":
             self._set_chrome_options(
@@ -994,6 +1006,8 @@ class Selenium(SeleniumLibrary):
             )
         elif use_profile:
             self.logger.warning("Profiles are supported with Chrome only")
+        if browser == "ie":
+            self._set_ie_options(options, url=url)
 
         try:
             path = options.binary_location or None
@@ -1007,7 +1021,7 @@ class Selenium(SeleniumLibrary):
                 "`executable_path` if running into issues."
             )
 
-        kwargs["options"] = options
+        kwargs["options"] = options  # legitimate webdriver kwarg separate from service
         return kwargs, options.arguments
 
     def _set_headless_options(self, browser: str, options: ArgOptions) -> None:
@@ -1079,26 +1093,36 @@ class Selenium(SeleniumLibrary):
         """
 
         def _create_driver(path: Optional[str] = None) -> AliasType:
+            # Prepare webdriver's service instance keyword arguments.
             service_kwargs = {
                 # Deprecated params if passed directly to the `WebDriver` class.
                 "service_args": None,
                 "service_log_path": None,
                 "port": 0,
             }
+            service_args = None  # for unsupported manual injection
             for name, default in service_kwargs.items():
                 service_kwargs[name] = kwargs.pop(name, default)
             service_kwargs["log_path"] = service_kwargs.pop("service_log_path")
             if path:
                 service_kwargs["executable_path"] = path
+
+            # Instantiate the right service to be passed during the webdriver creation.
             Service = self.AVAILABLE_SERVICES[browser.lower()]
             if Service is selenium_webdriver.safari.service.Service:
-                service_kwargs.pop("log_path")  # not supported
-            kwargs["service"] = Service(**service_kwargs)
+                service_kwargs.pop("log_path")  # not supported at all
+            elif Service is selenium_webdriver.ie.service.Service:
+                service_kwargs["log_file"] = service_kwargs.pop("log_path")
+                service_args = service_kwargs.pop("service_args")
+            service = Service(**service_kwargs)
+            if service_args:
+                service.service_args.extend(service_args)
 
             lib = BrowserManagementKeywords(self)
             # Capitalize browser name just to ensure it works if passed as lower case.
             # NOTE: But don't break a browser name like "ChromiumEdge".
             cap_browser = browser[0].upper() + browser[1:]
+            kwargs["service"] = service
             return lib.create_webdriver(cap_browser, alias, **kwargs)
 
         # No download requested.
