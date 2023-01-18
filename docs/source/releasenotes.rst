@@ -5,16 +5,17 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.SAP**: Fix error in dependency import order in underlying SapGuiLibrary
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-20.1.0 - 17 Jan 2023
+20.1.0 - 18 Jan 2023
 --------------------
 
 - Library **RPA.Browser.Selenium** (:issue:`745`): Ability to run Edge in IE
   compatibility mode.
+- Library **RPA.SAP**: Fix error in dependency import order in the underlying
+  `SapGuiLibrary`.
 
 20.0.2 - 10 Jan 2023
 --------------------
