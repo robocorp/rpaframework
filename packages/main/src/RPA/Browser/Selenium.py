@@ -562,30 +562,27 @@ class Selenium(SeleniumLibrary):
         self._close_on_exit()
 
     def _close_on_exit(self):
-        """Register function to clean leftover webdrivers on process exit."""
-        current_platform = platform.system()
+        """Register cleanup function for leftover webdrivers & browsers on process
+        exit.
+        """
 
         def stop_drivers():
-            if not self.auto_close:
-                # On Windows chromedriver.exe keeps hanging and
-                # prevents rcc close
-                if current_platform == "Windows":
-                    self._driver_connection_handler(process_kill=True)
-                return
-            self._driver_connection_handler(process_kill=False)
+            # NOTE: On Windows, "chromedriver.exe" keeps hanging and prevents "rcc" to
+            #  close.
+            # FIXME(cmin764): Ensure that only Chrome and any other browser which hangs
+            #  "rcc" on process exit, will be closed on a Windows OS.
+            if self.auto_close:
+                self._quit_all_drivers()
 
         atexit.register(stop_drivers)
 
-    def _driver_connection_handler(self, process_kill: bool = False):
+    def _quit_all_drivers(self):
         connections = self._drivers._connections  # pylint: disable=protected-access
         for driver in connections:
             try:
-                if process_kill:
-                    driver.service.process.kill()
-                else:
-                    driver.service.stop()
-            except Exception:  # pylint: disable=broad-except
-                pass
+                driver.quit()
+            except Exception as exc:  # pylint: disable=broad-except
+                self.logger.debug("Encountered error during auto-close: %s", exc)
 
     @property
     def location(self) -> str:
