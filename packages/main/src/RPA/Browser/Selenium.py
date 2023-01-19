@@ -18,9 +18,10 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
-from selenium.webdriver import ChromeOptions, FirefoxProfile
+from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
+from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
 from SeleniumLibrary import EMBED, SeleniumLibrary
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
@@ -104,7 +105,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         executable_path: Optional[str] = None,
     ) -> str:
         url = ensure_scheme(url, self._default_scheme)
-        options: ArgOptions = self.ctx.normalize_options(options, browser=browser)
+        if options:
+            options: ArgOptions = self.ctx.normalize_options(options, browser=browser)
         return super().open_browser(
             url=url,
             browser=browser,
@@ -508,6 +510,7 @@ class Selenium(SeleniumLibrary):
         "firefox": selenium_webdriver.FirefoxOptions,
         "edge": selenium_webdriver.EdgeOptions,
         "chromiumedge": selenium_webdriver.EdgeOptions,
+        "ie": selenium_webdriver.IeOptions,
     }
     AVAILABLE_SERVICES = {
         # Supporting services only for a specific range of browsers.
@@ -516,6 +519,7 @@ class Selenium(SeleniumLibrary):
         "edge": selenium_webdriver.edge.service.Service,
         "chromiumedge": selenium_webdriver.edge.service.Service,
         "safari": selenium_webdriver.safari.service.Service,
+        "ie": selenium_webdriver.ie.service.Service,
     }
 
     def __init__(self, *args, **kwargs) -> None:
@@ -559,30 +563,38 @@ class Selenium(SeleniumLibrary):
         self._close_on_exit()
 
     def _close_on_exit(self):
-        """Register function to clean leftover webdrivers on process exit."""
-        current_platform = platform.system()
+        """Register cleanup function for leftover webdrivers & browsers on process
+        exit.
+        """
 
         def stop_drivers():
-            if not self.auto_close:
-                # On Windows chromedriver.exe keeps hanging and
-                # prevents rcc close
-                if current_platform == "Windows":
-                    self._driver_connection_handler(process_kill=True)
-                return
-            self._driver_connection_handler(process_kill=False)
+            if self.auto_close:
+                self._quit_all_drivers()
+            elif platform.system() == "Windows":
+                # NOTE: On Windows, the webdriver executable keeps hanging and prevents
+                #  "rcc" to close even when the Python process exits.
+                self._quit_all_drivers(driver_only=True)
 
         atexit.register(stop_drivers)
 
-    def _driver_connection_handler(self, process_kill: bool = False):
+    def _quit_all_drivers(self, driver_only: bool = False):
+        # With `driver_only` on, we'll close just the drivers, but still leave the
+        #  browser window open.
         connections = self._drivers._connections  # pylint: disable=protected-access
         for driver in connections:
             try:
-                if process_kill:
-                    driver.service.process.kill()
+                if driver_only:
+                    if isinstance(driver, IeWebDriver):
+                        service = driver.iedriver
+                    else:
+                        service = driver.service
+                    # A `service.stop()` will hang here, so killing the process
+                    #  directly is the only way.
+                    service.process.kill()
                 else:
-                    driver.service.stop()
-            except Exception:  # pylint: disable=broad-except
-                pass
+                    driver.quit()
+            except Exception as exc:  # pylint: disable=broad-except
+                self.logger.debug("Encountered error during auto-close: %s", exc)
 
     @property
     def location(self) -> str:
@@ -626,6 +638,8 @@ class Selenium(SeleniumLibrary):
         supported browsers. Automatically downloads a corresponding webdriver
         if none is already installed.
 
+        Currently supported browsers: %s
+
         Optionally can be given a ``url`` as the first argument,
         to open the browser directly to the given page.
 
@@ -650,6 +664,10 @@ class Selenium(SeleniumLibrary):
         Make sure you provide every time a unique system-available local port if you
         plan to have multiple such browsers running in parallel.
 
+        For incompatible web apps designed to work in Internet Explorer only, Edge can
+        run in IE mode by simply setting `ie` in the ``browser_selection`` param.
+        Robot example: https://github.com/robocorp/example-ie-mode-edge
+
         Example:
 
         | Open Available Browser | https://www.robocorp.com |
@@ -672,10 +690,14 @@ class Selenium(SeleniumLibrary):
         ``browser_selection``. The argument can be either a comma-separated
         string or a list object.
 
+        Example:
+
+        | Open Available Browser | ${URL} | browser_selection=ie |
+
         == Webdriver download ==
 
         The library can (if requested) automatically download webdrivers
-        for all supported browsers. This can be controlled with the argument
+        for all the supported browsers. This can be controlled with the argument
         ``download``.
 
         If the value is ``False``, it will only attempt to start
@@ -776,6 +798,7 @@ class Selenium(SeleniumLibrary):
                     user_agent,
                     options,
                     port,
+                    url,
                 )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
@@ -815,6 +838,8 @@ class Selenium(SeleniumLibrary):
 
         return index_or_alias
 
+    open_available_browser.__doc__ %= ", ".join(AVAILABLE_SERVICES)
+
     def _arg_browser_selection(self, browser_selection: Any) -> List:
         """Parse argument for browser selection."""
         if str(browser_selection).strip().lower() == "auto":
@@ -852,7 +877,7 @@ class Selenium(SeleniumLibrary):
     def _set_chrome_options(
         self,
         kwargs: dict,
-        options: ArgOptions,
+        options: ChromeOptions,
         use_profile: bool = False,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
@@ -884,10 +909,19 @@ class Selenium(SeleniumLibrary):
         if use_profile:
             self._set_user_profile(options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
-            # Deprecated params, but no worries as they get bundled in a `Service`
-            #  instance inside of `self._create_webdriver` method.
+            # Deprecated params, but no worries as they get popped then bundled in a
+            #  `Service` instance inside of the `self._create_webdriver` method.
             kwargs["service_log_path"] = "chromedriver.log"
             kwargs["service_args"] = ["--verbose"]
+
+    def _set_ie_options(self, options: IeOptions, *, url: Optional[str]):
+        binary_location = getattr(options, "binary_location", None)
+        if binary_location:
+            options.edge_executable_path = binary_location
+        # An invalid default URL will make the automation freeze.
+        options.initial_browser_url = (
+            options.initial_browser_url or url or "https://robocorp.com/"
+        )
 
     def _set_option(
         self, name: str, values: Union[str, List, Dict], *, method: Callable
@@ -914,13 +948,20 @@ class Selenium(SeleniumLibrary):
     def normalize_options(
         self, options: Optional[OptionsType], *, browser: str
     ) -> ArgOptions:
-        """Normalize `options` to `<Browser>Options` instance."""
+        """Normalize provided `options` to a `<Browser>Options` instance."""
         browser = browser.lower()
-        options_obj = self.AVAILABLE_OPTIONS[browser]()
-        if not options:
-            # Empty options object.
-            return options_obj
 
+        # String or object based provided options, solved by the wrapped library.
+        if isinstance(options, (ArgOptions, str)):
+            return SeleniumOptions().create(self.BROWSER_NAMES[browser], options)
+
+        BrowserOptions = self.AVAILABLE_OPTIONS.get(browser)
+        if not BrowserOptions:
+            raise ValueError(
+                f"{browser!r} browser options other than string/object aren't supported"
+            )
+
+        options_obj = BrowserOptions()
         if isinstance(options, dict):
             option_method_map = {
                 "arguments": options_obj.add_argument,
@@ -939,10 +980,7 @@ class Selenium(SeleniumLibrary):
                 method = option_method_map[name]
                 self._set_option(name, values, method=method)
 
-            return options_obj
-
-        # String or object based provided options.
-        return SeleniumOptions().create(self.BROWSER_NAMES[browser], options)
+        return options_obj
 
     def _get_driver_args(  # noqa: C901
         self,
@@ -957,6 +995,7 @@ class Selenium(SeleniumLibrary):
         user_agent: Optional[str] = None,
         options: Optional[OptionsType] = None,
         port: Optional[int] = None,
+        url: Optional[str] = None,
     ) -> Tuple[dict, Any]:
         """Get browser and webdriver arguments for given options."""
         browser = browser.lower()
@@ -974,6 +1013,7 @@ class Selenium(SeleniumLibrary):
 
         kwargs = {}
         if port:
+            # Deprecated kwarg which will be transferred into a service instance.
             kwargs["port"] = int(port)
         if browser == "chrome":
             self._set_chrome_options(
@@ -987,6 +1027,8 @@ class Selenium(SeleniumLibrary):
             )
         elif use_profile:
             self.logger.warning("Profiles are supported with Chrome only")
+        if browser == "ie":
+            self._set_ie_options(options, url=url)
 
         try:
             path = options.binary_location or None
@@ -1000,7 +1042,7 @@ class Selenium(SeleniumLibrary):
                 "`executable_path` if running into issues."
             )
 
-        kwargs["options"] = options
+        kwargs["options"] = options  # legitimate webdriver kwarg separate from service
         return kwargs, options.arguments
 
     def _set_headless_options(self, browser: str, options: ArgOptions) -> None:
@@ -1072,26 +1114,36 @@ class Selenium(SeleniumLibrary):
         """
 
         def _create_driver(path: Optional[str] = None) -> AliasType:
+            # Prepare webdriver's service instance keyword arguments.
             service_kwargs = {
                 # Deprecated params if passed directly to the `WebDriver` class.
                 "service_args": None,
                 "service_log_path": None,
                 "port": 0,
             }
+            service_args = None  # for unsupported manual injection
             for name, default in service_kwargs.items():
                 service_kwargs[name] = kwargs.pop(name, default)
             service_kwargs["log_path"] = service_kwargs.pop("service_log_path")
             if path:
                 service_kwargs["executable_path"] = path
+
+            # Instantiate the right service to be passed during the webdriver creation.
             Service = self.AVAILABLE_SERVICES[browser.lower()]
             if Service is selenium_webdriver.safari.service.Service:
-                service_kwargs.pop("log_path")  # not supported
-            kwargs["service"] = Service(**service_kwargs)
+                service_kwargs.pop("log_path")  # not supported at all
+            elif Service is selenium_webdriver.ie.service.Service:
+                service_kwargs["log_file"] = service_kwargs.pop("log_path")
+                service_args = service_kwargs.pop("service_args")
+            service = Service(**service_kwargs)
+            if service_args:
+                service.service_args.extend(service_args)
 
             lib = BrowserManagementKeywords(self)
             # Capitalize browser name just to ensure it works if passed as lower case.
             # NOTE: But don't break a browser name like "ChromiumEdge".
             cap_browser = browser[0].upper() + browser[1:]
+            kwargs["service"] = service
             return lib.create_webdriver(cap_browser, alias, **kwargs)
 
         # No download requested.
