@@ -21,6 +21,7 @@ from selenium import webdriver as selenium_webdriver
 from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
+from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
 from SeleniumLibrary import EMBED, SeleniumLibrary
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
@@ -567,20 +568,31 @@ class Selenium(SeleniumLibrary):
         """
 
         def stop_drivers():
-            # NOTE: On Windows, "chromedriver.exe" keeps hanging and prevents "rcc" to
-            #  close.
-            # FIXME(cmin764): Ensure that only Chrome and any other browser which hangs
-            #  "rcc" on process exit, will be closed on a Windows OS.
             if self.auto_close:
                 self._quit_all_drivers()
+            elif platform.system() == "Windows":
+                # NOTE: On Windows, the webdriver executable keeps hanging and prevents
+                #  "rcc" to close even when the Python process exits.
+                self._quit_all_drivers(driver_only=True)
 
         atexit.register(stop_drivers)
 
-    def _quit_all_drivers(self):
+    def _quit_all_drivers(self, driver_only: bool = False):
+        # With `driver_only` on, we'll close just the drivers, but still leave the
+        #  browser window open.
         connections = self._drivers._connections  # pylint: disable=protected-access
         for driver in connections:
             try:
-                driver.quit()
+                if driver_only:
+                    if isinstance(driver, IeWebDriver):
+                        service = driver.iedriver
+                    else:
+                        service = driver.service
+                    # A `service.stop()` will hang here, so killing the process
+                    #  directly is the only way.
+                    service.process.kill()
+                else:
+                    driver.quit()
             except Exception as exc:  # pylint: disable=broad-except
                 self.logger.debug("Encountered error during auto-close: %s", exc)
 
@@ -626,6 +638,8 @@ class Selenium(SeleniumLibrary):
         supported browsers. Automatically downloads a corresponding webdriver
         if none is already installed.
 
+        Currently supported browsers: %s
+
         Optionally can be given a ``url`` as the first argument,
         to open the browser directly to the given page.
 
@@ -650,6 +664,10 @@ class Selenium(SeleniumLibrary):
         Make sure you provide every time a unique system-available local port if you
         plan to have multiple such browsers running in parallel.
 
+        For incompatible web apps designed to work in Internet Explorer only, Edge can
+        run in IE mode by simply setting `ie` in the ``browser_selection`` param.
+        Robot example: https://github.com/robocorp/example-ie-mode-edge
+
         Example:
 
         | Open Available Browser | https://www.robocorp.com |
@@ -672,10 +690,14 @@ class Selenium(SeleniumLibrary):
         ``browser_selection``. The argument can be either a comma-separated
         string or a list object.
 
+        Example:
+
+        | Open Available Browser | ${URL} | browser_selection=ie |
+
         == Webdriver download ==
 
         The library can (if requested) automatically download webdrivers
-        for all supported browsers. This can be controlled with the argument
+        for all the supported browsers. This can be controlled with the argument
         ``download``.
 
         If the value is ``False``, it will only attempt to start
@@ -815,6 +837,8 @@ class Selenium(SeleniumLibrary):
             self.go_to(url)
 
         return index_or_alias
+
+    open_available_browser.__doc__ %= ", ".join(AVAILABLE_SERVICES)
 
     def _arg_browser_selection(self, browser_selection: Any) -> List:
         """Parse argument for browser selection."""
