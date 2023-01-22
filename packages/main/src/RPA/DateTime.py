@@ -85,7 +85,7 @@ class DateTime:
         diff = end_d - start_d
         modifier_for_seconds = 1 if diff.seconds >= 0 else -1
         return {
-            "end_date_is_greater": end_d > start_d,
+            "end_date_is_later": end_d > start_d,
             "years": diff.years,
             "months": diff.months,
             "days": diff.days,
@@ -182,8 +182,10 @@ class DateTime:
         if return_format:
             return previous_dt.format(fmt=return_format, locale=locale)
         else:
-            # TODO. locale support
-            return previous_dt
+            previous_locale = pdl.set_locale(locale)
+            formatted = previous_dt.format()
+            pdl.set_locale(previous_locale)
+            return formatted
 
     def should_be_the_same_day(
         self,
@@ -234,4 +236,7 @@ class DateTime:
         raise NotImplementedError
 
     def last_business_day_of_the_month(self, date: DTFormat):
+        raise NotImplementedError
+
+    def order_list_of_datetimes(self, dates: List[DTFormat]) -> List:
         raise NotImplementedError
