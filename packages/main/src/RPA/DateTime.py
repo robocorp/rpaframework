@@ -182,10 +182,7 @@ class DateTime:
         if return_format:
             return previous_dt.format(fmt=return_format, locale=locale)
         else:
-            previous_locale = pdl.set_locale(locale)
-            formatted = previous_dt.format()
-            pdl.set_locale(previous_locale)
-            return formatted
+            return previous_dt
 
     def should_be_the_same_day(
         self,
