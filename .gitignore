@@ -28,6 +28,9 @@ poetry.toml
 # VS Code
 .vscode/
 
+# PyCharm
+.idea/
+
 # MacOS
 .DS_Store
 

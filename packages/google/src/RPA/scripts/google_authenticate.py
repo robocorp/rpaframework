@@ -76,7 +76,7 @@ def main():
     # if Google.GOOGLECLOUD_IMPORT_ERROR:
     #     error(
     #         "Please install the 'google' optional extra to use this script:\n"
-    #         "> pip install rpaframework[google]"
+    #         "> pip install rpaframework-google"
     #     )
 
     if (

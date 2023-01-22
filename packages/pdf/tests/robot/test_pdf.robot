@@ -3,9 +3,12 @@ Library           Collections
 Library           OperatingSystem
 Library           RPA.PDF
 Library           XML
+
 Resource          test.resource
+
 Task Teardown     Close all PDFs
 Suite Teardown    Empty Directory    ${WORK_DIR}
+
 
 *** Tasks ***
 Create PDF from HTML content
@@ -137,7 +140,7 @@ XML Dumping And Parsing
     Should Exist    ${XML_FILE}
     HTML to PDF    ${xml}    ${PDF}
     ${text_dict} =    Get Text From Pdf    ${PDF}
-    RPA Should Contain    ${text_dict}[${1}]    t e s t @ t e s t . c o m
+    RPA Should Contain    ${text_dict}[${1}]    test@test.com
 
 Find multiple anchors in multi-page PDF
     Open PDF    ${BOOK_PDF}

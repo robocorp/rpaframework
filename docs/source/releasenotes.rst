@@ -5,18 +5,150 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Robocorp.WorkItems** (:pr:`692`): Allow `email` input Work Item
-  variable in the absence of the Control Room controlled one during e-mail triggering.
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+20.1.0 - 19 Jan 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`745`): Ability to run Edge in IE
+  compatibility mode. (robot example: https://github.com/robocorp/example-ie-mode-edge)
+- Library **RPA.SAP**: Fix error in dependency import order in the underlying
+  `SapGuiLibrary`.
+
+20.0.2 - 10 Jan 2023
+--------------------
+
+- Security dependency fix given the bump of ``cryptography`` package to version **38**.
+  (:pr:`773`)
+
+20.0.1 - 10 Jan 2023
+--------------------
+
+- Fix docs given the dropped support for extras under library dependencies. (:pr:`772`)
+
+20.0.0 - 09 Jan 2023
+--------------------
+
+- Global package & sub-library updates adding security and documentation fixes.
+  (:pr:`767`)
+- Other affected sub-libraries:
+
+  - ``rpaframework-aws`` **5.2.5** (no API change, just dev & docs 3rd-party package
+    upgrades)
+  - ``rpaframework-google`` **6.1.5** (no API change, just dev & docs 3rd-party package
+    upgrades)
+  - ``rpaframework-pdf`` **6.0.1** (no API change, but behaviour may be different)
+  - ``rpaframework-windows`` **7.0.2** (no API change, but locators recording may act
+    differently)
+
+.. warning::
+  This is a **breaking** change!
+
+  - We don't support *optional* packages anymore. Migrate your *conda.yaml* if needed:
+
+    - ``rpaframework[aws]`` -> ``rpaframework-aws==5.2.4``
+    - ``rpaframework[cv]`` -> ``rpaframework-recognition==5.0.1``
+    - ``rpaframework[playwright]`` -> ``robotframework-browser==14.4.1``
+    - And of course, don't forget about ``rpaframework==20.0.0``.
+
+  - **RPA.Desktop** keywords related to mouse and keyboard may behave differently due
+    to their ``pynput`` dependency recent upgrade.
+  - Extra dependencies are pinned to the following minimum versions:
+
+    - ``requests = "^2.28.1"``
+    - ``oauthlib = "^3.2.2"``
+    - ``requests-oauthlib = "^1.3.1"``
+
+  - Misleading keyword ``On Token Refresh`` was removed from the **RPA.Email.Exchange**
+    library. (wasn't meant to be a keyword at all)
+
+19.4.2 - 21 Dec 2022
+--------------------
+
+- Library **RPA.Hubspot** (:issue:`740`): Deprecate keyword ``Auth With API Key`` in
+  favor to ``Auth With Token``. (read how to generate one with
+  `Private Apps <https://developers.hubspot.com/docs/api/private-apps>`_)
+
+19.4.1 - 09 Dec 2022
+--------------------
+
+- Library **RPA.Email.Exchange** (:issue:`736`): Fix token auto-refresh for
+  single-tenant Client apps.
+
+19.4.0 - 08 Dec 2022
+--------------------
+
+- Added native OAuth2 support (:pr:`706`) with the following keywords:
+
+  - ``Generate OAuth URL``
+  - ``Get OAuth Token``
+  - ``Refresh OAuth Token``
+
+  Available in libraries:
+
+    - **RPA.Email.Exchange** (:issue:`604`)
+    - **RPA.Email.ImapSmtp** (additional keyword ``Generate OAuth String``)
+    - **RPA.MFA** (:issue:`658`)
+
+  Check the updated OAuth2 E-mail sending Portal example on: https://robocorp.com/portal/robot/robocorp/example-oauth-email
+
+19.3.1 - 29 Nov 2022
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`710`): Fix bug with `auto_close=${False}`
+  param when importing the library, which still had the browser closed at the end of
+  the session. (now it's left open if such parameter is set to `False`)
+
+19.3.0 - 28 Nov 2022
+--------------------
+
+- Library **RPA.Slack** (:issue:`711`): New keyword ``Slack Raw Message`` adds support for
+  ``blocks`` message property by allowing user to set message dictionary.
+- Library **RPA.Excel.Files** (:pr:`712`): Add new keywords for the library.
+
+  List of new `RPA.Excel.Files` keywords:
+
+  - Set Cell Formula
+  - Copy Cell Values
+  - Delete Columns
+  - Delete Rows
+  - Insert Rows Before
+  - Insert Rows After
+  - Insert Columns After
+  - Insert Columns Before
+  - Move Range
+  - Clear Cell Range
+  - Set Styles
+  - Auto Size Columns
+  - Hide Columns
+  - Show Columns
+  - Set Cell Values
+
+19.2.0 - 17 Nov 2022
+--------------------
+
+- Library **RPA.Windows** (:pr:`693`):
+
+  - Keyword ``Get Elements`` supports now parameter `siblings_only` which filters for
+    elements found on the same level with the first match. This is ON by default; set
+    it to `False` for a global search, which retrieves all the found elements matching
+    the criteria instead.
+  - Keyword ``Get Value`` returns `None` when there's no value to retrieve at all.
+  - Fix sibling element searching in keyword ``Get Elements`` when there's no
+    comparison strategy identified.
+
+19.1.2 - 17 Nov 2022
+--------------------
+
+- Library **RPA.Robocorp.WorkItems** (:pr:`692`): Allow `email` input Work Item
+  variable in the absence of the Control Room controlled one during e-mail triggering.
 
 19.1.1 - 04 Nov 2022
 --------------------
 
 - Library **RPA.Outlook.RPA** (:pr:`687`): Fix ``pywintypesXX.dll`` errors.
-
 
 19.1.0 - 03 Nov 2022
 --------------------

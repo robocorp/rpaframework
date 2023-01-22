@@ -92,9 +92,9 @@ class Images:
 
     For more robust and faster template matching, the library can use a combination
     of `NumPy <https://numpy.org/>`_ and `OpenCV <https://opencv.org/>`_.
-    They can be installed by opting in to the `cv` dependency:
+    They can be installed by opting in to the recognition dependency:
 
-    ``pip install rpaframework[cv]``
+    ``pip install rpaframework rpaframework-recognition``
 
     **Examples**
 

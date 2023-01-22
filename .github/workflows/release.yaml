@@ -10,6 +10,7 @@ on:
         default: 'rpaframework'
         options:
         - rpaframework
+        - rpaframework-aws
         - rpaframework-core
         - rpaframework-dialogs
         - rpaframework-google

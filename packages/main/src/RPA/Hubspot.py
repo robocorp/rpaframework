@@ -1,10 +1,42 @@
 # pylint: disable=too-many-lines
-from enum import Enum
 import logging
 import math
-
 import traceback
-from typing import Any, List, Dict, Optional, Tuple, Union
+from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import requests
+
+# pylint: disable=no-name-in-module
+from hubspot import HubSpot as HubSpotApi
+from hubspot.crm.associations.models import (
+    AssociatedId,
+    BatchInputPublicObjectId,
+    PublicObjectId,
+)
+from hubspot.crm.objects.models import (
+    BatchInputSimplePublicObjectBatchInput as UpdateBatchInput,
+)
+from hubspot.crm.objects.models import (
+    BatchInputSimplePublicObjectInput as CreateBatchInput,
+)
+from hubspot.crm.objects.models import (
+    BatchReadInputSimplePublicObjectId,
+    Filter,
+    FilterGroup,
+)
+from hubspot.crm.objects.models import PublicObjectSearchRequest as ObjectSearchRequest
+from hubspot.crm.objects.models import SimplePublicObject
+from hubspot.crm.objects.models import SimplePublicObjectBatchInput as UpdateObjectInput
+from hubspot.crm.objects.models import SimplePublicObjectId
+from hubspot.crm.objects.models import SimplePublicObjectInput as CreateObjectInput
+from hubspot.crm.objects.models import SimplePublicObjectWithAssociations
+from hubspot.crm.owners.models import PublicOwner
+from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiException
+from hubspot.crm.pipelines.models import Pipeline
+from hubspot.crm.schemas.exceptions import ApiException as SchemaApiException
+from hubspot.crm.schemas.models import ObjectSchema
+from robot.api.deco import keyword, library
 from tenacity import (
     before_sleep_log,
     retry,
@@ -13,37 +45,7 @@ from tenacity import (
     wait_exponential,
 )
 
-from robot.api.deco import keyword, library
-
-import requests
-
-# pylint: disable=no-name-in-module
-from hubspot import HubSpot as HubSpotApi
-from hubspot.crm.objects.models import (
-    PublicObjectSearchRequest as ObjectSearchRequest,
-    FilterGroup,
-    Filter,
-    SimplePublicObject,
-    SimplePublicObjectWithAssociations,
-    BatchReadInputSimplePublicObjectId,
-    SimplePublicObjectId,
-    SimplePublicObjectInput as CreateObjectInput,
-    SimplePublicObjectBatchInput as UpdateObjectInput,
-    BatchInputSimplePublicObjectInput as CreateBatchInput,
-    BatchInputSimplePublicObjectBatchInput as UpdateBatchInput,
-)
-from hubspot.crm.schemas.models import ObjectSchema
-from hubspot.crm.pipelines.models import (
-    Pipeline,
-)
-from hubspot.crm.associations.models import (
-    BatchInputPublicObjectId,
-    PublicObjectId,
-    AssociatedId,
-)
-from hubspot.crm.owners.models import PublicOwner
-from hubspot.crm.schemas.exceptions import ApiException as SchemaApiException
-from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiException
+from RPA.core.logger import deprecation
 
 
 class HubSpotAuthenticationError(Exception):
@@ -1024,9 +1026,11 @@ class Hubspot:
         keyword verifies the provided credentials by retrieving the
         custom object schema from the API.
 
+        Learn more about Private Apps:
+        https://developers.hubspot.com/docs/api/private-apps
+
         :param access_token: The access token created for the Private App
             in your HubSpot account.
-
         """
         if self.hs is None or getattr(self.hs, "access_token", "") != access_token:
             self.hs = HubSpotApi(access_token=access_token)
@@ -1039,19 +1043,21 @@ class Hubspot:
                     ) from e
                 else:
                     raise e
-            self.logger.info("Authentication to Hubspot CRM API with token successful.")
+            self.logger.info("Authentication to Hubspot CRM API with token succeeded.")
         else:
             self.logger.info("Already authenticated with access token.")
 
     @keyword
     def auth_with_api_key(self, api_key: str) -> None:
-        """Authorize to HubSpot with an account-wide API key. This
+        """Deprecated! Use ``Auth With Token`` instead.
+
+        Authorize to HubSpot with an account-wide API key. This
         keyword verifies the provided credentials by retrieving the
         custom object schema from the API.
 
-        :param api_key: The API key for the account to autheniticate to.
-
+        :param api_key: The API key for the account to authenticate to.
         """
+        deprecation("Use `Auth With Token` as HubSpot removed support for API keys.")
         if self.hs is None or getattr(self.hs, "api_key", "") != api_key:
             self.hs = HubSpotApi(api_key=api_key)
             try:

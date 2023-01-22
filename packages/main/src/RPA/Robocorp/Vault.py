@@ -510,7 +510,7 @@ class Vault:
         def modifying_secrets():
             secret = VAULT.get_secret("swaglabs")
             secret["username"] = "nobody"
-            secrets.set_secret(secret)
+            VAULT.set_secret(secret)
 
     """  # noqa: E501
 

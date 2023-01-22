@@ -129,7 +129,7 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
     driver = manager.driver
     resolved_os = getattr(driver, "os_type", driver.get_os_type())
     os_name = get_os_name()
-    if os_name not in resolved_os:
+    if os_name.lower() not in resolved_os.lower():
         LOGGER.warning(
             "Attempting to download incompatible driver for OS %r on OS %r! Skip",
             resolved_os,
