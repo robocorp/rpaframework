@@ -46,29 +46,95 @@ Time difference in months
     ${diff}=    Time difference in months    2022-05-21T22:00:00    2023-08-21T22:00:00
     Should Be Equal As Integers    ${diff}[months]    15
 
-Previous business day
+Test Getting Previous business day for Finland
     ${previous}=    Return Previous Business Day    2022-11-14    FI
-    Should Be Equal As Strings    2022-11-11T00:00:00+00:00    ${previous}
+    Should Be Equal As Strings    2022-11-11    ${previous}
+
+Test Getting Previous business day for Finland - Midsummer 2023
+    ${previous}=    Return Previous Business Day    2023-06-26    FI
+    Should Be Equal As Strings    2023-06-22    ${previous}
+
+Test Getting Previous business day for Finland - New Year 2024
+    ${previous}=    Return Previous Business Day    2024-01-01    FI
+    Should Be Equal As Strings    2023-12-29    ${previous}
+
+Test Getting Previous business day for Finland With Return Format Set
     ${previous}=    Return Previous Business Day    2022-11-14    FI    return_format=YYYY-MM-DD
     Should Be Equal As Strings    2022-11-11    ${previous}
 
-Test Time difference
+Test Getting Previous business day for USA - Memorial Day 2023
+    ${previous}=    Return Previous Business Day    2023-05-30    US
+    Should Be Equal As Strings    2023-05-26    ${previous}
+
+Test Time difference Expecting Negative Difference
     ${diff}=    Time Difference    14:30    12:01
-    Log To Console    ${diff}
+    &{expected}=    Get Default Difference Dict
+    Set To Dictionary    ${expected}    end_date_is_later=${FALSE}    hours=${-2}    minutes=${-29}
+    Dictionaries Should Be Equal    ${diff}    ${expected}
+
+Test Time difference Expecting Positive Difference
     ${diff}=    Time Difference    14:30    14:32
-    Log To Console    ${diff}
-    ${is_it}=    Is 13:30 Later Than 14:00
-    Log To Console    IS IT: ${is_it} (Should Be: False)
-    ${is_it}=    Is 14:01 Later Than 14:00
-    Log To Console    IS IT: ${is_it} (Should Be: True)
-    ${is_it}=    Is 14:00 Later Than 14:00
-    Log To Console    IS IT: ${is_it} (Should Be: False)
-    ${is_it}=    Is 14:30 Before 14:00
-    Log To Console    IS IT: ${is_it} (Should Be: False)
-    ${is_it}=    Is 13:30 Before 14:00
-    Log To Console    IS IT: ${is_it} (Should Be: True)
-    ${is_it}=    Is 14:00 Before 14:00
-    Log To Console    IS IT: ${is_it} (Should Be: False)
+    &{expected}=    Get Default Difference Dict
+    Set To Dictionary    ${expected}    hours=${0}    minutes=${2}
+    Dictionaries Should Be Equal    ${diff}    ${expected}
+
+Test Time is not later with greater than character
+    ${is_it}=    Is Time 13:30 > 14:00
+    Should Not Be True    ${is_it}
+
+Test Time is later with greater than character
+    ${is_it}=    Is Time 23:30 > 14:00
+    Should Be True    ${is_it}
+
+Test Time is before with smaller than character
+    ${is_it}=    Is Time 13:30 < 14:00
+    Should Be True    ${is_it}
+
+Test Time is not before with smaller than character
+    ${is_it}=    Is Time 19:30 < 14:00
+    Should Not Be True    ${is_it}
+
+Test Time is before with smaller than character and variables
+    ${first_date}=    Set Variable    04:25
+    ${second_date}=    Set Variable    09:01
+    ${is_it}=    Is Time ${first_date} < ${second_date}
+    Should Be True    ${is_it}
+
+Test Time is not before with smaller than character and variables
+    ${first_date}=    Set Variable    21:00
+    ${second_date}=    Set Variable    09:01
+    ${is_it}=    Is Time ${first_date} < ${second_date}
+    Should Not Be True    ${is_it}
+
+Test Time is before using arguments normally
+    ${first_date}=    Set Variable    04:25
+    ${second_date}=    Set Variable    09:01
+    ${is_it}=    Is Time Before Than    ${first_date}    ${second_date}
+    Should Be True    ${is_it}
+
+Test Getting First Business Day of the Month - February 2023 Finland
+    ${result}=    First Business Day of the Month    2023-02-01    FI
+    Should Be Equal As Strings    2023-02-01    ${result}
+
+Test Getting First Business Day of the Month - April 2023 Finland
+    ${result}=    First Business Day of the Month    2023-04-01    FI
+    Should Be Equal As Strings    2023-04-03    ${result}
+
+Test Getting Last Business Day of the Month - April 2023 Finland
+    ${result}=    Last Business Day of the Month    2023-04-01    FI
+    Should Be Equal As Strings    2023-04-28    ${result}
+
+Test Getting Last Business Day of the Month - July 2023 US
+    ${result}=    Last Business Day of the Month    2023-07-01    US
+    Should Be Equal As Strings    2023-07-31    ${result}
+
+Test Getting Last Business Day of the Month - December 2023 US
+    ${result}=    Last Business Day of the Month    2023-12-12    US
+    Should Be Equal As Strings    2023-12-29    ${result}
+
+Test Getting Next Business Day of the Month - After Christmas 2023 Finland
+    ${result}=    Return Next Business Day    2023-12-22    FI
+    Should Be Equal As Strings    2023-12-27    ${result}
 
 
 *** Keywords ***
@@ -76,11 +142,3 @@ Get Default Difference Dict
     &{dict}=    Create Dictionary    end_date_is_later=${TRUE}    years=${0}
     ...    months=${0}    days=${0}    hours=${0}    minutes=${0}    seconds=${0}
     RETURN    ${dict}
-
-Is ${end_date} Later Than ${start_date}
-    ${diff}=    Time Difference    ${start_date}    ${end_date}
-    RETURN    ${diff}[end_date_is_later]
-
-Is ${end_date} Before ${start_date}
-    ${diff}=    Time Difference    ${end_date}    ${start_date}
-    RETURN    ${diff}[end_date_is_later]

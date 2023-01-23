@@ -1,11 +1,14 @@
-from datetime import date
+from datetime import date as datetime_date
+
 import logging
 from typing import Union, List
 
 import pendulum as pdl
 from pendulum.parsing.exceptions import ParserError
 from pendulum.datetime import DateTime as PendulumDateTime
+from pendulum import timezone
 
+from robot.api.deco import keyword, library
 import holidays
 
 parsing_error_message = """Could not parse date '%s'.
@@ -16,9 +19,10 @@ date format. See https://pendulum.eustace.io/docs/#tokens for
 valid tokens for the date format.
 """
 
-DTFormat = Union[str, date, PendulumDateTime]
+DTFormat = Union[str, datetime_date, PendulumDateTime]
 
 
+@library(scope="GLOBAL", doc_format="REST")
 class DateTime:
     """Library for handling different operations for date and time
     handling especially in business days and holiday contexts.
@@ -35,23 +39,23 @@ class DateTime:
     for specific keyword if that has a ``locale`` parameter.
     """
 
-    ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
-
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self.BUSINESS_DAYS = [1, 2, 3, 4, 5]  # Monday - Friday
 
+    @keyword
     def set_locale(self, locale_name: str):
         previous = pdl.get_locale()
         pdl.set_locale(locale_name)
         return previous
 
+    @keyword
     def set_business_days(self, days: List[int]) -> List:
         previous = self.BUSINESS_DAYS
         self.BUSINESS_DAYS = days
         return previous
 
+    @keyword
     def time_difference(
         self,
         start_date: DTFormat,
@@ -96,6 +100,7 @@ class DateTime:
             else abs(diff.seconds) % 60 * modifier_for_seconds,
         }
 
+    @keyword
     def create_datetime(
         self,
         date_string: str,
@@ -127,6 +132,7 @@ class DateTime:
             )
         return result.format(date_format_out) if date_format_out else result
 
+    @keyword
     def time_now(self, timezone: str = None):
         """Return current datetime
 
@@ -147,6 +153,7 @@ class DateTime:
         except ParserError as err:
             raise ValueError(parsing_error_message % date_string) from err
 
+    @keyword
     def time_difference_in_months(
         self,
         start_date: DTFormat,
@@ -156,13 +163,36 @@ class DateTime:
         diff["months"] += diff["years"] * 12
         return diff
 
+    @keyword
     def return_previous_business_day(
+        self,
+        given_date: DTFormat,
+        country: str = None,
+        return_format: str = "YYYY-MM-DD",
+        locale: str = None,
+    ):
+        return self._return_business_day(given_date, country, return_format, locale, -1)
+
+    @keyword
+    def return_next_business_day(
+        self,
+        given_date: DTFormat,
+        country: str = None,
+        return_format: str = "YYYY-MM-DD",
+        locale: str = None,
+    ):
+        return self._return_business_day(given_date, country, return_format, locale, 1)
+
+    def _return_business_day(
         self,
         given_date: DTFormat,
         country: str = None,
         return_format: str = None,
         locale: str = None,
+        direction: int = -1,
     ):
+        pass
+
         if isinstance(given_date, str):
             given_dt = pdl.parse(given_date, strict=False)
         else:
@@ -170,8 +200,8 @@ class DateTime:
         previous_dt = given_dt
         while True:
             is_business_day = False
-            previous_dt = previous_dt.add(days=-1)
-            prev_day = date(previous_dt.year, previous_dt.month, previous_dt.day)
+            previous_dt = previous_dt.add(days=direction)
+            prev_day = pdl.date(previous_dt.year, previous_dt.month, previous_dt.day)
             if previous_dt.day_of_week in self.BUSINESS_DAYS:
                 is_business_day = True
             if country and is_business_day:
@@ -184,56 +214,118 @@ class DateTime:
         else:
             return previous_dt
 
-    def should_be_the_same_day(
-        self,
-        first_date: DTFormat,
-        second_date: DTFormat,
-    ):
-        """Asserts that two given dates are from a same date.
-
-        :param first_date: _description_
-        :param second_date: _description_
-        """
-        if isinstance(first_date, str):
-            first_d = self._parse_datetime_string_to_pendulum_datetime(first_date)
-        else:
-            first_d = first_date
-        if isinstance(second_date, str):
-            second_d = self._parse_datetime_string_to_pendulum_datetime(second_date)
-        else:
-            second_d = first_date
-        diff_in_days = first_d.diff(second_d).in_days()
-        assert diff_in_days == 0, f"difference was {abs(diff_in_days)} days"
-
     def add_time_to_date(self):
+        """Keyword from original DateTime library
+
+        :raises NotImplementedError: _description_
+        """
         raise NotImplementedError
 
     def add_time_to_time(self):
+        """Keyword from original DateTime library
+
+        :raises NotImplementedError: _description_
+        """
         raise NotImplementedError
 
     def convert_date(self):
+        """Keyword from original DateTime library
+
+        :raises NotImplementedError: _description_
+        """
         raise NotImplementedError
 
     def convert_time(self):
+        """Keyword from original DateTime library
+
+        :raises NotImplementedError: _description_
+        """
         raise NotImplementedError
 
     def get_current_date(self):
+        """Keyword from original DateTime library
+
+        :raises NotImplementedError: _description_
+        """
         raise NotImplementedError
 
     def subtract_date_from_date(self):
+        """Keyword from original DateTime library
+
+        :raises NotImplementedError: _description_
+        """
         raise NotImplementedError
 
     def substract_time_from_date(self):
+        """Keyword from original DateTime library
+
+        :raises NotImplementedError: _description_
+        """
         raise NotImplementedError
 
     def subtract_time_from_time(self):
+        """Keyword from original DateTime library
+
+        :raises NotImplementedError: _description_
+        """
         raise NotImplementedError
 
-    def first_business_day_of_the_month(self, date: DTFormat):
-        raise NotImplementedError
+    @keyword
+    def first_business_day_of_the_month(self, date: DTFormat, country: str = None):
+        if isinstance(date, str):
+            given_dt = pdl.parse(date, strict=False)
+        else:
+            given_dt = date
+        year, current_month = given_dt.year, given_dt.month
+        day = 2
+        for _ in range(32):
+            day_to_check = pdl.date(year, current_month, day)
+            result = self.return_previous_business_day(
+                day_to_check, country=country, return_format=None
+            )
+            if result.month == current_month:
+                return result
+            else:
+                day += 1
 
-    def last_business_day_of_the_month(self, date: DTFormat):
-        raise NotImplementedError
+    @keyword
+    def last_business_day_of_the_month(self, date: DTFormat, country: str = None):
+        if isinstance(date, str):
+            given_dt = pdl.parse(date, strict=False)
+        else:
+            given_dt = date
+        year, current_month = given_dt.year, given_dt.month
+        day = 1
+        for _ in range(32):
+            try:
+                if day == 1:
+                    next_month = given_dt.set(day=1).add(months=1)
+                    day_to_check = pdl.date(next_month.year, next_month.month, day)
+                    day = 31
+                else:
+                    day_to_check = pdl.date(year, current_month, day)
+                result = self.return_previous_business_day(
+                    day_to_check, country=country, return_format=None
+                )
+                if result.month == current_month:
+                    return result
+                else:
+                    day -= 1
+            except ValueError:
+                day -= 1
 
     def order_list_of_datetimes(self, dates: List[DTFormat]) -> List:
         raise NotImplementedError
+
+    @keyword(name="is time ${time1} < ${time2}")
+    def _rfw_is_time_before_than(self, time1: DTFormat, time2: DTFormat):
+        return self.is_time_before_than(time1, time2)
+
+    @keyword(name="is time ${time1} > ${time2}")
+    def _rfw_is_time_after_than(self, time1: DTFormat, time2: DTFormat):
+        return not self.is_time_before_than(time1, time2)
+
+    @keyword
+    def is_time_before_than(self, time1: DTFormat, time2: DTFormat):
+        diff = self.time_difference(time1, time2)
+        return diff["end_date_is_later"]
