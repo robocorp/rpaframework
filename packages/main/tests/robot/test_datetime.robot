@@ -172,6 +172,23 @@ Test ordering list of dates
     ${result}=    Order List Of Dates    ${dates}    return_format=YYYY-MM-DD
     Lists Should Be Equal    ${result}    ${expected}
 
+Test ordering list of dates latest first
+    @{dates}=    Create List
+    ...    2023-07-05 14:20
+    ...    2023-02-05
+    ...    2023-04-03
+    ...    2023-07-05 14:49
+    ...    2023-01-01
+    @{expected}=    Create List
+    ...    2023-07-05 14:49
+    ...    2023-07-05 14:20
+    ...    2023-04-03 00:00
+    ...    2023-02-05 00:00
+    ...    2023-01-01 00:00
+
+    ${result}=    Order List Of Dates    ${dates}    return_format=YYYY-MM-DD HH:mm    reverse=True
+    Lists Should Be Equal    ${result}    ${expected}
+
 
 *** Keywords ***
 Get Default Difference Dict

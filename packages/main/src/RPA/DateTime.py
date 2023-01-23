@@ -347,10 +347,10 @@ class DateTime:
 
     @keyword
     def order_list_of_dates(
-        self, dates: List[DTFormat], return_format: str = None
+        self, dates: List[DTFormat], return_format: str = None, reverse: bool = False
     ) -> List:
         dt_list = [self.create_datetime(date) for date in dates]
-        result = sorted(dt_list)
+        result = sorted(dt_list, reverse=reverse)
         return [d.format(return_format) for d in result] if return_format else result
 
     @keyword(name="is time ${time1} < ${time2}")
