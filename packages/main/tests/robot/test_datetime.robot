@@ -100,6 +100,16 @@ Test Time is before with smaller than character and variables
     ${is_it}=    Is Time ${first_date} < ${second_date}
     Should Be True    ${is_it}
 
+Test longer formatted time is before with smaller than character and variables
+    ${first_date}=    Set Variable    2023-01-23 04:25
+    ${second_date}=    Set Variable    2023-01-23 09:01
+    ${is_it}=    Is Time ${first_date} < ${second_date}
+    Should Be True    ${is_it}
+
+Test longer formatted time is after with bigger than character
+    ${is_it}=    Is Time 2023-01-23 09:01 > 2023-01-23 04:25
+    Should Be True    ${is_it}
+
 Test Time is not before with smaller than character and variables
     ${first_date}=    Set Variable    21:00
     ${second_date}=    Set Variable    09:01

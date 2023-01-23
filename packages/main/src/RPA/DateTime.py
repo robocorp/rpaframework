@@ -6,7 +6,6 @@ from typing import Union, List
 import pendulum as pdl
 from pendulum.parsing.exceptions import ParserError
 from pendulum.datetime import DateTime as PendulumDateTime
-from pendulum import timezone
 
 from robot.api.deco import keyword, library
 import holidays
@@ -191,8 +190,6 @@ class DateTime:
         locale: str = None,
         direction: int = -1,
     ):
-        pass
-
         if isinstance(given_date, str):
             given_dt = pdl.parse(given_date, strict=False)
         else:
@@ -272,6 +269,7 @@ class DateTime:
 
     @keyword
     def first_business_day_of_the_month(self, date: DTFormat, country: str = None):
+        result = None
         if isinstance(date, str):
             given_dt = pdl.parse(date, strict=False)
         else:
@@ -284,12 +282,14 @@ class DateTime:
                 day_to_check, country=country, return_format=None
             )
             if result.month == current_month:
-                return result
+                break
             else:
                 day += 1
+        return result
 
     @keyword
     def last_business_day_of_the_month(self, date: DTFormat, country: str = None):
+        result = None
         if isinstance(date, str):
             given_dt = pdl.parse(date, strict=False)
         else:
@@ -308,11 +308,12 @@ class DateTime:
                     day_to_check, country=country, return_format=None
                 )
                 if result.month == current_month:
-                    return result
+                    break
                 else:
                     day -= 1
             except ValueError:
                 day -= 1
+        return result
 
     def order_list_of_datetimes(self, dates: List[DTFormat]) -> List:
         raise NotImplementedError
