@@ -156,6 +156,22 @@ Test Getting Next Business Day of the Month - After Christmas 2023 Finland
     ${result}=    Return Next Business Day    2023-12-22    FI
     Should Be Equal As Strings    2023-12-27    ${result}
 
+Test ordering list of dates
+    @{dates}=    Create List
+    ...    2023-07-03
+    ...    2023-02-05
+    ...    2023-04-03
+    ...    2023-07-05
+    ...    2023-01-01
+    @{expected}=    Create List
+    ...    2023-01-01
+    ...    2023-02-05
+    ...    2023-04-03
+    ...    2023-07-03
+    ...    2023-07-05
+    ${result}=    Order List Of Dates    ${dates}    return_format=YYYY-MM-DD
+    Lists Should Be Equal    ${result}    ${expected}
+
 
 *** Keywords ***
 Get Default Difference Dict

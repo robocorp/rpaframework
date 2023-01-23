@@ -346,8 +346,12 @@ class DateTime:
         return result
 
     @keyword
-    def order_list_of_dates(self, dates: List[DTFormat]) -> List:
-        raise NotImplementedError
+    def order_list_of_dates(
+        self, dates: List[DTFormat], return_format: str = None
+    ) -> List:
+        dt_list = [self.create_datetime(date) for date in dates]
+        result = sorted(dt_list)
+        return [d.format(return_format) for d in result] if return_format else result
 
     @keyword(name="is time ${time1} < ${time2}")
     def _rfw_is_time_before_than(self, time1: DTFormat, time2: DTFormat):
