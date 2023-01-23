@@ -158,9 +158,39 @@ class DateTime:
         start_date: DTFormat,
         end_date: DTFormat,
     ):
-        diff = self.time_difference(start_date, end_date)
-        diff["months"] += diff["years"] * 12
-        return diff
+        start_date_dt = self.create_datetime(start_date)
+        end_date_dt = self.create_datetime(end_date)
+        return end_date_dt.diff(start_date_dt).in_months()
+
+    @keyword
+    def time_difference_in_days(
+        self,
+        start_date: DTFormat,
+        end_date: DTFormat,
+    ):
+        start_date_dt = self.create_datetime(start_date)
+        end_date_dt = self.create_datetime(end_date)
+        return end_date_dt.diff(start_date_dt).in_days()
+
+    @keyword
+    def time_difference_in_hours(
+        self,
+        start_date: DTFormat,
+        end_date: DTFormat,
+    ):
+        start_date_dt = self.create_datetime(start_date)
+        end_date_dt = self.create_datetime(end_date)
+        return end_date_dt.diff(start_date_dt).in_hours()
+
+    @keyword
+    def time_difference_in_minutes(
+        self,
+        start_date: DTFormat,
+        end_date: DTFormat,
+    ):
+        start_date_dt = self.create_datetime(start_date)
+        end_date_dt = self.create_datetime(end_date)
+        return end_date_dt.diff(start_date_dt).in_minutes()
 
     @keyword
     def return_previous_business_day(

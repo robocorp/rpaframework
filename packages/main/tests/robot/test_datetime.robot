@@ -40,11 +40,21 @@ Time difference when dates are in Python datetime format
     Set To Dictionary    ${expected_diff}    days=${1}
     Dictionaries Should Be Equal    ${diff}    ${expected_diff}
 
-Time difference in months
-    ${diff}=    Time difference in months    2022-05-21T22:00:00    2023-05-21T22:00:00
-    Should Be Equal As Integers    ${diff}[months]    12
+Test time difference in months
     ${diff}=    Time difference in months    2022-05-21T22:00:00    2023-08-21T22:00:00
-    Should Be Equal As Integers    ${diff}[months]    15
+    Should Be Equal As Integers    ${diff}    15
+
+Test time difference in days
+    ${diff}=    Time difference in days    2023-05-21    2023-05-29
+    Should Be Equal As Integers    ${diff}    8
+
+Test time difference in hours
+    ${diff}=    Time difference in hours    2023-08-21T22:00:00    2023-08-22T04:00:00
+    Should Be Equal As Integers    ${diff}    6
+
+Test time difference in minutes
+    ${diff}=    Time difference in minutes    2023-08-21T22:00:00    2023-08-22T04:00:00
+    Should Be Equal As Integers    ${diff}    360
 
 Test Getting Previous business day for Finland
     ${previous}=    Return Previous Business Day    2022-11-14    FI
