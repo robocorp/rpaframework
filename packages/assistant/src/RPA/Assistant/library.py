@@ -926,8 +926,7 @@ class Assistant:
         # FIXME: support timeout
 
         self.add_submit_buttons(["Submit", "Close"], "Submit")
-        self._client.display_flet_window(**options)
-        return self._client.results
+        return self.run_dialog(**options)
 
     @keyword("Refresh Dialog", tags=["dialog"])
     def refresh_dialog(self):
