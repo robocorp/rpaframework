@@ -315,7 +315,8 @@ class DateTime:
                 day -= 1
         return result
 
-    def order_list_of_datetimes(self, dates: List[DTFormat]) -> List:
+    @keyword
+    def order_list_of_dates(self, dates: List[DTFormat]) -> List:
         raise NotImplementedError
 
     @keyword(name="is time ${time1} < ${time2}")
