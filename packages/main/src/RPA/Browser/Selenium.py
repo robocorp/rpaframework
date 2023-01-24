@@ -34,7 +34,6 @@ from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCr
 
 from RPA.core import notebook
 from RPA.core import webdriver as core_webdriver
-from RPA.core.robocorp import browser_preferences
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
 
 
@@ -63,6 +62,28 @@ def ensure_scheme(url: str, default: Optional[str]) -> str:
         url = urllib.parse.urlunsplit(parts)
 
     return url
+
+
+def browser_preferences() -> Dict[str, List[str]]:
+    """Get lists of browser preferences for OS.
+    Prefers environment variable RPA_SELENIUM_BROWSER_ORDER, if defined.
+    """
+    browsers = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
+    if browsers:
+        preferences = {
+            "default": [
+                browser.strip()
+                for browser in os.getenv("RPA_SELENIUM_BROWSER_ORDER", "").split(sep=",")
+            ],
+        }
+    else:
+        preferences = {
+            "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+            "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+            "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
+            "default": ["Chrome", "Firefox"],
+        }
+    return preferences
 
 
 class BrowserNotFoundError(ValueError):
