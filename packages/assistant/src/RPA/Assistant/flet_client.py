@@ -23,15 +23,16 @@ def resolve_absolute_position(
         left_coordinate = 0
         top_coordinate = 0
         return (left_coordinate, top_coordinate)
-    elif location is Location.BottomRight:
-        left_coordinate = screen_width
-        top_coordinate = screen_height
-        return (
-            left_coordinate - window_width,
-            top_coordinate - window_height,
-        )
-
-    return (0, 0)
+    else:
+        raise ValueError("Locations other than Center or TopLeft are not yet supported")
+    # TODO: implement (BottomLeft, BottomRight, TopRight)
+    # elif location is Location.BottomRight:
+    #     left_coordinate = screen_width
+    #     top_coordinate = screen_height
+    #     return (
+    #         left_coordinate - window_width,
+    #         top_coordinate - window_height,
+    #     )
 
 
 class FletEvent:

@@ -503,6 +503,7 @@ class Assistant:
         # handlers to record values, so default value otherwise will be missed
         # TODO: Implement the rows support
         self._client.results[name] = placeholder
+        # TODO: add robot keyword support e.g. if is keyword name use BuiltIn().run_keyword()
         self._validations[name] = validation
 
         self._client.add_element(
@@ -882,8 +883,7 @@ class Assistant:
         :param height: Height of dialog (in pixels or 'AUTO')
         :param width:  Width of dialog (in pixels)
         :param on_top: Show dialog always on top of other windows
-        :param location: Where to place the dialog
-        (options are Center, TopLeft, BottomLeft, BottomRight, TopRight)
+        :param location: Where to place the dialog (options are Center, TopLeft)
 
 
         Returns a result object with all input values.
