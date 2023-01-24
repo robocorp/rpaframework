@@ -32,7 +32,7 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.date_picker import DatePicker
-from RPA.Assistant.dialog_types import Icon, Options, Result, Size, Location
+from RPA.Assistant.types import Icon, Options, Result, Size, Location
 from RPA.Assistant.utils import optional_str, to_options
 
 

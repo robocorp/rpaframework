@@ -1,5 +1,5 @@
 import RPA.Assistant
-from RPA.Assistant.dialog_types import Icon
+from RPA.Assistant.types import Icon, Location
 
 
 def next_ui(results):

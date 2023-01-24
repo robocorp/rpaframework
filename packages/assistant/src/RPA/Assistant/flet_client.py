@@ -8,7 +8,7 @@ import flet
 from flet import Control, Page, ScrollMode
 from flet.utils import is_windows
 
-from RPA.Assistant.dialog_types import Result, Location
+from RPA.Assistant.types import Result, Location
 
 
 def resolve_absolute_position(
