@@ -2,13 +2,36 @@ import atexit
 import logging
 import os
 import signal
-from typing import Callable, List, Optional, Union
+from typing import Callable, List, Optional, Union, Literal, Tuple
 
 import flet
 from flet import Control, Page, ScrollMode
 from flet.utils import is_windows
 
-from RPA.Assistant.dialog_types import Result
+from RPA.Assistant.dialog_types import Result, Location
+
+
+def resolve_absolute_position(
+    location: Location,
+    window_height: int,
+    window_width: int,
+    screen_height: int,
+    screen_width: int,
+) -> Tuple[int, int]:
+
+    if location is Location.TopLeft:
+        left_coordinate = 0
+        top_coordinate = 0
+        return (left_coordinate, top_coordinate)
+    elif location is Location.BottomRight:
+        left_coordinate = screen_width
+        top_coordinate = screen_height
+        return (
+            left_coordinate - window_width,
+            top_coordinate - window_height,
+        )
+
+    return (0, 0)
 
 
 class FletEvent:
@@ -78,10 +101,11 @@ class FletClient:
     def _show_flet(
         self,
         target,
-        title: str = "Dialog",
-        height: Union[int, str] = "AUTO",
-        width: int = 480,
-        on_top: bool = False,
+        title: str,
+        height: Union[int, Literal["AUTO"]],
+        width: int,
+        on_top: bool,
+        location: Location,
     ):
         def on_session_created(conn, session_data):
             page = Page(conn, session_data.sessionID)
@@ -90,6 +114,23 @@ class FletClient:
                 page.window_height = height
             page.window_width = width
             page.window_always_on_top = on_top
+
+            # TODO: do we even allow None as argument?
+            # or some Location.AUTO which would let OS handle position?
+            if location is not None:
+                if location is Location.Center:
+                    page.window_center()
+                else:
+                    coordinates = resolve_absolute_position(
+                        location=location,
+                        window_height=int(page.window_height or 0),
+                        window_width=int(page.window_width or 0),
+                        # FIXME: how to get screen_height and width from flet
+                        screen_height=0,
+                        screen_width=0,
+                    )
+                    page.window_left = coordinates[0]
+                    page.window_top = coordinates[1]
             conn.sessions[session_data.sessionID] = page
             try:
                 assert target is not None
@@ -126,12 +167,13 @@ class FletClient:
 
     def display_flet_window(
         self,
-        title: str = "Dialog",
-        height: Union[int, str] = "AUTO",
-        width: int = 480,
-        on_top: bool = False,
+        title: str,
+        height: Union[int, Literal["AUTO"]],
+        width: int,
+        on_top: bool,
+        location: Location,
     ):
-        self._show_flet(self._execute(), title, height, width, on_top)
+        self._show_flet(self._execute(), title, height, width, on_top, location)
 
     def clear_elements(self):
         if self.page:

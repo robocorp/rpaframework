@@ -5,7 +5,7 @@ import platform
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
 
 import flet
 from flet import (
@@ -32,7 +32,7 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.date_picker import DatePicker
-from RPA.Assistant.dialog_types import Icon, Options, Result, Size
+from RPA.Assistant.dialog_types import Icon, Options, Result, Size, Location
 from RPA.Assistant.utils import optional_str, to_options
 
 
@@ -478,6 +478,7 @@ class Assistant:
         :param name:        Name of result field
         :param label:       Label for field
         :param placeholder: Placeholder text in input field
+        :param validation   Validation function for the input field
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -868,9 +869,10 @@ class Assistant:
         self,
         timeout: int = 180,
         title: str = "Dialog",
-        height: Union[int, str] = "AUTO",
+        height: Union[int, Literal["AUTO"]] = "AUTO",
         width: int = 480,
         on_top: bool = False,
+        location: Location = Location.Center,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -880,6 +882,8 @@ class Assistant:
         :param height: Height of dialog (in pixels or 'AUTO')
         :param width:  Width of dialog (in pixels)
         :param on_top: Show dialog always on top of other windows
+        :param location: Where to place the dialog
+        (options are Center, TopLeft, BottomLeft, BottomRight, TopRight)
 
 
         Returns a result object with all input values.
@@ -896,7 +900,11 @@ class Assistant:
 
         # FIXME: support timeout
 
-        self._client.display_flet_window(title, height, width, on_top)
+        # height has to be either AUTO or an int value
+        if not isinstance(height, int) and height != "AUTO":
+            height = int(height)
+
+        self._client.display_flet_window(title, height, width, on_top, location)
         return self._client.results
 
     @keyword("Ask User", tags=["dialog"])

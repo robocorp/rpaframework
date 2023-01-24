@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 from typing import Any, Dict, List, Union
 
 
@@ -22,3 +22,11 @@ class Icon(Enum):
     Success = "success"
     Warning = "warning"
     Failure = "failure"
+
+
+class Location(Enum):
+    Center = auto()
+    BottomLeft = auto()
+    TopLeft = auto()
+    BottomRight = auto()
+    TopRight = auto()
