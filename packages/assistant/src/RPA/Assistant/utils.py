@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from typing import Any, List, Optional, Tuple, Union
 
 from RPA.core.types import is_list_like  # type: ignore
@@ -67,3 +68,21 @@ def is_input(element: Element) -> bool:
 def is_submit(element: Element) -> bool:
     """Check if an element is a submit button."""
     return element["type"] == "submit"
+
+
+@contextmanager
+def button_lock(event, lock_object, flet_update):
+    """Acquire lock, early abort if not available, disable button and acquire lock if available."""
+    # check if lock is open
+    lock_status = lock_object.acquire(blocking=False)
+    try:
+        # early abort if unable to lock
+        if not lock_status:
+            return
+        event.control.disabled = True
+        flet_update()
+        yield lock_status
+    finally:
+        lock_object.release()
+        event.control.disabled = False
+        flet_update()

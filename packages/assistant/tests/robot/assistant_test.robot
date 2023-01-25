@@ -46,6 +46,8 @@ Control Buttons
     Add Button    print with python  Print With Python
     
     Add Heading  BAD buttons
+    # For debugging how unavailable keywords appear in robot side
+    Add Button    bad robot button   Not A Keyword
     Add Button    add buttons (does not work)  Control Buttons
     Add Button    subrobot button (broken!)    Exec Robot
     Add Button    python button (broken!)   Exec Python

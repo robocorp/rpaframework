@@ -35,7 +35,7 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.date_picker import DatePicker
 from RPA.Assistant.types import Icon, Options, Result, Size, Location
-from RPA.Assistant.utils import optional_str, to_options
+from RPA.Assistant.utils import button_lock, optional_str, to_options
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -959,24 +959,17 @@ class Assistant:
 
         # TODO: use logger.err and logger.debug instead of prints
         def on_click(event: ControlEvent):
-            # If lock is not free, there is currently a running event being
-            # handled, so we skip handling this one
-            if not self._button_event_lock.acquire(blocking=False):
-                return
-            event.control.disabled = True
-            self._client.flet_update()
-            try:
-                if isinstance(function, Callable):
-                    function(*args, **kwargs)
-                else:
-                    BuiltIn().run_keyword(function, *args, **kwargs)
-            except Exception as err:
-                print(f"on_click error with button labeled {label}")
-                print(err)
-            finally:
-                self._button_event_lock.release()
-                event.control.disabled = False
-                self._client.flet_update()
+            # lock the button so we don't get accidental async execution
+            with button_lock(event, self._button_event_lock, self._client.flet_update):
+                try:
+                    if isinstance(function, Callable):
+                        function(*args, **kwargs)
+                    else:
+                        # TODO: fail nicely if the keyword does not exist
+                        BuiltIn().run_keyword(function, *args, **kwargs)
+                except Exception as err:
+                    print(f"on_click error with button labeled {label}")
+                    print(err)
 
         self._client.add_element(ElevatedButton(label, on_click=on_click))
 
@@ -1006,29 +999,15 @@ class Assistant:
         """
 
         def on_click(event: ControlEvent):
-            if not self._button_event_lock.acquire(blocking=False):
-                return
-            event.control.disabled = True
-            self._client.flet_update()
-            if isinstance(function, Callable):
+            # lock the button so we don't get accidental async execution
+            with button_lock(event, self._button_event_lock, self._client.flet_update):
                 try:
-                    function(self._client.results)
+                    if isinstance(function, Callable):
+                        function(self._client.results)
+                    else:
+                        BuiltIn().run_keyword(function, self._client.results)
                 except Exception as err:
                     print(f"on_click error with button labeled {label}")
                     print(err)
-                finally:
-                    self._button_event_lock.release()
-                    event.control.disabled = False
-                    self._client.flet_update()
-            else:
-                try:
-                    BuiltIn().run_keyword(function, self._client.results)
-                except Exception as err:
-                    print(f"on_click error with button labeled {label}")
-                    print(err)
-                finally:
-                    self._button_event_lock.release()
-                    event.control.disabled = False
-                    self._client.flet_update()
 
         self._client.add_element(ElevatedButton(label, on_click=on_click))
