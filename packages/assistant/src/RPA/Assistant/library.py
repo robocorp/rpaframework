@@ -993,8 +993,8 @@ class Assistant:
                 try:
                     self._call_function_or_robot_keyword(function, *args, **kwargs)
                 except Exception as err:
-                    print(f"on_click error with button labeled {label}")
-                    print(err)
+                    self.logger.error(f"on_click error with button labeled {label}")
+                    self.logger.error(err)
 
         self._client.add_element(ElevatedButton(label, on_click=on_click))
 
@@ -1033,7 +1033,7 @@ class Assistant:
                 try:
                     self._call_function_or_robot_keyword(function, self._client.results)
                 except Exception as err:
-                    print(f"on_click error with button labeled {label}")
-                    print(err)
+                    self.logger.error(f"on_click error with button labeled {label}")
+                    self.logger.error(err)
 
         self._client.add_element(ElevatedButton(label, on_click=on_click))
