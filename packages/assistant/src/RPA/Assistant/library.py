@@ -35,7 +35,12 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.date_picker import DatePicker
 from RPA.Assistant.types import Icon, Options, Result, Size, Location
-from RPA.Assistant.utils import button_lock, optional_str, to_options
+from RPA.Assistant.utils import (
+    button_lock,
+    check_if_keyword_exists,
+    optional_str,
+    to_options,
+)
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -948,13 +953,27 @@ class Assistant:
         else:
             raise RuntimeError("No dialog open")
 
+    def _call_function_or_robot_keyword(
+        self, function: Union[Callable, str], *args, **kwargs
+    ):
+        """Check if function is a Python function or a Robot Keyword, and call it
+        or run it with Robot's run_keyword.
+        """
+        if isinstance(function, Callable):
+            function(*args, **kwargs)
+        elif check_if_keyword_exists(function):
+            BuiltIn().run_keyword(function, *args, **kwargs)
+        else:
+            raise ValueError(f"{function} was not a python Callable or a Robot keyword")
+
     @keyword("Add Button", tags=["dialog"])
     def add_button(
         self, label: str, function: Union[Callable, str], *args, **kwargs
     ) -> None:
         """
-        ``function`` should be a python function or a Robot keyword name,
-        args and kwargs should be valid arguments for it.
+        :param label Text for the button
+        :param function Python function or Robot Keyword name, that will get *args and
+        **kwargs passed into it
         """
 
         # TODO: use logger.err and logger.debug instead of prints
@@ -962,11 +981,7 @@ class Assistant:
             # lock the button so we don't get accidental async execution
             with button_lock(event, self._button_event_lock, self._client.flet_update):
                 try:
-                    if isinstance(function, Callable):
-                        function(*args, **kwargs)
-                    else:
-                        # TODO: fail nicely if the keyword does not exist
-                        BuiltIn().run_keyword(function, *args, **kwargs)
+                    self._call_function_or_robot_keyword(function, *args, **kwargs)
                 except Exception as err:
                     print(f"on_click error with button labeled {label}")
                     print(err)
@@ -977,6 +992,10 @@ class Assistant:
     def add_next_ui_button(self, label: str, function: Union[Callable, str]):
         """Create a button that leads to the next UI page, calling the passed
         keyword or function, and passing current form results as first positional argument to it.
+
+        :param label Text for the button
+        :param function Python function or Robot Keyword name, that will take form
+        results as it's first argument
 
         Example:
             *** Keywords ***
@@ -1002,10 +1021,7 @@ class Assistant:
             # lock the button so we don't get accidental async execution
             with button_lock(event, self._button_event_lock, self._client.flet_update):
                 try:
-                    if isinstance(function, Callable):
-                        function(self._client.results)
-                    else:
-                        BuiltIn().run_keyword(function, self._client.results)
+                    self._call_function_or_robot_keyword(function, self._client.results)
                 except Exception as err:
                     print(f"on_click error with button labeled {label}")
                     print(err)

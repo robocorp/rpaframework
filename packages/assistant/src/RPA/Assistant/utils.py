@@ -86,3 +86,15 @@ def button_lock(event, lock_object, flet_update):
         lock_object.release()
         event.control.disabled = False
         flet_update()
+
+
+def check_if_keyword_exists(keyword_name):
+    from robot.running.context import EXECUTION_CONTEXTS
+
+    context = EXECUTION_CONTEXTS.current
+    if not context:
+        raise Exception("Robot Framework not running, so cannot execute keywords")
+
+    runner = context.get_runner(keyword_name)
+    if getattr(runner, "error", None):
+        raise runner.error
