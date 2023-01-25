@@ -16,13 +16,11 @@ def resolve_absolute_position(
 ) -> Tuple[int, int]:
 
     if location is Location.TopLeft:
-        left_coordinate = 0
-        top_coordinate = 0
-        return (left_coordinate, top_coordinate)
+        return (0, 0)
     elif isinstance(location, tuple):
         return location
     else:
-        raise ValueError("Locations other than Center or TopLeft are not yet supported")
+        raise ValueError(f"Invalid location {location}")
 
 
 class FletEvent:
@@ -37,22 +35,23 @@ class FletClient:
     """Class for wrapping flet operations"""
 
     def __init__(self) -> None:
-        self._conn = self._preload_flet()
-        self.elements: List[List[Control]] = [[]]
-        self.invisible_elements: List[List[Control]] = [[]]
         self.results: Result = {}
-        self._pagination = 0
         self.page: Optional[Page] = None
+
+        self._conn = self._preload_flet()
+        self._elements: List[List[Control]] = [[]]
+        self._invisible_elements: List[List[Control]] = [[]]
+        self._pagination = 0
         self._fvp = None
         atexit.register(self._cleanup)
 
     @property
     def current_elements(self):
-        return self.elements[self._pagination]
+        return self._elements[self._pagination]
 
     @property
     def current_invisible_elements(self):
-        return self.invisible_elements[self._pagination]
+        return self._invisible_elements[self._pagination]
 
     def _cleanup(self) -> None:
         # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146
@@ -142,14 +141,14 @@ class FletClient:
 
     def add_element(self, element: flet.Control, name: Optional[str] = None):
         # TODO: validate that element "name" is unique
-        self.elements[-1].append(element)
+        self._elements[-1].append(element)
         if name is not None:
             # TODO: might be necessary to check that it doesn't already have change handler
             element.on_change = self._make_flet_event_handler(name)
             # element._add_event_handler("change", self._make_flet_event_handler(name))
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
-        self.invisible_elements[-1].append(element)
+        self._invisible_elements[-1].append(element)
         if name is not None:
             element.on_change = self._make_flet_event_handler(name)
 
@@ -168,8 +167,8 @@ class FletClient:
             self.page.controls.clear()
             self.page.overlay.clear()
             self.page.update()
-        self.elements[self._pagination] = []
-        self.invisible_elements[self._pagination] = []
+        self._elements[self._pagination] = []
+        self._invisible_elements[self._pagination] = []
         return
 
     def update_elements(self, page: Page):
