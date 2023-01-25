@@ -71,10 +71,7 @@ def browser_preferences() -> Dict[str, List[str]]:
     browsers = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
     if browsers:
         preferences = {
-            "default": [
-                browser.strip()
-                for browser in browsers.split(sep=",")
-            ],
+            "default": [browser.strip() for browser in browsers.split(sep=",")],
         }
     else:
         preferences = {
