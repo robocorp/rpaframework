@@ -10,7 +10,6 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
 
 import flet
 from flet import (
-    Alignment,
     Checkbox,
     Column,
     Container,
@@ -892,7 +891,7 @@ class Assistant:
         height: Union[int, Literal["AUTO"]] = "AUTO",
         width: int = 480,
         on_top: bool = False,
-        location: Union[Location, Tuple[int, int]] = Location.Center,
+        location: Union[Location, Tuple[int, int], None] = None,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -903,6 +902,7 @@ class Assistant:
         :param width:  Width of dialog (in pixels)
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a tuple of ints)
+        None will let the operating system place the window.
 
 
         Returns a result object with all input values.
@@ -922,6 +922,11 @@ class Assistant:
         # height has to be either AUTO or an int value
         if not isinstance(height, int) and height != "AUTO":
             height = int(height)
+
+        # if location is given as a string (Robot autoconversion doesn't work) parse it
+        # to enum manually
+        if isinstance(location, str):
+            location = Location[location]
 
         self._client.display_flet_window(title, height, width, on_top, location)
         return self._client.results
@@ -986,7 +991,6 @@ class Assistant:
         **kwargs passed into it
         """
 
-        # TODO: use logger.err and logger.debug instead of prints
         def on_click(event: ControlEvent):
             # lock the button so we don't get accidental async execution
             with button_lock(event, self._button_event_lock, self._client.flet_update):

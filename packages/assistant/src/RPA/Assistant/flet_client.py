@@ -15,7 +15,7 @@ def resolve_absolute_position(
     location: Union[Location, Tuple],
 ) -> Tuple[int, int]:
 
-    if location is Location.TopLeft or location == "TopLeft":
+    if location is Location.TopLeft:
         left_coordinate = 0
         top_coordinate = 0
         return (left_coordinate, top_coordinate)
@@ -34,6 +34,8 @@ class FletEvent:
 
 
 class FletClient:
+    """Class for wrapping flet operations"""
+
     def __init__(self) -> None:
         self._conn = self._preload_flet()
         self.elements: List[List[Control]] = [[]]
@@ -98,7 +100,7 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Union[Location, Tuple[int, int]],
+        location: Union[Location, Tuple[int, int], None],
     ):
         def on_session_created(conn, session_data):
             page = Page(conn, session_data.sessionID)
@@ -157,7 +159,7 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Union[Location, Tuple[int, int]],
+        location: Union[Location, Tuple[int, int], None],
     ):
         self._show_flet(self._execute(), title, height, width, on_top, location)
 
