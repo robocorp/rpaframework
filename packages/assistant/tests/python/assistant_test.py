@@ -7,7 +7,7 @@ def next_ui(results):
     assistant.clear_elements()
     assistant.add_text(str(results))
     assistant.add_text("asdf")
-    assistant.refresh()
+    assistant.refresh_dialog()
 
 
 def length_greater_3(value):
