@@ -27,12 +27,6 @@ from RPA.core.robocorp import robocorp_home
 LOGGER = logging.getLogger(__name__)
 
 DRIVER_ROOT = robocorp_home() / "webdrivers"
-DRIVER_PREFERENCE = {
-    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
-    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
-    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
-    "default": ["Chrome", "Firefox"],
-}
 AVAILABLE_DRIVERS = {
     # Driver names taken from `webdrivermanager` and adapted to `webdriver_manager`.
     "chrome": ChromeDriverManager,

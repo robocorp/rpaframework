@@ -64,6 +64,25 @@ def ensure_scheme(url: str, default: Optional[str]) -> str:
     return url
 
 
+def browser_preferences() -> Dict[str, List[str]]:
+    """Get lists of browser preferences for OS.
+    Prefers environment variable RPA_SELENIUM_BROWSER_ORDER, if defined.
+    """
+    browsers = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
+    if browsers:
+        preferences = {
+            "default": [browser.strip() for browser in browsers.split(sep=",")],
+        }
+    else:
+        preferences = {
+            "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+            "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+            "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
+            "default": ["Chrome", "Firefox"],
+        }
+    return preferences
+
+
 class BrowserNotFoundError(ValueError):
     """Raised when browser can't be initialized."""
 
@@ -843,8 +862,9 @@ class Selenium(SeleniumLibrary):
     def _arg_browser_selection(self, browser_selection: Any) -> List:
         """Parse argument for browser selection."""
         if str(browser_selection).strip().lower() == "auto":
-            order = core_webdriver.DRIVER_PREFERENCE.get(
-                platform.system(), core_webdriver.DRIVER_PREFERENCE["default"]
+            driver_preferences = browser_preferences()
+            order = driver_preferences.get(
+                platform.system(), driver_preferences["default"]
             )
         else:
             order = (
