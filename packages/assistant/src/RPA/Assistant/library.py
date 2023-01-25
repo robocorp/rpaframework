@@ -993,9 +993,17 @@ class Assistant:
 
         def on_click(event: ControlEvent):
             # lock the button so we don't get accidental async execution
-            with button_lock(event, self._button_event_lock, self._client.flet_update):
+            with button_lock(
+                event, self._button_event_lock, self._client.flet_update
+            ) as got_lock:
                 try:
-                    self._call_function_or_robot_keyword(function, *args, **kwargs)
+                    if got_lock:
+                        self._call_function_or_robot_keyword(function, *args, **kwargs)
+                    else:
+                        self.logger.debug(
+                            f"Button {label} was pressed while running callbacks was locked"
+                        )
+
                 except Exception as err:
                     self.logger.error(f"on_click error with button labeled {label}")
                     self.logger.error(err)
@@ -1033,9 +1041,19 @@ class Assistant:
 
         def on_click(event: ControlEvent):
             # lock the button so we don't get accidental async execution
-            with button_lock(event, self._button_event_lock, self._client.flet_update):
+            with button_lock(
+                event, self._button_event_lock, self._client.flet_update
+            ) as got_lock:
                 try:
-                    self._call_function_or_robot_keyword(function, self._client.results)
+                    if got_lock:
+                        self._call_function_or_robot_keyword(
+                            function, self._client.results
+                        )
+                    else:
+                        self.logger.debug(
+                            f"Button {label} was pressed while running callbacks was locked"
+                        )
+
                 except Exception as err:
                     self.logger.error(f"on_click error with button labeled {label}")
                     self.logger.error(err)

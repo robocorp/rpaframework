@@ -73,17 +73,16 @@ def is_submit(element: Element) -> bool:
 @contextmanager
 def button_lock(event, lock_object, flet_update):
     """Acquire lock, early abort if not available, disable button and acquire lock if available."""
-    # check if lock is open
-    lock_status = lock_object.acquire(blocking=False)
+    got_lock = lock_object.acquire(blocking=False)
     try:
-        # early abort if unable to lock
-        if not lock_status:
-            return
+        # FIXME: currently only the object that acquired the lock stays disabled for
+        # the duration of the lock. Other objects disable and immediately release.
         event.control.disabled = True
         flet_update()
-        yield lock_status
+        yield got_lock
     finally:
-        lock_object.release()
+        if got_lock:
+            lock_object.release()
         event.control.disabled = False
         flet_update()
 
