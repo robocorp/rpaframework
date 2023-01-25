@@ -12,11 +12,7 @@ from RPA.Assistant.types import Result, Location
 
 
 def resolve_absolute_position(
-    location: [Location, Tuple],
-    window_height: int,
-    window_width: int,
-    screen_height: int,
-    screen_width: int,
+    location: Union[Location, Tuple],
 ) -> Tuple[int, int]:
 
     if location is Location.TopLeft:
@@ -27,14 +23,6 @@ def resolve_absolute_position(
         return location
     else:
         raise ValueError("Locations other than Center or TopLeft are not yet supported")
-    # TODO: implement (BottomLeft, BottomRight, TopRight)
-    # elif location is Location.BottomRight:
-    #     left_coordinate = screen_width
-    #     top_coordinate = screen_height
-    #     return (
-    #         left_coordinate - window_width,
-    #         top_coordinate - window_height,
-    #     )
 
 
 class FletEvent:
@@ -110,7 +98,7 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Location,
+        location: Union[Location, Tuple[int, int]],
     ):
         def on_session_created(conn, session_data):
             page = Page(conn, session_data.sessionID)
@@ -126,14 +114,7 @@ class FletClient:
                 if location is Location.Center:
                     page.window_center()
                 else:
-                    coordinates = resolve_absolute_position(
-                        location=location,
-                        window_height=int(page.window_height or 0),
-                        window_width=int(page.window_width or 0),
-                        # FIXME: how to get screen_height and width from flet
-                        screen_height=0,
-                        screen_width=0,
-                    )
+                    coordinates = resolve_absolute_position(location=location)
                     page.window_left = coordinates[0]
                     page.window_top = coordinates[1]
             conn.sessions[session_data.sessionID] = page
@@ -176,7 +157,7 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Location,
+        location: Union[Location, Tuple[int, int]],
     ):
         self._show_flet(self._execute(), title, height, width, on_top, location)
 
