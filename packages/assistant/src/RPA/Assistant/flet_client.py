@@ -15,7 +15,7 @@ def resolve_absolute_position(
     location: Union[Location, Tuple],
 ) -> Tuple[int, int]:
 
-    if location is Location.TopLeft:
+    if location is Location.TopLeft or location == "TopLeft":
         left_coordinate = 0
         top_coordinate = 0
         return (left_coordinate, top_coordinate)

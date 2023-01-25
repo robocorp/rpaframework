@@ -52,9 +52,11 @@ Control Buttons
     Add Button    subrobot button (broken!)    Exec Robot
     Add Button    python button (broken!)   Exec Python
 
+    Add Heading  submit is below this
+
 
 
 *** Test Cases ***
 Main
     Control Buttons
-    Run Dialog  location=(500, 500)
+    Ask User  location=TopLeft

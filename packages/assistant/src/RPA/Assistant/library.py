@@ -10,6 +10,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
 
 import flet
 from flet import (
+    Alignment,
     Checkbox,
     Column,
     Container,
@@ -19,11 +20,14 @@ from flet import (
     FilePicker,
     FilePickerResultEvent,
     Image,
+    MainAxisAlignment,
     Markdown,
     Radio,
     RadioGroup,
+    Row,
     Text,
     TextField,
+    alignment,
     colors,
     icons,
 )
@@ -164,7 +168,7 @@ class Assistant:
         except RobotNotRunningError:
             pass
 
-    def _add_closing_button(self, label="Submit") -> None:
+    def _create_closing_button(self, label="Submit") -> Control:
         def validate_and_close(*_):
             should_close = True
             if not self._validations:
@@ -186,7 +190,7 @@ class Assistant:
                 self._client.results["submit"] = label
                 self._client.page.window_destroy()
 
-        self._client.add_element(ElevatedButton(label, on_click=validate_and_close))
+        return ElevatedButton(label, on_click=validate_and_close)
 
     @keyword("Clear elements")
     def clear_elements(self) -> None:
@@ -870,9 +874,15 @@ class Assistant:
                 Delete user    ${username}
             END
         """
-        buttons, default = to_options(buttons, default)
-        for button in buttons:
-            self._add_closing_button(button)
+        button_labels, default = to_options(buttons, default)
+
+        button_elements = [
+            self._create_closing_button(button) for button in button_labels
+        ]
+
+        button_row = Row(button_elements, alignment=MainAxisAlignment.END)
+        container = Container(button_row, alignment=alignment.bottom_right)
+        self._client.add_element(container)
 
     @keyword("Run dialog", tags=["dialog"])
     def run_dialog(
