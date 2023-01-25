@@ -73,7 +73,7 @@ def browser_preferences() -> Dict[str, List[str]]:
         preferences = {
             "default": [
                 browser.strip()
-                for browser in os.getenv("RPA_SELENIUM_BROWSER_ORDER", "").split(sep=",")
+                for browser in browsers.split(sep=",")
             ],
         }
     else:
