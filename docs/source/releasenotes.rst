@@ -13,7 +13,7 @@ Release notes
 --------------------
 
 - Library **RPA.Browser.Selenium** (:issue:`781`): Ability to determine the
-  default search order of browsers, when using the ``Open Available Browser``-keyword
+  default search order of browsers, when using the ``Open Available Browser`` keyword.
 
 20.1.0 - 19 Jan 2023
 --------------------
