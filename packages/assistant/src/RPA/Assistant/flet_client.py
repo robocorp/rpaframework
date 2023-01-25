@@ -185,5 +185,12 @@ class FletClient:
         self.invisible_elements[self._pagination] = []
         return
 
-    def update_elements(self, page):
+    def update_elements(self, page: Page):
+        """Updates the UI and shows new elements which have been added into the element lists"""
         return self._execute(page)()
+
+    def flet_update(self):
+        """Runs a plain update of the flet UI, updating existing elements"""
+        if not self.page:
+            raise Exception("Flet update called when page is not open")
+        self.page.update()

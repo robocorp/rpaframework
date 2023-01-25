@@ -1,3 +1,4 @@
+from time import sleep
 import RPA.Assistant
 from RPA.Assistant.types import Icon, Location
 
@@ -14,9 +15,17 @@ def length_greater_3(value):
         return "Length should be greater than 3"
 
 
+def sleepy_print(arg):
+    """used for testing is the button disabling working"""
+    sleep(1)
+    print(arg)
+
+
 assistant = RPA.Assistant.Assistant()
 # assistant.add_date_input("my_date", label="My Date")
-assistant.add_button("python button", print, "asd")
+assistant.add_button(
+    "python button", sleepy_print, "sleepy print output (should appear after ~1s sleep)"
+)
 assistant.add_button("robot button", "Log", "asd")
 assistant.add_next_ui_button("different form button", next_ui)
 assistant.add_heading("Heading test")

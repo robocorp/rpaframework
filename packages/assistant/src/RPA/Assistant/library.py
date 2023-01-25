@@ -5,6 +5,7 @@ import platform
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from threading import Lock
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
 
 import flet
@@ -26,6 +27,7 @@ from flet import (
     colors,
     icons,
 )
+from flet.control_event import ControlEvent
 from flet.dropdown import Option
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -140,6 +142,8 @@ class Assistant:
         self.logger = logging.getLogger(__name__)
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
+        # Used to ensure that only one button callback is executed at once
+        self._button_event_lock = Lock()
 
         try:
             # Prevent logging from keywords that return results
@@ -953,25 +957,26 @@ class Assistant:
         args and kwargs should be valid arguments for it.
         """
 
-        # FIXME: add some progress bar
-        # TODO: either optional or mandatory feature to block other button function
-        # calls while one is being processed
-        # (perhaps by making the button disabled during execution?)
-
-        # TODO: use logger.err and logger.debug
-        def on_click(_):
-            if isinstance(function, Callable):
-                try:
+        # TODO: use logger.err and logger.debug instead of prints
+        def on_click(event: ControlEvent):
+            # If lock is not free, there is currently a running event being
+            # handled, so we skip handling this one
+            if not self._button_event_lock.acquire(blocking=False):
+                return
+            event.control.disabled = True
+            self._client.flet_update()
+            try:
+                if isinstance(function, Callable):
                     function(*args, **kwargs)
-                except Exception as err:
-                    print(f"on_click error with button labeled {label}")
-                    print(err)
-            else:
-                try:
+                else:
                     BuiltIn().run_keyword(function, *args, **kwargs)
-                except Exception as err:
-                    print(f"on_click error with button labeled {label}")
-                    print(err)
+            except Exception as err:
+                print(f"on_click error with button labeled {label}")
+                print(err)
+            finally:
+                self._button_event_lock.release()
+                event.control.disabled = False
+                self._client.flet_update()
 
         self._client.add_element(ElevatedButton(label, on_click=on_click))
 
@@ -1000,18 +1005,30 @@ class Assistant:
 
         """
 
-        def on_click(_):
+        def on_click(event: ControlEvent):
+            if not self._button_event_lock.acquire(blocking=False):
+                return
+            event.control.disabled = True
+            self._client.flet_update()
             if isinstance(function, Callable):
                 try:
                     function(self._client.results)
                 except Exception as err:
                     print(f"on_click error with button labeled {label}")
                     print(err)
+                finally:
+                    self._button_event_lock.release()
+                    event.control.disabled = False
+                    self._client.flet_update()
             else:
                 try:
                     BuiltIn().run_keyword(function, self._client.results)
                 except Exception as err:
                     print(f"on_click error with button labeled {label}")
                     print(err)
+                finally:
+                    self._button_event_lock.release()
+                    event.control.disabled = False
+                    self._client.flet_update()
 
         self._client.add_element(ElevatedButton(label, on_click=on_click))
