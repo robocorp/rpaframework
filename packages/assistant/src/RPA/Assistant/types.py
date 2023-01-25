@@ -26,7 +26,4 @@ class Icon(Enum):
 
 class Location(Enum):
     Center = auto()
-    BottomLeft = auto()
     TopLeft = auto()
-    BottomRight = auto()
-    TopRight = auto()

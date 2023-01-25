@@ -12,7 +12,7 @@ from RPA.Assistant.types import Result, Location
 
 
 def resolve_absolute_position(
-    location: Location,
+    location: [Location, Tuple],
     window_height: int,
     window_width: int,
     screen_height: int,
@@ -23,6 +23,8 @@ def resolve_absolute_position(
         left_coordinate = 0
         top_coordinate = 0
         return (left_coordinate, top_coordinate)
+    elif isinstance(location, tuple):
+        return location
     else:
         raise ValueError("Locations other than Center or TopLeft are not yet supported")
     # TODO: implement (BottomLeft, BottomRight, TopRight)
@@ -73,6 +75,8 @@ class FletClient:
                 pass
 
     def _execute(self, page: Optional[Page] = None) -> Callable[[Optional[Page]], None]:
+        """TODO: document what this does exactly"""
+
         def inner_execute(inner_page: Optional[Page] = None):
             if page:
                 inner_page = page

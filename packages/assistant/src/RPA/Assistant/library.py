@@ -202,7 +202,7 @@ class Assistant:
         """
         self._client.clear_elements()
 
-    @keyword("Add heading")
+    @keyword("Add Heading")
     def add_heading(
         self,
         heading: str,
@@ -877,7 +877,7 @@ class Assistant:
         height: Union[int, Literal["AUTO"]] = "AUTO",
         width: int = 480,
         on_top: bool = False,
-        location: Location = Location.Center,
+        location: Union[Location, Tuple[int, int]] = Location.Center,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -887,7 +887,7 @@ class Assistant:
         :param height: Height of dialog (in pixels or 'AUTO')
         :param width:  Width of dialog (in pixels)
         :param on_top: Show dialog always on top of other windows
-        :param location: Where to place the dialog (options are Center, TopLeft)
+        :param location: Where to place the dialog (options are Center, TopLeft, or a tuple of ints)
 
 
         Returns a result object with all input values.
