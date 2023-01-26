@@ -43,6 +43,17 @@ AVAILABLE_DRIVERS = {
     "ie": IEDriverManager,
 }
 
+# Note: This is depracated.
+# Current resolving logic contained in RPA.Browser.Selenium,
+# and this should not be used anymore, but removing this
+# must be done in a major version.
+DRIVER_PREFERENCE = {
+    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
+    "default": ["Chrome", "Firefox"],
+}
+
 
 class Downloader(WDMHttpClient):
 
