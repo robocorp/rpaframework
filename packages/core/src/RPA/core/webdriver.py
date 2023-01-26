@@ -4,7 +4,7 @@ import os
 import platform
 import stat
 from pathlib import Path
-from typing import Optional
+from typing import Dict, List, Optional
 
 import requests
 from packaging import version
@@ -42,6 +42,47 @@ AVAILABLE_DRIVERS = {
     # NOTE: IE is discontinued and not supported/encouraged anymore.
     "ie": IEDriverManager,
 }
+_DRIVER_PREFERENCE = {
+    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
+    "default": ["Chrome", "Firefox"],
+}
+
+
+def _get_browser_order_from_env() -> Optional[List[str]]:
+    browsers: str = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
+    if browsers:
+        return [browser.strip() for browser in browsers.split(sep=",")]
+
+    return None  # meaning there's no env var to control the order
+
+
+def get_browser_order() -> List[str]:
+    """Get a list of preferred browsers based on the environment variable
+    `RPA_SELENIUM_BROWSER_ORDER` if set.
+
+    The OS dictates the order if no such env var is set.
+    """
+    browsers: Optional[List[str]] = _get_browser_order_from_env()
+    if browsers:
+        return browsers
+
+    return _DRIVER_PREFERENCE.get(platform.system(), _DRIVER_PREFERENCE["default"])
+
+
+def _set_driver_preference() -> Dict[str, List[str]]:
+    pref = _DRIVER_PREFERENCE.copy()
+    browsers: Optional[List[str]] = _get_browser_order_from_env()
+    if browsers:
+        for os in pref:
+            pref[os] = browsers
+    return pref
+
+
+# FIXME(cmin764): This constant is deprecated and is planned for removal in the next
+#  major upgrade. (use `get_browser_order` function instead)
+DRIVER_PREFERENCE = _set_driver_preference()
 
 
 class Downloader(WDMHttpClient):
