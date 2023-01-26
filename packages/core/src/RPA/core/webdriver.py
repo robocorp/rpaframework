@@ -50,24 +50,33 @@ _DRIVER_PREFERENCE = {
 }
 
 
+def _get_browser_order_from_env() -> Optional[List[str]]:
+    browsers: str = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
+    if browsers:
+        return [browser.strip() for browser in browsers.split(sep=",")]
+
+    return None  # meaning there's no env var to control the order
+
+
 def get_browser_order() -> List[str]:
     """Get a list of preferred browsers based on the environment variable
     `RPA_SELENIUM_BROWSER_ORDER` if set.
 
     The OS dictates the order if no such env var is set.
     """
-    browsers: str = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
+    browsers: Optional[List[str]] = _get_browser_order_from_env()
     if browsers:
-        return [browser.strip() for browser in browsers.split(sep=",")]
+        return browsers
 
     return _DRIVER_PREFERENCE.get(platform.system(), _DRIVER_PREFERENCE["default"])
 
 
 def _set_driver_preference() -> Dict[str, List[str]]:
     pref = _DRIVER_PREFERENCE.copy()
-    browsers = get_browser_order()
-    for os in pref:
-        pref[os] = browsers
+    browsers: Optional[List[str]] = _get_browser_order_from_env()
+    if browsers:
+        for os in pref:
+            pref[os] = browsers
     return pref
 
 
