@@ -29,12 +29,8 @@ class Windows(WindowsElementsMixin, DynamicCore):
     # pylint: disable=anomalous-backslash-in-string
     """The `Windows` is a library that can be used for Windows desktop automation.
 
-    **Installation**
-
-    This library, ``RPA.Windows`` is available via **rpaframework-windows** package. This
-    package is first available as a separate package installation from **rpaframework** package.
-    In the next stage this is integrated into **rpaframework** package. This library replaces
-    the deprecated ``RPA.Desktop.Windows``, please use ``RPA.Windows`` instead.
+    Library is included in the **rpaframework** package by default, but as shown in the
+    below example library can be also installed separately without **rpaframework**.
 
     .. code-block:: yaml
 
@@ -44,7 +40,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
           - python=3.9.13
           - pip=22.1.2
           - pip:
-            - rpaframework-windows==6.2.0 # stand alone Windows library (`rpaframework` includes this library)
+            - rpaframework-windows==7.0.2 # standalone Windows library (`rpaframework` includes this library)
 
 
     **About terminology**

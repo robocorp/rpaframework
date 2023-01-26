@@ -105,6 +105,13 @@ def to_speed(value):
 class Windows(OperatingSystem):
     """`Windows` is a library for managing the Windows operating system.
 
+    **DEPRECATION WARNING !!**
+
+    For Windows desktop automation Robocorp recommends the ``RPA.Windows`` library.
+
+    This library will receive only important security updates and will
+    eventually be removed from the **rpaframework** package.
+
     **Running Windows applications**
 
     Windows applications can be started in several ways. The library supports
