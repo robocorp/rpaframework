@@ -2,6 +2,11 @@
 
 from pathlib import Path
 import shutil
+from docutils import nodes, utils, frontend
+from docutils.parsers import rst
+import json
+from contextlib import redirect_stdout, redirect_stderr
+from os import devnull
 
 from invoke import task, Collection
 
@@ -132,6 +137,43 @@ def host_local_docs(ctx, disown=False):
 def print_changelog(ctx):
     """Prints changes in latest release."""
     shell.meta_tool(ctx, "changelog")
+
+
+def _parse_rst(doc: Path) -> nodes.document:
+    """Parses text as rst and returns the document"""
+    parser = rst.Parser()
+    components = (rst.Parser(),)
+    settings = frontend.OptionParser(components=components).get_default_values()
+    with open(devnull, "w") as fnull:
+        with redirect_stderr(fnull):
+            document = utils.new_document(str(doc), settings=settings)
+            parser.parse(doc.read_text(), document)
+    return document
+
+
+@task
+def update_libspec_tags(ctx):
+    """Parses documentation and updates the JSON libspec files with
+    RST meta tags if they exist for that component.
+    """
+    docs_source = Path(safely_load_config(ctx, "ctx.docs.source", DOCS_SOURCE_DIR))
+    docs = (docs_source / "libraries").glob("**/index.rst")
+    json_dir = docs_source / "json"
+    for doc in docs:
+        doc_name = doc.parent.name
+        parsed_doc = _parse_rst(doc)
+        for meta in parsed_doc.traverse(condition=nodes.meta):
+            current_json_path = list(json_dir.glob(f"*{doc_name}*.json"))
+            if len(current_json_path) > 1:
+                raise ValueError(f"Found more than one JSON matching {doc_name}")
+            current_json_path = current_json_path[0]
+            with current_json_path.open("r") as json_file:
+                current_json = json.load(json_file)
+            meta_dict = current_json.get("meta", {})
+            meta_dict.update({meta.attributes["name"]: meta.attributes["content"]})
+            current_json.update({"meta": meta_dict})
+            with current_json_path.open("w") as json_file:
+                json.dump(current_json, json_file, indent=2)
 
 
 # Configure how this namespace will be loaded
