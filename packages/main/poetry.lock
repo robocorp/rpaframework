@@ -1572,7 +1572,7 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.1.1"
+version = "10.2.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -2192,7 +2192,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "4ffd578d15154ee3e21c55dd0f0e5fe28d58d5946856b71a79eeeea3057209f0"
+content-hash = "937944f9d9d42d70c6be35db1d2e8fac3a4ef363d8576e59bed30179abee52dc"
 
 [metadata.files]
 alabaster = [
@@ -3334,8 +3334,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework_seleniumtestability-2.0.0-py3-none-any.whl", hash = "sha256:0d3a54df0f6adedbbe3af31d6c14157688f90057b951e50f1865fd725b212df5"},
 ]
 rpaframework-core = [
-    {file = "rpaframework_core-10.1.1-py3-none-any.whl", hash = "sha256:8274d82b152577e9ab44e418ac11901f8477b86b3b181030f8763205d947e63b"},
-    {file = "rpaframework_core-10.1.1.tar.gz", hash = "sha256:b98f336d2cf7b999bade5c85fa414b1cb3a6f566f0bd9040963cb65e0c82ab65"},
+    {file = "rpaframework_core-10.2.0-py3-none-any.whl", hash = "sha256:08dec26bd752032173a7b3517a2f0c38c4164b0f33e6151beb22847a14533c37"},
+    {file = "rpaframework_core-10.2.0.tar.gz", hash = "sha256:941828cc2f557d04f98d4ec25825f1a78bc187c7f0137e2ab120fc68129d9ecf"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework_dialogs-4.0.1-py3-none-any.whl", hash = "sha256:984d8e0d373fbfb0988cdc580054c7daf420194544c43162fd67e501759882e1"},
