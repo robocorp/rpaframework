@@ -42,27 +42,38 @@ AVAILABLE_DRIVERS = {
     # NOTE: IE is discontinued and not supported/encouraged anymore.
     "ie": IEDriverManager,
 }
+_DRIVER_PREFERENCE = {
+    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
+    "default": ["Chrome", "Firefox"],
+}
 
 
-def _browser_preferences() -> Dict[str, List[str]]:
-    """Get a list of preferred browsers to use given the OS.
+def get_browser_order() -> List[str]:
+    """Get a list of preferred browsers based on the environment variable
+    `RPA_SELENIUM_BROWSER_ORDER` if set.
 
-    Environment variable `RPA_SELENIUM_BROWSER_ORDER` takes precedence if defined.
+    The OS dictates the order if no such env var is set.
     """
-    preferences = {
-        "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
-        "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
-        "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
-        "default": ["Chrome", "Firefox"],
-    }
-    browsers = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
+    browsers: str = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
     if browsers:
-        preferences["custom"] = [browser.strip() for browser in browsers.split(sep=",")]
+        return [browser.strip() for browser in browsers.split(sep=",")]
 
-    return preferences
+    return _DRIVER_PREFERENCE.get(platform.system(), _DRIVER_PREFERENCE["default"])
 
 
-DRIVER_PREFERENCE = _browser_preferences()
+def _set_driver_preference() -> Dict[str, List[str]]:
+    pref = _DRIVER_PREFERENCE.copy()
+    browsers = get_browser_order()
+    for os in pref:
+        pref[os] = browsers
+    return pref
+
+
+# FIXME(cmin764): This constant is deprecated and is planned for removal in the next
+#  major upgrade. (use `get_browser_order` function instead)
+DRIVER_PREFERENCE = _set_driver_preference()
 
 
 class Downloader(WDMHttpClient):
