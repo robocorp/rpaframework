@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+20.1.2 - 26 Jan 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`787`): Improved browser order resolution given
+  the set env var and running OS.
+
 20.1.1 - 26 Jan 2023
 --------------------
 
