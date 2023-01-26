@@ -125,14 +125,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.52"
+version = "1.26.57"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.29.52,<1.30.0"
+botocore = ">=1.29.57,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -141,7 +141,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.52"
+version = "1.29.57"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -165,7 +165,7 @@ python-versions = "*"
 
 [[package]]
 name = "cachetools"
-version = "5.2.1"
+version = "5.3.0"
 description = "Extensible memoizing collections and decorators"
 category = "main"
 optional = false
@@ -369,11 +369,11 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "flake8-docstrings"
-version = "1.6.0"
+version = "1.7.0"
 description = "Extension for flake8 which uses pydocstyle to check docstrings"
 category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 
 [package.dependencies]
 flake8 = ">=3"
@@ -468,7 +468,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0dev)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.73.0"
+version = "2.74.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -547,7 +547,7 @@ grpc = ["grpcio (>=1.38.0,<2.0dev)"]
 
 [[package]]
 name = "google-cloud-documentai"
-version = "2.9.0"
+version = "2.10.0"
 description = "Google Cloud Documentai API client library"
 category = "main"
 optional = false
@@ -563,7 +563,7 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-language"
-version = "2.8.0"
+version = "2.8.1"
 description = "Google Cloud Language API client library"
 category = "main"
 optional = false
@@ -579,7 +579,7 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-speech"
-version = "2.17.0"
+version = "2.17.1"
 description = "Google Cloud Speech API client library"
 category = "main"
 optional = false
@@ -613,7 +613,7 @@ protobuf = ["protobuf (<5.0.0dev)"]
 
 [[package]]
 name = "google-cloud-texttospeech"
-version = "2.14.0"
+version = "2.14.1"
 description = "Google Cloud Texttospeech API client library"
 category = "main"
 optional = false
@@ -629,7 +629,7 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-translate"
-version = "3.10.0"
+version = "3.10.1"
 description = "Google Cloud Translate API client library"
 category = "main"
 optional = false
@@ -646,7 +646,7 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-videointelligence"
-version = "2.10.0"
+version = "2.10.1"
 description = "Google Cloud Videointelligence API client library"
 category = "main"
 optional = false
@@ -662,7 +662,7 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-vision"
-version = "3.3.0"
+version = "3.3.1"
 description = "Google Cloud Vision API client library"
 category = "main"
 optional = false
@@ -689,7 +689,7 @@ testing = ["pytest"]
 
 [[package]]
 name = "google-resumable-media"
-version = "2.4.0"
+version = "2.4.1"
 description = "Utilities for Google Media Downloads and Resumable Uploads"
 category = "main"
 optional = false
@@ -1264,7 +1264,7 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "pathspec"
-version = "0.10.3"
+version = "0.11.0"
 description = "Utility library for gitignore style pattern matching of file paths."
 category = "dev"
 optional = false
@@ -1569,7 +1569,7 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pypdf"
-version = "3.2.1"
+version = "3.3.0"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
@@ -1694,7 +1694,7 @@ lxml = ">=2.3.2"
 
 [[package]]
 name = "python-dotenv"
-version = "0.21.0"
+version = "0.21.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
 category = "main"
 optional = false
@@ -2013,7 +2013,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "20.1.0"
+version = "20.1.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -2092,7 +2092,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.1.0"
+version = "10.1.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -2248,7 +2248,7 @@ urllib3 = {version = ">=1.26,<2.0", extras = ["socks"]}
 
 [[package]]
 name = "setuptools"
-version = "66.0.0"
+version = "66.1.1"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
@@ -2865,20 +2865,20 @@ black = [
     {file = "black-22.12.0.tar.gz", hash = "sha256:229351e5a18ca30f447bf724d007f890f97e13af070bb6ad4c0a441cd7596a2f"},
 ]
 boto3 = [
-    {file = "boto3-1.26.52-py3-none-any.whl", hash = "sha256:319ddb274f8f83b035b88a3b127c465bf6fe3e3fc2d668869b489e992c47ca77"},
-    {file = "boto3-1.26.52.tar.gz", hash = "sha256:0b1f82d4565ed875c7975ac0be5665e8d948613c01bcb0e49df6d4f5af670cc8"},
+    {file = "boto3-1.26.57-py3-none-any.whl", hash = "sha256:f1f13bfcb34d2175cf6f515a632bc432e0b357e4ebee7d4efda7ab5ec2914ef2"},
+    {file = "boto3-1.26.57.tar.gz", hash = "sha256:9c34ceac30a0672d2b6b030d459eb87f1a02d48f86f347fb4b054de85fb8a4b1"},
 ]
 botocore = [
-    {file = "botocore-1.29.52-py3-none-any.whl", hash = "sha256:de55b6333fb13c66da9055972d7e4efff5dcc5a087478a2b70e99d888b29a24c"},
-    {file = "botocore-1.29.52.tar.gz", hash = "sha256:a0b89a33305cfa6251c6e1142deb7567e216e37e25363159f45fb81dc5b474e5"},
+    {file = "botocore-1.29.57-py3-none-any.whl", hash = "sha256:f43382babffc07645a084484b1f08fb9d3fa4744bb08b74065ae0b4b1f4103b6"},
+    {file = "botocore-1.29.57.tar.gz", hash = "sha256:02078e37d6b3626794f821385f3357195d87610fa1b25355577ed5393f16f7b8"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
     {file = "cached_property-1.5.2-py2.py3-none-any.whl", hash = "sha256:df4f613cf7ad9a588cc381aaf4a512d26265ecebd5eb9e1ba12f1319eb85a6a0"},
 ]
 cachetools = [
-    {file = "cachetools-5.2.1-py3-none-any.whl", hash = "sha256:8462eebf3a6c15d25430a8c27c56ac61340b2ecf60c9ce57afc2b97e450e47da"},
-    {file = "cachetools-5.2.1.tar.gz", hash = "sha256:5991bc0e08a1319bb618d3195ca5b6bc76646a49c21d55962977197b301cc1fe"},
+    {file = "cachetools-5.3.0-py3-none-any.whl", hash = "sha256:429e1a1e845c008ea6c85aa35d4b98b65d6a9763eeef3e37e92728a12d1de9d4"},
+    {file = "cachetools-5.3.0.tar.gz", hash = "sha256:13dfddc7b8df938c21a940dfa6557ce6e94a2f1cdfa58eb90c805721d58f2c14"},
 ]
 certifi = [
     {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
@@ -3120,8 +3120,8 @@ flake8 = [
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
 ]
 flake8-docstrings = [
-    {file = "flake8-docstrings-1.6.0.tar.gz", hash = "sha256:9fe7c6a306064af8e62a055c2f61e9eb1da55f84bb39caef2b84ce53708ac34b"},
-    {file = "flake8_docstrings-1.6.0-py2.py3-none-any.whl", hash = "sha256:99cac583d6c7e32dd28bbfbef120a7c0d1b6dde4adb5a9fd441c4227a6534bde"},
+    {file = "flake8_docstrings-1.7.0-py2.py3-none-any.whl", hash = "sha256:51f2344026da083fc084166a9353f5082b01f72901df422f74b4d953ae88ac75"},
+    {file = "flake8_docstrings-1.7.0.tar.gz", hash = "sha256:4c8cc748dc16e6869728699e5d0d685da9a10b0ea718e090b1ba088e67a941af"},
 ]
 flake8-rst-docstrings = [
     {file = "flake8-rst-docstrings-0.2.7.tar.gz", hash = "sha256:2740067ab9237559dd45a3434d8c987792c7b259ca563621a3b95efe201f5382"},
@@ -3144,8 +3144,8 @@ google-api-core = [
     {file = "google_api_core-2.11.0-py3-none-any.whl", hash = "sha256:ce222e27b0de0d7bc63eb043b956996d6dccab14cc3b690aaea91c9cc99dc16e"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.73.0.tar.gz", hash = "sha256:7e860e3ec27b504fb797fa23c07c012a874dd736491fddbe50a20d3bdde8ace6"},
-    {file = "google_api_python_client-2.73.0-py2.py3-none-any.whl", hash = "sha256:bafce2a02b06ee501df039eba5874afc7d28c9cf5ef92253327776448706556d"},
+    {file = "google-api-python-client-2.74.0.tar.gz", hash = "sha256:22c9565b6d4343e35a6d614f2c075e765888a81e11444a27c570e0865631a3f9"},
+    {file = "google_api_python_client-2.74.0-py2.py3-none-any.whl", hash = "sha256:679669b709450a12dacf28612adf0538afc858566b6ee01628e4013a2073dffc"},
 ]
 google-auth = [
     {file = "google-auth-2.16.0.tar.gz", hash = "sha256:ed7057a101af1146f0554a769930ac9de506aeca4fd5af6543ebe791851a9fbd"},
@@ -3164,36 +3164,36 @@ google-cloud-core = [
     {file = "google_cloud_core-2.3.2-py2.py3-none-any.whl", hash = "sha256:8417acf6466be2fa85123441696c4badda48db314c607cf1e5d543fa8bdc22fe"},
 ]
 google-cloud-documentai = [
-    {file = "google-cloud-documentai-2.9.0.tar.gz", hash = "sha256:03c45b2640efe1d5da8b5ab4a7ba20a14e38163ac3a553185d276ab09eed8330"},
-    {file = "google_cloud_documentai-2.9.0-py2.py3-none-any.whl", hash = "sha256:378aa7979022bf7da159ef3f41fdfb43dd7adda330ccd39167a7686839b3a9c3"},
+    {file = "google-cloud-documentai-2.10.0.tar.gz", hash = "sha256:cd494944301fb10eacb2db1820ae3f77c77bdd079f0cc5c9bd650744db7596af"},
+    {file = "google_cloud_documentai-2.10.0-py2.py3-none-any.whl", hash = "sha256:9f2426b005f59d7be8c7da01f88770dd2133deccaea08b2f518c758c4a86a599"},
 ]
 google-cloud-language = [
-    {file = "google-cloud-language-2.8.0.tar.gz", hash = "sha256:2c41317040fabe5bf62e1b68f8ac8b8b3f2ec834dafab1cbc9250d0d9a4719ee"},
-    {file = "google_cloud_language-2.8.0-py2.py3-none-any.whl", hash = "sha256:cd9e06e96ddaee38ab0459ed71624d64145cbecd514118b3e6fc2226b2424cb6"},
+    {file = "google-cloud-language-2.8.1.tar.gz", hash = "sha256:a38a3dc7bafb1e9c330725228c37a0ce8b37e4520bae8d04b2bdae80dda7cb0b"},
+    {file = "google_cloud_language-2.8.1-py2.py3-none-any.whl", hash = "sha256:81a755c80d181176afcf2399477db1c1dc73a1258e6a6322a2918530a8ce5de0"},
 ]
 google-cloud-speech = [
-    {file = "google-cloud-speech-2.17.0.tar.gz", hash = "sha256:2dbda8576afb084d6a73989ac731a9226df164aa6c391c753687e48e7a3ac4db"},
-    {file = "google_cloud_speech-2.17.0-py2.py3-none-any.whl", hash = "sha256:7ffe084855b06516ed5ad66af0b9ffc7925d9d9b0a56a6c8eac9f071422daa8d"},
+    {file = "google-cloud-speech-2.17.1.tar.gz", hash = "sha256:816718318f59b66e5df429105cfb4065a0e0acac14f7411905dce7b96583a7da"},
+    {file = "google_cloud_speech-2.17.1-py2.py3-none-any.whl", hash = "sha256:1c11cbecd787984ea3f498bb835f33ff542a8ebe70115d2b0b5729baf22bf8b1"},
 ]
 google-cloud-storage = [
     {file = "google-cloud-storage-2.7.0.tar.gz", hash = "sha256:1ac2d58d2d693cb1341ebc48659a3527be778d9e2d8989697a2746025928ff17"},
     {file = "google_cloud_storage-2.7.0-py2.py3-none-any.whl", hash = "sha256:f78a63525e72dd46406b255bbdf858a22c43d6bad8dc5bdeb7851a42967e95a1"},
 ]
 google-cloud-texttospeech = [
-    {file = "google-cloud-texttospeech-2.14.0.tar.gz", hash = "sha256:ab8383dfbaf266a838d0bf3d04d65d2c235e0b540fc15854693e12e6d3bcf099"},
-    {file = "google_cloud_texttospeech-2.14.0-py2.py3-none-any.whl", hash = "sha256:6f76114970a2094d246f681e20a0307970941e74a3f9c3980e54b00ad9807a88"},
+    {file = "google-cloud-texttospeech-2.14.1.tar.gz", hash = "sha256:dd716f2a768ad67502cfd99b9925c51ffd6e16be93b410abeeffdaac190bfe81"},
+    {file = "google_cloud_texttospeech-2.14.1-py2.py3-none-any.whl", hash = "sha256:883fe35e3c823ff77cc633b30ab9a93d3b5eb38ebce7eaeef6f87e8d03210e54"},
 ]
 google-cloud-translate = [
-    {file = "google-cloud-translate-3.10.0.tar.gz", hash = "sha256:49d840b24b1a946ba0d1e5bdad59401a91062148eb78a905223deff71e781ba2"},
-    {file = "google_cloud_translate-3.10.0-py2.py3-none-any.whl", hash = "sha256:6b202b29132f84b13f5ca05f6c995e8fa132abd9e769df26ffa7fdfe1109a764"},
+    {file = "google-cloud-translate-3.10.1.tar.gz", hash = "sha256:fbed64f258497c9edefe82bffc8c98c7d5bf45a7106bfd51c1dae1caf0985843"},
+    {file = "google_cloud_translate-3.10.1-py2.py3-none-any.whl", hash = "sha256:8cf75d6070fe2a95b7a51bfc2e9522e19748b13025a3fa7c670f096db7d78159"},
 ]
 google-cloud-videointelligence = [
-    {file = "google-cloud-videointelligence-2.10.0.tar.gz", hash = "sha256:4b30b34d8caf7fce44ec10c1574957e20d2188dc99e446e8d66f96478023a019"},
-    {file = "google_cloud_videointelligence-2.10.0-py2.py3-none-any.whl", hash = "sha256:3d63c9fe96634e18b2fd33ed4a927a4818d1ee774b687100afee39b284dcbb43"},
+    {file = "google-cloud-videointelligence-2.10.1.tar.gz", hash = "sha256:1e59aeccc39a0a5ef3f4d0552391e8087d6f96d40279e977d01e6ba17ffed871"},
+    {file = "google_cloud_videointelligence-2.10.1-py2.py3-none-any.whl", hash = "sha256:7a299c0d70d3e7bf318f2f1f4df8ca4f7e12a5522804c8bc56fc896820765919"},
 ]
 google-cloud-vision = [
-    {file = "google-cloud-vision-3.3.0.tar.gz", hash = "sha256:463eb247ff15eb9c0e20b55294b122ebe21180d937b7fb7b82b55a1dcf2c4496"},
-    {file = "google_cloud_vision-3.3.0-py2.py3-none-any.whl", hash = "sha256:70aae8a356ed8f6e523108d8c2a487d702987e6459b8ce76412dbfd171918bf9"},
+    {file = "google-cloud-vision-3.3.1.tar.gz", hash = "sha256:1bbbf4f42035a49d8e48bee007362f7d11ab8cf8d0125c67c9e52f3f6be91494"},
+    {file = "google_cloud_vision-3.3.1-py2.py3-none-any.whl", hash = "sha256:b306ee151570c7200f8ec2727d83279c447e27b4497ada3b59eaf37c2aa1d493"},
 ]
 google-crc32c = [
     {file = "google-crc32c-1.5.0.tar.gz", hash = "sha256:89284716bc6a5a415d4eaa11b1726d2d60a0cd12aadf5439828353662ede9dd7"},
@@ -3266,8 +3266,8 @@ google-crc32c = [
     {file = "google_crc32c-1.5.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:c672d99a345849301784604bfeaeba4db0c7aae50b95be04dd651fd2a7310b93"},
 ]
 google-resumable-media = [
-    {file = "google-resumable-media-2.4.0.tar.gz", hash = "sha256:8d5518502f92b9ecc84ac46779bd4f09694ecb3ba38a3e7ca737a86d15cbca1f"},
-    {file = "google_resumable_media-2.4.0-py2.py3-none-any.whl", hash = "sha256:2aa004c16d295c8f6c33b2b4788ba59d366677c0a25ae7382436cb30f776deaa"},
+    {file = "google-resumable-media-2.4.1.tar.gz", hash = "sha256:15b8a2e75df42dc6502d1306db0bce2647ba6013f9cd03b6e17368c0886ee90a"},
+    {file = "google_resumable_media-2.4.1-py2.py3-none-any.whl", hash = "sha256:831e86fd78d302c1a034730a0c6e5369dd11d37bad73fa69ca8998460d5bae8d"},
 ]
 googleapis-common-protos = [
     {file = "googleapis-common-protos-1.58.0.tar.gz", hash = "sha256:c727251ec025947d545184ba17e3578840fc3a24a0516a020479edab660457df"},
@@ -3741,8 +3741,8 @@ packaging = [
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
 pathspec = [
-    {file = "pathspec-0.10.3-py3-none-any.whl", hash = "sha256:3c95343af8b756205e2aba76e843ba9520a24dd84f68c22b9f93251507509dd6"},
-    {file = "pathspec-0.10.3.tar.gz", hash = "sha256:56200de4077d9d0791465aa9095a01d421861e405b5096955051deefd697d6f6"},
+    {file = "pathspec-0.11.0-py3-none-any.whl", hash = "sha256:3a66eb970cbac598f9e5ccb5b2cf58930cd8e3ed86d393d541eaf2d8b1705229"},
+    {file = "pathspec-0.11.0.tar.gz", hash = "sha256:64d338d4e0914e91c1792321e6907b5a593f1ab1851de7fc269557a21b30ebbc"},
 ]
 pdfminer-six = [
     {file = "pdfminer.six-20221105-py3-none-any.whl", hash = "sha256:1eaddd712d5b2732f8ac8486824533514f8ba12a0787b3d5fe1e686cd826532d"},
@@ -3964,8 +3964,8 @@ pyparsing = [
     {file = "pyparsing-3.0.9.tar.gz", hash = "sha256:2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"},
 ]
 pypdf = [
-    {file = "pypdf-3.2.1-py3-none-any.whl", hash = "sha256:beb4022d95caec5f32acd935e4de05b0b36cc95a5d06477f84d6ec0b337288b0"},
-    {file = "pypdf-3.2.1.tar.gz", hash = "sha256:ac6bcd4492b55c95f58f7e3a6e8e113588244bdfb21c8ee60da6db399725b8dd"},
+    {file = "pypdf-3.3.0-py3-none-any.whl", hash = "sha256:4239eff2e3d5e5d90b88590e5924cb34e7743ec1418717749a16cc9032c37f77"},
+    {file = "pypdf-3.3.0.tar.gz", hash = "sha256:37a272f6dd7d9a0eba29ae201d07d3060f8cb81d301e21f42d99e62d4c4e6e4b"},
 ]
 pyperclip = [
     {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
@@ -4065,8 +4065,8 @@ python-docx = [
     {file = "python-docx-0.8.11.tar.gz", hash = "sha256:1105d233a0956dd8dd1e710d20b159e2d72ac3c301041b95f4d4ceb3e0ebebc4"},
 ]
 python-dotenv = [
-    {file = "python-dotenv-0.21.0.tar.gz", hash = "sha256:b77d08274639e3d34145dfa6c7008e66df0f04b7be7a75fd0d5292c191d79045"},
-    {file = "python_dotenv-0.21.0-py3-none-any.whl", hash = "sha256:1684eb44636dd462b66c3ee016599815514527ad99965de77f43e0944634a7e5"},
+    {file = "python-dotenv-0.21.1.tar.gz", hash = "sha256:1c93de8f636cde3ce377292818d0e440b6e45a82f215c3744979151fa8151c49"},
+    {file = "python_dotenv-0.21.1-py3-none-any.whl", hash = "sha256:41e12e0318bebc859fcc4d97d4db8d20ad21721a6aa5047dd59f090391cb549a"},
 ]
 python-xlib = [
     {file = "python-xlib-0.33.tar.gz", hash = "sha256:55af7906a2c75ce6cb280a584776080602444f75815a7aff4d287bb2d7018b32"},
@@ -4300,8 +4300,8 @@ rpaframework-aws = [
     {file = "rpaframework_aws-5.2.6.tar.gz", hash = "sha256:04989ac28664dd4efaf2be34cfb1f5bf958fede2dbf79795bbcb71a7bc00548e"},
 ]
 rpaframework-core = [
-    {file = "rpaframework_core-10.1.0-py3-none-any.whl", hash = "sha256:7263f02fe4b7df7c00fd874a682849b75570fbdd1e1ebd89ffb9164ee617fb44"},
-    {file = "rpaframework_core-10.1.0.tar.gz", hash = "sha256:a9af528bd0a5d9f7af35fa5923eb240316ec6fd7754f758e70afeb395078ebe8"},
+    {file = "rpaframework_core-10.1.1-py3-none-any.whl", hash = "sha256:8274d82b152577e9ab44e418ac11901f8477b86b3b181030f8763205d947e63b"},
+    {file = "rpaframework_core-10.1.1.tar.gz", hash = "sha256:b98f336d2cf7b999bade5c85fa414b1cb3a6f566f0bd9040963cb65e0c82ab65"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework_dialogs-4.0.1-py3-none-any.whl", hash = "sha256:984d8e0d373fbfb0988cdc580054c7daf420194544c43162fd67e501759882e1"},
@@ -4339,8 +4339,8 @@ selenium = [
     {file = "selenium-4.5.0-py3-none-any.whl", hash = "sha256:a733dd77d3171b846893f4d51b18967d809313f547a10974e26579f9ce797462"},
 ]
 setuptools = [
-    {file = "setuptools-66.0.0-py3-none-any.whl", hash = "sha256:a78d01d1e2c175c474884671dde039962c9d74c7223db7369771fcf6e29ceeab"},
-    {file = "setuptools-66.0.0.tar.gz", hash = "sha256:bd6eb2d6722568de6d14b87c44a96fac54b2a45ff5e940e639979a3d1792adb6"},
+    {file = "setuptools-66.1.1-py3-none-any.whl", hash = "sha256:6f590d76b713d5de4e49fe4fbca24474469f53c83632d5d0fd056f7ff7e8112b"},
+    {file = "setuptools-66.1.1.tar.gz", hash = "sha256:ac4008d396bc9cd983ea483cb7139c0240a07bbc74ffb6232fceffedc6cf03a8"},
 ]
 simple-salesforce = [
     {file = "simple-salesforce-1.12.3.tar.gz", hash = "sha256:ff4ca9ae31d1f378fb0dce6e222b91ab6254d3dd5b0062c137822a822517e189"},
