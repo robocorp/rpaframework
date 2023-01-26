@@ -4,7 +4,7 @@ import os
 import platform
 import stat
 from pathlib import Path
-from typing import Optional
+from typing import Dict, List, Optional
 
 import requests
 from packaging import version
@@ -43,16 +43,26 @@ AVAILABLE_DRIVERS = {
     "ie": IEDriverManager,
 }
 
-# Note: This is depracated.
-# Current resolving logic contained in RPA.Browser.Selenium,
-# and this should not be used anymore, but removing this
-# must be done in a major version.
-DRIVER_PREFERENCE = {
-    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
-    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
-    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
-    "default": ["Chrome", "Firefox"],
-}
+
+def _browser_preferences() -> Dict[str, List[str]]:
+    """Get a list of preferred browsers to use given the OS.
+
+    Environment variable `RPA_SELENIUM_BROWSER_ORDER` takes precedence if defined.
+    """
+    preferences = {
+        "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
+        "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
+        "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
+        "default": ["Chrome", "Firefox"],
+    }
+    browsers = os.getenv("RPA_SELENIUM_BROWSER_ORDER", "")
+    if browsers:
+        preferences["custom"] = [browser.strip() for browser in browsers.split(sep=",")]
+
+    return preferences
+
+
+DRIVER_PREFERENCE = _browser_preferences()
 
 
 class Downloader(WDMHttpClient):
