@@ -70,5 +70,5 @@ assistant.add_submit_buttons(["second submit"], "second submit")
 # assistant.clear_elements()
 # assistant.add_icon(Icon.Failure)
 
-results = assistant.ask_user(location=Location.TopLeft)
+results = assistant.ask_user(location=Location.TopLeft, timeout=5)
 print(results)

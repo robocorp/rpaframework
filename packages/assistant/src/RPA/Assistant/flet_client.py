@@ -2,6 +2,7 @@ import atexit
 import logging
 import os
 import signal
+from subprocess import TimeoutExpired
 from typing import Callable, List, Optional, Union, Literal, Tuple
 
 import flet
@@ -30,6 +31,8 @@ class FletEvent:
     control: Control
     page: Page
 
+class TimeoutException(RuntimeError):
+    """Timeout while waiting for dialog to finish."""
 
 class FletClient:
     """Class for wrapping flet operations"""
@@ -100,6 +103,7 @@ class FletClient:
         width: int,
         on_top: bool,
         location: Union[Location, Tuple[int, int], None],
+        timeout: int,
     ):
         def on_session_created(conn, session_data):
             page = Page(conn, session_data.sessionID)
@@ -128,7 +132,9 @@ class FletClient:
         self._conn.on_session_created = on_session_created
         self._fvp = flet.flet._open_flet_view(self._conn.page_url, False)
         try:
-            self._fvp.wait()
+            self._fvp.wait(timeout=timeout)
+        except TimeoutExpired:
+            raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
         except Exception:
             pass
 
@@ -159,8 +165,9 @@ class FletClient:
         width: int,
         on_top: bool,
         location: Union[Location, Tuple[int, int], None],
+        timeout: int
     ):
-        self._show_flet(self._execute(), title, height, width, on_top, location)
+        self._show_flet(self._execute(), title, height, width, on_top, location, timeout)
 
     def clear_elements(self):
         if self.page:

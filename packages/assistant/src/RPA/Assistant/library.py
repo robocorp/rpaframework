@@ -917,8 +917,6 @@ class Assistant:
             Log    The username is: ${result.username}
         """
 
-        # FIXME: support timeout
-
         # height has to be either AUTO or an int value
         if not isinstance(height, int) and height != "AUTO":
             height = int(height)
@@ -928,7 +926,7 @@ class Assistant:
         if isinstance(location, str):
             location = Location[location]
 
-        self._client.display_flet_window(title, height, width, on_top, location)
+        self._client.display_flet_window(title, height, width, on_top, location, timeout)
         return self._client.results
 
     @keyword("Ask User", tags=["dialog"])
@@ -955,10 +953,8 @@ class Assistant:
             Log    The username is: ${result.username}
         """
 
-        # FIXME: support timeout
-
         self.add_submit_buttons(["Submit", "Close"], "Submit")
-        return self.run_dialog(**options)
+        return self.run_dialog(**options, timeout=timeout)
 
     @keyword("Refresh Dialog", tags=["dialog"])
     def refresh_dialog(self):
