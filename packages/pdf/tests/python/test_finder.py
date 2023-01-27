@@ -15,7 +15,7 @@ from . import TestFiles, library
 )
 def test_set_anchor_to_element(library, locator, trim, expected):
     library.open_pdf(TestFiles.invoice_pdf)
-    result = library.set_anchor_to_element(locator, trim=trim)
+    result = library.set_anchor_to_element(locator, trim=trim, ignore_case=True)
 
     assert result is expected
 
@@ -33,7 +33,7 @@ def test_set_anchor_to_element(library, locator, trim, expected):
 )
 def test_find_text_default_right(library, locator, trim, expected):
     library.open_pdf(TestFiles.invoice_pdf)
-    result = library.find_text(locator, trim=trim)
+    result = library.find_text(locator, trim=trim, ignore_case=True)
 
     assert result[0].neighbours[0] == expected
 
@@ -47,7 +47,7 @@ def test_find_text_left(library):
 
 def test_find_text_bottom(library):
     library.open_pdf(TestFiles.invoice_pdf)
-    service = library.find_text("text:service", direction="bottom")
+    service = library.find_text("text:service", direction="bottom", ignore_case=True)
 
     assert "Web Design" in service[0].neighbours[0]
 

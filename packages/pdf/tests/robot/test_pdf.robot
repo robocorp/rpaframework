@@ -84,27 +84,28 @@ Extract pages from PDF
     &{item} =    Get Text From PDF    ${WORKDIR}${/}extract.pdf
     RPA Should Contain    ${item}[${1}]    4.5 Omaisuuden hankkimisesta aiheutuneet menot
 
-Get text closest to element on the right (default)
-    Open PDF    ${INVOICE_PDF}
-    ${items} =    Find Text    text:due date
+Get text closest to element on the right
+    [Setup]     Open PDF    ${INVOICE_PDF}
+    ${items} =    Find Text    text:due date    ignore_case=${True}
     Should Be Equal    ${items[0].neighbours}[0]    January 31, 2016
 
 Get text closest to element on the left
-    Open PDF    ${INVOICE_PDF}
+    [Setup]     Open PDF    ${INVOICE_PDF}
     ${items} =    Find Text    text:January 31, 2016    pagenum=1    direction=left
     Should Be Equal    ${items[0].neighbours}[0]    Due Date
 
 Get text closest to element using regexp match for value
-    Open PDF    ${INVOICE_PDF}
+    [Setup]     Open PDF    ${INVOICE_PDF}
     ${items} =    Find Text    text:Hrs/Qty    pagenum=1    direction=bottom    regexp=\\d+[.]\\d+
     Should Be Equal    ${items[0].neighbours}[0]    1.00
 
 Get figures from PDF
+    [Setup]     Open PDF    ${IMAGES_PDF}
+
     # In the PDF with images we get one figure for each page and each figure's `top`
-    # value is found among the ones below.
-    @{expect_tops} =    Create List    ${817}    ${587}
-    Open PDF    ${IMAGES_PDF}
+    #  value is found among the ones below.
     &{figures_by_page} =    Get All Figures
+    @{expect_tops} =    Create List    ${817}    ${587}
     FOR    ${page}    ${figures}    IN    &{figures_by_page}
         Log    On page: ${page}
         FOR    ${figure_id}    ${figure}    IN    &{figures}
@@ -143,19 +144,21 @@ XML Dumping And Parsing
     RPA Should Contain    ${text_dict}[${1}]    test@test.com
 
 Find multiple anchors in multi-page PDF
-    Open PDF    ${BOOK_PDF}
+    [Setup]     Open PDF    ${BOOK_PDF}
+
     @{all_matches} =    Create List
     ${pages} =    Get Number Of Pages
     FOR    ${page}    IN RANGE    1    ${pages + 1}
         ${matches} =    Find Text    regex:.*Python.*    pagenum=${page}    direction=down
         Append To List    ${all_matches}    @{matches}
     END
+
     # First text below first "Python" result.
     RPA Should Contain    ${all_matches[0].neighbours[0]}    Simple, Rapid, Effective, and Scalable
     # Second "Python" result's text.
     RPA Should Contain    ${all_matches[1].anchor}    13. A4. Packaging and Distributing Python Projects
     # Paragraph under the last "Python" match.
-    RPA Should Contain    ${all_matches[7].neighbours[0]}    Flask is another popular framework
+    RPA Should Contain    ${all_matches[8].neighbours[0]}    Flask is another popular framework
 
 Add watermark into PDF
     ${pdf} =    Set Variable    ${WORK_DIR}${/}receipt.pdf
@@ -172,7 +175,7 @@ Figures to Images
     File Should Exist    ${WORK_DIR}${/}Energy-*.bmp
 
 Figure to Image
-    Open Pdf    ${RESOURCE_DIR}${/}sparebin-receipt.pdf
+    [Setup]     Open Pdf    ${RESOURCE_DIR}${/}sparebin-receipt.pdf
     &{figures} =    Get All Figures
     Log Dictionary    ${figures}
     &{figure_dict} =    Get From Dictionary    ${figures}    ${2}    # page 2
@@ -184,3 +187,9 @@ Figure to Image
     ...    file_prefix=robot-
     Log To Console    ${image_file_path}
     File Should Exist    ${WORK_DIR}${/}robot-*.bmp
+
+Get Subtext From Invoice
+    [Setup]     Open PDF    ${INVOICE_PDF}
+
+    ${matches} =    Find Text   subtext:order   ignore_case=${True}
+    Should Be Equal     ${matches[0].neighbours[0]}     12345

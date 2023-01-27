@@ -639,8 +639,7 @@ class ModelKeywords(LibraryContext):
             ]
         except KeyError as err:
             raise KeyError(
-                'PDF "%s" does not have any input fields.'
-                % self.active_pdf_document.path
+                f"PDF {active_document.path!r} does not have any input fields."
             ) from err
 
         record_fields = {}
@@ -664,7 +663,7 @@ class ModelKeywords(LibraryContext):
             }
             record_fields[name] = parsed_field
 
-        self.active_pdf_document.fields = record_fields or None
+        active_document.fields = record_fields or None
         return record_fields
 
     @keyword
