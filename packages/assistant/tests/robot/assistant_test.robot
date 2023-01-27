@@ -7,7 +7,7 @@ Library     Process
 *** Test Cases ***
 Main
     Control Buttons
-    Ask User    location=TopLeft
+    Ask User  location=TopLeft
 
 
 *** Keywords ***
@@ -29,6 +29,11 @@ Exec Python
     ${robot_cmd}=    Create List    python    tests/assistant_test.py
     ${result}=    Run Process    @{robot_cmd}
     Log    ${result}
+
+Sleep and Log to Console
+    Log To Console  sleeping
+    Sleep  1
+    Log To Console  awakening
 
 Print with Python
     ${result}=    Run Process    python    -c    print("hello")
@@ -55,6 +60,7 @@ Control Buttons
 
     Add Button    process_button    Dummy Process
     Add Button    print with python    Print With Python
+    Add Button    Sleep and log to console  Sleep and Log to Console
 
     Add Heading    BAD buttons
     # For debugging how unavailable keywords appear in robot side

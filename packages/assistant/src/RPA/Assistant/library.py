@@ -40,7 +40,6 @@ from RPA.Assistant.date_picker import DatePicker
 from RPA.Assistant.types import Icon, Options, Result, Size, Location
 from RPA.Assistant.utils import (
     button_lock,
-    check_if_keyword_exists,
     optional_str,
     to_options,
 )
@@ -972,10 +971,12 @@ class Assistant:
         """
         if isinstance(function, Callable):
             function(*args, **kwargs)
-        elif check_if_keyword_exists(function):
-            BuiltIn().run_keyword(function, *args, **kwargs)
         else:
-            raise ValueError(f"{function} was not a python Callable or a Robot keyword")
+            try:
+                BuiltIn().run_keyword(function, *args, **kwargs)
+            except Exception as e:
+                self.logger.error("Error calling {function}")
+                self.logger.error(e)
 
     @keyword("Add Button", tags=["dialog"])
     def add_button(
