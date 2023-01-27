@@ -7,6 +7,9 @@ from comtypes import COMError
 
 
 if platform.system() == "Windows":
+    # import win32com.client to fix order of imports in the SapGuiLibrary
+    # pylint: disable=unused-import
+    import win32com.client  # noqa: F401
     from SapGuiLibrary import SapGuiLibrary
 else:
     logging.getLogger(__name__).warning(
