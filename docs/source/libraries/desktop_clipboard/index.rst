@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Desktop
+   :platforms: Windows, Linux, MacOS
+
 #################
 Desktop.Clipboard
 #################

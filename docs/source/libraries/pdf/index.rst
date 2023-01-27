@@ -1,3 +1,7 @@
+.. meta::
+   :tags: PDF
+   :platforms: Windows, Linux, MacOS
+
 ###
 PDF
 ###

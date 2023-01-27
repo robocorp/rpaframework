@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Database
+   :platforms: Windows, Linux, MacOS
+
 ########
 Database
 ########

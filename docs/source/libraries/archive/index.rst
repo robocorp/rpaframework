@@ -1,3 +1,8 @@
+.. meta::
+   :description: Archive is a library for operating with ZIP and TAR packages.
+   :tags: Utility
+   :platforms: Windows, Linux, MacOS
+
 #######
 Archive
 #######

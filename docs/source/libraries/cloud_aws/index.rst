@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Cloud
+   :platforms: Windows, Linux, MacOS
+
 #########
 Cloud.AWS
 #########

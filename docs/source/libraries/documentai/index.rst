@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Intelligent Document Processing
+   :platforms: Windows, Linux, MacOS
+
 ##########
 DocumentAI
 ##########

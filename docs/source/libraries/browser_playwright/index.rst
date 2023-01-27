@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Browser
+   :platforms: Windows, Linux, MacOS
+
 .. _playwright:
 
 ##################

@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Office 365
+   :platforms: Windows, Linux, MacOS
+
 ###########
 Excel.Files
 ###########

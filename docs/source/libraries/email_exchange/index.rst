@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Email
+   :platforms: Windows, Linux, MacOS
+
 ##############
 Email.Exchange
 ##############

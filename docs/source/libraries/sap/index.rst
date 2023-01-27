@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Applications
+   :platforms: Windows
+
 ###
 SAP
 ###

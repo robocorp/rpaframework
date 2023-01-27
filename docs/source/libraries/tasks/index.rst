@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Utility
+   :platforms: Windows, Linux, MacOS
+
 #####
 Tasks
 #####

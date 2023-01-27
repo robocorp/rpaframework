@@ -1,3 +1,7 @@
+.. meta::
+   :tags: HTTP
+   :platforms: Windows, Linux, MacOS
+
 ####
 HTTP
 ####

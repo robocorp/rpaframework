@@ -1,3 +1,7 @@
+.. meta::
+   :tags: File management
+   :platforms: Windows, Linux, MacOS
+
 ##########
 FileSystem
 ##########

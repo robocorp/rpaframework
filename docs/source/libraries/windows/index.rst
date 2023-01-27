@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Desktop
+   :platforms: Windows
+
 #######
 Windows
 #######

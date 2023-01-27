@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Robocorp Control Room
+   :platforms: Windows, Linux, MacOS
+
 ##############
 Robocorp.Vault
 ##############

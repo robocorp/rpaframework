@@ -1,3 +1,7 @@
+.. meta::
+   :tags: Image
+   :platforms: Windows, Linux, MacOS
+
 ######
 Images
 ######
