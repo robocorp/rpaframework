@@ -76,7 +76,40 @@ def build_libdocs(ctx):
     )
 
 
-@task(pre=[config.install, build_libdocs], default=True, aliases=["build"])
+@task
+def update_libspec_tags(ctx):
+    """Parses documentation and updates the JSON libspec files with
+    RST meta tags if they exist for that component.
+    """
+    docs_source = Path(safely_load_config(ctx, "ctx.docs.source", DOCS_SOURCE_DIR))
+    docs = (docs_source / "libraries").glob("**/index.rst")
+    json_dir = docs_source / "json"
+    for doc in docs:
+        doc_name_pattern = "".join(
+            [f"[{c.upper()}{c.lower()}]" for c in doc.parent.name]
+        )
+        parsed_doc = _parse_rst(doc)
+        for meta in parsed_doc.traverse(condition=nodes.meta):
+            current_json_path = list(json_dir.glob(f"RPA_{doc_name_pattern}.json"))
+            if len(current_json_path) > 1:
+                raise ValueError(
+                    f"Found more than one JSON matching {doc_name_pattern}: {current_json_path!r}"
+                )
+            current_json_path = current_json_path[0]
+            with current_json_path.open("r") as json_file:
+                current_json = json.load(json_file)
+            meta_dict = current_json.get("meta", {})
+            meta_dict.update({meta.attributes["name"]: meta.attributes["content"]})
+            current_json.update({"meta": meta_dict})
+            with current_json_path.open("w") as json_file:
+                json.dump(current_json, json_file, indent=2)
+
+
+@task(
+    pre=[config.install, build_libdocs, update_libspec_tags],
+    default=True,
+    aliases=["build"],
+)
 def build_docs(ctx):
     """Builds documentation locally. These can then be browsed directly
     by going to ./docs/build/html/index.html or using ``invoke local-docs``
@@ -149,31 +182,6 @@ def _parse_rst(doc: Path) -> nodes.document:
             document = utils.new_document(str(doc), settings=settings)
             parser.parse(doc.read_text(), document)
     return document
-
-
-@task
-def update_libspec_tags(ctx):
-    """Parses documentation and updates the JSON libspec files with
-    RST meta tags if they exist for that component.
-    """
-    docs_source = Path(safely_load_config(ctx, "ctx.docs.source", DOCS_SOURCE_DIR))
-    docs = (docs_source / "libraries").glob("**/index.rst")
-    json_dir = docs_source / "json"
-    for doc in docs:
-        doc_name = doc.parent.name
-        parsed_doc = _parse_rst(doc)
-        for meta in parsed_doc.traverse(condition=nodes.meta):
-            current_json_path = list(json_dir.glob(f"*{doc_name}*.json"))
-            if len(current_json_path) > 1:
-                raise ValueError(f"Found more than one JSON matching {doc_name}")
-            current_json_path = current_json_path[0]
-            with current_json_path.open("r") as json_file:
-                current_json = json.load(json_file)
-            meta_dict = current_json.get("meta", {})
-            meta_dict.update({meta.attributes["name"]: meta.attributes["content"]})
-            current_json.update({"meta": meta_dict})
-            with current_json_path.open("w") as json_file:
-                json.dump(current_json, json_file, indent=2)
 
 
 # Configure how this namespace will be loaded
