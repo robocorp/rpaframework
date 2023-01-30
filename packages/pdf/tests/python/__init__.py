@@ -30,6 +30,7 @@ class TestFiles:
     alianz_pdf = RESOURCE_DIR / "alianz.pdf"
     receipt_pdf = RESOURCE_DIR / "receipt.pdf"
     robot_png = RESOURCE_DIR / "robot.png"
+    camelot_table = RESOURCE_DIR / "camelot-table.pdf"
 
 
 @contextmanager

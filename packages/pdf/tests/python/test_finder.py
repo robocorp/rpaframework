@@ -15,7 +15,7 @@ from . import TestFiles, library
 )
 def test_set_anchor_to_element(library, locator, trim, expected):
     library.open_pdf(TestFiles.invoice_pdf)
-    result = library.set_anchor_to_element(locator, trim=trim)
+    result = library.set_anchor_to_element(locator, trim=trim, ignore_case=True)
 
     assert result is expected
 
@@ -33,7 +33,7 @@ def test_set_anchor_to_element(library, locator, trim, expected):
 )
 def test_find_text_default_right(library, locator, trim, expected):
     library.open_pdf(TestFiles.invoice_pdf)
-    result = library.find_text(locator, trim=trim)
+    result = library.find_text(locator, trim=trim, ignore_case=True)
 
     assert result[0].neighbours[0] == expected
 
@@ -47,7 +47,7 @@ def test_find_text_left(library):
 
 def test_find_text_bottom(library):
     library.open_pdf(TestFiles.invoice_pdf)
-    service = library.find_text("text:service", direction="bottom")
+    service = library.find_text("text:service", direction="bottom", ignore_case=True)
 
     assert "Web Design" in service[0].neighbours[0]
 
@@ -126,3 +126,23 @@ def test_find_text(
     assert re.match(
         expected_neighbour, found_neighbour, flags=re.DOTALL
     ), f"doesn't match pattern {expected_neighbour}"
+
+
+@pytest.mark.parametrize(
+    "locator, ignore_case, expected_anchor",
+    [
+        ("text:Distance \n(mi)", False, "Distance \n(mi)"),
+        ("subtext:Distance", False, "Distance \n(mi)"),
+        ("subtext:name", False, None),
+        ("subtext:name", True, "Cycle \nName"),
+    ],
+)
+def test_find_text_subtext(library, locator, ignore_case, expected_anchor):
+    library.open_pdf(TestFiles.camelot_table)
+    matches = library.find_text(locator, ignore_case=ignore_case)
+    if expected_anchor:
+        assert matches, "no results found"
+        match = matches[0]
+        assert match.anchor == expected_anchor
+    else:
+        assert not matches, "shouldn't find results"

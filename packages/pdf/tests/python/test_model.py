@@ -6,6 +6,22 @@ from . import library  # for the fixture to work
 from . import TestFiles, temp_filename  # noqa
 
 
+def _escape_string(value: str) -> str:
+    to_escape = {"."}
+    values = []
+    for char in value:
+        if char in to_escape:
+            char = "\\\\" + oct(ord(char)).replace("o", "")
+        values.append(char)
+    return "".join(values)
+
+
+def assert_field_value(lib, name, value):
+    value = _escape_string(value)
+    content = lib.active_pdf_document.fileobject.read()
+    assert re.search(rf"{name}[^>]+{value}".encode(), content)
+
+
 @pytest.mark.parametrize(
     "trim,text",
     [
@@ -87,56 +103,30 @@ def test_set_field_value_checkbox(library):
         with pytest.raises(KeyError):
             # This output can't retrieve fields after save anymore.
             library.get_input_fields()
-        content = library.active_pdf_document.fileobject.read()
-        assert re.search(rf"{checkbox_name}[^>]+Yes".encode(), content)
+        assert_field_value(library, checkbox_name, "Yes")
 
 
-@pytest.mark.xfail(reason="Known issue: PDF won't show as having fields after saving")
-def test_save_field_values_fields_exist(library):
-    new_number = "12313123"
-    new_date = "01.04.2021"
-
-    with temp_filename() as tmp_file:
-        library.open_pdf(TestFiles.vero_pdf)
-        library.set_field_value("Puhelinnumero", new_number)
-        library.set_field_value("Paivays", new_date)
-        library.save_field_values(output_path=tmp_file)
-        fields = library.get_input_fields(tmp_file)
-
-        assert fields["Puhelinnumero"] == "12313123"
-        assert fields["Paivays"] == "01.04.2021"
-
-
-@pytest.mark.xfail(reason="Known issue: Field values won't show in text body")
-def test_save_field_values_text_exists(library):
-    new_number = "12313123"
-    new_date = "01.04.2021"
-
-    with temp_filename() as tmp_file:
-        library.open_pdf(TestFiles.vero_pdf)
-        library.set_field_value("Puhelinnumero", new_number)
-        library.set_field_value("Paivays", new_date)
-        library.save_field_values(output_path=tmp_file)
-        text = library.get_text_from_pdf(tmp_file)
-
-        assert new_number in text[2]
-        assert new_date in text[2]
-
-
-@pytest.mark.xfail(reason="Known issue: PDF won't show as having fields after saving")
-def test_save_field_values_multiple_updates_in_one_operation(library):
-    new_fields = {
-        "Puhelinnumero": "12313123",
-        "Paivays": "01.04.2021",
+@pytest.mark.parametrize("at_once", [False, True])
+def test_save_field_values_fields_exist(library, at_once):
+    fields = {
+        "Puhelinnumero": "12313123",  # new number
+        "Paivays": "01.04.2021",  # new date
     }
-    with temp_filename() as tmp_file:
-        library.save_field_values(
-            source_path=TestFiles.vero_pdf, output_path=tmp_file, newvals=new_fields
-        )
-        fields = library.get_input_fields(tmp_file)
 
-        assert fields["Puhelinnumero"] == "12313123"
-        assert fields["Paivays"] == "01.04.2021"
+    with temp_filename(suffix="-fields.pdf") as tmp_file:
+        library.open_pdf(TestFiles.vero_pdf)
+        # Keep non-empty values, because empty fields will fail the saving.
+        library.get_input_fields(replace_none_value=True)
+        if at_once:
+            for name, value in fields.items():
+                library.set_field_value(name, value)
+            library.save_field_values(output_path=tmp_file)
+        else:
+            library.save_field_values(output_path=tmp_file, newvals=fields)
+
+        library.open_pdf(tmp_file)
+        for name, value in fields.items():
+            assert_field_value(library, name, value)
 
 
 def test_dump_pdf_as_xml(library):

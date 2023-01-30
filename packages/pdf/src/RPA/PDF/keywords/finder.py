@@ -42,6 +42,8 @@ class Match:
 class FinderKeywords(LibraryContext):
     """Keywords for locating elements."""
 
+    RE_FLAGS = re.MULTILINE | re.DOTALL  # default regexp flags
+
     def __init__(self, ctx):
         super().__init__(ctx)
 
@@ -77,6 +79,13 @@ class FinderKeywords(LibraryContext):
         template = f"{prefix} box %d | bbox %s | text %r"
         self.logger.debug(template, elem.boxid, elem.bbox, elem.text)
 
+    @classmethod
+    def _re_flags(cls, ignore_case: bool) -> int:
+        flags = cls.RE_FLAGS
+        if ignore_case:
+            flags |= re.IGNORECASE
+        return flags
+
     @keyword
     def find_text(
         self,
@@ -85,17 +94,18 @@ class FinderKeywords(LibraryContext):
         direction: str = "right",
         closest_neighbours: Optional[Union[int, str]] = 1,
         strict: bool = False,
-        regexp: str = None,
+        regexp: Optional[str] = None,
         trim: bool = True,
+        ignore_case: bool = False,
     ) -> List[Match]:
         """Find the closest text elements near the set anchor(s) through `locator`.
 
         The PDF will be parsed automatically before elements can be searched.
 
         :param locator: Element to set anchor to. This can be prefixed with either
-            `text:`, `regex:` or `coords:` to find the anchor by text or coordinates.
-            `text` is assumed if no such prefix is specified. (text search is case
-            insensitive)
+            "text:", "subtext:", "regex:" or "coords:" to find the anchor by text or
+            coordinates. The "text" strategy is assumed if no such prefix is specified.
+            (text search is case-sensitive; use `ignore_case` param for controlling it)
         :param pagenum: Page number where search is performed on, defaults to 1 (first
             page).
         :param direction: In which direction to search for text elements. This can be
@@ -109,6 +119,8 @@ class FinderKeywords(LibraryContext):
             candidates in range are considered valid neighbours.
         :param trim: Automatically trim leading/trailing whitespace from the text
             elements. (switched on by default)
+        :param ignore_case: Do a case-insensitive search when set to `True`. (affects
+            the passed `locator` and `regexp` filtering)
         :returns: A list of `Match` objects where every match has the following
             attributes: `.anchor` - the matched text with the locator; `.neighbours` -
             a list of adjacent texts found on the specified direction
@@ -154,7 +166,7 @@ class FinderKeywords(LibraryContext):
             closest_neighbours = int(closest_neighbours)
         self.logger.info(
             "Searching for %s neighbour(s) to the %s of %r on page %d using regular "
-            "expression: %s",
+            "expression: %s (case %s)",
             f"closest {closest_neighbours}"
             if closest_neighbours is not None
             else "all",
@@ -162,13 +174,18 @@ class FinderKeywords(LibraryContext):
             locator,
             pagenum,
             regexp,
+            "insensitive" if ignore_case else "sensitive",
         )
-        self.set_anchor_to_element(locator, trim=trim, pagenum=pagenum)
+        self.set_anchor_to_element(
+            locator, trim=trim, pagenum=pagenum, ignore_case=ignore_case
+        )
         if not self.anchor_element:
             self.logger.warning("No anchor(s) set for locator: %s", locator)
             return []
 
-        regexp_compiled = re.compile(regexp) if regexp else None
+        regexp_compiled = None
+        if regexp:
+            regexp_compiled = re.compile(regexp, flags=self._re_flags(ignore_case))
         search_for_candidate = self._get_candidate_search_function(
             direction, regexp_compiled, strict
         )
@@ -208,7 +225,11 @@ class FinderKeywords(LibraryContext):
 
     @keyword
     def set_anchor_to_element(
-        self, locator: str, trim: bool = True, pagenum: Union[int, str] = 1
+        self,
+        locator: str,
+        trim: bool = True,
+        pagenum: Union[int, str] = 1,
+        ignore_case: bool = False,
     ) -> bool:
         """Sets main anchor point in the document for further searches.
 
@@ -216,13 +237,14 @@ class FinderKeywords(LibraryContext):
         the same time if such are found.
 
         :param locator: Element to set anchor to. This can be prefixed with either
-            `text:`, `regex:` or `coords:` to find the anchor by text or coordinates.
-            `text` is assumed if no such prefix is specified. (text search is case
-            insensitive)
+            "text:", "subtext:", "regex:" or "coords:" to find the anchor by text or
+            coordinates. The "text" strategy is assumed if no such prefix is specified.
+            (text search is case-sensitive; use `ignore_case` param for controlling it)
         :param trim: Automatically trim leading/trailing whitespace from the text
             elements. (switched on by default)
         :param pagenum: Page number where search is performed on, defaults to 1 (first
             page).
+        :param ignore_case: Do a case-insensitive search when set to `True`.
         :returns: True if at least one anchor was found.
 
         **Examples**
@@ -247,7 +269,10 @@ class FinderKeywords(LibraryContext):
         """
         pagenum = int(pagenum)
         self.logger.info(
-            "Trying to set anchor on page %d using locator: %r", pagenum, locator
+            "Trying to set anchor on page %d using locator: %r (case %s)",
+            pagenum,
+            locator,
+            "insensitive" if ignore_case else "sensitive",
         )
         self.ctx.convert(trim=trim, pagenum=pagenum)
         self._anchors.clear()
@@ -256,7 +281,7 @@ class FinderKeywords(LibraryContext):
         pure_locator = locator
         criteria = "text"
         parts = locator.split(":", 1)
-        if len(parts) == 2 and parts[0] in ("coords", "text", "regex"):
+        if len(parts) == 2 and parts[0] in ("coords", "text", "regex", "subtext"):
             criteria = parts[0]
             pure_locator = parts[1]
 
@@ -279,10 +304,17 @@ class FinderKeywords(LibraryContext):
             )
             anchor = TargetObject(bbox=bbox)
             self._anchors.append(anchor)
-        else:
+        else:  # text-based search
             if criteria == "regex":
-                pure_locator = re.compile(pure_locator)
-            anchors = self._find_matching_textboxes(pure_locator, pagenum=pagenum)
+                pure_locator = re.compile(
+                    pure_locator, flags=self._re_flags(ignore_case)
+                )
+            anchors = self._find_matching_textboxes(
+                pure_locator,
+                pagenum=pagenum,
+                is_subtext=criteria == "subtext",
+                ignore_case=ignore_case,
+            )
             self._anchors.extend(anchors)
 
         if self._anchors:
@@ -296,22 +328,34 @@ class FinderKeywords(LibraryContext):
         return list(page.textboxes.values())
 
     def _find_matching_textboxes(
-        self, locator: Union[str, Pattern], *, pagenum: int
+        self,
+        locator: Union[str, Pattern],
+        *,
+        pagenum: int,
+        is_subtext: bool = False,
+        ignore_case: bool = False,
     ) -> List[TextBox]:
         self.logger.info("Searching for matching text boxes with: %r", locator)
 
         if isinstance(locator, str):
-            lower_locator = locator.lower()
-            matches_anchor = (
-                lambda _anchor: _anchor.text.lower() == lower_locator
-            )  # noqa: E731
+            get_text = lambda string: (  # noqa: E731
+                string.lower() if ignore_case else string
+            )
+            if is_subtext:
+                matches_anchor = lambda _anchor: (  # noqa: E731
+                    get_text(locator) in get_text(_anchor.text)
+                )
+            else:
+                matches_anchor = lambda _anchor: (  # noqa: E731
+                    get_text(_anchor.text) == get_text(locator)
+                )
         else:
             matches_anchor = lambda _anchor: locator.match(_anchor.text)  # noqa: E731
+
         anchors = []
         for anchor in self._get_textboxes_on_page(pagenum):
             if matches_anchor(anchor):
                 anchors.append(anchor)
-
         if anchors:
             self.logger.info("Found %d matches with locator %r", len(anchors), locator)
             for anchor in anchors:
