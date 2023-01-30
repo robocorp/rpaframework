@@ -126,3 +126,23 @@ def test_find_text(
     assert re.match(
         expected_neighbour, found_neighbour, flags=re.DOTALL
     ), f"doesn't match pattern {expected_neighbour}"
+
+
+@pytest.mark.parametrize(
+    "locator, ignore_case, expected_anchor",
+    [
+        ("text:Distance \n(mi)", False, "Distance \n(mi)"),
+        ("subtext:Distance", False, "Distance \n(mi)"),
+        ("subtext:name", False, None),
+        ("subtext:name", True, "Cycle \nName"),
+    ],
+)
+def test_find_text_subtext(library, locator, ignore_case, expected_anchor):
+    library.open_pdf(TestFiles.camelot_table)
+    matches = library.find_text(locator, ignore_case=ignore_case)
+    if expected_anchor:
+        assert matches, "no results found"
+        match = matches[0]
+        assert match.anchor == expected_anchor
+    else:
+        assert not matches, "shouldn't find results"
