@@ -9,7 +9,7 @@ python = "^3.7"
 robotframework-browser = { version = "^14.4.1", python = ">=3.7,<4.0" }
 rpaframework = { path = "packages/main", develop = true }
 rpaframework-aws = "^5.2.5"
-rpaframework-google = "^6.1.5"
+rpaframework-google = "^7.0.0"
 rpaframework-recognition = "^5.0.1"
 rpaframework-windows = "^7.0.2"
 
