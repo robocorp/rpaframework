@@ -22,20 +22,12 @@ from .keywords import (
 
 
 def import_vault():
-    """Try to import Vault/Secrets library, with old and new name."""
+    """Try to import Vault/Secrets library, with the new name."""
     try:
         module = importlib.import_module("RPA.Robocorp.Vault")
         return getattr(module, "Vault")
     except ModuleNotFoundError:
-        pass
-
-    try:
-        module = importlib.import_module("RPA.Robocloud.Secrets")
-        return getattr(module, "Secrets")
-    except ModuleNotFoundError:
-        pass
-
-    return None
+        return None
 
 
 class Google(DynamicCore):
