@@ -11,16 +11,26 @@ from RPA.PDF.keywords.model import Document
 class PDF(DynamicCore):
     """`PDF` is a library for managing PDF documents.
 
-    It can be used to extract text from PDFs,
-    add watermarks to pages, and decrypt/encrypt documents.
+    It can be used to extract text from PDFs, add watermarks to pages, and
+    decrypt/encrypt documents.
 
-    There is also limited support for updating form field values.
+    There is also limited support for updating form field values. (check
+    ``Set Field Value`` and ``Save Field Values`` for more info)
 
-    Input PDF file can be passed as an argument to the keywords,
-    or it can be omitted if you first call `Open PDF`. Reference
-    to the current active PDF will be stored in the library instance and can be
-    changed by using `Switch To PDF` with another PDF file path, therefore you can
-    asynchronously work with multiple PDFs.
+    The input PDF file can be passed as an argument to the keywords, or it can be
+    omitted if you first call ``Open PDF``. A reference to the current active PDF will
+    be stored in the library instance and can be changed by using the ``Switch To PDF``
+    keyword with another PDF file path, therefore you can asynchronously work with
+    multiple PDFs.
+
+    .. Attention::
+        Keep in mind that this library works with text-based PDFs, and it **can't
+        extract information from an image-based (scan)** PDF file. For accurate
+        results, you have to use specialized external services wrapped by the
+        ``RPA.DocumentAI`` library.
+
+    Portal example with video recording demo for parsing PDF invoices:
+    https://github.com/robocorp/example-parse-pdf-invoice
 
     **Examples**
 

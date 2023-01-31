@@ -672,7 +672,9 @@ class ModelKeywords(LibraryContext):
     ) -> None:
         """Set value for field with given name on the active document.
 
-        Tries to match with field's identifier directly or its label.
+        Tries to match with field's identifier directly or its label. When ticking
+        checkboxes, try with the `/Yes` string value as simply `Yes` might not work
+        with most previewing apps.
 
         :param field_name: Field to update.
         :param value: New value for the field.
