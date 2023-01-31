@@ -125,6 +125,15 @@ class FinderKeywords(LibraryContext):
             attributes: `.anchor` - the matched text with the locator; `.neighbours` -
             a list of adjacent texts found on the specified direction
 
+        .. Attention::
+            Keep in mind that this keyword works with text-based PDFs, and it **can't
+            extract information from an image-based (scan)** PDF file. For accurate
+            results, you have to use specialized external services wrapped by the
+            ``RPA.DocumentAI`` library.
+
+        Portal example with video recording demo for parsing PDF invoices:
+        https://github.com/robocorp/example-parse-pdf-invoice
+
         **Examples**
 
         **Robot Framework**
