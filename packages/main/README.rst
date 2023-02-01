@@ -152,8 +152,6 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Desktop.OperatingSystem`_ | Read OS information and manipulate processes          | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
-| `Desktop.Windows`_         | Automate Windows desktop applications                 | x                      |
-+----------------------------+-------------------------------------------------------+------------------------+
 | `Dialogs`_                 | Request user input during executions                  | x,dialogs              |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `DocumentAI`_              | Intelligent Document Processing wrapper               | x                      |
@@ -224,7 +222,6 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Desktop: https://rpaframework.org/libraries/desktop/
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
 .. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
-.. _Desktop.Windows: https://rpaframework.org/libraries/desktop_windows/
 .. _Dialogs: https://rpaframework.org/libraries/dialogs/
 .. _DocumentAI: https://rpaframework.org/libraries/documentai
 .. _DocumentAI.Base64AI: https://rpaframework.org/libraries/documentai_base64ai/
@@ -273,7 +270,7 @@ Minimum required conda.yaml to install Playwright:
      - nodejs=16.4.2
      - pip:
        - robotframework-browser==13.3.0
-       - rpaframework==17.0.1
+       - rpaframework==20.1.2
    rccPostInstall:
      - rfbrowser init
 
@@ -292,7 +289,7 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
      - python=3.9.13
      - pip=22.1.2
      - pip:
-       - rpaframework==17.0.1
+       - rpaframework==20.1.2
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -307,7 +304,7 @@ To install all extra packages (including Playwright dependencies), you can use:
      - nodejs=16.14.2
      - pip:
        - robotframework-browser==13.3.0
-       - rpaframework==17.0.1   # rpaframework[aws]==13.0.0
+       - rpaframework==20.1.2
        - rpaframework-aws==5.0.0
        - rpaframework-google==6.1.1
        - rpaframework-recognition==5.0.0
