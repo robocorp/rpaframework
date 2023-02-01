@@ -150,7 +150,7 @@
 <span id="azure"></span><h2>Azure<a class="headerlink" href="#module-RPA.Cloud.Azure" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Cloud.Azure.Azure">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Cloud.Azure.</span></span><span class="sig-name descname"><span class="pre">Azure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'northeurope'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">robocloud_vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.Azure" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Cloud.Azure.</span></span><span class="sig-name descname"><span class="pre">Azure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'northeurope'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">robocorp_vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.Azure" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Azure.ServiceTextAnalytics" title="RPA.Cloud.Azure.ServiceTextAnalytics"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceTextAnalytics</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceFace" title="RPA.Cloud.Azure.ServiceFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceFace</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceComputerVision" title="RPA.Cloud.Azure.ServiceComputerVision"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceComputerVision</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceSpeech" title="RPA.Cloud.Azure.ServiceSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceSpeech</span></code></a></p>
 <p><cite>Azure</cite> is a library for operating with Microsoft Azure API endpoints.</p>
 <p>List of supported service names:</p>
@@ -168,7 +168,7 @@ in two different ways.</p>
 for example <code class="docutils literal notranslate"><span class="pre">AZURE_TEXTANALYTICS_KEY</span></code> or with common key <code class="docutils literal notranslate"><span class="pre">AZURE_SUBSCRIPTION_KEY</span></code> which
 will be used for all the services.</p></li>
 <li><p>Method 2 as Robocorp Vault secret. The vault name needs to be given in library init or
-with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
+with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocorp</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
 names.</p></li>
 </ul>
 <p>Method 1. subscription key using environment variable</p>
@@ -182,23 +182,23 @@ names.</p></li>
 <span class="p">    </span><span class="nf">Init Text Analytics Service</span>
 </pre></div>
 </div>
-<p>Method 2. setting Robocloud Vault in the library init</p>
+<p>Method 2. setting Robocorp Vault in the library init</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span><span class="p">  </span><span class="s">robocloud_vault_name=azure</span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span><span class="p">  </span><span class="s">robocorp_vault_name=azure</span>
 
 <span class="gh">*** Tasks ***</span>
 <span class="gu">Init Azure services</span>
-<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p">  </span><span class="s">use_robocorp_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>Method 2. setting Robocloud Vault with keyword</p>
+<p>Method 2. setting Robocorp Vault with keyword</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
 <span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span>
 
 <span class="gh">*** Tasks ***</span>
 <span class="gu">Init Azure services</span>
-<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">          </span><span class="s">vault_name=googlecloud</span>
-<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Set Robocorp Vault</span><span class="p">          </span><span class="s">vault_name=googlecloud</span>
+<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p">  </span><span class="s">use_robocorp_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>References</strong></p>
@@ -311,8 +311,8 @@ is set to 9.5 minutes = 570.0 seconds</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Cloud.Azure.AzureBase.robocloud_vault_name">
-<span class="sig-name descname"><span class="pre">robocloud_vault_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.robocloud_vault_name" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="RPA.Cloud.Azure.AzureBase.robocorp_vault_name">
+<span class="sig-name descname"><span class="pre">robocorp_vault_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.robocorp_vault_name" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -321,8 +321,8 @@ is set to 9.5 minutes = 570.0 seconds</p>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.Cloud.Azure.AzureBase.set_robocloud_vault">
-<span class="sig-name descname"><span class="pre">set_robocloud_vault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.set_robocloud_vault" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="RPA.Cloud.Azure.AzureBase.set_robocorp_vault">
+<span class="sig-name descname"><span class="pre">set_robocorp_vault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.set_robocorp_vault" title="Permalink to this definition"></a></dt>
 <dd><p>Set Robocorp Vault name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -350,13 +350,13 @@ is set to 9.5 minutes = 570.0 seconds</p>
 <p>Class for Azure Computer Vision service</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service">
-<span class="sig-name descname"><span class="pre">init_computer_vision_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_robocloud_vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_computer_vision_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_robocorp_vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize Azure Computer Vision</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> – identifier for service region</p></li>
-<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocorp Vault</cite></p></li>
+<li><p><strong>use_robocorp_vault</strong> – use secret stored into <cite>Robocorp Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -497,13 +497,13 @@ are “recognition_01” or “recognition_02”, default is “recognition_02�
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Cloud.Azure.ServiceFace.init_face_service">
-<span class="sig-name descname"><span class="pre">init_face_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_robocloud_vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceFace.init_face_service" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_face_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_robocorp_vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceFace.init_face_service" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize Azure Face</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> – identifier for service region</p></li>
-<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocorp Vault</cite></p></li>
+<li><p><strong>use_robocorp_vault</strong> – use secret stored into <cite>Robocorp Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -523,13 +523,13 @@ are “recognition_01” or “recognition_02”, default is “recognition_02�
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Cloud.Azure.ServiceSpeech.init_speech_service">
-<span class="sig-name descname"><span class="pre">init_speech_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_robocloud_vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.init_speech_service" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_speech_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_robocorp_vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.init_speech_service" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize Azure Speech</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> – identifier for service region</p></li>
-<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocorp Vault</cite></p></li>
+<li><p><strong>use_robocorp_vault</strong> – use secret stored into <cite>Robocorp Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -625,13 +625,13 @@ East US, South East Asia, and West Europe regions.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service">
-<span class="sig-name descname"><span class="pre">init_text_analytics_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_robocloud_vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_text_analytics_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_robocorp_vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize Azure Text Analyticts</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> – identifier for service region</p></li>
-<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocorp Vault</cite></p></li>
+<li><p><strong>use_robocorp_vault</strong> – use secret stored into <cite>Robocorp Vault</cite></p></li>
 </ul>
 </dd>
 </dl>

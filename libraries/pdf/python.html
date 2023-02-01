@@ -153,14 +153,24 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.PDF.</span></span><span class="sig-name descname"><span class="pre">PDF</span></span><a class="headerlink" href="#RPA.PDF.PDF" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DynamicCore</span></code></p>
 <p><cite>PDF</cite> is a library for managing PDF documents.</p>
-<p>It can be used to extract text from PDFs,
-add watermarks to pages, and decrypt/encrypt documents.</p>
-<p>There is also limited support for updating form field values.</p>
-<p>Input PDF file can be passed as an argument to the keywords,
-or it can be omitted if you first call <cite>Open PDF</cite>. Reference
-to the current active PDF will be stored in the library instance and can be
-changed by using <cite>Switch To PDF</cite> with another PDF file path, therefore you can
-asynchronously work with multiple PDFs.</p>
+<p>It can be used to extract text from PDFs, add watermarks to pages, and
+decrypt/encrypt documents.</p>
+<p>There is also limited support for updating form field values. (check
+<code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Field</span> <span class="pre">Value</span></code> and <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Field</span> <span class="pre">Values</span></code> for more info)</p>
+<p>The input PDF file can be passed as an argument to the keywords, or it can be
+omitted if you first call <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">PDF</span></code>. A reference to the current active PDF will
+be stored in the library instance and can be changed by using the <code class="docutils literal notranslate"><span class="pre">Switch</span> <span class="pre">To</span> <span class="pre">PDF</span></code>
+keyword with another PDF file path, therefore you can asynchronously work with
+multiple PDFs.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Keep in mind that this library works with text-based PDFs, and it <strong>can’t
+extract information from an image-based (scan)</strong> PDF file. For accurate
+results, you have to use specialized external services wrapped by the
+<code class="docutils literal notranslate"><span class="pre">RPA.DocumentAI</span></code> library.</p>
+</div>
+<p>Portal example with video recording demo for parsing PDF invoices:
+<a class="reference external" href="https://github.com/robocorp/example-parse-pdf-invoice">https://github.com/robocorp/example-parse-pdf-invoice</a></p>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>

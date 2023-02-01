@@ -9,6 +9,35 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+21.0.0 - 01 Feb 2023
+--------------------
+
+.. warning::
+  Multiple **breaking** changes below!
+
+- Library **RPA.Cloud.Azure** (:issue:`635`):
+
+  - `robocloud_vault_name` -> `robocorp_vault_name`
+  - `use_robocloud_vault` -> `use_robocorp_vault`
+  - ``Set Robocloud Vault`` -> ``Set Robocorp Vault``
+
+- Library **RPA.Cloud.Google** (:pr:`794`; ``rpaframework-google`` **7.0.0**):
+
+  - ``RPA.Robocloud.Secrets`` -> ``RPA.Robocorp.Vault``
+
+- Library **RPA.PDF** (:issue:`785`; ``rpaframework-pdf`` **7.0.1**):
+
+  - Keyword ``Find Text``:
+
+    - Supports additional parameter `ignore_case`, which if set to `True`, will make
+      the search case insensitive. (switch it **on** if you experience a different
+      behaviour)
+    - Adds `subtext:` strategy in the passed `locator` which checks for a substring
+      instead of the whole text to match.
+
+  - New related Portal example for parsing PDF invoices:
+    https://github.com/robocorp/example-parse-pdf-invoice
+
 20.1.2 - 26 Jan 2023
 --------------------
 

@@ -147,6 +147,42 @@
 </div>
 <div class="section" id="id2">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<div class="section" id="feb-2023">
+<h3>21.0.0 - 01 Feb 2023<a class="headerlink" href="#feb-2023" title="Permalink to this heading"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Multiple <strong>breaking</strong> changes below!</p>
+</div>
+<ul class="simple">
+<li><p>Library <strong>RPA.Cloud.Azure</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/635">#635</a>):</p>
+<ul>
+<li><p><cite>robocloud_vault_name</cite> -&gt; <cite>robocorp_vault_name</cite></p></li>
+<li><p><cite>use_robocloud_vault</cite> -&gt; <cite>use_robocorp_vault</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocorp</span> <span class="pre">Vault</span></code></p></li>
+</ul>
+</li>
+<li><p>Library <strong>RPA.Cloud.Google</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/794">#794</a>; <code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> <strong>7.0.0</strong>):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Robocloud.Secrets</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">RPA.Robocorp.Vault</span></code></p></li>
+</ul>
+</li>
+<li><p>Library <strong>RPA.PDF</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/785">#785</a>; <code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> <strong>7.0.1</strong>):</p>
+<ul>
+<li><p>Keyword <code class="docutils literal notranslate"><span class="pre">Find</span> <span class="pre">Text</span></code>:</p>
+<ul>
+<li><p>Supports additional parameter <cite>ignore_case</cite>, which if set to <cite>True</cite>, will make
+the search case insensitive. (switch it <strong>on</strong> if you experience a different
+behaviour)</p></li>
+<li><p>Adds <cite>subtext:</cite> strategy in the passed <cite>locator</cite> which checks for a substring
+instead of the whole text to match.</p></li>
+</ul>
+</li>
+<li><p>New related Portal example for parsing PDF invoices:
+<a class="reference external" href="https://github.com/robocorp/example-parse-pdf-invoice">https://github.com/robocorp/example-parse-pdf-invoice</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="jan-2023">
 <h3>20.1.2 - 26 Jan 2023<a class="headerlink" href="#jan-2023" title="Permalink to this heading"></a></h3>
 <ul class="simple">
