@@ -23,7 +23,7 @@ class AzureBase:
     COGNITIVE_API = "api.cognitive.microsoft.com"
     TOKEN_LIFESPAN = 570.0
     region = None
-    robocloud_vault_name: str = None
+    robocorp_vault_name: str = None
     services: dict = {}
     token = None
     token_time = None
@@ -94,13 +94,13 @@ class AzureBase:
             with open(json_filepath, "w", encoding="utf-8") as f:
                 json.dump(response_json, f)
 
-    def _set_subscription_key(self, service_name, use_robocloud_vault):
+    def _set_subscription_key(self, service_name, use_robocorp_vault):
         common_key = "AZURE_SUBSCRIPTION_KEY"
         service_key = f"AZURE_{service_name.upper()}_KEY"
         sub_key = None
-        if use_robocloud_vault:
+        if use_robocorp_vault:
             vault = Vault()
-            vault_items = vault.get_secret(self.robocloud_vault_name)
+            vault_items = vault.get_secret(self.robocorp_vault_name)
             vault_items = {k.upper(): v for (k, v) in vault_items.items()}
             if service_key in vault_items and vault_items[service_key].strip() != "":
                 sub_key = vault_items[service_key]
@@ -108,9 +108,9 @@ class AzureBase:
                 sub_key = vault_items[common_key]
             if sub_key is None:
                 raise KeyError(
-                    "The 'robocloud_vault_name' is required to access "
+                    "The 'robocorp_vault_name' is required to access "
                     "Robocorp Vault. Set them in library "
-                    "init or with `set_robocloud_vault` keyword."
+                    "init or with `set_robocorp_vault` keyword."
                 )
         else:
             sub_key = os.getenv(service_key)
@@ -171,13 +171,13 @@ class AzureBase:
         if image_url is None and image_file is None:
             raise KeyError("Parameter 'image_url' or 'image_file' must be given.")
 
-    def set_robocloud_vault(self, vault_name):
+    def set_robocorp_vault(self, vault_name):
         """Set Robocorp Vault name
 
         :param vault_name: Robocorp Vault name
         """
         if vault_name:
-            self.robocloud_vault_name = vault_name
+            self.robocorp_vault_name = vault_name
 
 
 class ServiceTextAnalytics(AzureBase):
@@ -190,16 +190,16 @@ class ServiceTextAnalytics(AzureBase):
         self.__region = None
 
     def init_text_analytics_service(
-        self, region: str = None, use_robocloud_vault: bool = False
+        self, region: str = None, use_robocorp_vault: bool = False
     ):
         """Initialize Azure Text Analyticts
 
         :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocorp Vault`
+        :param use_robocorp_vault: use secret stored into `Robocorp Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
-        self._set_subscription_key(self.__service_name, use_robocloud_vault)
+        self._set_subscription_key(self.__service_name, use_robocorp_vault)
 
     def sentiment_analyze(
         self, text: str, language: str = None, json_file: str = None
@@ -281,16 +281,16 @@ class ServiceFace(AzureBase):
         self.logger.debug("ServiceFace init")
 
     def init_face_service(
-        self, region: str = None, use_robocloud_vault: bool = False
+        self, region: str = None, use_robocorp_vault: bool = False
     ) -> None:
         """Initialize Azure Face
 
         :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocorp Vault`
+        :param use_robocorp_vault: use secret stored into `Robocorp Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
-        self._set_subscription_key(self.__service_name, use_robocloud_vault)
+        self._set_subscription_key(self.__service_name, use_robocorp_vault)
 
     def detect_face(
         self,
@@ -358,16 +358,16 @@ class ServiceComputerVision(AzureBase):
         self.logger.debug("ServiceComputerVision init")
 
     def init_computer_vision_service(
-        self, region: str = None, use_robocloud_vault: bool = False
+        self, region: str = None, use_robocorp_vault: bool = False
     ) -> None:
         """Initialize Azure Computer Vision
 
         :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocorp Vault`
+        :param use_robocorp_vault: use secret stored into `Robocorp Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
-        self._set_subscription_key(self.__service_name, use_robocloud_vault)
+        self._set_subscription_key(self.__service_name, use_robocorp_vault)
 
     def vision_analyze(
         self,
@@ -477,16 +477,16 @@ class ServiceSpeech(AzureBase):
         self.logger.debug("ServiceSpeech init")
 
     def init_speech_service(
-        self, region: str = None, use_robocloud_vault: bool = False
+        self, region: str = None, use_robocorp_vault: bool = False
     ) -> None:
         """Initialize Azure Speech
 
         :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocorp Vault`
+        :param use_robocorp_vault: use secret stored into `Robocorp Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.tts.speech.microsoft.com"
-        self._set_subscription_key(self.__service_name, use_robocloud_vault)
+        self._set_subscription_key(self.__service_name, use_robocorp_vault)
 
     def text_to_speech(
         self,
@@ -608,7 +608,7 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
       for example ``AZURE_TEXTANALYTICS_KEY`` or with common key ``AZURE_SUBSCRIPTION_KEY`` which
       will be used for all the services.
     - Method 2 as Robocorp Vault secret. The vault name needs to be given in library init or
-      with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
+      with keyword ``Set Robocorp Vault``. Secret keys are expected to match environment variable
       names.
 
     Method 1. subscription key using environment variable
@@ -624,18 +624,18 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
             # with AZURE_TEXTANALYTICS_KEY or AZURE_SUBSCRIPTION_KEY environment variable
             Init Text Analytics Service
 
-    Method 2. setting Robocloud Vault in the library init
+    Method 2. setting Robocorp Vault in the library init
 
     .. code-block:: robotframework
 
         *** Settings ***
-        Library   RPA.Cloud.Azure  robocloud_vault_name=azure
+        Library   RPA.Cloud.Azure  robocorp_vault_name=azure
 
         *** Tasks ***
         Init Azure services
-            Init Text Analytics Service  use_robocloud_vault=${TRUE}
+            Init Text Analytics Service  use_robocorp_vault=${TRUE}
 
-    Method 2. setting Robocloud Vault with keyword
+    Method 2. setting Robocorp Vault with keyword
 
     .. code-block:: robotframework
 
@@ -644,8 +644,8 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
 
         *** Tasks ***
         Init Azure services
-            Set Robocloud Vault          vault_name=googlecloud
-            Init Text Analytics Service  use_robocloud_vault=${TRUE}
+            Set Robocorp Vault          vault_name=googlecloud
+            Init Text Analytics Service  use_robocorp_vault=${TRUE}
 
     **References**
 
@@ -738,8 +738,8 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self, region: str = DEFAULT_REGION, robocloud_vault_name: str = None):
-        self.set_robocloud_vault(robocloud_vault_name)
+    def __init__(self, region: str = DEFAULT_REGION, robocorp_vault_name: str = None):
+        self.set_robocorp_vault(robocorp_vault_name)
         self.logger = logging.getLogger(__name__)
         ServiceTextAnalytics.__init__(self)
         ServiceFace.__init__(self)
