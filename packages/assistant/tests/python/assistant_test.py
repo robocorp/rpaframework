@@ -5,8 +5,23 @@ from RPA.Assistant.types import Icon, Location
 
 def next_ui(results):
     assistant.clear_elements()
+    assistant.add_heading("the 2nd ui")
     assistant.add_text(str(results))
-    assistant.add_text("asdf")
+    assistant.add_text_input(
+        "txt_input", placeholder="placeholder", validation=length_greater_3
+    )
+    assistant.add_next_ui_button("the 3rd ui", third_ui)
+    assistant.refresh_dialog()
+
+
+def third_ui(results):
+    assistant.clear_elements()
+    assistant.add_heading("the 3rd ui")
+    assistant.add_text(str(results))
+    assistant.add_text_input(
+        "txt_input", placeholder="placeholder", validation=length_greater_3
+    )
+    assistant.add_next_ui_button("the 2nd ui", next_ui)
     assistant.refresh_dialog()
 
 
