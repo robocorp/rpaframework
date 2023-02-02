@@ -68,7 +68,7 @@ class FletClient:
             for element in self._elements.invisible:
                 inner_page.overlay.append(element)
             inner_page.scroll = ScrollMode.AUTO
-            inner_page.on_disconnect = lambda _ : self._fvp.terminate()
+            inner_page.on_disconnect = lambda _: self._fvp.terminate()
             self.page = inner_page
             inner_page.update()
 
@@ -135,8 +135,6 @@ class FletClient:
                 time.sleep(0.2)
         except TimeoutException:
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
-        except Exception:
-            pass
 
     def _make_flet_event_handler(self, name: str):
         def change_listener(e: ControlEvent):

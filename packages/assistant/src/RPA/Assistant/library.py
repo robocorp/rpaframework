@@ -967,7 +967,7 @@ class Assistant:
         else:
             raise RuntimeError("No dialog open")
 
-    def _call_function_or_robot_keyword(
+    def _queue_function_or_robot_keyword(
         self, function: Union[Callable, str], *args, **kwargs
     ):
         """Check if function is a Python function or a Robot Keyword, and call it
@@ -975,19 +975,42 @@ class Assistant:
         """
         if self._client._pending_operation:
             self.logger.error(f"Can't have more than one pending operation.")
+            return
+
         if isinstance(function, Callable):
-            self._client._pending_operation = function(*args, **kwargs)
+
+            def func_wrapper():
+                try:
+                    function(*args, **kwargs)
+
+                # This can be anything since it comes from the user function, we don't
+                # want to let the user function crash the UI
+                except Exception as e:
+                    self.logger.error(f"Error calling Python function {function}")
+                    self.logger.error(e)
+
+            self._client._pending_operation = func_wrapper
         else:
-            try:
-                def func_wrapper(): BuiltIn().run_keyword(function, *args, **kwargs)
-                self._client._pending_operation = func_wrapper
-            except RobotNotRunningError:
-                self.logger.error(
-                    f"Robot Framework not running so cannot call keyword {function}"
-                )
-            except RobotError as e:
-                self.logger.error(f"Error calling robot keyword {function}")
-                self.logger.error(e)
+
+            def func_wrapper():
+                try:
+                    BuiltIn().run_keyword(function, *args, **kwargs)
+                except RobotNotRunningError:
+                    self.logger.error(
+                        f"Robot Framework not running so cannot call keyword {function}"
+                    )
+                except RobotError as e:
+                    self.logger.error(f"Error calling robot keyword {function}")
+                    self.logger.error(e)
+                # This can be anything since it comes from the user function, we don't
+                # want to let the user function crash the UI
+                except Exception as e:
+                    self.logger.error(
+                        f"Unexpected error running robot keyword {function}"
+                    )
+                    self.logger.error(e)
+
+            self._client._pending_operation = func_wrapper
 
     @keyword("Add Button", tags=["dialog"])
     def add_button(
@@ -1000,21 +1023,7 @@ class Assistant:
         """
 
         def on_click(event: ControlEvent):
-            # lock the button so we don't get accidental async execution
-            with button_lock(
-                event, self._button_event_lock, self._client.flet_update
-            ) as got_lock:
-                try:
-                    if got_lock:
-                        self._call_function_or_robot_keyword(function, *args, **kwargs)
-                    else:
-                        self.logger.debug(
-                            f"Button {label} was pressed while running callbacks was locked"
-                        )
-
-                except Exception as err:
-                    self.logger.error(f"on_click error with button labeled {label}")
-                    self.logger.error(err)
+            self._queue_function_or_robot_keyword(function, *args, **kwargs)
 
         self._client.add_element(ElevatedButton(label, on_click=on_click))
 
@@ -1048,22 +1057,6 @@ class Assistant:
         """
 
         def on_click(event: ControlEvent):
-            # lock the button so we don't get accidental async execution
-            with button_lock(
-                event, self._button_event_lock, self._client.flet_update
-            ) as got_lock:
-                try:
-                    if got_lock:
-                        self._call_function_or_robot_keyword(
-                            function, self._client.results
-                        )
-                    else:
-                        self.logger.debug(
-                            f"Button {label} was pressed while running callbacks was locked"
-                        )
-
-                except Exception as err:
-                    self.logger.error(f"on_click error with button labeled {label}")
-                    self.logger.error(err)
+            self._queue_function_or_robot_keyword(function, self._client.results)
 
         self._client.add_element(ElevatedButton(label, on_click=on_click))
