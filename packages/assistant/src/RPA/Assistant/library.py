@@ -973,11 +973,14 @@ class Assistant:
         """Check if function is a Python function or a Robot Keyword, and call it
         or run it with Robot's run_keyword.
         """
+        if self._client._pending_operation:
+            self.logger.error(f"Can't have more than one pending operation.")
         if isinstance(function, Callable):
-            function(*args, **kwargs)
+            self._client._pending_operation = function(*args, **kwargs)
         else:
             try:
-                BuiltIn().run_keyword(function, *args, **kwargs)
+                def func_wrapper(*args, **kwargs): BuiltIn().run_keyword(function, *args, **kwargs)
+                self._client._pending_operation = func_wrapper(*args, **kwargs)
             except RobotNotRunningError:
                 self.logger.error(
                     f"Robot Framework not running so cannot call keyword {function}"

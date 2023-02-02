@@ -2,16 +2,17 @@ import atexit
 import logging
 import os
 import signal
+import time
 from collections import namedtuple
-from subprocess import TimeoutExpired
-from typing import Callable, List, Optional, Union, Literal, Tuple
+from subprocess import Popen
+from timeit import default_timer as timer
+from typing import Callable, Literal, Optional, Tuple, Union
 
 import flet
-from flet import Control, Page, ScrollMode
+from flet import Page, ScrollMode
 from flet.control_event import ControlEvent
 from flet.utils import is_windows
-
-from RPA.Assistant.types import Result, Location
+from RPA.Assistant.types import Location, Result
 
 
 def resolve_absolute_position(
@@ -43,6 +44,7 @@ class FletClient:
         self._conn = self._preload_flet()
         self._elements: Elements = Elements([], [])
         self._fvp = None
+        self._pending_operation: Optional[Callable] = None
         atexit.register(self._cleanup)
 
     def _cleanup(self) -> None:
@@ -66,6 +68,7 @@ class FletClient:
             for element in self._elements.invisible:
                 inner_page.overlay.append(element)
             inner_page.scroll = ScrollMode.AUTO
+            inner_page.on_disconnect = lambda _ : self._fvp.terminate()
             self.page = inner_page
             inner_page.update()
 
@@ -119,10 +122,17 @@ class FletClient:
                 page.error(f"There was an error while rendering the page: {e}")
 
         self._conn.on_session_created = on_session_created
-        self._fvp = flet.flet._open_flet_view(self._conn.page_url, False)
+        self._fvp: Popen = flet.flet._open_flet_view(self._conn.page_url, False)
+        view_start_time = timer()
         try:
-            self._fvp.wait(timeout=timeout)
-        except TimeoutExpired:
+            while not self._fvp.poll():
+                if self._pending_operation:
+                    self._pending_operation()
+                if timer() - view_start_time >= timeout:
+                    self._fvp.terminate()
+                    raise TimeoutException()
+                time.sleep(0.2)
+        except TimeoutException:
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
         except Exception:
             pass
