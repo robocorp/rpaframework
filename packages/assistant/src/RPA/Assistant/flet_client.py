@@ -189,5 +189,5 @@ class FletClient:
     def flet_update(self):
         """Runs a plain update of the flet UI, updating existing elements"""
         if not self.page:
-            raise Exception("Flet update called when page is not open")
+            raise RuntimeError("Flet update called when page is not open")
         self.page.update()
