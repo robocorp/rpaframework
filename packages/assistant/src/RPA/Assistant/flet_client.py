@@ -6,7 +6,7 @@ import time
 from collections import namedtuple
 from subprocess import Popen
 from timeit import default_timer as timer
-from typing import Callable, Literal, Optional, Tuple, Union
+from typing import Callable, Literal, Optional, Tuple, Union, List
 
 import flet
 from flet import Page, ScrollMode
@@ -40,11 +40,12 @@ class FletClient:
     def __init__(self) -> None:
         self.results: Result = {}
         self.page: Optional[Page] = None
+        self.pending_operation: Optional[Callable] = None
 
         self._conn = self._preload_flet()
         self._elements: Elements = Elements([], [])
+        self._buttons: List[flet.Control] = []
         self._fvp = None
-        self._pending_operation: Optional[Callable] = None
         atexit.register(self._cleanup)
 
     def _cleanup(self) -> None:
@@ -126,13 +127,13 @@ class FletClient:
         view_start_time = timer()
         try:
             while not self._fvp.poll():
-                if self._pending_operation:
-                    self._pending_operation()
-                    self._pending_operation = None
+                if self.pending_operation:
+                    self.pending_operation()
+                    self.pending_operation = None
                 if timer() - view_start_time >= timeout:
                     self._fvp.terminate()
                     raise TimeoutException()
-                time.sleep(0.2)
+                time.sleep(0.1)
         except TimeoutException:
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
 
@@ -150,6 +151,14 @@ class FletClient:
             # TODO: might be necessary to check that it doesn't already have change handler
             element.on_change = self._make_flet_event_handler(name)
             # element._add_event_handler("change", self._make_flet_event_handler(name))
+
+    def add_button(self, element: flet.Control, name: Optional[str] = None):
+        """Use to add buttons so that they are listed in the internal button list,
+        used to disable them while interaction code is running. Otherwise behaves same
+        as add_element
+        """
+        self.add_element(element, name)
+        self._buttons.append(element)
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
@@ -187,3 +196,11 @@ class FletClient:
         if not self.page:
             raise RuntimeError("Flet update called when page is not open")
         self.page.update()
+
+    def lock_buttons(self):
+        for button in self._buttons:
+            button.disabled = True
+
+    def unlock_buttons(self):
+        for button in self._buttons:
+            button.disabled = False

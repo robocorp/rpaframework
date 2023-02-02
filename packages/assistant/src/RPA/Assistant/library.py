@@ -40,7 +40,6 @@ from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.date_picker import DatePicker
 from RPA.Assistant.types import Icon, Options, Result, Size, Location
 from RPA.Assistant.utils import (
-    button_lock,
     optional_str,
     to_options,
 )
@@ -973,9 +972,11 @@ class Assistant:
         """Check if function is a Python function or a Robot Keyword, and call it
         or run it with Robot's run_keyword.
         """
-        if self._client._pending_operation:
+        if self._client.pending_operation:
             self.logger.error(f"Can't have more than one pending operation.")
             return
+        self._client.lock_buttons()
+        self._client.flet_update()
 
         if isinstance(function, Callable):
 
@@ -988,8 +989,11 @@ class Assistant:
                 except Exception as e:
                     self.logger.error(f"Error calling Python function {function}")
                     self.logger.error(e)
+                finally:
+                    self._client.unlock_buttons()
+                    self._client.flet_update()
 
-            self._client._pending_operation = func_wrapper
+            self._client.pending_operation = func_wrapper
         else:
 
             def func_wrapper():
@@ -1009,8 +1013,11 @@ class Assistant:
                         f"Unexpected error running robot keyword {function}"
                     )
                     self.logger.error(e)
+                finally:
+                    self._client.unlock_buttons()
+                    self._client.flet_update()
 
-            self._client._pending_operation = func_wrapper
+            self._client.pending_operation = func_wrapper
 
     @keyword("Add Button", tags=["dialog"])
     def add_button(
@@ -1025,7 +1032,7 @@ class Assistant:
         def on_click(event: ControlEvent):
             self._queue_function_or_robot_keyword(function, *args, **kwargs)
 
-        self._client.add_element(ElevatedButton(label, on_click=on_click))
+        self._client.add_button(ElevatedButton(label, on_click=on_click))
 
     @keyword("Add Next Ui Button", tags=["dialog"])
     def add_next_ui_button(self, label: str, function: Union[Callable, str]):
@@ -1059,4 +1066,4 @@ class Assistant:
         def on_click(event: ControlEvent):
             self._queue_function_or_robot_keyword(function, self._client.results)
 
-        self._client.add_element(ElevatedButton(label, on_click=on_click))
+        self._client.add_button(ElevatedButton(label, on_click=on_click))

@@ -68,20 +68,3 @@ def is_input(element: Element) -> bool:
 def is_submit(element: Element) -> bool:
     """Check if an element is a submit button."""
     return element["type"] == "submit"
-
-
-@contextmanager
-def button_lock(event, lock_object, flet_update):
-    """Acquire lock, early abort if not available, disable button and acquire lock if available."""
-    got_lock = lock_object.acquire(blocking=False)
-    try:
-        # FIXME: currently only the object that acquired the lock stays disabled for
-        # the duration of the lock. Other objects disable and immediately release.
-        event.control.disabled = True
-        flet_update()
-        yield got_lock
-    finally:
-        if got_lock:
-            lock_object.release()
-        event.control.disabled = False
-        flet_update()
