@@ -44,7 +44,7 @@ class FletClient:
 
         self._conn = self._preload_flet()
         self._elements: Elements = Elements([], [])
-        self._buttons: List[flet.Control] = []
+        self._to_disable: List[flet.Control] = []
         self._fvp = None
         atexit.register(self._cleanup)
 
@@ -152,14 +152,6 @@ class FletClient:
             element.on_change = self._make_flet_event_handler(name)
             # element._add_event_handler("change", self._make_flet_event_handler(name))
 
-    def add_button(self, element: flet.Control, name: Optional[str] = None):
-        """Use to add buttons so that they are listed in the internal button list,
-        used to disable them while interaction code is running. Otherwise behaves same
-        as add_element
-        """
-        self.add_element(element, name)
-        self._buttons.append(element)
-
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
         if name is not None:
@@ -197,10 +189,14 @@ class FletClient:
             raise RuntimeError("Flet update called when page is not open")
         self.page.update()
 
-    def lock_buttons(self):
-        for button in self._buttons:
-            button.disabled = True
+    def lock_elements(self):
+        for element in self._to_disable:
+            element.disabled = True
 
-    def unlock_buttons(self):
-        for button in self._buttons:
-            button.disabled = False
+    def unlock_elements(self):
+        for element in self._to_disable:
+            element.disabled = False
+
+    def add_to_disablelist(self, element: flet.Control):
+        """added elements will be disabled when code is running from buttons"""
+        self._to_disable.append(element)

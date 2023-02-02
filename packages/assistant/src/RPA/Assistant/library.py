@@ -878,6 +878,8 @@ class Assistant:
         button_elements = [
             self._create_closing_button(button) for button in button_labels
         ]
+        for button in button_elements:
+            self._client.add_to_disablelist(button)
 
         button_row = Row(button_elements, alignment=MainAxisAlignment.END)
         container = Container(button_row, alignment=alignment.bottom_right)
@@ -975,7 +977,7 @@ class Assistant:
         if self._client.pending_operation:
             self.logger.error(f"Can't have more than one pending operation.")
             return
-        self._client.lock_buttons()
+        self._client.lock_elements()
         self._client.flet_update()
 
         if isinstance(function, Callable):
@@ -990,7 +992,7 @@ class Assistant:
                     self.logger.error(f"Error calling Python function {function}")
                     self.logger.error(e)
                 finally:
-                    self._client.unlock_buttons()
+                    self._client.unlock_elements()
                     self._client.flet_update()
 
             self._client.pending_operation = func_wrapper
@@ -1014,7 +1016,7 @@ class Assistant:
                     )
                     self.logger.error(e)
                 finally:
-                    self._client.unlock_buttons()
+                    self._client.unlock_elements()
                     self._client.flet_update()
 
             self._client.pending_operation = func_wrapper
@@ -1032,7 +1034,9 @@ class Assistant:
         def on_click(event: ControlEvent):
             self._queue_function_or_robot_keyword(function, *args, **kwargs)
 
-        self._client.add_button(ElevatedButton(label, on_click=on_click))
+        button = ElevatedButton(label, on_click=on_click)
+        self._client.add_element(button)
+        self._client.add_to_disablelist(button)
 
     @keyword("Add Next Ui Button", tags=["dialog"])
     def add_next_ui_button(self, label: str, function: Union[Callable, str]):
@@ -1066,4 +1070,6 @@ class Assistant:
         def on_click(event: ControlEvent):
             self._queue_function_or_robot_keyword(function, self._client.results)
 
-        self._client.add_button(ElevatedButton(label, on_click=on_click))
+        button = ElevatedButton(label, on_click=on_click)
+        self._client.add_element(button)
+        self._client.add_to_disablelist(button)
