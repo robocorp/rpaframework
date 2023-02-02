@@ -128,6 +128,7 @@ class FletClient:
             while not self._fvp.poll():
                 if self._pending_operation:
                     self._pending_operation()
+                    self._pending_operation = None
                 if timer() - view_start_time >= timeout:
                     self._fvp.terminate()
                     raise TimeoutException()
