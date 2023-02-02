@@ -2,11 +2,13 @@ import atexit
 import logging
 import os
 import signal
+from collections import namedtuple
 from subprocess import TimeoutExpired
 from typing import Callable, List, Optional, Union, Literal, Tuple
 
 import flet
 from flet import Control, Page, ScrollMode
+from flet.control_event import ControlEvent
 from flet.utils import is_windows
 
 from RPA.Assistant.types import Result, Location
@@ -24,16 +26,11 @@ def resolve_absolute_position(
         raise ValueError(f"Invalid location {location}")
 
 
-class FletEvent:
-    target: str
-    name: str
-    data: str
-    control: Control
-    page: Page
-
-
 class TimeoutException(RuntimeError):
     """Timeout while waiting for dialog to finish."""
+
+
+Elements = namedtuple("Elements", ["visible", "invisible"])
 
 
 class FletClient:
@@ -44,19 +41,9 @@ class FletClient:
         self.page: Optional[Page] = None
 
         self._conn = self._preload_flet()
-        self._elements: List[List[Control]] = [[]]
-        self._invisible_elements: List[List[Control]] = [[]]
-        self._pagination = 0
+        self._elements: Elements = Elements([], [])
         self._fvp = None
         atexit.register(self._cleanup)
-
-    @property
-    def current_elements(self):
-        return self._elements[self._pagination]
-
-    @property
-    def current_invisible_elements(self):
-        return self._invisible_elements[self._pagination]
 
     def _cleanup(self) -> None:
         # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146
@@ -74,9 +61,9 @@ class FletClient:
         def inner_execute(inner_page: Optional[Page] = None):
             if page:
                 inner_page = page
-            for element in self.current_elements:
+            for element in self._elements.visible:
                 inner_page.add(element)
-            for element in self.current_invisible_elements:
+            for element in self._elements.invisible:
                 inner_page.overlay.append(element)
             inner_page.scroll = ScrollMode.AUTO
             self.page = inner_page
@@ -141,7 +128,7 @@ class FletClient:
             pass
 
     def _make_flet_event_handler(self, name: str):
-        def change_listener(e: FletEvent):
+        def change_listener(e: ControlEvent):
             self.results[name] = e.data
             e.page.update()
 
@@ -149,14 +136,14 @@ class FletClient:
 
     def add_element(self, element: flet.Control, name: Optional[str] = None):
         # TODO: validate that element "name" is unique
-        self._elements[-1].append(element)
+        self._elements.visible.append(element)
         if name is not None:
             # TODO: might be necessary to check that it doesn't already have change handler
             element.on_change = self._make_flet_event_handler(name)
             # element._add_event_handler("change", self._make_flet_event_handler(name))
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
-        self._invisible_elements[-1].append(element)
+        self._elements.invisible.append(element)
         if name is not None:
             element.on_change = self._make_flet_event_handler(name)
 
@@ -178,8 +165,8 @@ class FletClient:
             self.page.controls.clear()
             self.page.overlay.clear()
             self.page.update()
-        self._elements[self._pagination] = []
-        self._invisible_elements[self._pagination] = []
+        self._elements.visible.clear()
+        self._elements.invisible.clear()
         return
 
     def update_elements(self, page: Page):
