@@ -33,6 +33,7 @@ from flet import (
 from flet.control_event import ControlEvent
 from flet.dropdown import Option
 from robot.api.deco import keyword, library
+from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.Assistant.flet_client import FletClient
@@ -156,6 +157,7 @@ class Assistant:
             # Prevent logging from keywords that return results
             keywords = [
                 "Run dialog",
+                "Ask user",
             ]
             BuiltIn().import_library(
                 "RPA.core.logger.RobotLogListener", "WITH NAME", "RPA.RobotLogListener"
@@ -925,7 +927,9 @@ class Assistant:
         if isinstance(location, str):
             location = Location[location]
 
-        self._client.display_flet_window(title, height, width, on_top, location, timeout)
+        self._client.display_flet_window(
+            title, height, width, on_top, location, timeout
+        )
         return self._client.results
 
     @keyword("Ask User", tags=["dialog"])
@@ -974,8 +978,12 @@ class Assistant:
         else:
             try:
                 BuiltIn().run_keyword(function, *args, **kwargs)
-            except Exception as e:
-                self.logger.error("Error calling {function}")
+            except RobotNotRunningError:
+                self.logger.error(
+                    f"Robot Framework not running so cannot call keyword {function}"
+                )
+            except RobotError as e:
+                self.logger.error(f"Error calling robot keyword {function}")
                 self.logger.error(e)
 
     @keyword("Add Button", tags=["dialog"])

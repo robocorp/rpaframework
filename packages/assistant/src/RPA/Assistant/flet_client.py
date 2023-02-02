@@ -31,8 +31,10 @@ class FletEvent:
     control: Control
     page: Page
 
+
 class TimeoutException(RuntimeError):
     """Timeout while waiting for dialog to finish."""
+
 
 class FletClient:
     """Class for wrapping flet operations"""
@@ -165,9 +167,11 @@ class FletClient:
         width: int,
         on_top: bool,
         location: Union[Location, Tuple[int, int], None],
-        timeout: int
+        timeout: int,
     ):
-        self._show_flet(self._execute(), title, height, width, on_top, location, timeout)
+        self._show_flet(
+            self._execute(), title, height, width, on_top, location, timeout
+        )
 
     def clear_elements(self):
         if self.page:
