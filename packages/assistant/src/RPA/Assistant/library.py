@@ -979,8 +979,8 @@ class Assistant:
             self._client._pending_operation = function(*args, **kwargs)
         else:
             try:
-                def func_wrapper(*args, **kwargs): BuiltIn().run_keyword(function, *args, **kwargs)
-                self._client._pending_operation = func_wrapper(*args, **kwargs)
+                def func_wrapper(): BuiltIn().run_keyword(function, *args, **kwargs)
+                self._client._pending_operation = func_wrapper
             except RobotNotRunningError:
                 self.logger.error(
                     f"Robot Framework not running so cannot call keyword {function}"
