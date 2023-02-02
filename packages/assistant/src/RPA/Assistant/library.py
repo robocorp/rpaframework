@@ -974,10 +974,11 @@ class Assistant:
         or run it with Robot's run_keyword.
         """
         if isinstance(function, Callable):
-            function(*args, **kwargs)
+            self._client._ops_queue.append(function(*args, **kwargs))
         else:
             try:
-                BuiltIn().run_keyword(function, *args, **kwargs)
+                def temp(*args, **kwargs): BuiltIn().run_keyword(function, *args, **kwargs)
+                self._client._ops_queue.append(temp(*args, **kwargs))
             except RobotNotRunningError:
                 self.logger.error(
                     f"Robot Framework not running so cannot call keyword {function}"

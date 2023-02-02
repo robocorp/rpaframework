@@ -1,10 +1,13 @@
 import atexit
+from datetime import timedelta
 import logging
 import os
 import signal
 from collections import namedtuple
 from subprocess import TimeoutExpired
+import time
 from typing import Callable, List, Optional, Union, Literal, Tuple
+from timeit import default_timer as timer
 
 import flet
 from flet import Control, Page, ScrollMode
@@ -43,6 +46,7 @@ class FletClient:
         self._conn = self._preload_flet()
         self._elements: Elements = Elements([], [])
         self._fvp = None
+        self._ops_queue = []
         atexit.register(self._cleanup)
 
     def _cleanup(self) -> None:
@@ -121,7 +125,15 @@ class FletClient:
         self._conn.on_session_created = on_session_created
         self._fvp = flet.flet._open_flet_view(self._conn.page_url, False)
         try:
-            self._fvp.wait(timeout=timeout)
+            while not self._fvp.poll():
+                if self._ops_queue:
+                    start = timer()
+                    self._ops_queue.pop(0)()
+                    end = timer()
+                    elapsed = end-start
+                    if elapsed < 0.5:
+                        self._ops_queue.pop(0)()
+                time.sleep(0.3)
         except TimeoutExpired:
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
         except Exception:
