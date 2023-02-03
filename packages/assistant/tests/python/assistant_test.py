@@ -37,7 +37,7 @@ def sleepy_print(arg):
 
 
 assistant = RPA.Assistant.Assistant()
-# assistant.add_date_input("my_date", label="My Date")
+assistant.add_date_input("my_date", label="My Date")
 assistant.add_button(
     "python button", sleepy_print, "sleepy print output (should appear after ~1s sleep)"
 )

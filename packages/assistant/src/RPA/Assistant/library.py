@@ -3,7 +3,7 @@ import logging
 import os
 import platform
 import subprocess
-from datetime import datetime
+from datetime import date
 from pathlib import Path
 from threading import Lock
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
@@ -37,7 +37,6 @@ from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.Assistant.flet_client import FletClient
-from RPA.Assistant.date_picker import DatePicker
 from RPA.Assistant.types import Icon, Options, Result, Size, Location
 from RPA.Assistant.utils import (
     optional_str,
@@ -173,7 +172,7 @@ class Assistant:
             if not self._validations:
                 self._client.page.window_destroy()
             for field_name, validation in self._validations.items():
-                if not validation:
+                if not validation or field_name not in self._client.results:
                     continue
                 error_message = validation(self._client.results[field_name])
                 if error_message:
@@ -511,15 +510,12 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        # TODO: Do this in a cleaner way. Workaround because we use on_change
-        # handlers to record values, so default value otherwise will be missed
         # TODO: Implement the rows support
-        self._client.results[name] = placeholder
         # TODO: add robot keyword support e.g. if is keyword name use BuiltIn().run_keyword()
         self._validations[name] = validation
 
         self._client.add_element(
-            name=name, element=TextField(label=label, value=placeholder)
+            name=name, element=TextField(label=label, hint_text=placeholder)
         )
 
     @keyword("Add password input", tags=["input"])
@@ -727,7 +723,7 @@ class Assistant:
     def add_date_input(
         self,
         name: str,
-        default: Optional[Union[datetime, str]] = None,
+        default: Optional[Union[date, str]] = None,
         label: Optional[str] = None,
     ) -> None:
         """Add a date input element.
@@ -750,10 +746,24 @@ class Assistant:
             ${result} =       Run dialog
             Log To Console    User birthdate year should be: ${result.birthdate.year}
         """
-        # See Issue #775.
-        raise NotImplementedError("date picking is not available at the moment")
-        self._client.add_element(Text(value=label))
-        self._client.add_element(name=str(name), element=DatePicker(default=default))
+        def validate(date_text):
+            try:
+                date.fromisoformat(date_text)
+            except ValueError:
+                return "Date should be in format YYYY-MM-DD"
+        if default:
+            if isinstance(default, str):
+                try:
+                    default = date.fromisoformat(default)
+                except ValueError as e:
+                    self.logger.error(f"Default date value {default} is not in a valid ISO format.")
+                    raise e
+            self._client.results[name] = default
+        # TODO: add robot keyword support e.g. if is keyword name use BuiltIn().run_keyword()
+        self._validations[name] = validate
+        self._client.add_element(
+            name=name, element=TextField(label=label, hint_text="YYYY-MM-DD", value=default)
+        )
 
     @keyword("Add radio buttons", tags=["input"])
     def add_radio_buttons(
