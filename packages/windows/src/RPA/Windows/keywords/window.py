@@ -3,7 +3,7 @@ import signal
 import time
 from typing import Dict, List, Optional
 
-from RPA.core.windows.locators import Locator, WindowsElement
+from RPA.core.windows.locators import Locator, LocatorMethods, WindowsElement
 from RPA.core.windows.window import WindowMethods
 
 from RPA.Windows import utils
@@ -55,11 +55,11 @@ class WindowKeywords(WindowMethods):
         :param foreground: True to bring window to foreground
         :param wait_time: time to wait after activating a window
         :param timeout: float value in seconds, see keyword
-         ``Set Global Timeout``
-        :param main: on True (default) starts search from desktop level,
-         on False will continue search on child elements of current
-         active window
-        :return: WindowsElement object
+            ``Set Global Timeout``
+        :param main: on `True` (default) starts the search from desktop level, on
+            `False` it will continue to search for child elements given the set anchor
+            or current active window
+        :return: `WindowsElement` object
 
         Example:
 
@@ -123,11 +123,11 @@ class WindowKeywords(WindowMethods):
 
     def _find_window(self, locator, main) -> Optional[WindowsElement]:
         try:
-            # `root_element = None` means using the `anchor` or `window` as root later
+            # A `root_element=None` will use the `anchor` or `window` as root later
             #  on. (fallbacks to Desktop)
-            root_element = (
-                WindowsElement(auto.GetRootControl(), locator) if main else None
-            )
+            root_element = None
+            if main:
+                root_element = LocatorMethods.get_desktop_element(locator)
             window = self.ctx.get_element(locator, root_element=root_element)
             return window
         except (ElementNotFound, LookupError):
@@ -351,7 +351,7 @@ class WindowKeywords(WindowMethods):
             ${closed_count} =     Close Window    Calculator
         """
         # Starts the search from Desktop level.
-        root_element = WindowsElement(auto.GetRootControl(), locator)
+        root_element = LocatorMethods.get_desktop_element(locator)
         # With all flavors of locators. (if flexible)
         for loc in self._iter_locator(locator):
             try:
