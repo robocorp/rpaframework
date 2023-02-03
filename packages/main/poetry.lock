@@ -68,7 +68,7 @@ tzdata = ["tzdata"]
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.11.1"
+version = "4.11.2"
 description = "Screen-scraping library"
 category = "main"
 optional = false
@@ -780,7 +780,7 @@ cryptography = ["cryptography", "cryptography (<2.2)"]
 
 [[package]]
 name = "o365"
-version = "2.0.25"
+version = "2.0.26"
 description = "Microsoft Graph and Office 365 API made easy"
 category = "main"
 optional = false
@@ -1511,7 +1511,7 @@ robotframework = ">=3.2.2,<4.0.1 || >4.0.1,<6.0.0"
 
 [[package]]
 name = "robotframework-pythonlibcore"
-version = "4.0.0"
+version = "4.1.0"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
 category = "main"
 optional = false
@@ -1572,7 +1572,7 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.2.0"
+version = "10.2.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1618,7 +1618,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "7.0.2"
+version = "7.0.3"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -1632,7 +1632,7 @@ pynput-robocorp-fork = ">=5.0.0,<6.0.0"
 pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=4.0.0,<5.0.0"
-rpaframework-core = ">=10.0.4,<11.0.0"
+rpaframework-core = ">=10.2.1,<11.0.0"
 uiautomation = ">=2.0.15,<3.0.0"
 
 [[package]]
@@ -2192,7 +2192,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "b224382639c00921fe97ce9788a39906b515e2d9b108df049cdef2d2375bc738"
+content-hash = "bebe99fba9ad1df57942fed99da8639854396f1dd7d2a51c27b3251442bb3d07"
 
 [metadata.files]
 alabaster = [
@@ -2234,8 +2234,8 @@ backports-zoneinfo = [
     {file = "backports.zoneinfo-0.2.1.tar.gz", hash = "sha256:fadbfe37f74051d024037f223b8e001611eac868b5c5b06144ef4d8b799862f2"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
-    {file = "beautifulsoup4-4.11.1.tar.gz", hash = "sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693"},
+    {file = "beautifulsoup4-4.11.2-py3-none-any.whl", hash = "sha256:0e79446b10b3ecb499c1556f7e228a53e64a2bfcebd455f370d8927cb5b59e39"},
+    {file = "beautifulsoup4-4.11.2.tar.gz", hash = "sha256:bc4bdda6717de5a2987436fb8d72f45dc90dd856bdfd512a1314ce90349a0106"},
 ]
 black = [
     {file = "black-22.12.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9eedd20838bd5d75b80c9f5487dbcb06836a43833a37846cf1d8c1cc01cef59d"},
@@ -2875,8 +2875,8 @@ ntlm-auth = [
     {file = "ntlm_auth-1.5.0-py2.py3-none-any.whl", hash = "sha256:f1527c581dbf149349134fc2d789d50af2a400e193206956fa0ab456ccc5a8ba"},
 ]
 o365 = [
-    {file = "O365-2.0.25-py3-none-any.whl", hash = "sha256:1b0bfb0672c9ad905ab826e311cbb29595c303570c2a6f6e6d815e85f8e73056"},
-    {file = "O365-2.0.25.tar.gz", hash = "sha256:4285c7c0c431b4a119351ee8ba79b0cb47d2e644cc640b4c3466b1c627dc4293"},
+    {file = "O365-2.0.26-py3-none-any.whl", hash = "sha256:220899f2135e5f2de1db808df9858f5f7bd38910e2c870bb08b04d94bd450b3f"},
+    {file = "O365-2.0.26.tar.gz", hash = "sha256:b478522a652df112c298446aabefccaa446b14bf257b6694fed524c08b76de38"},
 ]
 oauthlib = [
     {file = "oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca"},
@@ -3314,8 +3314,8 @@ robotframework-docgen = [
     {file = "robotframework_docgen-0.15.0-py3-none-any.whl", hash = "sha256:9678da187f7cb49cd307823d1e2f35f724920378e0be98ee03d0a41a59844ed6"},
 ]
 robotframework-pythonlibcore = [
-    {file = "robotframework-pythonlibcore-4.0.0.tar.gz", hash = "sha256:6028f4323b2ba30e1521f978e2e959107adb8590b5d3f2923af3c712315d494c"},
-    {file = "robotframework_pythonlibcore-4.0.0-py2.py3-none-any.whl", hash = "sha256:0bea30b41241f155f95f61a52ed622ad1638e06aee58a96f046ddf0f16106689"},
+    {file = "robotframework-pythonlibcore-4.1.0.tar.gz", hash = "sha256:b677313e2015d28a8bb2bbeb1d98d46e8e850b213113523a7cc9a7ca85016187"},
+    {file = "robotframework_pythonlibcore-4.1.0-py2.py3-none-any.whl", hash = "sha256:d67390fc9ab82ee03ff7af9a0347c2c3759933a796920703d9447493650f9ca9"},
 ]
 robotframework-requests = [
     {file = "robotframework-requests-0.9.4.tar.gz", hash = "sha256:e00943b8526c38bed5c3c661c813ec9d5a2106961bd91da0068712c2a0d49e82"},
@@ -3334,8 +3334,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework_seleniumtestability-2.0.0-py3-none-any.whl", hash = "sha256:0d3a54df0f6adedbbe3af31d6c14157688f90057b951e50f1865fd725b212df5"},
 ]
 rpaframework-core = [
-    {file = "rpaframework_core-10.2.0-py3-none-any.whl", hash = "sha256:08dec26bd752032173a7b3517a2f0c38c4164b0f33e6151beb22847a14533c37"},
-    {file = "rpaframework_core-10.2.0.tar.gz", hash = "sha256:941828cc2f557d04f98d4ec25825f1a78bc187c7f0137e2ab120fc68129d9ecf"},
+    {file = "rpaframework_core-10.2.1-py3-none-any.whl", hash = "sha256:c2d0ccb33f9e68982aa31fa5d1981e293db0577195fcb9c86ece6ae9814a074a"},
+    {file = "rpaframework_core-10.2.1.tar.gz", hash = "sha256:3327f0cc84968ffabfb9d2b0d517c0064c3f7fc5af9ab7db430510c8d4ce3498"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework_dialogs-4.0.1-py3-none-any.whl", hash = "sha256:984d8e0d373fbfb0988cdc580054c7daf420194544c43162fd67e501759882e1"},
@@ -3346,8 +3346,8 @@ rpaframework-pdf = [
     {file = "rpaframework_pdf-7.0.1.tar.gz", hash = "sha256:6f669c16b9f0accca6219af61f84fffd762389d002f5de9c45417361b6d80a25"},
 ]
 rpaframework-windows = [
-    {file = "rpaframework_windows-7.0.2-py3-none-any.whl", hash = "sha256:ece6d82d167250271e3611a14aa0483307641c6a655ba3e66133982cef0f3ada"},
-    {file = "rpaframework_windows-7.0.2.tar.gz", hash = "sha256:08486dfff7b2af0788f4dfb1e8e2eca5c398d81df2391f197dc1bfdb523ad7cb"},
+    {file = "rpaframework_windows-7.0.3-py3-none-any.whl", hash = "sha256:c070033faac37d9261616a4857fdf3973558fd2e289ef705d295e18b8bb30756"},
+    {file = "rpaframework_windows-7.0.3.tar.gz", hash = "sha256:257d039a78858a1bc8b5530ba057325b7fe799f5cf3ff4615216210ecc315708"},
 ]
 secretstorage = [
     {file = "SecretStorage-3.3.3-py3-none-any.whl", hash = "sha256:f356e6628222568e3af06f2eba8df495efa13b3b63081dafd4f7d9a7b7bc9f99"},

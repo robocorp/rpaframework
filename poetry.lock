@@ -87,7 +87,7 @@ tzdata = ["tzdata"]
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.11.1"
+version = "4.11.2"
 description = "Screen-scraping library"
 category = "main"
 optional = false
@@ -125,14 +125,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.60"
+version = "1.26.63"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.29.60,<1.30.0"
+botocore = ">=1.29.63,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -141,7 +141,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.60"
+version = "1.29.63"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -468,7 +468,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0dev)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.75.0"
+version = "2.76.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -579,7 +579,7 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-speech"
-version = "2.17.1"
+version = "2.17.3"
 description = "Google Cloud Speech API client library"
 category = "main"
 optional = false
@@ -1141,7 +1141,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "o365"
-version = "2.0.25"
+version = "2.0.26"
 description = "Microsoft Graph and Office 365 API made easy"
 category = "main"
 optional = false
@@ -1944,7 +1944,7 @@ robotframework = ">=3.2.2,<4.0.1 || >4.0.1,<6.0.0"
 
 [[package]]
 name = "robotframework-pythonlibcore"
-version = "4.0.0"
+version = "4.1.0"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
 category = "main"
 optional = false
@@ -2013,7 +2013,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "21.0.0"
+version = "21.0.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -2061,7 +2061,7 @@ robotframework-seleniumtestability = "^2.0.0"
 rpaframework-core = "^10.2.0"
 rpaframework-dialogs = "^4.0.0"
 rpaframework-pdf = "^7.0.1"
-rpaframework-windows = {version = "^7.0.2", markers = "sys_platform == \"win32\""}
+rpaframework-windows = {version = "^7.0.3", markers = "sys_platform == \"win32\""}
 selenium = "^4.4.0,<4.6.0"
 simple_salesforce = "^1.0.0"
 tenacity = "^8.0.1"
@@ -2092,7 +2092,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.2.0"
+version = "10.2.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -2178,7 +2178,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "7.0.2"
+version = "7.0.3"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -2192,7 +2192,7 @@ pynput-robocorp-fork = ">=5.0.0,<6.0.0"
 pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=4.0.0,<5.0.0"
-rpaframework-core = ">=10.0.4,<11.0.0"
+rpaframework-core = ">=10.2.1,<11.0.0"
 uiautomation = ">=2.0.15,<3.0.0"
 
 [[package]]
@@ -2248,7 +2248,7 @@ urllib3 = {version = ">=1.26,<2.0", extras = ["socks"]}
 
 [[package]]
 name = "setuptools"
-version = "67.0.0"
+version = "67.1.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
@@ -2797,7 +2797,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "e3126b23490c2b2ea89aa35c1985b1d2e480c3f2656fb639752f0665e4b8efcf"
+content-hash = "9c0d731f59edb6b59ff638adb2740f150bc2e384a5ef438a8a28255325d31169"
 
 [metadata.files]
 alabaster = [
@@ -2847,8 +2847,8 @@ backports-zoneinfo = [
     {file = "backports.zoneinfo-0.2.1.tar.gz", hash = "sha256:fadbfe37f74051d024037f223b8e001611eac868b5c5b06144ef4d8b799862f2"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
-    {file = "beautifulsoup4-4.11.1.tar.gz", hash = "sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693"},
+    {file = "beautifulsoup4-4.11.2-py3-none-any.whl", hash = "sha256:0e79446b10b3ecb499c1556f7e228a53e64a2bfcebd455f370d8927cb5b59e39"},
+    {file = "beautifulsoup4-4.11.2.tar.gz", hash = "sha256:bc4bdda6717de5a2987436fb8d72f45dc90dd856bdfd512a1314ce90349a0106"},
 ]
 black = [
     {file = "black-22.12.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9eedd20838bd5d75b80c9f5487dbcb06836a43833a37846cf1d8c1cc01cef59d"},
@@ -2865,12 +2865,12 @@ black = [
     {file = "black-22.12.0.tar.gz", hash = "sha256:229351e5a18ca30f447bf724d007f890f97e13af070bb6ad4c0a441cd7596a2f"},
 ]
 boto3 = [
-    {file = "boto3-1.26.60-py3-none-any.whl", hash = "sha256:5fd2810217a74a38078a19fb85a9e5d6934d0c146eb060967a3ffd7ab33cdf00"},
-    {file = "boto3-1.26.60.tar.gz", hash = "sha256:f0824b3bcf803800d3ecef903b4840427e4b3d37a069f6fc9a86310f7e036ad5"},
+    {file = "boto3-1.26.63-py3-none-any.whl", hash = "sha256:c84857aceccc422d9fb96c26bbc4ec2808b93b39a2886907efef811e6f0b5ea7"},
+    {file = "boto3-1.26.63.tar.gz", hash = "sha256:f688555dd427271e0493e6d166126ce76e1744dd89d626575ba7c2e62ba86e14"},
 ]
 botocore = [
-    {file = "botocore-1.29.60-py3-none-any.whl", hash = "sha256:c4ae251e7df0cf01d893eb945bc8f23c14989ed349775a8e16c949f08a068f9a"},
-    {file = "botocore-1.29.60.tar.gz", hash = "sha256:a21217ccf4613c9ebbe4c3192e13ba91d46be642560e39a16406662a398a107b"},
+    {file = "botocore-1.29.63-py3-none-any.whl", hash = "sha256:9e14f8dba1252a03d0a7db7240dc48fa4a3ac470434a044b23c0001f648d6d4f"},
+    {file = "botocore-1.29.63.tar.gz", hash = "sha256:710864600818b80c865334e12af729923e2886cc760685c614c0eae9cbbfdd4d"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3144,8 +3144,8 @@ google-api-core = [
     {file = "google_api_core-2.11.0-py3-none-any.whl", hash = "sha256:ce222e27b0de0d7bc63eb043b956996d6dccab14cc3b690aaea91c9cc99dc16e"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.75.0.tar.gz", hash = "sha256:0f109a2b71f14c9a7b48231fecfcdd3ab95861ea9abf54f060ac45c204fadc3d"},
-    {file = "google_api_python_client-2.75.0-py2.py3-none-any.whl", hash = "sha256:010fb49fdef85db9c622a3cb2ab89df48bea82d235794f66292aba2e1ee117a0"},
+    {file = "google-api-python-client-2.76.0.tar.gz", hash = "sha256:1446d8c618191afdb1190296a4f9648955460184c655da2bfa40c2968e6caac6"},
+    {file = "google_api_python_client-2.76.0-py2.py3-none-any.whl", hash = "sha256:514326068802f8e8b32c282c2c1f528cf007247ba19470de6d013731985a3d28"},
 ]
 google-auth = [
     {file = "google-auth-2.16.0.tar.gz", hash = "sha256:ed7057a101af1146f0554a769930ac9de506aeca4fd5af6543ebe791851a9fbd"},
@@ -3172,8 +3172,8 @@ google-cloud-language = [
     {file = "google_cloud_language-2.8.1-py2.py3-none-any.whl", hash = "sha256:81a755c80d181176afcf2399477db1c1dc73a1258e6a6322a2918530a8ce5de0"},
 ]
 google-cloud-speech = [
-    {file = "google-cloud-speech-2.17.1.tar.gz", hash = "sha256:816718318f59b66e5df429105cfb4065a0e0acac14f7411905dce7b96583a7da"},
-    {file = "google_cloud_speech-2.17.1-py2.py3-none-any.whl", hash = "sha256:1c11cbecd787984ea3f498bb835f33ff542a8ebe70115d2b0b5729baf22bf8b1"},
+    {file = "google-cloud-speech-2.17.3.tar.gz", hash = "sha256:46018bf525e5988e2672e2fca6170f382886a36c61cd165b9e9470ef65352b32"},
+    {file = "google_cloud_speech-2.17.3-py2.py3-none-any.whl", hash = "sha256:cbab37894072f676911e0bd10941f9681908f1cb6685b0641ca8838c56e375a9"},
 ]
 google-cloud-storage = [
     {file = "google-cloud-storage-2.7.0.tar.gz", hash = "sha256:1ac2d58d2d693cb1341ebc48659a3527be778d9e2d8989697a2746025928ff17"},
@@ -3673,8 +3673,8 @@ numpy = [
     {file = "numpy-1.21.1.zip", hash = "sha256:dff4af63638afcc57a3dfb9e4b26d434a7a602d225b42d746ea7fe2edf1342fd"},
 ]
 o365 = [
-    {file = "O365-2.0.25-py3-none-any.whl", hash = "sha256:1b0bfb0672c9ad905ab826e311cbb29595c303570c2a6f6e6d815e85f8e73056"},
-    {file = "O365-2.0.25.tar.gz", hash = "sha256:4285c7c0c431b4a119351ee8ba79b0cb47d2e644cc640b4c3466b1c627dc4293"},
+    {file = "O365-2.0.26-py3-none-any.whl", hash = "sha256:220899f2135e5f2de1db808df9858f5f7bd38910e2c870bb08b04d94bd450b3f"},
+    {file = "O365-2.0.26.tar.gz", hash = "sha256:b478522a652df112c298446aabefccaa446b14bf257b6694fed524c08b76de38"},
 ]
 oauthlib = [
     {file = "oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca"},
@@ -4271,8 +4271,8 @@ robotframework-docgen = [
     {file = "robotframework_docgen-0.15.0-py3-none-any.whl", hash = "sha256:9678da187f7cb49cd307823d1e2f35f724920378e0be98ee03d0a41a59844ed6"},
 ]
 robotframework-pythonlibcore = [
-    {file = "robotframework-pythonlibcore-4.0.0.tar.gz", hash = "sha256:6028f4323b2ba30e1521f978e2e959107adb8590b5d3f2923af3c712315d494c"},
-    {file = "robotframework_pythonlibcore-4.0.0-py2.py3-none-any.whl", hash = "sha256:0bea30b41241f155f95f61a52ed622ad1638e06aee58a96f046ddf0f16106689"},
+    {file = "robotframework-pythonlibcore-4.1.0.tar.gz", hash = "sha256:b677313e2015d28a8bb2bbeb1d98d46e8e850b213113523a7cc9a7ca85016187"},
+    {file = "robotframework_pythonlibcore-4.1.0-py2.py3-none-any.whl", hash = "sha256:d67390fc9ab82ee03ff7af9a0347c2c3759933a796920703d9447493650f9ca9"},
 ]
 robotframework-requests = [
     {file = "robotframework-requests-0.9.4.tar.gz", hash = "sha256:e00943b8526c38bed5c3c661c813ec9d5a2106961bd91da0068712c2a0d49e82"},
@@ -4300,8 +4300,8 @@ rpaframework-aws = [
     {file = "rpaframework_aws-5.2.6.tar.gz", hash = "sha256:04989ac28664dd4efaf2be34cfb1f5bf958fede2dbf79795bbcb71a7bc00548e"},
 ]
 rpaframework-core = [
-    {file = "rpaframework_core-10.2.0-py3-none-any.whl", hash = "sha256:08dec26bd752032173a7b3517a2f0c38c4164b0f33e6151beb22847a14533c37"},
-    {file = "rpaframework_core-10.2.0.tar.gz", hash = "sha256:941828cc2f557d04f98d4ec25825f1a78bc187c7f0137e2ab120fc68129d9ecf"},
+    {file = "rpaframework_core-10.2.1-py3-none-any.whl", hash = "sha256:c2d0ccb33f9e68982aa31fa5d1981e293db0577195fcb9c86ece6ae9814a074a"},
+    {file = "rpaframework_core-10.2.1.tar.gz", hash = "sha256:3327f0cc84968ffabfb9d2b0d517c0064c3f7fc5af9ab7db430510c8d4ce3498"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework_dialogs-4.0.1-py3-none-any.whl", hash = "sha256:984d8e0d373fbfb0988cdc580054c7daf420194544c43162fd67e501759882e1"},
@@ -4320,8 +4320,8 @@ rpaframework-recognition = [
     {file = "rpaframework_recognition-5.0.1.tar.gz", hash = "sha256:daf7a0732f6c1040d1fa3ac93b4fa7467491f4fd44ba660d1219b236527ea31b"},
 ]
 rpaframework-windows = [
-    {file = "rpaframework_windows-7.0.2-py3-none-any.whl", hash = "sha256:ece6d82d167250271e3611a14aa0483307641c6a655ba3e66133982cef0f3ada"},
-    {file = "rpaframework_windows-7.0.2.tar.gz", hash = "sha256:08486dfff7b2af0788f4dfb1e8e2eca5c398d81df2391f197dc1bfdb523ad7cb"},
+    {file = "rpaframework_windows-7.0.3-py3-none-any.whl", hash = "sha256:c070033faac37d9261616a4857fdf3973558fd2e289ef705d295e18b8bb30756"},
+    {file = "rpaframework_windows-7.0.3.tar.gz", hash = "sha256:257d039a78858a1bc8b5530ba057325b7fe799f5cf3ff4615216210ecc315708"},
 ]
 rsa = [
     {file = "rsa-4.9-py3-none-any.whl", hash = "sha256:90260d9058e514786967344d0ef75fa8727eed8a7d2e43ce9f4bcf1b536174f7"},
@@ -4339,8 +4339,8 @@ selenium = [
     {file = "selenium-4.5.0-py3-none-any.whl", hash = "sha256:a733dd77d3171b846893f4d51b18967d809313f547a10974e26579f9ce797462"},
 ]
 setuptools = [
-    {file = "setuptools-67.0.0-py3-none-any.whl", hash = "sha256:9d790961ba6219e9ff7d9557622d2fe136816a264dd01d5997cfc057d804853d"},
-    {file = "setuptools-67.0.0.tar.gz", hash = "sha256:883131c5b6efa70b9101c7ef30b2b7b780a4283d5fc1616383cdf22c83cbefe6"},
+    {file = "setuptools-67.1.0-py3-none-any.whl", hash = "sha256:a7687c12b444eaac951ea87a9627c4f904ac757e7abdc5aac32833234af90378"},
+    {file = "setuptools-67.1.0.tar.gz", hash = "sha256:e261cdf010c11a41cb5cb5f1bf3338a7433832029f559a6a7614bd42a967c300"},
 ]
 simple-salesforce = [
     {file = "simple-salesforce-1.12.3.tar.gz", hash = "sha256:ff4ca9ae31d1f378fb0dce6e222b91ab6254d3dd5b0062c137822a822517e189"},

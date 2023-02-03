@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+21.0.1 - 03 Feb 2023
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **7.0.3**): Fix Windows element(s)
+  retrieval. (and dependent keywords)
+
 21.0.0 - 01 Feb 2023
 --------------------
 
