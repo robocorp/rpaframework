@@ -242,13 +242,26 @@ class LocatorMethods(WindowsContext):
     def _get_control_from_params(
         search_params: Dict[str, str], root_control: Optional["Control"] = None
     ) -> "Control":
+        search_params = search_params.copy()
         offset = search_params.pop("offset", None)
         control_type = search_params.pop("ControlType", "Control")
         ElementControl = getattr(root_control, control_type, Control)
-        element = ElementControl(**search_params)
-        new_element = Control.CreateControlFromControl(element)
-        new_element.robocorp_click_offset = offset
-        return new_element
+        control = ElementControl(**search_params)
+        new_control = Control.CreateControlFromControl(control)
+        new_control.robocorp_click_offset = offset
+        return new_control
+
+    @staticmethod
+    def _get_desktop_control() -> "Control":
+        root_control = auto.GetRootControl()
+        new_control = Control.CreateControlFromControl(root_control)
+        new_control.robocorp_click_offset = None
+        return new_control
+
+    @classmethod
+    def get_desktop_element(cls, locator: Optional[Locator] = None) -> WindowsElement:
+        desktop_control = cls._get_desktop_control()
+        return WindowsElement(desktop_control, locator)
 
     def _get_control_from_listed_windows(
         self, search_params: Dict[str, str], *, param_type: str, win_type: str
@@ -282,8 +295,7 @@ class LocatorMethods(WindowsContext):
 
         # Obtain an element with the search parameters.
         if "desktop" in search_params:
-            root_control = auto.GetRootControl()
-            return Control.CreateControlFromControl(root_control)
+            return self._get_desktop_control()
 
         if "executable" in search_params:
             return self._get_control_from_listed_windows(
@@ -294,10 +306,6 @@ class LocatorMethods(WindowsContext):
             return self._get_control_from_listed_windows(
                 search_params, param_type="handle", win_type="handle"
             )
-
-        control = self._get_control_from_params(search_params)
-        if auto.ControlsAreSame(control, root_control):
-            return Control.CreateControlFromControl(root_control)
 
         return self._get_control_from_params(search_params, root_control=root_control)
 
@@ -317,7 +325,7 @@ class LocatorMethods(WindowsContext):
             self._window_or_none(root_element)
             or self.anchor
             or self.window
-            or WindowsElement(auto.GetRootControl(), None)
+            or self.get_desktop_element()
         )
         self.logger.info("Resulted root element: %s", root)
         return root
