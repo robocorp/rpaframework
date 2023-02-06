@@ -90,16 +90,16 @@ class OpenAI:
         :param prompt: Text submitted to OpenAI for creating natural language.
         :param model: OpenAI's model to use in the completion.
         :param temperature: What sampling temperature to use.
-        Higher values means the model will take more risks..
+            Higher values means the model will take more risks..
         :param max_tokens: The maximum number of tokens to generate in the completion..
         :param top_probability: Controls diversity via nucleus sampling. 0.5 means half
-        of all likelihood-weighted options are considered.
+            of all likelihood-weighted options are considered.
         :param frequency_penalty: Number between -2.0 and 2.0. Positive values penalize
-        new tokens based on their existing frequency in the text so far.
+            new tokens based on their existing frequency in the text so far.
         :param presence_penalty: Number between -2.0 and 2.0. Positive values penalize
-        new tokens based on whether they appear in the text so far.
+            new tokens based on whether they appear in the text so far.
         :param result_format: Result format (string / json). Return just a string or
-        the default JSON response.
+            the default JSON response.
 
         Robot Framework example:
 
@@ -151,7 +151,7 @@ class OpenAI:
         Keyword returns a list of urls for the images created.
 
         :param prompt: A text description of the desired image(s).
-        The maximum length is 1000 characters.
+            The maximum length is 1000 characters.
         :param size: Size of the files to be created. 256x256, 512x512, 1024x1024
         :param num_images: The number of images to generate. Must be between 1 and 10.
         :param result_format: Result format (list / json).
@@ -207,9 +207,9 @@ class OpenAI:
         Source file must be a valid PNG file, less than 4MB, and square.
 
         :param src_image: The image to use as the basis for the variation(s).
-        Must be a valid PNG file, less than 4MB, and square.
+            Must be a valid PNG file, less than 4MB, and square.
         :param size: The size of the generated images.
-        Must be one of 256x256, 512x512, or 1024x1024.
+            Must be one of 256x256, 512x512, or 1024x1024.
         :param num_images: The number of images to generate. Must be between 1 and 10
         :param result_format: Result format (list / json).
 
