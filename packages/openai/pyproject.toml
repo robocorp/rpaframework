@@ -30,7 +30,7 @@ include = ["*.libspec"]
 packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.7.1"
 openai = "^0.26.4"
 
 [tool.poetry.dev-dependencies]
