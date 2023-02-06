@@ -1,4 +1,4 @@
-from contextlib import contextmanager
+import subprocess
 from typing import Any, List, Optional, Tuple, Union
 
 from RPA.core.types import is_list_like  # type: ignore
@@ -68,3 +68,8 @@ def is_input(element: Element) -> bool:
 def is_submit(element: Element) -> bool:
     """Check if an element is a submit button."""
     return element["type"] == "submit"
+
+
+def nix_get_pid_fletd() -> int:
+    """ Gets the PID of the fletd process. Only used on *NIX systems. """
+    return int(subprocess.run(["pgrep", "fletd"], capture_output=True).stdout)

@@ -14,6 +14,8 @@ from flet.control_event import ControlEvent
 from flet.utils import is_windows
 from RPA.Assistant.types import Location, Result
 
+from RPA.Assistant.utils import nix_get_pid_fletd
+
 
 def resolve_absolute_position(
     location: Union[Location, Tuple],
@@ -53,8 +55,10 @@ class FletClient:
         self._conn.close()
         if self._fvp is not None and not is_windows():
             try:
+                fletd_pid = nix_get_pid_fletd()
                 logging.debug(f"Flet View process {self._fvp.pid}")
-                os.kill(self._fvp.pid + 1, signal.SIGKILL)
+                logging.debug(f"Fletd Server process {fletd_pid}")
+                os.kill(fletd_pid, signal.SIGKILL)
             except:
                 pass
 
