@@ -147,8 +147,192 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="openai">
-<h2>OpenAI<a class="headerlink" href="#openai" title="Permalink to this heading"></a></h2>
+<div class="section" id="module-RPA.OpenAI">
+<span id="openai"></span><h2>OpenAI<a class="headerlink" href="#module-RPA.OpenAI" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.OpenAI.OpenAI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.OpenAI.</span></span><span class="sig-name descname"><span class="pre">OpenAI</span></span><a class="headerlink" href="#RPA.OpenAI.OpenAI" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Library to support <a class="reference external" href="https://openai.com">OpenAI</a> service.</p>
+<p><strong>Robot Framework example usage</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocorp.Vault</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.OpenAI</span>
+
+<span class="gh">*** Tasks ***</span>
+<span class="gu">Create a text completion</span>
+<span class="p">    ${</span><span class="nv">secrets</span><span class="p">}   </span><span class="nf">Get Secret</span><span class="p">   </span><span class="s">secret_name=OpenAI</span>
+<span class="p">    </span><span class="nf">Authorize To OpenAI</span><span class="p">   </span><span class="s">api_key=</span><span class="p">${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">key</span><span class="p">]</span>
+<span class="p">    ${</span><span class="nv">completion</span><span class="p">}    </span><span class="nf">Completion Create</span>
+<span class="p">    ...     </span><span class="s">Write a tagline for an ice cream shop</span>
+<span class="p">    ...     </span><span class="s">temperature=0.6</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">   ${</span><span class="nv">completion</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python example usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
+<span class="kn">from</span> <span class="nn">RPA.OpenAI</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">secrets</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;OpenAI&quot;</span><span class="p">)</span>
+<span class="n">baselib</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">()</span>
+<span class="n">baselib</span><span class="o">.</span><span class="n">authorize_to_openai</span><span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">])</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">baselib</span><span class="o">.</span><span class="n">completion_create</span><span class="p">(</span>
+    <span class="n">Create</span> <span class="n">a</span> <span class="n">tagline</span> <span class="k">for</span> <span class="n">icecream</span> <span class="n">shop</span><span class="s1">&#39;,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.OpenAI.OpenAI.ROBOT_LIBRARY_DOC_FORMAT">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.OpenAI.OpenAI.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.OpenAI.OpenAI.ROBOT_LIBRARY_SCOPE">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Global'</span></em><a class="headerlink" href="#RPA.OpenAI.OpenAI.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.OpenAI.OpenAI.authorize_to_openai">
+<span class="sig-name descname"><span class="pre">authorize_to_openai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.OpenAI.OpenAI.authorize_to_openai" title="Permalink to this definition"></a></dt>
+<dd><p>Keyword for authorize to OpenAI with your API key obtained from your account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>api_key</strong> – Your OpenAI API key</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${secrets}</span><span class="p">   </span><span class="c">Get Secret</span><span class="p">   </span><span class="c">secret_name=OpenAI</span>
+<span class="c">Authorize To OpenAI</span><span class="p">   </span><span class="c">api_key=${secrets}[key]</span>
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">secrets</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;OpenAI&quot;</span><span class="p">)</span>
+<span class="n">baselib</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">()</span>
+<span class="n">baselib</span><span class="o">.</span><span class="n">authorize_to_openai</span><span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.OpenAI.OpenAI.completion_create">
+<span class="sig-name descname"><span class="pre">completion_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text-davinci-003'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_probability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">presence_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'string'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.OpenAI.OpenAI.completion_create" title="Permalink to this definition"></a></dt>
+<dd><p>Keyword for creating text completions in OpenAI.
+Keyword returns a text string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> – Text submitted to OpenAI for creating natural language.</p></li>
+<li><p><strong>model</strong> – OpenAI’s model to use in the completion.</p></li>
+<li><p><strong>temperature</strong> – What sampling temperature to use.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Higher values means the model will take more risks..
+:param max_tokens: The maximum number of tokens to generate in the completion..
+:param top_probability: Controls diversity via nucleus sampling. 0.5 means half
+of all likelihood-weighted options are considered.
+:param frequency_penalty: Number between -2.0 and 2.0. Positive values penalize
+new tokens based on their existing frequency in the text so far.
+:param presence_penalty: Number between -2.0 and 2.0. Positive values penalize
+new tokens based on whether they appear in the text so far.
+:param result_format: Result format (string / json). Return just a string or
+the default JSON response.</p>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${response}</span><span class="p">  </span><span class="c">Completion Create</span>
+<span class="c">...</span><span class="p">     </span><span class="c">Write a tagline for an icecream shop.</span>
+<span class="c">...</span><span class="p">     </span><span class="c">temperature=0.6</span>
+<span class="c">Log</span><span class="p">     </span><span class="c">${response}</span>
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">baselib</span><span class="o">.</span><span class="n">completion_create</span><span class="p">(</span>
+    <span class="s1">&#39;Create a tagline for icecream shop&#39;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.OpenAI.OpenAI.image_create">
+<span class="sig-name descname"><span class="pre">image_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'512x512'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'list'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.OpenAI.OpenAI.image_create" title="Permalink to this definition"></a></dt>
+<dd><p>Keyword for creating one or more images in OpenAI.
+Keyword returns a list of urls for the images created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prompt</strong> – A text description of the desired image(s).</p>
+</dd>
+</dl>
+<p>The maximum length is 1000 characters.
+:param size: Size of the files to be created. 256x256, 512x512, 1024x1024
+:param num_images: The number of images to generate. Must be between 1 and 10.
+:param result_format: Result format (list / json).</p>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${images}</span><span class="p">    </span><span class="c">Image Create</span>
+<span class="c">...</span><span class="p">   </span><span class="c">Cartoon style picture of a cute monkey skateboarding.</span>
+<span class="c">...</span><span class="p">   </span><span class="c">size=256x256</span>
+<span class="c">...</span><span class="p">   </span><span class="c">num_images=2</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${url}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{images}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${url}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">images</span> <span class="o">=</span> <span class="n">baselib</span><span class="o">.</span><span class="n">image_create</span><span class="p">(</span>
+    <span class="s1">&#39;Cartoon style picture of a cute monkey skateboarding&#39;</span><span class="p">,</span>
+    <span class="n">size</span><span class="o">=</span><span class="s1">&#39;256x256&#39;</span><span class="p">,</span>
+    <span class="n">num_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.OpenAI.OpenAI.image_create_variation">
+<span class="sig-name descname"><span class="pre">image_create_variation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'512x512'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'list'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.OpenAI.OpenAI.image_create_variation" title="Permalink to this definition"></a></dt>
+<dd><p>Keyword for creating one or more variations of a image. Keyword
+returns a list of urls for the images created.
+Source file must be a valid PNG file, less than 4MB, and square.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_image</strong> – The image to use as the basis for the variation(s).</p>
+</dd>
+</dl>
+<p>Must be a valid PNG file, less than 4MB, and square.
+:param size: The size of the generated images.
+Must be one of 256x256, 512x512, or 1024x1024.
+:param num_images: The number of images to generate. Must be between 1 and 10
+:param result_format: Result format (list / json).</p>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${variations}</span><span class="p">   </span><span class="c">Image Create Variation</span>
+<span class="c">...</span><span class="p">     </span><span class="c">source_image.png</span>
+<span class="c">...</span><span class="p">     </span><span class="c">size=256x256</span>
+<span class="c">...</span><span class="p">     </span><span class="c">num_images=2</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${url}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{variations}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${url}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">variations</span> <span class="o">=</span> <span class="n">baselib</span><span class="o">.</span><span class="n">image_create_variation</span><span class="p">(</span>
+    <span class="s1">&#39;source_image.png&#39;</span><span class="p">,</span>
+    <span class="n">size</span><span class="o">=</span><span class="s1">&#39;256x256&#39;</span><span class="p">,</span>
+    <span class="n">num_images</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">variations</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
