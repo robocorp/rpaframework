@@ -1,12 +1,12 @@
 import base64
 import itertools
-import json
 import logging
 import mimetypes
 import urllib.parse as urlparse
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import requests
+import validators
 
 from RPA.JSON import JSONType
 from RPA.RobotLogListener import RobotLogListener
@@ -122,11 +122,10 @@ class Base64AI:
             )
             payload["modelTypes"] = req_model_types
 
-        response = requests.request(
-            "POST",
+        response = requests.post(
             scan_endpoint,
             headers=self._request_headers,
-            data=json.dumps(payload),
+            json=payload,
         )
         response.raise_for_status()
         return response.json()
@@ -136,6 +135,18 @@ class Base64AI:
         with open(file_path, "rb") as image_file:
             encoded_content = base64.b64encode(image_file.read())
         return encoded_content.decode("utf-8"), mimetypes.guess_type(file_path)[0]
+
+    @classmethod
+    def _url_or_file(cls, resource: str, data_only: bool = False) -> Tuple[str, bool]:
+        # Returns the URL string (or file API-ready content) and resource type.
+        #  (`True` if URL)
+        if not data_only and validators.url(resource):
+            return resource, True
+
+        # We're dealing with a file then.
+        base64string, mime = cls._get_file_base64_and_mimetype(resource)
+        data = f"data:{mime};base64,{base64string}"
+        return data, False
 
     def scan_document_file(
         self,
@@ -178,8 +189,8 @@ class Base64AI:
                     print(f"{key}: {val['value']}")
                 print(f"Text (OCR): {r['ocr']}")
         """
-        base64string, mime = self._get_file_base64_and_mimetype(file_path)
-        payload = {"image": f"data:{mime};base64,{base64string}"}
+        data, _ = self._url_or_file(file_path, data_only=True)
+        payload = {"image": data}
         return self._scan_document(payload, model_types=model_types, mock=mock)
 
     def scan_document_url(
@@ -276,9 +287,8 @@ class Base64AI:
             userdata = baselib.get_user_data()
             print(f"I have still {userdata['remainingCredits']} credits left")
         """
-        response = requests.request(
-            "GET",
-            self._to_endpoint("/auth/user"),
+        response = requests.get(
+            self._to_endpoint("auth/user"),
             headers=self._request_headers,
         )
         response.raise_for_status()
@@ -298,3 +308,86 @@ class Base64AI:
         )
         json_response["remainingCredits"] = remainingCredits
         return json_response
+
+    def get_matching_signatures(
+        self, reference_image: str, query_image: str
+    ) -> JSONType:
+        """Returns a list of matching signatures found from the reference into the
+        query image.
+        """
+        # NOTE(cmin764): There's no mock support for this API.
+        recognize_endpoint = self._to_endpoint("signature/recognize")
+
+        payload = {
+            "reference": reference_image,
+            "query": query_image,
+        }
+        for key, value in list(payload.items()):
+            value, is_url = self._url_or_file(value)
+            key += "Url" if is_url else "Image"
+            payload[key] = value
+        del payload["reference"]
+        del payload["query"]
+
+        response = requests.post(
+            recognize_endpoint,
+            headers=self._request_headers,
+            json=payload,
+        )
+        response.raise_for_status()
+        match_response = response.json()
+        return match_response
+
+    def filter_matching_signatures(
+        self,
+        match_response: JSONType,
+        confidence_threshold: float = 0.8,
+        similarity_threshold: float = 0.8,
+    ) -> Dict[Tuple[int, Tuple[int, ...]], List[Dict[str, Any]]]:
+        """Gets through all the recognized signatures in the queried image and returns
+        only the ones passing the confidence thresholds.
+        """
+        accepted_references = [
+            True if ref["confidence"] >= confidence_threshold else False
+            for ref in match_response["reference"]
+        ]
+        candidates = {}
+        # As (left, top, right, bottom) tuple.
+        to_coords = lambda item: (
+            item["left"],
+            item["top"],
+            item["left"] + item["width"],
+            item["top"] + item["height"],
+        )
+
+        for qry_idx, candidate in enumerate(match_response["query"]):
+            if candidate["confidence"] < confidence_threshold:
+                continue  # not sure enough it is a signature
+
+            qry_coords = to_coords(candidate)
+            for ref_idx, similarity in enumerate(candidate["similarities"]):
+                if (
+                    not accepted_references[ref_idx]
+                    or similarity < similarity_threshold
+                ):
+                    # Skip any resemblance to doubtful reference signatures.
+                    # Skip not similar enough signatures.
+                    continue
+
+                # Filtered properties for the accepted match.
+                qry_body = {
+                    "index": qry_idx,
+                    "coords": qry_coords,
+                    "similarity": similarity,
+                }
+                # Every accepted reference signature (index, coordinates) contains a
+                #  list of similar recognized signatures from the queried image, as
+                #  {index, coordinates, similarity}.
+                ref_coords = to_coords(match_response["reference"][ref_idx])
+                # Example of such candidate dictionary entry:
+                #  (0, (92, 509, 234, 616)): [{'index': 0, 'coords': (1812, 813, 2114, 1035), 'similarity': 0.89}]
+                candidates.setdefault((ref_idx, ref_coords), []).append(qry_body)
+
+        for matches in candidates.values():
+            matches.sort(key=lambda body: body["similarity"], reverse=True)
+        return candidates
