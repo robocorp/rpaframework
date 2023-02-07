@@ -2,10 +2,12 @@
 Library     RPA.Assistant
 Library     Process
 # Library    RPA.Browser.Selenium
+Library     ExecutionContexts.py
 
 
 *** Test Cases ***
 Main
+    [Tags]    skip
     Control Buttons
     Ask User    location=TopLeft
 
@@ -35,10 +37,14 @@ Sleep and Log to Console
     Sleep    1
     Log To Console    awakening
 
-Print with Python
+Print with Python Subprocess
     ${result}=    Run Process    python    -c    print("hello")
     Log to Console    ${result}
     Log to Console    ${result.stdout}
+
+Print and Log Execution Context
+    ${context}=    Print Execution Context
+    Log    ${context}
 
 Dummy Process
     Set Log Level    TRACE
@@ -59,7 +65,8 @@ Control Buttons
     Add Button    close browser    Close Browser
 
     Add Button    process_button    Dummy Process
-    Add Button    print with python    Print With Python
+    Add Button    print with python    Print With Python Subprocess
+    Add Button    Test Execution Context    Print and Log Execution Context
     Add Button    Sleep and log to console    Sleep and Log to Console
 
     Add Heading    BAD buttons

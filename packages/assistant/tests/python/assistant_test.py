@@ -1,6 +1,10 @@
 from time import sleep
 import RPA.Assistant
 from RPA.Assistant.types import Icon, Location
+import pytest
+
+
+pytest.skip("until we have non-blocking assistant UI tests", allow_module_level=True)
 
 
 def next_ui(results):
