@@ -302,7 +302,12 @@ class Assistant:
         """
         if not label:
             label = url
-        self._client.add_element(Markdown(f"[{label}]({url})"))
+        self._client.add_element(
+            Markdown(
+                f"[{label}]({url})",
+                on_tap_link=lambda e: self._client.page.launch_url(e.data),
+            )
+        )
 
     @keyword("Add image")
     def add_image(
