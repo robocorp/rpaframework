@@ -348,12 +348,12 @@ class Base64AI:
         only the ones passing the confidence thresholds.
         """
         accepted_references = [
-            True if ref["confidence"] >= confidence_threshold else False
+            ref["confidence"] >= confidence_threshold
             for ref in match_response["reference"]
         ]
         candidates = {}
         # As (left, top, right, bottom) tuple.
-        to_coords = lambda item: (
+        to_coords = lambda item: (  # noqa: E731
             item["left"],
             item["top"],
             item["left"] + item["width"],
@@ -385,7 +385,7 @@ class Base64AI:
                 #  {index, coordinates, similarity}.
                 ref_coords = to_coords(match_response["reference"][ref_idx])
                 # Example of such candidate dictionary entry:
-                #  (0, (92, 509, 234, 616)): [{'index': 0, 'coords': (1812, 813, 2114, 1035), 'similarity': 0.89}]
+                #  (0, (92, 509, 234, 616)): [{'index': 0, 'coords': (1812, 813, 2114, 1035), 'similarity': 0.89}]  # noqa: E501
                 candidates.setdefault((ref_idx, ref_coords), []).append(qry_body)
 
         for matches in candidates.values():
