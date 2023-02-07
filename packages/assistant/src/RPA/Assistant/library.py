@@ -614,8 +614,8 @@ class Assistant:
 
         The argument ``file_type`` restricts the possible file extensions
         that the user can select. The format of the argument is as follows:
-        ``Description text (*.ext1;*.ext2;...)``. For instance, an argument
-        to limit options to Excel files could be: ``Excel files (*.xls;*.xlsx)``.
+        ``pdf,png,svg``. For instance, an argument
+        to limit options to Excel files could be: ``xls,xlsx``.
 
         To allow selecting more than one file, the ``multiple`` argument
         can be enabled.
@@ -637,7 +637,7 @@ class Assistant:
             Add file input    name=dest      destination=%{ROBOT_ROOT}
 
             # This restricts files to certain types
-            Add file input    name=types     file_type=PDF files (*.pdf)
+            Add file input    name=types     file_type=pdf
 
             # Every file input result is a list of paths
             ${result}=    Run dialog
@@ -661,6 +661,9 @@ class Assistant:
 
         if not options["source"]:
             options["source"] = os.path.expanduser("~")
+
+        if options["file_type"]:
+            options["file_type"] = options["file_type"].split(",")
 
         self._client.add_element(
             ElevatedButton(
