@@ -226,20 +226,20 @@ Keyword returns a text string.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prompt</strong> – Text submitted to OpenAI for creating natural language.</p></li>
 <li><p><strong>model</strong> – OpenAI’s model to use in the completion.</p></li>
-<li><p><strong>temperature</strong> – What sampling temperature to use.</p></li>
+<li><p><strong>temperature</strong> – What sampling temperature to use.
+Higher values means the model will take more risks..</p></li>
+<li><p><strong>max_tokens</strong> – The maximum number of tokens to generate in the completion..</p></li>
+<li><p><strong>top_probability</strong> – Controls diversity via nucleus sampling. 0.5 means half
+of all likelihood-weighted options are considered.</p></li>
+<li><p><strong>frequency_penalty</strong> – Number between -2.0 and 2.0. Positive values penalize
+new tokens based on their existing frequency in the text so far.</p></li>
+<li><p><strong>presence_penalty</strong> – Number between -2.0 and 2.0. Positive values penalize
+new tokens based on whether they appear in the text so far.</p></li>
+<li><p><strong>result_format</strong> – Result format (string / json). Return just a string or
+the default JSON response.</p></li>
 </ul>
 </dd>
 </dl>
-<p>Higher values means the model will take more risks..
-:param max_tokens: The maximum number of tokens to generate in the completion..
-:param top_probability: Controls diversity via nucleus sampling. 0.5 means half
-of all likelihood-weighted options are considered.
-:param frequency_penalty: Number between -2.0 and 2.0. Positive values penalize
-new tokens based on their existing frequency in the text so far.
-:param presence_penalty: Number between -2.0 and 2.0. Positive values penalize
-new tokens based on whether they appear in the text so far.
-:param result_format: Result format (string / json). Return just a string or
-the default JSON response.</p>
 <p>Robot Framework example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${response}</span><span class="p">  </span><span class="c">Completion Create</span>
 <span class="c">...</span><span class="p">     </span><span class="c">Write a tagline for an icecream shop.</span>
@@ -264,13 +264,15 @@ the default JSON response.</p>
 Keyword returns a list of urls for the images created.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>prompt</strong> – A text description of the desired image(s).</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> – A text description of the desired image(s).
+The maximum length is 1000 characters.</p></li>
+<li><p><strong>size</strong> – Size of the files to be created. 256x256, 512x512, 1024x1024</p></li>
+<li><p><strong>num_images</strong> – The number of images to generate. Must be between 1 and 10.</p></li>
+<li><p><strong>result_format</strong> – Result format (list / json).</p></li>
+</ul>
 </dd>
 </dl>
-<p>The maximum length is 1000 characters.
-:param size: Size of the files to be created. 256x256, 512x512, 1024x1024
-:param num_images: The number of images to generate. Must be between 1 and 10.
-:param result_format: Result format (list / json).</p>
 <p>Robot Framework example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${images}</span><span class="p">    </span><span class="c">Image Create</span>
 <span class="c">...</span><span class="p">   </span><span class="c">Cartoon style picture of a cute monkey skateboarding.</span>
@@ -301,14 +303,16 @@ returns a list of urls for the images created.
 Source file must be a valid PNG file, less than 4MB, and square.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>src_image</strong> – The image to use as the basis for the variation(s).</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_image</strong> – The image to use as the basis for the variation(s).
+Must be a valid PNG file, less than 4MB, and square.</p></li>
+<li><p><strong>size</strong> – The size of the generated images.
+Must be one of 256x256, 512x512, or 1024x1024.</p></li>
+<li><p><strong>num_images</strong> – The number of images to generate. Must be between 1 and 10</p></li>
+<li><p><strong>result_format</strong> – Result format (list / json).</p></li>
+</ul>
 </dd>
 </dl>
-<p>Must be a valid PNG file, less than 4MB, and square.
-:param size: The size of the generated images.
-Must be one of 256x256, 512x512, or 1024x1024.
-:param num_images: The number of images to generate. Must be between 1 and 10
-:param result_format: Result format (list / json).</p>
 <p>Robot Framework example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${variations}</span><span class="p">   </span><span class="c">Image Create Variation</span>
 <span class="c">...</span><span class="p">     </span><span class="c">source_image.png</span>
