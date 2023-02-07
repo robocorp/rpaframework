@@ -8,7 +8,7 @@ pytest.skip("until we have non-blocking assistant UI tests", allow_module_level=
 
 
 def next_ui(results):
-    assistant.clear_elements()
+    assistant.clear_dialog()
     assistant.add_heading("the 2nd ui")
     assistant.add_text(str(results))
     assistant.add_text_input(
@@ -19,7 +19,7 @@ def next_ui(results):
 
 
 def third_ui(results):
-    assistant.clear_elements()
+    assistant.clear_dialog()
     assistant.add_heading("the 3rd ui")
     assistant.add_text(str(results))
     assistant.add_text_input(
@@ -86,7 +86,7 @@ assistant.add_image(
 )
 assistant.add_submit_buttons(["second submit"], "second submit")
 
-# assistant.clear_elements()
+# assistant.clear_dialog()
 # assistant.add_icon(Icon.Failure)
 
 results = assistant.ask_user(location=Location.TopLeft, timeout=180)

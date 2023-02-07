@@ -193,9 +193,8 @@ class Assistant:
         return ElevatedButton(label, on_click=validate_and_close)
 
     @keyword("Clear elements")
-    def clear_elements(self) -> None:
-        """Remove all previously defined elements and start from a clean state
-
+    def clear_dialog(self) -> None:
+        """Remove all previously defined elements and start from a clean state.
         By default this is done automatically when a dialog is created.
 
         Example:
@@ -209,6 +208,7 @@ class Assistant:
             END
             Clear elements
         """
+        self._client.results = {}
         self._client.clear_elements()
 
     @keyword("Add Heading")
