@@ -4,7 +4,7 @@ import os
 import signal
 import time
 from collections import namedtuple
-from subprocess import Popen
+from subprocess import Popen, SubprocessError
 from timeit import default_timer as timer
 from typing import Callable, Literal, Optional, Tuple, Union, List
 
@@ -40,6 +40,7 @@ class FletClient:
     """Class for wrapping flet operations"""
 
     def __init__(self) -> None:
+        self.logger = logging.getLogger(__name__)
         self.results: Result = {}
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
@@ -59,8 +60,10 @@ class FletClient:
                 logging.debug(f"Flet View process {self._fvp.pid}")
                 logging.debug(f"Fletd Server process {fletd_pid}")
                 os.kill(fletd_pid, signal.SIGKILL)
-            except:
-                pass
+            except (SubprocessError, OSError) as err:
+                self.logger.error(
+                    f"Unexpected error {err} when killing Flet subprocess"
+                )
 
     def _execute(self, page: Optional[Page] = None) -> Callable[[Optional[Page]], None]:
         """TODO: document what this does exactly"""
@@ -80,6 +83,9 @@ class FletClient:
         return inner_execute
 
     def _preload_flet(self):
+        # We access Flet internals because it is simplest way to control the specifics
+        # In the future we should migrate / ask for a stable API that fits our needs
+        # pylint: disable=W0212
         return flet.flet._connect_internal(
             page_name="",
             host=None,
@@ -127,18 +133,24 @@ class FletClient:
                 page.error(f"There was an error while rendering the page: {e}")
 
         self._conn.on_session_created = on_session_created
+        # We access Flet internal function here to enable using of cached flet process
+        # for the lifetime of FletClient
+        # pylint: disable=W0212
         self._fvp: Popen = flet.flet._open_flet_view(self._conn.page_url, False)
         view_start_time = timer()
         try:
             while not self._fvp.poll():
-                if self.pending_operation:
+                if self.pending_operation is not None:
                     self.pending_operation()
                     self.pending_operation = None
                 if timer() - view_start_time >= timeout:
                     self._fvp.terminate()
-                    raise TimeoutException()
+                    raise TimeoutException(
+                        "Reached timeout while waiting for Assistant Dialog"
+                    )
                 time.sleep(0.1)
         except TimeoutException:
+            # pylint: disable=W0707
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
 
     def _make_flet_event_handler(self, name: str):
@@ -181,7 +193,6 @@ class FletClient:
             self.page.update()
         self._elements.visible.clear()
         self._elements.invisible.clear()
-        return
 
     def update_elements(self, page: Page):
         """Updates the UI and shows new elements which have been added into the element lists"""

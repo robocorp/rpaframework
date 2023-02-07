@@ -489,7 +489,7 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Union[Callable, str] = None,
+        validation: Union[Callable, None] = None,
     ) -> None:
         """Add a text input element
 
@@ -519,7 +519,8 @@ class Assistant:
         """
         # TODO: Implement the rows support
         # TODO: add robot keyword support e.g. if is keyword name use BuiltIn().run_keyword()
-        self._validations[name] = validation
+        if validation:
+            self._validations[name] = validation
 
         self._client.add_element(
             name=name, element=TextField(label=label, hint_text=placeholder)
@@ -760,6 +761,7 @@ class Assistant:
         def validate(date_text):
             try:
                 date.fromisoformat(date_text)
+                return None
             except ValueError:
                 return "Date should be in format YYYY-MM-DD"
 
@@ -1013,6 +1015,7 @@ class Assistant:
 
                 # This can be anything since it comes from the user function, we don't
                 # want to let the user function crash the UI
+                # pylint: disable=W0703
                 except Exception as e:
                     self.logger.error(f"Error calling Python function {function}")
                     self.logger.error(e)
@@ -1035,6 +1038,7 @@ class Assistant:
                     self.logger.error(e)
                 # This can be anything since it comes from the user function, we don't
                 # want to let the user function crash the UI
+                # pylint: disable=W0703
                 except Exception as e:
                     self.logger.error(
                         f"Unexpected error running robot keyword {function}"
@@ -1056,7 +1060,7 @@ class Assistant:
         **kwargs passed into it
         """
 
-        def on_click(event: ControlEvent):
+        def on_click(_: ControlEvent):
             self._queue_function_or_robot_keyword(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
@@ -1092,7 +1096,7 @@ class Assistant:
 
         """
 
-        def on_click(event: ControlEvent):
+        def on_click(_: ControlEvent):
             self._queue_function_or_robot_keyword(function, self._client.results)
 
         button = ElevatedButton(label, on_click=on_click)
