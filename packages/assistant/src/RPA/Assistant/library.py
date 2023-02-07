@@ -749,23 +749,28 @@ class Assistant:
             ${result} =       Run dialog
             Log To Console    User birthdate year should be: ${result.birthdate.year}
         """
+
         def validate(date_text):
             try:
                 date.fromisoformat(date_text)
             except ValueError:
                 return "Date should be in format YYYY-MM-DD"
+
         if default:
             if isinstance(default, str):
                 try:
                     default = date.fromisoformat(default)
                 except ValueError as e:
-                    self.logger.error(f"Default date value {default} is not in a valid ISO format.")
+                    self.logger.error(
+                        f"Default date value {default} is not in a valid ISO format."
+                    )
                     raise e
             self._client.results[name] = default
         # TODO: add robot keyword support e.g. if is keyword name use BuiltIn().run_keyword()
         self._validations[name] = validate
         self._client.add_element(
-            name=name, element=TextField(label=label, hint_text="YYYY-MM-DD", value=default)
+            name=name,
+            element=TextField(label=label, hint_text="YYYY-MM-DD", value=default),
         )
 
     @keyword("Add radio buttons", tags=["input"])
