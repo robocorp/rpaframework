@@ -150,6 +150,8 @@ class Assistant:
         self._validations: Dict[str, Callable] = {}
         # Used to ensure that only one button callback is executed at once
         self._button_event_lock = Lock()
+        # Disable fletd debug logging
+        os.environ["GIN_MODE"] = "release"
 
         try:
             # Prevent logging from keywords that return results
