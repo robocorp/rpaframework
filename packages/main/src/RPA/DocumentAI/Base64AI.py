@@ -314,7 +314,41 @@ class Base64AI:
         self, reference_image: str, query_image: str
     ) -> JSONType:
         """Returns a list of matching signatures found from the reference into the
-        query image.
+        queried image.
+
+        The output JSON-like dictionary contains all the details from the API, like the
+        detected signatures in both the reference and query image and for every such
+        signature, its bounding-box geometry, confidence and similarity score.
+        Use the ``Filter Matching Signatures`` over this value to get a simpler
+        structure.
+
+        :param reference_image: The reference image (jpg/png) to check query signatures
+            against. (e.g. driving license, ID card)
+        :param query_image: The query image containing signatures similar to the ones
+            from the reference image. (e.g. signed contract, bank check)
+        :returns: A JSON-like dictionary revealing recognized signatures and how much
+            they resemble with each other.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Match Signatures
+                ${ref_image} =  Set Variable    driving-license.jpg
+                ${query_image} =  Set Variable    signed-check.png
+                ${sigs} =   Get Matching Signatures     ${ref_image}    ${query_image}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.DocumentAI.Base64AI import Base64AI
+
+            lib = Base64AI()
+            sigs = lib.get_matching_signatures(
+                "driving-license.jpg", "signed-check.png"
+            )
         """
         # NOTE(cmin764): There's no mock support for this API.
         recognize_endpoint = self._to_endpoint("signature/recognize")
@@ -346,7 +380,49 @@ class Base64AI:
         similarity_threshold: float = 0.8,
     ) -> Dict[Tuple[int, Tuple[int, ...]], List[Dict[str, Any]]]:
         """Gets through all the recognized signatures in the queried image and returns
-        only the ones passing the confidence thresholds.
+        only the ones passing the confidence & similarity thresholds.
+
+        Additionally, this keyword simplifies the original input `match_response`
+        structure and returns a dictionary with all the detected and accepted reference
+        signatures as keys, and lists of similar enough query signatures as values.
+
+        - Each reference signature (key) is a tuple of `(index, coordinates)`.
+        - Each query signature (sub-value) is a dictionary of `{index, coords,
+          similarity}`.
+        - The coordinates describe the bounding-box enclosing the detected signature
+          portion from the original image, as follows: `(left, top, right, bottom)`
+          corners.
+
+        Use the original `match_response` object and the indexes from here if you need
+        to retrieve extra details not found here (e.g. confidence score). Use the
+        ``Get Signature Image`` to save and preview the image crop belonging to the
+        signature of choice.
+
+        :param match_response: The raw JSON-like response retrieved with the
+            ``Get Matching Signatures`` keyword.
+        :param confidence_threshold: The minimum accepted confidence score (0.0-1.0)
+            for a candidate to be considered a signature. (to avoid false-positives)
+        :param similarity_threshold: The minimum accepted similarity score (0.0-1.0)
+            for a query signature to be considered an alike signature. (to discard
+            different or fraudulent signatures)
+        :returns: A dictionary of accepted reference signatures and their similar ones
+            found in the queried image.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Match Signatures
+                &{matches} =   Filter Matching Signatures      ${sigs}
+                Log Dictionary    ${matches}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            matches = lib.filter_matching_signatures(sigs)
+            print(matches)
         """
         accepted_references = [
             ref["confidence"] >= confidence_threshold
@@ -357,8 +433,8 @@ class Base64AI:
         to_coords = lambda item: (  # noqa: E731
             item["left"],
             item["top"],
-            item["left"] + item["width"],
-            item["top"] + item["height"],
+            item["left"] + item["width"],  # right corner
+            item["top"] + item["height"],  # bottom corner
         )
 
         for qry_idx, candidate in enumerate(match_response["query"]):
@@ -402,6 +478,42 @@ class Base64AI:
         path: Optional[PathType] = None,
     ) -> str:
         """Retrieves and saves locally the image cut belonging to the provided `index`.
+
+        The image data itself is provided with the original `match_response` object as
+        base64 encoded content. This utility keyword retrieves, decodes and saves it
+        on the local disk customized with the `path` parameter. By default, the
+        searched `index` is considered a query image, switch to the reference type by
+        enabling it with the `reference` parameter.
+
+        :param match_response: The raw JSON-like response retrieved with the
+            ``Get Matching Signatures`` keyword.
+        :param index: The image ID (numeric) found along the coordinates in the output
+            of the ``Filter Matching Signatures`` keyword. (the list order is stable)
+        :param reference: Set this to `True` if you're looking for a reference (not
+            query) image instead. (off by default)
+        :param path: Set an explicit output path (including file name) for the locally
+            saved image. (uses the output directory as default)
+        :returns: The image path of the locally saved file.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Match Signatures
+                @{ref_sigs} =   Get Dictionary Keys    ${matches}
+                @{qry_sigs} =    Get From Dictionary    ${matches}    ${ref_sigs}[${0}]
+                &{qry_sig} =    Set Variable    ${qry_sigs}[${0}]
+                ${path} =   Get Signature Image     ${sigs}     index=${qry_sig}[index]
+                Log To Console    Preview query signature image crop: ${path}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            qry_sig = list(matches.values())[0][0]
+            path = lib.get_signature_image(sigs, index=qry_sig["index"])
+            print("Preview query signature image crop: ", path)
         """
         images_type = "reference" if reference else "query"
         images = match_response[images_type]

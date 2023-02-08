@@ -49,4 +49,4 @@ Match Signatures With Driver License
 
     # Even save and display the cropped image belonging to the queried signature.
     ${path} =   Get Signature Image     ${sigs}     index=${qry_sig}[index]
-    Log To Console    Preview signature image crop: ${path}
+    Log To Console    Preview query signature image crop: ${path}
