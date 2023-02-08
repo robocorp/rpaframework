@@ -189,10 +189,11 @@ class Assistant:
 
         return ElevatedButton(label, on_click=validate_and_close)
 
-    @keyword("Clear elements")
+    @keyword("Clear dialog")
     def clear_dialog(self) -> None:
         """Remove all previously defined elements and start from a clean state.
         By default this is done automatically when a dialog is created.
+        It will also clear all the results.
 
         Example:
 
@@ -203,7 +204,7 @@ class Assistant:
                 Run dialog    clear=False
                 Process page
             END
-            Clear elements
+            Clear dialog
         """
         self._client.results = {}
         self._client.clear_elements()
