@@ -28,7 +28,7 @@ class ElementKeywords(LibraryContext):
         """Set anchor to an element specified by the locator.
 
         All following keywords using locators will use this element
-        as an root element. Specific use case could be setting
+        as a root element. Specific use case could be setting
         anchor to TableControl element and then getting column data
         belonging to that TableControl element.
 

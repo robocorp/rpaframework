@@ -14,6 +14,8 @@ ${EXE_UIDEMO}       UIDemo.exe
 ${EXE_CALCULATOR}   calc.exe
 ${EXE_SPOTIFY}      Spotify.exe
 
+${LOC_NOTEPAD}      name:Notepad class:Notepad
+
 ${TIMEOUT}        1
 
 
@@ -87,7 +89,7 @@ Calculator with keys
 Keep open a single Notepad
     Set Global Timeout    ${TIMEOUT}
     ${closed} =    Set Variable    0
-    ${run} =    Run Keyword And Ignore Error    Close Window    subname:Notepad control:WindowControl
+    ${run} =    Run Keyword And Ignore Error    Close Window    ${LOC_NOTEPAD} control:WindowControl
     IF    "${run}[0]" == "PASS"
         ${closed} =    Set Variable    ${run}[1]
     END
@@ -118,7 +120,7 @@ Windows search Calculator by clicking buttons
     [Teardown]    Close Current Window And Sleep
 
 Calculator by clicking buttons already running
-    [Tags]  manual
+    [Tags]  manual  # Calculator should be already open.
     Calculator button actions
 
 Windows run Do some calculations
@@ -127,7 +129,7 @@ Windows run Do some calculations
     [Teardown]    Close Current Window And Sleep
 
 Windows run Do some calculations already running
-    [Tags]  manual
+    [Tags]  manual  # Calculator should be already open.
     Calculator with keys
 
 Play Task Calculator
@@ -204,7 +206,7 @@ Play Task UIDemo
     [Teardown]    Close Current Window
 
 Resize window with Spotify
-    [Tags]  manual
+    [Tags]  manual  # Spotify should be installed and available to use.
 
     Windows Run    ${EXE_SPOTIFY}
     ${window} =    Control Window    executable:${EXE_SPOTIFY}
@@ -230,7 +232,7 @@ Resize window with Spotify
 
 Notepad write text into a file
     Windows Run    notepad
-    Control Window    subname:"- Notepad"
+    Control Window    ${LOC_NOTEPAD}
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
         Click    Edit    wait_time=0.5
@@ -249,10 +251,10 @@ Notepad write text into a file
         Select    type:ComboBox id:1138    28
         Click    type:Button name:OK
     END
-    Control Window    subname:"- Notepad"
+    Control Window    ${LOC_NOTEPAD}
     Send Keys    keys={Ctrl}a{Del}
     Send Keys    keys=Lets add some text to the notepad
-    Control Window    subname:"- Notepad"
+    Control Window    ${LOC_NOTEPAD}
     IF    "${ver}" == "11"
         Click    File    wait_time=0.3
         Click    Save as
@@ -266,7 +268,7 @@ Notepad write text into a file
     IF    "${run}[0]" == "PASS"
         Click    Yes    wait_time=0.3
     END
-    Minimize Window    subname:"- Notepad"
+    Minimize Window    ${LOC_NOTEPAD}
     [Teardown]    Close Current Window
 
 Control Window by handle
@@ -295,16 +297,16 @@ Calculator result from recording
     [Teardown]    Close Current Window
 
 Write to Notepad in the background
+    [Tags]  manual  # The text editing element can't be found anymore.
     [Setup]     Windows Run    Notepad
 
     Windows Run    Calc
     Clear Anchor
-    Control Window    subname:"- Notepad"    foreground=${False}
+    Control Window    ${LOC_NOTEPAD}    foreground=${False}
     # All the following keyword calls will use the set anchor element as root locator,
     #  UNLESS they specify a locator / root element explicitly or `Clear Anchor` is
     #  used.
-    ${text_edit} =    Set Variable    regex:"Text (E|e)ditor"
-    Set Anchor    ${text_edit}
+    Set Anchor    regex:"Text (E|e)ditor"
 
     # Write in Notepad while having Calculator as active window.
     Control Window    Calculator
@@ -316,12 +318,12 @@ Write to Notepad in the background
     Set Value    value=${EMPTY}    append=${True}    enter=${True}
 
     Close Current Window    # this closes Calculator first (as active window)
-    [Teardown]    Close Window    subname:Notepad    # finally Notepad is closed too
+    [Teardown]    Close Window    ${LOC_NOTEPAD}    # finally Notepad is closed too
 
 Test getting elements
     Clear Anchor
     ${ver} =    Get OS Version
-    ${desktop} =    Get Element
+    ${desktop} =    Get Element     desktop
     IF    "${ver}" == "11"
         ${buttons} =    Get Elements    id:TaskbarFrameRepeater > type:Button    root_element=${desktop}
     ELSE
@@ -335,7 +337,7 @@ Test getting elements
 
 Control window after closing linked root element
     [Setup]    Keep open a single Notepad
-    ${window} =    Control Window    subname:Notepad control:WindowControl
+    ${window} =    Control Window    ${LOC_NOTEPAD} control:WindowControl
     Log    Controlling Notepad window: ${window}
     Kill app by name    Notepad
     Windows Run    Calc
@@ -345,7 +347,6 @@ Control window after closing linked root element
     [Teardown]    Close Current Window    # closes Calculator (last active window)
 
 Tree printing and controlled anchor cleanup
-    Print Tree
     Windows Run    Calc
     ${win} =    Control Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
     Set Anchor    ${win}
@@ -391,10 +392,16 @@ Retrieve Nested Notepad Elements
     ...     element inside the tree as soon as it becomes visible.
     [Setup]   Windows Run    Notepad
 
-    Control Window      subname:Notepad
+    Control Window      ${LOC_NOTEPAD}
     Click   View
     Click   Zoom
     ${zoom_in} =   Get Element     Zoom in
     Log To Console      "Zoom in" item: ${zoom_in}
 
     [Teardown]  Close Current Window
+
+Test Desktop Searching
+    [Documentation]     Test some odd scenarios of elements retrieval.
+
+    @{desktops} =     Get Elements  desktop     siblings_only=${False}
+    Log List    ${desktops}

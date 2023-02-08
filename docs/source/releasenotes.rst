@@ -11,6 +11,19 @@ Release notes
 08 Feb 2023
 -----------
 
+- **OpenAI** (:pr:`792`) comes to **RPA Framework**! New library **RPA.OpenAI** adds four keywords covering GPT-3 text completions and DALL.E image creation.
+  
+  - ``Authorize To Openai:`` Authorize with OpenAI using your API key
+  - ``Completion Create``: Keyword for creating text completions in GPT-3 API using your prompt and various arguments.
+  - ``Image Create``: Create one or more images based on a text prompt.
+  - ``Image Create Variation``: Creating one or more variations of an existing image.
+  
+  .. note:: 
+    **RPA.OpenAI** is not included in the core ``rpaframework`` package, so please add ``rpaframework-openai==1.0.1`` as **pip** dependency 
+    in your **conda.yaml**.
+
+
+
 - ``rpaframework-assistant`` **1.0.0**
 
     - New RPA.Assistant library! Provides better development experience for various use cases where previously RPA.Dialogs would have been used.
@@ -27,6 +40,63 @@ Release notes
 - ``rpaframework-assistant`` **1.0.2** and **1.0.3**
     
     - documentation building fixes and minor documentation updates
+
+21.0.1 - 03 Feb 2023
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **7.0.3**): Fix Windows element(s)
+  retrieval. (and dependent keywords)
+
+21.0.0 - 01 Feb 2023
+--------------------
+
+.. warning::
+  Multiple **breaking** changes below!
+
+- Library **RPA.Cloud.Azure** (:issue:`635`):
+
+  - `robocloud_vault_name` -> `robocorp_vault_name`
+  - `use_robocloud_vault` -> `use_robocorp_vault`
+  - ``Set Robocloud Vault`` -> ``Set Robocorp Vault``
+
+- Library **RPA.Cloud.Google** (:pr:`794`; ``rpaframework-google`` **7.0.0**):
+
+  - ``RPA.Robocloud.Secrets`` -> ``RPA.Robocorp.Vault``
+
+- Library **RPA.PDF** (:issue:`785`; ``rpaframework-pdf`` **7.0.1**):
+
+  - Keyword ``Find Text``:
+
+    - Supports additional parameter `ignore_case`, which if set to `True`, will make
+      the search case insensitive. (switch it **on** if you experience a different
+      behaviour)
+    - Adds `subtext:` strategy in the passed `locator` which checks for a substring
+      instead of the whole text to match.
+
+  - New related Portal example for parsing PDF invoices:
+    https://github.com/robocorp/example-parse-pdf-invoice
+
+20.1.2 - 26 Jan 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`787`): Improved browser order resolution given
+  the set env var and running OS.
+
+20.1.1 - 26 Jan 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`781`): Ability to change the default
+  search order of browsers, when using the ``Open Available Browser`` keyword, through
+  the `RPA_SELENIUM_BROWSER_ORDER` env var.
+
+20.1.0 - 19 Jan 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`745`): Ability to run Edge in IE
+  compatibility mode. (robot example: https://github.com/robocorp/example-ie-mode-edge)
+- Library **RPA.SAP**: Fix error in dependency import order in the underlying
+  `SapGuiLibrary`.
+>>>>>>> master
 
 20.0.2 - 10 Jan 2023
 --------------------

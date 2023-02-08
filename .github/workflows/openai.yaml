@@ -1,22 +1,22 @@
-name: rpaframework-aws
+name: rpaframework-openai
 
 on:
   push:
     branches:
       - master
     paths:
-      - 'packages/aws/**'
-      - '.github/workflows/aws.yaml'
+      - 'packages/openai/**'
+      - '.github/workflows/openai.yaml'
   pull_request:
     branches:
       - master
     paths:
-      - 'packages/aws/**'
-      - '.github/workflows/aws.yaml'
+      - 'packages/openai/**'
+      - '.github/workflows/openai.yaml'
 
 defaults:
   run:
-    working-directory: './packages/aws'
+    working-directory: './packages/openai'
 
 jobs:
   test:
@@ -68,6 +68,8 @@ jobs:
             python: "3.9"
             os: macos-latest
 
+    env:
+      INVOKE_IS_CI_CD: 1
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python }}
@@ -78,8 +80,6 @@ jobs:
       run: python -m pip install --upgrade pip
     - name: Install poetry
       run: pip install poetry
-    - name: Install invoke
-      run: pip install -U "invoke>=1.6.0,<2.0.0"
     - name: Get python version
       id: full-python-version
       shell: bash
@@ -90,6 +90,8 @@ jobs:
       with:
         path: .venv
         key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
+    - name: Install invoke
+      run: pip install -U "invoke>=1.6.0,<2.0.0"
     - name: Install invocation package
       run: invoke install-invocations
     - name: Install dependencies
