@@ -18,12 +18,12 @@ from robot.api.deco import keyword, library
 
 from RPA.JSON import JSONType
 from RPA.Robocorp.Vault import Vault
+from RPA.Robocorp.utils import PathType
 from RPA.RobotLogListener import RobotLogListener
 
 
 lib_vault = Vault()
 
-PathType = Union[Path, str]
 SecretType = Optional[Union[str, Path, Tuple, List, Dict]]
 ResultType = JSONType
 

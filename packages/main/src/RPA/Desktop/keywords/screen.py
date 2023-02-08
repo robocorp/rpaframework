@@ -9,12 +9,12 @@ import mss
 from PIL import Image
 from robot.api import logger as robot_logger
 from robot.running.context import EXECUTION_CONTEXTS
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.core.geometry import Point, Region
 from RPA.core.locators import LocatorType
 from RPA.Desktop import utils
 from RPA.Desktop.keywords import LibraryContext, keyword
+from RPA.Robocorp.utils import get_output_dir
 
 if utils.is_windows():
     import ctypes
@@ -140,10 +140,7 @@ class ScreenKeywords(LibraryContext):
             image = grab()
 
         if path is None:
-            try:
-                dirname = Path(BuiltIn().get_variable_value("${OUTPUT_DIR}"))
-            except RobotNotRunningError:
-                dirname = Path.cwd()
+            dirname = get_output_dir(default=Path.cwd())
             path = dirname / "desktop-screenshot-{index}.png"
 
         path: Path = _create_unique_path(path).with_suffix(".png")

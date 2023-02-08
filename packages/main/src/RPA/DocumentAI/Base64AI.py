@@ -9,6 +9,7 @@ import requests
 import validators
 
 from RPA.JSON import JSONType
+from RPA.Robocorp.utils import PathType, get_output_dir
 from RPA.RobotLogListener import RobotLogListener
 
 
@@ -391,3 +392,24 @@ class Base64AI:
         for matches in candidates.values():
             matches.sort(key=lambda body: body["similarity"], reverse=True)
         return candidates
+
+    def get_signature_image(
+        self,
+        match_response: JSONType,
+        *,
+        index: int,
+        reference: bool = False,
+        path: Optional[PathType] = None,
+    ) -> str:
+        """Retrieves and saves locally the image cut belonging to the provided `index`.
+        """
+        images_type = "reference" if reference else "query"
+        images = match_response[images_type]
+        encoded_content = images[index]["image"]
+        image_format, image_content = encoded_content.split(";base64,")
+        decoded_bytes = base64.b64decode(image_content.encode())
+        image_ext = image_format.split("/")[-1]
+        path = path or (get_output_dir() / f"{images_type}-{index}.{image_ext}")
+        with open(path, "wb") as stream:
+            stream.write(decoded_bytes)
+        return str(path)

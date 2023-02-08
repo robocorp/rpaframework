@@ -23,6 +23,7 @@ from RPA.RobotLogListener import RobotLogListener
 
 
 JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
+PathType = Union[Path, str]
 
 DEBUG_ON = bool(os.getenv("RPA_DEBUG_API"))
 log_to_console = BuiltIn().log_to_console
@@ -258,3 +259,12 @@ def protect_keywords(base: str, keywords: List[str]):
     to_protect = [f"{base}.{keyword}" for keyword in keywords]
     listener = RobotLogListener()
     listener.register_protected_keywords(to_protect)
+
+
+def get_output_dir(default: Optional[PathType] = "output") -> Path:
+    """Returns the output directory path."""
+    try:
+        output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}", default=default)
+    except RobotNotRunningError:
+        output_dir = default
+    return Path(output_dir).expanduser().resolve()
