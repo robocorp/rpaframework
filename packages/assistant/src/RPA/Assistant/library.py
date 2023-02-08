@@ -5,7 +5,6 @@ import platform
 import subprocess
 from datetime import date
 from pathlib import Path
-from threading import Lock
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
 
 import flet
@@ -516,7 +515,6 @@ class Assistant:
             Send feedback message    ${result.email}  ${result.message}
         """
         # TODO: Implement the rows support
-        # TODO: add robot keyword support e.g. if is keyword name use BuiltIn().run_keyword()
         if validation:
             self._validations[name] = validation
 
@@ -773,7 +771,7 @@ class Assistant:
                     )
                     raise e
             self._client.results[name] = default
-        # TODO: add robot keyword support e.g. if is keyword name use BuiltIn().run_keyword()
+
         self._validations[name] = validate
         self._client.add_element(
             name=name,
@@ -928,7 +926,8 @@ class Assistant:
         :param height: Height of dialog (in pixels or 'AUTO')
         :param width:  Width of dialog (in pixels)
         :param on_top: Show dialog always on top of other windows
-        :param location: Where to place the dialog (options are Center, TopLeft, or a tuple of ints)
+        :param location: Where to place the dialog (options are Center, TopLeft, or a
+                         tuple of ints)
         None will let the operating system place the window.
 
 
@@ -987,11 +986,59 @@ class Assistant:
 
     @keyword("Refresh Dialog", tags=["dialog"])
     def refresh_dialog(self):
-        """Can be used to update UI elements when adding elements while dialog is running"""
+        """Can be used to update UI elements when adding elements while dialog is
+        running
+        """
         if self._client.page:
             self._client.update_elements(self._client.page)
         else:
             raise RuntimeError("No dialog open")
+
+    def _create_python_function_wrapper(self, function, *args, **kwargs):
+        """wrapper code that is used to add wrapping for user functions when binding
+        them to be run by buttons
+        """
+
+        def func_wrapper():
+            try:
+                function(*args, **kwargs)
+
+            # This can be anything since it comes from the user function, we don't
+            # want to let the user function crash the UI
+            except Exception as err:  # pylint: disable=broad-except
+                self.logger.error(f"Error calling Python function {function}")
+                self.logger.error(err)
+            finally:
+                self._client.unlock_elements()
+                self._client.flet_update()
+
+        return func_wrapper
+
+    def _create_robot_function_wrapper(self, function, *args, **kwargs):
+        """wrapper code that is used to add wrapping for user functions when binding
+        them to be run by buttons
+        """
+
+        def func_wrapper():
+            try:
+                BuiltIn().run_keyword(function, *args, **kwargs)
+            except RobotNotRunningError:
+                self.logger.error(
+                    f"Robot Framework not running so cannot call keyword {function}"
+                )
+            except RobotError as e:
+                self.logger.error(f"Error calling robot keyword {function}")
+                self.logger.error(e)
+            # This can be anything since it comes from the user function, we don't
+            # want to let the user function crash the UI
+            except Exception as err:  # pylint: disable=broad-except
+                self.logger.error(f"Unexpected error running robot keyword {function}")
+                self.logger.error(err)
+            finally:
+                self._client.unlock_elements()
+                self._client.flet_update()
+
+        return func_wrapper
 
     def _queue_function_or_robot_keyword(
         self, function: Union[Callable, str], *args, **kwargs
@@ -1000,53 +1047,19 @@ class Assistant:
         or run it with Robot's run_keyword.
         """
         if self._client.pending_operation:
-            self.logger.error(f"Can't have more than one pending operation.")
+            self.logger.error("Can't have more than one pending operation.")
             return
         self._client.lock_elements()
         self._client.flet_update()
 
         if isinstance(function, Callable):
-
-            def func_wrapper():
-                try:
-                    function(*args, **kwargs)
-
-                # This can be anything since it comes from the user function, we don't
-                # want to let the user function crash the UI
-                # pylint: disable=W0703
-                except Exception as e:
-                    self.logger.error(f"Error calling Python function {function}")
-                    self.logger.error(e)
-                finally:
-                    self._client.unlock_elements()
-                    self._client.flet_update()
-
-            self._client.pending_operation = func_wrapper
+            self._client.pending_operation = self._create_python_function_wrapper(
+                function, *args, **kwargs
+            )
         else:
-
-            def func_wrapper():
-                try:
-                    BuiltIn().run_keyword(function, *args, **kwargs)
-                except RobotNotRunningError:
-                    self.logger.error(
-                        f"Robot Framework not running so cannot call keyword {function}"
-                    )
-                except RobotError as e:
-                    self.logger.error(f"Error calling robot keyword {function}")
-                    self.logger.error(e)
-                # This can be anything since it comes from the user function, we don't
-                # want to let the user function crash the UI
-                # pylint: disable=W0703
-                except Exception as e:
-                    self.logger.error(
-                        f"Unexpected error running robot keyword {function}"
-                    )
-                    self.logger.error(e)
-                finally:
-                    self._client.unlock_elements()
-                    self._client.flet_update()
-
-            self._client.pending_operation = func_wrapper
+            self._client.pending_operation = self._create_robot_function_wrapper(
+                function, *args, **kwargs
+            )
 
     @keyword("Add Button", tags=["dialog"])
     def add_button(
@@ -1068,7 +1081,8 @@ class Assistant:
     @keyword("Add Next Ui Button", tags=["dialog"])
     def add_next_ui_button(self, label: str, function: Union[Callable, str]):
         """Create a button that leads to the next UI page, calling the passed
-        keyword or function, and passing current form results as first positional argument to it.
+        keyword or function, and passing current form results as first positional
+        argument to it.
 
         :param label Text for the button
         :param function Python function or Robot Keyword name, that will take form

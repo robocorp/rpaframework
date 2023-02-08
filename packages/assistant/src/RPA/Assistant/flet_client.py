@@ -1,5 +1,5 @@
 import atexit
-import logging
+from logging import getLogger
 import os
 import signal
 import time
@@ -41,7 +41,7 @@ class FletClient:
 
     def __init__(self) -> None:
         atexit.register(self._cleanup)
-        self.logger = logging.getLogger(__name__)
+        self.logger = getLogger(__name__)
         self.results: Result = {}
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
@@ -52,13 +52,13 @@ class FletClient:
         self._fvp = None
 
     def _cleanup(self) -> None:
-        # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146
+        # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146 # noqa: E501
         self._conn.close()
         if self._fvp is not None and not is_windows():
             try:
                 fletd_pid = nix_get_pid("fletd")
-                logging.debug(f"Flet View process {self._fvp.pid}")
-                logging.debug(f"Fletd Server process {fletd_pid}")
+                self.logger.debug(f"Flet View process {self._fvp.pid}")
+                self.logger.debug(f"Fletd Server process {fletd_pid}")
                 os.kill(fletd_pid, signal.SIGKILL)
             except (SubprocessError, OSError) as err:
                 self.logger.error(
@@ -72,7 +72,7 @@ class FletClient:
         if is_macos():
             try:
                 fletd_app_pid = nix_get_pid("Flet")
-                logging.debug(f"Flet application process {fletd_app_pid}")
+                self.logger.debug(f"Flet application process {fletd_app_pid}")
                 os.kill(fletd_app_pid, signal.SIGKILL)
             except ValueError:
                 pass  # no leftover process found
@@ -81,9 +81,9 @@ class FletClient:
                     f"Unexpected error {err} when killing Flet subprocess"
                 )
 
-    def _execute(self, page: Optional[Page] = None) -> Callable[[Optional[Page]], None]:
-        """TODO: document what this does exactly"""
-
+    def _create_flet_target_function(
+        self, page: Optional[Page] = None
+    ) -> Callable[[Optional[Page]], None]:
         def inner_execute(inner_page: Optional[Page] = None):
             if page:
                 inner_page = page
@@ -101,7 +101,7 @@ class FletClient:
     def _preload_flet(self):
         # We access Flet internals because it is simplest way to control the specifics
         # In the future we should migrate / ask for a stable API that fits our needs
-        # pylint: disable=W0212
+        # pylint: disable=protected-access
         return flet.flet._connect_internal(
             page_name="",
             host=None,
@@ -116,7 +116,7 @@ class FletClient:
 
     def _show_flet(
         self,
-        target,
+        target: Callable[[Optional[Page]], None],
         title: str,
         height: Union[int, Literal["AUTO"]],
         width: int,
@@ -142,22 +142,19 @@ class FletClient:
                     page.window_left = coordinates[0]
                     page.window_top = coordinates[1]
             conn.sessions[session_data.sessionID] = page
-            try:
-                assert target is not None
-                target(page)
-            except Exception as e:
-                page.error(f"There was an error while rendering the page: {e}")
+
+            target(page)
 
         self._conn.on_session_created = on_session_created
         # We access Flet internal function here to enable using of cached flet process
         # for the lifetime of FletClient
-        # pylint: disable=W0212
+        # pylint: disable=protected-access
         self._fvp: Popen = flet.flet._open_flet_view(self._conn.page_url, False)
         view_start_time = timer()
         try:
             while not self._fvp.poll():
-                if self.pending_operation is not None:
-                    self.pending_operation()
+                if callable(self.pending_operation):
+                    self.pending_operation()  # pylint: disable=not-callable
                     self.pending_operation = None
                 if timer() - view_start_time >= timeout:
                     self._fvp.terminate()
@@ -166,7 +163,7 @@ class FletClient:
                     )
                 time.sleep(0.1)
         except TimeoutException:
-            # pylint: disable=W0707
+            # pylint: disable=raise-missing-from
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
 
     def _make_flet_event_handler(self, name: str):
@@ -180,9 +177,9 @@ class FletClient:
         # TODO: validate that element "name" is unique
         self._elements.visible.append(element)
         if name is not None:
-            # TODO: might be necessary to check that it doesn't already have change handler
+            # TODO: might be necessary to check that it doesn't already have change
+            # handler
             element.on_change = self._make_flet_event_handler(name)
-            # element._add_event_handler("change", self._make_flet_event_handler(name))
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
@@ -199,7 +196,13 @@ class FletClient:
         timeout: int,
     ):
         self._show_flet(
-            self._execute(), title, height, width, on_top, location, timeout
+            self._create_flet_target_function(),
+            title,
+            height,
+            width,
+            on_top,
+            location,
+            timeout,
         )
 
     def clear_elements(self):
@@ -211,8 +214,10 @@ class FletClient:
         self._elements.invisible.clear()
 
     def update_elements(self, page: Page):
-        """Updates the UI and shows new elements which have been added into the element lists"""
-        return self._execute(page)()
+        """Updates the UI and shows new elements which have been added into the element
+        lists
+        """
+        return self._create_flet_target_function(page)(None)
 
     def flet_update(self):
         """Runs a plain update of the flet UI, updating existing elements"""

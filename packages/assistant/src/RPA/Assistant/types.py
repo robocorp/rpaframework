@@ -24,5 +24,7 @@ class Icon(Enum):
 
 
 class Location(Enum):
+    """A relative location for placing elements or windows"""
+
     Center = auto()
     TopLeft = auto()
