@@ -37,9 +37,9 @@ Release notes
 
     - macOS force stop bugfix
 
-- ``rpaframework-assistant`` **1.0.2** and **1.0.3**
+- ``rpaframework-assistant`` **1.0.2**, **1.0.3**, **1.0.4**
     
-    - documentation building fixes and minor documentation updates
+    - documentation building fixes and documentation updates
 
 21.0.1 - 03 Feb 2023
 --------------------
