@@ -2175,7 +2175,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-assistant"
-version = "1.0.3"
+version = "1.0.4"
 description = "Interactive UI library for RPA Framework"
 category = "main"
 optional = false
@@ -2969,7 +2969,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "3e93567e48c892bfb0b2a3ae16e87aa7edaf7e71363a24977f0783eebca0d301"
+content-hash = "3640e1a08793180ae0b7f9ce4a40e17049bd06847831c1849bb579ad54308be3"
 
 [metadata.files]
 aiohttp = [
@@ -4617,8 +4617,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-assistant = [
-    {file = "rpaframework_assistant-1.0.3-py3-none-any.whl", hash = "sha256:320d6658f7ba254787f683f44d174cf597baca2e5976d152ace5b4e7c6f853f8"},
-    {file = "rpaframework_assistant-1.0.3.tar.gz", hash = "sha256:3e70c375156c8cc322af1f06aa6ac008699c2823733fa768154cf7ad6bdd3110"},
+    {file = "rpaframework_assistant-1.0.4-py3-none-any.whl", hash = "sha256:0052fc46533a5209d294d4a0e84b8037fc8231a2f11e1608e91602e6feef1e65"},
+    {file = "rpaframework_assistant-1.0.4.tar.gz", hash = "sha256:00021edd4514d04c449c3aefedfc2fb06bc72aaa0b268189855f3e5bcf3f3630"},
 ]
 rpaframework-aws = [
     {file = "rpaframework_aws-5.2.6-py3-none-any.whl", hash = "sha256:eaa440881aef316165da9c142d2d741cd7c48665ed421ff4633d357b38bf7dce"},

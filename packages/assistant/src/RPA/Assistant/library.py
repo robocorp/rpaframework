@@ -493,7 +493,7 @@ class Assistant:
         :param name:        Name of result field
         :param label:       Label for field
         :param placeholder: Placeholder text in input field
-        :param validation   Validation function for the input field
+        :param validation:   Validation function for the input field
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -928,6 +928,7 @@ class Assistant:
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
+
         None will let the operating system place the window.
 
 
@@ -1067,8 +1068,8 @@ class Assistant:
     ) -> None:
         """
         :param label Text for the button
-        :param function Python function or Robot Keyword name, that will get *args and
-        **kwargs passed into it
+        :param function Python function or Robot Keyword name, that will get ``*args``
+        and ``**kwargs`` passed into it
         """
 
         def on_click(_: ControlEvent):
@@ -1089,6 +1090,9 @@ class Assistant:
         results as it's first argument
 
         Example:
+
+        .. code-block:: robotframework
+
             *** Keywords ***
             Retrieve User Data
                 # Retrieves advanced data that needs to be displayed
@@ -1104,8 +1108,6 @@ class Assistant:
                 Add Heading  Retrieved Data
                 Add Text  ${user_data}[phone_number]
                 Add Text  ${user_data}[address]
-
-
         """
 
         def on_click(_: ControlEvent):
