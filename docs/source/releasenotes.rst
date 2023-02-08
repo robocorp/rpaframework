@@ -5,9 +5,28 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+08 Feb 2023
+-----------
+
+- ``rpaframework-assistant`` **1.0.0**
+
+    - New RPA.Assistant library! Provides better development experience for various use cases where previously RPA.Dialogs would have been used.
+        - RPA.Dialogs users: see migration guide at <>
+        - Does not use webview. Should improve compatibility and reduce broken installs.
+        - Added mechanism to make buttons execute Python functions or Robot keywords.
+        Enables building of code executing interactive assistants.
+        - New ``Ask User `` keyword for building simple dialogs with less boilerplate.
+
+- ``rpaframework-assistant`` **1.0.1**
+
+    - macOS force stop bugfix
+
+- ``rpaframework-assistant`` **1.0.2** and **1.0.3**
+    
+    - documentation building fixes and minor documentation updates
 
 20.0.2 - 10 Jan 2023
 --------------------
