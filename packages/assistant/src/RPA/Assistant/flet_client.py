@@ -46,14 +46,15 @@ class FletClient:
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
 
-        self._conn = self._preload_flet()
+        self._conn = None
         self._elements: Elements = Elements([], [])
         self._to_disable: List[flet.Control] = []
-        self._fvp = None
+        self._fvp: Optional[Popen] = None
 
     def _cleanup(self) -> None:
         # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146 # noqa: E501
-        self._conn.close()
+        if self._conn is not None:
+            self._conn.close()
         if self._fvp is not None and not is_windows():
             try:
                 fletd_pid = nix_get_pid("fletd")
@@ -145,11 +146,13 @@ class FletClient:
 
             target(page)
 
+        if not self._conn:
+            self._conn = self._preload_flet()
         self._conn.on_session_created = on_session_created
         # We access Flet internal function here to enable using of cached flet process
         # for the lifetime of FletClient
         # pylint: disable=protected-access
-        self._fvp: Popen = flet.flet._open_flet_view(self._conn.page_url, False)
+        self._fvp = flet.flet._open_flet_view(self._conn.page_url, False)
         view_start_time = timer()
         try:
             while not self._fvp.poll():
