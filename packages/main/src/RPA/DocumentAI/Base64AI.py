@@ -311,7 +311,7 @@ class Base64AI:
         return json_response
 
     def get_matching_signatures(
-        self, reference_image: str, query_image: str
+        self, reference_image: PathType, query_image: PathType
     ) -> JSONType:
         """Returns a list of matching signatures found from the reference into the
         queried image.
@@ -354,8 +354,8 @@ class Base64AI:
         recognize_endpoint = self._to_endpoint("signature/recognize")
 
         payload = {
-            "reference": reference_image,
-            "query": query_image,
+            "reference": str(reference_image),
+            "query": str(query_image),
         }
         for key, value in list(payload.items()):
             value, is_url = self._url_or_file(value)
