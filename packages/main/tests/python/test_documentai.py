@@ -25,6 +25,7 @@ class TestDocumentAI:
     def invoice_png():
         return RESOURCES_DIR / "invoice.png"
 
+    @pytest.mark.xfail(reason="`rpaframework-google` is unexpectedly available in venv")
     def test_init_engine_google(self, library):
         # As `rpaframework-google` isn't installed by default.
         with pytest.raises(ImportError):
@@ -63,9 +64,9 @@ class TestDocumentAI:
         library.init_engine("base64ai", secret="cosmin@robocorp.com,api-key")
         model = "invoice-model"
         library.predict(invoice_png, model=model)
-        args, kwargs = mock_requests.request.call_args
-        assert args == ("POST", "https://base64.ai/api/scan")
-        assert model in kwargs["data"]
+        args, kwargs = mock_requests.post.call_args
+        assert args == ("https://base64.ai/api/scan",)
+        assert model in kwargs["json"]["modelTypes"]
 
     @mock.patch("RPA.DocumentAI.Nanonets.requests")
     def test_predict_nanonets(self, mock_requests, library, invoice_png):
