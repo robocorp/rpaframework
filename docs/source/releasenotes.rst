@@ -27,7 +27,7 @@ Release notes
 - ``rpaframework-assistant`` **1.0.0**
 
     - New RPA.Assistant library! Provides better development experience for various use cases where previously RPA.Dialogs would have been used.
-        - RPA.Dialogs users: see migration guide at <>
+        - RPA.Dialogs users: `the new Migration Guide <https://github.com/robocorp/rpaframework/blob/master/packages/assistant/docs/Migration-Guide.md>`_
         - Does not use webview. Should improve compatibility and reduce broken installs.
         - Added mechanism to make buttons execute Python functions or Robot keywords.
         Enables building of code executing interactive assistants.
