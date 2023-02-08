@@ -45,8 +45,7 @@ from RPA.Assistant.utils import (
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class Assistant:
-    """This library is still in Beta and needs more testing and features.
-    The `Assistant` library provides a way to display information to a user
+    """The `Assistant` library provides a way to display information to a user
     and request input while a robot is running. It allows building processes
     that require human interaction. Also it offers capabilities of running
     other robots inside the current one and determine what to display to the
@@ -630,7 +629,7 @@ class Assistant:
         .. code-block:: robotframework
 
             # This can be any one file
-            Add file input    name=anyting
+            Add file input    name=anything
 
             # This can be multiple files
             Add file input    name=multiple  multiple=True
