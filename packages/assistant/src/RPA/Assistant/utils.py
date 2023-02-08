@@ -70,8 +70,8 @@ def is_submit(element: Element) -> bool:
     return element["type"] == "submit"
 
 
-def nix_get_pid_fletd() -> int:
-    """Gets the PID of the fletd process. Only used on *NIX systems."""
+def nix_get_pid(process_name: str) -> int:
+    """Gets the PID of `process_name` process. Only used on *NIX systems."""
     return int(
-        subprocess.run(["pgrep", "fletd"], capture_output=True, check=False).stdout
+        subprocess.run(["pgrep", process_name], capture_output=True, check=False).stdout
     )

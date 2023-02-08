@@ -11,10 +11,10 @@ from typing import Callable, Literal, Optional, Tuple, Union, List
 import flet
 from flet import Page, ScrollMode
 from flet.control_event import ControlEvent
-from flet.utils import is_windows
+from flet.utils import is_windows, is_macos
 from RPA.Assistant.types import Location, Result
 
-from RPA.Assistant.utils import nix_get_pid_fletd
+from RPA.Assistant.utils import nix_get_pid
 
 
 def resolve_absolute_position(
@@ -56,7 +56,7 @@ class FletClient:
         self._conn.close()
         if self._fvp is not None and not is_windows():
             try:
-                fletd_pid = nix_get_pid_fletd()
+                fletd_pid = nix_get_pid("fletd")
                 logging.debug(f"Flet View process {self._fvp.pid}")
                 logging.debug(f"Fletd Server process {fletd_pid}")
                 os.kill(fletd_pid, signal.SIGKILL)
@@ -66,6 +66,20 @@ class FletClient:
                 )
             except ValueError:
                 pass  # no leftover process found
+
+        # kill the graphical application on macOS,
+        # otherwise it can hang around after cleanup
+        if is_macos():
+            try:
+                fletd_app_pid = nix_get_pid("Flet")
+                logging.debug(f"Flet application process {fletd_app_pid}")
+                os.kill(fletd_app_pid, signal.SIGKILL)
+            except ValueError:
+                pass  # no leftover process found
+            except (SubprocessError, OSError) as err:
+                self.logger.error(
+                    f"Unexpected error {err} when killing Flet subprocess"
+                )
 
     def _execute(self, page: Optional[Page] = None) -> Callable[[Optional[Page]], None]:
         """TODO: document what this does exactly"""
