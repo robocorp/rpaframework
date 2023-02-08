@@ -40,6 +40,7 @@ class FletClient:
     """Class for wrapping flet operations"""
 
     def __init__(self) -> None:
+        atexit.register(self._cleanup)
         self.logger = logging.getLogger(__name__)
         self.results: Result = {}
         self.page: Optional[Page] = None
@@ -49,7 +50,6 @@ class FletClient:
         self._elements: Elements = Elements([], [])
         self._to_disable: List[flet.Control] = []
         self._fvp = None
-        atexit.register(self._cleanup)
 
     def _cleanup(self) -> None:
         # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146
@@ -64,6 +64,8 @@ class FletClient:
                 self.logger.error(
                     f"Unexpected error {err} when killing Flet subprocess"
                 )
+            except ValueError:
+                pass  # no leftover process found
 
     def _execute(self, page: Optional[Page] = None) -> Callable[[Optional[Page]], None]:
         """TODO: document what this does exactly"""
