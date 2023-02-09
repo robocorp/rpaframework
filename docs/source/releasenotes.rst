@@ -5,21 +5,36 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+21.1.0 - 09 Feb 2023
+--------------------
+
+- Library **RPA.DocumentAI.Base64AI** (:issue:`803`): Support for signature matching on
+  image documents with the following newly added keywords:
+
+  - ``Get Matching Signatures``: Detects and returns signatures and their similarity.
+  - ``Filter Matching Signatures``: Keeps relevant and alike signatures only.
+  - ``Get Signature Image``: Saves signature's image for manual inspection.
+
+  Portal example: https://github.com/robocorp/example-signature-match-assistant
+
+- Global fix with retrieving the output directory path.
 
 08 Feb 2023
 -----------
 
 - **OpenAI** (:pr:`792`) comes to **RPA Framework**! New library **RPA.OpenAI** adds four keywords covering GPT-3 text completions and DALL.E image creation.
-  
+
   - ``Authorize To Openai:`` Authorize with OpenAI using your API key
   - ``Completion Create``: Keyword for creating text completions in GPT-3 API using your prompt and various arguments.
   - ``Image Create``: Create one or more images based on a text prompt.
   - ``Image Create Variation``: Creating one or more variations of an existing image.
-  
-  .. note:: 
-    **RPA.OpenAI** is not included in the core ``rpaframework`` package, so please add ``rpaframework-openai==1.0.1`` as **pip** dependency 
+
+  .. note::
+    **RPA.OpenAI** is not included in the core ``rpaframework`` package, so please add ``rpaframework-openai==1.0.1`` as **pip** dependency
     in your **conda.yaml**.
 
 
@@ -38,7 +53,7 @@ Release notes
     - macOS force stop bugfix
 
 - ``rpaframework-assistant`` **1.0.2**, **1.0.3**, **1.0.4**
-    
+
     - documentation building fixes and documentation updates
 
 21.0.1 - 03 Feb 2023
@@ -96,7 +111,6 @@ Release notes
   compatibility mode. (robot example: https://github.com/robocorp/example-ie-mode-edge)
 - Library **RPA.SAP**: Fix error in dependency import order in the underlying
   `SapGuiLibrary`.
->>>>>>> master
 
 20.0.2 - 10 Jan 2023
 --------------------

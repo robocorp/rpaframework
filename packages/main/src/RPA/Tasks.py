@@ -13,6 +13,8 @@ from graphviz import ExecutableNotFound
 from robot.errors import PassExecution
 from robot.libraries.BuiltIn import BuiltIn
 
+from RPA.Robocorp.utils import get_output_dir
+
 
 class SchemaError(Exception):
     """Error raised when violating schema."""
@@ -749,7 +751,7 @@ class Tasks:
                 )
             else:
                 # Render to file
-                dirname = BuiltIn().get_variable_value("${OUTPUT_DIR}")
+                dirname = get_output_dir()
                 filename = "graph_{}".format(data.name.lower().replace(" ", "_"))
 
                 path = Path(dirname, filename)
