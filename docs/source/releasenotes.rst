@@ -19,6 +19,8 @@ Release notes
   - ``Filter Matching Signatures``: Keeps relevant and alike signatures only.
   - ``Get Signature Image``: Saves signature's image for manual inspection.
 
+  Portal example: https://github.com/robocorp/example-signature-match-assistant
+
 - Global fix with retrieving the output directory path.
 
 08 Feb 2023
