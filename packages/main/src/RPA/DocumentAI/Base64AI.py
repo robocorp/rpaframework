@@ -65,6 +65,8 @@ class Base64AI:
             for key, props in r["fields"].items():
                 print(f"FIELD {key}: {props['value']}")
             print(f"Text (OCR): {r['ocr']}")
+
+    Portal example: https://github.com/robocorp/example-idp-base64
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -349,6 +351,8 @@ class Base64AI:
             sigs = lib.get_matching_signatures(
                 "driving-license.jpg", "signed-check.png"
             )
+
+        Portal example: https://github.com/robocorp/example-signature-match-assistant
         """
         # NOTE(cmin764): There's no mock support for this API.
         recognize_endpoint = self._to_endpoint("signature/recognize")
