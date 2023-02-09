@@ -1067,8 +1067,8 @@ class Assistant:
         self, label: str, function: Union[Callable, str], *args, **kwargs
     ) -> None:
         """
-        :param label Text for the button
-        :param function Python function or Robot Keyword name, that will get ``*args``
+        :param label: Text for the button
+        :param function: Python function or Robot Keyword name, that will get ``*args``
         and ``**kwargs`` passed into it
         """
 
@@ -1085,8 +1085,8 @@ class Assistant:
         keyword or function, and passing current form results as first positional
         argument to it.
 
-        :param label Text for the button
-        :param function Python function or Robot Keyword name, that will take form
+        :param label: Text for the button
+        :param function: Python function or Robot Keyword name, that will take form
         results as it's first argument
 
         Example:
