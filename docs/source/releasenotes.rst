@@ -36,6 +36,24 @@ Release notes
     in your **conda.yaml**.
 
 
+
+- ``rpaframework-assistant`` **1.0.0**
+
+    - New RPA.Assistant library! Provides better development experience for various use cases where previously RPA.Dialogs would have been used.
+        - RPA.Dialogs users: `the new Migration Guide <https://github.com/robocorp/rpaframework/blob/master/packages/assistant/docs/Migration-Guide.md>`_
+        - Does not use webview. Should improve compatibility and reduce broken installs.
+        - Added mechanism to make buttons execute Python functions or Robot keywords.
+        Enables building of code executing interactive assistants.
+        - New ``Ask User `` keyword for building simple dialogs with less boilerplate.
+
+- ``rpaframework-assistant`` **1.0.1**
+
+    - macOS force stop bugfix
+
+- ``rpaframework-assistant`` **1.0.2**, **1.0.3**, **1.0.4**
+
+    - documentation building fixes and documentation updates
+
 21.0.1 - 03 Feb 2023
 --------------------
 
