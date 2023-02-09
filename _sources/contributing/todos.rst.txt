@@ -59,7 +59,7 @@ RPA.Desktop.keywords.screen:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "180", "Draw a circle instead?"
+   "177", "Draw a circle instead?"
 
 RPA.Email.Exchange:
 ===================
@@ -147,4 +147,4 @@ RPA.Tasks:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "674", "Move all result object modifying here"
+   "676", "Move all result object modifying here"

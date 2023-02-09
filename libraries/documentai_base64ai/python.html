@@ -202,6 +202,7 @@ service in multiple different file formats and via URL.</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Text (OCR): </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;ocr&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Portal example: <a class="reference external" href="https://github.com/robocorp/example-idp-base64">https://github.com/robocorp/example-idp-base64</a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.DocumentAI.Base64AI.Base64AI.BASE_URL">
 <span class="sig-name descname"><span class="pre">BASE_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://base64.ai'</span></em><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.BASE_URL" title="Permalink to this definition"></a></dt>
@@ -218,6 +219,57 @@ service in multiple different file formats and via URL.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.DocumentAI.Base64AI.Base64AI.filter_matching_signatures">
+<span class="sig-name descname"><span class="pre">filter_matching_signatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">match_response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarity_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.filter_matching_signatures" title="Permalink to this definition"></a></dt>
+<dd><p>Gets through all the recognized signatures in the queried image and returns
+only the ones passing the confidence &amp; similarity thresholds.</p>
+<p>Additionally, this keyword simplifies the original input <cite>match_response</cite>
+structure and returns a dictionary with all the detected and accepted reference
+signatures as keys, and lists of similar enough query signatures as values.</p>
+<ul class="simple">
+<li><p>Each reference signature (key) is a tuple of <cite>(index, coordinates)</cite>.</p></li>
+<li><p>Each query signature (sub-value) is a dictionary of <cite>{index, coords,
+similarity}</cite>.</p></li>
+<li><p>The coordinates describe the bounding-box enclosing the detected signature
+portion from the original image, as follows: <cite>(left, top, right, bottom)</cite>
+corners.</p></li>
+</ul>
+<p>Use the original <cite>match_response</cite> object and the indexes from here if you need
+to retrieve extra details not found here (e.g. confidence score). Use the
+<code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Signature</span> <span class="pre">Image</span></code> to save and preview the image crop belonging to the
+signature of choice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>match_response</strong> – The raw JSON-like response retrieved with the
+<code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Matching</span> <span class="pre">Signatures</span></code> keyword.</p></li>
+<li><p><strong>confidence_threshold</strong> – The minimum accepted confidence score (0.0-1.0)
+for a candidate to be considered a signature. (to avoid false-positives)</p></li>
+<li><p><strong>similarity_threshold</strong> – The minimum accepted similarity score (0.0-1.0)
+for a query signature to be considered an alike signature. (to discard
+different or fraudulent signatures)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of accepted reference signatures and their similar ones
+found in the queried image.</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Match Signatures</span>
+<span class="p">    &amp;{</span><span class="nv">matches</span><span class="p">} =   </span><span class="nf">Filter Matching Signatures</span><span class="p">      ${</span><span class="nv">sigs</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Log Dictionary</span><span class="p">    ${</span><span class="nv">matches</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">matches</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">filter_matching_signatures</span><span class="p">(</span><span class="n">sigs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.DocumentAI.Base64AI.Base64AI.get_fields_from_prediction_result">
 <span class="sig-name descname"><span class="pre">get_fields_from_prediction_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.get_fields_from_prediction_result" title="Permalink to this definition"></a></dt>
 <dd><p>Helper keyword to get found fields from a prediction result.
@@ -230,6 +282,94 @@ For example see <code class="docutils literal notranslate"><span class="pre">Sca
 <dd class="field-even"><p>list of found fields</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.DocumentAI.Base64AI.Base64AI.get_matching_signatures">
+<span class="sig-name descname"><span class="pre">get_matching_signatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.get_matching_signatures" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of matching signatures found from the reference into the
+queried image.</p>
+<p>The output JSON-like dictionary contains all the details from the API, like the
+detected signatures in both the reference and query image and for every such
+signature, its bounding-box geometry, confidence and similarity score.
+Use the <code class="docutils literal notranslate"><span class="pre">Filter</span> <span class="pre">Matching</span> <span class="pre">Signatures</span></code> over this value to get a simpler
+structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reference_image</strong> – The reference image (jpg/png) to check query signatures
+against. (e.g. driving license, ID card)</p></li>
+<li><p><strong>query_image</strong> – The query image containing signatures similar to the ones
+from the reference image. (e.g. signed contract, bank check)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A JSON-like dictionary revealing recognized signatures and how much
+they resemble with each other.</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Match Signatures</span>
+<span class="p">    ${</span><span class="nv">ref_image</span><span class="p">} =  </span><span class="nf">Set Variable</span><span class="p">    </span><span class="s">driving-license.jpg</span>
+<span class="p">    ${</span><span class="nv">query_image</span><span class="p">} =  </span><span class="nf">Set Variable</span><span class="p">    </span><span class="s">signed-check.png</span>
+<span class="p">    ${</span><span class="nv">sigs</span><span class="p">} =   </span><span class="nf">Get Matching Signatures</span><span class="p">     ${</span><span class="nv">ref_image</span><span class="p">}    ${</span><span class="nv">query_image</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.DocumentAI.Base64AI</span> <span class="kn">import</span> <span class="n">Base64AI</span>
+
+<span class="n">lib</span> <span class="o">=</span> <span class="n">Base64AI</span><span class="p">()</span>
+<span class="n">sigs</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_matching_signatures</span><span class="p">(</span>
+    <span class="s2">&quot;driving-license.jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;signed-check.png&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Portal example: <a class="reference external" href="https://github.com/robocorp/example-signature-match-assistant">https://github.com/robocorp/example-signature-match-assistant</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.DocumentAI.Base64AI.Base64AI.get_signature_image">
+<span class="sig-name descname"><span class="pre">get_signature_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">match_response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.DocumentAI.Base64AI.Base64AI.get_signature_image" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves and saves locally the image cut belonging to the provided <cite>index</cite>.</p>
+<p>The image data itself is provided with the original <cite>match_response</cite> object as
+base64 encoded content. This utility keyword retrieves, decodes and saves it
+on the local disk customized with the <cite>path</cite> parameter. By default, the
+searched <cite>index</cite> is considered a query image, switch to the reference type by
+enabling it with the <cite>reference</cite> parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>match_response</strong> – The raw JSON-like response retrieved with the
+<code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Matching</span> <span class="pre">Signatures</span></code> keyword.</p></li>
+<li><p><strong>index</strong> – The image ID (numeric) found along the coordinates in the output
+of the <code class="docutils literal notranslate"><span class="pre">Filter</span> <span class="pre">Matching</span> <span class="pre">Signatures</span></code> keyword. (the list order is stable)</p></li>
+<li><p><strong>reference</strong> – Set this to <cite>True</cite> if you’re looking for a reference (not
+query) image instead. (off by default)</p></li>
+<li><p><strong>path</strong> – Set an explicit output path (including file name) for the locally
+saved image. (uses the output directory as default)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The image path of the locally saved file.</p>
+</dd>
+</dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Match Signatures</span>
+<span class="p">    @{</span><span class="nv">ref_sigs</span><span class="p">} =   </span><span class="nf">Get Dictionary Keys</span><span class="p">    ${</span><span class="nv">matches</span><span class="p">}</span>
+<span class="p">    @{</span><span class="nv">qry_sigs</span><span class="p">} =    </span><span class="nf">Get From Dictionary</span><span class="p">    ${</span><span class="nv">matches</span><span class="p">}    ${</span><span class="nv">ref_sigs</span><span class="p">}[${</span><span class="nv">0</span><span class="p">}]</span>
+<span class="p">    &amp;{</span><span class="nv">qry_sig</span><span class="p">} =    </span><span class="nf">Set Variable</span><span class="p">    ${</span><span class="nv">qry_sigs</span><span class="p">}[${</span><span class="nv">0</span><span class="p">}]</span>
+<span class="p">    ${</span><span class="nv">path</span><span class="p">} =   </span><span class="nf">Get Signature Image</span><span class="p">     ${</span><span class="nv">sigs</span><span class="p">}     </span><span class="s">index=</span><span class="p">${</span><span class="nv">qry_sig</span><span class="p">}[</span><span class="nv">index</span><span class="p">]</span>
+<span class="p">    </span><span class="nf">Log To Console</span><span class="p">    </span><span class="s">Preview query signature image crop: </span><span class="p">${</span><span class="nv">path</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">qry_sig</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">matches</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_signature_image</span><span class="p">(</span><span class="n">sigs</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">qry_sig</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Preview query signature image crop: &quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
