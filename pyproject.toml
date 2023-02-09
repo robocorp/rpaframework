@@ -13,7 +13,7 @@ rpaframework-google = "^7.0.0"
 rpaframework-openai = "^1.0.1"
 rpaframework-recognition = "^5.0.1"
 rpaframework-windows = "^7.0.3"
-rpaframework-assistant = "^1.0.4"
+rpaframework-assistant = "^1.0.5"
 
 [tool.poetry.dev-dependencies]
 robotframeworklexer = "^1.1"

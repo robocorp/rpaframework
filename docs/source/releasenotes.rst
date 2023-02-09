@@ -96,7 +96,6 @@ Release notes
   compatibility mode. (robot example: https://github.com/robocorp/example-ie-mode-edge)
 - Library **RPA.SAP**: Fix error in dependency import order in the underlying
   `SapGuiLibrary`.
->>>>>>> master
 
 20.0.2 - 10 Jan 2023
 --------------------
