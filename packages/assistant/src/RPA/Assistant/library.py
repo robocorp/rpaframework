@@ -514,7 +514,6 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        # TODO: Implement the rows support
         if validation:
             self._validations[name] = validation
 
