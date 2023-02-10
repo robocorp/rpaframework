@@ -134,12 +134,6 @@ class Assistant:
             ...    rows=5
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
-
-        Dialog as progress indicator
-            Add heading    Please wait while I open a browser
-            ${dialog}=     Show dialog    title=Please wait    on_top=${TRUE}
-            Open available browser    https://robocorp.com
-            Close dialog   ${dialog}
     """
 
     def __init__(self) -> None:
