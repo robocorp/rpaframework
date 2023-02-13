@@ -51,6 +51,10 @@ class Assistant:
     other robots inside the current one and determine what to display to the
     user based on his previous responses.
 
+    It is not included in the `rpaframework` package, so in order to use it
+    you have to add `rpaframework-assistant` with the desired version in your
+    *conda.yaml* file
+
     Some examples of use-cases could be the following:
 
     - Displaying generated files after an execution is finished
@@ -585,7 +589,6 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         source: Optional[str] = None,
-        destination: Optional[str] = None,
         file_type: Optional[str] = None,
         multiple: bool = False,
     ) -> None:
@@ -594,7 +597,6 @@ class Assistant:
         :param name:        Name of result field
         :param label:       Label for input field
         :param source:      Default source directory
-        :param destination: Target directory for selected files
         :param file_type:   Accepted file types
         :param multiple:    Allow selecting multiple files
 
@@ -604,11 +606,6 @@ class Assistant:
 
         By default opens up in the user's home directory, but it can be
         set to a custom path with the ``source`` argument.
-
-        If the ``destination`` argument is not set, it returns the original
-        paths to the selected files. If the ``destination`` directory
-        is set, the files are copied there first and the new paths are
-        returned.
 
         The argument ``file_type`` restricts the possible file extensions
         that the user can select. The format of the argument is as follows:
@@ -631,9 +628,6 @@ class Assistant:
             # This opens the select dialog to a custom folder
             Add file input    name=src       source=C:\\Temp\\Output\\
 
-            # This copies selected files to a custom folder
-            Add file input    name=dest      destination=%{ROBOT_ROOT}
-
             # This restricts files to certain types
             Add file input    name=types     file_type=pdf
 
@@ -653,7 +647,6 @@ class Assistant:
 
         options = {
             "source": optional_str(source),
-            "destination": optional_str(destination),
             "file_type": optional_str(file_type),
         }
 
@@ -668,7 +661,7 @@ class Assistant:
                 label or "Choose files...",
                 on_click=lambda _: file_picker.pick_files(
                     allow_multiple=bool(multiple),
-                    initial_directory=options["destination"],
+                    initial_directory=options["source"],
                     allowed_extensions=options["file_type"],
                 ),
             )
@@ -712,11 +705,10 @@ class Assistant:
 
         """
         options, default = to_options(options, default)
-
         options: List[Control] = list(map(Option, options))
-
         dropdown = Dropdown(options=options, value=default)
 
+        self._client.results[name] = default
         self._client.add_element(Text(value=label))
         self._client.add_element(dropdown, name=str(name))
 
@@ -814,6 +806,7 @@ class Assistant:
         ]
         radio_group = RadioGroup(content=Column(radios), value=default)
 
+        self._client.results[name] = default
         self._client.add_element(Text(value=label))
         self._client.add_element(radio_group, name=str(name))
 
@@ -850,6 +843,7 @@ class Assistant:
                 Enable vault
             END
         """
+        self._client.results[name] = default
         self._client.add_element(
             name=str(name), element=Checkbox(label=str(label), value=bool(default))
         )
@@ -1060,10 +1054,24 @@ class Assistant:
     def add_button(
         self, label: str, function: Union[Callable, str], *args, **kwargs
     ) -> None:
-        """
+        """Create a button and execute the `function` as a callback when pressed.
+
         :param label: Text for the button
         :param function: Python function or Robot Keyword name, that will get ``*args``
-        and ``**kwargs`` passed into it
+            and ``**kwargs`` passed into it
+
+        Example:
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            First View
+                Add Heading  Here is the first view of the app
+                Add Button  Second View
+
+            Second View
+                Add Heading  Let's build an infinite loop
+                Add Button  First View
         """
 
         def on_click(_: ControlEvent):
@@ -1081,7 +1089,7 @@ class Assistant:
 
         :param label: Text for the button
         :param function: Python function or Robot Keyword name, that will take form
-        results as it's first argument
+            results as it's first argument
 
         Example:
 
