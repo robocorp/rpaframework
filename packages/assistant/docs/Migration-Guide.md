@@ -33,6 +33,8 @@ possible with `Add Next Ui Button`
 * Keyword `Run Dialog` no longer accepts the `clear` and `debug` arguments
 * Keyword `Show dialog` was completly removed and async behaviour is only supported through callbacks
 * Keywords `Wait dialog`, `Wait all dialogs`, `Close dialog` and `Close all dialogs` were completly removed
+* Keyword `Add file input` no longer supports a `destination` argument. If file copying is required
+it should be done manually with `RPA.FileSystem.Copy File`
 
 Besides this, the general look-and-feel of the UI and the components have changed.
 
