@@ -1468,10 +1468,10 @@ class Tables:
         .. code-block:: robotframework
 
             # Get all rows except first five
-            ${slice}=    Get table slice    ${table}    start=5
+            ${slice}=    Get table slice    ${table}    start=5
 
             # Get rows at indexes 5, 6, 7, 8, and 9
-            ${slice}=    Get table slice    ${table}    start=5    end=10
+            ${slice}=    Get table slice    ${table}    start=5    end=10
 
             # Get all rows except last five
             ${slice}=    Get table slice    ${table}    end=-5
@@ -1858,7 +1858,7 @@ class Tables:
         path: str,
         header: Optional[bool] = None,
         columns: Optional[List[str]] = None,
-        dialect: Optional[Dialect] = None,
+        dialect: Optional[Union[str, Dialect]] = None,
         delimiters: Optional[str] = None,
         column_unknown: str = "Unknown",
         encoding: Optional[str] = None,
@@ -1880,7 +1880,7 @@ class Tables:
         the format automatically, the dialect and header will
         have to be defined manually.
 
-        Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``,
+        Builtin ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``,
         and ``header`` is boolean argument (``True``/``False``). Optionally a
         set of valid ``delimiters`` can be given as a string.
 
@@ -1913,7 +1913,7 @@ class Tables:
         elif isinstance(dialect, Dialect):
             dialect_name = dialect.value
         else:
-            dialect_name = Dialect(dialect).value
+            dialect_name = dialect
 
         if header is None:
             header = sniffer.has_header(sample)
@@ -1945,7 +1945,7 @@ class Tables:
         table: Table,
         path: str,
         header: bool = True,
-        dialect: Dialect = Dialect.Excel,
+        dialect: Union[str, Dialect] = Dialect.Excel,
         encoding: Optional[str] = None,
         delimiter: Optional[str] = ",",
     ):
@@ -1959,7 +1959,7 @@ class Tables:
                          uses system encoding by default
         :param delimiter: Delimiter character between columns
 
-        Valid ``dialect`` values are ``Excel``, ``ExcelTab``, and ``Unix``.
+        Builtin ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
 
         Example:
 
@@ -1970,12 +1970,14 @@ class Tables:
         """
         self._requires_table(table)
 
-        if isinstance(dialect, str):
-            dialect = Dialect(dialect)
+        if isinstance(dialect, Dialect):
+            dialect_name = dialect.value
+        else:
+            dialect_name = dialect
 
         with open(path, mode="w", newline="", encoding=encoding) as fd:
             writer = csv.DictWriter(
-                fd, fieldnames=table.columns, dialect=dialect.value, delimiter=delimiter
+                fd, fieldnames=table.columns, dialect=dialect_name, delimiter=delimiter
             )
 
             if header:
