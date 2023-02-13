@@ -3,7 +3,6 @@ import csv
 import logging
 import re
 from collections import OrderedDict, namedtuple
-from enum import Enum
 from itertools import groupby, zip_longest
 from keyword import iskeyword
 from numbers import Number
@@ -111,14 +110,6 @@ def uniq(seq: Iterable):
         seen[item] = None
         result.append(item)
     return result
-
-
-class Dialect(Enum):
-    """CSV dialect"""
-
-    Excel = "excel"
-    ExcelTab = "excel-tab"
-    Unix = "unix"
 
 
 class Table:
@@ -1858,7 +1849,7 @@ class Tables:
         path: str,
         header: Optional[bool] = None,
         columns: Optional[List[str]] = None,
-        dialect: Optional[Dialect] = None,
+        dialect: Optional[str] = None,
         delimiters: Optional[str] = None,
         column_unknown: str = "Unknown",
         encoding: Optional[str] = None,
@@ -1880,7 +1871,7 @@ class Tables:
         the format automatically, the dialect and header will
         have to be defined manually.
 
-        Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``,
+        Builtin ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``,
         and ``header`` is boolean argument (``True``/``False``). Optionally a
         set of valid ``delimiters`` can be given as a string.
 
@@ -1910,10 +1901,8 @@ class Tables:
 
         if dialect is None:
             dialect_name = sniffer.sniff(sample, delimiters)
-        elif isinstance(dialect, Dialect):
-            dialect_name = dialect.value
         else:
-            dialect_name = Dialect(dialect).value
+            dialect_name = dialect
 
         if header is None:
             header = sniffer.has_header(sample)
@@ -1945,7 +1934,7 @@ class Tables:
         table: Table,
         path: str,
         header: bool = True,
-        dialect: Dialect = Dialect.Excel,
+        dialect: Optional[str] = "excel",
         encoding: Optional[str] = None,
         delimiter: Optional[str] = ",",
     ):
@@ -1959,7 +1948,7 @@ class Tables:
                          uses system encoding by default
         :param delimiter: Delimiter character between columns
 
-        Valid ``dialect`` values are ``Excel``, ``ExcelTab``, and ``Unix``.
+        Builtin ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
 
         Example:
 
@@ -1970,12 +1959,9 @@ class Tables:
         """
         self._requires_table(table)
 
-        if isinstance(dialect, str):
-            dialect = Dialect(dialect)
-
         with open(path, mode="w", newline="", encoding=encoding) as fd:
             writer = csv.DictWriter(
-                fd, fieldnames=table.columns, dialect=dialect.value, delimiter=delimiter
+                fd, fieldnames=table.columns, dialect=dialect, delimiter=delimiter
             )
 
             if header:
