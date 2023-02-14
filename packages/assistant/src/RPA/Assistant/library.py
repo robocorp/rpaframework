@@ -23,6 +23,7 @@ from flet import (
     Radio,
     RadioGroup,
     Row,
+    Slider,
     Text,
     TextField,
     alignment,
@@ -1121,3 +1122,40 @@ class Assistant:
         button = ElevatedButton(label, on_click=on_click)
         self._client.add_element(button)
         self._client.add_to_disablelist(button)
+
+    @keyword(tags=["input"])
+    def add_slider(
+        self,
+        name: str,
+        slider_min=0,
+        slider_max=100,
+        thumb_text="{value}",
+        steps: Optional[int] = None,
+    ):
+        """Add a slider input.
+
+        :param name:        Name of result field
+        :param slider_min:  Minimum value of the slider
+        :param slider_max:  Maximum value of the slider
+        :param thumb_label: Text to display when the slider is being slided. Use the
+                            placeholder {value} for the number. (thumb text `{value%}`
+                            will display values: `0%`, `100%`)
+        :param steps:       Amount of steps for the slider. If None, the slider will be
+                            continuous.
+                            For integer output, specify a steps value where all the
+                            steps will be integers, or implement rounding when
+                            retrieving the result.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Create Percentage Slider
+                Add Text    Percentage slider
+                Add Slider  name=percentage  slider_min=0  slider_max=100
+                            thumb_text={value}%  steps=100
+
+
+
+        """
+        slider = Slider(min=0, max=100, divisions=steps, label=thumb_text)
+        self._client.add_element(name=name, element=slider)
