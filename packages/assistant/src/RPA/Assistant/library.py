@@ -525,14 +525,13 @@ class Assistant:
             self._validations[name] = validation
 
         def empty_string_to_none(e):
-            print(e.control.value)
             if e.control.value == "":
                 e.data = None
 
         self._client.add_element(
             name=name,
             element=TextField(label=label, hint_text=placeholder, value=default),
-            handler=empty_string_to_none,
+            extra_handler=empty_string_to_none,
         )
 
     @keyword("Add password input", tags=["input"])

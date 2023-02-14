@@ -170,9 +170,22 @@ class FletClient:
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
 
     def _make_flet_event_handler(self, name: str, handler: Optional[Callable] = None):
-        def change_listener(e: ControlEvent):
-            handler(e)
-            self.results[name] = e.data
+        """Add flet event handler to record the element's data whenever content changes
+        if ``handler`` is provided also call that.
+        """
+
+        # We don't want the if inside the change_listener so it doesn't have to run on
+        # every on_change event
+        if not handler:
+
+            def change_listener(e: ControlEvent):
+                self.results[name] = e.data
+
+        else:
+
+            def change_listener(e: ControlEvent):
+                handler(e)
+                self.results[name] = e.data
 
         return change_listener
 
@@ -180,13 +193,12 @@ class FletClient:
         self,
         element: flet.Control,
         name: Optional[str] = None,
-        handler: Optional[Callable] = None,
+        extra_handler: Optional[Callable] = None,
     ):
         # TODO: validate that element "name" is unique
         self._elements.visible.append(element)
         if name is not None:
-
-            element.on_change = self._make_flet_event_handler(name, handler)
+            element.on_change = self._make_flet_event_handler(name, extra_handler)
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
