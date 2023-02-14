@@ -188,7 +188,7 @@ class Assistant:
 
         return ElevatedButton(label, on_click=validate_and_close)
 
-    @keyword("Clear dialog")
+    @keyword
     def clear_dialog(self) -> None:
         """Remove all previously defined elements and start from a clean state.
         By default this is done automatically when a dialog is closed.
@@ -208,7 +208,7 @@ class Assistant:
         self._client.results = {}
         self._client.clear_elements()
 
-    @keyword("Add Heading")
+    @keyword
     def add_heading(
         self,
         heading: str,
@@ -242,7 +242,7 @@ class Assistant:
 
         self._client.add_element(element=Text(heading, style=size_dict[size]))
 
-    @keyword("Add text")
+    @keyword
     def add_text(
         self,
         text: str,
@@ -275,7 +275,7 @@ class Assistant:
         elif size == Size.Large:
             self._client.add_element(element=Text(text, style="bodyLarge"))
 
-    @keyword("Add link")
+    @keyword
     def add_link(
         self,
         url: str,
@@ -308,7 +308,7 @@ class Assistant:
             )
         )
 
-    @keyword("Add image")
+    @keyword
     def add_image(
         self,
         url_or_path: str,
@@ -344,7 +344,7 @@ class Assistant:
             Container(content=Image(src=url_or_path, width=width, height=height))
         )
 
-    @keyword("Add file")
+    @keyword
     def add_file(
         self,
         path: str,
@@ -391,7 +391,7 @@ class Assistant:
             )
         )
 
-    @keyword("Add files")
+    @keyword
     def add_files(
         self,
         pattern: str,
@@ -436,7 +436,7 @@ class Assistant:
         for match in sorted(matches):
             self.add_file(match)
 
-    @keyword("Add icon")
+    @keyword
     def add_icon(self, variant: Icon, size: int = 48) -> None:
         """Add an icon element
 
@@ -480,7 +480,7 @@ class Assistant:
 
         self._client.add_element(flet.Icon(name=flet_icon, color=color, size=size))
 
-    @keyword("Add text input", tags=["input"])
+    @keyword(tags=["input"])
     def add_text_input(
         self,
         name: str,
@@ -521,7 +521,7 @@ class Assistant:
             name=name, element=TextField(label=label, hint_text=placeholder)
         )
 
-    @keyword("Add password input", tags=["input"])
+    @keyword(tags=["input"])
     def add_password_input(
         self,
         name: str,
@@ -555,7 +555,7 @@ class Assistant:
             name=name, element=TextField(label=label, value=placeholder, password=True)
         )
 
-    @keyword("Add hidden input", tags=["input"])
+    @keyword(tags=["input"])
     def add_hidden_input(
         self,
         name: str,
@@ -584,7 +584,7 @@ class Assistant:
         """
         self._client.results[name] = value
 
-    @keyword("Add file input", tags=["input"])
+    @keyword(tags=["input"])
     def add_file_input(
         self,
         name: str,
@@ -679,7 +679,7 @@ class Assistant:
             )
         )
 
-    @keyword("Add drop-down", tags=["input"])
+    @keyword("Add Drop-Down", tags=["input"])
     def add_drop_down(
         self,
         name: str,
@@ -725,7 +725,7 @@ class Assistant:
         self._client.add_element(Text(value=label))
         self._client.add_element(dropdown, name=str(name))
 
-    @keyword("Add Date Input", tags=["input"])
+    @keyword(tags=["input"])
     def add_date_input(
         self,
         name: str,
@@ -777,7 +777,7 @@ class Assistant:
             element=TextField(label=label, hint_text="YYYY-MM-DD", value=default),
         )
 
-    @keyword("Add radio buttons", tags=["input"])
+    @keyword(tags=["input"])
     def add_radio_buttons(
         self,
         name: str,
@@ -822,7 +822,7 @@ class Assistant:
         self._client.add_element(Text(value=label))
         self._client.add_element(radio_group, name=str(name))
 
-    @keyword("Add checkbox", tags=["input"])
+    @keyword(tags=["input"])
     def add_checkbox(
         self,
         name: str,
@@ -859,7 +859,7 @@ class Assistant:
             name=str(name), element=Checkbox(label=str(label), value=bool(default))
         )
 
-    @keyword("Add submit buttons", tags=["input"])
+    @keyword(tags=["input"])
     def add_submit_buttons(
         self, buttons: Options, default: Optional[str] = None
     ) -> None:
@@ -907,7 +907,7 @@ class Assistant:
         container = Container(button_row, alignment=alignment.bottom_right)
         self._client.add_element(container)
 
-    @keyword("Run dialog", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def run_dialog(
         self,
         timeout: int = 180,
@@ -963,7 +963,7 @@ class Assistant:
             self.clear_dialog()
         return results
 
-    @keyword("Ask User", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def ask_user(self, timeout: int = 180, **options: Any) -> Result:
         """Same as ``Run Dialog`` it will create a dialog from all the defined
         elements and block until the user has handled it. It will also add
@@ -990,7 +990,7 @@ class Assistant:
         self.add_submit_buttons(["Submit", "Close"], "Submit")
         return self.run_dialog(**options, timeout=timeout)
 
-    @keyword("Refresh Dialog", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def refresh_dialog(self):
         """Can be used to update UI elements when adding elements while dialog is
         running
@@ -1067,7 +1067,7 @@ class Assistant:
                 function, *args, **kwargs
             )
 
-    @keyword("Add Button", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def add_button(
         self, label: str, function: Union[Callable, str], *args, **kwargs
     ) -> None:
@@ -1084,7 +1084,7 @@ class Assistant:
         self._client.add_element(button)
         self._client.add_to_disablelist(button)
 
-    @keyword("Add Next Ui Button", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def add_next_ui_button(self, label: str, function: Union[Callable, str]):
         """Create a button that leads to the next UI page, calling the passed
         keyword or function, and passing current form results as first positional
