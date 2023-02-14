@@ -485,6 +485,7 @@ class Assistant:
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
         validation: Union[Callable, None] = None,
+        default: Optional[str] = None,
     ) -> None:
         """Add a text input element
 
@@ -492,6 +493,7 @@ class Assistant:
         :param label:       Label for field
         :param placeholder: Placeholder text in input field
         :param validation:   Validation function for the input field
+        :param default:     Default value if the field wasn't completed
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -499,6 +501,12 @@ class Assistant:
         For customizing the look of the input, the ``label`` text can be given
         to add a descriptive label and the ``placholder`` text can be given
         to act as an example of the input value.
+
+        The `default` value will be assigned to the input field if the user
+        doesn't complete it. If provided, the placeholder won't be shown.
+        By default it will be an `None`. Also, if a default value is provided
+        and the user deletes it, `None` will be the corresponding value in
+        the results dictionary.
 
         Example:
 
@@ -516,8 +524,15 @@ class Assistant:
         if validation:
             self._validations[name] = validation
 
+        def empty_string_to_none(e):
+            print(e.control.value)
+            if e.control.value == "":
+                e.data = None
+
         self._client.add_element(
-            name=name, element=TextField(label=label, hint_text=placeholder)
+            name=name,
+            element=TextField(label=label, hint_text=placeholder, value=default),
+            handler=empty_string_to_none,
         )
 
     @keyword("Add password input", tags=["input"])
@@ -857,14 +872,6 @@ class Assistant:
         :param buttons: Submit button options
         :param default: The primary button
 
-        The dialog automatically creates a button for closing itself.
-        If there are no input fields, the button will say "Close".
-        If there are one or more input fields, the button will say "Submit".
-
-        If the submit button should have a custom label or there should be
-        multiple options to choose from  when submitting, this keyword can
-        be used to replace the automatically generated ones.
-
         The result field will always be called ``submit`` and will contain
         the pressed button text as a value.
 
@@ -917,8 +924,8 @@ class Assistant:
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
 
-        None will let the operating system place the window.
-
+        If the `location` argument is `None` it will let the operating system
+        place the window.
 
         Returns a result object with all input values.
 

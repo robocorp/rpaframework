@@ -169,20 +169,24 @@ class FletClient:
             # pylint: disable=raise-missing-from
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
 
-    def _make_flet_event_handler(self, name: str):
+    def _make_flet_event_handler(self, name: str, handler: Optional[Callable] = None):
         def change_listener(e: ControlEvent):
+            handler(e)
             self.results[name] = e.data
-            e.page.update()
 
         return change_listener
 
-    def add_element(self, element: flet.Control, name: Optional[str] = None):
+    def add_element(
+        self,
+        element: flet.Control,
+        name: Optional[str] = None,
+        handler: Optional[Callable] = None,
+    ):
         # TODO: validate that element "name" is unique
         self._elements.visible.append(element)
         if name is not None:
-            # TODO: might be necessary to check that it doesn't already have change
-            # handler
-            element.on_change = self._make_flet_event_handler(name)
+
+            element.on_change = self._make_flet_event_handler(name, handler)
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
