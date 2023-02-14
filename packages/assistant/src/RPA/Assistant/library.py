@@ -191,7 +191,7 @@ class Assistant:
     @keyword("Clear dialog")
     def clear_dialog(self) -> None:
         """Remove all previously defined elements and start from a clean state.
-        By default this is done automatically when a dialog is created.
+        By default this is done automatically when a dialog is closed.
         It will also clear all the results.
 
         Example:
@@ -916,6 +916,7 @@ class Assistant:
         width: int = 480,
         on_top: bool = False,
         location: Union[Location, Tuple[int, int], None] = None,
+        clear: bool = True,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -927,6 +928,8 @@ class Assistant:
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
+        :param clear:  Clear the elements and results after the dialog exits. (If false
+                       next Run Dialog will start up with same elements.)
 
         None will let the operating system place the window.
 
@@ -955,7 +958,10 @@ class Assistant:
         self._client.display_flet_window(
             title, height, width, on_top, location, timeout
         )
-        return self._client.results
+        results = self._client.results
+        if clear:
+            self.clear_dialog()
+        return results
 
     @keyword("Ask User", tags=["dialog"])
     def ask_user(self, timeout: int = 180, **options: Any) -> Result:
