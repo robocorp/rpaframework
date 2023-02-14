@@ -911,7 +911,7 @@ class Assistant:
     def run_dialog(
         self,
         timeout: int = 180,
-        title: str = "Dialog",
+        title: str = "Assistant",
         height: Union[int, Literal["AUTO"]] = "AUTO",
         width: int = 480,
         on_top: bool = False,
