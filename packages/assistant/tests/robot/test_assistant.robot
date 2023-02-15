@@ -37,6 +37,12 @@ Sleep and Log to Console
     Sleep    1
     Log To Console    awakening
 
+Long Sleep That Timeouts
+    [Timeout]    1
+    Log To Console    sleeping
+    Sleep    2
+    Log To Console    should never print
+
 Print with Python Subprocess
     ${result}=    Run Process    python    -c    print("hello")
     Log to Console    ${result}
@@ -68,6 +74,7 @@ Control Buttons
     Add Button    print with python    Print With Python Subprocess
     Add Button    Test Execution Context    Print and Log Execution Context
     Add Button    Sleep and log to console    Sleep and Log to Console
+    Add Button    Sleep that timeouts    Long Sleep That Timeouts
 
     Add Heading    BAD buttons
     # For debugging how unavailable keywords appear in robot side

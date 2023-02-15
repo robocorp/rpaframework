@@ -9,6 +9,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+21.1.1 - 15 Feb 2023
+--------------------
+
+- Security upgrade of ``cryptography`` dependency to **39.0.1**. (:pr:`833`)
+
 21.1.0 - 09 Feb 2023
 --------------------
 

@@ -60,6 +60,8 @@ assistant.add_password_input("pw_input")
 assistant.add_checkbox("checkbox", "test_checkbox")
 assistant.add_file_input("file", file_type="pdf,png,jpg")
 assistant.add_hidden_input("Hidden", "value")
+assistant.add_text("Percentage slider")
+assistant.add_slider(name="percentage", slider_min=0, slider_max=0, steps=100)
 # assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
 
 assistant.add_radio_buttons(
