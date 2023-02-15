@@ -9,7 +9,7 @@ from timeit import default_timer as timer
 from typing import Callable, Literal, Optional, Tuple, Union, List
 
 import flet
-from flet import Page, ScrollMode
+from flet import Container, Page, ScrollMode
 from flet.control_event import ControlEvent
 from flet.utils import is_windows, is_macos
 from RPA.Assistant.types import Location, Result
@@ -178,7 +178,9 @@ class FletClient:
 
     def add_element(self, element: flet.Control, name: Optional[str] = None):
         # TODO: validate that element "name" is unique
-        self._elements.visible.append(element)
+        # make a container that adds margin around the element
+        container = Container(margin=5, content=element)
+        self._elements.visible.append(container)
         if name is not None:
             # TODO: might be necessary to check that it doesn't already have change
             # handler
