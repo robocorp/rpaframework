@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import List
 
+from comtypes import COMError
 import fire
 from pynput_robocorp import mouse, keyboard  # pylint: disable=C0415
 from RPA.core.windows.inspect import ElementInspector, RecordElement
@@ -32,7 +33,15 @@ def start_recording(verbose: bool = False):
                 seconds = max(round(float(timediff.microseconds / 1000000.0), 1), 0.1)
                 recording.append({"type": "sleep", "value": seconds})
             recording_time = inspect_time
-            ElementInspector.inspect_element(recording=recording, verbose=verbose)
+            try:
+                ElementInspector.inspect_element(recording=recording, verbose=verbose)
+            except (NotImplementedError, COMError) as err:
+                # At least in cases where Windows desktop is clicked as first event
+                # to capture, the recorder goes into some broken state where future
+                # clicks also fail to capture.
+                print(f"Could not capture element, got exception {err}", flush=True)
+                key_listener.stop()
+                mouse_listener.stop()
 
     def on_release(key):
         if key == keyboard.Key.esc:
@@ -42,7 +51,10 @@ def start_recording(verbose: bool = False):
     mouse_listener = mouse.Listener(on_click=on_click)
     mouse_listener.start()
     with keyboard.Listener(on_release=on_release) as key_listener:
-        print("keyboard and mouse listeners started", flush=True)
+        print(
+            "Mouse recording started. Use ESC to stop recording.",
+            flush=True,
+        )
         key_listener.join()
     mouse_listener.stop()
     the_recording = get_recording()
