@@ -350,7 +350,7 @@ value like <code class="docutils literal notranslate"><span class="pre">horror,y
 for each book by using the <code class="docutils literal notranslate"><span class="pre">split</span></code> function like so:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Task ***</span>
 <span class="gu">Get genres</span>
-<span class="p">    ${</span><span class="nv">genres</span><span class="p">}=  </span><span class="nf">Get values from JSON</span><span class="p">    </span><span class="s">$.books[*].genres.`split(,, 0, -1)`</span>
+<span class="p">    ${</span><span class="nv">genres</span><span class="p">}=  </span><span class="nf">Get values from JSON</span><span class="p">    </span><span class="s">$.books[*].genres.```split(,, 0, -1)```</span>
 </pre></div>
 </div>
 <p>Each functions parameters are defined here:</p>
@@ -692,7 +692,7 @@ were no matches.</p>
 <span class="p">    </span><span class="c"># Arithmetic operations only work when lists are of equal lengths and types.</span>
 <span class="p">    ${</span><span class="nv">prices</span><span class="p">}=    </span><span class="nf">Get values from json</span>
 <span class="p">    ...    ${</span><span class="nv">JSON_DOC</span><span class="p">}</span>
-<span class="p">    ...    </span><span class="s">$.clients[*].orders[*].id + &quot; has price &quot; + $.clients[*].orders[*].price.`str()`</span>
+<span class="p">    ...    </span><span class="s">$.clients[*].orders[*].id + &quot; has price &quot; + $.clients[*].orders[*].price.```str()```</span>
 <span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">\nOUTPUT IS\n </span><span class="p">${</span><span class="nv">prices</span><span class="p">}    </span><span class="s">console=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
 <span class="p">    </span><span class="nf">Should be equal as strings</span><span class="p">    ${</span><span class="nv">prices</span><span class="p">}</span>
 <span class="p">    ...    </span><span class="s">[&#39;guid-001 has price 103.2&#39;, &#39;guid-002 has price 98.99&#39;, &#39;guid-003 has price 22.0&#39;, &#39;guid-004 has price 2330.01&#39;, &#39;guid-005 has price 152.12&#39;]</span>
