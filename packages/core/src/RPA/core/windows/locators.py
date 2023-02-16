@@ -304,7 +304,7 @@ class LocatorMethods(WindowsContext):
 
             current = children[pos - 1]
 
-        offset = search_params.pop("offset", None)
+        offset = search_params.get("offset")
         current.robocorp_click_offset = offset
         return current
 
