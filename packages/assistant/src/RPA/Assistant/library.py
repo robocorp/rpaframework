@@ -1136,7 +1136,7 @@ class Assistant:
 
         :param label: Text for the button
         :param function: Python function or Robot Keyword name, that will take form
-            results as it's first argument
+            results as its first argument
 
         Example:
 
