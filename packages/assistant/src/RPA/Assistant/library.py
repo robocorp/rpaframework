@@ -789,7 +789,7 @@ class Assistant:
 
         def validate(date_text):
             if not date_text:
-                return
+                return None
             try:
                 date.fromisoformat(date_text)
                 return None
@@ -1200,5 +1200,7 @@ class Assistant:
 
 
         """
-        slider = Slider(min=0, max=100, divisions=steps, label=thumb_text)
+        slider = Slider(
+            min=slider_min, max=slider_max, divisions=steps, label=thumb_text
+        )
         self._client.add_element(name=name, element=slider)

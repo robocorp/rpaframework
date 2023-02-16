@@ -115,7 +115,7 @@ class FletClient:
             route_url_strategy="hash",
         )
 
-    def _show_flet(
+    def _show_flet(  # noqa: C901
         self,
         target: Callable[[Optional[Page]], None],
         title: str,
