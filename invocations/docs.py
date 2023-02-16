@@ -1,6 +1,7 @@
 """Common documentation related tasks"""
 
 from pathlib import Path
+from glob import glob
 import shutil
 from datetime import datetime, date
 from itertools import zip_longest
@@ -213,8 +214,12 @@ def parse_release_note(ctx, path=None, upload=True):
     provided, new release documents will be searched for in
     ``docs/source/releasenotes``. When searching for new notes, only
     those notes with the file name containing ``new_releasenote.rst``
-    will be parsed. If you need to parse a specific file name, it must
-    be provided.
+    will be parsed. If you need to parse specific files, they must
+    be provided. If you use a specific file with ``path``, the file
+    name must start with the release date of the note in the format
+    ``%Y%m%d``. Path can include wildcards in ``glob`` format. Specific
+    notes passed this way will not have their names changed when moved
+    to the appropriate folders within the repo.
 
     This task will attempt to upload the new release notes as new
     draft release notes at releasenotes.io based on the configuration
@@ -223,9 +228,21 @@ def parse_release_note(ctx, path=None, upload=True):
 
     """
     # convert release note to md?
+    ## Only library i can find that does this is pandoc (not python)
+    ## Or perhaps i can figure out this:
+    ### https://stackoverflow.com/questions/36237477/python-docstrings-to-github-readme-md
     # add release note to main index?
     ## do we need a json database of each release note?
     # upload
+
+    if path is None:
+        paths = glob(NOTES_DIR / "*new_releasenote.rst")
+    else:
+        path = Path(path)
+        if path.is_absolute():
+            paths = [path]
+        else:
+            paths = glob(path)
 
 
 # Configure how this namespace will be loaded
