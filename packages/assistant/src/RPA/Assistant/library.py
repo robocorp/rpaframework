@@ -169,9 +169,14 @@ class Assistant:
             if not self._validations:
                 self._client.page.window_destroy()
             for field_name, validation in self._validations.items():
-                if not validation or field_name not in self._client.results:
+                if not validation:
                     continue
-                error_message = validation(self._client.results[field_name])
+                if (
+                    field_name in self._client.results
+                    and self._client.results[field_name] == None
+                ):
+                    self._client.results.pop(field_name)
+                error_message = validation(self._client.results.get(field_name))
                 if error_message:
                     should_close = False
                     self._client.page.add(
@@ -186,6 +191,16 @@ class Assistant:
                 self._client.page.window_destroy()
 
         return ElevatedButton(label, on_click=validate_and_close)
+
+    def _required_input_wrapper(self, validation: Optional[Callable]) -> Optional[str]:
+        def required_and_validation(value: Optional[Any] = None):
+            if not value:
+                return "mandatory field was not completed"
+            if not validation:
+                return None
+            return validation(value)
+
+        return required_and_validation
 
     @keyword
     def clear_dialog(self) -> None:
@@ -485,8 +500,9 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Union[Callable, None] = None,
+        validation: Optional[Callable] = None,
         default: Optional[str] = None,
+        required: bool = False,
     ) -> None:
         """Add a text input element
 
@@ -495,6 +511,7 @@ class Assistant:
         :param placeholder: Placeholder text in input field
         :param validation:   Validation function for the input field
         :param default:     Default value if the field wasn't completed
+        :param required:    If true, will display an error if not completed
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -505,7 +522,7 @@ class Assistant:
 
         The `default` value will be assigned to the input field if the user
         doesn't complete it. If provided, the placeholder won't be shown.
-        By default it will be an `None`. Also, if a default value is provided
+        This is `None` by default. Also, if a default value is provided
         and the user deletes it, `None` will be the corresponding value in
         the results dictionary.
 
@@ -521,8 +538,14 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        if validation:
+        if validation and required:
+            self._validations[name] = self._required_input_wrapper(validation)
+        elif required:
+            self._validations[name] = self._required_input_wrapper(None)
+        elif validation:
             self._validations[name] = validation
+
+        self._client.results[name] = default
 
         def empty_string_to_none(e):
             if e.control.value == "":
@@ -755,6 +778,8 @@ class Assistant:
         """
 
         def validate(date_text):
+            if not date_text:
+                return
             try:
                 date.fromisoformat(date_text)
                 return None
