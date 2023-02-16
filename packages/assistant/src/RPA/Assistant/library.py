@@ -5,7 +5,7 @@ import platform
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal, Set
 
 import flet
 from flet import (
@@ -145,6 +145,7 @@ class Assistant:
         self.logger = logging.getLogger(__name__)
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
+        self._required_fields: Set[str] = set()
         # Disable fletd debug logging
         os.environ["GIN_MODE"] = "release"
 
@@ -163,44 +164,51 @@ class Assistant:
         except RobotNotRunningError:
             pass
 
+    def _create_error(self, error_message: str):
+        self._client.page.add(
+            Text(
+                error_message,
+                color=flet.colors.RED,
+            )
+        )
+
     def _create_closing_button(self, label="Submit") -> Control:
         def validate_and_close(*_):
-            should_close = True
-            if not self._validations:
-                self._client.page.window_destroy()
-            for field_name, validation in self._validations.items():
-                if not validation:
-                    continue
-                if (
-                    field_name in self._client.results
-                    and self._client.results[field_name] == None
-                ):
+            # remove None's from the result dictionary
+            for field_name in list(self._client.results.keys()):
+                if self._client.results[field_name] is None:
                     self._client.results.pop(field_name)
-                error_message = validation(self._client.results.get(field_name))
+
+            should_close = True
+
+            for field_name in self._required_fields:
+                value = self._client.results.get(field_name)
+                error_message = None if value else "Mandatory field was not completed"
                 if error_message:
                     should_close = False
-                    self._client.page.add(
-                        Text(
-                            f"Error on field named '{field_name}: {error_message}",
-                            color=flet.colors.RED,
-                        )
+                    self._create_error(error_message)
+                    self._client.flet_update()
+
+            for field_name, validation in self._validations.items():
+                field_value = self._client.results.get(field_name)
+                # Only run validations for non-None values.
+                if field_value:
+                    error_message = validation(self._client.results.get(field_name))
+                else:
+                    error_message = None
+
+                if error_message:
+                    should_close = False
+                    self._create_error(
+                        f"Error on field named '{field_name}: {error_message}",
                     )
-                    self._client.page.update()
+                    self._client.flet_update()
+
             if should_close:
                 self._client.results["submit"] = label
                 self._client.page.window_destroy()
 
         return ElevatedButton(label, on_click=validate_and_close)
-
-    def _required_input_wrapper(self, validation: Optional[Callable]) -> Optional[str]:
-        def required_and_validation(value: Optional[Any] = None):
-            if not value:
-                return "mandatory field was not completed"
-            if not validation:
-                return None
-            return validation(value)
-
-        return required_and_validation
 
     @keyword
     def clear_dialog(self) -> None:
@@ -538,10 +546,12 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
+
         if validation and required:
-            self._validations[name] = self._required_input_wrapper(validation)
+            self._validations[name] = validation
+            self._required_fields.add(name)
         elif required:
-            self._validations[name] = self._required_input_wrapper(None)
+            self._required_fields.add(name)
         elif validation:
             self._validations[name] = validation
 
