@@ -54,7 +54,7 @@ Links
 
 ------------
 
-.. image:: https://img.shields.io/github/workflow/status/robocorp/rpaframework/rpaframework?style=for-the-badge
+.. image:: https://img.shields.io/github/actions/workflow/status/robocorp/rpaframework/main.yaml?style=for-the-badge
    :target: https://github.com/robocorp/rpaframework/actions/workflows/main.yaml
    :alt: Status
 
@@ -76,6 +76,10 @@ Packages
    :alt: rpaframework latest version
 
 
+.. image:: https://img.shields.io/pypi/v/rpaframework-assistant.svg?label=rpaframework-assistant&style=for-the-badge
+   :target: https://pypi.python.org/pypi/rpaframework-assistant
+   :alt: rpaframework-assistant latest version
+   
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-aws.svg?label=rpaframework-aws&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework-aws
@@ -100,6 +104,10 @@ Packages
    :alt: rpaframework-google latest version
 
 
+.. image:: https://img.shields.io/pypi/v/rpaframework-openai.svg?label=rpaframework-openai&style=for-the-badge&color=blue
+   :target: https://pypi.python.org/pypi/rpaframework-openai
+   :alt: rpaframework-openai latest version
+   
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-pdf
