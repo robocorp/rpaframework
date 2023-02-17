@@ -132,6 +132,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Archive`_                 | Archiving TAR and ZIP files                           | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `Assistant`_               | Display information to a user and request input.      | assistant              |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Browser.Selenium`_        | Control browsers and automate the web                 | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Browser.Playwright`_      | Newer way to control browsers                         | special (more below)   |
@@ -152,7 +154,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Desktop.OperatingSystem`_ | Read OS information and manipulate processes          | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
-| `Dialogs`_                 | Request user input during executions                  | x,dialogs              |
+| `Dialogs`_                 | Request user input during executions                  | dialogs                |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `DocumentAI`_              | Intelligent Document Processing wrapper               | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
@@ -186,6 +188,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services              | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `OpenAI`_                  | Artificial Intelligence service                       | openai                 |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Outlook.Application`_     | Control the Outlook desktop application               | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `PDF`_                     | Read and create PDF documents                         | x,pdf                  |
@@ -212,6 +216,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 
 .. _Archive: https://rpaframework.org/libraries/archive/
+.. _Assistant: https://rpaframework.org/libraries/assistant/
 .. _Browser.Playwright: https://rpaframework.org/libraries/browser_playwright/
 .. _Browser.Selenium: https://rpaframework.org/libraries/browser_selenium/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
@@ -239,6 +244,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _JSON: https://rpaframework.org/libraries/json/
 .. _MFA: https://rpaframework.org/libraries/mfa/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
+.. _OpenAI: https://rpaframework.org/libraries/openai/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
 .. _Robocorp.Process: https://rpaframework.org/libraries/robocorp_process/
