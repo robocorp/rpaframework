@@ -5,7 +5,7 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Windows** (``rpaframework-windows`` **7.1.0**):
+- Library **RPA.Windows** (``rpaframework-windows`` **7.1.0**; :pr:`840`):
 
   - Add support for the `path:` strategy in locators. (index-based element tree search)
   - Enhance ``Print Tree`` keyword with better element tree logging and the ability to
