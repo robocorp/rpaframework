@@ -42,12 +42,15 @@ def to_configuration_type(value: Any) -> ConfigurationType:
 class Process:
     """A library for interacting with Control Room (CR) Process API endpoints.
 
-    See `Operating Workforce`_ for information about process run, step run and work
+    See `Unattended processes`_ for information about process run, step run and work
     item states.
 
     See `APIs and webhooks`_ for information about Control Room APIs.
 
-    .. _Operating Workforce: https://robocorp.com/docs/control-room/operating-workforce
+    The Process API endpoint is defined by `RC_API_PROCESS_HOST` environment variable,
+    which is available during Robocorp Workforce Agent runs.
+
+    .. _Unattended processes: https://robocorp.com/docs/control-room/unattended
     .. _APIs and webhooks: https://robocorp.com/docs/control-room/apis-and-webhooks
 
     **Examples**
