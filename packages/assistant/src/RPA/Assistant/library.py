@@ -5,7 +5,7 @@ import platform
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal, Set
 
 import flet
 from flet import (
@@ -23,6 +23,7 @@ from flet import (
     Radio,
     RadioGroup,
     Row,
+    Slider,
     Text,
     TextField,
     alignment,
@@ -144,6 +145,7 @@ class Assistant:
         self.logger = logging.getLogger(__name__)
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
+        self._required_fields: Set[str] = set()
         # Disable fletd debug logging
         os.environ["GIN_MODE"] = "release"
 
@@ -162,34 +164,56 @@ class Assistant:
         except RobotNotRunningError:
             pass
 
+    def _create_error(self, error_message: str):
+        self._client.page.add(
+            Text(
+                error_message,
+                color=flet.colors.RED,
+            )
+        )
+
     def _create_closing_button(self, label="Submit") -> Control:
         def validate_and_close(*_):
+            # remove None's from the result dictionary
+            for field_name in list(self._client.results.keys()):
+                if self._client.results[field_name] is None:
+                    self._client.results.pop(field_name)
+
             should_close = True
-            if not self._validations:
-                self._client.page.window_destroy()
-            for field_name, validation in self._validations.items():
-                if not validation or field_name not in self._client.results:
-                    continue
-                error_message = validation(self._client.results[field_name])
+
+            for field_name in self._required_fields:
+                value = self._client.results.get(field_name)
+                error_message = None if value else "Mandatory field was not completed"
                 if error_message:
                     should_close = False
-                    self._client.page.add(
-                        Text(
-                            f"Error on field named '{field_name}: {error_message}",
-                            color=flet.colors.RED,
-                        )
+                    self._create_error(error_message)
+                    self._client.flet_update()
+
+            for field_name, validation in self._validations.items():
+                field_value = self._client.results.get(field_name)
+                # Only run validations for non-None values.
+                if field_value:
+                    error_message = validation(self._client.results.get(field_name))
+                else:
+                    error_message = None
+
+                if error_message:
+                    should_close = False
+                    self._create_error(
+                        f"Error on field named '{field_name}: {error_message}",
                     )
-                    self._client.page.update()
+                    self._client.flet_update()
+
             if should_close:
                 self._client.results["submit"] = label
                 self._client.page.window_destroy()
 
         return ElevatedButton(label, on_click=validate_and_close)
 
-    @keyword("Clear dialog")
+    @keyword
     def clear_dialog(self) -> None:
         """Remove all previously defined elements and start from a clean state.
-        By default this is done automatically when a dialog is created.
+        By default this is done automatically when a dialog is closed.
         It will also clear all the results.
 
         Example:
@@ -206,7 +230,7 @@ class Assistant:
         self._client.results = {}
         self._client.clear_elements()
 
-    @keyword("Add Heading")
+    @keyword
     def add_heading(
         self,
         heading: str,
@@ -240,7 +264,7 @@ class Assistant:
 
         self._client.add_element(element=Text(heading, style=size_dict[size]))
 
-    @keyword("Add text")
+    @keyword
     def add_text(
         self,
         text: str,
@@ -273,7 +297,7 @@ class Assistant:
         elif size == Size.Large:
             self._client.add_element(element=Text(text, style="bodyLarge"))
 
-    @keyword("Add link")
+    @keyword
     def add_link(
         self,
         url: str,
@@ -306,7 +330,7 @@ class Assistant:
             )
         )
 
-    @keyword("Add image")
+    @keyword
     def add_image(
         self,
         url_or_path: str,
@@ -342,7 +366,7 @@ class Assistant:
             Container(content=Image(src=url_or_path, width=width, height=height))
         )
 
-    @keyword("Add file")
+    @keyword
     def add_file(
         self,
         path: str,
@@ -389,7 +413,7 @@ class Assistant:
             )
         )
 
-    @keyword("Add files")
+    @keyword
     def add_files(
         self,
         pattern: str,
@@ -434,7 +458,7 @@ class Assistant:
         for match in sorted(matches):
             self.add_file(match)
 
-    @keyword("Add icon")
+    @keyword
     def add_icon(self, variant: Icon, size: int = 48) -> None:
         """Add an icon element
 
@@ -478,13 +502,15 @@ class Assistant:
 
         self._client.add_element(flet.Icon(name=flet_icon, color=color, size=size))
 
-    @keyword("Add text input", tags=["input"])
+    @keyword(tags=["input"])
     def add_text_input(
         self,
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Union[Callable, None] = None,
+        validation: Optional[Callable] = None,
+        default: Optional[str] = None,
+        required: bool = False,
     ) -> None:
         """Add a text input element
 
@@ -492,6 +518,8 @@ class Assistant:
         :param label:       Label for field
         :param placeholder: Placeholder text in input field
         :param validation:   Validation function for the input field
+        :param default:     Default value if the field wasn't completed
+        :param required:    If true, will display an error if not completed
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -499,6 +527,12 @@ class Assistant:
         For customizing the look of the input, the ``label`` text can be given
         to add a descriptive label and the ``placholder`` text can be given
         to act as an example of the input value.
+
+        The `default` value will be assigned to the input field if the user
+        doesn't complete it. If provided, the placeholder won't be shown.
+        This is `None` by default. Also, if a default value is provided
+        and the user deletes it, `None` will be the corresponding value in
+        the results dictionary.
 
         Example:
 
@@ -512,15 +546,28 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        # TODO: Implement the rows support
-        if validation:
+
+        if validation and required:
+            self._validations[name] = validation
+            self._required_fields.add(name)
+        elif required:
+            self._required_fields.add(name)
+        elif validation:
             self._validations[name] = validation
 
+        self._client.results[name] = default
+
+        def empty_string_to_none(e):
+            if e.control.value == "":
+                e.data = None
+
         self._client.add_element(
-            name=name, element=TextField(label=label, hint_text=placeholder)
+            name=name,
+            element=TextField(label=label, hint_text=placeholder, value=default),
+            extra_handler=empty_string_to_none,
         )
 
-    @keyword("Add password input", tags=["input"])
+    @keyword(tags=["input"])
     def add_password_input(
         self,
         name: str,
@@ -554,7 +601,7 @@ class Assistant:
             name=name, element=TextField(label=label, value=placeholder, password=True)
         )
 
-    @keyword("Add hidden input", tags=["input"])
+    @keyword(tags=["input"])
     def add_hidden_input(
         self,
         name: str,
@@ -583,7 +630,7 @@ class Assistant:
         """
         self._client.results[name] = value
 
-    @keyword("Add file input", tags=["input"])
+    @keyword(tags=["input"])
     def add_file_input(
         self,
         name: str,
@@ -667,7 +714,7 @@ class Assistant:
             )
         )
 
-    @keyword("Add drop-down", tags=["input"])
+    @keyword("Add Drop-Down", tags=["input"])
     def add_drop_down(
         self,
         name: str,
@@ -712,7 +759,7 @@ class Assistant:
         self._client.add_element(Text(value=label))
         self._client.add_element(dropdown, name=str(name))
 
-    @keyword("Add Date Input", tags=["input"])
+    @keyword(tags=["input"])
     def add_date_input(
         self,
         name: str,
@@ -741,6 +788,8 @@ class Assistant:
         """
 
         def validate(date_text):
+            if not date_text:
+                return None
             try:
                 date.fromisoformat(date_text)
                 return None
@@ -764,7 +813,7 @@ class Assistant:
             element=TextField(label=label, hint_text="YYYY-MM-DD", value=default),
         )
 
-    @keyword("Add radio buttons", tags=["input"])
+    @keyword(tags=["input"])
     def add_radio_buttons(
         self,
         name: str,
@@ -810,7 +859,7 @@ class Assistant:
         self._client.add_element(Text(value=label))
         self._client.add_element(radio_group, name=str(name))
 
-    @keyword("Add checkbox", tags=["input"])
+    @keyword(tags=["input"])
     def add_checkbox(
         self,
         name: str,
@@ -848,7 +897,7 @@ class Assistant:
             name=str(name), element=Checkbox(label=str(label), value=bool(default))
         )
 
-    @keyword("Add submit buttons", tags=["input"])
+    @keyword(tags=["input"])
     def add_submit_buttons(
         self, buttons: Options, default: Optional[str] = None
     ) -> None:
@@ -856,14 +905,6 @@ class Assistant:
 
         :param buttons: Submit button options
         :param default: The primary button
-
-        The dialog automatically creates a button for closing itself.
-        If there are no input fields, the button will say "Close".
-        If there are one or more input fields, the button will say "Submit".
-
-        If the submit button should have a custom label or there should be
-        multiple options to choose from  when submitting, this keyword can
-        be used to replace the automatically generated ones.
 
         The result field will always be called ``submit`` and will contain
         the pressed button text as a value.
@@ -896,15 +937,16 @@ class Assistant:
         container = Container(button_row, alignment=alignment.bottom_right)
         self._client.add_element(container)
 
-    @keyword("Run dialog", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def run_dialog(
         self,
         timeout: int = 180,
-        title: str = "Dialog",
+        title: str = "Assistant",
         height: Union[int, Literal["AUTO"]] = "AUTO",
         width: int = 480,
         on_top: bool = False,
         location: Union[Location, Tuple[int, int], None] = None,
+        clear: bool = True,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -916,9 +958,11 @@ class Assistant:
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
+        :param clear:  Clear the elements and results after the dialog exits. (If false
+                       next Run Dialog will start up with same elements.)
 
-        None will let the operating system place the window.
-
+        If the `location` argument is `None` it will let the operating system
+        place the window.
 
         Returns a result object with all input values.
 
@@ -944,9 +988,12 @@ class Assistant:
         self._client.display_flet_window(
             title, height, width, on_top, location, timeout
         )
-        return self._client.results
+        results = self._client.results
+        if clear:
+            self.clear_dialog()
+        return results
 
-    @keyword("Ask User", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def ask_user(self, timeout: int = 180, **options: Any) -> Result:
         """Same as ``Run Dialog`` it will create a dialog from all the defined
         elements and block until the user has handled it. It will also add
@@ -973,7 +1020,7 @@ class Assistant:
         self.add_submit_buttons(["Submit", "Close"], "Submit")
         return self.run_dialog(**options, timeout=timeout)
 
-    @keyword("Refresh Dialog", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def refresh_dialog(self):
         """Can be used to update UI elements when adding elements while dialog is
         running
@@ -1050,7 +1097,7 @@ class Assistant:
                 function, *args, **kwargs
             )
 
-    @keyword("Add Button", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def add_button(
         self, label: str, function: Union[Callable, str], *args, **kwargs
     ) -> None:
@@ -1081,7 +1128,7 @@ class Assistant:
         self._client.add_element(button)
         self._client.add_to_disablelist(button)
 
-    @keyword("Add Next Ui Button", tags=["dialog"])
+    @keyword(tags=["dialog"])
     def add_next_ui_button(self, label: str, function: Union[Callable, str]):
         """Create a button that leads to the next UI page, calling the passed
         keyword or function, and passing current form results as first positional
@@ -1089,7 +1136,7 @@ class Assistant:
 
         :param label: Text for the button
         :param function: Python function or Robot Keyword name, that will take form
-            results as it's first argument
+            results as its first argument
 
         Example:
 
@@ -1118,3 +1165,42 @@ class Assistant:
         button = ElevatedButton(label, on_click=on_click)
         self._client.add_element(button)
         self._client.add_to_disablelist(button)
+
+    @keyword(tags=["input"])
+    def add_slider(
+        self,
+        name: str,
+        slider_min=0,
+        slider_max=100,
+        thumb_text="{value}",
+        steps: Optional[int] = None,
+    ):
+        """Add a slider input.
+
+        :param name:        Name of result field
+        :param slider_min:  Minimum value of the slider
+        :param slider_max:  Maximum value of the slider
+        :param thumb_label: Text to display when the slider is being slided. Use the
+                            placeholder {value} for the number. (thumb text `{value%}`
+                            will display values: `0%`, `100%`)
+        :param steps:       Amount of steps for the slider. If None, the slider will be
+                            continuous.
+                            For integer output, specify a steps value where all the
+                            steps will be integers, or implement rounding when
+                            retrieving the result.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Create Percentage Slider
+                Add Text    Percentage slider
+                Add Slider  name=percentage  slider_min=0  slider_max=100
+                            thumb_text={value}%  steps=100
+
+
+
+        """
+        slider = Slider(
+            min=slider_min, max=slider_max, divisions=steps, label=thumb_text
+        )
+        self._client.add_element(name=name, element=slider)
