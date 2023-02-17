@@ -49,11 +49,11 @@ class Windows(WindowsElementsMixin, DynamicCore):
     object, which can be e.g. `Window`, `Button` or `ListItem`.
 
     **Element** is an entity of an application structure (e.g. certain button in a window), which can be
-    identified by a locator.
+    identified by a locator. (also referred as **Control**)
 
-    **WindowsElement** is an library container object for the ``Element``. All keywords returning element, return
-    element as ``WindowsElement`` and all keywords taking in ``locator`` or ``root_element`` arguments accept
-    ``WindowsElement`` as an argument value.
+    **WindowsElement** is an library container object for the ``Element``. All the keywords returning elements, will in
+    fact return ``WindowsElement``s. The ones accepting ``locator`` or ``root_element`` as arguments, will accept
+    ``WindowsElement`` as an argument value. (``locator`` accepts strings as well)
 
     Structure of the ``WindowsElement``
 
@@ -112,6 +112,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
     desktop         *SPECIAL* target desktop, no value for the key e.g. `desktop:desktop and name:Calculator`
     process         *NOT YET SUPPORTED* target window by its executable's process id
     depth           searchDepth (int) for finding Control (default 8)
+    path            target element by its index-based path traversal (e.g. `path:2|3|8|2`)
     =============== =======================
 
     **About root element on locators**
@@ -120,7 +121,16 @@ class Windows(WindowsElementsMixin, DynamicCore):
     desktop. There are different ways on changing this root element.
 
     Keyword ``Control Window`` is the most common method of setting certain system window
-    as a root element for further actions using locators.
+    as a root element for further actions using locators. In the absence of a provided
+    `root_element` parameter, here's how you can control the default root element
+    resolving:
+
+      - ``Set Anchor``: Sets the active anchor window from which the search begins.
+      - ``Control Window``: Controls and focuses on a window and marks it as the current
+        active window, from which all the subsequent searches will start from in the
+        absence of a set anchor.
+      - If there's no set anchor nor active window, then the last resort will be the
+        "Desktop" element itself.
 
     Locators themselves support cascading syntax (denoted by character `>` in the locator string),
     which can denote root element in "parent (root) & child" terms.
@@ -171,6 +181,21 @@ class Windows(WindowsElementsMixin, DynamicCore):
     can't be found. To fix this it is recommended to set root element which can be found within 8 levels OR
     defining `depth` in the locator string to a bigger value, e.g. `id:deeplyNestedButton depth:16`. Useful
     keywords for setting root element are ``Control Window``, ``Set Anchor`` and ``Get Element``.
+
+    **About the path strategy**
+
+    When automation IDs and names aren't enough (or not reliable), then you can fallback
+    to the positions of elements in a tree. This can be achieved using the `path:`
+    strategy to specify a list of element positions which indicates how to traverse the
+    tree from parent to child beginning with the resolved root.
+
+    Example: `Calculator > path:2|3|2|8|2` - this locator looks for the "Calculator"
+    window, then it looks for the 2nd direct child and then it looks for the 3rd one of
+    the previous child and so on until it consumes the path completely. (indexes start
+    with `1`)
+
+    An alternative way to get the whole tree to explore it yourself would be to use the
+    ``Print Tree`` keyword.
 
     **Keyboard and mouse**
 
@@ -367,7 +392,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
     can be installed separately. Other options are tools `Inspect Object`_  and `UI Automation Verify`_, which
     can be accessed by installing Windows SDK.
 
-    A more programmatic approach is to run `Print Tree    log_as_warnings=${True}`
+    A more programmatic approach is to run ``Print Tree    log_as_warnings=${True}``
     keyword and then observe in the logs the found elements structure starting from
     Desktop as root. (refer to keyword's documentation for more details)
 
