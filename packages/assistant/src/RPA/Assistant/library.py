@@ -1170,11 +1170,11 @@ class Assistant:
     def add_slider(
         self,
         name: str,
-        slider_min=0,
-        slider_max=100,
+        slider_min: Union[int, float] = 0,
+        slider_max: Union[int, float] = 100,
         thumb_text="{value}",
         steps: Optional[int] = None,
-        default=None,
+        default: Optional[Union[int, float]] = None,
     ):
         """Add a slider input.
 
