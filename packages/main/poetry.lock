@@ -770,17 +770,6 @@ jsonschema = ">=4.4.0,<5.0.0"
 requests = ">=2.27.1,<3.0.0"
 
 [[package]]
-name = "ntlm-auth"
-version = "1.5.0"
-description = "Creates NTLM authentication structures"
-category = "main"
-optional = false
-python-versions = ">=2.6,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
-
-[package.extras]
-cryptography = ["cryptography", "cryptography (<2.2)"]
-
-[[package]]
 name = "o365"
 version = "2.0.26"
 description = "Microsoft Graph and Office 365 API made easy"
@@ -1219,6 +1208,21 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "pyspnego"
+version = "0.8.0"
+description = "Windows Negotiate Authentication Client and Server"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+cryptography = "*"
+
+[package.extras]
+kerberos = ["gssapi (>=1.6.0)", "krb5 (>=0.3.0)"]
+yaml = ["ruamel.yaml"]
+
+[[package]]
 name = "pytest"
 version = "7.2.1"
 description = "pytest: simple powerful testing with Python"
@@ -1431,15 +1435,15 @@ six = "*"
 
 [[package]]
 name = "requests-ntlm"
-version = "1.1.0"
+version = "1.2.0"
 description = "This package allows for HTTP NTLM authentication using the requests library."
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 
 [package.dependencies]
 cryptography = ">=1.3"
-ntlm-auth = ">=1.0.2"
+pyspnego = ">=0.1.6"
 requests = ">=2.0.0"
 
 [[package]]
@@ -1574,7 +1578,7 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.2.1"
+version = "10.3.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1620,7 +1624,7 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "7.0.3"
+version = "7.1.0"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -1634,7 +1638,7 @@ pynput-robocorp-fork = ">=5.0.0,<6.0.0"
 pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=4.0.0,<5.0.0"
-rpaframework-core = ">=10.2.1,<11.0.0"
+rpaframework-core = ">=10.3.1,<11.0.0"
 uiautomation = ">=2.0.15,<3.0.0"
 
 [[package]]
@@ -2220,7 +2224,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "9aca91c5fa034bc5a68550e830e952fc29d6f6e015d6881983229514bbb7a7b4"
+content-hash = "e130174dcf4c9384fd4a0911f9ec48c1f8556510f9083e57cdcad7dd0b21fe83"
 
 [metadata.files]
 alabaster = [
@@ -2894,10 +2898,6 @@ notifiers = [
     {file = "notifiers-1.3.3-py3-none-any.whl", hash = "sha256:152e605c0be595069b187a89ab1bdc1559f51a3ec5ee5803915c7e2ec9464e94"},
     {file = "notifiers-1.3.3.tar.gz", hash = "sha256:9fd8d95ab1ebcd3852423755aa90cbb0f72a805ca77af0d8c9ad7af445f58399"},
 ]
-ntlm-auth = [
-    {file = "ntlm-auth-1.5.0.tar.gz", hash = "sha256:c9667d361dc09f6b3750283d503c689070ff7d89f2f6ff0d38088d5436ff8543"},
-    {file = "ntlm_auth-1.5.0-py2.py3-none-any.whl", hash = "sha256:f1527c581dbf149349134fc2d789d50af2a400e193206956fa0ab456ccc5a8ba"},
-]
 o365 = [
     {file = "O365-2.0.26-py3-none-any.whl", hash = "sha256:220899f2135e5f2de1db808df9858f5f7bd38910e2c870bb08b04d94bd450b3f"},
     {file = "O365-2.0.26.tar.gz", hash = "sha256:b478522a652df112c298446aabefccaa446b14bf257b6694fed524c08b76de38"},
@@ -3207,6 +3207,20 @@ pysocks = [
     {file = "PySocks-1.7.1-py3-none-any.whl", hash = "sha256:2725bd0a9925919b9b51739eea5f9e2bae91e83288108a9ad338b2e3a4435ee5"},
     {file = "PySocks-1.7.1.tar.gz", hash = "sha256:3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0"},
 ]
+pyspnego = [
+    {file = "pyspnego-0.8.0-cp310-cp310-win32.whl", hash = "sha256:9dbbd3aec5240aa8b75a5baa0b8a78d3b4ec16638c5fe299cd849b2390cfd2ec"},
+    {file = "pyspnego-0.8.0-cp310-cp310-win_amd64.whl", hash = "sha256:2df21796b15e73b99a4b4bbe91e4ecd3fdaa888b7255c4ab697ccb6615dbd6e3"},
+    {file = "pyspnego-0.8.0-cp311-cp311-win32.whl", hash = "sha256:e15d7ecf70cb70f09ec80a7efd57086886380dcfbe0c31b1808f3349484f0b96"},
+    {file = "pyspnego-0.8.0-cp311-cp311-win_amd64.whl", hash = "sha256:ff546dc4a56c92aae253c04c8999baf4357919a523665c8daa65788567a52fe3"},
+    {file = "pyspnego-0.8.0-cp37-cp37m-win32.whl", hash = "sha256:c3cb9d9da79f1d38e8a268988c5af7520f25dc8f6c7bc97444260f8ce3d1efe9"},
+    {file = "pyspnego-0.8.0-cp37-cp37m-win_amd64.whl", hash = "sha256:1f76a924866040cece4600e1973bfdb20656f9a3ceb2935ed6be1f932c990b19"},
+    {file = "pyspnego-0.8.0-cp38-cp38-win32.whl", hash = "sha256:cf8bd2bd2cadc825e7fc7ff86a57eb158d898d30c0f7670940178c48ebe78e31"},
+    {file = "pyspnego-0.8.0-cp38-cp38-win_amd64.whl", hash = "sha256:92501106898b4fa60f454dc9445b8006c133e177c859d49b3c7f260985449cad"},
+    {file = "pyspnego-0.8.0-cp39-cp39-win32.whl", hash = "sha256:3e49fddd34c19d6bd1d534501769de5e2b0716ce9b6f26d50f2f0600158780c9"},
+    {file = "pyspnego-0.8.0-cp39-cp39-win_amd64.whl", hash = "sha256:e2faff077fe942ed7169bd6c84c9396f259f50069237d93de12a5bd5e11bb445"},
+    {file = "pyspnego-0.8.0-py3-none-any.whl", hash = "sha256:55b9bc76efb2ef335640f1bfe6922651c31d21a4c989b0def889eaa2f4865711"},
+    {file = "pyspnego-0.8.0.tar.gz", hash = "sha256:e0499cc066c56762f8a315bb053243d34240cb85e384afc6b87b4fa0142543df"},
+]
 pytest = [
     {file = "pytest-7.2.1-py3-none-any.whl", hash = "sha256:c7c6ca206e93355074ae32f7403e8ea12163b1163c976fee7d4d84027c162be5"},
     {file = "pytest-7.2.1.tar.gz", hash = "sha256:d45e0952f3727241918b8fd0f376f5ff6b301cc0777c6f9a556935c92d8a7d42"},
@@ -3311,8 +3325,8 @@ requests-file = [
     {file = "requests_file-1.5.1-py2.py3-none-any.whl", hash = "sha256:dfe5dae75c12481f68ba353183c53a65e6044c923e64c24b2209f6c7570ca953"},
 ]
 requests-ntlm = [
-    {file = "requests_ntlm-1.1.0-py2.py3-none-any.whl", hash = "sha256:1eb43d1026b64d431a8e0f1e8a8c8119ac698e72e9b95102018214411a8463ea"},
-    {file = "requests_ntlm-1.1.0.tar.gz", hash = "sha256:9189c92e8c61ae91402a64b972c4802b2457ce6a799d658256ebf084d5c7eb71"},
+    {file = "requests_ntlm-1.2.0-py3-none-any.whl", hash = "sha256:b7781090c647308a88b55fb530c7b3705cef45349e70a83b8d6731e7889272a6"},
+    {file = "requests_ntlm-1.2.0.tar.gz", hash = "sha256:33c285f5074e317cbdd338d199afa46a7c01132e5c111d36bd415534e9b916a8"},
 ]
 requests-oauthlib = [
     {file = "requests-oauthlib-1.3.1.tar.gz", hash = "sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a"},
@@ -3358,8 +3372,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework_seleniumtestability-2.1.0-py3-none-any.whl", hash = "sha256:b312783f2e26c39c5002ea6db561088a1c8cc551af1dd27b37cb7c04566bbc5c"},
 ]
 rpaframework-core = [
-    {file = "rpaframework_core-10.2.1-py3-none-any.whl", hash = "sha256:c2d0ccb33f9e68982aa31fa5d1981e293db0577195fcb9c86ece6ae9814a074a"},
-    {file = "rpaframework_core-10.2.1.tar.gz", hash = "sha256:3327f0cc84968ffabfb9d2b0d517c0064c3f7fc5af9ab7db430510c8d4ce3498"},
+    {file = "rpaframework_core-10.3.1-py3-none-any.whl", hash = "sha256:fc130ba2aac52dd39221e7c8480690eb1eae762cbc6d51e2246d38570f79d305"},
+    {file = "rpaframework_core-10.3.1.tar.gz", hash = "sha256:c34a130245336a640096f660f5330d3ac8099575a1099eef24f461960a367e2e"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework_dialogs-4.0.2-py3-none-any.whl", hash = "sha256:0d4ea9718efb38f1b2390240fb71aafcc56f2f8c004bcba5580e794d16445f85"},
@@ -3370,8 +3384,8 @@ rpaframework-pdf = [
     {file = "rpaframework_pdf-7.0.1.tar.gz", hash = "sha256:6f669c16b9f0accca6219af61f84fffd762389d002f5de9c45417361b6d80a25"},
 ]
 rpaframework-windows = [
-    {file = "rpaframework_windows-7.0.3-py3-none-any.whl", hash = "sha256:c070033faac37d9261616a4857fdf3973558fd2e289ef705d295e18b8bb30756"},
-    {file = "rpaframework_windows-7.0.3.tar.gz", hash = "sha256:257d039a78858a1bc8b5530ba057325b7fe799f5cf3ff4615216210ecc315708"},
+    {file = "rpaframework_windows-7.1.0-py3-none-any.whl", hash = "sha256:b44b8820a856c368240397d9f29a3aef255c4faacdcfd6c56ebd7baf3767c35e"},
+    {file = "rpaframework_windows-7.1.0.tar.gz", hash = "sha256:8e1c421a7eccd7c72bf716df67cbf65cc8c765949732db2363c237442f2b1ee6"},
 ]
 secretstorage = [
     {file = "SecretStorage-3.3.3-py3-none-any.whl", hash = "sha256:f356e6628222568e3af06f2eba8df495efa13b3b63081dafd4f7d9a7b7bc9f99"},

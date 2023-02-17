@@ -38,7 +38,7 @@ docutils = "*"
 rpaframework-core = "^10.2.0"
 rpaframework-dialogs = "^4.0.0"
 rpaframework-pdf = "^7.0.1"
-rpaframework-windows = { version = "^7.0.3", platform = "win32" }
+rpaframework-windows = { version = "^7.1.0", platform = "win32" }
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
