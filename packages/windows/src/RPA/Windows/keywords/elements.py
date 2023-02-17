@@ -66,19 +66,25 @@ class ElementKeywords(LibraryContext):
         log_as_warnings: bool = False,
         return_structure: bool = False,
     ) -> Optional[Dict[int, List[WindowsElement]]]:
-        """Print Control element tree.
+        """Print a tree of control elements.
 
-        Windows application structure can contain multilevel element
-        structure. Understanding this structure is important for
-        creating locators.
+        A Windows application structure can contain multilevel element structure.
+        Understanding this structure is crucial for creating locators. (based on
+        controls' details and their parent-child relationship)
 
-        This keyword can be used to output application element structure
-        starting with the element defined by the `locator`.
+        This keyword can be used to output logs of application's element structure,
+        starting with the element defined by the provided `locator` as root. Switch
+        the `return_structure` parameter to `True` to get a tree of elements returned
+        as well. (off by default to save memory)
 
-        :param locator: string locator or Control element
-        :param max_depth: maximum depth level (defaults to 8)
-        :param capture_image_folder: if None images are not captured
-        :param log_as_warnings: if set log messages are visible on the console
+        :param locator: The root of the tree to output.
+        :param max_depth: Maximum depth level. (defaults to 8)
+        :param capture_image_folder: If set, controls' images will be captured in this
+            path.
+        :param log_as_warnings: Enables highlighted logs (at the beginning of the log
+            file as warnings) and increases visibility in the output console.
+        :param return_structure: A flattened tree with all the elements collated by
+            level will be returned if this is enabled.
         """
         brothers_count = {}  # cache how many brothers are in total given a child
         structure = {}  # leveled flattened tree of controls
