@@ -89,6 +89,7 @@ class WindowKeywords(WindowMethods):
         return window
 
     @keyword(tags=["window"])
+    @with_timeout
     def control_child_window(
         self,
         locator: Optional[Locator] = None,

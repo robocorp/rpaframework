@@ -13,7 +13,7 @@ from RPA.Windows.keywords.context import with_timeout
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
-    from uiautomation import TreeNode
+    from uiautomation import Control
 
 
 class LocatorKeywords(LocatorMethods):
@@ -113,13 +113,13 @@ class LocatorKeywords(LocatorMethods):
         root_element: Optional[WindowsElement],
         timeout: Optional[float],
     ) -> List[WindowsElement]:
-        def get_first_child(ctrl: TreeNode) -> TreeNode:
+        def get_first_child(ctrl: Control) -> Control:
             return ctrl.GetFirstChildControl()
 
-        def get_next_sibling(ctrl: TreeNode) -> TreeNode:
+        def get_next_sibling(ctrl: Control) -> Control:
             return ctrl.GetNextSiblingControl()
 
-        def compare(ctrl: TreeNode, _) -> bool:
+        def compare(ctrl: Control, _) -> bool:
             element = WindowsElement(ctrl, locator)
             return initial_element.is_sibling(element)
 
