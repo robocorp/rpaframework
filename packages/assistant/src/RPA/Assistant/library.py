@@ -1170,10 +1170,11 @@ class Assistant:
     def add_slider(
         self,
         name: str,
-        slider_min=0,
-        slider_max=100,
+        slider_min: Union[int, float] = 0,
+        slider_max: Union[int, float] = 100,
         thumb_text="{value}",
         steps: Optional[int] = None,
+        default: Optional[Union[int, float]] = None,
     ):
         """Add a slider input.
 
@@ -1188,6 +1189,7 @@ class Assistant:
                             For integer output, specify a steps value where all the
                             steps will be integers, or implement rounding when
                             retrieving the result.
+        :param default:     Default value for the slider. Has to be between min and max
 
         .. code-block:: robotframework
 
@@ -1200,7 +1202,15 @@ class Assistant:
 
 
         """
+        if default:
+            if slider_min > default or slider_max < default:
+                raise ValueError(f"Slider {name} had an out of bounds default value.")
+
         slider = Slider(
-            min=slider_min, max=slider_max, divisions=steps, label=thumb_text
+            min=slider_min,
+            max=slider_max,
+            divisions=steps,
+            label=thumb_text,
+            value=default,
         )
         self._client.add_element(name=name, element=slider)
