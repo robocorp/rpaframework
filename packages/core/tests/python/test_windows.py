@@ -84,6 +84,13 @@ from RPA.core.windows.locators import MatchObject
                 ("foundIndex", 4, 1),
             ],
         ),
+        (
+            "Calculator > path:2|3|2|8|2",
+            [
+                ("Name", "Calculator", 0),
+                ("path", [2, 3, 2, 8, 2], 1)
+            ],
+        ),
     ],
 )
 def test_match_object(locator, locators):

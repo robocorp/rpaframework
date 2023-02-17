@@ -259,6 +259,7 @@ class LocatorMethods(WindowsContext):
     def _get_control_from_params(
         search_params: SearchType, root_control: Optional["Control"] = None
     ) -> "Control":
+        search_params = search_params.copy()  # to keep idempotent behaviour
         offset = search_params.pop("offset", None)
         control_type = search_params.pop("ControlType", "Control")
         ElementControl = getattr(root_control, control_type, Control)
@@ -270,6 +271,7 @@ class LocatorMethods(WindowsContext):
     def _get_control_from_listed_windows(
         self, search_params: SearchType, *, param_type: str, win_type: str
     ) -> "Control":
+        search_params = search_params.copy()  # to keep idempotent behaviour
         win_value = search_params.pop(param_type)
         window_list = self.ctx.list_windows()
         matches = [win for win in window_list if win[win_type] == win_value]
@@ -285,11 +287,11 @@ class LocatorMethods(WindowsContext):
         search_params["Name"] = matches[0]["title"]
         return self._get_control_from_params(search_params)
 
-    @staticmethod
     def _get_control_from_path(
-        search_params: SearchType, root_control: Optional["Control"] = None
+        self, search_params: SearchType, root_control: Optional["Control"] = None
     ) -> "Control":
         # Follow a path in the tree of controls until reaching the final target.
+        search_params = search_params.copy()  # to keep idempotent behaviour
         path = search_params["path"]
         current = root_control
         to_path = lambda index: MatchObject.PATH_SEP.join(path[:index])
@@ -303,6 +305,7 @@ class LocatorMethods(WindowsContext):
                 )
 
             current = children[pos - 1]
+            self.logger.debug("On child position %d found control: %s", pos, current)
 
         offset = search_params.get("offset")
         current.robocorp_click_offset = offset
@@ -326,22 +329,18 @@ class LocatorMethods(WindowsContext):
 
         if "executable" in search_params:
             return self._get_control_from_listed_windows(
-                search_params.copy(), param_type="executable", win_type="name"
+                search_params, param_type="executable", win_type="name"
             )
 
         if "handle" in search_params:
             return self._get_control_from_listed_windows(
-                search_params.copy(), param_type="handle", win_type="handle"
+                search_params, param_type="handle", win_type="handle"
             )
 
         if "path" in search_params:
-            return self._get_control_from_path(
-                search_params.copy(), root_control=root_control
-            )
+            return self._get_control_from_path(search_params, root_control=root_control)
 
-        return self._get_control_from_params(
-            search_params.copy(), root_control=root_control
-        )
+        return self._get_control_from_params(search_params, root_control=root_control)
 
     def _load_by_alias(self, criteria: str) -> str:
         try:
