@@ -5,7 +5,14 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Tables** (:issue: '821'): allow custom dialects in csv files
+- Library **RPA.Windows** (``rpaframework-windows`` **7.1.0**):
+
+  - Add support for the `path:` strategy in locators. (index-based element tree search)
+  - Enhance ``Print Tree`` keyword with better element tree logging and the ability to
+    return such structure.
+
+- Library **RPA.Tables** (:issue:`821`): Allow custom dialects in csv files.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
