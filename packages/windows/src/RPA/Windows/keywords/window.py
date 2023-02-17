@@ -14,9 +14,6 @@ from RPA.Windows.keywords import (
     with_timeout,
 )
 
-if utils.IS_WINDOWS:
-    import uiautomation as auto
-
 
 class WindowKeywords(WindowMethods):
     """Keywords for handling Window controls"""
