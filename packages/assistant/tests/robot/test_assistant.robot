@@ -64,6 +64,10 @@ Open Website
 
 Control Buttons
     Set Log Level    TRACE
+
+    Add Heading    UI elements for testing
+    Add Slider    name=slier    slider_min=0    slider_max=1    default=0.5    steps=10
+
     Add Heading    good buttons
     Add Button    log button    Log    test_string
     Add Button    print button    Log To Console    test_string
