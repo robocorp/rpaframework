@@ -227,7 +227,7 @@ class Process:
         self.logger = logging.getLogger(__name__)
 
         process_api_host_env = os.getenv(
-            "PROCESS_API_BASE_URL", "https://api.eu1.robocorp.com"
+            "RC_API_PROCESS_HOST", "https://api.eu1.robocorp.com"
         )
         self.robocorp_api_endpoint = kwargs.pop(
             "robocorp_api_server", f"{process_api_host_env}/process-v1"
