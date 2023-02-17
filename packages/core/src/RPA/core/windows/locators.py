@@ -20,6 +20,7 @@ if IS_WINDOWS:
 
 
 Locator = Union["WindowsElement", str]
+SearchType = Dict[str, Union[str, int, List[int]]]
 
 
 @dataclass
@@ -149,8 +150,10 @@ class MatchObject:
         "process": "process",
         "handle": "handle",
         "executable": "executable",
+        "path": "path",
     }
     TREE_SEP = " > "
+    PATH_SEP = "|"  # path locator index separator
     QUOTE = '"'  # enclosing quote character
     _LOCATOR_REGEX = re.compile(rf"\S*{QUOTE}[^{QUOTE}]+{QUOTE}|\S+", re.IGNORECASE)
     _LOGGER = logging.getLogger(__name__)
@@ -222,6 +225,8 @@ class MatchObject:
             value = value if value.endswith("Control") else f"{value}Control"
         elif control_strategy == "ClassName":
             self._classes.add(value.lower())  # pylint: disable=no-member
+        elif control_strategy == "path":
+            value = [int(idx) for idx in value.split(self.PATH_SEP)]
         self.locators.append(  # pylint: disable=no-member
             (control_strategy, value, level)
         )
@@ -239,19 +244,6 @@ class LocatorMethods(WindowsContext):
         self._locators_path = locators_path
 
     @staticmethod
-    def _get_control_from_params(
-        search_params: Dict[str, str], root_control: Optional["Control"] = None
-    ) -> "Control":
-        search_params = search_params.copy()
-        offset = search_params.pop("offset", None)
-        control_type = search_params.pop("ControlType", "Control")
-        ElementControl = getattr(root_control, control_type, Control)
-        control = ElementControl(**search_params)
-        new_control = Control.CreateControlFromControl(control)
-        new_control.robocorp_click_offset = offset
-        return new_control
-
-    @staticmethod
     def _get_desktop_control() -> "Control":
         root_control = auto.GetRootControl()
         new_control = Control.CreateControlFromControl(root_control)
@@ -263,9 +255,23 @@ class LocatorMethods(WindowsContext):
         desktop_control = cls._get_desktop_control()
         return WindowsElement(desktop_control, locator)
 
-    def _get_control_from_listed_windows(
-        self, search_params: Dict[str, str], *, param_type: str, win_type: str
+    @staticmethod
+    def _get_control_from_params(
+        search_params: SearchType, root_control: Optional["Control"] = None
     ) -> "Control":
+        search_params = search_params.copy()  # to keep idempotent behaviour
+        offset = search_params.pop("offset", None)
+        control_type = search_params.pop("ControlType", "Control")
+        ElementControl = getattr(root_control, control_type, Control)
+        control = ElementControl(**search_params)
+        new_control = Control.CreateControlFromControl(control)
+        new_control.robocorp_click_offset = offset
+        return new_control
+
+    def _get_control_from_listed_windows(
+        self, search_params: SearchType, *, param_type: str, win_type: str
+    ) -> "Control":
+        search_params = search_params.copy()  # to keep idempotent behaviour
         win_value = search_params.pop(param_type)
         window_list = self.ctx.list_windows()
         matches = [win for win in window_list if win[win_type] == win_value]
@@ -280,6 +286,30 @@ class LocatorMethods(WindowsContext):
         self.logger.info("Found process with window title: %r", matches[0]["title"])
         search_params["Name"] = matches[0]["title"]
         return self._get_control_from_params(search_params)
+
+    def _get_control_from_path(
+        self, search_params: SearchType, root_control: Optional["Control"] = None
+    ) -> "Control":
+        # Follow a path in the tree of controls until reaching the final target.
+        search_params = search_params.copy()  # to keep idempotent behaviour
+        path = search_params["path"]
+        current = root_control
+        to_path = lambda index: MatchObject.PATH_SEP.join(path[:index])
+
+        for idx, pos in enumerate(path):
+            children = current.GetChildren()
+            if pos > len(children):
+                raise ElementNotFound(
+                    f"Unable to retrieve child on position {pos!r} under a parent with"
+                    f" partial path {to_path(idx)!r}"
+                )
+
+            current = children[pos - 1]
+            self.logger.debug("On child position %d found control: %s", pos, current)
+
+        offset = search_params.get("offset")
+        current.robocorp_click_offset = offset
+        return current
 
     def _get_control_with_locator_part(
         self, locator: str, search_depth: int, root_control: "Control"
@@ -306,6 +336,9 @@ class LocatorMethods(WindowsContext):
             return self._get_control_from_listed_windows(
                 search_params, param_type="handle", win_type="handle"
             )
+
+        if "path" in search_params:
+            return self._get_control_from_path(search_params, root_control=root_control)
 
         return self._get_control_from_params(search_params, root_control=root_control)
 

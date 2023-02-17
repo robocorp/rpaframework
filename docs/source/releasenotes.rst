@@ -5,11 +5,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Assistant** (:issue:`838`; ``rpaframework-assistant`` **1.1.0**):
+- Library **RPA.Assistant** (:issue:`838`; :pr:`829`; ``rpaframework-assistant`` **1.1.0**):
     - Bugfixes for dialog clearing
     - New ``Add Slider`` keyword to create sliders for numeric inputs
     - New ``default`` and ``required`` arguments for ``Add Text Input``
     - Removing ``None`` values from the results so make value checking easier
+
+- Library **RPA.Tables** (:issue: '821'): allow custom dialects in csv files
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
