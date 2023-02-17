@@ -10,6 +10,17 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17 Feb 2023
+-----------
+- Library **RPA.Assistant** (:issue:`838`; :issue:`828`; ``rpaframework-assistant`` **1.1.0**):
+    - Bugfixes for dialog clearing
+    - New ``Add Slider`` keyword to create sliders for numeric inputs
+    - New ``default`` and ``required`` arguments for ``Add Text Input``
+    - Removing ``None`` values from the results so make value checking easier
+
+- Library **RPA.Assistant** (``rpaframework-assistant`` **1.2.0**):
+    - Add ``default`` argument to ``Add Slider`` keyword to set default of slider
+
 21.1.1 - 15 Feb 2023
 --------------------
 

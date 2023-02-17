@@ -115,7 +115,7 @@ class FletClient:
             route_url_strategy="hash",
         )
 
-    def _show_flet(
+    def _show_flet(  # noqa: C901
         self,
         target: Callable[[Optional[Page]], None],
         title: str,
@@ -169,22 +169,38 @@ class FletClient:
             # pylint: disable=raise-missing-from
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
 
-    def _make_flet_event_handler(self, name: str):
-        def change_listener(e: ControlEvent):
-            self.results[name] = e.data
-            e.page.update()
+    def _make_flet_event_handler(self, name: str, handler: Optional[Callable] = None):
+        """Add flet event handler to record the element's data whenever content changes
+        if ``handler`` is provided also call that.
+        """
+
+        # We don't want the if inside the change_listener so it doesn't have to run on
+        # every on_change event
+        if not handler:
+
+            def change_listener(e: ControlEvent):
+                self.results[name] = e.data
+
+        else:
+
+            def change_listener(e: ControlEvent):
+                handler(e)
+                self.results[name] = e.data
 
         return change_listener
 
-    def add_element(self, element: flet.Control, name: Optional[str] = None):
+    def add_element(
+        self,
+        element: flet.Control,
+        name: Optional[str] = None,
+        extra_handler: Optional[Callable] = None,
+    ):
         # TODO: validate that element "name" is unique
         # make a container that adds margin around the element
         container = Container(margin=5, content=element)
         self._elements.visible.append(container)
         if name is not None:
-            # TODO: might be necessary to check that it doesn't already have change
-            # handler
-            element.on_change = self._make_flet_event_handler(name)
+            element.on_change = self._make_flet_event_handler(name, extra_handler)
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
