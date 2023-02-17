@@ -5,7 +5,7 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Assistant** (:issue:`838`; :pr:`829`; ``rpaframework-assistant`` **1.1.0**):
+- Library **RPA.Assistant** (:issue:`838`; :issue:`828`; ``rpaframework-assistant`` **1.1.0**):
     - Bugfixes for dialog clearing
     - New ``Add Slider`` keyword to create sliders for numeric inputs
     - New ``default`` and ``required`` arguments for ``Add Text Input``
