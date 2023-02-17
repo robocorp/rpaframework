@@ -294,7 +294,9 @@ class LocatorMethods(WindowsContext):
         search_params = search_params.copy()  # to keep idempotent behaviour
         path = search_params["path"]
         current = root_control
-        to_path = lambda idx: MatchObject.PATH_SEP.join(str(pos) for pos in path[:idx])
+        to_path = lambda idx: (  # noqa: E731
+            MatchObject.PATH_SEP.join(str(pos) for pos in path[:idx])
+        )
 
         for index, position in enumerate(path):
             children = current.GetChildren()
