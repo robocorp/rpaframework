@@ -240,9 +240,13 @@ Notepad write text into a file
         Click    Font    wait_time=0.5    # for some reason this only highlitghts the button
         Click    Font    wait_time=2    # and this finally clicks it
         Click    id:FontFamilyComboBox
-        Click    name:"Lucida Sans Unicode"    wait_time=0.5
+        Send Keys   keys={DOWN}
+        Send Keys   keys={Ctrl}a{Del}
+        Send Keys   keys=Lucida Sans Unicode    send_enter=${True}    wait_time=0.5
         Click    id:FontSizeComboBox
-        Click    name:"26"    wait_time=0.5
+        Send Keys   keys={DOWN}
+        Send Keys   keys={Ctrl}a{Del}
+        Send Keys   keys=26     send_enter=${True}    wait_time=0.5
         Click    name:"Back"
     ELSE
         Control Window    Font
@@ -413,8 +417,9 @@ Test Locator Path Strategy
     [Setup]     Windows Run     ${EXE_CALCULATOR}
 
     # Retrieve the "One" button from a root parent.
-    ${elem} =   Get Element     Calculator > path:2|3|2|8|2
+    ${elem} =   Get Element     Calculator > path:2|3|2|8|2 offset:120,0
     Should Be Equal     ${elem.name}    One
+    Click   ${elem}  # clicks with offset too (even if found by path)
 
     # Get all the numeric buttons using a path parent.
     ${elems} =   Get Elements     Calculator > path:2|3|2|8 > type:ButtonControl
