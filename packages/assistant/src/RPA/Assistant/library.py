@@ -5,7 +5,7 @@ import platform
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal, Set
 
 import flet
 from flet import (
@@ -145,6 +145,7 @@ class Assistant:
         self.logger = logging.getLogger(__name__)
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
+        self._required_fields: Set[str] = set()
         # Disable fletd debug logging
         os.environ["GIN_MODE"] = "release"
 
@@ -163,24 +164,46 @@ class Assistant:
         except RobotNotRunningError:
             pass
 
+    def _create_error(self, error_message: str):
+        self._client.page.add(
+            Text(
+                error_message,
+                color=flet.colors.RED,
+            )
+        )
+
     def _create_closing_button(self, label="Submit") -> Control:
         def validate_and_close(*_):
+            # remove None's from the result dictionary
+            for field_name in list(self._client.results.keys()):
+                if self._client.results[field_name] is None:
+                    self._client.results.pop(field_name)
+
             should_close = True
-            if not self._validations:
-                self._client.page.window_destroy()
-            for field_name, validation in self._validations.items():
-                if not validation or field_name not in self._client.results:
-                    continue
-                error_message = validation(self._client.results[field_name])
+
+            for field_name in self._required_fields:
+                value = self._client.results.get(field_name)
+                error_message = None if value else "Mandatory field was not completed"
                 if error_message:
                     should_close = False
-                    self._client.page.add(
-                        Text(
-                            f"Error on field named '{field_name}: {error_message}",
-                            color=flet.colors.RED,
-                        )
+                    self._create_error(error_message)
+                    self._client.flet_update()
+
+            for field_name, validation in self._validations.items():
+                field_value = self._client.results.get(field_name)
+                # Only run validations for non-None values.
+                if field_value:
+                    error_message = validation(self._client.results.get(field_name))
+                else:
+                    error_message = None
+
+                if error_message:
+                    should_close = False
+                    self._create_error(
+                        f"Error on field named '{field_name}: {error_message}",
                     )
-                    self._client.page.update()
+                    self._client.flet_update()
+
             if should_close:
                 self._client.results["submit"] = label
                 self._client.page.window_destroy()
@@ -485,7 +508,9 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Union[Callable, None] = None,
+        validation: Optional[Callable] = None,
+        default: Optional[str] = None,
+        required: bool = False,
     ) -> None:
         """Add a text input element
 
@@ -493,6 +518,8 @@ class Assistant:
         :param label:       Label for field
         :param placeholder: Placeholder text in input field
         :param validation:   Validation function for the input field
+        :param default:     Default value if the field wasn't completed
+        :param required:    If true, will display an error if not completed
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -500,6 +527,12 @@ class Assistant:
         For customizing the look of the input, the ``label`` text can be given
         to add a descriptive label and the ``placholder`` text can be given
         to act as an example of the input value.
+
+        The `default` value will be assigned to the input field if the user
+        doesn't complete it. If provided, the placeholder won't be shown.
+        This is `None` by default. Also, if a default value is provided
+        and the user deletes it, `None` will be the corresponding value in
+        the results dictionary.
 
         Example:
 
@@ -513,11 +546,25 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        if validation:
+
+        if validation and required:
+            self._validations[name] = validation
+            self._required_fields.add(name)
+        elif required:
+            self._required_fields.add(name)
+        elif validation:
             self._validations[name] = validation
 
+        self._client.results[name] = default
+
+        def empty_string_to_none(e):
+            if e.control.value == "":
+                e.data = None
+
         self._client.add_element(
-            name=name, element=TextField(label=label, hint_text=placeholder)
+            name=name,
+            element=TextField(label=label, hint_text=placeholder, value=default),
+            extra_handler=empty_string_to_none,
         )
 
     @keyword(tags=["input"])
@@ -741,6 +788,8 @@ class Assistant:
         """
 
         def validate(date_text):
+            if not date_text:
+                return None
             try:
                 date.fromisoformat(date_text)
                 return None
@@ -857,14 +906,6 @@ class Assistant:
         :param buttons: Submit button options
         :param default: The primary button
 
-        The dialog automatically creates a button for closing itself.
-        If there are no input fields, the button will say "Close".
-        If there are one or more input fields, the button will say "Submit".
-
-        If the submit button should have a custom label or there should be
-        multiple options to choose from  when submitting, this keyword can
-        be used to replace the automatically generated ones.
-
         The result field will always be called ``submit`` and will contain
         the pressed button text as a value.
 
@@ -920,8 +961,8 @@ class Assistant:
         :param clear:  Clear the elements and results after the dialog exits. (If false
                        next Run Dialog will start up with same elements.)
 
-        None will let the operating system place the window.
-
+        If the `location` argument is `None` it will let the operating system
+        place the window.
 
         Returns a result object with all input values.
 
@@ -1095,7 +1136,7 @@ class Assistant:
 
         :param label: Text for the button
         :param function: Python function or Robot Keyword name, that will take form
-            results as it's first argument
+            results as its first argument
 
         Example:
 
@@ -1159,5 +1200,7 @@ class Assistant:
 
 
         """
-        slider = Slider(min=0, max=100, divisions=steps, label=thumb_text)
+        slider = Slider(
+            min=slider_min, max=slider_max, divisions=steps, label=thumb_text
+        )
         self._client.add_element(name=name, element=slider)

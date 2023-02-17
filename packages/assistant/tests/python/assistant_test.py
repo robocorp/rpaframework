@@ -54,7 +54,7 @@ assistant.add_icon(Icon.Failure)
 assistant.add_icon(Icon.Warning)
 assistant.add_icon(Icon.Success)
 assistant.add_text_input(
-    "txt_input", placeholder="placeholder", validation=length_greater_3
+    "txt_input", placeholder="placeholder", required=True, validation=length_greater_3
 )
 assistant.add_password_input("pw_input")
 assistant.add_checkbox("checkbox", "test_checkbox")
