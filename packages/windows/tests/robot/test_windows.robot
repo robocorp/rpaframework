@@ -15,6 +15,7 @@ ${EXE_CALCULATOR}   calc.exe
 ${EXE_SPOTIFY}      Spotify.exe
 
 ${LOC_NOTEPAD}      name:Notepad class:Notepad
+${LOC_CALCULATOR}   subname:Calc control:WindowControl
 
 ${TIMEOUT}        1
 
@@ -342,17 +343,17 @@ Control window after closing linked root element
     Kill app by name    Notepad
     Windows Run    Calc
     # Tests against `COMError` fixes.
-    ${window} =    Control Window    subname:Calc    main=${False}
+    ${window} =    Control Window    ${LOC_CALCULATOR}    main=${False}
     Log    Controlling Calculator window: ${window}
     [Teardown]    Close Current Window    # closes Calculator (last active window)
 
 Tree printing and controlled anchor cleanup
     Windows Run    Calc
-    ${win} =    Control Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
+    ${win} =    Control Window    ${LOC_CALCULATOR}    timeout=${TIMEOUT}
     Set Anchor    ${win}
     ${elem} =    Get Element    # pulls the anchor
     Should Be Equal    ${elem.name}    Calculator
-    Close Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
+    Close Window    ${LOC_CALCULATOR}    timeout=${TIMEOUT}
     # With the controlled Calculator closed and active window/anchor cleaned up, we
     #    should get the Desktop element only.
     ${elem} =    Get Element
@@ -362,7 +363,7 @@ Click Calculator Numeric Buttons
     [Documentation]    Clicks all the numeric buttons in Calculator
 
     Windows Run    Calc
-    Control Window    subname:Calc
+    Control Window    ${LOC_CALCULATOR}
     @{buttons} =    Get Elements    id:NumberPad > class:Button
     FOR    ${button}    IN    @{buttons}
         ${is_numeric} =    Evaluate    "num" in "${button.item.AutomationId}"
@@ -378,7 +379,7 @@ Log All Calculator Buttons Matching Expression
     ...     an 'o' in their name.
     [Setup]   Windows Run    Calc
 
-    Control Window    subname:Calc
+    Control Window    ${LOC_CALCULATOR}
     @{buttons} =    Get Elements    class:Button regex:.*o.*
     ...     siblings_only=${False}  # this will search globally for such buttons
     Log List    ${buttons}
@@ -405,3 +406,29 @@ Test Desktop Searching
 
     @{desktops} =     Get Elements  desktop     siblings_only=${False}
     Log List    ${desktops}
+
+Test Locator Path Strategy
+    [Documentation]     Check elements retrieval and tree printing with a path of
+    ...     element indexes. (node positions in the tree)
+    [Setup]     Windows Run     ${EXE_CALCULATOR}
+
+    # Retrieve the "One" button from a root parent.
+    ${elem} =   Get Element     Calculator > path:2|3|2|8|2
+    Should Be Equal     ${elem.name}    One
+
+    # Get all the numeric buttons using a path parent.
+    ${elems} =   Get Elements     Calculator > path:2|3|2|8 > type:ButtonControl
+    @{names} =   Create List
+    FOR     ${btn}   IN     @{elems}
+        Append To List  ${names}    ${btn.name}
+    END
+    List Should Contain Value   ${names}    Four
+
+    # Check the structure returned by the tree printing.
+    ${tree} =   Print Tree      Calculator > path:2|3|2|8   return_structure=${True}
+    Log To Console      ${tree}
+    # Check if the fifth control on level 2 in the tree is actually the "Four" button.
+    ${elem} =   Set Variable    ${tree}[${2}][${5 - 1}]
+    Should Be Equal     ${elem.name}    Four
+
+    [Teardown]      Close Window   ${LOC_CALCULATOR}
