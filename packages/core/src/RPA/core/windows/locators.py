@@ -288,24 +288,28 @@ class LocatorMethods(WindowsContext):
         return self._get_control_from_params(search_params)
 
     def _get_control_from_path(
-        self, search_params: SearchType, root_control: Optional["Control"] = None
+        self, search_params: SearchType, root_control: "Control"
     ) -> "Control":
         # Follow a path in the tree of controls until reaching the final target.
         search_params = search_params.copy()  # to keep idempotent behaviour
         path = search_params["path"]
         current = root_control
-        to_path = lambda index: MatchObject.PATH_SEP.join(path[:index])
+        to_path = lambda idx: (  # noqa: E731
+            MatchObject.PATH_SEP.join(str(pos) for pos in path[:idx])
+        )
 
-        for idx, pos in enumerate(path):
+        for index, position in enumerate(path):
             children = current.GetChildren()
-            if pos > len(children):
+            if position > len(children):
                 raise ElementNotFound(
-                    f"Unable to retrieve child on position {pos!r} under a parent with"
-                    f" partial path {to_path(idx)!r}"
+                    f"Unable to retrieve child on position {position!r} under a parent"
+                    f" with partial path {to_path(index)!r}"
                 )
 
-            current = children[pos - 1]
-            self.logger.debug("On child position %d found control: %s", pos, current)
+            current = children[position - 1]
+            self.logger.debug(
+                "On child position %d found control: %s", position, current
+            )
 
         offset = search_params.get("offset")
         current.robocorp_click_offset = offset
@@ -338,7 +342,7 @@ class LocatorMethods(WindowsContext):
             )
 
         if "path" in search_params:
-            return self._get_control_from_path(search_params, root_control=root_control)
+            return self._get_control_from_path(search_params, root_control)
 
         return self._get_control_from_params(search_params, root_control=root_control)
 

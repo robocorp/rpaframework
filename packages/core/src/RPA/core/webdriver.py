@@ -75,8 +75,8 @@ def _set_driver_preference() -> Dict[str, List[str]]:
     pref = _DRIVER_PREFERENCE.copy()
     browsers: Optional[List[str]] = _get_browser_order_from_env()
     if browsers:
-        for os in pref:
-            pref[os] = browsers
+        for op_sys in pref:
+            pref[op_sys] = browsers
     return pref
 
 
