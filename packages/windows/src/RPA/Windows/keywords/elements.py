@@ -1,19 +1,15 @@
 import inspect
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
-from RPA.core.windows.locators import Locator
+from RPA.core.windows.locators import Locator, WindowsElement
 
 from RPA.Windows import utils
-from RPA.Windows.keywords import (
-    ActionNotPossible,
-    keyword,
-    LibraryContext,
-)
+from RPA.Windows.keywords import ActionNotPossible, LibraryContext, keyword
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
-    from uiautomation import TreeNode
+    from uiautomation import Control
 
 
 class ElementKeywords(LibraryContext):
@@ -68,46 +64,57 @@ class ElementKeywords(LibraryContext):
         max_depth: int = 8,
         capture_image_folder: Optional[str] = None,
         log_as_warnings: bool = False,
-    ) -> None:
-        """Print Control element tree.
+        return_structure: bool = False,
+    ) -> Optional[Dict[int, List[WindowsElement]]]:
+        """Print a tree of control elements.
 
-        Windows application structure can contain multilevel element
-        structure. Understanding this structure is important for
-        creating locators.
+        A Windows application structure can contain multilevel element structure.
+        Understanding this structure is crucial for creating locators. (based on
+        controls' details and their parent-child relationship)
 
-        This keyword can be used to output application element structure
-        starting with the element defined by the `locator`.
+        This keyword can be used to output logs of application's element structure,
+        starting with the element defined by the provided `locator` as root. Switch
+        the `return_structure` parameter to `True` to get a tree of elements returned
+        as well. (off by default to save memory)
 
-        :param locator: string locator or Control element
-        :param max_depth: maximum depth level (defaults to 8)
-        :param capture_image_folder: if None images are not captured
-        :param log_as_warnings: if set log messages are visible on the console
+        :param locator: The root of the tree to output.
+        :param max_depth: Maximum depth level. (defaults to 8)
+        :param capture_image_folder: If set, controls' images will be captured in this
+            path.
+        :param log_as_warnings: Enables highlighted logs (at the beginning of the log
+            file as warnings) and increases visibility in the output console.
+        :param return_structure: A flattened tree with all the elements collated by
+            level will be returned if this is enabled.
         """
+        brothers_count = {}  # cache how many brothers are in total given a child
+        structure = {}  # leveled flattened tree of controls
 
-        def GetFirstChild(ctrl: TreeNode) -> TreeNode:
-            return ctrl.GetFirstChildControl()
+        def GetChildren(ctrl: Control) -> Control:
+            children = ctrl.GetChildren()
+            children_count = len(children)
+            for child in children:
+                brothers_count[hash(child)] = children_count
+            return children
 
-        def GetNextSibling(ctrl: TreeNode) -> TreeNode:
-            return ctrl.GetNextSiblingControl()
-
-        index = 1
+        image_idx = 1
         target_elem = self.ctx.get_element(locator)
+        root_ctrl = target_elem.item
+        brothers_count[hash(root_ctrl)] = 1  # the root is always singular here
         image_folder = None
         if capture_image_folder:
             image_folder = Path(capture_image_folder).expanduser().resolve()
             image_folder.mkdir(parents=True, exist_ok=True)
         control_log = self.logger.warning if log_as_warnings else self.logger.info
 
-        for control, depth in auto.WalkTree(
-            target_elem.item,
-            getFirstChild=GetFirstChild,
-            getNextSibling=GetNextSibling,
+        for control, depth, children_remaining in auto.WalkTree(
+            root_ctrl,
+            getChildren=GetChildren,
             includeTop=True,
             maxDepth=max_depth,
         ):
             control_str = str(control)
             if image_folder:
-                capture_filename = f"{control.ControlType}_{index}.png"
+                capture_filename = f"{control.ControlType}_{image_idx}.png"
                 img_path = str(image_folder / capture_filename)
                 try:
                     control.CaptureToImage(img_path)
@@ -117,8 +124,15 @@ class ElementKeywords(LibraryContext):
                     )
                 else:
                     control_str += f" [{capture_filename}]"
-            control_log(" " * depth * 4 + control_str)
-            index += 1
+            space = " " * depth * 4
+            child_pos = brothers_count[hash(control)] - children_remaining
+            control_log(f"{space}{depth + 1}-{child_pos}. ${control_str}")
+            if return_structure:
+                element = WindowsElement(control, locator)
+                structure.setdefault(depth + 1, []).append(element)
+            image_idx += 1
+
+        return structure if return_structure else None
 
     @keyword
     def get_attribute(self, locator: Locator, attribute: str) -> str:

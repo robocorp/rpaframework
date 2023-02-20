@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-assistant"
-version = "1.2.0"
+version = "1.2.1"
 description = "Interactive UI library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
