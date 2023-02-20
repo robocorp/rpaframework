@@ -27,7 +27,7 @@ Release notes
 
   We see that unattended robots are a majority of the process run cases and thus it makes sense to move libraries
   meant for the attended robots into separate packages. Added benefit is that will reduce the package size for the 
- ``rpaframework`` package.
+  ``rpaframework`` package.
 
   Please read `the migration guide <https://github.com/robocorp/rpaframework/blob/master/packages/assistant/docs/Migration-Guide.md>`_ 
   on how to move from **RPA.Dialogs** to **RPA.Assistant**.
