@@ -5,6 +5,32 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+20 Feb 2023
+-----------
+
+.. warning::
+  **Breaking** change release.
+
+- The ``rpaframework-dialogs`` package is no longer part of the ``rpaframework`` package. Reason for this
+  change is the deprecation of the **RPA.Dialogs** library as we are recommending the **RPA.Assistant**
+  library for building attended Robots.
+
+  This means that **RPA.Dialogs** library can be still used, but it needs to be separately added into the **pip**
+  section of the **conda.yaml** (``rpaframework-dialogs==4.0.2``).
+
+  The **RPA.Assistant** library also requires separate package installation of ``rpaframework-assistant==1.2.1``.
+
+  We see that unattended robots are a majority of the process run cases and thus it makes sense to move libraries
+  meant for the attended robots into separate packages. Added benefit is that will reduce the package size for the 
+ ``rpaframework`` package.
+
+Other changes included in the release:
+
 - Library **RPA.Windows** (``rpaframework-windows`` **7.1.0**; :pr:`840`):
 
   - Add support for the `path:` strategy in locators. (index-based element tree search)
@@ -15,10 +41,6 @@ Release notes
 
 - Library **RPA.Robocorp.Process** (:issue:`845`): Host of the Process API should use the host 
   from a environment variable (`RC_API_PROCESS_HOST`) if that is available.
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 20 Feb 2023
 -----------
