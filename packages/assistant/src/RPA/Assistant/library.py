@@ -1203,8 +1203,14 @@ class Assistant:
 
         """
         if default:
+            try:
+                default = int(default)
+            except ValueError:
+                default = float(default)
+
             if slider_min > default or slider_max < default:
                 raise ValueError(f"Slider {name} had an out of bounds default value.")
+            self._client.results[name] = default
 
         slider = Slider(
             min=slider_min,
