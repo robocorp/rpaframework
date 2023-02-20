@@ -5,6 +5,9 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Assistant** **1.2.1**
+    - Fix ``Add Slider`` ``default`` parameter not working if no user input was done
+
 - Library **RPA.Windows** (``rpaframework-windows`` **7.1.0**; :pr:`840`):
 
   - Add support for the `path:` strategy in locators. (index-based element tree search)
@@ -19,14 +22,15 @@ Release notes
 
 17 Feb 2023
 -----------
+- Library **RPA.Assistant** (``rpaframework-assistant`` **1.2.0**):
+    - Add ``default`` argument to ``Add Slider`` keyword to set default of slider
+
 - Library **RPA.Assistant** (:issue:`838`; :issue:`828`; ``rpaframework-assistant`` **1.1.0**):
     - Bugfixes for dialog clearing
     - New ``Add Slider`` keyword to create sliders for numeric inputs
     - New ``default`` and ``required`` arguments for ``Add Text Input``
     - Removing ``None`` values from the results so make value checking easier
 
-- Library **RPA.Assistant** (``rpaframework-assistant`` **1.2.0**):
-    - Add ``default`` argument to ``Add Slider`` keyword to set default of slider
 
 21.1.1 - 15 Feb 2023
 --------------------
