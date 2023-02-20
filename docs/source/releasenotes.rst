@@ -5,9 +5,6 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Assistant** **1.2.1**
-    - Fix ``Add Slider`` ``default`` parameter not working if no user input was done
-
 - Library **RPA.Windows** (``rpaframework-windows`` **7.1.0**; :pr:`840`):
 
   - Add support for the `path:` strategy in locators. (index-based element tree search)
@@ -19,6 +16,11 @@ Release notes
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+20 Feb 2023
+-----------
+- Library **RPA.Assistant** **1.2.1**
+    - Fix ``Add Slider`` ``default`` parameter not working if no user input was done
 
 17 Feb 2023
 -----------
