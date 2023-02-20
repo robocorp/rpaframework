@@ -19,8 +19,12 @@ Release notes
 
 20 Feb 2023
 -----------
-- Library **RPA.Assistant** **1.2.1**
-    - Fix ``Add Slider`` ``default`` parameter not working if no user input was done
+- Library **RPA.Assistant**
+    - **1.2.1**
+        - Fix ``Add Slider`` ``default`` parameter not working if no user input was done
+
+    - **1.2.2**
+        - Fix package on Python 3.7
 
 17 Feb 2023
 -----------
