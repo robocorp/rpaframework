@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-assistant"
-version = "1.2.1"
+version = "1.2.2"
 description = "Interactive UI library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -34,7 +34,9 @@ python = "^3.7"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 rpaframework-core = ">=6.5.1, <11.0.0"
 flet="0.2.2"
-typing-extensions = { version = "^4.4.0", python = "<3.8" }
+# We only need the Literal type on python 3.7 from the module, but it has to be
+# installed on all pythons so the imports work
+typing-extensions = { version = "^4.4.0" }
 
 
 [tool.poetry.dev-dependencies]
