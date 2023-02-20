@@ -5,7 +5,8 @@ import platform
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal, Set
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Set
+from typing_extensions import Literal
 
 import flet
 from flet import (

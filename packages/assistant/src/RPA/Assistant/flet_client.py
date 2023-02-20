@@ -6,7 +6,8 @@ import time
 from collections import namedtuple
 from subprocess import Popen, SubprocessError
 from timeit import default_timer as timer
-from typing import Callable, Literal, Optional, Tuple, Union, List
+from typing import Callable, Optional, Tuple, Union, List
+from typing_extensions import Literal
 
 import flet
 from flet import Container, Page, ScrollMode
