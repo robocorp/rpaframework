@@ -174,10 +174,10 @@ below example library can be also installed separately without <strong>rpaframew
 <p><strong>ControlType</strong> is a value referred to by locator keys <cite>type:</cite> or <cite>control</cite>. Represents type of application
 object, which can be e.g. <cite>Window</cite>, <cite>Button</cite> or <cite>ListItem</cite>.</p>
 <p><strong>Element</strong> is an entity of an application structure (e.g. certain button in a window), which can be
-identified by a locator.</p>
-<p><strong>WindowsElement</strong> is an library container object for the <code class="docutils literal notranslate"><span class="pre">Element</span></code>. All keywords returning element, return
-element as <code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code> and all keywords taking in <code class="docutils literal notranslate"><span class="pre">locator</span></code> or <code class="docutils literal notranslate"><span class="pre">root_element</span></code> arguments accept
-<code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code> as an argument value.</p>
+identified by a locator. (also referred as <strong>Control</strong>)</p>
+<p><strong>WindowsElement</strong> is an library container object for the <code class="docutils literal notranslate"><span class="pre">Element</span></code>. All the keywords returning elements, will in
+fact return <code class="docutils literal notranslate"><span class="pre">WindowsElement``s.</span> <span class="pre">The</span> <span class="pre">ones</span> <span class="pre">accepting</span> <span class="pre">``locator</span></code> or <code class="docutils literal notranslate"><span class="pre">root_element</span></code> as arguments, will accept
+<code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code> as an argument value. (<code class="docutils literal notranslate"><span class="pre">locator</span></code> accepts strings as well)</p>
 <p>Structure of the <code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">WindowsElement</span><span class="p">:</span>
     <span class="n">item</span><span class="p">:</span> <span class="n">Control</span>        <span class="c1"># ``item`` contains object instance of the element</span>
@@ -265,13 +265,28 @@ element as <code class="docutils literal notranslate"><span class="pre">WindowsE
 <tr class="row-even"><td><p>depth</p></td>
 <td><p>searchDepth (int) for finding Control (default 8)</p></td>
 </tr>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>target element by its index-based path traversal (e.g. <cite>path:2|3|8|2</cite>)</p></td>
+</tr>
 </tbody>
 </table>
 <p><strong>About root element on locators</strong></p>
 <p>Locators work on currently active <cite>root element</cite>. At the start <cite>root element</cite> is the whole
 desktop. There are different ways on changing this root element.</p>
 <p>Keyword <code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Window</span></code> is the most common method of setting certain system window
-as a root element for further actions using locators.</p>
+as a root element for further actions using locators. In the absence of a provided
+<cite>root_element</cite> parameter, here’s how you can control the default root element
+resolving:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Anchor</span></code>: Sets the active anchor window from which the search begins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Window</span></code>: Controls and focuses on a window and marks it as the current
+active window, from which all the subsequent searches will start from in the
+absence of a set anchor.</p></li>
+<li><p>If there’s no set anchor nor active window, then the last resort will be the
+“Desktop” element itself.</p></li>
+</ul>
+</div></blockquote>
 <p>Locators themselves support cascading syntax (denoted by character <cite>&gt;</cite> in the locator string),
 which can denote root element in “parent (root) &amp; child” terms.</p>
 <p>For example.</p>
@@ -308,6 +323,17 @@ Windows locators) support will be added in the future.</p>
 can’t be found. To fix this it is recommended to set root element which can be found within 8 levels OR
 defining <cite>depth</cite> in the locator string to a bigger value, e.g. <cite>id:deeplyNestedButton depth:16</cite>. Useful
 keywords for setting root element are <code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Window</span></code>, <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Anchor</span></code> and <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Element</span></code>.</p>
+<p><strong>About the path strategy</strong></p>
+<p>When automation IDs and names aren’t enough (or not reliable), then you can fallback
+to the positions of elements in a tree. This can be achieved using the <cite>path:</cite>
+strategy to specify a list of element positions which indicates how to traverse the
+tree from parent to child beginning with the resolved root.</p>
+<p>Example: <cite>Calculator &gt; path:2|3|2|8|2</cite> - this locator looks for the “Calculator”
+window, then it looks for the 2nd direct child and then it looks for the 3rd one of
+the previous child and so on until it consumes the path completely. (indexes start
+with <cite>1</cite>)</p>
+<p>An alternative way to get the whole tree to explore it yourself would be to use the
+<code class="docutils literal notranslate"><span class="pre">Print</span> <span class="pre">Tree</span></code> keyword.</p>
 <p><strong>Keyboard and mouse</strong></p>
 <p>Keys for the keyboard actions are given using <code class="docutils literal notranslate"><span class="pre">uiautomation</span></code> specification.</p>
 <p>Special keys which are given within <cite>{}</cite> syntax.</p>
@@ -796,7 +822,7 @@ down before they are all released up.</p>
 <p>Most common, and recommended by Microsoft, inspector tool for Windows is <a class="reference external" href="https://accessibilityinsights.io/">Accessibility Insights</a> that
 can be installed separately. Other options are tools <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects">Inspect Object</a>  and <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify">UI Automation Verify</a>, which
 can be accessed by installing Windows SDK.</p>
-<p>A more programmatic approach is to run <cite>Print Tree    log_as_warnings=${True}</cite>
+<p>A more programmatic approach is to run <code class="docutils literal notranslate"><span class="pre">Print</span> <span class="pre">Tree</span>&#160;&#160;&#160; <span class="pre">log_as_warnings=${True}</span></code>
 keyword and then observe in the logs the found elements structure starting from
 Desktop as root. (refer to keyword’s documentation for more details)</p>
 <p><strong>Recording</strong></p>
