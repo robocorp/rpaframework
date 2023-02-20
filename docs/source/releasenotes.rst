@@ -10,8 +10,8 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-20 Feb 2023
------------
+22.0.0 - 20 Feb 2023
+--------------------
 
 .. warning::
   **Breaking** change release.
@@ -29,6 +29,9 @@ Release notes
   meant for the attended robots into separate packages. Added benefit is that will reduce the package size for the 
  ``rpaframework`` package.
 
+  Please read `the migration guide <https://github.com/robocorp/rpaframework/blob/master/packages/assistant/docs/Migration-Guide.md>`_ 
+  on how to move from **RPA.Dialogs** to **RPA.Assistant**.
+ 
 Other changes included in the release:
 
 - Library **RPA.Windows** (``rpaframework-windows`` **7.1.0**; :pr:`840`):
