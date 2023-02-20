@@ -45,6 +45,8 @@ Other changes included in the release:
 - Library **RPA.Robocorp.Process** (:issue:`845`): Host of the Process API should use the host 
   from a environment variable (`RC_API_PROCESS_HOST`) if that is available.
 
+- Script **use-robocorp-vault** maximum token validity time has been lowered to 20 hours.
+
 20 Feb 2023
 -----------
 - Library **RPA.Assistant**
