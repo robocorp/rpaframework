@@ -36,7 +36,6 @@ packages = [
 python = "^3.7"
 docutils = "*"
 rpaframework-core = "^10.2.0"
-rpaframework-dialogs = "^4.0.0"
 rpaframework-pdf = "^7.0.1"
 rpaframework-windows = { version = "^7.1.0", platform = "win32" }
 jsonpath-ng = "^1.5.2"

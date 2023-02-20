@@ -492,7 +492,7 @@ testing = ["flake8 (<5)", "flufl.flake8", "importlib-resources (>=1.3)", "packag
 
 [[package]]
 name = "importlib-resources"
-version = "5.10.2"
+version = "5.12.0"
 description = "Read resources from Python packages"
 category = "main"
 optional = false
@@ -928,14 +928,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "proxy-tools"
-version = "0.1.0"
-description = "Proxy Implementation"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "psutil"
 version = "5.9.4"
 description = "Cross-platform lib for process and system monitoring in Python."
@@ -1143,55 +1135,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "pyqt5"
-version = "5.15.9"
-description = "Python bindings for the Qt cross platform application toolkit"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-PyQt5-Qt5 = ">=5.15.2"
-PyQt5-sip = ">=12.11,<13"
-
-[[package]]
-name = "pyqt5-qt5"
-version = "5.15.2"
-description = "The subset of a Qt installation needed by PyQt5."
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
-name = "pyqt5-sip"
-version = "12.11.1"
-description = "The sip module support for PyQt5"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[[package]]
-name = "pyqtwebengine"
-version = "5.15.6"
-description = "Python bindings for the Qt WebEngine framework"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-PyQt5 = ">=5.15.4"
-PyQt5-sip = ">=12.11,<13"
-PyQtWebEngine-Qt5 = ">=5.15.0"
-
-[[package]]
-name = "pyqtwebengine-qt5"
-version = "5.15.2"
-description = "The subset of a Qt installation needed by PyQtWebEngine."
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "pyrsistent"
 version = "0.19.3"
 description = "Persistent/Functional/Immutable data structures"
@@ -1348,24 +1291,6 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 tzdata = {version = "*", markers = "python_version >= \"3.6\""}
 
 [[package]]
-name = "pywebview"
-version = "3.6.3"
-description = "Build GUI for your Python program with JavaScript, HTML, and CSS."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-proxy-tools = "*"
-
-[package.extras]
-cef = ["cefpython3"]
-gtk = ["PyGObject"]
-pyside2 = ["PySide2", "QtPy"]
-pyside6 = ["PySide6", "QtPy"]
-qt = ["PyQt5", "QtPy", "pyqtwebengine"]
-
-[[package]]
 name = "pywin32"
 version = "303"
 description = "Python for Window Extensions"
@@ -1484,19 +1409,6 @@ python-versions = "*"
 docutils = ">=0.11,<1.0"
 
 [[package]]
-name = "robocorp-dialog"
-version = "0.5.3"
-description = "Dialog for querying user input"
-category = "main"
-optional = false
-python-versions = ">=3.6.2,<4.0.0"
-
-[package.dependencies]
-PyQt5 = {version = ">=5.15.2,<6.0.0", markers = "sys_platform == \"linux\""}
-PyQtWebEngine = {version = ">=5.15.2,<6.0.0", markers = "sys_platform == \"linux\""}
-pywebview = {version = "3.6.3", markers = "sys_platform == \"linux\""}
-
-[[package]]
 name = "robotframework"
 version = "5.0.1"
 description = "Generic automation framework for acceptance testing and robotic process automation (RPA)"
@@ -1517,7 +1429,7 @@ robotframework = ">=3.2.2,<4.0.1 || >4.0.1,<6.0.0"
 
 [[package]]
 name = "robotframework-pythonlibcore"
-version = "4.1.0"
+version = "4.1.2"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
 category = "main"
 optional = false
@@ -1592,19 +1504,6 @@ pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" a
 selenium = ">=4.4.0,<5.0.0"
 uiautomation = {version = ">=2.0.15,<3.0.0", markers = "sys_platform == \"win32\""}
 webdriver-manager = ">=3.8.3,<4.0.0"
-
-[[package]]
-name = "rpaframework-dialogs"
-version = "4.0.2"
-description = "Dialogs library of RPA Framework"
-category = "main"
-optional = false
-python-versions = ">=3.7,<4.0"
-
-[package.dependencies]
-robocorp-dialog = ">=0.5.3,<0.6.0"
-robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
-rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
@@ -2211,7 +2110,7 @@ xmlsec = ["xmlsec (>=0.6.1)"]
 
 [[package]]
 name = "zipp"
-version = "3.13.0"
+version = "3.14.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
@@ -2224,7 +2123,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "e130174dcf4c9384fd4a0911f9ec48c1f8556510f9083e57cdcad7dd0b21fe83"
+content-hash = "c09313f3a9c1eb36e5303cb017749477fb67d8a749518e8a3db2b37f9ddf0334"
 
 [metadata.files]
 alabaster = [
@@ -2629,8 +2528,8 @@ importlib-metadata = [
     {file = "importlib_metadata-4.13.0.tar.gz", hash = "sha256:dd0173e8f150d6815e098fd354f6414b0f079af4644ddfe90c71e2fc6174346d"},
 ]
 importlib-resources = [
-    {file = "importlib_resources-5.10.2-py3-none-any.whl", hash = "sha256:7d543798b0beca10b6a01ac7cafda9f822c54db9e8376a6bf57e0cbd74d486b6"},
-    {file = "importlib_resources-5.10.2.tar.gz", hash = "sha256:e4a96c8cc0339647ff9a5e0550d9f276fc5a01ffa276012b58ec108cfd7b8484"},
+    {file = "importlib_resources-5.12.0-py3-none-any.whl", hash = "sha256:7b1deeebbf351c7578e09bf2f63fa2ce8b5ffec296e0d349139d43cca061a81a"},
+    {file = "importlib_resources-5.12.0.tar.gz", hash = "sha256:4be82589bf5c1d7999aedf2a45159d10cb3ca4f19b2271f8792bc8e6da7b22f6"},
 ]
 iniconfig = [
     {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
@@ -2938,6 +2837,13 @@ pillow = [
     {file = "Pillow-9.4.0-1-cp39-cp39-macosx_10_10_x86_64.whl", hash = "sha256:b8c2f6eb0df979ee99433d8b3f6d193d9590f735cf12274c108bd954e30ca858"},
     {file = "Pillow-9.4.0-1-pp38-pypy38_pp73-macosx_10_10_x86_64.whl", hash = "sha256:b70756ec9417c34e097f987b4d8c510975216ad26ba6e57ccb53bc758f490dab"},
     {file = "Pillow-9.4.0-1-pp39-pypy39_pp73-macosx_10_10_x86_64.whl", hash = "sha256:43521ce2c4b865d385e78579a082b6ad1166ebed2b1a2293c3be1d68dd7ca3b9"},
+    {file = "Pillow-9.4.0-2-cp310-cp310-macosx_10_10_x86_64.whl", hash = "sha256:9d9a62576b68cd90f7075876f4e8444487db5eeea0e4df3ba298ee38a8d067b0"},
+    {file = "Pillow-9.4.0-2-cp311-cp311-macosx_10_10_x86_64.whl", hash = "sha256:87708d78a14d56a990fbf4f9cb350b7d89ee8988705e58e39bdf4d82c149210f"},
+    {file = "Pillow-9.4.0-2-cp37-cp37m-macosx_10_10_x86_64.whl", hash = "sha256:8a2b5874d17e72dfb80d917213abd55d7e1ed2479f38f001f264f7ce7bae757c"},
+    {file = "Pillow-9.4.0-2-cp38-cp38-macosx_10_10_x86_64.whl", hash = "sha256:83125753a60cfc8c412de5896d10a0a405e0bd88d0470ad82e0869ddf0cb3848"},
+    {file = "Pillow-9.4.0-2-cp39-cp39-macosx_10_10_x86_64.whl", hash = "sha256:9e5f94742033898bfe84c93c831a6f552bb629448d4072dd312306bab3bd96f1"},
+    {file = "Pillow-9.4.0-2-pp38-pypy38_pp73-macosx_10_10_x86_64.whl", hash = "sha256:013016af6b3a12a2f40b704677f8b51f72cb007dac785a9933d5c86a72a7fe33"},
+    {file = "Pillow-9.4.0-2-pp39-pypy39_pp73-macosx_10_10_x86_64.whl", hash = "sha256:99d92d148dd03fd19d16175b6d355cc1b01faf80dae93c6c3eb4163709edc0a9"},
     {file = "Pillow-9.4.0-cp310-cp310-macosx_10_10_x86_64.whl", hash = "sha256:2968c58feca624bb6c8502f9564dd187d0e1389964898f5e9e1fbc8533169157"},
     {file = "Pillow-9.4.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:c5c1362c14aee73f50143d74389b2c158707b4abce2cb055b7ad37ce60738d47"},
     {file = "Pillow-9.4.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bd752c5ff1b4a870b7661234694f24b1d2b9076b8bf337321a814c612665f343"},
@@ -3017,9 +2923,6 @@ pluggy = [
 ply = [
     {file = "ply-3.11-py2.py3-none-any.whl", hash = "sha256:096f9b8350b65ebd2fd1346b12452efe5b9607f7482813ffca50c22722a807ce"},
     {file = "ply-3.11.tar.gz", hash = "sha256:00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3"},
-]
-proxy-tools = [
-    {file = "proxy_tools-0.1.0.tar.gz", hash = "sha256:ccb3751f529c047e2d8a58440d86b205303cf0fe8146f784d1cbcd94f0a28010"},
 ]
 psutil = [
     {file = "psutil-5.9.4-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:c1ca331af862803a42677c120aff8a814a804e09832f166f226bfd22b56feee8"},
@@ -3124,55 +3027,6 @@ pypdf = [
 pyperclip = [
     {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
 ]
-pyqt5 = [
-    {file = "PyQt5-5.15.9-cp37-abi3-macosx_10_13_x86_64.whl", hash = "sha256:883ba5c8a348be78c8be6a3d3ba014c798e679503bce00d76c666c2dc6afe828"},
-    {file = "PyQt5-5.15.9-cp37-abi3-manylinux_2_17_x86_64.whl", hash = "sha256:dd5ce10e79fbf1df29507d2daf99270f2057cdd25e4de6fbf2052b46c652e3a5"},
-    {file = "PyQt5-5.15.9-cp37-abi3-win32.whl", hash = "sha256:e45c5cc15d4fd26ab5cb0e5cdba60691a3e9086411f8e3662db07a5a4222a696"},
-    {file = "PyQt5-5.15.9-cp37-abi3-win_amd64.whl", hash = "sha256:e030d795df4cbbfcf4f38b18e2e119bcc9e177ef658a5094b87bb16cac0ce4c5"},
-    {file = "PyQt5-5.15.9.tar.gz", hash = "sha256:dc41e8401a90dc3e2b692b411bd5492ab559ae27a27424eed4bd3915564ec4c0"},
-]
-pyqt5-qt5 = [
-    {file = "PyQt5_Qt5-5.15.2-py3-none-macosx_10_13_intel.whl", hash = "sha256:76980cd3d7ae87e3c7a33bfebfaee84448fd650bad6840471d6cae199b56e154"},
-    {file = "PyQt5_Qt5-5.15.2-py3-none-manylinux2014_x86_64.whl", hash = "sha256:1988f364ec8caf87a6ee5d5a3a5210d57539988bf8e84714c7d60972692e2f4a"},
-    {file = "PyQt5_Qt5-5.15.2-py3-none-win32.whl", hash = "sha256:9cc7a768b1921f4b982ebc00a318ccb38578e44e45316c7a4a850e953e1dd327"},
-    {file = "PyQt5_Qt5-5.15.2-py3-none-win_amd64.whl", hash = "sha256:750b78e4dba6bdf1607febedc08738e318ea09e9b10aea9ff0d73073f11f6962"},
-]
-pyqt5-sip = [
-    {file = "PyQt5_sip-12.11.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:a40a39a6136a90e10c31510295c2be924564fc6260691501cdde669bdc5edea5"},
-    {file = "PyQt5_sip-12.11.1-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:19b06164793177146c7f7604fe8389f44221a7bde196f2182457eb3e4229fa88"},
-    {file = "PyQt5_sip-12.11.1-cp310-cp310-win32.whl", hash = "sha256:3afb1d1c07adcfef5c8bb12356a2ec2ec094f324af4417735d43b1ecaf1bb1a4"},
-    {file = "PyQt5_sip-12.11.1-cp310-cp310-win_amd64.whl", hash = "sha256:54dad6c2e5dab14e46f6822a889bbb1515bbd2061762273af10d26566d649bd9"},
-    {file = "PyQt5_sip-12.11.1-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:7218f6a1cefeb0b2fc26b89f15011f841aa4cd77786ccd863bf9792347fa38a8"},
-    {file = "PyQt5_sip-12.11.1-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:6b1113538082a7dd63b908587f61ce28ba4c7b8341e801fdf305d53a50a878ab"},
-    {file = "PyQt5_sip-12.11.1-cp311-cp311-win32.whl", hash = "sha256:ac5f7ed06213d3bb203e33037f7c1a0716584c21f4f0922dcc044750e3659b80"},
-    {file = "PyQt5_sip-12.11.1-cp311-cp311-win_amd64.whl", hash = "sha256:4f0497e2f5eeaea9f5a67b0e55c501168efa86df4e53aace2a46498b87bc55c1"},
-    {file = "PyQt5_sip-12.11.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:b355d56483edc79dcba30be947a6b700856bb74beb90539e14cc4d92b9bad152"},
-    {file = "PyQt5_sip-12.11.1-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:dd163d9cffc4a56ebb9dd6908c0f0cb0caff8080294d41f4fb60fc3be63ca434"},
-    {file = "PyQt5_sip-12.11.1-cp37-cp37m-win32.whl", hash = "sha256:b714f550ea6ddae94fd7acae531971e535f4a4e7277b62eb44e7c649cf3f03d0"},
-    {file = "PyQt5_sip-12.11.1-cp37-cp37m-win_amd64.whl", hash = "sha256:d09b2586235deab7a5f2e28e4bde9a70c0b3730fa84f2590804a9932414136a3"},
-    {file = "PyQt5_sip-12.11.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:9a6f9c058564d0ac573561036299f54c452ae78b7d2a65d7c2d01685e6dca50d"},
-    {file = "PyQt5_sip-12.11.1-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:fc920c0e0d5050474d2d6282b478e4957548bf1dce58e1b0678914514dc70064"},
-    {file = "PyQt5_sip-12.11.1-cp38-cp38-win32.whl", hash = "sha256:3358c584832f0ac9fd1ad3623d8a346c705f43414df1fcd0cb285a6ef51fec08"},
-    {file = "PyQt5_sip-12.11.1-cp38-cp38-win_amd64.whl", hash = "sha256:f9691c6f4d899ca762dd54442a1be158c3e52017f583183da6ef37d5bae86595"},
-    {file = "PyQt5_sip-12.11.1-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:0bc81cb9e171d29302d393775f95cfa01b7a15f61b199ab1812976e5c4cb2cb9"},
-    {file = "PyQt5_sip-12.11.1-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:b077fb4383536f51382f5516f0347328a4f338c6ccc4c268cc358643bef1b838"},
-    {file = "PyQt5_sip-12.11.1-cp39-cp39-win32.whl", hash = "sha256:5c152878443c3e951d5db7df53509d444708dc06a121c267b548146be06b87f8"},
-    {file = "PyQt5_sip-12.11.1-cp39-cp39-win_amd64.whl", hash = "sha256:bd935cc46dfdbb89c21042c1db2e46a71f25693af57272f146d6d9418e2934f1"},
-    {file = "PyQt5_sip-12.11.1.tar.gz", hash = "sha256:97d3fbda0f61edb1be6529ec2d5c7202ae83aee4353e4b264a159f8c9ada4369"},
-]
-pyqtwebengine = [
-    {file = "PyQtWebEngine-5.15.6-cp37-abi3-macosx_10_13_x86_64.whl", hash = "sha256:8c2fce2458e7b781d2cc3070b336f67d39a717c5eef2f823cae501d5d9f200de"},
-    {file = "PyQtWebEngine-5.15.6-cp37-abi3-manylinux1_x86_64.whl", hash = "sha256:67110bc9d5b7e633dcc242b8228cc54b1532abc039fdf534b383ac40a60b7ba3"},
-    {file = "PyQtWebEngine-5.15.6-cp37-abi3-win32.whl", hash = "sha256:a90c945606683a53c9b264a7509943fd835d50366d535c22ddde952f23d35748"},
-    {file = "PyQtWebEngine-5.15.6-cp37-abi3-win_amd64.whl", hash = "sha256:dbd1a768877040050d3159270f5ab95758af4954c4cb4e54195bd3cad519d5b6"},
-    {file = "PyQtWebEngine-5.15.6.tar.gz", hash = "sha256:ae241ef2a61c782939c58b52c2aea53ad99b30f3934c8358d5e0a6ebb3fd0721"},
-]
-pyqtwebengine-qt5 = [
-    {file = "PyQtWebEngine_Qt5-5.15.2-py3-none-macosx_10_13_intel.whl", hash = "sha256:bc7b1fd1f4f8138d59b0b0245d601fb2c5c0aa1e1e7e853b713e52a3165d147e"},
-    {file = "PyQtWebEngine_Qt5-5.15.2-py3-none-manylinux2014_x86_64.whl", hash = "sha256:ec2acb1780c0124ef060c310e00ca701f388d8b6c35bba9127f7a6f0dc536f77"},
-    {file = "PyQtWebEngine_Qt5-5.15.2-py3-none-win32.whl", hash = "sha256:9e80b408d8de09d4e708d5d84c3ceaf3603292ff8f5e566ae44bb0320fa59c33"},
-    {file = "PyQtWebEngine_Qt5-5.15.2-py3-none-win_amd64.whl", hash = "sha256:24231f19e1595018779977de6722b5c69f3d03f34a5f7574ff21cd1e764ef76d"},
-]
 pyrsistent = [
     {file = "pyrsistent-0.19.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:20460ac0ea439a3e79caa1dbd560344b64ed75e85d8703943e0b66c2a6150e4a"},
     {file = "pyrsistent-0.19.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4c18264cb84b5e68e7085a43723f9e4c1fd1d935ab240ce02c0324a8e01ccb64"},
@@ -3259,10 +3113,6 @@ pytz-deprecation-shim = [
     {file = "pytz_deprecation_shim-0.1.0.post0-py2.py3-none-any.whl", hash = "sha256:8314c9692a636c8eb3bda879b9f119e350e93223ae83e70e80c31675a0fdc1a6"},
     {file = "pytz_deprecation_shim-0.1.0.post0.tar.gz", hash = "sha256:af097bae1b616dde5c5744441e2ddc69e74dfdcb0c263129610d85b87445a59d"},
 ]
-pywebview = [
-    {file = "pywebview-3.6.3-py3-none-any.whl", hash = "sha256:4316aec32801a48a7a1ec6f70575c0b69854d76b090033530b70581ed3d545d7"},
-    {file = "pywebview-3.6.3.tar.gz", hash = "sha256:edc82f0ce79f6514411c32f7057b2d5f99f1e9f6b15a373c3c1bf403b327b093"},
-]
 pywin32 = [
     {file = "pywin32-303-cp310-cp310-win32.whl", hash = "sha256:6fed4af057039f309263fd3285d7b8042d41507343cd5fa781d98fcc5b90e8bb"},
     {file = "pywin32-303-cp310-cp310-win_amd64.whl", hash = "sha256:51cb52c5ec6709f96c3f26e7795b0bf169ee0d8395b2c1d7eb2c029a5008ed51"},
@@ -3339,10 +3189,6 @@ requests-toolbelt = [
 restructuredtext-lint = [
     {file = "restructuredtext_lint-1.4.0.tar.gz", hash = "sha256:1b235c0c922341ab6c530390892eb9e92f90b9b75046063e047cacfb0f050c45"},
 ]
-robocorp-dialog = [
-    {file = "robocorp-dialog-0.5.3.tar.gz", hash = "sha256:bad97f722fe546e0d15ff91a111c0bb674c614c50557fdc0265c8cab9cd14fcf"},
-    {file = "robocorp_dialog-0.5.3-py3-none-any.whl", hash = "sha256:df0d1264e71c3c9005b7c40af6ac23ca53ad758beefe02e579543b2521de24d3"},
-]
 robotframework = [
     {file = "robotframework-5.0.1-py3-none-any.whl", hash = "sha256:2d2072cf9ec807e820bf27e5f71240e715e37691c9ba930a59a71d5c0fd61998"},
     {file = "robotframework-5.0.1.zip", hash = "sha256:cf5dc59777ed9d8c3e1e91fb4403454890242867735681f22f4f22dbb2a20fc8"},
@@ -3352,8 +3198,8 @@ robotframework-docgen = [
     {file = "robotframework_docgen-0.15.0-py3-none-any.whl", hash = "sha256:9678da187f7cb49cd307823d1e2f35f724920378e0be98ee03d0a41a59844ed6"},
 ]
 robotframework-pythonlibcore = [
-    {file = "robotframework-pythonlibcore-4.1.0.tar.gz", hash = "sha256:b677313e2015d28a8bb2bbeb1d98d46e8e850b213113523a7cc9a7ca85016187"},
-    {file = "robotframework_pythonlibcore-4.1.0-py2.py3-none-any.whl", hash = "sha256:d67390fc9ab82ee03ff7af9a0347c2c3759933a796920703d9447493650f9ca9"},
+    {file = "robotframework-pythonlibcore-4.1.2.tar.gz", hash = "sha256:308c0f4afeed51d913f4883cd9eb2b002f4459a20d76b9c942a42cae0296ea26"},
+    {file = "robotframework_pythonlibcore-4.1.2-py2.py3-none-any.whl", hash = "sha256:1b1c1bb7787d993e4c9643d2132302ff8a75cd7bdbefb5b3c293a179f2aaf17e"},
 ]
 robotframework-requests = [
     {file = "robotframework-requests-0.9.4.tar.gz", hash = "sha256:e00943b8526c38bed5c3c661c813ec9d5a2106961bd91da0068712c2a0d49e82"},
@@ -3374,10 +3220,6 @@ robotframework-seleniumtestability = [
 rpaframework-core = [
     {file = "rpaframework_core-10.3.1-py3-none-any.whl", hash = "sha256:fc130ba2aac52dd39221e7c8480690eb1eae762cbc6d51e2246d38570f79d305"},
     {file = "rpaframework_core-10.3.1.tar.gz", hash = "sha256:c34a130245336a640096f660f5330d3ac8099575a1099eef24f461960a367e2e"},
-]
-rpaframework-dialogs = [
-    {file = "rpaframework_dialogs-4.0.2-py3-none-any.whl", hash = "sha256:0d4ea9718efb38f1b2390240fb71aafcc56f2f8c004bcba5580e794d16445f85"},
-    {file = "rpaframework_dialogs-4.0.2.tar.gz", hash = "sha256:8ebdeecc074c13b781f1e0a5606191622665d457855faec74ebe2425cd917d89"},
 ]
 rpaframework-pdf = [
     {file = "rpaframework_pdf-7.0.1-py3-none-any.whl", hash = "sha256:d18cee21b77aeef98ce4b236253eb594b2670314665802c7f67f25e0ce653be5"},
@@ -3643,6 +3485,6 @@ zeep = [
     {file = "zeep-4.2.1.tar.gz", hash = "sha256:72093acfdb1d8360ed400869b73fbf1882b95c4287f798084c42ee0c1ff0e425"},
 ]
 zipp = [
-    {file = "zipp-3.13.0-py3-none-any.whl", hash = "sha256:e8b2a36ea17df80ffe9e2c4fda3f693c3dad6df1697d3cd3af232db680950b0b"},
-    {file = "zipp-3.13.0.tar.gz", hash = "sha256:23f70e964bc11a34cef175bc90ba2914e1e4545ea1e3e2f67c079671883f9cb6"},
+    {file = "zipp-3.14.0-py3-none-any.whl", hash = "sha256:188834565033387710d046e3fe96acfc9b5e86cbca7f39ff69cf21a4128198b7"},
+    {file = "zipp-3.14.0.tar.gz", hash = "sha256:9e5421e176ef5ab4c0ad896624e87a7b2f07aca746c9b2aa305952800cb8eecb"},
 ]

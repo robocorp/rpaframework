@@ -13,6 +13,9 @@ Release notes
 
 - Library **RPA.Tables** (:issue:`821`): Allow custom dialects in csv files.
 
+- Library **RPA.Robocorp.Process** (:issue:`845`): Host of the Process API should use the host 
+  from a environment variable (`RC_API_PROCESS_HOST`) if that is available.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
