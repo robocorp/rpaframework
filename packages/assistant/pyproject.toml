@@ -75,3 +75,9 @@ build-backend = "poetry.masonry.api"
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-report term-missing --cov-branch"
 testpaths = ["tests"]
+
+filterwarnings = [
+  # Ignore `pkg_resources.declare_namespace` that gets raised by dependencies
+  # when running pytest
+  "ignore:.*pkg_resources\\.declare_namespace.*:DeprecationWarning",
+]
