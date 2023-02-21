@@ -145,6 +145,7 @@ class Assistant:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
+        os.environ["FLET_LOG_LEVEL"] = "warning"
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
         self._required_fields: Set[str] = set()
