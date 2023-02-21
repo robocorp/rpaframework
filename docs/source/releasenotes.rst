@@ -10,6 +10,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+21 Feb 2023
+-----------
+
+**RPA.Assistant** (``rpaframework-assistant`` **1.2.3**):
+    - Fix ``results.key`` access not working as documented
+
+
 22.0.0 - 20 Feb 2023
 --------------------
 
@@ -50,11 +57,11 @@ Other changes included in the release:
 20 Feb 2023
 -----------
 - Library **RPA.Assistant**
+    - **1.2.2**
+        - Fix package on Python 3.7
     - **1.2.1**
         - Fix ``Add Slider`` ``default`` parameter not working if no user input was done
 
-    - **1.2.2**
-        - Fix package on Python 3.7
 
 17 Feb 2023
 -----------
