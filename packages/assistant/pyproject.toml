@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-assistant"
-version = "1.2.2"
+version = "1.2.3"
 description = "Interactive UI library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -75,3 +75,9 @@ build-backend = "poetry.masonry.api"
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-report term-missing --cov-branch"
 testpaths = ["tests"]
+
+filterwarnings = [
+  # Ignore `pkg_resources.declare_namespace` that gets raised by dependencies
+  # when running pytest
+  "ignore:.*pkg_resources\\.declare_namespace.*:DeprecationWarning",
+]
