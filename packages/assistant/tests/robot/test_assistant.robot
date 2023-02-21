@@ -66,8 +66,6 @@ Open Website
     Open Available Browser    robocorp.com
 
 Control Buttons
-    Set Log Level    TRACE
-
     Add Heading    UI elements for testing
     Add Slider    name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
 
