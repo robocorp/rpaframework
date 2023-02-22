@@ -6,9 +6,14 @@ Release notes
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+22 Feb 2023
+-----------
+**RPA.Assistant** (``rpaframework-assistant`` **1.2.4**):
+    - Reduce unnecessary debug logging from Flet that didn't obey log level
+
 
 21 Feb 2023
 -----------
