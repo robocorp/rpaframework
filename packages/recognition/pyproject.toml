@@ -29,7 +29,7 @@ packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-rpaframework-core = "^10.0.0"
+rpaframework-core = "^10.4.0"
 pillow = "^9.1.1"
 opencv-python-headless = "^4.5.2, <4.6.0"
 numpy = "^1.19.3"
