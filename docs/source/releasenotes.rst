@@ -5,16 +5,80 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+22 Feb 2023
+-----------
+**RPA.Assistant** (``rpaframework-assistant`` **1.2.4**):
+    - Reduce unnecessary debug logging from Flet that didn't obey log level
+
+
+21 Feb 2023
+-----------
+
+**RPA.Assistant** (``rpaframework-assistant`` **1.2.3**):
+    - Fix ``results.key`` access not working as documented
+
+
+22.0.0 - 20 Feb 2023
+--------------------
+
+.. warning::
+  **Breaking** change release.
+
+- The ``rpaframework-dialogs`` package is no longer part of the ``rpaframework`` package. Reason for this
+  change is the deprecation of the **RPA.Dialogs** library as we are recommending the **RPA.Assistant**
+  library for building attended Robots.
+
+  This means that **RPA.Dialogs** library can be still used, but it needs to be separately added into the **pip**
+  section of the **conda.yaml** (``rpaframework-dialogs==4.0.2``).
+
+  The **RPA.Assistant** library also requires separate package installation of ``rpaframework-assistant==1.2.1``.
+
+  We see that unattended robots are a majority of the process run cases and thus it makes sense to move libraries
+  meant for the attended robots into separate packages. Added benefit is that will reduce the package size for the 
+  ``rpaframework`` package.
+
+  Please read `the migration guide <https://github.com/robocorp/rpaframework/blob/master/packages/assistant/docs/Migration-Guide.md>`_ 
+  on how to move from **RPA.Dialogs** to **RPA.Assistant**.
+ 
+Other changes included in the release:
+
+- Library **RPA.Windows** (``rpaframework-windows`` **7.1.0**; :pr:`840`):
+
+  - Add support for the `path:` strategy in locators. (index-based element tree search)
+  - Enhance ``Print Tree`` keyword with better element tree logging and the ability to
+    return such structure.
+
+- Library **RPA.Tables** (:issue:`821`): Allow custom dialects in csv files.
+
+- Library **RPA.Robocorp.Process** (:issue:`845`): Host of the Process API should use the host 
+  from a environment variable (`RC_API_PROCESS_HOST`) if that is available.
+
+- Script **use-robocorp-vault** maximum token validity time has been lowered to 20 hours.
+
+20 Feb 2023
+-----------
+- Library **RPA.Assistant**
+    - **1.2.2**
+        - Fix package on Python 3.7
+    - **1.2.1**
+        - Fix ``Add Slider`` ``default`` parameter not working if no user input was done
+
+
+17 Feb 2023
+-----------
+- Library **RPA.Assistant** (``rpaframework-assistant`` **1.2.0**):
+    - Add ``default`` argument to ``Add Slider`` keyword to set default of slider
+
 - Library **RPA.Assistant** (:issue:`838`; :issue:`828`; ``rpaframework-assistant`` **1.1.0**):
     - Bugfixes for dialog clearing
     - New ``Add Slider`` keyword to create sliders for numeric inputs
     - New ``default`` and ``required`` arguments for ``Add Text Input``
     - Removing ``None`` values from the results so make value checking easier
 
-- Library **RPA.Tables** (:issue: '821'): allow custom dialects in csv files
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 21.1.1 - 15 Feb 2023
 --------------------

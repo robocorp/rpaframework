@@ -5,7 +5,8 @@ import platform
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal, Set
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Set
+from typing_extensions import Literal
 
 import flet
 from flet import (
@@ -35,6 +36,7 @@ from flet.dropdown import Option
 from robot.api.deco import keyword, library
 from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+from robot.utils.dotdict import DotDict
 
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.types import Icon, Options, Result, Size, Location
@@ -143,6 +145,7 @@ class Assistant:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
+        os.environ["FLET_LOG_LEVEL"] = "warning"
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
         self._required_fields: Set[str] = set()
@@ -988,10 +991,16 @@ class Assistant:
         self._client.display_flet_window(
             title, height, width, on_top, location, timeout
         )
-        results = self._client.results
+        results = self._get_results()
+
         if clear:
             self.clear_dialog()
+
         return results
+
+    def _get_results(self) -> DotDict:
+        results = self._client.results
+        return DotDict(**results)
 
     @keyword(tags=["dialog"])
     def ask_user(self, timeout: int = 180, **options: Any) -> Result:
@@ -1170,10 +1179,11 @@ class Assistant:
     def add_slider(
         self,
         name: str,
-        slider_min=0,
-        slider_max=100,
+        slider_min: Union[int, float] = 0,
+        slider_max: Union[int, float] = 100,
         thumb_text="{value}",
         steps: Optional[int] = None,
+        default: Optional[Union[int, float]] = None,
     ):
         """Add a slider input.
 
@@ -1188,6 +1198,7 @@ class Assistant:
                             For integer output, specify a steps value where all the
                             steps will be integers, or implement rounding when
                             retrieving the result.
+        :param default:     Default value for the slider. Has to be between min and max
 
         .. code-block:: robotframework
 
@@ -1200,7 +1211,22 @@ class Assistant:
 
 
         """
+        if default:
+            default = float(default)
+
+            # Is this even necessary?
+            if default.is_integer():
+                default = int(default)
+
+            if slider_min > default or slider_max < default:
+                raise ValueError(f"Slider {name} had an out of bounds default value.")
+            self._client.results[name] = default
+
         slider = Slider(
-            min=slider_min, max=slider_max, divisions=steps, label=thumb_text
+            min=slider_min,
+            max=slider_max,
+            divisions=steps,
+            label=thumb_text,
+            value=default,
         )
         self._client.add_element(name=name, element=slider)

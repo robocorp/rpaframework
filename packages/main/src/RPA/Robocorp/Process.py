@@ -1,6 +1,7 @@
 from enum import Enum
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Optional, Dict, List, Union, Any, Tuple
 
@@ -41,12 +42,15 @@ def to_configuration_type(value: Any) -> ConfigurationType:
 class Process:
     """A library for interacting with Control Room (CR) Process API endpoints.
 
-    See `Operating Workforce`_ for information about process run, step run and work
+    See `Unattended processes`_ for information about process run, step run and work
     item states.
 
     See `APIs and webhooks`_ for information about Control Room APIs.
 
-    .. _Operating Workforce: https://robocorp.com/docs/control-room/operating-workforce
+    The Process API endpoint is defined by `RC_API_PROCESS_HOST` environment variable,
+    which is available during Robocorp Workforce Agent runs.
+
+    .. _Unattended processes: https://robocorp.com/docs/control-room/unattended
     .. _APIs and webhooks: https://robocorp.com/docs/control-room/apis-and-webhooks
 
     **Examples**
@@ -225,8 +229,11 @@ class Process:
         )
         self.logger = logging.getLogger(__name__)
 
-        self.robocorp_api_server = kwargs.pop(
-            "robocorp_api_server", "https://api.eu1.robocorp.com/process-v1"
+        process_api_host_env = os.getenv(
+            "RC_API_PROCESS_HOST", "https://api.eu1.robocorp.com"
+        )
+        self.robocorp_api_endpoint = kwargs.pop(
+            "robocorp_api_server", f"{process_api_host_env}/process-v1"
         )
         self.set_credentials(workspace_id, process_id, workspace_api_key)
         self.http = HTTP()
@@ -281,7 +288,7 @@ class Process:
 
     @property
     def base_api(self) -> str:
-        return f"{self.robocorp_api_server}/workspaces/{self.workspace_id}"
+        return f"{self.robocorp_api_endpoint}/workspaces/{self.workspace_id}"
 
     def process_api(self, process_id: Optional[str] = None) -> str:
         pid = process_id or self.process_id
@@ -289,7 +296,7 @@ class Process:
 
     def workspace_api(self, workspace_id: Optional[str] = None) -> str:
         wid = workspace_id or self.workspace_id
-        return f"{self.robocorp_api_server}/workspaces/{wid}"
+        return f"{self.robocorp_api_endpoint}/workspaces/{wid}"
 
     @keyword(tags=["process", "post", "work item", "start"])
     def start_process(
