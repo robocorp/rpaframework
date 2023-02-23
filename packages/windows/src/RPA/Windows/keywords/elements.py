@@ -89,7 +89,7 @@ class ElementKeywords(LibraryContext):
         brothers_count = {}  # cache how many brothers are in total given a child
         structure = {}  # leveled flattened tree of controls
 
-        def GetChildren(ctrl: Control) -> Control:
+        def get_children(ctrl: Control) -> List[Control]:
             children = ctrl.GetChildren()
             children_count = len(children)
             for child in children:
@@ -108,7 +108,7 @@ class ElementKeywords(LibraryContext):
 
         for control, depth, children_remaining in auto.WalkTree(
             root_ctrl,
-            getChildren=GetChildren,
+            getChildren=get_children,
             includeTop=True,
             maxDepth=max_depth,
         ):
@@ -126,10 +126,10 @@ class ElementKeywords(LibraryContext):
                     control_str += f" [{capture_filename}]"
             space = " " * depth * 4
             child_pos = brothers_count[hash(control)] - children_remaining
-            control_log(f"{space}{depth + 1}-{child_pos}. ${control_str}")
+            control_log(f"{space}{depth}-{child_pos}. ${control_str}")
             if return_structure:
                 element = WindowsElement(control, locator)
-                structure.setdefault(depth + 1, []).append(element)
+                structure.setdefault(depth, []).append(element)
             image_idx += 1
 
         return structure if return_structure else None
