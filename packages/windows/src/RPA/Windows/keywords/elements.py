@@ -2,7 +2,7 @@ import inspect
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from RPA.core.windows.locators import Locator, WindowsElement
+from RPA.core.windows.locators import Locator, MatchObject, WindowsElement
 
 from RPA.Windows import utils
 from RPA.Windows.keywords import ActionNotPossible, LibraryContext, keyword
@@ -87,7 +87,8 @@ class ElementKeywords(LibraryContext):
             level will be returned if this is enabled.
         """
         brothers_count = {}  # cache how many brothers are in total given a child
-        structure = {}  # leveled flattened tree of controls
+        structure = {}  # flattened tree of elements by level
+        children_stack = [-1] * (max_depth + 1)
 
         def get_children(ctrl: Control) -> List[Control]:
             children = ctrl.GetChildren()
@@ -96,10 +97,16 @@ class ElementKeywords(LibraryContext):
                 brothers_count[hash(child)] = children_count
             return children
 
-        image_idx = 1
         target_elem = self.ctx.get_element(locator)
+        locator: Optional[Locator] = target_elem.locator
+        while locator:
+            if isinstance(locator, WindowsElement):
+                locator = locator.locator
+            else:  # finally, reached a string locator
+                break
         root_ctrl = target_elem.item
         brothers_count[hash(root_ctrl)] = 1  # the root is always singular here
+        image_idx = 1
         image_folder = None
         if capture_image_folder:
             image_folder = Path(capture_image_folder).expanduser().resolve()
@@ -113,6 +120,7 @@ class ElementKeywords(LibraryContext):
             maxDepth=max_depth,
         ):
             control_str = str(control)
+
             if image_folder:
                 capture_filename = f"{control.ControlType}_{image_idx}.png"
                 img_path = str(image_folder / capture_filename)
@@ -124,13 +132,25 @@ class ElementKeywords(LibraryContext):
                     )
                 else:
                     control_str += f" [{capture_filename}]"
+            image_idx += 1
+
             space = " " * depth * 4
             child_pos = brothers_count[hash(control)] - children_remaining
             control_log(f"{space}{depth}-{child_pos}. ${control_str}")
+
             if return_structure:
-                element = WindowsElement(control, locator)
+                children_stack[depth] = child_pos
+                path = MatchObject.PATH_SEP.join(
+                    str(pos) for pos in children_stack[1 : depth + 1]
+                )
+                if locator and path:
+                    control_locator = f"{locator} > path:{path}"
+                elif path:
+                    control_locator = f"path:{path}"
+                else:
+                    control_locator = locator
+                element = WindowsElement(control, control_locator)
                 structure.setdefault(depth, []).append(element)
-            image_idx += 1
 
         return structure if return_structure else None
 
