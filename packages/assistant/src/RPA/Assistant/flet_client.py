@@ -1,22 +1,15 @@
-import atexit
 from logging import getLogger
-import os
-import signal
 import time
 from collections import namedtuple
-from subprocess import Popen, SubprocessError
 from timeit import default_timer as timer
 from typing import Callable, Optional, Tuple, Union, List
 from typing_extensions import Literal
 
 import flet
-from flet import flet as ft
 from flet import Container, Page, ScrollMode
+from RPA.Assistant.background_flet import BackgroundFlet
 from flet.control_event import ControlEvent
-from flet.utils import is_windows, is_macos
 from RPA.Assistant.types import Location, Result
-
-from RPA.Assistant.utils import nix_get_pid
 
 
 def resolve_absolute_position(
@@ -42,47 +35,15 @@ class FletClient:
     """Class for wrapping flet operations"""
 
     def __init__(self) -> None:
-        atexit.register(self._cleanup)
         self.logger = getLogger(__name__)
         self.results: Result = {}
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
 
-        self._conn = None
         self._elements: Elements = Elements([], [])
         self._to_disable: List[flet.Control] = []
-        self._fvp: Optional[Popen] = None
 
-    def _cleanup(self) -> None:
-        # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146 # noqa: E501
-        if self._conn is not None:
-            self._conn.close()
-        if self._fvp is not None and not is_windows():
-            try:
-                fletd_pid = nix_get_pid("fletd")
-                self.logger.debug(f"Flet View process {self._fvp.pid}")
-                self.logger.debug(f"Fletd Server process {fletd_pid}")
-                os.kill(fletd_pid, signal.SIGKILL)
-            except (SubprocessError, OSError) as err:
-                self.logger.error(
-                    f"Unexpected error {err} when killing Flet subprocess"
-                )
-            except ValueError:
-                pass  # no leftover process found
-
-        # kill the graphical application on macOS,
-        # otherwise it can hang around after cleanup
-        if is_macos():
-            try:
-                fletd_app_pid = nix_get_pid("Flet")
-                self.logger.debug(f"Flet application process {fletd_app_pid}")
-                os.kill(fletd_app_pid, signal.SIGKILL)
-            except ValueError:
-                pass  # no leftover process found
-            except (SubprocessError, OSError) as err:
-                self.logger.error(
-                    f"Unexpected error {err} when killing Flet subprocess"
-                )
+        self._background_flet = BackgroundFlet()
 
     def _create_flet_target_function(
         self,
@@ -109,50 +70,26 @@ class FletClient:
                     page.window_left = coordinates[0]
                     page.window_top = coordinates[1]
             page.scroll = ScrollMode.AUTO
-            page.on_disconnect = lambda _: self._fvp.terminate()
+            page.on_disconnect = lambda _: self._background_flet.terminate()
             self.page = page
             self.update_elements()
 
         return inner_execute
-
-    def _create_flet_view(self, target):
-        # We access Flet internals because it is simplest way to control the specifics
-        # In the future we should migrate / ask for a stable API that fits our needs
-        # pylint: disable=protected-access
-        def on_session_created(conn, session_data):
-            page = Page(conn, session_data.sessionID)
-            conn.sessions[session_data.sessionID] = page
-            target(page)
-
-        if not self._conn:
-            self._conn = ft._connect_internal(
-                page_name="",
-                host=None,
-                port=0,
-                is_app=True,
-                permissions=None,
-                assets_dir="/",
-                upload_dir=None,
-                web_renderer="canvaskit",
-                route_url_strategy="hash",
-            )
-        self._conn.on_session_created = on_session_created
-        return ft._open_flet_view(self._conn.page_url, False)
 
     def _show_flet(  # noqa: C901
         self,
         target: Callable[[Page], None],
         timeout: int,
     ):
-        self._fvp = self._create_flet_view(target)
+        self._background_flet.start_flet_view(target)
         view_start_time = timer()
         try:
-            while not self._fvp.poll():
+            while self._background_flet.poll() is None:
                 if callable(self.pending_operation):
                     self.pending_operation()  # pylint: disable=not-callable
                     self.pending_operation = None
                 if timer() - view_start_time >= timeout:
-                    self._fvp.terminate()
+                    self._background_flet.terminate()
                     raise TimeoutException(
                         "Reached timeout while waiting for Assistant Dialog"
                     )
