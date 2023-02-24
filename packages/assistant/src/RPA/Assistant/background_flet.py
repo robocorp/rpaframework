@@ -4,13 +4,16 @@ import os
 import signal
 from logging import getLogger
 from typing import Optional
+import threading
 
 from flet import flet as ft
 from flet import Page
-from flet.connection import Connection
+from flet_core.connection import Connection
 from flet.utils import is_windows, is_macos
 
 from RPA.Assistant.utils import nix_get_pid
+
+_connect_internal_sync = ft.__connect_internal_sync
 
 
 class BackgroundFlet:
@@ -50,6 +53,54 @@ class BackgroundFlet:
                     f"Unexpected error {err} when killing Flet subprocess"
                 )
 
+    def _app_sync(
+        self,
+        target,
+        name="",
+        host=None,
+        port=0,
+        view: ft.AppViewer = ft.FLET_APP,
+        assets_dir=None,
+        upload_dir=None,
+        web_renderer="canvaskit",
+        route_url_strategy="path",
+        auth_token=None,
+    ):
+        force_web_view = os.environ.get("FLET_FORCE_WEB_VIEW")
+        # assets_dir = __get_assets_dir_path(assets_dir)
+
+        conn = _connect_internal_sync(
+            page_name=name,
+            view=view if not force_web_view else ft.WEB_BROWSER,
+            host=host,
+            port=port,
+            auth_token=auth_token,
+            session_handler=target,
+            assets_dir=assets_dir,
+            upload_dir=upload_dir,
+            web_renderer=web_renderer,
+            route_url_strategy=route_url_strategy,
+        )
+
+        url_prefix = os.getenv("FLET_DISPLAY_URL_PREFIX")
+        if url_prefix is not None:
+            print(url_prefix, conn.page_url)
+        else:
+            self.logger.info(f"App URL: {conn.page_url}")
+
+        self.logger.info("Connected to Flet app and handling user sessions...")
+
+        assert url_prefix is None
+
+        fvp, pid_file = ft.open_flet_view(
+            conn.page_url, assets_dir, view == ft.FLET_APP_HIDDEN
+        )
+        return conn, fvp, pid_file
+        try:
+            fvp.wait()
+        except (Exception) as e:
+            pass
+
     def start_flet_view(self, target):
         # We access Flet internals because it is simplest way to control the specifics
         # In the future we should migrate / ask for a stable API that fits our needs
@@ -59,20 +110,13 @@ class BackgroundFlet:
             conn.sessions[session_data.sessionID] = page
             target(page)
 
-        if not self._conn:
-            self._conn = ft._connect_internal(
-                page_name="",
-                host=None,
-                port=0,
-                is_app=True,
-                permissions=None,
-                assets_dir="/",
-                upload_dir=None,
-                web_renderer="canvaskit",
-                route_url_strategy="hash",
-            )
-        self._conn.on_session_created = on_session_created
-        self._fvp = ft._open_flet_view(self._conn.page_url, False)
+        # self._conn.on_session_created = on_session_created
+
+        self._conn, self._fvp, self._pid_file = self._app_sync(target)
+
+    def close_flet_view(self):
+        self._conn.close()
+        ft.close_flet_view(self._pid_file)
 
     def terminate(self):
         self._fvp.terminate()

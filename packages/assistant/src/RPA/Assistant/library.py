@@ -31,8 +31,8 @@ from flet import (
     colors,
     icons,
 )
-from flet.control_event import ControlEvent
-from flet.dropdown import Option
+from flet_core.control_event import ControlEvent
+from flet_core.dropdown import Option
 from robot.api.deco import keyword, library
 from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError

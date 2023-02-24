@@ -7,8 +7,9 @@ from typing_extensions import Literal
 
 import flet
 from flet import Container, Page, ScrollMode
+from flet_core.control_event import ControlEvent
+
 from RPA.Assistant.background_flet import BackgroundFlet
-from flet.control_event import ControlEvent
 from RPA.Assistant.types import Location, Result
 
 
