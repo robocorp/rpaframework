@@ -80,7 +80,7 @@ class FletClient:
 
         return inner_execute
 
-    def _show_flet(  # noqa: C901
+    def _show_flet(
         self,
         target: Callable[[Page], None],
         timeout: int,
@@ -101,6 +101,11 @@ class FletClient:
         except TimeoutException:
             # pylint: disable=raise-missing-from
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
+        finally:
+            # Control's can't be re-used on multiple pages so we remove the page and
+            # clear elements after flet closes
+            self.page = None
+            self.clear_elements()
 
     def _make_flet_event_handler(self, name: str, handler: Optional[Callable] = None):
         """Add flet event handler to record the element's data whenever content changes
@@ -157,12 +162,11 @@ class FletClient:
     def clear_elements(self):
         self._elements.visible.clear()
         self._elements.invisible.clear()
-        if not self.page:
-            raise Exception("Clear Elements called with no Page open")
-        if self.page.controls:
-            self.page.controls.clear()
-        self.page.overlay.clear()
-        self.page.update()
+        if self.page:
+            if self.page.controls:
+                self.page.controls.clear()
+            self.page.overlay.clear()
+            self.page.update()
 
     def update_elements(self):
         """Updates the UI and shows new elements which have been added into the element

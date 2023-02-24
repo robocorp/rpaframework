@@ -215,21 +215,7 @@ class Assistant:
 
     @keyword
     def clear_dialog(self) -> None:
-        """Remove all previously defined elements and start from a clean state.
-        By default this is done automatically when a dialog is closed.
-        It will also clear all the results.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Add heading     Please input user information
-            FOR    ${user}   IN    @{users}
-                Run dialog    clear=False
-                Process page
-            END
-            Clear dialog
-        """
+        """Clear dialog and results while it is running."""
         self._client.results = {}
         self._client.clear_elements()
 
@@ -949,7 +935,6 @@ class Assistant:
         width: int = 480,
         on_top: bool = False,
         location: Union[Location, Tuple[int, int], None] = None,
-        clear: bool = True,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -961,13 +946,13 @@ class Assistant:
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
-        :param clear:  Clear the elements and results after the dialog exits. (If false
-                       next Run Dialog will start up with same elements.)
 
         If the `location` argument is `None` it will let the operating system
         place the window.
 
         Returns a result object with all input values.
+
+        When the dialog closes elements are cleared.
 
         Example:
 
@@ -992,9 +977,7 @@ class Assistant:
             title, height, width, on_top, location, timeout
         )
         results = self._get_results()
-
-        if clear:
-            self.clear_dialog()
+        self._client.results.clear()
 
         return results
 
