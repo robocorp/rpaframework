@@ -31,6 +31,7 @@ from flet import (
     colors,
     icons,
 )
+from flet_core.alignment import Alignment
 from flet_core.control_event import ControlEvent
 from flet_core.dropdown import Option
 from robot.api.deco import keyword, library
@@ -39,7 +40,14 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.utils.dotdict import DotDict
 
 from RPA.Assistant.flet_client import FletClient
-from RPA.Assistant.types import Icon, Options, Result, Size, Location
+from RPA.Assistant.types import (
+    Icon,
+    Options,
+    Result,
+    Size,
+    VerticalLocation,
+    WindowLocation,
+)
 from RPA.Assistant.utils import (
     optional_str,
     to_options,
@@ -932,7 +940,7 @@ class Assistant:
         height: Union[int, Literal["AUTO"]] = "AUTO",
         width: int = 480,
         on_top: bool = False,
-        location: Union[Location, Tuple[int, int], None] = None,
+        location: Union[WindowLocation, Tuple[int, int], None] = None,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -969,7 +977,7 @@ class Assistant:
         # if location is given as a string (Robot autoconversion doesn't work) parse it
         # to enum manually
         if isinstance(location, str):
-            location = Location[location]
+            location = WindowLocation[location]
 
         self._client.display_flet_window(
             title, height, width, on_top, location, timeout
@@ -1086,7 +1094,12 @@ class Assistant:
 
     @keyword(tags=["dialog"])
     def add_button(
-        self, label: str, function: Union[Callable, str], *args, **kwargs
+        self,
+        label: str,
+        function: Union[Callable, str],
+        *args,
+        location: VerticalLocation = VerticalLocation.Left,
+        **kwargs,
     ) -> None:
         """Create a button and execute the `function` as a callback when pressed.
 
@@ -1112,7 +1125,8 @@ class Assistant:
             self._queue_function_or_robot_keyword(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
-        self._client.add_element(button)
+        container = Container(alignment=location.value, content=button)
+        self._client.add_element(container)
         self._client.add_to_disablelist(button)
 
     @keyword(tags=["dialog"])

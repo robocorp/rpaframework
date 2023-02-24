@@ -1,6 +1,6 @@
 from time import sleep
 import RPA.Assistant
-from RPA.Assistant.types import Icon, Location
+from RPA.Assistant.types import Icon, VerticalLocation, WindowLocation
 import pytest
 
 
@@ -92,6 +92,11 @@ assistant.add_submit_buttons(["second submit"], "second submit")
 
 # assistant.clear_dialog()
 # assistant.add_icon(Icon.Failure)
+assistant.add_button(
+    "clear elements",
+    lambda: assistant.clear_dialog(),
+    location=VerticalLocation.Right,
+)
 
-results = assistant.ask_user(location=Location.TopLeft, timeout=180)
+results = assistant.run_dialog(location=WindowLocation.TopLeft, timeout=180)
 print(results)

@@ -5,6 +5,16 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+**RPA.Assistant** (``rpaframework-assistant`` **2.0.0**):
+    - ** Breaking ** changes:
+        - Run Dialog and Ask User parameter "clear" was removed, clearing is now mandatory
+        - (affects Python side users only): Location enum that ``run_dialog`` and 
+        ``ask_user`` accepts was changed from Location to WindowLocation to improve clarity. 
+        - Remove ``add_submit_buttons``
+
+    - Update to flet 0.4.2, library startup time is improved from ~1.2-2 seconds to 0.2-1 second
+    - Added location argument to Add Button keyword
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

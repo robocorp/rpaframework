@@ -18,14 +18,14 @@ from flet_core import Control
 from flet_core.control_event import ControlEvent
 
 from RPA.Assistant.background_flet import BackgroundFlet
-from RPA.Assistant.types import Location, Result
+from RPA.Assistant.types import WindowLocation, Result
 
 
 def resolve_absolute_position(
-    location: Union[Location, Tuple],
+    location: Union[WindowLocation, Tuple],
 ) -> Tuple[int, int]:
 
-    if location is Location.TopLeft:
+    if location is WindowLocation.TopLeft:
         return (0, 0)
     elif isinstance(location, tuple):
         return location
@@ -62,7 +62,7 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Union[Location, Tuple[int, int], None],
+        location: Union[WindowLocation, Tuple[int, int], None],
     ) -> Callable[[Page], None]:
         def inner_execute(page: Page):
             page.title = title
@@ -74,7 +74,7 @@ class FletClient:
             # TODO: do we even allow None as argument?
             # or some Location.AUTO which would let OS handle position?
             if location is not None:
-                if location is Location.Center:
+                if location is WindowLocation.Center:
                     page.window_center()
                 else:
                     coordinates = resolve_absolute_position(location=location)
@@ -159,7 +159,7 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Union[Location, Tuple[int, int], None],
+        location: Union[WindowLocation, Tuple[int, int], None],
         timeout: int,
     ):
         self._show_flet(
