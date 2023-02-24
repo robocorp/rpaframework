@@ -3,8 +3,6 @@ from subprocess import Popen, SubprocessError
 import os
 import signal
 from logging import getLogger
-import sys
-from time import sleep
 from typing import Optional
 
 from flet import flet as ft
