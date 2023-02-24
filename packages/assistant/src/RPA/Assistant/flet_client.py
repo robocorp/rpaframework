@@ -2,11 +2,12 @@ from logging import getLogger
 import time
 from collections import namedtuple
 from timeit import default_timer as timer
-from typing import Callable, Optional, Tuple, Union, List
+from typing import Callable, NamedTuple, Optional, Tuple, Union, List
 from typing_extensions import Literal
 
 import flet
-from flet import Container, Page, ScrollMode
+from flet import Container, Page, ScrollMode, Theme, ThemeVisualDensity
+from flet_core import Control
 from flet_core.control_event import ControlEvent
 
 from RPA.Assistant.background_flet import BackgroundFlet
@@ -29,7 +30,9 @@ class TimeoutException(RuntimeError):
     """Timeout while waiting for dialog to finish."""
 
 
-Elements = namedtuple("Elements", ["visible", "invisible"])
+class Elements(NamedTuple):
+    visible: List[Control]
+    invisible: List[Control]
 
 
 class FletClient:
@@ -71,7 +74,7 @@ class FletClient:
                     page.window_left = coordinates[0]
                     page.window_top = coordinates[1]
             page.scroll = ScrollMode.AUTO
-            page.on_disconnect = lambda _: self._background_flet.terminate()
+            page.on_disconnect = lambda _: self._background_flet.close_flet_view()
             self.page = page
             self.update_elements()
 
@@ -152,19 +155,21 @@ class FletClient:
         )
 
     def clear_elements(self):
-        if self.page:
-            if self.page.controls:
-                self.page.controls.clear()
-            self.page.overlay.clear()
-            self.page.update()
         self._elements.visible.clear()
         self._elements.invisible.clear()
+        if not self.page:
+            raise Exception("Clear Elements called with no Page open")
+        if self.page.controls:
+            self.page.controls.clear()
+        self.page.overlay.clear()
+        self.page.update()
 
     def update_elements(self):
         """Updates the UI and shows new elements which have been added into the element
         lists
         """
-        assert self.page
+        if not self.page:
+            raise RuntimeError("No dialog open, tried to update")
         for element in self._elements.visible:
             self.page.add(element)
         for element in self._elements.invisible:

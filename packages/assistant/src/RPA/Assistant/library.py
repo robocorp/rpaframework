@@ -1034,10 +1034,7 @@ class Assistant:
         """Can be used to update UI elements when adding elements while dialog is
         running
         """
-        if self._client.page:
-            self._client.update_elements()
-        else:
-            raise RuntimeError("No dialog open")
+        self._client.update_elements()
 
     def _create_python_function_wrapper(self, function, *args, **kwargs):
         """wrapper code that is used to add wrapping for user functions when binding
