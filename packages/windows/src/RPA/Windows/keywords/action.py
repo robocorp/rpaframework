@@ -239,7 +239,7 @@ class ActionKeywords(LibraryContext):
 
             Send Keys  desktop   {Ctrl}{F4}
             Send Keys  keys={Ctrl}{F4}   # locator will be NONE, keys send to desktop
-            ${element}=   Send Keys  id:input5  username   send_enter=True
+            Send Keys  id:input5  username   send_enter=True
             ${element}=   Get Element   id:pass
             Send Keys  ${element}  password   send_enter=True
         """
