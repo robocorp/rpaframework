@@ -149,8 +149,6 @@ class Assistant:
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
         self._required_fields: Set[str] = set()
-        # Disable fletd debug logging
-        os.environ["GIN_MODE"] = "release"
 
         try:
             # Prevent logging from keywords that return results

@@ -6,7 +6,14 @@ from typing import Callable, NamedTuple, Optional, Tuple, Union, List
 from typing_extensions import Literal
 
 import flet
-from flet import Container, Page, ScrollMode, Theme, ThemeVisualDensity
+from flet import (
+    Container,
+    MainAxisAlignment,
+    Page,
+    ScrollMode,
+    Theme,
+    ThemeVisualDensity,
+)
 from flet_core import Control
 from flet_core.control_event import ControlEvent
 
@@ -106,6 +113,7 @@ class FletClient:
             # clear elements after flet closes
             self.page = None
             self.clear_elements()
+            self._to_disable.clear()
 
     def _make_flet_event_handler(self, name: str, handler: Optional[Callable] = None):
         """Add flet event handler to record the element's data whenever content changes
