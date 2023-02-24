@@ -1035,7 +1035,7 @@ class Assistant:
         running
         """
         if self._client.page:
-            self._client.update_elements(self._client.page)
+            self._client.update_elements()
         else:
             raise RuntimeError("No dialog open")
 

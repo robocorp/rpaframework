@@ -10,6 +10,7 @@ from typing import Callable, Optional, Tuple, Union, List
 from typing_extensions import Literal
 
 import flet
+from flet import flet as ft
 from flet import Container, Page, ScrollMode
 from flet.control_event import ControlEvent
 from flet.utils import is_windows, is_macos
@@ -84,50 +85,14 @@ class FletClient:
                 )
 
     def _create_flet_target_function(
-        self, page: Optional[Page] = None
-    ) -> Callable[[Optional[Page]], None]:
-        def inner_execute(inner_page: Optional[Page] = None):
-            if page:
-                inner_page = page
-            for element in self._elements.visible:
-                inner_page.add(element)
-            for element in self._elements.invisible:
-                inner_page.overlay.append(element)
-            inner_page.scroll = ScrollMode.AUTO
-            inner_page.on_disconnect = lambda _: self._fvp.terminate()
-            self.page = inner_page
-            inner_page.update()
-
-        return inner_execute
-
-    def _preload_flet(self):
-        # We access Flet internals because it is simplest way to control the specifics
-        # In the future we should migrate / ask for a stable API that fits our needs
-        # pylint: disable=protected-access
-        return flet.flet._connect_internal(
-            page_name="",
-            host=None,
-            port=0,
-            is_app=True,
-            permissions=None,
-            assets_dir="/",
-            upload_dir=None,
-            web_renderer="canvaskit",
-            route_url_strategy="hash",
-        )
-
-    def _show_flet(  # noqa: C901
         self,
-        target: Callable[[Optional[Page]], None],
         title: str,
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
         location: Union[Location, Tuple[int, int], None],
-        timeout: int,
-    ):
-        def on_session_created(conn, session_data):
-            page = Page(conn, session_data.sessionID)
+    ) -> Callable[[Page], None]:
+        def inner_execute(page: Page):
             page.title = title
             if height != "AUTO":
                 page.window_height = height
@@ -143,17 +108,43 @@ class FletClient:
                     coordinates = resolve_absolute_position(location=location)
                     page.window_left = coordinates[0]
                     page.window_top = coordinates[1]
-            conn.sessions[session_data.sessionID] = page
+            page.scroll = ScrollMode.AUTO
+            page.on_disconnect = lambda _: self._fvp.terminate()
+            self.page = page
+            self.update_elements()
 
+        return inner_execute
+
+    def _create_flet_view(self, target):
+        # We access Flet internals because it is simplest way to control the specifics
+        # In the future we should migrate / ask for a stable API that fits our needs
+        # pylint: disable=protected-access
+        def on_session_created(conn, session_data):
+            page = Page(conn, session_data.sessionID)
+            conn.sessions[session_data.sessionID] = page
             target(page)
 
         if not self._conn:
-            self._conn = self._preload_flet()
+            self._conn = ft._connect_internal(
+                page_name="",
+                host=None,
+                port=0,
+                is_app=True,
+                permissions=None,
+                assets_dir="/",
+                upload_dir=None,
+                web_renderer="canvaskit",
+                route_url_strategy="hash",
+            )
         self._conn.on_session_created = on_session_created
-        # We access Flet internal function here to enable using of cached flet process
-        # for the lifetime of FletClient
-        # pylint: disable=protected-access
-        self._fvp = flet.flet._open_flet_view(self._conn.page_url, False)
+        return ft._open_flet_view(self._conn.page_url, False)
+
+    def _show_flet(  # noqa: C901
+        self,
+        target: Callable[[Page], None],
+        timeout: int,
+    ):
+        self._fvp = self._create_flet_view(target)
         view_start_time = timer()
         try:
             while not self._fvp.poll():
@@ -218,28 +209,29 @@ class FletClient:
         timeout: int,
     ):
         self._show_flet(
-            self._create_flet_target_function(),
-            title,
-            height,
-            width,
-            on_top,
-            location,
+            self._create_flet_target_function(title, height, width, on_top, location),
             timeout,
         )
 
     def clear_elements(self):
         if self.page:
-            self.page.controls.clear()
+            if self.page.controls:
+                self.page.controls.clear()
             self.page.overlay.clear()
             self.page.update()
         self._elements.visible.clear()
         self._elements.invisible.clear()
 
-    def update_elements(self, page: Page):
+    def update_elements(self):
         """Updates the UI and shows new elements which have been added into the element
         lists
         """
-        return self._create_flet_target_function(page)(None)
+        assert self.page
+        for element in self._elements.visible:
+            self.page.add(element)
+        for element in self._elements.invisible:
+            self.page.overlay.append(element)
+        self.page.update()
 
     def flet_update(self):
         """Runs a plain update of the flet UI, updating existing elements"""
