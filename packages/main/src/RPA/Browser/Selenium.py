@@ -603,17 +603,28 @@ class Selenium(SeleniumLibrary):
 
     def _find_by_alias(self, parent, criteria, tag, constraints):
         """Custom 'alias' locator that uses locators database."""
-        del constraints
         locator = LocatorsDatabase.load_by_name(criteria, self.locators_path)
 
         if not isinstance(locator, BrowserLocator):
             raise ValueError(f"Not a browser locator: {criteria}")
 
-        selector = "{strategy}:{value}".format(
-            strategy=locator.strategy, value=locator.value
-        )
+        strategy = str(locator.strategy).lower()
+        finder = {
+            "class": By.CLASS_NAME,
+            "css": By.CSS_SELECTOR,
+            "id": By.ID,
+            "link": By.LINK_TEXT,
+            "name": By.NAME,
+            "tag": By.TAG_NAME,
+            "xpath": By.XPATH,
+        }[strategy]
 
-        return self._element_finder.find(selector, tag, parent)
+        if not finder:
+            raise ValueError(f"Unsupported locator strategy: {strategy}")
+
+        return self._element_finder._filter_elements(
+            parent.find_elements(finder, locator.value), tag, constraints
+        )
 
     @keyword
     def open_available_browser(
