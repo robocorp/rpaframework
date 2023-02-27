@@ -487,6 +487,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
 
     def __init__(self, locators_path: Optional[str] = None):
         self.wait_time: float = 0.5
+        self.simulate_move: bool = self.SIMULATE_MOVE
 
         # Prevent comtypes writing a lot of log messages.
         comtypes_logger = logging.getLogger("comtypes")

@@ -153,7 +153,7 @@ class WindowKeywords(WindowMethods):
 
         utils.call_attribute_if_available(window.item, "SetFocus")
         utils.call_attribute_if_available(window.item, "SetActive")
-        window.item.MoveCursorToMyCenter(simulateMove=self.ctx.SIMULATE_MOVE)
+        window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
         return window
 
     def _resize_window(

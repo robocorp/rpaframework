@@ -178,7 +178,7 @@ class ActionKeywords(LibraryContext):
         click_function(
             x=offset_x,
             y=offset_y,
-            simulateMove=self.ctx.SIMULATE_MOVE,
+            simulateMove=self.ctx.simulate_move,
             waitTime=click_wait_time,
         )
 
@@ -201,7 +201,11 @@ class ActionKeywords(LibraryContext):
         """
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "Select"):
-            element.item.Select(value)
+            # NOTE(cmin764): This is not supposed to work on `*Pattern` or `TextRange`
+            #  objects. (works with `Control`s and its derived flavors only)
+            element.item.Select(
+                value, simulateMove=self.ctx.simulate_move, waitTime=self.ctx.wait_time
+            )
         else:
             raise ActionNotPossible(
                 f"Element {locator!r} does not have 'Select' attribute"
@@ -403,7 +407,9 @@ class ActionKeywords(LibraryContext):
             ${old_wait_time}=  Set Wait Time  0.2
         """
         old_value = self.ctx.wait_time
+        self.logger.info("Previous wait time: %f", old_value)
         self.ctx.wait_time = wait_time
+        self.logger.info("Current wait time: %f", self.ctx.wait_time)
         return old_value
 
     @keyword(tags=["action"])
@@ -540,3 +546,21 @@ class ActionKeywords(LibraryContext):
             if copy:
                 self.click(source)
                 auto.ReleaseKey(auto.Keys.VK_CONTROL)
+
+    @keyword(tags=["action"])
+    def set_mouse_movement(self, simulate: bool) -> bool:
+        """Enable or disable mouse movement simulation during clicks and other actions.
+
+        Returns the previous set value as `True`/`False`.
+
+        :param simulate: Decide whether to simulate the move.
+        :return: Previous state.
+        """
+        to_str = lambda state: "ON" if state else "OFF"
+        previous = self.ctx.simulate_move
+        self.logger.info("Previous mouse movement simulation: %s", to_str(previous))
+        self.ctx.simulate_move = simulate
+        self.logger.info(
+            "Current mouse movement simulation: %s", to_str(self.ctx.simulate_move)
+        )
+        return previous
