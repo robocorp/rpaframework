@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 from RPA.core.windows.locators import Locator, WindowsElement
 
@@ -318,72 +318,102 @@ class ActionKeywords(LibraryContext):
         append: bool = False,
         enter: bool = False,
         newline: bool = False,
+        send_keys_fallback: bool = False,
     ) -> WindowsElement:
         """Set value of the element defined by the locator.
 
-        *Note.* Anchor works only on element structures where it can
-        be relied on that root/child element tree will remain the same.
+        *Note:* Anchor works only on element structures where it can
+        be relied on that root/child element tree, as remaining the same.
         Usually these kind of structures are tables.
 
-        Exception ``ActionNotPossible`` is raised if element does not
-        allow SetValue action.
+        *Note:* It is important to set ``append=${True}`` if you want to keep the
+        current text in the element. Other option is to read the current text into a
+        variable, then modify that value as you wish and pass it to the ``Set Value``
+        keyword for text replacement.
 
-        :param locator: string locator or Control element
-        :param value: string value to set
-        :param append: False for setting value, True for appending value
-        :param enter: set True to press enter key at the end of the line
-        :param newline: set True to add newline to the end of value
-        :return: WindowsElement object
+        Exception ``ActionNotPossible`` is raised if the element does not allow the
+        `SetValue` action to be run on it nor having ``send_keys_fallback=${True}``.
 
-        *Note.* It is important to set ``append=True`` if you want keep text in
-        the element. Other option is to read current text into a variable and
-        modify that value to pass for ``Set Value`` keyword.
+        :param locator: String locator or element object.
+        :param value: String value to be set.
+        :param append: `False` for setting the value, `True` for appending it. (OFF by
+            default)
+        :param enter: Set it to `True` to press the *Enter* key at the end of the line.
+            (nothing is pressed by default)
+        :param newline: Set it to `True` to add a new line at the end of the value. (no
+            default EOL)
+        :param send_keys_fallback: Tries to set the value by sending it through keys
+            if the expected way of setting it fails. (disabled by default)
+        :returns: The `WindowsElement` object identified through the passed `locator`.
 
-        Example:
+        **Example: Robot Framework**
 
         .. code-block:: robotframework
 
-            Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
-            # Press ENTER after setting the value
-            Set Value    type:Edit name:"File name:"    console.txt    enter=True
+            *** Tasks ***
+            Set Values In Notepad
+                Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
+                # Press ENTER after setting the value
+                Set Value    type:Edit name:"File name:"    console.txt    enter=True
 
-            # Add newline (manually) at the end of the string (Notepad example)
-            Set Value    name:"Text Editor"  abc\\n
-            # Add newline with parameter
-            Set Value    name:"Text Editor"  abc   newline=${True}
+                # Add newline (manually) at the end of the string (Notepad example)
+                Set Value    name:"Text Editor"  abc\\n
+                # Add newline with parameter
+                Set Value    name:"Text Editor"  abc   newline=${True}
 
-            # Clear Notepad window and start appending text
-            Set Anchor  name:"Text Editor"
-            # all following keyword calls will use anchor element as locator
-            # UNLESS they specify locator specifically or `Clear Anchor` is used
-            ${time}=    Get Time
-            # Clears when append=False (default)
-            Set Value    value=time now is ${time}
-            # Append text and add newline to the end
-            Set Value    value= and it's task run time    append=True    newline=True
-            # Continue appending
-            Set Value    value=this will appear on the 2nd line    append=True
+                # Clear Notepad window and start appending text
+                Set Anchor  name:"Text Editor"
+                # all following keyword calls will use anchor element as locator
+                # UNLESS they specify locator specifically or `Clear Anchor` is used
+                ${time}=    Get Time
+                # Clears when append=False (default)
+                Set Value    value=time now is ${time}
+                # Append text and add newline to the end
+                Set Value    value= and it's task run time    append=True    newline=True
+                # Continue appending
+                Set Value    value=this will appear on the 2nd line    append=True
         """
         value = value or ""
-        element = self.ctx.get_element(locator)
-        current_value = ""
+        if newline and enter:
+            self.logger.warning(
+                "Both `newline` and `enter` switches detected, expect to see multiple"
+                " new lines in the final text area."
+            )
         newline_string = "\n" if newline else ""
-        if hasattr(element.item, "GetValuePattern"):
-            value_pattern = element.item.GetValuePattern()
-            if append:
-                current_value = value_pattern.Value
+        element = self.ctx.get_element(locator)
+        item = element.item
+        get_pattern: Optional[Callable] = getattr(
+            item, "GetValuePattern", getattr(item, "GetLegacyIAccessiblePattern", None)
+        )
+        action = "Appending" if append else "Setting"
+
+        if get_pattern:
+            func_name = get_pattern.__name__
+            self.logger.info(
+                "%s the element value with the %r method.", action, func_name
+            )
+            value_pattern = get_pattern()
+            current_value = value_pattern.Value if append else ""
             value_pattern.SetValue(f"{current_value}{value}{newline_string}")
-        elif hasattr(element.item, "GetLegacyIAccessiblePattern"):
-            pattern = element.item.GetLegacyIAccessiblePattern()
-            if append:
-                current_value = pattern.Value
-            pattern.SetValue(f"{current_value}{value}{newline_string}")
+        elif send_keys_fallback:
+            self.logger.info(
+                "%s the element value with `Send Keys`. (no patterns found)", action
+            )
+            if newline_string:
+                self.logger.warning(
+                    "The `newline` switch is ignored when setting a value"
+                    " through keys! (enable it with the `enter` parameter only)"
+                )
+            self.send_keys(element, keys=value, send_enter=False)
         else:
             raise ActionNotPossible(
                 f"Element found with {locator!r} doesn't support value setting"
             )
+
         if enter:
-            self.send_keys(element, "{Ctrl}{End}{Enter}")
+            self.logger.info("Inserting a new line by sending the *Enter* key.")
+            self.send_keys(element, keys="{Ctrl}{End}{Enter}")
+
         return element
 
     @keyword(tags=["action"])
