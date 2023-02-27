@@ -553,8 +553,27 @@ class ActionKeywords(LibraryContext):
 
         Returns the previous set value as `True`/`False`.
 
-        :param simulate: Decide whether to simulate the move.
-        :return: Previous state.
+        :param simulate: Decide whether to simulate the move. (ON by default)
+        :returns: Previous state.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Disable Mouse Move
+                ${previous} =   Set Mouse Movement      ${False}
+                Log To Console   Previous mouse simulation: ${previous} (now disabled)
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib_win = Windows()
+            previous = lib_win.set_mouse_movement(False)
+            print(f"Previous mouse simulation: {previous} (now disabled)")
         """
         to_str = lambda state: "ON" if state else "OFF"
         previous = self.ctx.simulate_move
