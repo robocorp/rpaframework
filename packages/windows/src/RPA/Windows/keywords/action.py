@@ -331,8 +331,11 @@ class ActionKeywords(LibraryContext):
         variable, then modify that value as you wish and pass it to the ``Set Value``
         keyword for text replacement.
 
-        Exception ``ActionNotPossible`` is raised if the element does not allow the
-        `SetValue` action to be run on it nor having ``send_keys_fallback=${True}``.
+        The following exceptions are raised:
+
+            - ``ActionNotPossible`` if the element does not allow the `SetValue` action
+              to be run on it nor having ``send_keys_fallback=${True}``.
+            - ``ValueError`` if the new value to be set can't be set.
 
         :param locator: String locator or element object.
         :param value: String value to be set.
@@ -394,7 +397,12 @@ class ActionKeywords(LibraryContext):
             )
             value_pattern = get_pattern()
             current_value = value_pattern.Value if append else ""
-            value_pattern.SetValue(f"{current_value}{value}{newline_string}")
+            new_value = f"{current_value}{value}{newline_string}"
+            value_pattern.SetValue(new_value)
+            if value_pattern.Value != new_value:
+                raise ValueError(
+                    f"Element found with {locator!r} can't set value: {new_value}"
+                )
         elif send_keys_fallback:
             self.logger.info(
                 "%s the element value with `Send Keys`. (no patterns found)", action
