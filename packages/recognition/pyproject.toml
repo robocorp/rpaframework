@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-recognition"
-version = "5.0.2"
+version = "5.1.0"
 description = "OCR capabilities used by RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -29,7 +29,7 @@ packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-rpaframework-core = "^10.0.0"
+rpaframework-core = "^10.4.0"
 pillow = "^9.1.1"
 opencv-python-headless = "^4.5.2, <4.6.0"
 numpy = "^1.19.3"
