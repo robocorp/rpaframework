@@ -1,14 +1,14 @@
 import atexit
-from subprocess import Popen, SubprocessError
 import os
 import signal
 from logging import getLogger
+from subprocess import Popen, SubprocessError
 from typing import Optional
 
-from flet import flet as ft
 from flet import Page
+from flet import flet as ft
 from flet.connection import Connection
-from flet.utils import is_windows, is_macos
+from flet.utils import is_macos, is_windows
 
 from RPA.Assistant.utils import nix_get_pid
 

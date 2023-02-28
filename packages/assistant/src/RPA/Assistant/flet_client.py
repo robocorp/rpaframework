@@ -1,14 +1,15 @@
-from logging import getLogger
 import time
 from collections import namedtuple
+from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, Optional, Tuple, Union, List
-from typing_extensions import Literal
+from typing import Callable, List, Optional, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
-from RPA.Assistant.background_flet import BackgroundFlet
 from flet.control_event import ControlEvent
+from typing_extensions import Literal
+
+from RPA.Assistant.background_flet import BackgroundFlet
 from RPA.Assistant.types import Location, Result
 
 

@@ -1,2 +1,2 @@
 from .library import Assistant
-from .types import Icon, Options, Result, Size, Location
+from .types import Icon, Location, Options, Result, Size
