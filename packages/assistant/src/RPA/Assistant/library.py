@@ -5,8 +5,7 @@ import platform
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Set
-from typing_extensions import Literal
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import (
@@ -37,13 +36,11 @@ from robot.api.deco import keyword, library
 from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.utils.dotdict import DotDict
+from typing_extensions import Literal
 
 from RPA.Assistant.flet_client import FletClient
-from RPA.Assistant.types import Icon, Options, Result, Size, Location
-from RPA.Assistant.utils import (
-    optional_str,
-    to_options,
-)
+from RPA.Assistant.types import Icon, Location, Options, Result, Size
+from RPA.Assistant.utils import optional_str, to_options
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -1035,7 +1032,7 @@ class Assistant:
         running
         """
         if self._client.page:
-            self._client.update_elements(self._client.page)
+            self._client.update_elements()
         else:
             raise RuntimeError("No dialog open")
 
