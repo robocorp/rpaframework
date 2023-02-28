@@ -16,7 +16,12 @@ from .utils import to_options, optional_str, optional_int, int_or_auto, is_input
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class Dialogs:
-    """The `Dialogs` library provides a way to display information to a user
+    """**NOTICE:** The `Dialogs` library is now marked for deprecation.
+    The library will be replaced by `Assistant`. In order to get more
+    information and check the changes and the migration guide, please
+    check the Release Notes: https://rpaframework.org/releasenotes.html#id4
+
+    The `Dialogs` library provides a way to display information to a user
     and request input while a robot is running. It allows building processes
     that require human interaction.
 
