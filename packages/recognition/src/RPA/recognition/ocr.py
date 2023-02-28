@@ -50,8 +50,10 @@ def find(
     :param text: Text to find in image
     :param confidence: Minimum confidence for text similaritys
     :param region: Limit the region of the screen where to look for the text
-    :param language: 3-character ISO 639-2 language code of the text. This is passed directly to the pytesseract lib in the lang parameter. See https://tesseract-ocr.github.io/tessdoc/Command-Line-Usage.html#using-one-language
-    """
+    :param language: 3-character ISO 639-2 language code of the text.
+     This is passed directly to the pytesseract lib in the lang parameter.
+     See https://tesseract-ocr.github.io/tessdoc/Command-Line-Usage.html#using-one-language
+    """  # noqa: E501
     image = to_image(image)
     confidence = clamp(1, float(confidence), 100)
 
@@ -64,7 +66,9 @@ def find(
         image = image.crop(region.as_tuple())
 
     try:
-        data = pytesseract.image_to_data(image, lang=language, output_type=pytesseract.Output.DICT)
+        data = pytesseract.image_to_data(
+            image, lang=language, output_type=pytesseract.Output.DICT
+        )
     except TesseractNotFoundError as err:
         raise EnvironmentError(INSTALL_PROMPT) from err
 
