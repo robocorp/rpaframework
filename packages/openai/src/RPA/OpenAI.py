@@ -7,6 +7,10 @@ import openai
 class OpenAI:
     """Library to support `OpenAI <https://openai.com>`_ service.
 
+    Library is **not** included in the `rpaframework` package, so in order to use it
+    you have to add `rpaframework-openai` with the desired version in your
+    *conda.yaml* file.
+
     **Robot Framework example usage**
 
     .. code-block:: robotframework
