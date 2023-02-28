@@ -1,4 +1,3 @@
-from subprocess import Popen
 from logging import getLogger
 from subprocess import Popen, SubprocessError
 from typing import Optional

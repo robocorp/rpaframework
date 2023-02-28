@@ -5,17 +5,13 @@ from timeit import default_timer as timer
 from typing import Callable, List, NamedTuple, Optional, Tuple, Union
 
 import flet
-from flet import (
-    Container,
-    Page,
-    ScrollMode,
-)
+from flet import Container, Page, ScrollMode
 from flet_core import Control
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
 from RPA.Assistant.background_flet import BackgroundFlet
-from RPA.Assistant.types import WindowLocation, Result
+from RPA.Assistant.types import Result, WindowLocation
 
 
 def resolve_absolute_position(
