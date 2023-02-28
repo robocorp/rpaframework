@@ -3,7 +3,6 @@ from typing import Any, Dict, List, Union
 
 from flet_core import alignment
 
-
 Element = Dict[str, Any]
 Options = Union[List[str], str]
 Result = Dict[str, Any]

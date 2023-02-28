@@ -15,6 +15,9 @@ Release notes
     - Update to flet 0.4.2, library startup time is improved from ~1.2-2 seconds to 0.2-1 second
     - Added location argument to Add Button keyword
 
+**RPA.Assistant** (``rpaframework-assistant`` **1.2.X**):
+    - Internal refactoring
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

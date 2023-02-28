@@ -1,21 +1,18 @@
-from logging import getLogger
 import time
 from collections import namedtuple
+from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, NamedTuple, Optional, Tuple, Union, List
-from typing_extensions import Literal
+from typing import Callable, List, NamedTuple, Optional, Tuple, Union
 
 import flet
 from flet import (
     Container,
-    MainAxisAlignment,
     Page,
     ScrollMode,
-    Theme,
-    ThemeVisualDensity,
 )
 from flet_core import Control
 from flet_core.control_event import ControlEvent
+from typing_extensions import Literal
 
 from RPA.Assistant.background_flet import BackgroundFlet
 from RPA.Assistant.types import WindowLocation, Result
@@ -181,7 +178,8 @@ class FletClient:
         lists
         """
         if not self.page:
-            raise RuntimeError("No dialog open, tried to update")
+            raise ValueError("No page open when update_elements was called")
+
         for element in self._elements.visible:
             self.page.add(element)
         for element in self._elements.invisible:

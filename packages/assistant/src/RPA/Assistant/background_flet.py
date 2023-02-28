@@ -1,10 +1,9 @@
 from subprocess import Popen
 from logging import getLogger
+from subprocess import Popen, SubprocessError
 from typing import Optional
 
 from flet import flet as ft
-from flet import Page
-from flet_core.connection import Connection
 
 _connect_internal_sync = ft.__connect_internal_sync
 
@@ -12,7 +11,7 @@ _connect_internal_sync = ft.__connect_internal_sync
 class BackgroundFlet:
     def __init__(self):
         self.logger = getLogger(__name__)
-        self._conn: Optional[Connection] = None
+        self._conn: Optional[ft.Connection] = None
         self._fvp: Optional[Popen] = None
         self._pid_file: Optional[str] = None
 
@@ -33,7 +32,6 @@ class BackgroundFlet:
         # We access Flet internals because it is simplest way to control the specifics
         # In the future we should migrate / ask for a stable API that fits our needs
         # pylint: disable=protected-access
-
         conn = _connect_internal_sync(
             page_name=name,
             view=ft.FLET_APP,
