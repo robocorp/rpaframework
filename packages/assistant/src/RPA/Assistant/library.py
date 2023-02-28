@@ -30,7 +30,6 @@ from flet import (
     colors,
     icons,
 )
-from flet_core.alignment import Alignment
 from flet_core.control_event import ControlEvent
 from flet_core.dropdown import Option
 from robot.api.deco import keyword, library

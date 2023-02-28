@@ -1,8 +1,9 @@
 from logging import getLogger
-from subprocess import Popen, SubprocessError
-from typing import Optional
+from subprocess import Popen
+from typing import Optional, Tuple
 
 from flet import flet as ft
+from flet_core.page import Connection
 
 _connect_internal_sync = ft.__connect_internal_sync
 
@@ -10,7 +11,7 @@ _connect_internal_sync = ft.__connect_internal_sync
 class BackgroundFlet:
     def __init__(self):
         self.logger = getLogger(__name__)
-        self._conn: Optional[ft.Connection] = None
+        self._conn: Optional[Connection] = None
         self._fvp: Optional[Popen] = None
         self._pid_file: Optional[str] = None
 
@@ -26,7 +27,7 @@ class BackgroundFlet:
         web_renderer="canvaskit",
         route_url_strategy="path",
         auth_token=None,
-    ):
+    ) -> Tuple[Connection, Popen, str]:
         # Based on https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet/src/flet/flet.py#L96
         # We access Flet internals because it is simplest way to control the specifics
         # In the future we should migrate / ask for a stable API that fits our needs
