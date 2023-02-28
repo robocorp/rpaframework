@@ -164,7 +164,9 @@ class FletClient:
         """Updates the UI and shows new elements which have been added into the element
         lists
         """
-        assert self.page
+        if not self.page:
+            raise ValueError("No page open when update_elements was called")
+
         for element in self._elements.visible:
             self.page.add(element)
         for element in self._elements.invisible:
