@@ -1,7 +1,6 @@
 from enum import Enum, auto
 from typing import Any, Dict, List, Union
 
-
 Element = Dict[str, Any]
 Options = Union[List[str], str]
 Result = Dict[str, Any]
