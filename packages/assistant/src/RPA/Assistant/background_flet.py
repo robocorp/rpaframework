@@ -5,7 +5,6 @@ from logging import getLogger
 from subprocess import Popen, SubprocessError
 from typing import Optional
 
-from flet import Page
 from flet import flet as ft
 from flet.connection import Connection
 from flet.utils import is_macos, is_windows
@@ -55,7 +54,7 @@ class BackgroundFlet:
         # In the future we should migrate / ask for a stable API that fits our needs
         # pylint: disable=protected-access
         def on_session_created(conn, session_data):
-            page = Page(conn, session_data.sessionID)
+            page = ft.Page(conn, session_data.sessionID)
             conn.sessions[session_data.sessionID] = page
             target(page)
 
