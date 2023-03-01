@@ -5,6 +5,9 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+** rpaframework ** **22.0.1**
+    - Added PyYAML 6.0 support, rpaframework can now install together with tools like `langchain`
+
 **RPA.Assistant** (``rpaframework-assistant`` **1.2.X**):
     - Internal refactoring
 
