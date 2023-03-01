@@ -1172,7 +1172,7 @@ class Assistant:
         thumb_text="{value}",
         steps: Optional[int] = None,
         default: Optional[Union[int, float]] = None,
-        decimals: Optional[int] = None,
+        decimals: Optional[int] = 1,
     ):
         """Add a slider input.
 

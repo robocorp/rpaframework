@@ -10,9 +10,10 @@ Release notes
         - Run Dialog and Ask User parameter "clear" was removed, clearing is now mandatory
         - (affects Python side users only): Location enum that ``run_dialog`` and 
         ``ask_user`` accepts was changed from Location to WindowLocation to improve clarity. 
+        - By default Slider now rounds to 1 decimal.
 
     - Added ``location`` argument to Add Button keyword
-    - Added ``round`` argument to Add Slider keyword
+    - Added ``round`` argument to Add Slider keyword.
     - Internal refactoring
     - Update underlying UI library to flet 0.2.2 -> 0.4.2, granting various bugfixes and improvements
 
