@@ -40,7 +40,7 @@ RPA.Desktop.keywords.finder:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "304", "Add run-on-error support and maybe screenshotting matches?"
+   "307", "Add run-on-error support and maybe screenshotting matches?"
 
 RPA.Desktop.keywords.mouse:
 ===========================
