@@ -5,10 +5,12 @@ from typing import Optional, Tuple
 from flet import flet as ft
 from flet_core.page import Connection
 
-_connect_internal_sync = ft.__connect_internal_sync
+_connect_internal_sync = ft.__connect_internal_sync  # pylint: disable=protected-access
 
 
 class BackgroundFlet:
+    """Class that manages the graphical flet subrocess and related operations"""
+
     def __init__(self):
         self.logger = getLogger(__name__)
         self._conn: Optional[Connection] = None
@@ -28,7 +30,7 @@ class BackgroundFlet:
         route_url_strategy="path",
         auth_token=None,
     ) -> Tuple[Connection, Popen, str]:
-        # Based on https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet/src/flet/flet.py#L96
+        # Based on https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet/src/flet/flet.py#L96 # noqa: E501
         # We access Flet internals because it is simplest way to control the specifics
         # In the future we should migrate / ask for a stable API that fits our needs
         # pylint: disable=protected-access
@@ -52,13 +54,14 @@ class BackgroundFlet:
         )
         return conn, fvp, pid_file
 
-    def start_flet_view(self, target):
+    def start_flet_view(self, target) -> None:
         """Starts the flet process and places the connection, view process Popen and
         flet python server PID file into self
         """
         self._conn, self._fvp, self._pid_file = self._app_sync(target)
 
-    def close_flet_view(self):
+    def close_flet_view(self) -> None:
+        """Close the currently open flet view"""
         assert self._conn is not None
         assert self._fvp is not None
         assert self._pid_file is not None
@@ -68,9 +71,6 @@ class BackgroundFlet:
         self._conn = None
         self._fvp = None
         self._pid_file = None
-
-    def terminate(self):
-        self._fvp.terminate()
 
     def poll(self):
         return self._fvp.poll()

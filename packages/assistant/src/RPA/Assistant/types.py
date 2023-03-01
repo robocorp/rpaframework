@@ -32,6 +32,8 @@ class WindowLocation(Enum):
 
 
 class VerticalLocation(Enum):
+    """A vertical location"""
+
     Left = alignment.center_left
     Center = alignment.center
     Right = alignment.center_right

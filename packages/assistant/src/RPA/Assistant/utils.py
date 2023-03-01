@@ -1,4 +1,3 @@
-import subprocess
 from typing import Any, List, Optional, Tuple, Union
 
 from RPA.core.types import is_list_like  # type: ignore

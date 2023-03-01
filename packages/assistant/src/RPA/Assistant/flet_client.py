@@ -1,5 +1,4 @@
 import time
-from collections import namedtuple
 from logging import getLogger
 from timeit import default_timer as timer
 from typing import Callable, List, NamedTuple, Optional, Tuple, Union
@@ -31,6 +30,8 @@ class TimeoutException(RuntimeError):
 
 
 class Elements(NamedTuple):
+    """Lists of visible and invisible control elements"""
+
     visible: List[Control]
     invisible: List[Control]
 
@@ -93,7 +94,7 @@ class FletClient:
                     self.pending_operation()  # pylint: disable=not-callable
                     self.pending_operation = None
                 if timer() - view_start_time >= timeout:
-                    self._background_flet.terminate()
+                    self._background_flet.close_flet_view()
                     raise TimeoutException(
                         "Reached timeout while waiting for Assistant Dialog"
                     )
