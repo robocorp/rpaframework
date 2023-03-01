@@ -12,6 +12,9 @@ if utils.IS_WINDOWS:
     from uiautomation import Control
 
 
+StructureType = Dict[int, List[WindowsElement]]
+
+
 class ElementKeywords(LibraryContext):
     """Keywords for handling Control elements"""
 
@@ -57,6 +60,44 @@ class ElementKeywords(LibraryContext):
         """
         self.ctx.anchor_element = None
 
+    def _save_child_image(
+        self, control: "Control", *, image_folder: Path, image_idx: int
+    ) -> str:
+        # Saves control child as local image.
+        capture_filename = f"{control.ControlType}_{image_idx}.png"
+        img_path = str(image_folder / capture_filename)
+        try:
+            control.CaptureToImage(img_path)
+        except Exception as exc:  # pylint: disable=broad-except
+            self.logger.warning("Couldn't capture into %r due to: %s", img_path, exc)
+            return ""  # no suffix as image couldn't be saved
+        else:
+            return f" [{capture_filename}]"  # control string new suffix
+
+    @staticmethod
+    def _add_child_to_tree(
+        control: "Control",
+        structure: StructureType,
+        *,
+        locator: Optional[str],
+        depth: int,
+        children_stack: List[int],
+        child_pos: int,
+    ):
+        # Adds current control child as element in the flattened tree structure.
+        children_stack[depth] = child_pos
+        path = MatchObject.PATH_SEP.join(
+            str(pos) for pos in children_stack[1 : depth + 1]
+        )
+        if locator and path:
+            control_locator = f"{locator} > path:{path}"
+        elif path:
+            control_locator = f"path:{path}"
+        else:
+            control_locator = locator
+        element = WindowsElement(control, control_locator)
+        structure.setdefault(depth, []).append(element)
+
     @keyword
     def print_tree(
         self,
@@ -65,7 +106,7 @@ class ElementKeywords(LibraryContext):
         capture_image_folder: Optional[str] = None,
         log_as_warnings: bool = False,
         return_structure: bool = False,
-    ) -> Optional[Dict[int, List[WindowsElement]]]:
+    ) -> Optional[StructureType]:
         """Print a tree of control elements.
 
         A Windows application structure can contain multilevel element structure.
@@ -85,7 +126,8 @@ class ElementKeywords(LibraryContext):
           composed of "root > path" which will work to identify the element in the
           tree.
 
-        Portal example: https://robocorp.com/portal/robot/robocorp/example-windows-element-path
+        Portal example:
+        https://robocorp.com/portal/robot/robocorp/example-windows-element-path
 
         :param locator: The root of the tree to output.
         :param max_depth: Maximum depth level. (defaults to 8)
@@ -98,9 +140,12 @@ class ElementKeywords(LibraryContext):
         :returns: Optionally a dictionary of children per depth level when
             `return_structure` is enabled.
         """
-        brothers_count = {}  # cache how many brothers are in total given a child
-        structure = {}  # flattened tree of elements by level
-        children_stack = [-1] * (max_depth + 1)
+        # Cache how many brothers are in total given a child. (to know child position)
+        brothers_count: Dict[int, int] = {}
+        # Current path in the tree as children positions. (to compute the path locator)
+        children_stack: List[int] = [-1] * (max_depth + 1)
+        # Flattened tree of elements by depth level (to return the object if wanted).
+        structure: StructureType = {}
 
         def get_children(ctrl: Control) -> List[Control]:
             children = ctrl.GetChildren()
@@ -118,11 +163,13 @@ class ElementKeywords(LibraryContext):
                 break
         root_ctrl = target_elem.item
         brothers_count[hash(root_ctrl)] = 1  # the root is always singular here
-        image_idx = 1
-        image_folder = None
+
+        image_idx = 0
+        image_folder: Optional[Path] = None
         if capture_image_folder:
             image_folder = Path(capture_image_folder).expanduser().resolve()
             image_folder.mkdir(parents=True, exist_ok=True)
+
         control_log = self.logger.warning if log_as_warnings else self.logger.info
 
         for control, depth, children_remaining in auto.WalkTree(
@@ -134,35 +181,25 @@ class ElementKeywords(LibraryContext):
             control_str = str(control)
 
             if image_folder:
-                capture_filename = f"{control.ControlType}_{image_idx}.png"
-                img_path = str(image_folder / capture_filename)
-                try:
-                    control.CaptureToImage(img_path)
-                except Exception as exc:  # pylint: disable=broad-except
-                    self.logger.warning(
-                        "Couldn't capture into %r due to: %s", img_path, exc
-                    )
-                else:
-                    control_str += f" [{capture_filename}]"
-            image_idx += 1
+                image_idx += 1
+                control_suffix: str = self._save_child_image(
+                    control, image_folder=image_folder, image_idx=image_idx
+                )
+                control_str += control_suffix
 
             space = " " * depth * 4
             child_pos = brothers_count[hash(control)] - children_remaining
             control_log(f"{space}{depth}-{child_pos}. ${control_str}")
 
             if return_structure:
-                children_stack[depth] = child_pos
-                path = MatchObject.PATH_SEP.join(
-                    str(pos) for pos in children_stack[1 : depth + 1]
+                self._add_child_to_tree(
+                    control,
+                    structure,
+                    locator=locator,
+                    depth=depth,
+                    children_stack=children_stack,
+                    child_pos=child_pos,
                 )
-                if locator and path:
-                    control_locator = f"{locator} > path:{path}"
-                elif path:
-                    control_locator = f"path:{path}"
-                else:
-                    control_locator = locator
-                element = WindowsElement(control, control_locator)
-                structure.setdefault(depth, []).append(element)
 
         return structure if return_structure else None
 

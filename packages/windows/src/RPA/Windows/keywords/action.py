@@ -372,7 +372,7 @@ class ActionKeywords(LibraryContext):
                 # Clears when append=False (default)
                 Set Value    value=time now is ${time}
                 # Append text and add newline to the end
-                Set Value    value= and it's task run time    append=True    newline=True
+                Set Value    value= and it's task run time   append=True  newline=True
                 # Continue appending
                 Set Value    value=this will appear on the 2nd line    append=True
         """
@@ -613,7 +613,7 @@ class ActionKeywords(LibraryContext):
             previous = lib_win.set_mouse_movement(False)
             print(f"Previous mouse simulation: {previous} (now disabled)")
         """
-        to_str = lambda state: "ON" if state else "OFF"
+        to_str = lambda state: "ON" if state else "OFF"  # noqa: E731
         previous = self.ctx.simulate_move
         self.logger.info("Previous mouse movement simulation: %s", to_str(previous))
         self.ctx.simulate_move = simulate
