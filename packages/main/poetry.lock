@@ -47,7 +47,7 @@ tests_no_zope = ["cloudpickle", "hypothesis", "mypy (>=0.971,<0.990)", "pympler"
 
 [[package]]
 name = "Babel"
-version = "2.12.0"
+version = "2.12.1"
 description = "Internationalization utilities"
 category = "dev"
 optional = false
@@ -1804,7 +1804,7 @@ python-versions = "*"
 
 [[package]]
 name = "tenacity"
-version = "8.2.1"
+version = "8.2.2"
 description = "Retry code until it succeeds"
 category = "main"
 optional = false
@@ -2124,7 +2124,7 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "62eaf53651427c241e71fcdd2ce231c657dde06b14813b34439b8c58a21b1bc1"
+content-hash = "cea195f6021cda007ebc73202eae2dc20485691efa77398ba38afebe558783e3"
 
 [metadata.files]
 alabaster = [
@@ -2144,8 +2144,8 @@ attrs = [
     {file = "attrs-22.2.0.tar.gz", hash = "sha256:c9227bfc2f01993c03f68db37d1d15c9690188323c067c641f1a35ca58185f99"},
 ]
 Babel = [
-    {file = "Babel-2.12.0-py3-none-any.whl", hash = "sha256:8f8b752c803e9f9e03ff219b644aceb0dbcf081c55a88ea11f86291e60a7bb68"},
-    {file = "Babel-2.12.0.tar.gz", hash = "sha256:468e6cd1e2b571a1663110fc737e3a7d9069d038e0c9c4a7f158caeeafe4089c"},
+    {file = "Babel-2.12.1-py3-none-any.whl", hash = "sha256:b4246fb7677d3b98f501a39d43396d3cafdc8eadb045f4a31be01863f655c610"},
+    {file = "Babel-2.12.1.tar.gz", hash = "sha256:cc2d99999cd01d44420ae725a21c9e3711b3aadc7976d6147f622d8581963455"},
 ]
 "backports.zoneinfo" = [
     {file = "backports.zoneinfo-0.2.1-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:da6013fd84a690242c310d77ddb8441a559e9cb3d3d59ebac9aca1a57b2e18bc"},
@@ -3313,8 +3313,8 @@ stringcase = [
     {file = "stringcase-1.2.0.tar.gz", hash = "sha256:48a06980661908efe8d9d34eab2b6c13aefa2163b3ced26972902e3bdfd87008"},
 ]
 tenacity = [
-    {file = "tenacity-8.2.1-py3-none-any.whl", hash = "sha256:dd1b769ca7002fda992322939feca5bee4fa11f39146b0af14e0b8d9f27ea854"},
-    {file = "tenacity-8.2.1.tar.gz", hash = "sha256:c7bb4b86425b977726a7b49971542d4f67baf72096597d283f3ffd01f33b92df"},
+    {file = "tenacity-8.2.2-py3-none-any.whl", hash = "sha256:2f277afb21b851637e8f52e6a613ff08734c347dc19ade928e519d7d2d8569b0"},
+    {file = "tenacity-8.2.2.tar.gz", hash = "sha256:43af037822bd0029025877f3b2d97cc4d7bb0c2991000a3d59d71517c5c969e0"},
 ]
 termcolor = [
     {file = "termcolor-2.2.0-py3-none-any.whl", hash = "sha256:91ddd848e7251200eac969846cbae2dacd7d71c2871e92733289e7e3666f48e7"},

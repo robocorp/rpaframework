@@ -12,6 +12,14 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28 Feb 2023
+-----------
+**RPA.PDF** (``rpaframework-pdf`` **7.1.0**):
+    - Add possibility to change `boxes_flow` setting of PDF conversion with ``Set Convert Settings`` keyword.
+      The `boxes_flow` defines how text boxes within PDF page are ordered. Read more about this in the keyword 
+      documentation.
+
+
 22 Feb 2023
 -----------
 **RPA.Assistant** (``rpaframework-assistant`` **1.2.4**):
