@@ -77,6 +77,16 @@ class ElementKeywords(LibraryContext):
         the `return_structure` parameter to `True` to get a tree of elements returned
         as well. (off by default to save memory)
 
+        - The printed structure displays a tree prefixed with "depth" - "position" so
+          you know how deep (0 means root) in the tree you are and on what position
+          (1-indexed) the child you're looking for is.
+        - The returned structure is dictionary with all the children flattened per
+          depth level. Additionally, these `WindowsElement`s contain a relevant locator
+          composed of "root > path" which will work to identify the element in the
+          tree.
+
+        Portal example: https://robocorp.com/portal/robot/robocorp/example-windows-element-path
+
         :param locator: The root of the tree to output.
         :param max_depth: Maximum depth level. (defaults to 8)
         :param capture_image_folder: If set, controls' images will be captured in this
@@ -85,6 +95,8 @@ class ElementKeywords(LibraryContext):
             file as warnings) and increases visibility in the output console.
         :param return_structure: A flattened tree with all the elements collated by
             level will be returned if this is enabled.
+        :returns: Optionally a dictionary of children per depth level when
+            `return_structure` is enabled.
         """
         brothers_count = {}  # cache how many brothers are in total given a child
         structure = {}  # flattened tree of elements by level
