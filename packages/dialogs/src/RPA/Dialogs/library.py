@@ -121,7 +121,7 @@ class Dialogs:
             "`RPA.Dialogs` got deprecated and will be no longer maintained, "
             "please use `RPA.Assistant` instead and check the migration guide "
             "and release notes that describe the differences "
-            "(https://rpaframework.org/releasenotes.html#id4)"
+            "(https://updates.robocorp.com/release/Gfko5-rpaframework-2200)"
         )
         self.logger = logging.getLogger(__name__)
         self.elements: Elements = []
