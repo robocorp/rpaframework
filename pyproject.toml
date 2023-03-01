@@ -12,7 +12,7 @@ rpaframework-assistant = "^1.2.1"
 rpaframework-aws = "^5.2.6"
 rpaframework-dialogs = "^4.0.2"
 rpaframework-google = "^7.0.0"
-rpaframework-openai = "^1.0.1"
+rpaframework-openai = "^1.0.2"
 rpaframework-recognition = "^5.0.2"
 rpaframework-windows = "^7.1.0"
 

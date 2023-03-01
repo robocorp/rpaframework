@@ -198,11 +198,13 @@ class FinderKeywords(LibraryContext):
             raise ValueError(f"Unsupported search specifier for OCR: {base}")
 
         confidence = locator.confidence or self.confidence
+        language = locator.language
         self.logger.info(
-            "Searching for text '%s' (region: %s, confidence: %.1f)",
+            "Searching for text '%s' (region: %s, confidence: %.1f, language: %s)",
             locator.text,
             region or "display",
             confidence,
+            language or "Not set"
         )
 
         def finder(image: Image.Image) -> List[Region]:
@@ -211,6 +213,7 @@ class FinderKeywords(LibraryContext):
                 text=locator.text,
                 confidence=confidence,
                 region=region,
+                language=language,
             )
 
             return [match["region"] for match in matches]
