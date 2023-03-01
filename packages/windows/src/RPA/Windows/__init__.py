@@ -407,6 +407,12 @@ class Windows(WindowsElementsMixin, DynamicCore):
 
     Recording inspects elements on **mouse click** and can be stopped with keyboard **ESC**.
     Expected console output.
+    
+    **Caveats**
+    
+    - Make sure your *display scaling* is set to *100%*, otherwise you might encounter
+      issues when clicking or interacting with elements. (since offsets and coordinates
+      get distorted)
 
     .. code-block:: bash
 
