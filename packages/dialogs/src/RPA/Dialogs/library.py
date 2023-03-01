@@ -7,7 +7,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union, Any, Generator
 
 from robot.api.deco import library, keyword  # type: ignore
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError  # type: ignore
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+
+from RPA.core.logger import deprecation
 
 from .dialog import Dialog, TimeoutException
 from .dialog_types import Elements, Result, Options, Size, Icon
@@ -115,6 +117,12 @@ class Dialogs:
     """
 
     def __init__(self) -> None:
+        deprecation(
+            "`RPA.Dialogs` got deprecated and will be no longer maintained, "
+            "please use `RPA.Assistant` instead and check the migration guide "
+            "and release notes that describe the differences "
+            "(https://rpaframework.org/releasenotes.html#id4)"
+        )
         self.logger = logging.getLogger(__name__)
         self.elements: Elements = []
         self.dialogs: List[Dialog] = []
