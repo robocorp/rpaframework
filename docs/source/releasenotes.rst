@@ -11,9 +11,10 @@ Release notes
         - (affects Python side users only): Location enum that ``run_dialog`` and 
         ``ask_user`` accepts was changed from Location to WindowLocation to improve clarity. 
 
-    - Update to flet 0.4.2, library startup time is improved from ~1.2-2 seconds to 0.2-1 second
-    - Added location argument to Add Button keyword
+    - Added ``location`` argument to Add Button keyword
+    - Added ``round`` argument to Add Slider keyword
     - Internal refactoring
+    - Update underlying UI library to flet 0.2.2 -> 0.4.2, granting various bugfixes and improvements
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_

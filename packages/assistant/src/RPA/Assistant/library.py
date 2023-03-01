@@ -1172,6 +1172,7 @@ class Assistant:
         thumb_text="{value}",
         steps: Optional[int] = None,
         default: Optional[Union[int, float]] = None,
+        decimals: Optional[int] = None,
     ):
         """Add a slider input.
 
@@ -1186,7 +1187,8 @@ class Assistant:
                             For integer output, specify a steps value where all the
                             steps will be integers, or implement rounding when
                             retrieving the result.
-        :param default:     Default value for the slider. Has to be between min and max
+        :param default:     Default value for the slider. Must be between min and max.
+        :param decimals:    How many decimals should the value have and show.
 
         .. code-block:: robotframework
 
@@ -1194,9 +1196,7 @@ class Assistant:
             Create Percentage Slider
                 Add Text    Percentage slider
                 Add Slider  name=percentage  slider_min=0  slider_max=100
-                            thumb_text={value}%  steps=100
-
-
+                            thumb_text={value}%  steps=100  round=1
 
         """
         if default:
@@ -1216,5 +1216,6 @@ class Assistant:
             divisions=steps,
             label=thumb_text,
             value=default,
+            round=decimals,
         )
         self._client.add_element(name=name, element=slider)
