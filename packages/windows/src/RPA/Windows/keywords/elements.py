@@ -164,7 +164,7 @@ class ElementKeywords(LibraryContext):
         root_ctrl = target_elem.item
         brothers_count[hash(root_ctrl)] = 1  # the root is always singular here
 
-        image_idx = 0
+        image_idx = 1
         image_folder: Optional[Path] = None
         if capture_image_folder:
             image_folder = Path(capture_image_folder).expanduser().resolve()
@@ -181,11 +181,11 @@ class ElementKeywords(LibraryContext):
             control_str = str(control)
 
             if image_folder:
-                image_idx += 1
                 control_suffix: str = self._save_child_image(
                     control, image_folder=image_folder, image_idx=image_idx
                 )
                 control_str += control_suffix
+                image_idx += 1
 
             space = " " * depth * 4
             child_pos = brothers_count[hash(control)] - children_remaining
