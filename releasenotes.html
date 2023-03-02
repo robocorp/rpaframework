@@ -150,20 +150,28 @@
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this heading"></a></h1>
 <div class="section" id="id1">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
-<dl class="simple">
-<dt><strong>RPA.Assistant</strong> (<code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code> <strong>1.2.X</strong>):</dt><dd><ul class="simple">
-<li><p>Internal refactoring</p></li>
-</ul>
-</dd>
-</dl>
 </div>
 <div class="section" id="id2">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <div class="section" id="march-2023">
 <h3>2 March 2023<a class="headerlink" href="#march-2023" title="Permalink to this heading"></a></h3>
-<dl class="simple">
-<dt><strong>rpaframework-core</strong> 10.4.1</dt><dd><ul class="simple">
-<li><p>widen supported range of <code class="docutils literal notranslate"><span class="pre">packaging</span></code> dependency from ^21 to &gt;=21,&lt;24</p></li>
+<dl>
+<dt><strong>RPA.Assistant</strong> (<code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code> <strong>2.0.0</strong>):</dt><dd><ul>
+<li><dl>
+<dt>** Breaking ** changes:</dt><dd><ul class="simple">
+<li><p>Run Dialog and Ask User parameter “clear” was removed, clearing is now mandatory</p></li>
+<li><p>(affects Python side users only): Location enum that <code class="docutils literal notranslate"><span class="pre">run_dialog</span></code> and</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">ask_user</span></code> accepts was changed from Location to WindowLocation to improve clarity.
+- By default Slider now rounds to 1 decimal.</p>
+</dd>
+</dl>
+</li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">location</span></code> argument to Add Button keyword</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">round</span></code> argument to Add Slider keyword.</p></li>
+<li><p>Internal refactoring</p></li>
+<li><p>Update underlying UI library to flet 0.2.2 -&gt; 0.4.2, granting various bugfixes and improvements</p></li>
+<li><p>depend on <strong>rpaframework-core</strong> 10.4.1 due to Flet dependency incompatibilities with earlier versions</p></li>
 </ul>
 </dd>
 </dl>
