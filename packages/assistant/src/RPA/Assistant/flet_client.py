@@ -198,5 +198,11 @@ class FletClient:
             element.disabled = False
 
     def add_to_disablelist(self, element: flet.Control):
-        """added elements will be disabled when code is running from buttons"""
+        """Added elements will be disabled when code is running from buttons"""
         self._to_disable.append(element)
+
+    def set_title(self, title: str):
+        """Set flet dialog title when it is running."""
+        if not self.page:
+            raise RuntimeError("Flet update called when page is not open")
+        self.page.title = title

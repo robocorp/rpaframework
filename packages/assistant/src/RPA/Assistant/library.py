@@ -215,7 +215,7 @@ class Assistant:
 
         return ElevatedButton(label, on_click=validate_and_close)
 
-    @keyword
+    @keyword(tags=["dialog", "running"])
     def clear_dialog(self) -> None:
         """Clear dialog and results while it is running."""
         self._client.results = {}
@@ -1014,7 +1014,7 @@ class Assistant:
         self.add_submit_buttons(["Submit", "Close"], "Submit")
         return self.run_dialog(**options, timeout=timeout)
 
-    @keyword(tags=["dialog"])
+    @keyword(tags=["dialog", "running"])
     def refresh_dialog(self):
         """Can be used to update UI elements when adding elements while dialog is
         running
@@ -1219,3 +1219,8 @@ class Assistant:
             round=decimals,
         )
         self._client.add_element(name=name, element=slider)
+
+    @keyword(tags=["dialog", "running"])
+    def set_title(self, title: str):
+        """Set flet dialog title when it is running."""
+        self._client.set_title(title)

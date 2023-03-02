@@ -70,6 +70,7 @@ Control Buttons
     Add Slider    name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
 
     Add Heading    good buttons
+    Add Button    Set title     Set Title  testing_title
     Add Button    log button    Log    test_string
     Add Button    print button    Log To Console    test_string
     Add Button    open browser    Open Website
