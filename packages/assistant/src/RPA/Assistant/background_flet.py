@@ -1,80 +1,76 @@
-import atexit
-import os
-import signal
 from logging import getLogger
-from subprocess import Popen, SubprocessError
-from typing import Optional
+from subprocess import Popen
+from typing import Optional, Tuple
 
 from flet import flet as ft
-from flet.connection import Connection
-from flet.utils import is_macos, is_windows
+from flet_core.page import Connection
 
-from RPA.Assistant.utils import nix_get_pid
+_connect_internal_sync = ft.__connect_internal_sync  # pylint: disable=protected-access
 
 
 class BackgroundFlet:
+    """Class that manages the graphical flet subrocess and related operations"""
+
     def __init__(self):
-        atexit.register(self.cleanup)
         self.logger = getLogger(__name__)
         self._conn: Optional[Connection] = None
         self._fvp: Optional[Popen] = None
+        self._pid_file: Optional[str] = None
 
-    def cleanup(self):
-        # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146 # noqa: E501
-        if self._conn is not None:
-            self._conn.close()
-        if not is_windows():
-            try:
-                fletd_pid = nix_get_pid("fletd")
-                self.logger.debug(f"Fletd Server process {fletd_pid}")
-                os.kill(fletd_pid, signal.SIGTERM)
-            except (SubprocessError, OSError) as err:
-                self.logger.error(
-                    f"Unexpected error {err} when killing Flet subprocess"
-                )
-            except ValueError:
-                pass  # no leftover process found
-
-        # kill the graphical application on macOS,
-        # otherwise it can hang around after cleanup
-        if is_macos():
-            try:
-                fletd_app_pid = nix_get_pid("Flet")
-                self.logger.debug(f"Flet application process {fletd_app_pid}")
-                os.kill(fletd_app_pid, signal.SIGKILL)
-            except ValueError:
-                pass  # no leftover process found
-            except (SubprocessError, OSError) as err:
-                self.logger.error(
-                    f"Unexpected error {err} when killing Flet subprocess"
-                )
-
-    def start_flet_view(self, target):
+    def _app_sync(
+        self,
+        target,
+        name="",
+        host=None,
+        port=0,
+        view: ft.AppViewer = ft.FLET_APP,
+        assets_dir=None,
+        upload_dir=None,
+        web_renderer="canvaskit",
+        route_url_strategy="path",
+        auth_token=None,
+    ) -> Tuple[Connection, Popen, str]:
+        # Based on https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet/src/flet/flet.py#L96 # noqa: E501
         # We access Flet internals because it is simplest way to control the specifics
         # In the future we should migrate / ask for a stable API that fits our needs
         # pylint: disable=protected-access
-        def on_session_created(conn, session_data):
-            page = ft.Page(conn, session_data.sessionID)
-            conn.sessions[session_data.sessionID] = page
-            target(page)
+        conn = _connect_internal_sync(
+            page_name=name,
+            view=ft.FLET_APP,
+            host=host,
+            port=port,
+            auth_token=auth_token,
+            session_handler=target,
+            assets_dir=assets_dir,
+            upload_dir=upload_dir,
+            web_renderer=web_renderer,
+            route_url_strategy=route_url_strategy,
+        )
 
-        if not self._conn:
-            self._conn = ft._connect_internal(
-                page_name="",
-                host=None,
-                port=0,
-                is_app=True,
-                permissions=None,
-                assets_dir="/",
-                upload_dir=None,
-                web_renderer="canvaskit",
-                route_url_strategy="hash",
-            )
-        self._conn.on_session_created = on_session_created
-        self._fvp = ft._open_flet_view(self._conn.page_url, False)
+        self.logger.info("Connected to Flet app and handling user sessions...")
 
-    def terminate(self):
+        fvp, pid_file = ft.open_flet_view(
+            conn.page_url, assets_dir, view == ft.FLET_APP_HIDDEN
+        )
+        return conn, fvp, pid_file
+
+    def start_flet_view(self, target) -> None:
+        """Starts the flet process and places the connection, view process Popen and
+        flet python server PID file into self
+        """
+        self._conn, self._fvp, self._pid_file = self._app_sync(target)
+
+    def close_flet_view(self) -> None:
+        """Close the currently open flet view"""
+        assert self._conn is not None
+        assert self._fvp is not None
+        assert self._pid_file is not None
+        self._conn.close()
+        ft.close_flet_view(self._pid_file)
         self._fvp.terminate()
+        self._conn = None
+        self._fvp = None
+        self._pid_file = None
 
     def poll(self):
         return self._fvp.poll()
