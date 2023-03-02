@@ -5,8 +5,6 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-**rpaframework-core** 10.4.1
-    - widen supported range of ``packaging`` dependency from ^21 to >=21,<24
 
 **RPA.Assistant** (``rpaframework-assistant`` **1.2.X**):
     - Internal refactoring
@@ -14,6 +12,12 @@ Release notes
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+2 March 2023
+------------
+**rpaframework-core** 10.4.1
+    - widen supported range of ``packaging`` dependency from ^21 to >=21,<24
+
 
 28 Feb 2023
 -----------
