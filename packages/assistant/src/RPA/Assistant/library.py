@@ -153,6 +153,7 @@ class Assistant:
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
         self._required_fields: Set[str] = set()
+        self._open_layouting: List[str] = []
 
         try:
             # Prevent logging from keywords that return results
@@ -1222,5 +1223,49 @@ class Assistant:
 
     @keyword(tags=["dialog", "running"])
     def set_title(self, title: str):
-        """Set flet dialog title when it is running."""
+        """Set dialog title when it is running."""
         self._client.set_title(title)
+
+    def _last_opened_must_be(self, layouting_element: str):
+        """Check that either there is no open layouting element or last opened was
+        ``layouting_element``.
+        """
+        if not self._open_layouting:
+            raise ValueError(f"Cannot close {layouting_element}, no open layout")
+
+        last_opened = self._open_layouting[-1]
+        if not last_opened == layouting_element:
+            raise ValueError(
+                f"Cannot close {layouting_element}, last opened layout is {last_opened}"
+            )
+
+    @keyword(tags=["layout", ""])
+    def open_row(self):
+        """Open a row layout container. Following ``Add <element>`` calls will add
+        items into that row until ``Close Row`` is called.
+        """
+        self._open_layouting.append("row")
+        self._client.add_layout(Row())
+
+    @keyword(tags=["layout", ""])
+    def close_row(self):
+        """Close previously opened row.
+        Raises ValueError if called with no Row open, or if another layout element was
+        opened more recently than a row.
+        """
+        self._last_opened_must_be("row")
+        self._client.close_layout()
+        self._open_layouting.pop()
+
+    @keyword(tags=["layout", ""])
+    def open_container(self):
+        """Close latest opened container."""
+        self._open_layouting.append("container")
+        self._client.add_layout(Container())
+
+    @keyword(tags=["layout", ""])
+    def close_container(self):
+        """Close previously opened container."""
+        self._last_opened_must_be("container")
+        self._client.close_layout()
+        self._open_layouting.pop()

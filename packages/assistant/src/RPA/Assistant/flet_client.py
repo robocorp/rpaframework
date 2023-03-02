@@ -4,13 +4,13 @@ from timeit import default_timer as timer
 from typing import Callable, List, NamedTuple, Optional, Tuple, Union
 
 import flet
-from flet import Container, Page, ScrollMode
+from flet import Container, Page, Row, ScrollMode
 from flet_core import Control
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
 from RPA.Assistant.background_flet import BackgroundFlet
-from RPA.Assistant.types import Result, WindowLocation
+from RPA.Assistant.types import Result, SupportedFletLayout, WindowLocation
 
 
 def resolve_absolute_position(
@@ -47,6 +47,7 @@ class FletClient:
 
         self._elements: Elements = Elements([], [])
         self._to_disable: List[flet.Control] = []
+        self._container_stack: List[SupportedFletLayout] = []
 
         self._background_flet = BackgroundFlet()
 
@@ -138,7 +139,19 @@ class FletClient:
         # TODO: validate that element "name" is unique
         # make a container that adds margin around the element
         container = Container(margin=5, content=element)
-        self._elements.visible.append(container)
+
+        if self._container_stack != []:
+            current_container = self._container_stack[-1]
+            if hasattr(current_container, "controls"):
+                # multi content container
+                current_container.controls.append(container)
+            else:
+                # single content container
+                if not current_container.content is None:
+                    raise ValueError("Attempting to place two content in one Container")
+                current_container.content = container
+        else:
+            self._elements.visible.append(container)
         if name is not None:
             element.on_change = self._make_flet_event_handler(name, extra_handler)
 
@@ -206,3 +219,10 @@ class FletClient:
         if not self.page:
             raise RuntimeError("Flet update called when page is not open")
         self.page.title = title
+
+    def add_layout(self, container: SupportedFletLayout):
+        self._container_stack.append(container)
+        self._elements.visible.append(container)
+
+    def close_layout(self):
+        self._container_stack.pop()

@@ -8,6 +8,10 @@ Release notes
 **RPA.Assistant** (``rpaframework-assistant`` **2.1.0**):
     - Add ``Set Title`` keyword
 
+    - Add ``Open Row`` and ``Close Row`` keywords. Useful for layouting elements into rows
+    - Add ``Open Container`` and ``Close Container`` keywords. Useful for styling or placing single elements
+
+
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
