@@ -17,9 +17,20 @@ Release notes
     - Internal refactoring
     - Update underlying UI library to flet 0.2.2 -> 0.4.2, granting various bugfixes and improvements
 
+**rpaframework-core** 10.4.1
+    - widen supported range of ``packaging`` dependency from ^21 to >=21,<24
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+28 Feb 2023
+-----------
+**RPA.PDF** (``rpaframework-pdf`` **7.1.0**):
+    - Add possibility to change `boxes_flow` setting of PDF conversion with ``Set Convert Settings`` keyword.
+      The `boxes_flow` defines how text boxes within PDF page are ordered. Read more about this in the keyword 
+      documentation.
+
 
 22 Feb 2023
 -----------
