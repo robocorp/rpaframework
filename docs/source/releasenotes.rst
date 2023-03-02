@@ -10,6 +10,9 @@ Release notes
 
     - Add ``Open Row`` and ``Close Row`` keywords. Useful for layouting elements into rows
     - Add ``Open Container`` and ``Close Container`` keywords. Useful for styling or placing single elements
+    - Add ``Open Navbar`` and ``Close Navbar`` keywords. Useful for styling or placing single elements
+
+    - Add ``Add Flet Icon`` that enables adding icons from flets large gallery of icons
 
 
 

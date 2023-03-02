@@ -1,7 +1,7 @@
 from enum import Enum, auto
 from typing import Any, Dict, List, Union
 
-from flet_core import Column, Container, Row, alignment
+from flet_core import AppBar, Column, Container, Row, alignment
 
 Element = Dict[str, Any]
 Options = Union[List[str], str]
@@ -55,4 +55,4 @@ class Location(Enum):
     BottomRight = alignment.bottom_right
 
 
-SupportedFletLayout = Union[Row, Column, Container]
+SupportedFletLayout = Union[AppBar, Row, Column, Container]

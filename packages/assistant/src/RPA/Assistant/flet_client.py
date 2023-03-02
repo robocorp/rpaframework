@@ -5,7 +5,7 @@ from typing import Callable, List, NamedTuple, Optional, Tuple, Union
 
 import flet
 from flet import Container, Page, Row, ScrollMode
-from flet_core import Control
+from flet_core import Control, AppBar
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
@@ -145,6 +145,12 @@ class FletClient:
             if hasattr(current_container, "controls"):
                 # multi content container
                 current_container.controls.append(container)
+
+            elif hasattr(current_container, "actions"):
+                if not isinstance(current_container, AppBar):
+                    raise ValueError("Internal library error, invalid state")
+                # multi content container
+                current_container.actions.append(container)
             else:
                 # single content container
                 if not current_container.content is None:

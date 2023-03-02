@@ -68,6 +68,7 @@ Open Website
 Control Buttons
     Add Heading    UI elements for testing
     Add Slider    name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
+    Add Flet Icon  icon_name=check_circle_rounded  color=FF00FF  size=48
 
     Add Heading    good buttons
     Add Button    Set title     Set Title  testing_title

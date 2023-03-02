@@ -1,20 +1,29 @@
 import pytest
 from RPA.Assistant import Assistant
+from RPA.Assistant.types import Icon
 
 
 def test_rows(assistant: Assistant):
     assistant.open_row()
-    print(assistant._client._container_stack)
     assistant.add_date_input("my_date", label="My Date")
-    assistant.add_text(
-        "python button",
-    )
-    print(assistant._client._container_stack)
+    assistant.add_text("miscallenous text")
     assistant.close_row()
-    print(assistant._client._container_stack)
 
 
-def test_container_one_content(assistant: Assistant):
+def test_container(assistant: Assistant):
+    assistant.open_container()
+    assistant.add_text("miscallenous text")
+    assistant.close_container()
+
+
+def test_top_bar(assistant: Assistant):
+    assistant.open_navbar()
+    assistant.add_text("miscallenous text")
+    assistant.add_text("other text")
+    assistant.close_navbar()
+
+
+def test_container_multiple_content(assistant: Assistant):
     # with pytest.raises(ValueError):
     with pytest.raises(ValueError) as excinfo:
         assistant.open_container()
@@ -39,6 +48,12 @@ def test_mixed_closing(assistant: Assistant):
 
     with pytest.raises(ValueError) as excinfo:
         assistant.open_row()
+        assistant.close_container()
+
+    assert "Cannot close" in str(excinfo.value)
+
+    with pytest.raises(ValueError) as excinfo:
+        assistant.open_navbar()
         assistant.close_container()
 
     assert "Cannot close" in str(excinfo.value)

@@ -9,6 +9,7 @@ from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import (
+    AppBar,
     Checkbox,
     Column,
     Container,
@@ -452,7 +453,7 @@ class Assistant:
 
     @keyword
     def add_icon(self, variant: Icon, size: int = 48) -> None:
-        """Add an icon element
+        """Add an icon element from RPA.Assistant's short icon list.
 
         :param variant: The icon type
         :param size:    The size of the icon
@@ -493,6 +494,27 @@ class Assistant:
         flet_icon, color = flet_icon_conversions[variant]
 
         self._client.add_element(flet.Icon(name=flet_icon, color=color, size=size))
+
+    @keyword
+    def add_flet_icon(
+        self, icon_name: str, color: Optional[str] = None, size: Optional[int] = 24
+    ):
+        """Add an icon from a large gallery of icons.
+
+        :param icon_name: Corresponding flet icon name. Check
+        https://gallery.flet.dev/icons-browser/ for a list of icons.
+        :param     color: Hex color for the icon. Default depends on icon.
+        :param      size: Integer size for the icon.
+
+
+        Example:
+
+        .. code-block:: robotframework
+            Add Heading    Check icon
+            Add Flet Icon  icon_name=check_circle_rounded  color=FF00FF  size=48
+            Run Dialog
+        """
+        self._client.add_element(flet.Icon(name=icon_name, color=color, size=size))
 
     @keyword(tags=["input"])
     def add_text_input(
@@ -1239,33 +1261,48 @@ class Assistant:
                 f"Cannot close {layouting_element}, last opened layout is {last_opened}"
             )
 
-    @keyword(tags=["layout", ""])
+    @keyword(tags=["layout"])
     def open_row(self):
         """Open a row layout container. Following ``Add <element>`` calls will add
         items into that row until ``Close Row`` is called.
         """
-        self._open_layouting.append("row")
+        self._open_layouting.append("Row")
         self._client.add_layout(Row())
 
-    @keyword(tags=["layout", ""])
+    @keyword(tags=["layout"])
     def close_row(self):
         """Close previously opened row.
         Raises ValueError if called with no Row open, or if another layout element was
         opened more recently than a row.
         """
-        self._last_opened_must_be("row")
+        self._last_opened_must_be("Row")
         self._client.close_layout()
         self._open_layouting.pop()
 
-    @keyword(tags=["layout", ""])
+    @keyword(tags=["layout"])
     def open_container(self):
-        """Close latest opened container."""
-        self._open_layouting.append("container")
+        """Open a single element container. The following ``Add <element>`` calls adds
+        an element inside the container. Can be used for styling elements."""
+        self._open_layouting.append("Container")
         self._client.add_layout(Container())
 
-    @keyword(tags=["layout", ""])
+    @keyword(tags=["layout"])
     def close_container(self):
         """Close previously opened container."""
-        self._last_opened_must_be("container")
+        self._last_opened_must_be("Container")
+        self._client.close_layout()
+        self._open_layouting.pop()
+
+    @keyword(tags=["layout"])
+    def open_navbar(self, title: Optional[str] = None):
+        """Create a nav bar. Following ``Add <element>`` calls will add
+        items into the navbar until ``Close Navbar`` is called."""
+        self._open_layouting.append("AppBar")
+        self._client.add_layout(AppBar(title=Text(title)))
+
+    @keyword(tags=["layout"])
+    def close_navbar(self):
+        """Close previously opened navbar."""
+        self._last_opened_must_be("AppBar")
         self._client.close_layout()
         self._open_layouting.pop()
