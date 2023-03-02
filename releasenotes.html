@@ -155,15 +155,14 @@
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <div class="section" id="march-2023">
 <h3>2 March 2023<a class="headerlink" href="#march-2023" title="Permalink to this heading"></a></h3>
-<dl>
-<dt><strong>RPA.Assistant</strong> (<code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code> <strong>2.0.0</strong>):</dt><dd><ul>
-<li><dl>
-<dt>** Breaking ** changes:</dt><dd><ul class="simple">
+<dl class="simple">
+<dt><strong>RPA.Assistant</strong> (<code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code> <strong>2.0.0</strong>):</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt><strong>Breaking</strong> changes:</dt><dd><ul>
 <li><p>Run Dialog and Ask User parameter “clear” was removed, clearing is now mandatory</p></li>
-<li><p>(affects Python side users only): Location enum that <code class="docutils literal notranslate"><span class="pre">run_dialog</span></code> and</p></li>
+<li><p>(affects Python side users only): Location enum that <code class="docutils literal notranslate"><span class="pre">run_dialog</span></code> and <code class="docutils literal notranslate"><span class="pre">ask_user</span></code> accepts was changed from Location to WindowLocation to improve clarity.</p></li>
+<li><p>By default Slider now rounds to 1 decimal.</p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">ask_user</span></code> accepts was changed from Location to WindowLocation to improve clarity.
-- By default Slider now rounds to 1 decimal.</p>
 </dd>
 </dl>
 </li>
