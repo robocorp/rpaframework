@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, List
 from robot.api.deco import keyword
 import openai
 
@@ -147,7 +147,7 @@ class OpenAI:
     def chat_completion_create(
         self,
         user_content: str = None,
-        conversation: Optional[list] = None,
+        conversation: Optional[List] = None,
         model: Optional[str] = "gpt-3.5-turbo",
         system_content: Optional[str] = None,
         temperature: Optional[int] = 1,
@@ -192,7 +192,7 @@ class OpenAI:
 
         """
         if conversation is not None:
-            conversation = [conversation][0]
+            conversation = conversation[0]
         else:
             conversation = []
             if system_content is not None:
