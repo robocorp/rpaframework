@@ -12,10 +12,9 @@ Release notes
 2 March 2023
 ------------
 **RPA.Assistant** (``rpaframework-assistant`` **2.0.0**):
-    - ** Breaking ** changes:
+    - **Breaking** changes:
         - Run Dialog and Ask User parameter "clear" was removed, clearing is now mandatory
-        - (affects Python side users only): Location enum that ``run_dialog`` and 
-        ``ask_user`` accepts was changed from Location to WindowLocation to improve clarity. 
+        - (affects Python side users only): Location enum that ``run_dialog`` and ``ask_user`` accepts was changed from Location to WindowLocation to improve clarity. 
         - By default Slider now rounds to 1 decimal.
 
     - Added ``location`` argument to Add Button keyword
