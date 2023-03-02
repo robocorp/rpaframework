@@ -11,6 +11,9 @@ Release notes
 
 2 March 2023
 ------------
+**RPA.OpenAI** (``rpaframework-openai`` **1.1.1**):
+  - Fix keyword ``Chat Completion Create`` not working as documented
+
 **RPA.OpenAI** (``rpaframework-openai`` **1.1.0**, :pr:`867`):
   - New keyword ``Chat Completion Create`` can be used to build up discussion with ChatGPT
 
