@@ -180,15 +180,15 @@ class OpenAI:
         .. code-block:: robotframework
 
             # Create a new conversation without conversation history.
-            ${chatgpt_conversation}     Chat Completion Create
+            ${response}   @{chatgpt_conversation}=     Chat Completion Create
             ...    user_content=What is the biggest mammal?
-            Log    ${chatgpt_conversation}[0]
+            Log    ${response}
 
             # Continue the conversation by using the "conversation" argument.
-            ${chatgpt_conversation}      Chat Completion Create
-            ...    conversation=${chatgpt_conversation}[1]
+            ${response}   @{chatgpt_conversation}=     Chat Completion Create
+            ...    conversation=${chatgpt_conversation}
             ...    user_content=How old can it live?
-            Log    ${chatgpt_conversation}[0]
+            Log    ${response}
 
         """
         if conversation is not None:

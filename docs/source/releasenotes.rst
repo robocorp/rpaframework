@@ -11,6 +11,9 @@ Release notes
 
 2 March 2023
 ------------
+**RPA.OpenAI** (``rpaframework-openai`` **1.1.0**, :pr:`867`):
+  - New keyword ``Chat Completion Create`` can be used to build up discussion with ChatGPT
+
 **RPA.Assistant** (``rpaframework-assistant`` **2.0.0**):
     - **Breaking** changes:
         - Run Dialog and Ask User parameter "clear" was removed, clearing is now mandatory
