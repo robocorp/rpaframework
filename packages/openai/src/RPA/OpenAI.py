@@ -144,6 +144,86 @@ class OpenAI:
             return None
 
     @keyword
+    def chat_completion_create(
+        self,
+        user_content: str = None,
+        conversation: Optional[list] = None,
+        model: Optional[str] = "gpt-3.5-turbo",
+        system_content: Optional[str] = None,
+        temperature: Optional[int] = 1,
+        top_probability: Optional[int] = 1,
+        frequency_penalty: Optional[int] = 0,
+        presence_penalty: Optional[int] = 0,
+    ) -> None:
+        """Keyword for creating ChatGPT text completions in OpenAI. Keyword returns a
+        list containing the response as a string and the message history as a list.
+
+        :param user_content: Text submitted to ChatGPT to generate completions.
+        :param conversation: List containing the conversation to be continued. Leave
+         empty for a new conversation.
+        :param model: ID of the model to use. Currently, only gpt-3.5-turbo and
+         gpt-3.5-turbo-0301 are supported.
+        :param system_content: The system message helps set the behavior of
+         the assistant.
+        :param temperature: What sampling temperature to use between 0 to 2. Higher
+         values means the model will take more risks.
+        :param top_probability: An alternative to sampling with temperature, called
+         nucleus sampling, where the model considers the results of the tokens with
+         top_p probability mass.
+        :param frequency_penalty: Number between -2.0 and 2.0. Positive values penalize
+         new tokens based on their existing frequency in the text so far.
+        :param presence_penalty: Number between -2.0 and 2.0. Positive values penalize
+         new tokens based on whether they appear in the text so far.
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            # Create a new conversation without conversation history.
+            ${response}   @{chatgpt_conversation}=     Chat Completion Create
+            ...    user_content=What is the biggest mammal?
+            Log    ${response}
+
+            # Continue the conversation by using the "conversation" argument.
+            ${response}   @{chatgpt_conversation}=     Chat Completion Create
+            ...    conversation=${chatgpt_conversation}
+            ...    user_content=How old can it live?
+            Log    ${response}
+
+        """
+        if conversation is not None:
+            conversation = [conversation][0]
+        else:
+            conversation = []
+            if system_content is not None:
+                conversation.append(
+                    {"role": "system", "content": system_content},
+                )
+        conversation.append(
+            {"role": "user", "content": user_content},
+        )
+        self.logger.info(conversation)
+
+        response = openai.ChatCompletion.create(
+            model=model,
+            messages=conversation,
+            temperature=temperature,
+            top_p=top_probability,
+            frequency_penalty=frequency_penalty,
+            presence_penalty=presence_penalty,
+        )
+        self.logger.info(response)
+        text = response["choices"][0]["message"]["content"]
+        conversation.append(
+            {"role": "assistant", "content": text},
+        )
+        return_list = []
+        return_list.append(text)
+        return_list.append(conversation)
+        self.logger.info(return_list)
+        return return_list
+
+    @keyword
     def image_create(
         self,
         prompt: str,
