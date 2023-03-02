@@ -17,12 +17,16 @@ Release notes
     - Internal refactoring
     - Update underlying UI library to flet 0.2.2 -> 0.4.2, granting various bugfixes and improvements
 
-**rpaframework-core** 10.4.1
-    - widen supported range of ``packaging`` dependency from ^21 to >=21,<24
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+2 March 2023
+------------
+**rpaframework-core** 10.4.1
+    - widen supported range of ``packaging`` dependency from ^21 to >=21,<24
+
 
 28 Feb 2023
 -----------
