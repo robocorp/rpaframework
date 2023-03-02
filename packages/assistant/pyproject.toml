@@ -32,7 +32,9 @@ packages = [{ include = "RPA", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.7"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
-rpaframework-core = ">=6.5.1, <11.0.0"
+# Flet needs `packaging>=23`. Earlier rpaframework-core versions don't allow
+# installing it. This make resolution errors simpler and faster.
+rpaframework-core = "^10.4.1"
 flet="0.4.2"
 # We only need the Literal type on python 3.7 from the module, but it has to be
 # installed on all pythons so the imports work
