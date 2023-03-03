@@ -1,6 +1,6 @@
 from time import sleep
 import RPA.Assistant
-from RPA.Assistant.types import Icon, Location
+from RPA.Assistant.types import Icon, VerticalLocation, WindowLocation
 import pytest
 
 
@@ -62,7 +62,7 @@ assistant.add_file_input("file", file_type="pdf,png,jpg")
 assistant.add_hidden_input("Hidden", "value")
 assistant.add_text("Percentage slider")
 assistant.add_slider(
-    name="percentage", slider_min=0, slider_max=100, steps=100, default=80
+    name="percentage", slider_min=0, slider_max=100, steps=100, default=80, round=1
 )
 # assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
 
@@ -92,6 +92,11 @@ assistant.add_submit_buttons(["second submit"], "second submit")
 
 # assistant.clear_dialog()
 # assistant.add_icon(Icon.Failure)
+assistant.add_button(
+    "clear elements",
+    lambda: assistant.clear_dialog(),
+    location=VerticalLocation.Right,
+)
 
-results = assistant.ask_user(location=Location.TopLeft, timeout=180)
+results = assistant.run_dialog(location=WindowLocation.TopLeft, timeout=180)
 print(results)
