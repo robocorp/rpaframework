@@ -464,11 +464,11 @@ Click and set values in WordPad
     # Note that one additional `\r` (Windows EOL) is added by the app itself in this
     #  scenario.
     ${text_locator} =   Set Variable    name:"Rich Text Window"
-    Set Value   ${text_locator}     This i
-    Set Value   ${text_locator}     s my test text.     append=${True}
-    Set Value   ${text_locator}     append=${True}      enter=${True}
-    Set Value   ${text_locator}     2nd line text.   append=${True}    newline=${True}
-    ${text} =   Get Value   ${text_locator}
+    ${elem} =   Set Value   ${text_locator}     This i
+    Set Value   ${elem}     s my test text.     append=${True}
+    Set Value   ${elem}     append=${True}      enter=${True}
+    Set Value   ${elem}     2nd line text.   append=${True}    newline=${True}
+    ${text} =   Get Value   ${elem}
     Should Be Equal     ${text}     This i\rs my test text.\r\r\r2nd line text.\r\r
 
     [Teardown]  Close Current Window

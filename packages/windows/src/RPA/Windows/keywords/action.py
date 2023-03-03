@@ -366,25 +366,41 @@ class ActionKeywords(LibraryContext):
             *** Tasks ***
             Set Values In Notepad
                 Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
-                # Press ENTER after setting the value
-                Set Value    type:Edit name:"File name:"    console.txt    enter=True
+                # Press ENTER after setting the value.
+                Set Value    type:Edit name:"File name:"    console.txt   enter=${True}
 
-                # Add newline (manually) at the end of the string (Notepad example)
+                # Add newline (manually) at the end of the string. (Notepad example)
                 Set Value    name:"Text Editor"  abc\\n
-                # Add newline with parameter
+                # Add newline with parameter.
                 Set Value    name:"Text Editor"  abc   newline=${True}
 
-                # Clear Notepad window and start appending text
+                # Clear Notepad window and start appending text.
                 Set Anchor  name:"Text Editor"
-                # all following keyword calls will use anchor element as locator
-                # UNLESS they specify locator specifically or `Clear Anchor` is used
-                ${time}=    Get Time
-                # Clears when append=False (default)
+                # All the following keyword calls will use the anchor element as a
+                #  starting point, UNLESS they specify a locator explicitly or
+                #  `Clear Anchor` is used.
+                ${time} =    Get Time
+                # Clears with `append=${False}`. (default)
                 Set Value    value=time now is ${time}
-                # Append text and add newline to the end
-                Set Value    value= and it's task run time   append=True  newline=True
-                # Continue appending
-                Set Value    value=this will appear on the 2nd line    append=True
+                # Append text and add a newline at the end.
+                Set Value    value= and it's task run time   append=${True}
+                ...    newline=${True}
+                # Continue appending and ensure a new line at the end by pressing
+                #  the Enter key.
+                Set Value    value=this will appear on the 2nd line    append=${True}
+                ...    enter=${True}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib_win = Windows()
+            locator = "Document - WordPad > Rich Text Window"
+            elem = lib_win.set_value(locator, value="My text", send_keys_fallback=True)
+            text = lib_win.get_value(elem)
+            print(text)
         """
         value = value or ""
         if newline and enter:
@@ -420,7 +436,7 @@ class ActionKeywords(LibraryContext):
             if newline_string or re.search("[\r\n]", value):
                 self.logger.warning(
                     "The `newline` switch and EOLs are ignored when setting a value"
-                    " through keys! (enable them with the `enter` parameter only)"
+                    " through keys! (insert them with the `enter` parameter only)"
                 )
             if not append:
                 # Delete the entire present value inside.
