@@ -121,7 +121,7 @@ class ElementKeywords(LibraryContext):
         - The printed structure displays a tree prefixed with "depth" - "position" so
           you know how deep (0 means root) in the tree you are and on what position
           (1-indexed) the child you're looking for is.
-        - The returned structure is dictionary with all the children flattened per
+        - The returned structure is a dictionary with all the children flattened per
           depth level. Additionally, these `WindowsElement`s contain a relevant locator
           composed of "root > path" which will work to identify the element in the
           tree.
