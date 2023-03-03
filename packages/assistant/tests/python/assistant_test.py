@@ -54,7 +54,7 @@ assistant.add_icon(Icon.Failure)
 assistant.add_icon(Icon.Warning)
 assistant.add_icon(Icon.Success)
 
-assistant.add_flet_icon(icon_name="check_circle_rounded", color="FF00FF", size=48)
+assistant.add_flet_icon(icon="check_circle_rounded", color="FF00FF", size=48)
 
 assistant.add_text_input(
     "txt_input", placeholder="placeholder", required=True, validation=length_greater_3

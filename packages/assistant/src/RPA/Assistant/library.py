@@ -497,24 +497,32 @@ class Assistant:
 
     @keyword
     def add_flet_icon(
-        self, icon_name: str, color: Optional[str] = None, size: Optional[int] = 24
+        self,
+        icon: str,
+        color: Optional[str] = None,
+        size: Optional[int] = 24,
     ):
         """Add an icon from a large gallery of icons.
 
-        :param icon_name: Corresponding flet icon name. Check
-        https://gallery.flet.dev/icons-browser/ for a list of icons.
-        :param     color: Hex color for the icon. Default depends on icon.
-        :param      size: Integer size for the icon.
+        :param icon:      Corresponding flet icon name. Check
+                          https://gallery.flet.dev/icons-browser/ for a list of icons.
+                          Write the name in ``lower_case``
+        :param color:     Color for the icon. Default depends on icon. Allowed values
+                          are colors from
+                          https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37
+                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
+        :param size:      Integer size for the icon.
 
 
         Example:
 
         .. code-block:: robotframework
+
             Add Heading    Check icon
             Add Flet Icon  icon_name=check_circle_rounded  color=FF00FF  size=48
             Run Dialog
         """
-        self._client.add_element(flet.Icon(name=icon_name, color=color, size=size))
+        self._client.add_element(flet.Icon(name=icon, color=color, size=size))
 
     @keyword(tags=["input"])
     def add_text_input(
