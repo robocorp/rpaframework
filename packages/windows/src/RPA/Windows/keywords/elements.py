@@ -139,6 +139,26 @@ class ElementKeywords(LibraryContext):
             level will be returned if this is enabled.
         :returns: Optionally a dictionary of children per depth level when
             `return_structure` is enabled.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Display Element Structure
+                ${tree} =   Print Tree      Calculator > path:2|3|2|8
+                ...     return_structure=${True}
+                Log To Console      ${tree}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib = Windows()
+            tree = lib.print_tree("Calculator > path:2|3|2|8", return_structure=True)
+            print(tree)
         """
         # Cache how many brothers are in total given a child. (to know child position)
         brothers_count: Dict[int, int] = {}
