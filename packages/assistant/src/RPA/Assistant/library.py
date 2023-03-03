@@ -31,6 +31,7 @@ from flet import (
     colors,
     icons,
 )
+from flet_core import Stack
 from flet_core.control_event import ControlEvent
 from flet_core.dropdown import Option
 from robot.api.deco import keyword, library
@@ -1289,11 +1290,35 @@ class Assistant:
         self._close_layouting_element("Row")
 
     @keyword(tags=["layout"])
-    def open_container(self):
+    def open_container(
+        self,
+        margin: Optional[int] = None,
+        padding: Optional[int] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        bgcolor: Optional[str] = None,
+        # top: Optional[int] = None,
+        # left: Optional[int] = None,
+    ):
         """Open a single element container. The following ``Add <element>`` calls adds
-        an element inside the container. Can be used for styling elements."""
+        an element inside the container. Can be used for styling elements.
+
+        :param bgcolor:   Background color for the container. Default depends on icon.
+                          Allowed values are colors from
+                          https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37
+                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
+
+        """
         self._open_layouting.append("Container")
-        self._client.add_layout(Container())
+        self._client.add_layout(
+            Container(
+                margin=margin,
+                padding=padding,
+                width=width,
+                height=height,
+                bgcolor=bgcolor,
+            )
+        )
 
     @keyword(tags=["layout"])
     def close_container(self):
@@ -1311,3 +1336,12 @@ class Assistant:
     def close_navbar(self):
         """Close previously opened navbar."""
         self._close_layouting_element("AppBar")
+
+    @keyword(tags=["layout"])
+    def open_stack(self):
+        self._open_layouting.append("Stack")
+        self._client.add_layout(Stack())
+
+    @keyword(tags=["layout"])
+    def close_stack(self):
+        self._close_layouting_element("Stack")

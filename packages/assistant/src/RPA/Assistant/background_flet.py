@@ -1,3 +1,4 @@
+import atexit
 from logging import getLogger
 from subprocess import Popen
 from typing import Optional, Tuple
