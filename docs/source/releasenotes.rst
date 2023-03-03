@@ -5,11 +5,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-** rpaframework ** **22.0.1**
-    - Added PyYAML 6.0 support, rpaframework can now install together with tools like `langchain`
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+22.0.1 - 3 March 2023
+--------------------
+- Added PyYAML 6.0 support, rpaframework can now install together with tools like `langchain`
 
 2 March 2023
 ------------
