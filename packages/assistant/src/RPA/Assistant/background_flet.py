@@ -12,6 +12,7 @@ class BackgroundFlet:
     """Class that manages the graphical flet subrocess and related operations"""
 
     def __init__(self):
+        atexit.register(self.close_flet_view)
         self.logger = getLogger(__name__)
         self._conn: Optional[Connection] = None
         self._fvp: Optional[Popen] = None
