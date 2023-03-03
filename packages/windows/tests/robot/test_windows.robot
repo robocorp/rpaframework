@@ -16,6 +16,7 @@ ${EXE_SPOTIFY}      Spotify.exe
 
 ${LOC_NOTEPAD}      name:Notepad class:Notepad
 ${LOC_CALCULATOR}   subname:Calc control:WindowControl
+${LOC_WORDPAD}      name:"Document - WordPad" and type:WindowControl
 
 ${TIMEOUT}        1
 
@@ -318,7 +319,7 @@ Write to Notepad in the background
     # Clear Notepad edit window by writing initial text, then append rest of the text.
     ${time} =    Get Time
     Set Value    value=time now is ${time}    # clears when append=${False} (default)
-    Set Value    value= and it's task run time    append=${True}    newline=${True}
+    Set Value    value= and it's the task run time    append=${True}    newline=${True}
     Set Value    value=this will appear on the 2nd line    append=${True}
     Set Value    value=${EMPTY}    append=${True}    enter=${True}
 
@@ -437,3 +438,37 @@ Test Locator Path Strategy
     Should Be Equal     ${elem.name}    Four
 
     [Teardown]      Close Window   ${LOC_CALCULATOR}
+
+Click and set values in WordPad
+    [Documentation]     Set values in WordPad while text editor widget isn't in focus.
+    ...    (note that an additional '\r' is added with each value set, not in our
+    ...    control)
+    [Setup]     Windows Run     Wordpad
+
+    # Just control the main window and click the title bar.
+    Control Window      ${LOC_WORDPAD}
+    Click   id:TitleBar and type:TitleBarControl
+
+    # Enable mouse movement simulation while changing the page size.
+    ${old} =    Set Mouse Movement     ${True}
+    Should Be True      "${old}" == "False"  # disabled by default
+    Click   name:View
+    Click   File tab
+    Click   Page setup
+    Select  name:Size: class:ComboBox   A4
+    Send Keys   keys={Enter}
+    # Disable mouse movement simulation.
+    ${old} =    Set Mouse Movement     ${False}
+    Should Be True      "${old}" == "True"  # was enabled before
+
+    # Note that one additional `\r` (Windows EOL) is added by the app itself in this
+    #  scenario.
+    ${text_locator} =   Set Variable    name:"Rich Text Window"
+    Set Value   ${text_locator}     This i
+    Set Value   ${text_locator}     s my test text.     append=${True}
+    Set Value   ${text_locator}     append=${True}      enter=${True}
+    Set Value   ${text_locator}     2nd line text.   append=${True}    newline=${True}
+    ${text} =   Get Value   ${text_locator}
+    Should Be Equal     ${text}     This i\rs my test text.\r\r\r2nd line text.\r\r
+
+    [Teardown]  Close Current Window

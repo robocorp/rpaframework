@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 from typing import Callable, Optional
 
@@ -202,13 +203,14 @@ class ActionKeywords(LibraryContext):
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "Select"):
             # NOTE(cmin764): This is not supposed to work on `*Pattern` or `TextRange`
-            #  objects. (works with `Control`s and its derived flavors only)
+            #  objects. (works with `Control`s and its derived flavors only, like a
+            #  combobox)
             element.item.Select(
                 value, simulateMove=self.ctx.simulate_move, waitTime=self.ctx.wait_time
             )
         else:
             raise ActionNotPossible(
-                f"Element {locator!r} does not have 'Select' attribute"
+                f"Element {locator!r} does not support selection (try with `Set Value`)"
             )
         return element
 
@@ -287,27 +289,35 @@ class ActionKeywords(LibraryContext):
 
     @keyword(tags=["action"])
     def get_value(self, locator: Locator) -> Optional[str]:
-        """Get value of the element defined by the locator.
+        """Get the value of the element defined by the provided `locator`.
 
-        Exception ``ActionNotPossible`` is raised if element does not
-        allow GetValuePattern action.
+        The ``ActionNotPossible`` exception is raised if the identified element doesn't
+        support value retrieval.
 
-        :param locator: string locator or Control element
-        :return: value of ValuePattern attribute of an element
+        :param locator: String locator or element object.
+        :returns: Optionally the value of the identified element.
 
-        Example:
+        **Example: Robot Framework**
 
         .. code-block:: robotframework
 
-            ${value}=   Get Value   type:DataItem name:column1
+            ${value} =   Get Value   type:DataItem name:column1
         """
-        element = self.ctx.get_element(locator)
-        if hasattr(element.item, "GetValuePattern"):
-            value_pattern = element.item.GetValuePattern()
+        item = self.ctx.get_element(locator).item
+        get_pattern: Optional[Callable] = getattr(
+            item, "GetValuePattern", getattr(item, "GetLegacyIAccessiblePattern", None)
+        )
+
+        if get_pattern:
+            func_name = get_pattern.__name__
+            self.logger.info(
+                "Retrieving the element value with the %r method.", func_name
+            )
+            value_pattern = get_pattern()
             return value_pattern.Value if value_pattern else None
 
         raise ActionNotPossible(
-            f"Element found with {locator!r} does not have 'GetValuePattern' attribute"
+            f"Element found with {locator!r} doesn't support value retrieval"
         )
 
     @keyword(tags=["action"])
@@ -318,7 +328,7 @@ class ActionKeywords(LibraryContext):
         append: bool = False,
         enter: bool = False,
         newline: bool = False,
-        send_keys_fallback: bool = False,
+        send_keys_fallback: bool = True,
     ) -> WindowsElement:
         """Set value of the element defined by the locator.
 
@@ -344,7 +354,7 @@ class ActionKeywords(LibraryContext):
         :param enter: Set it to `True` to press the *Enter* key at the end of the line.
             (nothing is pressed by default)
         :param newline: Set it to `True` to add a new line at the end of the value. (no
-            default EOL)
+            EOL included by default)
         :param send_keys_fallback: Tries to set the value by sending it through keys
             if the expected way of setting it fails. (disabled by default)
         :returns: The `WindowsElement` object identified through the passed `locator`.
@@ -399,7 +409,7 @@ class ActionKeywords(LibraryContext):
             current_value = value_pattern.Value if append else ""
             new_value = f"{current_value}{value}{newline_string}"
             value_pattern.SetValue(new_value)
-            if value_pattern.Value != new_value:
+            if value_pattern.Value.strip() != new_value.strip():  # EOLs inconsistency
                 raise ValueError(
                     f"Element found with {locator!r} can't set value: {new_value}"
                 )
@@ -407,12 +417,16 @@ class ActionKeywords(LibraryContext):
             self.logger.info(
                 "%s the element value with `Send Keys`. (no patterns found)", action
             )
-            if newline_string:
+            if newline_string or re.search("[\r\n]", value):
                 self.logger.warning(
-                    "The `newline` switch is ignored when setting a value"
-                    " through keys! (enable it with the `enter` parameter only)"
+                    "The `newline` switch and EOLs are ignored when setting a value"
+                    " through keys! (enable them with the `enter` parameter only)"
                 )
-            self.send_keys(element, keys=value, send_enter=False)
+            if not append:
+                # Delete the entire present value inside.
+                self.send_keys(element, keys="{Ctrl}a{Del}")
+            if value:
+                self.send_keys(element, keys=value, send_enter=False)
         else:
             raise ActionNotPossible(
                 f"Element found with {locator!r} doesn't support value setting"
