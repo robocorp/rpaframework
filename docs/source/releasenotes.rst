@@ -8,12 +8,29 @@ Release notes
 ** rpaframework ** **22.0.1**
     - Added PyYAML 6.0 support, rpaframework can now install together with tools like `langchain`
 
-**RPA.Assistant** (``rpaframework-assistant`` **1.2.X**):
-    - Internal refactoring
-
-
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+2 March 2023
+------------
+**RPA.OpenAI** (``rpaframework-openai`` **1.1.1**):
+  - Fix keyword ``Chat Completion Create`` not working as documented
+
+**RPA.OpenAI** (``rpaframework-openai`` **1.1.0**, :pr:`867`):
+  - New keyword ``Chat Completion Create`` can be used to build up discussion with ChatGPT
+
+**RPA.Assistant** (``rpaframework-assistant`` **2.0.0**):
+    - **Breaking** changes:
+        - Run Dialog and Ask User parameter "clear" was removed, clearing is now mandatory
+        - (affects Python side users only): Location enum that ``run_dialog`` and ``ask_user`` accepts was changed from Location to WindowLocation to improve clarity. 
+        - By default Slider now rounds to 1 decimal.
+
+    - Added ``location`` argument to Add Button keyword
+    - Added ``round`` argument to Add Slider keyword.
+    - Internal refactoring
+    - Update underlying UI library to flet 0.2.2 -> 0.4.2, granting various bugfixes and improvements
+    - depend on **rpaframework-core** 10.4.1 due to Flet dependency incompatibilities with earlier versions
+
 
 28 Feb 2023
 -----------

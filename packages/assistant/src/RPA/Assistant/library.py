@@ -30,8 +30,8 @@ from flet import (
     colors,
     icons,
 )
-from flet.control_event import ControlEvent
-from flet.dropdown import Option
+from flet_core.control_event import ControlEvent
+from flet_core.dropdown import Option
 from robot.api.deco import keyword, library
 from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -39,7 +39,14 @@ from robot.utils.dotdict import DotDict
 from typing_extensions import Literal
 
 from RPA.Assistant.flet_client import FletClient
-from RPA.Assistant.types import Icon, Location, Options, Result, Size
+from RPA.Assistant.types import (
+    Icon,
+    Options,
+    Result,
+    Size,
+    VerticalLocation,
+    WindowLocation,
+)
 from RPA.Assistant.utils import optional_str, to_options
 
 
@@ -146,8 +153,6 @@ class Assistant:
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
         self._required_fields: Set[str] = set()
-        # Disable fletd debug logging
-        os.environ["GIN_MODE"] = "release"
 
         try:
             # Prevent logging from keywords that return results
@@ -212,21 +217,7 @@ class Assistant:
 
     @keyword
     def clear_dialog(self) -> None:
-        """Remove all previously defined elements and start from a clean state.
-        By default this is done automatically when a dialog is closed.
-        It will also clear all the results.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Add heading     Please input user information
-            FOR    ${user}   IN    @{users}
-                Run dialog    clear=False
-                Process page
-            END
-            Clear dialog
-        """
+        """Clear dialog and results while it is running."""
         self._client.results = {}
         self._client.clear_elements()
 
@@ -945,8 +936,7 @@ class Assistant:
         height: Union[int, Literal["AUTO"]] = "AUTO",
         width: int = 480,
         on_top: bool = False,
-        location: Union[Location, Tuple[int, int], None] = None,
-        clear: bool = True,
+        location: Union[WindowLocation, Tuple[int, int], None] = None,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -958,13 +948,13 @@ class Assistant:
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
-        :param clear:  Clear the elements and results after the dialog exits. (If false
-                       next Run Dialog will start up with same elements.)
 
         If the `location` argument is `None` it will let the operating system
         place the window.
 
         Returns a result object with all input values.
+
+        When the dialog closes elements are cleared.
 
         Example:
 
@@ -983,15 +973,13 @@ class Assistant:
         # if location is given as a string (Robot autoconversion doesn't work) parse it
         # to enum manually
         if isinstance(location, str):
-            location = Location[location]
+            location = WindowLocation[location]
 
         self._client.display_flet_window(
             title, height, width, on_top, location, timeout
         )
         results = self._get_results()
-
-        if clear:
-            self.clear_dialog()
+        self._client.results.clear()
 
         return results
 
@@ -1031,10 +1019,7 @@ class Assistant:
         """Can be used to update UI elements when adding elements while dialog is
         running
         """
-        if self._client.page:
-            self._client.update_elements()
-        else:
-            raise RuntimeError("No dialog open")
+        self._client.update_elements()
 
     def _create_python_function_wrapper(self, function, *args, **kwargs):
         """wrapper code that is used to add wrapping for user functions when binding
@@ -1105,7 +1090,12 @@ class Assistant:
 
     @keyword(tags=["dialog"])
     def add_button(
-        self, label: str, function: Union[Callable, str], *args, **kwargs
+        self,
+        label: str,
+        function: Union[Callable, str],
+        *args,
+        location: VerticalLocation = VerticalLocation.Left,
+        **kwargs,
     ) -> None:
         """Create a button and execute the `function` as a callback when pressed.
 
@@ -1131,7 +1121,8 @@ class Assistant:
             self._queue_function_or_robot_keyword(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
-        self._client.add_element(button)
+        container = Container(alignment=location.value, content=button)
+        self._client.add_element(container)
         self._client.add_to_disablelist(button)
 
     @keyword(tags=["dialog"])
@@ -1181,6 +1172,7 @@ class Assistant:
         thumb_text="{value}",
         steps: Optional[int] = None,
         default: Optional[Union[int, float]] = None,
+        decimals: Optional[int] = 1,
     ):
         """Add a slider input.
 
@@ -1195,7 +1187,8 @@ class Assistant:
                             For integer output, specify a steps value where all the
                             steps will be integers, or implement rounding when
                             retrieving the result.
-        :param default:     Default value for the slider. Has to be between min and max
+        :param default:     Default value for the slider. Must be between min and max.
+        :param decimals:    How many decimals should the value have and show.
 
         .. code-block:: robotframework
 
@@ -1203,9 +1196,7 @@ class Assistant:
             Create Percentage Slider
                 Add Text    Percentage slider
                 Add Slider  name=percentage  slider_min=0  slider_max=100
-                            thumb_text={value}%  steps=100
-
-
+                            thumb_text={value}%  steps=100  round=1
 
         """
         if default:
@@ -1225,5 +1216,6 @@ class Assistant:
             divisions=steps,
             label=thumb_text,
             value=default,
+            round=decimals,
         )
         self._client.add_element(name=name, element=slider)

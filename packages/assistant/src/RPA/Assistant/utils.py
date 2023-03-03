@@ -1,4 +1,3 @@
-import subprocess
 from typing import Any, List, Optional, Tuple, Union
 
 from RPA.core.types import is_list_like  # type: ignore
@@ -68,10 +67,3 @@ def is_input(element: Element) -> bool:
 def is_submit(element: Element) -> bool:
     """Check if an element is a submit button."""
     return element["type"] == "submit"
-
-
-def nix_get_pid(process_name: str) -> int:
-    """Gets the PID of `process_name` process. Only used on *NIX systems."""
-    return int(
-        subprocess.run(["pgrep", process_name], capture_output=True, check=False).stdout
-    )

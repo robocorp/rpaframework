@@ -1,23 +1,23 @@
 import time
-from collections import namedtuple
 from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, List, Optional, Tuple, Union
+from typing import Callable, List, NamedTuple, Optional, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
-from flet.control_event import ControlEvent
+from flet_core import Control
+from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
 from RPA.Assistant.background_flet import BackgroundFlet
-from RPA.Assistant.types import Location, Result
+from RPA.Assistant.types import Result, WindowLocation
 
 
 def resolve_absolute_position(
-    location: Union[Location, Tuple],
+    location: Union[WindowLocation, Tuple],
 ) -> Tuple[int, int]:
 
-    if location is Location.TopLeft:
+    if location is WindowLocation.TopLeft:
         return (0, 0)
     elif isinstance(location, tuple):
         return location
@@ -29,7 +29,11 @@ class TimeoutException(RuntimeError):
     """Timeout while waiting for dialog to finish."""
 
 
-Elements = namedtuple("Elements", ["visible", "invisible"])
+class Elements(NamedTuple):
+    """Lists of visible and invisible control elements"""
+
+    visible: List[Control]
+    invisible: List[Control]
 
 
 class FletClient:
@@ -52,7 +56,7 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Union[Location, Tuple[int, int], None],
+        location: Union[WindowLocation, Tuple[int, int], None],
     ) -> Callable[[Page], None]:
         def inner_execute(page: Page):
             page.title = title
@@ -64,20 +68,20 @@ class FletClient:
             # TODO: do we even allow None as argument?
             # or some Location.AUTO which would let OS handle position?
             if location is not None:
-                if location is Location.Center:
+                if location is WindowLocation.Center:
                     page.window_center()
                 else:
                     coordinates = resolve_absolute_position(location=location)
                     page.window_left = coordinates[0]
                     page.window_top = coordinates[1]
             page.scroll = ScrollMode.AUTO
-            page.on_disconnect = lambda _: self._background_flet.terminate()
+            page.on_disconnect = lambda _: self._background_flet.close_flet_view()
             self.page = page
             self.update_elements()
 
         return inner_execute
 
-    def _show_flet(  # noqa: C901
+    def _show_flet(
         self,
         target: Callable[[Page], None],
         timeout: int,
@@ -90,7 +94,7 @@ class FletClient:
                     self.pending_operation()  # pylint: disable=not-callable
                     self.pending_operation = None
                 if timer() - view_start_time >= timeout:
-                    self._background_flet.terminate()
+                    self._background_flet.close_flet_view()
                     raise TimeoutException(
                         "Reached timeout while waiting for Assistant Dialog"
                     )
@@ -98,6 +102,12 @@ class FletClient:
         except TimeoutException:
             # pylint: disable=raise-missing-from
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
+        finally:
+            # Control's can't be re-used on multiple pages so we remove the page and
+            # clear elements after flet closes
+            self.page = None
+            self.clear_elements()
+            self._to_disable.clear()
 
     def _make_flet_event_handler(self, name: str, handler: Optional[Callable] = None):
         """Add flet event handler to record the element's data whenever content changes
@@ -143,7 +153,7 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Union[Location, Tuple[int, int], None],
+        location: Union[WindowLocation, Tuple[int, int], None],
         timeout: int,
     ):
         self._show_flet(
@@ -152,13 +162,13 @@ class FletClient:
         )
 
     def clear_elements(self):
+        self._elements.visible.clear()
+        self._elements.invisible.clear()
         if self.page:
             if self.page.controls:
                 self.page.controls.clear()
             self.page.overlay.clear()
             self.page.update()
-        self._elements.visible.clear()
-        self._elements.invisible.clear()
 
     def update_elements(self):
         """Updates the UI and shows new elements which have been added into the element
