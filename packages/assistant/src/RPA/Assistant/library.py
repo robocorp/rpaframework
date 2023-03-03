@@ -1248,9 +1248,9 @@ class Assistant:
         """Set dialog title when it is running."""
         self._client.set_title(title)
 
-    def _last_opened_must_be(self, layouting_element: str):
-        """Check that either there is no open layouting element or last opened was
-        ``layouting_element``.
+    def _close_layouting_element(self, layouting_element: str):
+        """Checkhat if the last opened layout element matches what is being closed,
+        otherwise raise ValueError. If the check passes, close the layout element.
         """
         if not self._open_layouting:
             raise ValueError(f"Cannot close {layouting_element}, no open layout")
@@ -1260,6 +1260,9 @@ class Assistant:
             raise ValueError(
                 f"Cannot close {layouting_element}, last opened layout is {last_opened}"
             )
+
+        self._client.close_layout()
+        self._open_layouting.pop()
 
     @keyword(tags=["layout"])
     def open_row(self):
@@ -1275,9 +1278,7 @@ class Assistant:
         Raises ValueError if called with no Row open, or if another layout element was
         opened more recently than a row.
         """
-        self._last_opened_must_be("Row")
-        self._client.close_layout()
-        self._open_layouting.pop()
+        self._close_layouting_element("Row")
 
     @keyword(tags=["layout"])
     def open_container(self):
@@ -1289,9 +1290,7 @@ class Assistant:
     @keyword(tags=["layout"])
     def close_container(self):
         """Close previously opened container."""
-        self._last_opened_must_be("Container")
-        self._client.close_layout()
-        self._open_layouting.pop()
+        self._close_layouting_element("Container")
 
     @keyword(tags=["layout"])
     def open_navbar(self, title: Optional[str] = None):
@@ -1303,6 +1302,4 @@ class Assistant:
     @keyword(tags=["layout"])
     def close_navbar(self):
         """Close previously opened navbar."""
-        self._last_opened_must_be("AppBar")
-        self._client.close_layout()
-        self._open_layouting.pop()
+        self._close_layouting_element("AppBar")
