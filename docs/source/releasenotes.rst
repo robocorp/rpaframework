@@ -9,8 +9,8 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-22.1.0 - 6 Mar 2023
--------------------
+22.1.0 - 06 Mar 2023
+--------------------
 
 - Library **RPA.Windows** (``rpaframework-windows`` **7.2.0**; :pr:`855`):
 
@@ -26,8 +26,8 @@ Release notes
   - Miscellaneous: better recording instructions, documentation updates, bugfixes.
     (:issue:`591`, :issue:`797`)
 
-22.0.1 - 3 Mar 2023
--------------------
+22.0.1 - 03 Mar 2023
+--------------------
 
 - Added PyYAML 6.0 support, rpaframework can now install together with tools like
   `langchain`.
