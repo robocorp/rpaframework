@@ -56,3 +56,12 @@ class Location(Enum):
 
 
 SupportedFletLayout = Union[Row, Column, Container, Stack]
+
+
+class PageNotOpenError(RuntimeError):
+    """Raised when a method is called that requires the dialog to be open but dialog
+    was not yet open"""
+
+
+class LayoutError(ValueError):
+    """Raised when an invalid layout is made. Debug, and do not catch these."""

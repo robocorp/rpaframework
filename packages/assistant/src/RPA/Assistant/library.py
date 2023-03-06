@@ -43,6 +43,7 @@ from typing_extensions import Literal
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.types import (
     Icon,
+    LayoutError,
     Options,
     Result,
     Size,
@@ -1262,11 +1263,11 @@ class Assistant:
         otherwise raise ValueError. If the check passes, close the layout element.
         """
         if not self._open_layouting:
-            raise ValueError(f"Cannot close {layouting_element}, no open layout")
+            raise LayoutError(f"Cannot close {layouting_element}, no open layout")
 
         last_opened = self._open_layouting[-1]
         if not last_opened == layouting_element:
-            raise ValueError(
+            raise LayoutError(
                 f"Cannot close {layouting_element}, last opened layout is {last_opened}"
             )
 

@@ -11,7 +11,13 @@ from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
 from RPA.Assistant.background_flet import BackgroundFlet
-from RPA.Assistant.types import Result, SupportedFletLayout, WindowLocation
+from RPA.Assistant.types import (
+    LayoutError,
+    PageNotOpenError,
+    Result,
+    SupportedFletLayout,
+    WindowLocation,
+)
 
 
 def resolve_absolute_position(
@@ -154,7 +160,9 @@ class FletClient:
                 current_container.actions.append(container)
             elif isinstance(current_container, Container):
                 if current_container.content is not None:
-                    raise ValueError("Attempting to place two content in one Container")
+                    raise LayoutError(
+                        "Attempting to place two content in one Container"
+                    )
                 # we don't use the `container` variable here to allow users to override
                 # the default container behaviour
                 current_container.content = element
@@ -195,7 +203,7 @@ class FletClient:
         lists
         """
         if not self.page:
-            raise ValueError("No page open when update_elements was called")
+            raise PageNotOpenError("No page open when update_elements was called")
 
         for element in self._elements.visible:
             self.page.add(element)
@@ -208,7 +216,7 @@ class FletClient:
     def flet_update(self):
         """Runs a plain update of the flet UI, updating existing elements"""
         if not self.page:
-            raise RuntimeError("Flet update called when page is not open")
+            raise PageNotOpenError("Flet update called when page is not open")
         self.page.update()
 
     def lock_elements(self):
@@ -226,7 +234,7 @@ class FletClient:
     def set_title(self, title: str):
         """Set flet dialog title when it is running."""
         if not self.page:
-            raise RuntimeError("Flet update called when page is not open")
+            raise PageNotOpenError("Set title called when page is not open")
         self.page.title = title
 
     def add_layout(self, container: SupportedFletLayout):
@@ -241,6 +249,6 @@ class FletClient:
 
     def set_appbar(self, app_bar: AppBar):
         if self._elements.app_bar:
-            raise ValueError("Only one navigation may be defined at a time")
+            raise LayoutError("Only one navigation may be defined at a time")
         self._elements.app_bar = app_bar
         self._container_stack.append(app_bar)
