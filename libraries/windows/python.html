@@ -830,6 +830,12 @@ Desktop as root. (refer to keyword’s documentation for more details)</p>
 be started in the command line (in a environment containing <code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> installation).</p>
 <p>Recording inspects elements on <strong>mouse click</strong> and can be stopped with keyboard <strong>ESC</strong>.
 Expected console output.</p>
+<p><strong>Caveats</strong></p>
+<ul class="simple">
+<li><p>Make sure your <em>display scaling</em> is set to <em>100%</em>, otherwise you might encounter
+issues when clicking or interacting with elements. (since offsets and coordinates
+get distorted)</p></li>
+</ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>C:<span class="se">\U</span>sers<span class="se">\U</span>ser<span class="se">\r</span>obots<span class="se">\&gt;</span>windows-record<span class="w">  </span><span class="c1"># or &gt;python -m RPA.Windows</span>
 keyboard<span class="w"> </span>and<span class="w"> </span>mouse<span class="w"> </span>listeners<span class="w"> </span>started
 
