@@ -439,8 +439,8 @@ class ActionKeywords(LibraryContext):
         :param newline: Set it to `True` to add a new line at the end of the value. (no
             EOL included by default; this won't work with `send_keys_fallback` enabled)
         :param send_keys_fallback: Tries to set the value by sending it through keys
-            if the main way of setting it fails. (disabled by default)
-        :returns: The `WindowsElement` object identified through the passed `locator`.
+            if the main way of setting it fails. (enabled by default)
+        :returns: The element object identified through the passed `locator`.
 
         **Example: Robot Framework**
 
