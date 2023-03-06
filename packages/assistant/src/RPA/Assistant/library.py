@@ -105,8 +105,8 @@ class Assistant:
     a file input will have a list of paths.
 
     If the user closed the window before submitting or there was an internal
-    error, the library will raise an exception and the result values will
-    not be available.
+    error, the results object returned by Run Dialog or Ask User won't have a "submit"
+    key.
 
     **Examples**
 
@@ -1285,7 +1285,7 @@ class Assistant:
     @keyword(tags=["layout"])
     def close_row(self):
         """Close previously opened row.
-        Raises ValueError if called with no Row open, or if another layout element was
+        Raises LayoutError if called with no Row open, or if another layout element was
         opened more recently than a row.
         """
         self._close_layouting_element("Row")
