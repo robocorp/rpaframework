@@ -22,7 +22,7 @@ DTFormat = Union[str, datetime_date, PendulumDateTime]
 
 
 @library(scope="GLOBAL", doc_format="REST")
-class DateTime:
+class Calendar:
     """Library for handling different operations for date and time
     handling especially in business days and holiday contexts.
 

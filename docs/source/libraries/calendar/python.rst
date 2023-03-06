@@ -3,10 +3,10 @@ Python API
 ##########
 
 ********
-DateTime
+Calendar
 ********
 
-.. automodule:: RPA.DateTime
+.. automodule:: RPA.Calendar
    :members:
    :inherited-members:
    :undoc-members:
