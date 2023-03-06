@@ -186,7 +186,7 @@ class JSON:
 
         *** Task ***
         Get genres
-            ${genres}=  Get values from JSON    $.books[*].genres.`split(,, 0, -1)`
+            ${genres}=  Get values from JSON    $.books[*].genres.```split(,, 0, -1)```
 
     Each functions parameters are defined here:
 
@@ -569,7 +569,7 @@ class JSON:
                 # Arithmetic operations only work when lists are of equal lengths and types.
                 ${prices}=    Get values from json
                 ...    ${JSON_DOC}
-                ...    $.clients[*].orders[*].id + " has price " + $.clients[*].orders[*].price.`str()`
+                ...    $.clients[*].orders[*].id + " has price " + $.clients[*].orders[*].price.```str()```
                 Log    \\nOUTPUT IS\\n ${prices}    console=${True}
                 Should be equal as strings    ${prices}
                 ...    ['guid-001 has price 103.2', 'guid-002 has price 98.99', 'guid-003 has price 22.0', 'guid-004 has price 2330.01', 'guid-005 has price 152.12']

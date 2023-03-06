@@ -5,13 +5,16 @@ description = "Metapackage for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.7.1"
 robotframework-browser = { version = "^14.4.1", python = ">=3.7,<4.0" }
 rpaframework = { path = "packages/main", develop = true }
-rpaframework-aws = "^5.2.5"
-rpaframework-google = "^6.1.5"
-rpaframework-recognition = "^5.0.1"
-rpaframework-windows = "^7.0.2"
+rpaframework-assistant = "^2.0.0"
+rpaframework-aws = "^5.2.6"
+rpaframework-dialogs = "^4.0.2"
+rpaframework-google = "^7.0.0"
+rpaframework-openai = "^1.1.0"
+rpaframework-recognition = "^5.1.0"
+rpaframework-windows = "^7.2.1"
 
 [tool.poetry.dev-dependencies]
 robotframeworklexer = "^1.1"

@@ -32,6 +32,7 @@ from RPA.PDF.keywords import LibraryContext, keyword
 
 
 Coords = Tuple[int, ...]
+BOXES_FLOW_NOT_SET = -999.99
 
 
 def iterable_items_to_ints(bbox: Optional[Iterable]) -> Coords:
@@ -478,8 +479,8 @@ class ModelKeywords(LibraryContext):
     @keyword
     def convert(
         self,
-        source_path: str = None,
-        trim: bool = True,
+        source_path: Optional[str] = None,
+        trim: Optional[bool] = True,
         pagenum: Optional[Union[int, str]] = None,
     ):
         """Parse source PDF into entities.
@@ -581,8 +582,8 @@ class ModelKeywords(LibraryContext):
     def get_input_fields(
         self,
         source_path: Optional[str] = None,
-        replace_none_value: bool = False,
-        encoding: str = FIELDS_ENCODING,
+        replace_none_value: Optional[bool] = False,
+        encoding: Optional[str] = FIELDS_ENCODING,
     ) -> dict:
         """Get input fields in the PDF.
 
@@ -639,8 +640,7 @@ class ModelKeywords(LibraryContext):
             ]
         except KeyError as err:
             raise KeyError(
-                'PDF "%s" does not have any input fields.'
-                % self.active_pdf_document.path
+                f"PDF {active_document.path!r} does not have any input fields."
             ) from err
 
         record_fields = {}
@@ -664,16 +664,18 @@ class ModelKeywords(LibraryContext):
             }
             record_fields[name] = parsed_field
 
-        self.active_pdf_document.fields = record_fields or None
+        active_document.fields = record_fields or None
         return record_fields
 
     @keyword
     def set_field_value(
-        self, field_name: str, value: Any, source_path: str = None
+        self, field_name: str, value: Any, source_path: Optional[str] = None
     ) -> None:
         """Set value for field with given name on the active document.
 
-        Tries to match with field's identifier directly or its label.
+        Tries to match with field's identifier directly or its label. When ticking
+        checkboxes, try with the `/Yes` string value as simply `Yes` might not work
+        with most previewing apps.
 
         :param field_name: Field to update.
         :param value: New value for the field.
@@ -861,7 +863,7 @@ class ModelKeywords(LibraryContext):
             return writer
 
     @keyword
-    def dump_pdf_as_xml(self, source_path: str = None) -> str:
+    def dump_pdf_as_xml(self, source_path: Optional[str] = None) -> str:
         """Get PDFMiner format XML dump of the PDF
 
         **Examples**
@@ -897,9 +899,10 @@ class ModelKeywords(LibraryContext):
     @keyword
     def set_convert_settings(
         self,
-        line_margin: float = None,
-        word_margin: float = None,
-        char_margin: float = None,
+        line_margin: Optional[float] = None,
+        word_margin: Optional[float] = None,
+        char_margin: Optional[float] = None,
+        boxes_flow: Optional[float] = BOXES_FLOW_NOT_SET,
     ):
         """Change settings for PDFMiner document conversion.
 
@@ -912,9 +915,17 @@ class ModelKeywords(LibraryContext):
         `char_margin` controls how characters are grouped into words - if conversion
         results in individual characters instead of then set this to higher value
 
+        `boxes_flow` controls how much horizontal and vertical position of the text
+        matters when determining the order of text boxes. Value can be between range
+        of -1.0 (only horizontal position matters) to +1.0 (only vertical position
+        matters). This feature (advanced layout analysis) can be disabled by setting
+        value to `None` thus bottom left corner of the text box is used to determine
+        order of the text boxes.
+
         :param line_margin: relative margin between bounding lines, default 0.5
         :param word_margin: relative margin between words, default 0.1
         :param char_margin: relative margin between characters, default 2.0
+        :param boxes_flow: positioning of the text boxes based on text, default 0.5
 
         **Examples**
 
@@ -939,7 +950,7 @@ class ModelKeywords(LibraryContext):
             pdf = PDF()
 
             def example_keyword():
-                pdf.set_convert_settings(line_margin=)
+                pdf.set_convert_settings(boxes_flow=None)
                 texts = pdf.get_text_from_pdf("/tmp/sample.pdf")
         """
         self.ctx.convert_settings["detect_vertical"] = True
@@ -950,3 +961,5 @@ class ModelKeywords(LibraryContext):
             self.ctx.convert_settings["char_margin"] = char_margin
         if word_margin:
             self.ctx.convert_settings["word_margin"] = word_margin
+        if boxes_flow != BOXES_FLOW_NOT_SET:
+            self.ctx.convert_settings["boxes_flow"] = boxes_flow

@@ -15,7 +15,6 @@ from itertools import product
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
 from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
@@ -35,6 +34,7 @@ from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCr
 from RPA.core import notebook
 from RPA.core import webdriver as core_webdriver
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
+from RPA.Robocorp.utils import get_output_dir
 
 
 OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List, Dict]]]
@@ -843,14 +843,12 @@ class Selenium(SeleniumLibrary):
     def _arg_browser_selection(self, browser_selection: Any) -> List:
         """Parse argument for browser selection."""
         if str(browser_selection).strip().lower() == "auto":
-            order = core_webdriver.DRIVER_PREFERENCE.get(
-                platform.system(), core_webdriver.DRIVER_PREFERENCE["default"]
-            )
+            order = core_webdriver.get_browser_order()
         else:
             order = (
                 browser_selection
                 if isinstance(browser_selection, list)
-                else browser_selection.split(",")
+                else [browser.strip() for browser in browser_selection.split(",")]
             )
         return order
 
@@ -2201,12 +2199,7 @@ class Selenium(SeleniumLibrary):
         if isinstance(result, str) and "Printing is not available" in result:
             raise TypeError("PDF printing works in headless mode only")
 
-        try:
-            output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}", "output")
-        except robot.libraries.BuiltIn.RobotNotRunningError:
-            output_dir = "output"
-        default_output = str(Path(output_dir) / "out.pdf")
-        output_path = output_path or default_output
+        output_path = output_path or str(get_output_dir() / "out.pdf")
         pdf_data = base64.b64decode(result["data"])
         with open(output_path, "wb") as stream:
             stream.write(pdf_data)

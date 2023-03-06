@@ -14,6 +14,10 @@ ${EXE_UIDEMO}       UIDemo.exe
 ${EXE_CALCULATOR}   calc.exe
 ${EXE_SPOTIFY}      Spotify.exe
 
+${LOC_NOTEPAD}      name:Notepad class:Notepad
+${LOC_CALCULATOR}   subname:Calc control:WindowControl
+${LOC_WORDPAD}      name:"Document - WordPad" and type:WindowControl
+
 ${TIMEOUT}        1
 
 
@@ -87,7 +91,7 @@ Calculator with keys
 Keep open a single Notepad
     Set Global Timeout    ${TIMEOUT}
     ${closed} =    Set Variable    0
-    ${run} =    Run Keyword And Ignore Error    Close Window    subname:Notepad control:WindowControl
+    ${run} =    Run Keyword And Ignore Error    Close Window    ${LOC_NOTEPAD} control:WindowControl
     IF    "${run}[0]" == "PASS"
         ${closed} =    Set Variable    ${run}[1]
     END
@@ -118,7 +122,7 @@ Windows search Calculator by clicking buttons
     [Teardown]    Close Current Window And Sleep
 
 Calculator by clicking buttons already running
-    [Tags]  manual
+    [Tags]  manual  # Calculator should be already open.
     Calculator button actions
 
 Windows run Do some calculations
@@ -127,7 +131,7 @@ Windows run Do some calculations
     [Teardown]    Close Current Window And Sleep
 
 Windows run Do some calculations already running
-    [Tags]  manual
+    [Tags]  manual  # Calculator should be already open.
     Calculator with keys
 
 Play Task Calculator
@@ -204,7 +208,7 @@ Play Task UIDemo
     [Teardown]    Close Current Window
 
 Resize window with Spotify
-    [Tags]  manual
+    [Tags]  manual  # Spotify should be installed and available to use.
 
     Windows Run    ${EXE_SPOTIFY}
     ${window} =    Control Window    executable:${EXE_SPOTIFY}
@@ -230,16 +234,20 @@ Resize window with Spotify
 
 Notepad write text into a file
     Windows Run    notepad
-    Control Window    subname:"- Notepad"
+    Control Window    ${LOC_NOTEPAD}
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
         Click    Edit    wait_time=0.5
         Click    Font    wait_time=0.5    # for some reason this only highlitghts the button
         Click    Font    wait_time=2    # and this finally clicks it
         Click    id:FontFamilyComboBox
-        Click    name:"Lucida Sans Unicode"    wait_time=0.5
+        Send Keys   keys={DOWN}
+        Send Keys   keys={Ctrl}a{Del}
+        Send Keys   keys=Lucida Sans Unicode    send_enter=${True}    wait_time=0.5
         Click    id:FontSizeComboBox
-        Click    name:"26"    wait_time=0.5
+        Send Keys   keys={DOWN}
+        Send Keys   keys={Ctrl}a{Del}
+        Send Keys   keys=26     send_enter=${True}    wait_time=0.5
         Click    name:"Back"
     ELSE
         Control Window    Font
@@ -249,10 +257,10 @@ Notepad write text into a file
         Select    type:ComboBox id:1138    28
         Click    type:Button name:OK
     END
-    Control Window    subname:"- Notepad"
+    Control Window    ${LOC_NOTEPAD}
     Send Keys    keys={Ctrl}a{Del}
     Send Keys    keys=Lets add some text to the notepad
-    Control Window    subname:"- Notepad"
+    Control Window    ${LOC_NOTEPAD}
     IF    "${ver}" == "11"
         Click    File    wait_time=0.3
         Click    Save as
@@ -266,7 +274,7 @@ Notepad write text into a file
     IF    "${run}[0]" == "PASS"
         Click    Yes    wait_time=0.3
     END
-    Minimize Window    subname:"- Notepad"
+    Minimize Window    ${LOC_NOTEPAD}
     [Teardown]    Close Current Window
 
 Control Window by handle
@@ -295,33 +303,33 @@ Calculator result from recording
     [Teardown]    Close Current Window
 
 Write to Notepad in the background
+    [Tags]  manual  # The text editing element can't be found anymore.
     [Setup]     Windows Run    Notepad
 
     Windows Run    Calc
     Clear Anchor
-    Control Window    subname:"- Notepad"    foreground=${False}
+    Control Window    ${LOC_NOTEPAD}    foreground=${False}
     # All the following keyword calls will use the set anchor element as root locator,
     #  UNLESS they specify a locator / root element explicitly or `Clear Anchor` is
     #  used.
-    ${text_edit} =    Set Variable    regex:"Text (E|e)ditor"
-    Set Anchor    ${text_edit}
+    Set Anchor    regex:"Text (E|e)ditor"
 
     # Write in Notepad while having Calculator as active window.
     Control Window    Calculator
     # Clear Notepad edit window by writing initial text, then append rest of the text.
     ${time} =    Get Time
     Set Value    value=time now is ${time}    # clears when append=${False} (default)
-    Set Value    value= and it's task run time    append=${True}    newline=${True}
+    Set Value    value= and it's the task run time    append=${True}    newline=${True}
     Set Value    value=this will appear on the 2nd line    append=${True}
     Set Value    value=${EMPTY}    append=${True}    enter=${True}
 
     Close Current Window    # this closes Calculator first (as active window)
-    [Teardown]    Close Window    subname:Notepad    # finally Notepad is closed too
+    [Teardown]    Close Window    ${LOC_NOTEPAD}    # finally Notepad is closed too
 
 Test getting elements
     Clear Anchor
     ${ver} =    Get OS Version
-    ${desktop} =    Get Element
+    ${desktop} =    Get Element     desktop
     IF    "${ver}" == "11"
         ${buttons} =    Get Elements    id:TaskbarFrameRepeater > type:Button    root_element=${desktop}
     ELSE
@@ -335,23 +343,22 @@ Test getting elements
 
 Control window after closing linked root element
     [Setup]    Keep open a single Notepad
-    ${window} =    Control Window    subname:Notepad control:WindowControl
+    ${window} =    Control Window    ${LOC_NOTEPAD} control:WindowControl
     Log    Controlling Notepad window: ${window}
     Kill app by name    Notepad
     Windows Run    Calc
     # Tests against `COMError` fixes.
-    ${window} =    Control Window    subname:Calc    main=${False}
+    ${window} =    Control Window    ${LOC_CALCULATOR}    main=${False}
     Log    Controlling Calculator window: ${window}
     [Teardown]    Close Current Window    # closes Calculator (last active window)
 
 Tree printing and controlled anchor cleanup
-    Print Tree
     Windows Run    Calc
-    ${win} =    Control Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
+    ${win} =    Control Window    ${LOC_CALCULATOR}    timeout=${TIMEOUT}
     Set Anchor    ${win}
     ${elem} =    Get Element    # pulls the anchor
     Should Be Equal    ${elem.name}    Calculator
-    Close Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
+    Close Window    ${LOC_CALCULATOR}    timeout=${TIMEOUT}
     # With the controlled Calculator closed and active window/anchor cleaned up, we
     #    should get the Desktop element only.
     ${elem} =    Get Element
@@ -361,7 +368,7 @@ Click Calculator Numeric Buttons
     [Documentation]    Clicks all the numeric buttons in Calculator
 
     Windows Run    Calc
-    Control Window    subname:Calc
+    Control Window    ${LOC_CALCULATOR}
     @{buttons} =    Get Elements    id:NumberPad > class:Button
     FOR    ${button}    IN    @{buttons}
         ${is_numeric} =    Evaluate    "num" in "${button.item.AutomationId}"
@@ -377,7 +384,7 @@ Log All Calculator Buttons Matching Expression
     ...     an 'o' in their name.
     [Setup]   Windows Run    Calc
 
-    Control Window    subname:Calc
+    Control Window    ${LOC_CALCULATOR}
     @{buttons} =    Get Elements    class:Button regex:.*o.*
     ...     siblings_only=${False}  # this will search globally for such buttons
     Log List    ${buttons}
@@ -391,10 +398,78 @@ Retrieve Nested Notepad Elements
     ...     element inside the tree as soon as it becomes visible.
     [Setup]   Windows Run    Notepad
 
-    Control Window      subname:Notepad
+    Control Window      ${LOC_NOTEPAD}
     Click   View
     Click   Zoom
     ${zoom_in} =   Get Element     Zoom in
     Log To Console      "Zoom in" item: ${zoom_in}
+
+    [Teardown]  Close Current Window
+
+Test Desktop Searching
+    [Documentation]     Test some odd scenarios of elements retrieval.
+
+    @{desktops} =     Get Elements  desktop     siblings_only=${False}
+    Log List    ${desktops}
+
+Test Locator Path Strategy
+    [Documentation]     Check elements retrieval and tree printing with a path of
+    ...     element indexes. (node positions in the tree)
+    [Setup]     Windows Run     ${EXE_CALCULATOR}
+
+    # Retrieve the "One" button from a root parent.
+    ${elem} =   Get Element     Calculator > path:2|3|2|8|2 offset:120,0
+    Should Be Equal     ${elem.name}    One
+    Click   ${elem}  # clicks with offset too, even if found by path (Two button)
+
+    # Get all the numeric buttons using a path parent.
+    ${elems} =   Get Elements     Calculator > path:2|3|2|8 > type:ButtonControl
+    @{names} =   Create List
+    FOR     ${btn}   IN     @{elems}
+        Append To List  ${names}    ${btn.name}
+    END
+    List Should Contain Value   ${names}    Four
+
+    # Check the structure returned by the tree printing.
+    ${tree} =   Print Tree      Calculator > path:2|3|2|8   return_structure=${True}
+    Log To Console      ${tree}
+    # Check if the fifth control on level 2 in the tree is actually the "Four" button.
+    ${elem} =   Set Variable    ${tree}[${2}][${5 - 1}]
+    @{names} =  Create List     ${elem.name}
+    Should Contain Any      ${names}    Four    4
+
+    [Teardown]      Close Window   ${LOC_CALCULATOR}
+
+Click and set values in WordPad
+    [Documentation]     Set values in WordPad while text editor widget isn't in focus.
+    ...    (note that an additional '\r' is added with each value set, not in our
+    ...    control)
+    [Setup]     Windows Run     Wordpad
+
+    # Just control the main window and click the title bar.
+    Control Window      ${LOC_WORDPAD}
+    Click   id:TitleBar and type:TitleBarControl
+
+    # Enable mouse movement simulation while changing the page size.
+    ${old} =    Set Mouse Movement     ${True}
+    Should Be True      "${old}" == "False"  # disabled by default
+    Click   name:View
+    Click   File tab
+    Click   Page setup
+    Select  name:Size: class:ComboBox   A4
+    Send Keys   keys={Enter}
+    # Disable mouse movement simulation.
+    ${old} =    Set Mouse Movement     ${False}
+    Should Be True      "${old}" == "True"  # was enabled before
+
+    # Note that one additional `\r` (Windows EOL) is added by the app itself in this
+    #  scenario.
+    ${text_locator} =   Set Variable    name:"Rich Text Window"
+    ${elem} =   Set Value   ${text_locator}     This i
+    Set Value   ${elem}     s my test text.     append=${True}
+    Set Value   ${elem}     append=${True}      enter=${True}
+    Set Value   ${elem}     2nd line text.   append=${True}    newline=${True}
+    ${text} =   Get Value   ${elem}
+    Should Be Equal     ${text}     This i\rs my test text.\r\r\r2nd line text.\r\r
 
     [Teardown]  Close Current Window

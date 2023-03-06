@@ -10,6 +10,7 @@ Default Tags    skip
 *** Variables ***
 ${RESOURCES}        ${CURDIR}${/}..${/}resources
 ${INVOICE_PNG}      ${RESOURCES}${/}invoice.png
+${INVOICE_URL}      https://raw.githubusercontent.com/robocorp/rpaframework/master/packages/main/tests/resources/invoice.png
 
 
 *** Keywords ***
@@ -30,7 +31,7 @@ Predict With Multiple Engines
     [Setup]   Init Engines
 
     Switch Engine    base64ai
-    Predict    ${INVOICE_PNG}   mock=${True}
+    Predict    ${INVOICE_URL}
     @{data} =    Get Result    extended=${True}
     Log List    ${data}
 
