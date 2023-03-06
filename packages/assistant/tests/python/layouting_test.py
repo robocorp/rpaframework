@@ -23,6 +23,12 @@ def test_top_bar(assistant: Assistant):
     assistant.close_navbar()
 
 
+def test_column(assistant: Assistant):
+    assistant.open_column()
+    assistant.add_text("miscallenous text")
+    assistant.close_column()
+
+
 def test_container_multiple_content(assistant: Assistant):
     # with pytest.raises(ValueError):
     with pytest.raises(ValueError) as excinfo:
@@ -65,3 +71,45 @@ def test_mixed_closing(assistant: Assistant):
         assistant.close_container()
 
     assert "Cannot close" in str(excinfo.value)
+
+
+def manual(assistant: Assistant):
+    def print_controls():
+        print(assistant._client.page.controls)
+
+    assistant.open_navbar("nav")
+    assistant.add_icon(Icon.Failure)
+    assistant.add_button("test_button", print, "test")
+    assistant.add_button("test_button", print, "test")
+    assistant.add_button("print_controls", print_controls)
+    assistant.add_icon(Icon.Success)
+    assistant.close_navbar()
+
+    assistant.add_button("print_controls", print_controls)
+    for i in range(5):
+
+        # assistant.open_stack()
+
+        assistant.open_container(40, 0, background_color="red500")
+        assistant.open_row()
+        assistant.open_column()
+        assistant.add_heading("column 1")
+        assistant.add_text("asd")
+        assistant.add_text("testing 1")
+        assistant.add_text("testing 2")
+        assistant.close_column()
+
+        assistant.open_column()
+        assistant.add_heading("column 2")
+        assistant.add_text("testing 3")
+        assistant.add_text("testing 4")
+        assistant.close_column()
+        assistant.close_row()
+        assistant.close_container()
+
+        # assistant.close_stack()
+    assistant.run_dialog()
+
+
+if __name__ == "__main__":
+    manual(Assistant())
