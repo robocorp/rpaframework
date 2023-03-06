@@ -55,4 +55,4 @@ class Location(Enum):
     BottomRight = alignment.bottom_right
 
 
-SupportedFletLayout = Union[AppBar, Row, Column, Container, Stack]
+SupportedFletLayout = Union[Row, Column, Container, Stack]

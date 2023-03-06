@@ -35,8 +35,16 @@ def test_container_multiple_content(assistant: Assistant):
 
 
 def test_empty_closing(assistant: Assistant):
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as excinfo:
         assistant.close_row()
+    assert "Cannot close Row, no open layout" in str(excinfo.value)
+
+
+def test_double_navbar(assistant: Assistant):
+    with pytest.raises(ValueError) as excinfo:
+        assistant.open_navbar()
+        assistant.open_navbar()
+    assert "Only one navigation may be defined at a time" in str(excinfo.value)
 
 
 def test_mixed_closing(assistant: Assistant):

@@ -1330,7 +1330,8 @@ class Assistant:
         """Create a nav bar. Following ``Add <element>`` calls will add
         items into the navbar until ``Close Navbar`` is called."""
         self._open_layouting.append("AppBar")
-        self._client.add_layout(AppBar(title=Text(title)))
+        # self._client.add_layout(AppBar(title=Text(title)))
+        self._client.set_appbar(AppBar(title=Text(title)))
 
     @keyword(tags=["layout"])
     def close_navbar(self):

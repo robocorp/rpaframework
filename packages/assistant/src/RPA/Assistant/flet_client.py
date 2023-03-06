@@ -29,11 +29,13 @@ class TimeoutException(RuntimeError):
     """Timeout while waiting for dialog to finish."""
 
 
-class Elements(NamedTuple):
+@dataclass
+class Elements:
     """Lists of visible and invisible control elements"""
 
     visible: List[Control]
     invisible: List[Control]
+    app_bar: Optional[AppBar]
 
 
 class FletClient:
@@ -45,9 +47,9 @@ class FletClient:
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
 
-        self._elements: Elements = Elements([], [])
+        self._elements: Elements = Elements([], [], None)
         self._to_disable: List[flet.Control] = []
-        self._container_stack: List[SupportedFletLayout] = []
+        self._container_stack: List[Union[SupportedFletLayout, AppBar]] = []
 
         self._background_flet = BackgroundFlet()
 
@@ -138,24 +140,23 @@ class FletClient:
     ):
         # TODO: validate that element "name" is unique
         # make a container that adds margin around the element
+
         container = Container(margin=5, content=element)
 
         if self._container_stack != []:
             current_container = self._container_stack[-1]
             if hasattr(current_container, "controls"):
-                # multi content container
+                # Row, Stack and Column have "controls"
                 current_container.controls.append(container)
-
             elif hasattr(current_container, "actions"):
-                if not isinstance(current_container, AppBar):
-                    raise ValueError("Internal library error, invalid state")
-                # multi content container
+                # AppBar has actions
                 current_container.actions.append(container)
-            else:
-                # single content container
-                if not current_container.content is None:
+            elif isinstance(current_container, Container):
+                if current_container.content is not None:
                     raise ValueError("Attempting to place two content in one Container")
-                current_container.content = container
+                # we don't use the `container` variable here to allow users to override
+                # the default container behaviour
+                current_container.content = element
         else:
             self._elements.visible.append(container)
         if name is not None:
@@ -200,6 +201,8 @@ class FletClient:
             self.page.add(element)
         for element in self._elements.invisible:
             self.page.overlay.append(element)
+        if self._elements.app_bar:
+            self.page.appbar = self._elements.app_bar
         self.page.update()
 
     def flet_update(self):
@@ -227,8 +230,17 @@ class FletClient:
         self.page.title = title
 
     def add_layout(self, container: SupportedFletLayout):
+        """Add a layout element as the currently open layout element. Following
+        add_element calls will add elements inside ``container``."""
+        self.add_element(container)
         self._container_stack.append(container)
-        self._elements.visible.append(container)
 
     def close_layout(self):
+        """Stop adding layout elements to the latest opened container"""
         self._container_stack.pop()
+
+    def set_appbar(self, app_bar: AppBar):
+        if self._elements.app_bar:
+            raise ValueError("Only one navigation may be defined at a time")
+        self._elements.app_bar = app_bar
+        self._container_stack.append(app_bar)
