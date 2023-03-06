@@ -1,5 +1,6 @@
+import re
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional, Union
 
 from RPA.core.windows.locators import Locator, WindowsElement
 
@@ -9,6 +10,9 @@ from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
+
+
+PatternType = Union["auto.ValuePattern", "auto.LegacyIAccessiblePattern"]
 
 
 class ActionKeywords(LibraryContext):
@@ -26,7 +30,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param wait_time: time to wait after click, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param timeout: float value in seconds, see keyword
@@ -55,7 +59,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param wait_time: time to wait after click, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param timeout: float value in seconds, see keyword
@@ -82,7 +86,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param wait_time: time to wait after click, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param timeout: float value in seconds, see keyword
@@ -109,7 +113,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param wait_time: time to wait after click, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param timeout: float value in seconds, see keyword
@@ -178,7 +182,7 @@ class ActionKeywords(LibraryContext):
         click_function(
             x=offset_x,
             y=offset_y,
-            simulateMove=self.ctx.SIMULATE_MOVE,
+            simulateMove=self.ctx.simulate_move,
             waitTime=click_wait_time,
         )
 
@@ -189,7 +193,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Select action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param value: string value to select on Control element
         :return: WindowsElement object
 
@@ -201,10 +205,15 @@ class ActionKeywords(LibraryContext):
         """
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "Select"):
-            element.item.Select(value)
+            # NOTE(cmin764): This is not supposed to work on `*Pattern` or `TextRange`
+            #  objects. (works with `Control`s and its derived flavors only, like a
+            #  combobox)
+            element.item.Select(
+                value, simulateMove=self.ctx.simulate_move, waitTime=self.ctx.wait_time
+            )
         else:
             raise ActionNotPossible(
-                f"Element {locator!r} does not have 'Select' attribute"
+                f"Element {locator!r} does not support selection (try with `Set Value`)"
             )
         return element
 
@@ -225,23 +234,24 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow SendKeys action.
 
-        :param locator: string locator or Control element (default None means desktop)
-        :param keys: the keys to send
-        :param interval: time between sending keys, default 0.01 seconds
-        :param wait_time: time to wait after sending keys, default is a
-         library `wait_time`, see keyword ``Set Wait Time``
-        :param send_enter: if True then {Enter} is sent at the end of the keys
-        :return: WindowsElement object
+        :param locator: Optional string locator or element object.
+        :param keys: The keys to send.
+        :param interval: Time between each sent key. (defaults to 0.01 seconds)
+        :param wait_time: Time to wait after sending all the keys. (defaults to
+            library's set value, see keyword ``Set Wait Time``)
+        :param send_enter: If `True` then the {Enter} key is pressed at the end of the
+            sent keys.
+        :returns: The element identified through `locator`.
 
         Example:
 
         .. code-block:: robotframework
 
             Send Keys  desktop   {Ctrl}{F4}
-            Send Keys  keys={Ctrl}{F4}   # locator will be NONE, keys send to desktop
-            Send Keys  id:input5  username   send_enter=True
+            Send Keys  keys={Ctrl}{F4}   # locator will be NONE, keys sent to desktop
+            Send Keys  id:input5  username   send_enter=${True}
             ${element}=   Get Element   id:pass
-            Send Keys  ${element}  password   send_enter=True
+            Send Keys  ${element}  password   send_enter=${True}
         """
         if locator:
             element = self.ctx.get_element(locator).item
@@ -265,7 +275,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow GetWindowText action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :return: value of WindowText attribute of an element
 
         Example:
@@ -281,30 +291,117 @@ class ActionKeywords(LibraryContext):
             f"Element found with {locator!r} does not have 'GetWindowText' attribute"
         )
 
+    @staticmethod
+    def get_value_pattern(
+        element: WindowsElement,
+    ) -> Optional[Callable[[], PatternType]]:
+        item: auto.Control = element.item
+        get_pattern: Optional[Callable] = getattr(
+            item, "GetValuePattern", getattr(item, "GetLegacyIAccessiblePattern", None)
+        )
+        return get_pattern
+
     @keyword(tags=["action"])
     def get_value(self, locator: Locator) -> Optional[str]:
-        """Get value of the element defined by the locator.
+        """Get the value of the element defined by the provided `locator`.
 
-        Exception ``ActionNotPossible`` is raised if element does not
-        allow GetValuePattern action.
+        The ``ActionNotPossible`` exception is raised if the identified element doesn't
+        support value retrieval.
 
-        :param locator: string locator or Control element
-        :return: value of ValuePattern attribute of an element
+        :param locator: String locator or element object.
+        :returns: Optionally the value of the identified element.
 
-        Example:
+        **Example: Robot Framework**
 
         .. code-block:: robotframework
 
-            ${value}=   Get Value   type:DataItem name:column1
+            ${value} =   Get Value   type:DataItem name:column1
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib_win = Windows()
+            text = lib_win.get_value("Rich Text Window")
+            print(text)
         """
         element = self.ctx.get_element(locator)
-        if hasattr(element.item, "GetValuePattern"):
-            value_pattern = element.item.GetValuePattern()
+        get_value_pattern = self.get_value_pattern(element)
+
+        if get_value_pattern:
+            func_name = get_value_pattern.__name__
+            self.logger.info(
+                "Retrieving the element value with the %r method.", func_name
+            )
+            value_pattern = get_value_pattern()
             return value_pattern.Value if value_pattern else None
 
         raise ActionNotPossible(
-            f"Element found with {locator!r} does not have 'GetValuePattern' attribute"
+            f"Element found with {locator!r} doesn't support value retrieval"
         )
+
+    def _set_value_with_pattern(
+        self,
+        value: str,
+        newline_string: str,
+        *,
+        action: str,
+        get_value_pattern: Callable[[], PatternType],
+        append: bool,
+        locator: Optional[Locator],
+    ):
+        func_name = get_value_pattern.__name__
+        self.logger.info("%s the element value with the %r method.", action, func_name)
+        value_pattern = get_value_pattern()
+        current_value = value_pattern.Value if append else ""
+        new_value = f"{current_value}{value}{newline_string}"
+        value_pattern.SetValue(new_value)
+        if value_pattern.Value.strip() != new_value.strip():  # EOLs inconsistency
+            raise ValueError(
+                f"Element found with {locator!r} couldn't set value: {new_value}"
+            )
+
+    def _set_value_with_keys(
+        self,
+        value: str,
+        newline_string: str,
+        *,
+        action: str,
+        element: WindowsElement,
+        append: bool,
+        locator: Optional[Locator],
+    ):
+        self.logger.info(
+            "%s the element value with `Send Keys`. (no patterns found)", action
+        )
+        if newline_string or re.search("[\r\n]", value):
+            self.logger.warning(
+                "The `newline` switch and EOLs are ignored when setting a value"
+                " through keys! (insert them with the `enter` parameter only)"
+            )
+        get_text_pattern = getattr(element.item, "GetTextPattern", None)
+        get_text = (
+            lambda: get_text_pattern().DocumentRange.GetText()
+            if get_text_pattern
+            else None
+        )
+        if append:
+            current_value: str = get_text() or ""
+        else:
+            # Delete the entire present value inside.
+            self.send_keys(element, keys="{Ctrl}a{Del}")
+            current_value = ""
+        if value:
+            self.send_keys(element, keys=value, send_enter=False)
+            new_value = get_text()
+            if new_value is not None:
+                if new_value.strip() != f"{current_value}{value}".strip():
+                    raise ValueError(
+                        f"Element found with {locator!r} couldn't send value"
+                        f" through keys: {value}"
+                    )
 
     @keyword(tags=["action"])
     def set_value(
@@ -314,72 +411,118 @@ class ActionKeywords(LibraryContext):
         append: bool = False,
         enter: bool = False,
         newline: bool = False,
+        send_keys_fallback: bool = True,
     ) -> WindowsElement:
         """Set value of the element defined by the locator.
 
-        *Note.* Anchor works only on element structures where it can
-        be relied on that root/child element tree will remain the same.
-        Usually these kind of structures are tables.
+        *Note:* An anchor will work only on element structures where you can
+        rely on the stability of that root/child element tree, as remaining the same.
+        Usually these kind of structures are tables. (but not restricted to)
 
-        Exception ``ActionNotPossible`` is raised if element does not
-        allow SetValue action.
+        *Note:* It is important to set ``append=${True}`` if you want to keep the
+        current text in the element. Other option is to read the current text into a
+        variable, then modify that value as you wish and pass it to the ``Set Value``
+        keyword for a complete text replacement. (without setting the `append` flag)
 
-        :param locator: string locator or Control element
-        :param value: string value to set
-        :param append: False for setting value, True for appending value
-        :param enter: set True to press enter key at the end of the line
-        :param newline: set True to add newline to the end of value
-        :return: WindowsElement object
+        The following exceptions may be raised:
 
-        *Note.* It is important to set ``append=True`` if you want keep text in
-        the element. Other option is to read current text into a variable and
-        modify that value to pass for ``Set Value`` keyword.
+            - ``ActionNotPossible`` if the element does not allow the `SetValue` action
+              to be run on it nor having ``send_keys_fallback=${True}``.
+            - ``ValueError`` if the new value to be set can't be set correctly.
 
-        Example:
+        :param locator: String locator or element object.
+        :param value: String value to be set.
+        :param append: `False` for setting the value, `True` for appending it. (OFF by
+            default)
+        :param enter: Set it to `True` to press the *Enter* key at the end of the
+            input. (nothing is pressed by default)
+        :param newline: Set it to `True` to add a new line at the end of the value. (no
+            EOL included by default; this won't work with `send_keys_fallback` enabled)
+        :param send_keys_fallback: Tries to set the value by sending it through keys
+            if the main way of setting it fails. (enabled by default)
+        :returns: The element object identified through the passed `locator`.
+
+        **Example: Robot Framework**
 
         .. code-block:: robotframework
 
-            Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
-            # Press ENTER after setting the value
-            Set Value    type:Edit name:"File name:"    console.txt    enter=True
+            *** Tasks ***
+            Set Values In Notepad
+                Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
+                # Press ENTER after setting the value.
+                Set Value    type:Edit name:"File name:"    console.txt   enter=${True}
 
-            # Add newline (manually) at the end of the string (Notepad example)
-            Set Value    name:"Text Editor"  abc\\n
-            # Add newline with parameter
-            Set Value    name:"Text Editor"  abc   newline=${True}
+                # Add newline (manually) at the end of the string. (Notepad example)
+                Set Value    name:"Text Editor"  abc${\n}
+                # Add newline with parameter.
+                Set Value    name:"Text Editor"  abc   newline=${True}
 
-            # Clear Notepad window and start appending text
-            Set Anchor  name:"Text Editor"
-            # all following keyword calls will use anchor element as locator
-            # UNLESS they specify locator specifically or `Clear Anchor` is used
-            ${time}=    Get Time
-            # Clears when append=False (default)
-            Set Value    value=time now is ${time}
-            # Append text and add newline to the end
-            Set Value    value= and it's task run time    append=True    newline=True
-            # Continue appending
-            Set Value    value=this will appear on the 2nd line    append=True
+                # Clear Notepad window and start appending text.
+                Set Anchor  name:"Text Editor"
+                # All the following keyword calls will use the anchor element as a
+                #  starting point, UNLESS they specify a locator explicitly or
+                #  `Clear Anchor` is used.
+                ${time} =    Get Time
+                # Clears with `append=${False}`. (default)
+                Set Value    value=The time now is ${time}
+                # Append text and add a newline at the end.
+                Set Value    value= and it's the task run time.   append=${True}
+                ...    newline=${True}
+                # Continue appending and ensure a new line at the end by pressing
+                #  the Enter key this time.
+                Set Value    value=But this will appear on the 2nd line now.
+                ...    append=${True}   enter=${True}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib_win = Windows()
+            locator = "Document - WordPad > Rich Text Window"
+            elem = lib_win.set_value(locator, value="My text", send_keys_fallback=True)
+            text = lib_win.get_value(elem)
+            print(text)
         """
         value = value or ""
-        element = self.ctx.get_element(locator)
-        current_value = ""
+        if newline and enter:
+            self.logger.warning(
+                "Both `newline` and `enter` switches detected, expect to see multiple"
+                " new lines in the final text content."
+            )
         newline_string = "\n" if newline else ""
-        if hasattr(element.item, "GetValuePattern"):
-            value_pattern = element.item.GetValuePattern()
-            if append:
-                current_value = value_pattern.Value
-            value_pattern.SetValue(f"{current_value}{value}{newline_string}")
-        elif hasattr(element.item, "GetLegacyIAccessiblePattern"):
-            pattern = element.item.GetLegacyIAccessiblePattern()
-            if append:
-                current_value = pattern.Value
-            pattern.SetValue(f"{current_value}{value}{newline_string}")
+        element = self.ctx.get_element(locator)
+        get_value_pattern = self.get_value_pattern(element)
+        action = "Appending" if append else "Setting"
+
+        if get_value_pattern:
+            self._set_value_with_pattern(
+                value,
+                newline_string,
+                action=action,
+                get_value_pattern=get_value_pattern,
+                append=append,
+                locator=locator,
+            )
+        elif send_keys_fallback:
+            self._set_value_with_keys(
+                value,
+                newline_string,
+                action=action,
+                element=element,
+                append=append,
+                locator=locator,
+            )
         else:
             raise ActionNotPossible(
                 f"Element found with {locator!r} doesn't support value setting"
             )
+
         if enter:
-            self.send_keys(element, "{Ctrl}{End}{Enter}")
+            self.logger.info("Inserting a new line by sending the *Enter* key.")
+            self.send_keys(element, keys="{Ctrl}{End}{Enter}")
+
         return element
 
     @keyword(tags=["action"])
@@ -403,7 +546,9 @@ class ActionKeywords(LibraryContext):
             ${old_wait_time}=  Set Wait Time  0.2
         """
         old_value = self.ctx.wait_time
+        self.logger.info("Previous wait time: %f", old_value)
         self.ctx.wait_time = wait_time
+        self.logger.info("Current wait time: %f", self.ctx.wait_time)
         return old_value
 
     @keyword(tags=["action"])
@@ -413,7 +558,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow CaptureToImage action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param filename: image filename
         :return: absolute path to the screenshot file
 
@@ -441,7 +586,7 @@ class ActionKeywords(LibraryContext):
         """Set global timeout for element search. Applies also
         to ``Control Window`` keyword.
 
-        By default library has timeout of 10 seconds.
+        By default, the library has a timeout of 10 seconds.
 
         :param timeout: float value in seconds
         :return: previous timeout value
@@ -462,7 +607,7 @@ class ActionKeywords(LibraryContext):
     def set_focus(self, locator: Locator) -> None:
         """Set view focus to the element defined by the locator.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
 
         Example:
 
@@ -540,3 +685,40 @@ class ActionKeywords(LibraryContext):
             if copy:
                 self.click(source)
                 auto.ReleaseKey(auto.Keys.VK_CONTROL)
+
+    @keyword(tags=["action"])
+    def set_mouse_movement(self, simulate: bool) -> bool:
+        """Enable or disable mouse movement simulation during clicks and other actions.
+
+        Returns the previous set value as `True`/`False`.
+
+        :param simulate: Decide whether to simulate the move. (ON by default)
+        :returns: Previous state.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Disable Mouse Move
+                ${previous} =   Set Mouse Movement      ${False}
+                Log To Console   Previous mouse simulation: ${previous} (now disabled)
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib_win = Windows()
+            previous = lib_win.set_mouse_movement(False)
+            print(f"Previous mouse simulation: {previous} (now disabled)")
+        """
+        to_str = lambda state: "ON" if state else "OFF"  # noqa: E731
+        previous = self.ctx.simulate_move
+        self.logger.info("Previous mouse movement simulation: %s", to_str(previous))
+        self.ctx.simulate_move = simulate
+        self.logger.info(
+            "Current mouse movement simulation: %s", to_str(self.ctx.simulate_move)
+        )
+        return previous
