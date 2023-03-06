@@ -9,6 +9,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+22.1.1 - 06 Mar 2023
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **7.2.1**; :pr:`869`):
+  Documentation fixes in keywords: ``Set Value``, ``Print Tree``,
+  ``Set Mouse Movement``.
+
 22.1.0 - 06 Mar 2023
 --------------------
 
