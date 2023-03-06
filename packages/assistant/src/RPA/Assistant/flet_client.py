@@ -56,7 +56,7 @@ class FletClient:
 
         self._elements: Elements = Elements([], [], None)
         self._to_disable: List[flet.Control] = []
-        self._container_stack: List[Union[SupportedFletLayout, AppBar]] = []
+        self._layout_stack: List[Union[SupportedFletLayout, AppBar]] = []
 
         self._background_flet = BackgroundFlet()
 
@@ -148,26 +148,29 @@ class FletClient:
         # TODO: validate that element "name" is unique
         # make a container that adds margin around the element
 
-        container = Container(margin=5, content=element)
+        # if it's a Container we don't create our own margin container to allow setting
+        # of padding and absolute position manually by user
+        if isinstance(element, Container):
+            new_element = element
+        else:
+            new_element = Container(margin=5, content=element)
 
-        if self._container_stack != []:
-            current_container = self._container_stack[-1]
-            if hasattr(current_container, "controls"):
+        if self._layout_stack != []:
+            current_layout = self._layout_stack[-1]
+            if hasattr(current_layout, "controls"):
                 # Row, Stack and Column have "controls"
-                current_container.controls.append(container)
-            elif hasattr(current_container, "actions"):
+                current_layout.controls.append(new_element)
+            elif hasattr(current_layout, "actions"):
                 # AppBar has actions
-                current_container.actions.append(container)
-            elif isinstance(current_container, Container):
-                if current_container.content is not None:
+                current_layout.actions.append(new_element)
+            elif isinstance(current_layout, Container):
+                if current_layout.content is not None:
                     raise LayoutError(
                         "Attempting to place two content in one Container"
                     )
-                # we don't use the `container` variable here to allow users to override
-                # the default container behaviour
-                current_container.content = element
+                current_layout.content = new_element
         else:
-            self._elements.visible.append(container)
+            self._elements.visible.append(new_element)
         if name is not None:
             element.on_change = self._make_flet_event_handler(name, extra_handler)
 
@@ -237,18 +240,18 @@ class FletClient:
             raise PageNotOpenError("Set title called when page is not open")
         self.page.title = title
 
-    def add_layout(self, container: SupportedFletLayout):
+    def add_layout(self, layout: SupportedFletLayout):
         """Add a layout element as the currently open layout element. Following
-        add_element calls will add elements inside ``container``."""
-        self.add_element(container)
-        self._container_stack.append(container)
+        add_element calls will add elements inside ``layout``."""
+        self.add_element(layout)
+        self._layout_stack.append(layout)
 
     def close_layout(self):
-        """Stop adding layout elements to the latest opened container"""
-        self._container_stack.pop()
+        """Stop adding layout elements to the latest opened layout"""
+        self._layout_stack.pop()
 
     def set_appbar(self, app_bar: AppBar):
         if self._elements.app_bar:
             raise LayoutError("Only one navigation may be defined at a time")
         self._elements.app_bar = app_bar
-        self._container_stack.append(app_bar)
+        self._layout_stack.append(app_bar)
