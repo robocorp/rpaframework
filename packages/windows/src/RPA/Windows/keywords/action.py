@@ -30,7 +30,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param wait_time: time to wait after click, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param timeout: float value in seconds, see keyword
@@ -59,7 +59,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param wait_time: time to wait after click, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param timeout: float value in seconds, see keyword
@@ -86,7 +86,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param wait_time: time to wait after click, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param timeout: float value in seconds, see keyword
@@ -113,7 +113,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param wait_time: time to wait after click, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param timeout: float value in seconds, see keyword
@@ -193,7 +193,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow Select action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param value: string value to select on Control element
         :return: WindowsElement object
 
@@ -234,23 +234,24 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow SendKeys action.
 
-        :param locator: string locator or Control element (default None means desktop)
-        :param keys: the keys to send
-        :param interval: time between sending keys, default 0.01 seconds
-        :param wait_time: time to wait after sending keys, default is a
-         library `wait_time`, see keyword ``Set Wait Time``
-        :param send_enter: if True then {Enter} is sent at the end of the keys
-        :return: WindowsElement object
+        :param locator: Optional string locator or element object.
+        :param keys: The keys to send.
+        :param interval: Time between each sent key. (defaults to 0.01 seconds)
+        :param wait_time: Time to wait after sending all the keys. (defaults to
+            library's set value, see keyword ``Set Wait Time``)
+        :param send_enter: If `True` then the {Enter} key is pressed at the end of the
+            sent keys.
+        :returns: The element identified through `locator`.
 
         Example:
 
         .. code-block:: robotframework
 
             Send Keys  desktop   {Ctrl}{F4}
-            Send Keys  keys={Ctrl}{F4}   # locator will be NONE, keys send to desktop
-            Send Keys  id:input5  username   send_enter=True
+            Send Keys  keys={Ctrl}{F4}   # locator will be NONE, keys sent to desktop
+            Send Keys  id:input5  username   send_enter=${True}
             ${element}=   Get Element   id:pass
-            Send Keys  ${element}  password   send_enter=True
+            Send Keys  ${element}  password   send_enter=${True}
         """
         if locator:
             element = self.ctx.get_element(locator).item
@@ -274,7 +275,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow GetWindowText action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :return: value of WindowText attribute of an element
 
         Example:
@@ -291,7 +292,9 @@ class ActionKeywords(LibraryContext):
         )
 
     @staticmethod
-    def get_value_pattern(element: WindowsElement) -> Optional[Callable[[], PatternType]]:
+    def get_value_pattern(
+        element: WindowsElement,
+    ) -> Optional[Callable[[], PatternType]]:
         item: auto.Control = element.item
         get_pattern: Optional[Callable] = getattr(
             item, "GetValuePattern", getattr(item, "GetLegacyIAccessiblePattern", None)
@@ -338,6 +341,67 @@ class ActionKeywords(LibraryContext):
         raise ActionNotPossible(
             f"Element found with {locator!r} doesn't support value retrieval"
         )
+
+    def _set_value_with_pattern(
+        self,
+        value: str,
+        newline_string: str,
+        *,
+        action: str,
+        get_value_pattern: Callable[[], PatternType],
+        append: bool,
+        locator: Optional[Locator],
+    ):
+        func_name = get_value_pattern.__name__
+        self.logger.info("%s the element value with the %r method.", action, func_name)
+        value_pattern = get_value_pattern()
+        current_value = value_pattern.Value if append else ""
+        new_value = f"{current_value}{value}{newline_string}"
+        value_pattern.SetValue(new_value)
+        if value_pattern.Value.strip() != new_value.strip():  # EOLs inconsistency
+            raise ValueError(
+                f"Element found with {locator!r} couldn't set value: {new_value}"
+            )
+
+    def _set_value_with_keys(
+        self,
+        value: str,
+        newline_string: str,
+        *,
+        action: str,
+        element: WindowsElement,
+        append: bool,
+        locator: Optional[Locator],
+    ):
+        self.logger.info(
+            "%s the element value with `Send Keys`. (no patterns found)", action
+        )
+        if newline_string or re.search("[\r\n]", value):
+            self.logger.warning(
+                "The `newline` switch and EOLs are ignored when setting a value"
+                " through keys! (insert them with the `enter` parameter only)"
+            )
+        get_text_pattern = getattr(element.item, "GetTextPattern", None)
+        get_text = (
+            lambda: get_text_pattern().DocumentRange.GetText()
+            if get_text_pattern
+            else None
+        )
+        if append:
+            current_value: str = get_text() or ""
+        else:
+            # Delete the entire present value inside.
+            self.send_keys(element, keys="{Ctrl}a{Del}")
+            current_value = ""
+        if value:
+            self.send_keys(element, keys=value, send_enter=False)
+            new_value = get_text()
+            if new_value is not None:
+                if new_value.strip() != f"{current_value}{value}".strip():
+                    raise ValueError(
+                        f"Element found with {locator!r} couldn't send value"
+                        f" through keys: {value}"
+                    )
 
     @keyword(tags=["action"])
     def set_value(
@@ -433,44 +497,23 @@ class ActionKeywords(LibraryContext):
         action = "Appending" if append else "Setting"
 
         if get_value_pattern:
-            func_name = get_value_pattern.__name__
-            self.logger.info(
-                "%s the element value with the %r method.", action, func_name
+            self._set_value_with_pattern(
+                value,
+                newline_string,
+                action=action,
+                get_value_pattern=get_value_pattern,
+                append=append,
+                locator=locator,
             )
-            value_pattern = get_value_pattern()
-            current_value = value_pattern.Value if append else ""
-            new_value = f"{current_value}{value}{newline_string}"
-            value_pattern.SetValue(new_value)
-            if value_pattern.Value.strip() != new_value.strip():  # EOLs inconsistency
-                raise ValueError(
-                    f"Element found with {locator!r} couldn't set value: {new_value}"
-                )
         elif send_keys_fallback:
-            self.logger.info(
-                "%s the element value with `Send Keys`. (no patterns found)", action
+            self._set_value_with_keys(
+                value,
+                newline_string,
+                action=action,
+                element=element,
+                append=append,
+                locator=locator,
             )
-            if newline_string or re.search("[\r\n]", value):
-                self.logger.warning(
-                    "The `newline` switch and EOLs are ignored when setting a value"
-                    " through keys! (insert them with the `enter` parameter only)"
-                )
-            get_text_pattern = getattr(element.item, "GetTextPattern", None)
-            get_text = lambda: get_text_pattern().DocumentRange.GetText() if get_text_pattern else None
-            if append:
-                current_value: str = get_text() or ""
-            else:
-                # Delete the entire present value inside.
-                self.send_keys(element, keys="{Ctrl}a{Del}")
-                current_value = ""
-            if value:
-                self.send_keys(element, keys=value, send_enter=False)
-                new_value = get_text()
-                if new_value is not None:
-                    if new_value.strip() != f"{current_value}{value}".strip():
-                        raise ValueError(
-                            f"Element found with {locator!r} couldn't send value"
-                            f" through keys: {value}"
-                        )
         else:
             raise ActionNotPossible(
                 f"Element found with {locator!r} doesn't support value setting"
@@ -515,7 +558,7 @@ class ActionKeywords(LibraryContext):
         Exception ``ActionNotPossible`` is raised if element does not
         allow CaptureToImage action.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
         :param filename: image filename
         :return: absolute path to the screenshot file
 
@@ -543,7 +586,7 @@ class ActionKeywords(LibraryContext):
         """Set global timeout for element search. Applies also
         to ``Control Window`` keyword.
 
-        By default library has timeout of 10 seconds.
+        By default, the library has a timeout of 10 seconds.
 
         :param timeout: float value in seconds
         :return: previous timeout value
@@ -564,7 +607,7 @@ class ActionKeywords(LibraryContext):
     def set_focus(self, locator: Locator) -> None:
         """Set view focus to the element defined by the locator.
 
-        :param locator: string locator or Control element
+        :param locator: String locator or element object.
 
         Example:
 
