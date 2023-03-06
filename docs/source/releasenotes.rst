@@ -12,7 +12,7 @@ Release notes
 22.1.0 - 6 Mar 2023
 -------------------
 
-**RPA.Windows** (``rpaframework-windows`` **7.2.0**; :pr:`855`):
+- Library **RPA.Windows** (``rpaframework-windows`` **7.2.0**; :pr:`855`):
 
   - Enhances keyword ``Set Value`` with additional checks and a `send_keys_fallback`
     parameter as an alternate way of setting in the provided value. (if the main one
