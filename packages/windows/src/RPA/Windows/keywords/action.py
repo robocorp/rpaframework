@@ -453,7 +453,7 @@ class ActionKeywords(LibraryContext):
                 Set Value    type:Edit name:"File name:"    console.txt   enter=${True}
 
                 # Add newline (manually) at the end of the string. (Notepad example)
-                Set Value    name:"Text Editor"  abc${\n}
+                Set Value    name:"Text Editor"  abc\\n
                 # Add newline with parameter.
                 Set Value    name:"Text Editor"  abc   newline=${True}
 
@@ -692,7 +692,7 @@ class ActionKeywords(LibraryContext):
 
         Returns the previous set value as `True`/`False`.
 
-        :param simulate: Decide whether to simulate the move. (ON by default)
+        :param simulate: Decide whether to simulate the move. (OFF by default)
         :returns: Previous state.
 
         **Example: Robot Framework**
@@ -701,8 +701,8 @@ class ActionKeywords(LibraryContext):
 
             *** Tasks ***
             Disable Mouse Move
-                ${previous} =   Set Mouse Movement      ${False}
-                Log To Console   Previous mouse simulation: ${previous} (now disabled)
+                ${previous} =   Set Mouse Movement      ${True}
+                Log To Console   Previous mouse simulation: ${previous} (now enabled)
 
         **Example: Python**
 
@@ -711,8 +711,8 @@ class ActionKeywords(LibraryContext):
             from RPA.Windows import Windows
 
             lib_win = Windows()
-            previous = lib_win.set_mouse_movement(False)
-            print(f"Previous mouse simulation: {previous} (now disabled)")
+            previous = lib_win.set_mouse_movement(True)
+            print(f"Previous mouse simulation: {previous} (now enabled)")
         """
         to_str = lambda state: "ON" if state else "OFF"  # noqa: E731
         previous = self.ctx.simulate_move
