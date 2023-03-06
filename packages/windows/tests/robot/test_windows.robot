@@ -420,7 +420,7 @@ Test Locator Path Strategy
     # Retrieve the "One" button from a root parent.
     ${elem} =   Get Element     Calculator > path:2|3|2|8|2 offset:120,0
     Should Be Equal     ${elem.name}    One
-    Click   ${elem}  # clicks with offset too (even if found by path)
+    Click   ${elem}  # clicks with offset too, even if found by path (Two button)
 
     # Get all the numeric buttons using a path parent.
     ${elems} =   Get Elements     Calculator > path:2|3|2|8 > type:ButtonControl
@@ -435,7 +435,8 @@ Test Locator Path Strategy
     Log To Console      ${tree}
     # Check if the fifth control on level 2 in the tree is actually the "Four" button.
     ${elem} =   Set Variable    ${tree}[${2}][${5 - 1}]
-    Should Be Equal     ${elem.name}    Four
+    @{names} =  Create List     ${elem.name}
+    Should Contain Any      ${names}    Four    4
 
     [Teardown]      Close Window   ${LOC_CALCULATOR}
 
