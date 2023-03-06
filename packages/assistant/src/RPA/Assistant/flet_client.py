@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 import time
 from logging import getLogger
 from timeit import default_timer as timer
 from typing import Callable, List, NamedTuple, Optional, Tuple, Union
 
 import flet
-from flet import Container, Page, Row, ScrollMode
+from flet import Container, Page, ScrollMode
 from flet_core import Control, AppBar
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
@@ -182,8 +183,7 @@ class FletClient:
         )
 
     def clear_elements(self):
-        self._elements.visible.clear()
-        self._elements.invisible.clear()
+        self._elements = Elements([], [], None)
         if self.page:
             if self.page.controls:
                 self.page.controls.clear()

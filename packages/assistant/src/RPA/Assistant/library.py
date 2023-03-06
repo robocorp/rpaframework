@@ -1292,20 +1292,28 @@ class Assistant:
     @keyword(tags=["layout"])
     def open_container(
         self,
-        margin: Optional[int] = None,
+        margin: Optional[int] = 5,
         padding: Optional[int] = None,
         width: Optional[int] = None,
         height: Optional[int] = None,
-        bgcolor: Optional[str] = None,
+        background_color: Optional[str] = None,
         # top: Optional[int] = None,
         # left: Optional[int] = None,
     ):
         """Open a single element container. The following ``Add <element>`` calls adds
         an element inside the container. Can be used for styling elements.
 
+
+        :param margin: How much margin to add around the container. RPA.Assistant adds
+        by default a container of margin 5 around all elements, to have a smaller margin
+        use containers with smaller margin value for elements.
+        :param padding: How much padding to add around the content of the container.
+        :param width: Width of the container.
+        :param height: Height of the container.
+
         :param bgcolor:   Background color for the container. Default depends on icon.
                           Allowed values are colors from
-                          https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37
+                          https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37 (in the format ``black12``, ``red500``)
                           or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
 
         """
@@ -1316,7 +1324,7 @@ class Assistant:
                 padding=padding,
                 width=width,
                 height=height,
-                bgcolor=bgcolor,
+                bgcolor=background_color,
             )
         )
 
@@ -1346,3 +1354,12 @@ class Assistant:
     @keyword(tags=["layout"])
     def close_stack(self):
         self._close_layouting_element("Stack")
+
+    @keyword(tags=["layout"])
+    def open_column(self):
+        self._open_layouting.append("Column")
+        self._client.add_layout(Column())
+
+    @keyword(tags=["layout"])
+    def close_column(self):
+        self._close_layouting_element("Column")

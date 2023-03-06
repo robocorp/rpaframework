@@ -6,13 +6,15 @@ Release notes
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 **RPA.Assistant** (``rpaframework-assistant`` **2.1.0**):
-    - Add ``Set Title`` keyword
+    - Add ``Set Title`` keyword. Can be used to set title of assistant when it is running.
 
-    - Add ``Open Row`` and ``Close Row`` keywords. Useful for layouting elements into rows
-    - Add ``Open Container`` and ``Close Container`` keywords. Useful for styling or placing single elements
-    - Add ``Open Navbar`` and ``Close Navbar`` keywords. Useful for styling or placing single elements
+    - Add ``Open Row`` and ``Close Row`` keywords. Used to layout elements into rows.
+    - Add ``Open Column`` and ``Close Column`` keywords. Used to layout elements into columns.
+    - Add ``Open Container`` and ``Close Container`` keywords. Useful for styling or placing single elements.
+    - Add ``Open Navbar`` and ``Close Navbar`` keywords. Can be used to create an always visible top bar for a dialog.
 
-    - Add ``Add Flet Icon`` that enables adding icons from flets large gallery of icons
+    - Add ``Add Flet Icon`` that enables adding any icons from flets large gallery of icons
+        - Compared to `Add Icon` it is more difficult to use but supports a much larger amount of icons.
 
 
 
