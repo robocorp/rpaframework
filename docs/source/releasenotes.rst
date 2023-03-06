@@ -10,8 +10,10 @@ Release notes
 
     - Add ``Open Row`` and ``Close Row`` keywords. Used to layout elements into rows.
     - Add ``Open Column`` and ``Close Column`` keywords. Used to layout elements into columns.
-    - Add ``Open Container`` and ``Close Container`` keywords. Useful for styling or placing single elements.
     - Add ``Open Navbar`` and ``Close Navbar`` keywords. Can be used to create an always visible top bar for a dialog.
+    
+    - Add ``Open Stack`` and ``Close Stack`` keywords. Can be used to position elements manually.
+    - Add ``Open Container`` and ``Close Container`` keywords. Useful for styling or placing single elements.
 
     - Add ``Add Flet Icon`` that enables adding any icons from flets large gallery of icons
         - Compared to `Add Icon` it is more difficult to use but supports a much larger amount of icons.
