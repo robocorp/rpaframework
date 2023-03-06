@@ -5,62 +5,87 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-**RPA.Windows** (``rpaframework-windows`` **7.2.0**; :pr:`855`):
-  - Enhances keyword ``Set Value`` with additional checks and a `send_keys_fallback`
-    parameter as an alternate way of setting in the provided value. (if the main one
-    fails)
-  - Improves keyword ``Print Tree`` with clearer printed depths and children positions
-    in the element tree. The returned element structure now encapsulates a usable path
-    based locator in every element.
-  - Adds new keyword: ``Set Mouse Movement`` which enables/disables mouse movement
-    simulation when interacting with elements. (e.g. clicking combo-boxes)
-  - Miscellaneous: better recording instructions, documentation updates, bugfixes.
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-22.0.1 - 3 March 2023
---------------------
-- Added PyYAML 6.0 support, rpaframework can now install together with tools like `langchain`
+22.1.0 - 6 Mar 2023
+-------------------
 
-2 March 2023
-------------
+**RPA.Windows** (``rpaframework-windows`` **7.2.0**; :pr:`855`):
+
+  - Enhances keyword ``Set Value`` with additional checks and a `send_keys_fallback`
+    parameter as an alternate way of setting in the provided value. (if the main one
+    fails; :issue:`483`)
+  - Improves keyword ``Print Tree`` with clearer printed depths and children positions
+    in the element tree. The returned element structure now encapsulates a usable path
+    based locator in every element. (:issue:`796`)
+  - Adds new keyword: ``Set Mouse Movement`` which enables/disables mouse movement
+    simulation when interacting with elements. (e.g. clicking combo-boxes;
+    :issue:`791`)
+  - Miscellaneous: better recording instructions, documentation updates, bugfixes.
+    (:issue:`591`, :issue:`797`)
+
+22.0.1 - 3 Mar 2023
+-------------------
+
+- Added PyYAML 6.0 support, rpaframework can now install together with tools like
+  `langchain`.
+
+02 Mar 2023
+-----------
+
 **RPA.OpenAI** (``rpaframework-openai`` **1.1.1**):
-  - Fix keyword ``Chat Completion Create`` not working as documented
 
-**RPA.OpenAI** (``rpaframework-openai`` **1.1.0**, :pr:`867`):
-  - New keyword ``Chat Completion Create`` can be used to build up discussion with ChatGPT
+  - Fix keyword ``Chat Completion Create`` not working as documented.
+
+**RPA.OpenAI** (``rpaframework-openai`` **1.1.0**; :pr:`867`):
+
+  - New keyword ``Chat Completion Create`` can be used to build up discussion with
+    ChatGPT.
 
 **RPA.Assistant** (``rpaframework-assistant`` **2.0.0**):
-    - **Breaking** changes:
-        - Run Dialog and Ask User parameter "clear" was removed, clearing is now mandatory
-        - (affects Python side users only): Location enum that ``run_dialog`` and ``ask_user`` accepts was changed from Location to WindowLocation to improve clarity.
-        - By default Slider now rounds to 1 decimal.
 
-    - Added ``location`` argument to Add Button keyword
-    - Added ``round`` argument to Add Slider keyword.
-    - Internal refactoring
-    - Update underlying UI library to flet 0.2.2 -> 0.4.2, granting various bugfixes and improvements
-    - depend on **rpaframework-core** 10.4.1 due to Flet dependency incompatibilities with earlier versions
+  - Added `location` argument to ``Add Button`` keyword.
+  - Added `round` argument to ``Add Slider`` keyword.
+  - Internal refactoring.
+  - Update underlying UI library to ``flet`` **0.2.2** -> **0.4.2**, granting various
+    bugfixes and improvements.
+  - Depend on ``rpaframework-core`` **10.4.1** due to Flet dependency incompatibilities
+    with earlier versions.
+
+  .. warning::
+    **Breaking** changes:
+
+    - ``Run Dialog`` and ``Ask User`` parameter `clear` was removed, clearing is now
+      mandatory.
+    - (affects Python side users only): Location enum that ``run_dialog`` and
+      ``ask_user`` accepts was changed from `Location` to `WindowLocation` to improve
+      clarity.
+    - By default `Slider` now rounds to 1 decimal.
 
 28 Feb 2023
 -----------
+
 **RPA.PDF** (``rpaframework-pdf`` **7.1.0**):
-    - Add possibility to change `boxes_flow` setting of PDF conversion with ``Set Convert Settings`` keyword.
-      The `boxes_flow` defines how text boxes within PDF page are ordered. Read more about this in the keyword
-      documentation.
+
+  - Add possibility to change `boxes_flow` setting of PDF conversion with the
+    ``Set Convert Settings`` keyword. The `boxes_flow` defines how text boxes within
+    the PDF page are ordered. Read more about this in the keyword documentation.
 
 22 Feb 2023
 -----------
+
 **RPA.Assistant** (``rpaframework-assistant`` **1.2.4**):
-    - Reduce unnecessary debug logging from Flet that didn't obey log level
+
+  - Reduce unnecessary debug logging from Flet that didn't obey the log level.
 
 21 Feb 2023
 -----------
 
 **RPA.Assistant** (``rpaframework-assistant`` **1.2.3**):
-    - Fix ``results.key`` access not working as documented
+
+  - Fix `results.key` access not working as documented.
 
 22.0.0 - 20 Feb 2023
 --------------------
@@ -68,18 +93,20 @@ Release notes
 .. warning::
   **Breaking** change release.
 
-- The ``rpaframework-dialogs`` package is no longer part of the ``rpaframework`` package. Reason for this
-  change is the deprecation of the **RPA.Dialogs** library as we are recommending the **RPA.Assistant**
-  library for building attended Robots.
+- The ``rpaframework-dialogs`` package is no longer part of the ``rpaframework``
+  package. Reason for this change is the deprecation of the **RPA.Dialogs** library as
+  we are recommending the **RPA.Assistant** library for building attended Robots.
 
-  This means that **RPA.Dialogs** library can be still used, but it needs to be separately added into the **pip**
-  section of the **conda.yaml** (``rpaframework-dialogs==4.0.2``).
+  This means that **RPA.Dialogs** library can be still used, but it needs to be
+  separately added into the **pip** section of the *conda.yaml* file
+  (``rpaframework-dialogs==4.0.2``).
 
-  The **RPA.Assistant** library also requires separate package installation of ``rpaframework-assistant==1.2.1``.
+  The **RPA.Assistant** library also requires separate package installation of
+  ``rpaframework-assistant==1.2.1``.
 
-  We see that unattended robots are a majority of the process run cases and thus it makes sense to move libraries
-  meant for the attended robots into separate packages. Added benefit is that will reduce the package size for the
-  ``rpaframework`` package.
+  We see that unattended robots are a majority of the process run cases and thus it
+  makes sense to move libraries meant for the attended robots into separate packages.
+  Added benefit is that will reduce the package size for the ``rpaframework`` package.
 
   Please read `the migration guide <https://github.com/robocorp/rpaframework/blob/master/packages/assistant/docs/Migration-Guide.md>`_
   on how to move from **RPA.Dialogs** to **RPA.Assistant**.
@@ -94,29 +121,40 @@ Other changes included in the release:
 
 - Library **RPA.Tables** (:issue:`821`): Allow custom dialects in csv files.
 
-- Library **RPA.Robocorp.Process** (:issue:`845`): Host of the Process API should use the host
-  from a environment variable (`RC_API_PROCESS_HOST`) if that is available.
+- Library **RPA.Robocorp.Process** (:issue:`845`): Host of the Process API should use
+  the host from an environment variable (`RC_API_PROCESS_HOST`) if that is available.
 
-- Script **use-robocorp-vault** maximum token validity time has been lowered to 20 hours.
+- Script **use-robocorp-vault** maximum token validity time has been lowered to 20
+  hours.
 
 20 Feb 2023
 -----------
-- Library **RPA.Assistant**
-    - **1.2.2**
-        - Fix package on Python 3.7
-    - **1.2.1**
-        - Fix ``Add Slider`` ``default`` parameter not working if no user input was done
+
+- Library **RPA.Assistant**:
+
+  - **1.2.2**
+
+    - Fix package on Python 3.7.
+
+  - **1.2.1**
+
+    - Fix ``Add Slider`` `default` parameter misbehave if no user input was done on
+      it.
 
 17 Feb 2023
 -----------
-- Library **RPA.Assistant** (``rpaframework-assistant`` **1.2.0**):
-    - Add ``default`` argument to ``Add Slider`` keyword to set default of slider
 
-- Library **RPA.Assistant** (:issue:`838`; :issue:`828`; ``rpaframework-assistant`` **1.1.0**):
-    - Bugfixes for dialog clearing
-    - New ``Add Slider`` keyword to create sliders for numeric inputs
-    - New ``default`` and ``required`` arguments for ``Add Text Input``
-    - Removing ``None`` values from the results so make value checking easier
+- Library **RPA.Assistant** (``rpaframework-assistant`` **1.2.0**):
+
+    - Add `default` argument to ``Add Slider`` keyword to set a default for the slider.
+
+- Library **RPA.Assistant** (:issue:`838`, :issue:`828`; ``rpaframework-assistant``
+  **1.1.0**):
+
+    - Bugfixes for dialog clearing.
+    - New ``Add Slider`` keyword to create sliders for numeric inputs.
+    - New `default` and `required` arguments for ``Add Text Input``.
+    - Removing `None` values from the results so it makes value checking easier.
 
 21.1.1 - 15 Feb 2023
 --------------------
@@ -140,25 +178,28 @@ Other changes included in the release:
 08 Feb 2023
 -----------
 
-- **OpenAI** (:pr:`792`) comes to **RPA Framework**! New library **RPA.OpenAI** adds four keywords covering GPT-3 text completions and DALL.E image creation.
+- **OpenAI** (:pr:`792`) comes to **RPA Framework**! New library **RPA.OpenAI** adds
+  four keywords covering GPT-3 text completions and DALL.E image creation.
 
-  - ``Authorize To Openai:`` Authorize with OpenAI using your API key
-  - ``Completion Create``: Keyword for creating text completions in GPT-3 API using your prompt and various arguments.
+  - ``Authorize To Openai:`` Authorize with OpenAI using your API key.
+  - ``Completion Create``: Keyword for creating text completions in GPT-3 API using
+    your prompt and various arguments.
   - ``Image Create``: Create one or more images based on a text prompt.
   - ``Image Create Variation``: Creating one or more variations of an existing image.
 
   .. note::
-    **RPA.OpenAI** is not included in the core ``rpaframework`` package, so please add ``rpaframework-openai==1.0.1`` as **pip** dependency
-    in your **conda.yaml**.
+    **RPA.OpenAI** is not included in the core ``rpaframework`` package, so please add
+    ``rpaframework-openai==1.0.1`` as a **pip** dependency in your **conda.yaml**.
 
 - ``rpaframework-assistant`` **1.0.0**
 
-    - New RPA.Assistant library! Provides better development experience for various use cases where previously RPA.Dialogs would have been used.
-        - RPA.Dialogs users: `the new Migration Guide <https://github.com/robocorp/rpaframework/blob/master/packages/assistant/docs/Migration-Guide.md>`_
+    - New **RPA.Assistant** library! Provides better development experience for various
+      use cases where previously **RPA.Dialogs** would have been used.
+        - **RPA.Dialogs** users: `the new Migration Guide <https://github.com/robocorp/rpaframework/blob/master/packages/assistant/docs/Migration-Guide.md>`_
         - Does not use webview. Should improve compatibility and reduce broken installs.
         - Added mechanism to make buttons execute Python functions or Robot keywords.
         Enables building of code executing interactive assistants.
-        - New ``Ask User `` keyword for building simple dialogs with less boilerplate.
+        - New ``Ask User`` keyword for building simple dialogs with less boilerplate.
 
 - ``rpaframework-assistant`` **1.0.1**
 

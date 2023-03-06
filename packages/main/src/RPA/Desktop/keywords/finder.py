@@ -204,7 +204,7 @@ class FinderKeywords(LibraryContext):
             locator.text,
             region or "display",
             confidence,
-            language or "Not set"
+            language or "Not set",
         )
 
         def finder(image: Image.Image) -> List[Region]:
