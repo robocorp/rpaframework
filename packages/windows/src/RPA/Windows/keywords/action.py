@@ -1,6 +1,6 @@
 import re
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, Optional, Union
 
 from RPA.core.windows.locators import Locator, WindowsElement
 
@@ -10,6 +10,9 @@ from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
+
+
+PatternType = Union["auto.ValuePattern", "auto.LegacyIAccessiblePattern"]
 
 
 class ActionKeywords(LibraryContext):
@@ -287,6 +290,14 @@ class ActionKeywords(LibraryContext):
             f"Element found with {locator!r} does not have 'GetWindowText' attribute"
         )
 
+    @staticmethod
+    def get_value_pattern(element: WindowsElement) -> Optional[Callable[[], PatternType]]:
+        item: auto.Control = element.item
+        get_pattern: Optional[Callable] = getattr(
+            item, "GetValuePattern", getattr(item, "GetLegacyIAccessiblePattern", None)
+        )
+        return get_pattern
+
     @keyword(tags=["action"])
     def get_value(self, locator: Locator) -> Optional[str]:
         """Get the value of the element defined by the provided `locator`.
@@ -302,18 +313,26 @@ class ActionKeywords(LibraryContext):
         .. code-block:: robotframework
 
             ${value} =   Get Value   type:DataItem name:column1
-        """
-        item = self.ctx.get_element(locator).item
-        get_pattern: Optional[Callable] = getattr(
-            item, "GetValuePattern", getattr(item, "GetLegacyIAccessiblePattern", None)
-        )
 
-        if get_pattern:
-            func_name = get_pattern.__name__
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib_win = Windows()
+            text = lib_win.get_value("Rich Text Window")
+            print(text)
+        """
+        element = self.ctx.get_element(locator)
+        get_value_pattern = self.get_value_pattern(element)
+
+        if get_value_pattern:
+            func_name = get_value_pattern.__name__
             self.logger.info(
                 "Retrieving the element value with the %r method.", func_name
             )
-            value_pattern = get_pattern()
+            value_pattern = get_value_pattern()
             return value_pattern.Value if value_pattern else None
 
         raise ActionNotPossible(
@@ -332,31 +351,31 @@ class ActionKeywords(LibraryContext):
     ) -> WindowsElement:
         """Set value of the element defined by the locator.
 
-        *Note:* Anchor works only on element structures where it can
-        be relied on that root/child element tree, as remaining the same.
-        Usually these kind of structures are tables.
+        *Note:* An anchor will work only on element structures where you can
+        rely on the stability of that root/child element tree, as remaining the same.
+        Usually these kind of structures are tables. (but not restricted to)
 
         *Note:* It is important to set ``append=${True}`` if you want to keep the
         current text in the element. Other option is to read the current text into a
         variable, then modify that value as you wish and pass it to the ``Set Value``
-        keyword for text replacement.
+        keyword for a complete text replacement. (without setting the `append` flag)
 
-        The following exceptions are raised:
+        The following exceptions may be raised:
 
             - ``ActionNotPossible`` if the element does not allow the `SetValue` action
               to be run on it nor having ``send_keys_fallback=${True}``.
-            - ``ValueError`` if the new value to be set can't be set.
+            - ``ValueError`` if the new value to be set can't be set correctly.
 
         :param locator: String locator or element object.
         :param value: String value to be set.
         :param append: `False` for setting the value, `True` for appending it. (OFF by
             default)
-        :param enter: Set it to `True` to press the *Enter* key at the end of the line.
-            (nothing is pressed by default)
+        :param enter: Set it to `True` to press the *Enter* key at the end of the
+            input. (nothing is pressed by default)
         :param newline: Set it to `True` to add a new line at the end of the value. (no
-            EOL included by default)
+            EOL included by default; this won't work with `send_keys_fallback` enabled)
         :param send_keys_fallback: Tries to set the value by sending it through keys
-            if the expected way of setting it fails. (disabled by default)
+            if the main way of setting it fails. (disabled by default)
         :returns: The `WindowsElement` object identified through the passed `locator`.
 
         **Example: Robot Framework**
@@ -370,7 +389,7 @@ class ActionKeywords(LibraryContext):
                 Set Value    type:Edit name:"File name:"    console.txt   enter=${True}
 
                 # Add newline (manually) at the end of the string. (Notepad example)
-                Set Value    name:"Text Editor"  abc\\n
+                Set Value    name:"Text Editor"  abc${\n}
                 # Add newline with parameter.
                 Set Value    name:"Text Editor"  abc   newline=${True}
 
@@ -381,14 +400,14 @@ class ActionKeywords(LibraryContext):
                 #  `Clear Anchor` is used.
                 ${time} =    Get Time
                 # Clears with `append=${False}`. (default)
-                Set Value    value=time now is ${time}
+                Set Value    value=The time now is ${time}
                 # Append text and add a newline at the end.
-                Set Value    value= and it's task run time   append=${True}
+                Set Value    value= and it's the task run time.   append=${True}
                 ...    newline=${True}
                 # Continue appending and ensure a new line at the end by pressing
-                #  the Enter key.
-                Set Value    value=this will appear on the 2nd line    append=${True}
-                ...    enter=${True}
+                #  the Enter key this time.
+                Set Value    value=But this will appear on the 2nd line now.
+                ...    append=${True}   enter=${True}
 
         **Example: Python**
 
@@ -406,28 +425,25 @@ class ActionKeywords(LibraryContext):
         if newline and enter:
             self.logger.warning(
                 "Both `newline` and `enter` switches detected, expect to see multiple"
-                " new lines in the final text area."
+                " new lines in the final text content."
             )
         newline_string = "\n" if newline else ""
         element = self.ctx.get_element(locator)
-        item = element.item
-        get_pattern: Optional[Callable] = getattr(
-            item, "GetValuePattern", getattr(item, "GetLegacyIAccessiblePattern", None)
-        )
+        get_value_pattern = self.get_value_pattern(element)
         action = "Appending" if append else "Setting"
 
-        if get_pattern:
-            func_name = get_pattern.__name__
+        if get_value_pattern:
+            func_name = get_value_pattern.__name__
             self.logger.info(
                 "%s the element value with the %r method.", action, func_name
             )
-            value_pattern = get_pattern()
+            value_pattern = get_value_pattern()
             current_value = value_pattern.Value if append else ""
             new_value = f"{current_value}{value}{newline_string}"
             value_pattern.SetValue(new_value)
             if value_pattern.Value.strip() != new_value.strip():  # EOLs inconsistency
                 raise ValueError(
-                    f"Element found with {locator!r} can't set value: {new_value}"
+                    f"Element found with {locator!r} couldn't set value: {new_value}"
                 )
         elif send_keys_fallback:
             self.logger.info(
@@ -438,11 +454,23 @@ class ActionKeywords(LibraryContext):
                     "The `newline` switch and EOLs are ignored when setting a value"
                     " through keys! (insert them with the `enter` parameter only)"
                 )
-            if not append:
+            get_text_pattern = getattr(element.item, "GetTextPattern", None)
+            get_text = lambda: get_text_pattern().DocumentRange.GetText() if get_text_pattern else None
+            if append:
+                current_value: str = get_text() or ""
+            else:
                 # Delete the entire present value inside.
                 self.send_keys(element, keys="{Ctrl}a{Del}")
+                current_value = ""
             if value:
                 self.send_keys(element, keys=value, send_enter=False)
+                new_value = get_text()
+                if new_value is not None:
+                    if new_value.strip() != f"{current_value}{value}".strip():
+                        raise ValueError(
+                            f"Element found with {locator!r} couldn't send value"
+                            f" through keys: {value}"
+                        )
         else:
             raise ActionNotPossible(
                 f"Element found with {locator!r} doesn't support value setting"
