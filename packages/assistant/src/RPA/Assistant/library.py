@@ -1278,6 +1278,15 @@ class Assistant:
     def open_row(self):
         """Open a row layout container. Following ``Add <element>`` calls will add
         items into that row until ``Close Row`` is called.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Side By Side Elements
+                Open Row
+                Add Text  First item on the row
+                Add Text  Second item on the row
+                Close Row
         """
         self._open_layouting.append("Row")
         self._client.add_layout(Row())
@@ -1331,36 +1340,102 @@ class Assistant:
 
     @keyword(tags=["layout"])
     def close_container(self):
-        """Close previously opened container."""
+        """Close previously opened container.
+
+        Raises LayoutError if called with no Row open, or if another layout element was
+        opened more recently than a row.
+        """
         self._close_layouting_element("Container")
 
     @keyword(tags=["layout"])
     def open_navbar(self, title: Optional[str] = None):
-        """Create a nav bar. Following ``Add <element>`` calls will add
-        items into the navbar until ``Close Navbar`` is called."""
+        """Create a Navigation Bar. Following ``Add <element>`` calls will add
+        items into the Navbar until ``Close Navbar`` is called.
+
+        Navbar doesn't clear when Clear Dialog is called.
+
+        Only one Navbar can be initialized at a time. Trying to make a second one will
+        raise a LayoutError.
+
+        *** Keywords ***
+            Go To Start Menu
+                Add Heading  Start menu
+                Add Text  Start menu content
+
+            Assistant Navbar
+                Open Navbar  title=Assistant
+                Add Button   menu  Go To Start Menu
+                Close Navbar
+        """
         self._open_layouting.append("AppBar")
-        # self._client.add_layout(AppBar(title=Text(title)))
         self._client.set_appbar(AppBar(title=Text(title)))
 
     @keyword(tags=["layout"])
     def close_navbar(self):
-        """Close previously opened navbar."""
+        """Close previously opened navbar.
+
+        Raises LayoutError if called with no Row open, or if another layout element was
+        opened more recently than a row."""
         self._close_layouting_element("AppBar")
 
     @keyword(tags=["layout"])
-    def open_stack(self):
+    def open_stack(self, width, height):
+        """Create a "Stack" layout element. Stack can be used to position elements
+        absolutely and to have overlapping elements in your layout. Use Container's
+        `top` and `left` arguments to position the elements in a stack.
+
+        *** Keywords ***
+
+            Go To Start Menu
+                Add Heading  Start menu
+                Add Text  Start menu content
+
+            Assistant Navbar
+                Open Navbar  title=Assistant
+                Add Button   menu  Go To Start Menu
+                Close Navbar
+
+        """
         self._open_layouting.append("Stack")
-        self._client.add_layout(Stack())
+        self._client.add_layout(Stack(width=width, height=height))
 
     @keyword(tags=["layout"])
     def close_stack(self):
+        """Close previously opened Stack.
+
+        Raises LayoutError if called with no Stack open, or if another layout element
+        was opened more recently than a Stack.
+        """
         self._close_layouting_element("Stack")
 
     @keyword(tags=["layout"])
     def open_column(self):
+        """Open a Column layout container. Following ``Add <element>`` calls will add
+        items into that Column until ``Close Column`` is called.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Double Column Layout
+                Open Row
+                Open Column
+                Add Text      First item in the first column
+                Add Text      Second item on the first column
+                Close Column
+                Open Column
+                Add Text      First item on the second column
+                Close Column
+                Close Row
+        """
         self._open_layouting.append("Column")
         self._client.add_layout(Column())
 
     @keyword(tags=["layout"])
     def close_column(self):
+        """Closes previously opened Column.
+
+        Raises LayoutError if called with no Column open, or if another layout element
+        was opened more recently than a Column.
+        """
+
         self._close_layouting_element("Column")
