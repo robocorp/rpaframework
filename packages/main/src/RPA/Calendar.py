@@ -12,8 +12,8 @@ import holidays
 
 parsing_error_message = """Could not parse date '%s'.
 
-You can use `Create Datetime` keyword to construct valid
-date object by giving datetime as string and corresponding
+You can use `Create Time` keyword to construct valid
+calendar object by giving date and time as string in corresponding
 date format. See https://pendulum.eustace.io/docs/#tokens for
 valid tokens for the date format.
 """
@@ -33,6 +33,10 @@ class Calendar:
     ``Set Business Days`` keyword. A weekday is given as a integer, the
     0 for Sunday and 6 for Saturday.
 
+    Common country holidays are respected when getting next and previous
+    business days, but custom holidays can be added into consideration
+    using keyword ``Set Custom Holiday`` keyword.
+
     Some dates containing for example month names in English (en), but the
     locale of the library can be changed with keyword ``Set Locale`` or
     for specific keyword if that has a ``locale`` parameter.
@@ -41,15 +45,45 @@ class Calendar:
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self.BUSINESS_DAYS = [1, 2, 3, 4, 5]  # Monday - Friday
+        self.custom_holidays = []
 
     @keyword
-    def set_locale(self, locale_name: str):
+    def set_locale(self, locale_name: str) -> None:
+        """Set locale globally for the library
+
+        :param locale_name: name of the locale
+        """
         previous = pdl.get_locale()
         pdl.set_locale(locale_name)
         return previous
 
     @keyword
+    def reset_custom_holidays(self) -> None:
+        """Reset custom holiday list into empty list."""
+        self.custom_holidays = []
+
+    @keyword
+    def add_custom_holidays(self, days: Union[DTFormat, List[DTFormat]]) -> None:
+        """Add a day or list of days which are considered as holidays
+        in addition to country specific holidays when calculating
+
+        :param day: string or list of dates to consider as holidays
+        :return: list of current custom holidays
+        """
+        if isinstance(days, str):
+            self.custom_holidays.append(days.split(","))
+        else:
+            self.custom_holidays.append(days)
+        return self.custom_holidays
+
+    @keyword
     def set_business_days(self, days: List[int]) -> List:
+        """Set weekdays which are considered as business days
+        for calculating previous and next business day.
+
+        :param days: list of integers denoting weekdays
+        :return: previous list of weekdays
+        """
         previous = self.BUSINESS_DAYS
         self.BUSINESS_DAYS = days
         return previous
@@ -59,28 +93,36 @@ class Calendar:
         self,
         start_date: DTFormat,
         end_date: DTFormat,
-        timezone: str = None,
+        start_timezone: str = None,
+        end_timezone: str = None,
     ):
         """Compare 2 dates and get the time difference.
 
         Returned dictionary contains following properties:
 
             - end_date_is_greater, `True` if end_date is more recent
-            than start_date, otherwise `False`
+              than start_date, otherwise `False`
             - days, time difference in days
             - hours, time difference in hours (in addition to the days)
             - minutes, time difference in minutes (in addition to the hours)
             - seconds, time difference in seconds (in addition to the minutes)
+
+        :param start_date: starting date for the comparison
+        :param end_date: ending date for the comparison
+        :param start_timezone: timezone for the starting date, defaults to None
+        :param end_timezone: timezone for the ending date, defaults to None
+        :return: dictionary containing comparison result
         """
+
         if isinstance(start_date, str):
             start_d = self._parse_datetime_string_to_pendulum_datetime(
-                start_date, timezone=timezone
+                start_date, timezone=start_timezone
             )
         else:
             start_d = start_date
         if isinstance(end_date, str):
             end_d = self._parse_datetime_string_to_pendulum_datetime(
-                end_date, timezone=timezone
+                end_date, timezone=end_timezone
             )
         else:
             end_d = end_date
@@ -100,26 +142,26 @@ class Calendar:
         }
 
     @keyword
-    def create_datetime(
+    def create_time(
         self,
         date_string: str,
         date_format_in: str = None,
         timezone: str = None,
         date_format_out: str = None,
     ):
-        """This keyword tries to construct valid datetime
-        object from given date string and its expected date
+        """This keyword tries to construct valid calendar
+        instance from given date string and its expected date
         format.
 
         See https://pendulum.eustace.io/docs/#tokens for
         valid tokens for the date format. Tokens are
-        used to form correct date_format.
+        used to form correct date and time format.
 
         :param date_string: for example. "22 May 19"
         :param date_format: for example. "DD MMM YY"
         :param timezone: default timezone is "UTC"
 
-        :return: datetime object which can be used
+        :return: calendar object which can be used
         with `Time Difference` keyword
         """
         result = None
@@ -133,7 +175,7 @@ class Calendar:
 
     @keyword
     def time_now(self, timezone: str = None):
-        """Return current datetime
+        """Return current date and time
 
         :param timezone: optional, for example. "America/Boston"
         :return: current datetime as an object
@@ -157,9 +199,11 @@ class Calendar:
         self,
         start_date: DTFormat,
         end_date: DTFormat,
+        start_timezone: str = None,
+        end_timezone: str = None,
     ):
-        start_date_dt = self.create_datetime(start_date)
-        end_date_dt = self.create_datetime(end_date)
+        start_date_dt = self.create_time(start_date, timezone=start_timezone)
+        end_date_dt = self.create_time(end_date, timezone=end_timezone)
         return end_date_dt.diff(start_date_dt).in_months()
 
     @keyword
@@ -167,9 +211,11 @@ class Calendar:
         self,
         start_date: DTFormat,
         end_date: DTFormat,
+        start_timezone: str = None,
+        end_timezone: str = None,
     ):
-        start_date_dt = self.create_datetime(start_date)
-        end_date_dt = self.create_datetime(end_date)
+        start_date_dt = self.create_time(start_date, timezone=start_timezone)
+        end_date_dt = self.create_time(end_date, timezone=end_timezone)
         return end_date_dt.diff(start_date_dt).in_days()
 
     @keyword
@@ -177,9 +223,11 @@ class Calendar:
         self,
         start_date: DTFormat,
         end_date: DTFormat,
+        start_timezone: str = None,
+        end_timezone: str = None,
     ):
-        start_date_dt = self.create_datetime(start_date)
-        end_date_dt = self.create_datetime(end_date)
+        start_date_dt = self.create_time(start_date, timezone=start_timezone)
+        end_date_dt = self.create_time(end_date, timezone=end_timezone)
         return end_date_dt.diff(start_date_dt).in_hours()
 
     @keyword
@@ -187,10 +235,22 @@ class Calendar:
         self,
         start_date: DTFormat,
         end_date: DTFormat,
+        start_timezone: str = None,
+        end_timezone: str = None,
     ):
-        start_date_dt = self.create_datetime(start_date)
-        end_date_dt = self.create_datetime(end_date)
+        start_date_dt = self.create_time(start_date, timezone=start_timezone)
+        end_date_dt = self.create_time(end_date, timezone=end_timezone)
         return end_date_dt.diff(start_date_dt).in_minutes()
+
+    @keyword
+    def time_difference_between_timezones(
+        self,
+        start_timezone: str,
+        end_timezone: str,
+    ):
+        start_date_dt = pdl.datetime(2023, 1, 1, tz=start_timezone)
+        end_date_dt = pdl.datetime(2023, 1, 1, tz=end_timezone)
+        return end_date_dt.diff(start_date_dt).in_hours()
 
     @keyword
     def return_previous_business_day(
@@ -225,6 +285,13 @@ class Calendar:
         else:
             given_dt = given_date
         previous_dt = given_dt
+        if country:
+            holiday_list = holidays.country_holidays(country)
+        else:
+            holiday_list = holidays.HolidayBase()
+        # add custom holidays
+        for d in self.custom_holidays:
+            holiday_list.append(d)
         while True:
             is_business_day = False
             previous_dt = previous_dt.add(days=direction)
@@ -232,7 +299,7 @@ class Calendar:
             if previous_dt.day_of_week in self.BUSINESS_DAYS:
                 is_business_day = True
             if country and is_business_day:
-                is_business_day = prev_day not in holidays.country_holidays(country)
+                is_business_day = prev_day not in holiday_list
             if is_business_day:
                 break
 
@@ -240,62 +307,6 @@ class Calendar:
             return previous_dt.format(fmt=return_format, locale=locale)
         else:
             return previous_dt
-
-    def add_time_to_date(self):
-        """Keyword from original DateTime library
-
-        :raises NotImplementedError: _description_
-        """
-        raise NotImplementedError
-
-    def add_time_to_time(self):
-        """Keyword from original DateTime library
-
-        :raises NotImplementedError: _description_
-        """
-        raise NotImplementedError
-
-    def convert_date(self):
-        """Keyword from original DateTime library
-
-        :raises NotImplementedError: _description_
-        """
-        raise NotImplementedError
-
-    def convert_time(self):
-        """Keyword from original DateTime library
-
-        :raises NotImplementedError: _description_
-        """
-        raise NotImplementedError
-
-    def get_current_date(self):
-        """Keyword from original DateTime library
-
-        :raises NotImplementedError: _description_
-        """
-        raise NotImplementedError
-
-    def subtract_date_from_date(self):
-        """Keyword from original DateTime library
-
-        :raises NotImplementedError: _description_
-        """
-        raise NotImplementedError
-
-    def substract_time_from_date(self):
-        """Keyword from original DateTime library
-
-        :raises NotImplementedError: _description_
-        """
-        raise NotImplementedError
-
-    def subtract_time_from_time(self):
-        """Keyword from original DateTime library
-
-        :raises NotImplementedError: _description_
-        """
-        raise NotImplementedError
 
     @keyword
     def first_business_day_of_the_month(self, date: DTFormat, country: str = None):
@@ -346,22 +357,26 @@ class Calendar:
         return result
 
     @keyword
-    def order_list_of_dates(
+    def sort_list_of_dates(
         self, dates: List[DTFormat], return_format: str = None, reverse: bool = False
     ) -> List:
-        dt_list = [self.create_datetime(date) for date in dates]
+        dt_list = [self.create_time(date) for date in dates]
         result = sorted(dt_list, reverse=reverse)
         return [d.format(return_format) for d in result] if return_format else result
 
-    @keyword(name="is time ${time1} < ${time2}")
-    def _rfw_is_time_before_than(self, time1: DTFormat, time2: DTFormat):
-        return self.is_time_before_than(time1, time2)
+    @keyword(name="compare times ${time1} < ${time2}")
+    def _rfw_compare_time_before(self, time1: DTFormat, time2: DTFormat):
+        return self.compare_times(time1, time2)
 
-    @keyword(name="is time ${time1} > ${time2}")
-    def _rfw_is_time_after_than(self, time1: DTFormat, time2: DTFormat):
-        return not self.is_time_before_than(time1, time2)
+    @keyword(name="compare times ${time1} > ${time2}")
+    def _rfw_compare_time_after(self, time1: DTFormat, time2: DTFormat):
+        return not self.compare_times(time1, time2)
 
     @keyword
-    def is_time_before_than(self, time1: DTFormat, time2: DTFormat):
+    def compare_times(self, time1: DTFormat, time2: DTFormat):
         diff = self.time_difference(time1, time2)
         return diff["end_date_is_later"]
+
+    @keyword
+    def return_iso_calendar(self):
+        return datetime_date.isocalendar()

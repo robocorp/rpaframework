@@ -56,6 +56,28 @@ Test time difference in minutes
     ${diff}=    Time difference in minutes    2023-08-21T22:00:00    2023-08-22T04:00:00
     Should Be Equal As Integers    ${diff}    360
 
+Test time difference in hours between London and Helsinki
+    ${diff}=    Time difference in hours
+    ...    2023-01-21T12:00:00
+    ...    2023-01-21T12:00:00
+    ...    Europe/London
+    ...    Europe/Helsinki
+    Should Be Equal As Integers    ${diff}    2
+
+Test time difference in hours between NEw York and Helsinki
+    ${diff}=    Time difference in hours
+    ...    2023-06-21T12:00:00
+    ...    2023-06-21T12:00:00
+    ...    Europe/London
+    ...    America/New_York
+    Should Be Equal As Integers    ${diff}    5
+
+Test getting time difference of timezones
+    ${diff}=    Time difference between timezones
+    ...    Europe/London
+    ...    America/New_York
+    Should Be Equal As Integers    ${diff}    5
+
 Test Getting Previous business day for Finland
     ${previous}=    Return Previous Business Day    2022-11-14    FI
     Should Be Equal As Strings    2022-11-11    ${previous}
@@ -89,47 +111,47 @@ Test Time difference Expecting Positive Difference
     Dictionaries Should Be Equal    ${diff}    ${expected}
 
 Test Time is not later with greater than character
-    ${is_it}=    Is Time 13:30 > 14:00
+    ${is_it}=    Compare Times 13:30 > 14:00
     Should Not Be True    ${is_it}
 
 Test Time is later with greater than character
-    ${is_it}=    Is Time 23:30 > 14:00
+    ${is_it}=    Compare Times 23:30 > 14:00
     Should Be True    ${is_it}
 
 Test Time is before with smaller than character
-    ${is_it}=    Is Time 13:30 < 14:00
+    ${is_it}=    Compare Times 13:30 < 14:00
     Should Be True    ${is_it}
 
 Test Time is not before with smaller than character
-    ${is_it}=    Is Time 19:30 < 14:00
+    ${is_it}=    Compare Times 19:30 < 14:00
     Should Not Be True    ${is_it}
 
 Test Time is before with smaller than character and variables
     ${first_date}=    Set Variable    04:25
     ${second_date}=    Set Variable    09:01
-    ${is_it}=    Is Time ${first_date} < ${second_date}
+    ${is_it}=    Compare Times ${first_date} < ${second_date}
     Should Be True    ${is_it}
 
 Test longer formatted time is before with smaller than character and variables
     ${first_date}=    Set Variable    2023-01-23 04:25
     ${second_date}=    Set Variable    2023-01-23 09:01
-    ${is_it}=    Is Time ${first_date} < ${second_date}
+    ${is_it}=    Compare Times ${first_date} < ${second_date}
     Should Be True    ${is_it}
 
 Test longer formatted time is after with bigger than character
-    ${is_it}=    Is Time 2023-01-23 09:01 > 2023-01-23 04:25
+    ${is_it}=    Compare Times 2023-01-23 09:01 > 2023-01-23 04:25
     Should Be True    ${is_it}
 
 Test Time is not before with smaller than character and variables
     ${first_date}=    Set Variable    21:00
     ${second_date}=    Set Variable    09:01
-    ${is_it}=    Is Time ${first_date} < ${second_date}
+    ${is_it}=    Compare Times ${first_date} < ${second_date}
     Should Not Be True    ${is_it}
 
 Test Time is before using arguments normally
     ${first_date}=    Set Variable    04:25
     ${second_date}=    Set Variable    09:01
-    ${is_it}=    Is Time Before Than    ${first_date}    ${second_date}
+    ${is_it}=    Compare Times    ${first_date}    ${second_date}
     Should Be True    ${is_it}
 
 Test Getting First Business Day of the Month - February 2023 Finland
@@ -156,20 +178,44 @@ Test Getting Next Business Day of the Month - After Christmas 2023 Finland
     ${result}=    Return Next Business Day    2023-12-22    FI
     Should Be Equal As Strings    2023-12-27    ${result}
 
+Test Custom Holidays and Getting Next Business Day
+    Add Custom Holidays    2023-03-07
+    Add Custom Holidays    2023-03-08
+    Add Custom Holidays    2023-03-09
+    ${result}=    Return Next Business Day    2023-03-06    FI
+    Should Be Equal As Strings    2023-03-10    ${result}
+    ${result}=    Return Next Business Day    2024-03-06    FI
+    Should Be Equal As Strings    2024-03-07    ${result}
+
+Test Custom Holidays given in list
+    ${holidays}=    Create List    2023-03-07    2023-03-08    2023-03-09
+    Add Custom Holidays    ${holidays}
+    ${result}=    Return Next Business Day    2023-03-06    FI
+    Should Be Equal As Strings    2023-03-10    ${result}
+
+Test Custom Holidays given as command separated list
+    Add Custom Holidays    2023-03-07,2023-03-08,2023-03-09
+    ${result}=    Return Next Business Day    2023-03-06    FI
+    Should Be Equal As Strings    2023-03-10    ${result}
+
 Test ordering list of dates
     @{dates}=    Create List
     ...    2023-07-03
+    ...    2024-04-03
     ...    2023-02-05
+    ...    2021-04-03
     ...    2023-04-03
     ...    2023-07-05
     ...    2023-01-01
     @{expected}=    Create List
+    ...    2021-04-03
     ...    2023-01-01
     ...    2023-02-05
     ...    2023-04-03
     ...    2023-07-03
     ...    2023-07-05
-    ${result}=    Order List Of Dates    ${dates}    return_format=YYYY-MM-DD
+    ...    2024-04-03
+    ${result}=    Sort List Of Dates    ${dates}    return_format=YYYY-MM-DD
     Lists Should Be Equal    ${result}    ${expected}
 
 Test ordering list of dates latest first
@@ -186,8 +232,12 @@ Test ordering list of dates latest first
     ...    2023-02-05 00:00
     ...    2023-01-01 00:00
 
-    ${result}=    Order List Of Dates    ${dates}    return_format=YYYY-MM-DD HH:mm    reverse=True
+    ${result}=    Sort List Of Dates    ${dates}    return_format=YYYY-MM-DD HH:mm    reverse=True
     Lists Should Be Equal    ${result}    ${expected}
+
+Test Getting Previous business day when country is not set - Memorial Day 2023
+    ${previous}=    Return Previous Business Day    2023-05-30
+    Should Be Equal As Strings    2023-05-29    ${previous}
 
 
 *** Keywords ***
