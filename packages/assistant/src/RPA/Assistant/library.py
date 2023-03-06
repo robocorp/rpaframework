@@ -44,13 +44,14 @@ from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.types import (
     Icon,
     LayoutError,
+    Location,
     Options,
     Result,
     Size,
     VerticalLocation,
     WindowLocation,
 )
-from RPA.Assistant.utils import optional_str, to_options
+from RPA.Assistant.utils import location_to_absolute, optional_str, to_options
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -1143,11 +1144,11 @@ class Assistant:
             *** Keywords ***
             First View
                 Add Heading  Here is the first view of the app
-                Add Button  Second View
+                Add Button  Change View  Second View
 
             Second View
                 Add Heading  Let's build an infinite loop
-                Add Button  First View
+                Add Button  Change View  First View
         """
 
         def on_click(_: ControlEvent):
@@ -1294,6 +1295,7 @@ class Assistant:
     @keyword(tags=["layout"])
     def close_row(self):
         """Close previously opened row.
+
         Raises LayoutError if called with no Row open, or if another layout element was
         opened more recently than a row.
         """
@@ -1307,8 +1309,7 @@ class Assistant:
         width: Optional[int] = None,
         height: Optional[int] = None,
         background_color: Optional[str] = None,
-        # top: Optional[int] = None,
-        # left: Optional[int] = None,
+        location: Union[Location, Tuple[int, int], None] = None,
     ):
         """Open a single element container. The following ``Add <element>`` calls adds
         an element inside the container. Can be used for styling elements.
@@ -1325,9 +1326,35 @@ class Assistant:
                           Allowed values are colors from
                           https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37 (in the format ``black12``, ``red500``)
                           or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
+        :param location:  Where to place the container (A Location value or tuple of
+                          ints). Only works inside a Stack layout element.
+
+                          To use any Center___ or ___Center locations you must define
+                          width and height to the element.
+
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Padded Element With Background
+                Open Container  padding=20  background_color=blue500
+                Add Text        sample text
+                Close Container
+
 
         """
         self._open_layouting.append("Container")
+        if not location:
+            top, left, bottom, right = None, None, None, None
+        else:
+            parent_height, parent_width = self._client.get_layout_dimensions()
+            parsed_location = location_to_absolute(
+                location, parent_width, parent_height, width, height
+            )
+            top = parsed_location.get("top")
+            left = parsed_location.get("left")
+            right = parsed_location.get("right")
+            bottom = parsed_location.get("bottom")
         self._client.add_layout(
             Container(
                 margin=margin,
@@ -1335,6 +1362,10 @@ class Assistant:
                 width=width,
                 height=height,
                 bgcolor=background_color,
+                top=top,
+                left=left,
+                bottom=bottom,
+                right=right,
             )
         )
 
@@ -1379,21 +1410,30 @@ class Assistant:
         self._close_layouting_element("AppBar")
 
     @keyword(tags=["layout"])
-    def open_stack(self, width, height):
+    def open_stack(self, width: Optional[int] = None, height: Optional[int] = None):
         """Create a "Stack" layout element. Stack can be used to position elements
         absolutely and to have overlapping elements in your layout. Use Container's
         `top` and `left` arguments to position the elements in a stack.
 
         *** Keywords ***
+            Absolutely Positioned Elements
+                # Positioning containers with relative location values requires absolute
+                # size for the Stack
+                Open Stack  height=360  width=360
 
-            Go To Start Menu
-                Add Heading  Start menu
-                Add Text  Start menu content
+                Open Container  width=64  height=64  location=Center
+                Add Text  center
+                Close Container
 
-            Assistant Navbar
-                Open Navbar  title=Assistant
-                Add Button   menu  Go To Start Menu
-                Close Navbar
+                Open Container  width=64  height=64  location=TopRight
+                Add Text  top right
+                Close Container
+
+                Open Container  width=64  height=64  location=BottomRight
+                Add Text  bottom right
+                Close Container
+
+                Close Stack
 
         """
         self._open_layouting.append("Stack")

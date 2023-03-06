@@ -1,6 +1,6 @@
 import pytest
 from RPA.Assistant import Assistant
-from RPA.Assistant.types import Icon
+from RPA.Assistant.types import Icon, Location
 
 
 def test_rows(assistant: Assistant):
@@ -73,6 +73,16 @@ def test_mixed_closing(assistant: Assistant):
     assert "Cannot close" in str(excinfo.value)
 
 
+def test_center_without_absolute_dimensions(assistant: Assistant):
+    with pytest.raises(ValueError) as excinfo:
+        assistant.open_stack(width=512, height=512)
+        assistant.open_container(location=Location.Center)
+
+    assert "Cannot determine centered position without static width and height" in str(
+        excinfo.value
+    )
+
+
 def manual(assistant: Assistant):
     def print_controls():
         print(assistant._client.page.controls)
@@ -82,22 +92,28 @@ def manual(assistant: Assistant):
     assistant.add_button("test_button", print, "test")
     assistant.add_button("test_button", print, "test")
     assistant.add_button("print_controls", print_controls)
+    assistant.add_button("clear dialog", assistant.clear_dialog)
     assistant.add_icon(Icon.Success)
     assistant.close_navbar()
-
-    assistant.add_button("print_controls", print_controls)
     for i in range(5):
 
         # assistant.open_stack()
 
         assistant.open_container(40, 0, background_color="red500")
         assistant.open_row()
-        assistant.open_column()
+
+        assistant.open_stack()
         assistant.add_heading("column 1")
+        assistant.open_container(left=0)
         assistant.add_text("asd")
+        assistant.close_container()
+        assistant.open_container(left=100, background_color="green500")
         assistant.add_text("testing 1")
+        assistant.close_container()
+        assistant.open_container(left=5, top=20, background_color="blue500")
         assistant.add_text("testing 2")
-        assistant.close_column()
+        assistant.close_container()
+        assistant.close_stack()
 
         assistant.open_column()
         assistant.add_heading("column 2")

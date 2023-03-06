@@ -255,3 +255,14 @@ class FletClient:
             raise LayoutError("Only one navigation may be defined at a time")
         self._elements.app_bar = app_bar
         self._layout_stack.append(app_bar)
+
+    def get_layout_dimensions(self) -> Tuple[Optional[float], Optional[float]]:
+        if len(self._layout_stack) == 0:
+            raise LayoutError("No parent element to determine dimensions from")
+        current_layout = self._layout_stack[-1]
+        if isinstance(current_layout, AppBar):
+            raise LayoutError("Cannot use absolute positions in appbar")
+        if current_layout.width is None or current_layout.height is None:
+            raise RuntimeError("Cannot determine dimensions of parent element")
+
+        return (current_layout.width, current_layout.height)
