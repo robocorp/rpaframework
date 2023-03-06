@@ -1316,8 +1316,9 @@ class Assistant:
 
 
         :param margin: How much margin to add around the container. RPA.Assistant adds
-        by default a container of margin 5 around all elements, to have a smaller margin
-        use containers with smaller margin value for elements.
+                       by default a container of margin 5 around all elements, to have
+                       a smaller margin use containers with smaller margin value for
+                       elements.
         :param padding: How much padding to add around the content of the container.
         :param width: Width of the container.
         :param height: Height of the container.
@@ -1388,15 +1389,17 @@ class Assistant:
         Only one Navbar can be initialized at a time. Trying to make a second one will
         raise a LayoutError.
 
-        *** Keywords ***
-            Go To Start Menu
-                Add Heading  Start menu
-                Add Text  Start menu content
+        .. code-block:: robotframework
 
-            Assistant Navbar
-                Open Navbar  title=Assistant
-                Add Button   menu  Go To Start Menu
-                Close Navbar
+            *** Keywords ***
+                Go To Start Menu
+                    Add Heading  Start menu
+                    Add Text  Start menu content
+
+                Assistant Navbar
+                    Open Navbar  title=Assistant
+                    Add Button   menu  Go To Start Menu
+                    Close Navbar
         """
         self._open_layouting.append("AppBar")
         self._client.set_appbar(AppBar(title=Text(title)))
@@ -1415,25 +1418,27 @@ class Assistant:
         absolutely and to have overlapping elements in your layout. Use Container's
         `top` and `left` arguments to position the elements in a stack.
 
-        *** Keywords ***
-            Absolutely Positioned Elements
-                # Positioning containers with relative location values requires absolute
-                # size for the Stack
-                Open Stack  height=360  width=360
+        .. code-block:: robotframework
 
-                Open Container  width=64  height=64  location=Center
-                Add Text  center
-                Close Container
+            *** Keywords ***
+                Absolutely Positioned Elements
+                    # Positioning containers with relative location values requires absolute
+                    # size for the Stack
+                    Open Stack  height=360  width=360
 
-                Open Container  width=64  height=64  location=TopRight
-                Add Text  top right
-                Close Container
+                    Open Container  width=64  height=64  location=Center
+                    Add Text  center
+                    Close Container
 
-                Open Container  width=64  height=64  location=BottomRight
-                Add Text  bottom right
-                Close Container
+                    Open Container  width=64  height=64  location=TopRight
+                    Add Text  top right
+                    Close Container
 
-                Close Stack
+                    Open Container  width=64  height=64  location=BottomRight
+                    Add Text  bottom right
+                    Close Container
+
+                    Close Stack
 
         """
         self._open_layouting.append("Stack")
