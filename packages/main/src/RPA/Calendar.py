@@ -285,13 +285,7 @@ class Calendar:
         else:
             given_dt = given_date
         previous_dt = given_dt
-        if country:
-            holiday_list = holidays.country_holidays(country)
-        else:
-            holiday_list = holidays.HolidayBase()
-        # add custom holidays
-        for d in self.custom_holidays:
-            holiday_list.append(d)
+        holiday_list = self.return_holidays_as_list(country)
         while True:
             is_business_day = False
             previous_dt = previous_dt.add(days=direction)
@@ -307,6 +301,17 @@ class Calendar:
             return previous_dt.format(fmt=return_format, locale=locale)
         else:
             return previous_dt
+
+    @keyword
+    def return_holidays_as_list(self, country: str = None):
+        if country:
+            holiday_list = holidays.country_holidays(country)
+        else:
+            holiday_list = holidays.HolidayBase()
+        # add custom holidays
+        for d in self.custom_holidays:
+            holiday_list.append(d)
+        return holiday_list
 
     @keyword
     def first_business_day_of_the_month(self, date: DTFormat, country: str = None):
@@ -380,3 +385,30 @@ class Calendar:
     @keyword
     def return_iso_calendar(self):
         return datetime_date.isocalendar()
+
+    @keyword
+    def is_the_date_business_day(self, date_in: DTFormat, country: str = None):
+        holiday_list = self.return_holidays_as_list(country)
+        if isinstance(date_in, str):
+            given_dt = pdl.parse(date_in, strict=False)
+        else:
+            given_dt = date_in
+        is_business_day = False
+        if given_dt.day_of_week in self.BUSINESS_DAYS:
+            is_business_day = True
+        if country and is_business_day:
+            is_business_day = given_dt not in holiday_list
+        return is_business_day
+
+    @keyword
+    def is_the_date_holiday(self, date_in: DTFormat, country: str = None):
+        holiday_list = self.return_holidays_as_list(country)
+        if isinstance(date_in, str):
+            given_dt = pdl.parse(date_in, strict=False)
+        else:
+            given_dt = date_in
+        return given_dt in holiday_list
+
+    @keyword(name="is the ${date_in} business day in ${country}")
+    def _rfw_is_the_day_business_day(self, date_in: DTFormat, country: str):
+        return self.is_the_date_business_day(date_in, country)
