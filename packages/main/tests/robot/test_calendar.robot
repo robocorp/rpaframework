@@ -193,7 +193,7 @@ Test Custom Holidays given in list
     ${result}=    Return Next Business Day    2023-03-06    FI
     Should Be Equal As Strings    2023-03-10    ${result}
 
-Test Custom Holidays given as command separated list
+Test Custom Holidays given as command separated string
     Add Custom Holidays    2023-03-07,2023-03-08,2023-03-09
     ${result}=    Return Next Business Day    2023-03-06    FI
     Should Be Equal As Strings    2023-03-10    ${result}
