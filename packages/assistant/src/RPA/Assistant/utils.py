@@ -1,5 +1,6 @@
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
+from typing_extensions import Literal
 from RPA.core.types import is_list_like  # type: ignore
 
 from RPA.Assistant.types import Element, Location, Options
