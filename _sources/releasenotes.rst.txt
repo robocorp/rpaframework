@@ -6,7 +6,12 @@ Release notes
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-**RPA.Assistant** (``rpaframework-assistant`` **2.1.0**):
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+08 Mar 2023
+-----------
+- Library **RPA.Assistant** (``rpaframework-assistant`` **2.1.0**):
 
     - Features:
 
@@ -30,10 +35,6 @@ Release notes
 
         - The library no longer silently misses adding to the result when an input
           ``name`` duplicate name is used, instead raises a ValueError.
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 22.1.1 - 06 Mar 2023
 --------------------
