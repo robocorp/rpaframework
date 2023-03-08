@@ -1,7 +1,7 @@
 from enum import Enum, auto
 from typing import Any, Dict, List, Union
 
-from flet_core import AppBar, Column, Container, Row, Stack, alignment
+from flet_core import Column, Container, Row, Stack, alignment
 
 Element = Dict[str, Any]
 Options = Union[List[str], str]

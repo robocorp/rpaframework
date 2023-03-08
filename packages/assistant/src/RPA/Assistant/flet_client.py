@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import time
 from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, List, NamedTuple, Optional, Set, Tuple, Union
+from typing import Callable, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
@@ -170,7 +170,7 @@ class FletClient:
             # make a container that adds margin around the element
             new_element = Container(margin=5, content=element)
 
-        if self._layout_stack != []:
+        if self._layout_stack:
             self._add_child_to_layout(new_element)
         else:
             self._elements.visible.append(new_element)

@@ -1351,8 +1351,8 @@ class Assistant:
 
         :param bgcolor:   Background color for the container. Default depends on icon.
                           Allowed values are colors from
-                          https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37 (in the format ``black12``, ``red500``)
-                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
+                          [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
+                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
         :param location:  Where to place the container (A Location value or tuple of
                           ints). Only works inside a Stack layout element.
 
@@ -1369,7 +1369,7 @@ class Assistant:
                 Close Container
 
 
-        """
+        """  # noqa: E501
         self._open_layouting.append("Container")
         if not location:
             top, left, bottom, right = None, None, None, None
@@ -1448,8 +1448,8 @@ class Assistant:
 
             *** Keywords ***
                 Absolutely Positioned Elements
-                    # Positioning containers with relative location values requires absolute
-                    # size for the Stack
+                    # Positioning containers with relative location values requires
+                    # absolute size for the Stack
                     Open Stack  height=360  width=360
 
                     Open Container  width=64  height=64  location=Center
