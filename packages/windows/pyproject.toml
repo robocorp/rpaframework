@@ -13,8 +13,8 @@ repository = "https://github.com/robocorp/rpaframework"
 keywords = ["robotframework", "rpa", "automation", "windows", "uiautomation"]
 classifiers = [
 	"License :: OSI Approved :: Apache Software License",
-	"Development Status :: 3 - Alpha",
-	"Operating System :: OS Independent",
+	"Development Status :: 5 - Production/Stable",
+	"Operating System :: Microsoft :: Windows",
 	"Intended Audience :: Developers",
 	"Topic :: Software Development :: Libraries :: Python Modules",
 	"Topic :: Software Development :: Libraries",
