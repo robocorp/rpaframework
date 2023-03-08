@@ -109,6 +109,32 @@ class Assistant:
     error, the results object returned by Run Dialog or Ask User won't have a "submit"
     key.
 
+    **Layouting**
+
+    By default elements are added to the assistant dialog from top to bottom, with a bit
+    of margin around each element to add spaciousness. This margin is added as a
+    ``Container`` you can manually use ``Open Container`` to override the default
+    container. You can use it to set smaller margins.
+
+    You can combine layouting elements with each other. Layouting elements need to be
+    closed with the corresponding ``Close`` keyword. (So ``Open Row`` and then
+    ``Close Row``.)
+
+    ``Open Row`` can be used to layout elements in the same row.
+
+    ``Open Column`` can be used to layout elements in columns.
+
+    ``Open Stack`` and multiple ``Open Container``'s inside it can be used to set
+    positions like Center, Topleft, BottomRight, or coordinate tuples likes (0, 0),
+    (100, 100) and such.
+
+    ``Open Container`` can bse used for absolute positioning inside a Stack, or anywhere
+    for setting background color or margins and paddings.
+
+    ``Open Navbar`` can be used to make a navigation bar that will stay at the top of
+    the dialog. Its contents won't be cleared when.
+
+
     **Examples**
 
     .. code-block:: robotframework
