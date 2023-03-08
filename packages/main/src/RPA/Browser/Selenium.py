@@ -609,7 +609,7 @@ class Selenium(SeleniumLibrary):
             raise ValueError(f"Not a browser locator: {criteria}")
 
         strategy = str(locator.strategy).lower()
-        finder = {
+        finder: Optional[str] = {
             "class": By.CLASS_NAME,
             "css": By.CSS_SELECTOR,
             "id": By.ID,
@@ -617,11 +617,12 @@ class Selenium(SeleniumLibrary):
             "name": By.NAME,
             "tag": By.TAG_NAME,
             "xpath": By.XPATH,
-        }[strategy]
+        }.get(strategy)
 
         if not finder:
             raise ValueError(f"Unsupported locator strategy: {strategy}")
 
+        # pylint: disable=protected-access
         return self._element_finder._filter_elements(
             parent.find_elements(finder, locator.value), tag, constraints
         )

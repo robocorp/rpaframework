@@ -18,6 +18,11 @@ ${LOCATORS}         ${RESOURCES}${/}locators.json
 ${ALERT_HTML}       file://${RESOURCES}${/}alert.html
 
 
+*** Keywords ***
+My Custom Keyword
+    Get Value    id:notexist
+
+
 *** Tasks ***
 Does alert contain
     Go To    ${ALERT_HTML}
@@ -119,8 +124,3 @@ Open Browser With Dict Options
     Log To Console    Downloaded webdriver path: ${driver_path}
     Open Browser    https://robocorp.com    browser=Chrome    options=${options}
     ...    executable_path=${driver_path}
-
-
-*** Keywords ***
-My Custom Keyword
-    Get Value    id:notexist
