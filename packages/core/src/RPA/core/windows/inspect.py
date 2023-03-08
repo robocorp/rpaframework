@@ -7,8 +7,9 @@ from RPA.core.windows.window import WindowMethods
 
 if IS_WINDOWS:
     import uiautomation as auto
+    from uiautomation import Control
 
-    RecordElement = Dict[str, Optional[Union[float, str, auto.Control, List[str]]]]
+    RecordElement = Dict[str, Optional[Union[float, str, Control, List[str]]]]
 
 
 class ElementInspector:
@@ -39,9 +40,8 @@ class ElementInspector:
                 top_level_control = control.GetTopLevelControl()
             except AttributeError:
                 top_level_control = None
-                top_level_name = top_level_handle = "N/A"
+                top_level_handle = "N/A"
             else:
-                top_level_name = top_level_control.Name
                 top_level_handle = top_level_control.NativeWindowHandle
                 try:
                     exec_path = WindowMethods.get_fullpath(top_level_control.ProcessId)
@@ -51,21 +51,20 @@ class ElementInspector:
             top_properties = cls._get_element_key_properties(
                 top_level_control, verbose=verbose
             )
-
             parent_properties = cls._get_element_key_properties(
                 parent_control, verbose=verbose
             )
             child_properties = cls._get_element_key_properties(control, verbose=verbose)
 
+            top_locator = " and ".join(top_properties) or "N/A"
             parent_locator = " and ".join(parent_properties) or "N/A"
             child_locator = " and ".join(child_properties) or "N/A"
-
             locator_path = f"{parent_locator} > {child_locator}"
             if "name:" in child_locator or "id:" in child_locator:
                 locator_path = child_locator
 
             if control_window:
-                output.append(f"Control Window  {top_level_name}")
+                output.append(f"Control Window  {top_locator}")
             if action:
                 output.append(f"{action}  {locator_path}")
             else:
@@ -77,7 +76,7 @@ class ElementInspector:
                         "type": "locator",
                         "exec_path": exec_path,
                         "exec": Path(exec_path).name,
-                        "top": top_level_name,
+                        "top": top_locator,
                         "top_handle": top_level_handle,
                         "x": top_level_control,
                         "locator": locator_path,
@@ -93,7 +92,7 @@ class ElementInspector:
 
     @staticmethod
     def _get_element_key_properties(
-        element, *, verbose: bool, regex_limit: int = 300
+        element: Optional["Control"], *, verbose: bool, regex_limit: int = 300
     ) -> List[str]:
         if not element:
             print("Got null element!")
