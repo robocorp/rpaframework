@@ -28,6 +28,9 @@ Release notes
         - Fix regression, Assistant flet app not closing properly when run from CLI and
           when close button is pressed.
 
+        - The library no longer silently misses adding to the result when an input
+          ``name`` duplicate name is used, instead raises a ValueError.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

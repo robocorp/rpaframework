@@ -2,11 +2,11 @@ from dataclasses import dataclass
 import time
 from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, List, NamedTuple, Optional, Tuple, Union
+from typing import Callable, List, NamedTuple, Optional, Set, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
-from flet_core import Control, AppBar
+from flet_core import Column, Control, AppBar, Row, Stack
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
@@ -43,6 +43,7 @@ class Elements:
     visible: List[Control]
     invisible: List[Control]
     app_bar: Optional[AppBar]
+    used_names: Set[str]
 
 
 class FletClient:
@@ -54,7 +55,7 @@ class FletClient:
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
 
-        self._elements: Elements = Elements([], [], None)
+        self._elements: Elements = Elements([], [], None, set())
         self._to_disable: List[flet.Control] = []
         self._layout_stack: List[Union[SupportedFletLayout, AppBar]] = []
 
@@ -139,39 +140,43 @@ class FletClient:
 
         return change_listener
 
+    def _add_child_to_layout(self, child: Control):
+        current_layout = self._layout_stack[-1]
+        if isinstance(current_layout, (Row, Stack, Column)):
+            current_layout.controls.append(child)
+        elif isinstance(current_layout, AppBar):
+            current_layout.actions.append(child)
+        elif isinstance(current_layout, Container):
+            if current_layout.content is not None:
+                raise LayoutError("Attempting to place two content in one Container")
+            current_layout.content = child
+        else:
+            raise RuntimeError("Unsupported layout element")
+
     def add_element(
         self,
         element: flet.Control,
         name: Optional[str] = None,
         extra_handler: Optional[Callable] = None,
     ):
-        # TODO: validate that element "name" is unique
-        # make a container that adds margin around the element
+        if name in self._elements.used_names:
+            raise ValueError(f"Name `{name}` already in use")
 
-        # if it's a Container we don't create our own margin container to allow setting
-        # of padding and absolute position manually by user
+        # if added element is a Container we don't create our own margin container to
+        # not override added containers properties.
         if isinstance(element, Container):
             new_element = element
         else:
+            # make a container that adds margin around the element
             new_element = Container(margin=5, content=element)
 
         if self._layout_stack != []:
-            current_layout = self._layout_stack[-1]
-            if hasattr(current_layout, "controls"):
-                # Row, Stack and Column have "controls"
-                current_layout.controls.append(new_element)
-            elif hasattr(current_layout, "actions"):
-                # AppBar has actions
-                current_layout.actions.append(new_element)
-            elif isinstance(current_layout, Container):
-                if current_layout.content is not None:
-                    raise LayoutError(
-                        "Attempting to place two content in one Container"
-                    )
-                current_layout.content = new_element
+            self._add_child_to_layout(new_element)
         else:
             self._elements.visible.append(new_element)
+
         if name is not None:
+            self._elements.used_names.add(name)
             element.on_change = self._make_flet_event_handler(name, extra_handler)
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
@@ -194,7 +199,7 @@ class FletClient:
         )
 
     def clear_elements(self):
-        self._elements = Elements([], [], None)
+        self._elements = Elements([], [], None, set())
         if self.page:
             if self.page.controls:
                 self.page.controls.clear()
