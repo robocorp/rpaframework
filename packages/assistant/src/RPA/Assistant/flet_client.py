@@ -1,16 +1,23 @@
+from dataclasses import dataclass
 import time
 from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, List, NamedTuple, Optional, Tuple, Union
+from typing import Callable, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
-from flet_core import Control
+from flet_core import Column, Control, AppBar, Row, Stack
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
 from RPA.Assistant.background_flet import BackgroundFlet
-from RPA.Assistant.types import Result, WindowLocation
+from RPA.Assistant.types import (
+    LayoutError,
+    PageNotOpenError,
+    Result,
+    SupportedFletLayout,
+    WindowLocation,
+)
 
 
 def resolve_absolute_position(
@@ -29,11 +36,14 @@ class TimeoutException(RuntimeError):
     """Timeout while waiting for dialog to finish."""
 
 
-class Elements(NamedTuple):
+@dataclass
+class Elements:
     """Lists of visible and invisible control elements"""
 
     visible: List[Control]
     invisible: List[Control]
+    app_bar: Optional[AppBar]
+    used_names: Set[str]
 
 
 class FletClient:
@@ -45,8 +55,9 @@ class FletClient:
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
 
-        self._elements: Elements = Elements([], [])
+        self._elements: Elements = Elements([], [], None, set())
         self._to_disable: List[flet.Control] = []
+        self._layout_stack: List[Union[SupportedFletLayout, AppBar]] = []
 
         self._background_flet = BackgroundFlet()
 
@@ -129,17 +140,43 @@ class FletClient:
 
         return change_listener
 
+    def _add_child_to_layout(self, child: Control):
+        current_layout = self._layout_stack[-1]
+        if isinstance(current_layout, (Row, Stack, Column)):
+            current_layout.controls.append(child)
+        elif isinstance(current_layout, AppBar):
+            current_layout.actions.append(child)
+        elif isinstance(current_layout, Container):
+            if current_layout.content is not None:
+                raise LayoutError("Attempting to place two content in one Container")
+            current_layout.content = child
+        else:
+            raise RuntimeError("Unsupported layout element")
+
     def add_element(
         self,
         element: flet.Control,
         name: Optional[str] = None,
         extra_handler: Optional[Callable] = None,
     ):
-        # TODO: validate that element "name" is unique
-        # make a container that adds margin around the element
-        container = Container(margin=5, content=element)
-        self._elements.visible.append(container)
+        if name in self._elements.used_names:
+            raise ValueError(f"Name `{name}` already in use")
+
+        # if added element is a Container we don't create our own margin container to
+        # not override added containers properties.
+        if isinstance(element, Container):
+            new_element = element
+        else:
+            # make a container that adds margin around the element
+            new_element = Container(margin=5, content=element)
+
+        if self._layout_stack:
+            self._add_child_to_layout(new_element)
+        else:
+            self._elements.visible.append(new_element)
+
         if name is not None:
+            self._elements.used_names.add(name)
             element.on_change = self._make_flet_event_handler(name, extra_handler)
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
@@ -162,8 +199,7 @@ class FletClient:
         )
 
     def clear_elements(self):
-        self._elements.visible.clear()
-        self._elements.invisible.clear()
+        self._elements = Elements([], [], None, set())
         if self.page:
             if self.page.controls:
                 self.page.controls.clear()
@@ -175,18 +211,20 @@ class FletClient:
         lists
         """
         if not self.page:
-            raise ValueError("No page open when update_elements was called")
+            raise PageNotOpenError("No page open when update_elements was called")
 
         for element in self._elements.visible:
             self.page.add(element)
         for element in self._elements.invisible:
             self.page.overlay.append(element)
+        if self._elements.app_bar:
+            self.page.appbar = self._elements.app_bar
         self.page.update()
 
     def flet_update(self):
         """Runs a plain update of the flet UI, updating existing elements"""
         if not self.page:
-            raise RuntimeError("Flet update called when page is not open")
+            raise PageNotOpenError("Flet update called when page is not open")
         self.page.update()
 
     def lock_elements(self):
@@ -198,5 +236,38 @@ class FletClient:
             element.disabled = False
 
     def add_to_disablelist(self, element: flet.Control):
-        """added elements will be disabled when code is running from buttons"""
+        """Added elements will be disabled when code is running from buttons"""
         self._to_disable.append(element)
+
+    def set_title(self, title: str):
+        """Set flet dialog title when it is running."""
+        if not self.page:
+            raise PageNotOpenError("Set title called when page is not open")
+        self.page.title = title
+
+    def add_layout(self, layout: SupportedFletLayout):
+        """Add a layout element as the currently open layout element. Following
+        add_element calls will add elements inside ``layout``."""
+        self.add_element(layout)
+        self._layout_stack.append(layout)
+
+    def close_layout(self):
+        """Stop adding layout elements to the latest opened layout"""
+        self._layout_stack.pop()
+
+    def set_appbar(self, app_bar: AppBar):
+        if self._elements.app_bar:
+            raise LayoutError("Only one navigation may be defined at a time")
+        self._elements.app_bar = app_bar
+        self._layout_stack.append(app_bar)
+
+    def get_layout_dimensions(self) -> Tuple[Optional[float], Optional[float]]:
+        if len(self._layout_stack) == 0:
+            raise LayoutError("No parent element to determine dimensions from")
+        current_layout = self._layout_stack[-1]
+        if isinstance(current_layout, AppBar):
+            raise LayoutError("Cannot use absolute positions in appbar")
+        if current_layout.width is None or current_layout.height is None:
+            raise RuntimeError("Cannot determine dimensions of parent element")
+
+        return (current_layout.width, current_layout.height)

@@ -1,3 +1,4 @@
+import atexit
 from logging import getLogger
 from subprocess import Popen
 from typing import Optional, Tuple
@@ -12,6 +13,7 @@ class BackgroundFlet:
     """Class that manages the graphical flet subrocess and related operations"""
 
     def __init__(self):
+        atexit.register(self.close_flet_view)
         self.logger = getLogger(__name__)
         self._conn: Optional[Connection] = None
         self._fvp: Optional[Popen] = None
@@ -62,6 +64,9 @@ class BackgroundFlet:
 
     def close_flet_view(self) -> None:
         """Close the currently open flet view"""
+        if not all([self._conn, self._fvp, self._pid_file]):
+            # Library was not open
+            return
         assert self._conn is not None
         assert self._fvp is not None
         assert self._pid_file is not None

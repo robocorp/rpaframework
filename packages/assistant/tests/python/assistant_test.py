@@ -1,102 +1,30 @@
 from time import sleep
-import RPA.Assistant
-from RPA.Assistant.types import Icon, VerticalLocation, WindowLocation
+
 import pytest
+from RPA.Assistant import Assistant
+from RPA.Assistant.types import PageNotOpenError
 
 
-pytest.skip("until we have non-blocking assistant UI tests", allow_module_level=True)
+def test_set_title_no_page_open(assistant: Assistant):
+    with pytest.raises(PageNotOpenError) as excinfo:
+        assistant.set_title("test")
+    assert "Set title called when page is not open" in str(excinfo.value)
 
 
-def next_ui(results):
-    assistant.clear_dialog()
-    assistant.add_heading("the 2nd ui")
-    assistant.add_text(str(results))
-    assistant.add_text_input(
-        "txt_input", placeholder="placeholder", validation=length_greater_3
-    )
-    assistant.add_next_ui_button("the 3rd ui", third_ui)
-    assistant.refresh_dialog()
+def test_flet_update_no_page_open(assistant: Assistant):
+    with pytest.raises(PageNotOpenError) as excinfo:
+        assistant.refresh_dialog()
+    assert "No page open when update_elements was called" in str(excinfo.value)
 
 
-def third_ui(results):
-    assistant.clear_dialog()
-    assistant.add_heading("the 3rd ui")
-    assistant.add_text(str(results))
-    assistant.add_text_input(
-        "txt_input", placeholder="placeholder", validation=length_greater_3
-    )
-    assistant.add_next_ui_button("the 2nd ui", next_ui)
-    assistant.refresh_dialog()
+def test_duplicate_name_fails(assistant: Assistant):
+    with pytest.raises(ValueError) as excinfo:
+        assistant.add_text_input("one")
+        assistant.add_text_input("one")
+    assert "already in use" in str(excinfo.value)
 
 
-def length_greater_3(value):
-    if len(value) <= 3:
-        return "Length should be greater than 3"
-
-
-def sleepy_print(arg):
-    """used for testing is the button disabling working"""
-    sleep(1)
-    print(arg)
-
-
-assistant = RPA.Assistant.Assistant()
-assistant.add_date_input("my_date", label="My Date")
-assistant.add_button(
-    "python button", sleepy_print, "sleepy print output (should appear after ~1s sleep)"
-)
-assistant.add_button("robot button", "Log", "asd")
-assistant.add_next_ui_button("different form button", next_ui)
-assistant.add_heading("Heading test")
-assistant.add_text("Test")
-assistant.add_link("https://robocorp.com")
-assistant.add_icon(Icon.Failure)
-assistant.add_icon(Icon.Warning)
-assistant.add_icon(Icon.Success)
-assistant.add_text_input(
-    "txt_input", placeholder="placeholder", required=True, validation=length_greater_3
-)
-assistant.add_password_input("pw_input")
-assistant.add_checkbox("checkbox", "test_checkbox")
-assistant.add_file_input("file", file_type="pdf,png,jpg")
-assistant.add_hidden_input("Hidden", "value")
-assistant.add_text("Percentage slider")
-assistant.add_slider(
-    name="percentage", slider_min=0, slider_max=100, steps=100, default=80, round=1
-)
-# assistant.add_file(path="/Users/kerkko/Downloads/image.png", label="File")
-
-assistant.add_radio_buttons(
-    name="user_type_radio",
-    options="Admin,Maintainer,Operator",
-    default="Operator",
-    label="User type",
-)
-assistant.add_drop_down(
-    name="user_type_dropdown",
-    options="Admin,Maintainer,Operator",
-    default="Operator",
-    label="User type",
-)
-
-
-# assistant.add_dialog_next_page_button("Next page")
-
-assistant.add_text_input("txt_input_2", placeholder="placeholder")
-assistant.add_text("List python files")
-assistant.add_files("**/*.py")
-assistant.add_image(
-    "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
-)
-assistant.add_submit_buttons(["second submit"], "second submit")
-
-# assistant.clear_dialog()
-# assistant.add_icon(Icon.Failure)
-assistant.add_button(
-    "clear elements",
-    lambda: assistant.clear_dialog(),
-    location=VerticalLocation.Right,
-)
-
-results = assistant.run_dialog(location=WindowLocation.TopLeft, timeout=180)
-print(results)
+def test_different_names_work(assistant: Assistant):
+    assistant.add_text_input("one")
+    assistant.add_text_input("two")
+    assistant.add_text_input("three")

@@ -9,6 +9,7 @@ from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import (
+    AppBar,
     Checkbox,
     Column,
     Container,
@@ -30,6 +31,7 @@ from flet import (
     colors,
     icons,
 )
+from flet_core import Stack
 from flet_core.control_event import ControlEvent
 from flet_core.dropdown import Option
 from robot.api.deco import keyword, library
@@ -41,13 +43,15 @@ from typing_extensions import Literal
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.types import (
     Icon,
+    LayoutError,
+    Location,
     Options,
     Result,
     Size,
     VerticalLocation,
     WindowLocation,
 )
-from RPA.Assistant.utils import optional_str, to_options
+from RPA.Assistant.utils import location_to_absolute, optional_str, to_options
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -102,8 +106,34 @@ class Assistant:
     a file input will have a list of paths.
 
     If the user closed the window before submitting or there was an internal
-    error, the library will raise an exception and the result values will
-    not be available.
+    error, the results object returned by Run Dialog or Ask User won't have a "submit"
+    key.
+
+    **Layouting**
+
+    By default elements are added to the assistant dialog from top to bottom, with a bit
+    of margin around each element to add spaciousness. This margin is added as a
+    ``Container`` you can manually use ``Open Container`` to override the default
+    container. You can use it to set smaller margins.
+
+    You can combine layouting elements with each other. Layouting elements need to be
+    closed with the corresponding ``Close`` keyword. (So ``Open Row`` and then
+    ``Close Row``.)
+
+    ``Open Row`` can be used to layout elements in the same row.
+
+    ``Open Column`` can be used to layout elements in columns.
+
+    ``Open Stack`` and multiple ``Open Container``'s inside it can be used to set
+    positions like Center, Topleft, BottomRight, or coordinate tuples likes (0, 0),
+    (100, 100) and such.
+
+    ``Open Container`` can bse used for absolute positioning inside a Stack, or anywhere
+    for setting background color or margins and paddings.
+
+    ``Open Navbar`` can be used to make a navigation bar that will stay at the top of
+    the dialog. Its contents won't be cleared when.
+
 
     **Examples**
 
@@ -153,6 +183,7 @@ class Assistant:
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
         self._required_fields: Set[str] = set()
+        self._open_layouting: List[str] = []
 
         try:
             # Prevent logging from keywords that return results
@@ -215,7 +246,7 @@ class Assistant:
 
         return ElevatedButton(label, on_click=validate_and_close)
 
-    @keyword
+    @keyword(tags=["dialog", "running"])
     def clear_dialog(self) -> None:
         """Clear dialog and results while it is running."""
         self._client.results = {}
@@ -451,7 +482,7 @@ class Assistant:
 
     @keyword
     def add_icon(self, variant: Icon, size: int = 48) -> None:
-        """Add an icon element
+        """Add an icon element from RPA.Assistant's short icon list.
 
         :param variant: The icon type
         :param size:    The size of the icon
@@ -492,6 +523,35 @@ class Assistant:
         flet_icon, color = flet_icon_conversions[variant]
 
         self._client.add_element(flet.Icon(name=flet_icon, color=color, size=size))
+
+    @keyword
+    def add_flet_icon(
+        self,
+        icon: str,
+        color: Optional[str] = None,
+        size: Optional[int] = 24,
+    ):
+        """Add an icon from a large gallery of icons.
+
+        :param icon:      Corresponding flet icon name. Check
+                          https://gallery.flet.dev/icons-browser/ for a list of icons.
+                          Write the name in ``lower_case``
+        :param color:     Color for the icon. Default depends on icon. Allowed values
+                          are colors from
+                          https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37
+                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
+        :param size:      Integer size for the icon.
+
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add Heading    Check icon
+            Add Flet Icon  icon_name=check_circle_rounded  color=FF00FF  size=48
+            Run Dialog
+        """
+        self._client.add_element(flet.Icon(name=icon, color=color, size=size))
 
     @keyword(tags=["input"])
     def add_text_input(
@@ -1014,7 +1074,7 @@ class Assistant:
         self.add_submit_buttons(["Submit", "Close"], "Submit")
         return self.run_dialog(**options, timeout=timeout)
 
-    @keyword(tags=["dialog"])
+    @keyword(tags=["dialog", "running"])
     def refresh_dialog(self):
         """Can be used to update UI elements when adding elements while dialog is
         running
@@ -1110,11 +1170,11 @@ class Assistant:
             *** Keywords ***
             First View
                 Add Heading  Here is the first view of the app
-                Add Button  Second View
+                Add Button  Change View  Second View
 
             Second View
                 Add Heading  Let's build an infinite loop
-                Add Button  First View
+                Add Button  Change View  First View
         """
 
         def on_click(_: ControlEvent):
@@ -1219,3 +1279,234 @@ class Assistant:
             round=decimals,
         )
         self._client.add_element(name=name, element=slider)
+
+    @keyword(tags=["dialog", "running"])
+    def set_title(self, title: str):
+        """Set dialog title when it is running."""
+        self._client.set_title(title)
+
+    def _close_layouting_element(self, layouting_element: str):
+        """Checkhat if the last opened layout element matches what is being closed,
+        otherwise raise ValueError. If the check passes, close the layout element.
+        """
+        if not self._open_layouting:
+            raise LayoutError(f"Cannot close {layouting_element}, no open layout")
+
+        last_opened = self._open_layouting[-1]
+        if not last_opened == layouting_element:
+            raise LayoutError(
+                f"Cannot close {layouting_element}, last opened layout is {last_opened}"
+            )
+
+        self._client.close_layout()
+        self._open_layouting.pop()
+
+    @keyword(tags=["layout"])
+    def open_row(self):
+        """Open a row layout container. Following ``Add <element>`` calls will add
+        items into that row until ``Close Row`` is called.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Side By Side Elements
+                Open Row
+                Add Text  First item on the row
+                Add Text  Second item on the row
+                Close Row
+        """
+        self._open_layouting.append("Row")
+        self._client.add_layout(Row())
+
+    @keyword(tags=["layout"])
+    def close_row(self):
+        """Close previously opened row.
+
+        Raises LayoutError if called with no Row open, or if another layout element was
+        opened more recently than a row.
+        """
+        self._close_layouting_element("Row")
+
+    @keyword(tags=["layout"])
+    def open_container(
+        self,
+        margin: Optional[int] = 5,
+        padding: Optional[int] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        background_color: Optional[str] = None,
+        location: Union[Location, Tuple[int, int], None] = None,
+    ):
+        """Open a single element container. The following ``Add <element>`` calls adds
+        an element inside the container. Can be used for styling elements.
+
+
+        :param margin: How much margin to add around the container. RPA.Assistant adds
+                       by default a container of margin 5 around all elements, to have
+                       a smaller margin use containers with smaller margin value for
+                       elements.
+        :param padding: How much padding to add around the content of the container.
+        :param width: Width of the container.
+        :param height: Height of the container.
+
+        :param bgcolor:   Background color for the container. Default depends on icon.
+                          Allowed values are colors from
+                          [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
+                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+        :param location:  Where to place the container (A Location value or tuple of
+                          ints). Only works inside a Stack layout element.
+
+                          To use any Center___ or ___Center locations you must define
+                          width and height to the element.
+
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Padded Element With Background
+                Open Container  padding=20  background_color=blue500
+                Add Text        sample text
+                Close Container
+
+
+        """  # noqa: E501
+        self._open_layouting.append("Container")
+        if not location:
+            top, left, bottom, right = None, None, None, None
+        else:
+            parent_height, parent_width = self._client.get_layout_dimensions()
+            parsed_location = location_to_absolute(
+                location, parent_width, parent_height, width, height
+            )
+            top = parsed_location.get("top")
+            left = parsed_location.get("left")
+            right = parsed_location.get("right")
+            bottom = parsed_location.get("bottom")
+        self._client.add_layout(
+            Container(
+                margin=margin,
+                padding=padding,
+                width=width,
+                height=height,
+                bgcolor=background_color,
+                top=top,
+                left=left,
+                bottom=bottom,
+                right=right,
+            )
+        )
+
+    @keyword(tags=["layout"])
+    def close_container(self):
+        """Close previously opened container.
+
+        Raises LayoutError if called with no Row open, or if another layout element was
+        opened more recently than a row.
+        """
+        self._close_layouting_element("Container")
+
+    @keyword(tags=["layout"])
+    def open_navbar(self, title: Optional[str] = None):
+        """Create a Navigation Bar. Following ``Add <element>`` calls will add
+        items into the Navbar until ``Close Navbar`` is called.
+
+        Navbar doesn't clear when Clear Dialog is called.
+
+        Only one Navbar can be initialized at a time. Trying to make a second one will
+        raise a LayoutError.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+                Go To Start Menu
+                    Add Heading  Start menu
+                    Add Text  Start menu content
+
+                Assistant Navbar
+                    Open Navbar  title=Assistant
+                    Add Button   menu  Go To Start Menu
+                    Close Navbar
+        """
+        self._open_layouting.append("AppBar")
+        self._client.set_appbar(AppBar(title=Text(title)))
+
+    @keyword(tags=["layout"])
+    def close_navbar(self):
+        """Close previously opened navbar.
+
+        Raises LayoutError if called with no Row open, or if another layout element was
+        opened more recently than a row."""
+        self._close_layouting_element("AppBar")
+
+    @keyword(tags=["layout"])
+    def open_stack(self, width: Optional[int] = None, height: Optional[int] = None):
+        """Create a "Stack" layout element. Stack can be used to position elements
+        absolutely and to have overlapping elements in your layout. Use Container's
+        `top` and `left` arguments to position the elements in a stack.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+                Absolutely Positioned Elements
+                    # Positioning containers with relative location values requires
+                    # absolute size for the Stack
+                    Open Stack  height=360  width=360
+
+                    Open Container  width=64  height=64  location=Center
+                    Add Text  center
+                    Close Container
+
+                    Open Container  width=64  height=64  location=TopRight
+                    Add Text  top right
+                    Close Container
+
+                    Open Container  width=64  height=64  location=BottomRight
+                    Add Text  bottom right
+                    Close Container
+
+                    Close Stack
+
+        """
+        self._open_layouting.append("Stack")
+        self._client.add_layout(Stack(width=width, height=height))
+
+    @keyword(tags=["layout"])
+    def close_stack(self):
+        """Close previously opened Stack.
+
+        Raises LayoutError if called with no Stack open, or if another layout element
+        was opened more recently than a Stack.
+        """
+        self._close_layouting_element("Stack")
+
+    @keyword(tags=["layout"])
+    def open_column(self):
+        """Open a Column layout container. Following ``Add <element>`` calls will add
+        items into that Column until ``Close Column`` is called.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Double Column Layout
+                Open Row
+                Open Column
+                Add Text      First item in the first column
+                Add Text      Second item on the first column
+                Close Column
+                Open Column
+                Add Text      First item on the second column
+                Close Column
+                Close Row
+        """
+        self._open_layouting.append("Column")
+        self._client.add_layout(Column())
+
+    @keyword(tags=["layout"])
+    def close_column(self):
+        """Closes previously opened Column.
+
+        Raises LayoutError if called with no Column open, or if another layout element
+        was opened more recently than a Column.
+        """
+
+        self._close_layouting_element("Column")
