@@ -408,6 +408,12 @@ class Windows(WindowsElementsMixin, DynamicCore):
     Recording inspects elements on **mouse click** and can be stopped with keyboard **ESC**.
     Expected console output.
 
+    **Caveats**
+
+    - Make sure your *display scaling* is set to *100%*, otherwise you might encounter
+      issues when clicking or interacting with elements. (since offsets and coordinates
+      get distorted)
+
     .. code-block:: bash
 
         C:\\Users\\User\\robots\\>windows-record  # or >python -m RPA.Windows
@@ -487,6 +493,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
 
     def __init__(self, locators_path: Optional[str] = None):
         self.wait_time: float = 0.5
+        self.simulate_move: bool = self.SIMULATE_MOVE
 
         # Prevent comtypes writing a lot of log messages.
         comtypes_logger = logging.getLogger("comtypes")

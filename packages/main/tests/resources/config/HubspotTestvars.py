@@ -2,7 +2,8 @@ import os
 
 
 # Token for access.
-ACCESS_TOKEN = os.getenv("HUBSPOT_TOKEN", "not-set")
+hubspot_token_env = os.getenv("HUBSPOT_TOKEN", "")
+ACCESS_TOKEN = "not-set" if len(hubspot_token_env.strip()) == 0 else hubspot_token_env
 
 # Contact/object lookup tests.
 FIRST_NAME = "Cosmin"

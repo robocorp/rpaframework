@@ -7,7 +7,6 @@ from pynput_robocorp import mouse, keyboard  # pylint: disable=C0415
 from RPA.core.windows.inspect import ElementInspector, RecordElement
 
 
-recording_time = None
 recording: List[RecordElement] = []
 
 
@@ -21,11 +20,11 @@ def start_recording(verbose: bool = False):
 
     Can be stopped by pressing keyboard ``ESC``.
     """
-    global recording  # pylint: disable=W0603
-    recording = []
+    recording_time = None
+    recording.clear()
 
     def on_click(x, y, button, pressed):  # pylint: disable=W0613
-        global recording, recording_time  # pylint: disable=W0602
+        nonlocal recording_time  # pylint: disable=W0602
         if pressed:
             inspect_time = datetime.now()
             if recording_time:
@@ -61,13 +60,13 @@ def start_recording(verbose: bool = False):
     print(the_recording)
 
 
-def get_recording(sleeps: bool = False):
-    """Get list of recorded steps.
+def get_recording(sleeps: bool = False) -> str:
+    """Get a list of the recorded steps after stopping clicking elements.
 
     :param sleeps: Exclude recording sleeps when `False`.
+    :returns: The string report of recorded elements.
     """
     # NOTE: Works with "Click" only for now.
-    global recording  # pylint: disable=W0602
     output = []
     top = None
     action_name = "Click"
@@ -81,7 +80,7 @@ def get_recording(sleeps: bool = False):
             and item["top"] != top
         ):
             output.append(
-                f"Control Window    {item['top']}  # Handle: {item['top_handle']}"
+                f"Control Window    {item['top']}  # handle:{item['top_handle']}"
             )
             top = item["top"]
         if item["type"] == "locator":
