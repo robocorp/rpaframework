@@ -239,6 +239,18 @@ Test Getting Previous business day when country is not set - Memorial Day 2023
     ${previous}=    Return Previous Business Day    2023-05-30
     Should Be Equal As Strings    2023-05-29    ${previous}
 
+Test Is Finnish Independence Day a business day
+    ${business_day}=    Is The Date Business Day    2023-12-06    FI
+    Should Not Be True    ${business_day}
+
+Test Is Finnish Independence Day a holiday
+    ${holiday}=    Is The Date Holiday    2023-12-06    FI
+    Should Be True    ${holiday}
+
+Test helper keyword - is the date business day
+    ${business_day}=    Is The 2023-12-05 Business Day in FI
+    Should Be True    ${business_day}
+
 
 *** Keywords ***
 Get Default Difference Dict
