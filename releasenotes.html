@@ -150,6 +150,40 @@
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this heading"></a></h1>
 <div class="section" id="id1">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<p><strong>RPA.Assistant</strong> (<code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code> <strong>2.1.0</strong>):</p>
+<blockquote>
+<div><ul>
+<li><p>Features:</p>
+<blockquote>
+<div><ul>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Title</span></code> keyword. Can be used to set title of assistant when it is running.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Row</span></code> and <code class="docutils literal notranslate"><span class="pre">Close</span> <span class="pre">Row</span></code> keywords. Used to layout elements into rows.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Column</span></code> and <code class="docutils literal notranslate"><span class="pre">Close</span> <span class="pre">Column</span></code> keywords. Used to layout elements into columns.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Navbar</span></code> and <code class="docutils literal notranslate"><span class="pre">Close</span> <span class="pre">Navbar</span></code> keywords. Can be used to create an always visible top bar for a dialog.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Stack</span></code> and <code class="docutils literal notranslate"><span class="pre">Close</span> <span class="pre">Stack</span></code> keywords. Can be used to position elements manually.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Container</span></code> and <code class="docutils literal notranslate"><span class="pre">Close</span> <span class="pre">Container</span></code> keywords. Useful for styling or placing single elements.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Flet</span> <span class="pre">Icon</span></code> that enables adding any icons from flets large gallery of icons</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Compared to <cite>Add Icon</cite> it is more difficult to use but supports a much larger amount of icons.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Bugfixes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Fix regression, Assistant flet app not closing properly when run from CLI and
+when close button is pressed.</p></li>
+<li><p>The library no longer silently misses adding to the result when an input
+<code class="docutils literal notranslate"><span class="pre">name</span></code> duplicate name is used, instead raises a ValueError.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="id2">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
