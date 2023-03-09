@@ -9,6 +9,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+22.2.1 - 09 Mar 2023
+--------------------
+
+- Library **RPA.Calendar**:
+
+  Documentation fixes to various keywords.
+
 22.2.0 - 09 Mar 2023
 --------------------
 
