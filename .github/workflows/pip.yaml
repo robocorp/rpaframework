@@ -58,7 +58,7 @@ jobs:
       - name: check freeze file
         run: |
           python -m pip install pip-audit==2.4.14
-          python -m pip_audit -r requirements.txt
+          python -m pip_audit --no-deps -r requirements.txt
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
