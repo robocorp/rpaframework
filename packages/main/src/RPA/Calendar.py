@@ -35,10 +35,10 @@ class Calendar:
 
     Common country holidays are respected when getting next and previous
     business days, but custom holidays can be added into consideration
-    using keyword ``Set Custom Holiday`` keyword.
+    using keyword ``Add Custom Holidays`` keyword.
 
-    Some dates containing for example month names in English (en), but the
-    locale of the library can be changed with keyword ``Set Locale`` or
+    Some dates containing for example month names are in English (en), but
+    the locale of the library can be changed with keyword ``Set Locale`` or
     for specific keyword if that has a ``locale`` parameter.
     """
 
@@ -54,7 +54,7 @@ class Calendar:
         :param locale_name: name of the locale
         :return: name of the previous locale
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -65,6 +65,8 @@ class Calendar:
             library.set_locale("en")
             now = library.time_now(return_format="dddd DD MMMM YYYY")
             # now == "Thursday 09 March 2023"
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -90,10 +92,10 @@ class Calendar:
         """Add a day or list of days which are considered as holidays
         in addition to country specific holidays when calculating
 
-        :param day: string or list of dates to consider as holidays
+        :param days: string or list of dates to consider as holidays
         :return: list of current custom holidays
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -104,6 +106,8 @@ class Calendar:
                 "2023-03-09", "2023-03-10"
             ])
             # custom_holidays == ["2023-03-08", "2023-03-09", "2023-03-10"]
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -128,13 +132,15 @@ class Calendar:
         :param days: list of integers denoting weekdays
         :return: previous list of weekdays
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
             # set 4 day work week
             previous = Calendar().set_business_days([1,2,3,4])
             # previous == [1,2,3,4,5]
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -174,7 +180,7 @@ class Calendar:
         :param end_timezone: timezone for the ending date, defaults to None
         :return: dictionary containing comparison result
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -187,6 +193,8 @@ class Calendar:
             # diff['hours'] == 4
             # diff['minutes'] == 45
             # diff['seconds'] == 30
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -243,13 +251,13 @@ class Calendar:
         used to form correct date and time format.
 
         :param date_string: for example. "22 May 19"
-        :param date_format: for example. "DD MMM YY"
+        :param date_format_in: for example. "DD MMM YY"
         :param timezone: default timezone is "UTC"
-
+        :param date_format_out: for example. "DD-MM-YY"
         :return: set datetime as an object or string
          if `date_format_out` has been set
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -257,6 +265,8 @@ class Calendar:
                 "22 May 19",
                 "DD MMM YY"
             )
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -287,11 +297,13 @@ class Calendar:
          list, defaults to "YYYY-MM-DD"
         :return: current datetime as an object
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
             now = Calendar().time_now("Europe/Helsinki")
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -332,7 +344,7 @@ class Calendar:
          defaults to None
         :return: difference in months
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -341,6 +353,8 @@ class Calendar:
                 "2023-08-21T22:00:00"
             )
             # diff == 15
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -372,7 +386,7 @@ class Calendar:
          defaults to None
         :return: difference in days
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -381,6 +395,8 @@ class Calendar:
                 "2023-05-29"
             )
             # diff == 8
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -412,7 +428,7 @@ class Calendar:
          defaults to None
         :return: difference in hours
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -421,6 +437,8 @@ class Calendar:
                 "2023-08-22T04:00:00"
             )
             # diff == 6
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -452,7 +470,7 @@ class Calendar:
          defaults to None
         :return: difference in minutes
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -461,6 +479,8 @@ class Calendar:
                 "16:35"
             )
             # diff == 245
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -485,7 +505,7 @@ class Calendar:
         :param end_timezone: second timezone
         :return: hour difference between the timezones
 
-        Example.
+        Python example.
 
         .. code-block:: python
 
@@ -494,6 +514,8 @@ class Calendar:
                 "Europe/Helsinki"
             )
             # diff == 7
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -524,12 +546,14 @@ class Calendar:
         :param locale: name of the locale
         :return: the previous business day from day of origin
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
             prev_business = Calendar().return_previous_business_day("2023-01-09", "FI")
             # prev == "2023-01-05"
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -555,12 +579,14 @@ class Calendar:
         :param locale: name of the locale
         :return: the next business day from day of origin
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
             next_business = Calendar().return_next_business_day("2023-01-05", "FI")
             # next_business == "2023-01-09"
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -612,13 +638,15 @@ class Calendar:
         :return: holidays in a dictionary, the key is the date and the
          value is name of the holiday
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
             holidays = Calendar().return_holidays(2023, "FI")
             for date, holiday_name in holidays.items():
                 print(f"{date} is {holiday_name}")
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -649,12 +677,14 @@ class Calendar:
         :param country: country code, default `None`
         :return: first business of the month
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
             first_day = Calendar().first_business_day_of_the_month("2024-06-01")
             # first_day == "2024-06-03"
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -691,12 +721,14 @@ class Calendar:
         :param country: country code, default `None`
         :return: last business day of the month
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
             last_day = Calendar().last_business_day_of_the_month("2023-12-01")
             # last_day == "2023-12-29"
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -746,7 +778,7 @@ class Calendar:
          which means order from oldest to latest
         :return: list of sorted dates
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
@@ -761,6 +793,8 @@ class Calendar:
             sorted = Calendar().sort_list_of_dates(datelist, reverse=True)
             # sorted[0] == "2023-07-02 12:02:31"
             # sorted[-1] == "2023-07-03 12:02:35"
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -780,7 +814,7 @@ class Calendar:
         result = sorted(dt_list, reverse=reverse)
         return [d.format(return_format) for d in result] if return_format else result
 
-    @keyword(name="compare times ${time1} < ${time2}")
+    @keyword(name="Compare Times ${time1} < ${time2}")
     def _rfw_compare_time_before(self, time1: DTFormat, time2: DTFormat):
         """Compares given times and returns `True` if `time2`
         is more recent than `time1`.
@@ -789,7 +823,7 @@ class Calendar:
         :param time2: second time for comparison
         :return: `True` if `time2` is more recent than `time1`
 
-        Example:
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -801,7 +835,7 @@ class Calendar:
         """
         return self.compare_times(time1, time2)
 
-    @keyword(name="compare times ${time1} > ${time2}")
+    @keyword(name="Compare Times ${time1} > ${time2}")
     def _rfw_compare_time_after(self, time1: DTFormat, time2: DTFormat):
         """Compares given times and returns `True` if `time1`
         is more recent than `time2`.
@@ -810,7 +844,7 @@ class Calendar:
         :param time2: second time for comparison
         :return: `True` if `time1` is more recent than `time2`
 
-        Example:
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -831,13 +865,15 @@ class Calendar:
         :param time2: second time for comparison
         :return: `True` if `time2` is more recent than `time1`
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
             recent = Calendar().compare_times("2023-03-09 13:02", "2023-03-09 13:47")
             if recent:
                 print("2023-03-09 13:47 is more recent")
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -854,9 +890,10 @@ class Calendar:
     def get_iso_calendar(self, date: DTFormat):
         """Get ISO calendar information for the given date.
 
+        :parameter date: input date
         :return: ISO calendar object containing year, week number and weekday.
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
@@ -864,6 +901,8 @@ class Calendar:
             print(iso_cal.year)
             print(iso_cal.week)
             print(iso_cal.weekday)
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -890,7 +929,7 @@ class Calendar:
         :param country: country code, default `None`
         :return: `True` if the day is a business day, `False` if not
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
@@ -901,6 +940,8 @@ class Calendar:
                     print(f'It is time for the work on {date}')
                 else:
                     print(f'It is time to relax on {date}')
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -926,7 +967,7 @@ class Calendar:
             is_business_day = given_dt not in holiday_list
         return is_business_day
 
-    @keyword(name="is the ${date_in} business day in ${country}")
+    @keyword(name="Is the ${date} Business Day in ${country}")
     def _rfw_is_the_day_business_day(self, date: DTFormat, country: str):
         """Is the date a business day in a country.
 
@@ -934,7 +975,7 @@ class Calendar:
         :param country: country code
         :return: `True` if the day is a business day, `False` if not
 
-        Example:
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -956,7 +997,7 @@ class Calendar:
         :param country: country code, default `None`
         :return: `True` if the day is a holiday, `False` if not
 
-        Example:
+        Python example.
 
         .. code-block:: python
 
@@ -965,6 +1006,8 @@ class Calendar:
                 print('Time to relax')
             else:
                 print('Time for the work')
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -976,7 +1019,6 @@ class Calendar:
             END
 
         """
-
         if isinstance(date, str):
             given_dt = pdl.parse(date, strict=False)
         else:
@@ -984,7 +1026,7 @@ class Calendar:
         holiday_list = self.return_holidays(given_dt.year, country)
         return given_dt in holiday_list
 
-    @keyword(name="is the ${date_in} holiday in ${country}")
+    @keyword(name="Is the ${date} Holiday in ${country}")
     def _rfw_is_the_day_holiday(self, date: DTFormat, country: str):
         """Is the date a holiday in a country.
 
@@ -992,7 +1034,7 @@ class Calendar:
         :param country: country code
         :return: `True` if the day is a holiday, `False` if not
 
-        Example:
+        Robot Framework example.
 
         .. code-block:: robotframework
 

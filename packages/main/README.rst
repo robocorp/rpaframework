@@ -79,7 +79,7 @@ Packages
 .. image:: https://img.shields.io/pypi/v/rpaframework-assistant.svg?label=rpaframework-assistant&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework-assistant
    :alt: rpaframework-assistant latest version
-   
+
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-aws.svg?label=rpaframework-aws&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework-aws
@@ -107,7 +107,7 @@ Packages
 .. image:: https://img.shields.io/pypi/v/rpaframework-openai.svg?label=rpaframework-openai&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-openai
    :alt: rpaframework-openai latest version
-   
+
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-pdf
@@ -145,6 +145,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 | `Browser.Selenium`_        | Control browsers and automate the web                 | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Browser.Playwright`_      | Newer way to control browsers                         | special (more below)   |
++----------------------------+-------------------------------------------------------+------------------------+
+| `Calendar`_                | For date and time manipulations                       | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Cloud.AWS`_               | Use Amazon AWS services                               | x,aws                  |
 +----------------------------+-------------------------------------------------------+------------------------+
@@ -227,6 +229,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Assistant: https://rpaframework.org/libraries/assistant/
 .. _Browser.Playwright: https://rpaframework.org/libraries/browser_playwright/
 .. _Browser.Selenium: https://rpaframework.org/libraries/browser_selenium/
+.. _Calendar: https://rpaframework.org/libraries/calendar/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
 .. _Cloud.Azure: https://rpaframework.org/libraries/cloud_azure/
 .. _Cloud.Google: https://rpaframework.org/libraries/cloud_google/
@@ -284,7 +287,7 @@ Minimum required conda.yaml to install Playwright:
      - nodejs=16.4.2
      - pip:
        - robotframework-browser==13.3.0
-       - rpaframework==20.1.2
+       - rpaframework==22.2.1
    rccPostInstall:
      - rfbrowser init
 
@@ -303,7 +306,7 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
      - python=3.9.13
      - pip=22.1.2
      - pip:
-       - rpaframework==20.1.2
+       - rpaframework==22.2.1
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -318,7 +321,7 @@ To install all extra packages (including Playwright dependencies), you can use:
      - nodejs=16.14.2
      - pip:
        - robotframework-browser==13.3.0
-       - rpaframework==20.1.2
+       - rpaframework==22.2.1
        - rpaframework-aws==5.0.0
        - rpaframework-google==6.1.1
        - rpaframework-recognition==5.0.0
