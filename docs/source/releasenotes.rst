@@ -5,9 +5,42 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Database**:
+
+  - Change how `psycopg2` module handles the ``Call Stored Procedure`` keyword
+  - Set on the `autocommit` parameter use with ``Connect To Database`` keyword when using `psycopg2` module
+  - Remove **INFO** level logs from ``Connect To Database`` keyword
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+08 Mar 2023
+-----------
+- Library **RPA.Assistant** (``rpaframework-assistant`` **2.1.0**):
+
+    - Features:
+
+        - Add ``Set Title`` keyword. Can be used to set title of assistant when it is running.
+
+        - Add ``Open Row`` and ``Close Row`` keywords. Used to layout elements into rows.
+        - Add ``Open Column`` and ``Close Column`` keywords. Used to layout elements into columns.
+        - Add ``Open Navbar`` and ``Close Navbar`` keywords. Can be used to create an always visible top bar for a dialog.
+
+        - Add ``Open Stack`` and ``Close Stack`` keywords. Can be used to position elements manually.
+        - Add ``Open Container`` and ``Close Container`` keywords. Useful for styling or placing single elements.
+
+        - Add ``Add Flet Icon`` that enables adding any icons from flets large gallery of icons
+
+            - Compared to `Add Icon` it is more difficult to use but supports a much larger amount of icons.
+
+    - Bugfixes:
+
+        - Fix regression, Assistant flet app not closing properly when run from CLI and
+          when close button is pressed.
+
+        - The library no longer silently misses adding to the result when an input
+          ``name`` duplicate name is used, instead raises a ValueError.
 
 22.1.1 - 06 Mar 2023
 --------------------
