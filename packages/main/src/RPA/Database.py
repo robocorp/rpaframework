@@ -175,7 +175,7 @@ class Database:
         self.db_api_module_name = None
         self.config = Configuration()
         listener = RobotLogListener()
-        listener.register_protected_keywords(["RPA.Database.connect_to_database"])
+        listener.register_protected_keywords(["connect_to_database"])
 
     # pylint: disable=R0915, too-many-branches
     def connect_to_database(  # noqa: C901
@@ -222,7 +222,7 @@ class Database:
         :param port: SQL server port
         :param charset: for example, "utf-8", defaults to None
         :param config_file: location of configuration file, defaults to "db.cfg"
-        :param autocommit: set autocommit value for connect (only with pymssql atm)
+        :param autocommit: set autocommit value for connect
 
         Example:
 
@@ -250,7 +250,6 @@ class Database:
             dbmodule = importlib.import_module(self.config.module_name)
         if module_name in ["MySQLdb", "pymysql", "mysql.connector"]:
             self.config.set_default_port(3306)
-            self.logger.info(self.config.get_connection_parameters_as_string())
             parameters = {
                 "db": self.config.get("database"),
                 "user": self.config.get("username"),
@@ -266,7 +265,6 @@ class Database:
             self._dbconnection = dbmodule.connect(**parameters)
         elif module_name.startswith("psycopg"):
             self.config.set_default_port(5432)
-            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
                 database=self.config.get("database"),
                 user=self.config.get("username"),
@@ -274,6 +272,8 @@ class Database:
                 host=self.config.get("host"),
                 port=self.config.get("port"),
             )
+            if autocommit:
+                self._dbconnection.autocommit = True
         elif module_name in ("pyodbc", "pypyodbc"):
             self.config.set_default_port(1433)
             server = self.config.get("host", "")
@@ -287,7 +287,6 @@ class Database:
                 f"DRIVER={{SQL Server}};SERVER={server};DATABASE={db};"
                 f"UID={usr};PWD={pwd};",
             )
-            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(self.config.get("connect_string"))
         elif module_name == "excel":
             self.config.set_val(
@@ -296,7 +295,6 @@ class Database:
                 'DBQ=%s;ReadOnly=1;Extended Properties="Excel 8.0;HDR=YES";)'
                 % self.config.get("database"),
             )
-            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
                 self.config.get("connect_string"),
                 autocommit=True,
@@ -308,7 +306,6 @@ class Database:
                 'DBQ=%s;ReadOnly=0;Extended Properties="Excel 8.0;HDR=YES";)'
                 % self.config.get("database"),
             )
-            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
                 self.config.get("connect_string"),
                 autocommit=True,
@@ -326,7 +323,6 @@ class Database:
                     self.config.get("password"),
                 ),
             )
-            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
                 self.config.get("connect_string"),
                 "",
@@ -340,7 +336,6 @@ class Database:
                 service_name=self.config.get("database"),
             )
             self.config.set_val("oracle_dsn", oracle_dsn)
-            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
                 user=self.config.get("username"),
                 password=self.config.get("password"),
@@ -351,7 +346,6 @@ class Database:
             teradata_udaExec = dbmodule.UdaExec(
                 appName="RobotFramework", version="1.0", logConsole=False
             )
-            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = teradata_udaExec.connect(
                 method="odbc",
                 system=self.config.get("host"),
@@ -363,7 +357,6 @@ class Database:
             )
         elif module_name == "pymssql":
             self.config.set_default_port(1433)
-            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
                 server=self.config.get("host"),
                 user=self.config.get("username"),
@@ -375,7 +368,6 @@ class Database:
             )
         else:
             conf = self.config.all_but_empty()
-            self.logger.info(self.config.get_connection_parameters_as_string(conf))
             self._dbconnection = dbmodule.connect(**conf)
             if module_name == "sqlite3":
                 self._dbconnection.isolation_level = None if autocommit else "IMMEDIATE"
