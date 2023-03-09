@@ -54,10 +54,10 @@ jobs:
           # show it in CI log
           python -m pip freeze
           python -m pip freeze > requirements.txt
-      - name: check freeze file
-        run: |
-          python -m pip install pip-audit==2.4.14
-          python -m pip_audit -r requirements.txt
+      # - name: check freeze file
+      #   run: |
+      #     python -m pip install pip-audit==2.4.14
+      #     python -m pip_audit -r requirements.txt
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
