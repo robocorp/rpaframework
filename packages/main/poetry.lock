@@ -447,18 +447,20 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "holidays"
-version = "0.20"
+version = "0.21"
 description = "Generate and work with holidays in Python"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
+"backports.zoneinfo" = {version = "*", markers = "python_version < \"3.9\""}
 convertdate = ">=2.3.0"
 hijri-converter = "*"
 korean-lunar-calendar = "*"
 PyMeeus = "*"
 python-dateutil = "*"
+tzdata = {version = "*", markers = "os_name == \"nt\""}
 
 [[package]]
 name = "html2text"
@@ -2185,7 +2187,7 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "4027d36b54fe77fcb4305d72ea91e109c80d218849f1ac436f8d099c28c1ad6a"
+content-hash = "a43111287c9ed06108f5ee2f727db2c4c6e5bf5130de61f1a7060d29ecbe212a"
 
 [metadata.files]
 alabaster = [
@@ -2561,8 +2563,8 @@ hijri-converter = [
     {file = "hijri_converter-2.2.4-py3-none-any.whl", hash = "sha256:5ed4f4c284626e3916cd770e09346d5cc319e2a7762c22357838864908fd6e6d"},
 ]
 holidays = [
-    {file = "holidays-0.20-py3-none-any.whl", hash = "sha256:0a1e99116e45c310beb84e625e71bfa3ae45494905dfeadd55fd000bed710fe4"},
-    {file = "holidays-0.20.tar.gz", hash = "sha256:40befaf8823656900d0b6e5643e589193dbaf3ddb005d9347ba7fef94cce1b0a"},
+    {file = "holidays-0.21-py3-none-any.whl", hash = "sha256:3deb88649ad931e176798b23686798f29215fbf99f56b3f1f4c1e6f0015319ee"},
+    {file = "holidays-0.21.tar.gz", hash = "sha256:e3dece03969056dda9cf52f07676227e7ea042fd22a72ca431203c04029647b6"},
 ]
 html2text = [
     {file = "html2text-2020.1.16-py3-none-any.whl", hash = "sha256:c7c629882da0cf377d66f073329ccf34a12ed2adf0169b9285ae4e63ef54c82b"},

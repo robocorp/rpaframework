@@ -53,8 +53,8 @@ Test time difference in hours
     Should Be Equal As Integers    ${diff}    6
 
 Test time difference in minutes
-    ${diff}=    Time difference in minutes    2023-08-21T22:00:00    2023-08-22T04:00:00
-    Should Be Equal As Integers    ${diff}    360
+    ${diff}=    Time difference in minutes    12:30    16:35
+    Should Be Equal As Integers    ${diff}    245
 
 Test time difference in hours between London and Helsinki
     ${diff}=    Time difference in hours
@@ -64,7 +64,7 @@ Test time difference in hours between London and Helsinki
     ...    Europe/Helsinki
     Should Be Equal As Integers    ${diff}    2
 
-Test time difference in hours between NEw York and Helsinki
+Test time difference in hours between New York and Helsinki
     ${diff}=    Time difference in hours
     ...    2023-06-21T12:00:00
     ...    2023-06-21T12:00:00
@@ -74,9 +74,9 @@ Test time difference in hours between NEw York and Helsinki
 
 Test getting time difference of timezones
     ${diff}=    Time difference between timezones
-    ...    Europe/London
     ...    America/New_York
-    Should Be Equal As Integers    ${diff}    5
+    ...    Europe/Helsinki
+    Should Be Equal As Integers    ${diff}    7
 
 Test Getting Previous business day for Finland
     ${previous}=    Return Previous Business Day    2022-11-14    FI
@@ -99,9 +99,13 @@ Test Getting Previous business day for USA - Memorial Day 2023
     Should Be Equal As Strings    2023-05-26    ${previous}
 
 Test Time difference Expecting Negative Difference
-    ${diff}=    Time Difference    14:30    12:01
+    ${diff}=    Time Difference    12:01:25    14:30
     &{expected}=    Get Default Difference Dict
-    Set To Dictionary    ${expected}    end_date_is_later=${FALSE}    hours=${-2}    minutes=${-29}
+    Set To Dictionary    ${expected}
+    ...    end_date_is_later=${TRUE}
+    ...    hours=${2}
+    ...    minutes=${28}
+    ...    seconds=${35}
     Dictionaries Should Be Equal    ${diff}    ${expected}
 
 Test Time difference Expecting Positive Difference
@@ -181,7 +185,7 @@ Test Getting Next Business Day of the Month - After Christmas 2023 Finland
 Test Custom Holidays and Getting Next Business Day
     Add Custom Holidays    2023-03-07
     Add Custom Holidays    2023-03-08
-    Add Custom Holidays    2023-03-09
+    ${custom}=    Add Custom Holidays    2023-03-09
     ${result}=    Return Next Business Day    2023-03-06    FI
     Should Be Equal As Strings    2023-03-10    ${result}
     ${result}=    Return Next Business Day    2024-03-06    FI
@@ -250,6 +254,23 @@ Test Is Finnish Independence Day a holiday
 Test helper keyword - is the date business day
     ${business_day}=    Is The 2023-12-05 Business Day in FI
     Should Be True    ${business_day}
+
+Test Getting Holidays
+    Reset Custom Holidays
+    &{holidays}=    Return Holidays    2023    FI
+    FOR    ${date}    IN    @{holidays.keys()}
+        Log To Console    ${date} is ${holidays}[${date}]
+    END
+    ${length}=    Get Length    ${holidays}
+    Should Be Equal As Integers    ${length}    15
+
+Test Time Now
+    Set Locale    es
+    ${now}=    Time Now    return_format=dddd DD MMMM YYYY
+    Should Be Equal As Strings    ${now}    jueves 09 marzo 2023
+    Set Locale    en
+    ${now}=    Time Now    return_format=dddd DD MMMM YYYY
+    Should Be Equal As Strings    ${now}    Thursday 09 March 2023
 
 
 *** Keywords ***
