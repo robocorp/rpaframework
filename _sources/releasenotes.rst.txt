@@ -5,11 +5,17 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- New library **RPA.Calendar** (:pr:`694`):
+
+  - Read library documentation for full list of keywords
+  - Supports holiday and business day related calculations
+
 - Library **RPA.Database**:
 
   - Change how `psycopg2` module handles the ``Call Stored Procedure`` keyword
   - Set on the `autocommit` parameter use with ``Connect To Database`` keyword when using `psycopg2` module
   - Remove **INFO** level logs from ``Connect To Database`` keyword
+
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
