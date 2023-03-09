@@ -8,11 +8,6 @@ on:
       - '.github/workflows/pip.yaml'
   schedule:
     - cron: '0 6 * * *'
-  pull_request:
-    branches:
-      - master
-    paths:
-      - '.github/workflows/pip.yaml'
 
 jobs:
   install_and_check:
@@ -51,16 +46,12 @@ jobs:
           # TODO: run whole test suite here
       - name: create pip freeze file
         run: |
-          # show it in CI log
+          # show freeze file in CI log
           python -m pip freeze
           python -m pip freeze > requirements.txt
-      # - name: check freeze file
-      #   run: |
-      #     python -m pip install pip-audit==2.4.14
-      #     python -m pip_audit -r requirements.txt
+
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
           name: pip_freeze
           path: requirements.txt
-
