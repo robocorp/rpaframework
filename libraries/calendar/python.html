@@ -153,8 +153,739 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="calendar">
-<h2>Calendar<a class="headerlink" href="#calendar" title="Permalink to this heading"></a></h2>
+<div class="section" id="module-RPA.Calendar">
+<span id="calendar"></span><h2>Calendar<a class="headerlink" href="#module-RPA.Calendar" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Calendar.</span></span><span class="sig-name descname"><span class="pre">Calendar</span></span><a class="headerlink" href="#RPA.Calendar.Calendar" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Library for handling different operations for date and time
+handling especially in business days and holiday contexts.</p>
+<p>Utilizing  <a class="reference external" href="https://pypi.org/project/pendulum/">pendulum</a> and
+<a class="reference external" href="https://pypi.org/project/holidays/">holidays</a> packages.</p>
+<p>Library is by default using days from Monday to Friday as business
+days, but that can be changed by giving list of weekdays to
+<code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Business</span> <span class="pre">Days</span></code> keyword. A weekday is given as a integer, the
+0 for Sunday and 6 for Saturday.</p>
+<p>Common country holidays are respected when getting next and previous
+business days, but custom holidays can be added into consideration
+using keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Custom</span> <span class="pre">Holiday</span></code> keyword.</p>
+<p>Some dates containing for example month names in English (en), but the
+locale of the library can be changed with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Locale</span></code> or
+for specific keyword if that has a <code class="docutils literal notranslate"><span class="pre">locale</span></code> parameter.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.ROBOT_AUTO_KEYWORDS">
+<span class="sig-name descname"><span class="pre">ROBOT_AUTO_KEYWORDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#RPA.Calendar.Calendar.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.ROBOT_LIBRARY_DOC_FORMAT">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Calendar.Calendar.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.ROBOT_LIBRARY_SCOPE">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Calendar.Calendar.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.add_custom_holidays">
+<span class="sig-name descname"><span class="pre">add_custom_holidays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.add_custom_holidays" title="Permalink to this definition"></a></dt>
+<dd><p>Add a day or list of days which are considered as holidays
+in addition to country specific holidays when calculating</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>day</strong> – string or list of dates to consider as holidays</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of current custom holidays</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">library</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span>
+<span class="n">custom_holidays</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">add_custom_holidays</span><span class="p">(</span><span class="s2">&quot;2023-03-08&quot;</span><span class="p">)</span>
+<span class="c1"># custom_holidays == [&quot;2023-03-08&quot;]</span>
+<span class="n">custom_holidays</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">add_custom_holidays</span><span class="p">([</span>
+    <span class="s2">&quot;2023-03-09&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-03-10&quot;</span>
+<span class="p">])</span>
+<span class="c1"># custom_holidays == [&quot;2023-03-08&quot;, &quot;2023-03-09&quot;, &quot;2023-03-10&quot;]</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{custom_holidays}=</span><span class="p">   </span><span class="c">Add Custom Holidays</span><span class="p">   </span><span class="c">2023-03-08</span>
+<span class="c"># ${custom_holidays} == [&quot;2023-03-08&quot;]</span>
+<span class="c">@{more_holidays}=</span><span class="p">   </span><span class="c">Create List</span><span class="p">   </span><span class="c">2023-03-09</span><span class="p">   </span><span class="c">2023-03-10</span>
+<span class="c">@{custom_holidays}=</span><span class="p">   </span><span class="c">Add Custom Holidays</span><span class="p">   </span><span class="c">${more_holidays}</span>
+<span class="c"># ${custom_holidays} == [&quot;2023-03-08&quot;, &quot;2023-03-09&quot;, &quot;2023-03-10&quot;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.compare_times">
+<span class="sig-name descname"><span class="pre">compare_times</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.compare_times" title="Permalink to this definition"></a></dt>
+<dd><p>Compares given times and returns <cite>True</cite> if <cite>time2</cite>
+is more recent than <cite>time1</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time1</strong> – first time for comparison</p></li>
+<li><p><strong>time2</strong> – second time for comparison</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if <cite>time2</cite> is more recent than <cite>time1</cite></p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">recent</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">compare_times</span><span class="p">(</span><span class="s2">&quot;2023-03-09 13:02&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-03-09 13:47&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">recent</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2023-03-09 13:47 is more recent&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${recent}=</span><span class="p">  </span><span class="c">Compare Times</span><span class="p">   </span><span class="c">2023-03-09 13:02</span><span class="p">   </span><span class="c">2023-03-09 13:47</span>
+<span class="c">IF</span><span class="p">  </span><span class="c">${recent}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">2023-03-09 13:47 is more recent</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.create_time">
+<span class="sig-name descname"><span class="pre">create_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_format_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_format_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">DateTime</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.create_time" title="Permalink to this definition"></a></dt>
+<dd><p>This keyword tries to construct valid calendar
+instance from given date string and its expected date
+format.</p>
+<p>See <a class="reference external" href="https://pendulum.eustace.io/docs/#tokens">https://pendulum.eustace.io/docs/#tokens</a> for
+valid tokens for the date format. Tokens are
+used to form correct date and time format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_string</strong> – for example. “22 May 19”</p></li>
+<li><p><strong>date_format</strong> – for example. “DD MMM YY”</p></li>
+<li><p><strong>timezone</strong> – default timezone is “UTC”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>set datetime as an object or string
+if <cite>date_format_out</cite> has been set</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">date</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">create_time</span><span class="p">(</span>
+    <span class="s2">&quot;22 May 19&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DD MMM YY&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${date}=</span><span class="p">  </span><span class="c">Create Time</span>
+<span class="c">...</span><span class="p">  </span><span class="c">22 May 19</span>
+<span class="c">...</span><span class="p">  </span><span class="c">DD MMM YY</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.first_business_day_of_the_month">
+<span class="sig-name descname"><span class="pre">first_business_day_of_the_month</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.first_business_day_of_the_month" title="Permalink to this definition"></a></dt>
+<dd><p>Return first business day of the month.</p>
+<p>If <cite>country</cite> is not given then holidays are not considered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – date describing the month</p></li>
+<li><p><strong>country</strong> – country code, default <cite>None</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>first business of the month</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">first_day</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">first_business_day_of_the_month</span><span class="p">(</span><span class="s2">&quot;2024-06-01&quot;</span><span class="p">)</span>
+<span class="c1"># first_day == &quot;2024-06-03&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${first_day}=</span><span class="p">  </span><span class="c">First Business Day of the Month</span><span class="p">  </span><span class="c">2024-06-01</span>
+<span class="c"># ${first_day} == &quot;2024-06-03&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.get_iso_calendar">
+<span class="sig-name descname"><span class="pre">get_iso_calendar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.get_iso_calendar" title="Permalink to this definition"></a></dt>
+<dd><p>Get ISO calendar information for the given date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>ISO calendar object containing year, week number and weekday.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iso_cal</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">get_iso_calendar</span><span class="p">(</span><span class="s2">&quot;2023-03-09&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">iso_cal</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">iso_cal</span><span class="o">.</span><span class="n">week</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">iso_cal</span><span class="o">.</span><span class="n">weekday</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${iso_cal}=</span><span class="p">  </span><span class="c">Get ISO Calendar</span><span class="p">  </span><span class="c">2023-03-09</span>
+<span class="c">${iso_year}=</span><span class="p">  </span><span class="c">Set Variable</span><span class="p">  </span><span class="c">${iso_cal.year}</span>
+<span class="c">${iso_week}=</span><span class="p">  </span><span class="c">Set Variable</span><span class="p">  </span><span class="c">${iso_cal.week}</span>
+<span class="c">${iso_weekday}=</span><span class="p">  </span><span class="c">Set Variable</span><span class="p">  </span><span class="c">${iso_cal.weekday}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.is_the_date_business_day">
+<span class="sig-name descname"><span class="pre">is_the_date_business_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.is_the_date_business_day" title="Permalink to this definition"></a></dt>
+<dd><p>Is the date a business day in a country.</p>
+<p>If <cite>country</cite> is not given then holidays are not considered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – input date</p></li>
+<li><p><strong>country</strong> – country code, default <cite>None</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if the day is a business day, <cite>False</cite> if not</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;2023-1-</span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">is_business_day</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">is_the_date_business_day</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;FI&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_business_day</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;It is time for the work on </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;It is time to relax on </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">FOR</span><span class="p">  </span><span class="c">${day}</span><span class="p">  </span><span class="c">IN RANGE</span><span class="p">  </span><span class="c">1</span><span class="p">  </span><span class="c">32</span>
+<span class="p">    </span><span class="c">${date}=</span><span class="p">   </span><span class="c">Set Variable</span><span class="p">   </span><span class="c">2023-1-${day}</span>
+<span class="p">    </span><span class="c">${is_business_day}=</span><span class="p">   </span><span class="c">Is the date business day</span><span class="p">  </span><span class="c">${date}</span><span class="p">  </span><span class="c">FI</span>
+<span class="p">    </span><span class="c">IF</span><span class="p">   </span><span class="c">${is_business_day}</span>
+<span class="p">        </span><span class="c">Log To Console</span><span class="p">   </span><span class="c">It is time for the work on ${date}</span>
+<span class="p">    </span><span class="c">ELSE</span>
+<span class="p">        </span><span class="c">Log To Console</span><span class="p">   </span><span class="c">It is time to relax on ${date}</span>
+<span class="p">    </span><span class="c">END</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.is_the_date_holiday">
+<span class="sig-name descname"><span class="pre">is_the_date_holiday</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.is_the_date_holiday" title="Permalink to this definition"></a></dt>
+<dd><p>Is the date a holiday in a country.
+If <cite>country</cite> is not given then checks only if date is in custom holiday list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_in</strong> – input date</p></li>
+<li><p><strong>country</strong> – country code, default <cite>None</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if the day is a holiday, <cite>False</cite> if not</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">is_holiday</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">is_the_date_holiday</span><span class="p">(</span><span class="s2">&quot;2022-12-26&quot;</span><span class="p">,</span> <span class="s2">&quot;FI&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">is_holiday</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time to relax&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time for the work&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${is_holiday}=</span><span class="p">   </span><span class="c">Is the date holiday</span><span class="p">   </span><span class="c">2022-12-26</span><span class="p">   </span><span class="c">FI</span>
+<span class="c">IF</span><span class="p">   </span><span class="c">${is_holiday}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">Time to relax</span>
+<span class="c">ELSE</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">Time for the work</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.last_business_day_of_the_month">
+<span class="sig-name descname"><span class="pre">last_business_day_of_the_month</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.last_business_day_of_the_month" title="Permalink to this definition"></a></dt>
+<dd><p>Return last business day of the month.</p>
+<p>If <cite>country</cite> is not given then holidays are not considered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – date describing the month</p></li>
+<li><p><strong>country</strong> – country code, default <cite>None</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>last business day of the month</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">last_day</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">last_business_day_of_the_month</span><span class="p">(</span><span class="s2">&quot;2023-12-01&quot;</span><span class="p">)</span>
+<span class="c1"># last_day == &quot;2023-12-29&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${last_day}=</span><span class="p">  </span><span class="c">Last Business Day of the Month</span><span class="p">  </span><span class="c">2023-12-01</span>
+<span class="c"># ${last_day} == &quot;2023-12-29&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.reset_custom_holidays">
+<span class="sig-name descname"><span class="pre">reset_custom_holidays</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.reset_custom_holidays" title="Permalink to this definition"></a></dt>
+<dd><p>Reset custom holiday list into empty list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.return_holidays">
+<span class="sig-name descname"><span class="pre">return_holidays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.return_holidays" title="Permalink to this definition"></a></dt>
+<dd><p>Return holidays for a country. If country is not given
+then only custom holidays are returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>years</strong> – single year or list of years to list holidays for</p></li>
+<li><p><strong>country</strong> – country code, default <cite>None</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>holidays in a dictionary, the key is the date and the
+value is name of the holiday</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">holidays</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">return_holidays</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="s2">&quot;FI&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">date</span><span class="p">,</span> <span class="n">holiday_name</span> <span class="ow">in</span> <span class="n">holidays</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">holiday_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{holidays}=</span><span class="p">  </span><span class="c">Return Holidays</span><span class="p">  </span><span class="c">2023</span><span class="p">  </span><span class="c">FI</span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${date}</span><span class="p">  </span><span class="c">IN</span><span class="p">   </span><span class="c">@{holidays.keys()}</span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">   </span><span class="c">${date} is ${holidays}[${date}]</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.return_next_business_day">
+<span class="sig-name descname"><span class="pre">return_next_business_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'YYYY-MM-DD'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.return_next_business_day" title="Permalink to this definition"></a></dt>
+<dd><p>Return the next business day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – day of origin</p></li>
+<li><p><strong>country</strong> – country code, default <cite>None</cite></p></li>
+<li><p><strong>return_format</strong> – dates can be formatted for the resulting
+list, defaults to “YYYY-MM-DD”</p></li>
+<li><p><strong>locale</strong> – name of the locale</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the next business day from day of origin</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">next_business</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">return_next_business_day</span><span class="p">(</span><span class="s2">&quot;2023-01-05&quot;</span><span class="p">,</span> <span class="s2">&quot;FI&quot;</span><span class="p">)</span>
+<span class="c1"># next_business == &quot;2023-01-09&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${next_business}=</span><span class="p">  </span><span class="c">Return Next Business Day</span><span class="p">  </span><span class="c">2023-01-05</span><span class="p">  </span><span class="c">FI</span>
+<span class="c"># ${next_business} == &quot;2023-01-09&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.return_previous_business_day">
+<span class="sig-name descname"><span class="pre">return_previous_business_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'YYYY-MM-DD'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.return_previous_business_day" title="Permalink to this definition"></a></dt>
+<dd><p>Return the previous business day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – day of origin</p></li>
+<li><p><strong>country</strong> – country code, default <cite>None</cite></p></li>
+<li><p><strong>return_format</strong> – dates can be formatted for the resulting
+list, defaults to “YYYY-MM-DD”</p></li>
+<li><p><strong>locale</strong> – name of the locale</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the previous business day from day of origin</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prev_business</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">return_previous_business_day</span><span class="p">(</span><span class="s2">&quot;2023-01-09&quot;</span><span class="p">,</span> <span class="s2">&quot;FI&quot;</span><span class="p">)</span>
+<span class="c1"># prev == &quot;2023-01-05&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${previous_business}=</span><span class="p">  </span><span class="c">Return Previous Business Day</span><span class="p">  </span><span class="c">2023-01-09</span><span class="p">  </span><span class="c">FI</span>
+<span class="c"># ${previous_business} == &quot;2023-01-05&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.set_business_days">
+<span class="sig-name descname"><span class="pre">set_business_days</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.set_business_days" title="Permalink to this definition"></a></dt>
+<dd><p>Set weekdays which are considered as business days
+for calculating previous and next business day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>days</strong> – list of integers denoting weekdays</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>previous list of weekdays</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set 4 day work week</span>
+<span class="n">previous</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">set_business_days</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="c1"># previous == [1,2,3,4,5]</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{4days}=</span><span class="p">   </span><span class="c">Create List</span><span class="p">   </span><span class="c">1</span><span class="p">  </span><span class="c">2</span><span class="p">  </span><span class="c">3</span><span class="p">  </span><span class="c">4</span>
+<span class="c">@{previous}=</span><span class="p">    </span><span class="c">Set Business Days</span><span class="p">  </span><span class="c">${days}</span>
+<span class="c"># ${previous} == [1,2,3,4,5]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.set_locale">
+<span class="sig-name descname"><span class="pre">set_locale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locale_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.set_locale" title="Permalink to this definition"></a></dt>
+<dd><p>Set locale globally for the library</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locale_name</strong> – name of the locale</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>name of the previous locale</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">library</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span>
+<span class="n">library</span><span class="o">.</span><span class="n">set_locale</span><span class="p">(</span><span class="s2">&quot;es&quot;</span><span class="p">)</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">time_now</span><span class="p">(</span><span class="n">return_format</span><span class="o">=</span><span class="s2">&quot;dddd DD MMMM YYYY&quot;</span><span class="p">)</span>
+<span class="c1"># now == &quot;jueves 09 marzo 2023&quot;</span>
+<span class="n">library</span><span class="o">.</span><span class="n">set_locale</span><span class="p">(</span><span class="s2">&quot;en&quot;</span><span class="p">)</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">time_now</span><span class="p">(</span><span class="n">return_format</span><span class="o">=</span><span class="s2">&quot;dddd DD MMMM YYYY&quot;</span><span class="p">)</span>
+<span class="c1"># now == &quot;Thursday 09 March 2023&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set Locale</span><span class="p">   </span><span class="c">es</span>
+<span class="c">${now}=</span><span class="p">  </span><span class="c">Time Now</span><span class="p">  </span><span class="c">return_format=dddd DD MMMM YYYY</span>
+<span class="c"># ${now} == &quot;jueves 09 marzo 2023&quot;</span>
+<span class="c">Set Locale</span><span class="p">   </span><span class="c">en</span>
+<span class="c">${now}=</span><span class="p">  </span><span class="c">Time Now</span><span class="p">  </span><span class="c">return_format=dddd DD MMMM YYYY</span>
+<span class="c"># ${now} == &quot;Thursday 09 March 2023&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.sort_list_of_dates">
+<span class="sig-name descname"><span class="pre">sort_list_of_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.sort_list_of_dates" title="Permalink to this definition"></a></dt>
+<dd><p>Sort list of dates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dates</strong> – list of dates to sort</p></li>
+<li><p><strong>return_format</strong> – dates can be formatted for the resulting
+list</p></li>
+<li><p><strong>reverse</strong> – <cite>True</cite> return latest to oldest, defaults to <cite>False</cite>,
+which means order from oldest to latest</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of sorted dates</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">datelist</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;2023-07-02 12:02:31&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2023-07-03 12:02:35&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2023-07-03 12:02:31&quot;</span>
+<span class="p">]</span>
+<span class="nb">sorted</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">sort_list_of_dates</span><span class="p">(</span><span class="n">datelist</span><span class="p">)</span>
+<span class="c1"># sorted[0] == &quot;2023-07-03 12:02:35&quot;</span>
+<span class="c1"># sorted[-1] == &quot;2023-07-02 12:02:31&quot;</span>
+<span class="nb">sorted</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">sort_list_of_dates</span><span class="p">(</span><span class="n">datelist</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># sorted[0] == &quot;2023-07-02 12:02:31&quot;</span>
+<span class="c1"># sorted[-1] == &quot;2023-07-03 12:02:35&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{datelist}=</span><span class="p">  </span><span class="c">Create List</span>
+<span class="c">...</span><span class="p">   </span><span class="c">2023-07-02 12:02:31</span>
+<span class="c">...</span><span class="p">   </span><span class="c">2023-07-03 12:02:35</span>
+<span class="c">...</span><span class="p">   </span><span class="c">2023-07-03 12:02:31</span>
+<span class="c">${sorted}=</span><span class="p">  </span><span class="c">Sort List Of Dates</span><span class="p">   </span><span class="c">${datelist}</span>
+<span class="c"># ${sorted}[0] == &quot;2023-07-03 12:02:35&quot;</span>
+<span class="c"># ${sorted}[-1] == &quot;2023-07-02 12:02:31&quot;</span>
+<span class="c">${sorted}=</span><span class="p">  </span><span class="c">Sort List Of Dates</span><span class="p">   </span><span class="c">${datelist}</span><span class="p">  </span><span class="c">reverse=True</span>
+<span class="c"># ${sorted}[0] == &quot;2023-07-02 12:02:31&quot;</span>
+<span class="c"># ${sorted}[-1] == &quot;2023-07-03 12:02:35&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.time_difference">
+<span class="sig-name descname"><span class="pre">time_difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.time_difference" title="Permalink to this definition"></a></dt>
+<dd><p>Compare 2 dates and get the time difference.</p>
+<p>Returned dictionary contains following properties:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>end_date_is_later, <cite>True</cite> if end_date is more recent
+than start_date, otherwise <cite>False</cite></p></li>
+<li><p>years, time difference in years</p></li>
+<li><p>months, time difference in months</p></li>
+<li><p>days, time difference in days</p></li>
+<li><p>hours, time difference in hours (in addition to the days)</p></li>
+<li><p>minutes, time difference in minutes (in addition to the hours)</p></li>
+<li><p>seconds, time difference in seconds (in addition to the minutes)</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> – starting date for the comparison</p></li>
+<li><p><strong>end_date</strong> – ending date for the comparison</p></li>
+<li><p><strong>start_timezone</strong> – timezone for the starting date, defaults to None</p></li>
+<li><p><strong>end_timezone</strong> – timezone for the ending date, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary containing comparison result</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">time_difference</span><span class="p">(</span>
+    <span class="s2">&quot;1975-05-22T18:00:00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;1975-05-22T22:45:30&quot;</span>
+<span class="p">)</span>
+<span class="c1"># diff[&#39;end_date_is_later&#39;] == True</span>
+<span class="c1"># diff[&#39;days&#39;] == 0</span>
+<span class="c1"># diff[&#39;hours&#39;] == 4</span>
+<span class="c1"># diff[&#39;minutes&#39;] == 45</span>
+<span class="c1"># diff[&#39;seconds&#39;] == 30</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{diff}=</span><span class="p">    </span><span class="c">Time Difference</span><span class="p">  </span><span class="c">1975-05-22T18:00:00</span><span class="p">  </span><span class="c">1975-05-22T22:45:30</span>
+<span class="c"># ${diff}[end_date_is_later] == True</span>
+<span class="c"># ${diff}[days] == 0</span>
+<span class="c"># ${diff}[hours] == 4</span>
+<span class="c"># ${diff}[minutes] == 45</span>
+<span class="c"># ${diff}[seconds] == 30</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.time_difference_between_timezones">
+<span class="sig-name descname"><span class="pre">time_difference_between_timezones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.time_difference_between_timezones" title="Permalink to this definition"></a></dt>
+<dd><p>Return the hour difference between timezones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_timezone</strong> – first timezone</p></li>
+<li><p><strong>end_timezone</strong> – second timezone</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>hour difference between the timezones</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">time_difference_between_timezones</span><span class="p">(</span>
+    <span class="s2">&quot;America/New_York&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Europe/Helsinki&quot;</span>
+<span class="p">)</span>
+<span class="c1"># diff == 7</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${diff}=</span><span class="p">  </span><span class="c">Time Difference Between Timezones</span>
+<span class="c">...</span><span class="p">  </span><span class="c">America/New_York</span>
+<span class="c">...</span><span class="p">  </span><span class="c">Europe/Helsinki</span>
+<span class="c"># ${diff} == 7</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.time_difference_in_days">
+<span class="sig-name descname"><span class="pre">time_difference_in_days</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.time_difference_in_days" title="Permalink to this definition"></a></dt>
+<dd><p>Return the time difference of dates in days.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> – the start date</p></li>
+<li><p><strong>end_date</strong> – the end date</p></li>
+<li><p><strong>start_timezone</strong> – timezone for the start date,
+defaults to None</p></li>
+<li><p><strong>end_timezone</strong> – timezone for the end date,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>difference in days</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">time_difference_in_days</span><span class="p">(</span>
+    <span class="s2">&quot;2023-05-21&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2023-05-29&quot;</span>
+<span class="p">)</span>
+<span class="c1"># diff == 8</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${diff}=</span><span class="p">  </span><span class="c">Time Difference In Days</span>
+<span class="c">...</span><span class="p">  </span><span class="c">2023-05-21</span>
+<span class="c">...</span><span class="p">  </span><span class="c">2023-05-29</span>
+<span class="c"># ${diff} == 8</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.time_difference_in_hours">
+<span class="sig-name descname"><span class="pre">time_difference_in_hours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.time_difference_in_hours" title="Permalink to this definition"></a></dt>
+<dd><p>Return the time difference of dates in hours.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> – the start date</p></li>
+<li><p><strong>end_date</strong> – the end date</p></li>
+<li><p><strong>start_timezone</strong> – timezone for the start date,
+defaults to None</p></li>
+<li><p><strong>end_timezone</strong> – timezone for the end date,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>difference in hours</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">time_difference_in_hours</span><span class="p">(</span>
+    <span class="s2">&quot;2023-08-21T22:00:00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2023-08-22T04:00:00&quot;</span>
+<span class="p">)</span>
+<span class="c1"># diff == 6</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${diff}=</span><span class="p">  </span><span class="c">Time Difference In Hours</span>
+<span class="c">...</span><span class="p">  </span><span class="c">2023-08-21T22:00:00</span>
+<span class="c">...</span><span class="p">  </span><span class="c">2023-08-22T04:00:00</span>
+<span class="c"># ${diff} == 6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.time_difference_in_minutes">
+<span class="sig-name descname"><span class="pre">time_difference_in_minutes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.time_difference_in_minutes" title="Permalink to this definition"></a></dt>
+<dd><p>Return the time difference of dates in minutes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> – the start date</p></li>
+<li><p><strong>end_date</strong> – the end date</p></li>
+<li><p><strong>start_timezone</strong> – timezone for the start date,
+defaults to None</p></li>
+<li><p><strong>end_timezone</strong> – timezone for the end date,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>difference in minutes</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">time_difference_in_minutes</span><span class="p">(</span>
+    <span class="s2">&quot;12:30&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;16:35&quot;</span>
+<span class="p">)</span>
+<span class="c1"># diff == 245</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${diff}=</span><span class="p">  </span><span class="c">Time Difference In Minutes</span>
+<span class="c">...</span><span class="p">  </span><span class="c">12:30</span>
+<span class="c">...</span><span class="p">  </span><span class="c">16:35</span>
+<span class="c"># ${diff} == 245</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.time_difference_in_months">
+<span class="sig-name descname"><span class="pre">time_difference_in_months</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DateTime</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Calendar.Calendar.time_difference_in_months" title="Permalink to this definition"></a></dt>
+<dd><p>Return time difference of dates in months.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> – the start date</p></li>
+<li><p><strong>end_date</strong> – the end date</p></li>
+<li><p><strong>start_timezone</strong> – timezone for the start date,
+defaults to None</p></li>
+<li><p><strong>end_timezone</strong> – timezone for the end date,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>difference in months</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">time_difference_in_months</span><span class="p">(</span>
+    <span class="s2">&quot;2022-05-21T22:00:00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;2023-08-21T22:00:00&quot;</span>
+<span class="p">)</span>
+<span class="c1"># diff == 15</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${diff}=</span><span class="p">  </span><span class="c">Time Difference In Months</span>
+<span class="c">...</span><span class="p">  </span><span class="c">2022-05-21T22:00:00</span>
+<span class="c">...</span><span class="p">  </span><span class="c">2023-08-21T22:00:00</span>
+<span class="c"># ${diff} == 15</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Calendar.Calendar.time_now">
+<span class="sig-name descname"><span class="pre">time_now</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'YYYY-MM-DD'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DateTime</span></span></span><a class="headerlink" href="#RPA.Calendar.Calendar.time_now" title="Permalink to this definition"></a></dt>
+<dd><p>Return current date and time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timezone</strong> – optional, for example. “America/Boston”</p></li>
+<li><p><strong>return_format</strong> – dates can be formatted for the resulting
+list, defaults to “YYYY-MM-DD”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>current datetime as an object</p>
+</dd>
+</dl>
+<p>Example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">now</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">()</span><span class="o">.</span><span class="n">time_now</span><span class="p">(</span><span class="s2">&quot;Europe/Helsinki&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${now}=</span><span class="p">  </span><span class="c">Time Now</span><span class="p">   </span><span class="c">Europe/Helsinki</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
