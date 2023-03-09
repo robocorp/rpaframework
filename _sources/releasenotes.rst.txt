@@ -5,6 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Database**:
+
+  - Change how `psycopg2` module handles the ``Call Stored Procedure`` keyword
+  - Set on the `autocommit` parameter use with ``Connect To Database`` keyword when using `psycopg2` module
+  - Remove **INFO** level logs from ``Connect To Database`` keyword
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -20,7 +26,7 @@ Release notes
         - Add ``Open Row`` and ``Close Row`` keywords. Used to layout elements into rows.
         - Add ``Open Column`` and ``Close Column`` keywords. Used to layout elements into columns.
         - Add ``Open Navbar`` and ``Close Navbar`` keywords. Can be used to create an always visible top bar for a dialog.
-        
+
         - Add ``Open Stack`` and ``Close Stack`` keywords. Can be used to position elements manually.
         - Add ``Open Container`` and ``Close Container`` keywords. Useful for styling or placing single elements.
 
