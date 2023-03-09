@@ -16,7 +16,7 @@ Release notes
   - Set on the `autocommit` parameter use with ``Connect To Database`` keyword when using `psycopg2` module
   - Remove **INFO** level logs from ``Connect To Database`` keyword
 
-- Library **RPA.Outlook.Application** (:pr:`694`):
+- Library **RPA.Outlook.Application** (:pr:`878`):
 
   - Add possibility set **CC** and **BCC** recipients with ``Send Email`` and ``Send Message`` keywords
 
