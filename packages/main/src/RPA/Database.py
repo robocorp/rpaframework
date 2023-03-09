@@ -410,7 +410,7 @@ class Database:
         params = params or []
         cur = None
         try:
-            if self.db_api_module_name in ("cx_Oracle", "oracledb"):
+            if self.db_api_module_name in ("cx_Oracle", "oracledb", "psycopg2"):
                 cur = self._dbconnection.cursor()
             else:
                 cur = self._dbconnection.cursor(as_dict=False)
