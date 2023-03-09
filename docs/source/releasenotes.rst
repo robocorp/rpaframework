@@ -5,6 +5,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+22.2.0 - 09 Mar 2023
+--------------------
+
 - New library **RPA.Calendar** (:pr:`694`):
 
   - Read library documentation for full list of keywords
@@ -20,8 +27,6 @@ Release notes
 
   - Add possibility set **CC** and **BCC** recipients with ``Send Email`` and ``Send Message`` keywords
 
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 08 Mar 2023
 -----------
