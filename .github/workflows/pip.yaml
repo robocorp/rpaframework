@@ -62,6 +62,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
-          name: pip_freeze
+          name: pip_freeze_${{ matrix.python-version }}_${{ matrix.pip-version }}.txt
           path: requirements.txt
 
