@@ -6,7 +6,7 @@ import time
 from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
-from typing import Any, List
+from typing import Any, List, Union, Optional
 
 from RPA.Email.common import counter_duplicate_path
 
@@ -158,12 +158,14 @@ class Application:
 
     def send_message(
         self,
-        recipients: Any,
+        recipients: Union[str, List[str]],
         subject: str,
         body: str,
         html_body: bool = False,
-        attachments: Any = None,
+        attachments: Optional[Union[str, List[str]]] = None,
         save_as_draft: bool = False,
+        cc_recipients: Optional[Union[str, List[str]]] = None,
+        bcc_recipients: Optional[Union[str, List[str]]] = None,
     ) -> bool:
         """Send message with Outlook
 
@@ -182,17 +184,26 @@ class Application:
             "Use 'Send Email' instead."
         )
         return self.send_email(
-            recipients, subject, body, html_body, attachments, save_as_draft
+            recipients,
+            subject,
+            body,
+            html_body,
+            attachments,
+            save_as_draft,
+            cc_recipients,
+            bcc_recipients,
         )
 
     def send_email(
         self,
-        recipients: Any,
+        recipients: Union[str, List[str]],
         subject: str,
         body: str,
         html_body: bool = False,
-        attachments: Any = None,
+        attachments: Optional[Union[str, List[str]]] = None,
         save_as_draft: bool = False,
+        cc_recipients: Optional[Union[str, List[str]]] = None,
+        bcc_recipients: Optional[Union[str, List[str]]] = None,
     ) -> bool:
         """Send email with Outlook
 
@@ -202,31 +213,46 @@ class Application:
         :param html_body: True if body contains HTML, defaults to False
         :param attachments: list of filepaths to include in the email, defaults to []
         :param save_as_draft: email is saved as draft when `True`
+        :param cc_recipients: list of addresses for CC field, default None
+        :param bcc_recipients: list of addresses for BCC field, default None
         :return: `True` if there were no errors
 
         Example:
 
+        .. code-block:: python
+
+            library = Outlook()
+            library.open_application()
+            cc_recipients = ["recipient3@domain.com","recipient4@domain.com"]
+            library.send_email(
+                recipients="recipient1@domain.com",
+                cc_recipients=cc_recipients,
+                bcc_recipients="recipient3@domain.com;recipient4@domain.com",
+                subject="hello from Outlook",
+                body="empty body",
+                attachments=os.path.join(os.path.curdir, "example.xslx")
+            )
+
         .. code-block:: robotframework
 
+            ${cc}=  Create List   recipient3@domain.com   recipient4@domain.com
             Send Email
-            ...    recipients=robocorp.tester@gmail.com
+            ...    recipients=recipient1@domain.com
+            ...    cc_repients=${cc}
+            ...    bcc_repients=recipient5@domain.com;recipient6@domain.com
             ...    subject=hello from Outlook
             ...    body=empty body
             ...    attachments=${CURDIR}${/}example.xlsx
         """
         # pylint: disable=no-member
         attachments = attachments or []
-        if not isinstance(recipients, list):
-            recipients = recipients.split(",")
         if not isinstance(attachments, list):
-            attachments = str(attachments).split(",")
-
-        mailto = ";".join(recipients)
+            attachments = str(attachments).split(";")
 
         try:
             mail = self.app.CreateItem(0)
-            mail.To = mailto
             mail.Subject = subject
+            self._add_all_recipients(mail, recipients, cc_recipients, bcc_recipients)
 
             if html_body:
                 mail.HTMLBody = body
@@ -247,6 +273,22 @@ class Application:
             )
             return False
         return True
+
+    def _add_all_recipients(self, email, recipients, cc_recipients, bcc_recipients):
+        if isinstance(recipients, list):
+            email.To = ";".join(recipients)
+        else:
+            email.To = recipients
+        if cc_recipients:
+            if isinstance(cc_recipients, list):
+                email.CC = ";".join(cc_recipients)
+            else:
+                email.CC = cc_recipients
+        if bcc_recipients:
+            if isinstance(bcc_recipients, list):
+                email.BCC = ";".join(bcc_recipients)
+            else:
+                email.BCC = bcc_recipients
 
     def _add_attachments(self, email, attachments):
         for attachment in attachments:
