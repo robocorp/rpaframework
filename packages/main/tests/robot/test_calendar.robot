@@ -265,12 +265,18 @@ Test Getting Holidays
     Should Be Equal As Integers    ${length}    15
 
 Test Time Now
+    ${freezer} =    Evaluate    freezegun.freeze_time("2023-03-09")     modules=freezegun
+    Evaluate    $freezer.start()
+
     Set Locale    es
     ${now}=    Time Now    return_format=dddd DD MMMM YYYY
     Should Be Equal As Strings    ${now}    jueves 09 marzo 2023
+
     Set Locale    en
     ${now}=    Time Now    return_format=dddd DD MMMM YYYY
     Should Be Equal As Strings    ${now}    Thursday 09 March 2023
+
+    [Teardown]      Evaluate    $freezer.stop()
 
 
 *** Keywords ***
