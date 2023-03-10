@@ -2093,13 +2093,56 @@ class Selenium(SeleniumLibrary):
         """Set browser download directory.
 
         Works with ``Open Available Browser``, ``Open Chrome Browser`` and
-        ``Open Headless Chrome Browser`` keywords.
+        ``Open Headless Chrome Browser`` keywords (mainly with Chromium-based
+        browsers).
 
-        :param directory: Target directory for downloads, defaults to `None` which
+        If the downloading doesn't work (file is not found on disk), try using the
+        browser in non-headless (headful) mode when opening it. (`headless=${False}`)
+
+        :param directory: Target directory for downloads, defaults to `None`, which
             means that this setting is removed.
         :param download_pdf: A PDF file pointed by the URL is downloaded instead of
-            shown within browser's internal viewer when this is set to `True`. (enabled
-            by default)
+            being shown within browser's internal viewer when this is set to `True`.
+            (enabled by default)
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library     RPA.Browser.Selenium
+            Library     RPA.FileSystem
+
+            *** Tasks ***
+            Download PDF in custom directory
+                Set Download Directory    ${OUTPUT_DIR}
+                ${file_name} =   Set Variable    Robocorp-EULA-v1.0.pdf
+                Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
+                ...    headless=${False}  # to enable PDF downloading
+                @{files} =    List Files In Directory    ${OUTPUT_DIR}
+                Log List    ${files}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Browser.Selenium import Selenium
+            from RPA.FileSystem import FileSystem
+
+            selenium = Selenium()
+            file_system = FileSystem()
+
+            OUTPUT_DIR = "output"
+
+            def download_pdf_in_custom_directory():
+                selenium.set_download_directory(OUTPUT_DIR)
+                file_name = "Robocorp-EULA-v1.0.pdf"
+                selenium.open_available_browser(
+                    f"https://cdn.robocorp.com/legal/{file_name}", headless=False
+                )
+                files = file_system.list_files_in_directory(OUTPUT_DIR)
+                for file_path in files:
+                    print(file_path)
         """
         if directory is None:
             self.logger.info("Download directory set back to browser default setting")
