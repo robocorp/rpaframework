@@ -1,8 +1,9 @@
-from typing import Any, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
+from typing_extensions import Literal
 from RPA.core.types import is_list_like  # type: ignore
 
-from RPA.Assistant.types import Element, Options
+from RPA.Assistant.types import Element, Location, Options
 
 
 def to_options(
@@ -67,3 +68,52 @@ def is_input(element: Element) -> bool:
 def is_submit(element: Element) -> bool:
     """Check if an element is a submit button."""
     return element["type"] == "submit"
+
+
+def location_to_absolute(
+    location: Union[Location, Tuple[int, int], None],
+    parent_width: float,
+    parent_height: float,
+    element_width: Optional[float],
+    element_height: Optional[float],
+) -> Dict[Literal["left", "top", "bottom", "right"], float]:
+    """Calculates and returns absolute version of elements relative position as left or
+    right and bottom or top keys in dictionary.
+    """
+    if isinstance(location, tuple):
+        return {"left": location[0], "top": location[1]}
+
+    if location in [
+        Location.TopCenter,
+        Location.BottomCenter,
+        Location.CenterLeft,
+        Location.CenterRight,
+        Location.Center,
+    ]:
+        if element_height is None or element_width is None:
+            raise ValueError(
+                "Cannot determine centered position without static width and height"
+            )
+        half_height = (parent_height / 2) - (element_height / 2)
+        half_width = (parent_width / 2) - (element_width / 2)
+    else:
+        half_height, half_width = -1, -1
+
+    coordinates: Dict[
+        Location, Dict[Literal["left", "top", "bottom", "right"], float]
+    ] = {
+        Location.TopLeft: {"left": 0, "top": 0},
+        Location.TopCenter: {"left": half_width, "top": 0},
+        Location.TopRight: {"right": 0, "top": 0},
+        Location.CenterLeft: {"left": 0, "top": half_height},
+        Location.Center: {"left": half_width, "top": half_height},
+        Location.CenterRight: {"right": 0, "top": half_width},
+        Location.BottomLeft: {"left": 0, "bottom": 0},
+        Location.BottomCenter: {"left": half_width, "bottom": 0},
+        Location.BottomRight: {"right": 0, "bottom": 0},
+    }
+
+    if isinstance(location, Location):
+        return coordinates[location]
+    else:
+        raise ValueError(f"Invalid location {location}")

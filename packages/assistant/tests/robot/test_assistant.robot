@@ -8,6 +8,7 @@ Library     ExecutionContexts.py
 *** Test Cases ***
 Main
     [Tags]    skip
+
     Control Buttons
     ${results}=    Ask User    location=TopLeft
 
@@ -65,15 +66,37 @@ Open Website
     Set Log Level    TRACE
     Open Available Browser    robocorp.com
 
+Stack Testing Ui
+    Clear Dialog
+    Open Stack    width=360    height=360
+
+    Open Container    width=64    height=64    location=Center
+    Add Text    center
+    Close Container
+
+    Open Container    width=64    height=64    location=TopRight
+    Add Text    top right
+    Close Container
+
+    Open Container    width=64    height=64    location=TopLeft
+    Add Text    bottom right
+    Close Container
+
+    Close Stack
+    Refresh Dialog
+
 Control Buttons
     Add Heading    UI elements for testing
     Add Slider    name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
+    Add Flet Icon    icon_name=check_circle_rounded    color=FF00FF    size=48
 
     Add Heading    good buttons
+    Add Button    Set title    Set Title    testing_title
     Add Button    log button    Log    test_string
     Add Button    print button    Log To Console    test_string
     Add Button    open browser    Open Website
     Add Button    close browser    Close Browser
+    Add Button    stack ui    Stack Testing Ui
 
     Add Button    process_button    Dummy Process
     Add Button    print with python    Print With Python Subprocess

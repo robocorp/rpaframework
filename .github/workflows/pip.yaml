@@ -16,9 +16,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
-        python-version: [3.7, 3.8, 3.9.13, 3.10.6]
-        pip-version: [20.3.3, 21.3.1, 22.0.4, 22.1.2]
+        os: ["ubuntu-latest"]
+        python-version: [3.7, 3.9.13, 3.10.6] #dropped: 3.8
+        pip-version: [21.3.1, 22.3.0, 23.0.1] #dropped: 20.3.4
+        # test the latest recommended on macos and windows, and other pip versions and pythons on ubuntu for speed
+        # adding macos and windows to the matrix adds a bunch of running and delay because of mac and windows
+        # runners being slower to allocate
+        include:
+          - os: macos-latest
+            python-version: "3.9"
+            pip-version: "22.3.0"
+          - os: windows-latest
+            python-version: "3.9"
+            pip-version: "22.3.0"
     steps:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -28,11 +38,20 @@ jobs:
         run: python -m pip install --force-reinstall pip==${{matrix.pip-version}} wheel
       - name: install rpafw
         run: |
-          python -m pip install rpaframework-recognition robotframework-browser
-          python -m pip install rpaframework-aws
-          python -m pip install rpaframework-google
+          python -m pip install rpaframework-recognition robotframework-browser rpaframework-aws rpaframework-google rpaframework-assistant rpaframework-openai rpaframework-recognition rpaframework-windows
       - name: test install is correct
         run: |
           python -m pip check
           python -c "import RPA"
           # TODO: run whole test suite here
+      - name: create pip freeze file
+        run: |
+          # show freeze file in CI log
+          python -m pip freeze
+          python -m pip freeze > requirements.txt
+
+      - uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: pip_freeze
+          path: requirements.txt
