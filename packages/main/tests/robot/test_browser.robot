@@ -4,7 +4,7 @@ Library             RPA.Browser.Selenium    locators_path=${LOCATORS}
 Library             RPA.FileSystem
 Library             RPA.RobotLogListener
 
-Suite Setup         Open Available Browser    about:blank    headless=${TRUE}
+Suite Setup         Open Available Browser    about:blank    headless=${True}
 Suite Teardown      Close All Browsers
 
 Default Tags        rpa.browser
@@ -88,31 +88,24 @@ Mute browser failures
     Run keyword and expect error    *    Get Value    id:notexist
 
 Open In Incognito With Custom Options
-    [Tags]    skip
-    # Marked as SKIP on 20.02.2023 as this test failed on Github Actions (only on MacOS)
+    [Documentation]     Test Chrome with custom options (incognito), port and explicit
+    ...     profile directory.
+    [Tags]    skip  # requires headfull browser window, which doesn't work in CI
     Close Browser
-    ${non_windows} =    Evaluate    not sys.platform.startswith("win")    modules=sys
 
     ${options} =    Set Variable    add_argument("--incognito")
-    IF    ${non_windows}
-        ${data_dir} =    Absolute Path    ${BROWSER_DATA}
-        RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
-        ${data_dir_op} =    Set Variable    "user-data-dir=${data_dir}"
-        ${options} =    Catenate    SEPARATOR=;    ${options}
-        ...    add_argument(${data_dir_op})
-    END
-
+    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
+    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
     Open Available Browser    https://robocorp.com    browser_selection=Chrome
-    ...    headless=${True}    options=${options}    port=${18888}
+    ...    headless=${False}    options=${options}    port=${18888}
+    # Custom profile usage doesn't work in headless mode.
+    ...    use_profile=${True}      profile_path=${data_dir}
 
     ${visible} =    Is Element Visible    xpath://button[2]
     Should Be True    ${visible}
 
-    Close Browser
-    IF    ${non_windows}
-        Directory Should Not Be Empty    ${data_dir}
-        RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
-    END
+    Directory Should Not Be Empty    ${data_dir}
+    RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
 
 Open Browser With Dict Options
     @{args} =    Create List    --headless
