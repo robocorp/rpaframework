@@ -4,7 +4,7 @@ Library             RPA.Browser.Selenium    locators_path=${LOCATORS}
 Library             RPA.FileSystem
 Library             RPA.RobotLogListener
 
-Suite Setup         Open Available Browser    about:blank    headless=${False}
+Suite Setup         Open Available Browser    about:blank    headless=${True}
 Suite Teardown      Close All Browsers
 
 Default Tags        rpa.browser
@@ -81,28 +81,31 @@ Download PDF in custom directory
     [Teardown]    Run Keyword And Ignore Error    Remove File   ${file_path}
 
 Highlight elements
-    [Setup]    Open available browser    https://robocorp.com/docs/quickstart-guide    headless=${TRUE}
+    [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
+
     # TODO: test somehow that the outline is really drawn.
     Highlight Elements    xpath://h2
     Page Should Contain Element    xpath://h2[@rpaframework-highlight]
 
 Clear all highlights
-    [Setup]    Open available browser    https://robocorp.com/docs/quickstart-guide    headless=${TRUE}
+    [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
+
     Highlight Elements    xpath://h2
     Clear All Highlights
     Page Should Contain Element    xpath://h2
     Page Should Not Contain Element    xpath://h2[@rpaframework-highlight]
 
 Mute browser failures
+    [Setup]     Go To   https://robotsparebinindustries.com/
+
     Mute run on failure    My Custom Keyword
-    Open Available Browser    https://robotsparebinindustries.com/    headless=${TRUE}
     Run keyword and expect error    *    My Custom Keyword
     Run keyword and expect error    *    Get Value    id:notexist
 
 Open In Incognito With Custom Options
     [Documentation]     Test Chrome with custom options (incognito), port and explicit
     ...     profile directory.
-    Close Browser
+    [Setup]     Close Browser
 
     ${options} =    Set Variable    add_argument("--incognito")
     ${data_dir} =    Absolute Path    ${BROWSER_DATA}
@@ -119,6 +122,8 @@ Open In Incognito With Custom Options
     RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
 
 Open Browser With Dict Options
+    [Setup]     Close Browser
+
     @{args} =    Create List    --headless
     &{caps} =    Create Dictionary    acceptInsecureCerts    ${True}
     &{options} =    Create Dictionary    arguments    ${args}    capabilities    ${caps}
