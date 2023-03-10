@@ -1,26 +1,32 @@
-[
-    {
-        "id": 0,
-        "name": "RobotSpareBin.Username",
+{
+    "RobotSpareBin.Username": {
         "type": "browser",
         "strategy": "id",
         "value": "username",
         "source": "https://robotsparebinindustries.com/"
     },
-    {
-        "id": 1,
-        "name": "RobotSpareBin.Password",
+    "RobotSpareBin.Password": {
         "type": "browser",
         "strategy": "id",
         "value": "password",
         "source": "https://robotsparebinindustries.com/"
     },
-    {
-        "id": 2,
-        "name": "RobotSpareBin.Login",
+    "RobotSpareBin.Login": {
         "type": "browser",
         "strategy": "class",
         "value": "btn-primary",
         "source": "https://robotsparebinindustries.com/"
+    },
+    "RobotSpareBin.Order": {
+        "type": "browser",
+        "strategy": "css",
+        "value": ".nav-item:nth-child(2) > .nav-link",
+        "source": "https://robotsparebinindustries.com/#/"
+    },
+    "RobotSpareBin.Yep": {
+        "type": "browser",
+        "strategy": "xpath",
+        "value": "//button[contains(.,'Yep')]",
+        "source": "https://robotsparebinindustries.com/#/robot-order"
     }
-]
+}

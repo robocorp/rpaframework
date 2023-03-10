@@ -470,7 +470,9 @@ class Selenium(SeleniumLibrary):
 
     EventFiringWebDriver is new in SeleniumLibrary 4.0
 
-    = Thread support =
+    = Limitations and caveats =
+
+    == Thread support ==
 
     SeleniumLibrary is not thread-safe. This is mainly due because the underlying
     [https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread-safe|
@@ -494,7 +496,6 @@ class Selenium(SeleniumLibrary):
     argument when `importing` the library.
 
     Value needs to be set to ``False`` or anything considered false (see `Boolean arguments`).
-
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -2087,26 +2088,28 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def set_download_directory(
-        self, directory: str = None, download_pdf: bool = True
+        self, directory: Optional[str] = None, download_pdf: bool = True
     ) -> None:
         """Set browser download directory.
 
         Works with ``Open Available Browser``, ``Open Chrome Browser`` and
         ``Open Headless Chrome Browser`` keywords.
 
-        ``directory``    target directory for downloads, defaults to None which means
-                         that setting is removed
-        ``download_pdf`` if `True` then PDF is downloaded instead of shown with
-                         browser's internal viewer
+        :param directory: Target directory for downloads, defaults to `None` which
+            means that this setting is removed.
+        :param download_pdf: A PDF file pointed by the URL is downloaded instead of
+            shown within browser's internal viewer when this is set to `True`. (enabled
+            by default)
         """
         if directory is None:
             self.logger.info("Download directory set back to browser default setting")
-            self.download_preferences = {}
+            self.download_preferences.clear()
         else:
-            download_directory = str(Path(directory))
+            download_directory = Path(directory).expanduser().resolve()
+            download_directory.mkdir(parents=True, exist_ok=True)
             self.logger.info("Download directory set to: %s", download_directory)
             self.download_preferences = {
-                "download.default_directory": download_directory,
+                "download.default_directory": str(download_directory),
                 "plugins.always_open_pdf_externally": download_pdf,
                 "download.directory_upgrade": True,
                 "download.prompt_for_download": False,

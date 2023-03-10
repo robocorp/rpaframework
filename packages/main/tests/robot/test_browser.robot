@@ -4,7 +4,7 @@ Library             RPA.Browser.Selenium    locators_path=${LOCATORS}
 Library             RPA.FileSystem
 Library             RPA.RobotLogListener
 
-Suite Setup         Open Available Browser    about:blank    headless=${True}
+Suite Setup         Open Available Browser    about:blank    headless=${False}
 Suite Teardown      Close All Browsers
 
 Default Tags        rpa.browser
@@ -36,37 +36,49 @@ Does alert not contain
     ${res} =    Does Alert Not Contain    afterx
     Handle Alert    DISMISS
 
-Basic browser open and usage
-    [Tags]    skip
-    Open available browser    www.google.com    headless=${TRUE}
+Screenshot Robocorp Google search result
+    Go To    www.google.com
     Wait Until Element Is Visible    q
+
     Input Text    q    Robocorp
     Click Element    q
-    Press keys    q    ENTER
-    Sleep    3s
-    Screenshot
+    Press Keys    q    ENTER
+    Wait Until Element Is Visible   css:div.logo
 
-Check span value
-    [Tags]    skip
-    Open available Browser    https://www.w3schools.com/tags/att_span.asp    headless=${TRUE}
-    ${val} =    Get Value    class:dotcom
-    ${elem} =    Get WebElement    class:dotcom
-    Log    ${elem.text}
+    Screenshot      filename=${BROWSER_DATA}${/}google-robocorp.png
+
+Check button value
+    Go To    https://www.easytestmaker.com
+
+    ${locator} =    Set Variable    xpath://input[@type='hidden']
+    ${element} =   Get WebElement       ${locator}
+    ${value} =    Get Value     ${element}
+    Log To Console  Token: ${value}
 
 Locator aliases
-    [Tags]    skip
-    Open Available Browser    https://robotsparebinindustries.com/    headless=${TRUE}
+    Go To    https://robotsparebinindustries.com/
+
     Input Text    alias:RobotSpareBin.Username    maria
     Input Text    alias:RobotSpareBin.Password    thoushallnotpass
     Submit Form
-    Click button when visible    id:logout
 
-Set download directory
-    [Tags]    skip
+    Click Button When Visible    id:logout
+    Click Element When Visible      alias:RobotSpareBin.Order
+    Click Button When Visible   alias:RobotSpareBin.Yep
+
+Download PDF in custom directory
+    [Tags]      skip  # because such downloads don't work in headless mode
+    [Setup]     Close Browser
+
     Set Download Directory    ${OUTPUT_DIR}
-    Open Available Browser    https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf    headless=${TRUE}
-    File Should Exist    ${OUTPUT_DIR}${/}Robocorp-EULA-v1.0.pdf
-    [Teardown]    Run Keyword And Ignore Error    Remove File    ${OUTPUT_DIR}${/}Robocorp-EULA-v1.0.pdf
+    ${file_name} =   Set Variable    Robocorp-EULA-v1.0.pdf
+    Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
+    ...    headless=${False}  # to enable PDF downloading
+    Go To   robocorp.com  # this starts after the PDF above gets downloaded
+    ${file_path} =      Set Variable    ${OUTPUT_DIR}${/}${file_name}
+    File Should Exist   ${file_path}
+
+    [Teardown]    Run Keyword And Ignore Error    Remove File   ${file_path}
 
 Highlight elements
     [Setup]    Open available browser    https://robocorp.com/docs/quickstart-guide    headless=${TRUE}
@@ -90,15 +102,14 @@ Mute browser failures
 Open In Incognito With Custom Options
     [Documentation]     Test Chrome with custom options (incognito), port and explicit
     ...     profile directory.
-    [Tags]    skip  # requires headfull browser window, which doesn't work in CI
     Close Browser
 
     ${options} =    Set Variable    add_argument("--incognito")
     ${data_dir} =    Absolute Path    ${BROWSER_DATA}
     RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
     Open Available Browser    https://robocorp.com    browser_selection=Chrome
-    ...    headless=${False}    options=${options}    port=${18888}
-    # Custom profile usage doesn't work in headless mode.
+    ...    headless=${True}    options=${options}    port=${18888}
+    # Custom profile usage now works in headless mode.
     ...    use_profile=${True}      profile_path=${data_dir}
 
     ${visible} =    Is Element Visible    xpath://button[2]
