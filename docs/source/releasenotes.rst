@@ -9,7 +9,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-22.2.2 - 10 Mar 2023
+22.2.2 - 13 Mar 2023
 --------------------
 
 - Library **RPA.Browser.Selenium** (:pr:`859`):
