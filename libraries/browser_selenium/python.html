@@ -1082,7 +1082,8 @@ See the Selenium and SeleniumLibrary
 [<a class="reference external" href="https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending">https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending</a>.rst#EventFiringWebDriver|EventFiringWebDriver support]
 documentation for further details.</p>
 <p>EventFiringWebDriver is new in SeleniumLibrary 4.0</p>
-<p>= Thread support =</p>
+<p>= Limitations and caveats =</p>
+<p>== Thread support ==</p>
 <p>SeleniumLibrary is not thread-safe. This is mainly due because the underlying
 [<a class="reference external" href="https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread">https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread</a>-safe|
 Selenium tool is not thread-safe] within one browser/driver instance.
@@ -2086,13 +2087,56 @@ if set to <cite>None</cite> then file is not saved at all</p>
 <span class="sig-name descname"><span class="pre">set_download_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.set_download_directory" title="Permalink to this definition"></a></dt>
 <dd><p>Set browser download directory.</p>
 <p>Works with <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code>, <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Chrome</span> <span class="pre">Browser</span></code> and
-<code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Headless</span> <span class="pre">Chrome</span> <span class="pre">Browser</span></code> keywords.</p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">directory</span></code>    target directory for downloads, defaults to None which means</dt><dd><p>that setting is removed</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">download_pdf</span></code> if <cite>True</cite> then PDF is downloaded instead of shown with</dt><dd><p>browser’s internal viewer</p>
+<code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Headless</span> <span class="pre">Chrome</span> <span class="pre">Browser</span></code> keywords (mainly with Chromium-based
+browsers).</p>
+<p>If the downloading doesn’t work (file is not found on disk), try using the
+browser in non-headless (headful) mode when opening it. (<cite>headless=${False}</cite>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> – Target directory for downloads, defaults to <cite>None</cite>, which
+means that this setting is removed.</p></li>
+<li><p><strong>download_pdf</strong> – A PDF file pointed by the URL is downloaded instead of
+being shown within browser’s internal viewer when this is set to <cite>True</cite>.
+(enabled by default)</p></li>
+</ul>
 </dd>
 </dl>
+<p><strong>Example: Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Browser.Selenium</span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.FileSystem</span>
+
+<span class="gh">*** Tasks ***</span>
+<span class="gu">Download PDF in custom directory</span>
+<span class="p">    </span><span class="nf">Set Download Directory</span><span class="p">    ${</span><span class="nv">OUTPUT_DIR</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">file_name</span><span class="p">} =   </span><span class="nf">Set Variable</span><span class="p">    </span><span class="s">Robocorp-EULA-v1.0.pdf</span>
+<span class="p">    </span><span class="nf">Open Available Browser</span><span class="p">    </span><span class="s">https://cdn.robocorp.com/legal/</span><span class="p">${</span><span class="nv">file_name</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">headless=</span><span class="p">${</span><span class="nv">False</span><span class="p">}  </span><span class="c"># to enable PDF downloading</span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">} =    </span><span class="nf">List Files In Directory</span><span class="p">    ${</span><span class="nv">OUTPUT_DIR</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Log List</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Browser.Selenium</span> <span class="kn">import</span> <span class="n">Selenium</span>
+<span class="kn">from</span> <span class="nn">RPA.FileSystem</span> <span class="kn">import</span> <span class="n">FileSystem</span>
+
+<span class="n">selenium</span> <span class="o">=</span> <span class="n">Selenium</span><span class="p">()</span>
+<span class="n">file_system</span> <span class="o">=</span> <span class="n">FileSystem</span><span class="p">()</span>
+
+<span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span>
+
+<span class="k">def</span> <span class="nf">download_pdf_in_custom_directory</span><span class="p">():</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">set_download_directory</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">)</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;Robocorp-EULA-v1.0.pdf&quot;</span>
+    <span class="n">selenium</span><span class="o">.</span><span class="n">open_available_browser</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;https://cdn.robocorp.com/legal/</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">headless</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">file_system</span><span class="o">.</span><span class="n">list_files_in_directory</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
