@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "22.2.1"
+version = "22.2.2"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -86,7 +86,7 @@ validators = "^0.20.0"
 pendulum = "^2.1.2"
 holidays = "^0.21"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "^22.3.0"
 flake8 = "^3.7.9"
 pylint = "^2.4.4, <2.13"
@@ -97,7 +97,6 @@ mock = "^5.0.0"
 mypy = "^0.910"
 python-docx = "^0.8.11"
 pytest-env = "^0.6.2"
-setuptools = "^65.3.0"
 invoke = "^1.6.0"
 sphinx = "^5.3.0"
 sphinx-rtd-theme = "^1.1.1"
@@ -108,21 +107,20 @@ sphinx-issues = "^3.0.1"
 docutils = "0.16"
 colorama = "^0.4.5"
 keyring = "^23.9.0"
+flake8-docstrings = "^1.6.0"
+flake8-rst-docstrings = "^0.2.7"
+pytest-freezegun = "^0.4.2"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
 use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 
-[tool.poetry.group.dev.dependencies]
-flake8-docstrings = "^1.6.0"
-flake8-rst-docstrings = "^0.2.7"
-
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]
 
 [build-system]
-requires = ["setuptools", "poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-branch"
