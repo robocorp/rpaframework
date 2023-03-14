@@ -1217,7 +1217,7 @@ class Assistant:
         """
 
         def on_click(_: ControlEvent):
-            self._queue_function_or_robot_keyword(function, self._client.results)
+            self._queue_function_or_robot_keyword(function, self._get_results())
 
         button = ElevatedButton(label, on_click=on_click)
         self._client.add_element(button)
