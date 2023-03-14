@@ -25,6 +25,8 @@ classifiers = [
 	"Programming Language :: Python :: 3.9",
 ]
 
+include = ["*.libspec"]
+
 packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
