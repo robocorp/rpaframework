@@ -11,6 +11,7 @@ Main
 
     Control Buttons
     ${results}=    Ask User    location=TopLeft
+    Log To Console  ${results}
 
     Should Be Equal    ${results.slider}    ${0.5}
     Should Be Equal    ${results}[slider]    ${0.5}
@@ -85,9 +86,17 @@ Stack Testing Ui
     Close Stack
     Refresh Dialog
 
+DotDict Ui
+    [Arguments]  ${results}
+    Clear Dialog
+    Add Slider     name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
+    Add Text  ${results.hidden}
+
+    Refresh Dialog
+
 Control Buttons
     Add Heading    UI elements for testing
-    Add Slider    name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
+    Add Slider     name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
     Add Flet Icon    icon_name=check_circle_rounded    color=FF00FF    size=48
 
     Add Heading    good buttons
@@ -97,6 +106,8 @@ Control Buttons
     Add Button    open browser    Open Website
     Add Button    close browser    Close Browser
     Add Button    stack ui    Stack Testing Ui
+    Add Hidden Input    hidden  value
+    Add Next Ui Button  Test dotdict for next UI  DotDict Ui
 
     Add Button    process_button    Dummy Process
     Add Button    print with python    Print With Python Subprocess
@@ -110,5 +121,6 @@ Control Buttons
     Add Button    add buttons (does not work)    Control Buttons
     Add Button    subrobot button (broken!)    Exec Robot
     Add Button    python button (broken!)    Exec Python
+
 
     Add Heading    submit is below this
