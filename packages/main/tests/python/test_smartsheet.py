@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from json.encoder import JSONEncoder
 from requests.models import Response, PreparedRequest
-from typing import Union, Iterable
+from typing import Union, Iterable, List
 from itertools import chain
 
 import pytest
@@ -155,9 +155,9 @@ def _patch_file_response(
 def _patch_multiple_file_responses(
     library: Smartsheet,
     mocker: MockerFixture,
-    expected_filenames: list[str],
-    expected_contents: list[Union[str, bytes]],
-    mime_types: list[str],
+    expected_filenames: List[str],
+    expected_contents: List[Union[str, bytes]],
+    mime_types: List[str],
     send_patch: MagicMock = None,
 ) -> MagicMock:
     """Creates multiple file responses for a single request.
@@ -404,7 +404,7 @@ def test_get_native_row(lib_with_sheet: Smartsheet, mocker: MockerFixture) -> No
         ],
     ],
 )
-def test_create_row(lib_with_sheet: Smartsheet, row: Union[dict, list]) -> None:
+def test_create_row(lib_with_sheet: Smartsheet, row: Union[dict, List]) -> None:
     expected_cells = [
         {"column_id": NAME_COLUMN_ID, "value": "Mark"},
         {"column_id": ITEM_COLUMN_ID, "value": "Shirt"},

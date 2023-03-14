@@ -1,29 +1,17 @@
 # builtin imports
 import logging
 import os
-from typing import Union, Optional, Any
+from datetime import datetime
+from typing import Union, Optional, Any, List, Dict
 from pathlib import Path
 from collections import OrderedDict
 
 # Robot imports
 from robot.api.deco import keyword, library
 from robot.utils.robottime import timestr_to_secs, parse_time
-from robot.api import logger
-from robot.running.context import EXECUTION_CONTEXTS
-
-# package imports
-from RPA.version import __version__
-from RPA.Robocorp.utils import get_output_dir, PathType
-
-try:
-    from RPA.Tables import Table
-
-    TABLES = True
-except ImportError:
-    TABLES = False
 
 # Library specific imports
-from smartsheet import Smartsheet as smart_sdk, types as smart_types
+from smartsheet import Smartsheet as smart_sdk
 from smartsheet.models import (
     Sheet,
     Column,
@@ -36,8 +24,19 @@ from smartsheet.models import (
     ServerInfo,
 )
 
+# package imports
+from RPA.version import __version__
+from RPA.Robocorp.utils import get_output_dir, PathType
+
+try:
+    from RPA.Tables import Table
+
+    TABLES = True
+except ImportError:
+    TABLES = False
+
 CommaListType = Union[str, list[Any]]
-ColumnType = Union[dict, Column]
+ColumnType = Union[Dict, Column]
 if TABLES:
     TableType = Table
 else:
@@ -76,8 +75,8 @@ class Smartsheet:
         "discussions": "discussions",
         "rowPermalink": "permalink",
     }
-    """Dictionary of supported additional objects to ask for via ``include`` 
-    parameters for sheets. Key is the name of the option, value is the 
+    """Dictionary of supported additional objects to ask for via ``include``
+    parameters for sheets. Key is the name of the option, value is the
     API attribute or function to call.
     """
     ROW_INCLUDES = {
@@ -89,7 +88,7 @@ class Smartsheet:
         "filters": "filteredOut",
     }
     """Dictionary of supported additional objects to ask for via ``include``
-    parameters for rows. Key is the name of the option, value is the 
+    parameters for rows. Key is the name of the option, value is the
     API attribute or function to call.
     """
     ROW_EXCLUDES = [
@@ -149,7 +148,7 @@ class Smartsheet:
         # Server init
         self.app_constants = None
 
-    ## AUTH AND CONFIG
+    # *** AUTH AND CONFIG ***
     def _set_token(self, access_token: str = None):
         if (
             os.environ.get("SMARTSHEET_ACCESS_TOKEN", None) is None
@@ -201,11 +200,13 @@ class Smartsheet:
         old_time = self.max_retry_time
         self.max_retry_time = int(timestr_to_secs(max_retry_time, round_to=None))
         if self.smart is not None:
-            # might be affected by smart's def of __getattr__
+            # pylint: disable=protected-access
+            # might be affected by smart's def of __getattr__ ... this is a patch
+            # to allow modification of the calculated backoff time after init.
             self.smart._user_calc_backoff._max_retry_time = self.max_retry_time
         return old_time
 
-    ## UTILITY
+    # *** UTILITY ***
     def _parse_comma_list_type(
         self, comma_list: Optional[CommaListType] = None
     ) -> Optional[list[str]]:
@@ -228,19 +229,19 @@ class Smartsheet:
         underlying type.
         """
         if index_result is not None:
-            return [o for o in index_result.data]
+            return index_result.data
         else:
             return None
 
     def _parse_include(
-        self, include_type: dict, include: CommaListType = None
-    ) -> list[str]:
+        self, include_type: Dict, include: CommaListType = None
+    ) -> List[str]:
         """Parses the include parameter based on the provided include type."""
         include = self._parse_comma_list_type(include)
         if (
             include is not None
             and "ALL" not in include
-            and any([i not in include_type.keys() for i in include])
+            and any(i not in include_type.keys() for i in include)
         ):
             raise ValueError("Invalid or not implemented value(s) for include.")
         elif include is not None and "ALL" in include:
@@ -252,18 +253,18 @@ class Smartsheet:
         return includes
 
     def _parse_exclude(
-        self, exclude_type: list, exclude: CommaListType = None
-    ) -> list[str]:
+        self, exclude_type: List, exclude: CommaListType = None
+    ) -> List[str]:
         """Parses the exclude parameter based on the provided exclude type."""
         exclude = self._parse_comma_list_type(exclude)
-        if exclude is not None and any([i not in exclude_type for i in exclude]):
+        if exclude is not None and any(i not in exclude_type for i in exclude):
             raise ValueError("Invalid or not implemented value(s) for exclude.")
         return exclude
 
-    def _parse_scope(self, scope_type: list, scope: CommaListType = None) -> list[str]:
+    def _parse_scope(self, scope_type: List, scope: CommaListType = None) -> List[str]:
         """Parses the scope parameter based on the provided scope type."""
         scope = self._parse_comma_list_type(scope)
-        if scope is not None and any([i not in scope_type for i in scope]):
+        if scope is not None and any(i not in scope_type for i in scope):
             raise ValueError("Invalid or not implemented value(s) for scope.")
         return scope
 
@@ -276,7 +277,7 @@ class Smartsheet:
         self.app_constants = self.smart.Server.server_info()
         return self.app_constants
 
-    ## SHEETS
+    # *** SHEETS ***
     @property
     def sheets(self):
         """Full list of cached sheets."""
@@ -289,15 +290,18 @@ class Smartsheet:
         self._require_auth()
         self._sheets = self.smart.Sheets.list_sheets(include_all=True).data
 
-    def _find_sheet(self, name: str) -> IndexResult:
+    def _find_sheet(self, name: str) -> Optional[IndexResult]:
         """Finds a sheet by name and returns the ``IndexResult``, which
         can be used to pull sheet data with its ``id`` attribute.
         """
         for sheet in self.sheets:
             if sheet.name == name:
                 return sheet
+        return None
 
-    def _parse_sheet_id(self, sheet_id: int = None, sheet_name: int = None) -> int:
+    def _parse_sheet_id(
+        self, sheet_id: int = None, sheet_name: int = None
+    ) -> Optional[int]:
         """Gets the sheet ID between the provided ID and/or Name."""
         if sheet_id is not None and sheet_name is not None:
             raise ValueError("You cannot provide both sheet_id and sheet_name.")
@@ -307,6 +311,7 @@ class Smartsheet:
             return sheet_id
         if sheet_name is not None:
             return self._find_sheet(sheet_name).id
+        return None
 
     @keyword
     def list_sheets(self, use_cache: bool = True):
@@ -464,7 +469,7 @@ class Smartsheet:
 
     @keyword
     def get_sheet_owner(
-        self, sheet_id: int = None, sheet_name: int = None, native: bool = False
+        self, sheet_id: int = None, sheet_name: int = None
     ) -> tuple[str, int]:
         """Returns the owner's username and id for the current sheet."""
         sheet_id = self._parse_sheet_id(sheet_id, sheet_name)
@@ -474,12 +479,16 @@ class Smartsheet:
     @keyword
     def list_sheet_filters(
         self, sheet_id: int = None, sheet_name: int = None
-    ) -> list[SheetFilter]:
-        """Returns a list of available filters for the current sheet."""
+    ) -> List[SheetFilter]:
+        """Returns a list of available filters for the current sheet. You
+        can specify a different sheet via the ``sheet_id`` or
+        ``sheet_name`` parameters.
+        """
         # TODO: fix documentation
         self._require_current_sheet()
+        sheet_id = self._parse_sheet_id(sheet_id, sheet_name)
         filter_result = self.smart.Sheets.list_filters(
-            self.current_sheet.id, include_all=True
+            sheet_id or self.current_sheet.id, include_all=True
         )
         return self._unpack_index_result(filter_result)
 
@@ -487,7 +496,7 @@ class Smartsheet:
     def create_sheet(
         self,
         name: str,
-        columns: list[ColumnType] = None,
+        columns: List[ColumnType] = None,
         from_sheet_id: Union[int, str] = None,
     ) -> Sheet:
         """Creates a new sheet with the given name and columns, then sets
@@ -518,7 +527,7 @@ class Smartsheet:
         modified_since: Optional[Union[str, int]] = None,
         include: Optional[CommaListType] = None,
         scopes: Optional[CommaListType] = None,
-    ) -> list[Sheet]:
+    ) -> List[Sheet]:
         """Searches for all sheets for text matching the query. Returns
         a list of native Smartsheet Sheet objects. You can use the
         additional parameters to filter the search and increase speed.
@@ -561,11 +570,15 @@ class Smartsheet:
         self._require_auth()
         include = self._parse_include(self.SEARCH_INCLUDES, include)
         scopes = self._parse_scope(self.SEARCH_SCOPES, scopes)
+        if isinstance(modified_since, str):
+            modified_since = parse_time(modified_since)
+        if modified_since is not None:
+            modified_since = datetime.fromtimestamp(modified_since)
         return self.smart.Search.search(
             query, include, location, modified_since, scopes
         ).results
 
-    ## COLUMNS
+    # *** COLUMNS ***
     def _get_column_id(self, column: Union[int, str, Column]) -> int:
         """Returns the column ID for a column name. Can accept a
         column ID and will simply return it.
@@ -586,34 +599,39 @@ class Smartsheet:
             )
         raise ValueError(f"Column '{column}' not found.")
 
-    def _parse_columns(self, columns: list[ColumnType]) -> list[Column]:
+    def _parse_column(self, column: ColumnType) -> Column:
+        """Parses a column and returns a Column object."""
+        if isinstance(column, Column):
+            return column
+        elif isinstance(column, dict):
+            new_column = Column()
+            for key, value in column.items():
+                try:
+                    if key == "column_type":
+                        key = "type"
+                    setattr(new_column, key, value)
+                except AttributeError:
+                    self.logger.warning(
+                        f"Unable to set attribute '{key}' for column: {column}"
+                    )
+            return new_column
+        else:
+            raise TypeError(
+                f"Invalid column type. Received {type(column)}, "
+                f"expected dict or Column."
+            )
+
+    def _parse_columns(self, columns: List[ColumnType]) -> List[Column]:
         """Parses a list of columns and returns a list of Column objects."""
         new_columns = []
         for column in columns:
-            if isinstance(column, Column):
-                new_columns.append(column)
-            elif isinstance(column, dict):
-                new_column = Column()
-                for key, value in column.items():
-                    try:
-                        if key == "column_type":
-                            key = "type"
-                        setattr(new_column, key, value)
-                    except AttributeError:
-                        self.logger.warn(
-                            f"Unable to set attribute '{key}' for column: {column}"
-                        )
-                new_columns.append(new_column)
-            else:
-                raise TypeError(
-                    f"Invalid column type. Received {type(column)}, expected dict or Column."
-                )
+            new_columns.append(self._parse_column(column))
         return new_columns
 
     @keyword
     def list_columns(
         self, sheet_id: int = None, sheet_name: int = None
-    ) -> list[Column]:
+    ) -> List[Column]:
         """Returns a list of columns for the current sheet."""
         sheet_id = self._parse_sheet_id(sheet_id, sheet_name)
         column_result = self.smart.Sheets.get_columns(sheet_id, include_all=True)
@@ -622,8 +640,8 @@ class Smartsheet:
     @keyword
     def add_columns(
         self,
-        columns: list[ColumnType] = None,
-    ) -> list[Column]:
+        columns: List[ColumnType] = None,
+    ) -> List[Column]:
         """Adds columns to the current sheet. Columns must be defined as
         a list of dictionaries or Column objects. Dictionaries can have
         additional keys set, see `Add Column` keyword for more information.
@@ -635,7 +653,7 @@ class Smartsheet:
         :param columns: Columns as a list of dictionaries or Column
          objects.
         :type columns: dict
-        """
+        """  # noqa: E501
         self._require_current_sheet()
 
         new_columns = self._parse_columns(columns)
@@ -654,7 +672,7 @@ class Smartsheet:
         index: Optional[int] = None,
         description: Optional[str] = None,
         primary: bool = False,
-        format: Optional[str] = None,
+        format_string: Optional[str] = None,
         locked: bool = False,
         options: Optional[list[str]] = None,
         symbol: Optional[str] = None,
@@ -682,9 +700,9 @@ class Smartsheet:
         :type description: str
         :param primary: Whether the column is considered the primary
          key for indexing and searching. Defaults to ``False``.
-        :param format: Column format using a `format descriptor`_
+        :param format_string: Column format using a `format descriptor`_
          string. Defaults to ``None``.
-        :type format: str
+        :type format_string: str
         :param locked: Whether the column is locked. Defaults to ``False``.
         :type locked: bool
         :param options: List of options for a ``PICKLIST`` or
@@ -703,7 +721,7 @@ class Smartsheet:
         .. _symbol columns: https://smartsheet.redoc.ly/tag/columnsRelated/#section/Column-Types/Symbol-Columns
         .. _format descriptor: https://smartsheet.redoc.ly/#section/API-Basics/Formatting
         .. _supported type: https://smartsheet.redoc.ly/tag/columnsRelated/#section/Column-Types
-        """
+        """  # noqa: E501
         self._require_current_sheet()
         return self.add_columns(
             [
@@ -715,7 +733,7 @@ class Smartsheet:
                     "index": index,
                     "description": description,
                     "primary": primary,
-                    "format": format,
+                    "format": format_string,
                     "locked": locked,
                     "options": options,
                     "symbol": symbol,
@@ -742,11 +760,11 @@ class Smartsheet:
             try:
                 setattr(column, key, value)
             except AttributeError:
-                self.logger.warn(f"Unable to set attribute '{key}' for column.")
+                self.logger.warning(f"Unable to set attribute '{key}' for column.")
         column_response = self.smart.Sheets.update_column(column)
         return column_response.result
 
-    ## ROWS
+    # *** ROWS ***
     def _parse_row_id(self, row: Union[int, Row]) -> int:
         """Returns the row ID from a row object or an integer."""
         if isinstance(row, int):
@@ -756,7 +774,7 @@ class Smartsheet:
         else:
             raise ValueError("Invalid row type.")
 
-    def _create_row_from_dict(self, row_dict: dict) -> Row:
+    def _create_row_from_dict(self, row_dict: Dict) -> Row:
         """Creates a row object from a dictionary."""
         row = Row()
         for key, value in row_dict.items():
@@ -766,7 +784,7 @@ class Smartsheet:
             row.cells.append(cell)
         return row
 
-    def _create_row_from_list(self, row_list: list[dict]) -> Row:
+    def _create_row_from_list(self, row_list: List[dict]) -> Row:
         """Creates a row object from a list."""
         row = Row()
         for cell_dict in row_list:
@@ -823,7 +841,7 @@ class Smartsheet:
         self,
         data: Union[list, Table],
         native: bool = False,
-    ) -> list[Union[OrderedDict, Row]]:
+    ) -> List[Union[OrderedDict, Row]]:
         """Updates rows of the current sheet with the provided data.
 
         .. note::
@@ -851,7 +869,7 @@ class Smartsheet:
           be the column IDs or Titles.
 
         .. _smartsheet API docs: https://smartsheet.redoc.ly/tag/rows#operation/update-rows
-        """
+        """  # noqa: E501
         self._require_current_sheet()
         # TODO: implement using row number instead of row ID and data
         # of same length as sheet.
@@ -895,7 +913,7 @@ class Smartsheet:
           new values for the cells.
 
         .. _smartsheet API docs: https://smartsheet.redoc.ly/tag/rows#operation/update-rows
-        """
+        """  # noqa: E501
         self._require_current_sheet()
         if isinstance(row, Row) and data is None:
             data = row
@@ -907,7 +925,7 @@ class Smartsheet:
     @keyword
     def add_rows(
         self, data: Union[list, Table], native: bool = False
-    ) -> list[Union[OrderedDict, Row]]:
+    ) -> List[Union[OrderedDict, Row]]:
         """Adds rows to the current sheet with the provided data.
 
         You can provide the data in several ways:
@@ -943,8 +961,8 @@ class Smartsheet:
         else:
             return [self.convert_row_to_dict(row) for row in row_update_response.result]
 
-    ## CELLS
-    def _convert_dict_to_cell(self, cell: dict) -> Cell:
+    # *** CELLS ***
+    def _convert_dict_to_cell(self, cell: Dict) -> Cell:
         """Converts a dictionary to a Cell object."""
         new_cell = Cell()
         if isinstance(cell, dict):
@@ -963,10 +981,10 @@ class Smartsheet:
             raise TypeError(f"Invalid cell type. Received {type(cell)}, expected dict.")
         return new_cell
 
-    ## ATTACHMENTS
+    # *** ATTACHMENTS ***
     def _download_row_attachments(
         self, row: Row, download_path: PathType = None
-    ) -> list[Path]:
+    ) -> List[Path]:
         """Downloads all attachments from a row, saves them locally and
         returns a list of Paths to those attachements. Defaults to
         saving in the robot's ``OUTPUT_DIR``, but can be specified.
@@ -985,14 +1003,18 @@ class Smartsheet:
         )
         return [self.download_attachment(a, download_path) for a in attachments]
 
-    def _download_attachment_by_id(self, id: int, download_path: Path = None) -> Path:
+    def _download_attachment_by_id(
+        self, attachment_id: int, download_path: Path = None
+    ) -> Path:
         """Downloads the provided attachment using it's ID, requires
         a current sheet be selected. If ``download_path`` is not set,
         it will attempt to use the attribute ``download_path`` set to
         the ``current_sheet``.
         """
         self._require_current_sheet()
-        attachment = self.smart.Attachments.get_attachment(self.current_sheet.id, id)
+        attachment = self.smart.Attachments.get_attachment(
+            self.current_sheet.id, attachment_id
+        )
         download_result = self.smart.Attachments.download_attachment(
             attachment,
             str(
@@ -1004,7 +1026,7 @@ class Smartsheet:
         return Path(download_result.download_directory) / download_result.filename
 
     @keyword
-    def list_attachments(self) -> list[Attachment]:
+    def list_attachments(self) -> List[Attachment]:
         """Gets a list of all attachments from the currently selected sheet.
 
         This will include attachments to the sheet, rows, and discussions.
@@ -1036,7 +1058,7 @@ class Smartsheet:
         download_path = download_path or get_output_dir()
         if not download_path.exists():
             download_path.mkdir()
-        if isinstance(attachment, int) or isinstance(attachment, str):
+        if isinstance(attachment, (int, str)):
             try:
                 return self._download_attachment_by_id(attachment, download_path)
             except TypeError as e:
@@ -1060,7 +1082,7 @@ class Smartsheet:
                 f"expected 'int', 'dict' or 'Attachment'."
             )
 
-    ## Users
+    # *** USERS ***
     @keyword
     def get_current_user(self) -> User:
         """Gets the current authenticated user, which is also set in
