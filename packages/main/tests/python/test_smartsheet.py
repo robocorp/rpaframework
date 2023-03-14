@@ -342,7 +342,7 @@ def test_get_sheet_with_attachments(
     _extend_patch(send_patch, empty_responses)
 
     sheet_with_attachments: Table = authorized_lib.get_sheet(
-        123, include="attachments, attachmentFiles"
+        123, include="attachments, attachmentFiles", download_path=TEMP_DIR
     )
 
     send_patch.assert_called()

@@ -13,7 +13,7 @@ from robot.running.context import EXECUTION_CONTEXTS
 
 # package imports
 from RPA.version import __version__
-from RPA.Robocorp.utils import get_output_dir
+from RPA.Robocorp.utils import get_output_dir, PathType
 
 try:
     from RPA.Tables import Table
@@ -343,6 +343,7 @@ class Smartsheet:
         column_ids: CommaListType = None,
         filter_id: int = None,
         native: bool = False,
+        download_path: PathType = None,
     ) -> Union[TableType, Sheet]:
         """Retrieves a sheet from Smartsheet. This keyword also sets
         the currently selected sheet to the returned sheet.
@@ -357,7 +358,9 @@ class Smartsheet:
         :param include: Additional metadata which can be retrieved with
          the table. The list can only contain the following items:
          ``attachments``, ``attachmentFiles``, ``discussions``,
-         ``rowPermalink``, or ``ALL``.
+         ``rowPermalink``, or ``ALL``. Note that ``attachmentFiles``
+         will only download files if you do not set ``native`` to
+         ``True``.
         :param row_ids: A list of row IDs to include. All other rows
          will be ignored. The list can be a list object or a
          comma-separated list as a string.
@@ -372,6 +375,9 @@ class Smartsheet:
         :param native: Defaults to ``False``. Set to ``True`` to change
          the return type to the native Smartsheet data model. The native
          type is useful for passing to other keywords as arguments.
+        :param download_path: Defaults to ``None``. Can be set when
+         ``attachmentFiles`` is included in the ``include`` parameter.
+         All attachments will be downloaded to the provided directory.
         """
         # TODO: add examples to docs.
         self._require_auth()
@@ -389,6 +395,8 @@ class Smartsheet:
             filter_id=filter_id,
         )
         setattr(sheet, "selected_includes", includes)
+        if download_path is not None:
+            setattr(sheet, "download_path", download_path)
         self.current_sheet = sheet
         if native:
             return sheet
@@ -957,27 +965,41 @@ class Smartsheet:
 
     ## ATTACHMENTS
     def _download_row_attachments(
-        self, row: Row, download_path: Path = None
+        self, row: Row, download_path: PathType = None
     ) -> list[Path]:
         """Downloads all attachments from a row, saves them locally and
         returns a list of Paths to those attachements. Defaults to
         saving in the robot's ``OUTPUT_DIR``, but can be specified.
         Requires a current sheet.
+
+        If ``download_path`` is not set, it will attempt to use the
+        attribute ``download_path`` set to the ``current_sheet``.
         """
         self._require_current_sheet()
         attachment_result = self.smart.Attachments.list_row_attachments(
             self.current_sheet.id, row.id, include_all=True
         )
         attachments = self._unpack_index_result(attachment_result)
+        download_path = Path(
+            download_path or getattr(self.current_sheet, "download_path", None)
+        )
         return [self.download_attachment(a, download_path) for a in attachments]
 
-    def _download_attachment_by_id(self, id: int, download_path: Path) -> Path:
+    def _download_attachment_by_id(self, id: int, download_path: Path = None) -> Path:
         """Downloads the provided attachment using it's ID, requires
-        a current sheet be selected."""
+        a current sheet be selected. If ``download_path`` is not set,
+        it will attempt to use the attribute ``download_path`` set to
+        the ``current_sheet``.
+        """
         self._require_current_sheet()
         attachment = self.smart.Attachments.get_attachment(self.current_sheet.id, id)
         download_result = self.smart.Attachments.download_attachment(
-            attachment, str(download_path)
+            attachment,
+            str(
+                download_path
+                or getattr(self.current_sheet, "download_path", None)
+                or get_output_dir()
+            ),
         )
         return Path(download_result.download_directory) / download_result.filename
 
