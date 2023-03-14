@@ -10,7 +10,7 @@ homepage = "https://rpaframework.org/"
 documentation = "https://rpaframework.org/"
 repository = "https://github.com/robocorp/rpaframework"
 
-keywords = ["robotframework", "rpa", "automation", "dialogs"]
+keywords = ["robotframework", "rpa", "automation", "assistant"]
 classifiers = [
 	"License :: OSI Approved :: Apache Software License",
 	"Development Status :: 3 - Alpha",
