@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-dialogs"
-version = "4.0.2"
+version = "4.0.3"
 description = "Dialogs library of RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -13,7 +13,7 @@ repository = "https://github.com/robocorp/rpaframework"
 keywords = ["robotframework", "rpa", "automation", "dialogs"]
 classifiers = [
 	"License :: OSI Approved :: Apache Software License",
-	"Development Status :: 3 - Alpha",
+	"Development Status :: 5 - Production/Stable",
 	"Operating System :: OS Independent",
 	"Intended Audience :: Developers",
 	"Topic :: Software Development :: Libraries :: Python Modules",
@@ -33,12 +33,11 @@ rpaframework-core = "^10.0.0"
 robocorp-dialog = "^0.5.3"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "^22.3.0"
 pylint = "^2.4.4, <2.13"
 flake8 = "^3.8.4"
 pytest = "^7.2.0"
-setuptools = "^65.5.1"
 PyYAML = "^5.4.1"
 mypy = "^0.800"
 pytest-cov = "^4.0.0"
@@ -46,8 +45,6 @@ pytest-freezegun = "^0.4.2"
 toml = "^0.10.2"
 colorama = "^0.4.5"
 keyring = "^23.9.0"
-
-[tool.poetry.group.dev.dependencies]
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.7"
 
@@ -55,8 +52,8 @@ flake8-rst-docstrings = "^0.2.7"
 target-version = ["py37", "py38", "py39"]
 
 [build-system]
-requires = ["poetry>=1.1.4"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-report term-missing --cov-branch"
