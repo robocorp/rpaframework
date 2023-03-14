@@ -2,7 +2,7 @@
 import logging
 import os
 from datetime import datetime
-from typing import Union, Optional, Any, List, Dict
+from typing import Union, Optional, Any, List, Dict, Tuple
 from pathlib import Path
 from collections import OrderedDict
 
@@ -470,7 +470,7 @@ class Smartsheet:
     @keyword
     def get_sheet_owner(
         self, sheet_id: int = None, sheet_name: int = None
-    ) -> tuple[str, int]:
+    ) -> Tuple[str, int]:
         """Returns the owner's username and id for the current sheet."""
         sheet_id = self._parse_sheet_id(sheet_id, sheet_name)
         sheet = self.smart.Sheets.get_sheet(sheet_id, include=["ownerInfo"])
