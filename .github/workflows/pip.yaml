@@ -25,16 +25,16 @@ jobs:
         os: ["ubuntu-latest"]
         python-version: [3.7, 3.9.13, 3.10.6] #dropped: 3.8
         pip-version: [21.3.1, 22.1.2, 23.0.1] #dropped: 20.3.4
-        # test the latest recommended on macos and windows, and other pip versions and pythons on ubuntu for speed
+        # test the latest template on macos and windows, and other pip versions and pythons on ubuntu for speed
         # adding macos and windows to the matrix adds a bunch of running and delay because of mac and windows
         # runners being slower to allocate
         include:
           - os: macos-latest
-            python-version: "3.9"
-            pip-version: "22.3.0"
+            python-version: "3.9.13"
+            pip-version: "22.1.2"
           - os: windows-latest
-            python-version: "3.9"
-            pip-version: "22.3.0"
+            python-version: "3.9.13"
+            pip-version: "22.1.2"
     steps:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
