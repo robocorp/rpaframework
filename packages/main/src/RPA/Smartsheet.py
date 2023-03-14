@@ -567,9 +567,9 @@ class Smartsheet:
         if isinstance(column, int):
             return column
         elif isinstance(column, str):
-            for column in self.current_sheet.columns:
-                if column.title == column:
-                    return column.id
+            for sheet_col in self.current_sheet.columns:
+                if sheet_col.title == column:
+                    return sheet_col.id
         elif isinstance(column, Column):
             return column.id
         else:

@@ -290,11 +290,11 @@ def test_convert_sheet_to_table(
     table = lib_with_sheet.convert_sheet_to_table()
 
     assert isinstance(table, Table)
-    expected_columns = MOCK_SHEET_JSON["columns"]
+    expected_columns = MOCK_SHEET_JSON["columns"].copy()
     expected_columns.append({"title": "rowId"})
     assert table.columns == [c["title"] for c in expected_columns]
     for table_row, sheet_row in zip(table, MOCK_SHEET_JSON["rows"]):
-        expected_row = [cell["value"] for cell in sheet_row["cells"]]
+        expected_row = [cell["value"] for cell in sheet_row["cells"].copy()]
         expected_row.append(sheet_row["id"])
         assert list(table_row.values()) == expected_row
 
