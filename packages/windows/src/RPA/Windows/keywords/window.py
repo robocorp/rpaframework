@@ -14,9 +14,6 @@ from RPA.Windows.keywords import (
     with_timeout,
 )
 
-if utils.IS_WINDOWS:
-    import uiautomation as auto
-
 
 class WindowKeywords(WindowMethods):
     """Keywords for handling Window controls"""
@@ -92,6 +89,7 @@ class WindowKeywords(WindowMethods):
         return window
 
     @keyword(tags=["window"])
+    @with_timeout
     def control_child_window(
         self,
         locator: Optional[Locator] = None,
@@ -155,7 +153,7 @@ class WindowKeywords(WindowMethods):
 
         utils.call_attribute_if_available(window.item, "SetFocus")
         utils.call_attribute_if_available(window.item, "SetActive")
-        window.item.MoveCursorToMyCenter(simulateMove=self.ctx.SIMULATE_MOVE)
+        window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
         return window
 
     def _resize_window(

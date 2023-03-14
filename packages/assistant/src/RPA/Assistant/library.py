@@ -5,10 +5,11 @@ import platform
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, Literal
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import (
+    AppBar,
     Checkbox,
     Column,
     Container,
@@ -30,18 +31,27 @@ from flet import (
     colors,
     icons,
 )
-from flet.control_event import ControlEvent
-from flet.dropdown import Option
+from flet_core import Stack
+from flet_core.control_event import ControlEvent
+from flet_core.dropdown import Option
 from robot.api.deco import keyword, library
 from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+from robot.utils.dotdict import DotDict
+from typing_extensions import Literal
 
 from RPA.Assistant.flet_client import FletClient
-from RPA.Assistant.types import Icon, Options, Result, Size, Location
-from RPA.Assistant.utils import (
-    optional_str,
-    to_options,
+from RPA.Assistant.types import (
+    Icon,
+    LayoutError,
+    Location,
+    Options,
+    Result,
+    Size,
+    VerticalLocation,
+    WindowLocation,
 )
+from RPA.Assistant.utils import location_to_absolute, optional_str, to_options
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -96,8 +106,34 @@ class Assistant:
     a file input will have a list of paths.
 
     If the user closed the window before submitting or there was an internal
-    error, the library will raise an exception and the result values will
-    not be available.
+    error, the results object returned by Run Dialog or Ask User won't have a "submit"
+    key.
+
+    **Layouting**
+
+    By default elements are added to the assistant dialog from top to bottom, with a bit
+    of margin around each element to add spaciousness. This margin is added as a
+    ``Container`` you can manually use ``Open Container`` to override the default
+    container. You can use it to set smaller margins.
+
+    You can combine layouting elements with each other. Layouting elements need to be
+    closed with the corresponding ``Close`` keyword. (So ``Open Row`` and then
+    ``Close Row``.)
+
+    ``Open Row`` can be used to layout elements in the same row.
+
+    ``Open Column`` can be used to layout elements in columns.
+
+    ``Open Stack`` and multiple ``Open Container``'s inside it can be used to set
+    positions like Center, Topleft, BottomRight, or coordinate tuples likes (0, 0),
+    (100, 100) and such.
+
+    ``Open Container`` can bse used for absolute positioning inside a Stack, or anywhere
+    for setting background color or margins and paddings.
+
+    ``Open Navbar`` can be used to make a navigation bar that will stay at the top of
+    the dialog. Its contents won't be cleared when.
+
 
     **Examples**
 
@@ -143,10 +179,11 @@ class Assistant:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
+        os.environ["FLET_LOG_LEVEL"] = "warning"
         self._client = FletClient()
         self._validations: Dict[str, Callable] = {}
-        # Disable fletd debug logging
-        os.environ["GIN_MODE"] = "release"
+        self._required_fields: Set[str] = set()
+        self._open_layouting: List[str] = []
 
         try:
             # Prevent logging from keywords that return results
@@ -163,47 +200,55 @@ class Assistant:
         except RobotNotRunningError:
             pass
 
+    def _create_error(self, error_message: str):
+        self._client.page.add(
+            Text(
+                error_message,
+                color=flet.colors.RED,
+            )
+        )
+
     def _create_closing_button(self, label="Submit") -> Control:
         def validate_and_close(*_):
+            # remove None's from the result dictionary
+            for field_name in list(self._client.results.keys()):
+                if self._client.results[field_name] is None:
+                    self._client.results.pop(field_name)
+
             should_close = True
-            if not self._validations:
-                self._client.page.window_destroy()
-            for field_name, validation in self._validations.items():
-                if not validation or field_name not in self._client.results:
-                    continue
-                error_message = validation(self._client.results[field_name])
+
+            for field_name in self._required_fields:
+                value = self._client.results.get(field_name)
+                error_message = None if value else "Mandatory field was not completed"
                 if error_message:
                     should_close = False
-                    self._client.page.add(
-                        Text(
-                            f"Error on field named '{field_name}: {error_message}",
-                            color=flet.colors.RED,
-                        )
+                    self._create_error(error_message)
+                    self._client.flet_update()
+
+            for field_name, validation in self._validations.items():
+                field_value = self._client.results.get(field_name)
+                # Only run validations for non-None values.
+                if field_value:
+                    error_message = validation(self._client.results.get(field_name))
+                else:
+                    error_message = None
+
+                if error_message:
+                    should_close = False
+                    self._create_error(
+                        f"Error on field named '{field_name}: {error_message}",
                     )
-                    self._client.page.update()
+                    self._client.flet_update()
+
             if should_close:
                 self._client.results["submit"] = label
                 self._client.page.window_destroy()
 
         return ElevatedButton(label, on_click=validate_and_close)
 
-    @keyword
+    @keyword(tags=["dialog", "running"])
     def clear_dialog(self) -> None:
-        """Remove all previously defined elements and start from a clean state.
-        By default this is done automatically when a dialog is closed.
-        It will also clear all the results.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Add heading     Please input user information
-            FOR    ${user}   IN    @{users}
-                Run dialog    clear=False
-                Process page
-            END
-            Clear dialog
-        """
+        """Clear dialog and results while it is running."""
         self._client.results = {}
         self._client.clear_elements()
 
@@ -437,7 +482,7 @@ class Assistant:
 
     @keyword
     def add_icon(self, variant: Icon, size: int = 48) -> None:
-        """Add an icon element
+        """Add an icon element from RPA.Assistant's short icon list.
 
         :param variant: The icon type
         :param size:    The size of the icon
@@ -479,13 +524,44 @@ class Assistant:
 
         self._client.add_element(flet.Icon(name=flet_icon, color=color, size=size))
 
+    @keyword
+    def add_flet_icon(
+        self,
+        icon: str,
+        color: Optional[str] = None,
+        size: Optional[int] = 24,
+    ):
+        """Add an icon from a large gallery of icons.
+
+        :param icon:      Corresponding flet icon name. Check
+                          https://gallery.flet.dev/icons-browser/ for a list of icons.
+                          Write the name in ``lower_case``
+        :param color:     Color for the icon. Default depends on icon. Allowed values
+                          are colors from
+                          https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37
+                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
+        :param size:      Integer size for the icon.
+
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add Heading    Check icon
+            Add Flet Icon  icon_name=check_circle_rounded  color=FF00FF  size=48
+            Run Dialog
+        """
+        self._client.add_element(flet.Icon(name=icon, color=color, size=size))
+
     @keyword(tags=["input"])
     def add_text_input(
         self,
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Union[Callable, None] = None,
+        validation: Optional[Callable] = None,
+        default: Optional[str] = None,
+        required: bool = False,
     ) -> None:
         """Add a text input element
 
@@ -493,6 +569,8 @@ class Assistant:
         :param label:       Label for field
         :param placeholder: Placeholder text in input field
         :param validation:   Validation function for the input field
+        :param default:     Default value if the field wasn't completed
+        :param required:    If true, will display an error if not completed
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -500,6 +578,12 @@ class Assistant:
         For customizing the look of the input, the ``label`` text can be given
         to add a descriptive label and the ``placholder`` text can be given
         to act as an example of the input value.
+
+        The `default` value will be assigned to the input field if the user
+        doesn't complete it. If provided, the placeholder won't be shown.
+        This is `None` by default. Also, if a default value is provided
+        and the user deletes it, `None` will be the corresponding value in
+        the results dictionary.
 
         Example:
 
@@ -513,11 +597,25 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        if validation:
+
+        if validation and required:
+            self._validations[name] = validation
+            self._required_fields.add(name)
+        elif required:
+            self._required_fields.add(name)
+        elif validation:
             self._validations[name] = validation
 
+        self._client.results[name] = default
+
+        def empty_string_to_none(e):
+            if e.control.value == "":
+                e.data = None
+
         self._client.add_element(
-            name=name, element=TextField(label=label, hint_text=placeholder)
+            name=name,
+            element=TextField(label=label, hint_text=placeholder, value=default),
+            extra_handler=empty_string_to_none,
         )
 
     @keyword(tags=["input"])
@@ -741,6 +839,8 @@ class Assistant:
         """
 
         def validate(date_text):
+            if not date_text:
+                return None
             try:
                 date.fromisoformat(date_text)
                 return None
@@ -857,14 +957,6 @@ class Assistant:
         :param buttons: Submit button options
         :param default: The primary button
 
-        The dialog automatically creates a button for closing itself.
-        If there are no input fields, the button will say "Close".
-        If there are one or more input fields, the button will say "Submit".
-
-        If the submit button should have a custom label or there should be
-        multiple options to choose from  when submitting, this keyword can
-        be used to replace the automatically generated ones.
-
         The result field will always be called ``submit`` and will contain
         the pressed button text as a value.
 
@@ -904,8 +996,7 @@ class Assistant:
         height: Union[int, Literal["AUTO"]] = "AUTO",
         width: int = 480,
         on_top: bool = False,
-        location: Union[Location, Tuple[int, int], None] = None,
-        clear: bool = True,
+        location: Union[WindowLocation, Tuple[int, int], None] = None,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -917,13 +1008,13 @@ class Assistant:
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
-        :param clear:  Clear the elements and results after the dialog exits. (If false
-                       next Run Dialog will start up with same elements.)
 
-        None will let the operating system place the window.
-
+        If the `location` argument is `None` it will let the operating system
+        place the window.
 
         Returns a result object with all input values.
+
+        When the dialog closes elements are cleared.
 
         Example:
 
@@ -942,15 +1033,19 @@ class Assistant:
         # if location is given as a string (Robot autoconversion doesn't work) parse it
         # to enum manually
         if isinstance(location, str):
-            location = Location[location]
+            location = WindowLocation[location]
 
         self._client.display_flet_window(
             title, height, width, on_top, location, timeout
         )
-        results = self._client.results
-        if clear:
-            self.clear_dialog()
+        results = self._get_results()
+        self._client.results.clear()
+
         return results
+
+    def _get_results(self) -> DotDict:
+        results = self._client.results
+        return DotDict(**results)
 
     @keyword(tags=["dialog"])
     def ask_user(self, timeout: int = 180, **options: Any) -> Result:
@@ -979,15 +1074,12 @@ class Assistant:
         self.add_submit_buttons(["Submit", "Close"], "Submit")
         return self.run_dialog(**options, timeout=timeout)
 
-    @keyword(tags=["dialog"])
+    @keyword(tags=["dialog", "running"])
     def refresh_dialog(self):
         """Can be used to update UI elements when adding elements while dialog is
         running
         """
-        if self._client.page:
-            self._client.update_elements(self._client.page)
-        else:
-            raise RuntimeError("No dialog open")
+        self._client.update_elements()
 
     def _create_python_function_wrapper(self, function, *args, **kwargs):
         """wrapper code that is used to add wrapping for user functions when binding
@@ -1058,7 +1150,12 @@ class Assistant:
 
     @keyword(tags=["dialog"])
     def add_button(
-        self, label: str, function: Union[Callable, str], *args, **kwargs
+        self,
+        label: str,
+        function: Union[Callable, str],
+        *args,
+        location: VerticalLocation = VerticalLocation.Left,
+        **kwargs,
     ) -> None:
         """Create a button and execute the `function` as a callback when pressed.
 
@@ -1073,18 +1170,19 @@ class Assistant:
             *** Keywords ***
             First View
                 Add Heading  Here is the first view of the app
-                Add Button  Second View
+                Add Button  Change View  Second View
 
             Second View
                 Add Heading  Let's build an infinite loop
-                Add Button  First View
+                Add Button  Change View  First View
         """
 
         def on_click(_: ControlEvent):
             self._queue_function_or_robot_keyword(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
-        self._client.add_element(button)
+        container = Container(alignment=location.value, content=button)
+        self._client.add_element(container)
         self._client.add_to_disablelist(button)
 
     @keyword(tags=["dialog"])
@@ -1095,7 +1193,7 @@ class Assistant:
 
         :param label: Text for the button
         :param function: Python function or Robot Keyword name, that will take form
-            results as it's first argument
+            results as its first argument
 
         Example:
 
@@ -1129,10 +1227,12 @@ class Assistant:
     def add_slider(
         self,
         name: str,
-        slider_min=0,
-        slider_max=100,
+        slider_min: Union[int, float] = 0,
+        slider_max: Union[int, float] = 100,
         thumb_text="{value}",
         steps: Optional[int] = None,
+        default: Optional[Union[int, float]] = None,
+        decimals: Optional[int] = 1,
     ):
         """Add a slider input.
 
@@ -1147,6 +1247,8 @@ class Assistant:
                             For integer output, specify a steps value where all the
                             steps will be integers, or implement rounding when
                             retrieving the result.
+        :param default:     Default value for the slider. Must be between min and max.
+        :param decimals:    How many decimals should the value have and show.
 
         .. code-block:: robotframework
 
@@ -1154,10 +1256,257 @@ class Assistant:
             Create Percentage Slider
                 Add Text    Percentage slider
                 Add Slider  name=percentage  slider_min=0  slider_max=100
-                            thumb_text={value}%  steps=100
-
-
+                            thumb_text={value}%  steps=100  round=1
 
         """
-        slider = Slider(min=0, max=100, divisions=steps, label=thumb_text)
+        if default:
+            default = float(default)
+
+            # Is this even necessary?
+            if default.is_integer():
+                default = int(default)
+
+            if slider_min > default or slider_max < default:
+                raise ValueError(f"Slider {name} had an out of bounds default value.")
+            self._client.results[name] = default
+
+        slider = Slider(
+            min=slider_min,
+            max=slider_max,
+            divisions=steps,
+            label=thumb_text,
+            value=default,
+            round=decimals,
+        )
         self._client.add_element(name=name, element=slider)
+
+    @keyword(tags=["dialog", "running"])
+    def set_title(self, title: str):
+        """Set dialog title when it is running."""
+        self._client.set_title(title)
+
+    def _close_layouting_element(self, layouting_element: str):
+        """Checkhat if the last opened layout element matches what is being closed,
+        otherwise raise ValueError. If the check passes, close the layout element.
+        """
+        if not self._open_layouting:
+            raise LayoutError(f"Cannot close {layouting_element}, no open layout")
+
+        last_opened = self._open_layouting[-1]
+        if not last_opened == layouting_element:
+            raise LayoutError(
+                f"Cannot close {layouting_element}, last opened layout is {last_opened}"
+            )
+
+        self._client.close_layout()
+        self._open_layouting.pop()
+
+    @keyword(tags=["layout"])
+    def open_row(self):
+        """Open a row layout container. Following ``Add <element>`` calls will add
+        items into that row until ``Close Row`` is called.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Side By Side Elements
+                Open Row
+                Add Text  First item on the row
+                Add Text  Second item on the row
+                Close Row
+        """
+        self._open_layouting.append("Row")
+        self._client.add_layout(Row())
+
+    @keyword(tags=["layout"])
+    def close_row(self):
+        """Close previously opened row.
+
+        Raises LayoutError if called with no Row open, or if another layout element was
+        opened more recently than a row.
+        """
+        self._close_layouting_element("Row")
+
+    @keyword(tags=["layout"])
+    def open_container(
+        self,
+        margin: Optional[int] = 5,
+        padding: Optional[int] = None,
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        background_color: Optional[str] = None,
+        location: Union[Location, Tuple[int, int], None] = None,
+    ):
+        """Open a single element container. The following ``Add <element>`` calls adds
+        an element inside the container. Can be used for styling elements.
+
+
+        :param margin: How much margin to add around the container. RPA.Assistant adds
+                       by default a container of margin 5 around all elements, to have
+                       a smaller margin use containers with smaller margin value for
+                       elements.
+        :param padding: How much padding to add around the content of the container.
+        :param width: Width of the container.
+        :param height: Height of the container.
+
+        :param bgcolor:   Background color for the container. Default depends on icon.
+                          Allowed values are colors from
+                          [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
+                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+        :param location:  Where to place the container (A Location value or tuple of
+                          ints). Only works inside a Stack layout element.
+
+                          To use any Center___ or ___Center locations you must define
+                          width and height to the element.
+
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Padded Element With Background
+                Open Container  padding=20  background_color=blue500
+                Add Text        sample text
+                Close Container
+
+
+        """  # noqa: E501
+        self._open_layouting.append("Container")
+        if not location:
+            top, left, bottom, right = None, None, None, None
+        else:
+            parent_height, parent_width = self._client.get_layout_dimensions()
+            parsed_location = location_to_absolute(
+                location, parent_width, parent_height, width, height
+            )
+            top = parsed_location.get("top")
+            left = parsed_location.get("left")
+            right = parsed_location.get("right")
+            bottom = parsed_location.get("bottom")
+        self._client.add_layout(
+            Container(
+                margin=margin,
+                padding=padding,
+                width=width,
+                height=height,
+                bgcolor=background_color,
+                top=top,
+                left=left,
+                bottom=bottom,
+                right=right,
+            )
+        )
+
+    @keyword(tags=["layout"])
+    def close_container(self):
+        """Close previously opened container.
+
+        Raises LayoutError if called with no Row open, or if another layout element was
+        opened more recently than a row.
+        """
+        self._close_layouting_element("Container")
+
+    @keyword(tags=["layout"])
+    def open_navbar(self, title: Optional[str] = None):
+        """Create a Navigation Bar. Following ``Add <element>`` calls will add
+        items into the Navbar until ``Close Navbar`` is called.
+
+        Navbar doesn't clear when Clear Dialog is called.
+
+        Only one Navbar can be initialized at a time. Trying to make a second one will
+        raise a LayoutError.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+                Go To Start Menu
+                    Add Heading  Start menu
+                    Add Text  Start menu content
+
+                Assistant Navbar
+                    Open Navbar  title=Assistant
+                    Add Button   menu  Go To Start Menu
+                    Close Navbar
+        """
+        self._open_layouting.append("AppBar")
+        self._client.set_appbar(AppBar(title=Text(title)))
+
+    @keyword(tags=["layout"])
+    def close_navbar(self):
+        """Close previously opened navbar.
+
+        Raises LayoutError if called with no Row open, or if another layout element was
+        opened more recently than a row."""
+        self._close_layouting_element("AppBar")
+
+    @keyword(tags=["layout"])
+    def open_stack(self, width: Optional[int] = None, height: Optional[int] = None):
+        """Create a "Stack" layout element. Stack can be used to position elements
+        absolutely and to have overlapping elements in your layout. Use Container's
+        `top` and `left` arguments to position the elements in a stack.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+                Absolutely Positioned Elements
+                    # Positioning containers with relative location values requires
+                    # absolute size for the Stack
+                    Open Stack  height=360  width=360
+
+                    Open Container  width=64  height=64  location=Center
+                    Add Text  center
+                    Close Container
+
+                    Open Container  width=64  height=64  location=TopRight
+                    Add Text  top right
+                    Close Container
+
+                    Open Container  width=64  height=64  location=BottomRight
+                    Add Text  bottom right
+                    Close Container
+
+                    Close Stack
+
+        """
+        self._open_layouting.append("Stack")
+        self._client.add_layout(Stack(width=width, height=height))
+
+    @keyword(tags=["layout"])
+    def close_stack(self):
+        """Close previously opened Stack.
+
+        Raises LayoutError if called with no Stack open, or if another layout element
+        was opened more recently than a Stack.
+        """
+        self._close_layouting_element("Stack")
+
+    @keyword(tags=["layout"])
+    def open_column(self):
+        """Open a Column layout container. Following ``Add <element>`` calls will add
+        items into that Column until ``Close Column`` is called.
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Double Column Layout
+                Open Row
+                Open Column
+                Add Text      First item in the first column
+                Add Text      Second item on the first column
+                Close Column
+                Open Column
+                Add Text      First item on the second column
+                Close Column
+                Close Row
+        """
+        self._open_layouting.append("Column")
+        self._client.add_layout(Column())
+
+    @keyword(tags=["layout"])
+    def close_column(self):
+        """Closes previously opened Column.
+
+        Raises LayoutError if called with no Column open, or if another layout element
+        was opened more recently than a Column.
+        """
+
+        self._close_layouting_element("Column")

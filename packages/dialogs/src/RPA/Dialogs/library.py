@@ -7,7 +7,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union, Any, Generator
 
 from robot.api.deco import library, keyword  # type: ignore
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError  # type: ignore
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+
+from RPA.core.logger import deprecation
 
 from .dialog import Dialog, TimeoutException
 from .dialog_types import Elements, Result, Options, Size, Icon
@@ -16,7 +18,12 @@ from .utils import to_options, optional_str, optional_int, int_or_auto, is_input
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class Dialogs:
-    """The `Dialogs` library provides a way to display information to a user
+    """**NOTICE:** The `Dialogs` library is now marked for deprecation.
+    The library will be replaced by `Assistant`. In order to get more
+    information about the changes and the migration guide, please
+    check the release note: https://updates.robocorp.com/release/Gfko5-rpaframework-2200
+
+    The `Dialogs` library provides a way to display information to a user
     and request input while a robot is running. It allows building processes
     that require human interaction.
 
@@ -110,6 +117,12 @@ class Dialogs:
     """
 
     def __init__(self) -> None:
+        deprecation(
+            "`RPA.Dialogs` got deprecated and will be no longer maintained, "
+            "please use `RPA.Assistant` instead and check the migration guide "
+            "and release notes that describe the differences "
+            "(https://updates.robocorp.com/release/Gfko5-rpaframework-2200)"
+        )
         self.logger = logging.getLogger(__name__)
         self.elements: Elements = []
         self.dialogs: List[Dialog] = []

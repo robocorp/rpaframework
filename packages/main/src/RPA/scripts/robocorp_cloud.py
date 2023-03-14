@@ -127,7 +127,8 @@ def set_command():
     #     default=1440,
     #     type=int,
     # )
-    token_validity = 1440
+    # Max token validility changed to 20 hours (1200 minutes)
+    token_validity = 1200
     ret = run_command(f"rcc cloud authorize -a DEV -w {workspace} -m {token_validity}")
     if "Error:" in ret:
         output_and_exit(ret)

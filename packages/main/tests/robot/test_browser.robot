@@ -1,13 +1,13 @@
 *** Settings ***
-Library         OperatingSystem
-Library         RPA.Browser.Selenium    locators_path=${LOCATORS}
-Library         RPA.FileSystem
-Library         RPA.RobotLogListener
+Library             OperatingSystem
+Library             RPA.Browser.Selenium    locators_path=${LOCATORS}
+Library             RPA.FileSystem
+Library             RPA.RobotLogListener
 
-Suite Setup     Open Available Browser  about:blank  headless=${TRUE}
-Suite Teardown  Close All Browsers
+Suite Setup         Open Available Browser    about:blank    headless=${True}
+Suite Teardown      Close All Browsers
 
-Default Tags    RPA.Browser
+Default Tags        rpa.browser
 
 
 *** Variables ***
@@ -25,100 +25,116 @@ My Custom Keyword
 
 *** Tasks ***
 Does alert contain
-    Go To                 ${ALERT_HTML}
-    Click Element         //button
-    ${res}                Does Alert Contain  after
-    Handle Alert          DISMISS
+    Go To    ${ALERT_HTML}
+    Click Element    //button
+    ${res} =    Does Alert Contain    after
+    Handle Alert    DISMISS
 
 Does alert not contain
-    Go To                 ${ALERT_HTML}
-    Click Element         //button
-    ${res}                Does Alert Not Contain  afterx
-    Handle Alert          DISMISS
+    Go To    ${ALERT_HTML}
+    Click Element    //button
+    ${res} =    Does Alert Not Contain    afterx
+    Handle Alert    DISMISS
 
-Basic browser open and usage
-    [Tags]  skip
-    Open available browser          www.google.com    headless=${TRUE}
-    Wait Until Element Is Visible   q
-    Input Text                      q  Robocorp
-    Click Element                   q
-    Press keys                      q    ENTER
-    Sleep                           3s
-    Screenshot
+Screenshot Robocorp Google search result
+    Go To    www.google.com
+    Wait Until Element Is Visible    q
 
-Check span value
-    [Tags]  skip
-    Open available Browser    https://www.w3schools.com/tags/att_span.asp    headless=${TRUE}
-    ${val}=    Get Value        class:dotcom
-    ${elem}=   Get WebElement   class:dotcom
-    Log        ${elem.text}
+    Input Text    q    Robocorp
+    Click Element    q
+    Press Keys    q    ENTER
+    Wait Until Element Is Visible   css:div.logo
+
+    Screenshot      filename=${BROWSER_DATA}${/}google-robocorp.png
+
+Check button value
+    Go To    https://www.easytestmaker.com
+
+    ${locator} =    Set Variable    xpath://input[@type='hidden']
+    ${element} =   Get WebElement       ${locator}
+    ${value} =    Get Value     ${element}
+    Log To Console  Token: ${value}
 
 Locator aliases
-    [Tags]  skip
-    Open Available Browser    https://robotsparebinindustries.com/    headless=${TRUE}
-    Input Text      alias:RobotSpareBin.Username    maria
-    Input Text      alias:RobotSpareBin.Password    thoushallnotpass
-    Submit Form
-    Click button when visible   id:logout
+    Go To    https://robotsparebinindustries.com/
 
-Set download directory
-    [Tags]  skip
-    Set Download Directory  ${OUTPUT_DIR}
-    Open Available Browser  https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf  headless=${TRUE}
-    File Should Exist       ${OUTPUT_DIR}${/}Robocorp-EULA-v1.0.pdf
-    [Teardown]  Run Keyword And Ignore Error   Remove File  ${OUTPUT_DIR}${/}Robocorp-EULA-v1.0.pdf
+    Input Text    alias:RobotSpareBin.Username    maria
+    Input Text    alias:RobotSpareBin.Password    thoushallnotpass
+    Submit Form
+
+    Click Button When Visible    id:logout
+    Click Element When Visible      alias:RobotSpareBin.Order
+    Click Button When Visible   alias:RobotSpareBin.Yep
+
+Download PDF in custom directory
+    [Tags]      skip  # because such downloads don't work in headless mode
+    [Setup]     Close Browser
+
+    Set Download Directory    ${OUTPUT_DIR}
+    ${file_name} =   Set Variable    Robocorp-EULA-v1.0.pdf
+    Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
+    ...    headless=${False}  # to enable PDF downloading
+    Go To   robocorp.com  # this starts after the PDF above gets downloaded
+    ${file_path} =      Set Variable    ${OUTPUT_DIR}${/}${file_name}
+    File Should Exist   ${file_path}
+
+    [Teardown]    Run Keyword And Ignore Error    Remove File   ${file_path}
 
 Highlight elements
+    [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
+
     # TODO: test somehow that the outline is really drawn.
-    [Setup]  Open available browser  https://robocorp.com/docs/quickstart-guide  headless=${TRUE}
-    Highlight Elements               xpath://h2
-    Page Should Contain Element      xpath://h2[@rpaframework-highlight]
+    Highlight Elements    xpath://h2
+    Page Should Contain Element    xpath://h2[@rpaframework-highlight]
 
 Clear all highlights
-    [Setup]  Open available browser  https://robocorp.com/docs/quickstart-guide  headless=${TRUE}
-    Highlight Elements               xpath://h2
+    [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
+
+    Highlight Elements    xpath://h2
     Clear All Highlights
-    Page Should Contain Element      xpath://h2
-    Page Should Not Contain Element  xpath://h2[@rpaframework-highlight]
+    Page Should Contain Element    xpath://h2
+    Page Should Not Contain Element    xpath://h2[@rpaframework-highlight]
 
 Mute browser failures
+    [Setup]     Go To   https://robotsparebinindustries.com/
+
     Mute run on failure    My Custom Keyword
-    Open Available Browser    https://robotsparebinindustries.com/    headless=${TRUE}
     Run keyword and expect error    *    My Custom Keyword
     Run keyword and expect error    *    Get Value    id:notexist
 
 Open In Incognito With Custom Options
-    Close Browser
-    ${non_windows} =    Evaluate    not sys.platform.startswith("win")    modules=sys
+    [Documentation]     Test Chrome with custom options (incognito), port and explicit
+    ...     profile directory.
+    # In CI, Chrome attracts a buggy webdriver which makes the custom profile usage
+    #  to break in headless mode. (unknown error: unable to discover open pages)
+    [Tags]      skip
+    [Setup]     Close Browser
 
+    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
+    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
     ${options} =    Set Variable    add_argument("--incognito")
-    IF    ${non_windows}
-        ${data_dir} =   Absolute Path   ${BROWSER_DATA}
-        RPA.FileSystem.Create Directory    ${data_dir}     parents=${True}
-        ${data_dir_op} =   Set Variable     "user-data-dir=${data_dir}"
-        ${options} =    Catenate    SEPARATOR=;    ${options}
-        ...     add_argument(${data_dir_op})
-    END
 
     Open Available Browser    https://robocorp.com    browser_selection=Chrome
-    ...     headless=${True}    options=${options}  port=${18888}
+    ...    headless=${True}    options=${options}    port=${18888}
+    # Custom profile usage now works in headless mode as well. (but not guaranteed
+    #  with older browser versions)
+    ...    use_profile=${True}      profile_path=${data_dir}
 
-    ${visible} =    Is Element Visible      xpath://button[2]
+    ${visible} =    Is Element Visible    xpath://button[2]
     Should Be True    ${visible}
+    Directory Should Not Be Empty    ${data_dir}
 
-    Close Browser
-    IF    ${non_windows}
-        Directory Should Not Be Empty      ${data_dir}
-        RPA.FileSystem.Remove directory    ${data_dir}      recursive=${True}
-    END
+    [Teardown]  RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
 
 Open Browser With Dict Options
-    @{args} =   Create List     --headless
-    &{caps} =   Create Dictionary   acceptInsecureCerts     ${True}
-    &{options} =    Create Dictionary   arguments   ${args}     capabilities    ${caps}
+    [Setup]     Close Browser
 
-    ${driver_path} =   Evaluate    RPA.core.webdriver.download("Chrome")
-    ...     modules=RPA.core.webdriver
-    Log To Console      Downloaded webdriver path: ${driver_path}
-    Open Browser    https://robocorp.com    browser=Chrome      options=${options}
-    ...     executable_path=${driver_path}
+    @{args} =    Create List    --headless
+    &{caps} =    Create Dictionary    acceptInsecureCerts    ${True}
+    &{options} =    Create Dictionary    arguments    ${args}    capabilities    ${caps}
+
+    ${driver_path} =    Evaluate    RPA.core.webdriver.download("Chrome")
+    ...    modules=RPA.core.webdriver
+    Log To Console    Downloaded webdriver path: ${driver_path}
+    Open Browser    https://robocorp.com    browser=Chrome    options=${options}
+    ...    executable_path=${driver_path}

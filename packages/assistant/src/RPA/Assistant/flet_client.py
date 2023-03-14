@@ -1,27 +1,30 @@
-import atexit
-from logging import getLogger
-import os
-import signal
+from dataclasses import dataclass
 import time
-from collections import namedtuple
-from subprocess import Popen, SubprocessError
+from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, Literal, Optional, Tuple, Union, List
+from typing import Callable, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
-from flet.control_event import ControlEvent
-from flet.utils import is_windows, is_macos
-from RPA.Assistant.types import Location, Result
+from flet_core import Column, Control, AppBar, Row, Stack
+from flet_core.control_event import ControlEvent
+from typing_extensions import Literal
 
-from RPA.Assistant.utils import nix_get_pid
+from RPA.Assistant.background_flet import BackgroundFlet
+from RPA.Assistant.types import (
+    LayoutError,
+    PageNotOpenError,
+    Result,
+    SupportedFletLayout,
+    WindowLocation,
+)
 
 
 def resolve_absolute_position(
-    location: Union[Location, Tuple],
+    location: Union[WindowLocation, Tuple],
 ) -> Tuple[int, int]:
 
-    if location is Location.TopLeft:
+    if location is WindowLocation.TopLeft:
         return (0, 0)
     elif isinstance(location, tuple):
         return location
@@ -33,100 +36,40 @@ class TimeoutException(RuntimeError):
     """Timeout while waiting for dialog to finish."""
 
 
-Elements = namedtuple("Elements", ["visible", "invisible"])
+@dataclass
+class Elements:
+    """Lists of visible and invisible control elements"""
+
+    visible: List[Control]
+    invisible: List[Control]
+    app_bar: Optional[AppBar]
+    used_names: Set[str]
 
 
 class FletClient:
     """Class for wrapping flet operations"""
 
     def __init__(self) -> None:
-        atexit.register(self._cleanup)
         self.logger = getLogger(__name__)
         self.results: Result = {}
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
 
-        self._conn = None
-        self._elements: Elements = Elements([], [])
+        self._elements: Elements = Elements([], [], None, set())
         self._to_disable: List[flet.Control] = []
-        self._fvp: Optional[Popen] = None
+        self._layout_stack: List[Union[SupportedFletLayout, AppBar]] = []
 
-    def _cleanup(self) -> None:
-        # Source: https://github.com/flet-dev/flet/blob/89364edec81f0f9591a37bdba5f704215badb0d3/sdk/python/flet/flet.py#L146 # noqa: E501
-        if self._conn is not None:
-            self._conn.close()
-        if self._fvp is not None and not is_windows():
-            try:
-                fletd_pid = nix_get_pid("fletd")
-                self.logger.debug(f"Flet View process {self._fvp.pid}")
-                self.logger.debug(f"Fletd Server process {fletd_pid}")
-                os.kill(fletd_pid, signal.SIGKILL)
-            except (SubprocessError, OSError) as err:
-                self.logger.error(
-                    f"Unexpected error {err} when killing Flet subprocess"
-                )
-            except ValueError:
-                pass  # no leftover process found
-
-        # kill the graphical application on macOS,
-        # otherwise it can hang around after cleanup
-        if is_macos():
-            try:
-                fletd_app_pid = nix_get_pid("Flet")
-                self.logger.debug(f"Flet application process {fletd_app_pid}")
-                os.kill(fletd_app_pid, signal.SIGKILL)
-            except ValueError:
-                pass  # no leftover process found
-            except (SubprocessError, OSError) as err:
-                self.logger.error(
-                    f"Unexpected error {err} when killing Flet subprocess"
-                )
+        self._background_flet = BackgroundFlet()
 
     def _create_flet_target_function(
-        self, page: Optional[Page] = None
-    ) -> Callable[[Optional[Page]], None]:
-        def inner_execute(inner_page: Optional[Page] = None):
-            if page:
-                inner_page = page
-            for element in self._elements.visible:
-                inner_page.add(element)
-            for element in self._elements.invisible:
-                inner_page.overlay.append(element)
-            inner_page.scroll = ScrollMode.AUTO
-            inner_page.on_disconnect = lambda _: self._fvp.terminate()
-            self.page = inner_page
-            inner_page.update()
-
-        return inner_execute
-
-    def _preload_flet(self):
-        # We access Flet internals because it is simplest way to control the specifics
-        # In the future we should migrate / ask for a stable API that fits our needs
-        # pylint: disable=protected-access
-        return flet.flet._connect_internal(
-            page_name="",
-            host=None,
-            port=0,
-            is_app=True,
-            permissions=None,
-            assets_dir="/",
-            upload_dir=None,
-            web_renderer="canvaskit",
-            route_url_strategy="hash",
-        )
-
-    def _show_flet(
         self,
-        target: Callable[[Optional[Page]], None],
         title: str,
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Union[Location, Tuple[int, int], None],
-        timeout: int,
-    ):
-        def on_session_created(conn, session_data):
-            page = Page(conn, session_data.sessionID)
+        location: Union[WindowLocation, Tuple[int, int], None],
+    ) -> Callable[[Page], None]:
+        def inner_execute(page: Page):
             page.title = title
             if height != "AUTO":
                 page.window_height = height
@@ -136,31 +79,33 @@ class FletClient:
             # TODO: do we even allow None as argument?
             # or some Location.AUTO which would let OS handle position?
             if location is not None:
-                if location is Location.Center:
+                if location is WindowLocation.Center:
                     page.window_center()
                 else:
                     coordinates = resolve_absolute_position(location=location)
                     page.window_left = coordinates[0]
                     page.window_top = coordinates[1]
-            conn.sessions[session_data.sessionID] = page
+            page.scroll = ScrollMode.AUTO
+            page.on_disconnect = lambda _: self._background_flet.close_flet_view()
+            self.page = page
+            self.update_elements()
 
-            target(page)
+        return inner_execute
 
-        if not self._conn:
-            self._conn = self._preload_flet()
-        self._conn.on_session_created = on_session_created
-        # We access Flet internal function here to enable using of cached flet process
-        # for the lifetime of FletClient
-        # pylint: disable=protected-access
-        self._fvp = flet.flet._open_flet_view(self._conn.page_url, False)
+    def _show_flet(
+        self,
+        target: Callable[[Page], None],
+        timeout: int,
+    ):
+        self._background_flet.start_flet_view(target)
         view_start_time = timer()
         try:
-            while not self._fvp.poll():
+            while self._background_flet.poll() is None:
                 if callable(self.pending_operation):
                     self.pending_operation()  # pylint: disable=not-callable
                     self.pending_operation = None
                 if timer() - view_start_time >= timeout:
-                    self._fvp.terminate()
+                    self._background_flet.close_flet_view()
                     raise TimeoutException(
                         "Reached timeout while waiting for Assistant Dialog"
                     )
@@ -168,23 +113,71 @@ class FletClient:
         except TimeoutException:
             # pylint: disable=raise-missing-from
             raise TimeoutException("Reached timeout while waiting for Assistant Dialog")
+        finally:
+            # Control's can't be re-used on multiple pages so we remove the page and
+            # clear elements after flet closes
+            self.page = None
+            self.clear_elements()
+            self._to_disable.clear()
 
-    def _make_flet_event_handler(self, name: str):
-        def change_listener(e: ControlEvent):
-            self.results[name] = e.data
-            e.page.update()
+    def _make_flet_event_handler(self, name: str, handler: Optional[Callable] = None):
+        """Add flet event handler to record the element's data whenever content changes
+        if ``handler`` is provided also call that.
+        """
+
+        # We don't want the if inside the change_listener so it doesn't have to run on
+        # every on_change event
+        if not handler:
+
+            def change_listener(e: ControlEvent):
+                self.results[name] = e.data
+
+        else:
+
+            def change_listener(e: ControlEvent):
+                handler(e)
+                self.results[name] = e.data
 
         return change_listener
 
-    def add_element(self, element: flet.Control, name: Optional[str] = None):
-        # TODO: validate that element "name" is unique
-        # make a container that adds margin around the element
-        container = Container(margin=5, content=element)
-        self._elements.visible.append(container)
+    def _add_child_to_layout(self, child: Control):
+        current_layout = self._layout_stack[-1]
+        if isinstance(current_layout, (Row, Stack, Column)):
+            current_layout.controls.append(child)
+        elif isinstance(current_layout, AppBar):
+            current_layout.actions.append(child)
+        elif isinstance(current_layout, Container):
+            if current_layout.content is not None:
+                raise LayoutError("Attempting to place two content in one Container")
+            current_layout.content = child
+        else:
+            raise RuntimeError("Unsupported layout element")
+
+    def add_element(
+        self,
+        element: flet.Control,
+        name: Optional[str] = None,
+        extra_handler: Optional[Callable] = None,
+    ):
+        if name in self._elements.used_names:
+            raise ValueError(f"Name `{name}` already in use")
+
+        # if added element is a Container we don't create our own margin container to
+        # not override added containers properties.
+        if isinstance(element, Container):
+            new_element = element
+        else:
+            # make a container that adds margin around the element
+            new_element = Container(margin=5, content=element)
+
+        if self._layout_stack:
+            self._add_child_to_layout(new_element)
+        else:
+            self._elements.visible.append(new_element)
+
         if name is not None:
-            # TODO: might be necessary to check that it doesn't already have change
-            # handler
-            element.on_change = self._make_flet_event_handler(name)
+            self._elements.used_names.add(name)
+            element.on_change = self._make_flet_event_handler(name, extra_handler)
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
@@ -197,37 +190,41 @@ class FletClient:
         height: Union[int, Literal["AUTO"]],
         width: int,
         on_top: bool,
-        location: Union[Location, Tuple[int, int], None],
+        location: Union[WindowLocation, Tuple[int, int], None],
         timeout: int,
     ):
         self._show_flet(
-            self._create_flet_target_function(),
-            title,
-            height,
-            width,
-            on_top,
-            location,
+            self._create_flet_target_function(title, height, width, on_top, location),
             timeout,
         )
 
     def clear_elements(self):
+        self._elements = Elements([], [], None, set())
         if self.page:
-            self.page.controls.clear()
+            if self.page.controls:
+                self.page.controls.clear()
             self.page.overlay.clear()
             self.page.update()
-        self._elements.visible.clear()
-        self._elements.invisible.clear()
 
-    def update_elements(self, page: Page):
+    def update_elements(self):
         """Updates the UI and shows new elements which have been added into the element
         lists
         """
-        return self._create_flet_target_function(page)(None)
+        if not self.page:
+            raise PageNotOpenError("No page open when update_elements was called")
+
+        for element in self._elements.visible:
+            self.page.add(element)
+        for element in self._elements.invisible:
+            self.page.overlay.append(element)
+        if self._elements.app_bar:
+            self.page.appbar = self._elements.app_bar
+        self.page.update()
 
     def flet_update(self):
         """Runs a plain update of the flet UI, updating existing elements"""
         if not self.page:
-            raise RuntimeError("Flet update called when page is not open")
+            raise PageNotOpenError("Flet update called when page is not open")
         self.page.update()
 
     def lock_elements(self):
@@ -239,5 +236,38 @@ class FletClient:
             element.disabled = False
 
     def add_to_disablelist(self, element: flet.Control):
-        """added elements will be disabled when code is running from buttons"""
+        """Added elements will be disabled when code is running from buttons"""
         self._to_disable.append(element)
+
+    def set_title(self, title: str):
+        """Set flet dialog title when it is running."""
+        if not self.page:
+            raise PageNotOpenError("Set title called when page is not open")
+        self.page.title = title
+
+    def add_layout(self, layout: SupportedFletLayout):
+        """Add a layout element as the currently open layout element. Following
+        add_element calls will add elements inside ``layout``."""
+        self.add_element(layout)
+        self._layout_stack.append(layout)
+
+    def close_layout(self):
+        """Stop adding layout elements to the latest opened layout"""
+        self._layout_stack.pop()
+
+    def set_appbar(self, app_bar: AppBar):
+        if self._elements.app_bar:
+            raise LayoutError("Only one navigation may be defined at a time")
+        self._elements.app_bar = app_bar
+        self._layout_stack.append(app_bar)
+
+    def get_layout_dimensions(self) -> Tuple[Optional[float], Optional[float]]:
+        if len(self._layout_stack) == 0:
+            raise LayoutError("No parent element to determine dimensions from")
+        current_layout = self._layout_stack[-1]
+        if isinstance(current_layout, AppBar):
+            raise LayoutError("Cannot use absolute positions in appbar")
+        if current_layout.width is None or current_layout.height is None:
+            raise RuntimeError("Cannot determine dimensions of parent element")
+
+        return (current_layout.width, current_layout.height)

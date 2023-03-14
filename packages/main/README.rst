@@ -54,7 +54,7 @@ Links
 
 ------------
 
-.. image:: https://img.shields.io/github/workflow/status/robocorp/rpaframework/rpaframework?style=for-the-badge
+.. image:: https://img.shields.io/github/actions/workflow/status/robocorp/rpaframework/main.yaml?style=for-the-badge
    :target: https://github.com/robocorp/rpaframework/actions/workflows/main.yaml
    :alt: Status
 
@@ -75,6 +75,10 @@ Packages
    :target: https://pypi.python.org/pypi/rpaframework
    :alt: rpaframework latest version
 
+
+.. image:: https://img.shields.io/pypi/v/rpaframework-assistant.svg?label=rpaframework-assistant&style=for-the-badge
+   :target: https://pypi.python.org/pypi/rpaframework-assistant
+   :alt: rpaframework-assistant latest version
 
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-aws.svg?label=rpaframework-aws&style=for-the-badge
@@ -99,6 +103,10 @@ Packages
    :target: https://pypi.python.org/pypi/rpaframework-google
    :alt: rpaframework-google latest version
 
+
+.. image:: https://img.shields.io/pypi/v/rpaframework-openai.svg?label=rpaframework-openai&style=for-the-badge&color=blue
+   :target: https://pypi.python.org/pypi/rpaframework-openai
+   :alt: rpaframework-openai latest version
 
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
@@ -132,9 +140,13 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Archive`_                 | Archiving TAR and ZIP files                           | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `Assistant`_               | Display information to a user and request input.      | assistant              |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Browser.Selenium`_        | Control browsers and automate the web                 | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Browser.Playwright`_      | Newer way to control browsers                         | special (more below)   |
++----------------------------+-------------------------------------------------------+------------------------+
+| `Calendar`_                | For date and time manipulations                       | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Cloud.AWS`_               | Use Amazon AWS services                               | x,aws                  |
 +----------------------------+-------------------------------------------------------+------------------------+
@@ -152,7 +164,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Desktop.OperatingSystem`_ | Read OS information and manipulate processes          | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
-| `Dialogs`_                 | Request user input during executions                  | x,dialogs              |
+| `Dialogs`_                 | Request user input during executions                  | dialogs                |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `DocumentAI`_              | Intelligent Document Processing wrapper               | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
@@ -186,6 +198,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services              | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `OpenAI`_                  | Artificial Intelligence service                       | openai                 |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Outlook.Application`_     | Control the Outlook desktop application               | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `PDF`_                     | Read and create PDF documents                         | x,pdf                  |
@@ -212,8 +226,10 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 
 .. _Archive: https://rpaframework.org/libraries/archive/
+.. _Assistant: https://rpaframework.org/libraries/assistant/
 .. _Browser.Playwright: https://rpaframework.org/libraries/browser_playwright/
 .. _Browser.Selenium: https://rpaframework.org/libraries/browser_selenium/
+.. _Calendar: https://rpaframework.org/libraries/calendar/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
 .. _Cloud.Azure: https://rpaframework.org/libraries/cloud_azure/
 .. _Cloud.Google: https://rpaframework.org/libraries/cloud_google/
@@ -239,6 +255,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _JSON: https://rpaframework.org/libraries/json/
 .. _MFA: https://rpaframework.org/libraries/mfa/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
+.. _OpenAI: https://rpaframework.org/libraries/openai/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
 .. _Robocorp.Process: https://rpaframework.org/libraries/robocorp_process/
@@ -270,7 +287,7 @@ Minimum required conda.yaml to install Playwright:
      - nodejs=16.4.2
      - pip:
        - robotframework-browser==13.3.0
-       - rpaframework==20.1.2
+       - rpaframework==22.2.1
    rccPostInstall:
      - rfbrowser init
 
@@ -289,7 +306,7 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
      - python=3.9.13
      - pip=22.1.2
      - pip:
-       - rpaframework==20.1.2
+       - rpaframework==22.2.1
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -304,7 +321,7 @@ To install all extra packages (including Playwright dependencies), you can use:
      - nodejs=16.14.2
      - pip:
        - robotframework-browser==13.3.0
-       - rpaframework==20.1.2
+       - rpaframework==22.2.1
        - rpaframework-aws==5.0.0
        - rpaframework-google==6.1.1
        - rpaframework-recognition==5.0.0
