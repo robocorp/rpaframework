@@ -1,14 +1,13 @@
-name: pip installation tests
+name: daily installation tests
 
 on:
+  schedule:
+    - cron: '0 6 * * *'
   push:
     branches:
       - master
     paths:
       - '.github/workflows/pip.yaml'
-  schedule:
-    - cron: '0 6 * * *'
-  # TODO: remove before merging
   pull_request:
     branches:
       - master
