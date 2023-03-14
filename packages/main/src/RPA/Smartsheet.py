@@ -35,7 +35,7 @@ try:
 except ImportError:
     TABLES = False
 
-CommaListType = Union[str, list[Any]]
+CommaListType = Union[str, List[Any]]
 ColumnType = Union[Dict, Column]
 if TABLES:
     TableType = Table
@@ -209,7 +209,7 @@ class Smartsheet:
     # *** UTILITY ***
     def _parse_comma_list_type(
         self, comma_list: Optional[CommaListType] = None
-    ) -> Optional[list[str]]:
+    ) -> Optional[List[str]]:
         if isinstance(comma_list, str):
             return [s.strip() for s in comma_list.split(",")]
         elif isinstance(comma_list, list):
@@ -224,7 +224,7 @@ class Smartsheet:
 
     def _unpack_index_result(
         self, index_result: IndexResult = None
-    ) -> Optional[list[object]]:
+    ) -> Optional[List[object]]:
         """Unpacks the provided IndexResult object into a list of the
         underlying type.
         """
@@ -674,7 +674,7 @@ class Smartsheet:
         primary: bool = False,
         format_string: Optional[str] = None,
         locked: bool = False,
-        options: Optional[list[str]] = None,
+        options: Optional[List[str]] = None,
         symbol: Optional[str] = None,
         validation: bool = False,
         width: Optional[int] = None,
@@ -784,7 +784,7 @@ class Smartsheet:
             row.cells.append(cell)
         return row
 
-    def _create_row_from_list(self, row_list: List[dict]) -> Row:
+    def _create_row_from_list(self, row_list: List[Dict]) -> Row:
         """Creates a row object from a list."""
         row = Row()
         for cell_dict in row_list:
@@ -792,7 +792,7 @@ class Smartsheet:
             row.cells.append(cell)
         return row
 
-    def _convert_data_to_row(self, data: Union[dict, list, Row]) -> Row:
+    def _convert_data_to_row(self, data: Union[Dict, List, Row]) -> Row:
         """Converts a dictionary or list to a row object."""
         if isinstance(data, dict):
             return self._create_row_from_dict(data)
@@ -839,7 +839,7 @@ class Smartsheet:
     @keyword
     def set_rows(
         self,
-        data: Union[list, Table],
+        data: Union[List, Table],
         native: bool = False,
     ) -> List[Union[OrderedDict, Row]]:
         """Updates rows of the current sheet with the provided data.
@@ -890,9 +890,9 @@ class Smartsheet:
     def set_row(
         self,
         row: Union[int, Row],
-        data: Union[dict, list[dict], Row] = None,
+        data: Union[Dict, List[Dict], Row] = None,
         native: bool = False,
-    ) -> Union[dict, Row]:
+    ) -> Union[Dict, Row]:
         """Updates a single row of the current sheet with the provided data.
 
         You can provide the row as a native ``Row`` object or as an
@@ -924,7 +924,7 @@ class Smartsheet:
 
     @keyword
     def add_rows(
-        self, data: Union[list, Table], native: bool = False
+        self, data: Union[List, Table], native: bool = False
     ) -> List[Union[OrderedDict, Row]]:
         """Adds rows to the current sheet with the provided data.
 
@@ -1039,7 +1039,7 @@ class Smartsheet:
 
     @keyword
     def download_attachment(
-        self, attachment: Union[int, dict, Attachment], download_path: Path = None
+        self, attachment: Union[int, Dict, Attachment], download_path: Path = None
     ) -> Path:
         """Downloads the provided attachment from the currently selected
         sheet to the provided download_path, which defaults to
