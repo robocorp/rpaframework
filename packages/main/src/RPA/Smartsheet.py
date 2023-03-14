@@ -981,6 +981,23 @@ class Smartsheet:
             raise TypeError(f"Invalid cell type. Received {type(cell)}, expected dict.")
         return new_cell
 
+    @keyword
+    def get_cell_history(
+        self, row: Union[int, Row], column: Union[int, str]
+    ) -> List[Cell]:
+        """Retrieves the history of a cell in a row of the current sheet.
+
+        :param row: The row ID or a Row object.
+        :param column: The column ID or title.
+        """
+        self._require_current_sheet()
+        row_id = self._parse_row_id(row)
+        column_id = self._get_column_id(column)
+        cell_history = self.smart.Cells.get_cell_history(
+            self.current_sheet.id, row_id, column_id, include_all=True
+        )
+        return self._unpack_index_result(cell_history)
+
     # *** ATTACHMENTS ***
     def _download_row_attachments(
         self, row: Row, download_path: PathType = None
