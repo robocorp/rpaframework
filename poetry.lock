@@ -366,18 +366,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.89"
+version = "1.26.90"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.89-py3-none-any.whl", hash = "sha256:09929b24aaec4951e435d53d31f800e2ca52244af049dc11e5385ce062e106e9"},
-    {file = "boto3-1.26.89.tar.gz", hash = "sha256:e819812f16fab46fadf9b2853a46aaa126e108e7f038502dde555ebbbfc80133"},
+    {file = "boto3-1.26.90-py3-none-any.whl", hash = "sha256:f1123076445f93fa85bf7ee956ae33041f2e077a6824e31929cc56ad31aeffc1"},
+    {file = "boto3-1.26.90.tar.gz", hash = "sha256:1d33abca60643d14f90a9e77d94085ebfd8f8bf8f157f582466f6b3a141bab8c"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.89,<1.30.0"
+botocore = ">=1.29.90,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -386,14 +386,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.89"
+version = "1.29.90"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.89-py3-none-any.whl", hash = "sha256:b757e59feca82ac62934f658918133116b4535cf66f1d72ff4935fa24e522527"},
-    {file = "botocore-1.29.89.tar.gz", hash = "sha256:ac8da651f73a9d5759cf5d80beba68deda407e56aaaeb10d249fd557459f3b56"},
+    {file = "botocore-1.29.90-py3-none-any.whl", hash = "sha256:1b8c1b8c366875e65d39237a296842b9c0ea33af2ba4a2771db2ba6aefa663ef"},
+    {file = "botocore-1.29.90.tar.gz", hash = "sha256:2dbbc2c7d93ddefcf9896268597212d446e5d416fbceb1b12c793660fa9f83f3"},
 ]
 
 [package.dependencies]
@@ -1124,14 +1124,14 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0dev)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.80.0"
+version = "2.81.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-api-python-client-2.80.0.tar.gz", hash = "sha256:51dd62d467da7ad3df63c3f0e6fca84266ce50c2218691204b2e8cd651a0719a"},
-    {file = "google_api_python_client-2.80.0-py2.py3-none-any.whl", hash = "sha256:b9cd2550c2cdfeb78c3150d8c52208841082dabe597063a116476937170907ab"},
+    {file = "google-api-python-client-2.81.0.tar.gz", hash = "sha256:8faab0b9b19d3797b455d33320c643253b6761fd0d3f3adb54792ab155d0795a"},
+    {file = "google_api_python_client-2.81.0-py2.py3-none-any.whl", hash = "sha256:ad6700ae3a76ead8956d7f30935978cea308530e342ad8c1e26a4e40fc05c054"},
 ]
 
 [package.dependencies]
@@ -4199,14 +4199,14 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-assistant"
-version = "2.1.0"
+version = "2.1.2"
 description = "Interactive UI library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_assistant-2.1.0-py3-none-any.whl", hash = "sha256:56c524197b66d66a52742babbba3cf6fdb63f0f675b253096dba295a1feae27d"},
-    {file = "rpaframework_assistant-2.1.0.tar.gz", hash = "sha256:f375734d9669ccb6e1b705ef8edea5e23d8464eb156d714c0cda74dd7e843a7b"},
+    {file = "rpaframework_assistant-2.1.2-py3-none-any.whl", hash = "sha256:16e813717f468deb1456f9181e75cb147d4c9b99aa6d8753817e97c32039432b"},
+    {file = "rpaframework_assistant-2.1.2.tar.gz", hash = "sha256:9c521f1384e69714873769a625a182545bd98c2679506f094b7ab37b3fc68059"},
 ]
 
 [package.dependencies]
@@ -4217,14 +4217,14 @@ typing-extensions = ">=4.4.0,<5.0.0"
 
 [[package]]
 name = "rpaframework-aws"
-version = "5.2.6"
+version = "5.2.7"
 description = "AWS library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_aws-5.2.6-py3-none-any.whl", hash = "sha256:eaa440881aef316165da9c142d2d741cd7c48665ed421ff4633d357b38bf7dce"},
-    {file = "rpaframework_aws-5.2.6.tar.gz", hash = "sha256:04989ac28664dd4efaf2be34cfb1f5bf958fede2dbf79795bbcb71a7bc00548e"},
+    {file = "rpaframework_aws-5.2.7-py3-none-any.whl", hash = "sha256:eb4a4383553b05c8fd3b925ec150b3a6ecbd0d57ba343e6c00e093bf67694ce3"},
+    {file = "rpaframework_aws-5.2.7.tar.gz", hash = "sha256:844b4720b5e0e285dd6ab7f8bd02dcce2592a91209dc59c4e5e1df11eae2374d"},
 ]
 
 [package.dependencies]
@@ -4236,14 +4236,14 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "10.4.2"
+version = "10.4.3"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_core-10.4.2-py3-none-any.whl", hash = "sha256:db2ec26dbec47e92e44961be193cd87c9f7aa39c226b32ceba84d069895f98af"},
-    {file = "rpaframework_core-10.4.2.tar.gz", hash = "sha256:316eb019e897459a408d2ba4cc5c24fdbf60edc5762f55b0d48f8e7b7740ce04"},
+    {file = "rpaframework_core-10.4.3-py3-none-any.whl", hash = "sha256:ac76116adea24612fe2dbbed0ff4eeabd06e6c80c23608de42b35b09d77473c5"},
+    {file = "rpaframework_core-10.4.3.tar.gz", hash = "sha256:8f0f37592ac535245465779c4a8838c135b8106ec73c1ed53b169f04447844d2"},
 ]
 
 [package.dependencies]
@@ -4257,14 +4257,14 @@ webdriver-manager = ">=3.8.3,<4.0.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "4.0.2"
+version = "4.0.3"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_dialogs-4.0.2-py3-none-any.whl", hash = "sha256:0d4ea9718efb38f1b2390240fb71aafcc56f2f8c004bcba5580e794d16445f85"},
-    {file = "rpaframework_dialogs-4.0.2.tar.gz", hash = "sha256:8ebdeecc074c13b781f1e0a5606191622665d457855faec74ebe2425cd917d89"},
+    {file = "rpaframework_dialogs-4.0.3-py3-none-any.whl", hash = "sha256:4f0fa8abaa8bf84f2269fef454db26d0191bd1ef4d4104781aa6118330e0b8ef"},
+    {file = "rpaframework_dialogs-4.0.3.tar.gz", hash = "sha256:d2c30eef03b9245fdb1e929f5176fee476fcde5c6cbd2ce868b56b2e61dff0f9"},
 ]
 
 [package.dependencies]
@@ -4274,14 +4274,14 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-google"
-version = "7.0.0"
+version = "7.0.1"
 description = "Google library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_google-7.0.0-py3-none-any.whl", hash = "sha256:b9f6cf2297a8e4d1e796fbfa5e7f40136a9959f5c79b89f6d05c0014010a417e"},
-    {file = "rpaframework_google-7.0.0.tar.gz", hash = "sha256:8e377c68a703c08c7b2fd2838f26e6e2b322726a856838cd163716fb155737dc"},
+    {file = "rpaframework_google-7.0.1-py3-none-any.whl", hash = "sha256:86c334aa23ef8fc2ffcdcaef0c93d1534d68149bee8bcf1d2e599d29742d9fc5"},
+    {file = "rpaframework_google-7.0.1.tar.gz", hash = "sha256:37aab097bec0b99c28e53f9bbcdbf43c6341ae5b9b467488b0f336e057d91a0f"},
 ]
 
 [package.dependencies]
@@ -4303,14 +4303,14 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-openai"
-version = "1.1.1"
+version = "1.1.2"
 description = "OpenAI library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7.1,<4.0.0"
 files = [
-    {file = "rpaframework-openai-1.1.1.tar.gz", hash = "sha256:af38162b5bcbf760cf33ac0e791d0bbed58618ad066a90f2f29259fee48ac050"},
-    {file = "rpaframework_openai-1.1.1-py3-none-any.whl", hash = "sha256:702b7b72543f39eca85a02b3e149235e27ce6a66e6555cec0728195886e5371c"},
+    {file = "rpaframework_openai-1.1.2-py3-none-any.whl", hash = "sha256:f8327c94b8d27dc0fcd9c100ac5ce4f79506b63c32dea406fdf9cb792b8d6bfb"},
+    {file = "rpaframework_openai-1.1.2.tar.gz", hash = "sha256:85d03f30c95efc56b32b4e250ecf650be18002d9e02a6be09381217a28a4ee6c"},
 ]
 
 [package.dependencies]
@@ -4318,14 +4318,14 @@ openai = ">=0.27.0,<0.28.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "7.1.0"
+version = "7.1.1"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework-pdf-7.1.0.tar.gz", hash = "sha256:7a07cacac1b8b9347c79fb13f0399e489227edbb395188537da51ea7e3a683f8"},
-    {file = "rpaframework_pdf-7.1.0-py3-none-any.whl", hash = "sha256:02a010002766216d1622c588b1abc2e8da0752082045e8406618eece375c85b1"},
+    {file = "rpaframework_pdf-7.1.1-py3-none-any.whl", hash = "sha256:92cc774fe998a811d8f16dbec0b1251c3f76defd2516e2dcbe0956e34b107a46"},
+    {file = "rpaframework_pdf-7.1.1.tar.gz", hash = "sha256:6186a513203b391bbb8923efa03e1728a391e9e20c27afe98dde7c59db60dab2"},
 ]
 
 [package.dependencies]
@@ -4338,14 +4338,14 @@ rpaframework-core = ">=10.0.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "5.1.0"
+version = "5.1.1"
 description = "OCR capabilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework-recognition-5.1.0.tar.gz", hash = "sha256:8486c0d7c4748cd1feca027c90333fbfed4de040560dff199943bd1286abd1df"},
-    {file = "rpaframework_recognition-5.1.0-py3-none-any.whl", hash = "sha256:d4829459eb806ba4fd305e888d9549a1e50a706a23526c2a6972242335894a54"},
+    {file = "rpaframework_recognition-5.1.1-py3-none-any.whl", hash = "sha256:acb5a1b88823bad621cb6c8b40e177ba20dad5d10d964f831fa29186cd0d5795"},
+    {file = "rpaframework_recognition-5.1.1.tar.gz", hash = "sha256:3c3cdcc33049223d9001cd90c009ae6a3be6ed1d0e8fb0039e4585d38e8746e5"},
 ]
 
 [package.dependencies]
@@ -4357,14 +4357,14 @@ rpaframework-core = ">=10.4.0,<11.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "7.2.1"
+version = "7.2.2"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_windows-7.2.1-py3-none-any.whl", hash = "sha256:eef721a84281b93e1bd7a3d421295c5af5eb7b11163c579c2b0c1a45eb03e5f6"},
-    {file = "rpaframework_windows-7.2.1.tar.gz", hash = "sha256:463c9cec771466d1bedd2f89466b3f3dda1f53258a0e740e89356d1eeb9f2473"},
+    {file = "rpaframework_windows-7.2.2-py3-none-any.whl", hash = "sha256:0f803de4935c961026151d1460e94295e70eb354d751f378a0dd668d44fda665"},
+    {file = "rpaframework_windows-7.2.2.tar.gz", hash = "sha256:976310acf244fb095022cc5f089c7dcdb191af42fccae78c20467c16256fbdda"},
 ]
 
 [package.dependencies]
@@ -4699,18 +4699,18 @@ test = ["html5lib", "pytest"]
 
 [[package]]
 name = "sphinxcontrib-jquery"
-version = "2.0.0"
+version = "4.1"
 description = "Extension to include jQuery on newer Sphinx releases"
 category = "dev"
 optional = false
 python-versions = ">=2.7"
 files = [
-    {file = "sphinxcontrib-jquery-2.0.0.tar.gz", hash = "sha256:8fb65f6dba84bf7bcd1aea1f02ab3955ac34611d838bcc95d4983b805b234daa"},
-    {file = "sphinxcontrib_jquery-2.0.0-py3-none-any.whl", hash = "sha256:ed47fa425c338ffebe3c37e1cdb56e30eb806116b85f01055b158c7057fdb995"},
+    {file = "sphinxcontrib-jquery-4.1.tar.gz", hash = "sha256:1620739f04e36a2c779f1a131a2dfd49b2fd07351bf1968ced074365933abc7a"},
+    {file = "sphinxcontrib_jquery-4.1-py2.py3-none-any.whl", hash = "sha256:f936030d7d0147dd026a4f2b5a57343d233f1fc7b363f68b3d4f1cb0993878ae"},
 ]
 
 [package.dependencies]
-setuptools = "*"
+Sphinx = ">=1.8"
 
 [[package]]
 name = "sphinxcontrib-jsmath"
@@ -4869,18 +4869,18 @@ sortedcontainers = "*"
 
 [[package]]
 name = "trio-websocket"
-version = "0.9.2"
+version = "0.10.0"
 description = "WebSocket library for Trio"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.7"
 files = [
-    {file = "trio-websocket-0.9.2.tar.gz", hash = "sha256:a3d34de8fac26023eee701ed1e7bf4da9a8326b61a62934ec9e53b64970fd8fe"},
-    {file = "trio_websocket-0.9.2-py3-none-any.whl", hash = "sha256:5b558f6e83cc20a37c3b61202476c5295d1addf57bd65543364e0337e37ed2bc"},
+    {file = "trio-websocket-0.10.0.tar.gz", hash = "sha256:5a7a256cf45532a0e876b55c173f96228e95445869b6dfdb1556015de89796fa"},
+    {file = "trio_websocket-0.10.0-py3-none-any.whl", hash = "sha256:ae0a8bab4b0014510aca37fb67a6eaaa77e64aba372a7333845d2eb991989ae2"},
 ]
 
 [package.dependencies]
-async-generator = ">=1.10"
+exceptiongroup = "*"
 trio = ">=0.11"
 wsproto = ">=0.14"
 
@@ -5531,4 +5531,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.1"
-content-hash = "50ab175b33d0eb77ddf67af5a43cc7c736e8b0d188c073d91073b94be2b7dd9f"
+content-hash = "bc5669cfc922dba0587c3786407da199a2eb0511ad1be07b02230279a1ef9761"

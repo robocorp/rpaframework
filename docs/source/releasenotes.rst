@@ -5,16 +5,18 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14 Mar 2023
+-----------
 - Library **RPA.Assistant** 2.1.2:
 
     - Fix file picker sometimes causing ``AssertionError: Control must be added to the
       page first.`` error.
     - Fix ``Add Next Ui Button`` getting a normal dict and not a dotdict as it's first
       argument.
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 22.2.2 - 13 Mar 2023
 --------------------
