@@ -1,6 +1,6 @@
 try:
     from importlib import metadata
-except (ImportError, ModuleNotFoundError):
+except ImportError:
     import importlib_metadata as metadata
 
 # this should import the version from pyproject.toml
