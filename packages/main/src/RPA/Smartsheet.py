@@ -976,18 +976,6 @@ class Smartsheet:
                 return row.id
         return row_number
 
-    def _parse_row_id(self, row: Union[int, Row]) -> int:
-        """Returns the row ID from a row object or an integer."""
-        if isinstance(row, int):
-            if row not in [r.id for r in self.current_sheet.rows]:
-                return self._get_row_from_number(row)
-            else:
-                return row
-        elif isinstance(row, Row):
-            return row.id
-        else:
-            raise ValueError("Invalid row type.")
-
     def _create_row_from_list(self, row_list: List[Dict]) -> Row:
         """Creates a row object from a list."""
         row = Row()
