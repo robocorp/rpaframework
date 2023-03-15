@@ -2,11 +2,38 @@ import atexit
 from logging import getLogger
 from subprocess import Popen
 from typing import Optional, Tuple
+from typing_extensions import Literal
 
 from flet import flet as ft
 from flet_core.page import Connection
 
-_connect_internal_sync = ft.__connect_internal_sync  # pylint: disable=protected-access
+
+def _connect_internal_sync(
+    page_name,
+    view: Literal["flet_app"],
+    host,
+    port,
+    auth_token,
+    session_handler,
+    assets_dir,
+    upload_dir,
+    web_renderer,
+    route_url_strategy,
+) -> ft.SyncLocalSocketConnection:
+    # For some reason this is necessary to disable getting `flet.flet` linting errors
+    # pylint: disable=all
+    return ft.__connect_internal_sync(  # pylint: disable=protected-access
+        page_name,
+        view,
+        host,
+        port,
+        auth_token,
+        session_handler,
+        assets_dir,
+        upload_dir,
+        web_renderer,
+        route_url_strategy,
+    )
 
 
 class BackgroundFlet:

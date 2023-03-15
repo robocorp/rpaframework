@@ -8,7 +8,7 @@ authors = ["RPA Framework <rpafw@robocorp.com>"]
 python = "^3.7.1"
 robotframework-browser = { version = "^14.4.1", python = ">=3.7,<4.0" }
 rpaframework = { path = "packages/main", develop = true }
-rpaframework-assistant = "^2.1.0"
+rpaframework-assistant = "^2.1.2"
 rpaframework-aws = "^5.2.6"
 rpaframework-dialogs = "^4.0.2"
 rpaframework-google = "^7.0.0"
