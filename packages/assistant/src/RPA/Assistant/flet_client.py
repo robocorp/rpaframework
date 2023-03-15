@@ -10,8 +10,6 @@ from flet_core import Column, Control, AppBar, Row, Stack
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
-from robot.utils.dotdict import DotDict
-
 from RPA.Assistant.background_flet import BackgroundFlet
 from RPA.Assistant.types import (
     LayoutError,

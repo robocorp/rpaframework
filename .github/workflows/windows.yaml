@@ -88,7 +88,7 @@ jobs:
     - name: Install dependencies
       run: invoke install
     - name: Lint
-      run: invoke code.lint
+      run: invoke code.lint -e
     - name: Test
       run: invoke code.test-python
       # Windows robot tests disabled in CI for now. (requires VM with UI support)
