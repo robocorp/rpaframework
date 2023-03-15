@@ -2738,14 +2738,14 @@ webdriver-manager = ">=3.8.3,<4.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "7.1.1"
+version = "7.1.2"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_pdf-7.1.1-py3-none-any.whl", hash = "sha256:92cc774fe998a811d8f16dbec0b1251c3f76defd2516e2dcbe0956e34b107a46"},
-    {file = "rpaframework_pdf-7.1.1.tar.gz", hash = "sha256:6186a513203b391bbb8923efa03e1728a391e9e20c27afe98dde7c59db60dab2"},
+    {file = "rpaframework_pdf-7.1.2-py3-none-any.whl", hash = "sha256:29eedc0c84ca82096627c95ecfb53afc4014b3ba67a6278559e5a38b31afb121"},
+    {file = "rpaframework_pdf-7.1.2.tar.gz", hash = "sha256:d77838c6b39105e0ab4f674025e606bf24d29bcf9a2e8fc95f605162d3475213"},
 ]
 
 [package.dependencies]
