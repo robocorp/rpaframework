@@ -32,7 +32,8 @@ from RPA.PDF.keywords import LibraryContext, keyword
 
 
 Coords = Tuple[int, ...]
-BOXES_FLOW_NOT_SET = -999.99
+
+BOXES_FLOW_NOT_SET = 0.5
 
 
 def iterable_items_to_ints(bbox: Optional[Iterable]) -> Coords:
@@ -480,7 +481,7 @@ class ModelKeywords(LibraryContext):
     def convert(
         self,
         source_path: Optional[str] = None,
-        trim: Optional[bool] = True,
+        trim: bool = True,
         pagenum: Optional[Union[int, str]] = None,
     ):
         """Parse source PDF into entities.
@@ -582,7 +583,7 @@ class ModelKeywords(LibraryContext):
     def get_input_fields(
         self,
         source_path: Optional[str] = None,
-        replace_none_value: Optional[bool] = False,
+        replace_none_value: bool = False,
         encoding: Optional[str] = FIELDS_ENCODING,
     ) -> dict:
         """Get input fields in the PDF.
@@ -961,5 +962,4 @@ class ModelKeywords(LibraryContext):
             self.ctx.convert_settings["char_margin"] = char_margin
         if word_margin:
             self.ctx.convert_settings["word_margin"] = word_margin
-        if boxes_flow != BOXES_FLOW_NOT_SET:
-            self.ctx.convert_settings["boxes_flow"] = boxes_flow
+        self.ctx.convert_settings["boxes_flow"] = boxes_flow

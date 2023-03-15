@@ -4132,7 +4132,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "22.2.3"
+version = "22.2.2"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -4199,14 +4199,14 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-assistant"
-version = "2.1.1"
+version = "2.1.2"
 description = "Interactive UI library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_assistant-2.1.1-py3-none-any.whl", hash = "sha256:0686171d8fc9226e830691ac0bc5dbb7994763d29c6e6058309f47646cf1e137"},
-    {file = "rpaframework_assistant-2.1.1.tar.gz", hash = "sha256:823e6e254e4cf3b2f6a45a3fa821801d95c16ce2d8bf19cc6510f4fe1af2c00c"},
+    {file = "rpaframework_assistant-2.1.2-py3-none-any.whl", hash = "sha256:16e813717f468deb1456f9181e75cb147d4c9b99aa6d8753817e97c32039432b"},
+    {file = "rpaframework_assistant-2.1.2.tar.gz", hash = "sha256:9c521f1384e69714873769a625a182545bd98c2679506f094b7ab37b3fc68059"},
 ]
 
 [package.dependencies]
@@ -4699,18 +4699,18 @@ test = ["html5lib", "pytest"]
 
 [[package]]
 name = "sphinxcontrib-jquery"
-version = "2.0.0"
+version = "4.1"
 description = "Extension to include jQuery on newer Sphinx releases"
 category = "dev"
 optional = false
 python-versions = ">=2.7"
 files = [
-    {file = "sphinxcontrib-jquery-2.0.0.tar.gz", hash = "sha256:8fb65f6dba84bf7bcd1aea1f02ab3955ac34611d838bcc95d4983b805b234daa"},
-    {file = "sphinxcontrib_jquery-2.0.0-py3-none-any.whl", hash = "sha256:ed47fa425c338ffebe3c37e1cdb56e30eb806116b85f01055b158c7057fdb995"},
+    {file = "sphinxcontrib-jquery-4.1.tar.gz", hash = "sha256:1620739f04e36a2c779f1a131a2dfd49b2fd07351bf1968ced074365933abc7a"},
+    {file = "sphinxcontrib_jquery-4.1-py2.py3-none-any.whl", hash = "sha256:f936030d7d0147dd026a4f2b5a57343d233f1fc7b363f68b3d4f1cb0993878ae"},
 ]
 
 [package.dependencies]
-setuptools = "*"
+Sphinx = ">=1.8"
 
 [[package]]
 name = "sphinxcontrib-jsmath"
@@ -5531,4 +5531,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.1"
-content-hash = "50ab175b33d0eb77ddf67af5a43cc7c736e8b0d188c073d91073b94be2b7dd9f"
+content-hash = "bc5669cfc922dba0587c3786407da199a2eb0511ad1be07b02230279a1ef9761"

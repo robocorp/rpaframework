@@ -9,6 +9,15 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+14 Mar 2023
+-----------
+- Library **RPA.Assistant** 2.1.2:
+
+    - Fix file picker sometimes causing ``AssertionError: Control must be added to the
+      page first.`` error.
+    - Fix ``Add Next Ui Button`` getting a normal dict and not a dotdict as it's first
+      argument.
+
 22.2.2 - 13 Mar 2023
 --------------------
 
