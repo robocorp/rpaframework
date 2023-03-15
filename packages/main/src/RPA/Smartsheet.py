@@ -63,6 +63,41 @@ class Smartsheet:
     .. _Smartsheet API 2.0: https://smartsheet.redoc.ly/
     .. _smartsheet-python-sdk: https://github.com/smartsheet/smartsheet-python-sdk
 
+    Getting started
+    ===============
+
+    To use this library, you need to have a Smartsheet account and an API token.
+    You can get your API token from the `Smartsheet Developer Portal`_.
+    This library currently only supports raw token authentication. Once
+    obtained, you can configure the access token using the ``Set Access Token``
+    keyword or via the ``access_token`` argument in the library import.
+
+    .. _Smartsheet Developer Portal: https://smartsheet-platform.github.io/api-docs/
+
+    Working on a sheet
+    ==================
+
+    The library supports working on a single sheet at a time. To select a sheet
+    to work on, use the ``Select Sheet`` keyword. This will set the sheet as
+    the active sheet for all subsequent operations. Some operations
+    update the sheet, but this will not necessarily be reflected in the active
+    sheet. To refresh the active sheet, use the ``Refresh Sheet`` keyword.
+
+    Native Smartsheet objects
+    =========================
+
+    You can retrieve the native Smartsheet object from many keywords by
+    specifying the ``native`` argument. The default will return a more
+    common Python object, such as a dictionary or list. The native object
+    is a class from the `smartsheet-python-sdk`_ library and will have
+    additional methods and attributes. The most important attributes
+    available for most native objects are (some may be unavailable
+    for some objects):
+
+    - ``id``: the unique identifier of the object
+    - ``name``: the name of the object
+    - ``title``: the title of a column
+    - ``permalink``: the URL to the object
     """
 
     # TODO: ADD LOGGING THROUGHOUT
@@ -186,6 +221,18 @@ class Smartsheet:
 
         :param access_token: The access token created for your
          Smartsheet user.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Set access token  ${access_token}
+
+        .. code-block:: python
+
+            smartsheet = Smartsheet(access_token=access_token)
+            # or
+            smartsheet.set_access_token(access_token)
         """
         self._set_token(access_token)
 
@@ -324,6 +371,14 @@ class Smartsheet:
 
         :param use_cache: Defaults to ``True``. You can set to ``False``
          to force a reload of the cached list of sheets.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${sheets}=  List Sheets
+            FOR  ${sheet}  IN  @{sheets}
+                Log  ${sheet.name}
         """
         self._require_auth()
         if use_cache:
@@ -383,19 +438,35 @@ class Smartsheet:
         :param download_path: Defaults to ``None``. Can be set when
          ``attachmentFiles`` is included in the ``include`` parameter.
          All attachments will be downloaded to the provided directory.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${sheet}=  Get Sheet  sheet_name=My Sheet
+            FOR  ${row}  IN  &{sheet}
+                FOR  ${column}  ${value}  IN  &{row}
+                    Log  The column ${column} has the value ${value}
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            sheet = ss.get_sheet(sheet_name="My Sheet", native=True)
+            for row in sheet:
+                for cell in row:
+                    print(f"The column {cell.column_id} has the value {cell.value}")
         """
-        # TODO: add examples to docs.
         self._require_auth()
         sheet_id = self._parse_sheet_id(sheet_id, sheet_name)
         # Smartsheet class defines a `__getattr__` which makes the below work, just
         # doesn't help with intellisense autocompletion.
-        # BUG: will this affect how I attempt to modify `_user_calc_backoff`?
         includes = self._parse_include(self.SHEET_INCLUDES, include)
         sheet = self.smart.Sheets.get_sheet(
             sheet_id,
             include=includes,
             row_ids=self._parse_comma_list_type(row_ids),
             row_numbers=self._parse_comma_list_type(row_numbers),
+            exclude="filteredOutRows",
             column_ids=self._parse_comma_list_type(column_ids),
             filter_id=filter_id,
         )
@@ -468,10 +539,24 @@ class Smartsheet:
         return table
 
     @keyword
+    def refresh_sheet(self, native: bool = False) -> Union[TableType, Sheet]:
+        """Refreshes the current sheet from the API and returns it
+        either as a Table or native data model depending on the
+        ``native`` argument.
+        """
+        self._require_current_sheet()
+        sheet = self.smart.Sheets.get_sheet(self.current_sheet.id)
+        self.current_sheet = sheet
+        if native:
+            return sheet
+        else:
+            return self.convert_sheet_to_table(sheet)
+
+    @keyword
     def get_sheet_owner(
         self, sheet_id: int = None, sheet_name: int = None
     ) -> Tuple[str, int]:
-        """Returns the owner's username and id for the current sheet."""
+        """Returns the owner's username and ID for the current sheet."""
         sheet_id = self._parse_sheet_id(sheet_id, sheet_name)
         sheet = self.smart.Sheets.get_sheet(sheet_id, include=["ownerInfo"])
         return sheet.owner, sheet.owner_id
@@ -483,8 +568,37 @@ class Smartsheet:
         """Returns a list of available filters for the current sheet. You
         can specify a different sheet via the ``sheet_id`` or
         ``sheet_name`` parameters.
+
+        The returned list of filters can be used with the ``filter_id``
+        argument of the ``get_sheet`` keyword.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${filters}=  List Sheet Filters
+            FOR  ${filter}  IN  @{filters}
+                ${filtered_sheet}=  Get Sheet
+                ...  sheet_name=My sheet
+                ...  filter_id=${filter.id}
+                Log  There are ${len(filtered_sheet)} rows in the filtered sheet
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            my_sheet_id = 123456789
+            filters = ss.list_sheet_filters()
+            for filter in filters:
+                filtered_sheet = ss.get_sheet(
+                    sheet_id=my_sheet_id,
+                    filter_id=filter.id,
+                    native=True,
+                )
+                print(
+                    f"There are {len(filtered_sheet.rows)} rows in the "
+                    f"filtered sheet"
+                )
         """
-        # TODO: fix documentation
         self._require_current_sheet()
         sheet_id = self._parse_sheet_id(sheet_id, sheet_name)
         filter_result = self.smart.Sheets.list_filters(
@@ -505,6 +619,22 @@ class Smartsheet:
 
         :param from_sheet_id: Sheet ID to use as a template for the new
          sheet.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${columns}=  Create List  Name  Email
+            ${sheet}=  Create Sheet  My new sheet  ${columns}
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            columns = [
+                {"title": "Name", "type": "TEXT_NUMBER"},
+                {"title": "Email", "type": "TEXT_NUMBER"},
+            ]
+            sheet = ss.create_sheet("My new sheet", columns)
         """
         self._require_auth()
         if columns is not None:
@@ -566,6 +696,21 @@ class Smartsheet:
             * ``workspaceNames``: Search in workspace names.
 
         :type scopes: Union[str, list[str]]
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${sheets}=  Search  my search query
+            FOR  ${sheet}  IN  @{sheets}
+                Log  ${sheet.name}
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            sheets = ss.search("my search query")
+            for sheet in sheets:
+                print(sheet.name)
         """
         self._require_auth()
         include = self._parse_include(self.SEARCH_INCLUDES, include)
@@ -632,7 +777,13 @@ class Smartsheet:
     def list_columns(
         self, sheet_id: int = None, sheet_name: int = None
     ) -> List[Column]:
-        """Returns a list of columns for the current sheet."""
+        """Returns a list of columns for the current sheet.
+
+        :param sheet_id: The ID of the sheet to get columns from.
+        :type sheet_id: int
+        :param sheet_name: The name of the sheet to get columns from.
+        :type sheet_name: str
+        """
         sheet_id = self._parse_sheet_id(sheet_id, sheet_name)
         column_result = self.smart.Sheets.get_columns(sheet_id, include_all=True)
         return self._unpack_index_result(column_result)
@@ -721,6 +872,21 @@ class Smartsheet:
         .. _symbol columns: https://smartsheet.redoc.ly/tag/columnsRelated/#section/Column-Types/Symbol-Columns
         .. _format descriptor: https://smartsheet.redoc.ly/#section/API-Basics/Formatting
         .. _supported type: https://smartsheet.redoc.ly/tag/columnsRelated/#section/Column-Types
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add Column  Title  TEXT_NUMBER
+            Add Column  Description  TEXT_NUMBER  description=This is a description
+            Add Column  Formula  TEXT_NUMBER  formula==data@row
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            ss.add_column(title="Title", column_type="TEXT_NUMBER")
+            ss.add_column(title="Description", column_type="TEXT_NUMBER", description="This is a description")
+            ss.add_column(title="Formula", column_type="TEXT_NUMBER", formula="=data@row")
         """  # noqa: E501
         self._require_current_sheet()
         return self.add_columns(
@@ -745,7 +911,8 @@ class Smartsheet:
 
     @keyword
     def update_column(self, column: Union[int, str, Column], **kwargs) -> Column:
-        """Updates a column in the current sheet.
+        """Updates a column in the current sheet. See the `Add Column` keyword
+        for a list of supported attributes.
 
         :param column: Column ID or title.
         :type column: int or str
@@ -766,9 +933,18 @@ class Smartsheet:
 
     # *** ROWS ***
     def _parse_row_id(self, row: Union[int, Row]) -> int:
-        """Returns the row ID from a row object or an integer."""
+        """Returns the row ID from a row object or an integer. This
+        function will search the current sheet for the row ID if an
+        integer is provided, if it is not found, it will treat the
+        row as a row number and search the sheet for the row ID. If
+        not found there, it will return the row as an ID, assuming
+        it is a valid but unknown row.
+        """
         if isinstance(row, int):
-            return row
+            if row not in [r.id for r in self.current_sheet.rows]:
+                return self._get_row_from_number(row)
+            else:
+                return row
         elif isinstance(row, Row):
             return row.id
         else:
@@ -779,17 +955,50 @@ class Smartsheet:
         row = Row()
         for key, value in row_dict.items():
             cell = Cell()
-            cell.column_id = self._get_column_id(key)
-            cell.value = value
-            row.cells.append(cell)
+            if key in ["rowId", "row_id", "id"]:
+                row.id = value
+            elif key in ["rowNumber", "row_number"]:
+                row.id = self._get_row_from_number(value)
+            else:
+                cell.column_id = self._get_column_id(key)
+                cell.value = value
+                row.cells.append(cell)
         return row
+
+    def _get_row_from_number(self, row_number: int) -> int:
+        """Returns the row ID from a row number. If not found, it
+        assumes the provided row_number may have been an ID and
+        returns it.
+        """
+        self._require_current_sheet()
+        for row in self.current_sheet.rows:
+            if row.row_number == row_number:
+                return row.id
+        return row_number
+
+    def _parse_row_id(self, row: Union[int, Row]) -> int:
+        """Returns the row ID from a row object or an integer."""
+        if isinstance(row, int):
+            if row not in [r.id for r in self.current_sheet.rows]:
+                return self._get_row_from_number(row)
+            else:
+                return row
+        elif isinstance(row, Row):
+            return row.id
+        else:
+            raise ValueError("Invalid row type.")
 
     def _create_row_from_list(self, row_list: List[Dict]) -> Row:
         """Creates a row object from a list."""
         row = Row()
         for cell_dict in row_list:
-            cell = self._convert_dict_to_cell(cell_dict)
-            row.cells.append(cell)
+            if cell_dict.get("title") == "rowId":
+                row.id = cell_dict.get("value")
+            elif cell_dict.get("title") == "rowNumber":
+                row.id = self._get_row_from_number(cell_dict.get("value"))
+            else:
+                cell = self._convert_dict_to_cell(cell_dict)
+                row.cells.append(cell)
         return row
 
     def _convert_data_to_row(self, data: Union[Dict, List, Row]) -> Row:
@@ -869,14 +1078,52 @@ class Smartsheet:
           be the column IDs or Titles.
 
         .. _smartsheet API docs: https://smartsheet.redoc.ly/tag/rows#operation/update-rows
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            ${row1}=  Create Dictionary  rowId=123  column1=value1  column2=value2
+            ${row2}=  Create Dictionary  rowId=456  column1=value3  column2=value4
+            ${row3}=  Create Dictionary  rowId=789  column1=value5  column2=value6
+            ${data} =  Create List  ${row1}  ${row2}  ${row3}
+            Set Rows  ${data}
+
+            # Or work with native row objects to update them.
+            ${row1}=  Get Row  123
+            FOR  ${cell}  IN  @{row1.cells}
+                IF  ${cell.column_id} == 123
+                    ${cell.value}=  New Value
+                END
+            END
+            ${data}=  Create List  ${row1}
+            Set Rows  ${data}
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            row1 = {"rowId": 123, "column1": "value1", "column2": "value2"}
+            row2 = {"rowId": 456, "column1": "value3", "column2": "value4"}
+            row3 = {"rowId": 789, "column1": "value5", "column2": "value6"}
+            data = [row1, row2, row3]
+            ss.set_rows(data)
+
+            # or work with native row objects to update them.
+            row1 = ss.get_row(123)
+            for cell in row1.cells:
+                if cell.column_id == 123:
+                    cell.value = "New Value"
+            data = [row1]
+            ss.set_rows(data)
         """  # noqa: E501
         self._require_current_sheet()
-        # TODO: implement using row number instead of row ID and data
-        # of same length as sheet.
         new_rows = []
         # The Table will iterate as dictionaries
         for row in data:
             new_rows.append(self._convert_data_to_row(row))
+        if len(new_rows) == len(self.current_sheet.rows):
+            for i, row in enumerate(self.current_sheet.rows):
+                new_rows[i].id = row.id
         row_update_response = self.smart.Sheets.update_rows(
             self.current_sheet.id, new_rows
         )
@@ -913,6 +1160,8 @@ class Smartsheet:
           new values for the cells.
 
         .. _smartsheet API docs: https://smartsheet.redoc.ly/tag/rows#operation/update-rows
+
+        For examples, see ``Set Rows``.
         """  # noqa: E501
         self._require_current_sheet()
         if isinstance(row, Row) and data is None:
@@ -946,6 +1195,25 @@ class Smartsheet:
           be the column IDs or Titles.
 
         .. _smartsheet API docs: https://smartsheet.redoc.ly/tag/rows#operation/add-rows
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            ${row1}=  Create Dictionary  column1=value1  column2=value2
+            ${row2}=  Create Dictionary  column1=value3  column2=value4
+            ${row3}=  Create Dictionary  column1=value5  column2=value6
+            ${data} =  Create List  ${row1}  ${row2}  ${row3}
+            Add Rows  ${data}
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            row1 = {"column1": "value1", "column2": "value2"}
+            row2 = {"column1": "value3", "column2": "value4"}
+            row3 = {"column1": "value5", "column2": "value6"}
+            data = [row1, row2, row3]
+            ss.set_rows(data)
         """
         self._require_current_sheet()
         new_rows = []
@@ -983,12 +1251,27 @@ class Smartsheet:
 
     @keyword
     def get_cell_history(
-        self, row: Union[int, Row], column: Union[int, str]
+        self, row: Union[int, Row], column: Union[int, str, Column]
     ) -> List[Cell]:
         """Retrieves the history of a cell in a row of the current sheet.
 
-        :param row: The row ID or a Row object.
+        :param row: The row ID, row number, or a Row object.
         :param column: The column ID or title.
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            ${cell_history}=  Get Cell History  1  Approval
+            FOR  ${revision} IN  @{cell_history}
+                Log  Modified by ${revision.modified_by.email}
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            cell_history = ss.get_cell_history(1, "Approval")
+            for revision in cell_history:
+                print(f"Modified by {revision.modified_by.email}")
         """
         self._require_current_sheet()
         row_id = self._parse_row_id(row)
@@ -1000,7 +1283,7 @@ class Smartsheet:
 
     # *** ATTACHMENTS ***
     def _download_row_attachments(
-        self, row: Row, download_path: PathType = None
+        self, row: Union[int, Row], download_path: PathType = None
     ) -> List[Path]:
         """Downloads all attachments from a row, saves them locally and
         returns a list of Paths to those attachements. Defaults to
@@ -1009,10 +1292,13 @@ class Smartsheet:
 
         If ``download_path`` is not set, it will attempt to use the
         attribute ``download_path`` set to the ``current_sheet``.
+
+        :param row: The row ID, row number, or a Row object.
+        :param download_path: The path to save the attachments to.
         """
         self._require_current_sheet()
         attachment_result = self.smart.Attachments.list_row_attachments(
-            self.current_sheet.id, row.id, include_all=True
+            self.current_sheet.id, self._parse_row_id(row), include_all=True
         )
         attachments = self._unpack_index_result(attachment_result)
         download_path = Path(
@@ -1047,6 +1333,21 @@ class Smartsheet:
         """Gets a list of all attachments from the currently selected sheet.
 
         This will include attachments to the sheet, rows, and discussions.
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            ${attachments}=  List Attachments
+            FOR  ${attachment} IN  @{attachments}
+                Log  ${attachment.name}
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            attachments = ss.list_attachments()
+            for attachment in attachments:
+                print(attachment.name)
         """
         self._require_current_sheet()
         attachment_result = self.smart.Attachments.list_all_attachments(
@@ -1069,8 +1370,23 @@ class Smartsheet:
         :param attachment: An integar representing the attachment ID, a
          dictionary with at least the key ``id``, or a native
          ``Attachment`` data model object.
+        :param download_path: The path to save the attachment to.
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            ${attachment}=  Get Attachment  123456789
+            ${path}=  Download Attachment  ${attachment}
+            Log  ${path}
+
+        .. code-block:: python
+
+            ss = Smartsheet(access_token=access_token)
+            attachment = ss.get_attachment(123456789)
+            path = ss.download_attachment(attachment)
+            print(path)
         """
-        # TODO: Add example to documentation
         self._require_auth()
         download_path = download_path or get_output_dir()
         if not download_path.exists():

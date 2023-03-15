@@ -22,7 +22,7 @@ Smartsheet = ss.Smartsheet
 
 # You can set a personal testing token via the smartsheet_testvars.py file
 try:
-    from .smartsheet_testvars import ACCESS_TOKEN, ORDERS_COLS
+    from .smartsheet_testvars import ACCESS_TOKEN
 
     VARS = True
 except ImportError:
@@ -57,12 +57,13 @@ from .smartsheet_vars import (
 TEMP_DIR = Path(__file__).parent.parent / "results"
 
 
-# @skip  # Need to skip if smartsheet_testvars could not be imported
+# Need to skip if smartsheet_testvars could not be imported
 @pytest.mark.skip("Test only used for debugging")
 def test_debugging():
     """This test should always be skipped for automated tests."""
     lib = Smartsheet(access_token=ACCESS_TOKEN)
-    orders = lib.get_sheet(sheet_name="orders")
+    orders = lib.get_sheet(sheet_name="orders", native=True)
+    revisions = lib.get_cell_history(row=orders.rows[0], column=orders.columns[0])
     attachments = lib.list_attachments()
     for a in attachments:
         lib.download_attachment(a, TEMP_DIR)
@@ -508,3 +509,9 @@ def test_search(lib_with_sheet: Smartsheet, mocker: MockerFixture) -> None:
         assert result.object_id in [
             r["objectId"] for r in MOCKED_SEARCH_RESULTS["results"]
         ]
+
+
+def test_get_row_from_number(lib_with_sheet: Smartsheet, mocker: MockerFixture) -> None:
+    row_id = lib_with_sheet._get_row_from_number(1)
+
+    assert row_id == MOCK_SHEET_JSON["rows"][0]["id"]
