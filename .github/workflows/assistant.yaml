@@ -90,7 +90,7 @@ jobs:
     - name: Install dependencies
       run: invoke install
     - name: Lint
-      run: invoke code.lint
+      run: invoke code.lint -e
     - name: Test
       run: invoke code.test -a
     # TODO: add graphical tests like we hhave on main
