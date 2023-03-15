@@ -294,7 +294,8 @@ Test Run Keyword If File Exists
 
 *** Keywords ***
 Create mock files
-    Remove Directory    ${MOCK_WORKSPACE}   recursive=${True}
+    Run keyword and ignore error    Remove Directory    ${MOCK_WORKSPACE}
+    ...     recursive=${True}
     Prepare Files For Tests    root=${MOCK_WORKSPACE}
 
 Execute deferred
