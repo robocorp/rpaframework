@@ -9,14 +9,22 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+22.2.3 - 15 Mar 2023
+--------------------
+
+- Library **RPA.PDF** (``rpaframework-pdf`` **7.1.2**): Light documentation fix and
+  preserved default behaviour with the `boxes_flow` parameter in the
+  ``Set Convert Settings`` keyword. (defaults to `0.5`)
+
 14 Mar 2023
 -----------
+
 - Library **RPA.Assistant** 2.1.2:
 
-    - Fix file picker sometimes causing ``AssertionError: Control must be added to the
-      page first.`` error.
-    - Fix ``Add Next Ui Button`` getting a normal dict and not a dotdict as it's first
-      argument.
+  - Fix file picker sometimes causing ``AssertionError: Control must be added to the
+    page first.`` error.
+  - Fix ``Add Next Ui Button`` getting a normal `dict` and not a `dotdict` as its first
+    argument.
 
 22.2.2 - 13 Mar 2023
 --------------------
@@ -147,7 +155,7 @@ Release notes
 28 Feb 2023
 -----------
 
-**RPA.PDF** (``rpaframework-pdf`` **7.1.0**):
+Library **RPA.PDF** (``rpaframework-pdf`` **7.1.0**):
 
   - Add possibility to change `boxes_flow` setting of PDF conversion with the
     ``Set Convert Settings`` keyword. The `boxes_flow` defines how text boxes within
