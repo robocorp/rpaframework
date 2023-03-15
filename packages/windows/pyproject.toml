@@ -67,7 +67,7 @@ flake8-rst-docstrings = "^0.2.7"
 windows-record = 'RPA.scripts.record:main'
 
 [tool.black]
-target-version = ["py36", "py37", "py38", "py39"]
+target-version = ["py37", "py38", "py39"]
 
 [build-system]
 requires = ["poetry>=0.12"]

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "22.2.2"
+version = "22.2.3"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -116,7 +116,7 @@ rpa-crypto = 'RPA.scripts.crypto:main'
 use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 
 [tool.black]
-target-version = ["py36", "py37", "py38", "py39"]
+target-version = ["py37", "py38", "py39"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
