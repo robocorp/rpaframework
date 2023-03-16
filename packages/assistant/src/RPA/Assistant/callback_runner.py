@@ -6,7 +6,8 @@ from robot.errors import RobotError
 
 
 class CallbackRunner:
-    """provides helper functionality for running Robot and Python callbacks in Assistant"""
+    """provides helper functionality for running Robot and Python callbacks in
+    RPA.Assistant."""
 
     def __init__(self, client) -> None:
         self.logger = logging.getLogger(__name__)
@@ -36,18 +37,19 @@ class CallbackRunner:
 
         return func_wrapper
 
-    def _run_python_callback(self, function, *args, **kwargs):
+    def _run_python_callback(self, function: Callable, *args, **kwargs):
         try:
             return function(*args, **kwargs)
 
         # This can be anything since it comes from the user function, we don't
         # want to let the user function crash the UI
         except Exception as err:  # pylint: disable=broad-except
-            self.logger.error(f"Error calling Python function {function}")
+            self.logger.error(f"Error calling Python function {function.__name__}")
             self.logger.error(err)
         finally:
             self._client.unlock_elements()
             self._client.flet_update()
+        return None
 
     def _robot_callback(self, kw_name: str, *args, **kwargs) -> Callable[[], None]:
         """wrapper code that is used to add wrapping for user functions when binding
@@ -89,6 +91,7 @@ class CallbackRunner:
         finally:
             self._client.unlock_elements()
             self._client.flet_update()
+        return None
 
     def queue_fn_or_kw(self, function: Union[Callable, str], *args, **kwargs):
         """Check if function is a Python function or a Robot Keyword, and schedule it
