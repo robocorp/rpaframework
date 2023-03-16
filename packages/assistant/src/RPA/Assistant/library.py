@@ -601,13 +601,9 @@ class Assistant:
 
         if validation:
             if isinstance(validation, str):
-                self._validations[
-                    name
-                ] = self._callbacks._create_robot_validation_wrapper(validation)
+                self._validations[name] = self._callbacks.robot_validation(validation)
             elif isinstance(validation, Callable):
-                self._validations[
-                    name
-                ] = self._callbacks._create_python_validation_wrapper(validation)
+                self._validations[name] = self._callbacks.python_validation(validation)
             else:
                 raise ValueError("Invalid validation function.")
 
@@ -1119,7 +1115,7 @@ class Assistant:
         """
 
         def on_click(_: ControlEvent):
-            self._callbacks._queue_function_or_keyword(function, *args, **kwargs)
+            self._callbacks.queue_fn_or_kw(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
         container = Container(alignment=location.value, content=button)
@@ -1158,7 +1154,7 @@ class Assistant:
         """
 
         def on_click(_: ControlEvent):
-            self._callbacks._queue_function_or_keyword(function, self._get_results())
+            self._callbacks.queue_fn_or_kw(function, self._get_results())
 
         button = ElevatedButton(label, on_click=on_click)
         self._client.add_element(button)

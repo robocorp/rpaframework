@@ -12,7 +12,7 @@ class CallbackRunner:
         self.logger = logging.getLogger(__name__)
         self._client = client
 
-    def _create_python_function_wrapper(
+    def _python_callback(
         self, function: Callable[[Any], None], *args, **kwargs
     ) -> Callable[[], None]:
         """wrapper code that is used to add wrapping for user functions when binding
@@ -24,7 +24,7 @@ class CallbackRunner:
 
         return func_wrapper
 
-    def _create_python_validation_wrapper(
+    def python_validation(
         self, function: Callable[[Any], Optional[str]]
     ) -> Callable[[Any], Optional[str]]:
         """wrapper code that is used to add wrapping for user functions when binding
@@ -49,9 +49,7 @@ class CallbackRunner:
             self._client.unlock_elements()
             self._client.flet_update()
 
-    def _create_robot_function_wrapper(
-        self, kw_name: str, *args, **kwargs
-    ) -> Callable[[], None]:
+    def _robot_callback(self, kw_name: str, *args, **kwargs) -> Callable[[], None]:
         """wrapper code that is used to add wrapping for user functions when binding
         them to be run by buttons
         """
@@ -61,9 +59,7 @@ class CallbackRunner:
 
         return func_wrapper
 
-    def _create_robot_validation_wrapper(
-        self, kw_name: str
-    ) -> Callable[[Any], Optional[str]]:
+    def robot_validation(self, kw_name: str) -> Callable[[Any], Optional[str]]:
         """wrapper code that is used to add wrapping for user functions when binding
         them to be run on validation
         """
@@ -94,11 +90,9 @@ class CallbackRunner:
             self._client.unlock_elements()
             self._client.flet_update()
 
-    def _queue_function_or_keyword(
-        self, function: Union[Callable, str], *args, **kwargs
-    ):
-        """Check if function is a Python function or a Robot Keyword, and call it
-        or run it with Robot's run_keyword.
+    def queue_fn_or_kw(self, function: Union[Callable, str], *args, **kwargs):
+        """Check if function is a Python function or a Robot Keyword, and schedule it
+        for execution appropriately.
         """
         if self._client.pending_operation:
             self.logger.error("Can't have more than one pending operation.")
@@ -107,10 +101,10 @@ class CallbackRunner:
         self._client.flet_update()
 
         if isinstance(function, Callable):
-            self._client.pending_operation = self._create_python_function_wrapper(
+            self._client.pending_operation = self._python_callback(
                 function, *args, **kwargs
             )
         else:
-            self._client.pending_operation = self._create_robot_function_wrapper(
+            self._client.pending_operation = self._robot_callback(
                 function, *args, **kwargs
             )
