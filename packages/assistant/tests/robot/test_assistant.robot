@@ -96,6 +96,8 @@ DotDict Ui
 
 Must Be Short
     [Arguments]  ${value}
+    # We sleep to enable testing of a validation that won't return quickly
+    Sleep  0.2
     Log To Console  ${value}
     IF  len($value) > 3
         RETURN  Value Too Long
