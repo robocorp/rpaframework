@@ -835,14 +835,14 @@ files = [
 
 [[package]]
 name = "holidays"
-version = "0.21"
+version = "0.21.13"
 description = "Generate and work with holidays in Python"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "holidays-0.21-py3-none-any.whl", hash = "sha256:3deb88649ad931e176798b23686798f29215fbf99f56b3f1f4c1e6f0015319ee"},
-    {file = "holidays-0.21.tar.gz", hash = "sha256:e3dece03969056dda9cf52f07676227e7ea042fd22a72ca431203c04029647b6"},
+    {file = "holidays-0.21.13-py3-none-any.whl", hash = "sha256:638d91ad7e8d8d0ef3cdd824fd3544f83e74870474d5c62483ada5d4dddcb0c3"},
+    {file = "holidays-0.21.13.tar.gz", hash = "sha256:f6069b2be62bf3d984b99eb6c7f6c639c2ba1965d2bb561c634617567762dbb6"},
 ]
 
 [package.dependencies]
