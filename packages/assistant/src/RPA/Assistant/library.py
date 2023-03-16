@@ -559,7 +559,7 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Optional[Callable] = None,
+        validation: Optional[Union[Callable, str]] = None,
         default: Optional[str] = None,
         required: bool = False,
     ) -> None:
@@ -598,13 +598,19 @@ class Assistant:
             Send feedback message    ${result.email}  ${result.message}
         """
 
-        if validation and required:
-            self._validations[name] = validation
+        if validation:
+            if isinstance(validation, str):
+                self._validations[name] = self._create_robot_validation_wrapper(
+                    validation
+                )
+            elif isinstance(validation, Callable):
+                self._validations[name] = self._create_python_validation_wrapper(
+                    validation
+                )
+            else:
+                raise ValueError("Invalid validation function.")
+        if required:
             self._required_fields.add(name)
-        elif required:
-            self._required_fields.add(name)
-        elif validation:
-            self._validations[name] = validation
 
         self._client.results[name] = default
 
@@ -1081,12 +1087,14 @@ class Assistant:
         """
         self._client.update_elements()
 
-    def _create_python_function_wrapper(self, function, *args, **kwargs):
+    def _create_python_function_wrapper(
+        self, function: Callable[[Any], None], *args, **kwargs
+    ) -> Callable[[], None]:
         """wrapper code that is used to add wrapping for user functions when binding
         them to be run by buttons
         """
 
-        def func_wrapper():
+        def func_wrapper() -> None:
             try:
                 function(*args, **kwargs)
 
@@ -1101,14 +1109,66 @@ class Assistant:
 
         return func_wrapper
 
-    def _create_robot_function_wrapper(self, function, *args, **kwargs):
+    def _create_python_validation_wrapper(
+        self, function: Callable[[Any], Optional[str]]
+    ) -> Callable[[Any], Optional[str]]:
+        """wrapper code that is used to add wrapping for user functions when binding
+        them to be run on validations buttons
+        """
+
+        def func_wrapper(value) -> Optional[str]:
+            try:
+                return function(value)
+
+            # This can be anything since it comes from the user function, we don't
+            # want to let the user function crash the UI
+            except Exception as err:  # pylint: disable=broad-except
+                self.logger.error(f"Error calling Python function {function}")
+                self.logger.error(err)
+            finally:
+                self._client.unlock_elements()
+                self._client.flet_update()
+
+        return func_wrapper
+
+    def _create_robot_function_wrapper(
+        self, function: str, *args, **kwargs
+    ) -> Callable[[], None]:
         """wrapper code that is used to add wrapping for user functions when binding
         them to be run by buttons
         """
 
-        def func_wrapper():
+        def func_wrapper() -> None:
             try:
                 BuiltIn().run_keyword(function, *args, **kwargs)
+            except RobotNotRunningError:
+                self.logger.error(
+                    f"Robot Framework not running so cannot call keyword {function}"
+                )
+            except RobotError as e:
+                self.logger.error(f"Error calling robot keyword {function}")
+                self.logger.error(e)
+            # This can be anything since it comes from the user function, we don't
+            # want to let the user function crash the UI
+            except Exception as err:  # pylint: disable=broad-except
+                self.logger.error(f"Unexpected error running robot keyword {function}")
+                self.logger.error(err)
+            finally:
+                self._client.unlock_elements()
+                self._client.flet_update()
+
+        return func_wrapper
+
+    def _create_robot_validation_wrapper(
+        self, function: str
+    ) -> Callable[[Any], Optional[str]]:
+        """wrapper code that is used to add wrapping for user functions when binding
+        them to be run on validation
+        """
+
+        def func_wrapper(value) -> Optional[str]:
+            try:
+                return BuiltIn().run_keyword(function, value)
             except RobotNotRunningError:
                 self.logger.error(
                     f"Robot Framework not running so cannot call keyword {function}"
