@@ -826,7 +826,6 @@ class Smartsheet:
 
         :param columns: Columns as a list of dictionaries or Column
          objects.
-        :type columns: dict
         """  # noqa: E501
         self._require_current_sheet()
 
@@ -856,41 +855,30 @@ class Smartsheet:
         """Adds a column to the current sheet.
 
         :param title: Column title.
-        :type title: str
         :param column_type: Column type, must be a `supported type`_.
          Defaults to ``TEXT_NUMBER``.
-        :type column_type: str
         :param formula: Formula for the column (e.g., ``=data@row``).
          Defaults to ``None``.
-        :type formula: str
         :param hidden: Whether the column is hidden. Defaults to ``False``.
-        :type hidden: bool
         :param index: Index of the column. You can insert a column into
          and existing sheet by setting this index. Index is zero-based.
          Defaults to ``None`` which will add the column to the end of
          the sheet.
-        :type index: int
         :param description: Column description. Defaults to ``None``.
-        :type description: str
         :param primary: Whether the column is considered the primary
          key for indexing and searching. Defaults to ``False``.
         :param format_string: Column format using a `format descriptor`_
          string. Defaults to ``None``.
-        :type format_string: str
         :param locked: Whether the column is locked. Defaults to ``False``.
-        :type locked: bool
         :param options: List of options for a ``PICKLIST`` or
          ``MULTI_PICKLIST`` column. Defaults to ``None``.
         :param symbol: When a ``CHECKBOX`` or ``PICKLIST`` column has a
          display symbol, you can set the type of symbols by selected an
          appropriate string from the `symbol columns`_ definitions.
          Defaults to ``None``.
-        :type symbol: str
         :param validation: Whether validation has been enabled. Defaults
          to ``False``.
-        :type validation: bool
         :param width: Column width in pixels. Defaults to ``None``.
-        :type width: int
 
         .. _symbol columns: https://smartsheet.redoc.ly/tag/columnsRelated/#section/Column-Types/Symbol-Columns
         .. _format descriptor: https://smartsheet.redoc.ly/#section/API-Basics/Formatting
@@ -938,10 +926,8 @@ class Smartsheet:
         for a list of supported attributes.
 
         :param column: Column ID or title.
-        :type column: int or str
         :param kwargs: Column attributes to update. See ``Add Column`` keyword
          for a list of supported attributes.
-        :type kwargs: dict
         """
         self._require_current_sheet()
         column_id = self._get_column_id(column)
@@ -1094,6 +1080,8 @@ class Smartsheet:
 
         Examples:
 
+        *Robot Framework:*
+
         .. code-block:: robotframework
 
             ${row1}=  Create Dictionary  rowId=123  column1=value1  column2=value2
@@ -1111,6 +1099,8 @@ class Smartsheet:
             END
             ${data}=  Create List  ${row1}
             Set Rows  ${data}
+
+        *Python:*
 
         .. code-block:: python
 
@@ -1209,6 +1199,8 @@ class Smartsheet:
 
         Examples:
 
+        *Robot Framework:*
+
         .. code-block:: robotframework
 
             ${row1}=  Create Dictionary  column1=value1  column2=value2
@@ -1216,6 +1208,8 @@ class Smartsheet:
             ${row3}=  Create Dictionary  column1=value5  column2=value6
             ${data} =  Create List  ${row1}  ${row2}  ${row3}
             Add Rows  ${data}
+
+        *Python:*
 
         .. code-block:: python
 
@@ -1271,12 +1265,16 @@ class Smartsheet:
 
         Examples:
 
+        *Robot Framework:*
+
         .. code-block:: robotframework
 
             ${cell_history}=  Get Cell History  1  Approval
             FOR  ${revision} IN  @{cell_history}
                 Log  Modified by ${revision.modified_by.email}
             END
+
+        *Python:*
 
         .. code-block:: python
 
@@ -1348,12 +1346,16 @@ class Smartsheet:
 
         Examples:
 
+        *Robot Framework:*
+
         .. code-block:: robotframework
 
             ${attachments}=  List Attachments
             FOR  ${attachment} IN  @{attachments}
                 Log  ${attachment.name}
             END
+
+        *Python:*
 
         .. code-block:: python
 
@@ -1390,11 +1392,15 @@ class Smartsheet:
 
         Examples:
 
+        *Robot Framework:*
+
         .. code-block:: robotframework
 
             ${attachment}=  Get Attachment  123456789
             ${path}=  Download Attachment  ${attachment}
             Log  ${path}
+
+        *Python:*
 
         .. code-block:: python
 
