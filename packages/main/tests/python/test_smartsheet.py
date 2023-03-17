@@ -1,22 +1,20 @@
 import os
-from pathlib import Path
-from json.encoder import JSONEncoder
-from requests.models import Response, PreparedRequest
-from typing import Union, Iterable, List
 from itertools import chain
+from json.encoder import JSONEncoder
+from pathlib import Path
+from typing import Iterable, List, Union
 
 import pytest
+import smartsheet.smartsheet as smart_sdk
 from mock import MagicMock, patch
 from pytest_mock import MockerFixture
-
-
-import smartsheet.smartsheet as smart_sdk
+from requests.models import PreparedRequest, Response
 
 OperationResult = smart_sdk.OperationResult
 OperationErrorResult = smart_sdk.OperationErrorResult
 
-from RPA.Tables import Table
 import RPA.Smartsheet as ss
+from RPA.Tables import Table
 
 Smartsheet = ss.Smartsheet
 
@@ -30,28 +28,27 @@ except ImportError:
 
 # Import mock data
 from .smartsheet_vars import (
+    ITEM_COLUMN_ID,
     MOCK_ACCESS_TOKEN,
-    MOCK_SHEET_JSON,
     MOCK_IMAGE_ATTACHMENT,
+    MOCK_SHEET_JSON,
     MOCK_TEXT_ATTACHMENT,
+    MOCKED_ADD_ROW_SUCCESS,
     MOCKED_ATTACHMENT_LIST,
+    MOCKED_CREATE_SHEET_SUCCESS,
+    MOCKED_ROW,
     MOCKED_ROW_ATTACHMENTS,
     MOCKED_ROW_NO_ATTACHMENTS,
-    MOCKED_ROW,
-    NEW_ROWS,
-    MOCKED_ADD_ROW_SUCCESS,
-    UPDATED_ROW_1,
-    UPDATED_ROWS,
+    MOCKED_SEARCH_RESULTS,
     MOCKED_UPDATE_ROW_SUCCESS,
     NAME_COLUMN_ID,
-    ITEM_COLUMN_ID,
-    ZIP_COLUMN_ID,
-    NEW_SHEET_NAME,
+    NEW_ROWS,
     NEW_SHEET_COLUMNS,
-    MOCKED_CREATE_SHEET_SUCCESS,
-    MOCKED_SEARCH_RESULTS,
+    NEW_SHEET_NAME,
+    UPDATED_ROW_1,
+    UPDATED_ROWS,
+    ZIP_COLUMN_ID,
 )
-
 
 # Testing Constants
 TEMP_DIR = Path(__file__).parent.parent / "results"
@@ -220,7 +217,7 @@ def _wrap_lib(lib_with_sheet: Smartsheet, mocker: MockerFixture) -> MagicMock:
 
 
 def test_authorization(library: Smartsheet, mocker: MockerFixture) -> None:
-    mock_client = mocker.patch("RPA.Smartsheet.smart_sdk", autospec=True)
+    mock_client = mocker.patch("RPA.Smartsheet.SmartSDK", autospec=True)
 
     library.set_access_token(MOCK_ACCESS_TOKEN)
 

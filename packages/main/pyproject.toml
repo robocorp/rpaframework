@@ -111,6 +111,7 @@ keyring = "^23.9.0"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.7"
 pytest-freezegun = "^0.4.2"
+isort = "^5.11.5"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
@@ -118,6 +119,9 @@ use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 
 [tool.black]
 target-version = ["py37", "py38", "py39"]
+
+[tool.isort]
+profile = "black"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
