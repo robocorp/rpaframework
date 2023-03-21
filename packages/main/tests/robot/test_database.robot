@@ -30,6 +30,10 @@ Select data from sqlite3 database
     @{results}=   Query  SELECT * FROM incoming_orders
     Length Should Be  ${results}   2
 
+Select data from sqlite3 database using parameterized query
+    @{results}=    Query  SELECT * FROM incoming_orders WHERE asiakas = ?  data=("nokia", )
+    Length Should Be  ${results}   1
+
 Get table description
     Run Keyword And Expect Error    Operation not supported for 'sqlite3' type database    Description  incoming_orders
 
