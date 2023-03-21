@@ -529,6 +529,7 @@ class Database:
         sanstran: Optional[bool] = False,
         as_table: Optional[bool] = True,
         returning: Optional[bool] = None,
+        data: Union[Dict, Tuple, None] = None,
     ) -> Union[List, Dict, Table, Any]:
         """Execute a SQL query and optionally return the execution result.
 
@@ -544,6 +545,7 @@ class Database:
         :param returning: Set this to `True` if you want to have rows explicitly
             returned (instead of the query result), `False` otherwise. (by default a
             heuristic detects if it should return or not)
+        :param data: The data to use if the SQL statement is parameterized
         :returns: Fetched rows when `returning` is `True` or if the heuristic decides
             that the statement should return (raw rows or as `Table` if `as_table` is
             `True`), otherwise the object produced by the execution is returned.
@@ -585,11 +587,12 @@ class Database:
                 )
                 print([row["name"] for row in rows])  # ['my-1st-order', 'my-2nd-order']
         """
+        # TODO: Add example to code
         cursor = None
         try:
             self.logger.info("Executing query: %s", statement)
             cursor = self._dbconnection.cursor()
-            result = self.__execute_sql(cursor, statement)
+            result = self.__execute_sql(cursor, statement, data)
             should_return = (returning is True) or (
                 returning is None and self._is_returnable_statement(statement)
             )
@@ -643,8 +646,10 @@ class Database:
                 "Query assertion %s failed. Facts: %s" % (assertion, available_locals)
             )
 
-    def __execute_sql(self, cursor, sqlStatement):
-        return cursor.execute(sqlStatement)
+    def __execute_sql(self, cursor, sqlStatement, data: Union[Dict, Tuple, None] = None,):
+        if data is None:
+            return cursor.execute(sqlStatement)
+        return cursor.execute(sqlStatement, data)
 
     def set_auto_commit(self, autocommit: bool = True) -> None:
         """Set database auto commit mode.
