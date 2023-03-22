@@ -533,6 +533,10 @@ class Database:
     ) -> Union[List, Dict, Table, Any]:
         """Execute a SQL query and optionally return the execution result.
 
+        Security Warning: In order to safely include untrusted data in SQL queries
+        it is advisable to use parameterized queries. For more information about
+        formatting for specific databases, please see https://bobby-tables.com/python
+
         :param statement: SQL statement to execute.
         :param assertion: Assert on query result, row_count or columns.
             Works only for `SELECT` statements. (defaults to `None`)
@@ -568,6 +572,7 @@ class Database:
                 @{res} =    Query   Select * FROM table   row_count > ${EXPECTED}
                 @{res} =    Query   Select * FROM table   'value' in columns
                 @{res} =    Query   Select * FROM table   columns == ['id', 'value']
+                @{res} =    Query   Select * FROM table WHERE value = ?  data=("${data}", )
 
         **Python**
 
@@ -581,13 +586,17 @@ class Database:
                 lib.connect_to_database("sqlite3", "sqlite.db")
                 lib.query("DROP TABLE IF EXISTS orders;")
                 lib.query("CREATE TABLE orders(id INTEGER PRIMARY KEY, name TEXT);")
+                data1 = "my-1st-order"
+                data2 = "my-2nd-order"
+                lib.query(
+                    'INSERT INTO orders(id, name) VALUES(1, ?), (2, ?);',
+                    data=(data1, data2)
+                )
                 rows = lib.query(
-                    'INSERT INTO orders(id, name) VALUES(1, "my-1st-order"),'
-                    '(2, "my-2nd-order") RETURNING name;'
+                    'SELECT * FROM orders'
                 )
                 print([row["name"] for row in rows])  # ['my-1st-order', 'my-2nd-order']
         """
-        # TODO: Add example to code
         cursor = None
         try:
             self.logger.info("Executing query: %s", statement)
