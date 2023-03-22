@@ -265,7 +265,7 @@ won't break already working stuff?
 The risk of introducing regressions is high and unexpectedly appears even when you do
 a simple package upgrade, not even talking about code/behaviour change. And tests will
 be your friend here, the more covered you are with real-life like scenarios, the faster
-you'll deliver value by exchanging debugging and support time with testing development
+you'll deliver value by exchanging debugging and support time with tests development
 time. (as you write them once, but you're covered forever)
 
 ### Unit tests
@@ -296,7 +296,7 @@ under a real scenario with a context built with the help of other parts of the l
 
 Imagine our customer using that affected keyword, how would he/she be calling that?
 Sometimes a quick win is to copy-paste the docstring RF example and this way you also
-test the docstring itself.
+test the docstring itself too.
 
 Robot tests are run with `inv code.test-robot` (excludes `skip` and `manual` tests),
 this meaning collecting and running all of them from the package in focus.
@@ -413,7 +413,7 @@ A few things to take care first, right before publishing the package for real:
 
 While we don't have automatic linting for release notes yet, here is some common sense
 to follow:
-- Restructured Text format require one blank line before any bullet-point block,
+- Restructured Text format requires one blank line before any bullet-point block,
   otherwise the rendering won't happen as expected.
 - **Libraries** are bold (so version numbers), while `Key Words` are code-like (so
   library package names). Parameters, arguments and file_names.ext are usually _italic_.
@@ -425,7 +425,7 @@ to follow:
 - `DD MMM YYYY` date format, prefixed by the library version if it includes a release
   of `rpaframework` as well. (as independent packages aren't included by default in the
   main library)
-- Breaking changes go under the ⚠️`.. warning::` directive block.
+- Breaking changes go under the ⚠️ `.. warning::` directive block.
 - Two spaces (no tabs) for indentation. (don’t mix 4s with 2s, keep it consistent)
 - Sentences usually start with a capital letter and end with punctuation.
 - Try to correct your english with [Grammarly](https://www.grammarly.com/).
@@ -447,4 +447,5 @@ Now that your package was published successfully and visible in
    [docs site](https://robocorp.com/docs/) should reflect now the latest built and
    pushed documentation (that's why we re-built the _meta_ package). They are visible
    in our legacy rpaframework.org (and you should check that first), and for making
-   them visible in the official docs you should trigger this [workflow](https://github.com/robocorp/documentation/actions/workflows/build-deploy.yml).
+   them visible in the official docs you should trigger this documentation
+   [workflow](https://github.com/robocorp/documentation/actions/workflows/build-deploy.yml).
