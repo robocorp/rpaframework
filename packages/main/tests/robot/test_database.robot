@@ -31,7 +31,13 @@ Select data from sqlite3 database
     Length Should Be  ${results}   2
 
 Select data from sqlite3 database using parameterized query
-    @{results}=    Query  SELECT * FROM incoming_orders WHERE asiakas = ?  data=("nokia", )
+    # This test uses a hardcoded string for simplicity, but in a real scenario the untrusted data
+    # would be coming from an external source (Excel file, HTTP request, etc.)
+    ${untrusted_data}    Set Variable    nokia
+
+    # Each database uses a particular style of formatting. SQLite3 uses '?' for instance.
+    # For additional information about specific databases see https://bobby-tables.com/python
+    @{results}=    Query  SELECT * FROM incoming_orders WHERE asiakas = ?  data=("${untrusted_data}", )
     Length Should Be  ${results}   1
 
 Get table description
