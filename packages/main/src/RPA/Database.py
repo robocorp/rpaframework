@@ -655,7 +655,12 @@ class Database:
                 "Query assertion %s failed. Facts: %s" % (assertion, available_locals)
             )
 
-    def __execute_sql(self, cursor, sqlStatement, data: Union[Dict, Tuple, None] = None,):
+    def __execute_sql(
+        self,
+        cursor,
+        sqlStatement,
+        data: Union[Dict, Tuple, None] = None,
+    ):
         if data is None:
             return cursor.execute(sqlStatement)
         return cursor.execute(sqlStatement, data)
