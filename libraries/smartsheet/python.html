@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python API &mdash; RPA Framework  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/iframeResizer.min.js"></script>
+        <script src="../../_static/custom.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tables" href="../tables/index.html" />
+    <link rel="prev" title="Smartsheet" href="index.html" />
+	<!-- Cookie consent -->
+<link async rel="stylesheet" type="text/css" href="../../_static/cookie.css"/>
+<script async src="../../_static/cookie.js"></script>
+<!-- Robocorp banner -->
+<link async rel="stylesheet" type="text/css" href="../../_static/robocorp.css"/>
+<script async src="../../_static/robocorp.js"></script>
+<!--            -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RPA Framework
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assistant/index.html">Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_playwright/index.html">Browser.Playwright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_selenium/index.html">Browser.Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../calendar/index.html">Calendar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai/index.html">DocumentAI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai_base64ai/index.html">DocumentAI.Base64AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai_nanonets/index.html">DocumentAI.Nanonets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hubspot/index.html">HubSpot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../javaaccessbridge/index.html">JavaAccessBridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mfa/index.html">MFA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../msgraph/index.html">MSGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openai/index.html">OpenAI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_process/index.html">Robocorp.Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_vault/index.html">Robocorp.Vault</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_workitems/index.html">Robocorp.WorkItems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Smartsheet</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows/index.html">Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/todos.html">TODO</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Smartsheet</a></li>
+      <li class="breadcrumb-item active">Python API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/libraries/smartsheet/python.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+	
+           <div itemprop="articleBody">
+             
+  <div class="section" id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
+<div class="section" id="module-RPA.Smartsheet">
+<span id="smartsheet"></span><h2>Smartsheet<a class="headerlink" href="#module-RPA.Smartsheet" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Smartsheet.</span></span><span class="sig-name descname"><span class="pre">Smartsheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_retry_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p><em>Smartsheet</em> is a library for accessing Smartsheet using the
+<a class="reference external" href="https://smartsheet.redoc.ly/">Smartsheet API 2.0</a>. It extends <a class="reference external" href="https://github.com/smartsheet/smartsheet-python-sdk">smartsheet-python-sdk</a>.</p>
+<div class="section" id="getting-started">
+<h3>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h3>
+<p>To use this library, you need to have a Smartsheet account and an API token.
+You can get your API token from the <a class="reference external" href="https://smartsheet-platform.github.io/api-docs/">Smartsheet Developer Portal</a>.
+This library currently only supports raw token authentication. Once
+obtained, you can configure the access token using the <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Access</span> <span class="pre">Token</span></code>
+keyword or via the <code class="docutils literal notranslate"><span class="pre">access_token</span></code> argument in the library import.</p>
+</div>
+<div class="section" id="working-on-a-sheet">
+<h3>Working on a sheet<a class="headerlink" href="#working-on-a-sheet" title="Permalink to this heading"></a></h3>
+<p>The library supports working on a single sheet at a time. To select a sheet
+to work on, use the <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">Sheet</span></code> keyword. This will set the sheet as
+the active sheet for all subsequent operations. Some operations
+update the sheet, but this will not necessarily be reflected in the active
+sheet. To refresh the active sheet, use the <code class="docutils literal notranslate"><span class="pre">Refresh</span> <span class="pre">Sheet</span></code> keyword.</p>
+</div>
+<div class="section" id="native-smartsheet-objects">
+<h3>Native Smartsheet objects<a class="headerlink" href="#native-smartsheet-objects" title="Permalink to this heading"></a></h3>
+<p>You can retrieve the native Smartsheet object from many keywords by
+specifying the <code class="docutils literal notranslate"><span class="pre">native</span></code> argument. The default will return a more
+common Python object, such as a dictionary or list. The native object
+is a class from the <a class="reference external" href="https://github.com/smartsheet/smartsheet-python-sdk">smartsheet-python-sdk</a> library and will have
+additional methods and attributes. The most important attributes
+available for most native objects are (some may be unavailable
+for some objects):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: the unique identifier of the object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: the name of the object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code>: the title of a column</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">permalink</span></code>: the URL to the object</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.ROBOT_AUTO_KEYWORDS">
+<span class="sig-name descname"><span class="pre">ROBOT_AUTO_KEYWORDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.ROBOT_LIBRARY_DOC_FORMAT">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.ROBOT_LIBRARY_SCOPE">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.ROW_EXCLUDES">
+<span class="sig-name descname"><span class="pre">ROW_EXCLUDES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['filteredOutRows',</span> <span class="pre">'linkInFromCellDetails',</span> <span class="pre">'linksOutToCellsDetails',</span> <span class="pre">'nonexistentCells']</span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.ROW_EXCLUDES" title="Permalink to this definition"></a></dt>
+<dd><p>List of supported options to remove cells from rows.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.ROW_INCLUDES">
+<span class="sig-name descname"><span class="pre">ROW_INCLUDES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'attachmentFiles':</span> <span class="pre">None,</span> <span class="pre">'attachments':</span> <span class="pre">'attachments',</span> <span class="pre">'discussions':</span> <span class="pre">'discussions',</span> <span class="pre">'filters':</span> <span class="pre">'filteredOut',</span> <span class="pre">'rowId':</span> <span class="pre">None,</span> <span class="pre">'rowPermalink':</span> <span class="pre">'permalink'}</span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.ROW_INCLUDES" title="Permalink to this definition"></a></dt>
+<dd><p>Dictionary of supported additional objects to ask for via <code class="docutils literal notranslate"><span class="pre">include</span></code>
+parameters for rows. Key is the name of the option, value is the
+API attribute or function to call.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.SEARCH_INCLUDES">
+<span class="sig-name descname"><span class="pre">SEARCH_INCLUDES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'favoriteFlag':</span> <span class="pre">None}</span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.SEARCH_INCLUDES" title="Permalink to this definition"></a></dt>
+<dd><p>Dictionary of supported additional objects to ask for via <code class="docutils literal notranslate"><span class="pre">include</span></code>
+parameters for searches. Key is the name of the option, value is the
+API attribute or function to call.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.SEARCH_SCOPES">
+<span class="sig-name descname"><span class="pre">SEARCH_SCOPES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['attachments',</span> <span class="pre">'cellData',</span> <span class="pre">'comments',</span> <span class="pre">'folderNames',</span> <span class="pre">'reportNames',</span> <span class="pre">'sheetNames',</span> <span class="pre">'sightNames',</span> <span class="pre">'summaryFields',</span> <span class="pre">'templateNames',</span> <span class="pre">'workspaceNames']</span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.SEARCH_SCOPES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.SHEET_INCLUDES">
+<span class="sig-name descname"><span class="pre">SHEET_INCLUDES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'attachmentFiles':</span> <span class="pre">None,</span> <span class="pre">'attachments':</span> <span class="pre">'attachments',</span> <span class="pre">'discussions':</span> <span class="pre">'discussions',</span> <span class="pre">'rowId':</span> <span class="pre">None,</span> <span class="pre">'rowPermalink':</span> <span class="pre">'permalink'}</span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.SHEET_INCLUDES" title="Permalink to this definition"></a></dt>
+<dd><p>Dictionary of supported additional objects to ask for via <code class="docutils literal notranslate"><span class="pre">include</span></code>
+parameters for sheets. Key is the name of the option, value is the
+API attribute or function to call.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.add_column">
+<span class="sig-name descname"><span class="pre">add_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'TEXT_NUMBER'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locked</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.add_column" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a column to the current sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> – Column title.</p></li>
+<li><p><strong>column_type</strong> – Column type, must be a <a class="reference external" href="https://smartsheet.redoc.ly/tag/columnsRelated/#section/Column-Types">supported type</a>.
+Defaults to <code class="docutils literal notranslate"><span class="pre">TEXT_NUMBER</span></code>.</p></li>
+<li><p><strong>formula</strong> – Formula for the column (e.g., <code class="docutils literal notranslate"><span class="pre">=data&#64;row</span></code>).
+Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>hidden</strong> – Whether the column is hidden. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>index</strong> – Index of the column. You can insert a column into
+and existing sheet by setting this index. Index is zero-based.
+Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code> which will add the column to the end of
+the sheet.</p></li>
+<li><p><strong>description</strong> – Column description. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>primary</strong> – Whether the column is considered the primary
+key for indexing and searching. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>format_string</strong> – Column format using a <a class="reference external" href="https://smartsheet.redoc.ly/#section/API-Basics/Formatting">format descriptor</a>
+string. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>locked</strong> – Whether the column is locked. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>options</strong> – List of options for a <code class="docutils literal notranslate"><span class="pre">PICKLIST</span></code> or
+<code class="docutils literal notranslate"><span class="pre">MULTI_PICKLIST</span></code> column. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>symbol</strong> – When a <code class="docutils literal notranslate"><span class="pre">CHECKBOX</span></code> or <code class="docutils literal notranslate"><span class="pre">PICKLIST</span></code> column has a
+display symbol, you can set the type of symbols by selected an
+appropriate string from the <a class="reference external" href="https://smartsheet.redoc.ly/tag/columnsRelated/#section/Column-Types/Symbol-Columns">symbol columns</a> definitions.
+Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>validation</strong> – Whether validation has been enabled. Defaults
+to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>width</strong> – Column width in pixels. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add Column</span><span class="p">  </span><span class="c">Title</span><span class="p">  </span><span class="c">TEXT_NUMBER</span>
+<span class="c">Add Column</span><span class="p">  </span><span class="c">Description</span><span class="p">  </span><span class="c">TEXT_NUMBER</span><span class="p">  </span><span class="c">description=This is a description</span>
+<span class="c">Add Column</span><span class="p">  </span><span class="c">Formula</span><span class="p">  </span><span class="c">TEXT_NUMBER</span><span class="p">  </span><span class="c">formula==data@row</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">column_type</span><span class="o">=</span><span class="s2">&quot;TEXT_NUMBER&quot;</span><span class="p">)</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Description&quot;</span><span class="p">,</span> <span class="n">column_type</span><span class="o">=</span><span class="s2">&quot;TEXT_NUMBER&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;This is a description&quot;</span><span class="p">)</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Formula&quot;</span><span class="p">,</span> <span class="n">column_type</span><span class="o">=</span><span class="s2">&quot;TEXT_NUMBER&quot;</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s2">&quot;=data@row&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.add_columns">
+<span class="sig-name descname"><span class="pre">add_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Column</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Column</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.add_columns" title="Permalink to this definition"></a></dt>
+<dd><p>Adds columns to the current sheet. Columns must be defined as
+a list of dictionaries or Column objects. Dictionaries can have
+additional keys set, see <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Column</span></code> keyword for more information.</p>
+<p>Column types must be supported by the <a class="reference external" href="https://smartsheet.redoc.ly/tag/columnsRelated#section/Column-Types">Smartsheet API</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>columns</strong> – Columns as a list of dictionaries or Column
+objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.add_rows">
+<span class="sig-name descname"><span class="pre">add_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">native</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">OrderedDict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Row</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.add_rows" title="Permalink to this definition"></a></dt>
+<dd><p>Adds rows to the current sheet with the provided data.</p>
+<p>You can provide the data in several ways:</p>
+<ul class="simple">
+<li><p>As a list of dictionaries: each list item represents a row
+as a single dictionary. The keys of the dictionary are the
+column IDs or Titles and the values are the values for the
+cells.</p></li>
+<li><p>As a list of lists of dictionaries: each sub list item is
+a row and each dictionary is a cell. The keys of the dictionary
+should match cell attributes, e.g., <code class="docutils literal notranslate"><span class="pre">column_id</span></code>, <code class="docutils literal notranslate"><span class="pre">title</span></code>,
+<code class="docutils literal notranslate"><span class="pre">value</span></code>, etc. See the <a href="#id3"><span class="problematic" id="id4">`smartsheet API docs`_</span></a> for more
+information. The dictionary keys must be provided in snake
+case. You must use this method to set formulas on the row.</p></li>
+<li><p>As a list of native <code class="docutils literal notranslate"><span class="pre">Row</span></code> objects: each <code class="docutils literal notranslate"><span class="pre">Row</span></code> object is a
+native object from the API with new values for the cells.</p></li>
+<li><p>As a <code class="docutils literal notranslate"><span class="pre">Table</span></code> object: the columns of the Table must either
+be the column IDs or Titles.</p></li>
+</ul>
+<p>Examples:</p>
+<p><em>Robot Framework:</em></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${row1}=</span><span class="p">  </span><span class="c">Create Dictionary</span><span class="p">  </span><span class="c">column1=value1</span><span class="p">  </span><span class="c">column2=value2</span>
+<span class="c">${row2}=</span><span class="p">  </span><span class="c">Create Dictionary</span><span class="p">  </span><span class="c">column1=value3</span><span class="p">  </span><span class="c">column2=value4</span>
+<span class="c">${row3}=</span><span class="p">  </span><span class="c">Create Dictionary</span><span class="p">  </span><span class="c">column1=value5</span><span class="p">  </span><span class="c">column2=value6</span>
+<span class="c">${data} =</span><span class="p">  </span><span class="c">Create List</span><span class="p">  </span><span class="c">${row1}</span><span class="p">  </span><span class="c">${row2}</span><span class="p">  </span><span class="c">${row3}</span>
+<span class="c">Add Rows</span><span class="p">  </span><span class="c">${data}</span>
+</pre></div>
+</div>
+<p><em>Python:</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">row1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;column1&quot;</span><span class="p">:</span> <span class="s2">&quot;value1&quot;</span><span class="p">,</span> <span class="s2">&quot;column2&quot;</span><span class="p">:</span> <span class="s2">&quot;value2&quot;</span><span class="p">}</span>
+<span class="n">row2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;column1&quot;</span><span class="p">:</span> <span class="s2">&quot;value3&quot;</span><span class="p">,</span> <span class="s2">&quot;column2&quot;</span><span class="p">:</span> <span class="s2">&quot;value4&quot;</span><span class="p">}</span>
+<span class="n">row3</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;column1&quot;</span><span class="p">:</span> <span class="s2">&quot;value5&quot;</span><span class="p">,</span> <span class="s2">&quot;column2&quot;</span><span class="p">:</span> <span class="s2">&quot;value6&quot;</span><span class="p">}</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="n">row2</span><span class="p">,</span> <span class="n">row3</span><span class="p">]</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">set_rows</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.convert_row_to_dict">
+<span class="sig-name descname"><span class="pre">convert_row_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Row</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OrderedDict</span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.convert_row_to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a row object to a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.convert_sheet_to_table">
+<span class="sig-name descname"><span class="pre">convert_sheet_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sheet</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.convert_sheet_to_table" title="Permalink to this definition"></a></dt>
+<dd><p>Converts the current sheet to table. You can provide a differnt
+native sheet object to be converted via the <code class="docutils literal notranslate"><span class="pre">sheet</span></code> parameter.</p>
+<p>This keyword attempts to return the sheet as a table via
+<code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code>, but if that library is not available in this
+context, the sheet is returned as its native data model (e.g.,
+no operation is performed).</p>
+<p>If the sheet contains additional data from the <code class="docutils literal notranslate"><span class="pre">include</span></code>
+argument, they will be appended to the end of the table as
+additional columns in the data model. These additional objects
+will be attached as a list of objects depending on the items
+requested.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.create_sheet">
+<span class="sig-name descname"><span class="pre">create_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Column</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_sheet_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sheet</span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.create_sheet" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new sheet with the given name and columns, then sets
+the current sheet to the new sheet and returns it as a native
+Smartsheet object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of the new sheet.</p></li>
+<li><p><strong>columns</strong> – List of columns to create in the new sheet.</p></li>
+<li><p><strong>from_sheet_id</strong> – Sheet ID to use as a template for the new
+sheet.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${columns}=</span><span class="p">  </span><span class="c">Create List</span><span class="p">  </span><span class="c">Name</span><span class="p">  </span><span class="c">Email</span>
+<span class="c">${sheet}=</span><span class="p">  </span><span class="c">Create Sheet</span><span class="p">  </span><span class="c">My new sheet</span><span class="p">  </span><span class="c">${columns}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TEXT_NUMBER&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Email&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TEXT_NUMBER&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">create_sheet</span><span class="p">(</span><span class="s2">&quot;My new sheet&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.download_attachment">
+<span class="sig-name descname"><span class="pre">download_attachment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attachment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Attachment</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.download_attachment" title="Permalink to this definition"></a></dt>
+<dd><p>Downloads the provided attachment from the currently selected
+sheet to the provided download_path, which defaults to
+the <code class="docutils literal notranslate"><span class="pre">${OUTPUT_DIR}</span></code>.</p>
+<p>The attachment can be provided as an integer representing the
+attachments ID, a dictionary with at least the key <code class="docutils literal notranslate"><span class="pre">id</span></code> or as
+the native <code class="docutils literal notranslate"><span class="pre">Attachment</span></code> data model type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attachment</strong> – An integar representing the attachment ID, a
+dictionary with at least the key <code class="docutils literal notranslate"><span class="pre">id</span></code>, or a native
+<code class="docutils literal notranslate"><span class="pre">Attachment</span></code> data model object.</p></li>
+<li><p><strong>download_path</strong> – The path to save the attachment to.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples:</p>
+<p><em>Robot Framework:</em></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${attachment}=</span><span class="p">  </span><span class="c">Get Attachment</span><span class="p">  </span><span class="c">123456789</span>
+<span class="c">${path}=</span><span class="p">  </span><span class="c">Download Attachment</span><span class="p">  </span><span class="c">${attachment}</span>
+<span class="c">Log</span><span class="p">  </span><span class="c">${path}</span>
+</pre></div>
+</div>
+<p><em>Python:</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">attachment</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">get_attachment</span><span class="p">(</span><span class="mi">123456789</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">download_attachment</span><span class="p">(</span><span class="n">attachment</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.get_application_constants">
+<span class="sig-name descname"><span class="pre">get_application_constants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ServerInfo</span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.get_application_constants" title="Permalink to this definition"></a></dt>
+<dd><p>Gets application constants from the server. This is not
+necessary for most automation scenarios, but may be useful for
+debugging or for other advanced scenarios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.get_cell_history">
+<span class="sig-name descname"><span class="pre">get_cell_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Row</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Column</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Cell</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.get_cell_history" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves the history of a cell in a row of the current sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> – The row ID, row number, or a Row object.</p></li>
+<li><p><strong>column</strong> – The column ID or title.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples:</p>
+<p><em>Robot Framework:</em></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${cell_history}=</span><span class="p">  </span><span class="c">Get Cell History</span><span class="p">  </span><span class="c">1</span><span class="p">  </span><span class="c">Approval</span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${revision} IN</span><span class="p">  </span><span class="c">@{cell_history}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">Modified by ${revision.modified_by.email}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+<p><em>Python:</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">cell_history</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">get_cell_history</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Approval&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">revision</span> <span class="ow">in</span> <span class="n">cell_history</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modified by </span><span class="si">{</span><span class="n">revision</span><span class="o">.</span><span class="n">modified_by</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.get_current_user">
+<span class="sig-name descname"><span class="pre">get_current_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">User</span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.get_current_user" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the current authenticated user, which is also set in
+the library’s memory as the current user. Call this again
+if you switch user or begin to impersonate a user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.get_row">
+<span class="sig-name descname"><span class="pre">get_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Row</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">native</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Row</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">OrderedDict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.get_row" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a single row from the current sheet.</p>
+<p>You can provide the row as a native <code class="docutils literal notranslate"><span class="pre">Row</span></code> object or as an
+integer representing the row ID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.get_sheet">
+<span class="sig-name descname"><span class="pre">get_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_numbers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">native</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sheet</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.get_sheet" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves a sheet from Smartsheet. This keyword also sets
+the currently selected sheet to the returned sheet.</p>
+<p>You cannot provide both a <code class="docutils literal notranslate"><span class="pre">sheet_id</span></code> and <code class="docutils literal notranslate"><span class="pre">sheet_name</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – The ID of the sheet to get. You cannot supply
+both a <code class="docutils literal notranslate"><span class="pre">sheet_id</span></code> and <code class="docutils literal notranslate"><span class="pre">sheet_name</span></code>.</p></li>
+<li><p><strong>sheet_name</strong> – The name of the sheet to get, it will return
+the first sheet name matching the provided name. You cannot supply
+both a <code class="docutils literal notranslate"><span class="pre">sheet_id</span></code> and <code class="docutils literal notranslate"><span class="pre">sheet_name</span></code>.</p></li>
+<li><p><strong>include</strong> – Additional metadata which can be retrieved with
+the table. The list can only contain the following items:
+<code class="docutils literal notranslate"><span class="pre">attachments</span></code>, <code class="docutils literal notranslate"><span class="pre">attachmentFiles</span></code>, <code class="docutils literal notranslate"><span class="pre">discussions</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rowPermalink</span></code>, or <code class="docutils literal notranslate"><span class="pre">ALL</span></code>. Note that <code class="docutils literal notranslate"><span class="pre">attachmentFiles</span></code>
+will only download files if you do not set <code class="docutils literal notranslate"><span class="pre">native</span></code> to
+<code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>row_ids</strong> – A list of row IDs to include. All other rows
+will be ignored. The list can be a list object or a
+comma-separated list as a string.</p></li>
+<li><p><strong>row_numbers</strong> – A list of row numbers to include. All other
+rows will be ignored. The list can be a list object or a
+comma-separated list as a string.</p></li>
+<li><p><strong>column_ids</strong> – A list of column IDs to only include, others
+will not be returned. The list can be a list object or a
+comma-separated list as a string.</p></li>
+<li><p><strong>filter_id</strong> – The ID of a filter to apply. Filtered out
+rows will not be included in the resulting table.</p></li>
+<li><p><strong>native</strong> – Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>. Set to <code class="docutils literal notranslate"><span class="pre">True</span></code> to change
+the return type to the native Smartsheet data model. The native
+type is useful for passing to other keywords as arguments.</p></li>
+<li><p><strong>download_path</strong> – Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>. Can be set when
+<code class="docutils literal notranslate"><span class="pre">attachmentFiles</span></code> is included in the <code class="docutils literal notranslate"><span class="pre">include</span></code> parameter.
+All attachments will be downloaded to the provided directory.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${sheet}=</span><span class="p">  </span><span class="c">Get Sheet</span><span class="p">  </span><span class="c">sheet_name=My Sheet</span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${row}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">&amp;{sheet}</span>
+<span class="p">    </span><span class="c">FOR</span><span class="p">  </span><span class="c">${column}</span><span class="p">  </span><span class="c">${value}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">&amp;{row}</span>
+<span class="p">        </span><span class="c">Log</span><span class="p">  </span><span class="c">The column ${column} has the value ${value}</span>
+<span class="p">    </span><span class="c">END</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">get_sheet</span><span class="p">(</span><span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;My Sheet&quot;</span><span class="p">,</span> <span class="n">native</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">sheet</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The column </span><span class="si">{</span><span class="n">cell</span><span class="o">.</span><span class="n">column_id</span><span class="si">}</span><span class="s2"> has the value </span><span class="si">{</span><span class="n">cell</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.get_sheet_owner">
+<span class="sig-name descname"><span class="pre">get_sheet_owner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.get_sheet_owner" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the owner’s username and ID for the current sheet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.list_attachments">
+<span class="sig-name descname"><span class="pre">list_attachments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Attachment</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.list_attachments" title="Permalink to this definition"></a></dt>
+<dd><p>Gets a list of all attachments from the currently selected sheet.</p>
+<p>This will include attachments to the sheet, rows, and discussions.</p>
+<p>Examples:</p>
+<p><em>Robot Framework:</em></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${attachments}=</span><span class="p">  </span><span class="c">List Attachments</span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${attachment} IN</span><span class="p">  </span><span class="c">@{attachments}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${attachment.name}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+<p><em>Python:</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">attachments</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">list_attachments</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">attachment</span> <span class="ow">in</span> <span class="n">attachments</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">attachment</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.list_columns">
+<span class="sig-name descname"><span class="pre">list_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Column</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.list_columns" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of columns for the current sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – The ID of the sheet to get columns from.</p></li>
+<li><p><strong>sheet_name</strong> – The name of the sheet to get columns from.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.list_sheet_filters">
+<span class="sig-name descname"><span class="pre">list_sheet_filters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SheetFilter</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.list_sheet_filters" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of available filters for the current sheet. You
+can specify a different sheet via the <code class="docutils literal notranslate"><span class="pre">sheet_id</span></code> or
+<code class="docutils literal notranslate"><span class="pre">sheet_name</span></code> parameters.</p>
+<p>The returned list of filters can be used with the <code class="docutils literal notranslate"><span class="pre">filter_id</span></code>
+argument of the <code class="docutils literal notranslate"><span class="pre">get_sheet</span></code> keyword.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${filters}=</span><span class="p">  </span><span class="c">List Sheet Filters</span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${filter}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{filters}</span>
+<span class="p">    </span><span class="c">${filtered_sheet}=</span><span class="p">  </span><span class="c">Get Sheet</span>
+<span class="p">    </span><span class="c">...</span><span class="p">  </span><span class="c">sheet_name=My sheet</span>
+<span class="p">    </span><span class="c">...</span><span class="p">  </span><span class="c">filter_id=${filter.id}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">There are ${len(filtered_sheet)} rows in the filtered sheet</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">my_sheet_id</span> <span class="o">=</span> <span class="mi">123456789</span>
+<span class="n">filters</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">list_sheet_filters</span><span class="p">()</span>
+<span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">:</span>
+    <span class="n">filtered_sheet</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">get_sheet</span><span class="p">(</span>
+        <span class="n">sheet_id</span><span class="o">=</span><span class="n">my_sheet_id</span><span class="p">,</span>
+        <span class="n">filter_id</span><span class="o">=</span><span class="nb">filter</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="n">native</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;There are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filtered_sheet</span><span class="o">.</span><span class="n">rows</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows in the &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;filtered sheet&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.list_sheets">
+<span class="sig-name descname"><span class="pre">list_sheets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Sheet</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.list_sheets" title="Permalink to this definition"></a></dt>
+<dd><p>Lists all sheets available for the authenticated account. Uses
+cached lists if available unless <code class="docutils literal notranslate"><span class="pre">use_cache</span></code> is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>The cached lists is used for other keywords, so if you need to
+refresh the cache for other keywords to use, you must do so
+via this keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>use_cache</strong> – Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>. You can set to <code class="docutils literal notranslate"><span class="pre">False</span></code>
+to force a reload of the cached list of sheets.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${sheets}=</span><span class="p">  </span><span class="c">List Sheets</span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${sheet}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{sheets}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${sheet.name}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">SmartsheetLibrary</span><span class="p">(</span><span class="n">account_token</span><span class="o">=</span><span class="n">account_token</span><span class="p">)</span>
+<span class="n">sheets</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">list_sheets</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="n">sheets</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.refresh_sheet">
+<span class="sig-name descname"><span class="pre">refresh_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">native</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sheet</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.refresh_sheet" title="Permalink to this definition"></a></dt>
+<dd><p>Refreshes the current sheet from the API and returns it
+either as a Table or native data model depending on the
+<code class="docutils literal notranslate"><span class="pre">native</span></code> argument.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modified_since</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scopes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Sheet</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.search" title="Permalink to this definition"></a></dt>
+<dd><p>Searches for all sheets for text matching the query. Returns
+a list of native Smartsheet Sheet objects. You can use the
+additional parameters to filter the search and increase speed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – The text to search for.</p></li>
+<li><p><strong>location</strong> – The location to search. When specified with
+a value of <code class="docutils literal notranslate"><span class="pre">personalWorkspace</span></code>, the search will be limited
+to the current user’s personal workspace.</p></li>
+<li><p><strong>modified_since</strong> – The date to search from. This can be
+either a string or an integer. If an integer is provided, it
+will be interpreted as a Unix timestamp. If a string is
+provided, it will be parsed via the Robot Framework time
+utilities, so you can provided it using keywords like
+<code class="docutils literal notranslate"><span class="pre">NOW</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">day</span></code>.</p></li>
+<li><p><strong>include</strong> – When specified with the value of <code class="docutils literal notranslate"><span class="pre">favoriteFlag</span></code>,
+results will either include a <code class="docutils literal notranslate"><span class="pre">favorite</span></code> attribute or
+<code class="docutils literal notranslate"><span class="pre">parentObjectFavorite</span></code> attribute depending on the type of
+object found by the search engine.</p></li>
+<li><p><strong>scopes</strong> – <p>If search fails, try using an array for each type
+of this comma-separated list of search filters. The following
+strings can be used to filter the search results:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">attachments</span></code>: Search in attachments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cellData</span></code>: Search in cell data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comments</span></code>: Search in comments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">folderNames</span></code>: Search in folder names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reportNames</span></code>: Search in report names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sheetNames</span></code>: Search in sheet names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sightNames</span></code>: Search in sight names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">summaryFields</span></code>: Search in summary fields.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">templateNames</span></code>: Search in template names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">workspaceNames</span></code>: Search in workspace names.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${sheets}=</span><span class="p">  </span><span class="c">Search</span><span class="p">  </span><span class="c">my search query</span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${sheet}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{sheets}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${sheet.name}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">sheets</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;my search query&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="n">sheets</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.set_access_token">
+<span class="sig-name descname"><span class="pre">set_access_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.set_access_token" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the access token to be used when accessing the
+Smartsheet API.</p>
+<p>Learn more about authenticating to Smartsheets
+<a class="reference external" href="https://smartsheet.redoc.ly/#section/API-Basics/Raw-Token-Requests">here</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>access_token</strong> – The access token created for your
+Smartsheet user.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set Access Token</span><span class="p">  </span><span class="c">${access_token}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">smartsheet</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="c1"># or</span>
+<span class="n">smartsheet</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">access_token</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.set_max_retry_time">
+<span class="sig-name descname"><span class="pre">set_max_retry_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_retry_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.set_max_retry_time" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the max retry time to use when sending requests to the
+Smartsheet API. Returns the current max retry time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_retry_time</strong> – Maximum time to allow retries of API
+calls. Can be provided as a time string or int.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.set_row">
+<span class="sig-name descname"><span class="pre">set_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Row</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Row</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">native</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Row</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.set_row" title="Permalink to this definition"></a></dt>
+<dd><p>Updates a single row of the current sheet with the provided data.</p>
+<p>You can provide the row as a native <code class="docutils literal notranslate"><span class="pre">Row</span></code> object or as an
+integer representing the row ID. You may omit the <code class="docutils literal notranslate"><span class="pre">data</span></code>
+argument if you are providing a native <code class="docutils literal notranslate"><span class="pre">Row</span></code> object.</p>
+<p>You can provide the data in several ways:</p>
+<ul class="simple">
+<li><p>As a dictionary: the keys of the dictionary are the
+column IDs or Titles and the values are the values for the
+cells.</p></li>
+<li><p>As a list of dictionaries: each dictionary is a cell. The keys
+of the dictionary should match cell attributes, e.g., <code class="docutils literal notranslate"><span class="pre">column_id</span></code>,
+<code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">value</span></code>, etc. See the <a href="#id5"><span class="problematic" id="id6">`smartsheet API docs`_</span></a> for more
+information. The dictionary keys must be provided in snake case.
+You must use this method to set formulas on the row.</p></li>
+<li><p>As a native <code class="docutils literal notranslate"><span class="pre">Row</span></code> object: a native object from the API with
+new values for the cells.</p></li>
+</ul>
+<p>For examples, see <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Rows</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.set_rows">
+<span class="sig-name descname"><span class="pre">set_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">native</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">OrderedDict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Row</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.set_rows" title="Permalink to this definition"></a></dt>
+<dd><p>Updates rows of the current sheet with the provided data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to update rows, you must identify the rows to the
+API. You can do this by providing the <code class="docutils literal notranslate"><span class="pre">rowId</span></code> or <code class="docutils literal notranslate"><span class="pre">rowNumber</span></code>
+as a column in the data. The ID must be the API ID, while the
+number is the row number per the UI. This can only be excluded
+if the length of the data matches the length of the sheet.</p>
+</div>
+<p>You can provide the data in several ways:</p>
+<ul class="simple">
+<li><p>As a list of dictionaries: each list item represents a row
+as a single dictionary. The keys of the dictionary are the
+column IDs or Titles and the values are the values for the
+cells.</p></li>
+<li><p>As a list of lists of dictionaries: each sub list item is
+a row and each dictionary is a cell. The keys of the dictionary
+should match cell attributes, e.g., <code class="docutils literal notranslate"><span class="pre">column_id</span></code>, <code class="docutils literal notranslate"><span class="pre">title</span></code>,
+<code class="docutils literal notranslate"><span class="pre">value</span></code>, etc. See the <a href="#id7"><span class="problematic" id="id8">`smartsheet API docs`_</span></a> for more
+information. The dictionary keys must be provided in snake
+case. You must use this method to set formulas on the row.</p></li>
+<li><p>As a list of native <code class="docutils literal notranslate"><span class="pre">Row</span></code> objects: each <code class="docutils literal notranslate"><span class="pre">Row</span></code> object is a
+native object from the API with new values for the cells.</p></li>
+<li><p>As a <code class="docutils literal notranslate"><span class="pre">Table</span></code> object: the columns of the Table must either
+be the column IDs or Titles.</p></li>
+</ul>
+<p>Examples:</p>
+<p><em>Robot Framework:</em></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${row1}=</span><span class="p">  </span><span class="c">Create Dictionary</span><span class="p">  </span><span class="c">rowId=123</span><span class="p">  </span><span class="c">column1=value1</span><span class="p">  </span><span class="c">column2=value2</span>
+<span class="c">${row2}=</span><span class="p">  </span><span class="c">Create Dictionary</span><span class="p">  </span><span class="c">rowId=456</span><span class="p">  </span><span class="c">column1=value3</span><span class="p">  </span><span class="c">column2=value4</span>
+<span class="c">${row3}=</span><span class="p">  </span><span class="c">Create Dictionary</span><span class="p">  </span><span class="c">rowId=789</span><span class="p">  </span><span class="c">column1=value5</span><span class="p">  </span><span class="c">column2=value6</span>
+<span class="c">${data} =</span><span class="p">  </span><span class="c">Create List</span><span class="p">  </span><span class="c">${row1}</span><span class="p">  </span><span class="c">${row2}</span><span class="p">  </span><span class="c">${row3}</span>
+<span class="c">Set Rows</span><span class="p">  </span><span class="c">${data}</span>
+
+<span class="c"># Or work with native row objects to update them.</span>
+<span class="c">${row1}=</span><span class="p">  </span><span class="c">Get Row</span><span class="p">  </span><span class="c">123</span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${cell}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{row1.cells}</span>
+<span class="p">    </span><span class="c">IF</span><span class="p">  </span><span class="c">${cell.column_id} == 123</span>
+<span class="p">        </span><span class="c">${cell.value}=</span><span class="p">  </span><span class="c">Set Variable</span><span class="p">  </span><span class="c">New Value</span>
+<span class="p">    </span><span class="c">END</span>
+<span class="c">END</span>
+<span class="c">${data}=</span><span class="p">  </span><span class="c">Create List</span><span class="p">  </span><span class="c">${row1}</span>
+<span class="c">Set Rows</span><span class="p">  </span><span class="c">${data}</span>
+</pre></div>
+</div>
+<p><em>Python:</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ss</span> <span class="o">=</span> <span class="n">Smartsheet</span><span class="p">(</span><span class="n">access_token</span><span class="o">=</span><span class="n">access_token</span><span class="p">)</span>
+<span class="n">row1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rowId&quot;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="s2">&quot;column1&quot;</span><span class="p">:</span> <span class="s2">&quot;value1&quot;</span><span class="p">,</span> <span class="s2">&quot;column2&quot;</span><span class="p">:</span> <span class="s2">&quot;value2&quot;</span><span class="p">}</span>
+<span class="n">row2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rowId&quot;</span><span class="p">:</span> <span class="mi">456</span><span class="p">,</span> <span class="s2">&quot;column1&quot;</span><span class="p">:</span> <span class="s2">&quot;value3&quot;</span><span class="p">,</span> <span class="s2">&quot;column2&quot;</span><span class="p">:</span> <span class="s2">&quot;value4&quot;</span><span class="p">}</span>
+<span class="n">row3</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rowId&quot;</span><span class="p">:</span> <span class="mi">789</span><span class="p">,</span> <span class="s2">&quot;column1&quot;</span><span class="p">:</span> <span class="s2">&quot;value5&quot;</span><span class="p">,</span> <span class="s2">&quot;column2&quot;</span><span class="p">:</span> <span class="s2">&quot;value6&quot;</span><span class="p">}</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">row1</span><span class="p">,</span> <span class="n">row2</span><span class="p">,</span> <span class="n">row3</span><span class="p">]</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">set_rows</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># or work with native row objects to update them.</span>
+<span class="n">row1</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">get_row</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row1</span><span class="o">.</span><span class="n">cells</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">column_id</span> <span class="o">==</span> <span class="mi">123</span><span class="p">:</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;New Value&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">row1</span><span class="p">]</span>
+<span class="n">ss</span><span class="o">.</span><span class="n">set_rows</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.sheets">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sheets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Sheet</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.sheets" title="Permalink to this definition"></a></dt>
+<dd><p>Full list of cached sheets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.unselect_current_sheet">
+<span class="sig-name descname"><span class="pre">unselect_current_sheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.unselect_current_sheet" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the current sheet to <cite>None</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.Smartsheet.update_column">
+<span class="sig-name descname"><span class="pre">update_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Column</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Column</span></span></span><a class="headerlink" href="#RPA.Smartsheet.Smartsheet.update_column" title="Permalink to this definition"></a></dt>
+<dd><p>Updates a column in the current sheet. See the <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Column</span></code> keyword
+for a list of supported attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column</strong> – Column ID or title.</p></li>
+<li><p><strong>kwargs</strong> – Column attributes to update. See <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Column</span></code> keyword
+for a list of supported attributes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetAuthenticationError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Smartsheet.</span></span><span class="sig-name descname"><span class="pre">SmartsheetAuthenticationError</span></span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetAuthenticationError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Smartsheet.SmartsheetError" title="RPA.Smartsheet.SmartsheetError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SmartsheetError</span></code></a></p>
+<p>Error when authenticated Smartsheet instance does not exist.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetAuthenticationError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetAuthenticationError.args" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetAuthenticationError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetAuthenticationError.with_traceback" title="Permalink to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Smartsheet.</span></span><span class="sig-name descname"><span class="pre">SmartsheetError</span></span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base error class for Smartsheet library.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetError.args" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetError.with_traceback" title="Permalink to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetNoSheetSelectedError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Smartsheet.</span></span><span class="sig-name descname"><span class="pre">SmartsheetNoSheetSelectedError</span></span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetNoSheetSelectedError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Smartsheet.SmartsheetError" title="RPA.Smartsheet.SmartsheetError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SmartsheetError</span></code></a></p>
+<p>Error when no sheet was selected to on which to perform the operation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetNoSheetSelectedError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetNoSheetSelectedError.args" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Smartsheet.SmartsheetNoSheetSelectedError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Smartsheet.SmartsheetNoSheetSelectedError.with_traceback" title="Permalink to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+	<div id="cookieConsentContainer">
+  <div class="cookieDesc">
+    <p>
+      This website uses cookies to enhance the user experience.
+      By using the website you accept the use of cookies.
+      You can check our <a href="https://robocorp.com/privacy-policy">Privacy Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookieButton">
+    <a onClick="cookieDismiss();">
+      I understand
+    </a>
+  </div>
+</div>
+	<div id="robocorpBanner">
+  <div id="bannerContent">
+    <div id="bannerDismiss">
+      <a onClick="bannerDismiss();">
+        <img src="/_static/icon_cross.svg"/>
+      </a>
+    </div>
+    <a href="https://robocorp.com">
+      <img id="bannerLogo" src="https://cdn.robocorp.com/brand/Logo/Negative logo transparent/Negative logo transparent.svg"/>
+    </a>
+    <span id="bannerText">
+      The automation stack for RPA Framework.
+    </span>
+    <a id="bannerButton" href="https://robocorp.com/get-started">
+      Get started <img src="/_static/icon_arrow.svg"/>
+    </a>
+  </div>
+</div>
+
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Smartsheet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../tables/index.html" class="btn btn-neutral float-right" title="Tables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020 Robocorp Technologies, Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

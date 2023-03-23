@@ -5,6 +5,11 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- New library **RPA.Smartsheet** (:pr:`880`):
+
+  - Supports getting, creating and updating Smartsheet sheets, as well as downloading
+    attachments.
+  - Read library documentation for a full list of keywords.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

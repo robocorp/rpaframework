@@ -140,6 +140,16 @@ RPA.Robocorp.Process:
 
    "209", "Add support for all Process API endpoints"
 
+RPA.Smartsheet:
+===============
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "118", "ADD LOGGING THROUGHOUT"
+   "218", "consider if this properly connects the logs."
+
 RPA.Tasks:
 ==========
 

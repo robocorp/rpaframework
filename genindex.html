@@ -106,6 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="libraries/salesforce/index.html">Salesforce</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/sap/index.html">SAP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/smartsheet/index.html">Smartsheet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/tables/index.html">Tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/tasks/index.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/twitter/index.html">Twitter</a></li>
@@ -204,6 +205,10 @@
         <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.adapter">(RPA.Robocorp.WorkItems.WorkItems property)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.add_column">add_column() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.add_columns">add_columns() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/calendar/python.html#RPA.Calendar.Calendar.add_custom_holidays">add_custom_holidays() (RPA.Calendar.Calendar method)</a>
 </li>
       <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.BaseAdapter.add_file">add_file() (RPA.Robocorp.WorkItems.BaseAdapter method)</a>
@@ -239,6 +244,8 @@
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.add_new_workbook">add_new_workbook() (RPA.Excel.Application.Application method)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.add_product_into_opportunity">add_product_into_opportunity() (RPA.Salesforce.Salesforce method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.add_rows">add_rows() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.add_table_column">add_table_column() (RPA.Tables.Tables method)</a>
 </li>
@@ -364,6 +371,12 @@
         <li><a href="libraries/salesforce/python.html#RPA.Salesforce.SalesforceDataNotAnDictionary.args">(RPA.Salesforce.SalesforceDataNotAnDictionary attribute)</a>
 </li>
         <li><a href="libraries/salesforce/python.html#RPA.Salesforce.SalesforceDomainChangeError.args">(RPA.Salesforce.SalesforceDomainChangeError attribute)</a>
+</li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetAuthenticationError.args">(RPA.Smartsheet.SmartsheetAuthenticationError attribute)</a>
+</li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetError.args">(RPA.Smartsheet.SmartsheetError attribute)</a>
+</li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetNoSheetSelectedError.args">(RPA.Smartsheet.SmartsheetNoSheetSelectedError attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -638,12 +651,12 @@
       </ul></li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.connect_by_handle">connect_by_handle() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.connect_by_pid">connect_by_pid() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/database/python.html#RPA.Database.Database.connect_to_database">connect_to_database() (RPA.Database.Database method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP.connect_to_existing_connection">connect_to_existing_connection() (RPA.SAP.SAP method)</a>
 </li>
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP.connect_to_session">connect_to_session() (RPA.SAP.SAP method)</a>
@@ -651,6 +664,10 @@
       <li><a href="libraries/archive/python.html#RPA.Archive.convert_date">convert_date() (in module RPA.Archive)</a>
 </li>
       <li><a href="libraries/json/python.html#RPA.JSON.JSON.convert_json_to_string">convert_json_to_string() (RPA.JSON.JSON method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.convert_row_to_dict">convert_row_to_dict() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.convert_sheet_to_table">convert_sheet_to_table() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
       <li><a href="libraries/json/python.html#RPA.JSON.JSON.convert_string_to_json">convert_string_to_json() (RPA.JSON.JSON method)</a>
 </li>
@@ -765,6 +782,8 @@
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.create_session">create_session() (RPA.HTTP.HTTP method)</a>
 </li>
       <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.create_sharepoint_list">create_sharepoint_list() (RPA.MSGraph.MSGraph method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.create_sheet">create_sheet() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.create_table">create_table() (RPA.Tables.Tables method)</a>
 </li>
@@ -1000,6 +1019,8 @@
         <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem.download">(RPA.MSGraph.SharedItem method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.download_attachment">download_attachment() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.download_file_from_onedrive">download_file_from_onedrive() (RPA.MSGraph.MSGraph method)</a>
 </li>
       <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.download_file_from_share_link">download_file_from_share_link() (RPA.MSGraph.MSGraph method)</a>
@@ -1300,6 +1321,8 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_app">get_app() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.get_application_constants">get_application_constants() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/archive/python.html#RPA.Archive.Archive.get_archive_info">get_archive_info() (RPA.Archive.Archive method)</a>
 </li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_boot_time">get_boot_time() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
@@ -1315,6 +1338,8 @@
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_ids">get_browser_ids() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_cell">get_cell() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.get_cell_history">get_cell_history() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.get_cell_value">get_cell_value() (RPA.Excel.Files.Files method)</a>
 
@@ -1353,6 +1378,8 @@
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.get_current_session_alias">get_current_session_alias() (RPA.HTTP.HTTP method)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.get_current_stage_of_object">get_current_stage_of_object() (RPA.Hubspot.Hubspot method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.get_current_user">get_current_user() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
       <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.get_current_work_item">get_current_work_item() (RPA.Robocorp.WorkItems.WorkItems method)</a>
 </li>
@@ -1614,8 +1641,12 @@
 </li>
       <li><a href="libraries/robocorp_process/python.html#RPA.Robocorp.Process.Process.get_robot_run_artifact">get_robot_run_artifact() (RPA.Robocorp.Process.Process method)</a>
 </li>
-      <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_row">get_row() (RPA.Tables.Table method)</a>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.get_row">get_row() (RPA.Smartsheet.Smartsheet method)</a>
+
+      <ul>
+        <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_row">(RPA.Tables.Table method)</a>
 </li>
+      </ul></li>
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP.get_row_count">get_row_count() (RPA.SAP.SAP method)</a>
 </li>
       <li><a href="libraries/database/python.html#RPA.Database.Database.get_rows">get_rows() (RPA.Database.Database method)</a>
@@ -1649,6 +1680,10 @@
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_session_id">get_session_id() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
 </li>
       <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.get_sharepoint_site">get_sharepoint_site() (RPA.MSGraph.MSGraph method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.get_sheet">get_sheet() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.get_sheet_owner">get_sheet_owner() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
       <li><a href="libraries/documentai_base64ai/python.html#RPA.DocumentAI.Base64AI.Base64AI.get_signature_image">get_signature_image() (RPA.DocumentAI.Base64AI.Base64AI method)</a>
 </li>
@@ -2114,12 +2149,16 @@
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.list_associations">list_associations() (RPA.Hubspot.Hubspot method)</a>
 </li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.list_attachments">list_attachments() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.list_buckets">list_buckets() (RPA.Cloud.AWS.AWS method)</a>
 
       <ul>
         <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.list_buckets">(RPA.Cloud.AWS.ServiceS3 method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.list_columns">list_columns() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.list_directories_in_directory">list_directories_in_directory() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.list_files">list_files() (RPA.Cloud.AWS.AWS method)</a>
@@ -2186,10 +2225,14 @@
 </li>
       <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.list_sharepoint_site_drives">list_sharepoint_site_drives() (RPA.MSGraph.MSGraph method)</a>
 </li>
-      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech.list_supported_voices">list_supported_voices() (RPA.Cloud.Azure.ServiceSpeech method)</a>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.list_sheet_filters">list_sheet_filters() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.list_sheets">list_sheets() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech.list_supported_voices">list_supported_voices() (RPA.Cloud.Azure.ServiceSpeech method)</a>
+</li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange.list_unread_messages">list_unread_messages() (RPA.Email.Exchange.Exchange method)</a>
 </li>
       <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.list_work_item_files">list_work_item_files() (RPA.Robocorp.WorkItems.WorkItems method)</a>
@@ -2395,6 +2438,8 @@
         <li><a href="libraries/sap/python.html#module-RPA.SAP">RPA.SAP</a>
 </li>
         <li><a href="libraries/slack/python.html#module-RPA.Slack">RPA.Slack</a>
+</li>
+        <li><a href="libraries/smartsheet/python.html#module-RPA.Smartsheet">RPA.Smartsheet</a>
 </li>
         <li><a href="libraries/tables/python.html#module-RPA.Tables">RPA.Tables</a>
 </li>
@@ -2843,6 +2888,8 @@
         <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.refresh_oauth_token">(RPA.MSGraph.MSGraph method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.refresh_sheet">refresh_sheet() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.refresh_window">refresh_window() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.region">region (RPA.Cloud.AWS.AWS attribute)</a>
@@ -3008,6 +3055,8 @@
 </li>
         <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.ROBOT_AUTO_KEYWORDS">(RPA.Robocorp.WorkItems.WorkItems attribute)</a>
 </li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.ROBOT_AUTO_KEYWORDS">(RPA.Smartsheet.Smartsheet attribute)</a>
+</li>
       </ul></li>
       <li><a href="libraries/archive/python.html#RPA.Archive.Archive.ROBOT_LIBRARY_DOC_FORMAT">ROBOT_LIBRARY_DOC_FORMAT (RPA.Archive.Archive attribute)</a>
 
@@ -3085,6 +3134,8 @@
         <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.ROBOT_LIBRARY_DOC_FORMAT">(RPA.Salesforce.Salesforce attribute)</a>
 </li>
         <li><a href="libraries/slack/python.html#RPA.Slack.Slack.ROBOT_LIBRARY_DOC_FORMAT">(RPA.Slack.Slack attribute)</a>
+</li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.ROBOT_LIBRARY_DOC_FORMAT">(RPA.Smartsheet.Smartsheet attribute)</a>
 </li>
         <li><a href="libraries/tables/python.html#RPA.Tables.Tables.ROBOT_LIBRARY_DOC_FORMAT">(RPA.Tables.Tables attribute)</a>
 </li>
@@ -3174,6 +3225,8 @@
 </li>
         <li><a href="libraries/slack/python.html#RPA.Slack.Slack.ROBOT_LIBRARY_SCOPE">(RPA.Slack.Slack attribute)</a>
 </li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.ROBOT_LIBRARY_SCOPE">(RPA.Smartsheet.Smartsheet attribute)</a>
+</li>
         <li><a href="libraries/tables/python.html#RPA.Tables.Tables.ROBOT_LIBRARY_SCOPE">(RPA.Tables.Tables attribute)</a>
 </li>
         <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.ROBOT_LIBRARY_SCOPE">(RPA.Twitter.Twitter attribute)</a>
@@ -3194,6 +3247,10 @@
       <li><a href="libraries/robocorp_workitems/python.html#RPA.Robocorp.WorkItems.WorkItems.root">root (RPA.Robocorp.WorkItems.WorkItems attribute)</a>
 </li>
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.JavaElement.row">row (RPA.JavaAccessBridge.JavaElement attribute)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.ROW_EXCLUDES">ROW_EXCLUDES (RPA.Smartsheet.Smartsheet attribute)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.ROW_INCLUDES">ROW_INCLUDES (RPA.Smartsheet.Smartsheet attribute)</a>
 </li>
       <li>
     RPA.Archive
@@ -3490,6 +3547,13 @@
 </li>
       </ul></li>
       <li>
+    RPA.Smartsheet
+
+      <ul>
+        <li><a href="libraries/smartsheet/python.html#module-RPA.Smartsheet">module</a>
+</li>
+      </ul></li>
+      <li>
     RPA.Tables
 
       <ul>
@@ -3625,9 +3689,15 @@
       </ul></li>
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP.scroll">scroll() (RPA.SAP.SAP method)</a>
 </li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.search">search() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.search_for_objects">search_for_objects() (RPA.Hubspot.Hubspot method)</a>
 </li>
       <li><a href="libraries/msgraph/python.html#RPA.MSGraph.MSGraph.search_for_users">search_for_users() (RPA.MSGraph.MSGraph method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.SEARCH_INCLUDES">SEARCH_INCLUDES (RPA.Smartsheet.Smartsheet attribute)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.SEARCH_SCOPES">SEARCH_SCOPES (RPA.Smartsheet.Smartsheet attribute)</a>
 </li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.SearchLexer">SearchLexer (class in RPA.Hubspot)</a>
 </li>
@@ -3751,6 +3821,8 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.set">set() (RPA.Tables.Table method)</a>
 </li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.set_access_token">set_access_token() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.set_account">set_account() (RPA.Salesforce.Salesforce method)</a>
 </li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.set_active_worksheet">set_active_worksheet() (RPA.Excel.Application.Application method)</a>
@@ -3779,12 +3851,12 @@
 </li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.set_binary_mode">set_binary_mode() (RPA.FTP.FTP method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/browser_selenium/python.html#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_browser_implicit_wait">set_browser_implicit_wait() (RPA.Browser.Selenium.BrowserManagementKeywordsOverride method)</a>
 </li>
       <li><a href="libraries/calendar/python.html#RPA.Calendar.Calendar.set_business_days">set_business_days() (RPA.Calendar.Calendar method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_cell">set_cell() (RPA.Tables.Table method)</a>
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.set_cell_format">set_cell_format() (RPA.Excel.Files.Files method)</a>
@@ -3845,6 +3917,8 @@
 </li>
       <li><a href="libraries/calendar/python.html#RPA.Calendar.Calendar.set_locale">set_locale() (RPA.Calendar.Calendar method)</a>
 </li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.set_max_retry_time">set_max_retry_time() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/javaaccessbridge/python.html#RPA.JavaAccessBridge.JavaAccessBridge.set_mouse_position">set_mouse_position() (RPA.JavaAccessBridge.JavaAccessBridge method)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.set_pricebook">set_pricebook() (RPA.Salesforce.Salesforce method)</a>
@@ -3871,9 +3945,15 @@
         <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.set_robocorp_vault">(RPA.Cloud.Azure.AzureBase method)</a>
 </li>
       </ul></li>
-      <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_row">set_row() (RPA.Tables.Table method)</a>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.set_row">set_row() (RPA.Smartsheet.Smartsheet method)</a>
+
+      <ul>
+        <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_row">(RPA.Tables.Table method)</a>
 </li>
+      </ul></li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.set_row_as_column_names">set_row_as_column_names() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.set_rows">set_rows() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
       <li><a href="libraries/robocorp_vault/python.html#RPA.Robocorp.Vault.BaseSecretManager.set_secret">set_secret() (RPA.Robocorp.Vault.BaseSecretManager method)</a>
 
@@ -3945,12 +4025,16 @@
 </li>
       <li><a href="libraries/msgraph/python.html#RPA.MSGraph.SharedItem">SharedItem (class in RPA.MSGraph)</a>
 </li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.SHEET_INCLUDES">SHEET_INCLUDES (RPA.Smartsheet.Smartsheet attribute)</a>
+</li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.sheetnames">sheetnames (RPA.Excel.Files.XlsWorkbook property)</a>
 
       <ul>
         <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.sheetnames">(RPA.Excel.Files.XlsxWorkbook property)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.sheets">sheets (RPA.Smartsheet.Smartsheet property)</a>
+</li>
       <li><a href="libraries/msgraph/python.html#RPA.MSGraph.RobocorpVaultTokenBackend.should_refresh_token">should_refresh_token() (RPA.MSGraph.RobocorpVaultTokenBackend method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.show_region_in_image">show_region_in_image() (RPA.Images.Images method)</a>
@@ -3974,6 +4058,14 @@
       <li><a href="libraries/slack/python.html#RPA.Slack.Slack.slack_raw_message">slack_raw_message() (RPA.Slack.Slack method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Speed.SLOW">SLOW (RPA.Desktop.Windows.Speed attribute)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet">Smartsheet (class in RPA.Smartsheet)</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetAuthenticationError">SmartsheetAuthenticationError</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetError">SmartsheetError</a>
+</li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetNoSheetSelectedError">SmartsheetNoSheetSelectedError</a>
 </li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.smtp_connection">smtp_connection() (in module RPA.Email.ImapSmtp)</a>
 </li>
@@ -4179,6 +4271,8 @@
 </li>
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP.unselect_checkbox">unselect_checkbox() (RPA.SAP.SAP method)</a>
 </li>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.unselect_current_sheet">unselect_current_sheet() (RPA.Smartsheet.Smartsheet method)</a>
+</li>
       <li><a href="libraries/hubspot/python.html#RPA.Hubspot.BatchMode.UPDATE">UPDATE (RPA.Hubspot.BatchMode attribute)</a>
 </li>
       <li><a href="libraries/json/python.html#RPA.JSON.RPAFilter.update">update() (RPA.JSON.RPAFilter method)</a>
@@ -4189,12 +4283,14 @@
         <li><a href="libraries/robocorp_vault/python.html#RPA.Robocorp.Vault.Secret.update">(RPA.Robocorp.Vault.Secret method)</a>
 </li>
       </ul></li>
-      <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.update_object">update_object() (RPA.Hubspot.Hubspot method)</a>
+      <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.Smartsheet.update_column">update_column() (RPA.Smartsheet.Smartsheet method)</a>
 </li>
-      <li><a href="libraries/json/python.html#RPA.JSON.RPAFilter.update_or_create">update_or_create() (RPA.JSON.RPAFilter method)</a>
+      <li><a href="libraries/hubspot/python.html#RPA.Hubspot.Hubspot.update_object">update_object() (RPA.Hubspot.Hubspot method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/json/python.html#RPA.JSON.RPAFilter.update_or_create">update_or_create() (RPA.JSON.RPAFilter method)</a>
+</li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.update_salesforce_object">update_salesforce_object() (RPA.Salesforce.Salesforce method)</a>
 </li>
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.update_session">update_session() (RPA.HTTP.HTTP method)</a>
@@ -4367,6 +4463,12 @@
         <li><a href="libraries/salesforce/python.html#RPA.Salesforce.SalesforceDataNotAnDictionary.with_traceback">(RPA.Salesforce.SalesforceDataNotAnDictionary method)</a>
 </li>
         <li><a href="libraries/salesforce/python.html#RPA.Salesforce.SalesforceDomainChangeError.with_traceback">(RPA.Salesforce.SalesforceDomainChangeError method)</a>
+</li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetAuthenticationError.with_traceback">(RPA.Smartsheet.SmartsheetAuthenticationError method)</a>
+</li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetError.with_traceback">(RPA.Smartsheet.SmartsheetError method)</a>
+</li>
+        <li><a href="libraries/smartsheet/python.html#RPA.Smartsheet.SmartsheetNoSheetSelectedError.with_traceback">(RPA.Smartsheet.SmartsheetNoSheetSelectedError method)</a>
 </li>
       </ul></li>
   </ul></td>
