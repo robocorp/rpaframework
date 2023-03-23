@@ -5,14 +5,17 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+22.3.0 - 22 Mar 2023
+--------------------
+
 - New library **RPA.Smartsheet** (:pr:`880`):
 
   - Supports getting, creating and updating Smartsheet sheets, as well as downloading
     attachments.
   - Read library documentation for a full list of keywords.
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 22.2.3 - 15 Mar 2023
 --------------------
