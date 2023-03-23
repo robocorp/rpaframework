@@ -572,7 +572,7 @@ class Database:
                 @{res} =    Query   Select * FROM table   row_count > ${EXPECTED}
                 @{res} =    Query   Select * FROM table   'value' in columns
                 @{res} =    Query   Select * FROM table   columns == ['id', 'value']
-                @{res} =    Query   Select * FROM table WHERE value = ?  data=("${data}", )
+                @{res} =    Query   Select * FROM table WHERE value = ?  data=("${d}", )
 
         **Python**
 
