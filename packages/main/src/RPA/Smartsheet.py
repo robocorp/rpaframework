@@ -1312,7 +1312,9 @@ class Smartsheet:
         )
         attachments = self._unpack_index_result(attachment_result)
         download_path = Path(
-            download_path or getattr(self.current_sheet, "download_path", None)
+            download_path
+            or getattr(self.current_sheet, "download_path", None)
+            or get_output_dir()
         )
         return [self.download_attachment(a, download_path) for a in attachments]
 
