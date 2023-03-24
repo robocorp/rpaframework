@@ -181,7 +181,7 @@ class Files:
         self.logger = logging.getLogger(__name__)
         self.workbook = None
 
-    def require_open_xlsx_workbook(self, keyword_name: str):
+    def _require_open_xlsx_workbook(self, keyword_name: str):
         assert self.workbook, "No active workbook"
         if isinstance(self.workbook, XlsWorkbook):
             raise NotImplementedError(
