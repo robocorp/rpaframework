@@ -33,7 +33,7 @@ class CallbackRunner:
         """
 
         def func_wrapper(value) -> Optional[str]:
-            self._run_python_callback(function, value)
+            return self._run_python_callback(function, value)
 
         return func_wrapper
 
