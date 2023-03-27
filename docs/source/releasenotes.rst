@@ -7,8 +7,13 @@ Release notes
 
 - Library **RPA.Assistant** 2.2.0:
 
-    - Add ``minimum_rows`` and ``maximum_rows`` arguments to ``Add Text Input``.
-    - Add ability to specify validation functions as Robot Framework keywords
+  - Add ``minimum_rows`` and ``maximum_rows`` arguments to ``Add Text Input``.
+  - Add ability to specify validation functions as Robot Framework keywords
+
+- Library **RPA.Excel.Files**
+
+  - Make method ``require_open_xlsx_workbook`` that was accidentally exposed
+  a private method.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
