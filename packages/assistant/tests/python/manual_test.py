@@ -95,7 +95,7 @@ def manual():
 
     assistant.add_text_input("txt_input_2", placeholder="placeholder")
     assistant.add_text("List python files")
-    assistant.add_files("**/*.py")
+    assistant.add_files("src/**/*.py")
     assistant.add_image(
         "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
     )
