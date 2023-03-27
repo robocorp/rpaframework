@@ -92,8 +92,6 @@ def manual():
     )
 
     # assistant.add_dialog_next_page_button("Next page")
-
-    assistant.add_text_input("txt_input_2", placeholder="placeholder")
     assistant.add_text("List python files")
     assistant.add_files("src/**/*.py")
     assistant.add_image(
@@ -107,6 +105,10 @@ def manual():
         "clear elements",
         lambda: assistant.clear_dialog(),
         location=VerticalLocation.Right,
+    )
+
+    assistant.add_text_input(
+        "txt_input_2", placeholder="placeholder", minimum_rows=2, maximum_rows=3
     )
 
     results = assistant.run_dialog(location=WindowLocation.TopLeft, timeout=180)

@@ -562,6 +562,8 @@ class Assistant:
         validation: Optional[Callable] = None,
         default: Optional[str] = None,
         required: bool = False,
+        minimum_rows: Optional[int] = None,
+        maximum_rows: Optional[int] = None,
     ) -> None:
         """Add a text input element
 
@@ -571,6 +573,8 @@ class Assistant:
         :param validation:   Validation function for the input field
         :param default:     Default value if the field wasn't completed
         :param required:    If true, will display an error if not completed
+        :param minimum_rows: Minimum number of rows for the input field
+        :param maximum_rows: Maximum number of rows for the input field
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -597,7 +601,6 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-
         if validation and required:
             self._validations[name] = validation
             self._required_fields.add(name)
@@ -614,7 +617,13 @@ class Assistant:
 
         self._client.add_element(
             name=name,
-            element=TextField(label=label, hint_text=placeholder, value=default),
+            element=TextField(
+                label=label,
+                hint_text=placeholder,
+                value=default,
+                min_lines=minimum_rows,
+                max_lines=maximum_rows,
+            ),
             extra_handler=empty_string_to_none,
         )
 
