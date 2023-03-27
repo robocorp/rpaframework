@@ -94,6 +94,17 @@ DotDict Ui
 
     Refresh Dialog
 
+Must Be Short
+    [Arguments]  ${value}
+    # We sleep to enable testing of a validation that won't return quickly
+    Sleep  0.2
+    Log To Console  ${value}
+    IF  len($value) > 3
+        RETURN  Value Too Long
+    ELSE
+        RETURN
+    END
+
 Control Buttons
     Add Heading    UI elements for testing
     Add Slider     name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
@@ -121,6 +132,9 @@ Control Buttons
     Add Button    add buttons (does not work)    Control Buttons
     Add Button    subrobot button (broken!)    Exec Robot
     Add Button    python button (broken!)    Exec Python
+
+    Add Heading  Inputs with validations
+    Add Text Input  short_text  required=True  validation=Must Be Short
 
 
     Add Heading    submit is below this

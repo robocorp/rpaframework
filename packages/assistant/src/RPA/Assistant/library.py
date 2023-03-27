@@ -35,10 +35,10 @@ from flet_core import Stack
 from flet_core.control_event import ControlEvent
 from flet_core.dropdown import Option
 from robot.api.deco import keyword, library
-from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.utils.dotdict import DotDict
 from typing_extensions import Literal
+from RPA.Assistant.callback_runner import CallbackRunner
 
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.types import (
@@ -181,6 +181,7 @@ class Assistant:
         self.logger = logging.getLogger(__name__)
         os.environ["FLET_LOG_LEVEL"] = "warning"
         self._client = FletClient()
+        self._callbacks = CallbackRunner(self._client)
         self._validations: Dict[str, Callable] = {}
         self._required_fields: Set[str] = set()
         self._open_layouting: List[str] = []
@@ -559,7 +560,7 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Optional[Callable] = None,
+        validation: Optional[Union[Callable, str]] = None,
         default: Optional[str] = None,
         required: bool = False,
         minimum_rows: Optional[int] = None,
@@ -601,13 +602,16 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
-        if validation and required:
-            self._validations[name] = validation
+        if validation:
+            if isinstance(validation, str):
+                self._validations[name] = self._callbacks.robot_validation(validation)
+            elif isinstance(validation, Callable):
+                self._validations[name] = self._callbacks.python_validation(validation)
+            else:
+                raise ValueError("Invalid validation function.")
+
+        if required:
             self._required_fields.add(name)
-        elif required:
-            self._required_fields.add(name)
-        elif validation:
-            self._validations[name] = validation
 
         self._client.results[name] = default
 
@@ -1090,73 +1094,6 @@ class Assistant:
         """
         self._client.update_elements()
 
-    def _create_python_function_wrapper(self, function, *args, **kwargs):
-        """wrapper code that is used to add wrapping for user functions when binding
-        them to be run by buttons
-        """
-
-        def func_wrapper():
-            try:
-                function(*args, **kwargs)
-
-            # This can be anything since it comes from the user function, we don't
-            # want to let the user function crash the UI
-            except Exception as err:  # pylint: disable=broad-except
-                self.logger.error(f"Error calling Python function {function}")
-                self.logger.error(err)
-            finally:
-                self._client.unlock_elements()
-                self._client.flet_update()
-
-        return func_wrapper
-
-    def _create_robot_function_wrapper(self, function, *args, **kwargs):
-        """wrapper code that is used to add wrapping for user functions when binding
-        them to be run by buttons
-        """
-
-        def func_wrapper():
-            try:
-                BuiltIn().run_keyword(function, *args, **kwargs)
-            except RobotNotRunningError:
-                self.logger.error(
-                    f"Robot Framework not running so cannot call keyword {function}"
-                )
-            except RobotError as e:
-                self.logger.error(f"Error calling robot keyword {function}")
-                self.logger.error(e)
-            # This can be anything since it comes from the user function, we don't
-            # want to let the user function crash the UI
-            except Exception as err:  # pylint: disable=broad-except
-                self.logger.error(f"Unexpected error running robot keyword {function}")
-                self.logger.error(err)
-            finally:
-                self._client.unlock_elements()
-                self._client.flet_update()
-
-        return func_wrapper
-
-    def _queue_function_or_robot_keyword(
-        self, function: Union[Callable, str], *args, **kwargs
-    ):
-        """Check if function is a Python function or a Robot Keyword, and call it
-        or run it with Robot's run_keyword.
-        """
-        if self._client.pending_operation:
-            self.logger.error("Can't have more than one pending operation.")
-            return
-        self._client.lock_elements()
-        self._client.flet_update()
-
-        if isinstance(function, Callable):
-            self._client.pending_operation = self._create_python_function_wrapper(
-                function, *args, **kwargs
-            )
-        else:
-            self._client.pending_operation = self._create_robot_function_wrapper(
-                function, *args, **kwargs
-            )
-
     @keyword(tags=["dialog"])
     def add_button(
         self,
@@ -1187,7 +1124,7 @@ class Assistant:
         """
 
         def on_click(_: ControlEvent):
-            self._queue_function_or_robot_keyword(function, *args, **kwargs)
+            self._callbacks.queue_fn_or_kw(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
         container = Container(alignment=location.value, content=button)
@@ -1226,7 +1163,7 @@ class Assistant:
         """
 
         def on_click(_: ControlEvent):
-            self._queue_function_or_robot_keyword(function, self._get_results())
+            self._callbacks.queue_fn_or_kw(function, self._get_results())
 
         button = ElevatedButton(label, on_click=on_click)
         self._client.add_element(button)
