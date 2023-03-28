@@ -2,10 +2,10 @@ from dataclasses import dataclass
 import time
 from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, Dict, List, Optional, Set, Tuple, Union
+from typing import Callable, Dict, List, Optional, Set, Tuple, Union, cast
 
 import flet
-from flet import Container, Page, ScrollMode
+from flet import Container, Page, ScrollMode, TextField
 from flet_core import Column, Control, AppBar, Row, Stack
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
@@ -41,6 +41,7 @@ class Elements:
     """Lists of visible and invisible control elements"""
 
     visible: List[Control]
+    visible_by_name: Dict[str, Control]
     invisible: List[Control]
     app_bar: Optional[AppBar]
     used_names: Set[str]
@@ -55,7 +56,7 @@ class FletClient:
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
 
-        self._elements: Elements = Elements([], [], None, set())
+        self._elements: Elements = Elements([], {}, [], None, set())
         self._to_disable: List[flet.Control] = []
         self._layout_stack: List[Union[SupportedFletLayout, AppBar]] = []
 
@@ -179,6 +180,7 @@ class FletClient:
             self._elements.visible.append(new_element)
 
         if name is not None:
+            self._elements.visible_by_name[name] = element
             self._elements.used_names.add(name)
 
             on_change_data_saver = self._make_on_change_data_saver(name, extra_handler)
@@ -210,7 +212,7 @@ class FletClient:
         )
 
     def clear_elements(self):
-        self._elements = Elements([], [], None, set())
+        self._elements = Elements([], {}, [], None, set())
         if self.page:
             if self.page.controls:
                 self.page.controls.clear()
@@ -284,3 +286,14 @@ class FletClient:
             raise RuntimeError("Cannot determine dimensions of parent element")
 
         return (current_layout.width, current_layout.height)
+
+    def set_error(self, element_name: str, error: str):
+        """Set an error for an element. The element must be a TextField or other
+        Control that has error_text attribute."""
+        element = self._elements.visible_by_name[element_name]
+        if not hasattr(element, "error_text"):
+            raise RuntimeError(
+                "Tried to set error for element that does not have error_text attribute"
+            )
+        element.error_text = error
+        self.flet_update()

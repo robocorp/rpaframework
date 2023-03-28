@@ -200,14 +200,6 @@ class Assistant:
         except RobotNotRunningError:
             pass
 
-    def _create_error(self, error_message: str):
-        self._client.page.add(
-            Text(
-                error_message,
-                color=flet.colors.RED,
-            )
-        )
-
     def _create_closing_button(self, label="Submit") -> Control:
         def validate_and_close(*_):
             # remove None's from the result dictionary
@@ -224,29 +216,14 @@ class Assistant:
                 )
                 if error_message:
                     should_close = False
-                    self._create_error(error_message)
+                    self._client.set_error(field_name, error_message)
                     self._client.flet_update()
 
             for field_name, error in self._callbacks.validation_errors.items():
                 if error is not None:
                     should_close = False
-                    self._create_error(error)
+                    self._client.set_error(field_name, error)
             self._client.flet_update()
-
-            # for field_name, validation in self._validations.items():
-            #     field_value = self._client.results.get(field_name)
-            #     # Only run validations for non-None values.
-            #     if field_value:
-            #         error_message = validation(self._client.results.get(field_name))
-            #     else:
-            #         error_message = None
-
-            #     if error_message:
-            #         should_close = False
-            #         self._create_error(
-            #             f"Error on field named '{field_name}: {error_message}",
-            #         )
-            #         self._client.flet_update()
 
             if should_close:
                 self._client.results["submit"] = label
