@@ -1,5 +1,6 @@
 import logging
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Dict, Optional, Union
+from flet_core import ControlEvent
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.errors import RobotError
@@ -11,6 +12,7 @@ class CallbackRunner:
 
     def __init__(self, client) -> None:
         self.logger = logging.getLogger(__name__)
+        self.validation_errors: Dict[str, str] = {}
         self._client = client
 
     def _python_callback(
@@ -26,16 +28,20 @@ class CallbackRunner:
         return func_wrapper
 
     def python_validation(
-        self, function: Callable[[Any], Optional[str]]
-    ) -> Callable[[Any], Optional[str]]:
+        self, element_name: str, function: Callable[[Any], Optional[str]]
+    ) -> Callable[[ControlEvent], None]:
         """wrapper code that is used to add wrapping for user functions when binding
         them to be run on validations buttons
         """
 
-        def func_wrapper(value) -> Optional[str]:
-            return self._run_python_callback(function, value)
+        def validate(e: ControlEvent) -> None:
+            print(e.data)
+            error = self._run_python_callback(function, e.data)
+            e.control.error_text = error
+            self._client.flet_update()
+            self.validation_errors[element_name] = error
 
-        return func_wrapper
+        return validate
 
     def _run_python_callback(self, function: Callable, *args, **kwargs):
         try:
@@ -61,20 +67,25 @@ class CallbackRunner:
 
         return func_wrapper
 
-    def robot_validation(self, kw_name: str) -> Callable[[Any], Optional[str]]:
+    def robot_validation(
+        self, element_name: str, kw_name: str
+    ) -> Callable[[ControlEvent], None]:
         """wrapper code that is used to add wrapping for user functions when binding
         them to be run on validation
         """
+        # FIXME: we need some way to not spam the logs when the user is typing with
+        # callback calls
 
-        def func_wrapper(value) -> Optional[str]:
-            return self._run_robot_callback(kw_name, value)
+        def validate(e: ControlEvent) -> None:
+            error = self._run_robot_callback(kw_name, e.control.value)
+            e.control.error_text = error
+            self._client.flet_update()
+            self.validation_errors[element_name] = error
 
-        return func_wrapper
+        return validate
 
     def _run_robot_callback(self, kw_name: str, *args, **kwargs):
         try:
-            self._client.lock_elements()
-            self._client.flet_update()
             return BuiltIn().run_keyword(kw_name, *args, **kwargs)
         except RobotNotRunningError:
             self.logger.error(

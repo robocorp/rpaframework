@@ -8,7 +8,8 @@ Release notes
 - Library **RPA.Assistant** 2.2.0:
 
   - Add ``minimum_rows`` and ``maximum_rows`` arguments to ``Add Text Input``.
-  - Add ability to specify validation functions as Robot Framework keywords
+  - Add ability to specify validation functions as Robot Framework keywords.
+  - Improve how validation errors are displayed.
 
 - Library **RPA.Excel.Files**
 

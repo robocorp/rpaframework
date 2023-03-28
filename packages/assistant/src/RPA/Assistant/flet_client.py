@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import time
 from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, List, Optional, Set, Tuple, Union
+from typing import Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
@@ -120,7 +120,9 @@ class FletClient:
             self.clear_elements()
             self._to_disable.clear()
 
-    def _make_flet_event_handler(self, name: str, handler: Optional[Callable] = None):
+    def _make_on_change_data_saver(
+        self, name: str, handler: Optional[Callable] = None
+    ) -> Callable[[ControlEvent], None]:
         """Add flet event handler to record the element's data whenever content changes
         if ``handler`` is provided also call that.
         """
@@ -158,6 +160,7 @@ class FletClient:
         element: flet.Control,
         name: Optional[str] = None,
         extra_handler: Optional[Callable] = None,
+        validation_func: Optional[Callable] = None,
     ):
         if name in self._elements.used_names:
             raise ValueError(f"Name `{name}` already in use")
@@ -177,12 +180,20 @@ class FletClient:
 
         if name is not None:
             self._elements.used_names.add(name)
-            element.on_change = self._make_flet_event_handler(name, extra_handler)
+
+            on_change_data_saver = self._make_on_change_data_saver(name, extra_handler)
+
+            def on_change(event):
+                if validation_func:
+                    validation_func(event)
+                on_change_data_saver(event)
+
+            element.on_change = on_change
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
         if name is not None:
-            element.on_change = self._make_flet_event_handler(name)
+            element.on_change = self._make_on_change_data_saver(name)
 
     def display_flet_window(
         self,

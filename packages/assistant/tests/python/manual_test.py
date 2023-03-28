@@ -59,7 +59,7 @@ def manual():
 
     assistant.add_text_input(
         "txt_input",
-        placeholder="placeholder",
+        placeholder="field with validation",
         required=True,
         validation=length_greater_3,
     )

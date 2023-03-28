@@ -182,7 +182,6 @@ class Assistant:
         os.environ["FLET_LOG_LEVEL"] = "warning"
         self._client = FletClient()
         self._callbacks = CallbackRunner(self._client)
-        self._validations: Dict[str, Callable] = {}
         self._required_fields: Set[str] = set()
         self._open_layouting: List[str] = []
 
@@ -220,26 +219,34 @@ class Assistant:
 
             for field_name in self._required_fields:
                 value = self._client.results.get(field_name)
-                error_message = None if value else "Mandatory field was not completed"
+                error_message = (
+                    None if value else f"Mandatory field {field_name} was not completed"
+                )
                 if error_message:
                     should_close = False
                     self._create_error(error_message)
                     self._client.flet_update()
 
-            for field_name, validation in self._validations.items():
-                field_value = self._client.results.get(field_name)
-                # Only run validations for non-None values.
-                if field_value:
-                    error_message = validation(self._client.results.get(field_name))
-                else:
-                    error_message = None
-
-                if error_message:
+            for field_name, error in self._callbacks.validation_errors.items():
+                if error is not None:
                     should_close = False
-                    self._create_error(
-                        f"Error on field named '{field_name}: {error_message}",
-                    )
-                    self._client.flet_update()
+                    self._create_error(error)
+            self._client.flet_update()
+
+            # for field_name, validation in self._validations.items():
+            #     field_value = self._client.results.get(field_name)
+            #     # Only run validations for non-None values.
+            #     if field_value:
+            #         error_message = validation(self._client.results.get(field_name))
+            #     else:
+            #         error_message = None
+
+            #     if error_message:
+            #         should_close = False
+            #         self._create_error(
+            #             f"Error on field named '{field_name}: {error_message}",
+            #         )
+            #         self._client.flet_update()
 
             if should_close:
                 self._client.results["submit"] = label
@@ -602,11 +609,14 @@ class Assistant:
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
         """
+        validation_function = None
         if validation:
             if isinstance(validation, str):
-                self._validations[name] = self._callbacks.robot_validation(validation)
+                validation_function = self._callbacks.robot_validation(name, validation)
             elif isinstance(validation, Callable):
-                self._validations[name] = self._callbacks.python_validation(validation)
+                validation_function = self._callbacks.python_validation(
+                    name, validation
+                )
             else:
                 raise ValueError("Invalid validation function.")
 
@@ -629,6 +639,7 @@ class Assistant:
                 max_lines=maximum_rows,
             ),
             extra_handler=empty_string_to_none,
+            validation_func=validation_function,
         )
 
     @keyword(tags=["input"])
@@ -851,7 +862,8 @@ class Assistant:
             Log To Console    User birthdate year should be: ${result.birthdate.year}
         """
 
-        def validate(date_text):
+        def validate(e: ControlEvent):
+            date_text: str = e.data
             if not date_text:
                 return None
             try:
@@ -871,10 +883,10 @@ class Assistant:
                     raise e
             self._client.results[name] = default
 
-        self._validations[name] = validate
         self._client.add_element(
             name=name,
             element=TextField(label=label, hint_text="YYYY-MM-DD", value=default),
+            validation_func=validate,
         )
 
     @keyword(tags=["input"])
