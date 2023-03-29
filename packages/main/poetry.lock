@@ -108,14 +108,14 @@ tzdata = ["tzdata"]
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.11.2"
+version = "4.12.0"
 description = "Screen-scraping library"
 category = "main"
 optional = false
 python-versions = ">=3.6.0"
 files = [
-    {file = "beautifulsoup4-4.11.2-py3-none-any.whl", hash = "sha256:0e79446b10b3ecb499c1556f7e228a53e64a2bfcebd455f370d8927cb5b59e39"},
-    {file = "beautifulsoup4-4.11.2.tar.gz", hash = "sha256:bc4bdda6717de5a2987436fb8d72f45dc90dd856bdfd512a1314ce90349a0106"},
+    {file = "beautifulsoup4-4.12.0-py3-none-any.whl", hash = "sha256:2130a5ad7f513200fae61a17abb5e338ca980fa28c439c0571014bc0217e9591"},
+    {file = "beautifulsoup4-4.12.0.tar.gz", hash = "sha256:c5fceeaec29d09c84970e47c65f2f0efe57872f7cff494c9691a26ec0ff13234"},
 ]
 
 [package.dependencies]
@@ -743,14 +743,14 @@ woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
 
 [[package]]
 name = "fpdf2"
-version = "2.6.1"
+version = "2.7.1"
 description = "Simple & fast PDF generation for Python"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "fpdf2-2.6.1-py2.py3-none-any.whl", hash = "sha256:7f3e2dd47e081f3b8ed7edb2505761589365b8ea4fa8496e0baaf564377a85fb"},
-    {file = "fpdf2-2.6.1.tar.gz", hash = "sha256:c5196b1a5ef5ecb8769d3407db460c08842eb9f96ee9e2558a7d787239dd65b3"},
+    {file = "fpdf2-2.7.1-py2.py3-none-any.whl", hash = "sha256:85028a0c7625767326b6f82b64c0aba6b847ce7903ba8ce07ef6b9fb67accd1d"},
+    {file = "fpdf2-2.7.1.tar.gz", hash = "sha256:9ff1915cdd0e8db944e5776e4cf599f69125478456447e3ce3aaf55ae94c4f57"},
 ]
 
 [package.dependencies]
@@ -1045,14 +1045,14 @@ testing = ["flake8 (<5)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-chec
 
 [[package]]
 name = "java-access-bridge-wrapper"
-version = "0.9.5"
+version = "0.9.7"
 description = "Python wrapper for the Windows Java Access Bridge"
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4.0.0"
 files = [
-    {file = "java-access-bridge-wrapper-0.9.5.tar.gz", hash = "sha256:bd9d2a0cf722c0d0fcea404a6c9d11cdd5b656ea5c738009a19efe4aeebbabe8"},
-    {file = "java_access_bridge_wrapper-0.9.5-py3-none-any.whl", hash = "sha256:df3ebeea234df670429d50beeaadf05a39a084553de804b21deff54979c91462"},
+    {file = "java-access-bridge-wrapper-0.9.7.tar.gz", hash = "sha256:8f98ced20935b06dbe4fd4fd3417f3a210ef71e40838881b44f5a1199ded4b8c"},
+    {file = "java_access_bridge_wrapper-0.9.7-py3-none-any.whl", hash = "sha256:88b8012c0aa797dfa747c7d5212eb84cfd397381dd23612067bff15adfcb40a1"},
 ]
 
 [package.dependencies]
@@ -1778,22 +1778,22 @@ files = [
 
 [[package]]
 name = "platformdirs"
-version = "3.1.1"
+version = "3.2.0"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "platformdirs-3.1.1-py3-none-any.whl", hash = "sha256:e5986afb596e4bb5bde29a79ac9061aa955b94fca2399b7aaac4090860920dd8"},
-    {file = "platformdirs-3.1.1.tar.gz", hash = "sha256:024996549ee88ec1a9aa99ff7f8fc819bb59e2c3477b410d90a16d32d6e707aa"},
+    {file = "platformdirs-3.2.0-py3-none-any.whl", hash = "sha256:ebe11c0d7a805086e99506aa331612429a72ca7cd52a1f0d277dc4adc20cb10e"},
+    {file = "platformdirs-3.2.0.tar.gz", hash = "sha256:d5b638ca397f25f979350ff789db335903d7ea010ab28903f57b27e1b16c2b08"},
 ]
 
 [package.dependencies]
-typing-extensions = {version = ">=4.4", markers = "python_version < \"3.8\""}
+typing-extensions = {version = ">=4.5", markers = "python_version < \"3.8\""}
 
 [package.extras]
 docs = ["furo (>=2022.12.7)", "proselint (>=0.13)", "sphinx (>=6.1.3)", "sphinx-autodoc-typehints (>=1.22,!=1.23.4)"]
-test = ["appdirs (==1.4.4)", "covdefaults (>=2.2.2)", "pytest (>=7.2.1)", "pytest-cov (>=4)", "pytest-mock (>=3.10)"]
+test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.2.2)", "pytest-cov (>=4)", "pytest-mock (>=3.10)"]
 
 [[package]]
 name = "pluggy"
@@ -2101,14 +2101,14 @@ files = [
 
 [[package]]
 name = "pypdf"
-version = "3.5.2"
+version = "3.7.0"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pypdf-3.5.2-py3-none-any.whl", hash = "sha256:e326d699f42fd163ddbb2fdd9978aa1ba2b610aeb4c07bb6935eda5cdd87ae89"},
-    {file = "pypdf-3.5.2.tar.gz", hash = "sha256:49e0598c417107dde904daf6a62ce731991f51ce98c55d808ac7b3e952904e6d"},
+    {file = "pypdf-3.7.0-py3-none-any.whl", hash = "sha256:b50c2d3c807af2f75c945b7bdd8f8bb01d513a0c25d6b66bf299b9fad1cbc91c"},
+    {file = "pypdf-3.7.0.tar.gz", hash = "sha256:da98eb41428b26f5ab23561cc125eedff450147598d6b6159e62943edc0008fe"},
 ]
 
 [package.dependencies]
@@ -2364,14 +2364,14 @@ six = ">=1.10.0"
 
 [[package]]
 name = "pytz"
-version = "2022.7.1"
+version = "2023.3"
 description = "World timezone definitions, modern and historical"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "pytz-2022.7.1-py2.py3-none-any.whl", hash = "sha256:78f4f37d8198e0627c5f1143240bb0206b8691d8d7ac6d78fee88b78733f8c4a"},
-    {file = "pytz-2022.7.1.tar.gz", hash = "sha256:01a0681c4b9684a28304615eba55d1ab31ae00bf68ec157ec3708a8182dbbcd0"},
+    {file = "pytz-2023.3-py2.py3-none-any.whl", hash = "sha256:a151b3abb88eda1d4e34a9814df37de2a80e301e68ba0fd856fb9b46bfbbbffb"},
+    {file = "pytz-2023.3.tar.gz", hash = "sha256:1d8ce29db189191fb55338ee6d0387d82ab59f3d00eac103412d64e0ebd0c588"},
 ]
 
 [[package]]
@@ -2814,14 +2814,14 @@ urllib3 = {version = ">=1.26,<2.0", extras = ["socks"]}
 
 [[package]]
 name = "setuptools"
-version = "67.6.0"
+version = "67.6.1"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "setuptools-67.6.0-py3-none-any.whl", hash = "sha256:b78aaa36f6b90a074c1fa651168723acbf45d14cb1196b6f02c0fd07f17623b2"},
-    {file = "setuptools-67.6.0.tar.gz", hash = "sha256:2ee892cd5f29f3373097f5a814697e397cf3ce313616df0af11231e2ad118077"},
+    {file = "setuptools-67.6.1-py3-none-any.whl", hash = "sha256:e728ca814a823bf7bf60162daf9db95b93d532948c4c0bea762ce62f60189078"},
+    {file = "setuptools-67.6.1.tar.gz", hash = "sha256:257de92a9d50a60b8e22abfcbb771571fde0dbf3ec234463212027a4eeecbe9a"},
 ]
 
 [package.extras]
@@ -3244,14 +3244,14 @@ sortedcontainers = "*"
 
 [[package]]
 name = "trio-websocket"
-version = "0.10.0"
+version = "0.10.2"
 description = "WebSocket library for Trio"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "trio-websocket-0.10.0.tar.gz", hash = "sha256:5a7a256cf45532a0e876b55c173f96228e95445869b6dfdb1556015de89796fa"},
-    {file = "trio_websocket-0.10.0-py3-none-any.whl", hash = "sha256:ae0a8bab4b0014510aca37fb67a6eaaa77e64aba372a7333845d2eb991989ae2"},
+    {file = "trio-websocket-0.10.2.tar.gz", hash = "sha256:af13e9393f9051111300287947ec595d601758ce3d165328e7d36325135a8d62"},
+    {file = "trio_websocket-0.10.2-py3-none-any.whl", hash = "sha256:0908435e4eecc49d830ae1c4d6c47b978a75f00594a2be2104d58b61a04cdb53"},
 ]
 
 [package.dependencies]
@@ -3334,26 +3334,26 @@ files = [
 
 [[package]]
 name = "tzdata"
-version = "2022.7"
+version = "2023.3"
 description = "Provider of IANA time zone data"
 category = "main"
 optional = false
 python-versions = ">=2"
 files = [
-    {file = "tzdata-2022.7-py2.py3-none-any.whl", hash = "sha256:2b88858b0e3120792a3c0635c23daf36a7d7eeeca657c323da299d2094402a0d"},
-    {file = "tzdata-2022.7.tar.gz", hash = "sha256:fe5f866eddd8b96e9fcba978f8e503c909b19ea7efda11e52e39494bad3a7bfa"},
+    {file = "tzdata-2023.3-py2.py3-none-any.whl", hash = "sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda"},
+    {file = "tzdata-2023.3.tar.gz", hash = "sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a"},
 ]
 
 [[package]]
 name = "tzlocal"
-version = "4.2"
+version = "4.3"
 description = "tzinfo object for the local timezone"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "tzlocal-4.2-py3-none-any.whl", hash = "sha256:89885494684c929d9191c57aa27502afc87a579be5cdd3225c77c463ea043745"},
-    {file = "tzlocal-4.2.tar.gz", hash = "sha256:ee5842fa3a795f023514ac2d801c4a81d1743bbe642e3940143326b3a00addd7"},
+    {file = "tzlocal-4.3-py3-none-any.whl", hash = "sha256:b44c4388f3d34f25862cfbb387578a4d70fec417649da694a132f628a23367e2"},
+    {file = "tzlocal-4.3.tar.gz", hash = "sha256:3f21d09e1b2aa9f2dacca12da240ca37de3ba5237a93addfd6d593afe9073355"},
 ]
 
 [package.dependencies]
@@ -3362,18 +3362,17 @@ pytz-deprecation-shim = "*"
 tzdata = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.extras]
-devenv = ["black", "pyroma", "pytest-cov", "zest.releaser"]
-test = ["pytest (>=4.3)", "pytest-mock (>=3.3)"]
+devenv = ["black", "check-manifest", "flake8", "pyroma", "pytest (>=4.3)", "pytest-cov", "pytest-mock (>=3.3)", "zest.releaser"]
 
 [[package]]
 name = "uiautomation"
-version = "2.0.17"
+version = "2.0.18"
 description = "Python UIAutomation for Windows"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "uiautomation-2.0.17-py3-none-any.whl", hash = "sha256:def4aeefa3b7d19d5d7fb87c6a89d078e3bb3355dc1076444c2cc998b11c0359"},
+    {file = "uiautomation-2.0.18-py3-none-any.whl", hash = "sha256:19b2e03d7f94acf89c2f4dedf29d88e0befb2cb3ce9862039f7c548cb0a4de43"},
 ]
 
 [package.dependencies]
@@ -3644,4 +3643,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "2a64c2ae0dc1987ebf25ae2b42e1c5ab67b66e5012f32c5c0427abbcc8370868"
+content-hash = "c1b7040ffb5263662a0478c1c1e9bb31ed771463ca665d3eb00aa41bd7d81ffc"
