@@ -558,8 +558,9 @@ class Assistant:
         :param validation:   Validation function for the input field
         :param default:     Default value if the field wasn't completed
         :param required:    If true, will display an error if not completed
-        :param minimum_rows: Minimum number of rows for the input field
-        :param maximum_rows: Maximum number of rows for the input field
+        :param minimum_rows: Minimum number of rows to display for the input field
+        :param maximum_rows: Maximum number of rows to display for the input field, the
+                             input content can be longer but a scrollbar will appear
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -585,6 +586,30 @@ class Assistant:
             ...    placeholder=Enter feedback here
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
+
+        Validation example:
+
+        .. code-block:: robotframework
+
+            Validate Email
+                [Arguments]    ${email}
+                # E-mail specification is complicated, this matches that the e-mail has
+                # at least one character before and after the @ sign, and at least one
+                # character after the dot.
+                ${regex}=    Set Variable    ^.+@.+\\..+
+                ${valid}=    Run Keyword And Return Status    Should Match Regexp  ${email}  ${regex}
+                IF  not $valid
+                    RETURN  Invalid email address
+                END
+
+            Open Dialog
+                Add heading    Send feedback
+                Add text input    email
+                ...    label=Email
+                ...    validation=Validate Email
+                ${result}=    Run dialog
+                Send feedback message    ${result.email}  ${result.message}
+
         """
         validation_function = None
         if validation:
@@ -606,6 +631,11 @@ class Assistant:
             if e.control.value == "":
                 e.data = None
 
+        if minimum_rows or maximum_rows:
+            multiline = True
+        else:
+            multiline = None
+
         self._client.add_element(
             name=name,
             element=TextField(
@@ -614,6 +644,7 @@ class Assistant:
                 value=default,
                 min_lines=minimum_rows,
                 max_lines=maximum_rows,
+                multiline=multiline,
             ),
             extra_handler=empty_string_to_none,
             validation_func=validation_function,

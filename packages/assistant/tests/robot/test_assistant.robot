@@ -97,13 +97,26 @@ DotDict Ui
 Must Be Short
     [Arguments]  ${value}
     # We sleep to enable testing of a validation that won't return quickly
-    Sleep  0.2
+    # If there is a long sleep here the event synchronity gets out of order
+    # Sleep  0.2
     Log To Console  ${value}
     IF  len($value) > 3
         RETURN  Value Too Long
     ELSE
         RETURN
     END
+
+Validate Email
+    [Arguments]    ${email}
+    # E-mail specification is complicated, this matches that the e-mail has
+    # at least one character before and after the @ sign, and at least one
+    # character after the dot.
+    ${regex}=    Set Variable    ^.+@.+\\..+
+    ${valid}=    Run Keyword And Return Status    Should Match Regexp  ${email}  ${regex}
+    IF  not $valid
+        RETURN  Invalid email address
+    END
+
 
 Control Buttons
     Add Heading    UI elements for testing
@@ -135,6 +148,7 @@ Control Buttons
 
     Add Heading  Inputs with validations
     Add Text Input  short_text  required=True  validation=Must Be Short
+    Add text input    email  label=Email  validation=Validate Email
 
 
     Add Heading    submit is below this
