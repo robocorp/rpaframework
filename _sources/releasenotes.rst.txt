@@ -21,6 +21,8 @@ Release notes
 
   - Add support for parameterized sql queries
 
+- Library **RPA.PDF** (``rpaframework-pdf`` **7.1.3**): Add documentation about PDF merge and split.
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
