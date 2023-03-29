@@ -2,10 +2,10 @@ from dataclasses import dataclass
 import time
 from logging import getLogger
 from timeit import default_timer as timer
-from typing import Callable, Dict, List, Optional, Set, Tuple, Union, cast
+from typing import Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
-from flet import Container, Page, ScrollMode, TextField
+from flet import Container, Page, ScrollMode
 from flet_core import Column, Control, AppBar, Row, Stack
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal

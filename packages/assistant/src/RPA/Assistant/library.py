@@ -610,7 +610,7 @@ class Assistant:
                 ${result}=    Run dialog
                 Send feedback message    ${result.email}  ${result.message}
 
-        """
+        """  # noqa: E501
         validation_function = None
         if validation:
             if isinstance(validation, str):
