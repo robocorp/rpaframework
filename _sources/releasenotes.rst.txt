@@ -17,6 +17,10 @@ Release notes
     - Update to the latest ``java-access-bridge-wrapper`` 0.9.7
     - Add additional system window verification before using ``jab.switch_window_by_title``
 
+- Library **RPA.Database** (:pr:`899`):
+
+  - Add support for parameterized sql queries
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
