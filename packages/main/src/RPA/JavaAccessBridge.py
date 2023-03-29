@@ -200,13 +200,18 @@ class JavaAccessBridge:
     Then application's element information is still accessible and any actions on those elements can be performed
     with `RPA.Desktop` library.
 
-    *Note.* There are still keywords, for example. `Call Element Action`, which will cause error if used in this situation.
-    To be fixed in future release.
+    *Note.* There are still keywords, for example. ``Call Element Action``, which will cause error if used in this situation.
 
     .. code:: robotframework
 
         *** Settings ***
         Library   RPA.JavaAccessBridge   ignore_callbacks=True
+
+    **Controlling the Java window**
+
+    Keyword for this purpose is ``Select Window``. Window selection is based on the ``title`` parameter, which can be given
+    regular expressions to match the correct window. The keyword brings the window into focus and initially reads window's
+    element structure.
 
     **Locating elements**
 
@@ -215,7 +220,7 @@ class JavaAccessBridge:
 
     At the moment library contains basic level support for locators.
 
-    The common locator types are `name` and `role`.
+    The common locator types are ``name`` and ``role``.
 
     To identify element with more than one property `and` can be used, for example:
 
@@ -361,6 +366,16 @@ class JavaAccessBridge:
     # TODO. implement proper XPath syntax support
 
     def __init__(self, ignore_callbacks: bool = False, access_bridge_path: str = None):
+        """If library is not given ``access_bridge_path`` then path needs to be given
+        by the environment variable ``RC_JAVA_ACCESS_BRIDGE_DLL``.
+
+        The ``ignore_callbacks`` can be set to ``True`` if the target application
+        does not support Java callback feature (property value change listeners).
+
+        :param ignore_callbacks: set to `True` if application does not support
+         Java callback feature, defaults to False
+        :param access_bridge_path: absolute filepath to the DLL, defaults to None
+        """
         self.logger = logging.getLogger(__name__)
         desktoplogger = logging.getLogger("RPA.Desktop")
         desktoplogger.setLevel(logging.WARNING)
@@ -448,9 +463,11 @@ class JavaAccessBridge:
         """
         if self.jab_wrapper is None:
             self._initialize()
+
         window_found = False
         interval = float(0.5)
         end_time = time.time() + float(timeout)
+        self.jab_wrapper._wab.Windows_run()  # pylint: disable=protected-access
         while time.time() <= end_time:
             start = time.time()
             try:

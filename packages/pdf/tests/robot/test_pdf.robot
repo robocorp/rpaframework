@@ -7,7 +7,7 @@ Library           XML
 Resource          test.resource
 
 Task Teardown     Close all PDFs
-Suite Teardown    Empty Directory    ${WORK_DIR}
+Suite Teardown    Run Keyword And Ignore Error   Empty Directory    ${WORK_DIR}
 
 
 *** Tasks ***

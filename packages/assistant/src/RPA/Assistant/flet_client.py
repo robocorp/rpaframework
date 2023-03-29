@@ -213,10 +213,12 @@ class FletClient:
         if not self.page:
             raise PageNotOpenError("No page open when update_elements was called")
 
-        for element in self._elements.visible:
-            self.page.add(element)
+        # invisible elements have to be added before visible ones, for file pickers
+        # to work correctly
         for element in self._elements.invisible:
             self.page.overlay.append(element)
+        for element in self._elements.visible:
+            self.page.add(element)
         if self._elements.app_bar:
             self.page.appbar = self._elements.app_bar
         self.page.update()

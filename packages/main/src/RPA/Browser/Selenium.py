@@ -470,7 +470,9 @@ class Selenium(SeleniumLibrary):
 
     EventFiringWebDriver is new in SeleniumLibrary 4.0
 
-    = Thread support =
+    = Limitations and caveats =
+
+    == Thread support ==
 
     SeleniumLibrary is not thread-safe. This is mainly due because the underlying
     [https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread-safe|
@@ -494,7 +496,6 @@ class Selenium(SeleniumLibrary):
     argument when `importing` the library.
 
     Value needs to be set to ``False`` or anything considered false (see `Boolean arguments`).
-
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -603,17 +604,29 @@ class Selenium(SeleniumLibrary):
 
     def _find_by_alias(self, parent, criteria, tag, constraints):
         """Custom 'alias' locator that uses locators database."""
-        del constraints
         locator = LocatorsDatabase.load_by_name(criteria, self.locators_path)
 
         if not isinstance(locator, BrowserLocator):
             raise ValueError(f"Not a browser locator: {criteria}")
 
-        selector = "{strategy}:{value}".format(
-            strategy=locator.strategy, value=locator.value
-        )
+        strategy = str(locator.strategy).lower()
+        finder: Optional[str] = {
+            "class": By.CLASS_NAME,
+            "css": By.CSS_SELECTOR,
+            "id": By.ID,
+            "link": By.LINK_TEXT,
+            "name": By.NAME,
+            "tag": By.TAG_NAME,
+            "xpath": By.XPATH,
+        }.get(strategy)
 
-        return self._element_finder.find(selector, tag, parent)
+        if not finder:
+            raise ValueError(f"Unsupported locator strategy: {strategy}")
+
+        # pylint: disable=protected-access
+        return self._element_finder._filter_elements(
+            parent.find_elements(finder, locator.value), tag, constraints
+        )
 
     @keyword
     def open_available_browser(
@@ -2075,26 +2088,71 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def set_download_directory(
-        self, directory: str = None, download_pdf: bool = True
+        self, directory: Optional[str] = None, download_pdf: bool = True
     ) -> None:
         """Set browser download directory.
 
         Works with ``Open Available Browser``, ``Open Chrome Browser`` and
-        ``Open Headless Chrome Browser`` keywords.
+        ``Open Headless Chrome Browser`` keywords (mainly with Chromium-based
+        browsers).
 
-        ``directory``    target directory for downloads, defaults to None which means
-                         that setting is removed
-        ``download_pdf`` if `True` then PDF is downloaded instead of shown with
-                         browser's internal viewer
+        If the downloading doesn't work (file is not found on disk), try using the
+        browser in non-headless (headful) mode when opening it. (`headless=${False}`)
+
+        :param directory: Target directory for downloads, defaults to `None`, which
+            means that this setting is removed.
+        :param download_pdf: A PDF file pointed by the URL is downloaded instead of
+            being shown within browser's internal viewer when this is set to `True`.
+            (enabled by default)
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library     RPA.Browser.Selenium
+            Library     RPA.FileSystem
+
+            *** Tasks ***
+            Download PDF in custom directory
+                Set Download Directory    ${OUTPUT_DIR}
+                ${file_name} =   Set Variable    Robocorp-EULA-v1.0.pdf
+                Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
+                ...    headless=${False}  # to enable PDF downloading
+                @{files} =    List Files In Directory    ${OUTPUT_DIR}
+                Log List    ${files}
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Browser.Selenium import Selenium
+            from RPA.FileSystem import FileSystem
+
+            selenium = Selenium()
+            file_system = FileSystem()
+
+            OUTPUT_DIR = "output"
+
+            def download_pdf_in_custom_directory():
+                selenium.set_download_directory(OUTPUT_DIR)
+                file_name = "Robocorp-EULA-v1.0.pdf"
+                selenium.open_available_browser(
+                    f"https://cdn.robocorp.com/legal/{file_name}", headless=False
+                )
+                files = file_system.list_files_in_directory(OUTPUT_DIR)
+                for file_path in files:
+                    print(file_path)
         """
         if directory is None:
             self.logger.info("Download directory set back to browser default setting")
-            self.download_preferences = {}
+            self.download_preferences.clear()
         else:
-            download_directory = str(Path(directory))
+            download_directory = Path(directory).expanduser().resolve()
+            download_directory.mkdir(parents=True, exist_ok=True)
             self.logger.info("Download directory set to: %s", download_directory)
             self.download_preferences = {
-                "download.default_directory": download_directory,
+                "download.default_directory": str(download_directory),
                 "plugins.always_open_pdf_externally": download_pdf,
                 "download.directory_upgrade": True,
                 "download.prompt_for_download": False,

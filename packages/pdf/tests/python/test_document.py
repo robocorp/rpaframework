@@ -168,14 +168,6 @@ def test_decrypt_pdf(library):
             assert library.is_pdf_encrypted(encrypted_pdf)
 
 
-@pytest.mark.skip(reason="replacing text in PDF is missing")
-def test_replace_text(library):
-    new_text = "a company name"
-    library.replace_text("Test Business", new_text, source_path=TestFiles.invoice_pdf)
-    # TODO: this should replace text in the original PDF
-    # file without breaking anything.
-
-
 def test_get_all_figures(library):
     pages = library.get_all_figures(source_path=TestFiles.vero_pdf)
     figure = pages[1][44]

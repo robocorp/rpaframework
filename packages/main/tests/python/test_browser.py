@@ -28,7 +28,9 @@ class TestSelenium:
 
     def test_print_to_pdf(self, library):
         testfile = RESOURCES_DIR / "browser_docs.html"
-        library.open_available_browser(f"file://{testfile}", headless=True)
+        library.open_available_browser(
+            f"file://{testfile}", headless=True, browser_selection="chrome"
+        )
         with temp_filename(suffix=".pdf") as tmp_file:
             library.print_to_pdf(tmp_file)
             with open(tmp_file, "rb") as stream:

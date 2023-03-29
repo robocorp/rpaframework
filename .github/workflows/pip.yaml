@@ -1,13 +1,18 @@
-name: pip installation tests
+name: daily installation tests
 
 on:
+  schedule:
+    - cron: '0 6 * * *'
   push:
     branches:
       - master
     paths:
       - '.github/workflows/pip.yaml'
-  schedule:
-    - cron: '0 6 * * *'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/pip.yaml'
 
 jobs:
   install_and_check:
@@ -18,27 +23,27 @@ jobs:
       matrix:
         os: ["ubuntu-latest"]
         python-version: [3.7, 3.9.13, 3.10.6] #dropped: 3.8
-        pip-version: [21.3.1, 22.3.0, 23.0.1] #dropped: 20.3.4
-        # test the latest recommended on macos and windows, and other pip versions and pythons on ubuntu for speed
+        pip-version: [21.3.1, 22.1.2, 23.0.1] #dropped: 20.3.4
+        # test the latest template on macos and windows, and other pip versions and pythons on ubuntu for speed
         # adding macos and windows to the matrix adds a bunch of running and delay because of mac and windows
         # runners being slower to allocate
         include:
           - os: macos-latest
-            python-version: "3.9"
-            pip-version: "22.3.0"
+            python-version: "3.9.13"
+            pip-version: "22.1.2"
           - os: windows-latest
-            python-version: "3.9"
-            pip-version: "22.3.0"
+            python-version: "3.9.13"
+            pip-version: "22.1.2"
     steps:
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Set pip version
         run: python -m pip install --force-reinstall pip==${{matrix.pip-version}} wheel
       - name: install rpafw
         run: |
-          python -m pip install rpaframework-recognition robotframework-browser rpaframework-aws rpaframework-google rpaframework-assistant rpaframework-openai rpaframework-recognition rpaframework-windows
+          python -m pip install rpaframework rpaframework-recognition robotframework-browser rpaframework-aws rpaframework-google rpaframework-assistant rpaframework-openai rpaframework-recognition rpaframework-windows
       - name: test install is correct
         run: |
           python -m pip check
@@ -49,9 +54,15 @@ jobs:
           # show freeze file in CI log
           python -m pip freeze
           python -m pip freeze > requirements.txt
-
+      - name: check freeze file
+        run: |
+          python -m pip install pip-audit==2.4.14
+          python -m pip_audit --no-deps -r requirements.txt
+        # Only run scans for latest template version from https://github.com/robocorp/template-standard/blob/master/conda.yaml
+        if: ${{ matrix.python-version == '3.9.13' && matrix.pip-version == '22.1.2' }}
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
-          name: pip_freeze
+          name: pip_freeze_${{ matrix.python-version }}_${{ matrix.pip-version }}.txt
           path: requirements.txt
+
