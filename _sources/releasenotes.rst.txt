@@ -8,7 +8,14 @@ Release notes
 - Library **RPA.Excel.Files**
 
   - Make method ``require_open_xlsx_workbook`` that was accidentally exposed
-  a private method.
+    a private method.
+
+- Library **RPA.JavaAccessBridge** (:pr:`908`):
+
+  - Fixes related to keyword ``Select Window``
+
+    - Update to the latest ``java-access-bridge-wrapper`` 0.9.7
+    - Add additional system window verification before using ``jab.switch_window_by_title``
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

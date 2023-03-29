@@ -234,17 +234,20 @@ It is also possible to give DLL location as library initialization parameter <ci
 <p>Workaround for this situation is to initialize <cite>JavaAccessBridge</cite> library with parameter <cite>ignore_callbacks=True</cite>.
 Then application’s element information is still accessible and any actions on those elements can be performed
 with <cite>RPA.Desktop</cite> library.</p>
-<p><em>Note.</em> There are still keywords, for example. <cite>Call Element Action</cite>, which will cause error if used in this situation.
-To be fixed in future release.</p>
+<p><em>Note.</em> There are still keywords, for example. <code class="docutils literal notranslate"><span class="pre">Call</span> <span class="pre">Element</span> <span class="pre">Action</span></code>, which will cause error if used in this situation.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
 <span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.JavaAccessBridge</span><span class="p">   </span><span class="s">ignore_callbacks=True</span>
 </pre></div>
 </div>
+<p><strong>Controlling the Java window</strong></p>
+<p>Keyword for this purpose is <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">Window</span></code>. Window selection is based on the <code class="docutils literal notranslate"><span class="pre">title</span></code> parameter, which can be given
+regular expressions to match the correct window. The keyword brings the window into focus and initially reads window’s
+element structure.</p>
 <p><strong>Locating elements</strong></p>
 <p>To automate actions on the Java application, the robot needs locations to various elements
 using a feature called <cite>locators</cite>. Locator describes properties of an element.</p>
 <p>At the moment library contains basic level support for locators.</p>
-<p>The common locator types are <cite>name</cite> and <cite>role</cite>.</p>
+<p>The common locator types are <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
 <p>To identify element with more than one property <cite>and</cite> can be used, for example:</p>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">role:push button and name:Clear</span>
