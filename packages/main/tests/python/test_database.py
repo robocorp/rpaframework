@@ -42,7 +42,7 @@ def _ensure_orders(query):
 def test_query(library):
     _ensure_orders(library.query)
     orders_ids = library.query(
-        'INSERT INTO orders(id, name) VALUES(3, "my-3rd-order") RETURNING id;'
+        'INSERT INTO orders(id, name) VALUES(3, "my-3rd-order");'
     )
     assert orders_ids[0][0] == 3
 
@@ -50,6 +50,25 @@ def test_query(library):
     order_names = [order["name"] for order in orders]
     assert order_names == ["my-1st-order", "my-2nd-order", "my-3rd-order"]
 
+@pytest.mark.xfail(reason=RETURNING_REASON)
+def test_query_parameterized_data(library):
+    _ensure_orders(library.query)
+    # This test uses a hardcoded string for simplicity, but in a real scenario the untrusted data
+    # would be coming from an external source (Excel file, HTTP request, etc.)
+    untrusted_data = "my-3rd-order"
+
+    # Each database uses a particular style of formatting. SQLite3 uses '?' for instance.
+    # For additional information about specific databases see https://bobby-tables.com/python
+    orders_ids = library.query(
+        'INSERT INTO orders(id, name) VALUES(3, ?);',
+        data=(untrusted_data, )
+    )
+
+    assert orders_ids[0][0] == 3
+
+    orders = library.query("SELECT * FROM orders")
+    order_names = [order["name"] for order in orders]
+    assert order_names == ["my-1st-order", "my-2nd-order", "my-3rd-order"]
 
 @pytest.mark.parametrize("commit", [True, False])
 def test_query_no_transaction(library_no_commit, commit):
