@@ -1145,7 +1145,8 @@ class DocumentKeywords(LibraryContext):
         self, files: list = None, target_document: str = None, append: bool = False
     ) -> None:
         """Add images and/or pdfs to new PDF document.
-        Merge and split PDFs.
+
+        Supports merging and splitting PDFs.
 
         Image formats supported are JPEG, PNG and GIF.
 
