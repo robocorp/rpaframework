@@ -5,6 +5,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+22.4.0 - 29 Mar 2023
+--------------------
+
 - Library **RPA.Excel.Files**
 
   - Make method ``require_open_xlsx_workbook`` that was accidentally exposed
@@ -21,10 +28,8 @@ Release notes
 
   - Add support for parameterized sql queries
 
-- Library **RPA.PDF** (``rpaframework-pdf`` **7.1.3**): Add documentation about PDF merge and split.
+- Library **RPA.PDF** (``rpaframework-pdf`` **7.1.3**) (:pr:`909`): Add documentation about PDF merge and split.
 
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 22.3.0 - 22 Mar 2023
 --------------------
