@@ -214,6 +214,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `SAP`_                     | Control SAP GUI desktop client                        | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `Smartsheet`_              | Access Smartsheet sheets                              | x                      |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Tables`_                  | Manipulate, sort, and filter tabular data             | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Tasks`_                   | Control task execution                                | x                      |
@@ -263,6 +265,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Robocorp.Vault: https://rpaframework.org/libraries/robocorp_vault/
 .. _Salesforce: https://rpaframework.org/libraries/salesforce/
 .. _SAP: https://rpaframework.org/libraries/sap/
+.. _Smartsheet: https://rpaframework.org/libraries/smartsheet/
 .. _Tables: https://rpaframework.org/libraries/tables/
 .. _Tasks: https://rpaframework.org/libraries/tasks/
 .. _Twitter: https://rpaframework.org/libraries/twitter/
