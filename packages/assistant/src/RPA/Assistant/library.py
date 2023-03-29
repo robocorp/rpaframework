@@ -608,7 +608,27 @@ class Assistant:
                 ...    label=Email
                 ...    validation=Validate Email
                 ${result}=    Run dialog
-                Send feedback message    ${result.email}  ${result.message}
+                Log  ${result.email}
+
+        .. code-block:: python
+
+            import re
+            def validate_email(email):
+                # E-mail specification is complicated, this matches that the e-mail has
+                # at least one character before and after the @ sign, and at least one
+                # character after the dot.
+                regex = r"^.+@.+\\..+"
+                valid = re.match(regex, email)
+                if not valid:
+                    return "Invalid email address"
+
+            def open_dialog():
+                assistant.add_heading("Send feedback")
+                assistant.add_text_input("email", label="Email", validation=validate_email)
+                result = run_dialog()
+                print(result.email)
+
+
 
         """  # noqa: E501
         validation_function = None

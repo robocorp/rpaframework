@@ -33,6 +33,19 @@ def length_greater_3(value):
         return "Length should be greater than 3"
 
 
+import re
+
+
+def validate_email(email):
+    # E-mail specification is complicated, this matches that the e-mail has
+    # at least one character before and after the @ sign, and at least one
+    # character after the dot.
+    regex = r"^.+@.+\..+"
+    valid = re.match(regex, email)
+    if not valid:
+        return "Invalid email address"
+
+
 def sleepy_print(arg):
     """used for testing is the button disabling working"""
     sleep(1)
@@ -110,6 +123,7 @@ def manual():
     assistant.add_text_input(
         "txt_input_2", placeholder="placeholder", minimum_rows=2, maximum_rows=3
     )
+    assistant.add_text_input("email", label="Email", validation=validate_email)
 
     results = assistant.run_dialog(location=WindowLocation.TopLeft, timeout=180)
     print(results)

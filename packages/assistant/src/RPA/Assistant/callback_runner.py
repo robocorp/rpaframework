@@ -35,7 +35,6 @@ class CallbackRunner:
         """
 
         def validate(e: ControlEvent) -> None:
-            print(e.data)
             error = self._run_python_callback(function, e.data)
             casted_error = str(error) if error else None
             e.control.error_text = casted_error
@@ -76,8 +75,6 @@ class CallbackRunner:
         """
         # FIXME: we need some way to not spam the logs when the user is typing with
         # callback calls
-        # FIXME: the asynchronity for this when user is writing fast for the input is
-        # broken
 
         def validate(e: ControlEvent) -> None:
             error = self._run_robot_callback(kw_name, e.control.value)
