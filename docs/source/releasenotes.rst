@@ -9,7 +9,8 @@ Release notes
 
   - Add ``minimum_rows`` and ``maximum_rows`` arguments to ``Add Text Input``.
   - Add ability to specify validation functions as Robot Framework keywords.
-  - Improve how validation errors are displayed.
+  - Improve how validation errors are displayed. They display besides the input field
+    now, instead of bottom of the dialog.
 
 - Library **RPA.Excel.Files**
 
