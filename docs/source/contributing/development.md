@@ -270,7 +270,7 @@ adding a new library, so here's a list with all the areas of interest:
     _poetry.lock_ file if you're planning to release soon, right after the merge.
 - The changes you've done should be summarized in a human-friendly way in the
   [release notes](../../../docs/source/releasenotes.rst). (read more in the
-  [**Release**](#release--internal-developers-only-) section).
+  [**Release**](#release-internal-developers-only) section).
 - Adding a new library (additional requirements):
   - Ensure the new `RPA.<Library>` is now visible in the [README](../../../README.rst)
     as well. (under **Libraries**)
