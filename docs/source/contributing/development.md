@@ -272,8 +272,8 @@ adding a new library, so here's a list with all the areas of interest:
   [release notes](../../../docs/source/releasenotes.rst). (read more in the
   [**Release**](#release-internal-developers-only) section).
 - Adding a new library (additional requirements):
-  - Ensure the new `RPA.<Library>` is now visible in the [README](../../../README.rst)
-    as well. (under **Libraries**)
+  - Ensure the new `RPA.<Library>` is now visible in the
+    [README](../../../packages/main/README.rst) as well. (under **Libraries**)
   - There's a documentation entry under [libraries](../../../docs/source/libraries) as
     well. (follow the existing pattern)
   - Add exclusion rule in _invocations_' [_docs_](../../../invocations/docs.py)
