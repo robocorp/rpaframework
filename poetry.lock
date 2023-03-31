@@ -366,18 +366,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.91"
+version = "1.26.92"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.91-py3-none-any.whl", hash = "sha256:3ce2225a61832d69831d669d912424ea3863268ca1cfa2a82203bb90952acefa"},
-    {file = "boto3-1.26.91.tar.gz", hash = "sha256:278d896e9090a976f41ec68da5c572bc4e5b7cb1e515f1898fee8cb2fadfb50d"},
+    {file = "boto3-1.26.92-py3-none-any.whl", hash = "sha256:49bef90c0ccd6cd87a304d8563958d2d00f2361e02ec953fc3c8bde87cf21112"},
+    {file = "boto3-1.26.92.tar.gz", hash = "sha256:401088934097260597495ae3c1842a59a701712a2d0e89443f8ede9161cd3806"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.91,<1.30.0"
+botocore = ">=1.29.92,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -386,14 +386,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.91"
+version = "1.29.92"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.91-py3-none-any.whl", hash = "sha256:4ed6a488aee1b42367eace71f7d0993dda05b02eebd7dcdd78db5c9ce3d80da5"},
-    {file = "botocore-1.29.91.tar.gz", hash = "sha256:a8a800a2a945da807758cace539fc5b5ec1d5082ce363799d3a3870c2c4ed6fc"},
+    {file = "botocore-1.29.92-py3-none-any.whl", hash = "sha256:71a67c1f896db0204b97a8e199aa1188541d139ce3130ba52261ccd19b6e17db"},
+    {file = "botocore-1.29.92.tar.gz", hash = "sha256:0bb40ca410ad26c5e9821ab1ab52ea894759ed2188afd99152261c5e895d8c9c"},
 ]
 
 [package.dependencies]
@@ -1683,14 +1683,14 @@ files = [
 
 [[package]]
 name = "holidays"
-version = "0.21"
+version = "0.21.13"
 description = "Generate and work with holidays in Python"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "holidays-0.21-py3-none-any.whl", hash = "sha256:3deb88649ad931e176798b23686798f29215fbf99f56b3f1f4c1e6f0015319ee"},
-    {file = "holidays-0.21.tar.gz", hash = "sha256:e3dece03969056dda9cf52f07676227e7ea042fd22a72ca431203c04029647b6"},
+    {file = "holidays-0.21.13-py3-none-any.whl", hash = "sha256:638d91ad7e8d8d0ef3cdd824fd3544f83e74870474d5c62483ada5d4dddcb0c3"},
+    {file = "holidays-0.21.13.tar.gz", hash = "sha256:f6069b2be62bf3d984b99eb6c7f6c639c2ba1965d2bb561c634617567762dbb6"},
 ]
 
 [package.dependencies]
@@ -4132,7 +4132,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "22.2.3"
+version = "22.3.0a0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -4185,6 +4185,7 @@ rpaframework-pdf = "^7.1.0"
 rpaframework-windows = {version = "^7.2.1", markers = "sys_platform == \"win32\""}
 selenium = "^4.4.0,<4.6.0"
 simple_salesforce = "^1.0.0"
+smartsheet-python-sdk = "^3.0.0"
 tenacity = "^8.0.1"
 tweepy = "^3.8.0"
 tzlocal = "^4.2"
@@ -4489,6 +4490,29 @@ files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
+
+[[package]]
+name = "smartsheet-python-sdk"
+version = "3.0.0"
+description = "Library that uses Python to connect to Smartsheet services (using API 2.0)."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "smartsheet-python-sdk-3.0.0.tar.gz", hash = "sha256:9d710bea4a73a8a90c54334a5a042fc8a6f862cfcc64a9b391ff26155ef3dc6a"},
+    {file = "smartsheet_python_sdk-3.0.0-py2.py3-none-any.whl", hash = "sha256:bee48b90e2902543383e05d32693c38d82f6cfba844d2a75e6f8d56f9a4eb769"},
+]
+
+[package.dependencies]
+certifi = "*"
+python-dateutil = "*"
+requests = "*"
+requests-toolbelt = "*"
+six = ">=1.9"
+
+[package.extras]
+develop = ["coverage", "pytest", "pytest-instafail"]
+test = ["coverage", "pytest"]
 
 [[package]]
 name = "sniffio"

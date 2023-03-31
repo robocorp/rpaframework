@@ -1144,7 +1144,9 @@ class DocumentKeywords(LibraryContext):
     def add_files_to_pdf(
         self, files: list = None, target_document: str = None, append: bool = False
     ) -> None:
-        """Add images and/or pdfs to new PDF document
+        """Add images and/or pdfs to new PDF document.
+
+        Supports merging and splitting PDFs.
 
         Image formats supported are JPEG, PNG and GIF.
 
@@ -1186,6 +1188,18 @@ class DocumentKeywords(LibraryContext):
                 ...    ${TESTDATA_DIR}${/}landscape_image.png:format=Letter
                 Add Files To PDF    ${files}    newdoc.pdf
 
+            Merge pdfs
+                ${files}=    Create List
+                ...    ${TESTDATA_DIR}${/}invoice.pdf
+                ...    ${TESTDATA_DIR}${/}robot.pdf:1
+                ...    ${TESTDATA_DIR}${/}robot.pdf:2-10,15
+                Add Files To Pdf    ${files}    merged-doc.pdf
+
+            Split pdf
+                ${files}=    Create List
+                ...    ${OUTPUT_DIR}${/}robot.pdf:2-10,15
+                Add Files To Pdf     ${files}    split-doc.pdf
+
         **Python**
 
         .. code-block:: python
@@ -1194,16 +1208,36 @@ class DocumentKeywords(LibraryContext):
 
             pdf = PDF()
 
-            list_of_files = [
-                'invoice.pdf',
-                'approved.png:align=center',
-                'robot.pdf:1',
-                'approved.png:x=0,y=0',
-            ]
-            def example_keyword():
+            def example_addfiles():
+                list_of_files = [
+                    'invoice.pdf',
+                    'approved.png:align=center',
+                    'robot.pdf:1',
+                    'approved.png:x=0,y=0',
+                ]
                 pdf.add_files_to_pdf(
                     files=list_of_files,
                     target_document="output/output.pdf"
+                )
+
+            def example_merge():
+                list_of_files = [
+                    'invoice.pdf',
+                    'robot.pdf:1',
+                    'robot.pdf:2-10,15',
+                ]
+                pdf.add_files_to_pdf(
+                    files=list_of_files,
+                    target_document="output/merged-doc.pdf"
+                )
+
+            def example_split():
+                list_of_files = [
+                    'robot.pdf:2-10,15',
+                ]
+                pdf.add_files_to_pdf(
+                    files=list_of_files,
+                    target_document="output/split-doc.pdf"
                 )
 
         :param files: list of filepaths to add into PDF (can be either images or PDFs)

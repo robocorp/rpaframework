@@ -529,8 +529,13 @@ class Database:
         sanstran: Optional[bool] = False,
         as_table: Optional[bool] = True,
         returning: Optional[bool] = None,
+        data: Union[Dict, Tuple, None] = None,
     ) -> Union[List, Dict, Table, Any]:
         """Execute a SQL query and optionally return the execution result.
+
+        Security Warning: In order to safely include untrusted data in SQL queries
+        it is advisable to use parameterized queries. For more information about
+        formatting for specific databases, please see https://bobby-tables.com/python
 
         :param statement: SQL statement to execute.
         :param assertion: Assert on query result, row_count or columns.
@@ -544,6 +549,7 @@ class Database:
         :param returning: Set this to `True` if you want to have rows explicitly
             returned (instead of the query result), `False` otherwise. (by default a
             heuristic detects if it should return or not)
+        :param data: The data to use if the SQL statement is parameterized
         :returns: Fetched rows when `returning` is `True` or if the heuristic decides
             that the statement should return (raw rows or as `Table` if `as_table` is
             `True`), otherwise the object produced by the execution is returned.
@@ -566,6 +572,7 @@ class Database:
                 @{res} =    Query   Select * FROM table   row_count > ${EXPECTED}
                 @{res} =    Query   Select * FROM table   'value' in columns
                 @{res} =    Query   Select * FROM table   columns == ['id', 'value']
+                @{res} =    Query   Select * FROM table WHERE value = ?  data=("${d}", )
 
         **Python**
 
@@ -579,9 +586,14 @@ class Database:
                 lib.connect_to_database("sqlite3", "sqlite.db")
                 lib.query("DROP TABLE IF EXISTS orders;")
                 lib.query("CREATE TABLE orders(id INTEGER PRIMARY KEY, name TEXT);")
+                data1 = "my-1st-order"
+                data2 = "my-2nd-order"
+                lib.query(
+                    'INSERT INTO orders(id, name) VALUES(1, ?), (2, ?);',
+                    data=(data1, data2)
+                )
                 rows = lib.query(
-                    'INSERT INTO orders(id, name) VALUES(1, "my-1st-order"),'
-                    '(2, "my-2nd-order") RETURNING name;'
+                    'SELECT * FROM orders'
                 )
                 print([row["name"] for row in rows])  # ['my-1st-order', 'my-2nd-order']
         """
@@ -589,7 +601,7 @@ class Database:
         try:
             self.logger.info("Executing query: %s", statement)
             cursor = self._dbconnection.cursor()
-            result = self.__execute_sql(cursor, statement)
+            result = self.__execute_sql(cursor, statement, data)
             should_return = (returning is True) or (
                 returning is None and self._is_returnable_statement(statement)
             )
@@ -643,8 +655,15 @@ class Database:
                 "Query assertion %s failed. Facts: %s" % (assertion, available_locals)
             )
 
-    def __execute_sql(self, cursor, sqlStatement):
-        return cursor.execute(sqlStatement)
+    def __execute_sql(
+        self,
+        cursor,
+        sqlStatement,
+        data: Union[Dict, Tuple, None] = None,
+    ):
+        if data is None:
+            return cursor.execute(sqlStatement)
+        return cursor.execute(sqlStatement, data)
 
     def set_auto_commit(self, autocommit: bool = True) -> None:
         """Set database auto commit mode.

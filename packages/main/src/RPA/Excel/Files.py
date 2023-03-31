@@ -181,7 +181,7 @@ class Files:
         self.logger = logging.getLogger(__name__)
         self.workbook = None
 
-    def require_open_xlsx_workbook(self, keyword_name: str):
+    def _require_open_xlsx_workbook(self, keyword_name: str):
         assert self.workbook, "No active workbook"
         if isinstance(self.workbook, XlsWorkbook):
             raise NotImplementedError(
@@ -1068,7 +1068,7 @@ class Files:
             lib.clear_cell_range("A1")
             lib.clear_cell_range("B2:B50")
         """
-        self.require_open_xlsx_workbook("clear_cell_range")
+        self._require_open_xlsx_workbook("clear_cell_range")
         cr = CellRange(range_string=range_string)
         for row, acell in list(cr.cells):
             self.workbook.book.active.cell(row, acell).value = None
@@ -1096,7 +1096,7 @@ class Files:
             lib.delete_rows(2)
             lib.delete_rows(5,10)
         """
-        self.require_open_xlsx_workbook("delete_rows")
+        self._require_open_xlsx_workbook("delete_rows")
         amount = (end - start + 1) if end else 1
         self.workbook.book.active.delete_rows(start, amount)
 
@@ -1126,7 +1126,7 @@ class Files:
             lib.delete_columns("D")
             lib.delete_rows(1, "JJ")
         """
-        self.require_open_xlsx_workbook("delete_columns")
+        self._require_open_xlsx_workbook("delete_columns")
         start_column_index = (
             start if isinstance(start, int) else column_index_from_string(start)
         )
@@ -1160,7 +1160,7 @@ class Files:
             lib.insert_columns_before("C")
             lib.insert_columns_before("A", 3)
         """
-        self.require_open_xlsx_workbook("insert_columns_before")
+        self._require_open_xlsx_workbook("insert_columns_before")
 
         column_index = (
             column_index_from_string(column) if isinstance(column, str) else column
@@ -1189,7 +1189,7 @@ class Files:
             lib.insert_columns_after("C")
             lib.insert_columns_after("A", 3)
         """
-        self.require_open_xlsx_workbook("insert_columns_after")
+        self._require_open_xlsx_workbook("insert_columns_after")
 
         column_index = (
             column_index_from_string(column) if isinstance(column, str) else column
@@ -1218,7 +1218,7 @@ class Files:
             lib.insert_rows_before(1)
             lib.insert_rows_before(1, 3)
         """
-        self.require_open_xlsx_workbook("insert_rows_before")
+        self._require_open_xlsx_workbook("insert_rows_before")
 
         self.workbook.book.active.insert_rows(row, amount)
 
@@ -1244,7 +1244,7 @@ class Files:
             lib.insert_rows_after(1)
             lib.insert_rows_after(1, 3)
         """
-        self.require_open_xlsx_workbook("insert_rows_after")
+        self._require_open_xlsx_workbook("insert_rows_after")
 
         self.workbook.book.active.insert_rows(row + amount - 1, amount)
 
@@ -1268,7 +1268,7 @@ class Files:
 
             lib.copy_cell_values("A1:D4", "G10")
         """
-        self.require_open_xlsx_workbook("copy_cell_values")
+        self._require_open_xlsx_workbook("copy_cell_values")
 
         cr = CellRange(range_string=source_range)
         cells = list(cr.cells)
@@ -1388,7 +1388,7 @@ class Files:
 
             lib.set_styles("A1:D4", bold=True, font_name="Arial", size=24)
         """
-        self.require_open_xlsx_workbook("set_styles")
+        self._require_open_xlsx_workbook("set_styles")
 
         cr = CellRange(range_string=range_string)
         font_parameters = {}
@@ -1472,7 +1472,7 @@ class Files:
             lib.auto_size_columns("A", "D")
             lib.auto_size_columns("C", width=40)
         """
-        self.require_open_xlsx_workbook("auto_size_columns")
+        self._require_open_xlsx_workbook("auto_size_columns")
         start_index = (
             column_index_from_string(start_column)
             if isinstance(start_column, str)
@@ -1519,7 +1519,7 @@ class Files:
             lib.hide_columns("A", "D")
             lib.hide_columns("A")
         """
-        self.require_open_xlsx_workbook("hide_columns")
+        self._require_open_xlsx_workbook("hide_columns")
 
         self._set_column_hidden(True, start_column, end_column)
 
@@ -1549,7 +1549,7 @@ class Files:
             lib.unhide_columns("A", "D")
             lib.unhide_columns("A")
         """
-        self.require_open_xlsx_workbook("unhide_columns")
+        self._require_open_xlsx_workbook("unhide_columns")
 
         self._set_column_hidden(False, start_column, end_column)
 
@@ -1607,7 +1607,7 @@ class Files:
             lib.set_cell_formula("E2:E10", "=B2+5")
             lib.set_cell_formula("E2:E10", "=B2+5", True)
         """
-        self.require_open_xlsx_workbook("set_cell_formula")
+        self._require_open_xlsx_workbook("set_cell_formula")
 
         cr = CellRange(range_string=range_string)
         start_col, start_row, _, _ = cr.bounds
@@ -1656,7 +1656,7 @@ class Files:
             lib.move_range("E2:E10", rows=4)
             lib.move_range("E2:E10", rows=2, columns=2)
         """
-        self.require_open_xlsx_workbook("move_range")
+        self._require_open_xlsx_workbook("move_range")
 
         self.workbook.book.active.move_range(
             range_string, rows=rows, cols=columns, translate=translate
@@ -1705,7 +1705,7 @@ class Files:
             data =  [[1,2,3],[4,5,6],['a','b','c','d']]
             lib.set_cell_values("E2", data)
         """
-        self.require_open_xlsx_workbook("set_cell_values")
+        self._require_open_xlsx_workbook("set_cell_values")
         if isinstance(values, Table):
             data_values = return_table_as_raw_list(values, table_heading)
         else:

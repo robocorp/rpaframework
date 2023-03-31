@@ -14,6 +14,9 @@ class PDF(DynamicCore):
     It can be used to extract text from PDFs, add watermarks to pages, and
     decrypt/encrypt documents.
 
+    Merging and splitting PDFs is supported by ``Add Files To PDF`` keyword. Read
+    the keyword documentation for examples.
+
     There is also limited support for updating form field values. (check
     ``Set Field Value`` and ``Save Field Values`` for more info)
 
