@@ -94,15 +94,19 @@ class WindowsElement:
         pattern = cls._get_locator_value(locator, "RegexName")
         return bool(re.match(pattern, win_elem.name))
 
-    def is_sibling(self, win_elem: "WindowsElement") -> bool:
-        """Returns `True` if the provided window element is a sibling."""
-        locator: Optional[Locator] = win_elem.locator
+    @staticmethod
+    def norm_locator(locator: Optional[Locator]) -> Optional[str]:
         while locator:
             if isinstance(locator, WindowsElement):
                 locator = locator.locator
             else:  # finally, reached a string locator
                 break
-        else:
+        return locator
+
+    def is_sibling(self, win_elem: "WindowsElement") -> bool:
+        """Returns `True` if the provided window element is a sibling."""
+        locator: Optional[str] = self.norm_locator(win_elem)
+        if not locator:
             return True  # nothing to check here, can be considered sibling
 
         last_locator_part = locator.split(MatchObject.TREE_SEP)[-1]

@@ -95,6 +95,7 @@ class ElementKeywords(LibraryContext):
             control_locator = f"path:{path}"
         else:
             control_locator = locator
+        control.robocorp_click_offset = None
         element = WindowsElement(control, control_locator)
         structure.setdefault(depth, []).append(element)
 
@@ -175,12 +176,7 @@ class ElementKeywords(LibraryContext):
             return children
 
         target_elem = self.ctx.get_element(locator)
-        locator: Optional[Locator] = target_elem.locator
-        while locator:
-            if isinstance(locator, WindowsElement):
-                locator = locator.locator
-            else:  # finally, reached a string locator
-                break
+        locator: Optional[str] = WindowsElement.norm_locator(target_elem)
         root_ctrl = target_elem.item
         brothers_count[hash(root_ctrl)] = 1  # the root is always singular here
 
@@ -209,7 +205,7 @@ class ElementKeywords(LibraryContext):
 
             space = " " * depth * 4
             child_pos = brothers_count[hash(control)] - children_remaining
-            control_log(f"{space}{depth}-{child_pos}. ${control_str}")
+            control_log(f"{space}{depth}-{child_pos}. {control_str}")
 
             if return_structure:
                 self._add_child_to_tree(

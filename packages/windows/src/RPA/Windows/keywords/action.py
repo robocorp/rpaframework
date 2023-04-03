@@ -152,7 +152,7 @@ class ActionKeywords(LibraryContext):
             )
 
         # Attribute added in `RPA.core.windows.locators.LocatorMethods`.
-        offset: Optional[str] = item.robocorp_click_offset
+        offset: Optional[str] = getattr(item, "robocorp_click_offset", None)
         offset_x: Optional[int] = None
         offset_y: Optional[int] = None
         log_message = f"{click_type}-ing element"
