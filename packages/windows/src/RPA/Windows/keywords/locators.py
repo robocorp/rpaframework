@@ -147,7 +147,7 @@ class LocatorKeywords(LocatorMethods):
             getFirstChild=get_first_child,
             getNextSibling=get_next_sibling,
             yieldCondition=compare,
-            includeTop=not parent_locator,
+            includeTop=not locator,
             maxDepth=search_depth,
         )
         elements = []
