@@ -15,6 +15,11 @@ if utils.IS_WINDOWS:
 PatternType = Union["auto.ValuePattern", "auto.LegacyIAccessiblePattern"]
 
 
+def set_value_validator(expected: str, actual: str) -> bool:
+    """Checks the passed against the final set value and returns status."""
+    return actual.strip() == expected.strip()  # due to EOLs inconsistency
+
+
 class ActionKeywords(LibraryContext):
     """Keywords for performing desktop actions"""
 
@@ -354,16 +359,17 @@ class ActionKeywords(LibraryContext):
         get_value_pattern: Callable[[], PatternType],
         append: bool,
         locator: Optional[Locator],
+        validator: Optional[Callable],
     ):
         func_name = get_value_pattern.__name__
         self.logger.info("%s the element value with the %r method.", action, func_name)
         value_pattern = get_value_pattern()
         current_value = value_pattern.Value if append else ""
-        new_value = f"{current_value}{value}{newline_string}"
-        value_pattern.SetValue(new_value)
-        if value_pattern.Value.strip() != new_value.strip():  # EOLs inconsistency
+        expected_value = f"{current_value}{value}{newline_string}"
+        value_pattern.SetValue(expected_value)
+        if validator and not validator(expected_value, value_pattern.Value):
             raise ValueError(
-                f"Element found with {locator!r} couldn't set value: {new_value}"
+                f"Element found with {locator!r} couldn't set value: {expected_value}"
             )
 
     def _set_value_with_keys(
@@ -375,6 +381,7 @@ class ActionKeywords(LibraryContext):
         element: WindowsElement,
         append: bool,
         locator: Optional[Locator],
+        validator: Optional[Callable],
     ):
         self.logger.info(
             "%s the element value with `Send Keys`. (no patterns found)", action
@@ -398,9 +405,9 @@ class ActionKeywords(LibraryContext):
             current_value = ""
         if value:
             self.send_keys(element, keys=value, send_enter=False)
-            new_value = get_text()
-            if new_value is not None:
-                if new_value.strip() != f"{current_value}{value}".strip():
+            actual_value = get_text()
+            if actual_value is not None:
+                if validator and not validator(f"{current_value}{value}", actual_value):
                     raise ValueError(
                         f"Element found with {locator!r} couldn't send value"
                         f" through keys: {value}"
@@ -415,6 +422,7 @@ class ActionKeywords(LibraryContext):
         enter: bool = False,
         newline: bool = False,
         send_keys_fallback: bool = True,
+        validator: Optional[Callable] = set_value_validator,
     ) -> WindowsElement:
         """Set value of the element defined by the locator.
 
@@ -443,6 +451,10 @@ class ActionKeywords(LibraryContext):
             EOL included by default; this won't work with `send_keys_fallback` enabled)
         :param send_keys_fallback: Tries to set the value by sending it through keys
             if the main way of setting it fails. (enabled by default)
+        :param validator: Function receiving two parameters post-setting, the expected
+            and the current value, which returns `True` if the two values match. (by
+            default, the keyword will raise if the values are different, set this to
+            `None` to disable validation or pass your custom function instead)
         :returns: The element object identified through the passed `locator`.
 
         **Example: Robot Framework**
@@ -474,7 +486,7 @@ class ActionKeywords(LibraryContext):
                 # Continue appending and ensure a new line at the end by pressing
                 #  the Enter key this time.
                 Set Value    value=But this will appear on the 2nd line now.
-                ...    append=${True}   enter=${True}
+                ...    append=${True}   enter=${True}   validator=${None}
 
         **Example: Python**
 
@@ -507,6 +519,7 @@ class ActionKeywords(LibraryContext):
                 get_value_pattern=get_value_pattern,
                 append=append,
                 locator=locator,
+                validator=validator,
             )
         elif send_keys_fallback:
             self._set_value_with_keys(
@@ -516,6 +529,7 @@ class ActionKeywords(LibraryContext):
                 element=element,
                 append=append,
                 locator=locator,
+                validator=validator,
             )
         else:
             raise ActionNotPossible(
