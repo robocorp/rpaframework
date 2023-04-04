@@ -17,7 +17,11 @@ class BasicSwing extends JFrame implements WindowListener, ActionListener, ItemL
     JComboBox comboBox;
 
     public static void main(String[] args) {
-        BasicSwing myWindow = new BasicSwing("Chat Frame");
+        String window_title = "Chat Frame";
+        if (args.length==1) {
+            window_title = args[0];
+        }
+        BasicSwing myWindow = new BasicSwing(window_title);
         myWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         myWindow.setSize(800, 350);
         myWindow.setLocation(50, 100);

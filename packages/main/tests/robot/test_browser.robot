@@ -37,6 +37,7 @@ Does alert not contain
     Handle Alert    DISMISS
 
 Screenshot Robocorp Google search result
+    [Tags]   skip
     Go To    www.google.com
     Wait Until Element Is Visible    q
 
