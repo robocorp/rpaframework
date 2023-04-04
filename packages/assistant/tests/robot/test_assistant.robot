@@ -99,7 +99,6 @@ Must Be Short
     # We sleep to enable testing of a validation that won't return quickly
     # If there is a long sleep here the event synchronity gets out of order
     # Sleep  0.2
-    Log To Console  ${value}
     IF  len($value) > 3
         RETURN  Value Too Long
     ELSE
