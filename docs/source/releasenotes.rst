@@ -5,6 +5,15 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Assistant** 2.2.0:
+
+  - Add ``minimum_rows`` and ``maximum_rows`` arguments to ``Add Text Input``.
+  - Add ability to specify validation functions as Robot Framework keywords.
+  - Improve how validation errors are displayed. They display besides the input field
+    now, instead of bottom of the dialog.
+  - Fix checkbox values being returned as strings ``true`` and ``false`` instead of
+    booleans.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

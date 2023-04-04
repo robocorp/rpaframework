@@ -33,6 +33,19 @@ def length_greater_3(value):
         return "Length should be greater than 3"
 
 
+import re
+
+
+def validate_email(email):
+    # E-mail specification is complicated, this matches that the e-mail has
+    # at least one character before and after the @ sign, and at least one
+    # character after the dot.
+    regex = r"^.+@.+\..+"
+    valid = re.match(regex, email)
+    if not valid:
+        return "Invalid email address"
+
+
 def sleepy_print(arg):
     """used for testing is the button disabling working"""
     sleep(1)
@@ -59,7 +72,7 @@ def manual():
 
     assistant.add_text_input(
         "txt_input",
-        placeholder="placeholder",
+        placeholder="field with validation",
         required=True,
         validation=length_greater_3,
     )
@@ -92,10 +105,8 @@ def manual():
     )
 
     # assistant.add_dialog_next_page_button("Next page")
-
-    assistant.add_text_input("txt_input_2", placeholder="placeholder")
     assistant.add_text("List python files")
-    assistant.add_files("**/*.py")
+    assistant.add_files("src/**/*.py")
     assistant.add_image(
         "https://robocorp.com/assets/home/global-purple.svg", width=256, height=256
     )
@@ -108,6 +119,11 @@ def manual():
         lambda: assistant.clear_dialog(),
         location=VerticalLocation.Right,
     )
+
+    assistant.add_text_input(
+        "txt_input_2", placeholder="placeholder", minimum_rows=2, maximum_rows=3
+    )
+    assistant.add_text_input("email", label="Email", validation=validate_email)
 
     results = assistant.run_dialog(location=WindowLocation.TopLeft, timeout=180)
     print(results)

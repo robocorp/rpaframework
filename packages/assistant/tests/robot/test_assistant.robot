@@ -13,6 +13,11 @@ Main
     ${results}=    Ask User    location=TopLeft
     Log To Console  ${results}
 
+    Should Be True     ${results.true_checkbox}
+    Should Be True     $results.true_checkbox
+    Should Be True     not(${results.false_checkbox})
+    Should Be True     not($results.false_checkbox)
+
     Should Be Equal    ${results.slider}    ${0.5}
     Should Be Equal    ${results}[slider]    ${0.5}
 
@@ -94,9 +99,34 @@ DotDict Ui
 
     Refresh Dialog
 
+Must Be Short
+    [Arguments]  ${value}
+    # We sleep to enable testing of a validation that won't return quickly
+    # If there is a long sleep here the event synchronity gets out of order
+    # Sleep  0.2
+    IF  len($value) > 3
+        RETURN  Value Too Long
+    ELSE
+        RETURN
+    END
+
+Validate Email
+    [Arguments]    ${email}
+    # E-mail specification is complicated, this matches that the e-mail has
+    # at least one character before and after the @ sign, and at least one
+    # character after the dot.
+    ${regex}=    Set Variable    ^.+@.+\\..+
+    ${valid}=    Run Keyword And Return Status    Should Match Regexp  ${email}  ${regex}
+    IF  not $valid
+        RETURN  Invalid email address
+    END
+
+
 Control Buttons
     Add Heading    UI elements for testing
     Add Slider     name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
+    Add Checkbox    name=true_checkbox    label=Checkbox  default=True
+    Add Checkbox    name=false_checkbox   label=Checkbox  default=False
     Add Flet Icon    icon_name=check_circle_rounded    color=FF00FF    size=48
 
     Add Heading    good buttons
@@ -121,6 +151,10 @@ Control Buttons
     Add Button    add buttons (does not work)    Control Buttons
     Add Button    subrobot button (broken!)    Exec Robot
     Add Button    python button (broken!)    Exec Python
+
+    Add Heading  Inputs with validations
+    Add Text Input  short_text  required=True  validation=Must Be Short
+    Add text input    email  label=Email  validation=Validate Email
 
 
     Add Heading    submit is below this
