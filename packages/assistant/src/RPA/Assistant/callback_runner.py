@@ -1,12 +1,11 @@
 import logging
-from typing import Any, Callable, Dict, Optional, Union
-from flet_core import ControlEvent
-
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-from robot.errors import RobotError
-
-from robot.output.logger import LOGGER
 import types
+from typing import Any, Callable, Dict, Optional, Union
+
+from flet_core import ControlEvent
+from robot.errors import RobotError
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+from robot.output.logger import LOGGER
 
 
 class CallbackRunner:
@@ -78,7 +77,7 @@ class CallbackRunner:
         """
 
         def validate(e: ControlEvent) -> None:
-            def _nothing(*args, **kwargs):
+            def _nothing(*args, **kwargs):  # pylint: disable=unused-argument
                 pass
 
             logging_methods = (LOGGER.start_keyword, LOGGER.end_keyword)
