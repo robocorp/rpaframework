@@ -5,6 +5,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+04 Apr 2023
+-----------
+
 - Library **RPA.Assistant** 2.2.0:
 
   - Add ``minimum_rows`` and ``maximum_rows`` arguments to ``Add Text Input``.
@@ -13,10 +20,6 @@ Release notes
     now, instead of bottom of the dialog.
   - Fix checkbox values being returned as strings ``true`` and ``false`` instead of
     booleans.
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 22.4.0 - 29 Mar 2023
 --------------------
@@ -38,7 +41,6 @@ Release notes
   - Add support for parameterized sql queries
 
 - Library **RPA.PDF** (``rpaframework-pdf`` **7.1.3**) (:pr:`909`): Add documentation about PDF merge and split.
-
 
 22.3.0 - 22 Mar 2023
 --------------------
