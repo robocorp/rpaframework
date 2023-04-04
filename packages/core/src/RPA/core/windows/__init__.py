@@ -1,6 +1,7 @@
 import logging
 from typing import Optional
 
+from .elements import ElementMethods
 from .helpers import IS_WINDOWS
 from .inspect import ElementInspector
 from .locators import Locator, LocatorMethods
@@ -30,6 +31,7 @@ class WindowsElementsMixin:
 
     def _get_libraries(self, locators_path: Optional[str]):
         return [
+            ElementMethods(self),
             LocatorMethods(self, locators_path=locators_path),
             WindowMethods(self),
         ]

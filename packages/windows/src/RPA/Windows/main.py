@@ -33,7 +33,7 @@ def start_recording(verbose: bool = False):
                 recording.append({"type": "sleep", "value": seconds})
             recording_time = inspect_time
             try:
-                ElementInspector.inspect_element(recording=recording, verbose=verbose)
+                ElementInspector.inspect_element(recording, verbose=verbose)
             except (NotImplementedError, COMError) as err:
                 # At least in cases where Windows desktop is clicked as first event
                 # to capture, the recorder goes into some broken state where future

@@ -230,7 +230,10 @@ class MatchObject:
         elif control_strategy == "ClassName":
             self._classes.add(value.lower())  # pylint: disable=no-member
         elif control_strategy == "path":
-            value = [int(idx) for idx in value.strip(f" {self.PATH_SEP}").split(self.PATH_SEP)]
+            value = [
+                int(idx)
+                for idx in value.strip(f" {self.PATH_SEP}").split(self.PATH_SEP)
+            ]
         self.locators.append(  # pylint: disable=no-member
             (control_strategy, value, level)
         )
