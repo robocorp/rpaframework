@@ -13,6 +13,11 @@ Main
     ${results}=    Ask User    location=TopLeft
     Log To Console  ${results}
 
+    Should Be True     ${results.true_checkbox}
+    Should Be True     $results.true_checkbox
+    Should Be True     not(${results.false_checkbox})
+    Should Be True     not($results.false_checkbox)
+
     Should Be Equal    ${results.slider}    ${0.5}
     Should Be Equal    ${results}[slider]    ${0.5}
 
@@ -120,6 +125,8 @@ Validate Email
 Control Buttons
     Add Heading    UI elements for testing
     Add Slider     name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
+    Add Checkbox    name=true_checkbox    label=Checkbox  default=True
+    Add Checkbox    name=false_checkbox   label=Checkbox  default=False
     Add Flet Icon    icon_name=check_circle_rounded    color=FF00FF    size=48
 
     Add Heading    good buttons

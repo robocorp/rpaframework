@@ -6,7 +6,7 @@ from typing import Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
-from flet_core import Column, Control, AppBar, Row, Stack
+from flet_core import Checkbox, Column, Control, AppBar, Row, Stack
 from flet_core.control_event import ControlEvent
 from typing_extensions import Literal
 
@@ -121,6 +121,33 @@ class FletClient:
             self.clear_elements()
             self._to_disable.clear()
 
+    def _checkbox_data_saver(self, name: str, handler: Optional[Callable] = None):
+        """_make_on_change_data_saver special case for checkboxes, until
+        https://github.com/flet-dev/flet/issues/1251 is fixed"""
+
+        def handle_string_bool(bool_string: Literal["true", "false"]):
+            if bool_string == "true":
+                return True
+            elif bool_string == "false":
+                return False
+            else:
+                raise ValueError(f"Invalid checkbox value {bool_string}")
+
+        # We don't want the if inside the change_listener so it doesn't have to run on
+        # every on_change event
+        if not handler:
+
+            def change_listener(e: ControlEvent):
+                self.results[name] = handle_string_bool(e.data)
+
+        else:
+
+            def change_listener(e: ControlEvent):
+                handler(e)
+                self.results[name] = handle_string_bool(e.data)
+
+        return change_listener
+
     def _make_on_change_data_saver(
         self, name: str, handler: Optional[Callable] = None
     ) -> Callable[[ControlEvent], None]:
@@ -183,7 +210,13 @@ class FletClient:
             self._elements.visible_by_name[name] = element
             self._elements.used_names.add(name)
 
-            on_change_data_saver = self._make_on_change_data_saver(name, extra_handler)
+            if isinstance(element, Checkbox):
+                on_change_data_saver = self._checkbox_data_saver(name, extra_handler)
+
+            else:
+                on_change_data_saver = self._make_on_change_data_saver(
+                    name, extra_handler
+                )
 
             def on_change(event):
                 if validation_func:

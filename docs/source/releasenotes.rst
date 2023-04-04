@@ -11,6 +11,8 @@ Release notes
   - Add ability to specify validation functions as Robot Framework keywords.
   - Improve how validation errors are displayed. They display besides the input field
     now, instead of bottom of the dialog.
+  - Fix checkbox values being returned as strings ``true`` and ``false`` instead of
+    booleans.
 
 - Library **RPA.Excel.Files**
 
