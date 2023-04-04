@@ -230,7 +230,7 @@ class MatchObject:
         elif control_strategy == "ClassName":
             self._classes.add(value.lower())  # pylint: disable=no-member
         elif control_strategy == "path":
-            value = [int(idx) for idx in value.split(self.PATH_SEP)]
+            value = [int(idx) for idx in value.strip(f" {self.PATH_SEP}").split(self.PATH_SEP)]
         self.locators.append(  # pylint: disable=no-member
             (control_strategy, value, level)
         )
@@ -330,6 +330,10 @@ class LocatorMethods(WindowsContext):
             search_params[loc[0]] = loc[1]
         if "searchDepth" not in search_params:
             search_params["searchDepth"] = search_depth
+        elif {"desktop", "path"} & set(search_params):
+            self.logger.warning(
+                "Depth strategy has no effect on 'desktop:' or 'path:' ones!"
+            )
 
         # Obtain an element with the search parameters.
         if "desktop" in search_params:

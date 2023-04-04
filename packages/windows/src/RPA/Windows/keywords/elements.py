@@ -81,14 +81,9 @@ class ElementKeywords(LibraryContext):
         *,
         locator: Optional[str],
         depth: int,
-        children_stack: List[int],
-        child_pos: int,
+        path: str,
     ):
         # Adds current control child as element in the flattened tree structure.
-        children_stack[depth] = child_pos
-        path = MatchObject.PATH_SEP.join(
-            str(pos) for pos in children_stack[1 : depth + 1]
-        )
         if locator and path:
             control_locator = f"{locator} > path:{path}"
         elif path:
@@ -205,7 +200,11 @@ class ElementKeywords(LibraryContext):
 
             space = " " * depth * 4
             child_pos = brothers_count[hash(control)] - children_remaining
-            control_log(f"{space}{depth}-{child_pos}. {control_str}")
+            children_stack[depth] = child_pos
+            path = MatchObject.PATH_SEP.join(
+                str(pos) for pos in children_stack[1 : depth + 1]
+            )
+            control_log(f"{space}{depth}-{child_pos}. {control_str}    Path: {path}")
 
             if return_structure:
                 self._add_child_to_tree(
@@ -213,8 +212,7 @@ class ElementKeywords(LibraryContext):
                     structure,
                     locator=locator,
                     depth=depth,
-                    children_stack=children_stack,
-                    child_pos=child_pos,
+                    path=path,
                 )
 
         return structure if return_structure else None
