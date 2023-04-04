@@ -5,6 +5,9 @@ from flet_core import ControlEvent
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.errors import RobotError
 
+from robot.output.logger import LOGGER
+import types
+
 
 class CallbackRunner:
     """provides helper functionality for running Robot and Python callbacks in
@@ -73,18 +76,28 @@ class CallbackRunner:
         """wrapper code that is used to add wrapping for user functions when binding
         them to be run on validation
         """
-        # FIXME: we need some way to not spam the logs when the user is typing with
-        # callback calls
 
         def validate(e: ControlEvent) -> None:
-            error = self._run_robot_callback(kw_name, e.control.value)
-            e.control.error_text = error
-            self._client.flet_update()
-            self.validation_errors[element_name] = error
+            def _nothing(*args, **kwargs):
+                pass
+
+            logging_methods = (LOGGER.start_keyword, LOGGER.end_keyword)
+            try:
+                # Disable logging by monkey patching the robot logger
+                LOGGER.start_keyword = types.MethodType(_nothing, LOGGER)
+                LOGGER.end_keyword = types.MethodType(_nothing, LOGGER)
+
+                error = self._run_robot_callback(kw_name, e.control.value)
+                e.control.error_text = error
+                self._client.flet_update()
+                self.validation_errors[element_name] = error
+            finally:
+                LOGGER.start_keyword, LOGGER.end_keyword = logging_methods
 
         return validate
 
     def _run_robot_callback(self, kw_name: str, *args, **kwargs):
+
         try:
             return BuiltIn().run_keyword(kw_name, *args, **kwargs)
         except RobotNotRunningError:
