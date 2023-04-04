@@ -135,7 +135,9 @@ class ActionKeywords(LibraryContext):
         wait_time: Optional[float],
         timeout: Optional[float],
     ) -> WindowsElement:
-        click_wait_time: float = wait_time or self.ctx.wait_time
+        click_wait_time: float = (
+            wait_time if wait_time is not None else self.ctx.wait_time
+        )
         with self.set_timeout(timeout):
             element = self.ctx.get_element(locator)
             self._click_element(element, click_type, click_wait_time)
@@ -257,11 +259,12 @@ class ActionKeywords(LibraryContext):
             element = self.ctx.get_element(locator).item
         else:
             element = auto
-        keys_wait_time = wait_time or self.ctx.wait_time
+        keys: str = keys or ""
         if send_enter:
             keys += "{Enter}"
         if hasattr(element, "SendKeys"):
-            self.logger.info("Sending keys %r to element %r", keys, element)
+            self.logger.info("Sending keys %r to element: %s", keys, element)
+            keys_wait_time = wait_time if wait_time is not None else self.ctx.wait_time
             element.SendKeys(text=keys, interval=interval, waitTime=keys_wait_time)
         else:
             raise ActionNotPossible(
