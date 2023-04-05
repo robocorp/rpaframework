@@ -57,7 +57,7 @@ class ElementMethods(WindowsContext):
         locator: Optional[Locator] = None,
         max_depth: int = 8,
         capture_image_folder: Optional[str] = None,
-        log_as_warnings: bool = False,
+        log_as_warnings: Optional[bool] = False,
         return_structure: bool = False,
     ) -> Optional[StructureType]:
         # Cache how many brothers are in total given a child. (to know child position)
@@ -85,7 +85,11 @@ class ElementMethods(WindowsContext):
             image_folder = Path(capture_image_folder).expanduser().resolve()
             image_folder.mkdir(parents=True, exist_ok=True)
 
-        control_log = self.logger.warning if log_as_warnings else self.logger.info
+        control_log = {
+            None: self.logger.debug,
+            False: self.logger.info,
+            True: self.logger.warning,
+        }[log_as_warnings]
 
         for control, depth, children_remaining in auto.WalkTree(
             root_ctrl,

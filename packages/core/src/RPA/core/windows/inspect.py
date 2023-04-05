@@ -19,6 +19,8 @@ NOT_AVAILABLE = "N/A"
 class ElementInspector:
     """Element locator inspector"""
 
+    MATCH_PRIORITY = ["automation_id", "name"]  # element matching priority
+
     def __init__(self):
         # Lazily loaded with verbose mode on for printing the tree and returning the
         #  structure.
@@ -99,15 +101,15 @@ class ElementInspector:
                 }
             )
 
-    @staticmethod
+    @classmethod
     def _filter_structure(
+        cls,
         structure: StructureType,
         *,
         control: "Control",
-        name: str,
-        automation_id: str,
         control_type: str,
         class_name: str,
+        **kwargs,
     ) -> Dict[str, List[WindowsElement]]:
         elements: Dict[str, List[WindowsElement]] = {}
 
@@ -117,20 +119,17 @@ class ElementInspector:
             at_level += 1
 
         for element in structure[at_level]:
-            good = (
+            not_good = (
                 control_type
-                and control_type == element.control_type
+                and control_type != element.control_type
                 or class_name
-                and class_name == element.class_name
+                and class_name != element.class_name
             )
-            if not good:
+            if not_good:
                 continue
 
-            priority = {
-                "automation_id": automation_id,
-                "name": name,
-            }
-            for attr, value in priority.items():
+            for attr in cls.MATCH_PRIORITY:
+                value = kwargs[attr]
                 if value and value == getattr(element, attr):
                     elements.setdefault(attr, []).append(element)
 
@@ -143,12 +142,11 @@ class ElementInspector:
         #  (expands/shrinks/rotates) with element actions producing UI display changes.
         top_level_element = WindowsElement(top_level_control, None)
         structure = self.windows_elements.print_tree(
-            top_level_element, return_structure=True
+            top_level_element, return_structure=True, log_as_warnings=None
         )
         elems_dict = self._filter_structure(structure, control=control, **kwargs)
 
-        priority = ["automation_id", "name"]
-        for prio in priority:
+        for prio in self.MATCH_PRIORITY:
             elems = elems_dict.get(prio, [])
             for candidate in elems:
                 maybe_path = candidate.locator.rsplit(MatchObject.TREE_SEP, 1)[-1]
@@ -183,6 +181,8 @@ class ElementInspector:
                 q = MatchObject.QUOTE
                 name = f"{q}{name}{q}"
             locators.append(f"{name_property}{name}")
+        # NOTE(cmin764): Sometimes, the automation ID is a randomly generated number,
+        #  different with each run. (therefore you can't rely on it in the locator)
         if automation_id and not str(automation_id).isnumeric():
             locators.append(f"id:{automation_id}")
         if len(control_type) > 0:
@@ -196,10 +196,10 @@ class ElementInspector:
             path = self._match_element_for_path(
                 control,
                 top_level_control,
-                name=name,
-                automation_id=automation_id,
                 control_type=control_type,
                 class_name=class_name,
+                automation_id=automation_id,
+                name=name,
             )
             if path:
                 locators.append(path)
