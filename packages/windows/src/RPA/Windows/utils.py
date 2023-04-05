@@ -4,7 +4,6 @@ import platform
 from RPA.core.windows.helpers import (  # noqa: F401
     IS_WINDOWS,
     get_process_list,
-    is_numeric,
 )
 
 

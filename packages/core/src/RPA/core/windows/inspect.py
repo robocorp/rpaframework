@@ -1,8 +1,6 @@
-import itertools
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from RPA.core.windows import WindowsElements
 from RPA.core.windows.elements import StructureType
 from RPA.core.windows.helpers import IS_WINDOWS
 from RPA.core.windows.locators import MatchObject, WindowsElement
@@ -12,26 +10,32 @@ if IS_WINDOWS:
     import uiautomation as auto
     from uiautomation import Control
 
-    RecordElement = Dict[str, Optional[Union[float, str, Control, List[str]]]]
+
+RecordElement = Dict[str, Optional[Union[float, str, "Control", List[str]]]]
+
+NOT_AVAILABLE = "N/A"
 
 
 class ElementInspector:
     """Element locator inspector"""
 
-    def __int__(self):
+    def __init__(self):
         # Lazily loaded with verbose mode on for printing the tree and returning the
         #  structure.
-        self._windows_elements: Optional[WindowsElements] = None
+        self._windows_elements: Optional["WindowsElements"] = None
 
     @property
-    def windows_elements(self) -> WindowsElements:
+    def windows_elements(self) -> "WindowsElements":
+        """The minimal core flavor of the Windows library."""
         if not self._windows_elements:
+            from RPA.core.windows import WindowsElements
+
             self._windows_elements = WindowsElements()
         return self._windows_elements
 
     def inspect_element(
         self,
-        recording: List["RecordElement"],
+        recording: List[RecordElement],
         verbose: bool = False,
     ) -> None:
         """Inspect Windows element under mouse pointer.
@@ -51,7 +55,7 @@ class ElementInspector:
                 top_level_control = control.GetTopLevelControl()
             except AttributeError:
                 top_level_control = None
-                top_level_handle = "N/A"
+                top_level_handle = NOT_AVAILABLE
             else:
                 top_level_handle = top_level_control.NativeWindowHandle
                 try:
@@ -69,12 +73,14 @@ class ElementInspector:
                 control, top_level_control=top_level_control, verbose=verbose
             )
 
-            top_locator = " and ".join(top_properties) or "N/A"
-            parent_locator = " and ".join(parent_properties) or "N/A"
-            child_locator = " and ".join(child_properties) or "N/A"
-            locator_path = f"{parent_locator} > {child_locator}"
-            if "name:" in child_locator or "id:" in child_locator:
-                locator_path = child_locator
+            top_locator = " and ".join(top_properties) or NOT_AVAILABLE
+            parent_locator = " and ".join(parent_properties) or NOT_AVAILABLE
+            child_locator = " and ".join(child_properties) or NOT_AVAILABLE
+            control_locator = child_locator
+            if parent_locator != NOT_AVAILABLE and not (
+                "name:" in child_locator or "id:" in child_locator
+            ):
+                control_locator = f"{parent_locator} > {child_locator}"
 
             recording.append(
                 {
@@ -84,7 +90,7 @@ class ElementInspector:
                     "top": top_locator,
                     "top_handle": top_level_handle,
                     "x": top_level_control,
-                    "locator": locator_path,
+                    "locator": control_locator,
                     "top_props": top_properties,
                     "parent_props": parent_properties,
                     "props": child_properties,
@@ -93,18 +99,24 @@ class ElementInspector:
                 }
             )
 
+    @staticmethod
     def _filter_structure(
-        self,
         structure: StructureType,
         *,
+        control: "Control",
+        name: str,
+        automation_id: str,
         control_type: str,
         class_name: str,
-        automation_id: str,
-        name: str,
     ) -> Dict[str, List[WindowsElement]]:
         elements: Dict[str, List[WindowsElement]] = {}
 
-        for element in itertools.chain(*structure.values()):
+        at_level = 0
+        while not control.IsTopLevel():
+            control = control.GetParentControl()
+            at_level += 1
+
+        for element in structure[at_level]:
             good = (
                 control_type
                 and control_type == element.control_type
@@ -124,11 +136,32 @@ class ElementInspector:
 
         return elements
 
+    def _match_element_for_path(
+        self, control: "Control", top_level_control: "Control", **kwargs
+    ) -> Optional[str]:
+        # Obtain a new element tree structure during every click, as the tree changes
+        #  (expands/shrinks/rotates) with element actions producing UI display changes.
+        top_level_element = WindowsElement(top_level_control, None)
+        structure = self.windows_elements.print_tree(
+            top_level_element, return_structure=True
+        )
+        elems_dict = self._filter_structure(structure, control=control, **kwargs)
+
+        priority = ["automation_id", "name"]
+        for prio in priority:
+            elems = elems_dict.get(prio, [])
+            for candidate in elems:
+                maybe_path = candidate.locator.rsplit(MatchObject.TREE_SEP, 1)[-1]
+                if "path:" in maybe_path:
+                    return maybe_path
+
+        return None
+
     def _get_element_key_properties(
         self,
         control: Optional["Control"],
         *,
-        top_level_control: Optional["Control"],
+        top_level_control: Optional["Control"] = None,
         verbose: bool,
         regex_limit: int = 300,
     ) -> List[str]:
@@ -160,24 +193,14 @@ class ElementInspector:
         # Add the `path:` strategy as well with verbose recordings. (useful when you
         #  can't rely on Automation IDs nor names)
         if verbose and top_level_control:
-            path: Optional[str] = None
-            structure = self.windows_elements.print_tree(
-                top_level_control, return_structure=True
-            )
-            elems_dict = self._filter_structure(
-                structure,
+            path = self._match_element_for_path(
+                control,
+                top_level_control,
+                name=name,
+                automation_id=automation_id,
                 control_type=control_type,
                 class_name=class_name,
-                automation_id=automation_id,
-                name=name,
             )
-            priority = ["automation_id", "name"]
-            for prio in priority:
-                elems = elems_dict.get(prio)
-                if elems:
-                    match = elems[0]
-                    path = match.locator.rsplit(MatchObject.TREE_SEP, 1)[-1]
-                    break
             if path:
                 locators.append(path)
 
