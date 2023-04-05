@@ -8,8 +8,8 @@ from RPA.core.locators import LocatorsDatabase, WindowsLocator
 from RPA.core.vendor.deco import keyword as method
 from RPA.core.windows.context import (
     ElementNotFound,
-    WindowsContext,
     WindowControlError,
+    WindowsContext,
     with_timeout,
 )
 from RPA.core.windows.helpers import IS_WINDOWS
@@ -94,15 +94,19 @@ class WindowsElement:
         pattern = cls._get_locator_value(locator, "RegexName")
         return bool(re.match(pattern, win_elem.name))
 
-    def is_sibling(self, win_elem: "WindowsElement") -> bool:
-        """Returns `True` if the provided window element is a sibling."""
-        locator: Optional[Locator] = win_elem.locator
+    @staticmethod
+    def norm_locator(locator: Optional[Locator]) -> Optional[str]:
         while locator:
             if isinstance(locator, WindowsElement):
                 locator = locator.locator
             else:  # finally, reached a string locator
                 break
-        else:
+        return locator
+
+    def is_sibling(self, win_elem: "WindowsElement") -> bool:
+        """Returns `True` if the provided window element is a sibling."""
+        locator: Optional[str] = self.norm_locator(win_elem)
+        if not locator:
             return True  # nothing to check here, can be considered sibling
 
         last_locator_part = locator.split(MatchObject.TREE_SEP)[-1]
@@ -226,7 +230,10 @@ class MatchObject:
         elif control_strategy == "ClassName":
             self._classes.add(value.lower())  # pylint: disable=no-member
         elif control_strategy == "path":
-            value = [int(idx) for idx in value.split(self.PATH_SEP)]
+            value = [
+                int(idx)
+                for idx in value.strip(f" {self.PATH_SEP}").split(self.PATH_SEP)
+            ]
         self.locators.append(  # pylint: disable=no-member
             (control_strategy, value, level)
         )
@@ -326,6 +333,10 @@ class LocatorMethods(WindowsContext):
             search_params[loc[0]] = loc[1]
         if "searchDepth" not in search_params:
             search_params["searchDepth"] = search_depth
+        elif {"desktop", "path"} & set(search_params):
+            self.logger.warning(
+                "Depth strategy has no effect on 'desktop:' or 'path:' ones!"
+            )
 
         # Obtain an element with the search parameters.
         if "desktop" in search_params:
