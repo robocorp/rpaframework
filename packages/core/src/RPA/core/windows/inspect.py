@@ -21,8 +21,7 @@ class ElementInspector:
 
     MATCH_PRIORITY = ["automation_id", "name"]  # element matching priority
 
-    def __init__(self, max_depth: int = 8):
-        self._max_depth = max_depth
+    def __init__(self):
         # Lazily loaded with verbose mode on for printing the tree and returning the
         #  structure.
         self._windows_elements: Optional["WindowsElements"] = None
@@ -103,24 +102,17 @@ class ElementInspector:
             )
 
     @classmethod
-    def _filter_structure(
+    def _filter_elements(
         cls,
-        structure: StructureType,
+        elements: List["WindowsElements"],
         *,
-        control: "Control",
         control_type: str,
         class_name: str,
         **kwargs,
     ) -> Dict[str, List[WindowsElement]]:
-        elements: Dict[str, List[WindowsElement]] = {}
+        candidates: Dict[str, List[WindowsElement]] = {}
 
-        at_level = 0
-        cursor = control
-        while not cursor.IsTopLevel():
-            cursor = cursor.GetParentControl()
-            at_level += 1
-
-        for element in structure[at_level]:
+        for element in elements:
             not_good = (
                 control_type
                 and control_type != element.control_type
@@ -133,13 +125,20 @@ class ElementInspector:
             for attr in cls.MATCH_PRIORITY:
                 value = kwargs[attr]
                 if value and value == getattr(element, attr):
-                    elements.setdefault(attr, []).append(element)
+                    candidates.setdefault(attr, []).append(element)
 
-        return elements
+        return candidates
 
     def _match_element_for_path(
         self, control: "Control", top_level_control: "Control", **kwargs
     ) -> Optional[str]:
+        # Compute how deep the search should go.
+        at_level = 0
+        cursor = control
+        while not cursor.IsTopLevel():
+            cursor = cursor.GetParentControl()
+            at_level += 1
+
         # Obtain a new element tree structure during every click, as the tree changes
         #  (expands/shrinks/rotates) with element actions producing UI display changes.
         top_level_element = WindowsElement(top_level_control, None)
@@ -147,13 +146,13 @@ class ElementInspector:
             top_level_element,
             return_structure=True,
             log_as_warnings=None,
-            max_depth=self._max_depth,
+            max_depth=at_level,
         )
-        elems_dict = self._filter_structure(structure, control=control, **kwargs)
+        elements_dict = self._filter_elements(structure[at_level], **kwargs)
 
         for prio in self.MATCH_PRIORITY:
-            elems = elems_dict.get(prio, [])
-            for candidate in elems:
+            elements = elements_dict.get(prio, [])
+            for candidate in elements:
                 maybe_path = candidate.locator.rsplit(MatchObject.TREE_SEP, 1)[-1]
                 if "path:" in maybe_path:
                     return maybe_path

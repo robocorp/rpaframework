@@ -46,14 +46,14 @@ def get_recording(show_sleeps: bool = False) -> str:
     return f"{header}{result}{footer}"
 
 
-def start_recording(max_depth: int = 8, verbose: bool = False):
+def start_recording(verbose: bool = False):
     """Start recording elements with mouse clicks.
 
     Can be stopped by pressing the *ESC* key.
     """
     recording_time: Optional[datetime] = None
     recording.clear()
-    inspector = ElementInspector(max_depth=max_depth)
+    inspector = ElementInspector()
 
     def on_click(x, y, button, pressed):  # pylint: disable=W0613
         nonlocal recording_time  # pylint: disable=W0602
