@@ -573,19 +573,33 @@ class ActionKeywords(ActionMethods):
     def screenshot(self, locator: Locator, filename: Union[str, Path]) -> str:
         """Take a screenshot of the element defined by the locator.
 
-        Exception ``ActionNotPossible`` is raised if element does not
-        allow CaptureToImage action.
+        An `ActionNotPossible` exception is raised if the element doesn't allow being
+        captured.
 
         :param locator: String locator or element object.
-        :param filename: image filename
-        :return: absolute path to the screenshot file
+        :param filename: Image file name/path. (can be absolute/relative)
+        :raises ActionNotPossible: When the element can't be captured.
+        :returns: Absolute file path of the taken screenshot image.
 
-        Example:
+        **Example: Robot Framework**
 
         .. code-block:: robotframework
 
-            Screenshot  desktop   desktop.png
-            Screenshot  subname:Notepad   notepad.png
+            *** Tasks ***
+            Take Screenshots
+                Screenshot    desktop    desktop.png
+                Screenshot    subname:Notepad    ${OUTPUT_DIR}${/}notepad.png
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+            lib = Windows()
+
+            def take_screenshots():
+                lib.screenshot("desktop", "desktop.png")
+                lib.screenshot("subname:Notepad", "output/notepad.png")
         """
         return super().screenshot(locator, filename)
 
