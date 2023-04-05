@@ -125,9 +125,10 @@ class LocatorKeywords(LocatorMethods):
 
         # Take all the elements (no matter their level) starting from a parent as
         #  search tree root.
-        parent_locator = None
-        if locator:
-            branches = locator.rsplit(MatchObject.TREE_SEP, 1)
+        parent_locator: Optional[str] = None
+        locator_str: Optional[str] = WindowsElement.norm_locator(locator)
+        if locator_str:
+            branches = locator_str.rsplit(MatchObject.TREE_SEP, 1)
             if len(branches) == 2:
                 # Full locator's parent becomes the root for the search.
                 parent_locator = branches[0]
@@ -139,14 +140,14 @@ class LocatorKeywords(LocatorMethods):
             root_element,
             timeout,
         )
-        # Explore the entire subtree of elements starting with the resulted root above
+        # Explore the entire subtree of elements starting from the resulted root above
         #  and keep only the ones matching the strategies in the last locator branch.
         tree_generator = auto.WalkTree(
             top_element.item,
             getFirstChild=get_first_child,
             getNextSibling=get_next_sibling,
             yieldCondition=compare,
-            includeTop=True,
+            includeTop=not locator,
             maxDepth=search_depth,
         )
         elements = []
