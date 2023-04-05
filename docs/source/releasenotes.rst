@@ -9,6 +9,18 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+22.5.0 - 05 Apr 2023
+--------------------
+
+- Library **RPA.Windows** (``rpaframework-windows`` **7.3.0**; :pr:`912`):
+
+  - Our Windows elements recorder (`windows-recorder`) supports `path:` strategy
+    display when run with verbosity on. (``-v`` flag)
+  - Keyword ``Print Tree`` now displays the `path:` strategy locator alongside printed
+    controls and flattened-by-level returned elements.
+  - Keyword ``Set Value`` supports value validation customization through the
+    `validator` parameter.
+
 04 Apr 2023
 -----------
 
