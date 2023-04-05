@@ -21,7 +21,8 @@ class ElementInspector:
 
     MATCH_PRIORITY = ["automation_id", "name"]  # element matching priority
 
-    def __init__(self):
+    def __init__(self, max_depth: int = 8):
+        self._max_depth = max_depth
         # Lazily loaded with verbose mode on for printing the tree and returning the
         #  structure.
         self._windows_elements: Optional["WindowsElements"] = None
@@ -114,8 +115,9 @@ class ElementInspector:
         elements: Dict[str, List[WindowsElement]] = {}
 
         at_level = 0
-        while not control.IsTopLevel():
-            control = control.GetParentControl()
+        cursor = control
+        while not cursor.IsTopLevel():
+            cursor = cursor.GetParentControl()
             at_level += 1
 
         for element in structure[at_level]:
@@ -142,7 +144,10 @@ class ElementInspector:
         #  (expands/shrinks/rotates) with element actions producing UI display changes.
         top_level_element = WindowsElement(top_level_control, None)
         structure = self.windows_elements.print_tree(
-            top_level_element, return_structure=True, log_as_warnings=None
+            top_level_element,
+            return_structure=True,
+            log_as_warnings=None,
+            max_depth=self._max_depth,
         )
         elems_dict = self._filter_structure(structure, control=control, **kwargs)
 
@@ -167,20 +172,20 @@ class ElementInspector:
             print("Got null control!")
             return []
 
-        name = control.Name.strip()
+        display_name = name = control.Name
         automation_id = control.AutomationId
-        control_type = control.ControlTypeName.strip()
-        class_name = control.ClassName.strip()
+        control_type = control.ControlTypeName
+        class_name = control.ClassName
         locators = []
-        if len(name) > 0:
+        if len(display_name) > 0:
             name_property = "name:"
-            if len(name) > regex_limit:
+            if len(display_name) > regex_limit:
                 name_property = "regex:"
-                name = name[:regex_limit].strip()
-            if " " in name:
+                display_name = display_name[:regex_limit].strip()
+            if " " in display_name:
                 q = MatchObject.QUOTE
-                name = f"{q}{name}{q}"
-            locators.append(f"{name_property}{name}")
+                display_name = f"{q}{display_name}{q}"
+            locators.append(f"{name_property}{display_name}")
         # NOTE(cmin764): Sometimes, the automation ID is a randomly generated number,
         #  different with each run. (therefore you can't rely on it in the locator)
         if automation_id and not str(automation_id).isnumeric():

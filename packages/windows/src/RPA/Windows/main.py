@@ -29,7 +29,7 @@ def get_recording(show_sleeps: bool = False) -> str:
             new_top = item["top"]
             if not top_window or new_top != top_window:
                 output.append(
-                    f"Control Window    {new_top}  # handle:{item['top_handle']}"
+                    f"\nControl Window    {new_top}  # handle:{item['top_handle']}"
                 )
                 top_window = new_top
             else:
@@ -39,21 +39,21 @@ def get_recording(show_sleeps: bool = False) -> str:
     header = (
         f"\n{sep}"
         "\nCopy-paste the code below into your `*** Tasks ***` or `*** Keywords ***`"
-        f"\n{sep}\n\n"
+        f"\n{sep}\n"
     )
     result = "\n".join(output)
     footer = f"\n\n{sep}"
     return f"{header}{result}{footer}"
 
 
-def start_recording(verbose: bool = False):
+def start_recording(max_depth: int = 8, verbose: bool = False):
     """Start recording elements with mouse clicks.
 
     Can be stopped by pressing the *ESC* key.
     """
     recording_time: Optional[datetime] = None
     recording.clear()
-    inspector = ElementInspector()
+    inspector = ElementInspector(max_depth=max_depth)
 
     def on_click(x, y, button, pressed):  # pylint: disable=W0613
         nonlocal recording_time  # pylint: disable=W0602
