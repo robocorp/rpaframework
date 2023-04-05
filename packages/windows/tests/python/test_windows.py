@@ -1,5 +1,6 @@
-import pytest
 from unittest import mock
+
+import pytest
 
 from RPA.Windows import Windows
 from RPA.Windows.utils import IS_WINDOWS

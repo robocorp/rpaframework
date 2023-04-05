@@ -4,12 +4,15 @@ Library           Process
 Library           RPA.Windows
 Library           String
 
-Force Tags      skip
 Test Setup      Set Wait Time    0.7
+
+Default Tags      skip
 
 
 *** Variables ***
-# Not used as vars, but make sure you have these in PATH.
+${RESOURCES}      ${CURDIR}${/}..${/}resources
+${RESULTS}        ${CURDIR}${/}..${/}results
+
 ${EXE_UIDEMO}       UIDemo.exe
 ${EXE_CALCULATOR}   calc.exe
 ${EXE_SPOTIFY}      Spotify.exe
@@ -432,6 +435,7 @@ Test Locator Path Strategy
 
     # Check the structure returned by the tree printing.
     ${tree} =   Print Tree      Calculator > path:2|3|2|8   return_structure=${True}
+    ...     capture_image_folder=${RESULTS}${/}images   log_as_warnings=${True}
     Log To Console      ${tree}
     # Check if the fifth control on level 2 in the tree is actually the "Four" button.
     ${elem} =   Set Variable    ${tree}[${2}][${5 - 1}]

@@ -9,6 +9,10 @@ if IS_WINDOWS:
     from comtypes import COMError  # noqa
 
 
+class ActionNotPossible(ValueError):
+    """Action is not possible for the given Control."""
+
+
 class ElementNotFound(ValueError):
     """No matching elements were found."""
 

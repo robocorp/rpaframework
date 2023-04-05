@@ -1,14 +1,14 @@
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from RPA.core.windows.elements import StructureType
+from RPA.core.windows import WindowsElements
 from RPA.core.windows.helpers import IS_WINDOWS
 from RPA.core.windows.locators import MatchObject, WindowsElement
 from RPA.core.windows.window import WindowMethods
 
 if IS_WINDOWS:
     import uiautomation as auto
-    from uiautomation import Control
+    from uiautomation import Control  # pylint: disable=unused-import
 
 
 RecordElement = Dict[str, Optional[Union[float, str, "Control", List[str]]]]
@@ -24,14 +24,12 @@ class ElementInspector:
     def __init__(self):
         # Lazily loaded with verbose mode on for printing the tree and returning the
         #  structure.
-        self._windows_elements: Optional["WindowsElements"] = None
+        self._windows_elements: Optional[WindowsElements] = None
 
     @property
-    def windows_elements(self) -> "WindowsElements":
+    def windows_elements(self) -> WindowsElements:
         """The minimal core flavor of the Windows library."""
         if not self._windows_elements:
-            from RPA.core.windows import WindowsElements
-
             self._windows_elements = WindowsElements()
         return self._windows_elements
 
@@ -101,10 +99,41 @@ class ElementInspector:
                 }
             )
 
+    @staticmethod
+    def _get_locators(*, regex_limit: int, **kwargs) -> List[str]:
+        locators = []
+
+        name = kwargs["name"]
+        if name:
+            name_property = "name:"
+            if len(name) > regex_limit:
+                name_property = "regex:"
+                name = name[:regex_limit].strip()
+            if " " in name:
+                q = MatchObject.QUOTE
+                name = f"{q}{name}{q}"
+            locators.append(f"{name_property}{name}")
+
+        automation_id, control_type, class_name = (
+            kwargs["automation_id"],
+            kwargs["control_type"],
+            kwargs["class_name"],
+        )
+        # NOTE(cmin764): Sometimes, the automation ID is a randomly generated number,
+        #  different with each run. (therefore you can't rely on it in the locator)
+        if automation_id and not str(automation_id).isnumeric():
+            locators.append(f"id:{automation_id}")
+        if control_type:
+            locators.append(f"type:{control_type}")
+        if class_name:
+            locators.append(f"class:{class_name}")
+
+        return locators
+
     @classmethod
     def _filter_elements(
         cls,
-        elements: List["WindowsElements"],
+        elements: List[WindowsElement],
         *,
         control_type: str,
         class_name: str,
@@ -138,6 +167,8 @@ class ElementInspector:
         while not cursor.IsTopLevel():
             cursor = cursor.GetParentControl()
             at_level += 1
+        if at_level == 0:
+            return None  # the clicked element is the root of the tree (main window)
 
         # Obtain a new element tree structure during every click, as the tree changes
         #  (expands/shrinks/rotates) with element actions producing UI display changes.
@@ -171,28 +202,13 @@ class ElementInspector:
             print("Got null control!")
             return []
 
-        display_name = name = control.Name
-        automation_id = control.AutomationId
-        control_type = control.ControlTypeName
-        class_name = control.ClassName
-        locators = []
-        if len(display_name) > 0:
-            name_property = "name:"
-            if len(display_name) > regex_limit:
-                name_property = "regex:"
-                display_name = display_name[:regex_limit].strip()
-            if " " in display_name:
-                q = MatchObject.QUOTE
-                display_name = f"{q}{display_name}{q}"
-            locators.append(f"{name_property}{display_name}")
-        # NOTE(cmin764): Sometimes, the automation ID is a randomly generated number,
-        #  different with each run. (therefore you can't rely on it in the locator)
-        if automation_id and not str(automation_id).isnumeric():
-            locators.append(f"id:{automation_id}")
-        if len(control_type) > 0:
-            locators.append(f"type:{control_type}")
-        if len(class_name) > 0:
-            locators.append(f"class:{class_name}")
+        props = {
+            "name": control.Name,
+            "automation_id": control.AutomationId,
+            "control_type": control.ControlTypeName,
+            "class_name": control.ClassName,
+        }
+        locators = self._get_locators(regex_limit=regex_limit, **props)
 
         # Add the `path:` strategy as well with verbose recordings. (useful when you
         #  can't rely on Automation IDs nor names)
@@ -200,10 +216,7 @@ class ElementInspector:
             path = self._match_element_for_path(
                 control,
                 top_level_control,
-                control_type=control_type,
-                class_name=class_name,
-                automation_id=automation_id,
-                name=name,
+                **props,
             )
             if path:
                 locators.append(path)

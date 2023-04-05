@@ -17,20 +17,6 @@ StructureType = Dict[int, List[WindowsElement]]
 class ElementMethods(WindowsContext):
     """Keywords for listing Windows GUI elements."""
 
-    def _save_child_image(
-        self, control: "Control", *, image_folder: Path, image_idx: int
-    ) -> str:
-        # Saves control child as local image.
-        capture_filename = f"{control.ControlType}_{image_idx}.png"
-        img_path = str(image_folder / capture_filename)
-        try:
-            control.CaptureToImage(img_path)
-        except Exception as exc:  # pylint: disable=broad-except
-            self.logger.warning("Couldn't capture into %r due to: %s", img_path, exc)
-            return ""  # no suffix as image couldn't be saved
-        else:
-            return f" [{capture_filename}]"  # control string new suffix
-
     @staticmethod
     def _add_child_to_tree(
         control: "Control",
@@ -100,10 +86,17 @@ class ElementMethods(WindowsContext):
             control_str = str(control)
 
             if image_folder:
-                control_suffix: str = self._save_child_image(
-                    control, image_folder=image_folder, image_idx=image_idx
-                )
-                control_str += control_suffix
+                element = WindowsElement(control, locator)
+                capture_filename = f"{control.ControlType}_{image_idx}.png"
+                image_path = image_folder / capture_filename
+                try:
+                    self.ctx.screenshot(element, image_path)
+                except Exception as exc:  # pylint: disable=broad-except
+                    self.logger.warning(
+                        "Couldn't capture into %r due to: %s", image_path, exc
+                    )
+                else:
+                    control_str += f"    Image: {capture_filename}"
                 image_idx += 1
 
             space = " " * depth * 4

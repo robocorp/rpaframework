@@ -2,11 +2,12 @@ import re
 from pathlib import Path
 from typing import Callable, Optional, Union
 
+from RPA.core.windows.action import ActionMethods
 from RPA.core.windows.locators import Locator, WindowsElement
 
 from RPA.Windows import utils
 from RPA.Windows.keywords import keyword
-from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
+from RPA.Windows.keywords.context import ActionNotPossible
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
@@ -20,8 +21,8 @@ def set_value_validator(expected: str, actual: str) -> bool:
     return actual.strip() == expected.strip()  # due to EOLs inconsistency
 
 
-class ActionKeywords(LibraryContext):
-    """Keywords for performing desktop actions"""
+class ActionKeywords(ActionMethods):
+    """Keywords for performing desktop actions."""
 
     @keyword(tags=["action", "mouse"])
     def click(
@@ -569,7 +570,7 @@ class ActionKeywords(LibraryContext):
         return old_value
 
     @keyword(tags=["action"])
-    def screenshot(self, locator: Locator, filename: str) -> str:
+    def screenshot(self, locator: Locator, filename: Union[str, Path]) -> str:
         """Take a screenshot of the element defined by the locator.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -586,17 +587,7 @@ class ActionKeywords(LibraryContext):
             Screenshot  desktop   desktop.png
             Screenshot  subname:Notepad   notepad.png
         """
-        element = self.ctx.get_element(locator)
-        if not hasattr(element.item, "CaptureToImage"):
-            raise ActionNotPossible(
-                f"Element found with {locator!r} does not have 'CaptureToImage' "
-                "attribute"
-            )
-
-        element.item.SetFocus()
-        filepath = str(Path(filename).expanduser().resolve())
-        element.item.CaptureToImage(filepath)
-        return filepath
+        return super().screenshot(locator, filename)
 
     @keyword(tags=["action"])
     def set_global_timeout(self, timeout: float) -> float:

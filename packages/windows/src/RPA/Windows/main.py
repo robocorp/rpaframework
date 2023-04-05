@@ -2,9 +2,9 @@ from datetime import datetime
 from typing import List, Optional
 
 import fire
-from RPA.core.windows.inspect import ElementInspector, RecordElement
 from comtypes import COMError
-from pynput_robocorp import mouse, keyboard  # pylint: disable=C0415
+from pynput_robocorp import keyboard, mouse  # pylint: disable=C0415
+from RPA.core.windows.inspect import ElementInspector, RecordElement
 
 
 recording: List[RecordElement] = []

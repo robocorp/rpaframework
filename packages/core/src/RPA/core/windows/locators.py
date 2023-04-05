@@ -8,8 +8,8 @@ from RPA.core.locators import LocatorsDatabase, WindowsLocator
 from RPA.core.vendor.deco import keyword as method
 from RPA.core.windows.context import (
     ElementNotFound,
-    WindowsContext,
     WindowControlError,
+    WindowsContext,
     with_timeout,
 )
 from RPA.core.windows.helpers import IS_WINDOWS

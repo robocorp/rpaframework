@@ -1,7 +1,7 @@
 import base64
+from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Optional
-from io import BytesIO
 
 from PIL import Image
 
@@ -10,12 +10,12 @@ from RPA.core.windows.context import WindowsContext
 from RPA.core.windows.helpers import IS_WINDOWS, get_process_list
 
 if IS_WINDOWS:
+    import uiautomation as auto
     import win32api
     import win32con
     import win32gui
     import win32process
     import win32ui
-    import uiautomation as auto
 
 
 class WindowMethods(WindowsContext):

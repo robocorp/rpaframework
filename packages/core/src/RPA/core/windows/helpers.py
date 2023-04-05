@@ -1,5 +1,5 @@
-from typing import Dict
 import platform
+from typing import Dict
 
 IS_WINDOWS = platform.system() == "Windows"
 
