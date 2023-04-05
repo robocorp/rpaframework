@@ -138,18 +138,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.105"
+version = "1.26.106"
 description = "The AWS SDK for Python"
 category = "dev"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.105-py3-none-any.whl", hash = "sha256:f4951f8162905b96fd045e32853ba8cf707042faac846a23910817c508ef27d7"},
-    {file = "boto3-1.26.105.tar.gz", hash = "sha256:2914776e0138530ec6464d0e2f05b4aa18e9212ac920c48472f8a93650feaed2"},
+    {file = "boto3-1.26.106-py3-none-any.whl", hash = "sha256:53d449bc3445da0a8812857f3e24e143dc56573bc365f36a5610900b09d06faf"},
+    {file = "boto3-1.26.106.tar.gz", hash = "sha256:bdabab7ad27ae86de22a8687cbf55d8a152c6d6f178ffb452e560bac0be957a7"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.105,<1.30.0"
+botocore = ">=1.29.106,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -158,14 +158,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.105"
+version = "1.29.106"
 description = "Low-level, data-driven core of boto 3."
 category = "dev"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.105-py3-none-any.whl", hash = "sha256:06a2838daad3f346cba5460d0d3deb198225b556ff9ca729798d787fadbdebde"},
-    {file = "botocore-1.29.105.tar.gz", hash = "sha256:17c82391dfd6aaa8f96fbbb08cad2c2431ef3cda0ece89e6e6ba444c5eed45c2"},
+    {file = "botocore-1.29.106-py3-none-any.whl", hash = "sha256:d50df9a39da1b0e475727c6c2ba141b44d9df527d3dc1936b264ee4cb1525ab7"},
+    {file = "botocore-1.29.106.tar.gz", hash = "sha256:eaaa669fe33a0ef2e9d345a98ed0befac1ea33395d63620913c1bb738c387d4d"},
 ]
 
 [package.dependencies]
@@ -1802,14 +1802,14 @@ doc = ["furo", "sphinx", "sphinx-copybutton (==0.3.3)", "sphinx-design"]
 
 [[package]]
 name = "rpaframework-core"
-version = "10.4.3"
+version = "11.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_core-10.4.3-py3-none-any.whl", hash = "sha256:ac76116adea24612fe2dbbed0ff4eeabd06e6c80c23608de42b35b09d77473c5"},
-    {file = "rpaframework_core-10.4.3.tar.gz", hash = "sha256:8f0f37592ac535245465779c4a8838c135b8106ec73c1ed53b169f04447844d2"},
+    {file = "rpaframework_core-11.0.0-py3-none-any.whl", hash = "sha256:d04a4c18a4f682c6a9511184f7d3c2c9fb80c60b75ebd8d4ee7d26e3f833b96a"},
+    {file = "rpaframework_core-11.0.0.tar.gz", hash = "sha256:1d9e8bf4b21e757b12d91beba0a16e75b2737468f5ecba5af1ca4cef85887735"},
 ]
 
 [package.dependencies]
@@ -2636,4 +2636,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "5dc778c6277b3f84aa895c9a07d7002bd5e470055f8d5cfff8d2473db94b5b76"
+content-hash = "7f2b0807d75526e652ce6b2cd61d65f5e0dd9a91923df090e14523596a3b14a8"
