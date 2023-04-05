@@ -9,6 +9,18 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+04 Apr 2023
+-----------
+
+- Library **RPA.Assistant** 2.2.0:
+
+  - Add ``minimum_rows`` and ``maximum_rows`` arguments to ``Add Text Input``.
+  - Add ability to specify validation functions as Robot Framework keywords.
+  - Improve how validation errors are displayed. They display besides the input field
+    now, instead of bottom of the dialog.
+  - Fix checkbox values being returned as strings ``true`` and ``false`` instead of
+    booleans.
+
 22.4.0 - 29 Mar 2023
 --------------------
 
@@ -29,7 +41,6 @@ Release notes
   - Add support for parameterized sql queries
 
 - Library **RPA.PDF** (``rpaframework-pdf`` **7.1.3**) (:pr:`909`): Add documentation about PDF merge and split.
-
 
 22.3.0 - 22 Mar 2023
 --------------------

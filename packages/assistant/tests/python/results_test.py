@@ -52,3 +52,11 @@ def test_dotdict_access(assistant: Assistant):
     assert results.txt_input == "text"
     assert results["txt_input"] == "text"
     assert results.get("txt_input") == "text"
+
+
+def test_checkbox_input(assistant: Assistant):
+    assistant.add_checkbox("checkbox_true", "True", default=True)
+    assistant.add_checkbox("checkbox_false", "False")
+    results = assistant._get_results()
+    assert results.checkbox_true is True
+    assert results.checkbox_false is False

@@ -35,10 +35,10 @@ from flet_core import Stack
 from flet_core.control_event import ControlEvent
 from flet_core.dropdown import Option
 from robot.api.deco import keyword, library
-from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.utils.dotdict import DotDict
 from typing_extensions import Literal
+from RPA.Assistant.callback_runner import CallbackRunner
 
 from RPA.Assistant.flet_client import FletClient
 from RPA.Assistant.types import (
@@ -181,7 +181,7 @@ class Assistant:
         self.logger = logging.getLogger(__name__)
         os.environ["FLET_LOG_LEVEL"] = "warning"
         self._client = FletClient()
-        self._validations: Dict[str, Callable] = {}
+        self._callbacks = CallbackRunner(self._client)
         self._required_fields: Set[str] = set()
         self._open_layouting: List[str] = []
 
@@ -200,14 +200,6 @@ class Assistant:
         except RobotNotRunningError:
             pass
 
-    def _create_error(self, error_message: str):
-        self._client.page.add(
-            Text(
-                error_message,
-                color=flet.colors.RED,
-            )
-        )
-
     def _create_closing_button(self, label="Submit") -> Control:
         def validate_and_close(*_):
             # remove None's from the result dictionary
@@ -219,26 +211,19 @@ class Assistant:
 
             for field_name in self._required_fields:
                 value = self._client.results.get(field_name)
-                error_message = None if value else "Mandatory field was not completed"
+                error_message = (
+                    None if value else f"Mandatory field {field_name} was not completed"
+                )
                 if error_message:
                     should_close = False
-                    self._create_error(error_message)
+                    self._client.set_error(field_name, error_message)
                     self._client.flet_update()
 
-            for field_name, validation in self._validations.items():
-                field_value = self._client.results.get(field_name)
-                # Only run validations for non-None values.
-                if field_value:
-                    error_message = validation(self._client.results.get(field_name))
-                else:
-                    error_message = None
-
-                if error_message:
+            for field_name, error in self._callbacks.validation_errors.items():
+                if error is not None:
                     should_close = False
-                    self._create_error(
-                        f"Error on field named '{field_name}: {error_message}",
-                    )
-                    self._client.flet_update()
+                    self._client.set_error(field_name, error)
+            self._client.flet_update()
 
             if should_close:
                 self._client.results["submit"] = label
@@ -559,9 +544,11 @@ class Assistant:
         name: str,
         label: Optional[str] = None,
         placeholder: Optional[str] = None,
-        validation: Optional[Callable] = None,
+        validation: Optional[Union[Callable, str]] = None,
         default: Optional[str] = None,
         required: bool = False,
+        minimum_rows: Optional[int] = None,
+        maximum_rows: Optional[int] = None,
     ) -> None:
         """Add a text input element
 
@@ -571,6 +558,9 @@ class Assistant:
         :param validation:   Validation function for the input field
         :param default:     Default value if the field wasn't completed
         :param required:    If true, will display an error if not completed
+        :param minimum_rows: Minimum number of rows to display for the input field
+        :param maximum_rows: Maximum number of rows to display for the input field, the
+                             input content can be longer but a scrollbar will appear
 
         Adds a text field that can be filled by the user. The entered
         content will be available in the ``name`` field of the result.
@@ -596,15 +586,64 @@ class Assistant:
             ...    placeholder=Enter feedback here
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
-        """
 
-        if validation and required:
-            self._validations[name] = validation
+        Validation example:
+
+        .. code-block:: robotframework
+
+            Validate Email
+                [Arguments]    ${email}
+                # E-mail specification is complicated, this matches that the e-mail has
+                # at least one character before and after the @ sign, and at least one
+                # character after the dot.
+                ${regex}=    Set Variable    ^.+@.+\\..+
+                ${valid}=    Run Keyword And Return Status    Should Match Regexp  ${email}  ${regex}
+                IF  not $valid
+                    RETURN  Invalid email address
+                END
+
+            Open Dialog
+                Add heading    Send feedback
+                Add text input    email
+                ...    label=Email
+                ...    validation=Validate Email
+                ${result}=    Run dialog
+                Log  ${result.email}
+
+        .. code-block:: python
+
+            import re
+            def validate_email(email):
+                # E-mail specification is complicated, this matches that the e-mail has
+                # at least one character before and after the @ sign, and at least one
+                # character after the dot.
+                regex = r"^.+@.+\\..+"
+                valid = re.match(regex, email)
+                if not valid:
+                    return "Invalid email address"
+
+            def open_dialog():
+                assistant.add_heading("Send feedback")
+                assistant.add_text_input("email", label="Email", validation=validate_email)
+                result = run_dialog()
+                print(result.email)
+
+
+
+        """  # noqa: E501
+        validation_function = None
+        if validation:
+            if isinstance(validation, str):
+                validation_function = self._callbacks.robot_validation(name, validation)
+            elif isinstance(validation, Callable):
+                validation_function = self._callbacks.python_validation(
+                    name, validation
+                )
+            else:
+                raise ValueError("Invalid validation function.")
+
+        if required:
             self._required_fields.add(name)
-        elif required:
-            self._required_fields.add(name)
-        elif validation:
-            self._validations[name] = validation
 
         self._client.results[name] = default
 
@@ -612,10 +651,23 @@ class Assistant:
             if e.control.value == "":
                 e.data = None
 
+        if minimum_rows or maximum_rows:
+            multiline = True
+        else:
+            multiline = None
+
         self._client.add_element(
             name=name,
-            element=TextField(label=label, hint_text=placeholder, value=default),
+            element=TextField(
+                label=label,
+                hint_text=placeholder,
+                value=default,
+                min_lines=minimum_rows,
+                max_lines=maximum_rows,
+                multiline=multiline,
+            ),
             extra_handler=empty_string_to_none,
+            validation_func=validation_function,
         )
 
     @keyword(tags=["input"])
@@ -838,7 +890,8 @@ class Assistant:
             Log To Console    User birthdate year should be: ${result.birthdate.year}
         """
 
-        def validate(date_text):
+        def validate(e: ControlEvent):
+            date_text: str = e.data
             if not date_text:
                 return None
             try:
@@ -858,10 +911,10 @@ class Assistant:
                     raise e
             self._client.results[name] = default
 
-        self._validations[name] = validate
         self._client.add_element(
             name=name,
             element=TextField(label=label, hint_text="YYYY-MM-DD", value=default),
+            validation_func=validate,
         )
 
     @keyword(tags=["input"])
@@ -1081,73 +1134,6 @@ class Assistant:
         """
         self._client.update_elements()
 
-    def _create_python_function_wrapper(self, function, *args, **kwargs):
-        """wrapper code that is used to add wrapping for user functions when binding
-        them to be run by buttons
-        """
-
-        def func_wrapper():
-            try:
-                function(*args, **kwargs)
-
-            # This can be anything since it comes from the user function, we don't
-            # want to let the user function crash the UI
-            except Exception as err:  # pylint: disable=broad-except
-                self.logger.error(f"Error calling Python function {function}")
-                self.logger.error(err)
-            finally:
-                self._client.unlock_elements()
-                self._client.flet_update()
-
-        return func_wrapper
-
-    def _create_robot_function_wrapper(self, function, *args, **kwargs):
-        """wrapper code that is used to add wrapping for user functions when binding
-        them to be run by buttons
-        """
-
-        def func_wrapper():
-            try:
-                BuiltIn().run_keyword(function, *args, **kwargs)
-            except RobotNotRunningError:
-                self.logger.error(
-                    f"Robot Framework not running so cannot call keyword {function}"
-                )
-            except RobotError as e:
-                self.logger.error(f"Error calling robot keyword {function}")
-                self.logger.error(e)
-            # This can be anything since it comes from the user function, we don't
-            # want to let the user function crash the UI
-            except Exception as err:  # pylint: disable=broad-except
-                self.logger.error(f"Unexpected error running robot keyword {function}")
-                self.logger.error(err)
-            finally:
-                self._client.unlock_elements()
-                self._client.flet_update()
-
-        return func_wrapper
-
-    def _queue_function_or_robot_keyword(
-        self, function: Union[Callable, str], *args, **kwargs
-    ):
-        """Check if function is a Python function or a Robot Keyword, and call it
-        or run it with Robot's run_keyword.
-        """
-        if self._client.pending_operation:
-            self.logger.error("Can't have more than one pending operation.")
-            return
-        self._client.lock_elements()
-        self._client.flet_update()
-
-        if isinstance(function, Callable):
-            self._client.pending_operation = self._create_python_function_wrapper(
-                function, *args, **kwargs
-            )
-        else:
-            self._client.pending_operation = self._create_robot_function_wrapper(
-                function, *args, **kwargs
-            )
-
     @keyword(tags=["dialog"])
     def add_button(
         self,
@@ -1178,7 +1164,7 @@ class Assistant:
         """
 
         def on_click(_: ControlEvent):
-            self._queue_function_or_robot_keyword(function, *args, **kwargs)
+            self._callbacks.queue_fn_or_kw(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
         container = Container(alignment=location.value, content=button)
@@ -1217,7 +1203,7 @@ class Assistant:
         """
 
         def on_click(_: ControlEvent):
-            self._queue_function_or_robot_keyword(function, self._get_results())
+            self._callbacks.queue_fn_or_kw(function, self._get_results())
 
         button = ElevatedButton(label, on_click=on_click)
         self._client.add_element(button)
