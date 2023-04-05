@@ -32,8 +32,8 @@ def get_recording(show_sleeps: bool = False) -> str:
                     f"\nControl Window    {new_top}  # handle:{item['top_handle']}"
                 )
                 top_window = new_top
-            else:
-                output.append(f"{action_name}    {item['locator']}")
+
+            output.append(f"{action_name}    {item['locator']}")
 
     sep = "-" * 80
     header = (
