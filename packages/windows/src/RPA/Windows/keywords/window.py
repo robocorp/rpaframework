@@ -256,22 +256,38 @@ class WindowKeywords(WindowMethods):
 
     @keyword(tags=["window"])
     def windows_run(self, text: str, wait_time: float = 3.0) -> None:
-        """Use Windows run window to launch application.
+        """Use Windows Run window to launch an application.
 
-        Activated by pressing `win + r`.
+        Activated by pressing `Win + R`. Then the app name is typed in and finally the
+        "Enter" key is pressed.
 
-        :param text: text to enter into run input field
-        :param wait_time: sleep time after search has been entered (default 3.0 seconds)
+        :param text: Text to enter into the Run input field. (e.g. `Notepad`)
+        :param wait_time: Time to sleep after the searched app is executed. (3s by
+            default)
 
-        Example:
+        **Example: Robot Framework**
 
         .. code-block:: robotframework
 
-            Windows Run   explorer.exe
+            *** Tasks ***
+            Run Notepad
+                Windows Run   notepad
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+            lib = Windows()
+
+            def run_notepad():
+                lib.windows_run("notepad")
         """
-        self.ctx.send_keys(None, "{Win}r")
-        self.ctx.send_keys(None, text)
-        self.ctx.send_keys(None, "{Enter}")
+        # NOTE(cmin764): The waiting time after each key set sending can be controlled
+        #  globally and individually with `Set Wait Time`.
+        self.ctx.send_keys(keys="{Win}r")
+        self.ctx.send_keys(keys=text, interval=0.01)
+        self.ctx.send_keys(send_enter=True)
         time.sleep(wait_time)
 
     @keyword(tags=["window"])

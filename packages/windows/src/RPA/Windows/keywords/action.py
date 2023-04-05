@@ -2,11 +2,12 @@ import re
 from pathlib import Path
 from typing import Callable, Optional, Union
 
+from RPA.core.windows.action import ActionMethods
 from RPA.core.windows.locators import Locator, WindowsElement
 
 from RPA.Windows import utils
 from RPA.Windows.keywords import keyword
-from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
+from RPA.Windows.keywords.context import ActionNotPossible
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
@@ -15,8 +16,13 @@ if utils.IS_WINDOWS:
 PatternType = Union["auto.ValuePattern", "auto.LegacyIAccessiblePattern"]
 
 
-class ActionKeywords(LibraryContext):
-    """Keywords for performing desktop actions"""
+def set_value_validator(expected: str, actual: str) -> bool:
+    """Checks the passed against the final set value and returns status."""
+    return actual.strip() == expected.strip()  # due to EOLs inconsistency
+
+
+class ActionKeywords(ActionMethods):
+    """Keywords for performing desktop actions."""
 
     @keyword(tags=["action", "mouse"])
     def click(
@@ -135,7 +141,9 @@ class ActionKeywords(LibraryContext):
         wait_time: Optional[float],
         timeout: Optional[float],
     ) -> WindowsElement:
-        click_wait_time: float = wait_time or self.ctx.wait_time
+        click_wait_time: float = (
+            wait_time if wait_time is not None else self.ctx.wait_time
+        )
         with self.set_timeout(timeout):
             element = self.ctx.get_element(locator)
             self._click_element(element, click_type, click_wait_time)
@@ -152,7 +160,7 @@ class ActionKeywords(LibraryContext):
             )
 
         # Attribute added in `RPA.core.windows.locators.LocatorMethods`.
-        offset: Optional[str] = item.robocorp_click_offset
+        offset: Optional[str] = getattr(item, "robocorp_click_offset", None)
         offset_x: Optional[int] = None
         offset_y: Optional[int] = None
         log_message = f"{click_type}-ing element"
@@ -257,11 +265,12 @@ class ActionKeywords(LibraryContext):
             element = self.ctx.get_element(locator).item
         else:
             element = auto
-        keys_wait_time = wait_time or self.ctx.wait_time
+        keys: str = keys or ""
         if send_enter:
             keys += "{Enter}"
         if hasattr(element, "SendKeys"):
-            self.logger.info("Sending keys %r to element %r", keys, element)
+            self.logger.info("Sending keys %r to element: %s", keys, element)
+            keys_wait_time = wait_time if wait_time is not None else self.ctx.wait_time
             element.SendKeys(text=keys, interval=interval, waitTime=keys_wait_time)
         else:
             raise ActionNotPossible(
@@ -351,16 +360,17 @@ class ActionKeywords(LibraryContext):
         get_value_pattern: Callable[[], PatternType],
         append: bool,
         locator: Optional[Locator],
+        validator: Optional[Callable],
     ):
         func_name = get_value_pattern.__name__
         self.logger.info("%s the element value with the %r method.", action, func_name)
         value_pattern = get_value_pattern()
         current_value = value_pattern.Value if append else ""
-        new_value = f"{current_value}{value}{newline_string}"
-        value_pattern.SetValue(new_value)
-        if value_pattern.Value.strip() != new_value.strip():  # EOLs inconsistency
+        expected_value = f"{current_value}{value}{newline_string}"
+        value_pattern.SetValue(expected_value)
+        if validator and not validator(expected_value, value_pattern.Value):
             raise ValueError(
-                f"Element found with {locator!r} couldn't set value: {new_value}"
+                f"Element found with {locator!r} couldn't set value: {expected_value}"
             )
 
     def _set_value_with_keys(
@@ -372,6 +382,7 @@ class ActionKeywords(LibraryContext):
         element: WindowsElement,
         append: bool,
         locator: Optional[Locator],
+        validator: Optional[Callable],
     ):
         self.logger.info(
             "%s the element value with `Send Keys`. (no patterns found)", action
@@ -395,9 +406,9 @@ class ActionKeywords(LibraryContext):
             current_value = ""
         if value:
             self.send_keys(element, keys=value, send_enter=False)
-            new_value = get_text()
-            if new_value is not None:
-                if new_value.strip() != f"{current_value}{value}".strip():
+            actual_value = get_text()
+            if actual_value is not None:
+                if validator and not validator(f"{current_value}{value}", actual_value):
                     raise ValueError(
                         f"Element found with {locator!r} couldn't send value"
                         f" through keys: {value}"
@@ -412,6 +423,7 @@ class ActionKeywords(LibraryContext):
         enter: bool = False,
         newline: bool = False,
         send_keys_fallback: bool = True,
+        validator: Optional[Callable] = set_value_validator,
     ) -> WindowsElement:
         """Set value of the element defined by the locator.
 
@@ -440,6 +452,10 @@ class ActionKeywords(LibraryContext):
             EOL included by default; this won't work with `send_keys_fallback` enabled)
         :param send_keys_fallback: Tries to set the value by sending it through keys
             if the main way of setting it fails. (enabled by default)
+        :param validator: Function receiving two parameters post-setting, the expected
+            and the current value, which returns `True` if the two values match. (by
+            default, the keyword will raise if the values are different, set this to
+            `None` to disable validation or pass your custom function instead)
         :returns: The element object identified through the passed `locator`.
 
         **Example: Robot Framework**
@@ -471,7 +487,7 @@ class ActionKeywords(LibraryContext):
                 # Continue appending and ensure a new line at the end by pressing
                 #  the Enter key this time.
                 Set Value    value=But this will appear on the 2nd line now.
-                ...    append=${True}   enter=${True}
+                ...    append=${True}   enter=${True}   validator=${None}
 
         **Example: Python**
 
@@ -504,6 +520,7 @@ class ActionKeywords(LibraryContext):
                 get_value_pattern=get_value_pattern,
                 append=append,
                 locator=locator,
+                validator=validator,
             )
         elif send_keys_fallback:
             self._set_value_with_keys(
@@ -513,6 +530,7 @@ class ActionKeywords(LibraryContext):
                 element=element,
                 append=append,
                 locator=locator,
+                validator=validator,
             )
         else:
             raise ActionNotPossible(
@@ -552,34 +570,38 @@ class ActionKeywords(LibraryContext):
         return old_value
 
     @keyword(tags=["action"])
-    def screenshot(self, locator: Locator, filename: str) -> str:
+    def screenshot(self, locator: Locator, filename: Union[str, Path]) -> str:
         """Take a screenshot of the element defined by the locator.
 
-        Exception ``ActionNotPossible`` is raised if element does not
-        allow CaptureToImage action.
+        An `ActionNotPossible` exception is raised if the element doesn't allow being
+        captured.
 
         :param locator: String locator or element object.
-        :param filename: image filename
-        :return: absolute path to the screenshot file
+        :param filename: Image file name/path. (can be absolute/relative)
+        :raises ActionNotPossible: When the element can't be captured.
+        :returns: Absolute file path of the taken screenshot image.
 
-        Example:
+        **Example: Robot Framework**
 
         .. code-block:: robotframework
 
-            Screenshot  desktop   desktop.png
-            Screenshot  subname:Notepad   notepad.png
-        """
-        element = self.ctx.get_element(locator)
-        if not hasattr(element.item, "CaptureToImage"):
-            raise ActionNotPossible(
-                f"Element found with {locator!r} does not have 'CaptureToImage' "
-                "attribute"
-            )
+            *** Tasks ***
+            Take Screenshots
+                Screenshot    desktop    desktop.png
+                Screenshot    subname:Notepad    ${OUTPUT_DIR}${/}notepad.png
 
-        element.item.SetFocus()
-        filepath = str(Path(filename).expanduser().resolve())
-        element.item.CaptureToImage(filepath)
-        return filepath
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+            lib = Windows()
+
+            def take_screenshots():
+                lib.screenshot("desktop", "desktop.png")
+                lib.screenshot("subname:Notepad", "output/notepad.png")
+        """
+        return super().screenshot(locator, filename)
 
     @keyword(tags=["action"])
     def set_global_timeout(self, timeout: float) -> float:

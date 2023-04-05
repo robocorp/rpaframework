@@ -1,17 +1,13 @@
 import logging
 from typing import Optional
 
-# pylint: disable=wrong-import-order
-from RPA.core.windows import WindowsElementsMixin
 from robotlibcore import DynamicCore
 
+# pylint: disable=wrong-import-order
+from RPA.core.windows import WindowsElementsMixin
+
 from . import utils
-from .keywords import (
-    ActionKeywords,
-    ElementKeywords,
-    LocatorKeywords,
-    WindowKeywords,
-)
+from .keywords import ActionKeywords, ElementKeywords, LocatorKeywords, WindowKeywords
 
 if utils.IS_WINDOWS:
     # Configure comtypes to not generate DLL bindings into
