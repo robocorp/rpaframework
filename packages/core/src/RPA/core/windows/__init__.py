@@ -1,16 +1,15 @@
 import logging
 from typing import Optional
 
+from ..vendor.robotlibcore import DynamicCore
+from .action import ActionMethods
+from .elements import ElementMethods
 from .helpers import IS_WINDOWS
-from .inspect import ElementInspector
 from .locators import Locator, LocatorMethods
 from .window import WindowMethods
-from ..vendor.robotlibcore import DynamicCore
-
 
 if IS_WINDOWS:
     import uiautomation as auto
-    from .inspect import RecordElement  # library exposure
 
 
 class WindowsElementsMixin:
@@ -30,10 +29,12 @@ class WindowsElementsMixin:
 
     def _get_libraries(self, locators_path: Optional[str]):
         return [
+            ActionMethods(self),
+            ElementMethods(self),
             LocatorMethods(self, locators_path=locators_path),
             WindowMethods(self),
         ]
 
 
 class WindowsElements(WindowsElementsMixin, DynamicCore):
-    """Windows elements library compatible with inspector and windows packages."""
+    """Windows elements library compatible with the inspector and windows packages."""
