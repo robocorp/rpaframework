@@ -286,7 +286,7 @@ class WindowKeywords(WindowMethods):
         # NOTE(cmin764): The waiting time after each key set sending can be controlled
         #  globally and individually with `Set Wait Time`.
         self.ctx.send_keys(keys="{Win}r")
-        self.ctx.send_keys(keys=text, interval=0.1)
+        self.ctx.send_keys(keys=text, interval=0.01)
         self.ctx.send_keys(send_enter=True)
         time.sleep(wait_time)
 
