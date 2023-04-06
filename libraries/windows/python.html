@@ -826,76 +826,95 @@ can be installed separately. Other options are tools <a class="reference externa
 can be accessed by installing Windows SDK.</p>
 <p>A more programmatic approach is to run <code class="docutils literal notranslate"><span class="pre">Print</span> <span class="pre">Tree</span>&#160;&#160;&#160; <span class="pre">log_as_warnings=${True}</span></code>
 keyword and then observe in the logs the found elements structure starting from
-Desktop as root. (refer to keyword’s documentation for more details)</p>
+Desktop (or the currently set anchor / active window) as root. (refer to keyword’s
+<a class="reference external" href="https://robocorp.com/docs/libraries/rpa-framework/rpa-windows/keywords#print-tree">documentation</a>
+for more details)</p>
 <p><strong>Recording</strong></p>
-<p>The package provides some rudimentary inspecting and recording via script <code class="docutils literal notranslate"><span class="pre">windows-record</span></code>, which can
-be started in the command line (in a environment containing <code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> installation).</p>
-<p>Recording inspects elements on <strong>mouse click</strong> and can be stopped with keyboard <strong>ESC</strong>.
-Expected console output.</p>
+<p>The package provides some rudimentary inspecting and recording via the
+<code class="docutils literal notranslate"><span class="pre">windows-record</span></code> script, which can be started through the command line (in an
+environment containing the <code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> installation).</p>
+<p>Recording inspects elements on <strong>mouse click</strong> and can be stopped by pressing the
+<strong>ESC</strong> key. Expected console output:</p>
+<div class="highlight-winbatch notranslate"><div class="highlight"><pre><span></span>C<span class="p">:</span><span class="nl">\Users\User\robots\</span><span class="c1">&gt; windows-record -v  # or &gt; python -m RPA.Windows -v</span>
+Mouse recording started. Use ESC to stop recording.
+
+--------------------------------------------------------------------------------
+Copy-paste the code below into your `*** Tasks ***` or `*** Keywords ***`
+--------------------------------------------------------------------------------
+
+Control Window    name:Calculator and type:WindowControl and class:ApplicationFrameWindow  # handle:9569486
+Click    name:Calculator and id:TitleBar and type:WindowControl and class:ApplicationFrameTitleBarWindow and path:1
+Click    name:<span class="s2">&quot;Display is 0&quot;</span> and id:CalculatorResults and type:TextControl and path:2<span class="p">|</span>3<span class="p">|</span>2<span class="p">|</span>2
+Click    name:Eight and id:num8Button and type:ButtonControl and class:Button and path:2<span class="p">|</span>3<span class="p">|</span>2<span class="p">|</span>8<span class="p">|</span>9
+Click    name:Nine and id:num9Button and type:ButtonControl and class:Button and path:2<span class="p">|</span>3<span class="p">|</span>2<span class="p">|</span>8<span class="p">|</span>10
+Click    name:Clear and id:clearButton and type:ButtonControl and class:Button and path:2<span class="p">|</span>3<span class="p">|</span>2<span class="p">|</span>5<span class="p">|</span>3
+
+--------------------------------------------------------------------------------
+</pre></div>
+</div>
+<p>Check our Portal example in order to learn more abot the <cite>path:</cite> strategy in
+locators and how to record elements displaying their paths:
+<a class="reference external" href="https://robocorp.com/portal/robot/robocorp/example-windows-element-path">https://robocorp.com/portal/robot/robocorp/example-windows-element-path</a></p>
+<p>Video recorded demo on how to run the recorder script from VSCode:
+<a class="reference external" href="https://www.loom.com/share/2807372359f34b9cbe1bc2df9194ec68">https://www.loom.com/share/2807372359f34b9cbe1bc2df9194ec68</a></p>
 <p><strong>Caveats</strong></p>
 <ul class="simple">
 <li><p>Make sure your <em>display scaling</em> is set to <em>100%</em>, otherwise you might encounter
 issues when clicking or interacting with elements. (since offsets and coordinates
 get distorted)</p></li>
+<li><p>Disturbing the automation (like interacting with your mouse/keyboard) or having
+other apps obstructing the process interacting with your app of interest will
+most probably affect the expected behaviour. In order to avoid this, try
+controlling the app’s main window right before sending clicks or keys. And keep
+targeting elements through <strong>string locators</strong>, as interacting with Windows
+element objects previously retrieved will not work as expected in a future
+altered state of the app (changes under the element structure).</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>C:<span class="se">\U</span>sers<span class="se">\U</span>ser<span class="se">\r</span>obots<span class="se">\&gt;</span>windows-record<span class="w">  </span><span class="c1"># or &gt;python -m RPA.Windows</span>
-keyboard<span class="w"> </span>and<span class="w"> </span>mouse<span class="w"> </span>listeners<span class="w"> </span>started
-
---------------------------------------------------------------------------------
-COPY<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span>PASTE<span class="w"> </span>BELOW<span class="w"> </span>CODE<span class="w"> </span>INTO<span class="w"> </span>***<span class="w"> </span>Tasks<span class="w"> </span>***<span class="w"> </span>or<span class="w"> </span>***<span class="w"> </span>Keywords<span class="w"> </span>***
---------------------------------------------------------------------------------
-
-Control<span class="w"> </span>Window<span class="w">    </span>Taskbar<span class="w">  </span><span class="c1"># Handle: 131380</span>
-Click<span class="w">   </span>name:<span class="s2">&quot;Type here to search&quot;</span>
-Control<span class="w"> </span>Window<span class="w">    </span>Calculator<span class="w">  </span><span class="c1"># Handle: 3411840</span>
-Click<span class="w">   </span>name:Five
-Click<span class="w">   </span>name:Eight
-Click<span class="w">   </span>name:Five
-
---------------------------------------------------------------------------------
-</pre></div>
-</div>
-<p><strong>Examples</strong></p>
-<p>Both Robot Framework and Python examples follow.</p>
+<p><strong>Example: Robot Framework</strong></p>
 <p>The library must be imported first.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
 <span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Windows</span>
 </pre></div>
 </div>
-<p>Windows Calculator task</p>
+<p>Windows Calculator automation task</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
 <span class="gu">Do some calculations</span>
 <span class="p">    [</span><span class="kn">Setup</span><span class="p">]  </span><span class="nf">Windows Run</span><span class="p">   </span><span class="s">calc.exe</span>
+
 <span class="p">    </span><span class="nf">Control Window</span><span class="p">    </span><span class="s">name:Calculator</span>
 <span class="p">    </span><span class="nf">Click</span><span class="p">    </span><span class="s">id:clearButton</span>
 <span class="p">    </span><span class="nf">Send Keys</span><span class="p">   </span><span class="s">keys=96+4=</span>
-<span class="p">    ${</span><span class="nv">result</span><span class="p">}=    </span><span class="nf">Get Attribute</span><span class="p">    </span><span class="s">id:CalculatorResults</span><span class="p">    </span><span class="s">Name</span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">} =    </span><span class="nf">Get Attribute</span><span class="p">    </span><span class="s">id:CalculatorResults</span><span class="p">    </span><span class="s">Name</span>
 <span class="p">    </span><span class="nf">Log To Console</span><span class="p">    ${</span><span class="nv">result</span><span class="p">}</span>
-<span class="p">    ${</span><span class="nv">buttons</span><span class="p">}=  </span><span class="nf">Get Elements</span><span class="p">  </span><span class="s">type:Group and name:&quot;Number pad&quot; &gt; type:Button</span>
+
+<span class="p">    @{</span><span class="nv">buttons</span><span class="p">} =  </span><span class="nf">Get Elements</span><span class="p">  </span><span class="s">type:Group and name:&quot;Number pad&quot; &gt; type:Button</span>
 <span class="p">    FOR  ${</span><span class="nv">button</span><span class="p">}  IN  @{</span><span class="nv">buttons</span><span class="p">}</span>
 <span class="p">        </span><span class="nf">Log To Console</span><span class="p">   ${</span><span class="nv">button</span><span class="p">}</span>
 <span class="p">    END</span>
+
 <span class="p">    [</span><span class="kn">Teardown</span><span class="p">]   </span><span class="nf">Close Current Window</span>
 </pre></div>
 </div>
-<p>Python example</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">from RPA.Windows import Windows</span>
+<p><strong>Example: Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Windows</span> <span class="kn">import</span> <span class="n">Windows</span>
 
-<span class="c">library = Windows()</span>
+<span class="n">library</span> <span class="o">=</span> <span class="n">Windows</span><span class="p">()</span>
 
-<span class="c">def test_do_some_calculations():</span>
-<span class="p">    </span><span class="c">try:</span>
-<span class="p">        </span><span class="c">library.windows_run(&quot;calc.exe&quot;)</span>
-<span class="p">        </span><span class="c">library.control_window(&quot;name:Calculator&quot;)</span>
-<span class="p">        </span><span class="c">library.click(&quot;id:clearButton&quot;)</span>
-<span class="p">        </span><span class="c">library.send_keys(keys=&quot;96+4=&quot;)</span>
-<span class="p">        </span><span class="c">result = library.get_attribute(&quot;id:CalculatorResults&quot;, &quot;Name&quot;)</span>
-<span class="p">        </span><span class="c">print(result)</span>
-<span class="p">        </span><span class="c">buttons = library.get_elements(&#39;type:Group and name:&quot;Number pad&quot; &gt; type:Button&#39;)</span>
-<span class="p">        </span><span class="c">for button in buttons:</span>
-<span class="p">            </span><span class="c">print(button)</span>
-<span class="p">    </span><span class="c">finally:</span>
-<span class="p">        </span><span class="c">library.close_current_window()</span>
+<span class="k">def</span> <span class="nf">test_do_some_calculations</span><span class="p">():</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">windows_run</span><span class="p">(</span><span class="s2">&quot;calc.exe&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">library</span><span class="o">.</span><span class="n">control_window</span><span class="p">(</span><span class="s2">&quot;name:Calculator&quot;</span><span class="p">)</span>
+        <span class="n">library</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">&quot;id:clearButton&quot;</span><span class="p">)</span>
+        <span class="n">library</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="s2">&quot;96+4=&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;id:CalculatorResults&quot;</span><span class="p">,</span> <span class="s2">&quot;Name&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">buttons</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_elements</span><span class="p">(</span>
+            <span class="s1">&#39;type:Group and name:&quot;Number pad&quot; &gt; type:Button&#39;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">button</span> <span class="ow">in</span> <span class="n">buttons</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">library</span><span class="o">.</span><span class="n">close_current_window</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="py attribute">
