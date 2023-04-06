@@ -390,7 +390,9 @@ class Windows(WindowsElementsMixin, DynamicCore):
 
     A more programmatic approach is to run ``Print Tree    log_as_warnings=${True}``
     keyword and then observe in the logs the found elements structure starting from
-    Desktop as root. (refer to keyword's documentation for more details)
+    Desktop (or the currently set anchor / active window) as root. (refer to keyword's
+    `documentation <https://robocorp.com/docs/libraries/rpa-framework/rpa-windows/keywords#print-tree>`_
+    for more details)
 
     .. _Accessibility Insights: https://accessibilityinsights.io/
     .. _Inspect Object: https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects
@@ -398,40 +400,52 @@ class Windows(WindowsElementsMixin, DynamicCore):
 
     **Recording**
 
-    The package provides some rudimentary inspecting and recording via script ``windows-record``, which can
-    be started in the command line (in a environment containing ``rpaframework-windows`` installation).
+    The package provides some rudimentary inspecting and recording via the
+    ``windows-record`` script, which can be started through the command line (in an
+    environment containing the ``rpaframework-windows`` installation).
 
-    Recording inspects elements on **mouse click** and can be stopped with keyboard **ESC**.
-    Expected console output.
+    Recording inspects elements on **mouse click** and can be stopped by pressing the
+    **ESC** key. Expected console output:
+
+    .. code-block:: winbatch
+
+        C:\\Users\\User\\robots\\> windows-record -v  # or > python -m RPA.Windows -v
+        Mouse recording started. Use ESC to stop recording.
+
+        --------------------------------------------------------------------------------
+        Copy-paste the code below into your `*** Tasks ***` or `*** Keywords ***`
+        --------------------------------------------------------------------------------
+
+        Control Window    name:Calculator and type:WindowControl and class:ApplicationFrameWindow  # handle:9569486
+        Click    name:Calculator and id:TitleBar and type:WindowControl and class:ApplicationFrameTitleBarWindow and path:1
+        Click    name:"Display is 0" and id:CalculatorResults and type:TextControl and path:2|3|2|2
+        Click    name:Eight and id:num8Button and type:ButtonControl and class:Button and path:2|3|2|8|9
+        Click    name:Nine and id:num9Button and type:ButtonControl and class:Button and path:2|3|2|8|10
+        Click    name:Clear and id:clearButton and type:ButtonControl and class:Button and path:2|3|2|5|3
+
+        --------------------------------------------------------------------------------
+
+    Check our Portal example in order to learn more abot the `path:` strategy in
+    locators and how to record elements displaying their paths:
+    https://robocorp.com/portal/robot/robocorp/example-windows-element-path
+    
+    Video recorded demo on how to run the recorder script from VSCode:
+    https://www.loom.com/share/2807372359f34b9cbe1bc2df9194ec68
 
     **Caveats**
 
     - Make sure your *display scaling* is set to *100%*, otherwise you might encounter
       issues when clicking or interacting with elements. (since offsets and coordinates
       get distorted)
+    - Disturbing the automation (like interacting with your mouse/keyboard) or having
+      other apps obstructing the process interacting with your app of interest will
+      most probably affect the expected behaviour. In order to avoid this, try
+      controlling the app's main window right before sending clicks or keys. And keep
+      targeting elements through **string locators**, as interacting with Windows
+      element objects previously retrieved will not work as expected in a future
+      altered state of the app (changes under the element structure).
 
-    .. code-block:: bash
-
-        C:\\Users\\User\\robots\\>windows-record  # or >python -m RPA.Windows
-        keyboard and mouse listeners started
-
-        --------------------------------------------------------------------------------
-        COPY & PASTE BELOW CODE INTO *** Tasks *** or *** Keywords ***
-        --------------------------------------------------------------------------------
-
-        Control Window    Taskbar  # Handle: 131380
-        Click   name:"Type here to search"
-        Control Window    Calculator  # Handle: 3411840
-        Click   name:Five
-        Click   name:Eight
-        Click   name:Five
-
-        --------------------------------------------------------------------------------
-
-
-    **Examples**
-
-    Both Robot Framework and Python examples follow.
+    **Example: Robot Framework**
 
     The library must be imported first.
 
@@ -440,42 +454,46 @@ class Windows(WindowsElementsMixin, DynamicCore):
         *** Settings ***
         Library    RPA.Windows
 
-
-    Windows Calculator task
+    Windows Calculator automation task
 
     .. code-block:: robotframework
 
         *** Tasks ***
         Do some calculations
             [Setup]  Windows Run   calc.exe
+            
             Control Window    name:Calculator
             Click    id:clearButton
             Send Keys   keys=96+4=
-            ${result}=    Get Attribute    id:CalculatorResults    Name
+            ${result} =    Get Attribute    id:CalculatorResults    Name
             Log To Console    ${result}
-            ${buttons}=  Get Elements  type:Group and name:"Number pad" > type:Button
+            
+            @{buttons} =  Get Elements  type:Group and name:"Number pad" > type:Button
             FOR  ${button}  IN  @{buttons}
                 Log To Console   ${button}
             END
+            
             [Teardown]   Close Current Window
 
-    Python example
+    **Example: Python**
 
-    .. code-block:: robotframework
+    .. code-block:: python
 
         from RPA.Windows import Windows
 
         library = Windows()
 
         def test_do_some_calculations():
+            library.windows_run("calc.exe")
             try:
-                library.windows_run("calc.exe")
                 library.control_window("name:Calculator")
                 library.click("id:clearButton")
                 library.send_keys(keys="96+4=")
                 result = library.get_attribute("id:CalculatorResults", "Name")
                 print(result)
-                buttons = library.get_elements('type:Group and name:"Number pad" > type:Button')
+                buttons = library.get_elements(
+                    'type:Group and name:"Number pad" > type:Button'
+                )
                 for button in buttons:
                     print(button)
             finally:
