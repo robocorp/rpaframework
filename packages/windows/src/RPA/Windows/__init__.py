@@ -428,7 +428,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
     Check our Portal example in order to learn more abot the `path:` strategy in
     locators and how to record elements displaying their paths:
     https://robocorp.com/portal/robot/robocorp/example-windows-element-path
-    
+
     Video recorded demo on how to run the recorder script from VSCode:
     https://www.loom.com/share/2807372359f34b9cbe1bc2df9194ec68
 
@@ -461,18 +461,18 @@ class Windows(WindowsElementsMixin, DynamicCore):
         *** Tasks ***
         Do some calculations
             [Setup]  Windows Run   calc.exe
-            
+
             Control Window    name:Calculator
             Click    id:clearButton
             Send Keys   keys=96+4=
             ${result} =    Get Attribute    id:CalculatorResults    Name
             Log To Console    ${result}
-            
+
             @{buttons} =  Get Elements  type:Group and name:"Number pad" > type:Button
             FOR  ${button}  IN  @{buttons}
                 Log To Console   ${button}
             END
-            
+
             [Teardown]   Close Current Window
 
     **Example: Python**

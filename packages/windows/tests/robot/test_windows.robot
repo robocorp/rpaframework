@@ -236,21 +236,27 @@ Resize window with Spotify
     [Teardown]    Close Current Window
 
 Notepad write text into a file
-    Windows Run    notepad
+    [Setup]     Windows Run    notepad
+
     Control Window    ${LOC_NOTEPAD}
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
         Click    Edit    wait_time=0.5
         Click    Font    wait_time=0.5    # for some reason this only highlitghts the button
         Click    Font    wait_time=2    # and this finally clicks it
+
         Click    id:FontFamilyComboBox
         Send Keys   keys={DOWN}
         Send Keys   keys={Ctrl}a{Del}
         Send Keys   keys=Lucida Sans Unicode    send_enter=${True}    wait_time=0.5
-        Click    id:FontSizeComboBox
-        Send Keys   keys={DOWN}
-        Send Keys   keys={Ctrl}a{Del}
-        Send Keys   keys=26     send_enter=${True}    wait_time=0.5
+
+        Select  id:FontSizeComboBox     22
+        # If the Select above doesn't work.
+#        Click    id:FontSizeComboBox
+#        Send Keys   keys={DOWN}
+#        Send Keys   keys={Ctrl}a{Del}
+#        Send Keys   keys=22     send_enter=${True}    wait_time=0.5
+
         Click    name:"Back"
     ELSE
         Control Window    Font
@@ -278,6 +284,7 @@ Notepad write text into a file
         Click    Yes    wait_time=0.3
     END
     Minimize Window    ${LOC_NOTEPAD}
+
     [Teardown]    Close Current Window
 
 Control Window by handle

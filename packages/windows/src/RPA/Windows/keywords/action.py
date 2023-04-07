@@ -158,6 +158,14 @@ class ActionKeywords(ActionMethods):
             raise ActionNotPossible(
                 f"Element {element!r} does not have {click_type!r} attribute"
             )
+        # Get a new fresh bounding box each time, since the element might have been
+        #  moved from its initial spot.
+        rect = item.BoundingRectangle
+        if not rect or rect.width() == 0 or rect.height() == 0:
+            raise ActionNotPossible(
+                f"Element {element!r} is not visible for clicking, use a string"
+                " locator and ensure the root window is in focus"
+            )
 
         # Attribute added in `RPA.core.windows.locators.LocatorMethods`.
         offset: Optional[str] = getattr(item, "robocorp_click_offset", None)
@@ -165,9 +173,6 @@ class ActionKeywords(ActionMethods):
         offset_y: Optional[int] = None
         log_message = f"{click_type}-ing element"
         if offset:
-            # Get a new fresh bounding box each time, since the element might have been
-            #  moved from its initial spot.
-            rect = item.BoundingRectangle
             # Now compute the new coordinates starting from the element center.
             dist_x, dist_y = (int(dist.strip()) for dist in offset.split(","))
             pos_x, pos_y = rect.xcenter() + dist_x, rect.ycenter() + dist_y
@@ -196,20 +201,34 @@ class ActionKeywords(ActionMethods):
 
     @keyword(tags=["action"])
     def select(self, locator: Locator, value: str) -> WindowsElement:
-        """Select value on Control element if action is supported.
+        """Select a value on the passed element if such action is supported.
 
-        Exception ``ActionNotPossible`` is raised if element does not
-        allow Select action.
+        The ``ActionNotPossible`` exception is raised when the element does not allow
+        the `Select` action. This is usually used with combo box elements.
 
         :param locator: String locator or element object.
-        :param value: string value to select on Control element
-        :return: WindowsElement object
+        :param value: String value to select on Control element
+        :returns: The controlled Windows element.
 
-        Example:
+        **Example: Robot Framework**
 
-        .. code-block:: robotframework
+            *** Settings ***
+            Library     RPA.Windows
 
-            Select  type:SelectControl   option2
+            *** Tasks ***
+            Set Notepad Size
+                Select    id:FontSizeComboBox    22
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib = Windows()
+
+            def set_notepad_size():
+                lib.select("id:FontSizeComboBox", "22")
         """
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "Select"):
@@ -221,7 +240,8 @@ class ActionKeywords(ActionMethods):
             )
         else:
             raise ActionNotPossible(
-                f"Element {locator!r} does not support selection (try with `Set Value`)"
+                f"Element {locator!r} does not support selection (try with"
+                " `Set Value` instead)"
             )
         return element
 

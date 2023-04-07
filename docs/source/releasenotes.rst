@@ -5,6 +5,15 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Windows** (``rpaframework-windows`` **7.3.2**; :issue:`913`):
+
+  - Keywords ``[Double|Right|Middle ]Click`` will raise `ActionNotPossible` if the
+    element is not visible during clicking. (thus clicking wouldn't happen at all)
+  - Main library and various keywords documentation fixes.
+
+- Library **RPA.PDF** (``rpaframework-pdf`` **7.1.5**) (:pr:`914`): Fix "TypeError:
+  cannot pickle 'dict_keys' object" bug with the ``HTML To PDF`` keyword.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
