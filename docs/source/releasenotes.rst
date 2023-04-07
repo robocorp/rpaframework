@@ -7,8 +7,8 @@ Release notes
 
 - Library **RPA.Windows** (``rpaframework-windows`` **7.3.2**; :issue:`913`):
 
-  - Keywords ``[Double|Right|Middle ]Click`` will raise `ActionNotPossible` if they
-    are not visible during clicking. (thus clicking wouldn't happen)
+  - Keywords ``[Double|Right|Middle ]Click`` will raise `ActionNotPossible` if the
+    element is not visible during clicking. (thus clicking wouldn't happen at all)
   - Main library and various keywords documentation fixes.
 
 
