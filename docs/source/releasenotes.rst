@@ -11,6 +11,9 @@ Release notes
     element is not visible during clicking. (thus clicking wouldn't happen at all)
   - Main library and various keywords documentation fixes.
 
+- Library **RPA.PDF** (``rpaframework-pdf`` **7.1.5**) (:pr:`914`): Fix "TypeError:
+  cannot pickle 'dict_keys' object" bug with the ``HTML To PDF`` keyword.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
