@@ -255,7 +255,7 @@ Notepad write text into a file
 #        Click    id:FontSizeComboBox
 #        Send Keys   keys={DOWN}
 #        Send Keys   keys={Ctrl}a{Del}
-#        Send Keys   keys=26     send_enter=${True}    wait_time=0.5
+#        Send Keys   keys=22     send_enter=${True}    wait_time=0.5
 
         Click    name:"Back"
     ELSE

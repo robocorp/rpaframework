@@ -5,6 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Windows** (``rpaframework-windows`` **7.3.2**; :issue:`913`):
+
+  - Keywords ``[Double|Right|Middle ]Click`` will raise `ActionNotPossible` if they
+    are not visible during clicking. (thus clicking wouldn't happen)
+  - Main library and various keywords documentation fixes.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

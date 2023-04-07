@@ -164,7 +164,7 @@ class ActionKeywords(ActionMethods):
         if not rect or rect.width() == 0 or rect.height() == 0:
             raise ActionNotPossible(
                 f"Element {element!r} is not visible for clicking, use a string"
-                f" locator and ensure the root window is in focus"
+                " locator and ensure the root window is in focus"
             )
 
         # Attribute added in `RPA.core.windows.locators.LocatorMethods`.
@@ -201,20 +201,34 @@ class ActionKeywords(ActionMethods):
 
     @keyword(tags=["action"])
     def select(self, locator: Locator, value: str) -> WindowsElement:
-        """Select value on Control element if action is supported.
+        """Select a value on the passed element if such action is supported.
 
-        Exception ``ActionNotPossible`` is raised if element does not
-        allow Select action.
+        The ``ActionNotPossible`` exception is raised when the element does not allow
+        the `Select` action. This is usually used with combo box elements.
 
         :param locator: String locator or element object.
-        :param value: string value to select on Control element
-        :return: WindowsElement object
+        :param value: String value to select on Control element
+        :returns: The controlled Windows element.
 
-        Example:
+        **Example: Robot Framework**
 
-        .. code-block:: robotframework
+            *** Settings ***
+            Library     RPA.Windows
 
-            Select  type:SelectControl   option2
+            *** Tasks ***
+            Set Notepad Size
+                Select    id:FontSizeComboBox    22
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib = Windows()
+
+            def set_notepad_size():
+                lib.select("id:FontSizeComboBox", "22")
         """
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "Select"):
@@ -226,7 +240,8 @@ class ActionKeywords(ActionMethods):
             )
         else:
             raise ActionNotPossible(
-                f"Element {locator!r} does not support selection (try with `Set Value`)"
+                f"Element {locator!r} does not support selection (try with"
+                " `Set Value` instead)"
             )
         return element
 
