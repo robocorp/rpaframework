@@ -158,6 +158,14 @@ class ActionKeywords(ActionMethods):
             raise ActionNotPossible(
                 f"Element {element!r} does not have {click_type!r} attribute"
             )
+        # Get a new fresh bounding box each time, since the element might have been
+        #  moved from its initial spot.
+        rect = item.BoundingRectangle
+        if not rect or rect.width() == 0 or rect.height() == 0:
+            raise ActionNotPossible(
+                f"Element {element!r} is not visible for clicking, use a string"
+                f" locator and ensure the root window is in focus"
+            )
 
         # Attribute added in `RPA.core.windows.locators.LocatorMethods`.
         offset: Optional[str] = getattr(item, "robocorp_click_offset", None)
@@ -165,9 +173,6 @@ class ActionKeywords(ActionMethods):
         offset_y: Optional[int] = None
         log_message = f"{click_type}-ing element"
         if offset:
-            # Get a new fresh bounding box each time, since the element might have been
-            #  moved from its initial spot.
-            rect = item.BoundingRectangle
             # Now compute the new coordinates starting from the element center.
             dist_x, dist_y = (int(dist.strip()) for dist in offset.split(","))
             pos_x, pos_y = rect.xcenter() + dist_x, rect.ycenter() + dist_y
