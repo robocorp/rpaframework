@@ -157,16 +157,34 @@
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
 <div class="section" id="apr-2023">
 <h3>22.5.1 - 07 Apr 2023<a class="headerlink" href="#apr-2023" title="Permalink to this heading"></a></h3>
-<ul class="simple">
-<li><p>Library <strong>RPA.Windows</strong> (<code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> <strong>7.3.2</strong>; <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/913">#913</a>):</p>
 <ul>
+<li><p>Library <strong>RPA.Windows</strong> (<code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> <strong>7.3.2</strong>; <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/913">#913</a>):</p>
+<ul class="simple">
 <li><p>Keywords <code class="docutils literal notranslate"><span class="pre">[Double|Right|Middle</span> <span class="pre">]Click</span></code> will raise <cite>ActionNotPossible</cite> if the
 element is not visible during clicking. (thus clicking wouldn’t happen at all)</p></li>
 <li><p>Main library and various keywords documentation fixes.</p></li>
 </ul>
 </li>
 <li><p>Library <strong>RPA.PDF</strong> (<code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> <strong>7.1.5</strong>) (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/914">#914</a>): Fix “TypeError:
-cannot pickle ‘dict_keys’ object” bug with the <code class="docutils literal notranslate"><span class="pre">HTML</span> <span class="pre">To</span> <span class="pre">PDF</span></code> keyword.</p></li>
+cannot pickle ‘dict_keys’ object” bug with the <code class="docutils literal notranslate"><span class="pre">HTML</span> <span class="pre">To</span> <span class="pre">PDF</span></code> keyword.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> version requires at least the following library versions (if
+you have such dependencies already listed in your <em>conda.yaml</em>), although we
+recommend upgrading to the latest found in <a class="reference external" href="https://pypi.org/">PyPI</a>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code> <strong>2.2.1</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code> <strong>5.2.8</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-dialogs</span></code> <strong>4.0.4</strong> (deprecated)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> <strong>7.0.2</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> <strong>7.1.4</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code> <strong>5.1.2</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> <strong>7.3.0</strong></p></li>
+</ul>
+</div></blockquote>
+</div>
+</li>
 </ul>
 </div>
 <div class="section" id="id3">
