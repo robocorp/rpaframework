@@ -1121,25 +1121,32 @@ class Selenium(SeleniumLibrary):
         if profile_name is not None:
             options.add_argument(f"--profile-directory={profile_name}")
 
-    @staticmethod
-    def _augment_service_class(Service: ServiceType) -> type:
-
+    def _augment_service_class(self, Service: ServiceType) -> type:
         class BrowserService(Service):
             """Custom service class wrapping the picked browser's one."""
 
-            def _start_process(self, *args, **kwargs):
+            def _start_process(this, *args, **kwargs):
                 try:
                     return super()._start_process(*args, **kwargs)
                 except WebDriverException as exc:
                     if "path" in str(exc).lower():
                         # Raises differently in order to not trigger the default
                         #  Selenium Manager webdriver download, while letting the error
-                        #  bubble up. (so it's caught and handled by us)
+                        #  bubble up. (so it's caught and handled by us instead, in
+                        #  order to let our core's webdriver-manager to handle the
+                        #  download)
                         raise OSError(
                             "Webdriver executable not in PATH (disabled selenium"
                             " manager)"
                         ) from exc
                     raise
+
+            def __del__(this) -> None:
+                # With auto-close disabled, we shouldn't call the object's cleanup
+                #  method, as this will automatically stop the webdriver service, which
+                #  implies a browser shutdown command, which closes the browser.
+                if self.auto_close:
+                    super().__del__()
 
         return BrowserService
 
