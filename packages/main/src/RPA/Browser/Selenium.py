@@ -17,9 +17,11 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
+from selenium.common import WebDriverException
 from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
+from selenium.webdriver.common.service import Service as ServiceType
 from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
 from SeleniumLibrary import EMBED, SeleniumLibrary
 from SeleniumLibrary.base import keyword
@@ -917,6 +919,9 @@ class Selenium(SeleniumLibrary):
         options.add_experimental_option(
             "excludeSwitches", ["enable-logging", "enable-automation"]
         )
+        if not self.auto_close:
+            # Leave the browser window open if auto-closing is disabled.
+            options.add_experimental_option("detach", True)
         if use_profile:
             self._set_user_profile(options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
@@ -1056,14 +1061,14 @@ class Selenium(SeleniumLibrary):
         kwargs["options"] = options  # legitimate webdriver kwarg separate from service
         return kwargs, options.arguments
 
-    def _set_headless_options(self, browser: str, options: ArgOptions) -> None:
+    def _set_headless_options(self, lower_browser: str, options: ArgOptions) -> None:
         """Set headless mode for the browser, if possible.
 
         ``browser`` string name of the browser
 
         ``options`` browser options class instance
         """
-        if browser.lower() == "safari":
+        if lower_browser == "safari":
             self.logger.warning(
                 "Safari does not support headless mode. "
                 "(https://github.com/SeleniumHQ/selenium/issues/5985)"
@@ -1073,7 +1078,7 @@ class Selenium(SeleniumLibrary):
         options.headless = True
         options.add_argument("--disable-gpu")
 
-        if browser.lower() == "chrome":
+        if lower_browser == "chrome":
             options.add_argument("--window-size=1440,900")
 
     def _set_user_profile(
@@ -1116,6 +1121,28 @@ class Selenium(SeleniumLibrary):
         if profile_name is not None:
             options.add_argument(f"--profile-directory={profile_name}")
 
+    @staticmethod
+    def _augment_service_class(Service: ServiceType) -> type:
+
+        class BrowserService(Service):
+            """Custom service class wrapping the picked browser's one."""
+
+            def _start_process(self, *args, **kwargs):
+                try:
+                    return super()._start_process(*args, **kwargs)
+                except WebDriverException as exc:
+                    if "path" in str(exc).lower():
+                        # Raises differently in order to not trigger the default
+                        #  Selenium Manager webdriver download, while letting the error
+                        #  bubble up. (so it's caught and handled by us)
+                        raise OSError(
+                            "Webdriver executable not in PATH (disabled selenium"
+                            " manager)"
+                        ) from exc
+                    raise
+
+        return BrowserService
+
     def _create_webdriver(
         self, browser: str, alias: Optional[str], download: bool, **kwargs
     ) -> AliasType:
@@ -1146,7 +1173,8 @@ class Selenium(SeleniumLibrary):
             elif Service is selenium_webdriver.ie.service.Service:
                 service_kwargs["log_file"] = service_kwargs.pop("log_path")
                 service_args = service_kwargs.pop("service_args")
-            service = Service(**service_kwargs)
+            BrowserService = self._augment_service_class(Service)
+            service = BrowserService(**service_kwargs)
             if service_args:
                 service.service_args.extend(service_args)
 
@@ -1492,7 +1520,7 @@ class Selenium(SeleniumLibrary):
         if text in alert.text:
             return True
         else:
-            raise ValueError('Alert did not contain text "%s"' % text)
+            raise ValueError(f"Alert did not contain text {text!r}")
 
     @keyword
     def does_alert_not_contain(self, text: str = None, timeout: float = None) -> bool:
@@ -1512,7 +1540,7 @@ class Selenium(SeleniumLibrary):
         if alert and text not in alert.text:
             return True
         else:
-            raise ValueError('Alert did contain text "%s"' % text)
+            raise ValueError(f"Alert did contain text {text!r}")
 
     @keyword
     def is_checkbox_selected(self, locator: str) -> bool:
