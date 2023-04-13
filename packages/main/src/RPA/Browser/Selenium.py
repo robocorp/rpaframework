@@ -524,6 +524,10 @@ class Selenium(SeleniumLibrary):
         "safari": selenium_webdriver.safari.service.Service,
         "ie": selenium_webdriver.ie.service.Service,
     }
+    SUPPORTED_BROWSERS = dict(
+        {name: name.capitalize() for name in AVAILABLE_SERVICES},
+        **{"chromiumedge": "ChromiumEdge"},
+    )
 
     def __init__(self, *args, **kwargs) -> None:
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
@@ -697,9 +701,9 @@ class Selenium(SeleniumLibrary):
         and is as follows:
 
         | Platform    | Default order                         |
-        | ``Windows`` | Chrome, Firefox, ChromiumEdge         |
-        | ``Linux``   | Chrome, Firefox, ChromiumEdge         |
-        | ``Darwin``  | Chrome, Firefox, ChromiumEdge, Safari |
+        | ``Windows`` | Chrome, Firefox, Edge         |
+        | ``Linux``   | Chrome, Firefox, Edge         |
+        | ``Darwin``  | Chrome, Firefox, Edge, Safari |
 
         The order can be overridden with a custom list by using the argument
         ``browser_selection``. The argument can be either a comma-separated
@@ -853,9 +857,11 @@ class Selenium(SeleniumLibrary):
 
         return index_or_alias
 
-    open_available_browser.__doc__ %= ", ".join(AVAILABLE_SERVICES)
+    open_available_browser.__doc__ %= ", ".join(SUPPORTED_BROWSERS.values())
 
-    def _arg_browser_selection(self, browser_selection: Any) -> List:
+    def _arg_browser_selection(
+        self, browser_selection: Union[str, List[str]]
+    ) -> List[str]:
         """Parse argument for browser selection."""
         if str(browser_selection).strip().lower() == "auto":
             order = core_webdriver.get_browser_order()
@@ -990,9 +996,9 @@ class Selenium(SeleniumLibrary):
             for name, values in options.items():
                 if name not in option_method_map:
                     raise TypeError(
-                        f"Option type {name!r} not supported, choose from "
-                        f"{list(option_method_map)} or try providing them as string "
-                        "or object"
+                        f"Option type {name!r} not supported, choose from"
+                        f" {list(option_method_map)} or try providing them as string"
+                        " or object"
                     )
                 method = option_method_map[name]
                 self._set_option(name, values, method=method)
@@ -1071,12 +1077,26 @@ class Selenium(SeleniumLibrary):
         """
         if browser_lower == "safari":
             self.logger.warning(
-                "Safari does not support headless mode. "
-                "(https://github.com/SeleniumHQ/selenium/issues/5985)"
+                "Safari does not support headless mode."
+                " (https://github.com/SeleniumHQ/selenium/issues/5985)"
             )
             return
 
-        options.headless = True
+        # NOTE(cmin764): `options.headless` will be removed in Selenium 4.10.0
+        #  (https://www.selenium.dev/blog/2023/headless-is-going-away/)
+        headless_args = {
+            "chrome": "--headless=new",
+            "edge": "--headless=new",
+            "chromiumedge": "--headless=new",
+            "firefox": "-headless",
+        }
+        headless_arg = headless_args.get(browser_lower)
+        if headless_arg:
+            options.add_argument(headless_arg)
+        else:
+            self.logger.warning(
+                "Headless is supported only with: %s", ", ".join(headless_args)
+            )
         options.add_argument("--disable-gpu")
 
         if browser_lower == "chrome":
