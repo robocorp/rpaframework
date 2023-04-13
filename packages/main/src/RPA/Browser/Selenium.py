@@ -54,8 +54,8 @@ def html_table(header, rows):
 
 def ensure_scheme(url: str, default: Optional[str]) -> str:
     """Ensures that a URL has a scheme, such as `http` or `https`"""
-    if default is None:
-        return url
+    if not all([url, default]):
+        return url  # nothing to do here in the absence of the URL or scheme
 
     parts = list(urllib.parse.urlsplit(url))
     if not parts[0]:
@@ -74,7 +74,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     def __init__(self, ctx):
         super().__init__(ctx)
-        self._default_scheme = "https"
+        self._default_scheme: Optional[str] = "https"
 
     @keyword
     def set_default_url_scheme(self, scheme: Optional[str]) -> None:
@@ -87,7 +87,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     @keyword
     def go_to(self, url: str) -> None:
-        url = ensure_scheme(url, self._default_scheme)
+        url = ensure_scheme(url, default=self._default_scheme)
         super().go_to(url)
 
     go_to.__doc__ = BrowserManagementKeywords.go_to.__doc__
@@ -105,7 +105,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         service_log_path: Optional[str] = None,
         executable_path: Optional[str] = None,
     ) -> str:
-        url = ensure_scheme(url, self._default_scheme)
+        if url:
+            url = ensure_scheme(url, default=self._default_scheme)
         if options:
             options: ArgOptions = self.ctx.normalize_options(options, browser=browser)
         return super().open_browser(
