@@ -757,8 +757,9 @@ class Selenium(SeleniumLibrary):
         the context.
 
         It can be explicitly enabled or disabled with the argument ``headless``.
-        By default it will be disabled, unless it detects that it is running
-        in a Linux environment without a display, i.e. a container.
+        By default, it will be disabled, unless it detects that it is running
+        in a Linux environment without a display, e.g. a container or if the
+        `RPA_HEADLESS_MODE` env var is set to a number different than `0`.
 
         == Chrome options ==
 
@@ -1146,6 +1147,7 @@ class Selenium(SeleniumLibrary):
         class BrowserService(Service):
             """Custom service class wrapping the picked browser's one."""
 
+            # pylint: disable=no-self-argument
             def _start_process(this, *args, **kwargs):
                 try:
                     return super()._start_process(*args, **kwargs)
@@ -1162,6 +1164,7 @@ class Selenium(SeleniumLibrary):
                         ) from exc
                     raise
 
+            # pylint: disable=no-self-argument
             def __del__(this) -> None:
                 # With auto-close disabled, we shouldn't call the object's cleanup
                 #  method, as this will automatically stop the webdriver service, which
@@ -1296,15 +1299,15 @@ class Selenium(SeleniumLibrary):
     @keyword
     def screenshot(
         self,
-        locator: str = None,
-        filename: str = "",
-    ) -> None:
+        locator: Optional[str] = None,
+        filename: Optional[str] = "",
+    ) -> Optional[str]:
         # pylint: disable=C0301, W0212
         """Capture page and/or element screenshot.
 
         ``locator`` if defined, take element screenshot, if not takes page screenshot
 
-        ``filename`` filename for the screenshot, by default creates file `screenshot-timestamp-element/page.png`
+        ``filename`` filename for the screenshot, by default creates file `screenshot-<timestamp>-(element|page).png`
         if set to `None` then file is not saved at all
 
         Example:
@@ -1347,6 +1350,8 @@ class Selenium(SeleniumLibrary):
                 )
                 __save_base64_screenshot_to_file(screenshot_as_base64, filename)
                 notebook.notebook_image(filename)
+
+        return filename
 
     @keyword
     def click_element_when_visible(
@@ -2283,7 +2288,7 @@ class Selenium(SeleniumLibrary):
     ) -> str:
         """Print the current page to a PDF document using Chrome/Chromium DevTools.
 
-        Attention: This works in ``headless`` mode only!
+        Attention: With some older browsers, this may work in `headless` mode only!
         For supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
         Returns the output PDF file path.
