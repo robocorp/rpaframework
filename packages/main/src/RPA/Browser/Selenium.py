@@ -1332,23 +1332,22 @@ class Selenium(SeleniumLibrary):
 
         if locator:
             element = screenshot_keywords.find_element(locator)
-            screenshot_keywords._embed_to_log_as_base64(
-                element.screenshot_as_base64, 400
-            )
+            ss_data = element.screenshot_as_base64
+            screenshot_keywords._embed_to_log_as_base64(ss_data, 400)
             if filename is not None:
                 filename = filename or os.path.join(
                     os.curdir, f"{default_filename_prefix}-element.png"
                 )
-                __save_base64_screenshot_to_file(element.screenshot_as_base64, filename)
+                __save_base64_screenshot_to_file(ss_data, filename)
                 notebook.notebook_image(filename)
         else:
-            screenshot_as_base64 = self.driver.get_screenshot_as_base64()
-            screenshot_keywords._embed_to_log_as_base64(screenshot_as_base64, 800)
+            ss_data = self.driver.get_screenshot_as_base64()
+            screenshot_keywords._embed_to_log_as_base64(ss_data, 800)
             if filename is not None:
                 filename = filename or os.path.join(
                     os.curdir, f"{default_filename_prefix}-page.png"
                 )
-                __save_base64_screenshot_to_file(screenshot_as_base64, filename)
+                __save_base64_screenshot_to_file(ss_data, filename)
                 notebook.notebook_image(filename)
 
         return filename

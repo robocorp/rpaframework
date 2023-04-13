@@ -45,8 +45,14 @@ Screenshot Robocorp Google search result
     Press Keys    q    ENTER
     Wait Until Element Is Visible   css:div.logo
 
-    ${output_path} =    Screenshot     filename=${BROWSER_DATA}${/}google-robocorp.png
+    ${output_path} =    Screenshot      css:div.logo
+    ...     filename=${BROWSER_DATA}${/}google-logo.png
     File Should Exist   ${output_path}
+
+    ${output_path} =    Screenshot
+    ...     filename=${BROWSER_DATA}${/}google-robocorp-result.png
+    File Should Exist   ${output_path}
+    Log To Console     Full page screenshot: ${output_path}
 
 Check button value
     Go To    https://www.easytestmaker.com
@@ -71,7 +77,7 @@ Print page as PDF document
     Go To    https://robotsparebinindustries.com/
 
     ${destination_path} =      Set Variable    ${BROWSER_DATA}${/}printed-page.pdf
-    Log     Printing page into: ${destination_path}
+    Log To Console     Printing page into: ${destination_path}
     ${output_path} =    Print To Pdf    ${destination_path}
     File Should Exist   ${output_path}
 

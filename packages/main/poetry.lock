@@ -1594,14 +1594,14 @@ attrs = ">=19.2.0"
 
 [[package]]
 name = "packaging"
-version = "23.0"
+version = "23.1"
 description = "Core utilities for Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "packaging-23.0-py3-none-any.whl", hash = "sha256:714ac14496c3e68c99c29b00845f7a2b85f3bb6f1078fd9f72fd20f0570002b2"},
-    {file = "packaging-23.0.tar.gz", hash = "sha256:b6ad297f8907de0fa2fe1ccbd26fdaf387f5f47c7275fedf8cce89f99446cf97"},
+    {file = "packaging-23.1-py3-none-any.whl", hash = "sha256:994793af429502c4ea2ebf6bf664629d07c1a9fe974af92966e4b8d2df7edc61"},
+    {file = "packaging-23.1.tar.gz", hash = "sha256:a392980d2b6cffa644431898be54b0045151319d1e7ec34f0cfed48767dd334f"},
 ]
 
 [[package]]
@@ -1868,18 +1868,18 @@ files = [
 
 [[package]]
 name = "pydash"
-version = "6.0.2"
+version = "7.0.0"
 description = "The kitchen sink of Python utility libraries for doing \"stuff\" in a functional way. Based on the Lo-Dash Javascript library."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pydash-6.0.2-py3-none-any.whl", hash = "sha256:6d3ce5cbbc8ca3533c12782ac201c2ec756d1e1703ec3efc88f2b95d1ed2bb31"},
-    {file = "pydash-6.0.2.tar.gz", hash = "sha256:35caa588e01d293713655e0870544d25128cd414c5e19477a0d63adc2b2ca03e"},
+    {file = "pydash-7.0.0-py3-none-any.whl", hash = "sha256:65eec35f3be7addcdadf6d1e3c20af77a4db966c2eed08c6eddb19092559e148"},
+    {file = "pydash-7.0.0.tar.gz", hash = "sha256:5321092644ce02bfb00453c85e2eb8ee7e134f54acb205398aeffb9ee2073f38"},
 ]
 
 [package.extras]
-dev = ["Sphinx", "black", "build", "coverage", "docformatter", "flake8", "flake8-black", "flake8-bugbear", "flake8-isort", "importlib-metadata (<5)", "invoke", "isort", "pylint", "pytest", "pytest-cov", "sphinx-rtd-theme", "tox", "twine", "wheel"]
+dev = ["Sphinx", "black", "build", "coverage", "docformatter", "flake8", "flake8-black", "flake8-bugbear", "flake8-isort", "importlib-metadata (<5)", "invoke", "isort", "mypy", "pylint", "pytest", "pytest-cov", "pytest-mypy-testing", "sphinx-autodoc-typehints", "sphinx-rtd-theme", "tox", "twine", "wheel"]
 
 [[package]]
 name = "pydocstyle"
@@ -2705,14 +2705,14 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "11.0.0"
+version = "11.0.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_core-11.0.0-py3-none-any.whl", hash = "sha256:d04a4c18a4f682c6a9511184f7d3c2c9fb80c60b75ebd8d4ee7d26e3f833b96a"},
-    {file = "rpaframework_core-11.0.0.tar.gz", hash = "sha256:1d9e8bf4b21e757b12d91beba0a16e75b2737468f5ecba5af1ca4cef85887735"},
+    {file = "rpaframework_core-11.0.1-py3-none-any.whl", hash = "sha256:3b3aa497b3e8b2b59f55238b5fbcf99e805c269df2cd44b5644fec7be1950b6f"},
+    {file = "rpaframework_core-11.0.1.tar.gz", hash = "sha256:a3d546cfc9d51806608aea88e35127d8eba9a06f2239b9f6f2283857971c57c6"},
 ]
 
 [package.dependencies]
@@ -2720,9 +2720,9 @@ packaging = ">=21.3,<24"
 pillow = ">=9.1.1,<10.0.0"
 psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
 pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
-selenium = ">=4.4.0,<5.0.0"
+selenium = ">=4.6.1,<5.0.0"
 uiautomation = {version = ">=2.0.15,<3.0.0", markers = "sys_platform == \"win32\""}
-webdriver-manager = ">=3.8.3,<4.0.0"
+webdriver-manager = ">=3.8.4,<4.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
@@ -3632,4 +3632,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "25f694702f2c976ea1d7f50f3ccc58e33f7776a9f791a654e967ced912dc1efd"
+content-hash = "b6a20869685de94f1503c9d87bff7b8868b3f3e86544aa28957ec89f60fc910b"
