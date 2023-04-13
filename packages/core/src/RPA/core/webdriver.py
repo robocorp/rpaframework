@@ -4,10 +4,9 @@ import os
 import platform
 import stat
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 import requests
-from packaging import version
 from requests import Response
 from selenium import webdriver
 from selenium.webdriver.common.service import Service
@@ -42,10 +41,15 @@ AVAILABLE_DRIVERS = {
     # NOTE: IE is discontinued and not supported/encouraged anymore.
     "ie": IEDriverManager,
 }
+# Available `WebDriver` classes in Selenium.
+SUPPORTED_BROWSERS = dict(
+    {name: name.capitalize() for name in AVAILABLE_DRIVERS},
+    **{"chromiumedge": "ChromiumEdge"},
+)
 _DRIVER_PREFERENCE = {
-    "Windows": ["Chrome", "Firefox", "ChromiumEdge"],
-    "Linux": ["Chrome", "Firefox", "ChromiumEdge"],
-    "Darwin": ["Chrome", "Firefox", "ChromiumEdge", "Safari"],
+    "Windows": ["Chrome", "Firefox", "Edge"],
+    "Linux": ["Chrome", "Firefox", "Edge"],
+    "Darwin": ["Chrome", "Firefox", "Edge", "Safari"],
     "default": ["Chrome", "Firefox"],
 }
 
@@ -71,41 +75,11 @@ def get_browser_order() -> List[str]:
     return _DRIVER_PREFERENCE.get(platform.system(), _DRIVER_PREFERENCE["default"])
 
 
-def _set_driver_preference() -> Dict[str, List[str]]:
-    pref = _DRIVER_PREFERENCE.copy()
-    browsers: Optional[List[str]] = _get_browser_order_from_env()
-    if browsers:
-        for op_sys in pref:
-            pref[op_sys] = browsers
-    return pref
-
-
-# FIXME(cmin764): This constant is deprecated and is planned for removal in the next
-#  major upgrade. (use `get_browser_order` function instead)
-DRIVER_PREFERENCE = _set_driver_preference()
-
-
 class Downloader(WDMHttpClient):
 
     """Custom downloader which disables download progress reporting."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.driver = None
-
-    def _fix_mac_arm_url(self, url) -> str:
-        if "m1" not in self.driver.get_os_type():
-            return url
-
-        # FIXME(cmin764): Remove this when the issue below gets closed
-        #  https://github.com/SergeyPirogov/webdriver_manager/issues/446
-        browser_version = self.driver.get_version()
-        if version.parse(browser_version) >= version.parse("106.0.5249.61"):
-            url = url.replace("mac64_m1", "mac_arm64")
-        return url
-
     def get(self, url, **kwargs) -> Response:
-        url = self._fix_mac_arm_url(url)
         resp = requests.get(url=url, verify=self._ssl_verify, stream=True, **kwargs)
         self.validate_response(resp)
         return resp
@@ -128,25 +102,25 @@ def start(browser: str, service: Optional[Service] = None, **options) -> WebDriv
     browser = browser.strip()
     webdriver_factory = getattr(webdriver, browser, None)
     if not webdriver_factory:
-        raise ValueError(f"Unsupported browser: {browser}")
+        raise ValueError(f"Unsupported Selenium browser: {browser}")
 
     # NOTE: It is recommended to pass a `service` rather than deprecated `options`.
     driver = webdriver_factory(service=service, **options)
     return driver
 
 
-def _to_manager(browser: str, root: Path = DRIVER_ROOT) -> DriverManager:
+def _to_manager(browser: str, *, root: Path) -> DriverManager:
     browser = browser.strip()
     manager_factory = AVAILABLE_DRIVERS.get(browser.lower())
     if not manager_factory:
         raise ValueError(
-            f"Unsupported browser {browser!r}! (choose from: {list(AVAILABLE_DRIVERS)})"
+            f"Unsupported browser {browser!r} for webdriver download!"
+            f" (choose from: {', '.join(SUPPORTED_BROWSERS.values())})"
         )
 
     downloader = Downloader()
     download_manager = WDMDownloadManager(downloader)
     manager = manager_factory(path=str(root), download_manager=download_manager)
-    downloader.driver = manager.driver
     return manager
 
 
@@ -160,7 +134,7 @@ def _set_executable(path: str) -> None:
 
 def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
     """Download a webdriver binary for the given browser and return the path to it."""
-    manager = _to_manager(browser, root)
+    manager = _to_manager(browser, root=root)
     driver = manager.driver
     resolved_os = getattr(driver, "os_type", driver.get_os_type())
     os_name = get_os_name()
@@ -176,5 +150,5 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
         path: str = manager.install()
     if platform.system() != "Windows":
         _set_executable(path)
-    LOGGER.debug("Downloaded webdriver to: %s", path)
+    LOGGER.info("Downloaded webdriver to: %s", path)
     return path
