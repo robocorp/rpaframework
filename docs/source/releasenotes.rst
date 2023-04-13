@@ -20,7 +20,8 @@ Release notes
   - Fixes `headless` mode setting with newer browsers and enables more browser features
     when running in this mode. (:issue:`919`)
   - Ensures keyword ``Screenshot`` works and logs messages as expected. (logs aren't
-    polluted with raw image data on levels equal or greater than `INFO`; :issue:`920`)
+    polluted with raw image data on levels equal or greater than `INFO` and it returns
+    the final output image path; :issue:`920`)
   - Takes into use the latest webdriver-manager fixes given ``rpaframework-core``
     **11.0.1**.
 
