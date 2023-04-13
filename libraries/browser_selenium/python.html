@@ -819,7 +819,7 @@ and <code class="docutils literal notranslate"><span class="pre">name</span></co
 or other values that make sense in their context. For example, <cite>Click
 Link</cite> supports the <code class="docutils literal notranslate"><span class="pre">href</span></code> attribute and the link text and addition
 to the normal <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
-<p>Examples:</p>
+<p>Example:</p>
 <div class="line-block">
 <div class="line"><cite>Click Element</cite> | example | # Match based on <code class="docutils literal notranslate"><span class="pre">id</span></code> or <code class="docutils literal notranslate"><span class="pre">name</span></code>.            |</div>
 <div class="line"><cite>Click Link</cite>    | example | # Match also based on link text and <code class="docutils literal notranslate"><span class="pre">href</span></code>.   |</div>
@@ -828,7 +828,7 @@ to the normal <code class="docutils literal notranslate"><span class="pre">id</s
 <p>If a locator accidentally starts with a prefix recognized as <cite>explicit
 locator strategy</cite> or <cite>implicit XPath strategy</cite>, it is possible to use
 the explicit <code class="docutils literal notranslate"><span class="pre">default</span></code> prefix to enable the default strategy.</p>
-<p>Examples:</p>
+<p>Example:</p>
 <div class="line-block">
 <div class="line"><cite>Click Element</cite> | name:foo         | # Find element with name <code class="docutils literal notranslate"><span class="pre">foo</span></code>.               |</div>
 <div class="line"><cite>Click Element</cite> | default:name:foo | # Use default strategy with value <code class="docutils literal notranslate"><span class="pre">name:foo</span></code>. |</div>
@@ -877,7 +877,7 @@ using <code class="docutils literal notranslate"><span class="pre">tag</span></c
 more complex cases using XPath expressions is typically the best
 approach. They are very powerful but a downside is that they can also
 get complex.</p>
-<p>Examples:</p>
+<p>Example:</p>
 <div class="line-block">
 <div class="line"><cite>Click Element</cite> | id:foo                      | # Element with id ‘foo’. |</div>
 <div class="line"><cite>Click Element</cite> | css:div#foo h1              | # h1 element under div with id ‘foo’. |</div>
@@ -901,7 +901,7 @@ If you have element like <cite>&lt;div data-automation=”automation-id-2”&gt;
 of the <code class="docutils literal notranslate"><span class="pre">//</span></code>, the locator is considered to be an XPath expression. In other
 words, using <code class="docutils literal notranslate"><span class="pre">//div</span></code> is equivalent to using explicit <code class="docutils literal notranslate"><span class="pre">xpath://div</span></code> and
 <code class="docutils literal notranslate"><span class="pre">((//div))</span></code> is equivalent to using explicit <code class="docutils literal notranslate"><span class="pre">xpath:((//div))</span></code></p>
-<p>Examples:</p>
+<p>Example:</p>
 <div class="line-block">
 <div class="line"><cite>Click Element</cite> | //div[&#64;id=”foo”]//h1 |</div>
 <div class="line"><cite>Click Element</cite> | (//div)[2]           |</div>
@@ -918,13 +918,13 @@ but it should not. Or if there is need to existing WebElement as locator.</p>
 some locator strategies use JavaScript to find elements and JavaScript is executed for the whole browser context
 and not for the element found be the previous locator. Chaining is supported by locator strategies which
 are based on Selenium API, like <cite>xpath</cite> or <cite>css</cite>, but example chaining is not supported by <cite>sizzle</cite> or <a href="#id3"><span class="problematic" id="id4">`</span></a>jquery</p>
-<p>Examples:
+<p>Example:
 | <cite>Click Element</cite> | css:.bar &gt;&gt; xpath://a | # To find a link which is present after an element with class “bar” |</p>
-<p>List examples:
-| ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | xpath://<a href="#id5"><span class="problematic" id="id6">*</span></a>[text(), ” &gt;&gt; “] |
+<p>Example with list:
+| &#64;{locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | xpath://<a href="#id5"><span class="problematic" id="id6">*</span></a>[text(), ” &gt;&gt; “] |
 | <cite>Page Should Contain Element</cite> | ${locator_list} |                           |                           |
 | ${element} =                  | Get WebElement  | xpath://<a href="#id7"><span class="problematic" id="id8">*</span></a>[text(), ” &gt;&gt; “] |                           |
-| ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | ${element}                |
+| &#64;{locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | ${element}                |
 | <cite>Page Should Contain Element</cite> | ${locator_list} |                           |                           |</p>
 <p>Chaining locators in new in SeleniumLibrary 5.0</p>
 <p>== Using WebElements ==</p>
@@ -1129,6 +1129,11 @@ argument when <cite>importing</cite> the library.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION">
 <span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.0.0'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.SUPPORTED_BROWSERS">
+<span class="sig-name descname"><span class="pre">SUPPORTED_BROWSERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'chrome':</span> <span class="pre">'Chrome',</span> <span class="pre">'chromiumedge':</span> <span class="pre">'ChromiumEdge',</span> <span class="pre">'edge':</span> <span class="pre">'Edge',</span> <span class="pre">'firefox':</span> <span class="pre">'Firefox',</span> <span class="pre">'ie':</span> <span class="pre">'Ie',</span> <span class="pre">'safari':</span> <span class="pre">'Safari'}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.SUPPORTED_BROWSERS" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1862,7 +1867,7 @@ Fail if element does not exist</p>
 <dd><p>Attempts to open a browser on the user’s device from a set of
 supported browsers. Automatically downloads a corresponding webdriver
 if none is already installed.</p>
-<p>Currently supported browsers: chrome, firefox, edge, chromiumedge, safari, ie</p>
+<p>Currently supported browsers: Chrome, Firefox, Edge, ChromiumEdge, Safari, Ie</p>
 <p>Optionally can be given a <code class="docutils literal notranslate"><span class="pre">url</span></code> as the first argument,
 to open the browser directly to the given page.</p>
 <p>Returns either a generated index or a custom <code class="docutils literal notranslate"><span class="pre">alias</span></code> for the
@@ -1878,9 +1883,9 @@ instance (e.g. <code class="docutils literal notranslate"><span class="pre">Chro
 <cite>add_argument(“–incognito”);set_capability(“acceptInsecureCerts”, True)</cite> or
 even a simple dictionary like:
 <cite>{“arguments”: [“–incognito”], “capabilities”: {“acceptInsecureCerts”: True}}</cite></p>
-<p>A custom <code class="docutils literal notranslate"><span class="pre">port</span></code> can be provided to start the browser without a random one.
-Make sure you provide every time a unique system-available local port if you
-plan to have multiple such browsers running in parallel.</p>
+<p>A custom <code class="docutils literal notranslate"><span class="pre">port</span></code> can be provided to start the browser webdriver without a
+randomly picked one. Make sure you provide every time a unique system-available
+local port if you plan to have multiple browsers being controlled in parallel.</p>
 <p>For incompatible web apps designed to work in Internet Explorer only, Edge can
 run in IE mode by simply setting <cite>ie</cite> in the <code class="docutils literal notranslate"><span class="pre">browser_selection</span></code> param.
 Robot example: <a class="reference external" href="https://github.com/robocorp/example-ie-mode-edge">https://github.com/robocorp/example-ie-mode-edge</a></p>
@@ -1897,9 +1902,9 @@ Robot example: <a class="reference external" href="https://github.com/robocorp/e
 and is as follows:</p>
 <div class="line-block">
 <div class="line">Platform    | Default order                         |</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">Windows</span></code> | Chrome, Firefox, ChromiumEdge         |</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">Linux</span></code>   | Chrome, Firefox, ChromiumEdge         |</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">Darwin</span></code>  | Chrome, Firefox, ChromiumEdge, Safari |</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Windows</span></code> | Chrome, Firefox, Edge         |</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Linux</span></code>   | Chrome, Firefox, Edge         |</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Darwin</span></code>  | Chrome, Firefox, Edge, Safari |</div>
 </div>
 <p>The order can be overridden with a custom list by using the argument
 <code class="docutils literal notranslate"><span class="pre">browser_selection</span></code>. The argument can be either a comma-separated
@@ -1944,8 +1949,9 @@ where there is no display available. It also prevents manual interaction
 with the browser, which can be either a benefit or a drawback depending on
 the context.</p>
 <p>It can be explicitly enabled or disabled with the argument <code class="docutils literal notranslate"><span class="pre">headless</span></code>.
-By default it will be disabled, unless it detects that it is running
-in a Linux environment without a display, i.e. a container.</p>
+By default, it will be disabled, unless it detects that it is running
+in a Linux environment without a display, e.g. a container or if the
+<cite>RPA_HEADLESS_MODE</cite> env var is set to a number different than <cite>0</cite>.</p>
 <p>== Chrome options ==</p>
 <p>Some features are currently available only for Chrome/Chromium.
 This includes using an existing user profile. By default Selenium
@@ -1958,7 +1964,7 @@ mind that the <code class="docutils literal notranslate"><span class="pre">profi
 “google-chrome” and the <code class="docutils literal notranslate"><span class="pre">profile_name</span></code> is a directory relative to
 <code class="docutils literal notranslate"><span class="pre">profile_path</span></code>, usually named “Profile 1”, “Profile 2” etc. (and not as your
 visible name in the Chrome browser)</p>
-<p>Examples:</p>
+<p>Example:</p>
 <div class="line-block">
 <div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | use_profile=${True} |</div>
 <div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | use_profile=${True} | profile_name=Default |</div>
@@ -2015,7 +2021,7 @@ access already open browser with selenium keywords.</p>
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.print_to_pdf">
 <span class="sig-name descname"><span class="pre">print_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.print_to_pdf" title="Permalink to this definition"></a></dt>
 <dd><p>Print the current page to a PDF document using Chrome/Chromium DevTools.</p>
-<p>Attention: This works in <code class="docutils literal notranslate"><span class="pre">headless</span></code> mode only!
+<p>Attention: With some older browsers, this may work in <cite>headless</cite> mode only!
 For supported parameters see:
 <a class="reference external" href="https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF">https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF</a>
 Returns the output PDF file path.</p>
@@ -2067,10 +2073,10 @@ the following values:
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.screenshot">
-<span class="sig-name descname"><span class="pre">screenshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.screenshot" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">screenshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.screenshot" title="Permalink to this definition"></a></dt>
 <dd><p>Capture page and/or element screenshot.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> if defined, take element screenshot, if not takes page screenshot</p>
-<p><code class="docutils literal notranslate"><span class="pre">filename</span></code> filename for the screenshot, by default creates file <cite>screenshot-timestamp-element/page.png</cite>
+<p><code class="docutils literal notranslate"><span class="pre">filename</span></code> filename for the screenshot, by default creates file <cite>screenshot-&lt;timestamp&gt;-(element|page).png</cite>
 if set to <cite>None</cite> then file is not saved at all</p>
 <p>Example:</p>
 <div class="line-block">
