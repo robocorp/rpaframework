@@ -37,7 +37,6 @@ Does alert not contain
     Handle Alert    DISMISS
 
 Screenshot Robocorp Google search result
-    [Tags]   skip
     Go To    www.google.com
     Wait Until Element Is Visible    q
 
@@ -46,7 +45,14 @@ Screenshot Robocorp Google search result
     Press Keys    q    ENTER
     Wait Until Element Is Visible   css:div.logo
 
-    Screenshot      filename=${BROWSER_DATA}${/}google-robocorp.png
+    ${output_path} =    Screenshot      css:div.logo
+    ...     filename=${BROWSER_DATA}${/}google-logo.png
+    File Should Exist   ${output_path}
+
+    ${output_path} =    Screenshot
+    ...     filename=${BROWSER_DATA}${/}google-robocorp-result.png
+    File Should Exist   ${output_path}
+    Log To Console     Full page screenshot: ${output_path}
 
 Check button value
     Go To    https://www.easytestmaker.com
@@ -67,19 +73,27 @@ Locator aliases
     Click Element When Visible      alias:RobotSpareBin.Order
     Click Button When Visible   alias:RobotSpareBin.Yep
 
+Print page as PDF document
+    Go To    https://robotsparebinindustries.com/
+
+    ${destination_path} =      Set Variable    ${BROWSER_DATA}${/}printed-page.pdf
+    Log To Console     Printing page into: ${destination_path}
+    ${output_path} =    Print To Pdf    ${destination_path}
+    File Should Exist   ${output_path}
+
 Download PDF in custom directory
-    [Tags]      skip  # because such downloads don't work in headless mode
     [Setup]     Close Browser
 
     Set Download Directory    ${OUTPUT_DIR}
     ${file_name} =   Set Variable    Robocorp-EULA-v1.0.pdf
     Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
-    ...    headless=${False}  # to enable PDF downloading
+    ...    headless=${True}  # PDF downloading now works in headless as well
     Go To   robocorp.com  # this starts after the PDF above gets downloaded
     ${file_path} =      Set Variable    ${OUTPUT_DIR}${/}${file_name}
     File Should Exist   ${file_path}
 
-    [Teardown]    Run Keyword And Ignore Error    Remove File   ${file_path}
+    [Teardown]    Run Keyword And Ignore Error
+    ...     RPA.FileSystem.Remove File   ${file_path}
 
 Highlight elements
     [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
@@ -106,9 +120,9 @@ Mute browser failures
 Open In Incognito With Custom Options
     [Documentation]     Test Chrome with custom options (incognito), port and explicit
     ...     profile directory.
-    # In CI, Chrome attracts a buggy webdriver which makes the custom profile usage
+    # In CI, Chrome may attract a buggy webdriver which makes the custom profile usage
     #  to break in headless mode. (unknown error: unable to discover open pages)
-    [Tags]      skip
+#    [Tags]  skip
     [Setup]     Close Browser
 
     ${data_dir} =    Absolute Path    ${BROWSER_DATA}
@@ -125,17 +139,21 @@ Open In Incognito With Custom Options
     Should Be True    ${visible}
     Directory Should Not Be Empty    ${data_dir}
 
+    Close Browser
     [Teardown]  RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
 
 Open Browser With Dict Options
     [Setup]     Close Browser
 
-    @{args} =    Create List    --headless
+    @{args} =    Create List    --headless=new
     &{caps} =    Create Dictionary    acceptInsecureCerts    ${True}
     &{options} =    Create Dictionary    arguments    ${args}    capabilities    ${caps}
 
     ${driver_path} =    Evaluate    RPA.core.webdriver.download("Chrome")
     ...    modules=RPA.core.webdriver
     Log To Console    Downloaded webdriver path: ${driver_path}
+
     Open Browser    https://robocorp.com    browser=Chrome    options=${options}
     ...    executable_path=${driver_path}
+    ${visible} =    Is Element Visible    xpath://button[2]
+    Should Be True    ${visible}

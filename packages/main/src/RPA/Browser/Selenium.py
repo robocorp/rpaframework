@@ -17,6 +17,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
+from selenium.common import WebDriverException
 from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
@@ -53,8 +54,8 @@ def html_table(header, rows):
 
 def ensure_scheme(url: str, default: Optional[str]) -> str:
     """Ensures that a URL has a scheme, such as `http` or `https`"""
-    if default is None:
-        return url
+    if not all([url, default]):
+        return url  # nothing to do here in the absence of the URL or scheme
 
     parts = list(urllib.parse.urlsplit(url))
     if not parts[0]:
@@ -73,7 +74,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     def __init__(self, ctx):
         super().__init__(ctx)
-        self._default_scheme = "https"
+        self._default_scheme: Optional[str] = "https"
 
     @keyword
     def set_default_url_scheme(self, scheme: Optional[str]) -> None:
@@ -86,7 +87,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
     @keyword
     def go_to(self, url: str) -> None:
-        url = ensure_scheme(url, self._default_scheme)
+        url = ensure_scheme(url, default=self._default_scheme)
         super().go_to(url)
 
     go_to.__doc__ = BrowserManagementKeywords.go_to.__doc__
@@ -104,7 +105,8 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         service_log_path: Optional[str] = None,
         executable_path: Optional[str] = None,
     ) -> str:
-        url = ensure_scheme(url, self._default_scheme)
+        if url:
+            url = ensure_scheme(url, default=self._default_scheme)
         if options:
             options: ArgOptions = self.ctx.normalize_options(options, browser=browser)
         return super().open_browser(
@@ -160,7 +162,7 @@ class Selenium(SeleniumLibrary):
     Link` supports the ``href`` attribute and the link text and addition
     to the normal ``id`` and ``name``.
 
-    Examples:
+    Example:
 
     | `Click Element` | example | # Match based on ``id`` or ``name``.            |
     | `Click Link`    | example | # Match also based on link text and ``href``.   |
@@ -170,7 +172,7 @@ class Selenium(SeleniumLibrary):
     locator strategy` or `implicit XPath strategy`, it is possible to use
     the explicit ``default`` prefix to enable the default strategy.
 
-    Examples:
+    Example:
 
     | `Click Element` | name:foo         | # Find element with name ``foo``.               |
     | `Click Element` | default:name:foo | # Use default strategy with value ``name:foo``. |
@@ -223,7 +225,7 @@ class Selenium(SeleniumLibrary):
     approach. They are very powerful but a downside is that they can also
     get complex.
 
-    Examples:
+    Example:
 
     | `Click Element` | id:foo                      | # Element with id 'foo'. |
     | `Click Element` | css:div#foo h1              | # h1 element under div with id 'foo'. |
@@ -249,7 +251,7 @@ class Selenium(SeleniumLibrary):
     words, using ``//div`` is equivalent to using explicit ``xpath://div`` and
     ``((//div))`` is equivalent to using explicit ``xpath:((//div))``
 
-    Examples:
+    Example:
 
     | `Click Element` | //div[@id="foo"]//h1 |
     | `Click Element` | (//div)[2]           |
@@ -270,14 +272,14 @@ class Selenium(SeleniumLibrary):
     and not for the element found be the previous locator. Chaining is supported by locator strategies which
     are based on Selenium API, like `xpath` or `css`, but example chaining is not supported by `sizzle` or `jquery
 
-    Examples:
+    Example:
     | `Click Element` | css:.bar >> xpath://a | # To find a link which is present after an element with class "bar" |
 
-    List examples:
-    | ${locator_list} =             | `Create List`   | css:div#div_id            | xpath://*[text(), " >> "] |
+    Example with list:
+    | @{locator_list} =             | `Create List`   | css:div#div_id            | xpath://*[text(), " >> "] |
     | `Page Should Contain Element` | ${locator_list} |                           |                           |
     | ${element} =                  | Get WebElement  | xpath://*[text(), " >> "] |                           |
-    | ${locator_list} =             | `Create List`   | css:div#div_id            | ${element}                |
+    | @{locator_list} =             | `Create List`   | css:div#div_id            | ${element}                |
     | `Page Should Contain Element` | ${locator_list} |                           |                           |
 
     Chaining locators in new in SeleniumLibrary 5.0
@@ -522,6 +524,10 @@ class Selenium(SeleniumLibrary):
         "safari": selenium_webdriver.safari.service.Service,
         "ie": selenium_webdriver.ie.service.Service,
     }
+    SUPPORTED_BROWSERS = dict(
+        {name: name.capitalize() for name in AVAILABLE_SERVICES},
+        **{"chromiumedge": "ChromiumEdge"},
+    )
 
     def __init__(self, *args, **kwargs) -> None:
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
@@ -673,9 +679,9 @@ class Selenium(SeleniumLibrary):
         even a simple dictionary like:
         `{"arguments": ["--incognito"], "capabilities": {"acceptInsecureCerts": True}}`
 
-        A custom ``port`` can be provided to start the browser without a random one.
-        Make sure you provide every time a unique system-available local port if you
-        plan to have multiple such browsers running in parallel.
+        A custom ``port`` can be provided to start the browser webdriver without a
+        randomly picked one. Make sure you provide every time a unique system-available
+        local port if you plan to have multiple browsers being controlled in parallel.
 
         For incompatible web apps designed to work in Internet Explorer only, Edge can
         run in IE mode by simply setting `ie` in the ``browser_selection`` param.
@@ -695,9 +701,9 @@ class Selenium(SeleniumLibrary):
         and is as follows:
 
         | Platform    | Default order                         |
-        | ``Windows`` | Chrome, Firefox, ChromiumEdge         |
-        | ``Linux``   | Chrome, Firefox, ChromiumEdge         |
-        | ``Darwin``  | Chrome, Firefox, ChromiumEdge, Safari |
+        | ``Windows`` | Chrome, Firefox, Edge         |
+        | ``Linux``   | Chrome, Firefox, Edge         |
+        | ``Darwin``  | Chrome, Firefox, Edge, Safari |
 
         The order can be overridden with a custom list by using the argument
         ``browser_selection``. The argument can be either a comma-separated
@@ -751,8 +757,9 @@ class Selenium(SeleniumLibrary):
         the context.
 
         It can be explicitly enabled or disabled with the argument ``headless``.
-        By default it will be disabled, unless it detects that it is running
-        in a Linux environment without a display, i.e. a container.
+        By default, it will be disabled, unless it detects that it is running
+        in a Linux environment without a display, e.g. a container or if the
+        `RPA_HEADLESS_MODE` env var is set to a number different than `0`.
 
         == Chrome options ==
 
@@ -769,7 +776,7 @@ class Selenium(SeleniumLibrary):
         ``profile_path``, usually named "Profile 1", "Profile 2" etc. (and not as your
         visible name in the Chrome browser)
 
-        Examples:
+        Example:
 
         | Open Available Browser | https://www.robocorp.com | use_profile=${True} |
         | Open Available Browser | https://www.robocorp.com | use_profile=${True} | profile_name=Default |
@@ -851,9 +858,11 @@ class Selenium(SeleniumLibrary):
 
         return index_or_alias
 
-    open_available_browser.__doc__ %= ", ".join(AVAILABLE_SERVICES)
+    open_available_browser.__doc__ %= ", ".join(SUPPORTED_BROWSERS.values())
 
-    def _arg_browser_selection(self, browser_selection: Any) -> List:
+    def _arg_browser_selection(
+        self, browser_selection: Union[str, List[str]]
+    ) -> List[str]:
         """Parse argument for browser selection."""
         if str(browser_selection).strip().lower() == "auto":
             order = core_webdriver.get_browser_order()
@@ -917,6 +926,9 @@ class Selenium(SeleniumLibrary):
         options.add_experimental_option(
             "excludeSwitches", ["enable-logging", "enable-automation"]
         )
+        if not self.auto_close:
+            # Leave the browser window open if auto-closing is disabled.
+            options.add_experimental_option("detach", True)
         if use_profile:
             self._set_user_profile(options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
@@ -960,16 +972,17 @@ class Selenium(SeleniumLibrary):
         self, options: Optional[OptionsType], *, browser: str
     ) -> ArgOptions:
         """Normalize provided `options` to a `<Browser>Options` instance."""
-        browser = browser.lower()
+        browser_lower = browser.lower()
 
         # String or object based provided options, solved by the wrapped library.
         if isinstance(options, (ArgOptions, str)):
-            return SeleniumOptions().create(self.BROWSER_NAMES[browser], options)
+            return SeleniumOptions().create(self.BROWSER_NAMES[browser_lower], options)
 
-        BrowserOptions = self.AVAILABLE_OPTIONS.get(browser)
+        BrowserOptions = self.AVAILABLE_OPTIONS.get(browser_lower)
         if not BrowserOptions:
             raise ValueError(
-                f"{browser!r} browser options other than string/object aren't supported"
+                f"{browser!r} browser options not provided as a string/object aren't"
+                f" supported"
             )
 
         options_obj = BrowserOptions()
@@ -984,9 +997,9 @@ class Selenium(SeleniumLibrary):
             for name, values in options.items():
                 if name not in option_method_map:
                     raise TypeError(
-                        f"Option type {name!r} not supported, choose from "
-                        f"{list(option_method_map)} or try providing them as string "
-                        "or object"
+                        f"Option type {name!r} not supported, choose from"
+                        f" {list(option_method_map)} or try providing them as string"
+                        " or object"
                     )
                 method = option_method_map[name]
                 self._set_option(name, values, method=method)
@@ -1009,14 +1022,14 @@ class Selenium(SeleniumLibrary):
         url: Optional[str] = None,
     ) -> Tuple[dict, Any]:
         """Get browser and webdriver arguments for given options."""
-        browser = browser.lower()
-        if browser not in self.AVAILABLE_OPTIONS:
+        browser_lower = browser.lower()
+        if browser_lower not in self.AVAILABLE_OPTIONS:
             return {}, []
 
         options: ArgOptions = self.normalize_options(options, browser=browser)
         headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
         if headless:
-            self._set_headless_options(browser, options)
+            self._set_headless_options(browser_lower, options)
         if maximized:
             options.add_argument("--start-maximized")
         if user_agent:
@@ -1026,7 +1039,7 @@ class Selenium(SeleniumLibrary):
         if port:
             # Deprecated kwarg which will be transferred into a service instance.
             kwargs["port"] = int(port)
-        if browser == "chrome":
+        if browser_lower == "chrome":
             self._set_chrome_options(
                 kwargs,
                 options,
@@ -1038,7 +1051,7 @@ class Selenium(SeleniumLibrary):
             )
         elif use_profile:
             self.logger.warning("Profiles are supported with Chrome only")
-        if browser == "ie":
+        if browser_lower == "ie":
             self._set_ie_options(options, url=url)
 
         try:
@@ -1056,24 +1069,38 @@ class Selenium(SeleniumLibrary):
         kwargs["options"] = options  # legitimate webdriver kwarg separate from service
         return kwargs, options.arguments
 
-    def _set_headless_options(self, browser: str, options: ArgOptions) -> None:
+    def _set_headless_options(self, browser_lower: str, options: ArgOptions) -> None:
         """Set headless mode for the browser, if possible.
 
         ``browser`` string name of the browser
 
         ``options`` browser options class instance
         """
-        if browser.lower() == "safari":
+        if browser_lower == "safari":
             self.logger.warning(
-                "Safari does not support headless mode. "
-                "(https://github.com/SeleniumHQ/selenium/issues/5985)"
+                "Safari does not support headless mode."
+                " (https://github.com/SeleniumHQ/selenium/issues/5985)"
             )
             return
 
-        options.headless = True
+        # NOTE(cmin764): `options.headless` will be removed in Selenium 4.10.0
+        #  (https://www.selenium.dev/blog/2023/headless-is-going-away/)
+        headless_args = {
+            "chrome": "--headless=new",
+            "edge": "--headless=new",
+            "chromiumedge": "--headless=new",
+            "firefox": "-headless",
+        }
+        headless_arg = headless_args.get(browser_lower)
+        if headless_arg:
+            options.add_argument(headless_arg)
+        else:
+            self.logger.warning(
+                "Headless is supported only with: %s", ", ".join(headless_args)
+            )
         options.add_argument("--disable-gpu")
 
-        if browser.lower() == "chrome":
+        if browser_lower == "chrome":
             options.add_argument("--window-size=1440,900")
 
     def _set_user_profile(
@@ -1116,6 +1143,37 @@ class Selenium(SeleniumLibrary):
         if profile_name is not None:
             options.add_argument(f"--profile-directory={profile_name}")
 
+    def _augment_service_class(self, Service: type) -> type:
+        class BrowserService(Service):
+            """Custom service class wrapping the picked browser's one."""
+
+            # pylint: disable=no-self-argument
+            def _start_process(this, *args, **kwargs):
+                try:
+                    return super()._start_process(*args, **kwargs)
+                except WebDriverException as exc:
+                    if "path" in str(exc).lower():
+                        # Raises differently in order to not trigger the default
+                        #  Selenium Manager webdriver download, while letting the error
+                        #  bubble up. (so it's caught and handled by us instead, in
+                        #  order to let our core's webdriver-manager to handle the
+                        #  download)
+                        raise OSError(
+                            "Webdriver executable not in PATH (with disabled selenium"
+                            " manager)"
+                        ) from exc
+                    raise
+
+            # pylint: disable=no-self-argument
+            def __del__(this) -> None:
+                # With auto-close disabled, we shouldn't call the object's cleanup
+                #  method, as this will automatically stop the webdriver service, which
+                #  implies a browser shutdown command, which closes the browser.
+                if self.auto_close:
+                    super().__del__()
+
+        return BrowserService
+
     def _create_webdriver(
         self, browser: str, alias: Optional[str], download: bool, **kwargs
     ) -> AliasType:
@@ -1146,7 +1204,8 @@ class Selenium(SeleniumLibrary):
             elif Service is selenium_webdriver.ie.service.Service:
                 service_kwargs["log_file"] = service_kwargs.pop("log_path")
                 service_args = service_kwargs.pop("service_args")
-            service = Service(**service_kwargs)
+            BrowserService = self._augment_service_class(Service)
+            service = BrowserService(**service_kwargs)
             if service_args:
                 service.service_args.extend(service_args)
 
@@ -1240,15 +1299,15 @@ class Selenium(SeleniumLibrary):
     @keyword
     def screenshot(
         self,
-        locator: str = None,
-        filename: str = "",
-    ) -> None:
+        locator: Optional[str] = None,
+        filename: Optional[str] = "",
+    ) -> Optional[str]:
         # pylint: disable=C0301, W0212
         """Capture page and/or element screenshot.
 
         ``locator`` if defined, take element screenshot, if not takes page screenshot
 
-        ``filename`` filename for the screenshot, by default creates file `screenshot-timestamp-element/page.png`
+        ``filename`` filename for the screenshot, by default creates file `screenshot-<timestamp>-(element|page).png`
         if set to `None` then file is not saved at all
 
         Example:
@@ -1273,24 +1332,25 @@ class Selenium(SeleniumLibrary):
 
         if locator:
             element = screenshot_keywords.find_element(locator)
-            screenshot_keywords._embed_to_log_as_base64(
-                element.screenshot_as_base64, 400
-            )
+            ss_data = element.screenshot_as_base64
+            screenshot_keywords._embed_to_log_as_base64(ss_data, 400)
             if filename is not None:
                 filename = filename or os.path.join(
                     os.curdir, f"{default_filename_prefix}-element.png"
                 )
-                __save_base64_screenshot_to_file(element.screenshot_as_base64, filename)
+                __save_base64_screenshot_to_file(ss_data, filename)
                 notebook.notebook_image(filename)
         else:
-            screenshot_as_base64 = self.driver.get_screenshot_as_base64()
-            screenshot_keywords._embed_to_log_as_base64(screenshot_as_base64, 800)
+            ss_data = self.driver.get_screenshot_as_base64()
+            screenshot_keywords._embed_to_log_as_base64(ss_data, 800)
             if filename is not None:
                 filename = filename or os.path.join(
                     os.curdir, f"{default_filename_prefix}-page.png"
                 )
-                __save_base64_screenshot_to_file(screenshot_as_base64, filename)
+                __save_base64_screenshot_to_file(ss_data, filename)
                 notebook.notebook_image(filename)
+
+        return filename
 
     @keyword
     def click_element_when_visible(
@@ -1492,7 +1552,7 @@ class Selenium(SeleniumLibrary):
         if text in alert.text:
             return True
         else:
-            raise ValueError('Alert did not contain text "%s"' % text)
+            raise ValueError(f"Alert did not contain text {text!r}")
 
     @keyword
     def does_alert_not_contain(self, text: str = None, timeout: float = None) -> bool:
@@ -1512,7 +1572,7 @@ class Selenium(SeleniumLibrary):
         if alert and text not in alert.text:
             return True
         else:
-            raise ValueError('Alert did contain text "%s"' % text)
+            raise ValueError(f"Alert did contain text {text!r}")
 
     @keyword
     def is_checkbox_selected(self, locator: str) -> bool:
@@ -2227,7 +2287,7 @@ class Selenium(SeleniumLibrary):
     ) -> str:
         """Print the current page to a PDF document using Chrome/Chromium DevTools.
 
-        Attention: This works in ``headless`` mode only!
+        Attention: With some older browsers, this may work in `headless` mode only!
         For supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
         Returns the output PDF file path.
