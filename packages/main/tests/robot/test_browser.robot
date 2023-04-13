@@ -139,6 +139,7 @@ Open In Incognito With Custom Options
     Should Be True    ${visible}
     Directory Should Not Be Empty    ${data_dir}
 
+    Close Browser
     [Teardown]  RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
 
 Open Browser With Dict Options
