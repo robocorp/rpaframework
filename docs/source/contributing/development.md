@@ -29,6 +29,30 @@ For obtaining an env with such specific version, you can either use
 [virtualenv](https://virtualenv.pypa.io/) or [pyenv](https://github.com/pyenv/pyenv),
 but that's totally up to you.
 
+With `virtualenv` on windows do the following:
+
+- Uninstall every other `python 3.9` versions.
+
+- Download `python 3.9.13` and make sure it is added to the path. Install it via GUI.
+```console
+% curl "https://www.python.org/ftp/python/3.9.13/python-3.9.13-amd64.exe" -o "%USERPROFILE%\Downloads\python-3.9.13.exe"
+```
+
+- Install virtualenv on python 3.9
+```console
+python39 -m pip install virtualenv
+```
+
+- Create the virtual environment
+```console
+python -m virtualenv -p python39 .venv
+```
+
+- Activate the virtualenv and follow the instructions for installing requirements.
+```console
+.\.venv\Scripts\activate.bat
+```
+
 With `pyenv`, I would do the following (in the repo root):
 ```console
 % pyenv install 3.9.13
