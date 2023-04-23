@@ -39,6 +39,7 @@ from RPA.Email.common import (
     counter_duplicate_path,
 )
 from RPA.Robocorp.utils import protect_keywords
+from RPA.Email.Exchange import NoRecipientsError
 
 
 FilePath = Union[str, Path]
@@ -449,7 +450,7 @@ class ImapSmtp(OAuthMixin):
     def send_message(
         self,
         sender: str,
-        recipients: Union[List[str], str],
+        recipients: Union[List[str], str] = [],
         subject: str = "",
         body: str = "",
         attachments: Optional[Union[List[str], str]] = None,
@@ -521,6 +522,10 @@ class ImapSmtp(OAuthMixin):
 
         if evaluated_attachment_position == AttachmentPosition.BOTTOM:
             self._add_attachments_to_msg(attachments, msg)
+
+        if not recipients:
+            raise NoRecipientsError()
+            return False
 
         # Create a generator and flatten message object to 'file’
         str_io = StringIO()
