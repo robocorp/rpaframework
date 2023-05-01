@@ -451,7 +451,7 @@ class DriveKeywords(LibraryContext):
         """  # noqa: E501
         result_files = []
         if file_id or file_dict:
-            target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
+            target_files = self._get_target_file(file_id, file_dict, query, multiple_ok,details=True)
         else:
             target_files = self.search_drive_files(query, source=source)
         target_parent = None
