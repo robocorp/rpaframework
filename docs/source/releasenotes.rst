@@ -13,7 +13,8 @@ Release notes
 --------------------
 
 - Security update: Bumps ``cryptography`` to version **40**. (fixes the limitation of
-  not being able to use the latest ``rpaframework-pdf`` in some scenarios)
+  not being able to use the latest ``rpaframework-pdf`` in some scenarios;
+  :issue:`926`)
 
 22.5.2 - 13 Apr 2023
 --------------------
