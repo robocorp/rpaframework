@@ -4123,7 +4123,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "22.5.2"
+version = "22.5.3"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
