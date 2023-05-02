@@ -37,6 +37,9 @@ Does alert not contain
     Handle Alert    DISMISS
 
 Screenshot Robocorp Google search result
+    [Tags]    skip
+    # Marked as SKIP on 2.5.2023 as this test does not
+    # handle Google consent popup and thus fails
     Go To    www.google.com
     Wait Until Element Is Visible    q
 
