@@ -5,8 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.FTP** (:pr:`938`): Add socket support for TLS connections.
+- Library **RPA.Email.ImapSmtp**:
 
+  - Make the `recipients` optional. It is still mandatory to give one of the following
+    parameters `recipients`, `cc` or `bcc`. (:pr:`930`)
+
+- Library **RPA.FTP** (:pr:`938`): Add socket support for TLS connections.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

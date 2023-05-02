@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 from RPA.Email.ImapSmtp import ImapSmtp
-from RPA.Email.common import counter_duplicate_path
+from RPA.Email.common import counter_duplicate_path, NoRecipientsError
 from docx import Document
 
 from . import RESOURCES_DIR
@@ -65,7 +65,7 @@ def test_send_message_with_no_sender(library, recipients):
 
 
 def test_send_message_with_no_recipients(library):
-    with pytest.raises(TypeError):
+    with pytest.raises(NoRecipientsError):
         library.send_message(
             sender="sender@domain.com",
             subject="My test email subject",

@@ -37,6 +37,7 @@ from RPA.Email.common import (
     OAuthProvider,
     OAuthProviderType,
     counter_duplicate_path,
+    NoRecipientsError,
 )
 from RPA.Robocorp.utils import protect_keywords
 
@@ -449,7 +450,7 @@ class ImapSmtp(OAuthMixin):
     def send_message(
         self,
         sender: str,
-        recipients: Union[List[str], str],
+        recipients: Optional[Union[List[str], str]] = None,
         subject: str = "",
         body: str = "",
         attachments: Optional[Union[List[str], str]] = None,
@@ -497,7 +498,7 @@ class ImapSmtp(OAuthMixin):
         """
         evaluated_attachment_position = to_attachment_position(attachment_position)
         add_charset(self.encoding, QP, QP, self.encoding)
-        to, attachments, images = self._handle_message_parameters(
+        email_recipients, attachments, images = self._handle_message_parameters(
             recipients, attachments, images
         )
         msg = MIMEMultipart()
@@ -506,16 +507,20 @@ class ImapSmtp(OAuthMixin):
             self._add_attachments_to_msg(attachments, msg)
 
         sender = sender.encode("idna").decode("ascii")
-        msg_to = ",".join(to).encode("idna").decode("ascii")
         msg["From"] = sender
-        msg["To"] = msg_to
+        msg["To"] = ",".join(email_recipients).encode("idna").decode("ascii")
         msg["Subject"] = Header(subject, self.encoding)
-        recipients = to if isinstance(to, list) else [to]
+
         if cc:
             msg["Cc"] = ",".join(cc) if isinstance(cc, list) else cc
-            recipients += cc if isinstance(cc, list) else cc.split(",")
+            email_recipients += cc if isinstance(cc, list) else cc.split(",")
         if bcc:
-            recipients += bcc if isinstance(bcc, list) else bcc.split(",")
+            email_recipients += bcc if isinstance(bcc, list) else bcc.split(",")
+
+        if not email_recipients:
+            raise NoRecipientsError(
+                "Message needs to have either 'recipients', 'cc' or 'bcc' for sending."
+            )
 
         self._add_message_content(html, images, body, msg)
 
@@ -529,7 +534,7 @@ class ImapSmtp(OAuthMixin):
         try:
             if self.smtp_conn is None:
                 self.authorize_smtp()
-            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
+            self.smtp_conn.sendmail(sender, email_recipients, str_io.getvalue())
         except Exception as err:
             raise ValueError(f"Send Message failed: {err}") from err
         return True
@@ -565,6 +570,8 @@ class ImapSmtp(OAuthMixin):
             attachments = []
         if images is None:
             images = []
+        if recipients is None:
+            recipients = []
         if not isinstance(recipients, list):
             recipients = recipients.split(",")
         if not isinstance(attachments, list):

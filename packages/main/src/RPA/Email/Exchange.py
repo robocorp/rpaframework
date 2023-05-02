@@ -35,6 +35,7 @@ from RPA.Email.common import (
     OAuthMixin,
     OAuthProvider,
     counter_duplicate_path,
+    NoRecipientsError,
 )
 from RPA.Robocorp.Vault import Vault
 from RPA.Robocorp.utils import protect_keywords
@@ -72,10 +73,6 @@ class AccessType(Enum):
 
     DELEGATE = DELEGATE
     IMPERSONATION = IMPERSONATION
-
-
-class NoRecipientsError(ValueError):
-    """Raised when email to be sent does not have any recipients, cc or bcc addresses."""  # noqa: E501
 
 
 class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
