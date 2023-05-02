@@ -18,11 +18,6 @@ ${LOCATORS}         ${RESOURCES}${/}locators.json
 ${ALERT_HTML}       file://${RESOURCES}${/}alert.html
 
 
-*** Keywords ***
-My Custom Keyword
-    Get Value    id:notexist
-
-
 *** Tasks ***
 Does alert contain
     Go To    ${ALERT_HTML}
@@ -46,24 +41,24 @@ Screenshot Robocorp Google search result
     Input Text    q    Robocorp
     Click Element    q
     Press Keys    q    ENTER
-    Wait Until Element Is Visible   css:div.logo
+    Wait Until Element Is Visible    css:div.logo
 
-    ${output_path} =    Screenshot      css:div.logo
-    ...     filename=${BROWSER_DATA}${/}google-logo.png
-    File Should Exist   ${output_path}
+    ${output_path} =    Screenshot    css:div.logo
+    ...    filename=${BROWSER_DATA}${/}google-logo.png
+    File Should Exist    ${output_path}
 
     ${output_path} =    Screenshot
-    ...     filename=${BROWSER_DATA}${/}google-robocorp-result.png
-    File Should Exist   ${output_path}
-    Log To Console     Full page screenshot: ${output_path}
+    ...    filename=${BROWSER_DATA}${/}google-robocorp-result.png
+    File Should Exist    ${output_path}
+    Log To Console    Full page screenshot: ${output_path}
 
 Check button value
     Go To    https://www.easytestmaker.com
 
     ${locator} =    Set Variable    xpath://input[@type='hidden']
-    ${element} =   Get WebElement       ${locator}
-    ${value} =    Get Value     ${element}
-    Log To Console  Token: ${value}
+    ${element} =    Get WebElement    ${locator}
+    ${value} =    Get Value    ${element}
+    Log To Console    Token: ${value}
 
 Locator aliases
     Go To    https://robotsparebinindustries.com/
@@ -73,30 +68,30 @@ Locator aliases
     Submit Form
 
     Click Button When Visible    id:logout
-    Click Element When Visible      alias:RobotSpareBin.Order
-    Click Button When Visible   alias:RobotSpareBin.Yep
+    Click Element When Visible    alias:RobotSpareBin.Order
+    Click Button When Visible    alias:RobotSpareBin.Yep
 
 Print page as PDF document
     Go To    https://robotsparebinindustries.com/
-
-    ${destination_path} =      Set Variable    ${BROWSER_DATA}${/}printed-page.pdf
-    Log To Console     Printing page into: ${destination_path}
+    ${data_dir} =    Create Browser Data Directory
+    ${destination_path} =    Set Variable    ${data_dir}${/}printed-page.pdf
+    Log To Console    Printing page into: ${destination_path}
     ${output_path} =    Print To Pdf    ${destination_path}
-    File Should Exist   ${output_path}
+    File Should Exist    ${output_path}
 
 Download PDF in custom directory
-    [Setup]     Close Browser
+    [Setup]    Close Browser
 
     Set Download Directory    ${OUTPUT_DIR}
-    ${file_name} =   Set Variable    Robocorp-EULA-v1.0.pdf
+    ${file_name} =    Set Variable    Robocorp-EULA-v1.0.pdf
     Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
-    ...    headless=${True}  # PDF downloading now works in headless as well
-    Go To   robocorp.com  # this starts after the PDF above gets downloaded
-    ${file_path} =      Set Variable    ${OUTPUT_DIR}${/}${file_name}
-    File Should Exist   ${file_path}
+    ...    headless=${True}    # PDF downloading now works in headless as well
+    Go To    robocorp.com    # this starts after the PDF above gets downloaded
+    ${file_path} =    Set Variable    ${OUTPUT_DIR}${/}${file_name}
+    File Should Exist    ${file_path}
 
     [Teardown]    Run Keyword And Ignore Error
-    ...     RPA.FileSystem.Remove File   ${file_path}
+    ...    RPA.FileSystem.Remove File    ${file_path}
 
 Highlight elements
     [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
@@ -114,39 +109,38 @@ Clear all highlights
     Page Should Not Contain Element    xpath://h2[@rpaframework-highlight]
 
 Mute browser failures
-    [Setup]     Go To   https://robotsparebinindustries.com/
+    [Setup]    Go To    https://robotsparebinindustries.com/
 
     Mute run on failure    My Custom Keyword
     Run keyword and expect error    *    My Custom Keyword
     Run keyword and expect error    *    Get Value    id:notexist
 
 Open In Incognito With Custom Options
-    [Documentation]     Test Chrome with custom options (incognito), port and explicit
-    ...     profile directory.
+    [Documentation]    Test Chrome with custom options (incognito), port and explicit
+    ...    profile directory.
+    [Setup]    Close Browser
     # In CI, Chrome may attract a buggy webdriver which makes the custom profile usage
-    #  to break in headless mode. (unknown error: unable to discover open pages)
-#    [Tags]  skip
-    [Setup]     Close Browser
+    #    to break in headless mode. (unknown error: unable to discover open pages)
+#    [Tags]    skip
 
-    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
-    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
+    ${data_dir} =    Create Browser Data Directory
     ${options} =    Set Variable    add_argument("--incognito")
 
     Open Available Browser    https://robocorp.com    browser_selection=Chrome
     ...    headless=${True}    options=${options}    port=${18888}
     # Custom profile usage now works in headless mode as well. (but not guaranteed
-    #  with older browser versions)
-    ...    use_profile=${True}      profile_path=${data_dir}
+    #    with older browser versions)
+    ...    use_profile=${True}    profile_path=${data_dir}
 
     ${visible} =    Is Element Visible    xpath://button[2]
     Should Be True    ${visible}
     Directory Should Not Be Empty    ${data_dir}
 
     Close Browser
-    [Teardown]  RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
+    [Teardown]    RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
 
 Open Browser With Dict Options
-    [Setup]     Close Browser
+    [Setup]    Close Browser
 
     @{args} =    Create List    --headless=new
     &{caps} =    Create Dictionary    acceptInsecureCerts    ${True}
@@ -160,3 +154,13 @@ Open Browser With Dict Options
     ...    executable_path=${driver_path}
     ${visible} =    Is Element Visible    xpath://button[2]
     Should Be True    ${visible}
+
+
+*** Keywords ***
+My Custom Keyword
+    Get Value    id:notexist
+
+Create Browser Data Directory
+    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
+    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
+    RETURN    ${data_dir}
