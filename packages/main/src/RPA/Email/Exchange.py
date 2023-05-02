@@ -75,7 +75,6 @@ class AccessType(Enum):
     IMPERSONATION = IMPERSONATION
 
 
-
 class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
 
     """OAuth2 auth code flow credentials wrapper supporting token state on refresh."""

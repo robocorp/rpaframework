@@ -37,7 +37,7 @@ from RPA.Email.common import (
     OAuthProvider,
     OAuthProviderType,
     counter_duplicate_path,
-    NoRecipientsError
+    NoRecipientsError,
 )
 from RPA.Robocorp.utils import protect_keywords
 
@@ -518,7 +518,9 @@ class ImapSmtp(OAuthMixin):
             email_recipients += bcc if isinstance(bcc, list) else bcc.split(",")
 
         if not email_recipients:
-            raise NoRecipientsError("Message needs to have either 'recipients', 'cc' or 'bcc' for sending.")
+            raise NoRecipientsError(
+                "Message needs to have either 'recipients', 'cc' or 'bcc' for sending."
+            )
 
         self._add_message_content(html, images, body, msg)
 
