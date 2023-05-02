@@ -507,6 +507,414 @@ set self.__traceback__ to tb and return self.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.FTP.</span></span><span class="sig-name descname"><span class="pre">ImplicitFTP_TLS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FTP_TLS</span></code></p>
+<p>FTP_TLS subclass that automatically wraps sockets in
+SSL to support implicit FTPS.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.abort">
+<span class="sig-name descname"><span class="pre">abort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.abort" title="Permalink to this definition"></a></dt>
+<dd><p>Abort a file transfer.  Uses out-of-band data.
+This does not follow the procedure from the RFC to send Telnet
+IP and Synch; that doesn’t seem to work with the servers I’ve
+tried.  Instead, just send the ABOR command as OOB data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.acct">
+<span class="sig-name descname"><span class="pre">acct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.acct" title="Permalink to this definition"></a></dt>
+<dd><p>Send new account name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.auth">
+<span class="sig-name descname"><span class="pre">auth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.auth" title="Permalink to this definition"></a></dt>
+<dd><p>Set up secure control connection by using TLS/SSL.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.ccc">
+<span class="sig-name descname"><span class="pre">ccc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.ccc" title="Permalink to this definition"></a></dt>
+<dd><p>Switch back to a clear-text control connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.close" title="Permalink to this definition"></a></dt>
+<dd><p>Close the connection without assuming anything about it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.connect" title="Permalink to this definition"></a></dt>
+<dd><p>Connect to host.  Arguments are:
+- host: hostname to connect to (string, default previous host)
+- port: port to connect to (integer, default previous port)
+- timeout: the timeout to set against the ftp socket(s)
+- source_address: a 2-tuple (host, port) for the socket to bind</p>
+<blockquote>
+<div><p>to as its source address before connecting.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.cwd">
+<span class="sig-name descname"><span class="pre">cwd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.cwd" title="Permalink to this definition"></a></dt>
+<dd><p>Change to a directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.debug">
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.debug" title="Permalink to this definition"></a></dt>
+<dd><p>Set the debugging level.
+The required argument level means:
+0: no debugging output (default)
+1: print commands and responses but not body text etc.
+2: also print raw lines read and sent before stripping CR/LF</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.debugging">
+<span class="sig-name descname"><span class="pre">debugging</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.debugging" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Delete a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.dir">
+<span class="sig-name descname"><span class="pre">dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.dir" title="Permalink to this definition"></a></dt>
+<dd><p>List a directory in long form.
+By default list current directory to stdout.
+Optional last argument is callback function; all
+non-empty arguments before it are concatenated to the
+LIST command.  (This <em>should</em> only be used for a pathname.)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.file">
+<span class="sig-name descname"><span class="pre">file</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.getline">
+<span class="sig-name descname"><span class="pre">getline</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.getline" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.getmultiline">
+<span class="sig-name descname"><span class="pre">getmultiline</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.getmultiline" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.getresp">
+<span class="sig-name descname"><span class="pre">getresp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.getresp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.getwelcome">
+<span class="sig-name descname"><span class="pre">getwelcome</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.getwelcome" title="Permalink to this definition"></a></dt>
+<dd><p>Get the welcome message from the server.
+(this is read and squirreled away by connect())</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.host">
+<span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.host" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.login">
+<span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">passwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.login" title="Permalink to this definition"></a></dt>
+<dd><p>Login, default anonymous.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.makepasv">
+<span class="sig-name descname"><span class="pre">makepasv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.makepasv" title="Permalink to this definition"></a></dt>
+<dd><p>Internal: Does the PASV or EPSV handshake -&gt; (address, port)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.makeport">
+<span class="sig-name descname"><span class="pre">makeport</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.makeport" title="Permalink to this definition"></a></dt>
+<dd><p>Create a new socket and send a PORT command for it.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.maxline">
+<span class="sig-name descname"><span class="pre">maxline</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8192</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.maxline" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.mkd">
+<span class="sig-name descname"><span class="pre">mkd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.mkd" title="Permalink to this definition"></a></dt>
+<dd><p>Make a directory, return its full pathname.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.mlsd">
+<span class="sig-name descname"><span class="pre">mlsd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.mlsd" title="Permalink to this definition"></a></dt>
+<dd><p>List a directory in a standardized format by using MLSD
+command (RFC-3659). If path is omitted the current directory
+is assumed. “facts” is a list of strings representing the type
+of information desired (e.g. [“type”, “size”, “perm”]).</p>
+<p>Return a generator object yielding a tuple of two elements
+for every file found in path.
+First element is the file name, the second one is a dictionary
+including a variable number of “facts” depending on the server
+and whether “facts” argument has been provided.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.nlst">
+<span class="sig-name descname"><span class="pre">nlst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.nlst" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of files in a given directory (default the current).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.ntransfercmd">
+<span class="sig-name descname"><span class="pre">ntransfercmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.ntransfercmd" title="Permalink to this definition"></a></dt>
+<dd><p>Initiate a transfer over the data connection.</p>
+<p>If the transfer is active, send a port command and the
+transfer command, and accept the connection.  If the server is
+passive, send a pasv command, connect to it, and start the
+transfer command.  Either way, return the socket for the
+connection and the expected size of the transfer.  The
+expected size may be None if it could not be determined.</p>
+<p>Optional <a href="#id1"><span class="problematic" id="id2">`</span></a>rest’ argument can be a string that is sent as the
+argument to a REST command.  This is essentially a server
+marker used to tell the server to skip over any data up to the
+given marker.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.passiveserver">
+<span class="sig-name descname"><span class="pre">passiveserver</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.passiveserver" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.port">
+<span class="sig-name descname"><span class="pre">port</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">21</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.port" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.prot_c">
+<span class="sig-name descname"><span class="pre">prot_c</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.prot_c" title="Permalink to this definition"></a></dt>
+<dd><p>Set up clear text data connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.prot_p">
+<span class="sig-name descname"><span class="pre">prot_p</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.prot_p" title="Permalink to this definition"></a></dt>
+<dd><p>Set up secure data connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.putcmd">
+<span class="sig-name descname"><span class="pre">putcmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.putcmd" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.putline">
+<span class="sig-name descname"><span class="pre">putline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.putline" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.pwd">
+<span class="sig-name descname"><span class="pre">pwd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.pwd" title="Permalink to this definition"></a></dt>
+<dd><p>Return current working directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.quit">
+<span class="sig-name descname"><span class="pre">quit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.quit" title="Permalink to this definition"></a></dt>
+<dd><p>Quit, and close the connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fromname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.rename" title="Permalink to this definition"></a></dt>
+<dd><p>Rename a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.retrbinary">
+<span class="sig-name descname"><span class="pre">retrbinary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blocksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8192</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.retrbinary" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve data in binary mode.  A new port is created for you.</p>
+<dl>
+<dt>Args:</dt><dd><p>cmd: A RETR command.
+callback: A single parameter callable to be called on each</p>
+<blockquote>
+<div><p>block of data read.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>blocksize: The maximum number of bytes to read from the</dt><dd><p>socket at one time.  [default: 8192]</p>
+</dd>
+</dl>
+<p>rest: Passed to transfercmd().  [default: None]</p>
+</dd>
+<dt>Returns:</dt><dd><p>The response code.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.retrlines">
+<span class="sig-name descname"><span class="pre">retrlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.retrlines" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve data in line mode.  A new port is created for you.</p>
+<dl>
+<dt>Args:</dt><dd><p>cmd: A RETR, LIST, or NLST command.
+callback: An optional single parameter callable that is called</p>
+<blockquote>
+<div><p>for each line with the trailing CRLF stripped.
+[default: print_line()]</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>The response code.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.rmd">
+<span class="sig-name descname"><span class="pre">rmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.rmd" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.sanitize">
+<span class="sig-name descname"><span class="pre">sanitize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.sanitize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.sendcmd">
+<span class="sig-name descname"><span class="pre">sendcmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.sendcmd" title="Permalink to this definition"></a></dt>
+<dd><p>Send a command and return the response.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.sendeprt">
+<span class="sig-name descname"><span class="pre">sendeprt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.sendeprt" title="Permalink to this definition"></a></dt>
+<dd><p>Send an EPRT command with the current host and the given port number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.sendport">
+<span class="sig-name descname"><span class="pre">sendport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.sendport" title="Permalink to this definition"></a></dt>
+<dd><p>Send a PORT command with the current host and the given
+port number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.set_debuglevel">
+<span class="sig-name descname"><span class="pre">set_debuglevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.set_debuglevel" title="Permalink to this definition"></a></dt>
+<dd><p>Set the debugging level.
+The required argument level means:
+0: no debugging output (default)
+1: print commands and responses but not body text etc.
+2: also print raw lines read and sent before stripping CR/LF</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.set_pasv">
+<span class="sig-name descname"><span class="pre">set_pasv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.set_pasv" title="Permalink to this definition"></a></dt>
+<dd><p>Use passive or active mode for data transfers.
+With a false argument, use the normal PORT mode,
+With a true argument, use the PASV command.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.size" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve the size of a file.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.sock">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sock</span></span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.sock" title="Permalink to this definition"></a></dt>
+<dd><p>Return the socket.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.ssl_version">
+<span class="sig-name descname"><span class="pre">ssl_version</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.ssl_version" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.storbinary">
+<span class="sig-name descname"><span class="pre">storbinary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blocksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8192</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.storbinary" title="Permalink to this definition"></a></dt>
+<dd><p>Store a file in binary mode.  A new port is created for you.</p>
+<dl>
+<dt>Args:</dt><dd><p>cmd: A STOR command.
+fp: A file-like object with a read(num_bytes) method.
+blocksize: The maximum data size to read from fp and send over</p>
+<blockquote>
+<div><p>the connection at once.  [default: 8192]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>callback: An optional single parameter callable that is called on</dt><dd><p>each block of data after it is sent.  [default: None]</p>
+</dd>
+</dl>
+<p>rest: Passed to transfercmd().  [default: None]</p>
+</dd>
+<dt>Returns:</dt><dd><p>The response code.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.storlines">
+<span class="sig-name descname"><span class="pre">storlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.storlines" title="Permalink to this definition"></a></dt>
+<dd><p>Store a file in line mode.  A new port is created for you.</p>
+<dl>
+<dt>Args:</dt><dd><p>cmd: A STOR command.
+fp: A file-like object with a readline() method.
+callback: An optional single parameter callable that is called on</p>
+<blockquote>
+<div><p>each line after it is sent.  [default: None]</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>The response code.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.transfercmd">
+<span class="sig-name descname"><span class="pre">transfercmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.transfercmd" title="Permalink to this definition"></a></dt>
+<dd><p>Like ntransfercmd() but returns only the socket.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.trust_server_pasv_ipv4_address">
+<span class="sig-name descname"><span class="pre">trust_server_pasv_ipv4_address</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.trust_server_pasv_ipv4_address" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.voidcmd">
+<span class="sig-name descname"><span class="pre">voidcmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.voidcmd" title="Permalink to this definition"></a></dt>
+<dd><p>Send a command and expect a response beginning with ‘2’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.voidresp">
+<span class="sig-name descname"><span class="pre">voidresp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.voidresp" title="Permalink to this definition"></a></dt>
+<dd><p>Expect a response beginning with ‘2’.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.FTP.ImplicitFTP_TLS.welcome">
+<span class="sig-name descname"><span class="pre">welcome</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#RPA.FTP.ImplicitFTP_TLS.welcome" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="RPA.FTP.ftpcommand">
 <span class="sig-prename descclassname"><span class="pre">RPA.FTP.</span></span><span class="sig-name descname"><span class="pre">ftpcommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ftpcommand" title="Permalink to this definition"></a></dt>
