@@ -9,6 +9,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+22.5.3 - 02 May 2023
+--------------------
+
+- Security update: Bumps ``cryptography`` to version **40**. (fixes the limitation of
+  not being able to use the latest ``rpaframework-pdf`` in some scenarios;
+  :issue:`926`)
+
 22.5.2 - 13 Apr 2023
 --------------------
 
