@@ -22,7 +22,7 @@ from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
-from SeleniumLibrary import EMBED, SeleniumLibrary
+from SeleniumLibrary import EMBED, SeleniumLibrary, WebElement
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
 from SeleniumLibrary.keywords import (
@@ -40,6 +40,7 @@ from RPA.Robocorp.utils import get_output_dir
 
 OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List, Dict]]]
 AliasType = Union[str, int]
+Locator = Union[WebElement, str]
 
 
 def html_table(header, rows):
@@ -2362,3 +2363,23 @@ class Selenium(SeleniumLibrary):
         response = self.driver.command_executor._request("POST", url, body)
 
         return response.get("value")
+
+    @keyword
+    def set_element_attribute(
+        self, locator: Locator, attribute: str, value: str
+    ) -> None:
+        """Sets a ``value`` for the ``attribute`` in the element ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Example:
+        | `Set Element Attribute` | css:h1 | class | active |
+        """
+        element = self.find_element(locator)
+        # NOTE(cmin764): The `WebElement` object doesn't support the `set_attribute`
+        #  method nor the execution of the "setElementAttribute" command in order to
+        #  canonically set a `value` to the passed `attribute`.
+        #  Therefore we execute a script instead:
+        script = f"arguments[0].setAttribute(arguments[1], arguments[2]);"
+        element.parent.execute_script(script, element, attribute, value)

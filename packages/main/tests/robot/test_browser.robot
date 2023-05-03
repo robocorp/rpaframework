@@ -18,6 +18,16 @@ ${LOCATORS}         ${RESOURCES}${/}locators.json
 ${ALERT_HTML}       file://${RESOURCES}${/}alert.html
 
 
+*** Keywords ***
+My Custom Keyword
+    Get Value    id:notexist
+
+Create Browser Data Directory
+    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
+    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
+    RETURN    ${data_dir}
+
+
 *** Tasks ***
 Does alert contain
     Go To    ${ALERT_HTML}
@@ -155,12 +165,14 @@ Open Browser With Dict Options
     ${visible} =    Is Element Visible    xpath://button[2]
     Should Be True    ${visible}
 
+Get and set an attribute
+    [Setup]    Go To    https://robotsparebinindustries.com/
 
-*** Keywords ***
-My Custom Keyword
-    Get Value    id:notexist
+    ${button_locator} =     Set Variable    xpath://button[@type="submit"]
+    ${button} =     Get WebElement    ${button_locator}
+    ${class} =      Get Element Attribute    ${button}    class
+    Should Be Equal    ${class}    btn btn-primary
 
-Create Browser Data Directory
-    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
-    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
-    RETURN    ${data_dir}
+    Set Element Attribute    ${button}    class     btn btn-secondary
+    ${class} =      Get Element Attribute    ${button_locator}    class
+    Should Be Equal    ${class}    btn btn-secondary
