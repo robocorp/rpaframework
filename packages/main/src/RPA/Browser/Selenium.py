@@ -1300,7 +1300,7 @@ class Selenium(SeleniumLibrary):
     @keyword
     def screenshot(
         self,
-        locator: Optional[str] = None,
+        locator: Optional[Locator] = None,
         filename: Optional[str] = "",
     ) -> Optional[str]:
         # pylint: disable=C0301, W0212
@@ -1355,7 +1355,10 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def click_element_when_visible(
-        self, locator: str, modifier: Optional[str] = None, action_chain: bool = False
+        self,
+        locator: Locator,
+        modifier: Optional[str] = None,
+        action_chain: bool = False,
     ) -> None:
         """Click element identified by ``locator``, once it becomes visible.
 
@@ -1376,7 +1379,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def click_button_when_visible(
-        self, locator: str, modifier: Optional[str] = None
+        self, locator: Locator, modifier: Optional[str] = None
     ) -> None:
         """Click button identified by ``locator``, once it becomes visible.
 
@@ -1395,7 +1398,7 @@ class Selenium(SeleniumLibrary):
     wait_and_click_button = click_button_when_visible
 
     @keyword
-    def click_element_if_visible(self, locator: str) -> None:
+    def click_element_if_visible(self, locator: Locator) -> None:
         """Click element if it is visible
 
         ``locator`` element locator
@@ -1409,7 +1412,7 @@ class Selenium(SeleniumLibrary):
             self.click_element(locator)
 
     @keyword
-    def input_text_when_element_is_visible(self, locator: str, text: str) -> None:
+    def input_text_when_element_is_visible(self, locator: Locator, text: str) -> None:
         # pylint: disable=C0301
         """Input text into locator after it has become visible.
 
@@ -1425,7 +1428,7 @@ class Selenium(SeleniumLibrary):
         self.input_text(locator, text)
 
     @keyword
-    def is_element_enabled(self, locator: str, missing_ok: bool = True) -> bool:
+    def is_element_enabled(self, locator: Locator, missing_ok: bool = True) -> bool:
         """Is element enabled
 
         ``locator`` element locator
@@ -1443,7 +1446,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_element_visible(self, locator: str, missing_ok: bool = True) -> bool:
+    def is_element_visible(self, locator: Locator, missing_ok: bool = True) -> bool:
         """Is element visible
 
         ``locator`` element locator
@@ -1461,7 +1464,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_element_disabled(self, locator: str, missing_ok: bool = True) -> bool:
+    def is_element_disabled(self, locator: Locator, missing_ok: bool = True) -> bool:
         """Is element disabled
 
         ``locator`` element locator
@@ -1479,7 +1482,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_element_focused(self, locator: str, missing_ok: bool = True) -> bool:
+    def is_element_focused(self, locator: Locator, missing_ok: bool = True) -> bool:
         """Is element focused
 
         ``locator`` element locator
@@ -1498,7 +1501,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def is_element_attribute_equal_to(
-        self, locator: str, attribute: str, expected: str
+        self, locator: Locator, attribute: str, expected: str
     ) -> bool:
         """Is element attribute equal to expected value
 
@@ -1576,7 +1579,7 @@ class Selenium(SeleniumLibrary):
             raise ValueError(f"Alert did contain text {text!r}")
 
     @keyword
-    def is_checkbox_selected(self, locator: str) -> bool:
+    def is_checkbox_selected(self, locator: Locator) -> bool:
         """Is checkbox selected
 
         ``locator`` element locator
@@ -1590,7 +1593,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_frame_contain(self, locator: str, text: str) -> bool:
+    def does_frame_contain(self, locator: Locator, text: str) -> bool:
         """Does frame contain expected text
 
         ``locator`` locator of the frame to check
@@ -1607,7 +1610,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def does_element_contain(
-        self, locator: str, expected: str, ignore_case: bool = False
+        self, locator: Locator, expected: str, ignore_case: bool = False
     ) -> bool:
         # pylint: disable=C0301
         """Does element contain expected text
@@ -1631,7 +1634,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def is_element_text(
-        self, locator: str, expected: str, ignore_case: bool = False
+        self, locator: Locator, expected: str, ignore_case: bool = False
     ) -> bool:
         """Is element text expected
 
@@ -1654,7 +1657,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_list_selection(self, locator: str, *expected: str) -> bool:
+    def is_list_selection(self, locator: Locator, *expected: str) -> bool:
         """Is list selected with expected values
 
         ``locator`` element locator
@@ -1670,7 +1673,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_list_selected(self, locator: str) -> bool:
+    def is_list_selected(self, locator: Locator) -> bool:
         """Is any option selected in the
 
         ``locator`` element locator
@@ -1728,7 +1731,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_button(self, locator: str) -> bool:
+    def does_page_contain_button(self, locator: Locator) -> bool:
         """Does page contain expected button
 
         ``locator`` element locator
@@ -1742,7 +1745,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_checkbox(self, locator: str) -> bool:
+    def does_page_contain_checkbox(self, locator: Locator) -> bool:
         """Does page contain expected checkbox
 
         ``locator`` element locator
@@ -1756,7 +1759,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_element(self, locator: str, count: int = None) -> bool:
+    def does_page_contain_element(self, locator: Locator, count: int = None) -> bool:
         """Does page contain expected element
 
         ``locator`` element locator
@@ -1774,7 +1777,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_image(self, locator: str) -> bool:
+    def does_page_contain_image(self, locator: Locator) -> bool:
         """Does page contain expected image
 
         ``locator`` element locator
@@ -1789,7 +1792,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_link(self, locator: str) -> bool:
+    def does_page_contain_link(self, locator: Locator) -> bool:
         """Does page contain expected link
 
         ``locator`` element locator
@@ -1803,7 +1806,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_list(self, locator: str) -> bool:
+    def does_page_contain_list(self, locator: Locator) -> bool:
         """Does page contain expected list
 
         ``locator`` element locator
@@ -1817,7 +1820,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_radio_button(self, locator: str) -> bool:
+    def does_page_contain_radio_button(self, locator: Locator) -> bool:
         """Does page contain expected radio button
 
         ``locator`` element locator
@@ -1831,7 +1834,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_textfield(self, locator: str) -> bool:
+    def does_page_contain_textfield(self, locator: Locator) -> bool:
         """Does page contain expected textfield
 
         ``locator`` element locator
@@ -1879,7 +1882,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def does_table_cell_contain(
-        self, locator: str, row: int, column: int, expected: str
+        self, locator: Locator, row: int, column: int, expected: str
     ) -> bool:
         """Does table cell contain expected text
 
@@ -1901,7 +1904,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def does_table_column_contain(
-        self, locator: str, column: int, expected: str
+        self, locator: Locator, column: int, expected: str
     ) -> bool:
         """Does table column contain expected text
 
@@ -1920,7 +1923,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_table_row_contain(self, locator: str, row: int, expected: str) -> bool:
+    def does_table_row_contain(self, locator: Locator, row: int, expected: str) -> bool:
         """Does table row contain expected text
 
         ``locator`` element locator for the table
@@ -1938,7 +1941,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_table_footer_contain(self, locator: str, expected: str) -> bool:
+    def does_table_footer_contain(self, locator: Locator, expected: str) -> bool:
         """Does table footer contain expected text
 
         ``locator`` element locator for the table
@@ -1954,7 +1957,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_table_header_contain(self, locator: str, expected: str) -> bool:
+    def does_table_header_contain(self, locator: Locator, expected: str) -> bool:
         """Does table header contain expected text
 
         ``locator`` element locator for the table
@@ -1970,7 +1973,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_table_contain(self, locator: str, expected: str) -> bool:
+    def does_table_contain(self, locator: Locator, expected: str) -> bool:
         """Does table contain expected text
 
         ``locator`` element locator
@@ -1986,7 +1989,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_textarea_value(self, locator: str, expected: str) -> bool:
+    def is_textarea_value(self, locator: Locator, expected: str) -> bool:
         """Is textarea matching expected value
 
         ``locator`` element locator
@@ -2002,7 +2005,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_textarea_contain(self, locator: str, expected: str) -> bool:
+    def does_textarea_contain(self, locator: Locator, expected: str) -> bool:
         """Does textarea contain expected text
 
         ``locator`` element locator
@@ -2018,7 +2021,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_textfield_contain(self, locator: str, expected: str) -> bool:
+    def does_textfield_contain(self, locator: Locator, expected: str) -> bool:
         """Does textfield contain expected text
 
         ``locator`` element locator
@@ -2034,7 +2037,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_textfield_value(self, locator: str, expected: str) -> bool:
+    def is_textfield_value(self, locator: Locator, expected: str) -> bool:
         """Is textfield value expected
 
         ``locator`` element locator
@@ -2080,7 +2083,7 @@ class Selenium(SeleniumLibrary):
             return False
 
     @keyword
-    def get_element_status(self, locator: str) -> dict:
+    def get_element_status(self, locator: Locator) -> dict:
         """Return dictionary containing element status of:
 
             - visible
@@ -2222,7 +2225,7 @@ class Selenium(SeleniumLibrary):
     @keyword
     def highlight_elements(
         self,
-        locator: str,
+        locator: Locator,
         width: str = "2px",
         style: str = "dotted",
         color: str = "blue",
@@ -2381,5 +2384,5 @@ class Selenium(SeleniumLibrary):
         #  method nor the execution of the "setElementAttribute" command in order to
         #  canonically set a `value` to the passed `attribute`.
         #  Therefore we execute a script instead:
-        script = f"arguments[0].setAttribute(arguments[1], arguments[2]);"
+        script = "arguments[0].setAttribute(arguments[1], arguments[2]);"
         element.parent.execute_script(script, element, attribute, value)
