@@ -19,6 +19,8 @@ except RobotNotRunningError:
     pass
 
 
+MYSQL_CONNECTORS = ["MySQLdb", "pymysql", "mysql.connector"]
+
 class Configuration:
     """Class to handle configuration from config files
     and class init"""
@@ -247,7 +249,7 @@ class Database:
         else:
             self.db_api_module_name = self.config.module_name
             dbmodule = importlib.import_module(self.config.module_name)
-        if module_name in ["MySQLdb", "pymysql", "mysql.connector"]:
+        if module_name in MYSQL_CONNECTORS:
             self.config.set_default_port(3306)
             parameters = {
                 "db": self.config.get("database"),
@@ -377,7 +379,8 @@ class Database:
             parameters[config_key] = config_value
 
     def _call_stored_procedure(self, name, params):
-        if self.db_api_module_name in ("cx_Oracle", "oracledb", "psycopg2"):
+        modules_without_as_dict = MYSQL_CONNECTORS + ["cx_Oracle", "oracledb", "psycopg2"]
+        if self.db_api_module_name in modules_without_as_dict:
             cur = self._dbconnection.cursor()
         else:
             cur = self._dbconnection.cursor(as_dict=False)
@@ -608,6 +611,9 @@ class Database:
                 @{res} =    Query   Select * FROM table   'value' in columns
                 @{res} =    Query   Select * FROM table   columns == ['id', 'value']
                 @{res} =    Query   Select * FROM table WHERE value = ?  data=("${d}", )
+                # Calling Stored Procedure with Query keyword requires that parameter
+                # 'returning' is set to 'True'
+                @{res} =    Query   Exec stored_procedure  returning=True
 
         **Python**
 
