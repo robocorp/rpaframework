@@ -21,6 +21,7 @@ except RobotNotRunningError:
 
 MYSQL_CONNECTORS = ["MySQLdb", "pymysql", "mysql.connector"]
 
+
 class Configuration:
     """Class to handle configuration from config files
     and class init"""
@@ -121,6 +122,20 @@ class Database:
     return values by default in `RPA.Table` format.
 
     Library is compatible with any Database API Specification 2.0 module.
+
+    **Workaround for inserting large JSON data for Call Stored Procedure**
+
+    Workaround is to use instead `Query` keyword. At the moment there is
+    no known fix for the `Call Stored Procedure` keyword as it fails if
+    JSON string is more than 8000 characters long.
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        ${data}=    Load JSON from file    random_data.json
+        ${json}=    Convert JSON to String    ${data}
+        Query    exec InsertJsonDataToSampleTable @JsonData='${json}'
 
     References:
 
@@ -379,7 +394,11 @@ class Database:
             parameters[config_key] = config_value
 
     def _call_stored_procedure(self, name, params):
-        modules_without_as_dict = MYSQL_CONNECTORS + ["cx_Oracle", "oracledb", "psycopg2"]
+        modules_without_as_dict = MYSQL_CONNECTORS + [
+            "cx_Oracle",
+            "oracledb",
+            "psycopg2",
+        ]
         if self.db_api_module_name in modules_without_as_dict:
             cur = self._dbconnection.cursor()
         else:
