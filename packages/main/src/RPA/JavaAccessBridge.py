@@ -464,8 +464,8 @@ class JavaAccessBridge:
         :param timeout: selection timeout
         """
         deprecation(
-            "Keyword `Select Window` is deprecated and will be removed in the major "
-            "update to the `RPA.JavaAccessBridge library. "
+            "Keyword `Select Window` is deprecated and will be removed in the "
+            "next major update to the `RPA.JavaAccessBridge` library. "
             "Please use `Select Window By Title` or `Select Window By PID` keywords "
             "instead."
         )
