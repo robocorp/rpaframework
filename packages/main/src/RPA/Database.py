@@ -1,7 +1,6 @@
 import importlib
 import logging
 
-import sys
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -18,6 +17,9 @@ try:
     BuiltIn().import_library("RPA.RobotLogListener")
 except RobotNotRunningError:
     pass
+
+
+MYSQL_CONNECTORS = ["MySQLdb", "pymysql", "mysql.connector"]
 
 
 class Configuration:
@@ -120,6 +122,21 @@ class Database:
     return values by default in `RPA.Table` format.
 
     Library is compatible with any Database API Specification 2.0 module.
+
+    **Workaround for inserting large JSON data for Call Stored Procedure**
+
+    Workaround is to use instead `Query` keyword. At the moment there is
+    no known fix for the `Call Stored Procedure` keyword as it fails if
+    JSON string is more than 8000 characters long.
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        ${data}=    Load JSON from file    random_data.json
+        ${json}=    Convert JSON to String    ${data}
+        # Single quotes around ${json} string are necessary
+        Query    exec InsertJsonDataToSampleTable '${json}'
 
     References:
 
@@ -248,7 +265,7 @@ class Database:
         else:
             self.db_api_module_name = self.config.module_name
             dbmodule = importlib.import_module(self.config.module_name)
-        if module_name in ["MySQLdb", "pymysql", "mysql.connector"]:
+        if module_name in MYSQL_CONNECTORS:
             self.config.set_default_port(3306)
             parameters = {
                 "db": self.config.get("database"),
@@ -377,18 +394,46 @@ class Database:
         if config_value:
             parameters[config_key] = config_value
 
+    def _call_stored_procedure(self, name, params):
+        modules_without_as_dict = MYSQL_CONNECTORS + [
+            "cx_Oracle",
+            "oracledb",
+            "psycopg2",
+        ]
+        if self.db_api_module_name in modules_without_as_dict:
+            cur = self._dbconnection.cursor()
+        else:
+            cur = self._dbconnection.cursor(as_dict=False)
+        cur.callproc(name, params)
+        return cur
+
+    @staticmethod
+    def _get_result_set_rows(cur):
+        _rows = []
+        # Get column names
+        _columns = [column[0] for column in (cur.description or [])]
+        for row in cur:
+            _rows.append(row)
+        return _rows, _columns
+
     def call_stored_procedure(
         self,
         name: str,
         params: Optional[List[str]] = None,
         sanstran: Optional[bool] = False,
-    ) -> List[str]:
+        as_table: Optional[bool] = True,
+        multiple: Optional[bool] = False,
+    ) -> Union[Table, List[str]]:
         """Call stored procedure with name and params.
 
         :param name: procedure name
         :param params: parameters for the procedure as a list, defaults to None
         :param sanstran: Run the query without an implicit transaction commit or
             rollback if such additional action was detected. (turned off by default)
+        :param as_table: If the result should be an instance of `Table`, otherwise a
+            `list` will be returned. (defaults to `True`)
+        :param multiple: Return results for one result set (default `False`) or multiple
+            results from all result sets (set this parameter to `True`)
         :returns: list of results
 
         Example:
@@ -401,19 +446,26 @@ class Database:
         """
         params = params or []
         cur = None
+        rows = []
+        columns = []
+        result = []
+
         try:
-            if self.db_api_module_name in ("cx_Oracle", "oracledb", "psycopg2"):
-                cur = self._dbconnection.cursor()
-            else:
-                cur = self._dbconnection.cursor(as_dict=False)
-            PY3K = sys.version_info >= (3, 0)
-            if not PY3K:
-                name = name.encode("ascii", "ignore")
-            cur.callproc(name, params)
-            cur.nextset()
-            value = []
-            for row in cur:
-                value.append(row)
+            cur = self._call_stored_procedure(name, params)
+            more_results = True
+            while more_results is not None:
+                _rows, _columns = self._get_result_set_rows(cur)
+                if multiple:
+                    if as_table:
+                        result.append(Table(_rows, _columns))
+                    else:
+                        rows.append(_rows)
+                        columns.append(_columns)
+                else:
+                    rows = _rows
+                    columns = _columns
+                    break
+                more_results = cur.nextset()
         except Exception as exc:
             # Implicitly rollback when error occurs.
             self.logger.error(exc)
@@ -423,7 +475,13 @@ class Database:
         else:
             if not sanstran:
                 self._dbconnection.commit()
-            return value
+            if as_table and len(result) > 0:
+                pass
+            elif as_table:
+                result = Table(rows, columns)
+            else:
+                result = rows
+            return result
 
     def description(self, table: str) -> list:
         """Get description of the SQL table
@@ -573,6 +631,9 @@ class Database:
                 @{res} =    Query   Select * FROM table   'value' in columns
                 @{res} =    Query   Select * FROM table   columns == ['id', 'value']
                 @{res} =    Query   Select * FROM table WHERE value = ?  data=("${d}", )
+                # Calling Stored Procedure with Query keyword requires that parameter
+                # 'returning' is set to 'True'
+                @{res} =    Query   Exec stored_procedure  returning=True
 
         **Python**
 
