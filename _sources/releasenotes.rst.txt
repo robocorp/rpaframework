@@ -5,6 +5,18 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Database**:
+
+  - Improvements for keyword ``Call Stored Procedure``
+
+    - Fix keyword not returning results of the procedure
+    - Add possibility of returning result as a ``RPA.Tables.Table`` by parameter ``as_table=True``
+      (default is `True`, ie. `Table` is returned)
+    - Add possibility of returning multiple result sets from a ``Call Stored Procedure``
+      by parameter ``multiple=True`` (default is `False`, ie. only one result set is returned).
+      Multiple results are then either list of lists or list of Tables.
+    - Remove specific support for Python 2.* in this keyword
+
 - Library **RPA.Email.ImapSmtp**:
 
   - Make the `recipients` optional. It is still mandatory to give one of the following

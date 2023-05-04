@@ -9,7 +9,7 @@ RPA.Database:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "241", "take autocommit into use for all database modules"
+   "258", "take autocommit into use for all database modules"
 
 RPA.Desktop.Windows:
 ====================

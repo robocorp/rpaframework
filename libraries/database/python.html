@@ -202,6 +202,17 @@ and class init</p>
 <p>All database operations are supported. Keywords <cite>Query</cite> and <cite>Get Rows</cite>
 return values by default in <cite>RPA.Table</cite> format.</p>
 <p>Library is compatible with any Database API Specification 2.0 module.</p>
+<p><strong>Workaround for inserting large JSON data for Call Stored Procedure</strong></p>
+<p>Workaround is to use instead <cite>Query</cite> keyword. At the moment there is
+no known fix for the <cite>Call Stored Procedure</cite> keyword as it fails if
+JSON string is more than 8000 characters long.</p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${data}=</span><span class="p">    </span><span class="c">Load JSON from file</span><span class="p">    </span><span class="c">random_data.json</span>
+<span class="c">${json}=</span><span class="p">    </span><span class="c">Convert JSON to String</span><span class="p">    </span><span class="c">${data}</span>
+<span class="c"># Single quotes around ${json} string are necessary</span>
+<span class="c">Query</span><span class="p">    </span><span class="c">exec InsertJsonDataToSampleTable &#39;${json}&#39;</span>
+</pre></div>
+</div>
 <p>References:</p>
 <ul class="simple">
 <li><p>Database API Specification 2.0 - <a class="reference external" href="http://www.python.org/dev/peps/pep-0249/">http://www.python.org/dev/peps/pep-0249/</a></p></li>
@@ -253,7 +264,7 @@ return values by default in <cite>RPA.Table</cite> format.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Database.Database.call_stored_procedure">
-<span class="sig-name descname"><span class="pre">call_stored_procedure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanstran</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Database.Database.call_stored_procedure" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">call_stored_procedure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanstran</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Database.Database.call_stored_procedure" title="Permalink to this definition"></a></dt>
 <dd><p>Call stored procedure with name and params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -262,6 +273,10 @@ return values by default in <cite>RPA.Table</cite> format.</p>
 <li><p><strong>params</strong> – parameters for the procedure as a list, defaults to None</p></li>
 <li><p><strong>sanstran</strong> – Run the query without an implicit transaction commit or
 rollback if such additional action was detected. (turned off by default)</p></li>
+<li><p><strong>as_table</strong> – If the result should be an instance of <cite>Table</cite>, otherwise a
+<cite>list</cite> will be returned. (defaults to <cite>True</cite>)</p></li>
+<li><p><strong>multiple</strong> – Return results for one result set (default <cite>False</cite>) or multiple
+results from all result sets (set this parameter to <cite>True</cite>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -476,6 +491,9 @@ that the statement should return (raw rows or as <cite>Table</cite> if <cite>as_
 <span class="p">    @{</span><span class="nv">res</span><span class="p">} =    </span><span class="nf">Query</span><span class="p">   </span><span class="s">Select * FROM table</span><span class="p">   </span><span class="s">&#39;value&#39; in columns</span>
 <span class="p">    @{</span><span class="nv">res</span><span class="p">} =    </span><span class="nf">Query</span><span class="p">   </span><span class="s">Select * FROM table</span><span class="p">   </span><span class="s">columns == [&#39;id&#39;, &#39;value&#39;]</span>
 <span class="p">    @{</span><span class="nv">res</span><span class="p">} =    </span><span class="nf">Query</span><span class="p">   </span><span class="s">Select * FROM table WHERE value = ?</span><span class="p">  </span><span class="s">data=(&quot;</span><span class="p">${</span><span class="nv">d</span><span class="p">}</span><span class="s">&quot;, )</span>
+<span class="p">    </span><span class="c"># Calling Stored Procedure with Query keyword requires that parameter</span>
+<span class="p">    </span><span class="c"># &#39;returning&#39; is set to &#39;True&#39;</span>
+<span class="p">    @{</span><span class="nv">res</span><span class="p">} =    </span><span class="nf">Query</span><span class="p">   </span><span class="s">Exec stored_procedure</span><span class="p">  </span><span class="s">returning=True</span>
 </pre></div>
 </div>
 <p><strong>Python</strong></p>
