@@ -40,7 +40,7 @@ Release notes
   - **RPA.Excel.Application**
   - **RPA.Outlook.Application**
 
-- **RPA.Word.Application** (:pr:`945`): Add `autoexit` init parameter (on default `True` as it is for
+- Library **RPA.Word.Application** (:pr:`945`): Add `autoexit` init parameter (on default `True` as it is for
   similar libraries). This is a breaking change.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
