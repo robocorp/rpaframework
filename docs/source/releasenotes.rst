@@ -5,8 +5,6 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Cloud.Google** (``rpaframework-google`` **7.0.3**; :pr:`935`): Fix move drive file
-
 - Library **RPA.JavaAccessBridge** (:pr:`947`):
 
   - Add new keyword ``List Java Windows``
@@ -45,6 +43,12 @@ Release notes
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+04 May 2023
+-----------
+
+- Library **RPA.Cloud.Google** (``rpaframework-google`` **7.0.3**; :pr:`935`): Fix move drive file
+
 
 22.5.3 - 02 May 2023
 --------------------
