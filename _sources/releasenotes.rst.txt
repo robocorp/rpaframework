@@ -5,6 +5,15 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.JavaAccessBridge** (:pr:`947`):
+
+  - Add new keyword ``List Java Windows``
+  - Add new keyword ``Select Window By PID``
+  - Add new keyword ``Select Window By Title``
+  - Keyword ``Select Window`` is deprecated in favor of the 2 ``Select..`` keywords mentioned
+    above. Direct replacement for this keyword is ``Select Window By Title``. This keyword
+    will be removed during next major release involving ``RPA.JavaAccessBridge`` library.
+
 - Library **RPA.Database** (:pr:`944`):
 
   - Improvements for keyword ``Call Stored Procedure``

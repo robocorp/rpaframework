@@ -549,6 +549,51 @@ False will be using startsWith matching on non-integer properties</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.list_java_windows">
+<span class="sig-name descname"><span class="pre">list_java_windows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.list_java_windows" title="Permalink to this definition"></a></dt>
+<dd><p>List all available Java windows.</p>
+<p><cite>JavaWindow</cite> object contains following properties:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Java process id (pid)</p></li>
+<li><p>Java window title</p></li>
+<li><p>Java window handle (hwnd)</p></li>
+</ul>
+</div></blockquote>
+<p>The pid and title can be used to get control of the
+Java process by.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of <cite>JavaWindow</cite> objects</p>
+</dd>
+</dl>
+<p><strong>Python example.</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">window_list</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="n">list_java_windows</span><span class="p">()</span>
+<span class="c1"># By looping window list</span>
+<span class="k">for</span> <span class="n">window</span> <span class="ow">in</span> <span class="n">window_list</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">window</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="s2">&quot;my java window title&quot;</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Java window found&quot;</span><span class="p">)</span>
+        <span class="n">java</span><span class="o">.</span><span class="n">select_window_by_pid</span><span class="p">(</span><span class="n">window</span><span class="o">.</span><span class="n">pid</span><span class="p">)</span>
+<span class="c1"># Directly accessing</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">window_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">java</span><span class="o">.</span><span class="n">select_window_by_pid</span><span class="p">(</span><span class="n">window_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Robot Framework example.</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{window_list}=</span><span class="p">    </span><span class="c">List Java Windows</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${window}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{window_list}</span>
+<span class="p">    </span><span class="c">IF</span><span class="p">    </span><span class="c">&quot;${window.title}&quot; == &quot;my java window title&quot;</span>
+<span class="p">        </span><span class="c">Select Window By PID</span><span class="p">    </span><span class="c">${window.pid}</span>
+<span class="p">    </span><span class="c">END</span>
+<span class="c">END</span>
+<span class="c">IF</span><span class="p">    </span><span class="c">len($window_list)==1</span>
+<span class="p">    </span><span class="c">Select Window By PID</span><span class="p">    </span><span class="c">${window_list[0].pid}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.press_keys">
 <span class="sig-name descname"><span class="pre">press_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">keys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.press_keys" title="Permalink to this definition"></a></dt>
 <dd><p>Press multiple keys down simultaneously</p>
@@ -613,7 +658,40 @@ False will be using startsWith matching on non-integer properties</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.select_window">
 <span class="sig-name descname"><span class="pre">select_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bring_foreground</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.select_window" title="Permalink to this definition"></a></dt>
-<dd><p>Selects Java application window as target for the automation</p>
+<dd><p>Selects Java application window as target for the automation using
+Java window title.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> – application window title</p></li>
+<li><p><strong>bring_foreground</strong> – if application is brought to foreground or not</p></li>
+<li><p><strong>timeout</strong> – selection timeout</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.select_window_by_pid">
+<span class="sig-name descname"><span class="pre">select_window_by_pid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bring_foreground</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.select_window_by_pid" title="Permalink to this definition"></a></dt>
+<dd><p>Selects Java application window as target for the automation using
+Java process ID (pid).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pid</strong> – application process id</p></li>
+<li><p><strong>bring_foreground</strong> – if application is brought to foreground or not</p></li>
+<li><p><strong>timeout</strong> – selection timeout</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.select_window_by_title">
+<span class="sig-name descname"><span class="pre">select_window_by_title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bring_foreground</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.select_window_by_title" title="Permalink to this definition"></a></dt>
+<dd><p>Selects Java application window as target for the automation using
+Java window title.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
