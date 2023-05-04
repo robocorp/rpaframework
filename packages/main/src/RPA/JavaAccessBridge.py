@@ -6,7 +6,7 @@ import platform
 import queue
 import threading
 import time
-from typing import Union, List
+from typing import Union
 import warnings
 
 from robot.api.deco import library, keyword
@@ -25,7 +25,7 @@ def get_scaled_coordinate(coordinate, scaling_factor):
 
 if platform.system() == "Windows":
     from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
-    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper, JavaWindow
+    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
     import ctypes
     from ctypes import wintypes, byref
 
@@ -1005,7 +1005,7 @@ class JavaAccessBridge:
         os.system(f"taskkill /F /T /PID {self.pid}")
 
     @keyword
-    def list_java_windows(self) -> List[JavaWindow]:
+    def list_java_windows(self):
         """List all available Java windows.
 
         `JavaWindow` object contains following properties:
