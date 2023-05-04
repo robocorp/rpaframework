@@ -24,6 +24,14 @@ Release notes
 
 - Library **RPA.FTP** (:pr:`938`): Add socket support for TLS connections.
 
+- Update library documentation to contain information about `autoexit` init parameter
+
+  - **RPA.Excel.Application**
+  - **RPA.Outlook.Application**
+
+- **RPA.Word.Application**: Add `autoexit` init parameter (on default `True` as it is for
+  similar libraries). This is a breaking change.
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

@@ -49,6 +49,14 @@ class Application:
 
     *Note*. Library works only Windows platform.
 
+    Library will automatically close the Outlook application at the end of the
+    task execution. This can be changed by importing library with `autoexit` setting.
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library                 RPA.Outlook.Application   autoexit=${FALSE}
+
     **About Email Filtering**
 
     Emails can be filtered according to specification set by Restrict method of the Item

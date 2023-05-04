@@ -45,6 +45,14 @@ class Application:
 
     *Note*. Library works only Windows platform.
 
+    Library will automatically close the Excel application at the end of the
+    task execution. This can be changed by importing library with `autoexit` setting.
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library                 RPA.Excel.Application   autoexit=${FALSE}
+
     **Examples**
 
     **Robot Framework**
