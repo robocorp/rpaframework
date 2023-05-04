@@ -5,6 +5,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Cloud.Google** (``rpaframework-google`` **7.0.3**; :pr:`935`): Fix move drive file
+
 - Library **RPA.JavaAccessBridge** (:pr:`947`):
 
   - Add new keyword ``List Java Windows``
