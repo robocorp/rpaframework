@@ -153,28 +153,36 @@
 <div class="section" id="id1">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Library <strong>RPA.Database</strong>:</p>
+<li><p>Library <strong>RPA.Database</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/944">#944</a>):</p>
 <ul>
 <li><p>Improvements for keyword <code class="docutils literal notranslate"><span class="pre">Call</span> <span class="pre">Stored</span> <span class="pre">Procedure</span></code></p>
 <ul>
 <li><p>Fix keyword not returning results of the procedure</p></li>
 <li><p>Add possibility of returning result as a <code class="docutils literal notranslate"><span class="pre">RPA.Tables.Table</span></code> by parameter <code class="docutils literal notranslate"><span class="pre">as_table=True</span></code>
 (default is <cite>True</cite>, ie. <cite>Table</cite> is returned)</p></li>
-<li><p>Add possibility of returning multiple result sets from a <code class="docutils literal notranslate"><span class="pre">Call</span> <span class="pre">Stored</span> <span class="pre">Procedure</span></code>
-by parameter <code class="docutils literal notranslate"><span class="pre">multiple=True</span></code> (default is <cite>False</cite>, ie. only one result set is returned).
+<li><p>Add possibility of returning multiple resultsets from a <code class="docutils literal notranslate"><span class="pre">Call</span> <span class="pre">Stored</span> <span class="pre">Procedure</span></code>
+by parameter <code class="docutils literal notranslate"><span class="pre">multiple=True</span></code> (default is <cite>False</cite>, ie. only one resultset is returned)
 Multiple results are then either list of lists or list of Tables.</p></li>
 <li><p>Remove specific support for Python 2.* in this keyword</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>Library <strong>RPA.Email.ImapSmtp</strong>:</p>
+<li><p>Library <strong>RPA.Email.ImapSmtp</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/930">#930</a>):</p>
 <ul>
 <li><p>Make the <cite>recipients</cite> optional. It is still mandatory to give one of the following
-parameters <cite>recipients</cite>, <cite>cc</cite> or <cite>bcc</cite>. (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/930">#930</a>)</p></li>
+parameters <cite>recipients</cite>, <cite>cc</cite> or <cite>bcc</cite></p></li>
 </ul>
 </li>
 <li><p>Library <strong>RPA.FTP</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/938">#938</a>): Add socket support for TLS connections.</p></li>
+<li><p>Update library documentation to contain information about <cite>autoexit</cite> init parameter</p>
+<ul>
+<li><p><strong>RPA.Excel.Application</strong></p></li>
+<li><p><strong>RPA.Outlook.Application</strong></p></li>
+</ul>
+</li>
+<li><p><strong>RPA.Word.Application</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/945">#945</a>): Add <cite>autoexit</cite> init parameter (on default <cite>True</cite> as it is for
+similar libraries). This is a breaking change.</p></li>
 </ul>
 </div>
 <div class="section" id="id2">

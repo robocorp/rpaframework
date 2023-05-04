@@ -162,6 +162,12 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p><cite>Outlook.Application</cite> is a library for controlling the Outlook application.</p>
 <p><em>Note</em>. Library works only Windows platform.</p>
+<p>Library will automatically close the Outlook application at the end of the
+task execution. This can be changed by importing library with <cite>autoexit</cite> setting.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">                 </span><span class="nn">RPA.Outlook.Application</span><span class="p">   </span><span class="s">autoexit=</span><span class="p">${</span><span class="nv">FALSE</span><span class="p">}</span>
+</pre></div>
+</div>
 <p><strong>About Email Filtering</strong></p>
 <p>Emails can be filtered according to specification set by Restrict method of the Item
 class <a class="reference external" href="https://docs.microsoft.com/en-us/office/vba/api/outlook.items.restrict">https://docs.microsoft.com/en-us/office/vba/api/outlook.items.restrict</a>.</p>

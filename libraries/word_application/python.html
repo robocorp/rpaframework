@@ -158,10 +158,16 @@
 <span id="excel-application"></span><h2>Excel.Application<a class="headerlink" href="#module-RPA.Word.Application" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Word.Application.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><a class="headerlink" href="#RPA.Word.Application.Application" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Word.Application.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoexit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p><cite>Word.Application</cite> is a library for controlling a Word application.</p>
 <p><em>Note</em>. Library works only Windows platform.</p>
+<p>Library will automatically close the Word application at the end of the
+task execution. This can be changed by importing library with <cite>autoexit</cite> setting.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">                 </span><span class="nn">RPA.Word.Application</span><span class="p">   </span><span class="s">autoexit=</span><span class="p">${</span><span class="nv">FALSE</span><span class="p">}</span>
+</pre></div>
+</div>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
