@@ -17,6 +17,10 @@ lib_mfa = MFA()
 OAuthProviderType = Union["OAuthProvider", str]
 
 
+class NoRecipientsError(ValueError):
+    """Raised when email to be sent does not have any recipients, cc or bcc addresses."""  # noqa: E501
+
+
 class OAuthProvider(Enum):
     """OAuth2 tested providers."""
 

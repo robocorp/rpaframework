@@ -5,9 +5,51 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.JavaAccessBridge** (:pr:`947`):
+
+  - Add new keyword ``List Java Windows``
+  - Add new keyword ``Select Window By PID``
+  - Add new keyword ``Select Window By Title``
+  - Keyword ``Select Window`` is deprecated in favor of the 2 ``Select..`` keywords mentioned
+    above. Direct replacement for this keyword is ``Select Window By Title``. This keyword
+    will be removed during next major release involving ``RPA.JavaAccessBridge`` library.
+
+- Library **RPA.Database** (:pr:`944`):
+
+  - Improvements for keyword ``Call Stored Procedure``
+
+    - Fix keyword not returning results of the procedure
+    - Add possibility of returning result as a ``RPA.Tables.Table`` by parameter ``as_table=True``
+      (default is `True`, ie. `Table` is returned)
+    - Add possibility of returning multiple resultsets from a ``Call Stored Procedure``
+      by parameter ``multiple=True`` (default is `False`, ie. only one resultset is returned)
+      Multiple results are then either list of lists or list of Tables.
+    - Remove specific support for Python 2.* in this keyword
+
+- Library **RPA.Email.ImapSmtp** (:pr:`930`):
+
+  - Make the `recipients` optional. It is still mandatory to give one of the following
+    parameters `recipients`, `cc` or `bcc`
+
+- Library **RPA.FTP** (:pr:`938`): Add socket support for TLS connections.
+
+- Update library documentation to contain information about `autoexit` init parameter
+
+  - **RPA.Excel.Application**
+  - **RPA.Outlook.Application**
+
+- **RPA.Word.Application** (:pr:`945`): Add `autoexit` init parameter (on default `True` as it is for
+  similar libraries). This is a breaking change.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+22.5.3 - 02 May 2023
+--------------------
+
+- Security update: Bumps ``cryptography`` to version **40**. (fixes the limitation of
+  not being able to use the latest ``rpaframework-pdf`` in some scenarios;
+  :issue:`926`)
 
 22.5.2 - 13 Apr 2023
 --------------------
