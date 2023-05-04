@@ -135,7 +135,8 @@ class Database:
 
         ${data}=    Load JSON from file    random_data.json
         ${json}=    Convert JSON to String    ${data}
-        Query    exec InsertJsonDataToSampleTable @JsonData='${json}'
+        # Single quotes around ${json} string are necessary
+        Query    exec InsertJsonDataToSampleTable '${json}'
 
     References:
 
