@@ -544,8 +544,8 @@ class ImapSmtp(OAuthMixin):
         with `re: ` prefix, ie. "re: Why it is best to use Robocorp RPA" or with
         the original email subject.
 
-        And please note that `in_reply_to` the 'Message ID' needs to contain '<' in
-        the start of the ID and '>' at the end of the ID.
+        And please note that `in_reply_to` the 'Message ID' needs to contain `<` in
+        the start of the ID and `>` at the end of the ID.
 
         **About return_path**
 
