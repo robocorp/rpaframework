@@ -5,20 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Email.Exchange** (:pr:`948`):
 
-  - Add new keyword ``Send Reply Message``
-  - Add parameter `items_only` for keyword ``List Messages`` which returns internal Email
-    objects (mainly for advanced usage)
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.JavaAccessBridge** (:pr:`947`):
-
-  - Add new keyword ``List Java Windows``
-  - Add new keyword ``Select Window By PID``
-  - Add new keyword ``Select Window By Title``
-  - Keyword ``Select Window`` is deprecated in favor of the 2 ``Select..`` keywords mentioned
-    above. Direct replacement for this keyword is ``Select Window By Title``. This keyword
-    will be removed during next major release involving ``RPA.JavaAccessBridge`` library.
+23.0.0 - 05 May 2023
+--------------------
 
 - Library **RPA.Database** (:pr:`944`):
 
@@ -32,6 +24,12 @@ Release notes
       Multiple results are then either list of lists or list of Tables.
     - Remove specific support for Python 2.* in this keyword
 
+- Library **RPA.Email.Exchange** (:pr:`948`):
+
+  - Add new keyword ``Send Reply Message``
+  - Add parameter `items_only` for keyword ``List Messages`` which returns internal Email
+    objects (mainly for advanced usage)
+
 - Library **RPA.Email.ImapSmtp**:
 
   - Add keyword ``Convert EML file into message`` which reads EML message and returns
@@ -42,6 +40,15 @@ Release notes
 
 - Library **RPA.FTP** (:pr:`938`): Add socket support for TLS connections.
 
+- Library **RPA.JavaAccessBridge** (:pr:`947`):
+
+  - Add new keyword ``List Java Windows``
+  - Add new keyword ``Select Window By PID``
+  - Add new keyword ``Select Window By Title``
+  - Keyword ``Select Window`` is deprecated in favor of the 2 ``Select..`` keywords mentioned
+    above. Direct replacement for this keyword is ``Select Window By Title``. This keyword
+    will be removed during next major release involving ``RPA.JavaAccessBridge`` library.
+
 - Update library documentation to contain information about `autoexit` init parameter
 
   - **RPA.Excel.Application**
@@ -50,8 +57,6 @@ Release notes
 - Library **RPA.Word.Application** (:pr:`945`): Add `autoexit` init parameter (on default `True` as it is for
   similar libraries). This is a breaking change.
 
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 04 May 2023
 -----------

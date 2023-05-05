@@ -195,7 +195,7 @@ all browsers are closed.</p>
 WebDriver instance directly. This keyword should only be used if
 the functionality provided by <cite>Open Browser</cite> is not adequate.</p>
 <p><code class="docutils literal notranslate"><span class="pre">driver_name</span></code> must be a WebDriver implementation name like Firefox,
-Chrome, Ie, Opera, Safari, PhantomJS, or Remote.</p>
+Chrome, Ie, Edge, Safari, or Remote.</p>
 <p>The initialized WebDriver can be configured either with a Python
 dictionary <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> or by using keyword arguments <code class="docutils literal notranslate"><span class="pre">**init_kwargs</span></code>.
 These arguments are passed directly to WebDriver without any
@@ -294,6 +294,12 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_action_chain_delay">
+<span class="sig-name descname"><span class="pre">get_action_chain_delay</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_action_chain_delay" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the currently stored value for chain_delay_value in timestr format.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_aliases">
 <span class="sig-name descname"><span class="pre">get_browser_aliases</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_browser_aliases" title="Permalink to this definition"></a></dt>
 <dd><p>Returns aliases of all active browser that has an alias as NormalizedDict.
@@ -337,6 +343,16 @@ This can be accessed as dictionary <code class="docutils literal notranslate"><s
 <dd><p>Gets the implicit wait value used by Selenium.</p>
 <p>The value is returned as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.</p>
 <p>See the <cite>Implicit wait</cite> section above for more information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_page_load_timeout">
+<span class="sig-name descname"><span class="pre">get_selenium_page_load_timeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.get_selenium_page_load_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the timeout to wait for a page load to complete
+before throwing an error.</p>
+<p>The value is returned as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.</p>
+<p>See the <cite>Page load</cite> section above for more information.</p>
+<p>New in SeleniumLibrary 6.1</p>
 </dd></dl>
 
 <dl class="py method">
@@ -480,8 +496,6 @@ are case-insensitive and some browsers have multiple supported names.</p>
 <div class="line">Internet Explorer | internetexplorer, ie     |</div>
 <div class="line">Edge              | edge                     |</div>
 <div class="line">Safari            | safari                   |</div>
-<div class="line">Opera             | opera                    |</div>
-<div class="line">Android           | android                  |</div>
 <div class="line">Iphone            | iphone                   |</div>
 <div class="line">PhantomJS         | phantomjs                |</div>
 <div class="line">HTMLUnit          | htmlunit                 |</div>
@@ -664,6 +678,17 @@ attributes are new in SeleniumLibrary 4.0.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_action_chain_delay">
+<span class="sig-name descname"><span class="pre">set_action_chain_delay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_action_chain_delay" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the duration of delay in ActionChains() used by SeleniumLibrary.</p>
+<p>The value can be given as a number that is considered to be
+seconds or as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.</p>
+<p>Value is always stored as milliseconds internally.</p>
+<p>The previous value is returned and can be used to restore
+the original value later if needed.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_browser_implicit_wait">
 <span class="sig-name descname"><span class="pre">set_browser_implicit_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_browser_implicit_wait" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the implicit wait value used by Selenium.</p>
@@ -695,6 +720,25 @@ browser.</p>
 | ${orig wait} = | <cite>Set Selenium Implicit Wait</cite> | 10 seconds |
 | <cite>Perform AJAX call that is slow</cite> |
 | <cite>Set Selenium Implicit Wait</cite> | ${orig wait} |</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_selenium_page_load_timeout">
+<span class="sig-name descname"><span class="pre">set_selenium_page_load_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserManagementKeywordsOverride.set_selenium_page_load_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the page load timeout value used by Selenium.</p>
+<p>The value can be given as a number that is considered to be
+seconds or as a human-readable string like <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">second</span></code>.
+The previous value is returned and can be used to restore
+the original value later if needed.</p>
+<p>In contrast to <cite>Set Selenium Timeout</cite> and <cite>Set Selenium Implicit Wait</cite>
+this keywords sets the time for Webdriver to wait until page
+is loaded before throwing an error.</p>
+<p>See the <cite>Page load</cite> section above for more information.</p>
+<p>Example:
+| ${orig page load timeout} = | <cite>Set Selenium Page Load Timeout</cite> | 30 seconds |
+| <cite>Open page that loads slowly</cite> |
+| <cite>Set Selenium Page Load Timeout</cite> | ${orig page load timeout} |</p>
+<p>New in SeleniumLibrary 6.1</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1113,7 +1157,7 @@ argument when <cite>importing</cite> the library.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.BROWSER_NAMES">
-<span class="sig-name descname"><span class="pre">BROWSER_NAMES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'android':</span> <span class="pre">'android',</span> <span class="pre">'chrome':</span> <span class="pre">'chrome',</span> <span class="pre">'chromiumedge':</span> <span class="pre">'edge',</span> <span class="pre">'edge':</span> <span class="pre">'edge',</span> <span class="pre">'ff':</span> <span class="pre">'firefox',</span> <span class="pre">'firefox':</span> <span class="pre">'firefox',</span> <span class="pre">'gc':</span> <span class="pre">'chrome',</span> <span class="pre">'googlechrome':</span> <span class="pre">'chrome',</span> <span class="pre">'headlesschrome':</span> <span class="pre">'headless_chrome',</span> <span class="pre">'headlessfirefox':</span> <span class="pre">'headless_firefox',</span> <span class="pre">'htmlunit':</span> <span class="pre">'htmlunit',</span> <span class="pre">'htmlunitwithjs':</span> <span class="pre">'htmlunit_with_js',</span> <span class="pre">'ie':</span> <span class="pre">'ie',</span> <span class="pre">'internetexplorer':</span> <span class="pre">'ie',</span> <span class="pre">'iphone':</span> <span class="pre">'iphone',</span> <span class="pre">'opera':</span> <span class="pre">'opera',</span> <span class="pre">'phantomjs':</span> <span class="pre">'phantomjs',</span> <span class="pre">'safari':</span> <span class="pre">'safari'}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.BROWSER_NAMES" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">BROWSER_NAMES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'android':</span> <span class="pre">'android',</span> <span class="pre">'chrome':</span> <span class="pre">'chrome',</span> <span class="pre">'chromiumedge':</span> <span class="pre">'edge',</span> <span class="pre">'edge':</span> <span class="pre">'edge',</span> <span class="pre">'ff':</span> <span class="pre">'firefox',</span> <span class="pre">'firefox':</span> <span class="pre">'firefox',</span> <span class="pre">'gc':</span> <span class="pre">'chrome',</span> <span class="pre">'googlechrome':</span> <span class="pre">'chrome',</span> <span class="pre">'headlesschrome':</span> <span class="pre">'headless_chrome',</span> <span class="pre">'headlessfirefox':</span> <span class="pre">'headless_firefox',</span> <span class="pre">'htmlunit':</span> <span class="pre">'htmlunit',</span> <span class="pre">'htmlunitwithjs':</span> <span class="pre">'htmlunit_with_js',</span> <span class="pre">'ie':</span> <span class="pre">'ie',</span> <span class="pre">'internetexplorer':</span> <span class="pre">'ie',</span> <span class="pre">'iphone':</span> <span class="pre">'iphone',</span> <span class="pre">'phantomjs':</span> <span class="pre">'phantomjs',</span> <span class="pre">'safari':</span> <span class="pre">'safari'}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.BROWSER_NAMES" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1128,7 +1172,7 @@ argument when <cite>importing</cite> the library.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.0.0'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.1.0'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
