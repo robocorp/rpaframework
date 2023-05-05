@@ -5,6 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Email.Exchange** (:pr:`948`):
+
+  - Add new keyword ``Send Reply Message``
+  - Add parameter `items_only` for keyword ``List Messages`` which returns internal Email
+    objects (mainly for advanced usage)
+
 - Library **RPA.JavaAccessBridge** (:pr:`947`):
 
   - Add new keyword ``List Java Windows``
@@ -26,10 +32,13 @@ Release notes
       Multiple results are then either list of lists or list of Tables.
     - Remove specific support for Python 2.* in this keyword
 
-- Library **RPA.Email.ImapSmtp** (:pr:`930`):
+- Library **RPA.Email.ImapSmtp**:
 
+  - Add keyword ``Convert EML file into message`` which reads EML message and returns
+    headers, attachments and body (in text and HTML) format. (:pr:`948`)
+  - Add parameters `in_reply_to` and `return_path` to keyword ``Send Message``. (:pr:`948`)
   - Make the `recipients` optional. It is still mandatory to give one of the following
-    parameters `recipients`, `cc` or `bcc`
+    parameters `recipients`, `cc` or `bcc`. (:pr:`930`)
 
 - Library **RPA.FTP** (:pr:`938`): Add socket support for TLS connections.
 
