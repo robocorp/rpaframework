@@ -153,6 +153,13 @@
 <div class="section" id="id1">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <ul class="simple">
+<li><p>Library <strong>RPA.Email.Exchange</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/948">#948</a>):</p>
+<ul>
+<li><p>Add new keyword <code class="docutils literal notranslate"><span class="pre">Send</span> <span class="pre">Reply</span> <span class="pre">Message</span></code></p></li>
+<li><p>Add parameter <cite>items_only</cite> for keyword <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Messages</span></code> which returns internal Email
+objects (mainly for advanced usage)</p></li>
+</ul>
+</li>
 <li><p>Library <strong>RPA.JavaAccessBridge</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/947">#947</a>):</p>
 <ul>
 <li><p>Add new keyword <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Java</span> <span class="pre">Windows</span></code></p></li>
@@ -178,10 +185,13 @@ Multiple results are then either list of lists or list of Tables.</p></li>
 </li>
 </ul>
 </li>
-<li><p>Library <strong>RPA.Email.ImapSmtp</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/930">#930</a>):</p>
+<li><p>Library <strong>RPA.Email.ImapSmtp</strong>:</p>
 <ul>
+<li><p>Add keyword <code class="docutils literal notranslate"><span class="pre">Convert</span> <span class="pre">EML</span> <span class="pre">file</span> <span class="pre">into</span> <span class="pre">message</span></code> which reads EML message and returns
+headers, attachments and body (in text and HTML) format. (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/948">#948</a>)</p></li>
+<li><p>Add parameters <cite>in_reply_to</cite> and <cite>return_path</cite> to keyword <code class="docutils literal notranslate"><span class="pre">Send</span> <span class="pre">Message</span></code>. (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/948">#948</a>)</p></li>
 <li><p>Make the <cite>recipients</cite> optional. It is still mandatory to give one of the following
-parameters <cite>recipients</cite>, <cite>cc</cite> or <cite>bcc</cite></p></li>
+parameters <cite>recipients</cite>, <cite>cc</cite> or <cite>bcc</cite>. (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/930">#930</a>)</p></li>
 </ul>
 </li>
 <li><p>Library <strong>RPA.FTP</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/938">#938</a>): Add socket support for TLS connections.</p></li>
