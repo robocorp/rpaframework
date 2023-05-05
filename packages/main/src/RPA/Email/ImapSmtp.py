@@ -6,10 +6,14 @@ import time
 
 # email package declares these properties in the __all__ definition but
 # pylint ignores that
-from email import encoders, message_from_bytes  # pylint: disable=E0611
+from email import (
+    encoders,
+    message_from_bytes,
+    message_from_binary_file,
+)  # pylint: disable=E0611
 from email.charset import QP, add_charset  # pylint: disable=E0611
 from email.generator import Generator  # pylint: disable=E0611
-from email.header import Header, decode_header, make_header  # pylint: disable=E0611
+from email.header import decode_header, make_header  # pylint: disable=E0611
 from email.message import Message  # pylint: disable=E0611
 from email.mime.base import MIMEBase  # pylint: disable=E0611
 from email.mime.image import MIMEImage  # pylint: disable=E0611
@@ -28,7 +32,7 @@ from smtplib import (
     SMTPServerDisconnected,
     ssl,
 )
-from typing import Any, BinaryIO, List, Optional, Tuple, Union
+from typing import Any, BinaryIO, List, Optional, Tuple, Union, Dict
 
 from htmldocx import HtmlToDocx
 
@@ -98,6 +102,54 @@ def to_action(value):
         return Action[sanitized]
     except KeyError as err:
         raise ValueError(f"Unknown email action: {value}") from err
+
+
+def get_payload_decoded_or_not(message_part):
+    result = None
+    try:
+        result = message_part.get_payload(decode=True).decode("utf-8")
+    except Exception:  # pylint: disable=W0703
+        result = message_part.get_payload(decode=True)
+    return result
+
+
+def get_email_body_from_message(message: Message, message_dict: Dict):
+    if message.is_multipart():
+        for part in message.walk():
+            if part.get_content_type() == "text/plain":
+                message_dict["body_text"] = get_payload_decoded_or_not(part)
+            elif part.get_content_type() == "text/html":
+                message_dict["body_html"] = get_payload_decoded_or_not(part)
+    else:
+        message_dict["body_text"] = get_payload_decoded_or_not(message)
+
+
+def get_attachments_from_message(
+    message: Message, save_attachments_directory: str, message_dict: Dict
+):
+    attachments = []
+    if message.is_multipart():
+        for part in message.walk():
+            if part.get_content_maintype() == "multipart":
+                continue
+            if part.get("Content-Disposition") is None:
+                continue
+
+            filename = part.get_filename()
+            if not filename:
+                ext = part.get_content_type().split("/")[-1]
+                filename = f"untitled.{ext}"
+
+            if save_attachments_directory:
+                data = part.get_payload(decode=True)
+                full_filepath = os.path.join(save_attachments_directory, filename)
+                with open(full_filepath, "wb") as f:
+                    f.write(data)
+                attachments.append(full_filepath)
+            else:
+                attachments.append(filename)
+
+    message_dict["attachments"] = attachments
 
 
 def get_part_filename(msg: Message) -> Optional[str]:
@@ -447,6 +499,7 @@ class ImapSmtp(OAuthMixin):
         if self.smtp_conn:
             self.smtp_conn.ehlo()
 
+    @smtp_connection
     def send_message(
         self,
         sender: str,
@@ -459,6 +512,8 @@ class ImapSmtp(OAuthMixin):
         cc: Optional[Union[List[str], str]] = None,
         bcc: Optional[Union[List[str], str]] = None,
         attachment_position: Optional[AttachmentPosition] = AttachmentPosition.TOP,
+        in_reply_to: Optional[str] = None,
+        return_path: Optional[str] = None,
     ) -> bool:
         """Send SMTP email
 
@@ -472,11 +527,32 @@ class ImapSmtp(OAuthMixin):
         :param cc: list of email addresses for email 'cc' field
         :param bcc: list of email addresses for email 'bcc' field
         :param attachment_position: content position for attachment, default `top`
+        :param in_reply_to: the 'Message ID' to which this message is in reply to,
+         for example `<message_id_for_reply_to>`
+        :param return_path: email address which should receive "bounce messages"
 
-        Valid sender values:
+        **Valid sender values**
 
         - First Lastname <address@domain>
         - address@domain
+
+        **About in_reply_to**
+
+        In addition of setting `in_reply_to` parameter to match the 'Message ID'
+        of the email this message is replying to, some email servers require that
+        also subject of the original email is included in the reply email subject
+        with `re: ` prefix, ie. "re: Why it is best to use Robocorp RPA" or with
+        the original email subject.
+
+        And please note that `in_reply_to` the 'Message ID' needs to contain '<' in
+        the start of the ID and '>' at the end of the ID.
+
+        **About return_path**
+
+        Email servers tend to set 'Return-Path' of the email on their own so in
+        some cases user given address won't work as the email server does not
+        use the user set address. If possible, the email server's configuration
+        can be changed to ensure that 'Return-Path' header is respected.
 
         Example:
 
@@ -497,30 +573,22 @@ class ImapSmtp(OAuthMixin):
             ...           attachment_position=bottom
         """
         evaluated_attachment_position = to_attachment_position(attachment_position)
-        add_charset(self.encoding, QP, QP, self.encoding)
-        email_recipients, attachments, images = self._handle_message_parameters(
-            recipients, attachments, images
-        )
+        add_charset(self.encoding, self.encoding, QP, self.encoding)
         msg = MIMEMultipart()
-
+        email_recipients, attachments, images = self._handle_message_parameters(
+            msg, recipients, cc, bcc, attachments, images
+        )
         if evaluated_attachment_position == AttachmentPosition.TOP:
             self._add_attachments_to_msg(attachments, msg)
 
-        sender = sender.encode("idna").decode("ascii")
-        msg["From"] = sender
-        msg["To"] = ",".join(email_recipients).encode("idna").decode("ascii")
-        msg["Subject"] = Header(subject, self.encoding)
+        msg.add_header("From", sender)
+        msg.add_header("To", ",".join(email_recipients))
+        msg.add_header("Subject", subject)
 
-        if cc:
-            msg["Cc"] = ",".join(cc) if isinstance(cc, list) else cc
-            email_recipients += cc if isinstance(cc, list) else cc.split(",")
-        if bcc:
-            email_recipients += bcc if isinstance(bcc, list) else bcc.split(",")
-
-        if not email_recipients:
-            raise NoRecipientsError(
-                "Message needs to have either 'recipients', 'cc' or 'bcc' for sending."
-            )
+        if return_path:
+            msg.add_header("Return-Path", return_path)
+        if in_reply_to:
+            msg.add_header("In-Reply-To", in_reply_to)
 
         self._add_message_content(html, images, body, msg)
 
@@ -565,7 +633,7 @@ class ImapSmtp(OAuthMixin):
                     )
                     msg.attach(img)
 
-    def _handle_message_parameters(self, recipients, attachments, images):
+    def _handle_message_parameters(self, msg, recipients, cc, bcc, attachments, images):
         if attachments is None:
             attachments = []
         if images is None:
@@ -578,6 +646,17 @@ class ImapSmtp(OAuthMixin):
             attachments = str(attachments).split(",")
         if not isinstance(images, list):
             images = str(images).split(",")
+
+        if cc:
+            msg["Cc"] = ",".join(cc) if isinstance(cc, list) else cc
+            recipients += cc if isinstance(cc, list) else cc.split(",")
+        if bcc:
+            recipients += bcc if isinstance(bcc, list) else bcc.split(",")
+
+        if not recipients:
+            raise NoRecipientsError(
+                "Message needs to have either 'recipients', 'cc' or 'bcc' for sending."
+            )
         return recipients, attachments, images
 
     def _add_attachments_to_msg(self, attachments: list = None, msg=None):
@@ -1852,3 +1931,47 @@ class ImapSmtp(OAuthMixin):
         """
         auth_string = f"user={username}\1auth=Bearer {access_token}\1\1"
         return base64.b64encode(auth_string.encode()).decode()
+
+    def convert_eml_file_into_message(
+        self, eml_filepath: str, save_attachments_directory: str = None
+    ):
+        """Converts EML file into message dictionary.
+
+        Returned dictionary contains:
+
+        - **headers** of the email
+        - **attachments** the filenames of the attachments or if attachments
+          have been saved then they are absolute filepaths to each attachment
+        - **body_text** is the TEXT formatted content of the email body
+        - **body_html** is the HTML formatted content of the email body
+
+        :param eml_filepath: filepath to the EML file
+        :param save_attachments_directory: path to the directory where possible
+         attachments will be saved to, if not given then attachment filenames are
+         returned in a list of the return dictionary in the key 'attachments'
+        :return: dictionary containing information aboutthe EML message
+        """
+        message = None
+        message_dict = {
+            "headers": None,
+            "attachments": None,
+            "body_text": None,
+            "body_html": None,
+        }
+
+        with open(eml_filepath, "rb") as f:
+            message = message_from_binary_file(f)
+        if message:
+            # Get the headers
+            headers = {}
+            for key, val in message.items():
+                headers[key] = val
+            message_dict["headers"] = headers
+
+            # Get the body
+            get_email_body_from_message(message, message_dict)
+            # Get the attachments
+            get_attachments_from_message(
+                message, save_attachments_directory, message_dict
+            )
+        return message_dict

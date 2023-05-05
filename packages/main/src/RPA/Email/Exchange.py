@@ -398,6 +398,7 @@ class Exchange(OAuthMixin):
         contains: Optional[bool] = False,  # pylint: disable=unused-argument
         count: Optional[int] = 100,
         save_dir: Optional[str] = None,
+        items_only: Optional[bool] = False,
     ) -> list:
         """List messages in the account inbox. Order by descending
         received time.
@@ -409,6 +410,7 @@ class Exchange(OAuthMixin):
         :param count: number of messages to list
         :param save_dir: set to path where attachments should be saved,
          default None (attachments are not saved)
+        :param items_only: return only list of Message objects (instead of dictionaries)
         """
         # pylint: disable=no-member
         messages = []
@@ -418,6 +420,8 @@ class Exchange(OAuthMixin):
             items = source_folder.filter(**filter_dict)
         else:
             items = source_folder.all()
+        if items_only:
+            return items
         for item in items.order_by("-datetime_received")[:count]:
             attachments = []
             if save_dir and len(item.attachments) > 0:
@@ -522,6 +526,57 @@ class Exchange(OAuthMixin):
             m.send_and_save()
         else:
             m.send()
+
+    def send_reply_message(
+        self,
+        message: Union[Message, str],
+        body: str,
+        subject: str = None,
+        reply_all: bool = False,
+    ):
+        """Send reply to a message.
+
+        :param message: either Message object or ID of the message
+         for the message which this is replying to
+        :param body: message body for the reply
+        :param subject: optional subject for the reply, defaults to None
+        :param reply_all: if `True` then reply is sent to all recipients,
+         defaults to False
+
+        **Robot Framework example**
+
+        .. code-block:: robotframework
+
+            ${messages}=    List Messages    criterion=subject:'I have new query'
+            FOR    ${m}    IN    @{messages}
+                # Verifying that this is email that I want to reply to
+                ${now}=    RPA.Calendar.Time Now   UTC  return_format=YYYY-MM-DD HH:mm
+                ${received}=    Evaluate    str($m["datetime_received"])
+                ${diff}=   RPA.Calendar.Time Difference In Minutes   ${received}  ${now}
+                # message was received less than 5 minutes
+                # and it came from the expected address
+                IF    $diff < 5 and "${m}[sender]" == "mika@robocorp.com"
+                    Send Reply Message
+                    ...  ${m}[id]
+                    ...  body=I totally agree
+                END
+            END
+        """
+        if isinstance(message, str):
+            message_id = message
+            message = self.account.inbox.get(id=message_id)  # pylint: disable=no-member
+            if not isinstance(message, Message):
+                raise ValueError(f"Could not get message by id '{message_id}'")
+        if subject:
+            new_subject = subject
+        else:
+            new_subject = (f"Re: {message.subject}")[:255]
+        if reply_all:
+            message.reply_all(subject=new_subject, body=body)
+        else:
+            message.reply(
+                subject=new_subject, body=body, to_recipients=[message.author]
+            )
 
     def _handle_message_parameters(self, recipients, cc, bcc, attachments, images):
         recipients = recipients or []
