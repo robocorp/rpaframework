@@ -11,7 +11,7 @@ rpaframework = { path = "packages/main", develop = true }
 rpaframework-assistant = "^2.2.1"
 rpaframework-aws = "^5.2.8"
 rpaframework-dialogs = "^4.0.4"
-rpaframework-google = "^7.0.2"
+rpaframework-google = "^7.0.3"
 rpaframework-openai = "^1.1.0"
 rpaframework-recognition = "^5.1.2"
 rpaframework-windows = "^7.3.2"
