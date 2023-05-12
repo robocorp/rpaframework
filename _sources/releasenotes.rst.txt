@@ -9,6 +9,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+12 May 2023
+-----------
+- Library **RPA.Assistant** 2.2.2:
+
+  - Documentation example fix, correct name of argument to ``maximum_rows``.
+
 23.0.0 - 05 May 2023
 --------------------
 
