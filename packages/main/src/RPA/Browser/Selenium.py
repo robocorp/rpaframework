@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import platform
+import shutil
 import time
 import traceback
 import urllib.parse
@@ -18,7 +19,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
 from selenium.common import WebDriverException
-from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
+from selenium.webdriver import ChromeOptions, FirefoxOptions, FirefoxProfile, IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
@@ -530,6 +531,10 @@ class Selenium(SeleniumLibrary):
         **{"chromiumedge": "ChromiumEdge"},
     )
 
+    ERR_WEBDRIVER_NOT_AVAILABLE = OSError(
+        "Webdriver executable not in PATH (with disabled Selenium manager)"
+    )
+
     def __init__(self, *args, **kwargs) -> None:
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
         self.auto_close = kwargs.pop("auto_close", True)
@@ -920,7 +925,7 @@ class Selenium(SeleniumLibrary):
             "prefs",
             {
                 **default_preferences,
-                **self.download_preferences,
+                **self.download_preferences.get("chromium", {}),
                 **(preferences or {}),
             },
         )
@@ -946,6 +951,18 @@ class Selenium(SeleniumLibrary):
         options.initial_browser_url = (
             options.initial_browser_url or url or "https://robocorp.com/"
         )
+
+    def _set_firefox_options(
+        self, options: FirefoxOptions, *, preferences: Optional[dict]
+    ):
+        # Set the custom download directory previously configured with
+        #  `set_download_directory(...)`.
+        prefs = {
+            **self.download_preferences.get("firefox", {}),
+            **(preferences or {}),
+        }
+        for name, value in prefs.items():
+            options.set_preference(name, value)
 
     def _set_option(
         self, name: str, values: Union[str, List, Dict], *, method: Callable
@@ -1050,10 +1067,13 @@ class Selenium(SeleniumLibrary):
                 preferences=preferences,
                 proxy=proxy,
             )
-        elif use_profile:
-            self.logger.warning("Profiles are supported with Chrome only")
-        if browser_lower == "ie":
+        elif browser_lower == "ie":
             self._set_ie_options(options, url=url)
+        elif browser_lower == "firefox":
+            self._set_firefox_options(options, preferences=preferences)
+        # FIXME(cmin764): Enable profiles with any chromium-based browsers.
+        if browser_lower != "chrome" and use_profile:
+            self.logger.warning("Profiles are supported with Chrome only")
 
         try:
             path = options.binary_location or None
@@ -1159,10 +1179,7 @@ class Selenium(SeleniumLibrary):
                         #  bubble up. (so it's caught and handled by us instead, in
                         #  order to let our core's webdriver-manager to handle the
                         #  download)
-                        raise OSError(
-                            "Webdriver executable not in PATH (with disabled selenium"
-                            " manager)"
-                        ) from exc
+                        raise self.ERR_WEBDRIVER_NOT_AVAILABLE from exc
                     raise
 
             # pylint: disable=no-self-argument
@@ -1209,6 +1226,11 @@ class Selenium(SeleniumLibrary):
             service = BrowserService(**service_kwargs)
             if service_args:
                 service.service_args.extend(service_args)
+            # NOTE(cmin764): Starting with Selenium 4.9.1, we have to block their
+            #  `SeleniumManager` from early stage, otherwise it will be activated when
+            #  the WebDriver class itself is instantiated without throwing any error.
+            if not shutil.which(service.path):
+                raise self.ERR_WEBDRIVER_NOT_AVAILABLE
 
             lib = BrowserManagementKeywords(self)
             # Capitalize browser name just to ensure it works if passed as lower case.
@@ -2209,18 +2231,35 @@ class Selenium(SeleniumLibrary):
                     print(file_path)
         """
         if directory is None:
-            self.logger.info("Download directory set back to browser default setting")
+            self.logger.info("Download directory set back to browser default setting!")
             self.download_preferences.clear()
-        else:
-            download_directory = Path(directory).expanduser().resolve()
-            download_directory.mkdir(parents=True, exist_ok=True)
-            self.logger.info("Download directory set to: %s", download_directory)
-            self.download_preferences = {
-                "download.default_directory": str(download_directory),
-                "plugins.always_open_pdf_externally": download_pdf,
-                "download.directory_upgrade": True,
-                "download.prompt_for_download": False,
-            }
+            return
+
+        download_directory = Path(directory).expanduser().resolve()
+        download_directory.mkdir(parents=True, exist_ok=True)
+        download_directory = str(download_directory)
+        self.logger.info("Download directory set to: %s", download_directory)
+        chromium_prefs = {
+            "download.default_directory": download_directory,
+            "plugins.always_open_pdf_externally": download_pdf,
+            "download.directory_upgrade": True,
+            "download.prompt_for_download": False,
+        }
+        firefox_prefs = {
+            "browser.download.folderList": 2,
+            "browser.download.manager.showWhenStarting": False,
+            "browser.download.improvements_to_download_panel": True,
+            "browser.download.useDownloadDir": True,
+            "browser.helperApps.alwaysAsk.force": False,
+            "pdfjs.disabled": True,
+            "browser.download.dir": download_directory,
+            "browser.helperApps.neverAsk.saveToDisk": ("application/pdf"),
+            "browser.download.viewableInternally.enabledTypes": "",
+        }
+        self.download_preferences = {
+            "chromium": chromium_prefs,
+            "firefox": firefox_prefs,
+        }
 
     @keyword
     def highlight_elements(
