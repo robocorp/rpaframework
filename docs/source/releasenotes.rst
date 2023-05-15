@@ -5,15 +5,71 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+12 May 2023
+-----------
+- Library **RPA.Assistant** 2.2.2:
+
+  - Documentation example fix, correct name of argument to ``maximum_rows``.
+
+23.0.0 - 05 May 2023
+--------------------
+
+- Library **RPA.Database** (:pr:`944`):
+
+  - Improvements for keyword ``Call Stored Procedure``
+
+    - Fix keyword not returning results of the procedure
+    - Add possibility of returning result as a ``RPA.Tables.Table`` by parameter ``as_table=True``
+      (default is `True`, ie. `Table` is returned)
+    - Add possibility of returning multiple resultsets from a ``Call Stored Procedure``
+      by parameter ``multiple=True`` (default is `False`, ie. only one resultset is returned)
+      Multiple results are then either list of lists or list of Tables.
+    - Remove specific support for Python 2.* in this keyword
+
+- Library **RPA.Email.Exchange** (:pr:`948`):
+
+  - Add new keyword ``Send Reply Message``
+  - Add parameter `items_only` for keyword ``List Messages`` which returns internal Email
+    objects (mainly for advanced usage)
+
 - Library **RPA.Email.ImapSmtp**:
 
+  - Add keyword ``Convert EML file into message`` which reads EML message and returns
+    headers, attachments and body (in text and HTML) format. (:pr:`948`)
+  - Add parameters `in_reply_to` and `return_path` to keyword ``Send Message``. (:pr:`948`)
   - Make the `recipients` optional. It is still mandatory to give one of the following
     parameters `recipients`, `cc` or `bcc`. (:pr:`930`)
 
 - Library **RPA.FTP** (:pr:`938`): Add socket support for TLS connections.
 
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+- Library **RPA.JavaAccessBridge** (:pr:`947`):
+
+  - Add new keyword ``List Java Windows``
+  - Add new keyword ``Select Window By PID``
+  - Add new keyword ``Select Window By Title``
+  - Keyword ``Select Window`` is deprecated in favor of the 2 ``Select..`` keywords mentioned
+    above. Direct replacement for this keyword is ``Select Window By Title``. This keyword
+    will be removed during next major release involving ``RPA.JavaAccessBridge`` library.
+
+- Update library documentation to contain information about `autoexit` init parameter
+
+  - **RPA.Excel.Application**
+  - **RPA.Outlook.Application**
+
+- Library **RPA.Word.Application** (:pr:`945`): Add `autoexit` init parameter (on default `True` as it is for
+  similar libraries). This is a breaking change.
+
+
+04 May 2023
+-----------
+
+- Library **RPA.Cloud.Google** (``rpaframework-google`` **7.0.3**; :pr:`935`): Fix move drive file
+
 
 22.5.3 - 02 May 2023
 --------------------

@@ -172,7 +172,7 @@ class Assistant:
             Add text input    message
             ...    label=Feedback
             ...    placeholder=Enter feedback here
-            ...    rows=5
+            ...    maximum_rows=5
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
     """

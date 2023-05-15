@@ -1,3 +1,4 @@
+import atexit
 import logging
 from pathlib import Path
 import platform
@@ -25,6 +26,14 @@ class Application:
     """`Word.Application` is a library for controlling a Word application.
 
     *Note*. Library works only Windows platform.
+
+    Library will automatically close the Word application at the end of the
+    task execution. This can be changed by importing library with `autoexit` setting.
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library                 RPA.Word.Application   autoexit=${FALSE}
 
     **Examples**
 
@@ -63,7 +72,7 @@ class Application:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self) -> None:
+    def __init__(self, autoexit: bool = True) -> None:
         self.logger = logging.getLogger(__name__)
         self.app = None
         self.filename = None
@@ -72,6 +81,9 @@ class Application:
             self.logger.warning(
                 "Word application library requires Windows dependencies to work."
             )
+
+        if autoexit:
+            atexit.register(self.quit_application)
 
     def open_application(
         self, visible: bool = False, display_alerts: bool = False

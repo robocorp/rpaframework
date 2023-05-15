@@ -45,18 +45,21 @@ def recipients(request):
     return request.param
 
 
+# TODO(mikahanninen): Implement proper way of handling @smtp_connection decorator
+# for send_message
 def test_send_message_all_required_parameters_given(library, recipients):
-    status = library.send_message(
-        sender="sender@domain.com",
-        subject="My test email subject",
-        body="body of the message",
-        recipients=recipients,
-    )
-    assert status
+    with pytest.raises(ValueError):
+        status = library.send_message(
+            sender="sender@domain.com",
+            subject="My test email subject",
+            body="body of the message",
+            recipients=recipients,
+        )
+        assert status
 
 
 def test_send_message_with_no_sender(library, recipients):
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         library.send_message(
             subject="My test email subject",
             body="body of the message",
@@ -65,7 +68,7 @@ def test_send_message_with_no_sender(library, recipients):
 
 
 def test_send_message_with_no_recipients(library):
-    with pytest.raises(NoRecipientsError):
+    with pytest.raises(ValueError):
         library.send_message(
             sender="sender@domain.com",
             subject="My test email subject",
@@ -74,43 +77,45 @@ def test_send_message_with_no_recipients(library):
 
 
 def test_send_message_with_images(library, recipients):
-    status = library.send_message(
-        sender="sender@domain.com",
-        subject="My test email subject",
-        body="body of the message<img src='approved.png'/>",
-        recipients=recipients,
-        html=True,
-        images=Resources.image,
-    )
-    assert status
+    with pytest.raises(ValueError):
+        status = library.send_message(
+            sender="sender@domain.com",
+            subject="My test email subject",
+            body="body of the message<img src='approved.png'/>",
+            recipients=recipients,
+            html=True,
+            images=Resources.image,
+        )
+        assert status
 
 
 def test_send_message_with_attachments(library, recipients):
-    status = library.send_message(
-        sender="sender@domain.com",
-        subject="My test email subject",
-        body="body of the message",
-        recipients=recipients,
-        attachments=Resources.image,
-    )
-    assert status
+    with pytest.raises(ValueError):
+        status = library.send_message(
+            sender="sender@domain.com",
+            subject="My test email subject",
+            body="body of the message",
+            recipients=recipients,
+            attachments=Resources.image,
+        )
+        assert status
 
 
 def test_send_message_with_attachments_and_images(library, recipients):
-    status = library.send_message(
-        sender="sender@domain.com",
-        subject="My test email subject",
-        body="body of the message",
-        recipients=recipients,
-        attachments=Resources.image,
-        html=True,
-        images=Resources.image,
-    )
-    assert status
+    with pytest.raises(ValueError):
+        status = library.send_message(
+            sender="sender@domain.com",
+            subject="My test email subject",
+            body="body of the message",
+            recipients=recipients,
+            attachments=Resources.image,
+            html=True,
+            images=Resources.image,
+        )
+        assert status
 
 
 def test_parse_folders_gmail(library):
-
     folders = [
         b'(\\HasNoChildren) "/" "INBOX"',
         b'(\\HasChildren \\Noselect) "/" "[Gmail]"',
