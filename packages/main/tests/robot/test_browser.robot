@@ -27,6 +27,21 @@ Create Browser Data Directory
     RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
     RETURN    ${data_dir}
 
+Download With Specific Browser
+    [Arguments]     ${browser}
+    Close Browser
+
+    ${file_name} =    Set Variable    security-and-data-protection-whitepaper.pdf
+    Open Available Browser    https://robocorp.com/docs/security
+    ...    browser_selection=${browser}
+    ...    headless=${True}    # PDF downloading now works in headless as well
+    Click Link    Data protection whitepaper
+    ${file_path} =    Set Variable    ${OUTPUT_DIR}${/}${file_name}
+    Wait Until Keyword Succeeds    3x    1s    File Should Exist    ${file_path}
+
+    [Teardown]    Run Keyword And Ignore Error
+    ...    RPA.FileSystem.Remove File    ${file_path}
+
 
 *** Tasks ***
 Does alert contain
@@ -90,18 +105,11 @@ Print page as PDF document
     File Should Exist    ${output_path}
 
 Download PDF in custom directory
-    [Setup]    Close Browser
-
     Set Download Directory    ${OUTPUT_DIR}
-    ${file_name} =    Set Variable    Robocorp-EULA-v1.0.pdf
-    Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
-    ...    headless=${True}    # PDF downloading now works in headless as well
-    Go To    robocorp.com    # this starts after the PDF above gets downloaded
-    ${file_path} =    Set Variable    ${OUTPUT_DIR}${/}${file_name}
-    File Should Exist    ${file_path}
-
-    [Teardown]    Run Keyword And Ignore Error
-    ...    RPA.FileSystem.Remove File    ${file_path}
+    @{browsers} =    Create List    Firefox    Chrome
+    FOR    ${browser}    IN    @{browsers}
+        Download With Specific Browser    ${browser}
+    END
 
 Highlight elements
     [Setup]    Go To    https://robocorp.com/docs/quickstart-guide

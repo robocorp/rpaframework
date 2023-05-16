@@ -925,7 +925,7 @@ class Selenium(SeleniumLibrary):
             "prefs",
             {
                 **default_preferences,
-                **self.download_preferences.get("chromium", {}),
+                **self.download_preferences.get("chrome", {}),
                 **(preferences or {}),
             },
         )
@@ -1071,6 +1071,10 @@ class Selenium(SeleniumLibrary):
             self._set_ie_options(options, url=url)
         elif browser_lower == "firefox":
             self._set_firefox_options(options, preferences=preferences)
+        if self.download_preferences and browser_lower not in self.download_preferences:
+            self.logger.warning(
+                "Custom download directory not supported with %r!", browser
+            )
         # FIXME(cmin764): Enable profiles with any chromium-based browsers.
         if browser_lower != "chrome" and use_profile:
             self.logger.warning("Profiles are supported with Chrome only")
@@ -2253,11 +2257,17 @@ class Selenium(SeleniumLibrary):
             "browser.helperApps.alwaysAsk.force": False,
             "pdfjs.disabled": True,
             "browser.download.dir": download_directory,
-            "browser.helperApps.neverAsk.saveToDisk": ("application/pdf"),
-            "browser.download.viewableInternally.enabledTypes": "",
+            # MIME types: https://www.freeformatter.com/mime-types-list.html
+            "browser.helperApps.neverAsk.saveToDisk": "application/octet-stream",
         }
+        if download_pdf:
+            # Disable the viewer when downloading is preferred instead of viewing.
+            firefox_prefs["browser.download.viewableInternally.enabledTypes"] = ""
+            firefox_prefs[
+                "browser.helperApps.neverAsk.saveToDisk"
+            ] += " application/pdf"
         self.download_preferences = {
-            "chromium": chromium_prefs,
+            "chrome": chromium_prefs,
             "firefox": firefox_prefs,
         }
 
