@@ -19,7 +19,13 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
 from selenium.common import WebDriverException
-from selenium.webdriver import ChromeOptions, FirefoxOptions, FirefoxProfile, IeOptions
+from selenium.webdriver import (
+    ChromeOptions,
+    EdgeOptions,
+    FirefoxOptions,
+    FirefoxProfile,
+    IeOptions,
+)
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
@@ -40,6 +46,7 @@ from RPA.Robocorp.utils import get_output_dir
 
 
 OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List, Dict]]]
+ChromiumOptions = Union[ChromeOptions, EdgeOptions]
 AliasType = Union[str, int]
 Locator = Union[WebElement, str]
 
@@ -530,6 +537,7 @@ class Selenium(SeleniumLibrary):
         {name: name.capitalize() for name in AVAILABLE_SERVICES},
         **{"chromiumedge": "ChromiumEdge"},
     )
+    CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge"]
 
     ERR_WEBDRIVER_NOT_AVAILABLE = OSError(
         "Webdriver executable not in PATH (with disabled Selenium manager)"
@@ -767,9 +775,9 @@ class Selenium(SeleniumLibrary):
         in a Linux environment without a display, e.g. a container or if the
         `RPA_HEADLESS_MODE` env var is set to a number different than `0`.
 
-        == Chrome options ==
+        == Chromium options ==
 
-        Some features are currently available only for Chrome/Chromium.
+        Some features are currently available only for Chromium-based browsers.
         This includes using an existing user profile. By default Selenium
         uses a new profile for each session, but it can use an existing
         one by enabling the ``use_profile`` argument.
@@ -777,10 +785,11 @@ class Selenium(SeleniumLibrary):
         If a custom profile is stored somewhere outside of the default location,
         the path to the profiles directory and the name of the profile can
         be controlled with ``profile_path`` and ``profile_name`` respectively. Keep in
-        mind that the ``profile_path`` ends usually in "Chrome", "User Data" or
-        "google-chrome" and the ``profile_name`` is a directory relative to
-        ``profile_path``, usually named "Profile 1", "Profile 2" etc. (and not as your
-        visible name in the Chrome browser)
+        mind that the ``profile_path`` for the Chrome browser for e.g. ends usually
+        with "Chrome", "User Data" or "google-chrome" (based on platform) and the
+        ``profile_name`` is a directory relative to ``profile_path``, usually named
+        "Profile 1", "Profile 2" etc. (and not as your visible name in the Chrome
+        browser). Similar behavior is observed with Edge as well.
 
         Example:
 
@@ -792,8 +801,8 @@ class Selenium(SeleniumLibrary):
         Profile preferences can be further overridden with the ``preferences``
         argument by giving a dictionary of key/value pairs.
 
-        Chrome can additionally connect through a ``proxy``, which
-        should be given as either local or remote address.
+        Chromium-based browsers can additionally connect through a ``proxy``, which
+        should be given as either a local or remote address.
         """  # noqa: E501
         # pylint: disable=redefined-argument-from-local
         browsers = self._arg_browser_selection(browser_selection)
@@ -807,7 +816,7 @@ class Selenium(SeleniumLibrary):
         for browser, download in product(browsers, downloads):
             try:
                 self.logger.debug(
-                    "Creating webdriver for '%s' (headless: %s, download: %s)",
+                    "Creating webdriver for %r (headless: %s, download: %s)",
                     browser,
                     headless,
                     download,
@@ -900,10 +909,11 @@ class Selenium(SeleniumLibrary):
         else:
             return bool(headless)
 
-    def _set_chrome_options(
+    def _set_chromium_options(
         self,
+        browser_lower: str,
         kwargs: dict,
-        options: ChromeOptions,
+        options: ChromiumOptions,
         use_profile: bool = False,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
@@ -925,7 +935,7 @@ class Selenium(SeleniumLibrary):
             "prefs",
             {
                 **default_preferences,
-                **self.download_preferences.get("chrome", {}),
+                **self.download_preferences.get(browser_lower, {}),
                 **(preferences or {}),
             },
         )
@@ -936,11 +946,11 @@ class Selenium(SeleniumLibrary):
             # Leave the browser window open if auto-closing is disabled.
             options.add_experimental_option("detach", True)
         if use_profile:
-            self._set_user_profile(options, profile_path, profile_name)
+            self._set_user_profile(browser_lower, options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
             # Deprecated params, but no worries as they get popped then bundled in a
             #  `Service` instance inside of the `self._create_webdriver` method.
-            kwargs["service_log_path"] = "chromedriver.log"
+            kwargs["service_log_path"] = "chromiumdriver.log"
             kwargs["service_args"] = ["--verbose"]
 
     def _set_ie_options(self, options: IeOptions, *, url: Optional[str]):
@@ -1057,8 +1067,9 @@ class Selenium(SeleniumLibrary):
         if port:
             # Deprecated kwarg which will be transferred into a service instance.
             kwargs["port"] = int(port)
-        if browser_lower == "chrome":
-            self._set_chrome_options(
+        if browser_lower in self.CHROMIUM_BROWSERS:
+            self._set_chromium_options(
+                browser_lower,
                 kwargs,
                 options,
                 use_profile=use_profile,
@@ -1075,9 +1086,10 @@ class Selenium(SeleniumLibrary):
             self.logger.warning(
                 "Custom download directory not supported with %r!", browser
             )
-        # FIXME(cmin764): Enable profiles with any chromium-based browsers.
-        if browser_lower != "chrome" and use_profile:
-            self.logger.warning("Profiles are supported with Chrome only")
+        if use_profile and browser_lower not in self.CHROMIUM_BROWSERS:
+            self.logger.warning(
+                "Profiles are supported with Chromium-based browsers only!"
+            )
 
         try:
             path = options.binary_location or None
@@ -1125,12 +1137,13 @@ class Selenium(SeleniumLibrary):
             )
         options.add_argument("--disable-gpu")
 
-        if browser_lower == "chrome":
+        if browser_lower in self.CHROMIUM_BROWSERS:
             options.add_argument("--window-size=1440,900")
 
     def _set_user_profile(
         self,
-        options: ArgOptions,
+        browser_lower: str,
+        options: ChromiumOptions,
         profile_path: Optional[str] = None,
         profile_name: Optional[str] = None,
     ) -> None:
@@ -1142,20 +1155,47 @@ class Selenium(SeleniumLibrary):
         ``options`` dictionary of browser options
         """
         data_dir = profile_path or os.getenv("RPA_CHROME_USER_PROFILE_DIR")
-
         system = platform.system()
         home = Path.home()
 
-        if data_dir is not None:
-            pass
-        elif system == "Windows":
-            data_dir = home / "AppData" / "Local" / "Google" / "Chrome" / "User Data"
-        elif system == "Linux":
-            data_dir = home / ".config" / "google-chrome"
-        elif system == "Darwin":
-            data_dir = home / "Library" / "Application Support" / "Google" / "Chrome"
-        else:
-            self.logger.warning("Unable to resolve profile directory for: %s", system)
+        if not data_dir:
+            data_dirs = {
+                "Windows": {
+                    "chrome": home
+                    / "AppData"
+                    / "Local"
+                    / "Google"
+                    / "Chrome"
+                    / "User Data",
+                    "edge": home
+                    / "AppData"
+                    / "Local"
+                    / "Microsoft"
+                    / "Edge"
+                    / "User Data",
+                },
+                "Linux": {
+                    "chrome": home / ".config" / "google-chrome",
+                    "edge": home / ".config" / "edge",
+                },
+                "Darwin": {
+                    "chrome": home
+                    / "Library"
+                    / "Application Support"
+                    / "Google"
+                    / "Chrome",
+                    "edge": home / "Library" / "Application Support" / "Microsoft Edge",
+                },
+            }
+            for value in data_dirs.values():
+                value["chromiumedge"] = value["edge"]
+            data_dir = data_dirs.get(system, {}).get(browser_lower)
+        if not data_dir:
+            self.logger.warning(
+                "Unable to resolve profile directory on %r for: %s",
+                system,
+                browser_lower,
+            )
             return
 
         if not Path(data_dir).exists():
@@ -1164,7 +1204,6 @@ class Selenium(SeleniumLibrary):
         options.add_argument("--enable-local-sync-backend")
         options.add_argument(f"--local-sync-backend-dir={data_dir}")
         options.add_argument(f"--user-data-dir={data_dir}")
-
         if profile_name is not None:
             options.add_argument(f"--profile-directory={profile_name}")
 
@@ -1265,8 +1304,9 @@ class Selenium(SeleniumLibrary):
         proxy: str = None,
         user_agent: Optional[str] = None,
     ) -> AliasType:
-        """Open Chrome browser. See ``Open Available Browser`` for
-        descriptions of arguments.
+        """Opens a Chrome browser.
+
+        See ``Open Available Browser`` for a full descriptions of the arguments.
         """
         return self.open_available_browser(
             url,
@@ -1286,7 +1326,7 @@ class Selenium(SeleniumLibrary):
     def attach_chrome_browser(
         self, port: int, alias: Optional[str] = None
     ) -> AliasType:
-        """Attach to an existing instance of Chrome or Chromium.
+        """Attach to an existing instance of Chrome browser.
 
         Requires that the browser was started with the command line
         option ``--remote-debugging-port=<port>``, where port is any
@@ -1313,13 +1353,13 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def open_headless_chrome_browser(self, url: str) -> AliasType:
-        """Open Chrome browser in headless mode.
+        """Opens the Chrome browser in headless mode.
 
         ``url`` URL to open
 
         Example:
 
-        | ${idx} | Open Headless Chrome Browser | https://www.google.com |
+        | ${idx} = | Open Headless Chrome Browser | https://www.google.com |
         """
         return self.open_chrome_browser(url, headless=True)
 
@@ -2142,25 +2182,25 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def open_user_browser(self, url: str, tab=True) -> None:
-        """Open URL with user's default browser
+        """Opens an URL with te user's default browser.
 
         The browser opened with this keyword is not accessible
-        with selenium. To interact with the opened browser it is
-        possible to use ``Desktop`` library keywords.
+        with Selenium. To interact with the opened browser it is
+        possible to use ``RPA.Desktop`` or ``RPA.Windows`` library keywords.
 
         The keyword `Attach Chrome Browser` can be used to
-        access already open browser with selenium keywords.
+        access an already open browser with Selenium keywords.
 
         Read more: https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser
 
         ``url`` URL to open
-        ``tab`` defines is url is opened in a tab (default `True`) or
-                in new window (`False`)
+        ``tab`` defines is url is opened in a tab (defaults to ``True``) or
+                in new window (if set to ``False``)
 
         Example:
 
         | Open User Browser  | https://www.google.com?q=rpa |
-        | Open User Browser  | https://www.google.com?q=rpa | tab=False |
+        | Open User Browser  | https://www.google.com?q=rpa | tab=${False} |
         """  # noqa: E501
         browser_method = webbrowser.open_new_tab if tab else webbrowser.open_new
         browser_method(url)
@@ -2189,7 +2229,7 @@ class Selenium(SeleniumLibrary):
         - ``Open Chrome Browser``
         - ``Open Headless Chrome Browser``
 
-        Supported browsers: Chrome, Firefox.
+        Supported browsers: Chrome, Edge, Firefox.
 
         If the downloading doesn't work (file is not found on disk), try using the
         browser in non-headless (headful) mode when opening it. (``headless=${False}``)
@@ -2242,9 +2282,10 @@ class Selenium(SeleniumLibrary):
                 "browser.helperApps.neverAsk.saveToDisk"
             ] += " application/pdf"
         self.download_preferences = {
-            "chrome": chromium_prefs,
             "firefox": firefox_prefs,
         }
+        for browser_lower in self.CHROMIUM_BROWSERS:
+            self.download_preferences[browser_lower] = chromium_prefs
 
     @keyword
     def highlight_elements(
@@ -2309,6 +2350,10 @@ class Selenium(SeleniumLibrary):
         )
         self.driver.execute_script(script, *elements)
 
+    @property
+    def is_chromium(self) -> bool:
+        return self.driver.name.lower() in self.CHROMIUM_BROWSERS
+
     @keyword
     def print_to_pdf(
         self, output_path: Optional[str] = None, params: Optional[dict] = None
@@ -2334,8 +2379,11 @@ class Selenium(SeleniumLibrary):
         }
         ```
         """
-        if not self.driver.name.lower().startswith("chrom"):
-            raise NotImplementedError("PDF printing works only with Chrome/Chromium")
+        if not self.is_chromium:
+            raise NotImplementedError(
+                "PDF printing works only with Chromium-based browsers, got: %s",
+                self.driver.name,
+            )
 
         default_params = {
             "landscape": False,
@@ -2358,9 +2406,9 @@ class Selenium(SeleniumLibrary):
     @keyword
     def execute_cdp(self, command, parameters):
         """
-        Executes Chrome DevTools Protocol commands
+        Executes Chromium DevTools Protocol commands
 
-        Works only with Chrome/Chromium
+        Works only with Chromium-based browsers!
 
         For more information, available commands and parameters, see:
         https://chromedevtools.github.io/devtools-protocol/
@@ -2376,10 +2424,11 @@ class Selenium(SeleniumLibrary):
         | Execute CDP | Network.setUserAgentOverride | ${params} |
         | Go To | https://robocorp.com |
         """
-        if "chrom" not in self.driver.name:
+        if not self.is_chromium:
             raise NotImplementedError(
-                "Executing Chrome DevTools Protocol commands "
-                "works only with Chrome/Chromium"
+                "Executing DevTools Protocol commands"
+                " works only with Chromium-based browsers, got: %s",
+                self.driver.name,
             )
         return self._send_command_and_get_result(command, parameters)
 
