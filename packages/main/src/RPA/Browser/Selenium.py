@@ -2180,62 +2180,37 @@ class Selenium(SeleniumLibrary):
     def set_download_directory(
         self, directory: Optional[str] = None, download_pdf: bool = True
     ) -> None:
-        """Set browser download directory.
+        """Set a custom browser download directory.
 
-        Works with ``Open Available Browser``, ``Open Chrome Browser`` and
-        ``Open Headless Chrome Browser`` keywords (mainly with Chromium-based
-        browsers).
+        This has to be called before opening the browser and it works with the
+        following keywords:
+
+        - ``Open Available Browser``
+        - ``Open Chrome Browser``
+        - ``Open Headless Chrome Browser``
+
+        Supported browsers: Chrome, Firefox.
 
         If the downloading doesn't work (file is not found on disk), try using the
-        browser in non-headless (headful) mode when opening it. (`headless=${False}`)
+        browser in non-headless (headful) mode when opening it. (``headless=${False}``)
 
-        :param directory: Target directory for downloads, defaults to `None`, which
-            means that this setting is removed.
-        :param download_pdf: A PDF file pointed by the URL is downloaded instead of
-            being shown within browser's internal viewer when this is set to `True`.
-            (enabled by default)
+        Parameter ``directory`` sets a path for downloads, defaults to ``None``, which
+        means that this setting is removed and the default location will be used.
+        Parameter ``download_pdf`` will download a PDF file instead of previewing it
+        within browser's internal viewer when this is set to ``True``. (enabled by
+        default)
 
         **Example: Robot Framework**
 
-        .. code-block:: robotframework
-
-            *** Settings ***
-            Library     RPA.Browser.Selenium
-            Library     RPA.FileSystem
-
-            *** Tasks ***
-            Download PDF in custom directory
-                Set Download Directory    ${OUTPUT_DIR}
-                ${file_name} =   Set Variable    Robocorp-EULA-v1.0.pdf
-                Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
-                ...    headless=${False}  # to enable PDF downloading
-                @{files} =    List Files In Directory    ${OUTPUT_DIR}
-                Log List    ${files}
-
-        **Example: Python**
-
-        .. code-block:: python
-
-            from RPA.Browser.Selenium import Selenium
-            from RPA.FileSystem import FileSystem
-
-            selenium = Selenium()
-            file_system = FileSystem()
-
-            OUTPUT_DIR = "output"
-
-            def download_pdf_in_custom_directory():
-                selenium.set_download_directory(OUTPUT_DIR)
-                file_name = "Robocorp-EULA-v1.0.pdf"
-                selenium.open_available_browser(
-                    f"https://cdn.robocorp.com/legal/{file_name}", headless=False
-                )
-                files = file_system.list_files_in_directory(OUTPUT_DIR)
-                for file_path in files:
-                    print(file_path)
-        """
+        | `Set Download Directory` | ${OUTPUT_DIR}           |
+        | Open Available Browser   | https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf |
+        | @{files} =               | List Files In Directory | ${OUTPUT_DIR}               |
+        | Log List                 |  ${files}               |
+        """  # noqa: E501
         if directory is None:
-            self.logger.info("Download directory set back to browser default setting!")
+            self.logger.info(
+                "Download directory set back to browser's default setting!"
+            )
             self.download_preferences.clear()
             return
 
@@ -2338,23 +2313,26 @@ class Selenium(SeleniumLibrary):
     def print_to_pdf(
         self, output_path: Optional[str] = None, params: Optional[dict] = None
     ) -> str:
-        """Print the current page to a PDF document using Chrome/Chromium DevTools.
+        """Print the current page to a PDF document using Chrome's DevTools.
 
-        Attention: With some older browsers, this may work in `headless` mode only!
-        For supported parameters see:
+        Attention: With some older browsers, this may work in **headless** mode only!
+        For a list of supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
         Returns the output PDF file path.
 
-        :param output_path: File path for the generated PDF document. By default, it is
-            saved to the output folder with the name `out.pdf`.
-        :param params: Parameters for the browser printing method. By default, it uses
-            the following values:
-            ``{
-                "landscape": False,
-                "displayHeaderFooter": False,
-                "printBackground": True,
-                "preferCSSPageSize": True,
-            }``
+        Parameter ``output_path`` specifies the file path for the generated PDF
+        document. By default, it is saved to the output folder with the default name
+        of `out.pdf`.
+        Parameter ``params`` specify parameters for the browser printing method. By
+        default, it uses the following values:
+        ```
+        {
+            "landscape": False,
+            "displayHeaderFooter": False,
+            "printBackground": True,
+            "preferCSSPageSize": True,
+        }
+        ```
         """
         if not self.driver.name.lower().startswith("chrom"):
             raise NotImplementedError("PDF printing works only with Chrome/Chromium")
