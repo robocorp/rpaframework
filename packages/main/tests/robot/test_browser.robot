@@ -4,7 +4,7 @@ Library             RPA.Browser.Selenium    locators_path=${LOCATORS}
 Library             RPA.FileSystem
 Library             RPA.RobotLogListener
 
-Suite Setup         Open Available Browser    about:blank    headless=${False}
+Suite Setup         Open Available Browser    about:blank    headless=${True}
 ...    browser_selection=Edge
 Suite Teardown      Close All Browsers
 
@@ -105,6 +105,8 @@ Print page as PDF document
     Log To Console    Printing page into: ${destination_path}
     ${output_path} =    Print To Pdf    ${destination_path}
     File Should Exist    ${output_path}
+    [Teardown]    Run Keyword And Ignore Error
+    ...    RPA.FileSystem.Remove File    ${output_path}
 
 Download PDF in custom directory
     Set Download Directory    ${OUTPUT_DIR}
