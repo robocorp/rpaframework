@@ -4,7 +4,8 @@ Library             RPA.Browser.Selenium    locators_path=${LOCATORS}
 Library             RPA.FileSystem
 Library             RPA.RobotLogListener
 
-Suite Setup         Open Available Browser    about:blank    headless=${True}
+Suite Setup         Open Available Browser    about:blank    headless=${False}
+...    browser_selection=Edge
 Suite Teardown      Close All Browsers
 
 Default Tags        rpa.browser
@@ -16,6 +17,7 @@ ${RESULTS}          ${CURDIR}${/}..${/}results
 ${BROWSER_DATA}     ${RESULTS}${/}browser
 ${LOCATORS}         ${RESOURCES}${/}locators.json
 ${ALERT_HTML}       file://${RESOURCES}${/}alert.html
+${USER_AGENT}       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1337.0.0.0 Safari/1337.36
 
 
 *** Keywords ***
@@ -184,3 +186,8 @@ Get and set an attribute
     Set Element Attribute    ${button}    class     btn btn-secondary
     ${class} =      Get Element Attribute    ${button_locator}    class
     Should Be Equal    ${class}    btn btn-secondary
+
+Set user agent with CDP command
+    &{params} =     Create Dictionary   userAgent   ${USER_AGENT}
+    Execute CDP     Network.setUserAgentOverride    ${params}
+    Go To   https://robocorp.com

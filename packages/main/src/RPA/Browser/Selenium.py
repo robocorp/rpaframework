@@ -537,7 +537,8 @@ class Selenium(SeleniumLibrary):
         {name: name.capitalize() for name in AVAILABLE_SERVICES},
         **{"chromiumedge": "ChromiumEdge"},
     )
-    CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge"]
+    # Both driver and browser lower-case names.
+    CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge", "msedge"]
 
     ERR_WEBDRIVER_NOT_AVAILABLE = OSError(
         "Webdriver executable not in PATH (with disabled Selenium manager)"
@@ -2420,7 +2421,7 @@ class Selenium(SeleniumLibrary):
         Example:
 
         | Open Chrome Browser | about:blank | headless=True |
-        | &{params} | Create Dictionary | useragent=Chrome/83.0.4103.53 |
+        | &{params} | Create Dictionary | userAgent=Chrome/83.0.4103.53 |
         | Execute CDP | Network.setUserAgentOverride | ${params} |
         | Go To | https://robocorp.com |
         """
