@@ -2382,8 +2382,8 @@ class Selenium(SeleniumLibrary):
         """
         if not self.is_chromium:
             raise NotImplementedError(
-                "PDF printing works only with Chromium-based browsers, got: %s",
-                self.driver.name,
+                f"PDF printing works only with Chromium-based browsers,"
+                f" got: {self.driver.name}"
             )
 
         default_params = {
@@ -2428,8 +2428,7 @@ class Selenium(SeleniumLibrary):
         if not self.is_chromium:
             raise NotImplementedError(
                 "Executing DevTools Protocol commands"
-                " works only with Chromium-based browsers, got: %s",
-                self.driver.name,
+                f" works only with Chromium-based browsers, got: {self.driver.name}",
             )
         return self._send_command_and_get_result(command, parameters)
 
