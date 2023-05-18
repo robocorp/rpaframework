@@ -5,7 +5,7 @@ Library             RPA.FileSystem
 Library             RPA.RobotLogListener
 
 Suite Setup         Open Available Browser    about:blank    headless=${True}
-...    browser_selection=Edge
+...    browser_selection=Chrome
 Suite Teardown      Close All Browsers
 
 Default Tags        rpa.browser
