@@ -107,7 +107,7 @@ jobs:
       run: invoke code.lint -e
     - name: Test (non-linux)
       if: matrix.os != 'ubuntu-latest'
-      run: invoke code.test -a
+      run: invoke code.test
     - name: Test (linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
