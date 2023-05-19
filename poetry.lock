@@ -369,18 +369,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.133"
+version = "1.26.136"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.133-py3-none-any.whl", hash = "sha256:62285ecee7629a4388d55ae369536f759622d68d5b9a0ced7c58a0c1a409c0f7"},
-    {file = "boto3-1.26.133.tar.gz", hash = "sha256:8ff0af0b25266a01616396abc19eb34dc3d44bd867fa4158985924128b9034fb"},
+    {file = "boto3-1.26.136-py3-none-any.whl", hash = "sha256:82d92428599c107d8cf7c716e4d805193f07585968d261d9751a0e0777d8b178"},
+    {file = "boto3-1.26.136.tar.gz", hash = "sha256:110263d6be92383b9d5de61f4b36f732f0c98080dcfaf0aeb2f53f93b45b030a"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.133,<1.30.0"
+botocore = ">=1.29.136,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -389,14 +389,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.133"
+version = "1.29.136"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.133-py3-none-any.whl", hash = "sha256:b266185d7414a559952569005009a400de50af91fd3da44f05cf05b00946c4a7"},
-    {file = "botocore-1.29.133.tar.gz", hash = "sha256:7b38e540f73c921d8cb0ac72794072000af9e10758c04ba7f53d5629cc52fa87"},
+    {file = "botocore-1.29.136-py3-none-any.whl", hash = "sha256:134c9a84d3ce112fd7ed00b626d6a48f9d232742dffd9ee77f190b53c44bbcc8"},
+    {file = "botocore-1.29.136.tar.gz", hash = "sha256:1f36cfa1586c9ceeaf2835a886c5272dd81c9467cf1d515f2dc6a82a2a658da0"},
 ]
 
 [package.dependencies]
@@ -1142,14 +1142,14 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.18.0"
+version = "2.18.1"
 description = "Google Authentication Library"
 category = "main"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
 files = [
-    {file = "google-auth-2.18.0.tar.gz", hash = "sha256:c66b488a8b005b23ccb97b1198b6cece516c91869091ac5b7c267422db2733c7"},
-    {file = "google_auth-2.18.0-py2.py3-none-any.whl", hash = "sha256:ef3f3a67fa54d421a1c155864570f9a8de9179cedc937bda496b7a8ca338e936"},
+    {file = "google-auth-2.18.1.tar.gz", hash = "sha256:d7a3249027e7f464fbbfd7ee8319a08ad09d2eea51578575c4bd360ffa049ccb"},
+    {file = "google_auth-2.18.1-py2.py3-none-any.whl", hash = "sha256:55a395cdfd3f3dd3f649131d41f97c17b4ed8a2aac1be3502090c716314e8a37"},
 ]
 
 [package.dependencies]
@@ -4127,7 +4127,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "23.0.0"
+version = "23.1.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -4460,17 +4460,18 @@ testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (
 
 [[package]]
 name = "simple-salesforce"
-version = "1.12.3"
+version = "1.12.4"
 description = "A basic Salesforce.com REST API client."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "simple-salesforce-1.12.3.tar.gz", hash = "sha256:ff4ca9ae31d1f378fb0dce6e222b91ab6254d3dd5b0062c137822a822517e189"},
-    {file = "simple_salesforce-1.12.3-py2.py3-none-any.whl", hash = "sha256:e46306bb9820fe3036c8873a6ee6b806be9471cca1b454ae24c585784a64b20b"},
+    {file = "simple-salesforce-1.12.4.tar.gz", hash = "sha256:e9205f8041226c8273f020448c7fbd37999d481d25edd67f9bf86dc159cd3939"},
+    {file = "simple_salesforce-1.12.4-py2.py3-none-any.whl", hash = "sha256:87f1ac1363987ebf9b7a66ac9e7395534ec3f5a9545e08b664cb695dc085b1ac"},
 ]
 
 [package.dependencies]
+cryptography = "*"
 pyjwt = "*"
 requests = ">=2.22.0"
 zeep = "*"
@@ -4489,14 +4490,14 @@ files = [
 
 [[package]]
 name = "smartsheet-python-sdk"
-version = "3.0.0"
+version = "3.0.2"
 description = "Library that uses Python to connect to Smartsheet services (using API 2.0)."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "smartsheet-python-sdk-3.0.0.tar.gz", hash = "sha256:9d710bea4a73a8a90c54334a5a042fc8a6f862cfcc64a9b391ff26155ef3dc6a"},
-    {file = "smartsheet_python_sdk-3.0.0-py2.py3-none-any.whl", hash = "sha256:bee48b90e2902543383e05d32693c38d82f6cfba844d2a75e6f8d56f9a4eb769"},
+    {file = "smartsheet-python-sdk-3.0.2.tar.gz", hash = "sha256:1f417bef80d088c2133e266a3e33a3636cd3fc1d4e983e4aa6a542b2cec26c8d"},
+    {file = "smartsheet_python_sdk-3.0.2-py2.py3-none-any.whl", hash = "sha256:48a0dc83f0dfbbb9da4dd384d8a296a51df17bac7b9f426d11b179f8153f7b2e"},
 ]
 
 [package.dependencies]
@@ -4507,8 +4508,8 @@ requests-toolbelt = "*"
 six = ">=1.9"
 
 [package.extras]
-develop = ["coverage", "pytest", "pytest-instafail"]
-test = ["coverage", "pytest"]
+develop = ["coverage", "coveralls[yaml]", "pytest", "pytest-instafail"]
+test = ["coverage", "coveralls", "pytest"]
 
 [[package]]
 name = "sniffio"
