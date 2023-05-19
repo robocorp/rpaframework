@@ -33,12 +33,14 @@ Download With Specific Browser
     [Arguments]     ${browser}
     Close Browser
 
-    ${file_name} =    Set Variable    security-and-data-protection-whitepaper.pdf
+    Set Download Directory    ${OUTPUT_DIR}
     Open Available Browser    https://robocorp.com/docs/security
     ...    browser_selection=${browser}
     ...    headless=${True}    # PDF downloading now works in headless as well
     Click Link    Data protection whitepaper
-    ${file_path} =    Set Variable    ${OUTPUT_DIR}${/}${file_name}
+
+    ${file_path} =    Set Variable
+    ...     ${OUTPUT_DIR}${/}security-and-data-protection-whitepaper.pdf
     Wait Until Keyword Succeeds    3x    1s    File Should Exist    ${file_path}
 
     [Teardown]    Run Keyword And Ignore Error
@@ -59,9 +61,8 @@ Does alert not contain
     Handle Alert    DISMISS
 
 Screenshot Robocorp Google search result
-    [Tags]    skip
-    # Marked as SKIP on 2.5.2023 as this test does not
-    # handle Google consent popup and thus fails
+    # NOTE(cmin764): As of 19.05.2023 this test passes in CI, Mac, Windows and
+    #  Control Room, without any consent popup blocker.
     Go To    www.google.com
     Wait Until Element Is Visible    q
 
@@ -108,12 +109,12 @@ Print page as PDF document
     [Teardown]    Run Keyword And Ignore Error
     ...    RPA.FileSystem.Remove File    ${output_path}
 
-Download PDF in custom directory
-    Set Download Directory    ${OUTPUT_DIR}
-    @{browsers} =    Create List    Firefox    Chrome
-    FOR    ${browser}    IN    @{browsers}
-        Download With Specific Browser    ${browser}
-    END
+Download PDF in custom Chrome directory
+    Download With Specific Browser    Chrome
+
+Download PDF in custom Firefox directory
+    [Tags]    skip  # no support for the Firefox browser in CI
+    Download With Specific Browser    Firefox
 
 Highlight elements
     [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
@@ -141,8 +142,9 @@ Open In Incognito With Custom Options
     [Documentation]    Test Chrome with custom options (incognito), port and explicit
     ...    profile directory.
     [Setup]    Close Browser
-    # In CI, Chrome may attract a buggy webdriver which makes the custom profile usage
-    #    to break in headless mode. (unknown error: unable to discover open pages)
+    # NOTE(cmin764): In CI, Chrome may attract a buggy webdriver which makes the custom
+    #  profile usage to break in headless mode. (unknown error: unable to discover open
+    #  pages)
 #    [Tags]    skip
 
     ${data_dir} =    Create Browser Data Directory
