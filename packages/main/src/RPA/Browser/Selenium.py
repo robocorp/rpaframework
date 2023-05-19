@@ -147,7 +147,7 @@ class Selenium(SeleniumLibrary):
 
     By default, the browser instances created during a task execution are closed
     at the end of the task. This can be prevented with the ``auto_close``
-    parameter when **importing** the library.
+    parameter when *importing* the library.
 
     The value of the parameter needs to be set to ``False`` or any object evaluated as
     false (see `Boolean arguments`).
@@ -2009,7 +2009,7 @@ class Selenium(SeleniumLibrary):
     ) -> str:
         """Print the current page to a PDF document using Chrome's DevTools.
 
-        Attention: With some older browsers, this may work in **headless** mode only!
+        Attention: With some older browsers, this may work in *headless* mode only!
         For a list of supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
         Returns the output PDF file path.
