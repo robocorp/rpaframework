@@ -839,12 +839,13 @@ set self.__traceback__ to tb and return self.</p>
 <p>This document explains how to use keywords provided by SeleniumLibrary.
 For information about installation, support, and more, please visit the
 [<a class="reference external" href="https://github.com/robotframework">https://github.com/robotframework</a>/SeleniumLibrary|project pages].
-For more information about Robot Framework, see <a class="reference external" href="https://robotframework.org">https://robotframework.org</a>.</p>
+For more information about Robot Framework, see <a class="reference external" href="http://robotframework.org">http://robotframework.org</a>.</p>
 <p>SeleniumLibrary uses the Selenium WebDriver modules internally to
-control a web browser. See <a class="reference external" href="https://www.selenium.dev/">https://www.selenium.dev/</a> for more information
+control a web browser. See <a class="reference external" href="http://seleniumhq.org">http://seleniumhq.org</a> for more information
 about Selenium in general and SeleniumLibrary README.rst
 [<a class="reference external" href="https://github.com/robotframework/SeleniumLibrary#browser">https://github.com/robotframework/SeleniumLibrary#browser</a>-drivers|Browser drivers chapter]
 for more details about WebDriver binary installation.</p>
+<p>%TOC%</p>
 <p>= Locating elements =</p>
 <p>All keywords in SeleniumLibrary that need to interact with an element
 on a web page take an argument typically named <code class="docutils literal notranslate"><span class="pre">locator</span></code> that specifies
@@ -863,7 +864,7 @@ and <code class="docutils literal notranslate"><span class="pre">name</span></co
 or other values that make sense in their context. For example, <cite>Click
 Link</cite> supports the <code class="docutils literal notranslate"><span class="pre">href</span></code> attribute and the link text and addition
 to the normal <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
-<p>Example:</p>
+<p>Examples:</p>
 <div class="line-block">
 <div class="line"><cite>Click Element</cite> | example | # Match based on <code class="docutils literal notranslate"><span class="pre">id</span></code> or <code class="docutils literal notranslate"><span class="pre">name</span></code>.            |</div>
 <div class="line"><cite>Click Link</cite>    | example | # Match also based on link text and <code class="docutils literal notranslate"><span class="pre">href</span></code>.   |</div>
@@ -872,7 +873,7 @@ to the normal <code class="docutils literal notranslate"><span class="pre">id</s
 <p>If a locator accidentally starts with a prefix recognized as <cite>explicit
 locator strategy</cite> or <cite>implicit XPath strategy</cite>, it is possible to use
 the explicit <code class="docutils literal notranslate"><span class="pre">default</span></code> prefix to enable the default strategy.</p>
-<p>Example:</p>
+<p>Examples:</p>
 <div class="line-block">
 <div class="line"><cite>Click Element</cite> | name:foo         | # Find element with name <code class="docutils literal notranslate"><span class="pre">foo</span></code>.               |</div>
 <div class="line"><cite>Click Element</cite> | default:name:foo | # Use default strategy with value <code class="docutils literal notranslate"><span class="pre">name:foo</span></code>. |</div>
@@ -883,7 +884,7 @@ the explicit <code class="docutils literal notranslate"><span class="pre">defaul
 <p>The explicit locator strategy is specified with a prefix using either
 syntax <code class="docutils literal notranslate"><span class="pre">strategy:value</span></code> or <code class="docutils literal notranslate"><span class="pre">strategy=value</span></code>. The former syntax
 is preferred because the latter is identical to Robot Framework’s
-[<a class="reference external" href="https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument">https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument</a>-syntax|
+[<a class="reference external" href="http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument">http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument</a>-syntax|
 named argument syntax] and that can cause problems. Spaces around
 the separator are ignored, so <code class="docutils literal notranslate"><span class="pre">id:foo</span></code>, <code class="docutils literal notranslate"><span class="pre">id:</span> <span class="pre">foo</span></code> and <code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">:</span> <span class="pre">foo</span></code>
 are all equivalent.</p>
@@ -921,7 +922,7 @@ using <code class="docutils literal notranslate"><span class="pre">tag</span></c
 more complex cases using XPath expressions is typically the best
 approach. They are very powerful but a downside is that they can also
 get complex.</p>
-<p>Example:</p>
+<p>Examples:</p>
 <div class="line-block">
 <div class="line"><cite>Click Element</cite> | id:foo                      | # Element with id ‘foo’. |</div>
 <div class="line"><cite>Click Element</cite> | css:div#foo h1              | # h1 element under div with id ‘foo’. |</div>
@@ -945,7 +946,7 @@ If you have element like <cite>&lt;div data-automation=”automation-id-2”&gt;
 of the <code class="docutils literal notranslate"><span class="pre">//</span></code>, the locator is considered to be an XPath expression. In other
 words, using <code class="docutils literal notranslate"><span class="pre">//div</span></code> is equivalent to using explicit <code class="docutils literal notranslate"><span class="pre">xpath://div</span></code> and
 <code class="docutils literal notranslate"><span class="pre">((//div))</span></code> is equivalent to using explicit <code class="docutils literal notranslate"><span class="pre">xpath:((//div))</span></code></p>
-<p>Example:</p>
+<p>Examples:</p>
 <div class="line-block">
 <div class="line"><cite>Click Element</cite> | //div[&#64;id=”foo”]//h1 |</div>
 <div class="line"><cite>Click Element</cite> | (//div)[2]           |</div>
@@ -962,13 +963,13 @@ but it should not. Or if there is need to existing WebElement as locator.</p>
 some locator strategies use JavaScript to find elements and JavaScript is executed for the whole browser context
 and not for the element found be the previous locator. Chaining is supported by locator strategies which
 are based on Selenium API, like <cite>xpath</cite> or <cite>css</cite>, but example chaining is not supported by <cite>sizzle</cite> or <a href="#id3"><span class="problematic" id="id4">`</span></a>jquery</p>
-<p>Example:
+<p>Examples:
 | <cite>Click Element</cite> | css:.bar &gt;&gt; xpath://a | # To find a link which is present after an element with class “bar” |</p>
-<p>Example with list:
-| &#64;{locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | xpath://<a href="#id5"><span class="problematic" id="id6">*</span></a>[text(), ” &gt;&gt; “] |
+<p>List examples:
+| ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | xpath://<a href="#id5"><span class="problematic" id="id6">*</span></a>[text(), ” &gt;&gt; “] |
 | <cite>Page Should Contain Element</cite> | ${locator_list} |                           |                           |
 | ${element} =                  | Get WebElement  | xpath://<a href="#id7"><span class="problematic" id="id8">*</span></a>[text(), ” &gt;&gt; “] |                           |
-| &#64;{locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | ${element}                |
+| ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | ${element}                |
 | <cite>Page Should Contain Element</cite> | ${locator_list} |                           |                           |</p>
 <p>Chaining locators in new in SeleniumLibrary 5.0</p>
 <p>== Using WebElements ==</p>
@@ -1081,7 +1082,9 @@ argument, uses a timeout to define how long asynchronous JavaScript
 can run.</p>
 <p>The default timeout these keywords use can be set globally either by
 using the <cite>Set Selenium Timeout</cite> keyword or with the <code class="docutils literal notranslate"><span class="pre">timeout</span></code> argument
-when <cite>importing</cite> the library. See <cite>time format</cite> below for supported
+when <cite>importing</cite> the library. If no default timeout is set globally, the
+default is 5 seconds. If None is specified for the timeout argument in the
+keywords, the default is used. See <cite>time format</cite> below for supported
 timeout syntax.</p>
 <p>== Implicit wait ==</p>
 <p>Implicit wait specifies the maximum time how long Selenium waits when
@@ -1090,6 +1093,13 @@ Wait</cite> keyword or with the <code class="docutils literal notranslate"><span
 the library. See [<a class="reference external" href="https://www.seleniumhq.org/docs/04_webdriver_advanced">https://www.seleniumhq.org/docs/04_webdriver_advanced</a>.jsp|
 Selenium documentation] for more information about this functionality.</p>
 <p>See <cite>time format</cite> below for supported syntax.</p>
+<p>== Page load ==
+Page load timeout is the amount of time to wait for page load to complete until error is raised.</p>
+<p>The default page load timeout can be set globally
+when <cite>importing</cite> the library with the <code class="docutils literal notranslate"><span class="pre">page_load_timeout</span></code> argument
+or by using the <cite>Set Selenium Page Load Timeout</cite> keyword.</p>
+<p>See <cite>time format</cite> below for supported timeout syntax.</p>
+<p>Support for page load is new in SeleniumLibrary 6.1</p>
 <p>== Selenium speed ==</p>
 <p>Selenium execution speed can be slowed down globally by using <cite>Set
 Selenium speed</cite> keyword. This functionality is designed to be used for
@@ -1102,7 +1112,7 @@ and waits should be used instead.</p>
 (e.g. <code class="docutils literal notranslate"><span class="pre">0.5</span></code> or <code class="docutils literal notranslate"><span class="pre">42</span></code>) or in Robot Framework’s time syntax
 (e.g. <code class="docutils literal notranslate"><span class="pre">1.5</span> <span class="pre">seconds</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">min</span> <span class="pre">30</span> <span class="pre">s</span></code>). For more information about
 the time syntax see the
-[<a class="reference external" href="https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time">https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time</a>-format|Robot Framework User Guide].</p>
+[<a class="reference external" href="http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time">http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time</a>-format|Robot Framework User Guide].</p>
 <p>= Run-on-failure functionality =</p>
 <p>SeleniumLibrary has a handy feature that it can automatically execute
 a keyword if any of its own keywords fails. By default, it uses the
@@ -1117,7 +1127,7 @@ such as <code class="docutils literal notranslate"><span class="pre">NONE</span>
 <p>Starting from 5.0 SeleniumLibrary relies on Robot Framework to perform the
 boolean conversion based on keyword arguments [<a class="reference external" href="https://docs.python.org/3/library/typing">https://docs.python.org/3/library/typing</a>.html|type hint].
 More details in Robot Framework
-[<a class="reference external" href="https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported">https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported</a>-conversions|user guide]</p>
+[<a class="reference external" href="http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported">http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported</a>-conversions|user guide]</p>
 <p>Please note SeleniumLibrary 3 and 4 did have own custom methods to covert
 arguments to boolean values.</p>
 <p>= EventFiringWebDriver =</p>
@@ -1127,8 +1137,7 @@ See the Selenium and SeleniumLibrary
 [<a class="reference external" href="https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending">https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending</a>.rst#EventFiringWebDriver|EventFiringWebDriver support]
 documentation for further details.</p>
 <p>EventFiringWebDriver is new in SeleniumLibrary 4.0</p>
-<p>= Limitations and caveats =</p>
-<p>== Thread support ==</p>
+<p>= Thread support =</p>
 <p>SeleniumLibrary is not thread-safe. This is mainly due because the underlying
 [<a class="reference external" href="https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread">https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread</a>-safe|
 Selenium tool is not thread-safe] within one browser/driver instance.
@@ -1141,10 +1150,11 @@ functionality without creating a new library or hacking the source code. See
 documentation for further details.</p>
 <p>Plugin API is new SeleniumLibrary 4.0</p>
 <p>= Auto closing browser =</p>
-<p>By default browser instances created during task execution are closed
+<p>By default, the browser instances created during a task execution are closed
 at the end of the task. This can be prevented with the <code class="docutils literal notranslate"><span class="pre">auto_close</span></code>
-argument when <cite>importing</cite> the library.</p>
-<p>Value needs to be set to <code class="docutils literal notranslate"><span class="pre">False</span></code> or anything considered false (see <cite>Boolean arguments</cite>).</p>
+parameter when <em>importing</em> the library.</p>
+<p>The value of the parameter needs to be set to <code class="docutils literal notranslate"><span class="pre">False</span></code> or any object evaluated as
+false (see <cite>Boolean arguments</cite>).</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS">
 <span class="sig-name descname"><span class="pre">AVAILABLE_OPTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'chrome':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.chrome.options.Options'&gt;,</span> <span class="pre">'chromiumedge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'edge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'firefox':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.firefox.options.Options'&gt;,</span> <span class="pre">'ie':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.ie.options.Options'&gt;}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS" title="Permalink to this definition"></a></dt>
@@ -1158,6 +1168,16 @@ argument when <cite>importing</cite> the library.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.BROWSER_NAMES">
 <span class="sig-name descname"><span class="pre">BROWSER_NAMES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'android':</span> <span class="pre">'android',</span> <span class="pre">'chrome':</span> <span class="pre">'chrome',</span> <span class="pre">'chromiumedge':</span> <span class="pre">'edge',</span> <span class="pre">'edge':</span> <span class="pre">'edge',</span> <span class="pre">'ff':</span> <span class="pre">'firefox',</span> <span class="pre">'firefox':</span> <span class="pre">'firefox',</span> <span class="pre">'gc':</span> <span class="pre">'chrome',</span> <span class="pre">'googlechrome':</span> <span class="pre">'chrome',</span> <span class="pre">'headlesschrome':</span> <span class="pre">'headless_chrome',</span> <span class="pre">'headlessfirefox':</span> <span class="pre">'headless_firefox',</span> <span class="pre">'htmlunit':</span> <span class="pre">'htmlunit',</span> <span class="pre">'htmlunitwithjs':</span> <span class="pre">'htmlunit_with_js',</span> <span class="pre">'ie':</span> <span class="pre">'ie',</span> <span class="pre">'internetexplorer':</span> <span class="pre">'ie',</span> <span class="pre">'iphone':</span> <span class="pre">'iphone',</span> <span class="pre">'phantomjs':</span> <span class="pre">'phantomjs',</span> <span class="pre">'safari':</span> <span class="pre">'safari'}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.BROWSER_NAMES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.CHROMIUM_BROWSERS">
+<span class="sig-name descname"><span class="pre">CHROMIUM_BROWSERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['chrome',</span> <span class="pre">'edge',</span> <span class="pre">'chromiumedge',</span> <span class="pre">'msedge']</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.CHROMIUM_BROWSERS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.ERR_WEBDRIVER_NOT_AVAILABLE">
+<span class="sig-name descname"><span class="pre">ERR_WEBDRIVER_NOT_AVAILABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">OSError('Webdriver</span> <span class="pre">executable</span> <span class="pre">not</span> <span class="pre">in</span> <span class="pre">PATH</span> <span class="pre">(with</span> <span class="pre">disabled</span> <span class="pre">Selenium</span> <span class="pre">manager)')</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ERR_WEBDRIVER_NOT_AVAILABLE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1188,7 +1208,7 @@ argument when <cite>importing</cite> the library.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.attach_chrome_browser">
 <span class="sig-name descname"><span class="pre">attach_chrome_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.attach_chrome_browser" title="Permalink to this definition"></a></dt>
-<dd><p>Attach to an existing instance of Chrome or Chromium.</p>
+<dd><p>Attach to an existing instance of Chrome browser.</p>
 <p>Requires that the browser was started with the command line
 option <code class="docutils literal notranslate"><span class="pre">--remote-debugging-port=&lt;port&gt;</span></code>, where port is any
 4-digit number not being used by other applications.</p>
@@ -1209,7 +1229,7 @@ started with this command line option or this won’t have an effect.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.click_button_when_visible">
-<span class="sig-name descname"><span class="pre">click_button_when_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_button_when_visible" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">click_button_when_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_button_when_visible" title="Permalink to this definition"></a></dt>
 <dd><p>Click button identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
@@ -1221,7 +1241,7 @@ started with this command line option or this won’t have an effect.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.click_element_if_visible">
-<span class="sig-name descname"><span class="pre">click_element_if_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_element_if_visible" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">click_element_if_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_element_if_visible" title="Permalink to this definition"></a></dt>
 <dd><p>Click element if it is visible</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1231,8 +1251,23 @@ started with this command line option or this won’t have an effect.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.click_element_when_clickable">
+<span class="sig-name descname"><span class="pre">click_element_when_clickable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">timedelta</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_element_when_clickable" title="Permalink to this definition"></a></dt>
+<dd><p>Waits for and clicks an element until is fully ready to be clicked.</p>
+<p>If a normal click doesn’t work, then JavaScript-oriented workarounds are tried
+as a fallback mechanism.</p>
+<p>Parameter <code class="docutils literal notranslate"><span class="pre">locator</span></code> targets the element to be clicked.
+Parameter <code class="docutils literal notranslate"><span class="pre">timeout</span></code> optionally configures a custom duration to wait for the
+element to become clickable, until it gives up.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Click Element When Clickable | example |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.click_element_when_visible">
-<span class="sig-name descname"><span class="pre">click_element_when_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_chain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_element_when_visible" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">click_element_when_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_chain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_element_when_visible" title="Permalink to this definition"></a></dt>
 <dd><p>Click element identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
@@ -1247,7 +1282,7 @@ started with this command line option or this won’t have an effect.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_alert_contain">
-<span class="sig-name descname"><span class="pre">does_alert_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_alert_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_alert_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">timedelta</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_alert_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does alert contain text.</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> check if alert includes text, will raise ValueError is text
 does not exist</p>
@@ -1259,7 +1294,7 @@ does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_alert_not_contain">
-<span class="sig-name descname"><span class="pre">does_alert_not_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_alert_not_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_alert_not_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">timedelta</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_alert_not_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does alert not contain text.</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> check that alert does not include text, will raise ValueError if text
 does exist</p>
@@ -1271,7 +1306,7 @@ does exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_element_contain">
-<span class="sig-name descname"><span class="pre">does_element_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_case</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_element_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_element_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_case</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_element_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does element contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected element text</p>
@@ -1284,7 +1319,7 @@ does exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_frame_contain">
-<span class="sig-name descname"><span class="pre">does_frame_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_frame_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_frame_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_frame_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does frame contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> locator of the frame to check</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> does frame contain this text</p>
@@ -1320,7 +1355,7 @@ does exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_page_contain_button">
-<span class="sig-name descname"><span class="pre">does_page_contain_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_button" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_page_contain_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_button" title="Permalink to this definition"></a></dt>
 <dd><p>Does page contain expected button</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1331,7 +1366,7 @@ does exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_page_contain_checkbox">
-<span class="sig-name descname"><span class="pre">does_page_contain_checkbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_checkbox" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_page_contain_checkbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_checkbox" title="Permalink to this definition"></a></dt>
 <dd><p>Does page contain expected checkbox</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1342,7 +1377,7 @@ does exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_page_contain_element">
-<span class="sig-name descname"><span class="pre">does_page_contain_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_element" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_page_contain_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_element" title="Permalink to this definition"></a></dt>
 <dd><p>Does page contain expected element</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">count</span></code> how many times element is expected to appear on page
@@ -1356,7 +1391,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_page_contain_image">
-<span class="sig-name descname"><span class="pre">does_page_contain_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_image" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_page_contain_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_image" title="Permalink to this definition"></a></dt>
 <dd><p>Does page contain expected image</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1368,7 +1403,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_page_contain_link">
-<span class="sig-name descname"><span class="pre">does_page_contain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_link" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_page_contain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_link" title="Permalink to this definition"></a></dt>
 <dd><p>Does page contain expected link</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1379,7 +1414,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_page_contain_list">
-<span class="sig-name descname"><span class="pre">does_page_contain_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_list" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_page_contain_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_list" title="Permalink to this definition"></a></dt>
 <dd><p>Does page contain expected list</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1390,7 +1425,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_page_contain_radio_button">
-<span class="sig-name descname"><span class="pre">does_page_contain_radio_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_radio_button" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_page_contain_radio_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_radio_button" title="Permalink to this definition"></a></dt>
 <dd><p>Does page contain expected radio button</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1401,7 +1436,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_page_contain_textfield">
-<span class="sig-name descname"><span class="pre">does_page_contain_textfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_textfield" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_page_contain_textfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_textfield" title="Permalink to this definition"></a></dt>
 <dd><p>Does page contain expected textfield</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1412,7 +1447,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_table_cell_contain">
-<span class="sig-name descname"><span class="pre">does_table_cell_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_cell_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_table_cell_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_cell_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does table cell contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">row</span></code> row index starting from 1 (beginning) or -1 (from the end)</p>
@@ -1426,7 +1461,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_table_column_contain">
-<span class="sig-name descname"><span class="pre">does_table_column_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_column_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_table_column_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_column_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does table column contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">column</span></code> column index starting from 1 (beginning) or -1 (from the end)</p>
@@ -1439,7 +1474,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_table_contain">
-<span class="sig-name descname"><span class="pre">does_table_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_table_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does table contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table</p>
@@ -1451,7 +1486,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_table_footer_contain">
-<span class="sig-name descname"><span class="pre">does_table_footer_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_footer_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_table_footer_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_footer_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does table footer contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table footer</p>
@@ -1463,7 +1498,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_table_header_contain">
-<span class="sig-name descname"><span class="pre">does_table_header_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_header_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_table_header_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_header_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does table header contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table header</p>
@@ -1475,7 +1510,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_table_row_contain">
-<span class="sig-name descname"><span class="pre">does_table_row_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_row_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_table_row_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_row_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does table row contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">row</span></code> row index starting from 1 (beginning) or -1 (from the end)</p>
@@ -1488,7 +1523,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_textarea_contain">
-<span class="sig-name descname"><span class="pre">does_textarea_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_textarea_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_textarea_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_textarea_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does textarea contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in textarea</p>
@@ -1500,7 +1535,7 @@ by default one or more</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.does_textfield_contain">
-<span class="sig-name descname"><span class="pre">does_textfield_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_textfield_contain" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">does_textfield_contain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_textfield_contain" title="Permalink to this definition"></a></dt>
 <dd><p>Does textfield contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in textfield</p>
@@ -1527,8 +1562,8 @@ by default one or more</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.execute_cdp">
 <span class="sig-name descname"><span class="pre">execute_cdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.execute_cdp" title="Permalink to this definition"></a></dt>
-<dd><p>Executes Chrome DevTools Protocol commands</p>
-<p>Works only with Chrome/Chromium</p>
+<dd><p>Executes Chromium DevTools Protocol commands</p>
+<p>Works only with Chromium-based browsers!</p>
 <p>For more information, available commands and parameters, see:
 <a class="reference external" href="https://chromedevtools.github.io/devtools-protocol/">https://chromedevtools.github.io/devtools-protocol/</a></p>
 <p><code class="docutils literal notranslate"><span class="pre">command</span></code> command to execute as string</p>
@@ -1536,7 +1571,7 @@ by default one or more</p>
 <p>Example:</p>
 <div class="line-block">
 <div class="line">Open Chrome Browser | <a class="reference external" href="about:blank">about:blank</a> | headless=True |</div>
-<div class="line">&amp;{params} | Create Dictionary | useragent=Chrome/83.0.4103.53 |</div>
+<div class="line">&amp;{params} | Create Dictionary | userAgent=Chrome/83.0.4103.53 |</div>
 <div class="line">Execute CDP | Network.setUserAgentOverride | ${params} |</div>
 <div class="line">Go To | <a class="reference external" href="https://robocorp.com">https://robocorp.com</a> |</div>
 </div>
@@ -1610,7 +1645,7 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.get_element_status">
-<span class="sig-name descname"><span class="pre">get_element_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_element_status" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_element_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_element_status" title="Permalink to this definition"></a></dt>
 <dd><p>Return dictionary containing element status of:</p>
 <blockquote>
 <div><ul class="simple">
@@ -1669,7 +1704,7 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.highlight_elements">
-<span class="sig-name descname"><span class="pre">highlight_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2px'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dotted'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.highlight_elements" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">highlight_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'2px'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dotted'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.highlight_elements" title="Permalink to this definition"></a></dt>
 <dd><p>Highlight all matching elements by locator.</p>
 <p>Highlighting is done by adding a colored outline
 around the elements with CSS styling.</p>
@@ -1685,7 +1720,7 @@ around the elements with CSS styling.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.input_text_when_element_is_visible">
-<span class="sig-name descname"><span class="pre">input_text_when_element_is_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.input_text_when_element_is_visible" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">input_text_when_element_is_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.input_text_when_element_is_visible" title="Permalink to this definition"></a></dt>
 <dd><p>Input text into locator after it has become visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> insert text to locator</p>
@@ -1712,7 +1747,7 @@ will check if alert is present at all</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_checkbox_selected">
-<span class="sig-name descname"><span class="pre">is_checkbox_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_checkbox_selected" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_checkbox_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_checkbox_selected" title="Permalink to this definition"></a></dt>
 <dd><p>Is checkbox selected</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1721,9 +1756,14 @@ will check if alert is present at all</p>
 </div>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_chromium">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_chromium</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_chromium" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_element_attribute_equal_to">
-<span class="sig-name descname"><span class="pre">is_element_attribute_equal_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_attribute_equal_to" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_element_attribute_equal_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_attribute_equal_to" title="Permalink to this definition"></a></dt>
 <dd><p>Is element attribute equal to expected value</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">attribute</span></code> element attribute to check for</p>
@@ -1736,7 +1776,7 @@ will check if alert is present at all</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_element_disabled">
-<span class="sig-name descname"><span class="pre">is_element_disabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_disabled" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_element_disabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_disabled" title="Permalink to this definition"></a></dt>
 <dd><p>Is element disabled</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
 <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
@@ -1749,7 +1789,7 @@ Fail if element does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_element_enabled">
-<span class="sig-name descname"><span class="pre">is_element_enabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_enabled" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_element_enabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_enabled" title="Permalink to this definition"></a></dt>
 <dd><p>Is element enabled</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
 <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
@@ -1762,7 +1802,7 @@ Fail if element does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_element_focused">
-<span class="sig-name descname"><span class="pre">is_element_focused</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_focused" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_element_focused</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_focused" title="Permalink to this definition"></a></dt>
 <dd><p>Is element focused</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
 <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
@@ -1775,7 +1815,7 @@ Fail if element does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_element_text">
-<span class="sig-name descname"><span class="pre">is_element_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_case</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_text" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_element_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_case</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_text" title="Permalink to this definition"></a></dt>
 <dd><p>Is element text expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected element text</p>
@@ -1789,7 +1829,7 @@ Fail if element does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_element_visible">
-<span class="sig-name descname"><span class="pre">is_element_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_visible" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_element_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_visible" title="Permalink to this definition"></a></dt>
 <dd><p>Is element visible</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
 <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
@@ -1802,7 +1842,7 @@ Fail if element does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_list_selected">
-<span class="sig-name descname"><span class="pre">is_list_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_list_selected" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_list_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_list_selected" title="Permalink to this definition"></a></dt>
 <dd><p>Is any option selected in the</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1813,7 +1853,7 @@ Fail if element does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_list_selection">
-<span class="sig-name descname"><span class="pre">is_list_selection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_list_selection" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_list_selection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_list_selection" title="Permalink to this definition"></a></dt>
 <dd><p>Is list selected with expected values</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected selected options</p>
@@ -1860,7 +1900,7 @@ Fail if element does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_textarea_value">
-<span class="sig-name descname"><span class="pre">is_textarea_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_textarea_value" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_textarea_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_textarea_value" title="Permalink to this definition"></a></dt>
 <dd><p>Is textarea matching expected value</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected textarea value</p>
@@ -1872,7 +1912,7 @@ Fail if element does not exist</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.is_textfield_value">
-<span class="sig-name descname"><span class="pre">is_textfield_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_textfield_value" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_textfield_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_textfield_value" title="Permalink to this definition"></a></dt>
 <dd><p>Is textfield value expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected textfield value</p>
@@ -1996,18 +2036,19 @@ the context.</p>
 By default, it will be disabled, unless it detects that it is running
 in a Linux environment without a display, e.g. a container or if the
 <cite>RPA_HEADLESS_MODE</cite> env var is set to a number different than <cite>0</cite>.</p>
-<p>== Chrome options ==</p>
-<p>Some features are currently available only for Chrome/Chromium.
+<p>== Chromium options ==</p>
+<p>Some features are currently available only for Chromium-based browsers.
 This includes using an existing user profile. By default Selenium
 uses a new profile for each session, but it can use an existing
 one by enabling the <code class="docutils literal notranslate"><span class="pre">use_profile</span></code> argument.</p>
 <p>If a custom profile is stored somewhere outside of the default location,
 the path to the profiles directory and the name of the profile can
 be controlled with <code class="docutils literal notranslate"><span class="pre">profile_path</span></code> and <code class="docutils literal notranslate"><span class="pre">profile_name</span></code> respectively. Keep in
-mind that the <code class="docutils literal notranslate"><span class="pre">profile_path</span></code> ends usually in “Chrome”, “User Data” or
-“google-chrome” and the <code class="docutils literal notranslate"><span class="pre">profile_name</span></code> is a directory relative to
-<code class="docutils literal notranslate"><span class="pre">profile_path</span></code>, usually named “Profile 1”, “Profile 2” etc. (and not as your
-visible name in the Chrome browser)</p>
+mind that the <code class="docutils literal notranslate"><span class="pre">profile_path</span></code> for the Chrome browser for e.g. ends usually
+with “Chrome”, “User Data” or “google-chrome” (based on platform) and the
+<code class="docutils literal notranslate"><span class="pre">profile_name</span></code> is a directory relative to <code class="docutils literal notranslate"><span class="pre">profile_path</span></code>, usually named
+“Profile 1”, “Profile 2” etc. (and not as your visible name in the Chrome
+browser). Similar behavior is observed with Edge as well.</p>
 <p>Example:</p>
 <div class="line-block">
 <div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | use_profile=${True} |</div>
@@ -2017,77 +2058,74 @@ visible name in the Chrome browser)</p>
 </div>
 <p>Profile preferences can be further overridden with the <code class="docutils literal notranslate"><span class="pre">preferences</span></code>
 argument by giving a dictionary of key/value pairs.</p>
-<p>Chrome can additionally connect through a <code class="docutils literal notranslate"><span class="pre">proxy</span></code>, which
-should be given as either local or remote address.</p>
+<p>Chromium-based browsers can additionally connect through a <code class="docutils literal notranslate"><span class="pre">proxy</span></code>, which
+should be given as either a local or remote address.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.open_chrome_browser">
 <span class="sig-name descname"><span class="pre">open_chrome_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headless</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preferences</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_chrome_browser" title="Permalink to this definition"></a></dt>
-<dd><p>Open Chrome browser. See <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code> for
-descriptions of arguments.</p>
+<dd><p>Opens a Chrome browser.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code> for a full descriptions of the arguments.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.open_headless_chrome_browser">
 <span class="sig-name descname"><span class="pre">open_headless_chrome_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_headless_chrome_browser" title="Permalink to this definition"></a></dt>
-<dd><p>Open Chrome browser in headless mode.</p>
+<dd><p>Opens the Chrome browser in headless mode.</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
 <p>Example:</p>
 <div class="line-block">
-<div class="line">${idx} | Open Headless Chrome Browser | <a class="reference external" href="https://www.google.com">https://www.google.com</a> |</div>
+<div class="line">${idx} = | Open Headless Chrome Browser | <a class="reference external" href="https://www.google.com">https://www.google.com</a> |</div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.open_user_browser">
 <span class="sig-name descname"><span class="pre">open_user_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_user_browser" title="Permalink to this definition"></a></dt>
-<dd><p>Open URL with user’s default browser</p>
+<dd><p>Opens an URL with te user’s default browser.</p>
 <p>The browser opened with this keyword is not accessible
-with selenium. To interact with the opened browser it is
-possible to use <code class="docutils literal notranslate"><span class="pre">Desktop</span></code> library keywords.</p>
+with Selenium. To interact with the opened browser it is
+possible to use <code class="docutils literal notranslate"><span class="pre">RPA.Desktop</span></code> or <code class="docutils literal notranslate"><span class="pre">RPA.Windows</span></code> library keywords.</p>
 <p>The keyword <cite>Attach Chrome Browser</cite> can be used to
-access already open browser with selenium keywords.</p>
+access an already open browser with Selenium keywords.</p>
 <p>Read more: <a class="reference external" href="https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser">https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser</a></p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open
-<code class="docutils literal notranslate"><span class="pre">tab</span></code> defines is url is opened in a tab (default <cite>True</cite>) or</p>
+<code class="docutils literal notranslate"><span class="pre">tab</span></code> defines is url is opened in a tab (defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>) or</p>
 <blockquote>
-<div><p>in new window (<cite>False</cite>)</p>
+<div><p>in new window (if set to <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p>
 </div></blockquote>
 <p>Example:</p>
 <div class="line-block">
 <div class="line">Open User Browser  | <a class="reference external" href="https://www.google.com?q=rpa">https://www.google.com?q=rpa</a> |</div>
-<div class="line">Open User Browser  | <a class="reference external" href="https://www.google.com?q=rpa">https://www.google.com?q=rpa</a> | tab=False |</div>
+<div class="line">Open User Browser  | <a class="reference external" href="https://www.google.com?q=rpa">https://www.google.com?q=rpa</a> | tab=${False} |</div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.print_to_pdf">
 <span class="sig-name descname"><span class="pre">print_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.print_to_pdf" title="Permalink to this definition"></a></dt>
-<dd><p>Print the current page to a PDF document using Chrome/Chromium DevTools.</p>
-<p>Attention: With some older browsers, this may work in <cite>headless</cite> mode only!
-For supported parameters see:
+<dd><p>Print the current page to a PDF document using Chrome’s DevTools.</p>
+<p>Attention: With some older browsers, this may work in <em>headless</em> mode only!
+For a list of supported parameters see:
 <a class="reference external" href="https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF">https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF</a>
 Returns the output PDF file path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>output_path</strong> – File path for the generated PDF document. By default, it is
-saved to the output folder with the name <cite>out.pdf</cite>.</p></li>
-<li><p><strong>params</strong> – <p>Parameters for the browser printing method. By default, it uses
-the following values:
-<a href="#id9"><span class="problematic" id="id10">``</span></a>{</p>
+<p>Parameter <code class="docutils literal notranslate"><span class="pre">output_path</span></code> specifies the file path for the generated PDF
+document. By default, it is saved to the output folder with the default name
+of <cite>out.pdf</cite>.
+Parameter <code class="docutils literal notranslate"><span class="pre">params</span></code> specify parameters for the browser printing method. By
+default, it uses the following values:
+<a href="#id9"><span class="problematic" id="id10">``</span></a>`
+{</p>
 <blockquote>
-<div><p>”landscape”: False,
+<div><p>“landscape”: False,
 “displayHeaderFooter”: False,
 “printBackground”: True,
 “preferCSSPageSize”: True,</p>
 </div></blockquote>
-<p>}``</p>
-</p></li>
-</ul>
-</dd>
-</dl>
+<div class="section" id="id11">
+<h3>}<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -2117,7 +2155,7 @@ the following values:
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.screenshot">
-<span class="sig-name descname"><span class="pre">screenshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.screenshot" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">screenshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.screenshot" title="Permalink to this definition"></a></dt>
 <dd><p>Capture page and/or element screenshot.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> if defined, take element screenshot, if not takes page screenshot</p>
 <p><code class="docutils literal notranslate"><span class="pre">filename</span></code> filename for the screenshot, by default creates file <cite>screenshot-&lt;timestamp&gt;-(element|page).png</cite>
@@ -2136,63 +2174,46 @@ if set to <cite>None</cite> then file is not saved at all</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.set_download_directory">
 <span class="sig-name descname"><span class="pre">set_download_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.set_download_directory" title="Permalink to this definition"></a></dt>
-<dd><p>Set browser download directory.</p>
-<p>Works with <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code>, <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Chrome</span> <span class="pre">Browser</span></code> and
-<code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Headless</span> <span class="pre">Chrome</span> <span class="pre">Browser</span></code> keywords (mainly with Chromium-based
-browsers).</p>
-<p>If the downloading doesn’t work (file is not found on disk), try using the
-browser in non-headless (headful) mode when opening it. (<cite>headless=${False}</cite>)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>directory</strong> – Target directory for downloads, defaults to <cite>None</cite>, which
-means that this setting is removed.</p></li>
-<li><p><strong>download_pdf</strong> – A PDF file pointed by the URL is downloaded instead of
-being shown within browser’s internal viewer when this is set to <cite>True</cite>.
-(enabled by default)</p></li>
+<dd><p>Set a custom browser download directory.</p>
+<p>This has to be called before opening the browser and it works with the
+following keywords:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Chrome</span> <span class="pre">Browser</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Headless</span> <span class="pre">Chrome</span> <span class="pre">Browser</span></code></p></li>
 </ul>
-</dd>
-</dl>
-<p><strong>Example: Robot Framework</strong></p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Browser.Selenium</span>
-<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.FileSystem</span>
-
-<span class="gh">*** Tasks ***</span>
-<span class="gu">Download PDF in custom directory</span>
-<span class="p">    </span><span class="nf">Set Download Directory</span><span class="p">    ${</span><span class="nv">OUTPUT_DIR</span><span class="p">}</span>
-<span class="p">    ${</span><span class="nv">file_name</span><span class="p">} =   </span><span class="nf">Set Variable</span><span class="p">    </span><span class="s">Robocorp-EULA-v1.0.pdf</span>
-<span class="p">    </span><span class="nf">Open Available Browser</span><span class="p">    </span><span class="s">https://cdn.robocorp.com/legal/</span><span class="p">${</span><span class="nv">file_name</span><span class="p">}</span>
-<span class="p">    ...    </span><span class="s">headless=</span><span class="p">${</span><span class="nv">False</span><span class="p">}  </span><span class="c"># to enable PDF downloading</span>
-<span class="p">    @{</span><span class="nv">files</span><span class="p">} =    </span><span class="nf">List Files In Directory</span><span class="p">    ${</span><span class="nv">OUTPUT_DIR</span><span class="p">}</span>
-<span class="p">    </span><span class="nf">Log List</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}</span>
-</pre></div>
+<p>Supported browsers: Chrome, Edge, Firefox.</p>
+<p>If the downloading doesn’t work (file is not found on disk), try using the
+browser in non-headless (headful) mode when opening it. (<code class="docutils literal notranslate"><span class="pre">headless=${False}</span></code>)</p>
+<p>Parameter <code class="docutils literal notranslate"><span class="pre">directory</span></code> sets a path for downloads, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>, which
+means that this setting is removed and the default location will be used.
+Parameter <code class="docutils literal notranslate"><span class="pre">download_pdf</span></code> will download a PDF file instead of previewing it
+within browser’s internal viewer when this is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. (enabled by
+default)</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line"><cite>Set Download Directory</cite> | ${OUTPUT_DIR}           |</div>
+<div class="line">Open Available Browser   | <a class="reference external" href="https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf">https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf</a> |</div>
+<div class="line">&#64;{files} =               | List Files In Directory | ${OUTPUT_DIR}               |</div>
+<div class="line">Log List                 |  ${files}               |</div>
 </div>
-<p><strong>Example: Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Browser.Selenium</span> <span class="kn">import</span> <span class="n">Selenium</span>
-<span class="kn">from</span> <span class="nn">RPA.FileSystem</span> <span class="kn">import</span> <span class="n">FileSystem</span>
+</dd></dl>
 
-<span class="n">selenium</span> <span class="o">=</span> <span class="n">Selenium</span><span class="p">()</span>
-<span class="n">file_system</span> <span class="o">=</span> <span class="n">FileSystem</span><span class="p">()</span>
-
-<span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span>
-
-<span class="k">def</span> <span class="nf">download_pdf_in_custom_directory</span><span class="p">():</span>
-    <span class="n">selenium</span><span class="o">.</span><span class="n">set_download_directory</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">)</span>
-    <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;Robocorp-EULA-v1.0.pdf&quot;</span>
-    <span class="n">selenium</span><span class="o">.</span><span class="n">open_available_browser</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;https://cdn.robocorp.com/legal/</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">headless</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">file_system</span><span class="o">.</span><span class="n">list_files_in_directory</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-</pre></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.set_element_attribute">
+<span class="sig-name descname"><span class="pre">set_element_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.set_element_attribute" title="Permalink to this definition"></a></dt>
+<dd><p>Sets a <code class="docutils literal notranslate"><span class="pre">value</span></code> for the <code class="docutils literal notranslate"><span class="pre">attribute</span></code> in the element <code class="docutils literal notranslate"><span class="pre">locator</span></code>.</p>
+<p>See the <cite>Locating elements</cite> section for details about the locator
+syntax.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Set Element Attribute | css:h1 | class | active |</div>
 </div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.wait_and_click_button">
-<span class="sig-name descname"><span class="pre">wait_and_click_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.wait_and_click_button" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">wait_and_click_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.wait_and_click_button" title="Permalink to this definition"></a></dt>
 <dd><p>Click button identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
