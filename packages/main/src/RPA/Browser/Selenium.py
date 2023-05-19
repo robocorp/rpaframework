@@ -1,6 +1,7 @@
 # pylint: disable=too-many-lines
 import atexit
 import base64
+import datetime
 import json
 import logging
 import os
@@ -19,6 +20,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
 from selenium.common import WebDriverException
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver import (
     ChromeOptions,
     EdgeOptions,
@@ -29,6 +31,8 @@ from selenium.webdriver import (
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import WebDriverWait
 from SeleniumLibrary import EMBED, SeleniumLibrary, WebElement
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
@@ -45,10 +49,12 @@ from RPA.core.locators import BrowserLocator, LocatorsDatabase
 from RPA.Robocorp.utils import get_output_dir
 
 
+Locator = Union[WebElement, str]
+AliasType = Union[str, int]
+TimeoutType = Optional[Union[str, int, datetime.timedelta]]
+
 OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List, Dict]]]
 ChromiumOptions = Union[ChromeOptions, EdgeOptions]
-AliasType = Union[str, int]
-Locator = Union[WebElement, str]
 
 
 def html_table(header, rows):
@@ -563,17 +569,18 @@ class Selenium(SeleniumLibrary):
 
         SeleniumLibrary.__init__(self, *args, **kwargs)
 
-        # Add inherit/overridden library keywords
-        overrides = [BrowserManagementKeywordsOverride(self)]
-        self.add_library_components(overrides)
+        # Add inherit/overridden library keywords.
+        self.browser_management = BrowserManagementKeywordsOverride(self)
+        override_plugins = [self.browser_management]
+        self.add_library_components(override_plugins)
 
         self.logger = logging.getLogger(__name__)
         self.using_testability = bool("SeleniumTestability" in plugins)
 
-        # Add support for locator aliases
+        # Add support for locator aliases.
         self._element_finder.register("alias", self._find_by_alias, persist=True)
 
-        # Embed screenshots in logs by default
+        # Embed screenshots in logs by default.
         if not notebook.IPYTHON_AVAILABLE:
             self._embedding_screenshots = True
             self._previous_screenshot_directory = self.set_screenshot_directory(EMBED)
@@ -1276,12 +1283,13 @@ class Selenium(SeleniumLibrary):
             if not shutil.which(service.path):
                 raise self.ERR_WEBDRIVER_NOT_AVAILABLE
 
-            lib = BrowserManagementKeywords(self)
             # Capitalize browser name just to ensure it works if passed as lower case.
             # NOTE: But don't break a browser name like "ChromiumEdge".
             cap_browser = browser[0].upper() + browser[1:]
             kwargs["service"] = service
-            return lib.create_webdriver(cap_browser, alias, **kwargs)
+            return self.browser_management.create_webdriver(
+                cap_browser, alias, **kwargs
+            )
 
         # No download requested.
         if not download:
@@ -1607,7 +1615,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_alert_contain(self, text: str = None, timeout: float = None) -> bool:
+    def does_alert_contain(self, text: str = None, timeout: TimeoutType = None) -> bool:
         # pylint: disable=W0212
         """Does alert contain text.
 
@@ -1626,7 +1634,9 @@ class Selenium(SeleniumLibrary):
             raise ValueError(f"Alert did not contain text {text!r}")
 
     @keyword
-    def does_alert_not_contain(self, text: str = None, timeout: float = None) -> bool:
+    def does_alert_not_contain(
+        self, text: str = None, timeout: TimeoutType = None
+    ) -> bool:
         # pylint: disable=W0212
         """Does alert not contain text.
 
@@ -2241,7 +2251,7 @@ class Selenium(SeleniumLibrary):
         within browser's internal viewer when this is set to ``True``. (enabled by
         default)
 
-        **Example: Robot Framework**
+        Example:
 
         | `Set Download Directory` | ${OUTPUT_DIR}           |
         | Open Available Browser   | https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf |
@@ -2453,7 +2463,7 @@ class Selenium(SeleniumLibrary):
         syntax.
 
         Example:
-        | `Set Element Attribute` | css:h1 | class | active |
+        | Set Element Attribute | css:h1 | class | active |
         """
         element = self.find_element(locator)
         # NOTE(cmin764): The `WebElement` object doesn't support the `set_attribute`
@@ -2462,3 +2472,37 @@ class Selenium(SeleniumLibrary):
         #  Therefore we execute a script instead:
         script = "arguments[0].setAttribute(arguments[1], arguments[2]);"
         element.parent.execute_script(script, element, attribute, value)
+
+    @keyword
+    def click_element_when_clickable(
+        self, locator: Locator, timeout: TimeoutType = None
+    ) -> None:
+        """Waits for and clicks an element until is fully ready to be clicked.
+
+        If a normal click doesn't work, then JavaScript-oriented workarounds are tried
+        as a fallback mechanism.
+
+        Parameter ``locator`` targets the element to be clicked.
+        Parameter ``timeout`` optionally configures a custom duration to wait for the
+        element to become clickable, until it gives up.
+
+        Example:
+
+        | Click Element When Clickable | example |
+        """
+        element = self.find_element(locator)
+        timeout: float = self.browser_management.get_timeout(timeout)
+        wait = WebDriverWait(self.driver, timeout)
+        clickable_element = wait.until(
+            expected_conditions.element_to_be_clickable(element)
+        )
+        try:
+            clickable_element.click()
+        except ElementClickInterceptedException as exc:
+            self.logger.warning(
+                "Couldn't click element %r with Selenium due to: %s"
+                " (trying with JavaScript)",
+                locator,
+                exc,
+            )
+            self.driver.execute_script("arguments[0].click();", clickable_element)

@@ -193,3 +193,9 @@ Set user agent with CDP command
     &{params} =     Create Dictionary   userAgent   ${USER_AGENT}
     Execute CDP     Network.setUserAgentOverride    ${params}
     Go To   https://robocorp.com
+
+Test enhanced clicking
+    [Setup]     Go To    ${ALERT_HTML}
+
+    Click Element When Clickable    //button
+    Does Alert Contain    after
