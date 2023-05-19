@@ -1,3 +1,4 @@
+import re
 import urllib.parse
 
 import pytest
@@ -6,6 +7,9 @@ from selenium.webdriver import ChromeOptions
 from RPA.Browser.Selenium import Selenium, ensure_scheme
 
 from . import RESOURCES_DIR, temp_filename
+
+
+CHROMIUM_HEADLESS = "--headless=new"
 
 
 @pytest.fixture
@@ -18,7 +22,7 @@ def library():
 def get_chrome_options():
     """Returns `ChromeOptions` with custom arguments and capabilities."""
     options = ChromeOptions()
-    options.add_argument("--headless")
+    options.add_argument(CHROMIUM_HEADLESS)
     options.set_capability("acceptInsecureCerts", True)
     return options
 
@@ -29,7 +33,7 @@ class TestSelenium:
     def test_print_to_pdf(self, library):
         testfile = RESOURCES_DIR / "browser_docs.html"
         library.open_available_browser(
-            f"file://{testfile}", headless=True, browser_selection="chrome"
+            f"file://{testfile}", headless=True, browser_selection="Chrome"
         )
         with temp_filename(suffix=".pdf") as tmp_file:
             library.print_to_pdf(tmp_file)
@@ -41,31 +45,35 @@ class TestSelenium:
     def test_print_to_pdf_exception_on_non_supported_driver(self, library):
         testfile = RESOURCES_DIR / "browser_docs.html"
         library.open_available_browser(
-            f"file://{testfile}", browser_selection="firefox", headless=True
+            f"file://{testfile}", browser_selection="Firefox", headless=True
         )
-        err_msg = "PDF printing works only with Chrome/Chromium"
-        with pytest.raises(NotImplementedError, match=err_msg):
-            library.print_to_pdf(output_path=None)
+        err_expr = re.compile(r"PDF printing works only with Chromium-based browsers")
+        with pytest.raises(NotImplementedError, match=err_expr):
+            library.print_to_pdf()
 
     @pytest.mark.parametrize(
         "options",
         [
             {
-                "arguments": ["--headless"],
+                "arguments": [CHROMIUM_HEADLESS],
                 "capabilities": {"acceptInsecureCerts": True},
             },
-            {"arguments": "--headless", "capabilities": "acceptInsecureCerts:True"},
-            "add_argument('--headless');set_capability('acceptInsecureCerts', True)",
+            {
+                "arguments": CHROMIUM_HEADLESS,
+                "capabilities": "acceptInsecureCerts:True",
+            },
+            f"add_argument('{CHROMIUM_HEADLESS}');set_capability('acceptInsecureCerts', True)",
             get_chrome_options(),
         ],
     )
     def test_options_normalization(self, library, options):
         options_obj = library.normalize_options(options, browser="Chrome")
-        assert options_obj.headless
+        args = options_obj.to_capabilities()["goog:chromeOptions"]["args"]
         assert options_obj.accept_insecure_certs
+        assert CHROMIUM_HEADLESS in args
 
     def test_unrecognized_option(self, library):
-        options = {"argument": "--headless"}
+        options = {"argument": CHROMIUM_HEADLESS}  # expecting "arguments" instead
         with pytest.raises(TypeError):
             library.normalize_options(options, browser="Chrome")
 

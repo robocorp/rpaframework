@@ -9,6 +9,23 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+23.1.0 - 19 May 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`943`):
+
+  - New keyword ``Click Element When Clickable`` which tries to overcome errors like
+    "Other element would receive the click". (:issue:`884`)
+  - New keyword ``Set Element Attribute`` which sets an attribute value to an element
+    retrievable with ``Get Element Attribute``. (:issue:`762`)
+  - Setting a custom download directory is now supported by all Chromium-based browsers
+    and Firefox. Use ``Set Download Directory`` before opening any browser instance in
+    order to set such a custom path. (this should be working now in both headful and
+    headless modes; :issue:`882`)
+  - Custom user profiles (and common configuration) can be used with all Chromium-based
+    browsers, like Chrome, Edge. (:issue:`865`)
+  - Improved main library documentation, accepting both `WebElement` and `str` as
+    locator types under our keywords as well. (:issue:`940`, :issue:`939`)
 
 12 May 2023
 -----------
@@ -64,12 +81,10 @@ Release notes
 - Library **RPA.Word.Application** (:pr:`945`): Add `autoexit` init parameter (on default `True` as it is for
   similar libraries). This is a breaking change.
 
-
 04 May 2023
 -----------
 
 - Library **RPA.Cloud.Google** (``rpaframework-google`` **7.0.3**; :pr:`935`): Fix move drive file
-
 
 22.5.3 - 02 May 2023
 --------------------

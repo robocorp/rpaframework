@@ -5,6 +5,7 @@ Library             RPA.FileSystem
 Library             RPA.RobotLogListener
 
 Suite Setup         Open Available Browser    about:blank    headless=${True}
+...    browser_selection=Chrome
 Suite Teardown      Close All Browsers
 
 Default Tags        rpa.browser
@@ -16,6 +17,34 @@ ${RESULTS}          ${CURDIR}${/}..${/}results
 ${BROWSER_DATA}     ${RESULTS}${/}browser
 ${LOCATORS}         ${RESOURCES}${/}locators.json
 ${ALERT_HTML}       file://${RESOURCES}${/}alert.html
+${USER_AGENT}       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1337.0.0.0 Safari/1337.36
+
+
+*** Keywords ***
+My Custom Keyword
+    Get Value    id:notexist
+
+Create Browser Data Directory
+    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
+    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
+    RETURN    ${data_dir}
+
+Download With Specific Browser
+    [Arguments]     ${browser}
+    Close Browser
+
+    Set Download Directory    ${OUTPUT_DIR}
+    Open Available Browser    https://robocorp.com/docs/security
+    ...    browser_selection=${browser}
+    ...    headless=${True}    # PDF downloading now works in headless as well
+    Click Link    Data protection whitepaper
+
+    ${file_path} =    Set Variable
+    ...     ${OUTPUT_DIR}${/}security-and-data-protection-whitepaper.pdf
+    Wait Until Keyword Succeeds    3x    1s    File Should Exist    ${file_path}
+
+    [Teardown]    Run Keyword And Ignore Error
+    ...    RPA.FileSystem.Remove File    ${file_path}
 
 
 *** Tasks ***
@@ -32,9 +61,8 @@ Does alert not contain
     Handle Alert    DISMISS
 
 Screenshot Robocorp Google search result
-    [Tags]    skip
-    # Marked as SKIP on 2.5.2023 as this test does not
-    # handle Google consent popup and thus fails
+    # NOTE(cmin764): As of 19.05.2023 this test passes in CI, Mac, Windows and
+    #  Control Room, without any consent popup blocker.
     Go To    www.google.com
     Wait Until Element Is Visible    q
 
@@ -78,20 +106,15 @@ Print page as PDF document
     Log To Console    Printing page into: ${destination_path}
     ${output_path} =    Print To Pdf    ${destination_path}
     File Should Exist    ${output_path}
-
-Download PDF in custom directory
-    [Setup]    Close Browser
-
-    Set Download Directory    ${OUTPUT_DIR}
-    ${file_name} =    Set Variable    Robocorp-EULA-v1.0.pdf
-    Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
-    ...    headless=${True}    # PDF downloading now works in headless as well
-    Go To    robocorp.com    # this starts after the PDF above gets downloaded
-    ${file_path} =    Set Variable    ${OUTPUT_DIR}${/}${file_name}
-    File Should Exist    ${file_path}
-
     [Teardown]    Run Keyword And Ignore Error
-    ...    RPA.FileSystem.Remove File    ${file_path}
+    ...    RPA.FileSystem.Remove File    ${output_path}
+
+Download PDF in custom Chrome directory
+    Download With Specific Browser    Chrome
+
+Download PDF in custom Firefox directory
+    [Tags]    skip  # no support for the Firefox browser in CI
+    Download With Specific Browser    Firefox
 
 Highlight elements
     [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
@@ -119,8 +142,9 @@ Open In Incognito With Custom Options
     [Documentation]    Test Chrome with custom options (incognito), port and explicit
     ...    profile directory.
     [Setup]    Close Browser
-    # In CI, Chrome may attract a buggy webdriver which makes the custom profile usage
-    #    to break in headless mode. (unknown error: unable to discover open pages)
+    # NOTE(cmin764): In CI, Chrome may attract a buggy webdriver which makes the custom
+    #  profile usage to break in headless mode. (unknown error: unable to discover open
+    #  pages)
 #    [Tags]    skip
 
     ${data_dir} =    Create Browser Data Directory
@@ -155,12 +179,25 @@ Open Browser With Dict Options
     ${visible} =    Is Element Visible    xpath://button[2]
     Should Be True    ${visible}
 
+Get and set an attribute
+    [Setup]    Go To    https://robotsparebinindustries.com/
 
-*** Keywords ***
-My Custom Keyword
-    Get Value    id:notexist
+    ${button_locator} =     Set Variable    xpath://button[@type="submit"]
+    ${button} =     Get WebElement    ${button_locator}
+    ${class} =      Get Element Attribute    ${button}    class
+    Should Be Equal    ${class}    btn btn-primary
 
-Create Browser Data Directory
-    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
-    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
-    RETURN    ${data_dir}
+    Set Element Attribute    ${button}    class     btn btn-secondary
+    ${class} =      Get Element Attribute    ${button_locator}    class
+    Should Be Equal    ${class}    btn btn-secondary
+
+Set user agent with CDP command
+    &{params} =     Create Dictionary   userAgent   ${USER_AGENT}
+    Execute CDP     Network.setUserAgentOverride    ${params}
+    Go To   https://robocorp.com
+
+Test enhanced clicking
+    [Setup]     Go To    ${ALERT_HTML}
+
+    Click Element When Clickable    //button
+    Does Alert Contain    after

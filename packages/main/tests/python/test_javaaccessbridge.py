@@ -25,6 +25,7 @@ def test_typing_text():
     jab.type_text("role:text", "text for the input field", index=1, clear=True)
     jab.click_element("role:push button and name:Send")
 
+
 @pytest.mark.skip(reason="requires windows and java with UI")
 def test_selecting_window_by_pid():
     jab = JavaAccessBridge()
@@ -34,6 +35,7 @@ def test_selecting_window_by_pid():
     for w in window_list:
         if w.title == "Chat Frame":
             jab.select_window_by_pid(w.pid)
+
 
 if __name__ == "__main__":
     javalib = JavaAccessBridge()
