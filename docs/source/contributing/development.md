@@ -29,6 +29,8 @@ For obtaining an env with such specific version, you can either use
 [virtualenv](https://virtualenv.pypa.io/) or [pyenv](https://github.com/pyenv/pyenv),
 but that's totally up to you.
 
+#### Using `pyenv` on any platform to manage interpreters
+
 With `pyenv`, I would do the following (in the repo root):
 ```console
 % pyenv install 3.9.13
@@ -43,7 +45,25 @@ and `pyenv which python`:
 ```console
 /Users/cmin/.pyenv/versions/3.9.13/bin/python  # C:\Users\cmin\.pyenv\pyenv-win\versions\3.9.13\python.exe
 ```
-so I'm good to go with running this installation command once:
+
+#### Using system's interpreter on Windows (alternative to `pyenv`)
+
+1. Uninstall any Python **3.9** version you might have on your system. Careful! This
+   might break apps dependent on your system interpreter if this was previously taken
+   into use.
+2. [Download](https://www.python.org/downloads/release/python-3913/) Python **3.9.13**
+   and make sure it will be available in `PATH` as well during installation.
+3. Do NOT install nor create any `virtualenv` for this project, as Poetry manages its
+   own virtual environments in separate _.venv_ directories for each package. Check the
+   installed system-available interpreter version with:
+   ```console
+   > py -V
+   Python 3.9.13
+   ```
+
+### Installing requirements
+
+Now I'm good to go with running this installation command once:
 ```console
 % python -m pip install -Ur invocations/requirements.txt
 % inv install-invocations
@@ -92,8 +112,8 @@ Path:       C:\Users\cmin\.pyenv\pyenv-win\versions\3.9.13
 Executable: C:\Users\cmin\.pyenv\pyenv-win\versions\3.9.13\python.exe
 ```
 
-Meaning that my _.venv_ virtualenv dir is in place and based on the expected
-interpreter version.
+Meaning that my _.venv_ virtualenv dir managed by Poetry is in place and based on the
+expected previously installed interpreter version.
 
 ### PyPI & DevPI
 
