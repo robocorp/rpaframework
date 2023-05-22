@@ -4,6 +4,7 @@ from ftplib import all_errors, error_perm
 from functools import wraps
 import logging
 import os
+import ssl
 from typing import Tuple
 from RPA.core.notebook import notebook_file
 
@@ -34,6 +35,27 @@ def ftpcommand(f):
             raise FTPException from e
 
     return wrapper
+
+
+class ImplicitFTP_TLS(TLSconn):
+    """FTP_TLS subclass that automatically wraps sockets in
+    SSL to support implicit FTPS."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._sock = None
+
+    @property
+    def sock(self):
+        """Return the socket."""
+        return self._sock
+
+    @sock.setter
+    def sock(self, value):
+        """When modifying the socket, ensure that it is ssl wrapped."""
+        if value is not None and not isinstance(value, ssl.SSLSocket):
+            value = self.context.wrap_socket(value)
+        self._sock = value
 
 
 class FTP:
@@ -117,7 +139,7 @@ class FTP:
         """
         try:
             if tls:
-                self.instance = TLSconn(
+                self.instance = ImplicitFTP_TLS(
                     keyfile=keyfile,
                     certfile=certfile,
                     timeout=timeout,

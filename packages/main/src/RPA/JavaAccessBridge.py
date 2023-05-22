@@ -13,6 +13,7 @@ from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.Desktop import Desktop
+from RPA.core.logger import deprecation
 
 
 DESKTOP = Desktop()
@@ -455,47 +456,22 @@ class JavaAccessBridge:
     def select_window(
         self, title: str, bring_foreground: bool = True, timeout: int = 30
     ):
-        """Selects Java application window as target for the automation
+        """Selects Java application window as target for the automation using
+        Java window title.
 
         :param title: application window title
         :param bring_foreground: if application is brought to foreground or not
         :param timeout: selection timeout
         """
-        if self.jab_wrapper is None:
-            self._initialize()
-
-        window_found = False
-        interval = float(0.5)
-        end_time = time.time() + float(timeout)
-        self.jab_wrapper._wab.Windows_run()  # pylint: disable=protected-access
-        while time.time() <= end_time:
-            start = time.time()
-            try:
-                self.pid = self.jab_wrapper.switch_window_by_title(title)
-                window_found = True
-                break
-            except Exception:  # pylint: disable=broad-except
-                pass
-            finally:
-                duration = time.time() - start
-                if duration < interval:
-                    time.sleep(interval - duration)
-
-        if not window_found:
-            raise ValueError("Did not find window '%s'" % title)
-
-        if not self.version_printed:
-            self.get_version_info()
-            self.version_printed = True
-
-        if bring_foreground:
-            handle = self.jab_wrapper.get_current_windows_handle()
-            # pylint: disable=c-extension-no-member
-            win32gui.ShowWindow(handle, win32con.SW_SHOW)
-            # pylint: disable=c-extension-no-member
-            win32gui.SetForegroundWindow(handle)
-
-        self.application_refresh()
+        deprecation(
+            "Keyword `Select Window` is deprecated and will be removed in the "
+            "next major update to the `RPA.JavaAccessBridge` library. "
+            "Please use `Select Window By Title` or `Select Window By PID` keywords "
+            "instead."
+        )
+        self._select_window(
+            title=title, bring_foreground=bring_foreground, timeout=timeout
+        )
 
     def _parse_locator(self, locator, strict_default=False):
         levels = locator.split(">")
@@ -1027,3 +1003,138 @@ class JavaAccessBridge:
         if not self.pid:
             raise JavaWindowNotFound()
         os.system(f"taskkill /F /T /PID {self.pid}")
+
+    @keyword
+    def list_java_windows(self):
+        """List all available Java windows.
+
+        `JavaWindow` object contains following properties:
+
+            - Java process id (pid)
+            - Java window title
+            - Java window handle (hwnd)
+
+        The pid and title can be used to get control of the
+        Java process by.
+
+        :return: list of `JavaWindow` objects
+
+        **Python example.**
+
+        .. code:: python
+
+            window_list = java.list_java_windows()
+            # By looping window list
+            for window in window_list:
+                if window.title == "my java window title":
+                    logging.info("Java window found")
+                    java.select_window_by_pid(window.pid)
+            # Directly accessing
+            if len(window_list) == 1:
+                java.select_window_by_pid(window_list[0].pid)
+
+        **Robot Framework example.**
+
+        .. code:: robotframework
+
+            @{window_list}=    List Java Windows
+            FOR    ${window}    IN    @{window_list}
+                IF    "${window.title}" == "my java window title"
+                    Select Window By PID    ${window.pid}
+                END
+            END
+            IF    len($window_list)==1
+                Select Window By PID    ${window_list[0].pid}
+            END
+        """
+        if self.jab_wrapper is None:
+            self._initialize()
+        window_list = self.jab_wrapper.get_windows()
+        return window_list
+
+    @keyword
+    def select_window_by_title(
+        self, title: str, bring_foreground: bool = True, timeout: int = 30
+    ):
+        """Selects Java application window as target for the automation using
+        Java window title.
+
+        :param title: application window title
+        :param bring_foreground: if application is brought to foreground or not
+        :param timeout: selection timeout
+        """
+        self._select_window(
+            title=title, bring_foreground=bring_foreground, timeout=timeout
+        )
+
+    @keyword
+    def select_window_by_pid(
+        self, pid: int, bring_foreground: bool = True, timeout: int = 30
+    ):
+        """Selects Java application window as target for the automation using
+        Java process ID (pid).
+
+        :param pid: application process id
+        :param bring_foreground: if application is brought to foreground or not
+        :param timeout: selection timeout
+        """
+        self._select_window(pid=pid, bring_foreground=bring_foreground, timeout=timeout)
+
+    def _find_window(self, title, pid):
+        window_found = False
+        try:
+            if title:
+                self.pid = self.jab_wrapper.switch_window_by_title(title)
+            elif pid:
+                self.pid = self.jab_wrapper.switch_window_by_pid(pid)
+            window_found = True
+        except Exception:  # pylint: disable=broad-except
+            pass
+        return window_found
+
+    def _select_window(
+        self,
+        title: str = None,
+        pid: int = None,
+        bring_foreground: bool = True,
+        timeout: int = 30,
+    ):
+        if self.jab_wrapper is None:
+            self._initialize()
+
+        window_found = False
+        interval = float(0.5)
+        end_time = time.time() + float(timeout)
+        while time.time() <= end_time:
+            start = time.time()
+            window_found = self._find_window(title, pid)
+            if window_found:
+                break
+            duration = time.time() - start
+            if duration < interval:
+                time.sleep(interval - duration)
+
+        if not window_found:
+            if title:
+                raise ValueError("Did not find window with title '%s'" % title)
+            elif pid:
+                raise ValueError("Did not find window with pid '%s'" % pid)
+            else:
+                raise ValueError(
+                    "Window selection was called without 'title' or 'pid'. Can't select window."  # noqa: E501
+                )
+
+        if not self.version_printed:
+            self.get_version_info()
+            self.version_printed = True
+
+        if bring_foreground:
+            handle = self.jab_wrapper.get_current_windows_handle()
+            # pylint: disable=c-extension-no-member
+            win32gui.ShowWindow(handle, win32con.SW_SHOW)
+            # pylint: disable=c-extension-no-member
+            win32gui.SetForegroundWindow(handle)
+
+        self.application_refresh()
+
+        return self.pid

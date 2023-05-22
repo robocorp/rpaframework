@@ -1,10 +1,12 @@
 # pylint: disable=too-many-lines
 import atexit
 import base64
+import datetime
 import json
 import logging
 import os
 import platform
+import shutil
 import time
 import traceback
 import urllib.parse
@@ -18,11 +20,20 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
 from selenium.common import WebDriverException
-from selenium.webdriver import ChromeOptions, FirefoxProfile, IeOptions
+from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.webdriver import (
+    ChromeOptions,
+    EdgeOptions,
+    FirefoxOptions,
+    FirefoxProfile,
+    IeOptions,
+)
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
-from SeleniumLibrary import EMBED, SeleniumLibrary
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import WebDriverWait
+from SeleniumLibrary import EMBED, SeleniumLibrary, WebElement
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
 from SeleniumLibrary.keywords import (
@@ -38,8 +49,12 @@ from RPA.core.locators import BrowserLocator, LocatorsDatabase
 from RPA.Robocorp.utils import get_output_dir
 
 
-OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List, Dict]]]
+Locator = Union[WebElement, str]
 AliasType = Union[str, int]
+TimeoutType = Optional[Union[str, int, datetime.timedelta]]
+
+OptionsType = Union[ArgOptions, str, Dict[str, Union[str, List, Dict]]]
+ChromiumOptions = Union[ChromeOptions, EdgeOptions]
 
 
 def html_table(header, rows):
@@ -125,379 +140,17 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 
 
 class Selenium(SeleniumLibrary):
-    """SeleniumLibrary is a web testing library for Robot Framework.
-
-    This document explains how to use keywords provided by SeleniumLibrary.
-    For information about installation, support, and more, please visit the
-    [https://github.com/robotframework/SeleniumLibrary|project pages].
-    For more information about Robot Framework, see https://robotframework.org.
-
-    SeleniumLibrary uses the Selenium WebDriver modules internally to
-    control a web browser. See https://www.selenium.dev/ for more information
-    about Selenium in general and SeleniumLibrary README.rst
-    [https://github.com/robotframework/SeleniumLibrary#browser-drivers|Browser drivers chapter]
-    for more details about WebDriver binary installation.
-
-    = Locating elements =
-
-    All keywords in SeleniumLibrary that need to interact with an element
-    on a web page take an argument typically named ``locator`` that specifies
-    how to find the element. Most often the locator is given as a string
-    using the locator syntax described below, but `using WebElements` is
-    possible too.
-
-    == Locator syntax ==
-
-    SeleniumLibrary supports finding elements based on different strategies
-    such as the element id, XPath expressions, or CSS selectors. The strategy
-    can either be explicitly specified with a prefix or the strategy can be
-    implicit.
-
-    === Default locator strategy ===
-
-    By default, locators are considered to use the keyword specific default
-    locator strategy. All keywords support finding elements based on ``id``
-    and ``name`` attributes, but some keywords support additional attributes
-    or other values that make sense in their context. For example, `Click
-    Link` supports the ``href`` attribute and the link text and addition
-    to the normal ``id`` and ``name``.
-
-    Example:
-
-    | `Click Element` | example | # Match based on ``id`` or ``name``.            |
-    | `Click Link`    | example | # Match also based on link text and ``href``.   |
-    | `Click Button`  | example | # Match based on ``id``, ``name`` or ``value``. |
-
-    If a locator accidentally starts with a prefix recognized as `explicit
-    locator strategy` or `implicit XPath strategy`, it is possible to use
-    the explicit ``default`` prefix to enable the default strategy.
-
-    Example:
-
-    | `Click Element` | name:foo         | # Find element with name ``foo``.               |
-    | `Click Element` | default:name:foo | # Use default strategy with value ``name:foo``. |
-    | `Click Element` | //foo            | # Find element using XPath ``//foo``.           |
-    | `Click Element` | default: //foo   | # Use default strategy with value ``//foo``.    |
-
-    === Explicit locator strategy ===
-
-    The explicit locator strategy is specified with a prefix using either
-    syntax ``strategy:value`` or ``strategy=value``. The former syntax
-    is preferred because the latter is identical to Robot Framework's
-    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax|
-    named argument syntax] and that can cause problems. Spaces around
-    the separator are ignored, so ``id:foo``, ``id: foo`` and ``id : foo``
-    are all equivalent.
-
-    Locator strategies that are supported by default are listed in the table
-    below. In addition to them, it is possible to register `custom locators`.
-
-    | = Strategy = |          = Match based on =         |         = Example =            |
-    | id           | Element ``id``.                     | ``id:example``                 |
-    | name         | ``name`` attribute.                 | ``name:example``               |
-    | identifier   | Either ``id`` or ``name``.          | ``identifier:example``         |
-    | class        | Element ``class``.                  | ``class:example``              |
-    | tag          | Tag name.                           | ``tag:div``                    |
-    | xpath        | XPath expression.                   | ``xpath://div[@id="example"]`` |
-    | css          | CSS selector.                       | ``css:div#example``            |
-    | dom          | DOM expression.                     | ``dom:document.images[5]``     |
-    | link         | Exact text a link has.              | ``link:The example``           |
-    | partial link | Partial link text.                  | ``partial link:he ex``         |
-    | sizzle       | Sizzle selector deprecated.         | ``sizzle:div.example``         |
-    | data         | Element ``data-*`` attribute        | ``data:id:my_id``              |
-    | jquery       | jQuery expression.                  | ``jquery:div.example``         |
-    | default      | Keyword specific default behavior.  | ``default:example``            |
-
-    See the `Default locator strategy` section below for more information
-    about how the default strategy works. Using the explicit ``default``
-    prefix is only necessary if the locator value itself accidentally
-    matches some of the explicit strategies.
-
-    Different locator strategies have different pros and cons. Using ids,
-    either explicitly like ``id:foo`` or by using the `default locator
-    strategy` simply like ``foo``, is recommended when possible, because
-    the syntax is simple and locating elements by id is fast for browsers.
-    If an element does not have an id or the id is not stable, other
-    solutions need to be used. If an element has a unique tag name or class,
-    using ``tag``, ``class`` or ``css`` strategy like ``tag:h1``,
-    ``class:example`` or ``css:h1.example`` is often an easy solution. In
-    more complex cases using XPath expressions is typically the best
-    approach. They are very powerful but a downside is that they can also
-    get complex.
-
-    Example:
-
-    | `Click Element` | id:foo                      | # Element with id 'foo'. |
-    | `Click Element` | css:div#foo h1              | # h1 element under div with id 'foo'. |
-    | `Click Element` | xpath: //div[@id="foo"]//h1 | # Same as the above using XPath, not CSS. |
-    | `Click Element` | xpath: //*[contains(text(), "example")] | # Element containing text 'example'. |
-
-    *NOTE:*
-
-    - The ``strategy:value`` syntax is only supported by SeleniumLibrary 3.0
-      and newer.
-    - Using the ``sizzle`` strategy or its alias ``jquery`` requires that
-      the system under test contains the jQuery library.
-    - Prior to SeleniumLibrary 3.0, table related keywords only supported
-      ``xpath``, ``css`` and ``sizzle/jquery`` strategies.
-    - ``data`` strategy is conveniance locator that will construct xpath from the parameters.
-      If you have element like `<div data-automation="automation-id-2">`, you locate the element via
-      ``data:automation:automation-id-2``. This feature was added in SeleniumLibrary 5.2.0
-
-    === Implicit XPath strategy ===
-
-    If the locator starts with ``//``  or multiple opening parenthesis in front
-    of the ``//``, the locator is considered to be an XPath expression. In other
-    words, using ``//div`` is equivalent to using explicit ``xpath://div`` and
-    ``((//div))`` is equivalent to using explicit ``xpath:((//div))``
-
-    Example:
-
-    | `Click Element` | //div[@id="foo"]//h1 |
-    | `Click Element` | (//div)[2]           |
-
-    The support for the ``(//`` prefix is new in SeleniumLibrary 3.0.
-    Supporting multiple opening parenthesis is new in SeleniumLibrary 5.0.
-
-    === Chaining locators ===
-
-    It is possible chain multiple locators together as single locator. Each chained locator must start with locator
-    strategy. Chained locators must be separated with single space, two greater than characters and followed with
-    space. It is also possible mix different locator strategies, example css or xpath. Also a list can also be
-    used to specify multiple locators. This is useful, is some part of locator would match as the locator separator
-    but it should not. Or if there is need to existing WebElement as locator.
-
-    Although all locators support chaining, some locator strategies do not abey the chaining. This is because
-    some locator strategies use JavaScript to find elements and JavaScript is executed for the whole browser context
-    and not for the element found be the previous locator. Chaining is supported by locator strategies which
-    are based on Selenium API, like `xpath` or `css`, but example chaining is not supported by `sizzle` or `jquery
-
-    Example:
-    | `Click Element` | css:.bar >> xpath://a | # To find a link which is present after an element with class "bar" |
-
-    Example with list:
-    | @{locator_list} =             | `Create List`   | css:div#div_id            | xpath://*[text(), " >> "] |
-    | `Page Should Contain Element` | ${locator_list} |                           |                           |
-    | ${element} =                  | Get WebElement  | xpath://*[text(), " >> "] |                           |
-    | @{locator_list} =             | `Create List`   | css:div#div_id            | ${element}                |
-    | `Page Should Contain Element` | ${locator_list} |                           |                           |
-
-    Chaining locators in new in SeleniumLibrary 5.0
-
-    == Using WebElements ==
-
-    In addition to specifying a locator as a string, it is possible to use
-    Selenium's WebElement objects. This requires first getting a WebElement,
-    for example, by using the `Get WebElement` keyword.
-
-    | ${elem} =       | `Get WebElement` | id:example |
-    | `Click Element` | ${elem}          |            |
-
-    == Custom locators ==
-
-    If more complex lookups are required than what is provided through the
-    default locators, custom lookup strategies can be created. Using custom
-    locators is a two part process. First, create a keyword that returns
-    a WebElement that should be acted on:
-
-    | Custom Locator Strategy | [Arguments] | ${browser} | ${locator} | ${tag} | ${constraints} |
-    |   | ${element}= | Execute Javascript | return window.document.getElementById('${locator}'); |
-    |   | [Return] | ${element} |
-
-    This keyword is a reimplementation of the basic functionality of the
-    ``id`` locator where ``${browser}`` is a reference to a WebDriver
-    instance and ``${locator}`` is the name of the locator strategy. To use
-    this locator, it must first be registered by using the
-    `Add Location Strategy` keyword:
-
-    | `Add Location Strategy` | custom | Custom Locator Strategy |
-
-    The first argument of `Add Location Strategy` specifies the name of
-    the strategy and it must be unique. After registering the strategy,
-    the usage is the same as with other locators:
-
-    | `Click Element` | custom:example |
-
-    See the `Add Location Strategy` keyword for more details.
-
-    = Browser and Window =
-
-    There is different conceptual meaning when SeleniumLibrary talks
-    about windows or browsers. This chapter explains those differences.
-
-    == Browser ==
-
-    When `Open Browser` or `Create WebDriver` keyword is called, it
-    will create a new Selenium WebDriver instance by using the
-    [https://www.seleniumhq.org/docs/03_webdriver.jsp|Selenium WebDriver]
-    API. In SeleniumLibrary terms, a new browser is created. It is
-    possible to start multiple independent browsers (Selenium Webdriver
-    instances) at the same time, by calling `Open Browser` or
-    `Create WebDriver` multiple times. These browsers are usually
-    independent of each other and do not share data like cookies,
-    sessions or profiles. Typically when the browser starts, it
-    creates a single window which is shown to the user.
-
-    == Window ==
-
-    Windows are the part of a browser that loads the web site and presents
-    it to the user. All content of the site is the content of the window.
-    Windows are children of a browser. In SeleniumLibrary browser is a
-    synonym for WebDriver instance. One browser may have multiple
-    windows. Windows can appear as tabs, as separate windows or pop-ups with
-    different position and size. Windows belonging to the same browser
-    typically share the sessions detail, like cookies. If there is a
-    need to separate sessions detail, example login with two different
-    users, two browsers (Selenium WebDriver instances) must be created.
-    New windows can be opened example by the application under test or
-    by example `Execute Javascript` keyword:
-
-    | `Execute Javascript`    window.open()    # Opens a new window with location about:blank
-
-    The example below opens multiple browsers and windows,
-    to demonstrate how the different keywords can be used to interact
-    with browsers, and windows attached to these browsers.
-
-    Structure:
-    | BrowserA
-    |            Window 1  (location=https://robotframework.org/)
-    |            Window 2  (location=https://robocon.io/)
-    |            Window 3  (location=https://github.com/robotframework/)
-    |
-    | BrowserB
-    |            Window 1  (location=https://github.com/)
-
-    Example:
-    | `Open Browser`       | https://robotframework.org         | ${BROWSER}       | alias=BrowserA   | # BrowserA with first window is opened.                                       |
-    | `Execute Javascript` | window.open()                      |                  |                  | # In BrowserA second window is opened.                                        |
-    | `Switch Window`      | locator=NEW                        |                  |                  | # Switched to second window in BrowserA                                       |
-    | `Go To`              | https://robocon.io                 |                  |                  | # Second window navigates to robocon site.                                    |
-    | `Execute Javascript` | window.open()                      |                  |                  | # In BrowserA third window is opened.                                         |
-    | ${handle}            | `Switch Window`                    | locator=NEW      |                  | # Switched to third window in BrowserA                                        |
-    | `Go To`              | https://github.com/robotframework/ |                  |                  | # Third windows goes to robot framework github site.                          |
-    | `Open Browser`       | https://github.com                 | ${BROWSER}       | alias=BrowserB   | # BrowserB with first windows is opened.                                      |
-    | ${location}          | `Get Location`                     |                  |                  | # ${location} is: https://www.github.com                                      |
-    | `Switch Window`      | ${handle}                          | browser=BrowserA |                  | # BrowserA second windows is selected.                                        |
-    | ${location}          | `Get Location`                     |                  |                  | # ${location} = https://robocon.io/                                           |
-    | @{locations 1}       | `Get Locations`                    |                  |                  | # By default, lists locations under the currectly active browser (BrowserA).   |
-    | @{locations 2}       | `Get Locations`                    |  browser=ALL     |                  | # By using browser=ALL argument keyword list all locations from all browsers. |
-
-    The above example, @{locations 1} contains the following items:
-    https://robotframework.org/, https://robocon.io/ and
-    https://github.com/robotframework/'. The @{locations 2}
-    contains the following items: https://robotframework.org/,
-    https://robocon.io/, https://github.com/robotframework/'
-    and 'https://github.com/.
-
-    = Timeouts, waits, and delays =
-
-    This section discusses different ways how to wait for elements to
-    appear on web pages and to slow down execution speed otherwise.
-    It also explains the `time format` that can be used when setting various
-    timeouts, waits, and delays.
-
-    == Timeout ==
-
-    SeleniumLibrary contains various keywords that have an optional
-    ``timeout`` argument that specifies how long these keywords should
-    wait for certain events or actions. These keywords include, for example,
-    ``Wait ...`` keywords and keywords related to alerts. Additionally
-    `Execute Async Javascript`. Although it does not have ``timeout``,
-    argument, uses a timeout to define how long asynchronous JavaScript
-    can run.
-
-    The default timeout these keywords use can be set globally either by
-    using the `Set Selenium Timeout` keyword or with the ``timeout`` argument
-    when `importing` the library. See `time format` below for supported
-    timeout syntax.
-
-    == Implicit wait ==
-
-    Implicit wait specifies the maximum time how long Selenium waits when
-    searching for elements. It can be set by using the `Set Selenium Implicit
-    Wait` keyword or with the ``implicit_wait`` argument when `importing`
-    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|
-    Selenium documentation] for more information about this functionality.
-
-    See `time format` below for supported syntax.
-
-    == Selenium speed ==
-
-    Selenium execution speed can be slowed down globally by using `Set
-    Selenium speed` keyword. This functionality is designed to be used for
-    demonstrating or debugging purposes. Using it to make sure that elements
-    appear on a page is not a good idea. The above-explained timeouts
-    and waits should be used instead.
-
-    See `time format` below for supported syntax.
-
-    == Time format ==
-
-    All timeouts and waits can be given as numbers considered seconds
-    (e.g. ``0.5`` or ``42``) or in Robot Framework's time syntax
-    (e.g. ``1.5 seconds`` or ``1 min 30 s``). For more information about
-    the time syntax see the
-    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format|Robot Framework User Guide].
-
-    = Run-on-failure functionality =
-
-    SeleniumLibrary has a handy feature that it can automatically execute
-    a keyword if any of its own keywords fails. By default, it uses the
-    `Capture Page Screenshot` keyword, but this can be changed either by
-    using the `Register Keyword To Run On Failure` keyword or with the
-    ``run_on_failure`` argument when `importing` the library. It is
-    possible to use any keyword from any imported library or resource file.
-
-    The run-on-failure functionality can be disabled by using a special value
-    ``NOTHING`` or anything considered false (see `Boolean arguments`)
-    such as ``NONE``.
-
-    = Boolean arguments =
-
-    Starting from 5.0 SeleniumLibrary relies on Robot Framework to perform the
-    boolean conversion based on keyword arguments [https://docs.python.org/3/library/typing.html|type hint].
-    More details in Robot Framework
-    [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#supported-conversions|user guide]
-
-    Please note SeleniumLibrary 3 and 4 did have own custom methods to covert
-    arguments to boolean values.
-
-    = EventFiringWebDriver =
-
-    The SeleniumLibrary offers support for
-    [https://seleniumhq.github.io/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.event_firing_webdriver.html#module-selenium.webdriver.support.event_firing_webdriver|EventFiringWebDriver].
-    See the Selenium and SeleniumLibrary
-    [https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending.rst#EventFiringWebDriver|EventFiringWebDriver support]
-    documentation for further details.
-
-    EventFiringWebDriver is new in SeleniumLibrary 4.0
-
-    = Limitations and caveats =
-
-    == Thread support ==
-
-    SeleniumLibrary is not thread-safe. This is mainly due because the underlying
-    [https://github.com/SeleniumHQ/selenium/wiki/Frequently-Asked-Questions#q-is-webdriver-thread-safe|
-    Selenium tool is not thread-safe] within one browser/driver instance.
-    Because of the limitation in the Selenium side, the keywords or the
-    API provided by the SeleniumLibrary is not thread-safe.
-
-    = Plugins =
-
-    SeleniumLibrary offers plugins as a way to modify and add library keywords and modify some of the internal
-    functionality without creating a new library or hacking the source code. See
-    [https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending.rst#Plugins|plugin API]
-    documentation for further details.
-
-    Plugin API is new SeleniumLibrary 4.0
-
+    # NOTE(cmin764): The docstring below will be appended (and not overridding) the
+    #  docstring of the super-class.
+    """
     = Auto closing browser =
 
-    By default browser instances created during task execution are closed
+    By default, the browser instances created during a task execution are closed
     at the end of the task. This can be prevented with the ``auto_close``
-    argument when `importing` the library.
+    parameter when *importing* the library.
 
-    Value needs to be set to ``False`` or anything considered false (see `Boolean arguments`).
+    The value of the parameter needs to be set to ``False`` or any object evaluated as
+    false (see `Boolean arguments`).
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -528,8 +181,14 @@ class Selenium(SeleniumLibrary):
         {name: name.capitalize() for name in AVAILABLE_SERVICES},
         **{"chromiumedge": "ChromiumEdge"},
     )
+    # Both driver and browser lower-case names.
+    CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge", "msedge"]
 
-    def __init__(self, *args, **kwargs) -> None:
+    ERR_WEBDRIVER_NOT_AVAILABLE = OSError(
+        "Webdriver executable not in PATH (with disabled Selenium manager)"
+    )
+
+    def __init__(self, *args, **kwargs):
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
         self.auto_close = kwargs.pop("auto_close", True)
         self.locators_path = kwargs.pop("locators_path", None)
@@ -548,17 +207,18 @@ class Selenium(SeleniumLibrary):
 
         SeleniumLibrary.__init__(self, *args, **kwargs)
 
-        # Add inherit/overridden library keywords
-        overrides = [BrowserManagementKeywordsOverride(self)]
-        self.add_library_components(overrides)
+        # Add inherit/overridden library keywords.
+        self.browser_management = BrowserManagementKeywordsOverride(self)
+        override_plugins = [self.browser_management]
+        self.add_library_components(override_plugins)
 
         self.logger = logging.getLogger(__name__)
         self.using_testability = bool("SeleniumTestability" in plugins)
 
-        # Add support for locator aliases
+        # Add support for locator aliases.
         self._element_finder.register("alias", self._find_by_alias, persist=True)
 
-        # Embed screenshots in logs by default
+        # Embed screenshots in logs by default.
         if not notebook.IPYTHON_AVAILABLE:
             self._embedding_screenshots = True
             self._previous_screenshot_directory = self.set_screenshot_directory(EMBED)
@@ -761,9 +421,9 @@ class Selenium(SeleniumLibrary):
         in a Linux environment without a display, e.g. a container or if the
         `RPA_HEADLESS_MODE` env var is set to a number different than `0`.
 
-        == Chrome options ==
+        == Chromium options ==
 
-        Some features are currently available only for Chrome/Chromium.
+        Some features are currently available only for Chromium-based browsers.
         This includes using an existing user profile. By default Selenium
         uses a new profile for each session, but it can use an existing
         one by enabling the ``use_profile`` argument.
@@ -771,10 +431,11 @@ class Selenium(SeleniumLibrary):
         If a custom profile is stored somewhere outside of the default location,
         the path to the profiles directory and the name of the profile can
         be controlled with ``profile_path`` and ``profile_name`` respectively. Keep in
-        mind that the ``profile_path`` ends usually in "Chrome", "User Data" or
-        "google-chrome" and the ``profile_name`` is a directory relative to
-        ``profile_path``, usually named "Profile 1", "Profile 2" etc. (and not as your
-        visible name in the Chrome browser)
+        mind that the ``profile_path`` for the Chrome browser for e.g. ends usually
+        with "Chrome", "User Data" or "google-chrome" (based on platform) and the
+        ``profile_name`` is a directory relative to ``profile_path``, usually named
+        "Profile 1", "Profile 2" etc. (and not as your visible name in the Chrome
+        browser). Similar behavior is observed with Edge as well.
 
         Example:
 
@@ -786,8 +447,8 @@ class Selenium(SeleniumLibrary):
         Profile preferences can be further overridden with the ``preferences``
         argument by giving a dictionary of key/value pairs.
 
-        Chrome can additionally connect through a ``proxy``, which
-        should be given as either local or remote address.
+        Chromium-based browsers can additionally connect through a ``proxy``, which
+        should be given as either a local or remote address.
         """  # noqa: E501
         # pylint: disable=redefined-argument-from-local
         browsers = self._arg_browser_selection(browser_selection)
@@ -801,7 +462,7 @@ class Selenium(SeleniumLibrary):
         for browser, download in product(browsers, downloads):
             try:
                 self.logger.debug(
-                    "Creating webdriver for '%s' (headless: %s, download: %s)",
+                    "Creating webdriver for %r (headless: %s, download: %s)",
                     browser,
                     headless,
                     download,
@@ -894,10 +555,11 @@ class Selenium(SeleniumLibrary):
         else:
             return bool(headless)
 
-    def _set_chrome_options(
+    def _set_chromium_options(
         self,
+        browser_lower: str,
         kwargs: dict,
-        options: ChromeOptions,
+        options: ChromiumOptions,
         use_profile: bool = False,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
@@ -919,7 +581,7 @@ class Selenium(SeleniumLibrary):
             "prefs",
             {
                 **default_preferences,
-                **self.download_preferences,
+                **self.download_preferences.get(browser_lower, {}),
                 **(preferences or {}),
             },
         )
@@ -930,11 +592,11 @@ class Selenium(SeleniumLibrary):
             # Leave the browser window open if auto-closing is disabled.
             options.add_experimental_option("detach", True)
         if use_profile:
-            self._set_user_profile(options, profile_path, profile_name)
+            self._set_user_profile(browser_lower, options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
             # Deprecated params, but no worries as they get popped then bundled in a
             #  `Service` instance inside of the `self._create_webdriver` method.
-            kwargs["service_log_path"] = "chromedriver.log"
+            kwargs["service_log_path"] = "chromiumdriver.log"
             kwargs["service_args"] = ["--verbose"]
 
     def _set_ie_options(self, options: IeOptions, *, url: Optional[str]):
@@ -945,6 +607,18 @@ class Selenium(SeleniumLibrary):
         options.initial_browser_url = (
             options.initial_browser_url or url or "https://robocorp.com/"
         )
+
+    def _set_firefox_options(
+        self, options: FirefoxOptions, *, preferences: Optional[dict]
+    ):
+        # Set the custom download directory previously configured with
+        #  `set_download_directory(...)`.
+        prefs = {
+            **self.download_preferences.get("firefox", {}),
+            **(preferences or {}),
+        }
+        for name, value in prefs.items():
+            options.set_preference(name, value)
 
     def _set_option(
         self, name: str, values: Union[str, List, Dict], *, method: Callable
@@ -1039,8 +713,9 @@ class Selenium(SeleniumLibrary):
         if port:
             # Deprecated kwarg which will be transferred into a service instance.
             kwargs["port"] = int(port)
-        if browser_lower == "chrome":
-            self._set_chrome_options(
+        if browser_lower in self.CHROMIUM_BROWSERS:
+            self._set_chromium_options(
+                browser_lower,
                 kwargs,
                 options,
                 use_profile=use_profile,
@@ -1049,10 +724,18 @@ class Selenium(SeleniumLibrary):
                 preferences=preferences,
                 proxy=proxy,
             )
-        elif use_profile:
-            self.logger.warning("Profiles are supported with Chrome only")
-        if browser_lower == "ie":
+        elif browser_lower == "ie":
             self._set_ie_options(options, url=url)
+        elif browser_lower == "firefox":
+            self._set_firefox_options(options, preferences=preferences)
+        if self.download_preferences and browser_lower not in self.download_preferences:
+            self.logger.warning(
+                "Custom download directory not supported with %r!", browser
+            )
+        if use_profile and browser_lower not in self.CHROMIUM_BROWSERS:
+            self.logger.warning(
+                "Profiles are supported with Chromium-based browsers only!"
+            )
 
         try:
             path = options.binary_location or None
@@ -1100,12 +783,13 @@ class Selenium(SeleniumLibrary):
             )
         options.add_argument("--disable-gpu")
 
-        if browser_lower == "chrome":
+        if browser_lower in self.CHROMIUM_BROWSERS:
             options.add_argument("--window-size=1440,900")
 
     def _set_user_profile(
         self,
-        options: ArgOptions,
+        browser_lower: str,
+        options: ChromiumOptions,
         profile_path: Optional[str] = None,
         profile_name: Optional[str] = None,
     ) -> None:
@@ -1117,20 +801,47 @@ class Selenium(SeleniumLibrary):
         ``options`` dictionary of browser options
         """
         data_dir = profile_path or os.getenv("RPA_CHROME_USER_PROFILE_DIR")
-
         system = platform.system()
         home = Path.home()
 
-        if data_dir is not None:
-            pass
-        elif system == "Windows":
-            data_dir = home / "AppData" / "Local" / "Google" / "Chrome" / "User Data"
-        elif system == "Linux":
-            data_dir = home / ".config" / "google-chrome"
-        elif system == "Darwin":
-            data_dir = home / "Library" / "Application Support" / "Google" / "Chrome"
-        else:
-            self.logger.warning("Unable to resolve profile directory for: %s", system)
+        if not data_dir:
+            data_dirs = {
+                "Windows": {
+                    "chrome": home
+                    / "AppData"
+                    / "Local"
+                    / "Google"
+                    / "Chrome"
+                    / "User Data",
+                    "edge": home
+                    / "AppData"
+                    / "Local"
+                    / "Microsoft"
+                    / "Edge"
+                    / "User Data",
+                },
+                "Linux": {
+                    "chrome": home / ".config" / "google-chrome",
+                    "edge": home / ".config" / "edge",
+                },
+                "Darwin": {
+                    "chrome": home
+                    / "Library"
+                    / "Application Support"
+                    / "Google"
+                    / "Chrome",
+                    "edge": home / "Library" / "Application Support" / "Microsoft Edge",
+                },
+            }
+            for value in data_dirs.values():
+                value["chromiumedge"] = value["edge"]
+            data_dir = data_dirs.get(system, {}).get(browser_lower)
+        if not data_dir:
+            self.logger.warning(
+                "Unable to resolve profile directory on %r for: %s",
+                system,
+                browser_lower,
+            )
             return
 
         if not Path(data_dir).exists():
@@ -1139,7 +850,6 @@ class Selenium(SeleniumLibrary):
         options.add_argument("--enable-local-sync-backend")
         options.add_argument(f"--local-sync-backend-dir={data_dir}")
         options.add_argument(f"--user-data-dir={data_dir}")
-
         if profile_name is not None:
             options.add_argument(f"--profile-directory={profile_name}")
 
@@ -1158,10 +868,7 @@ class Selenium(SeleniumLibrary):
                         #  bubble up. (so it's caught and handled by us instead, in
                         #  order to let our core's webdriver-manager to handle the
                         #  download)
-                        raise OSError(
-                            "Webdriver executable not in PATH (with disabled selenium"
-                            " manager)"
-                        ) from exc
+                        raise self.ERR_WEBDRIVER_NOT_AVAILABLE from exc
                     raise
 
             # pylint: disable=no-self-argument
@@ -1208,13 +915,19 @@ class Selenium(SeleniumLibrary):
             service = BrowserService(**service_kwargs)
             if service_args:
                 service.service_args.extend(service_args)
+            # NOTE(cmin764): Starting with Selenium 4.9.1, we have to block their
+            #  `SeleniumManager` from early stage, otherwise it will be activated when
+            #  the WebDriver class itself is instantiated without throwing any error.
+            if not shutil.which(service.path):
+                raise self.ERR_WEBDRIVER_NOT_AVAILABLE
 
-            lib = BrowserManagementKeywords(self)
             # Capitalize browser name just to ensure it works if passed as lower case.
             # NOTE: But don't break a browser name like "ChromiumEdge".
             cap_browser = browser[0].upper() + browser[1:]
             kwargs["service"] = service
-            return lib.create_webdriver(cap_browser, alias, **kwargs)
+            return self.browser_management.create_webdriver(
+                cap_browser, alias, **kwargs
+            )
 
         # No download requested.
         if not download:
@@ -1238,8 +951,9 @@ class Selenium(SeleniumLibrary):
         proxy: str = None,
         user_agent: Optional[str] = None,
     ) -> AliasType:
-        """Open Chrome browser. See ``Open Available Browser`` for
-        descriptions of arguments.
+        """Opens a Chrome browser.
+
+        See ``Open Available Browser`` for a full descriptions of the arguments.
         """
         return self.open_available_browser(
             url,
@@ -1259,7 +973,7 @@ class Selenium(SeleniumLibrary):
     def attach_chrome_browser(
         self, port: int, alias: Optional[str] = None
     ) -> AliasType:
-        """Attach to an existing instance of Chrome or Chromium.
+        """Attach to an existing instance of Chrome browser.
 
         Requires that the browser was started with the command line
         option ``--remote-debugging-port=<port>``, where port is any
@@ -1286,20 +1000,20 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def open_headless_chrome_browser(self, url: str) -> AliasType:
-        """Open Chrome browser in headless mode.
+        """Opens the Chrome browser in headless mode.
 
         ``url`` URL to open
 
         Example:
 
-        | ${idx} | Open Headless Chrome Browser | https://www.google.com |
+        | ${idx} = | Open Headless Chrome Browser | https://www.google.com |
         """
         return self.open_chrome_browser(url, headless=True)
 
     @keyword
     def screenshot(
         self,
-        locator: Optional[str] = None,
+        locator: Optional[Locator] = None,
         filename: Optional[str] = "",
     ) -> Optional[str]:
         # pylint: disable=C0301, W0212
@@ -1354,7 +1068,10 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def click_element_when_visible(
-        self, locator: str, modifier: Optional[str] = None, action_chain: bool = False
+        self,
+        locator: Locator,
+        modifier: Optional[str] = None,
+        action_chain: bool = False,
     ) -> None:
         """Click element identified by ``locator``, once it becomes visible.
 
@@ -1375,7 +1092,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def click_button_when_visible(
-        self, locator: str, modifier: Optional[str] = None
+        self, locator: Locator, modifier: Optional[str] = None
     ) -> None:
         """Click button identified by ``locator``, once it becomes visible.
 
@@ -1394,7 +1111,7 @@ class Selenium(SeleniumLibrary):
     wait_and_click_button = click_button_when_visible
 
     @keyword
-    def click_element_if_visible(self, locator: str) -> None:
+    def click_element_if_visible(self, locator: Locator) -> None:
         """Click element if it is visible
 
         ``locator`` element locator
@@ -1408,7 +1125,7 @@ class Selenium(SeleniumLibrary):
             self.click_element(locator)
 
     @keyword
-    def input_text_when_element_is_visible(self, locator: str, text: str) -> None:
+    def input_text_when_element_is_visible(self, locator: Locator, text: str) -> None:
         # pylint: disable=C0301
         """Input text into locator after it has become visible.
 
@@ -1424,7 +1141,7 @@ class Selenium(SeleniumLibrary):
         self.input_text(locator, text)
 
     @keyword
-    def is_element_enabled(self, locator: str, missing_ok: bool = True) -> bool:
+    def is_element_enabled(self, locator: Locator, missing_ok: bool = True) -> bool:
         """Is element enabled
 
         ``locator`` element locator
@@ -1442,7 +1159,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_element_visible(self, locator: str, missing_ok: bool = True) -> bool:
+    def is_element_visible(self, locator: Locator, missing_ok: bool = True) -> bool:
         """Is element visible
 
         ``locator`` element locator
@@ -1460,7 +1177,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_element_disabled(self, locator: str, missing_ok: bool = True) -> bool:
+    def is_element_disabled(self, locator: Locator, missing_ok: bool = True) -> bool:
         """Is element disabled
 
         ``locator`` element locator
@@ -1478,7 +1195,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_element_focused(self, locator: str, missing_ok: bool = True) -> bool:
+    def is_element_focused(self, locator: Locator, missing_ok: bool = True) -> bool:
         """Is element focused
 
         ``locator`` element locator
@@ -1497,7 +1214,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def is_element_attribute_equal_to(
-        self, locator: str, attribute: str, expected: str
+        self, locator: Locator, attribute: str, expected: str
     ) -> bool:
         """Is element attribute equal to expected value
 
@@ -1536,7 +1253,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_alert_contain(self, text: str = None, timeout: float = None) -> bool:
+    def does_alert_contain(self, text: str = None, timeout: TimeoutType = None) -> bool:
         # pylint: disable=W0212
         """Does alert contain text.
 
@@ -1555,7 +1272,9 @@ class Selenium(SeleniumLibrary):
             raise ValueError(f"Alert did not contain text {text!r}")
 
     @keyword
-    def does_alert_not_contain(self, text: str = None, timeout: float = None) -> bool:
+    def does_alert_not_contain(
+        self, text: str = None, timeout: TimeoutType = None
+    ) -> bool:
         # pylint: disable=W0212
         """Does alert not contain text.
 
@@ -1575,7 +1294,7 @@ class Selenium(SeleniumLibrary):
             raise ValueError(f"Alert did contain text {text!r}")
 
     @keyword
-    def is_checkbox_selected(self, locator: str) -> bool:
+    def is_checkbox_selected(self, locator: Locator) -> bool:
         """Is checkbox selected
 
         ``locator`` element locator
@@ -1589,7 +1308,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_frame_contain(self, locator: str, text: str) -> bool:
+    def does_frame_contain(self, locator: Locator, text: str) -> bool:
         """Does frame contain expected text
 
         ``locator`` locator of the frame to check
@@ -1606,7 +1325,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def does_element_contain(
-        self, locator: str, expected: str, ignore_case: bool = False
+        self, locator: Locator, expected: str, ignore_case: bool = False
     ) -> bool:
         # pylint: disable=C0301
         """Does element contain expected text
@@ -1630,7 +1349,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def is_element_text(
-        self, locator: str, expected: str, ignore_case: bool = False
+        self, locator: Locator, expected: str, ignore_case: bool = False
     ) -> bool:
         """Is element text expected
 
@@ -1653,7 +1372,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_list_selection(self, locator: str, *expected: str) -> bool:
+    def is_list_selection(self, locator: Locator, *expected: str) -> bool:
         """Is list selected with expected values
 
         ``locator`` element locator
@@ -1669,7 +1388,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_list_selected(self, locator: str) -> bool:
+    def is_list_selected(self, locator: Locator) -> bool:
         """Is any option selected in the
 
         ``locator`` element locator
@@ -1727,7 +1446,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_button(self, locator: str) -> bool:
+    def does_page_contain_button(self, locator: Locator) -> bool:
         """Does page contain expected button
 
         ``locator`` element locator
@@ -1741,7 +1460,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_checkbox(self, locator: str) -> bool:
+    def does_page_contain_checkbox(self, locator: Locator) -> bool:
         """Does page contain expected checkbox
 
         ``locator`` element locator
@@ -1755,7 +1474,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_element(self, locator: str, count: int = None) -> bool:
+    def does_page_contain_element(self, locator: Locator, count: int = None) -> bool:
         """Does page contain expected element
 
         ``locator`` element locator
@@ -1773,7 +1492,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_image(self, locator: str) -> bool:
+    def does_page_contain_image(self, locator: Locator) -> bool:
         """Does page contain expected image
 
         ``locator`` element locator
@@ -1788,7 +1507,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_link(self, locator: str) -> bool:
+    def does_page_contain_link(self, locator: Locator) -> bool:
         """Does page contain expected link
 
         ``locator`` element locator
@@ -1802,7 +1521,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_list(self, locator: str) -> bool:
+    def does_page_contain_list(self, locator: Locator) -> bool:
         """Does page contain expected list
 
         ``locator`` element locator
@@ -1816,7 +1535,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_radio_button(self, locator: str) -> bool:
+    def does_page_contain_radio_button(self, locator: Locator) -> bool:
         """Does page contain expected radio button
 
         ``locator`` element locator
@@ -1830,7 +1549,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_page_contain_textfield(self, locator: str) -> bool:
+    def does_page_contain_textfield(self, locator: Locator) -> bool:
         """Does page contain expected textfield
 
         ``locator`` element locator
@@ -1878,7 +1597,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def does_table_cell_contain(
-        self, locator: str, row: int, column: int, expected: str
+        self, locator: Locator, row: int, column: int, expected: str
     ) -> bool:
         """Does table cell contain expected text
 
@@ -1900,7 +1619,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def does_table_column_contain(
-        self, locator: str, column: int, expected: str
+        self, locator: Locator, column: int, expected: str
     ) -> bool:
         """Does table column contain expected text
 
@@ -1919,7 +1638,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_table_row_contain(self, locator: str, row: int, expected: str) -> bool:
+    def does_table_row_contain(self, locator: Locator, row: int, expected: str) -> bool:
         """Does table row contain expected text
 
         ``locator`` element locator for the table
@@ -1937,7 +1656,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_table_footer_contain(self, locator: str, expected: str) -> bool:
+    def does_table_footer_contain(self, locator: Locator, expected: str) -> bool:
         """Does table footer contain expected text
 
         ``locator`` element locator for the table
@@ -1953,7 +1672,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_table_header_contain(self, locator: str, expected: str) -> bool:
+    def does_table_header_contain(self, locator: Locator, expected: str) -> bool:
         """Does table header contain expected text
 
         ``locator`` element locator for the table
@@ -1969,7 +1688,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_table_contain(self, locator: str, expected: str) -> bool:
+    def does_table_contain(self, locator: Locator, expected: str) -> bool:
         """Does table contain expected text
 
         ``locator`` element locator
@@ -1985,7 +1704,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_textarea_value(self, locator: str, expected: str) -> bool:
+    def is_textarea_value(self, locator: Locator, expected: str) -> bool:
         """Is textarea matching expected value
 
         ``locator`` element locator
@@ -2001,7 +1720,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_textarea_contain(self, locator: str, expected: str) -> bool:
+    def does_textarea_contain(self, locator: Locator, expected: str) -> bool:
         """Does textarea contain expected text
 
         ``locator`` element locator
@@ -2017,7 +1736,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def does_textfield_contain(self, locator: str, expected: str) -> bool:
+    def does_textfield_contain(self, locator: Locator, expected: str) -> bool:
         """Does textfield contain expected text
 
         ``locator`` element locator
@@ -2033,7 +1752,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
-    def is_textfield_value(self, locator: str, expected: str) -> bool:
+    def is_textfield_value(self, locator: Locator, expected: str) -> bool:
         """Is textfield value expected
 
         ``locator`` element locator
@@ -2079,7 +1798,7 @@ class Selenium(SeleniumLibrary):
             return False
 
     @keyword
-    def get_element_status(self, locator: str) -> dict:
+    def get_element_status(self, locator: Locator) -> dict:
         """Return dictionary containing element status of:
 
             - visible
@@ -2112,25 +1831,25 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     def open_user_browser(self, url: str, tab=True) -> None:
-        """Open URL with user's default browser
+        """Opens an URL with te user's default browser.
 
         The browser opened with this keyword is not accessible
-        with selenium. To interact with the opened browser it is
-        possible to use ``Desktop`` library keywords.
+        with Selenium. To interact with the opened browser it is
+        possible to use ``RPA.Desktop`` or ``RPA.Windows`` library keywords.
 
         The keyword `Attach Chrome Browser` can be used to
-        access already open browser with selenium keywords.
+        access an already open browser with Selenium keywords.
 
         Read more: https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser
 
         ``url`` URL to open
-        ``tab`` defines is url is opened in a tab (default `True`) or
-                in new window (`False`)
+        ``tab`` defines is url is opened in a tab (defaults to ``True``) or
+                in new window (if set to ``False``)
 
         Example:
 
         | Open User Browser  | https://www.google.com?q=rpa |
-        | Open User Browser  | https://www.google.com?q=rpa | tab=False |
+        | Open User Browser  | https://www.google.com?q=rpa | tab=${False} |
         """  # noqa: E501
         browser_method = webbrowser.open_new_tab if tab else webbrowser.open_new
         browser_method(url)
@@ -2150,78 +1869,77 @@ class Selenium(SeleniumLibrary):
     def set_download_directory(
         self, directory: Optional[str] = None, download_pdf: bool = True
     ) -> None:
-        """Set browser download directory.
+        """Set a custom browser download directory.
 
-        Works with ``Open Available Browser``, ``Open Chrome Browser`` and
-        ``Open Headless Chrome Browser`` keywords (mainly with Chromium-based
-        browsers).
+        This has to be called before opening the browser and it works with the
+        following keywords:
+
+        - ``Open Available Browser``
+        - ``Open Chrome Browser``
+        - ``Open Headless Chrome Browser``
+
+        Supported browsers: Chrome, Edge, Firefox.
 
         If the downloading doesn't work (file is not found on disk), try using the
-        browser in non-headless (headful) mode when opening it. (`headless=${False}`)
+        browser in non-headless (headful) mode when opening it. (``headless=${False}``)
 
-        :param directory: Target directory for downloads, defaults to `None`, which
-            means that this setting is removed.
-        :param download_pdf: A PDF file pointed by the URL is downloaded instead of
-            being shown within browser's internal viewer when this is set to `True`.
-            (enabled by default)
+        Parameter ``directory`` sets a path for downloads, defaults to ``None``, which
+        means that this setting is removed and the default location will be used.
+        Parameter ``download_pdf`` will download a PDF file instead of previewing it
+        within browser's internal viewer when this is set to ``True``. (enabled by
+        default)
 
-        **Example: Robot Framework**
+        Example:
 
-        .. code-block:: robotframework
-
-            *** Settings ***
-            Library     RPA.Browser.Selenium
-            Library     RPA.FileSystem
-
-            *** Tasks ***
-            Download PDF in custom directory
-                Set Download Directory    ${OUTPUT_DIR}
-                ${file_name} =   Set Variable    Robocorp-EULA-v1.0.pdf
-                Open Available Browser    https://cdn.robocorp.com/legal/${file_name}
-                ...    headless=${False}  # to enable PDF downloading
-                @{files} =    List Files In Directory    ${OUTPUT_DIR}
-                Log List    ${files}
-
-        **Example: Python**
-
-        .. code-block:: python
-
-            from RPA.Browser.Selenium import Selenium
-            from RPA.FileSystem import FileSystem
-
-            selenium = Selenium()
-            file_system = FileSystem()
-
-            OUTPUT_DIR = "output"
-
-            def download_pdf_in_custom_directory():
-                selenium.set_download_directory(OUTPUT_DIR)
-                file_name = "Robocorp-EULA-v1.0.pdf"
-                selenium.open_available_browser(
-                    f"https://cdn.robocorp.com/legal/{file_name}", headless=False
-                )
-                files = file_system.list_files_in_directory(OUTPUT_DIR)
-                for file_path in files:
-                    print(file_path)
-        """
+        | `Set Download Directory` | ${OUTPUT_DIR}           |
+        | Open Available Browser   | https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf |
+        | @{files} =               | List Files In Directory | ${OUTPUT_DIR}               |
+        | Log List                 |  ${files}               |
+        """  # noqa: E501
         if directory is None:
-            self.logger.info("Download directory set back to browser default setting")
+            self.logger.info(
+                "Download directory set back to browser's default setting!"
+            )
             self.download_preferences.clear()
-        else:
-            download_directory = Path(directory).expanduser().resolve()
-            download_directory.mkdir(parents=True, exist_ok=True)
-            self.logger.info("Download directory set to: %s", download_directory)
-            self.download_preferences = {
-                "download.default_directory": str(download_directory),
-                "plugins.always_open_pdf_externally": download_pdf,
-                "download.directory_upgrade": True,
-                "download.prompt_for_download": False,
-            }
+            return
+
+        download_directory = Path(directory).expanduser().resolve()
+        download_directory.mkdir(parents=True, exist_ok=True)
+        download_directory = str(download_directory)
+        self.logger.info("Download directory set to: %s", download_directory)
+        chromium_prefs = {
+            "download.default_directory": download_directory,
+            "plugins.always_open_pdf_externally": download_pdf,
+            "download.directory_upgrade": True,
+            "download.prompt_for_download": False,
+        }
+        firefox_prefs = {
+            "browser.download.folderList": 2,
+            "browser.download.manager.showWhenStarting": False,
+            "browser.download.improvements_to_download_panel": True,
+            "browser.download.useDownloadDir": True,
+            "browser.helperApps.alwaysAsk.force": False,
+            "pdfjs.disabled": True,
+            "browser.download.dir": download_directory,
+            # MIME types: https://www.freeformatter.com/mime-types-list.html
+            "browser.helperApps.neverAsk.saveToDisk": "application/octet-stream",
+        }
+        if download_pdf:
+            # Disable the viewer when downloading is preferred instead of viewing.
+            firefox_prefs["browser.download.viewableInternally.enabledTypes"] = ""
+            firefox_prefs[
+                "browser.helperApps.neverAsk.saveToDisk"
+            ] += " application/pdf"
+        self.download_preferences = {
+            "firefox": firefox_prefs,
+        }
+        for browser_lower in self.CHROMIUM_BROWSERS:
+            self.download_preferences[browser_lower] = chromium_prefs
 
     @keyword
     def highlight_elements(
         self,
-        locator: str,
+        locator: Locator,
         width: str = "2px",
         style: str = "dotted",
         color: str = "blue",
@@ -2281,30 +1999,40 @@ class Selenium(SeleniumLibrary):
         )
         self.driver.execute_script(script, *elements)
 
+    @property
+    def is_chromium(self) -> bool:
+        return self.driver.name.lower() in self.CHROMIUM_BROWSERS
+
     @keyword
     def print_to_pdf(
         self, output_path: Optional[str] = None, params: Optional[dict] = None
     ) -> str:
-        """Print the current page to a PDF document using Chrome/Chromium DevTools.
+        """Print the current page to a PDF document using Chrome's DevTools.
 
-        Attention: With some older browsers, this may work in `headless` mode only!
-        For supported parameters see:
+        Attention: With some older browsers, this may work in *headless* mode only!
+        For a list of supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
         Returns the output PDF file path.
 
-        :param output_path: File path for the generated PDF document. By default, it is
-            saved to the output folder with the name `out.pdf`.
-        :param params: Parameters for the browser printing method. By default, it uses
-            the following values:
-            ``{
-                "landscape": False,
-                "displayHeaderFooter": False,
-                "printBackground": True,
-                "preferCSSPageSize": True,
-            }``
+        Parameter ``output_path`` specifies the file path for the generated PDF
+        document. By default, it is saved to the output folder with the default name
+        of `out.pdf`.
+        Parameter ``params`` specify parameters for the browser printing method. By
+        default, it uses the following values:
+        ```
+        {
+            "landscape": False,
+            "displayHeaderFooter": False,
+            "printBackground": True,
+            "preferCSSPageSize": True,
+        }
+        ```
         """
-        if not self.driver.name.lower().startswith("chrom"):
-            raise NotImplementedError("PDF printing works only with Chrome/Chromium")
+        if not self.is_chromium:
+            raise NotImplementedError(
+                f"PDF printing works only with Chromium-based browsers,"
+                f" got: {self.driver.name}"
+            )
 
         default_params = {
             "landscape": False,
@@ -2327,9 +2055,9 @@ class Selenium(SeleniumLibrary):
     @keyword
     def execute_cdp(self, command, parameters):
         """
-        Executes Chrome DevTools Protocol commands
+        Executes Chromium DevTools Protocol commands
 
-        Works only with Chrome/Chromium
+        Works only with Chromium-based browsers!
 
         For more information, available commands and parameters, see:
         https://chromedevtools.github.io/devtools-protocol/
@@ -2341,14 +2069,14 @@ class Selenium(SeleniumLibrary):
         Example:
 
         | Open Chrome Browser | about:blank | headless=True |
-        | &{params} | Create Dictionary | useragent=Chrome/83.0.4103.53 |
+        | &{params} | Create Dictionary | userAgent=Chrome/83.0.4103.53 |
         | Execute CDP | Network.setUserAgentOverride | ${params} |
         | Go To | https://robocorp.com |
         """
-        if "chrom" not in self.driver.name:
+        if not self.is_chromium:
             raise NotImplementedError(
-                "Executing Chrome DevTools Protocol commands "
-                "works only with Chrome/Chromium"
+                "Executing DevTools Protocol commands"
+                f" works only with Chromium-based browsers, got: {self.driver.name}",
             )
         return self._send_command_and_get_result(command, parameters)
 
@@ -2362,3 +2090,61 @@ class Selenium(SeleniumLibrary):
         response = self.driver.command_executor._request("POST", url, body)
 
         return response.get("value")
+
+    @keyword
+    def set_element_attribute(
+        self, locator: Locator, attribute: str, value: str
+    ) -> None:
+        """Sets a ``value`` for the ``attribute`` in the element ``locator``.
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+
+        Example:
+
+        | Set Element Attribute | css:h1 | class | active |
+        """
+        element = self.find_element(locator)
+        # NOTE(cmin764): The `WebElement` object doesn't support the `set_attribute`
+        #  method nor the execution of the "setElementAttribute" command in order to
+        #  canonically set a `value` to the passed `attribute`.
+        #  Therefore we execute a script instead:
+        script = "arguments[0].setAttribute(arguments[1], arguments[2]);"
+        element.parent.execute_script(script, element, attribute, value)
+
+    @keyword
+    def click_element_when_clickable(
+        self, locator: Locator, timeout: TimeoutType = None
+    ) -> None:
+        """Waits for and clicks an element until is fully ready to be clicked.
+
+        If a normal click doesn't work, then JavaScript-oriented workarounds are tried
+        as a fallback mechanism.
+
+        Parameter ``locator`` targets the element to be clicked.
+        Parameter ``timeout`` optionally configures a custom duration to wait for the
+        element to become clickable, until it gives up.
+
+        Example:
+
+        | Click Element When Clickable | example |
+        """
+        element = self.find_element(locator)
+        timeout: float = self.browser_management.get_timeout(timeout)
+        wait = WebDriverWait(self.driver, timeout)
+        clickable_element = wait.until(
+            expected_conditions.element_to_be_clickable(element)
+        )
+        try:
+            clickable_element.click()
+        except ElementClickInterceptedException as exc:
+            self.logger.warning(
+                "Couldn't click element %r with Selenium due to: %s"
+                " (trying with JavaScript)",
+                locator,
+                exc,
+            )
+            self.driver.execute_script("arguments[0].click();", clickable_element)
+
+
+Selenium.__doc__ = SeleniumLibrary.__doc__ + Selenium.__doc__
