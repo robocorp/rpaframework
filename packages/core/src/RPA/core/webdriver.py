@@ -113,7 +113,10 @@ def start(browser: str, service: Optional[Service] = None, **options) -> WebDriv
 
 def _is_chromium() -> bool:
     """Detects if Chromium is used instead of Chrome no matter the platform."""
-    return bool(get_browser_version_from_os(ChromeType.CHROMIUM))
+    is_browser = lambda browser_type: bool(  # noqa: E731
+        get_browser_version_from_os(browser_type)
+    )
+    return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
 
 
 def _to_manager(browser: str, *, root: Path) -> DriverManager:
