@@ -5,6 +5,11 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Browser.Selenium**:
+
+  - Fix bug with detecting the right web-driver version for download on systems having
+    Chromium installed instead of Chrome. (:issue:`949`)
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

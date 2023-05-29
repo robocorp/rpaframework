@@ -1,4 +1,5 @@
 import contextlib
+import functools
 import logging
 import os
 import platform
@@ -15,6 +16,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.download_manager import WDMDownloadManager
 from webdriver_manager.core.http import WDMHttpClient
 from webdriver_manager.core.manager import DriverManager
+from webdriver_manager.core.utils import ChromeType, get_browser_version_from_os
 from webdriver_manager.core.utils import os_name as get_os_name
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager, IEDriverManager
@@ -109,6 +111,14 @@ def start(browser: str, service: Optional[Service] = None, **options) -> WebDriv
     return driver
 
 
+def _is_chromium() -> bool:
+    """Detects if Chromium is used instead of Chrome no matter the platform."""
+    is_browser = lambda browser_type: bool(  # noqa: E731
+        get_browser_version_from_os(browser_type)
+    )
+    return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
+
+
 def _to_manager(browser: str, *, root: Path) -> DriverManager:
     browser = browser.strip()
     manager_factory = AVAILABLE_DRIVERS.get(browser.lower())
@@ -118,6 +128,10 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
             f" (choose from: {', '.join(SUPPORTED_BROWSERS.values())})"
         )
 
+    if manager_factory == ChromeDriverManager and _is_chromium():
+        manager_factory = functools.partial(
+            manager_factory, chrome_type=ChromeType.CHROMIUM
+        )
     downloader = Downloader()
     download_manager = WDMDownloadManager(downloader)
     manager = manager_factory(path=str(root), download_manager=download_manager)
