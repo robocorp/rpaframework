@@ -5,7 +5,7 @@ import openai
 
 
 class OpenAI:
-    """Library to support `OpenAI <https://openai.com>`_ service.
+    """Library to support `OpenAI <https://openai.com>`_ and `Azure OpenAI <https://learn.microsoft.com/en-us/azure/cognitive-services/openai/overview>`_ services.
 
     Library is **not** included in the `rpaframework` package, so in order to use it
     you have to add `rpaframework-openai` with the desired version in your
@@ -51,6 +51,53 @@ class OpenAI:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
+        self.service_type = "OpenAI"
+
+    @keyword
+    def authorize_to_azure_openai(
+        self, 
+        api_key: str, 
+        api_base: str, 
+        api_type: Optional[str] = "azure",
+        api_version: Optional[str] = "2023-05-15",
+    ) -> None:
+        """Keyword for authorize to Azure OpenAI.
+
+        :param api_key: Your Azure OpenAI API key
+        :param api_base: Your Endpoint URL. Example: https://docs-test-001.openai.azure.com/
+        :param api_type: "azure"
+        :param api_version: "2023-05-15"
+
+        Robot Framework example: 
+
+        .. code-block:: robotframework
+
+            ${secrets}   Get Secret   secret_name=AzureOpenAI
+            Authorize To Azure Openai
+            ...    api_key=${secrets}[api_key]
+            ...    api_base=${secrets}[api_base]
+            ...    api_type=azure
+            ...    api_version=2023-05-15
+
+        Python example:
+
+        .. code-block:: python
+
+            secrets = Vault().get_secret("AzureOpenAI")
+            baselib = OpenAI()
+            baselib.authorize_to_azure_openai(
+                secrets["api_key"],
+                ${secrets}[api_base],
+                "azure",
+                "2023-05-15"
+            )
+
+        """
+        openai.api_key = api_key
+        openai.api_base = api_base
+        openai.api_type = api_type
+        openai.api_version = api_version
+        self.service_type = "Azure"
 
     @keyword
     def authorize_to_openai(self, api_key: str) -> None:
@@ -155,14 +202,18 @@ class OpenAI:
         frequency_penalty: Optional[int] = 0,
         presence_penalty: Optional[int] = 0,
     ) -> None:
-        """Keyword for creating ChatGPT text completions in OpenAI. Keyword returns a
-        list containing the response as a string and the message history as a list.
+
+        """Keyword for creating ChatGPT text completions using OpenAI or Azure OpenAI. 
+        Keyword returns the response as a string and the message history as a list.
+        
+        **Note**. When using ``Azure OpenAI`` you must provide the ``deployment_name`` 
+        as the ``model`` parameter instead of the model ID used with ``OpenAI``.
 
         :param user_content: Text submitted to ChatGPT to generate completions.
         :param conversation: List containing the conversation to be continued. Leave
          empty for a new conversation.
-        :param model: ID of the model to use. Currently, only gpt-3.5-turbo and
-         gpt-3.5-turbo-0301 are supported.
+        :param model: ``OpenAI``: ID of the model to use, e.g. ``gpt-4`` or ``gpt-3.5-turbo``.
+        :param model: ``Azure OpenAI``: Deployment name, e.g. ``myGPT4deployment``.
         :param system_content: The system message helps set the behavior of
          the assistant.
         :param temperature: What sampling temperature to use between 0 to 2. Higher
@@ -179,7 +230,7 @@ class OpenAI:
 
         .. code-block:: robotframework
 
-            # Create a new conversation without conversation history.
+            # Get response without conversation history.
             ${response}   @{chatgpt_conversation}=     Chat Completion Create
             ...    user_content=What is the biggest mammal?
             Log    ${response}
@@ -202,16 +253,21 @@ class OpenAI:
         conversation.append(
             {"role": "user", "content": user_content},
         )
-        self.logger.info(conversation)
 
-        response = openai.ChatCompletion.create(
-            model=model,
-            messages=conversation,
-            temperature=temperature,
-            top_p=top_probability,
-            frequency_penalty=frequency_penalty,
-            presence_penalty=presence_penalty,
-        )
+        parameters = {
+            "messages": conversation,
+            "temperature": temperature,
+            "top_p": top_probability,
+            "frequency_penalty": frequency_penalty,
+            "presence_penalty": presence_penalty,
+        }
+
+        if self.service_type == "Azure":
+            parameters["engine"] = model
+        else:
+            parameters["model"] = model
+
+        response = openai.ChatCompletion.create(**parameters)
         self.logger.info(response)
         text = response["choices"][0]["message"]["content"]
         conversation.append(

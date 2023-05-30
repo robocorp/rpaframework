@@ -31,7 +31,7 @@ packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
-openai = "^0.27.0"
+openai = "^0.27.7"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.3.0"
