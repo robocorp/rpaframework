@@ -44,7 +44,7 @@ class OpenAI:
             temperature=0.6,
         )
         print(result)
-    """
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "Global"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
@@ -55,9 +55,9 @@ class OpenAI:
 
     @keyword
     def authorize_to_azure_openai(
-        self, 
-        api_key: str, 
-        api_base: str, 
+        self,
+        api_key: str,
+        api_base: str,
         api_type: Optional[str] = "azure",
         api_version: Optional[str] = "2023-05-15",
     ) -> None:
@@ -68,7 +68,7 @@ class OpenAI:
         :param api_type: "azure"
         :param api_version: "2023-05-15"
 
-        Robot Framework example: 
+        Robot Framework example:
 
         .. code-block:: robotframework
 
@@ -92,7 +92,7 @@ class OpenAI:
                 "2023-05-15"
             )
 
-        """
+        """  # noqa: E501
         openai.api_key = api_key
         openai.api_base = api_base
         openai.api_type = api_type
@@ -202,17 +202,17 @@ class OpenAI:
         frequency_penalty: Optional[int] = 0,
         presence_penalty: Optional[int] = 0,
     ) -> None:
-
-        """Keyword for creating ChatGPT text completions using OpenAI or Azure OpenAI. 
+        """Keyword for creating ChatGPT text completions using OpenAI or Azure OpenAI.
         Keyword returns the response as a string and the message history as a list.
-        
-        **Note**. When using ``Azure OpenAI`` you must provide the ``deployment_name`` 
+
+        **Note**. When using ``Azure OpenAI`` you must provide the ``deployment_name``
         as the ``model`` parameter instead of the model ID used with ``OpenAI``.
 
         :param user_content: Text submitted to ChatGPT to generate completions.
         :param conversation: List containing the conversation to be continued. Leave
          empty for a new conversation.
-        :param model: ``OpenAI``: ID of the model to use, e.g. ``gpt-4`` or ``gpt-3.5-turbo``.
+        :param model: ``OpenAI``: ID of the model to use, e.g. ``gpt-4``
+         or ``gpt-3.5-turbo``.
         :param model: ``Azure OpenAI``: Deployment name, e.g. ``myGPT4deployment``.
         :param system_content: The system message helps set the behavior of
          the assistant.
