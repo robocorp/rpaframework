@@ -555,7 +555,7 @@ class JavaAccessBridge:
          if False will use Desktop().press_keys()
         """
         target = self._get_matching_element(locator, index)
-        self._click_element_middle(target, "double click")
+        self.click_element(target, click_type="double click")
 
         if not self.ignore_callbacks:
             target.request_focus()
@@ -786,6 +786,7 @@ class JavaAccessBridge:
         index: int = 0,
         action: bool = True,
         timeout: int = 10,
+        click_type: str = "click",
     ):
         """Click element
 
@@ -793,20 +794,21 @@ class JavaAccessBridge:
         :param index: target element index if multiple are returned
         :param action: call click action on element (default), or use coordinates
         :param timeout: timeout in seconds to find element
+        :param click_type: default `click`, see `RPA.Desktop` for different
+         click options
         """
         if isinstance(locator, str):
-            interval = float(0.2)
             end_time = time.time() + float(timeout)
             while time.time() <= end_time:
-                start = time.time()
                 elements = self._find_elements(locator)
-                if len(elements) > 0:
+                if len(elements) > 0 and len(elements) >= (index + 1):
                     break
-                duration = time.time() - start
-                if duration < interval:
-                    time.sleep(interval - duration)
-
+                self.application_refresh()
+                # sleep a bit just in case
+                time.sleep(0.05)
             if len(elements) < (index + 1):
+                # print element tree when result is not expected
+                self.print_element_tree()
                 raise ElementNotFound(
                     "Locator '%s' matched only %s elements" % (locator, len(elements))
                 )
@@ -818,9 +820,9 @@ class JavaAccessBridge:
                 self.logger.info("Element click action type:%s", type(matching))
                 matching.do_action("click")
             else:
-                self._click_element_middle(matching)
+                self._click_element_middle(matching, click_type)
         except NotImplementedError:
-            self._click_element_middle(matching)
+            self._click_element_middle(matching, click_type)
 
     @keyword
     def call_element_action(self, locator: str, action: str):
