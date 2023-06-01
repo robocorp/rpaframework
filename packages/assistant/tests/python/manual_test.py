@@ -125,7 +125,7 @@ def manual():
     )
     assistant.add_text_input("email", label="Email", validation=validate_email)
     assistant.add_loading_spinner("spinner")
-    assistant.add_loading_bar("loading")
+    assistant.add_loading_bar("loading", width=100)
 
     results = assistant.run_dialog(location=WindowLocation.TopLeft, timeout=180)
     print(results)
