@@ -27,6 +27,6 @@ class Playwright(Browser):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._playwright_state = PlaywrightState(self)
+        self._playwright_state = RobocorpPlaywrightState(self)
         library_components = [self._playwright_state]
         self.add_library_components(library_components)
