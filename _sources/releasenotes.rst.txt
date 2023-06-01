@@ -17,7 +17,7 @@ Release notes
 01 June 2023
 ------------
 
-- Library **RPA.OpenAI** 1.2.0:
+- Library **RPA.OpenAI** 1.2.0 (:pr:`973`):
 
   - Add support for AzureAI and update ``openai`` to ``0.27.7``.
 
