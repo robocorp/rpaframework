@@ -31,6 +31,7 @@ from selenium.webdriver import (
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
+from selenium.webdriver.remote.shadowroot import ShadowRoot
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 from SeleniumLibrary import EMBED, SeleniumLibrary, WebElement
@@ -42,6 +43,7 @@ from SeleniumLibrary.keywords import (
     ScreenshotKeywords,
 )
 from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCreator
+from SeleniumLibrary.locators import ElementFinder
 
 from RPA.core import notebook
 from RPA.core import webdriver as core_webdriver
@@ -49,7 +51,8 @@ from RPA.core.locators import BrowserLocator, LocatorsDatabase
 from RPA.Robocorp.utils import get_output_dir
 
 
-Locator = Union[WebElement, str]
+Element = Union[WebElement, ShadowRoot]
+Locator = Union[Element, str]
 AliasType = Union[str, int]
 TimeoutType = Optional[Union[str, int, datetime.timedelta]]
 
@@ -82,6 +85,16 @@ def ensure_scheme(url: str, default: Optional[str]) -> str:
 
 class BrowserNotFoundError(ValueError):
     """Raised when browser can't be initialized."""
+
+
+class RobocorpElementFinder(ElementFinder):
+    """Customizes the element finding logic."""
+
+    def _is_webelement(self, element: Element) -> bool:
+        """Checks and accepts various web elements during finding."""
+        # NOTE(cmin764): This will allow the finder to fully parse the locator and look
+        #  for elements even under a shadow root.
+        return isinstance(element, ShadowRoot) or super()._is_webelement(element)
 
 
 class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
@@ -206,6 +219,7 @@ class Selenium(SeleniumLibrary):
         kwargs["plugins"] = ",".join(plugins)
 
         SeleniumLibrary.__init__(self, *args, **kwargs)
+        self._element_finder = RobocorpElementFinder(self)
 
         # Add inherit/overridden library keywords.
         self.browser_management = BrowserManagementKeywordsOverride(self)
@@ -2145,6 +2159,23 @@ class Selenium(SeleniumLibrary):
                 exc,
             )
             self.driver.execute_script("arguments[0].click();", clickable_element)
+
+    @keyword(name="Get WebElement")
+    def get_webelement(
+        self, locator: Locator, parent: Optional[Element] = None, shadow: bool = False
+    ) -> Element:
+        """Returns the first ``Element`` matching the given ``locator``.
+
+        With the ``parent`` parameter you can optionally specify a parent to start the
+        search from. Set ``shadow`` to ``True`` if you're targeting and expecting a
+        shadow root in return. Read more on the shadow root:
+        https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot
+
+        See the `Locating elements` section for details about the locator
+        syntax.
+        """
+        element = self.find_element(locator, parent=parent)
+        return element.shadow_root if shadow else element
 
 
 Selenium.__doc__ = SeleniumLibrary.__doc__ + Selenium.__doc__
