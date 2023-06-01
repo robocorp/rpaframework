@@ -1267,12 +1267,48 @@ class Assistant:
         self._client.add_element(name=name, element=slider)
 
     @keyword(tags=["dialog", "running"])
+    def add_loading_spinner(
+        self,
+        name,
+        width=16,
+        height=16,
+        stroke_width=2,
+        color=None,
+        tooltip=None,
+        value=None,
+    ):
+        pr = flet.ProgressRing(
+            width=width,
+            height=height,
+            stroke_width=stroke_width,
+            color=color,
+            tooltip=tooltip,
+            value=value,
+        )
+        self._client.add_element(pr, name)
+        return pr
+
+    @keyword(tags=["dialog", "running"])
+    def add_loading_bar(
+        self, name, width=16, bar_height=16, color=None, tooltip=None, value=None
+    ):
+        pb = flet.ProgressBar(
+            width=width,
+            bar_height=bar_height,
+            color=color,
+            tooltip=tooltip,
+            value=value,
+        )
+        self._client.add_element(pb, name)
+        return pb
+
+    @keyword(tags=["dialog", "running"])
     def set_title(self, title: str):
         """Set dialog title when it is running."""
         self._client.set_title(title)
 
     def _close_layouting_element(self, layouting_element: str):
-        """Checkhat if the last opened layout element matches what is being closed,
+        """Check if the last opened layout element matches what is being closed,
         otherwise raise ValueError. If the check passes, close the layout element.
         """
         if not self._open_layouting:
