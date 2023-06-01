@@ -138,12 +138,12 @@ class OpenAI:
         """Keyword for creating text completions in OpenAI and Azure OpenAI.
         Keyword returns a text string.
 
-        **Note**. When using ``Azure OpenAI`` you must provide the ``deployment_name`` 
+        **Note**. When using ``Azure OpenAI`` you must provide the ``deployment_name``
         as the ``model`` parameter instead of the model ID used with ``OpenAI``.
 
         :param prompt: Text submitted to OpenAI for creating natural language.
-        :param model: ``OpenAI``: ID of the model to use, e.g. ``text-davinci-003``.
-        :param model: ``Azure OpenAI``: Deployment name, e.g. ``myDavinci3deployment``.
+        :param model: ``OpenAI``: ID of the model to use, e.g. ``text-davinci-003`` or
+         for ``Azure OpenAI``: Deployment name, e.g. ``myDavinci3deployment``.
         :param temperature: What sampling temperature to use.
             Higher values means the model will take more risks..
         :param max_tokens: The maximum number of tokens to generate in the completion..
@@ -281,9 +281,7 @@ class OpenAI:
         conversation.append(
             {"role": "assistant", "content": text},
         )
-        return_list = []
-        return_list.append(text)
-        return_list.append(conversation)
+        return_list = [text, conversation]
         self.logger.info(return_list)
         return return_list
 
@@ -357,7 +355,7 @@ class OpenAI:
         Source file must be a valid PNG file, less than 4MB, and square.
 
         **Note**. Keyword not supported in the ``Azure OpenAI`` service.
-        
+
         :param src_image: The image to use as the basis for the variation(s).
             Must be a valid PNG file, less than 4MB, and square.
         :param size: The size of the generated images.
