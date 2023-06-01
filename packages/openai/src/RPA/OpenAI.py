@@ -142,8 +142,8 @@ class OpenAI:
         as the ``model`` parameter instead of the model ID used with ``OpenAI``.
 
         :param prompt: Text submitted to OpenAI for creating natural language.
-        :param model: ``OpenAI``: ID of the model to use, e.g. ``text-davinci-003`` or
-         for ``Azure OpenAI``: Deployment name, e.g. ``myDavinci3deployment``.
+        :param model: For ``OpenAI`` the ID of the model to use, e.g. ``text-davinci-003``
+         or for ``Azure OpenAI`` the Deployment name, e.g. ``myDavinci3deployment``.
         :param temperature: What sampling temperature to use.
             Higher values means the model will take more risks..
         :param max_tokens: The maximum number of tokens to generate in the completion..
@@ -219,9 +219,9 @@ class OpenAI:
         :param user_content: Text submitted to ChatGPT to generate completions.
         :param conversation: List containing the conversation to be continued. Leave
          empty for a new conversation.
-        :param model: ``OpenAI``: ID of the model to use, e.g. ``gpt-4``
-         or ``gpt-3.5-turbo``.
-        :param model: ``Azure OpenAI``: Deployment name, e.g. ``myGPT4deployment``.
+        :param model: For ``OpenAI`` the ID of the model to use, e.g. ``gpt-4``
+         or ``gpt-3.5-turbo``. For``Azure OpenAI`` the Deployment name,
+         e.g. ``myGPT4deployment``.
         :param system_content: The system message helps set the behavior of
          the assistant.
         :param temperature: What sampling temperature to use between 0 to 2. Higher
@@ -329,6 +329,10 @@ class OpenAI:
                 print(url)
 
         """
+        if self.service_type == "Azure":
+            raise NotImplementedError(
+                "Keyword 'Image Create' is not supported by Azure service"
+            )
         response = openai.Image.create(prompt=prompt, size=size, n=num_images)
         self.logger.info(response)
         urls = []
@@ -388,6 +392,10 @@ class OpenAI:
                 print(url)
 
         """
+        if self.service_type == "Azure":
+            raise NotImplementedError(
+                "Keyword 'Image Create Variation' is not supported by Azure service"
+            )
         with open(src_image, "rb") as image_file:
             response = openai.Image.create_variation(
                 image=image_file, n=num_images, size=size
