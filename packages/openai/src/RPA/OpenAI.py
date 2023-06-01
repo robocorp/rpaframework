@@ -46,7 +46,7 @@ class OpenAI:
         print(result)
     """  # noqa: E501
 
-    ROBOT_LIBRARY_SCOPE = "Global"
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self) -> None:
