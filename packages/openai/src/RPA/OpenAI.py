@@ -87,7 +87,7 @@ class OpenAI:
             baselib = OpenAI()
             baselib.authorize_to_azure_openai(
                 secrets["api_key"],
-                ${secrets}[api_base],
+                secrets["api_base"],
                 "azure",
                 "2023-05-15"
             )
@@ -142,8 +142,8 @@ class OpenAI:
         as the ``model`` parameter instead of the model ID used with ``OpenAI``.
 
         :param prompt: Text submitted to OpenAI for creating natural language.
-        :param model: For ``OpenAI`` the ID of the model to use, e.g. ``text-davinci-003``
-         or for ``Azure OpenAI`` the Deployment name, e.g. ``myDavinci3deployment``.
+        :param model: For ``OpenAI`` the ID of the model to use, e.g. ``text-davinci-003``.
+         For ``Azure OpenAI`` the Deployment name, e.g. ``myDavinci3deployment``.
         :param temperature: What sampling temperature to use.
             Higher values means the model will take more risks..
         :param max_tokens: The maximum number of tokens to generate in the completion..
@@ -220,7 +220,7 @@ class OpenAI:
         :param conversation: List containing the conversation to be continued. Leave
          empty for a new conversation.
         :param model: For ``OpenAI`` the ID of the model to use, e.g. ``gpt-4``
-         or ``gpt-3.5-turbo``. For``Azure OpenAI`` the Deployment name,
+         or ``gpt-3.5-turbo``. For ``Azure OpenAI`` the Deployment name,
          e.g. ``myGPT4deployment``.
         :param system_content: The system message helps set the behavior of
          the assistant.
