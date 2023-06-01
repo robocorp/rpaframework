@@ -48,6 +48,7 @@ from SeleniumLibrary.locators import ElementFinder
 from RPA.core import notebook
 from RPA.core import webdriver as core_webdriver
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
+from RPA.Browser.common import AUTO, get_headless_state
 from RPA.Robocorp.utils import get_output_dir
 
 
@@ -313,16 +314,16 @@ class Selenium(SeleniumLibrary):
         self,
         url: Optional[str] = None,
         use_profile: bool = False,
-        headless: Any = "AUTO",
+        headless: Union[bool, str] = AUTO,
         maximized: bool = False,
-        browser_selection: Any = "AUTO",
+        browser_selection: Any = AUTO,
         alias: Optional[str] = None,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
-        download: Any = "AUTO",
+        download: Any = AUTO,
         options: Optional[OptionsType] = None,
         port: Optional[int] = None,
     ) -> AliasType:
@@ -365,7 +366,7 @@ class Selenium(SeleniumLibrary):
 
         | Open Available Browser | https://www.robocorp.com |
         | ${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |
-        | Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |
+        | Open Available Browser | ${URL} | headless=${True} | alias=HeadlessBrowser |
         | Open Available Browser | ${URL} | options=add_argument("user-data-dir=path/to/data");add_argument("--incognito") |
         | Open Available Browser | ${URL} | port=${8888} |
 
@@ -467,7 +468,7 @@ class Selenium(SeleniumLibrary):
         # pylint: disable=redefined-argument-from-local
         browsers = self._arg_browser_selection(browser_selection)
         downloads = self._arg_download(download)
-        headless = self._arg_headless(headless)
+        headless = get_headless_state(headless)
 
         attempts = []
         index_or_alias = None
@@ -539,7 +540,7 @@ class Selenium(SeleniumLibrary):
         self, browser_selection: Union[str, List[str]]
     ) -> List[str]:
         """Parse argument for browser selection."""
-        if str(browser_selection).strip().lower() == "auto":
+        if str(browser_selection).strip().lower() == AUTO.lower():
             order = core_webdriver.get_browser_order()
         else:
             order = (
@@ -551,23 +552,10 @@ class Selenium(SeleniumLibrary):
 
     def _arg_download(self, download: Any) -> List:
         """Parse argument for webdriver download."""
-        if str(download).strip().lower() == "auto":
+        if str(download).strip().lower() == AUTO.lower():
             return [False, True]
         else:
             return [bool(download)]
-
-    def _arg_headless(self, headless: Any) -> bool:
-        """Parse argument for headless mode."""
-        if str(headless).strip().lower() == "auto":
-            # If in Linux and with no valid display, we can assume we are in a container
-            headless = platform.system() == "Linux" and not (
-                os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")
-            )
-            if headless:
-                self.logger.info("Autodetected headless environment")
-            return headless
-        else:
-            return bool(headless)
 
     def _set_chromium_options(
         self,
@@ -715,7 +703,6 @@ class Selenium(SeleniumLibrary):
             return {}, []
 
         options: ArgOptions = self.normalize_options(options, browser=browser)
-        headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
         if headless:
             self._set_headless_options(browser_lower, options)
         if maximized:
@@ -2082,7 +2069,7 @@ class Selenium(SeleniumLibrary):
 
         Example:
 
-        | Open Chrome Browser | about:blank | headless=True |
+        | Open Chrome Browser | about:blank | headless=${True} |
         | &{params} | Create Dictionary | userAgent=Chrome/83.0.4103.53 |
         | Execute CDP | Network.setUserAgentOverride | ${params} |
         | Go To | https://robocorp.com |
