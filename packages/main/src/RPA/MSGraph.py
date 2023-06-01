@@ -2,7 +2,7 @@ import base64
 import logging
 from typing import List, Optional, Union
 from pathlib import Path
-from O365 import (
+from O365 import (  # pylint: disable=no-name-in-module
     Account,
     MSGraphProtocol,
     FileSystemTokenBackend,
