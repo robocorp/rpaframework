@@ -14,6 +14,13 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+01 June 2023
+------------
+
+- Library **RPA.OpenAI** 1.2.0:
+
+  - Add support for AzureAI and update ``openai`` to ``0.27.7``.
+
 23.1.0 - 19 May 2023
 --------------------
 
@@ -34,6 +41,7 @@ Release notes
 
 12 May 2023
 -----------
+
 - Library **RPA.Assistant** 2.2.2:
 
   - Documentation example fix, correct name of argument to ``maximum_rows``.
