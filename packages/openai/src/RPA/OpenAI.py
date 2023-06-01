@@ -135,11 +135,15 @@ class OpenAI:
         presence_penalty: Optional[int] = 0,
         result_format: Optional[str] = "string",
     ) -> None:
-        """Keyword for creating text completions in OpenAI.
+        """Keyword for creating text completions in OpenAI and Azure OpenAI.
         Keyword returns a text string.
 
+        **Note**. When using ``Azure OpenAI`` you must provide the ``deployment_name`` 
+        as the ``model`` parameter instead of the model ID used with ``OpenAI``.
+
         :param prompt: Text submitted to OpenAI for creating natural language.
-        :param model: OpenAI's model to use in the completion.
+        :param model: ``OpenAI``: ID of the model to use, e.g. ``text-davinci-003``.
+        :param model: ``Azure OpenAI``: Deployment name, e.g. ``myDavinci3deployment``.
         :param temperature: What sampling temperature to use.
             Higher values means the model will take more risks..
         :param max_tokens: The maximum number of tokens to generate in the completion..
@@ -172,15 +176,19 @@ class OpenAI:
             print(result)
 
         """
-        response = openai.Completion.create(
-            model=model,
-            prompt=prompt,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            top_p=top_probability,
-            frequency_penalty=frequency_penalty,
-            presence_penalty=presence_penalty,
-        )
+        parameters = {
+            "prompt": prompt,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "top_p": top_probability,
+            "frequency_penalty": frequency_penalty,
+            "presence_penalty": presence_penalty,
+        }
+        if self.service_type == "Azure":
+            parameters["engine"] = model
+        else:
+            parameters["model"] = model
+        response = openai.Completion.create(**parameters)
         self.logger.info(response)
         if result_format == "string":
             text = response["choices"][0]["text"].strip()
@@ -287,8 +295,10 @@ class OpenAI:
         num_images: Optional[int] = 1,
         result_format: Optional[str] = "list",
     ) -> None:
-        """Keyword for creating one or more images in OpenAI.
+        """Keyword for creating one or more images using OpenAI.
         Keyword returns a list of urls for the images created.
+
+        **Note**. Keyword not supported in the ``Azure OpenAI`` service.
 
         :param prompt: A text description of the desired image(s).
             The maximum length is 1000 characters.
@@ -346,6 +356,8 @@ class OpenAI:
         returns a list of urls for the images created.
         Source file must be a valid PNG file, less than 4MB, and square.
 
+        **Note**. Keyword not supported in the ``Azure OpenAI`` service.
+        
         :param src_image: The image to use as the basis for the variation(s).
             Must be a valid PNG file, less than 4MB, and square.
         :param size: The size of the generated images.
