@@ -21,7 +21,6 @@ Release notes
 
   - Add support for AzureAI and update ``openai`` to ``0.27.7``.
 
-
 23.1.0 - 19 May 2023
 --------------------
 
