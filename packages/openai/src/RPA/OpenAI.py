@@ -175,7 +175,7 @@ class OpenAI:
             )
             print(result)
 
-        """
+        """  # noqa: E501
         parameters = {
             "prompt": prompt,
             "temperature": temperature,
