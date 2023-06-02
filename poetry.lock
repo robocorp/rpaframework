@@ -370,18 +370,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.144"
+version = "1.26.145"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.144-py3-none-any.whl", hash = "sha256:2eb9e688aa86bf1fadcec0b6995b42ec9788e7cd5f1a9c8ac1b66a2506aa209f"},
-    {file = "boto3-1.26.144.tar.gz", hash = "sha256:5b7e9f2674fe8aa99e2d168744023a3f66da12d9c51e0624489dd0db7aafe30d"},
+    {file = "boto3-1.26.145-py3-none-any.whl", hash = "sha256:77e8fa7c257f9ed8bfe0c3ffc2ccc47b1cfa27058f99415b6003699d1202e0c0"},
+    {file = "boto3-1.26.145.tar.gz", hash = "sha256:30f8ab1cf89d5864a80ba2d5eb5316dbd2a63c9469877e0cffb522630438aa85"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.144,<1.30.0"
+botocore = ">=1.29.145,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -390,14 +390,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.144"
+version = "1.29.145"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.144-py3-none-any.whl", hash = "sha256:e2b970e68643cf4752cad4e45ba3319fc35707f1bff7f150f7ffcac1b1427b47"},
-    {file = "botocore-1.29.144.tar.gz", hash = "sha256:c60b9158cbc7447411abdec77b87a71d86d9404064702e92d317dca6a1ec9a5b"},
+    {file = "botocore-1.29.145-py3-none-any.whl", hash = "sha256:264a3f19ed280d80711b7e278be09acff7ed379a96432fdf179b4e6e3a687e6a"},
+    {file = "botocore-1.29.145.tar.gz", hash = "sha256:65e2a2b1cc70583225f87d6d63736215f93c6234721967bdab872270ba7a1f45"},
 ]
 
 [package.dependencies]
@@ -1143,14 +1143,14 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.19.0"
+version = "2.19.1"
 description = "Google Authentication Library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "google-auth-2.19.0.tar.gz", hash = "sha256:f39d528077ac540793dd3c22a8706178f157642a67d874db25c640b7fead277e"},
-    {file = "google_auth-2.19.0-py2.py3-none-any.whl", hash = "sha256:be617bfaf77774008e9d177573f782e109188c8a64ae6e744285df5cea3e7df6"},
+    {file = "google-auth-2.19.1.tar.gz", hash = "sha256:a9cfa88b3e16196845e64a3658eb953992129d13ac7337b064c6546f77c17183"},
+    {file = "google_auth-2.19.1-py2.py3-none-any.whl", hash = "sha256:ea165e014c7cbd496558796b627c271aa8c18b4cba79dc1cc962b24c5efdfb85"},
 ]
 
 [package.dependencies]
@@ -1264,14 +1264,14 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-speech"
-version = "2.19.0"
+version = "2.20.0"
 description = "Google Cloud Speech API client library"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-cloud-speech-2.19.0.tar.gz", hash = "sha256:fa4e5ec478c9b7d6d275b7955a04d6c7e21a625279e49ad3574c287e85560a95"},
-    {file = "google_cloud_speech-2.19.0-py2.py3-none-any.whl", hash = "sha256:deb43b6a56512daf2cdcbd525fbe836540b58cbb1e1d0cd4b126ef19a802b114"},
+    {file = "google-cloud-speech-2.20.0.tar.gz", hash = "sha256:e6c5b86ffe8e474b9c82b699ef902f75c9478e77e44ea39de3997b3ef8af3e2e"},
+    {file = "google_cloud_speech-2.20.0-py2.py3-none-any.whl", hash = "sha256:baee6524836c1c86bd4ad508a6258bbf51601d329d6e22d71d163761c0b188e9"},
 ]
 
 [package.dependencies]
@@ -1347,14 +1347,14 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-videointelligence"
-version = "2.11.1"
+version = "2.11.2"
 description = "Google Cloud Videointelligence API client library"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-cloud-videointelligence-2.11.1.tar.gz", hash = "sha256:7ec0bc593c2b30981764794eb08f537d870cf10e6b297b80ad354cfa91e97ea1"},
-    {file = "google_cloud_videointelligence-2.11.1-py2.py3-none-any.whl", hash = "sha256:633f137dbfb6ff38930340fb7dbf4d2830b39322031a60b62263aa94c0308032"},
+    {file = "google-cloud-videointelligence-2.11.2.tar.gz", hash = "sha256:5a5069436df8275ac20358e93cf0b151afa4ebe0c02a2bd957a90b9279d402bc"},
+    {file = "google_cloud_videointelligence-2.11.2-py2.py3-none-any.whl", hash = "sha256:543835c5b3cdd66154eefd84a88f8b63d1a393f2eca3f1f27230e04c5deb423e"},
 ]
 
 [package.dependencies]
@@ -4299,18 +4299,18 @@ rpaframework-core = ">=11.0.0,<12.0.0"
 
 [[package]]
 name = "rpaframework-openai"
-version = "1.1.2"
+version = "1.2.0"
 description = "OpenAI library for RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7.1,<4.0.0"
 files = [
-    {file = "rpaframework_openai-1.1.2-py3-none-any.whl", hash = "sha256:f8327c94b8d27dc0fcd9c100ac5ce4f79506b63c32dea406fdf9cb792b8d6bfb"},
-    {file = "rpaframework_openai-1.1.2.tar.gz", hash = "sha256:85d03f30c95efc56b32b4e250ecf650be18002d9e02a6be09381217a28a4ee6c"},
+    {file = "rpaframework_openai-1.2.0-py3-none-any.whl", hash = "sha256:1ad4d733ee9dc98adfc09227ce9bb7b97ba0c20e6f6ecb63cd911b7b150bce97"},
+    {file = "rpaframework_openai-1.2.0.tar.gz", hash = "sha256:74ceaaff0da97a613df341f2917cb7dbffd9c15c54f493d232cd5a75ac3df64c"},
 ]
 
 [package.dependencies]
-openai = ">=0.27.0,<0.28.0"
+openai = ">=0.27.7,<0.28.0"
 
 [[package]]
 name = "rpaframework-pdf"
@@ -4968,14 +4968,14 @@ files = [
 
 [[package]]
 name = "typing-extensions"
-version = "4.6.2"
+version = "4.6.3"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typing_extensions-4.6.2-py3-none-any.whl", hash = "sha256:3a8b36f13dd5fdc5d1b16fe317f5668545de77fa0b8e02006381fd49d731ab98"},
-    {file = "typing_extensions-4.6.2.tar.gz", hash = "sha256:06006244c70ac8ee83fa8282cb188f697b8db25bc8b4df07be1873c43897060c"},
+    {file = "typing_extensions-4.6.3-py3-none-any.whl", hash = "sha256:88a4153d8505aabbb4e13aacb7c486c2b4a33ca3b3f807914a9b4c844c471c26"},
+    {file = "typing_extensions-4.6.3.tar.gz", hash = "sha256:d91d5919357fe7f681a9f2b5b4cb2a5f1ef0a1e9f59c4d8ff0d3491e05c0ffd5"},
 ]
 
 [[package]]
@@ -5554,4 +5554,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.1"
-content-hash = "bd6cd404b97a3bd55b605dede91308e0a42c395160cd7a12a4023cebb0446abd"
+content-hash = "c4dff244718e96f870e1bace069336a3488722577d6fccfd66f1d9781f9f44db"
