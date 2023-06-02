@@ -1,4 +1,5 @@
 import logging
+
 from RPA.Browser.Selenium import Selenium as _Selenium
 
 

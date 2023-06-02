@@ -6,7 +6,7 @@ authors = ["RPA Framework <rpafw@robocorp.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
-robotframework-browser = { version = "^14.4.1", python = ">=3.7,<4.0" }
+robotframework-browser = { version = "^16.2.0", python = ">=3.7,<4.0" }
 rpaframework = { path = "packages/main", develop = true }
 rpaframework-assistant = "^2.2.2"
 rpaframework-aws = "^5.2.8"

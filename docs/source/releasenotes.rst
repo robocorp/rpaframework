@@ -5,17 +5,31 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Browser.Selenium**:
-
-  - Fix bug with detecting the right web-driver version for download on systems having
-    Chromium installed instead of Chrome. (:issue:`949`)
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-01 June 2023
-------------
+23.2.0 - 02 Jun 2023
+--------------------
+
+- Library **RPA.Browser.*** (:pr:`974`):
+
+  - **Selenium**:
+
+    - Fix bug with detecting the right web-driver version for download on systems
+      having Chromium installed instead of Chrome. (:issue:`949`)
+    - Add support for operating on shadow DOMs within the ``Get WebElement`` keyword.
+      (:issue:`941`)
+
+  - **Playwright**:
+
+    - Upgrade version and documentation to the latest `robotframework-browser`
+      **16.2.0**. (:issue:`942`)
+    - Automatic `headless` detection when running on systems without UI, including our
+      Cloud Worker (Linux container). (:issue:`166`)
+
+01 Jun 2023
+-----------
 
 - Library **RPA.OpenAI** 1.2.0 (:pr:`973`):
 

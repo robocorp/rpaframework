@@ -201,3 +201,13 @@ Test enhanced clicking
 
     Click Element When Clickable    //button
     Does Alert Contain    after
+
+Test Shadow Root
+    [Setup]     Is Alert Present
+
+    Go To   http://watir.com/examples/shadow_dom.html
+
+    ${shadow_elem} =    Get WebElement    css:#shadow_host    shadow=${True}
+    ${elem} =    Get WebElement    css:#shadow_content    parent=${shadow_elem}
+    ${text} =    Get Text    ${elem}
+    Should Be Equal    ${text}    some text
