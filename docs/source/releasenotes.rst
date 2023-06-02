@@ -9,6 +9,14 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+23.2.1 - 02 Jun 2023
+--------------------
+
+- Library **RPA.JavaAccessBridge** (:pr:`978`):
+
+  - Fix element search issue with ``Click Element`` keyword
+  - Add new keyword ``Wait Until Element Exists``
+
 23.2.0 - 02 Jun 2023
 --------------------
 

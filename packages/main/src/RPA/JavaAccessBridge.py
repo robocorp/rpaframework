@@ -790,7 +790,7 @@ class JavaAccessBridge:
     ):
         """Click element
 
-        :param target: element to click
+        :param locator: element to click
         :param index: target element index if multiple are returned
         :param action: call click action on element (default), or use coordinates
         :param timeout: timeout in seconds to find element
@@ -1137,6 +1137,13 @@ class JavaAccessBridge:
 
     @keyword
     def wait_until_element_exists(self, locator: str, timeout: int = 10):
+        """Wait until element(s) matching the locator are found within
+        given timeout or raises ``ElementNotFound`` exception.
+
+        :param locator: locator to match element
+        :param timeout: timeout in seconds to find element
+        :return: element(s) if found
+        """
         elements = None
         end_time = time.time() + float(timeout)
         while time.time() <= end_time:
