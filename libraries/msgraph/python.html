@@ -191,7 +191,7 @@ for a list of permissions available to MS Graph apps.</p></li>
 <dt class="sig sig-object py" id="RPA.MSGraph.MSGraph.authorize_and_get_token">
 <span class="sig-name descname"><span class="pre">authorize_and_get_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authorization_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.MSGraph.MSGraph.authorize_and_get_token" title="Permalink to this definition"></a></dt>
 <dd><p>Exchanges the OAuth authorization URL obtained from
-`Generate OAuth Authorization URL` for an access token. This
+<code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">OAuth</span> <span class="pre">Authorization</span> <span class="pre">URL</span></code> for an access token. This
 library maintains the user access token for current requests
 and returns the refresh token to be stored in a secure location
 (e.g., the Robocorp Control Room Vault).</p>
@@ -239,7 +239,7 @@ secret if not using the default.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>list_data</strong> – Dictionary with the data for the new list.</p></li>
-<li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
+<li><p><strong>site</strong> – Site instance obtained from <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Sharepoint</span> <span class="pre">Site</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -302,7 +302,7 @@ defaults to the current directory.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>target_file</strong> – <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> or file path of the desired file.</p></li>
-<li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
+<li><p><strong>site</strong> – Site instance obtained from <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Sharepoint</span> <span class="pre">Site</span></code>.</p></li>
 <li><p><strong>to_path</strong> – Destination folder of the downloaded file,
 defaults to the current directory.</p></li>
 <li><p><strong>name</strong> – New name for the downloaded file, with or without extension.</p></li>
@@ -345,10 +345,10 @@ provided, will use the default drive.</p></li>
 <dd><p>Returns a list of files found in OneDrive based on the search string.
 If a folder is not specified, the search is done in the entire drive and
 may include items that were shared with the user. It is possible to pass
-`root` as the target folder in order to avoid this behavior.</p>
+<code class="docutils literal notranslate"><span class="pre">root</span></code> as the target folder in order to avoid this behavior.</p>
 <p>The files returned are <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> objects and they have additional
 properties that can be accessed with dot-notation, see
-`List Files In Onedrive Folder` for details.</p>
+<code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Files</span> <span class="pre">In</span> <span class="pre">Onedrive</span> <span class="pre">Folder</span></code> for details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -374,7 +374,7 @@ provided, will use the default drive.</p></li>
 <dd><p>Generates an authorization URL which must be opened
 by the user to complete the OAuth flow. If no scopes
 are provided, the default scope is used which is all
-scopes defined in the `Get Scopes` keyword.</p>
+scopes defined in the <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Scopes</span></code> keyword.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -383,7 +383,7 @@ scopes defined in the `Get Scopes` keyword.</p>
 <li><p><strong>redirect_uri</strong> – Can be provided with client ID and client
 secret if not using the default.</p></li>
 <li><p><strong>scopes</strong> – A list of scopes in the form required by the
-API. Use the helper function `Get scopes`.</p></li>
+API. Use the helper function <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">scopes</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -452,7 +452,7 @@ is found by it’s display name.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>list_name</strong> – Display name of the SharePoint list.</p></li>
-<li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
+<li><p><strong>site</strong> – Site instance obtained from <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Sharepoint</span> <span class="pre">Site</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -477,7 +477,7 @@ provided “scope helpers”, which are enumerated below.
 You can pass none to get all scopes. Basic is included
 in all other scopes. The provided object can be passed
 to the <code class="docutils literal notranslate"><span class="pre">scopes</span></code> parameter when calling
-`Generate OAuth Authorization URL`.</p>
+<code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">OAuth</span> <span class="pre">Authorization</span> <span class="pre">URL</span></code>.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">basic</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">mailbox</span></code></p></li>
@@ -566,14 +566,14 @@ provided, will use the default drive.</p></li>
 <dd><p>List files in the SharePoint Site drive.</p>
 <p>If the <code class="docutils literal notranslate"><span class="pre">drive</span></code> is not set, the default Document Library
 will be used. The <code class="docutils literal notranslate"><span class="pre">drive</span></code> can be obtained from the keyword
-`List Sharepoint Site Drives`.</p>
+<code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Sharepoint</span> <span class="pre">Site</span> <span class="pre">Drives</span></code>.</p>
 <p>The files returned are <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> objects and they have additional
 properties that can be accessed with dot-notation, see
-`List Files In Onedrive Folder` for details.</p>
+<code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Files</span> <span class="pre">In</span> <span class="pre">Onedrive</span> <span class="pre">Folder</span></code> for details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p></li>
+<li><p><strong>site</strong> – Site instance obtained from <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Sharepoint</span> <span class="pre">Site</span></code>.</p></li>
 <li><p><strong>include_folders</strong> – Boolean indicating if should return folders
 as well.</p></li>
 <li><p><strong>drive</strong> – A <code class="docutils literal notranslate"><span class="pre">Drive</span></code> object or Drive ID as a string. If not
@@ -594,7 +594,7 @@ If none is provided, will return files from the root of the drive.</p></li>
 <dd><p>Get a list of Drives available in the SharePoint Site.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>site</strong> – Site instance obtained from `Get Sharepoint Site`.</p>
+<dd class="field-odd"><p><strong>site</strong> – Site instance obtained from <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Sharepoint</span> <span class="pre">Site</span></code>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>List of Drives present in the SharePoint Site.</p>
@@ -628,7 +628,7 @@ future sessions.</p>
 <dd><p>Returns a list of <code class="docutils literal notranslate"><span class="pre">User</span></code> objects from the Active Directory
 based on the provided search string.</p>
 <p><code class="docutils literal notranslate"><span class="pre">User</span></code> objects have additional properties that can be accessed
-with dot-notation, see `Get Me` for additional details.</p>
+with dot-notation, see <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Me</span></code> for additional details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -646,7 +646,7 @@ with dot-notation, see `Get Me` for additional details.</p>
 <dd><p>Uploads a file to the specified OneDrive folder.</p>
 <p>The uploaded file is returned as a <code class="docutils literal notranslate"><span class="pre">DriveItem</span></code> object and it has
 additional properties that can be accessed with dot-notation, see
-`List Files In Onedrive Folder` for details.</p>
+<code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Files</span> <span class="pre">In</span> <span class="pre">Onedrive</span> <span class="pre">Folder</span></code> for details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

@@ -506,17 +506,17 @@ integer sent to the API must have 13 digits as of March 18, 2022).</p>
 <div class="section" id="batch-inputs">
 <span id="id1"></span><h3>Batch Inputs<a class="headerlink" href="#batch-inputs" title="Permalink to this heading"></a></h3>
 <p>When retrieving information, the library automatically batches requests
-that are provided as lists, see `Get object` keyword for an example,
+that are provided as lists, see <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">object</span></code> keyword for an example,
 but when wishing to create or update many objects, the library provides
 a batching system.</p>
-<p>In order to start a batch, you must first call the `Create new batch`
+<p>In order to start a batch, you must first call the <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">new</span> <span class="pre">batch</span></code>
 keyword. This initializes a new batch to accept inputs. If a batch
 already exists when you call this keyword, it will be lost and a new
 blank one will be started.</p>
 <p>Once the batch has been initialized, you can add inputs one at a time with
-`Add input to batch` or many at a time with `Extend batch with inputs`.</p>
+<code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">input</span> <span class="pre">to</span> <span class="pre">batch</span></code> or many at a time with <code class="docutils literal notranslate"><span class="pre">Extend</span> <span class="pre">batch</span> <span class="pre">with</span> <span class="pre">inputs</span></code>.</p>
 <p>In order to finally send the batch to HubSpot, you must call
-`Execute batch`. The final keyword will return the created or updated
+<code class="docutils literal notranslate"><span class="pre">Execute</span> <span class="pre">batch</span></code>. The final keyword will return the created or updated
 objects from HubSpot. New object IDs can be obtained from the <code class="docutils literal notranslate"><span class="pre">id</span></code>
 property, see the <a class="reference internal" href="#simplepublicobject">SimplePublicObject</a> reference.</p>
 <p><strong>Robot framework example:</strong></p>
@@ -1079,7 +1079,7 @@ as an owner of another HubSpot object, such as a contact or company.
 You may provide the identifier as <code class="docutils literal notranslate"><span class="pre">owner_id</span></code>, <code class="docutils literal notranslate"><span class="pre">owner_email</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">user_id</span></code>. The <code class="docutils literal notranslate"><span class="pre">owner_id</span></code> will correspond to fields from the
 CRM API while the <code class="docutils literal notranslate"><span class="pre">user_id</span></code> will correspond to the user
-provisioning API (see keyword `Get User`).</p>
+provisioning API (see keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">User</span></code>).</p>
 <p>The owner object has the following attributes (accessible via
 dot notation):</p>
 <p>If more than one of these IDs are provided, the keyword prefers
@@ -1104,7 +1104,7 @@ the <code class="docutils literal notranslate"><span class="pre">owner_id</span>
 <dd><p>Looks up the owner of a given Hubspot object, the provided object
 should be from this library or it should be a dictionary with an
 <code class="docutils literal notranslate"><span class="pre">hubspot_owner_id</span></code> key. If the object has no owner, this keyword
-returns None. See keyword `Get owner by ID` for information about
+returns None. See keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">owner</span> <span class="pre">by</span> <span class="pre">ID</span></code> for information about
 the returned object.</p>
 <p>You can use an alternate property as the owner ID property by providing
 it with argument <code class="docutils literal notranslate"><span class="pre">owner_property</span></code>. If that property does not exist
@@ -1113,7 +1113,7 @@ this keyword will try the default <code class="docutils literal notranslate"><sp
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object</strong> – A HubSpot object, best if the object was obtained
-via another keyword such as `Get owner by ID`</p></li>
+via another keyword such as <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">owner</span> <span class="pre">by</span> <span class="pre">ID</span></code></p></li>
 <li><p><strong>owner_property</strong> – An alternate property of the provided
 object to use as the field containing the Owner to be looked up.</p></li>
 </ul>
@@ -1543,7 +1543,7 @@ input API.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>batch_input</strong> – A batch object such as one returned from
-the `Get current batch` keyword.</p>
+the <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">current</span> <span class="pre">batch</span></code> keyword.</p>
 </dd>
 </dl>
 </dd></dl>
