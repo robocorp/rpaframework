@@ -204,6 +204,7 @@ Test enhanced clicking
 
 Test Shadow Root
     [Setup]     Is Alert Present
+    [Tags]    skip  # flaky test during async runs
 
     Go To   http://watir.com/examples/shadow_dom.html
 
