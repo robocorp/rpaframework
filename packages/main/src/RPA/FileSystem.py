@@ -275,7 +275,7 @@ class FileSystem:
         # pylint: disable=anomalous-backslash-in-string
         """Returns True if the file does not exist, False if it does.
 
-        See \`Does File Exist\` for usage example.
+        See ``Does File Exist`` for usage example.
 
         :param path:    path to inspected file
         :return: true or false if the files does not exist
@@ -286,7 +286,7 @@ class FileSystem:
         # pylint: disable=anomalous-backslash-in-string
         """Returns True if the given directory exists, False if not.
 
-        See \`Does Directory Not Exist\` for usage example.
+        See ``Does Directory Not Exist`` for usage example.
 
         :param path:    path to inspected directory
         :return: true or false if the directory exists
@@ -339,7 +339,7 @@ class FileSystem:
         # pylint: disable=anomalous-backslash-in-string
         """Returns True if the given directory has any files or subdirectories.
 
-        See \`Is Directory Empty\` for usage example.
+        See ``Is Directory Empty`` for usage example.
 
         :param path:    path to inspected directory
         :return: true or false if the directory is not empty
@@ -381,7 +381,7 @@ class FileSystem:
         # pylint: disable=anomalous-backslash-in-string
         """Reads a file as text, with given `encoding`, and returns the content."
 
-        See \`Find Files\` for usage example.
+        See ``Find Files`` for usage example.
 
         :param path:        path to file to read
         :param encoding:    character encoding of file (default ``utf-8``)
@@ -486,7 +486,7 @@ class FileSystem:
         # pylint: disable=anomalous-backslash-in-string
         """Appends text to the given file.
 
-        See \`Create File\` for usage example.
+        See ``Create File`` for usage example.
 
         :param path:        path to file to append to
         :param content:     content to append
@@ -502,7 +502,7 @@ class FileSystem:
         # pylint: disable=anomalous-backslash-in-string
         """Appends binary content to the given file.
 
-        See \`Create Binary File\` for usage example.
+        See ``Create Binary File`` for usage example.
 
         :param path:        path to file to append to
         :param content:     content to append
@@ -618,7 +618,7 @@ class FileSystem:
         # pylint: disable=anomalous-backslash-in-string
         """Copy a file from source path to destination path.
 
-        See \`Is Directory Empty\` for usage example.
+        See ``Is Directory Empty`` for usage example.
 
         :param source:      path to source file
         :param destination: path to copy destination
