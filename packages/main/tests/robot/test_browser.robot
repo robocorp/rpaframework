@@ -203,7 +203,9 @@ Test enhanced clicking
     Does Alert Contain    after
 
 Test Shadow Root
-    [Setup]     Go To    http://watir.com/examples/shadow_dom.html
+    [Setup]     Is Alert Present
+
+    Go To   http://watir.com/examples/shadow_dom.html
 
     ${shadow_elem} =    Get WebElement    css:#shadow_host    shadow=${True}
     ${elem} =    Get WebElement    css:#shadow_content    parent=${shadow_elem}
