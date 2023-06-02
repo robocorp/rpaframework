@@ -797,32 +797,26 @@ class JavaAccessBridge:
         :param click_type: default `click`, see `RPA.Desktop` for different
          click options
         """
+        element = None
         if isinstance(locator, str):
-            end_time = time.time() + float(timeout)
-            while time.time() <= end_time:
-                elements = self._find_elements(locator)
-                if len(elements) > 0 and len(elements) >= (index + 1):
-                    break
-                self.application_refresh()
-                # sleep a bit just in case
-                time.sleep(0.05)
+            elements = self.wait_until_element_exists(locator, timeout)
             if len(elements) < (index + 1):
                 # print element tree when result is not expected
                 self.print_element_tree()
                 raise ElementNotFound(
                     "Locator '%s' matched only %s elements" % (locator, len(elements))
                 )
-            matching = elements[index]
+            element = elements[index]
         else:
-            matching = locator
+            element = locator
         try:
             if action:
-                self.logger.info("Element click action type:%s", type(matching))
-                matching.do_action("click")
+                self.logger.info("Element click action type:%s", type(element))
+                element.do_action("click")
             else:
-                self._click_element_middle(matching, click_type)
+                self._click_element_middle(element, click_type)
         except NotImplementedError:
-            self._click_element_middle(matching, click_type)
+            self._click_element_middle(element, click_type)
 
     @keyword
     def call_element_action(self, locator: str, action: str):
@@ -1140,3 +1134,23 @@ class JavaAccessBridge:
         self.application_refresh()
 
         return self.pid
+
+    @keyword
+    def wait_until_element_exists(self, locator: str, timeout: int = 10):
+        elements = None
+        end_time = time.time() + float(timeout)
+        while time.time() <= end_time:
+            start_time = time.time()
+            elements = self._find_elements(locator)
+            if len(elements) > 0:
+                break
+            self.application_refresh()
+            # sleep at least a second per iteration
+            duration = time.time() - start_time
+            if duration < 1.0:
+                time.sleep(1.0 - duration)
+        if elements is None or len(elements) == 0:
+            # print element tree when result is not expected
+            self.print_element_tree()
+            raise ElementNotFound("Locator '%s' did not match any elements" % locator)
+        return elements
