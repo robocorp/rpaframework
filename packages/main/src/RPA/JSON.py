@@ -212,7 +212,7 @@ class JSON:
     expression used must return the same type, and when performing
     such functions between returned lists, each list must be the same
     length. An example is included in documentation for the keyword
-    \`Get values from JSON\`.
+    ``Get values from JSON``.
 
     Additional Information
     ^^^^^^^^^^^^^^^^^^^^^^

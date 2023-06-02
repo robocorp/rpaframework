@@ -1133,7 +1133,7 @@ class WorkItems:
         The current work item is used as the target by other keywords
         in this library.
 
-        Keywords \`Get Input Work Item\` and \`Create Output Work Item\`
+        Keywords ``Get Input Work Item`` and ``Create Output Work Item``
         set the active work item automatically, and return the created
         instance.
 
@@ -1341,8 +1341,8 @@ class WorkItems:
 
         **NOTE**: Most use cases should prefer higher-level keywords.
         Using this keyword may cause errors when getting the payload via
-        the normal \`Get work item variable\` and
-        \`Get work item variables\` keywords if you do not set the payload
+        the normal ``Get work item variable`` and
+        ``Get work item variables`` keywords if you do not set the payload
         to a ``dict``.
 
         Example:
