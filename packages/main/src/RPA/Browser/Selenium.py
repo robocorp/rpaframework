@@ -45,10 +45,10 @@ from SeleniumLibrary.keywords import (
 from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCreator
 from SeleniumLibrary.locators import ElementFinder
 
+from RPA.Browser.common import AUTO, auto_headless
 from RPA.core import notebook
 from RPA.core import webdriver as core_webdriver
 from RPA.core.locators import BrowserLocator, LocatorsDatabase
-from RPA.Browser.common import AUTO, get_headless_state
 from RPA.Robocorp.utils import get_output_dir
 
 
@@ -156,8 +156,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
 class Selenium(SeleniumLibrary):
     # NOTE(cmin764): The docstring below will be appended (and not overridding) the
     #  docstring of the super-class.
-    """
-    = Auto closing browser =
+    """= Auto closing browser =
 
     By default, the browser instances created during a task execution are closed
     at the end of the task. This can be prevented with the ``auto_close``
@@ -166,6 +165,8 @@ class Selenium(SeleniumLibrary):
     The value of the parameter needs to be set to ``False`` or any object evaluated as
     false (see `Boolean arguments`).
     """  # noqa: E501
+
+    __doc__ = f"{SeleniumLibrary.__doc__}\n{__doc__}"
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
@@ -310,6 +311,7 @@ class Selenium(SeleniumLibrary):
         )
 
     @keyword
+    @auto_headless
     def open_available_browser(
         self,
         url: Optional[str] = None,
@@ -468,7 +470,6 @@ class Selenium(SeleniumLibrary):
         # pylint: disable=redefined-argument-from-local
         browsers = self._arg_browser_selection(browser_selection)
         downloads = self._arg_download(download)
-        headless = get_headless_state(headless)
 
         attempts = []
         index_or_alias = None
@@ -943,7 +944,7 @@ class Selenium(SeleniumLibrary):
         self,
         url: str,
         use_profile: bool = False,
-        headless: bool = False,
+        headless: Union[bool, str] = AUTO,
         maximized: bool = False,
         alias: Optional[str] = None,
         profile_name: Optional[str] = None,
@@ -2163,6 +2164,3 @@ class Selenium(SeleniumLibrary):
         """
         element = self.find_element(locator, parent=parent)
         return element.shadow_root if shadow else element
-
-
-Selenium.__doc__ = SeleniumLibrary.__doc__ + Selenium.__doc__

@@ -1,5 +1,4 @@
 import functools
-from typing import Union
 
 try:
     from Browser import Browser
@@ -9,20 +8,27 @@ except (ModuleNotFoundError, ImportError) as exc:
         "instructions: https://rpaframework.org/libraries/browser_playwright/"
         "index.html#install-instructions"
     ) from exc
-
 from Browser.keywords import PlaywrightState
 
-from RPA.Browser.common import AUTO, get_headless_state
+from RPA.Browser.common import auto_headless
 
 
 class RobocorpPlaywrightState(PlaywrightState):
-    @functools.wraps(PlaywrightState.open_browser)
-    def open_browser(self, *args, headless: Union[bool, str] = AUTO, **kwargs):
-        headless = get_headless_state(headless)
-        super().open_browser(*args, headless=headless, **kwargs)
+    """Automatic headless detection is supported when opening a new browser."""
+
+    __doc__ = f"{PlaywrightState.__doc__}\n{__doc__}"
+
+    open_browser = auto_headless(PlaywrightState.open_browser)
+    new_browser = auto_headless(PlaywrightState.new_browser)
+    new_persistent_context = auto_headless(PlaywrightState.new_persistent_context)
 
 
+# pylint: disable=missing-class-docstring
 class Playwright(Browser):
+    """Automatic headless detection is supported when opening a new browser."""
+
+    __doc__ = f"{Browser.__doc__}\n{__doc__}"
+
     @functools.wraps(Browser.__init__)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
