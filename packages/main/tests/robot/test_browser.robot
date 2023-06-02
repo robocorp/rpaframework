@@ -5,7 +5,7 @@ Library             RPA.FileSystem
 Library             RPA.RobotLogListener
 
 Suite Setup         Open Available Browser    about:blank    headless=${True}
-...    browser_selection=Chrome
+...                     browser_selection=Chrome
 Suite Teardown      Close All Browsers
 
 Default Tags        rpa.browser
@@ -17,34 +17,8 @@ ${RESULTS}          ${CURDIR}${/}..${/}results
 ${BROWSER_DATA}     ${RESULTS}${/}browser
 ${LOCATORS}         ${RESOURCES}${/}locators.json
 ${ALERT_HTML}       file://${RESOURCES}${/}alert.html
-${USER_AGENT}       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1337.0.0.0 Safari/1337.36
-
-
-*** Keywords ***
-My Custom Keyword
-    Get Value    id:notexist
-
-Create Browser Data Directory
-    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
-    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
-    RETURN    ${data_dir}
-
-Download With Specific Browser
-    [Arguments]     ${browser}
-    Close Browser
-
-    Set Download Directory    ${OUTPUT_DIR}
-    Open Available Browser    https://robocorp.com/docs/security
-    ...    browser_selection=${browser}
-    ...    headless=${True}    # PDF downloading now works in headless as well
-    Click Link    Data protection whitepaper
-
-    ${file_path} =    Set Variable
-    ...     ${OUTPUT_DIR}${/}security-and-data-protection-whitepaper.pdf
-    Wait Until Keyword Succeeds    3x    1s    File Should Exist    ${file_path}
-
-    [Teardown]    Run Keyword And Ignore Error
-    ...    RPA.FileSystem.Remove File    ${file_path}
+${USER_AGENT}
+...                 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1337.0.0.0 Safari/1337.36
 
 
 *** Tasks ***
@@ -61,8 +35,11 @@ Does alert not contain
     Handle Alert    DISMISS
 
 Screenshot Robocorp Google search result
+    [Tags]    skip
     # NOTE(cmin764): As of 19.05.2023 this test passes in CI, Mac, Windows and
-    #  Control Room, without any consent popup blocker.
+    #    Control Room, without any consent popup blocker.
+    # NOTE(mikahanninen): Skipped on 02.06.2023 as this fails on
+    # local build on consent form which for me is also using Finnish Google site.
     Go To    www.google.com
     Wait Until Element Is Visible    q
 
@@ -113,7 +90,7 @@ Download PDF in custom Chrome directory
     Download With Specific Browser    Chrome
 
 Download PDF in custom Firefox directory
-    [Tags]    skip  # no support for the Firefox browser in CI
+    [Tags]    skip    # no support for the Firefox browser in CI
     Download With Specific Browser    Firefox
 
 Highlight elements
@@ -143,8 +120,8 @@ Open In Incognito With Custom Options
     ...    profile directory.
     [Setup]    Close Browser
     # NOTE(cmin764): In CI, Chrome may attract a buggy webdriver which makes the custom
-    #  profile usage to break in headless mode. (unknown error: unable to discover open
-    #  pages)
+    #    profile usage to break in headless mode. (unknown error: unable to discover open
+    #    pages)
 #    [Tags]    skip
 
     ${data_dir} =    Create Browser Data Directory
@@ -182,33 +159,60 @@ Open Browser With Dict Options
 Get and set an attribute
     [Setup]    Go To    https://robotsparebinindustries.com/
 
-    ${button_locator} =     Set Variable    xpath://button[@type="submit"]
-    ${button} =     Get WebElement    ${button_locator}
-    ${class} =      Get Element Attribute    ${button}    class
+    ${button_locator} =    Set Variable    xpath://button[@type="submit"]
+    ${button} =    Get WebElement    ${button_locator}
+    ${class} =    Get Element Attribute    ${button}    class
     Should Be Equal    ${class}    btn btn-primary
 
-    Set Element Attribute    ${button}    class     btn btn-secondary
-    ${class} =      Get Element Attribute    ${button_locator}    class
+    Set Element Attribute    ${button}    class    btn btn-secondary
+    ${class} =    Get Element Attribute    ${button_locator}    class
     Should Be Equal    ${class}    btn btn-secondary
 
 Set user agent with CDP command
-    &{params} =     Create Dictionary   userAgent   ${USER_AGENT}
-    Execute CDP     Network.setUserAgentOverride    ${params}
-    Go To   https://robocorp.com
+    &{params} =    Create Dictionary    userAgent    ${USER_AGENT}
+    Execute CDP    Network.setUserAgentOverride    ${params}
+    Go To    https://robocorp.com
 
 Test enhanced clicking
-    [Setup]     Go To    ${ALERT_HTML}
+    [Setup]    Go To    ${ALERT_HTML}
 
     Click Element When Clickable    //button
     Does Alert Contain    after
 
 Test Shadow Root
-    [Setup]     Is Alert Present
-    [Tags]    skip  # flaky test during async runs
+    [Tags]    skip    # flaky test during async runs
+    [Setup]    Is Alert Present
 
-    Go To   http://watir.com/examples/shadow_dom.html
+    Go To    http://watir.com/examples/shadow_dom.html
 
     ${shadow_elem} =    Get WebElement    css:#shadow_host    shadow=${True}
     ${elem} =    Get WebElement    css:#shadow_content    parent=${shadow_elem}
     ${text} =    Get Text    ${elem}
     Should Be Equal    ${text}    some text
+
+
+*** Keywords ***
+My Custom Keyword
+    Get Value    id:notexist
+
+Create Browser Data Directory
+    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
+    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
+    RETURN    ${data_dir}
+
+Download With Specific Browser
+    [Arguments]    ${browser}
+    Close Browser
+
+    Set Download Directory    ${OUTPUT_DIR}
+    Open Available Browser    https://robocorp.com/docs/security
+    ...    browser_selection=${browser}
+    ...    headless=${True}    # PDF downloading now works in headless as well
+    Click Link    Data protection whitepaper
+
+    ${file_path} =    Set Variable
+    ...    ${OUTPUT_DIR}${/}security-and-data-protection-whitepaper.pdf
+    Wait Until Keyword Succeeds    3x    1s    File Should Exist    ${file_path}
+
+    [Teardown]    Run Keyword And Ignore Error
+    ...    RPA.FileSystem.Remove File    ${file_path}
