@@ -2,7 +2,7 @@ import base64
 import logging
 from typing import List, Optional, Union
 from pathlib import Path
-from O365 import (
+from O365 import (  # pylint: disable=no-name-in-module
     Account,
     MSGraphProtocol,
     FileSystemTokenBackend,
@@ -380,7 +380,7 @@ class MSGraph:
         You can pass none to get all scopes. Basic is included
         in all other scopes. The provided object can be passed
         to the ``scopes`` parameter when calling
-        \`Generate OAuth Authorization URL\`.
+        ``Generate OAuth Authorization URL``.
 
         * ``basic``
         * ``mailbox``
@@ -432,14 +432,14 @@ class MSGraph:
         """Generates an authorization URL which must be opened
         by the user to complete the OAuth flow. If no scopes
         are provided, the default scope is used which is all
-        scopes defined in the \`Get Scopes\` keyword.
+        scopes defined in the ``Get Scopes`` keyword.
 
         :param client_id: Application client ID.
         :param client_secret: Application client secret.
         :param redirect_uri: Can be provided with client ID and client
          secret if not using the default.
         :param scopes: A list of scopes in the form required by the
-         API. Use the helper function \`Get scopes\`.
+         API. Use the helper function ``Get scopes``.
         :return: The URL the user must follow to complete their portion
          of the OAuth flow.
         """  # noqa: W605
@@ -464,7 +464,7 @@ class MSGraph:
     def authorize_and_get_token(self, authorization_url: str) -> str:
         # pylint: disable=anomalous-backslash-in-string
         """Exchanges the OAuth authorization URL obtained from
-        \`Generate OAuth Authorization URL\` for an access token. This
+        ``Generate OAuth Authorization URL`` for an access token. This
         library maintains the user access token for current requests
         and returns the refresh token to be stored in a secure location
         (e.g., the Robocorp Control Room Vault).
@@ -548,7 +548,7 @@ class MSGraph:
         based on the provided search string.
 
         ``User`` objects have additional properties that can be accessed
-        with dot-notation, see \`Get Me\` for additional details.
+        with dot-notation, see ``Get Me`` for additional details.
 
         :param search_string: Text to search for.
         :param search_field: Where to search. Defaults to display name.
@@ -720,11 +720,11 @@ class MSGraph:
         """Returns a list of files found in OneDrive based on the search string.
         If a folder is not specified, the search is done in the entire drive and
         may include items that were shared with the user. It is possible to pass
-        \`root\` as the target folder in order to avoid this behavior.
+        ``root`` as the target folder in order to avoid this behavior.
 
         The files returned are ``DriveItem`` objects and they have additional
         properties that can be accessed with dot-notation, see
-        \`List Files In Onedrive Folder\` for details.
+        ``List Files In Onedrive Folder`` for details.
 
         :param search_string: String used to search for file in Onedrive.
          Values may be matched across several fields including filename,
@@ -809,7 +809,7 @@ class MSGraph:
 
         The uploaded file is returned as a ``DriveItem`` object and it has
         additional properties that can be accessed with dot-notation, see
-        \`List Files In Onedrive Folder\` for details.
+        ``List Files In Onedrive Folder`` for details.
 
         :param file_path: Path of the local file being uploaded.
         :param target_folder: Path of the folder in Onedrive.
@@ -899,7 +899,7 @@ class MSGraph:
         is found by it's display name.
 
         :param list_name: Display name of the SharePoint list.
-        :param site: Site instance obtained from \`Get Sharepoint Site\`.
+        :param site: Site instance obtained from ``Get Sharepoint Site``.
         :return: Table or list of dicts of the items.
 
         .. code-block: robotframework
@@ -925,7 +925,7 @@ class MSGraph:
         """Creates a sharepoint list and returns the instance.
 
         :param list_data: Dictionary with the data for the new list.
-        :param site: Site instance obtained from \`Get Sharepoint Site\`.
+        :param site: Site instance obtained from ``Get Sharepoint Site``.
         :return: SharePoint List that was created.
 
         ``SharepointList`` objects have additional properties that can be accessed
@@ -959,7 +959,7 @@ class MSGraph:
         # pylint: disable=anomalous-backslash-in-string
         """Get a list of Drives available in the SharePoint Site.
 
-        :param site: Site instance obtained from \`Get Sharepoint Site\`.
+        :param site: Site instance obtained from ``Get Sharepoint Site``.
         :return: List of Drives present in the SharePoint Site.
 
         .. code-block: robotframework
@@ -991,13 +991,13 @@ class MSGraph:
 
         If the ``drive`` is not set, the default Document Library
         will be used. The ``drive`` can be obtained from the keyword
-        \`List Sharepoint Site Drives\`.
+        ``List Sharepoint Site Drives``.
 
         The files returned are ``DriveItem`` objects and they have additional
         properties that can be accessed with dot-notation, see
-        \`List Files In Onedrive Folder\` for details.
+        ``List Files In Onedrive Folder`` for details.
 
-        :param site: Site instance obtained from \`Get Sharepoint Site\`.
+        :param site: Site instance obtained from ``Get Sharepoint Site``.
         :param include_folders: Boolean indicating if should return folders
          as well.
         :param drive: A ``Drive`` object or Drive ID as a string. If not
@@ -1036,7 +1036,7 @@ class MSGraph:
         The downloaded file will be saved to a local folder.
 
         :param target_file: ``DriveItem`` or file path of the desired file.
-        :param site: Site instance obtained from \`Get Sharepoint Site\`.
+        :param site: Site instance obtained from ``Get Sharepoint Site``.
         :param to_path: Destination folder of the downloaded file,
          defaults to the current directory.
         :param name: New name for the downloaded file, with or without extension.
