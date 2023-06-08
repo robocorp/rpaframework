@@ -1342,7 +1342,7 @@ class Assistant:
 
     def _close_layouting_element(self, layouting_element: str):
         """Check if the last opened layout element matches what is being closed,
-        otherwise raise ValueError. If the check passes, close the layout element.
+        otherwise raise `ValueError`. If the check passes, close the layout element.
         """
         if not self._open_layouting:
             raise LayoutError(f"Cannot close {layouting_element}, no open layout")
