@@ -1269,14 +1269,28 @@ class Assistant:
     @keyword(tags=["dialog", "running"])
     def add_loading_spinner(
         self,
-        name,
-        width=16,
-        height=16,
-        stroke_width=2,
-        color=None,
-        tooltip=None,
-        value=None,
+        name: str,
+        width: int = 16,
+        height: int = 16,
+        stroke_width: int = 2,
+        color: Optional[str] = None,
+        tooltip: Optional[str] = None,
+        value: Optional[float] = None,
     ):
+        """Add a loading spinner.
+
+        :param name:        Name of the element
+        :param width:       Width of the spinner
+        :param height:      Height of the spinner
+        :param stroke_width: Width of the spinner's stroke
+        :param color:       Color of the spinner's stroke.
+                            Allowed values are colors from
+                            [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
+                            or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+        :param tooltip:     Tooltip to be displayed on mouse hover.
+        :param value:       Between 0.0 and 1.0 if you want to manually control it's completion.
+                            If `None` it will spin endlessy.
+        """
         pr = flet.ProgressRing(
             width=width,
             height=height,
@@ -1290,8 +1304,27 @@ class Assistant:
 
     @keyword(tags=["dialog", "running"])
     def add_loading_bar(
-        self, name, width=16, bar_height=16, color=None, tooltip=None, value=None
+        self,
+        name: str,
+        width: int = 16,
+        bar_height: int = 16,
+        color: Optional[str] = None,
+        tooltip: Optional[str] = None,
+        value: Optional[float] = None,
     ):
+        """Add a loading bar.
+
+        :param name:        Name of the element
+        :param width:       Width of the bar
+        :param bar_height:  Height of the bar
+        :param color:       Color of the bar's stroke.
+                            Allowed values are colors from
+                            [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
+                            or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+        :param tooltip:     Tooltip to be displayed on mouse hover.
+        :param value:       Between 0.0 and 1.0 if you want to manually control it's completion.
+                            Use `None` for indeterminate progress indicator.
+        """
         pb = flet.ProgressBar(
             width=width,
             bar_height=bar_height,
