@@ -1285,14 +1285,13 @@ class Assistant:
         :param stroke_width: Width of the spinner's stroke
         :param color:       Color of the spinner's stroke.
                             Allowed values are colors from
-                            # noqa: E731
                             [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
                             or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
         :param tooltip:     Tooltip to be displayed
                             on mouse hover.
         :param value:       Between 0.0 and 1.0 if you want to manually control it's completion.
                             If `None` it will spin endlessy.
-        """
+        """  # noqa: E501
         pr = flet.ProgressRing(
             width=width,
             height=height,
@@ -1321,13 +1320,12 @@ class Assistant:
         :param bar_height:  Height of the bar
         :param color:       Color of the bar's stroke.
                             Allowed values are colors from
-                            # noqa: E731
                             [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
                             or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
         :param tooltip:     Tooltip to be displayed on mouse hover.
         :param value:       Between 0.0 and 1.0 if you want to manually control it's completion.
                             Use `None` for indeterminate progress indicator.
-        """
+        """  # noqa: E501
         pb = flet.ProgressBar(
             width=width,
             bar_height=bar_height,
