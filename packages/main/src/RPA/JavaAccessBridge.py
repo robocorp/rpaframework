@@ -24,7 +24,10 @@ def get_scaled_coordinate(coordinate, scaling_factor):
 
 
 if platform.system() == "Windows":  # noqa: C901
-    from RPA.Windows import Windows
+    try:
+        from RPA.Windows import Windows
+    except ImportError:
+        Windows = object()
     import ctypes
     from ctypes import wintypes, byref
     from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
