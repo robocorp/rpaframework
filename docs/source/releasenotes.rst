@@ -13,7 +13,7 @@ Release notes
 
   - Add new elements with ``Add Loading Spinner`` and ``Add Loading Bar``.
 
-23.3.0 - 08 Jun 2023
+23.3.0 - 09 Jun 2023
 --------------------
 
 - Library **RPA.MSGraph** (:pr:`980`):
