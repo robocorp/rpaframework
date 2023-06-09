@@ -2803,14 +2803,14 @@ jeepney = ">=0.6"
 
 [[package]]
 name = "selenium"
-version = "4.10.0"
+version = "4.9.1"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "selenium-4.10.0-py3-none-any.whl", hash = "sha256:40241b9d872f58959e9b34e258488bf11844cd86142fd68182bd41db9991fc5c"},
-    {file = "selenium-4.10.0.tar.gz", hash = "sha256:871bf800c4934f745b909c8dfc7d15c65cf45bd2e943abd54451c810ada395e3"},
+    {file = "selenium-4.9.1-py3-none-any.whl", hash = "sha256:82aedaa85d55bc861f4c89ff9609e82f6c958e2e1e3da3ffcc36703f21d3ee16"},
+    {file = "selenium-4.9.1.tar.gz", hash = "sha256:3444f4376321530c36ce8355b6b357d8cf4a7d588ce5cf772183465930bbed0e"},
 ]
 
 [package.dependencies]
@@ -3655,4 +3655,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "378d81c4ddd498f4c7e8b231c33c62b495b63c0c955e864cc7f3eed63dce0f6f"
+content-hash = "eea03a68a984c4acc51df65f8e4d86d315c307a0379568d809aac500998a25c4"
