@@ -23,11 +23,12 @@ def get_scaled_coordinate(coordinate, scaling_factor):
     return int(coordinate * scaling_factor)
 
 
-if platform.system() == "Windows":
-    from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
-    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
+if platform.system() == "Windows":  # noqa: C901
+    from RPA.Windows import Windows
     import ctypes
     from ctypes import wintypes, byref
+    from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
+    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
 
     # Configure comtypes to not generate DLL bindings into
     # current environment, instead keeping them in memory.
@@ -399,6 +400,7 @@ class JavaAccessBridge:
         self.display_scale_factor = ScalingFactor
         self.ignore_callbacks = ignore_callbacks
         self.pid = None
+        self.windows = Windows()
 
     def _initialize(self):
         pipe = queue.Queue()
@@ -1125,15 +1127,23 @@ class JavaAccessBridge:
             self.version_printed = True
 
         if bring_foreground:
+            self._bring_window_to_foreground(title, pid)
+
+        self.application_refresh()
+
+        return self.pid
+
+    def _bring_window_to_foreground(self, title, pid):
+        if title:
+            self.windows.foreground_window(title)
+        # TODO. need to implement reliable way to foreground
+        # correct window identifiable by the PID
+        if pid:
             handle = self.jab_wrapper.get_current_windows_handle()
             # pylint: disable=c-extension-no-member
             win32gui.ShowWindow(handle, win32con.SW_SHOW)
             # pylint: disable=c-extension-no-member
             win32gui.SetForegroundWindow(handle)
-
-        self.application_refresh()
-
-        return self.pid
 
     @keyword
     def wait_until_element_exists(self, locator: str, timeout: int = 10):
