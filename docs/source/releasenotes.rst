@@ -14,7 +14,7 @@ Release notes
 
 - Library **RPA.Assistant** 2.3.0 (:pr:`975`):
 
-  - Add new elements with `Add Loading Spinner` and `Add Loading Bar`.
+  - Add new elements with ``Add Loading Spinner`` and ``Add Loading Bar``.
 
 23.2.1 - 02 Jun 2023
 --------------------
