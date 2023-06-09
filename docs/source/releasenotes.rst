@@ -5,13 +5,16 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Assistant** 2.3.0:
-
-  - Add new elements with `Add Loading Spinner` and `Add Loading Bar`.
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+009 Jun 2023
+--------------------
+
+- Library **RPA.Assistant** 2.3.0 (:pr:`975`):
+
+  - Add new elements with `Add Loading Spinner` and `Add Loading Bar`.
 
 23.2.1 - 02 Jun 2023
 --------------------
