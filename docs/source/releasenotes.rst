@@ -5,13 +5,27 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 - Library **RPA.Assistant** 2.3.0:
 
   - Add new elements with ``Add Loading Spinner`` and ``Add Loading Bar``.
 
+23.3.0 - 08 Jun 2023
+--------------------
 
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+- Library **RPA.MSGraph** (:pr:`980`):
+
+  - Lock ``O365`` dependency to a version less than ``2.0.27`` for compatibility
+    with Python 3.7.
+
+- Security update: Bumps ``cryptography`` to version ``41.0.1``. (:issue:`979`)
+
+- Library **RPA.JavaAccessBridge**:
+
+  - Update ``java-access-bridge-wrapper`` to version ``0.12.0``
 
 23.2.1 - 02 Jun 2023
 --------------------
