@@ -9,7 +9,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-009 Jun 2023
+09 Jun 2023
 --------------------
 
 - Library **RPA.Assistant** 2.3.0 (:pr:`975`):
