@@ -28,7 +28,7 @@ Load Mocked Library
 
 *** Tasks ***
 Manage Assets
-    [Tags]    manual  # since it relies on a real working API key
+    [Tags]    manual  # since it relies on a real working API key not provided in CI
     [Setup]     Set Asset   cosmin      cosmin@robocorp.com
 
     @{assets} =    List Assets
