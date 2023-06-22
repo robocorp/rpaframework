@@ -210,6 +210,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Robocorp.Vault`_          | Use the Robocorp Secrets API                          | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `Robocorp.Storage`_        | Use the Robocorp Asset Storage API                    | x                      |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Salesforce`_              | Salesforce operations                                 | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `SAP`_                     | Control SAP GUI desktop client                        | x                      |
@@ -263,6 +265,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Robocorp.Process: https://rpaframework.org/libraries/robocorp_process/
 .. _Robocorp.WorkItems: https://rpaframework.org/libraries/robocorp_workitems/
 .. _Robocorp.Vault: https://rpaframework.org/libraries/robocorp_vault/
+.. _Robocorp.Storage: https://rpaframework.org/libraries/robocorp_storage/
 .. _Salesforce: https://rpaframework.org/libraries/salesforce/
 .. _SAP: https://rpaframework.org/libraries/sap/
 .. _Smartsheet: https://rpaframework.org/libraries/smartsheet/

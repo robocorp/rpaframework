@@ -87,6 +87,7 @@ Print page as PDF document
     ...    RPA.FileSystem.Remove File    ${output_path}
 
 Download PDF in custom Chrome directory
+    [Tags]    skip    # flaky test in CI, mainly on Windows with Python 3.7, 3.8
     Download With Specific Browser    Chrome
 
 Download PDF in custom Firefox directory
