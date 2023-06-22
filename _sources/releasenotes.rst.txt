@@ -9,6 +9,15 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+23.4.0 - 22 Jun 2023
+--------------------
+
+- Add new library **RPA.Robocorp.Storage** for managing assets within *Asset Storage*
+  in Control Room. (:issue:`957`)
+
+09 Jun 2023
+-----------
+
 - Library **RPA.Assistant** 2.3.0:
 
   - Add new elements with ``Add Loading Spinner`` and ``Add Loading Bar``.
