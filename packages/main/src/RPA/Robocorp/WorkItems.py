@@ -788,7 +788,7 @@ class WorkItems:
     .. code-block:: robotframework
 
         *** Tasks ***
-        Using Prased Emails
+        Using Parsed Emails
             ${mail} =    Get Work Item Variable    email
             Set Work Item Variables    &{mail}[body]
             ${message} =     Get Work Item Variable     message
