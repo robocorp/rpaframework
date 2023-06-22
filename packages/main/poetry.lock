@@ -1794,14 +1794,14 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.3.1)", "pytest-
 
 [[package]]
 name = "pluggy"
-version = "1.0.0"
+version = "1.2.0"
 description = "plugin and hook calling mechanisms for python"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "pluggy-1.0.0-py2.py3-none-any.whl", hash = "sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3"},
-    {file = "pluggy-1.0.0.tar.gz", hash = "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159"},
+    {file = "pluggy-1.2.0-py3-none-any.whl", hash = "sha256:c2fd55a7d7a3863cba1a013e4e2414658b1d07b6bc57b3919e0c63c9abb99849"},
+    {file = "pluggy-1.2.0.tar.gz", hash = "sha256:d12f0c4b579b15f5e054301bb226ee85eeeba08ffec228092f8defbaa3a4c4b3"},
 ]
 
 [package.dependencies]
@@ -2615,14 +2615,14 @@ docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "robocorp-storage"
-version = "0.1.1"
+version = "0.1.2"
 description = "Robocorp Asset Storage library"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "robocorp_storage-0.1.1-py3-none-any.whl", hash = "sha256:c3323784f7fd7a986eacdcbd7f2ee47203d26bb72040614b718e395bc594171e"},
-    {file = "robocorp_storage-0.1.1.tar.gz", hash = "sha256:e1ea2187c08f8165aa91df5832f596c5dc63e1a86fbe81baebf691a3755e347c"},
+    {file = "robocorp_storage-0.1.2-py3-none-any.whl", hash = "sha256:5659be950dd7c10c2d1856d20eba9257616f8d5c37853b13f646db1fe3950b41"},
+    {file = "robocorp_storage-0.1.2.tar.gz", hash = "sha256:1c3dd4c1eac7f84ec8a371b8c69de210c47cf7481acb1d5faafe253328419757"},
 ]
 
 [package.dependencies]
@@ -3371,14 +3371,14 @@ files = [
 
 [[package]]
 name = "tzlocal"
-version = "4.3"
+version = "4.3.1"
 description = "tzinfo object for the local timezone"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "tzlocal-4.3-py3-none-any.whl", hash = "sha256:b44c4388f3d34f25862cfbb387578a4d70fec417649da694a132f628a23367e2"},
-    {file = "tzlocal-4.3.tar.gz", hash = "sha256:3f21d09e1b2aa9f2dacca12da240ca37de3ba5237a93addfd6d593afe9073355"},
+    {file = "tzlocal-4.3.1-py3-none-any.whl", hash = "sha256:67d7e7f4ce0a98e9dfde2e02474c60fe846ed032d78b555c554c2e9cba472d84"},
+    {file = "tzlocal-4.3.1.tar.gz", hash = "sha256:ee32ef8c20803c19a96ed366addd3d4a729ef6309cb5c7359a0cc2eeeb7fa46a"},
 ]
 
 [package.dependencies]
@@ -3672,4 +3672,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "2e180b33db957abca684e589b35437fec10409f9cfffd4e404b3c1ea932e0440"
+content-hash = "5203e8b987d513519bc33817b06aadd7c574d0e264a3648d48da28858a88885c"
