@@ -302,7 +302,7 @@ adding a new library, so here's a list with all the areas of interest:
     the docs generation process will include only the resources collated in the central
     package, so you won't run into duplicates given such a split.
   - Finally, a library entry should be added under our private **documentation** repo
-    [config file](https://github.com/robocorp/documentation/blob/master/config/libraries.ts).
+    [config file](https://github.com/robocorp/documentation/blob/master/src/lib/libraries.ts).
 
 
 ### Linting & documentation
