@@ -6,7 +6,7 @@ from robot.api.deco import keyword, library
 
 @library
 class Storage:
-    """Control Room `Storage Asset` library operating with the cloud built-in key-value
+    """Control Room `Asset Storage` library operating with the cloud built-in key-value
     store.
 
     **Usage**
