@@ -59,7 +59,9 @@ if platform.system() == "Windows":  # noqa: C901
 
         name: str
         role: str
+        description: str
         states: list
+        ancestry: int
         checked: bool
         selected: bool
         visible: bool
@@ -75,6 +77,8 @@ if platform.system() == "Windows":  # noqa: C901
         text: str
         column_count: int
         visible_children: list
+        visible_children_count: int
+        index_in_parent: int
 
         def __init__(
             self,
@@ -87,7 +91,9 @@ if platform.system() == "Windows":  # noqa: C901
             scaling_factor = scaling_factor or ScalingFactor
             self.name = node.context_info.name
             self.role = node.context_info.role
+            self.description = node.context_info.description
             self.states = node.context_info.states.split(",")
+            self.ancestry = node.ancestry
             self.checked = "checked" in self.states
             self.selected = "selected" in self.states
             self.visible = "visible" in self.states
@@ -105,6 +111,8 @@ if platform.system() == "Windows":  # noqa: C901
             self.center_y = self.y + int(self.height / 2)
             self.text = node.text._items.sentence
             self.visible_children = node.get_visible_children()
+            self.visible_children_count = node.visible_children_count
+            self.index_in_parent = node.context_info.indexInParent
             self.column_count = column_count or len(self.visible_children)
             if self.column_count > 0:
                 self.row = (
@@ -134,6 +142,28 @@ if platform.system() == "Windows":  # noqa: C901
             for c in text:
                 DESKTOP.press_keys(c)
 
+        def __str__(self):
+            string = (
+                f"name={self.name}; "
+                f"role={self.role}; "
+                f"enabled={self.enabled}; "
+                f"visible={self.visible}; "
+                f"selected={self.selected}; "
+                f"checked={self.checked}; "
+                f"description={self.description}; "
+                f"ancestry={self.ancestry}; "
+                f"states={self.states}; "
+                f"x={self.x}; "
+                f"y={self.y}; "
+                f"width={self.width}; "
+                f"height={self.height}; "
+                f"center_x={self.center_x}; "
+                f"center_y={self.center_y}; "
+                f"indexInParent={self.index_in_parent}; "
+                f"childrentCount={self.visible_children_count};"
+            )
+            return string
+
     LocatorType = Union[ContextNode, JavaElement, str]
 else:
     ScalingFactor = 1.0
@@ -154,7 +184,15 @@ class InvalidLocatorError(AttributeError):
     """Invalid locator string."""
 
 
-IntegerLocatorTypes = ["x", "y", "width", "height", "indexInParent", "childrentCount"]
+IntegerLocatorTypes = [
+    "x",
+    "y",
+    "width",
+    "height",
+    "indexInParent",
+    "ancestry",
+    "childrentCount",
+]
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -167,13 +205,16 @@ class JavaAccessBridge:
 
     **Inspecting elements**
 
-    The recommended tool for inspecting Java application is:
+    At the moment the recommended tool for inspecting Java application is:
 
         Google's `Access Bridge Explorer`_
 
     The `Accessibility Insights for Windows`_ can show element properties if application framework
     supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_. Then recommended
     library would be `RPA.Windows`_ library.
+
+    As an alternative way of inspecting Java application we have implemented `Assistant robot`_, which
+    can be used to find locators and also test them against real Java application.
 
     **Steps to enable**
 
@@ -193,6 +234,7 @@ class JavaAccessBridge:
 
     .. _Java Access Bridge technology: https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html
     .. _java-access-bridge-wrapper: https://github.com/robocorp/java-access-bridge-wrapper
+    .. _Assistant robot: https://github.com/robocorp/working-with-java
 
     **About Java wrapper callbacks and actions**
 
@@ -903,6 +945,7 @@ class JavaAccessBridge:
         """Print current element into log and possibly into a file
 
         :param filename: filepath to save element tree
+        :return: element tree
         """
         tree = repr(self.context_info_tree)
         self.logger.info(tree)
@@ -910,6 +953,22 @@ class JavaAccessBridge:
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(tree)
             self.logger.info("Context tree written to file '%s'", filename)
+        return tree
+
+    @keyword
+    def print_locator_tree(self, filename: str = None):
+        """Print current Java window locator list into log and possibly
+        into a file.
+
+        :param filename: filepath to save locator tree
+        :return: locator tree
+        """
+        tree = self.context_info_tree.get_library_locator_tree_as_text()
+        self.logger.info(tree)
+        if filename:
+            with open(filename, "w", encoding="utf-8") as f:
+                f.write(tree)
+            self.logger.info("Locator tree written to file '%s'", filename)
         return tree
 
     @keyword
