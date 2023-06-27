@@ -203,13 +203,15 @@ set self.__traceback__ to tb and return self.</p>
 <p>The library utilizes <a class="reference external" href="https://github.com/robocorp/java-access-bridge-wrapper">java-access-bridge-wrapper</a> package to interact with
 Java UI. Currently only the 64-bit Windows OS is supported.</p>
 <p><strong>Inspecting elements</strong></p>
-<p>The recommended tool for inspecting Java application is:</p>
+<p>At the moment the recommended tool for inspecting Java application is:</p>
 <blockquote>
 <div><p>Google’s <a class="reference external" href="https://github.com/google/access-bridge-explorer">Access Bridge Explorer</a></p>
 </div></blockquote>
 <p>The <a class="reference external" href="https://accessibilityinsights.io/en/downloads/">Accessibility Insights for Windows</a> can show element properties if application framework
 supports Windows UI Automation (UIA), see more at <a class="reference external" href="https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java">using Accessibility Insights</a>. Then recommended
 library would be <a class="reference external" href="https://robocorp.com/docs/libraries/rpa-framework/rpa-windows">RPA.Windows</a> library.</p>
+<p>As an alternative way of inspecting Java application we have implemented <a class="reference external" href="https://github.com/robocorp/working-with-java">Assistant robot</a>, which
+can be used to find locators and also test them against real Java application.</p>
 <p><strong>Steps to enable</strong></p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -616,6 +618,24 @@ Java process by.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> – filepath to save element tree</p>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>element tree</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.print_locator_tree">
+<span class="sig-name descname"><span class="pre">print_locator_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.print_locator_tree" title="Permalink to this definition"></a></dt>
+<dd><p>Print current Java window locator list into log and possibly
+into a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – filepath to save locator tree</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>locator tree</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -844,6 +864,11 @@ given timeout or raises <code class="docutils literal notranslate"><span class="
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstraction for Java object properties</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.ancestry">
+<span class="sig-name descname"><span class="pre">ancestry</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.ancestry" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.checked">
 <span class="sig-name descname"><span class="pre">checked</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.checked" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -864,6 +889,11 @@ given timeout or raises <code class="docutils literal notranslate"><span class="
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.description" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.enabled">
 <span class="sig-name descname"><span class="pre">enabled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.enabled" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -871,6 +901,11 @@ given timeout or raises <code class="docutils literal notranslate"><span class="
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.height">
 <span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.height" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.index_in_parent">
+<span class="sig-name descname"><span class="pre">index_in_parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.index_in_parent" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -926,6 +961,11 @@ given timeout or raises <code class="docutils literal notranslate"><span class="
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.visible_children">
 <span class="sig-name descname"><span class="pre">visible_children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.visible_children" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.visible_children_count">
+<span class="sig-name descname"><span class="pre">visible_children_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.visible_children_count" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

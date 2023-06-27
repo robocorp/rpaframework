@@ -9,6 +9,14 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+23.5.0 - 27 Jun 2023
+--------------------
+
+- Library **RPA.JavaAccessBridge**:
+
+  - Update ``java-access-bridge-wrapper`` to version ``0.13.0``
+
+
 23.4.0 - 22 Jun 2023
 --------------------
 
