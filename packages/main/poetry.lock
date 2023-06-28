@@ -1053,14 +1053,14 @@ testing = ["flake8 (<5)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-chec
 
 [[package]]
 name = "java-access-bridge-wrapper"
-version = "0.13.0"
+version = "0.14.1"
 description = "Python wrapper for the Windows Java Access Bridge"
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4.0.0"
 files = [
-    {file = "java_access_bridge_wrapper-0.13.0-py3-none-any.whl", hash = "sha256:0eec4f507ee11453a6f5dbd883ecf4252d2b46bb03035046def0de3ab37653d2"},
-    {file = "java_access_bridge_wrapper-0.13.0.tar.gz", hash = "sha256:7e473e9c2156008b74f9a3c34c0ad5e48ce4e2282e335bce2c9c88422dd9ae10"},
+    {file = "java_access_bridge_wrapper-0.14.1-py3-none-any.whl", hash = "sha256:5e3a5afbb5a42a50d33b355ad74b7fe1e1109c4f7a90c363ec49542fcd605806"},
+    {file = "java_access_bridge_wrapper-0.14.1.tar.gz", hash = "sha256:8ee085b6257b23037e84c0572821e636402b14450ec7d396b0b04ab85ce40476"},
 ]
 
 [package.dependencies]
@@ -2108,14 +2108,14 @@ files = [
 
 [[package]]
 name = "pypdf"
-version = "3.11.0"
+version = "3.11.1"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pypdf-3.11.0-py3-none-any.whl", hash = "sha256:4f1fd2c1ee05e381e05447152d9e993016666647578fcdd7cf15739d13536861"},
-    {file = "pypdf-3.11.0.tar.gz", hash = "sha256:2f5b9b28763234427cd6e525795e583aae7e36a79bdadd48ba8ab5277c12182a"},
+    {file = "pypdf-3.11.1-py3-none-any.whl", hash = "sha256:2afc8914355a784fb184f60ae82fe10f9b992aa0733b705f0746966e470f98bd"},
+    {file = "pypdf-3.11.1.tar.gz", hash = "sha256:198c4d0231525d0b730cbbd11a5fc7d9a2e410dfc8ae2928c8de000b7ef149c5"},
 ]
 
 [package.dependencies]
@@ -3672,4 +3672,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "474e7d7d34053a74a62f1cb9892aff2b556c27644e53e02f8aef2315a9f61fdd"
+content-hash = "63850cc4be282fe2560ca3e8bc8ff3510f1569cdfb0034a5e4fd77c346390b40"
