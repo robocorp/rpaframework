@@ -66,6 +66,8 @@ if platform.system() == "Windows":  # noqa: C901
         selected: bool
         visible: bool
         enabled: bool
+        showing: bool
+        focusable: bool
         states_string: str
         x: int
         y: int
@@ -98,6 +100,8 @@ if platform.system() == "Windows":  # noqa: C901
             self.selected = "selected" in self.states
             self.visible = "visible" in self.states
             self.enabled = "enabled" in self.states
+            self.showing = "showing" in self.states
+            self.focusable = "focusable" in self.states
             self.node = node
             self.internal = internal_node
             self.states_string = node.context_info.states
@@ -150,6 +154,8 @@ if platform.system() == "Windows":  # noqa: C901
                 f"visible={self.visible}; "
                 f"selected={self.selected}; "
                 f"checked={self.checked}; "
+                f"showing={self.checked}; "
+                f"focusable={self.checked}; "
                 f"description={self.description}; "
                 f"ancestry={self.ancestry}; "
                 f"states={self.states}; "
@@ -956,6 +962,22 @@ class JavaAccessBridge:
         return tree
 
     @keyword
+    def get_locator_tree(self):
+        """Return Java locator tree as list of objects.
+
+        Mostly relevant object properties are:
+
+            - ancestry
+            - role
+            - name
+            - description
+            - indexInParent
+
+        :return: list of objects
+        """
+        return self.context_info_tree.get_search_element_tree()
+
+    @keyword
     def print_locator_tree(self, filename: str = None):
         """Print current Java window locator list into log and possibly
         into a file.
@@ -963,7 +985,15 @@ class JavaAccessBridge:
         :param filename: filepath to save locator tree
         :return: locator tree
         """
-        tree = self.context_info_tree.get_library_locator_tree_as_text()
+        search_tree = self.get_locator_tree()
+        tree = "\n".join(
+            [
+                f"{'| ' * item.ancestry}role:{item.role} and name:{item.name} and "
+                f"description:{item.description} "
+                f"and indexInParent:{item.indexInParent}"
+                for item in search_tree
+            ]
+        )
         self.logger.info(tree)
         if filename:
             with open(filename, "w", encoding="utf-8") as f:

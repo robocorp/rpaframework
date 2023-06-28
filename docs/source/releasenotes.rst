@@ -9,12 +9,20 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+23.5.1 - 28 Jun 2023
+--------------------
+
+- Library **RPA.JavaAccessBridge**:
+
+  - Update and pin ``java-access-bridge-wrapper`` to version ``0.14.1``
+
 23.5.0 - 27 Jun 2023
 --------------------
 
 - Library **RPA.JavaAccessBridge**:
 
   - Update ``java-access-bridge-wrapper`` to version ``0.13.0``
+  - Add keyword ``Print Locator Tree``
 
 
 23.4.0 - 22 Jun 2023
