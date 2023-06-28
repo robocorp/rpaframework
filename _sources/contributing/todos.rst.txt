@@ -118,9 +118,9 @@ RPA.JavaAccessBridge:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "412", "add keyword for taking screenshots of elements and window"
-   "413", "implement proper XPath syntax support"
-   "1201", "need to implement reliable way to foreground"
+   "418", "add keyword for taking screenshots of elements and window"
+   "419", "implement proper XPath syntax support"
+   "1231", "need to implement reliable way to foreground"
 
 RPA.MSGraph:
 ============
