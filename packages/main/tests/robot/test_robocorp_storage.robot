@@ -22,7 +22,6 @@ Load Mocked Library
     ${secret} =    Get Secret    asset_storage
 
     Set Environment Variable    RC_API_URL_V1   ${secret}[api_url]
-    Set Environment Variable    RC_API_KEY      ${secret}[api_key]
     Set Environment Variable    RC_WORKSPACE_ID     ${secret}[workspace_id]
 
 
