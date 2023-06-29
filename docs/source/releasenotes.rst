@@ -5,11 +5,15 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Robocorp.Storage**: Add support for using Assets in VSCode
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+23.5.2 - 29 Jun 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage**: Add support for using Assets in VSCode
+
 
 23.5.1 - 28 Jun 2023
 --------------------
