@@ -14,7 +14,6 @@ Release notes
 
 - Library **RPA.Robocorp.Storage**: Add support for using Assets in VSCode
 
-
 23.5.1 - 28 Jun 2023
 --------------------
 
