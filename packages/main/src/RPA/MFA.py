@@ -50,7 +50,7 @@ class MFA:
     """**RPA.MFA** is a library intended mainly for generating one-time passwords (OTP)
     and not only, as OAuth2 support was introduced lately.
 
-    Available with **rpaframework** version: 19.4.0
+    Library requires at the minimum `rpaframework` version **19.4.0**.
 
     Based on the `pyotp <https://pypi.org/project/pyotp/>`_ and
     `requests_oauthlib <https://pypi.org/project/requests-oauthlib/>`_ packages. It

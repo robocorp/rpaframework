@@ -17,7 +17,7 @@ class Base64AI:
     """Library to support `Base64.ai <https://base64.ai/>`_ service for intelligent
     document processing (IDP).
 
-    Added with `rpaframework` version **19.0.0**.
+    Library requires at the minimum `rpaframework` version **19.0.0**.
 
     Service supports identifying fields in the documents, which can be given to the
     service in multiple different file formats and via URL.

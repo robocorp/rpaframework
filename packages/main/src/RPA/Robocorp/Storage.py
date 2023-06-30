@@ -9,6 +9,8 @@ class Storage:
     """Control Room `Asset Storage` library operating with the cloud built-in key-value
     store.
 
+    Library requires at the minimum `rpaframework` version **23.5.2**.
+
     **Usage**
 
     .. code-block:: robotframework

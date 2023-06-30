@@ -48,7 +48,7 @@ class DocumentAI:
     """Wrapper library offering generic keywords for initializing, scanning and
     retrieving results as fields from documents (PDF, PNG etc.).
 
-    Added with `rpaframework` version **19.0.0**.
+    Library requires at the minimum `rpaframework` version **19.0.0**.
 
     This is a helper facade for the following libraries:
 
