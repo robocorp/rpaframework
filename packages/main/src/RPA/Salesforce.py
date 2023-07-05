@@ -265,6 +265,48 @@ class Salesforce:
         )
         self.logger.debug("Salesforce session id: %s", self.session_id)
 
+    def auth_with_connected_app(
+        self,
+        username: str,
+        password: str,
+        api_token: str,
+        consumer_key: str,
+        consumer_secret: str,
+    ) -> None:
+        """Authorize to Salesforce with security token, username,
+        password, connected app key, and connected app secret
+        creating instance.
+
+        :param username: Salesforce API username
+        :param password: Salesforce API password
+        :param api_token: Salesforce API security token
+        :param consumer_key: Salesforce connected app client ID
+        :param consumer_secret: Salesforce connected app client secret
+        """
+        self.session = requests.Session()
+        response = requests.post(
+            f"https://{self.domain}.salesforce.com/services/oauth2/token",
+            json={
+                "username": username,
+                "password": password + api_token,
+                "client_id": consumer_key,
+                "client_secret": consumer_secret,
+                "grant_type": "password",
+            },
+        ).json()
+
+        if "access_token" in response.keys() and response["access_token"]:
+            self.logger.warning(response)
+            self.sf = SimpleSalesforce(
+                instance_url=response["instance_url"],
+                session_id=response["access_token"],
+                domain=self.domain,
+                session=self.session,
+            )
+            self.logger.debug("Salesforce session id: %s", self.session_id)
+        else:
+            raise SalesforceAuthenticationError(response)
+
     def _get_values(self, node, prefix=None, data=None):
         if data is None:
             data = []
