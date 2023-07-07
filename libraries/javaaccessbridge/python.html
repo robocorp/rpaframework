@@ -203,15 +203,16 @@ set self.__traceback__ to tb and return self.</p>
 <p>The library utilizes <a class="reference external" href="https://github.com/robocorp/java-access-bridge-wrapper">java-access-bridge-wrapper</a> package to interact with
 Java UI. Currently only the 64-bit Windows OS is supported.</p>
 <p><strong>Inspecting elements</strong></p>
-<p>At the moment the recommended tool for inspecting Java application is:</p>
-<blockquote>
-<div><p>Google’s <a class="reference external" href="https://github.com/google/access-bridge-explorer">Access Bridge Explorer</a></p>
-</div></blockquote>
+<p>We have built an <a class="reference external" href="https://github.com/robocorp/working-with-java">Assistant</a> for working with Java application’s element structure and <a class="reference external" href="https://robocorp.com/docs/development-guide/locators#java-locators">Java locators</a>.
+The Assistant provides copy pasteable locators for each element and also allows testing locators against
+selected application.</p>
+<p>If our tools fail to pick the locator from your target application, there is always the
+<a class="reference external" href="https://github.com/google/access-bridge-explorer">Access Bridge Explorer</a> from Google that enables you to see the raw view. Please note that
+Access Bridge Explorer repository has been archived on July 27, 2022 and is no longer actively
+maintained.</p>
 <p>The <a class="reference external" href="https://accessibilityinsights.io/en/downloads/">Accessibility Insights for Windows</a> can show element properties if application framework
 supports Windows UI Automation (UIA), see more at <a class="reference external" href="https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java">using Accessibility Insights</a>. Then recommended
 library would be <a class="reference external" href="https://robocorp.com/docs/libraries/rpa-framework/rpa-windows">RPA.Windows</a> library.</p>
-<p>As an alternative way of inspecting Java application we have implemented <a class="reference external" href="https://github.com/robocorp/working-with-java">Assistant robot</a>, which
-can be used to find locators and also test them against real Java application.</p>
 <p><strong>Steps to enable</strong></p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -248,7 +249,7 @@ regular expressions to match the correct window. The keyword brings the window i
 element structure.</p>
 <p><strong>Locating elements</strong></p>
 <p>To automate actions on the Java application, the robot needs locations to various elements
-using a feature called <cite>locators</cite>. Locator describes properties of an element.</p>
+using a feature called <a class="reference external" href="https://robocorp.com/docs/development-guide/locators#java-locators">Java locators</a>. Locator describes properties of an element.</p>
 <p>At the moment library contains basic level support for locators.</p>
 <p>The common locator types are <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p>
 <p>To identify element with more than one property <cite>and</cite> can be used, for example:</p>
