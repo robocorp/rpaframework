@@ -296,7 +296,6 @@ class Salesforce:
         ).json()
 
         if "access_token" in response.keys() and response["access_token"]:
-            self.logger.warning(response)
             self.sf = SimpleSalesforce(
                 instance_url=response["instance_url"],
                 session_id=response["access_token"],
