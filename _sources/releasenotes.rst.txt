@@ -9,6 +9,21 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+24.0.0 - 18 Jul 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage**: Takes into use ``robocorp-storage`` **0.3.1** and
+  replaces the limited generic keywords with the ones below. (:pr:`1016`)
+
+  - ``Set Bytes Asset`` & ``Get Bytes Asset``
+  - ``Set Text Asset`` & ``Get Text Asset``
+  - ``Set JSON Asset`` & ``Get JSON Asset``
+  - ``Set File Asset`` & ``Get File Asset``
+
+  .. warning::
+    **Breaking** changes: Old ``Set Asset`` & ``Get Asset`` keywords are gone, please
+    replace them with one of the pairs above.
+
 23.5.2 - 29 Jun 2023
 --------------------
 
@@ -28,7 +43,6 @@ Release notes
 
   - Update ``java-access-bridge-wrapper`` to version ``0.13.0``
   - Add keyword ``Print Locator Tree``
-
 
 23.4.0 - 22 Jun 2023
 --------------------
