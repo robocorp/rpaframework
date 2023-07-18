@@ -3978,14 +3978,14 @@ pywebview = {version = "3.6.3", markers = "sys_platform == \"linux\""}
 
 [[package]]
 name = "robocorp-storage"
-version = "0.3.0"
+version = "0.3.1"
 description = "Robocorp Asset Storage library"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "robocorp_storage-0.3.0-py3-none-any.whl", hash = "sha256:41aba06798b06e1e032f2e93c7b45b426efa4cb7cc0e9fe052eead66848a20e2"},
-    {file = "robocorp_storage-0.3.0.tar.gz", hash = "sha256:69d9e8f48c971c2eb461fd77f29084290b987c2fe67b41a84f4ce373243ae80a"},
+    {file = "robocorp_storage-0.3.1-py3-none-any.whl", hash = "sha256:d7f81555aa7434d6f67a8a55dd489722412fe191b9b69ca5b0a6a3391a88555e"},
+    {file = "robocorp_storage-0.3.1.tar.gz", hash = "sha256:7017a82b73f7101c31ba0449b4c0a8b907933a694943d9c95b9e3ecfebb8fe04"},
 ]
 
 [package.dependencies]
@@ -4197,7 +4197,7 @@ pywinauto = {version = "^0.6.8", markers = "python_full_version != \"3.7.6\" and
 PyYAML = ">=5.4.1,<7.0.0"
 requests = "^2.28.1"
 requests-oauthlib = "^1.3.1"
-robocorp-storage = "^0.3.0"
+robocorp-storage = "^0.3.1"
 robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
 robotframework-pythonlibcore = "^4.0.0"
 robotframework-requests = "^0.9.1"
