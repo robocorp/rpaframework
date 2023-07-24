@@ -12,8 +12,10 @@ Release notes
 24.0.1 - 24 Jul 2023
 --------------------
 
-- Library **RPA.Browser.Selenium** (:pr:`943`; ``rpaframework-core`` **11.0.3**):
+- Library **RPA.Browser.Selenium** (:pr:`1021`; ``rpaframework-core`` **11.0.3**):
   Correctly handles and downloads a valid webdriver version when there's need for one.
+  (Portal example:
+  https://robocorp.com/portal/robot/robocorp/example-google-image-search)
 
 24.0.0 - 18 Jul 2023
 --------------------
