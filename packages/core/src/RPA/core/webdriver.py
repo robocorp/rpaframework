@@ -4,11 +4,11 @@ import logging
 import os
 import platform
 import stat
-from packaging import version
 from pathlib import Path
 from typing import List, Optional
 
 import requests
+from packaging import version
 from requests import Response
 from selenium import webdriver
 from selenium.webdriver.common.service import Service
@@ -29,6 +29,8 @@ from RPA.core.robocorp import robocorp_home
 
 
 class ChromeDriver(_ChromeDriver):
+    """Custom class which correctly obtains the chromedriver download URL."""
+
     def get_latest_release_version(self):
         determined_browser_version = self.get_browser_version_from_os()
         log(f"Get LATEST {self._name} version for {self._browser_type}")
@@ -49,6 +51,8 @@ class ChromeDriver(_ChromeDriver):
 # FIXME(cmin764; 24 Jul 2023): Remove this when the following upstream Issue is solved:
 #  https://github.com/SergeyPirogov/webdriver_manager/issues/550
 class ChromeDriverManager(_ChromeDriverManager):
+    """Custom Chrome webdriver manager which correctly downloads the chromedriver."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
