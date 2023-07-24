@@ -4,6 +4,7 @@ import logging
 import os
 import platform
 import stat
+from packaging import version
 from pathlib import Path
 from typing import List, Optional
 
@@ -12,17 +13,54 @@ from requests import Response
 from selenium import webdriver
 from selenium.webdriver.common.service import Service
 from selenium.webdriver.remote.webdriver import WebDriver
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager as _ChromeDriverManager
 from webdriver_manager.core.download_manager import WDMDownloadManager
 from webdriver_manager.core.driver_cache import DriverCacheManager
 from webdriver_manager.core.http import WDMHttpClient
+from webdriver_manager.core.logger import log
 from webdriver_manager.core.manager import DriverManager
 from webdriver_manager.core.os_manager import ChromeType, OperationSystemManager
+from webdriver_manager.drivers.chrome import ChromeDriver as _ChromeDriver
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager, IEDriverManager
 from webdriver_manager.opera import OperaDriverManager
 
 from RPA.core.robocorp import robocorp_home
+
+
+class ChromeDriver(_ChromeDriver):
+    def get_latest_release_version(self):
+        determined_browser_version = self.get_browser_version_from_os()
+        log(f"Get LATEST {self._name} version for {self._browser_type}")
+        if determined_browser_version:
+            parts = version.parse(determined_browser_version).release
+            if len(parts) == 4:
+                return determined_browser_version  # got a fully downloadable version
+
+        latest_release_url = (
+            self._latest_release_url
+            if (self._driver_version == "latest" or determined_browser_version is None)
+            else f"{self._latest_release_url}_{determined_browser_version}"
+        )
+        resp = self._http_client.get(url=latest_release_url)
+        return resp.text.rstrip()
+
+
+# FIXME(cmin764; 24 Jul 2023): Remove this when the following upstream Issue is solved:
+#  https://github.com/SergeyPirogov/webdriver_manager/issues/550
+class ChromeDriverManager(_ChromeDriverManager):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.driver = ChromeDriver(
+            name=kwargs["name"],
+            driver_version=kwargs["driver_version"],
+            url=kwargs["url"],
+            latest_release_url=kwargs["latest_release_url"],
+            chrome_type=kwargs["chrome_type"],
+            http_client=self.http_client,
+            os_system_manager=kwargs["os_system_manager"],
+        )
 
 
 LOGGER = logging.getLogger(__name__)
