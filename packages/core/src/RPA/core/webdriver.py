@@ -14,10 +14,10 @@ from selenium.webdriver.common.service import Service
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.download_manager import WDMDownloadManager
+from webdriver_manager.core.driver_cache import DriverCacheManager
 from webdriver_manager.core.http import WDMHttpClient
 from webdriver_manager.core.manager import DriverManager
-from webdriver_manager.core.utils import ChromeType, get_browser_version_from_os
-from webdriver_manager.core.utils import os_name as get_os_name
+from webdriver_manager.core.os_manager import ChromeType, OperationSystemManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager, IEDriverManager
 from webdriver_manager.opera import OperaDriverManager
@@ -54,6 +54,8 @@ _DRIVER_PREFERENCE = {
     "Darwin": ["Chrome", "Firefox", "Edge", "Safari"],
     "default": ["Chrome", "Firefox"],
 }
+
+OPS_MANAGER = OperationSystemManager()
 
 
 def _get_browser_order_from_env() -> Optional[List[str]]:
@@ -114,7 +116,7 @@ def start(browser: str, service: Optional[Service] = None, **options) -> WebDriv
 def _is_chromium() -> bool:
     """Detects if Chromium is used instead of Chrome no matter the platform."""
     is_browser = lambda browser_type: bool(  # noqa: E731
-        get_browser_version_from_os(browser_type)
+        OPS_MANAGER.get_browser_version_from_os(browser_type)
     )
     return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
 
@@ -134,7 +136,8 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
         )
     downloader = Downloader()
     download_manager = WDMDownloadManager(downloader)
-    manager = manager_factory(path=str(root), download_manager=download_manager)
+    cache_manager = DriverCacheManager(root_dir=str(root))
+    manager = manager_factory(cache_manager=cache_manager, download_manager=download_manager)
     return manager
 
 
@@ -151,7 +154,8 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
     manager = _to_manager(browser, root=root)
     driver = manager.driver
     resolved_os = getattr(driver, "os_type", driver.get_os_type())
-    os_name = get_os_name()
+    os_name = OPS_MANAGER.get_os_name()
+    # FIXME(cmin764; 24 Jul 2023): Not interested in matching OS architecture as well.
     if os_name.lower() not in resolved_os.lower():
         LOGGER.warning(
             "Attempting to download incompatible driver for OS %r on OS %r! Skip",
