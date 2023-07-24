@@ -5,6 +5,7 @@ import os
 import platform
 import stat
 from pathlib import Path
+from types import MethodType
 from typing import List, Optional
 
 import requests
@@ -56,14 +57,8 @@ class ChromeDriverManager(_ChromeDriverManager):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.driver = ChromeDriver(
-            name=kwargs["name"],
-            driver_version=kwargs["driver_version"],
-            url=kwargs["url"],
-            latest_release_url=kwargs["latest_release_url"],
-            chrome_type=kwargs["chrome_type"],
-            http_client=self.http_client,
-            os_system_manager=kwargs["os_system_manager"],
+        self.driver.get_latest_release_version = MethodType(
+            ChromeDriver.get_latest_release_version, self.driver
         )
 
 
