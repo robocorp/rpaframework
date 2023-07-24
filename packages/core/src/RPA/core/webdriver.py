@@ -137,7 +137,9 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
     downloader = Downloader()
     download_manager = WDMDownloadManager(downloader)
     cache_manager = DriverCacheManager(root_dir=str(root))
-    manager = manager_factory(cache_manager=cache_manager, download_manager=download_manager)
+    manager = manager_factory(
+        cache_manager=cache_manager, download_manager=download_manager
+    )
     return manager
 
 
