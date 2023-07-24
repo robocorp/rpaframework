@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "24.0.0"
+version = "24.0.1"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -35,7 +35,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.7"
 docutils = "*"
-rpaframework-core = "^11.0.2"
+rpaframework-core = "^11.0.3"
 rpaframework-pdf = "^7.1.5"
 rpaframework-windows = { version = "^7.3.2", platform = "win32" }
 java-access-bridge-wrapper = "0.14.1"
