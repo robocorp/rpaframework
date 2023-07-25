@@ -32,6 +32,7 @@ from RPA.core.robocorp import robocorp_home
 #  upstream Issue is solved:
 #  https://github.com/SergeyPirogov/webdriver_manager/issues/550
 
+
 class ChromeDriver(_ChromeDriver):
     """Custom class which correctly obtains the chromedriver download URL."""
 
@@ -64,16 +65,19 @@ class ChromeDriver(_ChromeDriver):
                 # Got a fully downloadable version that MAY be available, but we are
                 #  not sure until we don't try it.
                 log(
-                    f"Get {determined_browser_version} {self._name} version for {self._browser_type}"
+                    f"Get {determined_browser_version} {self._name} version for"
+                    f" {self._browser_type}"
                 )
                 return determined_browser_version
 
         log(
-            f"Get LATEST {self._name} version for {self._browser_type} based on {determined_browser_version}"
+            f"Get LATEST {self._name} version for {self._browser_type} based on"
+            f" {determined_browser_version}"
         )
         return self._get_resolved_version(determined_browser_version)
 
-    def get_driver_download_url(self, resolve: bool = False):
+    # pylint: disable=arguments-differ
+    def get_driver_download_url(self, resolve: bool = False) -> str:
         if resolve:
             # This time we want a resolved version based on the previously parsed
             #  non-existing one on the server.
@@ -91,7 +95,9 @@ class ChromeDriverManager(_ChromeDriverManager):
         driver_version: Optional[str] = None,
         name: str = "chromedriver",
         url: str = "https://chromedriver.storage.googleapis.com",
-        latest_release_url: str = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE",
+        latest_release_url: str = (
+            "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
+        ),
         chrome_type: str = ChromeType.GOOGLE,
         download_manager: Optional[DownloadManager] = None,
         cache_manager: Optional[DriverCacheManager] = None,
@@ -108,7 +114,7 @@ class ChromeDriverManager(_ChromeDriverManager):
             os_system_manager=os_system_manager,
         )
 
-        # Replace the upstream webdriver helper class with our custom resolving
+        # Replace the upstream webdriver helper class with our custom auto-resolving
         #  behavior.
         self.driver = ChromeDriver(
             name=name,
@@ -120,7 +126,7 @@ class ChromeDriverManager(_ChromeDriverManager):
             os_system_manager=os_system_manager,
         )
 
-    def _get_driver_binary_path(self, driver: ChromeDriver):
+    def _get_driver_binary_path(self, driver: ChromeDriver) -> str:
         """Resolve the webdriver version if is not available for download."""
         try:
             return super()._get_driver_binary_path(driver)
