@@ -595,7 +595,10 @@ def test_uploading_file_to_onedrive(
     mocker.patch("pathlib.Path.stat", return_value=mocked_path)
     open_file = mocker.mock_open(read_data="secret notes")
     mocker.patch("io.open", open_file)
-    mocker.patch("pathlib.Path._accessor.open", open_file)
+    try:
+        mocker.patch("pathlib.Path._accessor.open", open_file, create=True)
+    except AttributeError:
+        pass
 
     item = authorized_lib.upload_file_to_onedrive(file_path, folder_path)
 
