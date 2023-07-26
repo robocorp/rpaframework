@@ -11,7 +11,7 @@ def _test_chrome_download():
     assert "chromedriver" in path
 
 
-@pytest.mark.parametrize("version_override", [None, "114.0.5735.198"])
+@pytest.mark.parametrize("version_override", [None, "114.0.5735.198", "115.0.5790.110"])
 @mock.patch(
     "webdriver_manager.core.driver_cache.DriverCacheManager.find_driver",
     new=mock.Mock(return_value=None),

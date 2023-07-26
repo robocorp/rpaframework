@@ -5,10 +5,10 @@ import os
 import platform
 import stat
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
+import packaging
 import requests
-from packaging import version
 from requests import Response
 from selenium import webdriver
 from selenium.webdriver.common.service import Service
@@ -26,7 +26,6 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager, IEDriverManag
 from webdriver_manager.opera import OperaDriverManager
 
 from RPA.core.robocorp import robocorp_home
-
 
 # FIXME(cmin764; 24 Jul 2023): Remove the derived classes below when the following
 #  upstream Issue is solved:
@@ -58,9 +57,10 @@ class ChromeDriver(_ChromeDriver):
         return resp.text.rstrip()
 
     def get_latest_release_version(self) -> str:
+        # This is activated for any chromedriver version.
         determined_browser_version = self.get_browser_version_from_os()
         if determined_browser_version and not self._resolve_version:
-            parts = version.parse(determined_browser_version).release
+            parts = packaging.version.parse(determined_browser_version).release
             if len(parts) == 4:
                 # Got a fully downloadable version that MAY be available, but we are
                 #  not sure until we don't try it.
@@ -75,6 +75,58 @@ class ChromeDriver(_ChromeDriver):
             f" {determined_browser_version}"
         )
         return self._get_resolved_version(determined_browser_version)
+
+    def _resolve_modern_url(
+        self, version: Dict, *, driver_platform: str
+    ) -> Optional[str]:
+        downloads = version["downloads"]["chromedriver"]
+        for dld in downloads:
+            # There's also a chance for platform mismatch.
+            if dld["platform"] == driver_platform:
+                self._driver_to_download_version = version["version"]
+                return dld["url"]
+
+        return None
+
+    # pylint: disable=arguments-renamed
+    def get_url_for_version_and_platform(
+        self, browser_version: str, driver_platform: str
+    ) -> str:
+        # This is activated for chromedriver 115 or higher only.
+        parse_version = lambda ver: packaging.version.parse(ver).release  # noqa: E731
+        parse_floating_version = lambda ver: parse_version(ver)[:3]  # noqa: E731
+        parsed_version = parse_floating_version(browser_version)
+        resolve_modern_url = functools.partial(
+            self._resolve_modern_url, driver_platform=driver_platform
+        )
+
+        versions_url = (
+            "https://googlechromelabs.github.io/chrome-for-testing/"
+            "known-good-versions-with-downloads.json"
+        )
+        response = self._http_client.get(versions_url)
+        data = response.json()
+        versions = data["versions"]
+
+        candidates = []
+        for version in versions:
+            if version["version"] == browser_version:  # exact match
+                url = resolve_modern_url(version)
+                if url:
+                    return url
+            elif parsed_version == parse_floating_version(version["version"]):
+                candidates.append(version)
+
+        # No exact version found, let's return the latest from the matching candidates.
+        if candidates:
+            latest = max(
+                candidates, key=lambda candidate: parse_version(candidate["version"])
+            )
+            url = resolve_modern_url(latest)
+            if url:
+                return url
+
+        raise Exception(f"No such driver version {browser_version} for {platform}")
 
     # pylint: disable=arguments-differ
     def get_driver_download_url(self, resolve: bool = False) -> str:
