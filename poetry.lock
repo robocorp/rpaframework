@@ -335,18 +335,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.28.10"
+version = "1.28.11"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.28.10-py3-none-any.whl", hash = "sha256:67001b3f512cbe2e00e352c65fb443b504e5e388fee39d73bcc42da1ae87d9e3"},
-    {file = "boto3-1.28.10.tar.gz", hash = "sha256:cb8af03f553f1c7db7137bc897785baeeaa97b8fde483eb1cdb1f1ef3cec9cb7"},
+    {file = "boto3-1.28.11-py3-none-any.whl", hash = "sha256:e24460d50001b517c6734dcf1c879feb43aa2062d88d9bdbb8703c986cb05941"},
+    {file = "boto3-1.28.11.tar.gz", hash = "sha256:0fe7a35cf0041145c8eefebd3ae2ddf41baed62d7c963e5042b8ed8c297f648f"},
 ]
 
 [package.dependencies]
-botocore = ">=1.31.10,<1.32.0"
+botocore = ">=1.31.11,<1.32.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -355,14 +355,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.31.10"
+version = "1.31.11"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.31.10-py3-none-any.whl", hash = "sha256:a3bfd3627a490faedf37d79373d6957936d7720888ca85466e0471cb921e4557"},
-    {file = "botocore-1.31.10.tar.gz", hash = "sha256:736a9412f405d6985570c4a87b533c2396dd8d4042d8c7a0ca14e73d4f1bcf9d"},
+    {file = "botocore-1.31.11-py3-none-any.whl", hash = "sha256:d3cbffe554c9a1ba2ac6973734c43c21b8e7985a2ac4a4c31a09811b8029445c"},
+    {file = "botocore-1.31.11.tar.gz", hash = "sha256:b17ff973bb70b02b227928c2abe4992f1cfc46d13aee0228516c8f32572b88c6"},
 ]
 
 [package.dependencies]
@@ -1208,14 +1208,14 @@ grpc = ["grpcio (>=1.38.0,<2.0dev)"]
 
 [[package]]
 name = "google-cloud-documentai"
-version = "2.17.0"
+version = "2.18.0"
 description = "Google Cloud Documentai API client library"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-cloud-documentai-2.17.0.tar.gz", hash = "sha256:47f381c1c73f046d238c35c7c006d8a203f68648b698f89d7bdc9e65b9808402"},
-    {file = "google_cloud_documentai-2.17.0-py2.py3-none-any.whl", hash = "sha256:f8ba477d333ed23932a7a58ee869e40d540d7a2b69647e715785aacfa90923f1"},
+    {file = "google-cloud-documentai-2.18.0.tar.gz", hash = "sha256:ab9bcd5c9af0a37189ba5c0e05dd34711b34b3ef446798d5b3282854c8905173"},
+    {file = "google_cloud_documentai-2.18.0-py2.py3-none-any.whl", hash = "sha256:dc4399d62b581c45cee1f4f62c862770d6bdb737e733d35b3e4cd38d182d53fa"},
 ]
 
 [package.dependencies]
@@ -4071,7 +4071,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "24.1.0"
+version = "24.1.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -4120,7 +4120,7 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
-rpaframework-core = "^11.0.4"
+rpaframework-core = "^11.0.5"
 rpaframework-pdf = "^7.1.5"
 rpaframework-windows = {version = "^7.3.2", markers = "sys_platform == \"win32\""}
 selenium = "^4.6.1,!=4.10.0"
@@ -4177,14 +4177,14 @@ rpaframework-core = ">=11.0.0,<12.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "11.0.4"
+version = "11.0.5"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_core-11.0.4-py3-none-any.whl", hash = "sha256:4285233b71987308cb03780a4977f44652ec193b3cbc6aedfc93f5c7c1f2f233"},
-    {file = "rpaframework_core-11.0.4.tar.gz", hash = "sha256:a8acb3f770b3d9457a8909f19a799479186bbc91d8be198cd1313cc608f93b86"},
+    {file = "rpaframework_core-11.0.5-py3-none-any.whl", hash = "sha256:05a829ff66f4bf0d6de0934fa7946f1e5f199a48026ddd51664ddc272a32a6fa"},
+    {file = "rpaframework_core-11.0.5.tar.gz", hash = "sha256:7e354b275d3a940921b842004c2dbfc2f71b957a73ba1db0be1c41458e2e08d4"},
 ]
 
 [package.dependencies]

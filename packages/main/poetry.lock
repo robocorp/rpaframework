@@ -2796,14 +2796,14 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "11.0.4"
+version = "11.0.5"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "rpaframework_core-11.0.4-py3-none-any.whl", hash = "sha256:4285233b71987308cb03780a4977f44652ec193b3cbc6aedfc93f5c7c1f2f233"},
-    {file = "rpaframework_core-11.0.4.tar.gz", hash = "sha256:a8acb3f770b3d9457a8909f19a799479186bbc91d8be198cd1313cc608f93b86"},
+    {file = "rpaframework_core-11.0.5-py3-none-any.whl", hash = "sha256:05a829ff66f4bf0d6de0934fa7946f1e5f199a48026ddd51664ddc272a32a6fa"},
+    {file = "rpaframework_core-11.0.5.tar.gz", hash = "sha256:7e354b275d3a940921b842004c2dbfc2f71b957a73ba1db0be1c41458e2e08d4"},
 ]
 
 [package.dependencies]
@@ -3771,4 +3771,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "ddcdb0e25b52f17f2a5170c23a5fe2b6a619604ac7a29ae74893821e4f941fe8"
+content-hash = "552a1a68b4c88f2d13401bc8be473db42d4d3e5f10b175120acb4439d2361da8"

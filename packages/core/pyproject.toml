@@ -20,15 +20,15 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.7",
 	"Programming Language :: Python :: 3.8",
 	"Programming Language :: Python :: 3.9",
+	"Programming Language :: Python :: 3.10",
 ]
 
 packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 selenium = "^4.6.1"
 webdriver-manager = "^3.9.1"
 psutil = { version = "^5.9.0", platform = "win32" }
