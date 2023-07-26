@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+24.1.1 - 26 Jul 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1035`; ``rpaframework-core`` **11.0.5**):
+  Fix `chromedriver` download issues with Chrome **115** and over.
+
 24.1.0 - 25 Jul 2023
 --------------------
 
