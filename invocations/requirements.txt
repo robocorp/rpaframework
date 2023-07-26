@@ -3,5 +3,5 @@ pip>=21.3
 poetry~=1.4.0
 keyring~=23.9.0
 toml~=0.10.2
-PyYAML~=5.4.1
+PyYAML~=6.0.1
 colorama~=0.4.5
