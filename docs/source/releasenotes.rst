@@ -9,6 +9,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+24.1.2 - 27 Jul 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage** (``robocorp-storage`` **0.3.2**): Fix bug when
+  retrieving assets containing spaces in their names.
+
 24.1.1 - 26 Jul 2023
 --------------------
 

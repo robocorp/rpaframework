@@ -2630,14 +2630,14 @@ docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "robocorp-storage"
-version = "0.3.1"
+version = "0.3.2"
 description = "Robocorp Asset Storage library"
 category = "main"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = ">=3.7.2,<4.0.0"
 files = [
-    {file = "robocorp_storage-0.3.1-py3-none-any.whl", hash = "sha256:d7f81555aa7434d6f67a8a55dd489722412fe191b9b69ca5b0a6a3391a88555e"},
-    {file = "robocorp_storage-0.3.1.tar.gz", hash = "sha256:7017a82b73f7101c31ba0449b4c0a8b907933a694943d9c95b9e3ecfebb8fe04"},
+    {file = "robocorp_storage-0.3.2-py3-none-any.whl", hash = "sha256:b315f9a7a8a1f01fd39879422d05ab173f52d40c7d8b23d18f5d447b2b7ed765"},
+    {file = "robocorp_storage-0.3.2.tar.gz", hash = "sha256:f584e3a17d5e92e35655947643e69b6501883ae36a53c17950c76529b193d13b"},
 ]
 
 [package.dependencies]
@@ -3729,4 +3729,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "989d7d86f7705317ab4e6e0a409a8c4a91ec842bfc8399efcde8999cb0e043fc"
+content-hash = "a71c508f890506ff03307a84fb4ab21ed8cee42ce5895e86c2829e21682521c1"

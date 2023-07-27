@@ -188,7 +188,7 @@ class Storage:
         """
         return storage.get_text(name)
 
-    @keyword
+    @keyword("Set JSON Asset")
     def set_json_asset(self, name: str, value: Dict, wait: bool = True):
         """Creates or updates an asset named `name` with the provided dictionary
         `value`.
@@ -216,7 +216,7 @@ class Storage:
         """
         storage.set_json(name, value=value, wait=wait)
 
-    @keyword
+    @keyword("Get JSON Asset")
     def get_json_asset(self, name: str) -> Dict:
         """Get the asset's dictionary value by providing its `name`.
 
