@@ -34,6 +34,9 @@ Release notes
   - Portal example taking these into use:
     https://robocorp.com/portal/robot/robocorp/example-google-image-search
 
+- Library **RPA.Browser.Playwright**: Renders documentation for
+  ``robotframework-browser==17.1.0``.
+
 24.0.0 - 18 Jul 2023
 --------------------
 
