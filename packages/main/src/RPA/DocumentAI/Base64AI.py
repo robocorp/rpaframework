@@ -355,7 +355,7 @@ class Base64AI:
         Portal example: https://github.com/robocorp/example-signature-match-assistant
         """
         # NOTE(cmin764): There's no mock support for this API.
-        recognize_endpoint = self._to_endpoint("signature/recognize")
+        recognize_endpoint = self._to_endpoint("signature")
 
         payload = {
             "reference": str(reference_image),
