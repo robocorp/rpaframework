@@ -2,7 +2,7 @@ import json
 import logging
 import sys
 from collections import OrderedDict
-from typing import Any, Union
+from typing import Any, Union, Dict
 
 import requests
 from simple_salesforce import Salesforce as SimpleSalesforce
@@ -272,6 +272,7 @@ class Salesforce:
         api_token: str,
         consumer_key: str,
         consumer_secret: str,
+        embed_api_token: bool = False,
     ) -> None:
         """Authorize to Salesforce with security token, username,
         password, connected app key, and connected app secret
@@ -282,29 +283,60 @@ class Salesforce:
         :param api_token: Salesforce API security token
         :param consumer_key: Salesforce connected app client ID
         :param consumer_secret: Salesforce connected app client secret
+        :param embed_api_token: Embed API token to password (default: False)
         """
         self.session = requests.Session()
+        request_data = {
+            "username": username,
+            "password": f"{password}{api_token}" if embed_api_token else password,
+            "client_id": consumer_key,
+            "client_secret": consumer_secret,
+            "grant_type": "password",
+        }
         response = requests.post(
             f"https://{self.domain}.salesforce.com/services/oauth2/token",
-            json={
-                "username": username,
-                "password": password + api_token,
-                "client_id": consumer_key,
-                "client_secret": consumer_secret,
-                "grant_type": "password",
-            },
-        ).json()
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+            data=request_data,
+        )
+        try:
+            response.raise_for_status()
+            result = response.json()
 
-        if "access_token" in response.keys() and response["access_token"]:
-            self.sf = SimpleSalesforce(
-                instance_url=response["instance_url"],
-                session_id=response["access_token"],
-                domain=self.domain,
-                session=self.session,
+            if result.get("access_token"):
+                self.sf = SimpleSalesforce(
+                    instance_url=result["instance_url"],
+                    session_id=result["access_token"],
+                    domain=self.domain,
+                    session=self.session,
+                )
+                self.logger.debug("Salesforce session id: %s", self.session_id)
+            else:
+                error_message = (
+                    "Could not get access token\n"
+                    f"Details: {response.status_code} {response.text}"
+                )
+                raise SalesforceAuthenticationError(error_message)
+        except requests.exceptions.HTTPError as err:
+            error_message = (
+                f"{str(err)}\nDetails: {response.status_code} {response.text}"
             )
-            self.logger.debug("Salesforce session id: %s", self.session_id)
-        else:
-            raise SalesforceAuthenticationError(response)
+            raise SalesforceAuthenticationError(error_message) from err
+
+    def execute_apex(self, apex: str, apex_data: Dict = None, apex_method="POST"):
+        """Execute APEX operation.
+
+        The APEX classes can be added via Salesforce Developer console
+        (from menu: File > New > Apex Class).
+
+        Permissions for the APEX classes can be set via Salesforce Setup
+        (Apex Classes -> Security).
+
+        :param apex: endpoint of the APEX operation
+        :param apex_data: data to be sent to the APEX operation
+        :param apex_method: operation method
+        :return: result of the APEX operation
+        """
+        return self.sf.apexecute(apex, method=apex_method, data=apex_data)
 
     def _get_values(self, node, prefix=None, data=None):
         if data is None:
