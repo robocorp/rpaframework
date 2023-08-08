@@ -211,16 +211,18 @@ class JavaAccessBridge:
 
     **Inspecting elements**
 
-    At the moment the recommended tool for inspecting Java application is:
+    We have built an `Assistant`_ for working with Java application's element structure and `Java locators`_.
+    The Assistant provides copy pasteable locators for each element and also allows testing locators against
+    selected application.
 
-        Google's `Access Bridge Explorer`_
+    If our tools fail to pick the locator from your target application, there is always the
+    `Access Bridge Explorer`_ from Google that enables you to see the raw view. Please note that
+    Access Bridge Explorer repository has been archived on July 27, 2022 and is no longer actively
+    maintained.
 
     The `Accessibility Insights for Windows`_ can show element properties if application framework
     supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_. Then recommended
     library would be `RPA.Windows`_ library.
-
-    As an alternative way of inspecting Java application we have implemented `Assistant robot`_, which
-    can be used to find locators and also test them against real Java application.
 
     **Steps to enable**
 
@@ -240,7 +242,7 @@ class JavaAccessBridge:
 
     .. _Java Access Bridge technology: https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html
     .. _java-access-bridge-wrapper: https://github.com/robocorp/java-access-bridge-wrapper
-    .. _Assistant robot: https://github.com/robocorp/working-with-java
+    .. _Assistant: https://github.com/robocorp/working-with-java
 
     **About Java wrapper callbacks and actions**
 
@@ -269,7 +271,7 @@ class JavaAccessBridge:
     **Locating elements**
 
     To automate actions on the Java application, the robot needs locations to various elements
-    using a feature called `locators`. Locator describes properties of an element.
+    using a feature called `Java locators`_. Locator describes properties of an element.
 
     At the moment library contains basic level support for locators.
 
@@ -354,11 +356,11 @@ class JavaAccessBridge:
     possible to opt for interaction elements by their coordinates by giving keyword parameter
     ``action=False`` if parameter is available.
 
-
     .. _Accessibility Insights for Windows: https://accessibilityinsights.io/en/downloads/
     .. _Access Bridge Explorer: https://github.com/google/access-bridge-explorer
     .. _using Accessibility Insights: https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java
     .. _RPA.Windows: https://robocorp.com/docs/libraries/rpa-framework/rpa-windows
+    .. _Java locators: https://robocorp.com/docs/development-guide/locators#java-locators
 
     **Examples**
 

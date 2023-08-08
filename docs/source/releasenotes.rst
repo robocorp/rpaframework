@@ -9,6 +9,49 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+24.1.2 - 27 Jul 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage** (``robocorp-storage`` **0.3.2**): Fix bug when
+  retrieving assets containing spaces in their names.
+
+24.1.1 - 26 Jul 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1035`; ``rpaframework-core`` **11.0.5**):
+  Fix `chromedriver` download issues with Chrome **115** and over.
+
+24.1.0 - 25 Jul 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1021`; ``rpaframework-core`` **11.0.4**):
+
+  - Correctly handles and downloads a valid existing webdriver version when there's a
+    need for one.
+  - Ability to provide a default browser binary location with the
+    `RPA_SELENIUM_BINARY_LOCATION` environment variable. (useful when the webdriver
+    isn't able to automatically detect and start your system browser)
+  - Portal example taking these into use:
+    https://robocorp.com/portal/robot/robocorp/example-google-image-search
+
+- Library **RPA.Browser.Playwright**: Renders documentation for
+  ``robotframework-browser==17.1.0``.
+
+24.0.0 - 18 Jul 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage**: Takes into use ``robocorp-storage`` **0.3.1** and
+  replaces the limited generic keywords with the ones below. (:pr:`1016`)
+
+  - ``Set Bytes Asset`` & ``Get Bytes Asset``
+  - ``Set Text Asset`` & ``Get Text Asset``
+  - ``Set JSON Asset`` & ``Get JSON Asset``
+  - ``Set File Asset`` & ``Get File Asset``
+
+  .. warning::
+    **Breaking** changes: Old ``Set Asset`` & ``Get Asset`` keywords are gone, please
+    replace them with one of the pairs above.
+
 23.5.2 - 29 Jun 2023
 --------------------
 
@@ -28,7 +71,6 @@ Release notes
 
   - Update ``java-access-bridge-wrapper`` to version ``0.13.0``
   - Add keyword ``Print Locator Tree``
-
 
 23.4.0 - 22 Jun 2023
 --------------------

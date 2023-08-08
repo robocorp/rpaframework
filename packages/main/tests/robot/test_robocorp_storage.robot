@@ -4,10 +4,14 @@ Library     OperatingSystem
 Library     RPA.Robocorp.Storage
 
 Suite Setup     Load Mocked Library
+# Skip all tests by default since they rely on a real working API URL & token
+#  simulating the cloud environment not provided yet in CI.
+Default Tags    manual
 
 
 *** Variables ***
 ${RESOURCES}        ${CURDIR}${/}..${/}resources
+${RESULTS}        ${CURDIR}${/}..${/}results
 
 
 *** Keywords ***
@@ -22,19 +26,53 @@ Load Mocked Library
     ${secret} =    Get Secret    asset_storage
 
     Set Environment Variable    RC_API_URL_V1   ${secret}[api_url]
+    Set Environment Variable    RC_API_TOKEN_V1   ${secret}[api_token]
     Set Environment Variable    RC_WORKSPACE_ID     ${secret}[workspace_id]
+
+
+Delete All Assets
+    [Arguments]     ${assets}   ${pattern}
+
+    FOR    ${asset}    IN    @{assets}
+        ${matches} =    Evaluate    fnmatch.fnmatch('${asset}', '${pattern}')
+        ...     modules=fnmatch
+        IF    ${matches}
+            Delete Asset    ${asset}
+        END
+    END
 
 
 *** Tasks ***
 Manage Assets
-    [Tags]    manual  # since it relies on a real working API key not provided in CI
-    [Setup]     Set Asset   cosmin      cosmin@robocorp.com
+    # NOTE(cmin764; 18 Jul 2023): Placed all the atomic tests into a bigger integration
+    #  one for the following reasons: reducing overall time given the assets listing
+    #  check and giving time for the resources to settle in the cloud memory.
 
+    # Set assets with a common prefix and various types.
+    ${data} =      Evaluate    b"Cosmin" + b" Poieana"
+    Set Bytes Asset     cosmin-data    ${data}
+    Set Text Asset      cosmin-text      cosmin@robocorp.com
+    &{entries} =    Create Dictionary   country    Romania
+    Set JSON Asset    cosmin-dict    ${entries}
+    Set File Asset    cosmin-file      ${RESOURCES}${/}faces.jpeg
+
+    # Check if the assets are present in CR.
+    @{expected_assets} =    Create List     cosmin-data     cosmin-text
+    ...     cosmin-dict     cosmin-file
     @{assets} =    List Assets
-    @{asset_names} =    Evaluate    [asset['name'] for asset in ${assets}]
-    List Should Contain Value    ${asset_names}    cosmin
+    List Should Contain Sub List    ${assets}    ${expected_assets}
 
-    ${value} =      Get Asset   cosmin
+    # Now retrieve & check the value for every asset.
+    ${value} =      Get Bytes Asset   cosmin-data
+    Should Be Equal As Strings    ${value}    ${data}
+    ${value} =      Get Text Asset   cosmin-text
     Should Be Equal As Strings    ${value}    cosmin@robocorp.com
+    &{value} =      Get JSON Asset       cosmin-dict
+    Should Be Equal As Strings    ${value}[country]    Romania
+    ${path} =      Get File Asset       cosmin-file    ${RESULTS}${/}faces.jpeg
+    ...     overwrite=${True}
+    ${content} =   Get Binary File    ${path}
+    ${image_mark} =     Convert To Bytes    JFIF
+    Should Contain    ${content}    ${image_mark}
 
-    [Teardown]      Delete Asset    cosmin
+    [Teardown]      Delete All Assets   ${assets}   cosmin-*

@@ -645,6 +645,15 @@ class Selenium(SeleniumLibrary):
             self.logger.debug("Setting binary location: %s", values)
             method(values)
 
+    @staticmethod
+    def _set_options_from_env(options_obj: ArgOptions):
+        """Add default options from the environment variables when an explicit value
+        isn't set already.
+        """
+        binary_location = os.getenv("RPA_SELENIUM_BINARY_LOCATION")
+        if binary_location and not getattr(options_obj, "binary_location"):
+            options_obj.binary_location = binary_location
+
     def normalize_options(
         self, options: Optional[OptionsType], *, browser: str
     ) -> ArgOptions:
@@ -653,7 +662,11 @@ class Selenium(SeleniumLibrary):
 
         # String or object based provided options, solved by the wrapped library.
         if isinstance(options, (ArgOptions, str)):
-            return SeleniumOptions().create(self.BROWSER_NAMES[browser_lower], options)
+            options_obj = SeleniumOptions().create(
+                self.BROWSER_NAMES[browser_lower], options
+            )
+            self._set_options_from_env(options_obj)
+            return options_obj
 
         BrowserOptions = self.AVAILABLE_OPTIONS.get(browser_lower)
         if not BrowserOptions:
@@ -681,6 +694,7 @@ class Selenium(SeleniumLibrary):
                 method = option_method_map[name]
                 self._set_option(name, values, method=method)
 
+        self._set_options_from_env(options_obj)
         return options_obj
 
     def _get_driver_args(  # noqa: C901
