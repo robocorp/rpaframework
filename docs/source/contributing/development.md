@@ -11,7 +11,7 @@ every project)
 
 So the first thing to run is `inv -l` to see a list of available commands, and if you
 see just one, it means that you need to run `inv install-invocations` once, right
-in the root repo directory. (the _meta_ project)
+in the root directory of the repository. (the _meta_ project)
 
 Explore our helper commands with `inv <cmd> --help` in order to learn more about each
 one of them.
@@ -19,9 +19,9 @@ one of them.
 ### Virtual environment(s)
 
 In case [invoke](https://www.pyinvoke.org/) isn't installed yet on your system, you
-have to do so by either your package manager or `pip install invoke` if you're fine to
-rely on system's Python interpreter. Keep in mind that we recommend developing with
-version **3.9.13** as that's what we use with most of the robots. So is better to
+have to do so by either your package manager or `pip install invoke` if you're fine
+with relying on system's Python interpreter. Keep in mind that we recommend developing
+with version **3.9.x** as that's what we recommend in our robots. So is better to
 develop with the same version that is expected to be at the core of our robots. (pinned
 in their _conda.yaml_)
 
@@ -51,8 +51,8 @@ and `pyenv which python`:
 1. Uninstall any Python **3.9** version you might have on your system. Careful! This
    might break apps dependent on your system interpreter if this was previously taken
    into use.
-2. [Download](https://www.python.org/downloads/release/python-3913/) Python **3.9.13**
-   and make sure it will be available in `PATH` as well during installation.
+2. [Download](https://www.python.org/downloads/) the latest Python **3.9** and make
+   sure it will be available in `PATH` as well during installation.
 3. Do NOT install nor create any `virtualenv` for this project, as Poetry manages its
    own virtual environments in separate _.venv_ directories for each package. Check the
    installed system-available interpreter version with:
@@ -63,7 +63,7 @@ and `pyenv which python`:
 
 ### Installing requirements
 
-Now I'm good to go with running this installation command once:
+Now I'm good to go with running these installation commands once from the root dir:
 ```console
 % python -m pip install -Ur invocations/requirements.txt
 % inv install-invocations
@@ -513,7 +513,7 @@ Now that your package was published successfully and visible in
    visible in our legacy rpaframework.org site first (which you can check initially for
    problems). But for making them visible in the official docs site as well, you should
    trigger the following documentation
-   [workflow](https://github.com/robocorp/documentation/actions/workflows/build-deploy.yml).
+   [workflow](https://github.com/robocorp/documentation/actions/workflows/manual-build.yml).
 2. Release notes can be copy-pasted from the freshly built
    [rpaframework.org](https://rpaframework.org/releasenotes.html) page into a new
    release managed by [releasenotes.io](https://app.releasenotes.io/dashboard).
