@@ -182,9 +182,15 @@ class ApplicationKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
+            # Open a file with a default application
             ${word}=    Open file    template.docx
             # Do something with Word
             Close application    ${word}
+
+            # Open a an application with a specific executable
+            ${ie}=    Open application    iexplore.exe
+            # Do something with IE
+            Close application    ${ie}
         """
         if app.is_running:
             app.stop()

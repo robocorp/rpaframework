@@ -2,7 +2,7 @@ import json
 import logging
 import sys
 from collections import OrderedDict
-from typing import Any, Union
+from typing import Any, Union, Dict
 
 import requests
 from simple_salesforce import Salesforce as SimpleSalesforce
@@ -264,6 +264,150 @@ class Salesforce:
             session=self.session,
         )
         self.logger.debug("Salesforce session id: %s", self.session_id)
+
+    def auth_with_connected_app(
+        self,
+        username: str,
+        password: str,
+        api_token: str,
+        consumer_key: str,
+        consumer_secret: str,
+        embed_api_token: bool = False,
+    ) -> None:
+        """Authorize to Salesforce with security token, username,
+        password, connected app key, and connected app secret
+        creating instance.
+
+        :param username: Salesforce API username
+        :param password: Salesforce API password
+        :param api_token: Salesforce API security token
+        :param consumer_key: Salesforce connected app client ID
+        :param consumer_secret: Salesforce connected app client secret
+        :param embed_api_token: Embed API token to password (default: False)
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.Salesforce import Salesforce
+            from RPA.Robocorp.Vault import Vault
+
+            SF = Salesforce(domain="robocorp-testing-stuff.develop.my")
+            VAULT = Vault()
+
+            secrets = VAULT.get_secret("salesforce")
+            SF.auth_with_connected_app(
+                username=secrets["USERNAME"],
+                password=secrets["PASSWORD"],
+                api_token=secrets["API_TOKEN"],
+                consumer_key=secrets["CONSUMER_KEY"],
+                consumer_secret=secrets["CONSUMER_SECRET"],
+            )
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library  RPA.Salesforce   domain=robocop-testing-stuff.develop.my
+            Library  RPA.Robocorp.Vault
+
+            *** Tasks ***
+            Authenticate to Salesforce using connected app
+                ${secrets}=  Get Secret  salesforce
+
+                Auth with connected app
+                ...  username=${secrets}[USERNAME]
+                ...  password=${secrets}[PASSWORD]
+                ...  api_token=${secrets}[API_TOKEN]
+                ...  consumer_key=${secrets}[CONSUMER_KEY]
+                ...  consumer_secret=${secrets}[CONSUMER_SECRET]
+        """
+        self.session = requests.Session()
+        request_data = {
+            "username": username,
+            "password": f"{password}{api_token}" if embed_api_token else password,
+            "client_id": consumer_key,
+            "client_secret": consumer_secret,
+            "grant_type": "password",
+        }
+        response = requests.post(
+            f"https://{self.domain}.salesforce.com/services/oauth2/token",
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+            data=request_data,
+        )
+        try:
+            response.raise_for_status()
+            result = response.json()
+
+            if result.get("access_token"):
+                self.sf = SimpleSalesforce(
+                    instance_url=result["instance_url"],
+                    session_id=result["access_token"],
+                    domain=self.domain,
+                    session=self.session,
+                )
+                self.logger.debug("Salesforce session id: %s", self.session_id)
+            else:
+                error_message = (
+                    "Could not get access token\n"
+                    f"Details: {response.status_code} {response.text}"
+                )
+                raise SalesforceAuthenticationError(error_message)
+        except requests.exceptions.HTTPError as err:
+            error_message = (
+                f"{str(err)}\nDetails: {response.status_code} {response.text}"
+            )
+            raise SalesforceAuthenticationError(error_message) from err
+
+    def execute_apex(
+        self, apex: str, apex_data: Dict = None, apex_method: str = "POST", **kwargs
+    ):
+        """Execute APEX operation.
+
+        The APEX classes can be added via Salesforce Developer console
+        (from menu: File > New > Apex Class).
+
+        Permissions for the APEX classes can be set via Salesforce Setup
+        (Apex Classes -> Security).
+
+        :param apex: endpoint of the APEX operation
+        :param apex_data: data to be sent to the APEX operation
+        :param apex_method: operation method
+        :param kwargs: additional arguments to be passed to the APEX request
+        :return: result of the APEX operation
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.Salesforce import Salesforce
+
+            SF = Salesforce(domain="robocorp-testing-stuff.develop.my")
+            # authenticate to Salesforce
+            SF.execute_apex(apex="MyClass", apex_data={"data": "value"})
+            result = SF.execute_apex(
+                apex="getAccount/?id=0017R00002xmXB1QAM",
+                apex_method="GET")
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library  RPA.Salesforce   domain=robocop-testing-stuff.develop.my
+
+            *** Tasks ***
+            Executing APEX operations
+                # Authenticate to Salesforce
+
+                &{apex_data}=  Create Dictionary  data=value
+                ${result}=     Execute APEX  MyClass  apex_data=${apex_data}
+                ${result}=     Execute APEX
+                ...  apex=getAccount/?id=0017R00002xmXB1QAM
+                ...  apex_method=GET
+        """
+        return self.sf.apexecute(apex, method=apex_method, data=apex_data, **kwargs)
 
     def _get_values(self, node, prefix=None, data=None):
         if data is None:
