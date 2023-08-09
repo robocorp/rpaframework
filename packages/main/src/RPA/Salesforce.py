@@ -284,6 +284,44 @@ class Salesforce:
         :param consumer_key: Salesforce connected app client ID
         :param consumer_secret: Salesforce connected app client secret
         :param embed_api_token: Embed API token to password (default: False)
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.Salesforce import Salesforce
+            from RPA.Robocorp.Vault import Vault
+
+            SF = Salesforce(domain="robocorp-testing-stuff.develop.my")
+            VAULT = Vault()
+
+            secrets = VAULT.get_secret("salesforce")
+            SF.auth_with_connected_app(
+                username=secrets["USERNAME"],
+                password=secrets["PASSWORD"],
+                api_token=secrets["API_TOKEN"],
+                consumer_key=secrets["CONSUMER_KEY"],
+                consumer_secret=secrets["CONSUMER_SECRET"],
+            )
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library  RPA.Salesforce   domain=robocop-testing-stuff.develop.my
+            Library  RPA.Robocorp.Vault
+
+            *** Tasks ***
+            Authenticate to Salesforce using connected app
+                ${secrets}=  Get Secret  salesforce
+
+                Auth with connected app
+                ...  username=${secrets}[USERNAME]
+                ...  password=${secrets}[PASSWORD]
+                ...  api_token=${secrets}[API_TOKEN]
+                ...  consumer_key=${secrets}[CONSUMER_KEY]
+                ...  consumer_secret=${secrets}[CONSUMER_SECRET]
         """
         self.session = requests.Session()
         request_data = {
@@ -322,7 +360,9 @@ class Salesforce:
             )
             raise SalesforceAuthenticationError(error_message) from err
 
-    def execute_apex(self, apex: str, apex_data: Dict = None, apex_method="POST"):
+    def execute_apex(
+        self, apex: str, apex_data: Dict = None, apex_method: str = "POST", **kwargs
+    ):
         """Execute APEX operation.
 
         The APEX classes can be added via Salesforce Developer console
@@ -334,9 +374,40 @@ class Salesforce:
         :param apex: endpoint of the APEX operation
         :param apex_data: data to be sent to the APEX operation
         :param apex_method: operation method
+        :param kwargs: additional arguments to be passed to the APEX request
         :return: result of the APEX operation
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.Salesforce import Salesforce
+
+            SF = Salesforce(domain="robocorp-testing-stuff.develop.my")
+            # authenticate to Salesforce
+            SF.execute_apex(apex="MyClass", apex_data={"data": "value"})
+            result = SF.execute_apex(
+                apex="getAccount/?id=0017R00002xmXB1QAM",
+                apex_method="GET")
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library  RPA.Salesforce   domain=robocop-testing-stuff.develop.my
+
+            *** Tasks ***
+            Executing APEX operations
+                # Authenticate to Salesforce
+
+                &{apex_data}=  Create Dictionary  data=value
+                ${result}=     Execute APEX  MyClass  apex_data=${apex_data}
+                ${result}=     Execute APEX
+                ...  apex=getAccount/?id=0017R00002xmXB1QAM
+                ...  apex_method=GET
         """
-        return self.sf.apexecute(apex, method=apex_method, data=apex_data)
+        return self.sf.apexecute(apex, method=apex_method, data=apex_data, **kwargs)
 
     def _get_values(self, node, prefix=None, data=None):
         if data is None:
