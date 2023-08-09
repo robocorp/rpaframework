@@ -5,8 +5,12 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Salesforce** (:pr:`1003`): Add keywords ``Authenticate with connected app``
-  and ``Execute APEX``
+- Library **RPA.Salesforce** (:pr:`1003`): Add keywords
+  ``Authenticate With Connected App`` and ``Execute APEX``.
+- Library **RPA.DocumentAI.Base64AI** (:pr:`1051`):
+
+  - Fix signature matching API.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
