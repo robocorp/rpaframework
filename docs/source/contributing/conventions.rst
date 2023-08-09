@@ -98,9 +98,9 @@ The CI pipeline is a matrix of the following:
 
 - Python versions:
 
-    + Python 3.7
     + Python 3.8
     + Python 3.9
+    + Python 3.10
 
 Change Log
 ==========

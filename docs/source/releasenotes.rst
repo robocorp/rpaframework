@@ -2,6 +2,12 @@ Release notes
 =============
 
 
+Latest versions
++++++++++++++++
+
+.. include:: ../../packages/main/packages.rst
+
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -10,6 +16,7 @@ Release notes
 - Library **RPA.DocumentAI.Base64AI** (:pr:`1051`):
 
   - Fix signature matching API.
+  - Better documentation and errors.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_

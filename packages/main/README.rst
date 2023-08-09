@@ -16,7 +16,6 @@ struggling to smoothly write task for a Robot. Describe the situation where your
 .. include-marker
 
 
-
 Introduction
 ------------
 
@@ -68,64 +67,16 @@ Links
 
 ------------
 
+
 Packages
 --------
 
-.. image:: https://img.shields.io/pypi/v/rpaframework.svg?label=rpaframework&style=for-the-badge
-   :target: https://pypi.python.org/pypi/rpaframework
-   :alt: rpaframework latest version
+.. include:: packages.rst
 
+----
 
-.. image:: https://img.shields.io/pypi/v/rpaframework-assistant.svg?label=rpaframework-assistant&style=for-the-badge
-   :target: https://pypi.python.org/pypi/rpaframework-assistant
-   :alt: rpaframework-assistant latest version
-
-
-.. image:: https://img.shields.io/pypi/v/rpaframework-aws.svg?label=rpaframework-aws&style=for-the-badge
-   :target: https://pypi.python.org/pypi/rpaframework-aws
-   :alt: rpaframework-aws latest version
-
-
-
-.. image:: https://img.shields.io/pypi/v/rpaframework-core.svg?label=rpaframework-core&style=for-the-badge
-   :target: https://pypi.python.org/pypi/rpaframework-core
-   :alt: rpaframework-core latest version
-
-
-
-.. image:: https://img.shields.io/pypi/v/rpaframework-dialogs.svg?label=rpaframework-dialogs&style=for-the-badge&color=blue
-   :target: https://pypi.python.org/pypi/rpaframework-dialogs
-   :alt: rpaframework-dialogs latest version
-
-
-
-.. image:: https://img.shields.io/pypi/v/rpaframework-google.svg?label=rpaframework-google&style=for-the-badge&color=blue
-   :target: https://pypi.python.org/pypi/rpaframework-google
-   :alt: rpaframework-google latest version
-
-
-.. image:: https://img.shields.io/pypi/v/rpaframework-openai.svg?label=rpaframework-openai&style=for-the-badge&color=blue
-   :target: https://pypi.python.org/pypi/rpaframework-openai
-   :alt: rpaframework-openai latest version
-
-
-.. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
-   :target: https://pypi.python.org/pypi/rpaframework-pdf
-   :alt: rpaframework-pdf latest version
-
-
-
-.. image:: https://img.shields.io/pypi/v/rpaframework-recognition.svg?label=rpaframework-recognition&style=for-the-badge&color=blue
-   :target: https://pypi.python.org/pypi/rpaframework-recognition
-   :alt: rpaframework-recognition latest version
-
-
-
-.. image:: https://img.shields.io/pypi/v/rpaframework-windows.svg?label=rpaframework-windows&style=for-the-badge&color=blue
-   :target: https://pypi.python.org/pypi/rpaframework-windows
-   :alt: rpaframework-windows latest version
-
-From the above packages **rpaframework-core** and **rpaframework-recognition** are support packages, which themselves do **not** contain any libraries.
+From the above packages, ``rpaframework-core`` and ``rpaframework-recognition`` are
+support packages, which alone do **not** contain any libraries.
 
 
 Libraries
@@ -281,38 +232,38 @@ Installation of RPA.Browser.Playwright
 The **RPA.Browser.Playwright** at the moment requires special installation, because
 of the package size and the post install step it needs to be fully installed.
 
-Minimum required conda.yaml to install Playwright:
+Minimum required `conda.yaml` to install Playwright:
 
 .. code-block:: yaml
 
-   channels:
-     - conda-forge
-   dependencies:
-     - python=3.9.13
-     - pip=22.1.2
-     - nodejs=16.4.2
-     - pip:
-       - robotframework-browser==13.3.0
-       - rpaframework==22.2.1
-   rccPostInstall:
-     - rfbrowser init
+    channels:
+      - conda-forge
+    dependencies:
+      - python=3.9.16
+      - nodejs=16.14.2
+      - pip=22.1.2
+      - pip:
+        - robotframework-browser==17.2.0
+        - rpaframework==24.1.2
+    rccPostInstall:
+      - rfbrowser init
 
 Installation
 ------------
 
 Learn about installing Python packages at `Installing Python Packages`_.
 
-Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
+Default installation method with Robocorp `Developer Tools`_ using `conda.yaml`:
 
 .. code-block:: yaml
 
    channels:
      - conda-forge
    dependencies:
-     - python=3.9.13
+     - python=3.9.16
      - pip=22.1.2
      - pip:
-       - rpaframework==22.2.1
+       - rpaframework==24.1.2
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -321,36 +272,37 @@ To install all extra packages (including Playwright dependencies), you can use:
    channels:
      - conda-forge
    dependencies:
-     - python=3.9.13
+     - python=3.9.16
      - tesseract=4.1.1
-     - pip=22.1.2
      - nodejs=16.14.2
+     - pip=22.1.2
      - pip:
-       - robotframework-browser==13.3.0
-       - rpaframework==22.2.1
-       - rpaframework-aws==5.0.0
-       - rpaframework-google==6.1.1
-       - rpaframework-recognition==5.0.0
+       - robotframework-browser==17.2.0
+       - rpaframework==24.1.2
+       - rpaframework-aws==5.2.8
+       - rpaframework-google==7.0.3
+       - rpaframework-recognition==5.1.2
    rccPostInstall:
      - rfbrowser init
 
-Separate installation of AWS, Dialogs, PDF and Windows libraries without main rpaframework:
+Separate installation of AWS, Dialogs, PDF and Windows libraries without the main
+``rpaframework``:
 
 .. code-block:: yaml
 
    channels:
      - conda-forge
    dependencies:
-     - python=3.9.13
+     - python=3.9.16
      - pip=22.1.2
      - pip:
-       - rpaframework-aws==5.0.0 # included in the rpaframework as an extra
-       - rpaframework-dialogs==4.0.0  # included in the rpaframework by default
-       - rpaframework-pdf==5.0.0  # included in the rpaframework by default
-       - rpaframework-windows==6.0.1 # included in the rpaframework by default
+       - rpaframework-aws==5.2.8  # included in the rpaframework as an extra
+       - rpaframework-dialogs==4.0.4  # included in the rpaframework by default
+       - rpaframework-pdf==7.1.5  # included in the rpaframework by default
+       - rpaframework-windows==7.3.2  # included in the rpaframework by default
 
+.. note:: Python 3.8 or higher is required
 
-.. note:: Python 3.7 or higher is required
 
 Example
 -------
@@ -407,15 +359,18 @@ Development
 -----------
 
 Repository development is `Python`_ based and requires at minimum
-Python version 3.7+ installed on the development machine. The default Python version used in the
-Robocorp Robot template is 3.7.5 so it is a good choice for the version to install. Not recommended
-versions are 3.7.6 and 3.8.1, because they have issues with some of the dependencies related to rpaframework.
-At the time the newer Python versions starting from 3.9 are also not recommended, because some of
+Python version 3.8+ installed on the development machine. The default Python version used in the
+Robocorp Robot template is 3.9.16 so it is a good choice for the version to install. Not recommended
+versions are 3.7.6 and 3.8.1, because they have issues with some of the dependencies related to ``rpaframework``.
+At the time the newer Python versions starting from 3.11 are also not recommended, because some of
 the dependencies might cause issues.
 
 Repository development tooling is based on basically on `poetry`_ and `invoke`_. Poetry is the
 underlying tool used for compiling, building and running the package. Invoke is used for scripting
 purposes for example for linting, testing and publishing tasks.
+
+.. include:: ../../docs/source/contributing/guide.rst
+   :start-after: include-dev-guide
 
 First steps to start developing:
 
@@ -466,14 +421,14 @@ First steps to start developing:
 
       # Before
       [tool.poetry.dependencies]
-      python = "^3.7"
+      python = "^3.8"
       rpaframework = { path = "packages/main", extras = ["cv", "playwright", "aws"] }
       rpaframework-google = "^4.0.0"
       rpaframework-windows = "^4.0.0"
 
       # After
       [tool.poetry.dependencies]
-      python = "^3.7"
+      python = "^3.8"
       rpaframework = { path = "packages/main", extras = ["cv", "playwright"] }
       rpaframework-aws = { path = "packages/aws" }
       rpaframework-google = "^4.0.0"
