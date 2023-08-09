@@ -947,7 +947,7 @@ class DocumentKeywords(LibraryContext):
     def save_pdf(
         self,
         output_path: str,
-        reader: RobocorpPdfReader,
+        reader: Optional[RobocorpPdfReader] = None,
     ):
         """Save the contents of a pypdf reader to a new file.
 
@@ -973,8 +973,12 @@ class DocumentKeywords(LibraryContext):
                 pdf.save_pdf(output_path="output/output.pdf")
 
         :param output_path: filepath to target PDF
-        :param reader: a pypdf reader
+        :param reader: a pypdf reader (defaults to currently active document)
         """
+        if not reader:
+            # Ensures there's at least one document open and active.
+            self.switch_to_pdf()
+            reader = self.active_pdf_document.reader
         writer = pypdf.PdfWriter()
         for page in reader.pages:
             try:

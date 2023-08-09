@@ -18,6 +18,10 @@ Latest versions
   - Fix signature matching API.
   - Better documentation and errors.
 
+- Library **RPA.PDF** (:pr:`1051`; ``rpaframework-pdf`` **7.1.6**):
+
+  - Make the `reader` parameter optional in the ``Save PDF`` keyword.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
