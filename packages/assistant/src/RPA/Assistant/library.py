@@ -1204,7 +1204,7 @@ class Assistant:
                 assistant.add_submit_buttons("Submit", default="Submit")
                 result = assistant.run_dialog()
                 send_feedback_message(result.email, result.message)
-        """
+        """  # noqa: E501
 
         def on_click(_: ControlEvent):
             self._callbacks.queue_fn_or_kw(function, *args, **kwargs)
