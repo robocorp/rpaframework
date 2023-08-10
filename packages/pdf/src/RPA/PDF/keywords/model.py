@@ -2,7 +2,7 @@ import re
 import sys
 import typing
 from collections import OrderedDict
-from typing import Any, Iterable, Optional, Set, Tuple, Union, cast
+from typing import Any, Iterable, Optional, Set, Tuple, Union
 
 import pdfminer
 import pypdf
@@ -26,7 +26,6 @@ from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfparser import PDFParser
 from pdfminer.utils import bbox2str, enc
-from pypdf._utils import logger_warning, skip_over_whitespace
 
 from RPA.PDF.keywords import LibraryContext, keyword
 
@@ -39,86 +38,6 @@ def iterable_items_to_ints(bbox: Optional[Iterable]) -> Coords:
     if bbox is None:
         return ()
     return tuple(map(int, bbox))
-
-
-class RobocorpPdfReader(pypdf.PdfReader):
-    """Custom PDF reader class patching the one from the `pypdf` library."""
-
-    def __get_object(
-        self, indirect_reference: Union[int, pypdf.generic.IndirectObject]
-    ) -> Optional[pypdf.generic.PdfObject]:
-        retval = None
-        if hasattr(self.stream, "getbuffer"):
-            buf = bytes(self.stream.getbuffer())  # type: ignore
-        else:
-            p = self.stream.tell()
-            self.stream.seek(0, 0)
-            buf = self.stream.read(-1)
-            self.stream.seek(p, 0)
-        m = re.search(
-            # NOTE(cmin764): Here we fixed the regex in order to be able to find the
-            #  object.
-            (
-                rf"\s*{indirect_reference.idnum}\s+"
-                rf"{indirect_reference.generation}\s+obj"
-            ).encode(),
-            buf,
-        )
-        if m is not None:
-            logger_warning(
-                f"Object {indirect_reference.idnum} {indirect_reference.generation} "
-                f"found",
-                __name__,
-            )
-            if indirect_reference.generation not in self.xref:
-                self.xref[indirect_reference.generation] = {}
-            self.xref[indirect_reference.generation][indirect_reference.idnum] = (
-                m.start(0) + 1
-            )
-            self.stream.seek(m.end(0) + 1)
-            skip_over_whitespace(self.stream)
-            self.stream.seek(-1, 1)
-            retval = pypdf.generic.read_object(self.stream, self)  # type: ignore
-
-            # override encryption is used for the /Encrypt dictionary
-            if not self._override_encryption and self._encryption is not None:
-                # if we don't have the encryption key:
-                if not self._encryption.is_decrypted():
-                    raise pypdf.errors.FileNotDecryptedError(
-                        "File has not been decrypted"
-                    )
-                # otherwise, decrypt here...
-                retval = cast(pypdf.generic.PdfObject, retval)
-                retval = self._encryption.decrypt_object(
-                    retval, indirect_reference.idnum, indirect_reference.generation
-                )
-        else:
-            logger_warning(
-                f"Object {indirect_reference.idnum} {indirect_reference.generation} "
-                f"not defined.",
-                __name__,
-            )
-            if self.strict:
-                raise pypdf.errors.PdfReadError("Could not find object.")
-
-        self.cache_indirect_object(
-            indirect_reference.generation, indirect_reference.idnum, retval
-        )
-        return retval
-
-    def get_object(self, *args, **kwargs) -> Optional[pypdf.generic.PdfObject]:
-        """Patched object retrieval compatible with various flavours of PDF data."""
-        try:
-            retval = super().get_object(*args, **kwargs)
-        except pypdf.errors.PdfReadError:
-            if not self.strict:
-                raise
-            retval = None
-
-        if retval:
-            return retval
-
-        return self.__get_object(*args, **kwargs)
 
 
 class BaseElement:
@@ -270,9 +189,9 @@ class Document:
         return self._fileobject
 
     @property
-    def reader(self) -> RobocorpPdfReader:
+    def reader(self) -> pypdf.PdfReader:
         """Get a PyPDF reader instance for the PDF."""
-        return RobocorpPdfReader(self.fileobject, strict=False)
+        return pypdf.PdfReader(self.fileobject, strict=False)
 
     def add_page(self, page: Page) -> None:
         self._pages[page.pageid] = page
@@ -711,7 +630,7 @@ class ModelKeywords(LibraryContext):
         """
         fields = self.get_input_fields(source_path=source_path)
         if not fields:
-            raise ValueError("Document does not have input fields")
+            raise ValueError("Document does not have input fields.")
 
         if field_name in fields.keys():
             fields[field_name]["value"] = value  # pylint: disable=E1136
@@ -833,7 +752,14 @@ class ModelKeywords(LibraryContext):
         if output_path is None:
             output_path = self.active_pdf_document.path
         with open(output_path, "wb") as stream:
-            writer.write(stream)
+            try:
+                writer.write(stream)
+            except IndexError as exc:
+                raise ValueError(
+                    "Output PDF saving failed, as there are required fields which"
+                    " haven't been set. Enable `replace_none_value` when retrieving"
+                    " the fields or pass them directly with `newvals` during save."
+                ) from exc
 
     @keyword
     def dump_pdf_as_xml(self, source_path: Optional[str] = None) -> str:
