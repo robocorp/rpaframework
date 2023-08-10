@@ -1,5 +1,6 @@
 import base64
 import logging
+import mimetypes
 import os
 import re
 import time
@@ -48,7 +49,6 @@ from RPA.Robocorp.utils import protect_keywords
 
 FilePath = Union[str, Path]
 
-IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
 FLAG_DELETED = "\\Deleted"
 FLAG_SEEN = "\\Seen"
 FLAG_FLAGGED = "\\Flagged"
@@ -60,6 +60,14 @@ class AttachmentPosition(Enum):
 
     TOP = 1  # Default
     BOTTOM = 2
+
+
+def to_list(value):
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        return value.split(",")
+    return value
 
 
 def to_attachment_position(value):
@@ -572,18 +580,20 @@ class ImapSmtp(OAuthMixin):
             ...           attachments=${CURDIR}${/}report.pdf
             ...           attachment_position=bottom
         """
-        evaluated_attachment_position = to_attachment_position(attachment_position)
         add_charset(self.encoding, self.encoding, QP, self.encoding)
         msg = MIMEMultipart()
-        email_recipients, attachments, images = self._handle_message_parameters(
+        msg["Subject"] = subject
+        msg["From"] = sender
+
+        # The following lines optimize handling the parameters
+        msg_recipients, attachments, images = self._handle_message_parameters(
             msg, recipients, cc, bcc, attachments, images
         )
+
+        evaluated_attachment_position = to_attachment_position(attachment_position)
+
         if evaluated_attachment_position == AttachmentPosition.TOP:
             self._add_attachments_to_msg(attachments, msg)
-
-        msg.add_header("From", sender)
-        msg.add_header("To", ",".join(email_recipients))
-        msg.add_header("Subject", subject)
 
         if return_path:
             msg.add_header("Return-Path", return_path)
@@ -599,12 +609,16 @@ class ImapSmtp(OAuthMixin):
         str_io = StringIO()
         g = Generator(str_io, False)
         g.flatten(msg)
+
         try:
             if self.smtp_conn is None:
                 self.authorize_smtp()
-            self.smtp_conn.sendmail(sender, email_recipients, str_io.getvalue())
+            self.smtp_conn.sendmail(
+                from_addr=sender, to_addrs=msg_recipients, msg=str_io.getvalue()
+            )
         except Exception as err:
             raise ValueError(f"Send Message failed: {err}") from err
+
         return True
 
     def _add_message_content(self, html, images, body, msg):
@@ -634,29 +648,29 @@ class ImapSmtp(OAuthMixin):
                     msg.attach(img)
 
     def _handle_message_parameters(self, msg, recipients, cc, bcc, attachments, images):
-        if attachments is None:
-            attachments = []
-        if images is None:
-            images = []
-        if recipients is None:
-            recipients = []
-        if not isinstance(recipients, list):
-            recipients = recipients.split(",")
-        if not isinstance(attachments, list):
-            attachments = str(attachments).split(",")
-        if not isinstance(images, list):
-            images = str(images).split(",")
+        # Convert the parameters to lists using the helper function
+        recipients = to_list(recipients)
+        attachments = to_list(attachments)
+        images = to_list(images)
 
+        has_recipients = False
+
+        if recipients:
+            has_recipients = True
+            msg.add_header("To", ",".join(recipients))
         if cc:
-            msg["Cc"] = ",".join(cc) if isinstance(cc, list) else cc
-            recipients += cc if isinstance(cc, list) else cc.split(",")
+            has_recipients = True
+            msg["Cc"] = ",".join(to_list(cc))
+            recipients += to_list(cc)
         if bcc:
-            recipients += bcc if isinstance(bcc, list) else bcc.split(",")
+            has_recipients = True
+            recipients += to_list(bcc)
 
-        if not recipients:
+        if not has_recipients:
             raise NoRecipientsError(
                 "Message needs to have either 'recipients', 'cc' or 'bcc' for sending."
             )
+
         return recipients, attachments, images
 
     def _add_attachments_to_msg(self, attachments: list = None, msg=None):
@@ -665,13 +679,22 @@ class ImapSmtp(OAuthMixin):
                 if os.path.dirname(filename) == "":
                     filename = str(Path.cwd() / filename)
                 with open(filename, "rb") as attachment:
-                    _, ext = filename.lower().rsplit(".", 1)
-                    if ext in IMAGE_FORMATS:
+                    ctype, encoding = mimetypes.guess_type(filename)
+                    if ctype is None or encoding is not None:
+                        ctype = "application/octet-stream"
+
+                    maintype, subtype = ctype.split("/", 1)
+                    self.logger.warning(f"MAIN: {maintype} SUB: {subtype}")
+                    if maintype == "image":
                         # image attachment
                         part = MIMEImage(
                             attachment.read(),
                             name=Path(filename).name,
-                            _subtype=ext,
+                            _subtype=subtype,
+                        )
+                    elif maintype == "text":
+                        part = MIMEText(
+                            attachment.read().decode("utf-8"), _subtype=subtype
                         )
                     else:
                         # attach other filetypes
