@@ -124,7 +124,7 @@ class Archive:
             Archive Folder With Zip  ${CURDIR}               packagelzma.zip  compression=lzma
             Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2
 
-            
+
         .. code-block:: python
 
             from RPA.Archive import Archive

@@ -1161,8 +1161,8 @@ class Assistant:
             Second View
                 Add Heading  Let's build an infinite loop
                 Add Button  Change View  First View
-        
-                
+
+
         .. code-block:: python
 
             def success_dialog():
@@ -1197,7 +1197,7 @@ class Assistant:
                     delete_user(username)
 
             def input_from_dialog():
-                assistant = Assistant()   
+                assistant = Assistant()
                 assistant.add_heading("Send feedback")
                 assistant.add_text_input("email", label="E-mail address")
                 assistant.add_text_input("message", label="Feedback", placeholder="Enter feedback here", maximum_rows=5)
