@@ -5,8 +5,10 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Salesforce** (:pr:`1003`): Add keywords ``Authenticate with connected app``
-  and ``Execute APEX``
+- Library **RPA.Salesforce** (:pr:`1003`): Add keywords
+  ``Authenticate with connected app`` and ``Execute APEX``.
+- Library **RPA.Email.ImapSmtp** (:pr:`1054`): Fix handling of `To`, `Cc` and `Bcc`
+  fields in `Send Message` keyword.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
