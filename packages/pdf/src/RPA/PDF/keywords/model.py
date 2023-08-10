@@ -30,7 +30,6 @@ from pypdf._utils import logger_warning, skip_over_whitespace
 
 from RPA.PDF.keywords import LibraryContext, keyword
 
-
 Coords = Tuple[int, ...]
 
 BOXES_FLOW_NOT_SET = 0.5
@@ -224,7 +223,7 @@ class Page(BaseElement):
 
     @property
     def figures(self) -> OrderedDict:
-        # NOTE(cmiN): Usually all our figures are of type `LTImage` only. (as the
+        # NOTE(cmin764): Usually all our figures are of type `LTImage` only. (as the
         #  `LTFigure` ones are duplicates of the previously extracted unique images)
         return self._figures
 
@@ -364,8 +363,8 @@ class Converter(PDFConverter):
                 self._show_group(child)
             self.write("</textgroup>\n")
 
-    # pylint: disable=R0912, R0915
-    def _render(self, item):
+    # pylint: disable = R0912, R0915
+    def _render(self, item):  # noqa: C901
         if isinstance(item, LTPage):
             self.current_page = Page(item.pageid, item.bbox, item.rotate)
             self.write(self.current_page.tag + "\n")
@@ -463,7 +462,7 @@ class Converter(PDFConverter):
         else:
             self._logger.warning("Unknown item: %r", item)
 
-    def receive_layout(self, ltpage: LTPage):  # noqa: C901 pylint: disable=R0915
+    def receive_layout(self, ltpage: LTPage):
         self._render(ltpage)
 
     def close(self):
@@ -566,15 +565,17 @@ class ModelKeywords(LibraryContext):
         device.close()
 
     @classmethod
-    def _decode_field(
-        cls, binary: Optional[bytes], *, encoding
-    ) -> Optional[Union[str, bytes]]:
-        if not (binary and hasattr(binary, "decode")):
+    def _decode_field(cls, binary: Optional[bytes], *, encoding) -> Optional[str]:
+        can_decode = binary is not None and hasattr(binary, "decode")
+        if not can_decode:
             return binary
 
         try:
             return binary.decode(encoding)
         except UnicodeDecodeError:
+            if encoding == cls.FIELDS_ENCODING:
+                raise
+            # Defaults to a fallback default encoding if the custom one fails.
             return binary.decode(cls.FIELDS_ENCODING)
 
     @keyword
@@ -633,9 +634,9 @@ class ModelKeywords(LibraryContext):
         source_parser = PDFParser(active_document.fileobject)
         source_document = PDFDocument(source_parser)
         try:
-            fields = pdfminer.pdftypes.resolve1(source_document.catalog["AcroForm"])[
-                "Fields"
-            ]
+            miner_fields = pdfminer.pdftypes.resolve1(
+                source_document.catalog["AcroForm"]
+            )["Fields"]
             pypdf_fields = active_document.reader.get_fields()
         except KeyError as err:
             raise KeyError(
@@ -643,24 +644,25 @@ class ModelKeywords(LibraryContext):
             ) from err
 
         record_fields = {}
-        for miner_field in fields:
+        for miner_field in miner_fields:
             field = pdfminer.pdftypes.resolve1(miner_field)
             if field is None:
                 continue
 
-            name, value, raw_rect, label = (
+            name, value, label = (
                 self._decode_field(field.get("T"), encoding=encoding),
                 self._decode_field(field.get("V"), encoding=encoding),
-                field.get("Rect"),
                 self._decode_field(field.get("TU"), encoding=encoding),
             )
+            raw_rect = field.get("Rect")
+            states = pypdf_fields.get(name, {}).get("/_States_")
             if value is None and replace_none_value:
-                states = pypdf_fields.get(name, {}).get("/_States_")
                 value = states[0] if states else name
             parsed_field = {
                 "value": value,
-                "rect": iterable_items_to_ints(raw_rect),
                 "label": label or None,
+                "rect": iterable_items_to_ints(raw_rect),
+                "states": states,
             }
             record_fields[name] = parsed_field
 
@@ -747,10 +749,11 @@ class ModelKeywords(LibraryContext):
         :param source_path: Source PDF with fields to update.
         :param output_path: Updated target PDF.
         :param newvals: New values when updating many at once.
-        :param use_appearances_writer: For some PDF documents the updated
-            fields won't be visible, try to set this to `True` if you
-            encounter problems. (viewing the output PDF in browser might display the
-            field values then)
+        :param use_appearances_writer: For some PDF documents the updated fields won't
+            be visible (or will look strange). When this happens, try to set this to
+            `True` so the previewer will re-render these based on the actual values.
+            (and viewing the output PDF in a browser might display the field values
+            correcly then)
 
         **Examples**
 
@@ -792,30 +795,24 @@ class ModelKeywords(LibraryContext):
                     newvals=new_fields
                 )
         """
-        # NOTE(cmin764): The resulting PDF will be a mutated version of the original
-        #  PDF, and it won't necessarily display correctly in all document viewers.
-        #  It also won't show anymore as having fields at all. The tests will XFAIL for
-        #  the time being.
+        # NOTE(cmin764): The resulting PDF won't be a mutated version anymore and the
+        #  fields can be retrieved and replaced again.
         self.ctx.switch_to_pdf(source_path)
         reader = self.active_pdf_document.reader
-        if "/AcroForm" in reader.trailer["/Root"]:
-            reader.trailer["/Root"]["/AcroForm"].update(
-                {
-                    pypdf.generic.NameObject(
-                        "/NeedAppearances"
-                    ): pypdf.generic.BooleanObject(True)
-                }
-            )
-
         writer = pypdf.PdfWriter(clone_from=reader)
         writer.set_need_appearances_writer(use_appearances_writer)
+
         if newvals:
-            self.logger.debug("Updating form fields with provided values for all pages")
+            self.logger.debug(
+                "Updating form fields with the provided argument values for all pages"
+            )
             updated_fields = newvals
         elif self.active_pdf_document.fields:
-            self.logger.debug("Updating form fields with PDF values for all pages")
+            self.logger.debug(
+                "Updating form fields with the set PDF values for all pages"
+            )
             updated_fields = {
-                key: value["value"] or ""  # should never pass a non-string value
+                key: value["value"] or ""  # should never pass a null value
                 for (key, value) in self.active_pdf_document.fields.items()
             }
         else:
