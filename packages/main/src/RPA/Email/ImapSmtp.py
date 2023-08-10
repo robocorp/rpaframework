@@ -580,6 +580,7 @@ class ImapSmtp(OAuthMixin):
             ...           attachments=${CURDIR}${/}report.pdf
             ...           attachment_position=bottom
         """
+        add_charset(self.encoding, self.encoding, QP, self.encoding)
         msg = MIMEMultipart()
         msg["Subject"] = subject
         msg["From"] = sender
@@ -590,7 +591,6 @@ class ImapSmtp(OAuthMixin):
         )
 
         evaluated_attachment_position = to_attachment_position(attachment_position)
-        add_charset(self.encoding, self.encoding, QP, self.encoding)
 
         if evaluated_attachment_position == AttachmentPosition.TOP:
             self._add_attachments_to_msg(attachments, msg)
