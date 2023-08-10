@@ -13,7 +13,7 @@ Release notes
 --------------------
 
 - Library **RPA.Salesforce** (:pr:`1003`): Add keywords
-  ``Authenticate with connected app`` and ``Execute APEX``.
+  ``Auth with connected app`` and ``Execute APEX``.
 - Library **RPA.Email.ImapSmtp** (:pr:`1054`): Fix handling of `To`, `Cc` and `Bcc`
   fields in `Send Message` keyword.
 
