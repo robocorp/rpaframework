@@ -353,120 +353,118 @@ class Converter(PDFConverter):
             text = self.CONTROL.sub("", text)
         self.write(enc(text))
 
-    def receive_layout(self, ltpage: LTPage):  # noqa: C901 pylint: disable=R0915
-        # TODO: document this
-        def show_group(item):
-            if isinstance(item, LTTextBox):
+    def _show_group(self, item):
+        if isinstance(item, LTTextBox):
+            self.write(
+                '<textbox id="%d" bbox="%s" />\n' % (item.index, bbox2str(item.bbox))
+            )
+        elif isinstance(item, LTTextGroup):
+            self.write('<textgroup bbox="%s">\n' % bbox2str(item.bbox))
+            for child in item:
+                self._show_group(child)
+            self.write("</textgroup>\n")
+
+    # pylint: disable=R0912, R0915
+    def _render(self, item):
+        if isinstance(item, LTPage):
+            self.current_page = Page(item.pageid, item.bbox, item.rotate)
+            self.write(self.current_page.tag + "\n")
+            for child in item:
+                self._render(child)
+            if item.groups is not None:
+                self.write("<layout>\n")
+                for group in item.groups:
+                    self._show_group(group)
+                self.write("</layout>\n")
+            self.write("</page>\n")
+            self.active_pdf_document.add_page(self.current_page)
+        elif isinstance(item, LTLine):
+            s = '<line linewidth="%d" bbox="%s" />\n' % (
+                item.linewidth,
+                bbox2str(item.bbox),
+            )
+            self.write(s)
+        elif isinstance(item, LTRect):
+            s = '<rect linewidth="%d" bbox="%s" />\n' % (
+                item.linewidth,
+                bbox2str(item.bbox),
+            )
+            self.write(s)
+        elif isinstance(item, LTCurve):
+            s = '<curve linewidth="%d" bbox="%s" pts="%s"/>\n' % (
+                item.linewidth,
+                bbox2str(item.bbox),
+                item.get_pts(),
+            )
+            self.write(s)
+        elif isinstance(item, LTFigure):
+            s = '<figure name="%s" bbox="%s">\n' % (
+                item.name,
+                bbox2str(item.bbox),
+            )
+            self.write(s)
+            for child in item:
+                self._render(child)
+                if isinstance(child, LTImage):
+                    figure = Figure(child)
+                    self._add_unique_figure(figure)
+            self.write("</figure>\n")
+        elif isinstance(item, LTTextLine):
+            self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
+            for child in item:
+                self._render(child)
+            self.write("</textline>\n")
+        elif isinstance(item, LTTextBox):
+            wmode = ""
+
+            if isinstance(item, LTTextBoxVertical):
+                wmode = ' wmode="vertical"'
+            s = '<textbox id="%d" bbox="%s"%s>\n' % (
+                item.index,
+                bbox2str(item.bbox),
+                wmode,
+            )
+            box = TextBox(item.index, item=item, trim=self.trim)
+            self.write(s)
+            self.current_page.add_content(box)
+            for child in item:
+                self._render(child)
+            self.write("</textbox>\n")
+        elif isinstance(item, LTChar):
+            s = (
+                '<text font="%s" bbox="%s" colourspace="%s" '
+                'ncolour="%s" size="%.3f">'
+                % (
+                    enc(item.fontname),
+                    bbox2str(item.bbox),
+                    item.ncs.name,
+                    item.graphicstate.ncolor,
+                    item.size,
+                )
+            )
+            self.write(s)
+            self.write_text(item.get_text())
+            self.write("</text>\n")
+        elif isinstance(item, LTText):
+            self.write("<text>%s</text>\n" % item.get_text())
+        elif isinstance(item, LTImage):
+            if self.imagewriter is not None:
+                name = self.imagewriter.export_image(item)
                 self.write(
-                    '<textbox id="%d" bbox="%s" />\n'
-                    % (item.index, bbox2str(item.bbox))
+                    '<image src="%s" width="%d" height="%d" />\n'
+                    % (enc(name), item.width, item.height)
                 )
-            elif isinstance(item, LTTextGroup):
-                self.write('<textgroup bbox="%s">\n' % bbox2str(item.bbox))
-                for child in item:
-                    show_group(child)
-                self.write("</textgroup>\n")
-
-        #  pylint: disable=R0912, R0915
-        def render(item):
-            if isinstance(item, LTPage):
-                self.current_page = Page(item.pageid, item.bbox, item.rotate)
-                self.write(self.current_page.tag + "\n")
-                for child in item:
-                    render(child)
-                if item.groups is not None:
-                    self.write("<layout>\n")
-                    for group in item.groups:
-                        show_group(group)
-                    self.write("</layout>\n")
-                self.write("</page>\n")
-                self.active_pdf_document.add_page(self.current_page)
-            elif isinstance(item, LTLine):
-                s = '<line linewidth="%d" bbox="%s" />\n' % (
-                    item.linewidth,
-                    bbox2str(item.bbox),
-                )
-                self.write(s)
-            elif isinstance(item, LTRect):
-                s = '<rect linewidth="%d" bbox="%s" />\n' % (
-                    item.linewidth,
-                    bbox2str(item.bbox),
-                )
-                self.write(s)
-            elif isinstance(item, LTCurve):
-                s = '<curve linewidth="%d" bbox="%s" pts="%s"/>\n' % (
-                    item.linewidth,
-                    bbox2str(item.bbox),
-                    item.get_pts(),
-                )
-                self.write(s)
-            elif isinstance(item, LTFigure):
-                s = '<figure name="%s" bbox="%s">\n' % (
-                    item.name,
-                    bbox2str(item.bbox),
-                )
-                self.write(s)
-                for child in item:
-                    render(child)
-                    if isinstance(child, LTImage):
-                        figure = Figure(child)
-                        self._add_unique_figure(figure)
-                self.write("</figure>\n")
-            elif isinstance(item, LTTextLine):
-                self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
-                for child in item:
-                    render(child)
-                self.write("</textline>\n")
-            elif isinstance(item, LTTextBox):
-                wmode = ""
-
-                if isinstance(item, LTTextBoxVertical):
-                    wmode = ' wmode="vertical"'
-                s = '<textbox id="%d" bbox="%s"%s>\n' % (
-                    item.index,
-                    bbox2str(item.bbox),
-                    wmode,
-                )
-                box = TextBox(item.index, item=item, trim=self.trim)
-                self.write(s)
-                self.current_page.add_content(box)
-                for child in item:
-                    render(child)
-                self.write("</textbox>\n")
-            elif isinstance(item, LTChar):
-                s = (
-                    '<text font="%s" bbox="%s" colourspace="%s" '
-                    'ncolour="%s" size="%.3f">'
-                    % (
-                        enc(item.fontname),
-                        bbox2str(item.bbox),
-                        item.ncs.name,
-                        item.graphicstate.ncolor,
-                        item.size,
-                    )
-                )
-                self.write(s)
-                self.write_text(item.get_text())
-                self.write("</text>\n")
-            elif isinstance(item, LTText):
-                self.write("<text>%s</text>\n" % item.get_text())
-            elif isinstance(item, LTImage):
-                if self.imagewriter is not None:
-                    name = self.imagewriter.export_image(item)
-                    self.write(
-                        '<image src="%s" width="%d" height="%d" />\n'
-                        % (enc(name), item.width, item.height)
-                    )
-                else:
-                    self.write(
-                        '<image width="%d" height="%d" />\n' % (item.width, item.height)
-                    )
-                figure = Figure(item)
-                self._add_unique_figure(figure)
             else:
-                self._logger.warning("Unknown item: %r", item)
+                self.write(
+                    '<image width="%d" height="%d" />\n' % (item.width, item.height)
+                )
+            figure = Figure(item)
+            self._add_unique_figure(figure)
+        else:
+            self._logger.warning("Unknown item: %r", item)
 
-        render(ltpage)
+    def receive_layout(self, ltpage: LTPage):  # noqa: C901 pylint: disable=R0915
+        self._render(ltpage)
 
     def close(self):
         self.write_footer()
@@ -594,7 +592,7 @@ class ModelKeywords(LibraryContext):
         :param source_path: Filepath to source, if not given use the currently active
             PDF.
         :param replace_none_value: Enable this to conveniently visualize the fields. (
-            replaces the null value with field's name)
+            replaces the null value with field's default or its name if absent)
         :param encoding: Use an explicit encoding for field name/value parsing. (
             defaults to "iso-8859-1" but "utf-8/16" might be the one working for you)
         :returns: A dictionary with all the found fields. Use their key names when
@@ -634,11 +632,11 @@ class ModelKeywords(LibraryContext):
 
         source_parser = PDFParser(active_document.fileobject)
         source_document = PDFDocument(source_parser)
-
         try:
             fields = pdfminer.pdftypes.resolve1(source_document.catalog["AcroForm"])[
                 "Fields"
             ]
+            pypdf_fields = active_document.reader.get_fields()
         except KeyError as err:
             raise KeyError(
                 f"PDF {active_document.path!r} does not have any input fields."
@@ -657,9 +655,10 @@ class ModelKeywords(LibraryContext):
                 self._decode_field(field.get("TU"), encoding=encoding),
             )
             if value is None and replace_none_value:
-                value = name
+                states = pypdf_fields.get(name, {}).get("/_States_")
+                value = states[0] if states else name
             parsed_field = {
-                "value": value or "",
+                "value": value,
                 "rect": iterable_items_to_ints(raw_rect),
                 "label": label or None,
             }
@@ -726,13 +725,13 @@ class ModelKeywords(LibraryContext):
                 fields[field_key]["value"] = value  # pylint: disable=E1136
             elif label_matches > 1:
                 raise ValueError(
-                    "Unable to set field value - field name: '%s' matched %d fields"
-                    % (field_name, label_matches)
+                    f"Unable to set field value - field name: {field_name!r} matched"
+                    f" {label_matches} fields"
                 )
             else:
                 raise ValueError(
-                    "Unable to set field value - field name: '%s' "
-                    "not found in the document" % field_name
+                    f"Unable to set field value for {field_name!r}:"
+                    " not found in the document"
                 )
 
     @keyword
@@ -793,11 +792,10 @@ class ModelKeywords(LibraryContext):
                     newvals=new_fields
                 )
         """
-        # NOTE:
-        # The resulting PDF will be a mutated version of the original PDF,
-        # and it won't necessarily show correctly in all document viewers.
-        # It also won't show anymore as having fields at all.
-        # The tests will XFAIL for the time being.
+        # NOTE(cmin764): The resulting PDF will be a mutated version of the original
+        #  PDF, and it won't necessarily display correctly in all document viewers.
+        #  It also won't show anymore as having fields at all. The tests will XFAIL for
+        #  the time being.
         self.ctx.switch_to_pdf(source_path)
         reader = self.active_pdf_document.reader
         if "/AcroForm" in reader.trailer["/Root"]:
@@ -808,60 +806,37 @@ class ModelKeywords(LibraryContext):
                     ): pypdf.generic.BooleanObject(True)
                 }
             )
-        writer = pypdf.PdfWriter()
-        if use_appearances_writer:
-            writer = self._set_need_appearances_writer(writer)
 
+        writer = pypdf.PdfWriter(clone_from=reader)
+        writer.set_need_appearances_writer(use_appearances_writer)
         if newvals:
             self.logger.debug("Updating form fields with provided values for all pages")
             updated_fields = newvals
         elif self.active_pdf_document.fields:
             self.logger.debug("Updating form fields with PDF values for all pages")
             updated_fields = {
-                k: v["value"] or ""
-                for (k, v) in self.active_pdf_document.fields.items()
+                key: value["value"] or ""  # should never pass a non-string value
+                for (key, value) in self.active_pdf_document.fields.items()
             }
         else:
             self.logger.debug("No values available for updating the form fields")
             updated_fields = {}
 
-        for page in reader.pages:
-            if updated_fields:
+        if updated_fields:
+            for page in writer.pages:
                 try:
-                    writer.update_page_form_field_values(page, fields=updated_fields)
+                    writer.update_page_form_field_values(
+                        page,
+                        fields=updated_fields,
+                        auto_regenerate=use_appearances_writer,
+                    )
                 except Exception as exc:  # pylint: disable=W0703
                     self.logger.warning(repr(exc))
-            writer.add_page(page)
 
         if output_path is None:
             output_path = self.active_pdf_document.path
         with open(output_path, "wb") as stream:
             writer.write(stream)
-
-    def _set_need_appearances_writer(self, writer: pypdf.PdfWriter):
-        # See 12.7.2 and 7.7.2 for more information:
-        # http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
-        try:
-            catalog = writer._root_object  # pylint: disable=W0212
-            # get the AcroForm tree
-            if "/AcroForm" not in catalog:
-                catalog.update(
-                    {
-                        pypdf.generic.NameObject(
-                            "/AcroForm"
-                        ): pypdf.generic.IndirectObject(
-                            len(writer._objects), 0, writer  # pylint: disable=W0212
-                        )
-                    }
-                )
-
-            need_appearances = pypdf.generic.NameObject("/NeedAppearances")
-            catalog["/AcroForm"][need_appearances] = pypdf.generic.BooleanObject(True)
-            return writer
-
-        except Exception:  # pylint: disable=broad-except
-            self.logger.exception()
-            return writer
 
     @keyword
     def dump_pdf_as_xml(self, source_path: Optional[str] = None) -> str:
