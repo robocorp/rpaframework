@@ -13,7 +13,7 @@ Latest versions
 
 - Library **RPA.Salesforce** (:pr:`1003`): Add keywords
   ``Authenticate With Connected App`` and ``Execute APEX``.
-- Library **RPA.DocumentAI.Base64AI** (:pr:`1051`):
+- Library **RPA.DocumentAI.Base64AI** (:issue:`719`):
 
   - Fix signature matching API.
   - Better documentation and errors.
@@ -21,6 +21,10 @@ Latest versions
 - Library **RPA.PDF** (:pr:`1051`; ``rpaframework-pdf`` **7.1.6**):
 
   - Make the `reader` parameter optional in the ``Save PDF`` keyword.
+  - Fix PDF fields retrieval, value decoding and setting. (:issue:`872`)
+
+- Library **RPA.Email.ImapSmtp** (:pr:`1054`): Fix handling of `To`, `Cc` and `Bcc`
+  fields in `Send Message` keyword.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
