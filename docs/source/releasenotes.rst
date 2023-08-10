@@ -9,7 +9,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-25.0.0 - 10 Aug 2023
+25.0.1 - 10 Aug 2023
 --------------------
 
 - Library **RPA.DocumentAI.Base64AI** (:issue:`719`):
