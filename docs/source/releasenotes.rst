@@ -2,17 +2,16 @@ Release notes
 =============
 
 
-Latest versions
-+++++++++++++++
-
-.. include:: ../../packages/main/packages.rst
-
-
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Salesforce** (:pr:`1003`): Add keywords
-  ``Authenticate With Connected App`` and ``Execute APEX``.
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+25.0.0 - 10 Aug 2023
+--------------------
+
 - Library **RPA.DocumentAI.Base64AI** (:issue:`719`):
 
   - Fix signature matching API.
@@ -23,12 +22,13 @@ Latest versions
   - Make the `reader` parameter optional in the ``Save PDF`` keyword.
   - Fix PDF fields retrieval, value decoding and setting. (:issue:`872`)
 
+25.0.0 - 10 Aug 2023
+--------------------
+
+- Library **RPA.Salesforce** (:pr:`1003`): Add keywords
+  ``Authenticate with connected app`` and ``Execute APEX``.
 - Library **RPA.Email.ImapSmtp** (:pr:`1054`): Fix handling of `To`, `Cc` and `Bcc`
   fields in `Send Message` keyword.
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 24.1.2 - 27 Jul 2023
 --------------------
