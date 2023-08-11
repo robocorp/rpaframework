@@ -1,3 +1,5 @@
+.. include-full-readme
+
 RPA Framework
 =============
 
@@ -13,8 +15,8 @@ struggling to smoothly write task for a Robot. Describe the situation where your
    :local:
    :depth: 1
 
-.. include-marker
 
+.. include-docs-readme
 
 Introduction
 ------------
@@ -73,7 +75,6 @@ Packages
 
 .. include:: ../../docs/source/packages.rst
    :start-after: include-packages
-
 
 ----
 
