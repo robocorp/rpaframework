@@ -1,5 +1,38 @@
 .. include-packages
 
+New `Robo <https://github.com/robocorp/robo/>`_
+-----------------------------------------------
+
+.. image:: https://img.shields.io/pypi/v/robocorp.svg?label=robocorp&style=for-the-badge
+   :target: https://pypi.python.org/pypi/robocorp
+   :alt: robocorp latest version
+
+.. image:: https://img.shields.io/pypi/v/robocorp-tasks.svg?label=robocorp-tasks&style=for-the-badge
+   :target: https://pypi.python.org/pypi/robocorp-tasks
+   :alt: robocorp-tasks latest version
+
+.. image:: https://img.shields.io/pypi/v/robocorp-log.svg?label=robocorp-log&style=for-the-badge
+   :target: https://pypi.python.org/pypi/robocorp-log
+   :alt: robocorp-log latest version
+
+.. image:: https://img.shields.io/pypi/v/robocorp-vault.svg?label=robocorp-vault&style=for-the-badge
+   :target: https://pypi.python.org/pypi/robocorp-vault
+   :alt: robocorp-vault latest version
+
+.. image:: https://img.shields.io/pypi/v/robocorp-workitems.svg?label=robocorp-workitems&style=for-the-badge
+   :target: https://pypi.python.org/pypi/robocorp-workitems
+   :alt: robocorp-workitems latest version
+
+.. image:: https://img.shields.io/pypi/v/robocorp-storage.svg?label=robocorp-storage&style=for-the-badge
+   :target: https://pypi.python.org/pypi/robocorp-storage
+   :alt: robocorp-storage latest version
+
+.. image:: https://img.shields.io/pypi/v/robocorp-browser.svg?label=robocorp-browser&style=for-the-badge
+   :target: https://pypi.python.org/pypi/robocorp-browser
+   :alt: robocorp-browser latest version
+
+Legacy `RPA Framework <https://github.com/robocorp/rpaframework/>`_
+-------------------------------------------------------------------
 
 .. image:: https://img.shields.io/pypi/v/rpaframework.svg?label=rpaframework&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework
