@@ -193,14 +193,14 @@ wrapt = ">=1.11,<2.0"
 
 [[package]]
 name = "async-timeout"
-version = "4.0.2"
+version = "4.0.3"
 description = "Timeout context manager for asyncio programs"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "async-timeout-4.0.2.tar.gz", hash = "sha256:2163e1640ddb52b7a8c80d0a67a08587e5d245cc9c553a74a847056bc2976b15"},
-    {file = "async_timeout-4.0.2-py3-none-any.whl", hash = "sha256:8ca1e4fcf50d07413d66d1a5e416e42cfdf5851c981d679a09851a6853383b3c"},
+    {file = "async-timeout-4.0.3.tar.gz", hash = "sha256:4640d96be84d82d02ed59ea2b7105a0f7b33abe8703703cd0ab0bf87c427522f"},
+    {file = "async_timeout-4.0.3-py3-none-any.whl", hash = "sha256:7405140ff1230c310e51dc27b3145b9092d659ce68ff733fb0cefe3ee42be028"},
 ]
 
 [[package]]
@@ -335,18 +335,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.28.23"
+version = "1.28.24"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.28.23-py3-none-any.whl", hash = "sha256:807d4a4698ba9a76d5901a1663ff1943d13efbc388908f38b60f209c3511f1d6"},
-    {file = "boto3-1.28.23.tar.gz", hash = "sha256:839deb868d1278dd5a3f87208cfc4a8e259c95ca3cbe607cc322d435f02f63b0"},
+    {file = "boto3-1.28.24-py3-none-any.whl", hash = "sha256:0300ca6ec8bc136eb316b32cc1e30c66b85bc497f5a5fe42e095ae4280569708"},
+    {file = "boto3-1.28.24.tar.gz", hash = "sha256:9d1b4713c888e53a218648ad71522bee9bec9d83f2999fff2494675af810b632"},
 ]
 
 [package.dependencies]
-botocore = ">=1.31.23,<1.32.0"
+botocore = ">=1.31.24,<1.32.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -355,14 +355,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.31.23"
+version = "1.31.24"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.31.23-py3-none-any.whl", hash = "sha256:d0a95f74eb6bd99e8f52f16af0a430ba6cd1526744f40ffdd3fcccceeaf961c2"},
-    {file = "botocore-1.31.23.tar.gz", hash = "sha256:f3258feaebce48f138eb2675168c4d33cc3d99e9f45af13cb8de47bdc2b9c573"},
+    {file = "botocore-1.31.24-py3-none-any.whl", hash = "sha256:8c7ba9b09e9104e2d473214e1ffcf84b77e04cf6f5f2344942c1eed9e299f947"},
+    {file = "botocore-1.31.24.tar.gz", hash = "sha256:2d8f412c67f9285219f52d5dbbb6ef0dfa9f606da29cbdd41b6d6474bcc4bbd4"},
 ]
 
 [package.dependencies]
@@ -4084,7 +4084,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "24.1.2"
+version = "25.0.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -4134,7 +4134,7 @@ robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"w
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
 rpaframework-core = "^11.0.5"
-rpaframework-pdf = "^7.1.5"
+rpaframework-pdf = "^7.1.6"
 rpaframework-windows = {version = "^7.3.2", markers = "sys_platform == \"win32\""}
 selenium = "^4.6.1,!=4.10.0"
 simple_salesforce = "^1.0.0"
@@ -4272,20 +4272,20 @@ openai = ">=0.27.7,<0.28.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "7.1.5"
+version = "7.1.6"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_pdf-7.1.5-py3-none-any.whl", hash = "sha256:1dd01624e067a3ce59e83a7beb2228ab78fd6ca83693383e0973878df641fe40"},
-    {file = "rpaframework_pdf-7.1.5.tar.gz", hash = "sha256:9a2bbf4b7fde3a276abc7d604b90801ac6a6d6e17786994bd96c6771540042d5"},
+    {file = "rpaframework_pdf-7.1.6-py3-none-any.whl", hash = "sha256:3cbfb2e35f6d3ba9e222ce4cb0a2f2e857f992338862895bb8db67bd181e3864"},
+    {file = "rpaframework_pdf-7.1.6.tar.gz", hash = "sha256:341a663ce7afd00f8666fc31059c802ad2f549616736b496b3d1f895336fb6bf"},
 ]
 
 [package.dependencies]
 fpdf2 = ">=2.7.3,<3.0.0"
 "pdfminer.six" = "20221105"
-pypdf = ">=3.7.0,<4.0.0"
+pypdf = ">=3.15.0,<4.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=4.0.0,<5.0.0"
 rpaframework-core = ">=11.0.0,<12.0.0"

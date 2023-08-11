@@ -2773,20 +2773,20 @@ webdriver-manager = ">=3.9.1,<4.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "7.1.5"
+version = "7.1.6"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_pdf-7.1.5-py3-none-any.whl", hash = "sha256:1dd01624e067a3ce59e83a7beb2228ab78fd6ca83693383e0973878df641fe40"},
-    {file = "rpaframework_pdf-7.1.5.tar.gz", hash = "sha256:9a2bbf4b7fde3a276abc7d604b90801ac6a6d6e17786994bd96c6771540042d5"},
+    {file = "rpaframework_pdf-7.1.6-py3-none-any.whl", hash = "sha256:3cbfb2e35f6d3ba9e222ce4cb0a2f2e857f992338862895bb8db67bd181e3864"},
+    {file = "rpaframework_pdf-7.1.6.tar.gz", hash = "sha256:341a663ce7afd00f8666fc31059c802ad2f549616736b496b3d1f895336fb6bf"},
 ]
 
 [package.dependencies]
 fpdf2 = ">=2.7.3,<3.0.0"
 "pdfminer.six" = "20221105"
-pypdf = ">=3.7.0,<4.0.0"
+pypdf = ">=3.15.0,<4.0.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
 robotframework-pythonlibcore = ">=4.0.0,<5.0.0"
 rpaframework-core = ">=11.0.0,<12.0.0"
@@ -3727,4 +3727,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "a71c508f890506ff03307a84fb4ab21ed8cee42ce5895e86c2829e21682521c1"
+content-hash = "7a832dab33e0df96944f0e9eadbea101b5cc97bbd8c64849942fe413b9e1c63e"
