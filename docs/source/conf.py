@@ -17,8 +17,8 @@
 # -- Project information -----------------------------------------------------
 
 project = "RPA Framework"
-copyright = "2020 Robocorp Technologies, Inc."
-author = "Ossi Rajuvaara, Mika Hänninen"
+copyright = "2023 Robocorp Technologies, Inc."
+author = "Ossi Rajuvaara, Mika Hänninen, Cosmin Poieana"
 
 # -- General configuration ---------------------------------------------------
 

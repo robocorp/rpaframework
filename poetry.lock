@@ -4096,7 +4096,7 @@ develop = true
 chardet = "^3.0.0"
 click = "^8.1.2"
 comtypes = {version = "^1.1.11", markers = "sys_platform == \"win32\""}
-cryptography = "^41.0.1"
+cryptography = "^41.0.3"
 docutils = "*"
 exchangelib = "^4.7.6"
 graphviz = "^0.13.2"
