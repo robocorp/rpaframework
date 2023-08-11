@@ -2,6 +2,12 @@ Release notes
 =============
 
 
+Latest versions
++++++++++++++++
+
+.. include:: ../../packages/main/packages.rst
+
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
