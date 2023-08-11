@@ -5,7 +5,8 @@ Release notes
 Latest versions
 +++++++++++++++
 
-.. include:: ../../packages/main/packages.rst
+.. include:: packages.rst
+   :start-after: include-packages
 
 
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_

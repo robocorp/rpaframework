@@ -1,3 +1,6 @@
+.. include-packages
+
+
 .. image:: https://img.shields.io/pypi/v/rpaframework.svg?label=rpaframework&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework
    :alt: rpaframework latest version

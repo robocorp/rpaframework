@@ -71,7 +71,9 @@ Links
 Packages
 --------
 
-.. include:: packages.rst
+.. include:: ../../docs/source/packages.rst
+   :start-after: include-packages
+
 
 ----
 
@@ -365,9 +367,9 @@ versions are 3.7.6 and 3.8.1, because they have issues with some of the dependen
 At the time the newer Python versions starting from 3.11 are also not recommended, because some of
 the dependencies might cause issues.
 
-Repository development tooling is based on basically on `poetry`_ and `invoke`_. Poetry is the
-underlying tool used for compiling, building and running the package. Invoke is used for scripting
-purposes for example for linting, testing and publishing tasks.
+Repository development tooling is based on `poetry`_ and `invoke`_. Poetry is the
+underlying tool used for compiling, building and running the package. Invoke is used
+for scripting purposes, for example for linting, testing and publishing tasks.
 
 .. include:: ../../docs/source/contributing/guide.rst
    :start-after: include-dev-guide
