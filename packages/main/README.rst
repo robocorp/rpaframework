@@ -1,5 +1,3 @@
-.. include-full-readme
-
 RPA Framework
 =============
 
