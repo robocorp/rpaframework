@@ -160,7 +160,7 @@
 <p>Generic Intelligent Document Processing generic keywords capable of working with
 various engines.</p>
 <p>Currently, supporting the following:
-- Google Document AI
+- Google Document AI (<cite>rpaframework-google</cite>)
 - Base64
 - Nanonets</p>
 <dl class="py class">
@@ -172,7 +172,7 @@ retrieving results as fields from documents (PDF, PNG etc.).</p>
 <p>Library requires at the minimum <cite>rpaframework</cite> version <strong>19.0.0</strong>.</p>
 <p>This is a helper facade for the following libraries:</p>
 <ul class="simple">
-<li><p>RPA.Cloud.Google</p></li>
+<li><p>RPA.Cloud.Google (requires <cite>rpaframework-google</cite>)</p></li>
 <li><p>RPA.DocumentAI.Base64AI</p></li>
 <li><p>RPA.DocumentAI.Nanonets</p></li>
 </ul>
@@ -294,6 +294,19 @@ authenticate. (‘name:key’ or {name: key} formats are supported)</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>How secret resolution works</strong></p>
+<p>When <cite>vault</cite> is passed in, the corresponding Vault is retrieved and the value
+belonging to specified field is returned as a secret. If a <cite>secret</cite> is used,
+then this value is returned as it is if this isn’t a path pointing to the file
+holding the value to be returned. We’ll be relying on environment variables in
+the absence of both the <cite>secret</cite> and <cite>vault</cite>.</p>
+<p>Expected secret value formats:</p>
+<ul class="simple">
+<li><p>google: <cite>&lt;json-service/token&gt;</cite> (<code class="docutils literal notranslate"><span class="pre">RPA.Cloud.Google.Init</span> <span class="pre">Document</span> <span class="pre">AI</span></code>)</p></li>
+<li><p>base64ai: <cite>&lt;e-mail&gt;,&lt;api-key&gt;</cite>
+(<code class="docutils literal notranslate"><span class="pre">RPA.DocumentAI.Base64AI.Set</span> <span class="pre">Authorization</span></code>)</p></li>
+<li><p>nanonets: <cite>&lt;api-key&gt;</cite> (<code class="docutils literal notranslate"><span class="pre">RPA.DocumentAI.Nanonets.Set</span> <span class="pre">Authorization</span></code>)</p></li>
+</ul>
 <p><strong>Example: Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
 <span class="gu">Init Base64</span>

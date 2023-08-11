@@ -524,14 +524,9 @@ browsers are opened, and reset back to 1 when <cite>Close All Browsers</cite>
 is called. See <cite>Switch Browser</cite> for more information and examples.</p>
 <p>Optional <code class="docutils literal notranslate"><span class="pre">remote_url</span></code> is the URL for a
 [<a class="reference external" href="https://github.com/SeleniumHQ/selenium/wiki">https://github.com/SeleniumHQ/selenium/wiki</a>/Grid2|Selenium Grid].</p>
-<p>Optional <code class="docutils literal notranslate"><span class="pre">desired_capabilities</span></code> can be used to configure, for example,
-logging preferences for a browser or a browser and operating system
-when using [<a class="reference external" href="http://saucelabs">http://saucelabs</a>.com|Sauce Labs]. Desired capabilities can
-be given either as a Python dictionary or as a string in the format
-<code class="docutils literal notranslate"><span class="pre">key1:value1,key2:value2</span></code>.
-[<a class="reference external" href="https://github.com/SeleniumHQ/selenium/wiki">https://github.com/SeleniumHQ/selenium/wiki</a>/DesiredCapabilities|
-Selenium documentation] lists possible capabilities that can be
-enabled.</p>
+<p>Optional <code class="docutils literal notranslate"><span class="pre">desired_capabilities</span></code> is deprecated and will be ignored. Capabilities of each
+individual browser is now done through options or services. Please refer to those arguments
+for configuring specific browsers.</p>
 <p>Optional <code class="docutils literal notranslate"><span class="pre">ff_profile_dir</span></code> is the path to the Firefox profile
 directory if you wish to overwrite the default profile Selenium
 uses. Notice that prior to SeleniumLibrary 3.0, the library
@@ -1307,7 +1302,7 @@ false (see <cite>Boolean arguments</cite>).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.1.0'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.1.1'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
