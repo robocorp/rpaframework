@@ -318,6 +318,8 @@ class Base64AI:
         """Returns a list of matching signatures found from the reference into the
         queried image.
 
+        The input images can be paths to the files or URLs.
+
         The output JSON-like dictionary contains all the details from the API, like the
         detected signatures in both the reference and query image and for every such
         signature, its bounding-box geometry, confidence and similarity score.
@@ -355,18 +357,15 @@ class Base64AI:
         Portal example: https://github.com/robocorp/example-signature-match-assistant
         """
         # NOTE(cmin764): There's no mock support for this API.
-        recognize_endpoint = self._to_endpoint("signature/recognize")
+        recognize_endpoint = self._to_endpoint("signature")
 
+        reference, query = map(
+            lambda img: self._url_or_file(str(img)), (reference_image, query_image)
+        )
         payload = {
-            "reference": str(reference_image),
-            "query": str(query_image),
+            f"{'url' if reference[1] else 'document'}": reference[0],
+            f"{'queryUrl' if query[1] else 'queryDocument'}": query[0],
         }
-        for key, value in list(payload.items()):
-            value, is_url = self._url_or_file(value)
-            key += "Url" if is_url else "Image"
-            payload[key] = value
-        del payload["reference"]
-        del payload["query"]
 
         response = requests.post(
             recognize_endpoint,

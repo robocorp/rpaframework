@@ -49,7 +49,7 @@ def test_get_input_fields(library):
     fields = library.get_input_fields(TestFiles.vero_pdf)
 
     assert len(fields) == 65
-    assert fields["Puhelinnumero"]["value"] == ""
+    assert fields["Puhelinnumero"]["value"] == None
     assert isinstance(fields["Puhelinnumero"]["rect"], tuple)
 
 
@@ -62,7 +62,7 @@ def test_set_field_value(library):
     fields = library.get_input_fields(TestFiles.vero_pdf)
     new_number = "+358-55-12322121312"
 
-    assert fields["Puhelinnumero"]["value"] == ""
+    assert fields["Puhelinnumero"]["value"] == None
 
     library.set_field_value("Puhelinnumero", new_number)
 
@@ -71,21 +71,31 @@ def test_set_field_value(library):
 
 def test_set_field_value_encoding(library):
     fields = library.get_input_fields(TestFiles.foersom_pdf, encoding="utf-16")
+
     name_field = "Given Name Text Box"
     assert not fields[name_field]["value"]
-
     new_name = "Mark"
     library.set_field_value(name_field, new_name)
     assert fields[name_field]["value"] == new_name
 
+    driving_field = "Driving License Check Box"
+    assert fields[driving_field]["value"].name == "Off"  # unchecked
+    new_driving = "/Yes"
+    library.set_field_value(driving_field, new_driving)  # checks it
+
+    color_field = "Favourite Colour List Box"
+    assert fields[color_field]["value"] == "Red"
+    new_color = "Black"
+    library.set_field_value(color_field, new_color)
+
     with temp_filename(suffix=".pdf") as tmp_file:
         library.save_field_values(output_path=tmp_file, use_appearances_writer=True)
         library.switch_to_pdf(tmp_file)
-        with pytest.raises(KeyError):
-            # This output can't retrieve fields after save anymore.
-            library.get_input_fields()
-        content = library.active_pdf_document.fileobject.read()
-        assert new_name.encode() in content
+        # Fields can still be retrieved even after the PDF is saved.
+        new_fields = library.get_input_fields()
+        assert new_fields[name_field]["value"] == new_name
+        assert new_fields[driving_field]["value"] == new_driving
+        assert new_fields[color_field]["value"] == new_color
 
 
 def test_set_field_value_checkbox(library):
@@ -98,34 +108,35 @@ def test_set_field_value_checkbox(library):
     library.set_field_value(checkbox_name, "/Yes")
 
     with temp_filename(suffix=".pdf") as tmp_file:
-        library.save_field_values(output_path=tmp_file)
+        library.save_field_values(output_path=tmp_file, use_appearances_writer=True)
         library.switch_to_pdf(tmp_file)
-        with pytest.raises(KeyError):
-            # This output can't retrieve fields after save anymore.
-            library.get_input_fields()
+        new_fields = library.get_input_fields()
+        assert new_fields[checkbox_name]["value"] == "/Yes"
         assert_field_value(library, checkbox_name, "Yes")
 
 
-@pytest.mark.parametrize("at_once", [False, True])
-def test_save_field_values_fields_exist(library, at_once):
-    fields = {
+@pytest.mark.parametrize("set_fields", [False, True])
+def test_save_field_values_fields_exist(library, set_fields):
+    library.open_pdf(TestFiles.vero_pdf)
+    to_insert = {
         "Puhelinnumero": "12313123",  # new number
         "Paivays": "01.04.2021",  # new date
     }
 
     with temp_filename(suffix="-fields.pdf") as tmp_file:
-        library.open_pdf(TestFiles.vero_pdf)
-        # Keep non-empty values, because empty fields will fail the saving.
-        library.get_input_fields(replace_none_value=True)
-        if at_once:
-            for name, value in fields.items():
+        if set_fields:
+            # Keep non-empty values, because null fields will fail the saving.
+            existing_fields = library.get_input_fields(replace_none_value=True)
+            for name, value in to_insert.items():
                 library.set_field_value(name, value)
+                assert existing_fields[name]["value"] == value
             library.save_field_values(output_path=tmp_file)
         else:
-            library.save_field_values(output_path=tmp_file, newvals=fields)
+            # There are no fields retrieved at all this time.
+            library.save_field_values(output_path=tmp_file, newvals=to_insert)
 
-        library.open_pdf(tmp_file)
-        for name, value in fields.items():
+        library.switch_to_pdf(tmp_file)
+        for name, value in to_insert.items():
             assert_field_value(library, name, value)
 
 

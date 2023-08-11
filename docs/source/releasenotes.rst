@@ -9,6 +9,19 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+25.0.1 - 11 Aug 2023
+--------------------
+
+- Library **RPA.DocumentAI.Base64AI** (:issue:`719`):
+
+  - Fix signature matching API.
+  - Better documentation and errors.
+
+- Library **RPA.PDF** (:pr:`1051`; ``rpaframework-pdf`` **7.1.6**):
+
+  - Make the `reader` parameter optional in the ``Save PDF`` keyword.
+  - Fix PDF fields retrieval, value decoding and setting. (:issue:`872`)
+
 25.0.0 - 10 Aug 2023
 --------------------
 
