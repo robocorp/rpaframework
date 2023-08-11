@@ -29,6 +29,7 @@ Documentation
    releasenotes
    contributing/guide
    contributing/conventions
+   contributing/todos
 
 Indices and tables
 ------------------
