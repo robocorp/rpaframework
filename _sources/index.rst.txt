@@ -6,7 +6,7 @@ RPA Framework
    :depth: 1
 
 .. include:: ../../packages/main/README.rst
-   :start-after: include-marker
+   :start-after: include-docs-readme
 
 -------------
 
@@ -29,7 +29,6 @@ Documentation
    releasenotes
    contributing/guide
    contributing/conventions
-   contributing/todos
 
 Indices and tables
 ------------------
