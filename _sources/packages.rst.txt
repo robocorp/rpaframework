@@ -31,8 +31,8 @@ New `Robo <https://github.com/robocorp/robo/>`_
    :target: https://pypi.python.org/pypi/robocorp-browser
    :alt: robocorp-browser latest version
 
-Legacy `RPA Framework <https://github.com/robocorp/rpaframework/>`_
--------------------------------------------------------------------
+Traditional `RPA Framework <https://github.com/robocorp/rpaframework/>`_
+------------------------------------------------------------------------
 
 .. image:: https://img.shields.io/pypi/v/rpaframework.svg?label=rpaframework&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework
