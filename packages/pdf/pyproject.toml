@@ -32,8 +32,8 @@ packages = [{ include = "RPA", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 rpaframework-core = "^11.0.0"
-robotframework = ">=4.0.0,!=4.0.1,<7.0.0"
-robotframework-pythonlibcore = "^4.0.0"
+robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
+robotframework-pythonlibcore = "^4.2.0"
 "pdfminer.six" = "20221105"
 pypdf = "^3.15.0"
 fpdf2 = "^2.7.3"

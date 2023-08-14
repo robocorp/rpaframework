@@ -32,8 +32,8 @@ packages = [{ include = "RPA", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.7"
 rpaframework-core = "^11.0.0"
-robotframework = ">=4.0.0,!=4.0.1,<6.0.0"
-robotframework-pythonlibcore = "^4.0.0"
+robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
+robotframework-pythonlibcore = "^4.2.0"
 google-api-python-client = "^2.58.0"
 google-auth-httplib2 = "^0.1.0"
 google-auth-oauthlib = "^0.5.2"
