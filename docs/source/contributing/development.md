@@ -11,7 +11,7 @@ every project)
 
 So the first thing to run is `inv -l` to see a list of available commands, and if you
 see just one, it means that you need to run `inv install-invocations` once, right
-in the root repo directory. (the _meta_ project)
+in the root directory of the repository. (the _meta_ project)
 
 Explore our helper commands with `inv <cmd> --help` in order to learn more about each
 one of them.
@@ -19,15 +19,17 @@ one of them.
 ### Virtual environment(s)
 
 In case [invoke](https://www.pyinvoke.org/) isn't installed yet on your system, you
-have to do so by either your package manager or `pip install invoke` if you're fine to
-rely on system's Python interpreter. Keep in mind that we recommend developing with
-version **3.9.13** as that's what we use with most of the robots. So is better to
+have to do so by either your package manager or `pip install invoke` if you're fine
+with relying on system's Python interpreter. Keep in mind that we recommend developing
+with version **3.9.x** as that's what we recommend in our robots. So is better to
 develop with the same version that is expected to be at the core of our robots. (pinned
 in their _conda.yaml_)
 
 For obtaining an env with such specific version, you can either use
 [virtualenv](https://virtualenv.pypa.io/) or [pyenv](https://github.com/pyenv/pyenv),
 but that's totally up to you.
+
+#### Using `pyenv` on any platform to manage interpreters
 
 With `pyenv`, I would do the following (in the repo root):
 ```console
@@ -43,7 +45,25 @@ and `pyenv which python`:
 ```console
 /Users/cmin/.pyenv/versions/3.9.13/bin/python  # C:\Users\cmin\.pyenv\pyenv-win\versions\3.9.13\python.exe
 ```
-so I'm good to go with running this installation command once:
+
+#### Using system's interpreter on Windows (alternative to `pyenv`)
+
+1. Uninstall any Python **3.9** version you might have on your system. Careful! This
+   might break apps dependent on your system interpreter if this was previously taken
+   into use.
+2. [Download](https://www.python.org/downloads/) the latest Python **3.9** and make
+   sure it will be available in `PATH` as well during installation.
+3. Do NOT install nor create any `virtualenv` for this project, as Poetry manages its
+   own virtual environments in separate _.venv_ directories for each package. Check the
+   installed system-available interpreter version with:
+   ```console
+   > py -V
+   Python 3.9.13
+   ```
+
+### Installing requirements
+
+Now I'm good to go with running these installation commands once from the root dir:
 ```console
 % python -m pip install -Ur invocations/requirements.txt
 % inv install-invocations
@@ -92,8 +112,8 @@ Path:       C:\Users\cmin\.pyenv\pyenv-win\versions\3.9.13
 Executable: C:\Users\cmin\.pyenv\pyenv-win\versions\3.9.13\python.exe
 ```
 
-Meaning that my _.venv_ virtualenv dir is in place and based on the expected
-interpreter version.
+Meaning that my _.venv_ virtualenv dir managed by Poetry is in place and based on the
+expected previously installed interpreter version.
 
 ### PyPI & DevPI
 
@@ -282,7 +302,7 @@ adding a new library, so here's a list with all the areas of interest:
     the docs generation process will include only the resources collated in the central
     package, so you won't run into duplicates given such a split.
   - Finally, a library entry should be added under our private **documentation** repo
-    [config file](https://github.com/robocorp/documentation/blob/master/config/libraries.ts).
+    [config file](https://github.com/robocorp/documentation/blob/master/src/lib/libraries.ts).
 
 
 ### Linting & documentation
@@ -493,7 +513,7 @@ Now that your package was published successfully and visible in
    visible in our legacy rpaframework.org site first (which you can check initially for
    problems). But for making them visible in the official docs site as well, you should
    trigger the following documentation
-   [workflow](https://github.com/robocorp/documentation/actions/workflows/build-deploy.yml).
+   [workflow](https://github.com/robocorp/documentation/actions/workflows/manual-build.yml).
 2. Release notes can be copy-pasted from the freshly built
    [rpaframework.org](https://rpaframework.org/releasenotes.html) page into a new
    release managed by [releasenotes.io](https://app.releasenotes.io/dashboard).

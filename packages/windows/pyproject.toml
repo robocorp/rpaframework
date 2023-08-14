@@ -70,8 +70,8 @@ windows-record = 'RPA.scripts.record:main'
 target-version = ["py37", "py38", "py39"]
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-report term-missing --cov-branch"

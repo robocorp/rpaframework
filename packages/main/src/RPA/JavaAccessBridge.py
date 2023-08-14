@@ -23,11 +23,15 @@ def get_scaled_coordinate(coordinate, scaling_factor):
     return int(coordinate * scaling_factor)
 
 
-if platform.system() == "Windows":
-    from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
-    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
+if platform.system() == "Windows":  # noqa: C901
+    try:
+        from RPA.Windows import Windows
+    except ImportError:
+        Windows = object()
     import ctypes
     from ctypes import wintypes, byref
+    from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
+    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
 
     # Configure comtypes to not generate DLL bindings into
     # current environment, instead keeping them in memory.
@@ -55,11 +59,15 @@ if platform.system() == "Windows":
 
         name: str
         role: str
+        description: str
         states: list
+        ancestry: int
         checked: bool
         selected: bool
         visible: bool
         enabled: bool
+        showing: bool
+        focusable: bool
         states_string: str
         x: int
         y: int
@@ -71,6 +79,8 @@ if platform.system() == "Windows":
         text: str
         column_count: int
         visible_children: list
+        visible_children_count: int
+        index_in_parent: int
 
         def __init__(
             self,
@@ -83,11 +93,15 @@ if platform.system() == "Windows":
             scaling_factor = scaling_factor or ScalingFactor
             self.name = node.context_info.name
             self.role = node.context_info.role
+            self.description = node.context_info.description
             self.states = node.context_info.states.split(",")
+            self.ancestry = node.ancestry
             self.checked = "checked" in self.states
             self.selected = "selected" in self.states
             self.visible = "visible" in self.states
             self.enabled = "enabled" in self.states
+            self.showing = "showing" in self.states
+            self.focusable = "focusable" in self.states
             self.node = node
             self.internal = internal_node
             self.states_string = node.context_info.states
@@ -101,6 +115,8 @@ if platform.system() == "Windows":
             self.center_y = self.y + int(self.height / 2)
             self.text = node.text._items.sentence
             self.visible_children = node.get_visible_children()
+            self.visible_children_count = node.visible_children_count
+            self.index_in_parent = node.context_info.indexInParent
             self.column_count = column_count or len(self.visible_children)
             if self.column_count > 0:
                 self.row = (
@@ -130,6 +146,30 @@ if platform.system() == "Windows":
             for c in text:
                 DESKTOP.press_keys(c)
 
+        def __str__(self):
+            string = (
+                f"name={self.name}; "
+                f"role={self.role}; "
+                f"enabled={self.enabled}; "
+                f"visible={self.visible}; "
+                f"selected={self.selected}; "
+                f"checked={self.checked}; "
+                f"showing={self.checked}; "
+                f"focusable={self.checked}; "
+                f"description={self.description}; "
+                f"ancestry={self.ancestry}; "
+                f"states={self.states}; "
+                f"x={self.x}; "
+                f"y={self.y}; "
+                f"width={self.width}; "
+                f"height={self.height}; "
+                f"center_x={self.center_x}; "
+                f"center_y={self.center_y}; "
+                f"indexInParent={self.index_in_parent}; "
+                f"childrentCount={self.visible_children_count};"
+            )
+            return string
+
     LocatorType = Union[ContextNode, JavaElement, str]
 else:
     ScalingFactor = 1.0
@@ -150,7 +190,15 @@ class InvalidLocatorError(AttributeError):
     """Invalid locator string."""
 
 
-IntegerLocatorTypes = ["x", "y", "width", "height", "indexInParent", "childrentCount"]
+IntegerLocatorTypes = [
+    "x",
+    "y",
+    "width",
+    "height",
+    "indexInParent",
+    "ancestry",
+    "childrentCount",
+]
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -163,9 +211,14 @@ class JavaAccessBridge:
 
     **Inspecting elements**
 
-    The recommended tool for inspecting Java application is:
+    We have built an `Assistant`_ for working with Java application's element structure and `Java locators`_.
+    The Assistant provides copy pasteable locators for each element and also allows testing locators against
+    selected application.
 
-        Google's `Access Bridge Explorer`_
+    If our tools fail to pick the locator from your target application, there is always the
+    `Access Bridge Explorer`_ from Google that enables you to see the raw view. Please note that
+    Access Bridge Explorer repository has been archived on July 27, 2022 and is no longer actively
+    maintained.
 
     The `Accessibility Insights for Windows`_ can show element properties if application framework
     supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_. Then recommended
@@ -189,10 +242,11 @@ class JavaAccessBridge:
 
     .. _Java Access Bridge technology: https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html
     .. _java-access-bridge-wrapper: https://github.com/robocorp/java-access-bridge-wrapper
+    .. _Assistant: https://github.com/robocorp/working-with-java
 
     **About Java wrapper callbacks and actions**
 
-    There might be a compability issue with callbacks and actions on target Java application. Possible reasons:
+    There might be a compatibility issue with callbacks and actions on target Java application. Possible reasons:
 
     - target application is executed with 32-bit Java
     - target application does not support callbacks and/or actions
@@ -217,7 +271,7 @@ class JavaAccessBridge:
     **Locating elements**
 
     To automate actions on the Java application, the robot needs locations to various elements
-    using a feature called `locators`. Locator describes properties of an element.
+    using a feature called `Java locators`_. Locator describes properties of an element.
 
     At the moment library contains basic level support for locators.
 
@@ -302,11 +356,11 @@ class JavaAccessBridge:
     possible to opt for interaction elements by their coordinates by giving keyword parameter
     ``action=False`` if parameter is available.
 
-
     .. _Accessibility Insights for Windows: https://accessibilityinsights.io/en/downloads/
     .. _Access Bridge Explorer: https://github.com/google/access-bridge-explorer
     .. _using Accessibility Insights: https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java
     .. _RPA.Windows: https://robocorp.com/docs/libraries/rpa-framework/rpa-windows
+    .. _Java locators: https://robocorp.com/docs/development-guide/locators#java-locators
 
     **Examples**
 
@@ -399,6 +453,7 @@ class JavaAccessBridge:
         self.display_scale_factor = ScalingFactor
         self.ignore_callbacks = ignore_callbacks
         self.pid = None
+        self.windows = Windows()
 
     def _initialize(self):
         pipe = queue.Queue()
@@ -555,7 +610,7 @@ class JavaAccessBridge:
          if False will use Desktop().press_keys()
         """
         target = self._get_matching_element(locator, index)
-        self._click_element_middle(target, "double click")
+        self.click_element(target, click_type="double click")
 
         if not self.ignore_callbacks:
             target.request_focus()
@@ -786,41 +841,37 @@ class JavaAccessBridge:
         index: int = 0,
         action: bool = True,
         timeout: int = 10,
+        click_type: str = "click",
     ):
         """Click element
 
-        :param target: element to click
+        :param locator: element to click
         :param index: target element index if multiple are returned
         :param action: call click action on element (default), or use coordinates
         :param timeout: timeout in seconds to find element
+        :param click_type: default `click`, see `RPA.Desktop` for different
+         click options
         """
+        element = None
         if isinstance(locator, str):
-            interval = float(0.2)
-            end_time = time.time() + float(timeout)
-            while time.time() <= end_time:
-                start = time.time()
-                elements = self._find_elements(locator)
-                if len(elements) > 0:
-                    break
-                duration = time.time() - start
-                if duration < interval:
-                    time.sleep(interval - duration)
-
+            elements = self.wait_until_element_exists(locator, timeout)
             if len(elements) < (index + 1):
+                # print element tree when result is not expected
+                self.print_element_tree()
                 raise ElementNotFound(
                     "Locator '%s' matched only %s elements" % (locator, len(elements))
                 )
-            matching = elements[index]
+            element = elements[index]
         else:
-            matching = locator
+            element = locator
         try:
             if action:
-                self.logger.info("Element click action type:%s", type(matching))
-                matching.do_action("click")
+                self.logger.info("Element click action type:%s", type(element))
+                element.do_action("click")
             else:
-                self._click_element_middle(matching)
+                self._click_element_middle(element, click_type)
         except NotImplementedError:
-            self._click_element_middle(matching)
+            self._click_element_middle(element, click_type)
 
     @keyword
     def call_element_action(self, locator: str, action: str):
@@ -902,6 +953,7 @@ class JavaAccessBridge:
         """Print current element into log and possibly into a file
 
         :param filename: filepath to save element tree
+        :return: element tree
         """
         tree = repr(self.context_info_tree)
         self.logger.info(tree)
@@ -909,6 +961,46 @@ class JavaAccessBridge:
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(tree)
             self.logger.info("Context tree written to file '%s'", filename)
+        return tree
+
+    @keyword
+    def get_locator_tree(self):
+        """Return Java locator tree as list of objects.
+
+        Mostly relevant object properties are:
+
+            - ancestry
+            - role
+            - name
+            - description
+            - indexInParent
+
+        :return: list of objects
+        """
+        return self.context_info_tree.get_search_element_tree()
+
+    @keyword
+    def print_locator_tree(self, filename: str = None):
+        """Print current Java window locator list into log and possibly
+        into a file.
+
+        :param filename: filepath to save locator tree
+        :return: locator tree
+        """
+        search_tree = self.get_locator_tree()
+        tree = "\n".join(
+            [
+                f"{'| ' * item.ancestry}role:{item.role} and name:{item.name} and "
+                f"description:{item.description} "
+                f"and indexInParent:{item.indexInParent}"
+                for item in search_tree
+            ]
+        )
+        self.logger.info(tree)
+        if filename:
+            with open(filename, "w", encoding="utf-8") as f:
+                f.write(tree)
+            self.logger.info("Locator tree written to file '%s'", filename)
         return tree
 
     @keyword
@@ -1129,12 +1221,47 @@ class JavaAccessBridge:
             self.version_printed = True
 
         if bring_foreground:
+            self._bring_window_to_foreground(title, pid)
+
+        self.application_refresh()
+
+        return self.pid
+
+    def _bring_window_to_foreground(self, title, pid):
+        if title:
+            self.windows.foreground_window(title)
+        # TODO. need to implement reliable way to foreground
+        # correct window identifiable by the PID
+        if pid:
             handle = self.jab_wrapper.get_current_windows_handle()
             # pylint: disable=c-extension-no-member
             win32gui.ShowWindow(handle, win32con.SW_SHOW)
             # pylint: disable=c-extension-no-member
             win32gui.SetForegroundWindow(handle)
 
-        self.application_refresh()
+    @keyword
+    def wait_until_element_exists(self, locator: str, timeout: int = 10):
+        """Wait until element(s) matching the locator are found within
+        given timeout or raises ``ElementNotFound`` exception.
 
-        return self.pid
+        :param locator: locator to match element
+        :param timeout: timeout in seconds to find element
+        :return: element(s) if found
+        """
+        elements = None
+        end_time = time.time() + float(timeout)
+        while time.time() <= end_time:
+            start_time = time.time()
+            elements = self._find_elements(locator)
+            if len(elements) > 0:
+                break
+            self.application_refresh()
+            # sleep at least a second per iteration
+            duration = time.time() - start_time
+            if duration < 1.0:
+                time.sleep(1.0 - duration)
+        if elements is None or len(elements) == 0:
+            # print element tree when result is not expected
+            self.print_element_tree()
+            raise ElementNotFound("Locator '%s' did not match any elements" % locator)
+        return elements

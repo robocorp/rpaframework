@@ -19,10 +19,10 @@ from tenacity import (
     wait_random_exponential,
 )
 
+from RPA.JSON import JSONType
 from RPA.RobotLogListener import RobotLogListener
 
 
-JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
 PathType = Union[Path, str]
 
 DEBUG_ON = bool(os.getenv("RPA_DEBUG_API"))

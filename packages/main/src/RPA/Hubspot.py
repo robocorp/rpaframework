@@ -467,20 +467,20 @@ class Hubspot:
     ============
 
     When retrieving information, the library automatically batches requests
-    that are provided as lists, see \`Get object\` keyword for an example,
+    that are provided as lists, see ``Get object`` keyword for an example,
     but when wishing to create or update many objects, the library provides
     a batching system.
 
-    In order to start a batch, you must first call the \`Create new batch\`
+    In order to start a batch, you must first call the ``Create new batch``
     keyword. This initializes a new batch to accept inputs. If a batch
     already exists when you call this keyword, it will be lost and a new
     blank one will be started.
 
     Once the batch has been initialized, you can add inputs one at a time with
-    \`Add input to batch\` or many at a time with \`Extend batch with inputs\`.
+    ``Add input to batch`` or many at a time with ``Extend batch with inputs``.
 
     In order to finally send the batch to HubSpot, you must call
-    \`Execute batch\`. The final keyword will return the created or updated
+    ``Execute batch``. The final keyword will return the created or updated
     objects from HubSpot. New object IDs can be obtained from the ``id``
     property, see the `SimplePublicObject`_ reference.
 
@@ -1772,7 +1772,7 @@ class Hubspot:
         input API.
 
         :param batch_input: A batch object such as one returned from
-            the \`Get current batch\` keyword.
+            the ``Get current batch`` keyword.
 
         """
         self.batch_input = batch_input
@@ -2210,7 +2210,7 @@ class Hubspot:
         You may provide the identifier as ``owner_id``, ``owner_email``, or
         ``user_id``. The ``owner_id`` will correspond to fields from the
         CRM API while the ``user_id`` will correspond to the user
-        provisioning API (see keyword \`Get User\`).
+        provisioning API (see keyword ``Get User``).
 
         The owner object has the following attributes (accessible via
         dot notation):
@@ -2247,7 +2247,7 @@ class Hubspot:
         r"""Looks up the owner of a given Hubspot object, the provided object
         should be from this library or it should be a dictionary with an
         ``hubspot_owner_id`` key. If the object has no owner, this keyword
-        returns None. See keyword \`Get owner by ID\` for information about
+        returns None. See keyword ``Get owner by ID`` for information about
         the returned object.
 
         You can use an alternate property as the owner ID property by providing
@@ -2255,7 +2255,7 @@ class Hubspot:
         this keyword will try the default ``hubspot_owner_id`` property, instead.
 
         :param object: A HubSpot object, best if the object was obtained
-            via another keyword such as \`Get owner by ID\`
+            via another keyword such as ``Get owner by ID``
         :param owner_property: An alternate property of the provided
             object to use as the field containing the Owner to be looked up.
 

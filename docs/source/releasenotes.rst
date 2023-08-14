@@ -2,12 +2,189 @@ Release notes
 =============
 
 
+Latest versions
++++++++++++++++
+
+.. include:: packages.rst
+   :start-after: include-packages
+
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+25.0.1 - 11 Aug 2023
+--------------------
+
+- Library **RPA.DocumentAI.Base64AI** (:issue:`719`):
+
+  - Fix signature matching API.
+  - Better documentation and errors.
+
+- Library **RPA.PDF** (:pr:`1051`; ``rpaframework-pdf`` **7.1.6**):
+
+  - Make the `reader` parameter optional in the ``Save PDF`` keyword.
+  - Fix PDF fields retrieval, value decoding and setting. (:issue:`872`)
+
+25.0.0 - 10 Aug 2023
+--------------------
+
+- Library **RPA.Salesforce** (:pr:`1003`): Add keywords
+  ``Auth with connected app`` and ``Execute APEX``.
+- Library **RPA.Email.ImapSmtp** (:pr:`1054`): Fix handling of `To`, `Cc` and `Bcc`
+  fields in `Send Message` keyword.
+
+24.1.2 - 27 Jul 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage** (``robocorp-storage`` **0.3.2**): Fix bug when
+  retrieving assets containing spaces in their names.
+
+24.1.1 - 26 Jul 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1035`; ``rpaframework-core`` **11.0.5**):
+  Fix `chromedriver` download issues with Chrome **115** and over.
+
+24.1.0 - 25 Jul 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1021`; ``rpaframework-core`` **11.0.4**):
+
+  - Correctly handles and downloads a valid existing webdriver version when there's a
+    need for one.
+  - Ability to provide a default browser binary location with the
+    `RPA_SELENIUM_BINARY_LOCATION` environment variable. (useful when the webdriver
+    isn't able to automatically detect and start your system browser)
+  - Portal example taking these into use:
+    https://robocorp.com/portal/robot/robocorp/example-google-image-search
+
+- Library **RPA.Browser.Playwright**: Renders documentation for
+  ``robotframework-browser==17.1.0``.
+
+24.0.0 - 18 Jul 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage**: Takes into use ``robocorp-storage`` **0.3.1** and
+  replaces the limited generic keywords with the ones below. (:pr:`1016`)
+
+  - ``Set Bytes Asset`` & ``Get Bytes Asset``
+  - ``Set Text Asset`` & ``Get Text Asset``
+  - ``Set JSON Asset`` & ``Get JSON Asset``
+  - ``Set File Asset`` & ``Get File Asset``
+
+  .. warning::
+    **Breaking** changes: Old ``Set Asset`` & ``Get Asset`` keywords are gone, please
+    replace them with one of the pairs above.
+
+23.5.2 - 29 Jun 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage**: Add support for using Assets in VSCode
+
+23.5.1 - 28 Jun 2023
+--------------------
+
+- Library **RPA.JavaAccessBridge**:
+
+  - Update and pin ``java-access-bridge-wrapper`` to version ``0.14.1``
+
+23.5.0 - 27 Jun 2023
+--------------------
+
+- Library **RPA.JavaAccessBridge**:
+
+  - Update ``java-access-bridge-wrapper`` to version ``0.13.0``
+  - Add keyword ``Print Locator Tree``
+
+23.4.0 - 22 Jun 2023
+--------------------
+
+- Add new library **RPA.Robocorp.Storage** for managing assets within *Asset Storage*
+  in Control Room. (:issue:`957`)
+
+09 Jun 2023
+-----------
+
+- Library **RPA.Assistant** 2.3.0:
+
+  - Add new elements with ``Add Loading Spinner`` and ``Add Loading Bar``.
+
+23.3.0 - 09 Jun 2023
+--------------------
+
+- Library **RPA.MSGraph** (:pr:`980`):
+
+  - Lock ``O365`` dependency to a version less than ``2.0.27`` for compatibility
+    with Python 3.7.
+
+- Security update: Bumps ``cryptography`` to version ``41.0.1``. (:issue:`979`)
+
+- Library **RPA.JavaAccessBridge**:
+
+  - Update ``java-access-bridge-wrapper`` to version ``0.12.0``
+
+23.2.1 - 02 Jun 2023
+--------------------
+
+- Library **RPA.JavaAccessBridge** (:pr:`978`):
+
+  - Fix element search issue with ``Click Element`` keyword
+  - Add new keyword ``Wait Until Element Exists``
+
+23.2.0 - 02 Jun 2023
+--------------------
+
+- Library **RPA.Browser.*** (:pr:`974`):
+
+  - **Selenium**:
+
+    - Fix bug with detecting the right web-driver version for download on systems
+      having Chromium installed instead of Chrome. (:issue:`949`)
+    - Add support for operating on shadow DOMs within the ``Get WebElement`` keyword.
+      (:issue:`941`)
+
+  - **Playwright**:
+
+    - Upgrade version and documentation to the latest `robotframework-browser`
+      **16.2.0**. (:issue:`942`)
+    - Automatic `headless` detection when running on systems without UI, including our
+      Cloud Worker (Linux container). (:issue:`166`)
+
+01 Jun 2023
+-----------
+
+- Library **RPA.OpenAI** 1.2.0 (:pr:`973`):
+
+  - Add support for AzureAI and update ``openai`` to ``0.27.7``.
+
+23.1.0 - 19 May 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`943`):
+
+  - New keyword ``Click Element When Clickable`` which tries to overcome errors like
+    "Other element would receive the click". (:issue:`884`)
+  - New keyword ``Set Element Attribute`` which sets an attribute value to an element
+    retrievable with ``Get Element Attribute``. (:issue:`762`)
+  - Setting a custom download directory is now supported by all Chromium-based browsers
+    and Firefox. Use ``Set Download Directory`` before opening any browser instance in
+    order to set such a custom path. (this should be working now in both headful and
+    headless modes; :issue:`882`)
+  - Custom user profiles (and common configuration) can be used with all Chromium-based
+    browsers, like Chrome, Edge. (:issue:`865`)
+  - Improved main library documentation, accepting both `WebElement` and `str` as
+    locator types under our keywords as well. (:issue:`940`, :issue:`939`)
+
+12 May 2023
+-----------
+
+- Library **RPA.Assistant** 2.2.2:
+
+  - Documentation example fix, correct name of argument to ``maximum_rows``.
 
 23.0.0 - 05 May 2023
 --------------------
@@ -57,12 +234,10 @@ Release notes
 - Library **RPA.Word.Application** (:pr:`945`): Add `autoexit` init parameter (on default `True` as it is for
   similar libraries). This is a breaking change.
 
-
 04 May 2023
 -----------
 
 - Library **RPA.Cloud.Google** (``rpaframework-google`` **7.0.3**; :pr:`935`): Fix move drive file
-
 
 22.5.3 - 02 May 2023
 --------------------

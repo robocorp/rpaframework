@@ -123,7 +123,21 @@ class Archive:
             Archive Folder With Zip  ${CURDIR}${/}documents  documents.zip    recursive=True
             Archive Folder With Zip  ${CURDIR}               packagelzma.zip  compression=lzma
             Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2
+
+
+        .. code-block:: python
+
+            from RPA.Archive import Archive
+
+            lib = Archive()
+            lib.archive_folder_with_zip('./documents', 'mydocs.zip')
+            lib.archive_folder_with_zip('./tasks', 'robottasks.zip', include='*.robot')
+            lib.archive_folder_with_zip('./tasks', 'no_dotfiles.zip', exclude='/.*')
+            lib.archive_folder_with_zip('./documents', 'documents.zip', recursive=True)
+            lib.archive_folder_with_zip('./', 'packagelzma.zip', compression='lzma')
+            lib.archive_folder_with_zip('./', 'bzipped.zip', compression='bzip2')
         """  # noqa: E501
+
         if compression == "stored":
             comp_method = zipfile.ZIP_STORED
         elif compression == "deflated":

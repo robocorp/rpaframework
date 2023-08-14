@@ -16,7 +16,7 @@ from PIL import Image
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.PDF.keywords import LibraryContext, keyword
-from RPA.PDF.keywords.model import Document, Figure, RobocorpPdfReader
+from RPA.PDF.keywords.model import Document, Figure
 
 
 FilePath = Union[str, Path]
@@ -902,7 +902,7 @@ class DocumentKeywords(LibraryContext):
 
             # Get image page from temporary PDF using pypdf. (compatible with the
             # writer)
-            img_pdf_reader = RobocorpPdfReader(temp_img_pdf)
+            img_pdf_reader = pypdf.PdfReader(temp_img_pdf)
             watermark_page = img_pdf_reader.pages[0]
 
             # Write the merged pages of source PDF into the destination one.
@@ -947,7 +947,7 @@ class DocumentKeywords(LibraryContext):
     def save_pdf(
         self,
         output_path: str,
-        reader: RobocorpPdfReader,
+        reader: Optional[pypdf.PdfReader] = None,
     ):
         """Save the contents of a pypdf reader to a new file.
 
@@ -973,8 +973,12 @@ class DocumentKeywords(LibraryContext):
                 pdf.save_pdf(output_path="output/output.pdf")
 
         :param output_path: filepath to target PDF
-        :param reader: a pypdf reader
+        :param reader: a pypdf reader (defaults to currently active document)
         """
+        if not reader:
+            # Ensures there's at least one document open and active.
+            self.switch_to_pdf()
+            reader = self.active_pdf_document.reader
         writer = pypdf.PdfWriter()
         for page in reader.pages:
             try:
@@ -989,7 +993,7 @@ class DocumentKeywords(LibraryContext):
 
     @staticmethod
     def _get_page_numbers(
-        pages: PagesType = None, reader: Optional[RobocorpPdfReader] = None
+        pages: PagesType = None, reader: Optional[pypdf.PdfReader] = None
     ) -> List[int]:
         """Resolve page numbers argument to a list of 1-indexed integer pages."""
         if not pages and not reader:
@@ -1258,7 +1262,7 @@ class DocumentKeywords(LibraryContext):
             image_filetype = imghdr.what(str(file_to_add))
             self.logger.info("File %s type: %s", str(file_to_add), image_filetype)
             if basename.lower().endswith(".pdf"):
-                reader = RobocorpPdfReader(str(file_to_add), strict=False)
+                reader = pypdf.PdfReader(str(file_to_add), strict=False)
                 pages = self._get_pages(len(reader.pages), parameters)
                 for page_nr in pages:
                     try:
@@ -1288,7 +1292,7 @@ class DocumentKeywords(LibraryContext):
                 )
                 pdf.output(name=temp_pdf)
 
-                reader = RobocorpPdfReader(temp_pdf)
+                reader = pypdf.PdfReader(temp_pdf)
                 writer.add_page(reader.pages[0])
 
         with open(target_document, "wb") as f:
@@ -1301,7 +1305,7 @@ class DocumentKeywords(LibraryContext):
                 "Creating document instead." % target_document
             )
         else:
-            reader = RobocorpPdfReader(str(target_document), strict=False)
+            reader = pypdf.PdfReader(str(target_document), strict=False)
             for idx, page in enumerate(reader.pages):
                 self.logger.info("Adding page: %s", idx)
                 writer.add_page(page)

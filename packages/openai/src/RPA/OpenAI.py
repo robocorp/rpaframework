@@ -5,7 +5,7 @@ import openai
 
 
 class OpenAI:
-    """Library to support `OpenAI <https://openai.com>`_ service.
+    """Library to support `OpenAI <https://openai.com>`_ and `Azure OpenAI <https://learn.microsoft.com/en-us/azure/cognitive-services/openai/overview>`_ services.
 
     Library is **not** included in the `rpaframework` package, so in order to use it
     you have to add `rpaframework-openai` with the desired version in your
@@ -44,13 +44,60 @@ class OpenAI:
             temperature=0.6,
         )
         print(result)
-    """
+    """  # noqa: E501
 
-    ROBOT_LIBRARY_SCOPE = "Global"
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
+        self.service_type = "OpenAI"
+
+    @keyword
+    def authorize_to_azure_openai(
+        self,
+        api_key: str,
+        api_base: str,
+        api_type: Optional[str] = "azure",
+        api_version: Optional[str] = "2023-05-15",
+    ) -> None:
+        """Keyword for authorize to Azure OpenAI.
+
+        :param api_key: Your Azure OpenAI API key
+        :param api_base: Your Endpoint URL. Example: https://docs-test-001.openai.azure.com/
+        :param api_type: "azure"
+        :param api_version: "2023-05-15"
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${secrets}   Get Secret   secret_name=AzureOpenAI
+            Authorize To Azure Openai
+            ...    api_key=${secrets}[api_key]
+            ...    api_base=${secrets}[api_base]
+            ...    api_type=azure
+            ...    api_version=2023-05-15
+
+        Python example:
+
+        .. code-block:: python
+
+            secrets = Vault().get_secret("AzureOpenAI")
+            baselib = OpenAI()
+            baselib.authorize_to_azure_openai(
+                secrets["api_key"],
+                secrets["api_base"],
+                "azure",
+                "2023-05-15"
+            )
+
+        """  # noqa: E501
+        openai.api_key = api_key
+        openai.api_base = api_base
+        openai.api_type = api_type
+        openai.api_version = api_version
+        self.service_type = "Azure"
 
     @keyword
     def authorize_to_openai(self, api_key: str) -> None:
@@ -88,11 +135,15 @@ class OpenAI:
         presence_penalty: Optional[int] = 0,
         result_format: Optional[str] = "string",
     ) -> None:
-        """Keyword for creating text completions in OpenAI.
+        """Keyword for creating text completions in OpenAI and Azure OpenAI.
         Keyword returns a text string.
 
+        **Note**. When using ``Azure OpenAI`` you must provide the ``deployment_name``
+        as the ``model`` parameter instead of the model ID used with ``OpenAI``.
+
         :param prompt: Text submitted to OpenAI for creating natural language.
-        :param model: OpenAI's model to use in the completion.
+        :param model: For ``OpenAI`` the ID of the model to use, e.g. ``text-davinci-003``.
+         For ``Azure OpenAI`` the Deployment name, e.g. ``myDavinci3deployment``.
         :param temperature: What sampling temperature to use.
             Higher values means the model will take more risks..
         :param max_tokens: The maximum number of tokens to generate in the completion..
@@ -124,16 +175,20 @@ class OpenAI:
             )
             print(result)
 
-        """
-        response = openai.Completion.create(
-            model=model,
-            prompt=prompt,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            top_p=top_probability,
-            frequency_penalty=frequency_penalty,
-            presence_penalty=presence_penalty,
-        )
+        """  # noqa: E501
+        parameters = {
+            "prompt": prompt,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "top_p": top_probability,
+            "frequency_penalty": frequency_penalty,
+            "presence_penalty": presence_penalty,
+        }
+        if self.service_type == "Azure":
+            parameters["engine"] = model
+        else:
+            parameters["model"] = model
+        response = openai.Completion.create(**parameters)
         self.logger.info(response)
         if result_format == "string":
             text = response["choices"][0]["text"].strip()
@@ -155,14 +210,18 @@ class OpenAI:
         frequency_penalty: Optional[int] = 0,
         presence_penalty: Optional[int] = 0,
     ) -> None:
-        """Keyword for creating ChatGPT text completions in OpenAI. Keyword returns a
-        list containing the response as a string and the message history as a list.
+        """Keyword for creating ChatGPT text completions using OpenAI or Azure OpenAI.
+        Keyword returns the response as a string and the message history as a list.
+
+        **Note**. When using ``Azure OpenAI`` you must provide the ``deployment_name``
+        as the ``model`` parameter instead of the model ID used with ``OpenAI``.
 
         :param user_content: Text submitted to ChatGPT to generate completions.
         :param conversation: List containing the conversation to be continued. Leave
          empty for a new conversation.
-        :param model: ID of the model to use. Currently, only gpt-3.5-turbo and
-         gpt-3.5-turbo-0301 are supported.
+        :param model: For ``OpenAI`` the ID of the model to use, e.g. ``gpt-4``
+         or ``gpt-3.5-turbo``. For ``Azure OpenAI`` the Deployment name,
+         e.g. ``myGPT4deployment``.
         :param system_content: The system message helps set the behavior of
          the assistant.
         :param temperature: What sampling temperature to use between 0 to 2. Higher
@@ -179,7 +238,7 @@ class OpenAI:
 
         .. code-block:: robotframework
 
-            # Create a new conversation without conversation history.
+            # Get response without conversation history.
             ${response}   @{chatgpt_conversation}=     Chat Completion Create
             ...    user_content=What is the biggest mammal?
             Log    ${response}
@@ -202,24 +261,27 @@ class OpenAI:
         conversation.append(
             {"role": "user", "content": user_content},
         )
-        self.logger.info(conversation)
 
-        response = openai.ChatCompletion.create(
-            model=model,
-            messages=conversation,
-            temperature=temperature,
-            top_p=top_probability,
-            frequency_penalty=frequency_penalty,
-            presence_penalty=presence_penalty,
-        )
+        parameters = {
+            "messages": conversation,
+            "temperature": temperature,
+            "top_p": top_probability,
+            "frequency_penalty": frequency_penalty,
+            "presence_penalty": presence_penalty,
+        }
+
+        if self.service_type == "Azure":
+            parameters["engine"] = model
+        else:
+            parameters["model"] = model
+
+        response = openai.ChatCompletion.create(**parameters)
         self.logger.info(response)
         text = response["choices"][0]["message"]["content"]
         conversation.append(
             {"role": "assistant", "content": text},
         )
-        return_list = []
-        return_list.append(text)
-        return_list.append(conversation)
+        return_list = [text, conversation]
         self.logger.info(return_list)
         return return_list
 
@@ -231,8 +293,10 @@ class OpenAI:
         num_images: Optional[int] = 1,
         result_format: Optional[str] = "list",
     ) -> None:
-        """Keyword for creating one or more images in OpenAI.
+        """Keyword for creating one or more images using OpenAI.
         Keyword returns a list of urls for the images created.
+
+        **Note**. Keyword not supported in the ``Azure OpenAI`` service.
 
         :param prompt: A text description of the desired image(s).
             The maximum length is 1000 characters.
@@ -265,6 +329,10 @@ class OpenAI:
                 print(url)
 
         """
+        if self.service_type == "Azure":
+            raise NotImplementedError(
+                "Keyword 'Image Create' is not supported by Azure service"
+            )
         response = openai.Image.create(prompt=prompt, size=size, n=num_images)
         self.logger.info(response)
         urls = []
@@ -289,6 +357,8 @@ class OpenAI:
         """Keyword for creating one or more variations of a image. Keyword
         returns a list of urls for the images created.
         Source file must be a valid PNG file, less than 4MB, and square.
+
+        **Note**. Keyword not supported in the ``Azure OpenAI`` service.
 
         :param src_image: The image to use as the basis for the variation(s).
             Must be a valid PNG file, less than 4MB, and square.
@@ -322,6 +392,10 @@ class OpenAI:
                 print(url)
 
         """
+        if self.service_type == "Azure":
+            raise NotImplementedError(
+                "Keyword 'Image Create Variation' is not supported by Azure service"
+            )
         with open(src_image, "rb") as image_file:
             response = openai.Image.create_variation(
                 image=image_file, n=num_images, size=size

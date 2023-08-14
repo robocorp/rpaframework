@@ -58,6 +58,8 @@ be it a new library or a fix to a typo in this documentation.
 However, before submitting a large Pull Request, it's advised to discuss it
 beforehand on the Slack_ or in a corresponding GH Issue on the tracker_.
 
+.. include-dev-guide
+
 Before writing any code, please read and acknowledge our extensive `Dev Guide`_.
 
 .. _Dev Guide: https://github.com/robocorp/rpaframework/blob/master/docs/source/contributing/development.md

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-assistant"
-version = "2.2.1"
+version = "2.3.0"
 description = "Interactive UI library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -57,7 +57,6 @@ robotframework-docgen = "^0.15.0"
 robotframework-tidy = "^3.3.3"
 sphinx-issues = "^3.0.1"
 docutils = "0.16"
-moto = "3.1.8"
 colorama = "^0.4.5"
 keyring = "^23.9.0"
 PyYAML = "^5.4.1"

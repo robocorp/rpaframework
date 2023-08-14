@@ -1,10 +1,10 @@
 import shutil
 from contextlib import contextmanager
 
+import pypdf
 import pytest
 
 from RPA.PDF.keywords.document import DocumentKeywords
-from RPA.PDF.keywords.model import RobocorpPdfReader
 
 from . import TestFiles, library, temp_filename
 
@@ -97,7 +97,7 @@ def test_html_to_pdf(library, text, encoding):
 
 
 def _get_source_pages(pdf_file, page_nums):
-    reader = RobocorpPdfReader(pdf_file)
+    reader = pypdf.PdfReader(pdf_file)
     if not page_nums:
         return reader.pages
 
@@ -281,7 +281,7 @@ def test_close_all_pdfs(library):
         ("1,2,3", None, [1, 2, 3], does_not_raise()),
         (
             None,
-            RobocorpPdfReader(str(TestFiles.loremipsum_pdf)),
+            pypdf.PdfReader(str(TestFiles.loremipsum_pdf)),
             [1],
             does_not_raise(),
         ),

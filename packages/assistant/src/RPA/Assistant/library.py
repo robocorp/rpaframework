@@ -172,7 +172,7 @@ class Assistant:
             Add text input    message
             ...    label=Feedback
             ...    placeholder=Enter feedback here
-            ...    rows=5
+            ...    maximum_rows=5
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
     """
@@ -1161,7 +1161,50 @@ class Assistant:
             Second View
                 Add Heading  Let's build an infinite loop
                 Add Button  Change View  First View
-        """
+
+
+        .. code-block:: python
+
+            def success_dialog():
+                assistant = Assistant()
+                assistant.add_icon("success")
+                assistant.add_heading("Your orders have been processed")
+                assistant.add_files("*.txt")
+                assistant.run_dialog(title="Success")
+
+            def failure_dialog():
+                assistant = Assistant()
+                assistant.add_icon("failure")
+                assistant.add_heading("There was an error")
+                assistant.add_text("The assistant failed to login to the Enterprise portal")
+                assistant.add_link("https://robocorp.com/docs", label="Troubleshooting guide")
+                assistant.add_files("*.txt")
+                assistant.run_dialog(title="Failure")
+
+            def large_dialog():
+                assistant = Assistant()
+                assistant.add_heading("A real chonker", size="large")
+                assistant.add_image("fat-cat.jpeg")
+                assistant.run_dialog(title="Large", height=1024, width=1024)
+
+            def confirmation_dialog():
+                assistant = Assistant()
+                assistant.add_icon("warning")
+                assistant.add_heading("Delete user ${username}?")
+                assistant.add_submit_buttons(buttons="No, Yes", default="Yes")
+                result = assistant.run_dialog()
+                if result.submit == "Yes":
+                    delete_user(username)
+
+            def input_from_dialog():
+                assistant = Assistant()
+                assistant.add_heading("Send feedback")
+                assistant.add_text_input("email", label="E-mail address")
+                assistant.add_text_input("message", label="Feedback", placeholder="Enter feedback here", maximum_rows=5)
+                assistant.add_submit_buttons("Submit", default="Submit")
+                result = assistant.run_dialog()
+                send_feedback_message(result.email, result.message)
+        """  # noqa: E501
 
         def on_click(_: ControlEvent):
             self._callbacks.queue_fn_or_kw(function, *args, **kwargs)
@@ -1267,13 +1310,83 @@ class Assistant:
         self._client.add_element(name=name, element=slider)
 
     @keyword(tags=["dialog", "running"])
+    def add_loading_spinner(
+        self,
+        name: str,
+        width: int = 16,
+        height: int = 16,
+        stroke_width: int = 2,
+        color: Optional[str] = None,
+        tooltip: Optional[str] = None,
+        value: Optional[float] = None,
+    ):
+        """Add a loading spinner.
+
+        :param name:        Name of the element
+        :param width:       Width of the spinner
+        :param height:      Height of the spinner
+        :param stroke_width: Width of the spinner's stroke
+        :param color:       Color of the spinner's stroke.
+                            Allowed values are colors from
+                            [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
+                            or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+        :param tooltip:     Tooltip to be displayed
+                            on mouse hover.
+        :param value:       Between 0.0 and 1.0 if you want to manually control it's completion.
+                            If `None` it will spin endlessy.
+        """  # noqa: E501
+        pr = flet.ProgressRing(
+            width=width,
+            height=height,
+            stroke_width=stroke_width,
+            color=color,
+            tooltip=tooltip,
+            value=value,
+        )
+        self._client.add_element(pr, name)
+        return pr
+
+    @keyword(tags=["dialog", "running"])
+    def add_loading_bar(
+        self,
+        name: str,
+        width: int = 16,
+        bar_height: int = 16,
+        color: Optional[str] = None,
+        tooltip: Optional[str] = None,
+        value: Optional[float] = None,
+    ):
+        """Add a loading bar.
+
+        :param name:        Name of the element
+        :param width:       Width of the bar
+        :param bar_height:  Height of the bar
+        :param color:       Color of the bar's stroke.
+                            Allowed values are colors from
+                            [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
+                            or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+        :param tooltip:     Tooltip to be displayed on mouse hover.
+        :param value:       Between 0.0 and 1.0 if you want to manually control it's completion.
+                            Use `None` for indeterminate progress indicator.
+        """  # noqa: E501
+        pb = flet.ProgressBar(
+            width=width,
+            bar_height=bar_height,
+            color=color,
+            tooltip=tooltip,
+            value=value,
+        )
+        self._client.add_element(pb, name)
+        return pb
+
+    @keyword(tags=["dialog", "running"])
     def set_title(self, title: str):
         """Set dialog title when it is running."""
         self._client.set_title(title)
 
     def _close_layouting_element(self, layouting_element: str):
-        """Checkhat if the last opened layout element matches what is being closed,
-        otherwise raise ValueError. If the check passes, close the layout element.
+        """Check if the last opened layout element matches what is being closed,
+        otherwise raise `ValueError`. If the check passes, close the layout element.
         """
         if not self._open_layouting:
             raise LayoutError(f"Cannot close {layouting_element}, no open layout")
