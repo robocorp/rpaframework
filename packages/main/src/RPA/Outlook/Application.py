@@ -1,10 +1,10 @@
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, List, Union, Optional
+from typing import Any, List, Optional, Union
 
-from RPA.Email.common import counter_duplicate_path
 from RPA.application import BaseApplication, COMError
+from RPA.Email.common import counter_duplicate_path
 
 
 class Application(BaseApplication):
@@ -188,9 +188,10 @@ class Application(BaseApplication):
             else:
                 mail.Send()
                 self.logger.debug("Email sent")
-        except COMError as e:
+        # On non-Windows OS `COMError` is `Exception`.
+        except COMError as exc:  # pylint: disable=broad-except
             self.logger.error(
-                f"Mail {'saving' if save_as_draft else 'sending'} failed: %s", e
+                f"Mail {'saving' if save_as_draft else 'sending'} failed: %s", exc
             )
             return False
         return True
@@ -280,8 +281,6 @@ class Application(BaseApplication):
 
             Wait for Email     SUBJECT:rpa task calling    timeout=300    interval=10
         """
-        if self.app is None:
-            raise ValueError("Requires active Outlook Application")
         if criterion is None:
             self.logger.warning(
                 "Wait for message requires criteria for which message to wait for."
@@ -351,7 +350,7 @@ class Application(BaseApplication):
         if folder_messages and email_filter:
             try:
                 folder_messages = folder_messages.Restrict(email_filter)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 raise AttributeError(  # pylint: disable=raise-missing-from
                     "Invalid email filter '%s'" % email_filter
                 )
@@ -359,7 +358,7 @@ class Application(BaseApplication):
             sort_key = sort_key or "ReceivedTime"
             try:
                 folder_messages.Sort(f"[{sort_key}]", sort_descending)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 raise AttributeError(  # pylint: disable=raise-missing-from
                     "Invalid email sort key '%s'" % sort_key
                 )
@@ -396,7 +395,6 @@ class Application(BaseApplication):
         return account_folder
 
     def _get_matching_folder(self, folder_name, folder=None):
-        folders = []
         if not folder or isinstance(folder, str):
             folders = self.app.GetNamespace("MAPI").Folders
         elif isinstance(folder, list):
@@ -525,7 +523,7 @@ class Application(BaseApplication):
         if folder_messages and email_filter:
             try:
                 folder_messages = folder_messages.Restrict(email_filter)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 raise AttributeError(  # pylint: disable=raise-missing-from
                     "Invalid email filter '%s'" % email_filter
                 )

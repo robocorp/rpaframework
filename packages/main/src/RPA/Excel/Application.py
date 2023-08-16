@@ -1,9 +1,20 @@
 import functools
 from itertools import count
-from pathlib import Path
 from typing import Any
 
-from RPA.application import BaseApplication, COMError
+from RPA.application import BaseApplication, catch_com_error, to_str_path
+
+
+def requires_workbook(func):
+    """Ensures a workbook is open."""
+
+    @functools.wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if self.workbook is None:
+            raise ValueError("No workbook open")
+        return func(self, *args, **kwargs)
+
+    return wrapper
 
 
 class Application(BaseApplication):
@@ -84,9 +95,6 @@ class Application(BaseApplication):
 
     def add_new_workbook(self) -> None:
         """Adds new workbook for Excel application"""
-        if not self.app:
-            raise ValueError("Excel application is not open")
-
         with catch_com_error():
             self.workbook = self.app.Workbooks.Add()
 
@@ -97,10 +105,10 @@ class Application(BaseApplication):
 
         :param filename: path to filename
         """
-        if not self.app:
+        if not self._app:
             self.open_application()
 
-        path = str(Path(filename).resolve())
+        path = to_str_path(filename)
         self.logger.info("Opening workbook: %s", path)
 
         with catch_com_error():
@@ -114,6 +122,7 @@ class Application(BaseApplication):
         self.set_active_worksheet(sheetnumber=1)
         self.logger.debug("Current workbook: %s", self.workbook)
 
+    @requires_workbook
     def set_active_worksheet(
         self, sheetname: str = None, sheetnumber: int = None
     ) -> None:
@@ -122,9 +131,6 @@ class Application(BaseApplication):
         :param sheetname: name of Excel sheet, defaults to None
         :param sheetnumber: index of Excel sheet, defaults to None
         """
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         with catch_com_error():
             if sheetnumber:
                 self.worksheet = self.workbook.Worksheets(int(sheetnumber))
@@ -176,6 +182,7 @@ class Application(BaseApplication):
         # return cell[0] if cell else None
         return cell
 
+    @requires_workbook
     def find_first_available_cell(
         self, worksheet: Any = None, row: int = 1, column: int = 1
     ) -> Any:
@@ -186,9 +193,6 @@ class Application(BaseApplication):
         :param column: starting column for search, defaults to 1
         :return: tuple (row, column) or (None, None) if not found
         """
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         if worksheet:
             self.set_active_worksheet(worksheet)
 
@@ -200,6 +204,7 @@ class Application(BaseApplication):
 
         return None, None
 
+    @requires_workbook
     def write_to_cells(
         self,
         worksheet: Any = None,
@@ -219,9 +224,6 @@ class Application(BaseApplication):
         :param formula: possible format to set, defaults to None
         :raises ValueError: if cell is not given
         """
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         if row is None or column is None:
             raise ValueError("No cell was given")
 
@@ -238,6 +240,7 @@ class Application(BaseApplication):
             if formula:
                 cell.Formula = formula
 
+    @requires_workbook
     def read_from_cells(
         self,
         worksheet: Any = None,
@@ -251,9 +254,6 @@ class Application(BaseApplication):
         :param column: target row, defaults to None
         :raises ValueError: if cell is not given
         """
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         if row is None or column is None:
             raise ValueError("No cell was given")
 
@@ -264,14 +264,13 @@ class Application(BaseApplication):
             cell = self.worksheet.Cells(int(row), int(column))
             return cell.Value
 
+    @requires_workbook
     def save_excel(self) -> None:
         """Saves Excel file"""
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         with catch_com_error():
             self.workbook.Save()
 
+    @requires_workbook
     def save_excel_as(
         self, filename: str, autofit: bool = False, file_format=None
     ) -> None:
@@ -297,35 +296,24 @@ class Application(BaseApplication):
             # Save workbook in Excel 97 format (format from above URL)
             Save excel as    legacy.xls   file_format=${56}
         """
-        if not self.workbook:
-            # Doesn't raise error for backwards compatibility
-            self.logger.warning("No workbook open")
-            return
-
         with catch_com_error():
             if autofit:
                 self.worksheet.Rows.AutoFit()
                 self.worksheet.Columns.AutoFit()
 
-            path = str(Path(filename).resolve())
-
+            path = to_str_path(filename)
             if file_format is not None:
                 self.workbook.SaveAs(path, FileFormat=file_format)
             else:
                 self.workbook.SaveAs(path)
 
+    @requires_workbook
     def run_macro(self, macro_name: str, *args: Any):
         """Run Excel macro with given name
 
         :param macro_name: macro to run
         :param args: arguments to pass to macro
         """
-        if not self.app:
-            raise ValueError("Excel application is not open")
-
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         with catch_com_error():
             self.app.Application.Run(f"'{self.workbook.Name}'!{macro_name}", *args)
 
@@ -342,7 +330,7 @@ class Application(BaseApplication):
             self.open_workbook(excel_filename)
         else:
             if not self.workbook:
-                raise ValueError("No workbook open. Can't export PDF.")
+                raise ValueError("No workbook open, can't export PDF")
         with catch_com_error():
-            path = str(Path(pdf_filename).resolve())
-            self.workbook.ExportAsFixedFormat(0, path)
+            pdf_path = to_str_path(pdf_filename)
+            self.workbook.ExportAsFixedFormat(0, pdf_path)

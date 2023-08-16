@@ -5,22 +5,36 @@ import logging
 import platform
 import struct
 from contextlib import contextmanager
+from pathlib import Path
 
 if platform.system() == "Windows":
     import win32api
     import win32com.client
     from pywintypes import com_error as COMError
+    from win32com.client import constants  # pylint: disable=unused-import
 else:
     logging.getLogger(__name__).warning(
-        "Any `RPA.*.Application` library works only on Windows platform"
+        "Any `RPA.*.Application` library works only on Windows platform!"
     )
+    # As these are imported anyway from here and should be defined on non-Windows OSes.
     COMError = Exception
+    constants = None
 
 
 def _to_unsigned(val):
     return struct.unpack("L", struct.pack("l", val))[0]
 
 
+def to_path(path: str) -> Path:
+    return Path(path).expanduser().resolve()
+
+
+def to_str_path(path: str) -> str:
+    return str(to_path(path))
+
+
+# TODO(cmin764; 16 Aug 2023): Create a `handles_com_error` decorator if we get a little
+#  too repetitive with context managers guarding. (to decorate the keywords)
 @contextmanager
 def catch_com_error():
     """Try to convert COM errors to human-readable format."""
@@ -40,8 +54,42 @@ def catch_com_error():
         raise RuntimeError(msg) from err
 
 
-class BaseApplication:
-    """Base library `Application` class for managing COM apps."""
+class MetaApplication(type):
+    """Metaclass enhancing every final class inheriting from a base using this."""
+
+    def __new__(cls, *args, **kwargs) -> type:
+        final_class = super().__new__(cls, *args, **kwargs)
+        bases = final_class.__mro__[1:]
+        if len(bases) < 2:  # not enhancing bases
+            return final_class
+
+        super_class = bases[0]
+        final_class.__doc__ += super_class.__doc__
+        if final_class.APP_DISPATCH is None:
+            raise ValueError(
+                "An `APP_DISPATCH` has to be defined in this"
+                f" {final_class.__name__!r} class"
+            )
+        return final_class
+
+
+class BaseApplication(metaclass=MetaApplication):
+    # Base library `Application` class for managing COM apps.
+    # The docstring below is automatically appended at the end of every inheritor.
+    """
+    **Caveats**
+
+    This library works on a Windows operating system with UI enabled only, and you must
+    ensure that you open the app first with ``Open Application`` before running any
+    other relevant keyword which requires to operate on an open app.
+
+    If you're running the Process by Control Room through a custom self-hosted Worker
+    service, then please make sure that you enable an RDP session by ticking "Use
+    Desktop Connection" under the Step configuration.
+
+    If you still encounter issues with opening a document, please ensure that file can
+    be opened first manually and dismiss any alert potentially blocking the process.
+    """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
@@ -50,14 +98,23 @@ class BaseApplication:
 
     def __init__(self, autoexit: bool = True):
         self.logger = logging.getLogger(__name__)
-        self.app = None
+        self._app_name = self.APP_DISPATCH.split(".")[0]
+        self._app = None
 
         if platform.system() != "Windows":
             self.logger.warning(
-                "This Application library requires Windows dependencies to work."
+                "This %s application library requires Windows dependencies to work.",
+                self._app_name,
             )
         if autoexit:
             atexit.register(self.quit_application)
+
+    @property
+    def app(self):
+        if self._app is None:
+            raise ValueError(f"{self._app_name} application is not open")
+
+        return self._app
 
     def open_application(
         self, visible: bool = False, display_alerts: bool = False
@@ -68,7 +125,7 @@ class BaseApplication:
         :param display_alerts: Display alert popups. (`False` by default)
         """
         with catch_com_error():
-            self.app = win32com.client.gencache.EnsureDispatch(self.APP_DISPATCH)
+            self._app = win32com.client.gencache.EnsureDispatch(self.APP_DISPATCH)
             self.logger.debug("Opened application: %s", self.app)
 
             if hasattr(self.app, "Visible"):
@@ -78,7 +135,7 @@ class BaseApplication:
 
             # Show for e.g. a file overwrite warning or not.
             if hasattr(self.app, "DisplayAlerts"):
-                state = "Displaying" is display_alerts else "Hiding"
+                state = "Displaying" if display_alerts else "Hiding"
                 self.logger.debug("%s the application alerts.", state)
                 self.app.DisplayAlerts = display_alerts
 
@@ -87,7 +144,7 @@ class BaseApplication:
 
         :param save_changes: Enable to save changes on quit. (defaults to `False`)
         """
-        if not self.app:  # no app open at all
+        if not self._app:  # no app open at all
             return
 
         if hasattr(self.app, "ActiveDocument"):
@@ -101,10 +158,10 @@ class BaseApplication:
 
         :param save_changes: Enable to save changes on quit. (defaults to False)
         """
-        if not self.app:
+        if not self._app:
             return
 
         self.close_document(save_changes)
         with catch_com_error():
             self.app.Quit()
-        self.app = None
+        self._app = None
