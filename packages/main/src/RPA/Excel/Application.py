@@ -1,46 +1,12 @@
-import atexit
-import logging
-import platform
-import struct
+import functools
 from itertools import count
 from pathlib import Path
 from typing import Any
-from contextlib import contextmanager
 
-if platform.system() == "Windows":
-    import win32api
-    import win32com.client
-    import pywintypes
-else:
-    logging.getLogger(__name__).warning(
-        "RPA.Excel.Application library works only on Windows platform"
-    )
+from RPA.application import BaseApplication, COMError
 
 
-def _to_unsigned(val):
-    return struct.unpack("L", struct.pack("l", val))[0]
-
-
-@contextmanager
-def catch_com_error():
-    """Try to convert COM errors to human readable format."""
-    try:
-        yield
-    except pywintypes.com_error as err:  # pylint: disable=no-member
-        if err.excepinfo:
-            try:
-                msg = win32api.FormatMessage(_to_unsigned(err.excepinfo[5]))
-            except Exception:  # pylint: disable=broad-except
-                msg = err.excepinfo[2]
-        else:
-            try:
-                msg = win32api.FormatMessage(_to_unsigned(err.hresult))
-            except Exception:  # pylint: disable=broad-except
-                msg = err.strerror
-        raise RuntimeError(msg) from err
-
-
-class Application:
+class Application(BaseApplication):
     """`Excel.Application` is a library for controlling an Excel application.
 
     *Note*. Library works only Windows platform.
@@ -97,62 +63,24 @@ class Application:
         app.quit_application()
     """
 
-    ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    APP_DISPATCH = "Excel.Application"
 
-    def __init__(self, autoexit: bool = True) -> None:
-        self.logger = logging.getLogger(__name__)
-        self.app = None
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         self.workbook = None
         self.worksheet = None
 
-        if platform.system() != "Windows":
-            self.logger.warning(
-                "Excel application library requires Windows dependencies to work."
-            )
-        if autoexit:
-            atexit.register(self.quit_application)
-
-    def open_application(
-        self, visible: bool = False, display_alerts: bool = False
-    ) -> None:
-        """Open the Excel application.
-
-        :param visible: show window after opening
-        :param display_alerts: show alert popups
-        """
-        with catch_com_error():
-            self.app = win32com.client.gencache.EnsureDispatch("Excel.Application")
-            self.logger.debug("Opened application: %s", self.app)
-
-            if hasattr(self.app, "Visible"):
-                self.app.Visible = visible
-
-            # Show eg. file overwrite warning or not
-            if hasattr(self.app, "DisplayAlerts"):
-                self.app.DisplayAlerts = display_alerts
-
-    def close_document(self, save_changes: bool = False) -> None:
-        """Close the active document (if open)."""
+    @functools.wraps(BaseApplication.close_document)
+    def close_document(self, *args, **kwargs):
         if not self.workbook:
             return
 
-        with catch_com_error():
-            self.workbook.Close(save_changes)
+        self.app.ActiveDocument = self.workbook
+        super().close_document(*args, **kwargs)
 
         self.workbook = None
         self.worksheet = None
-
-    def quit_application(self, save_changes: bool = False) -> None:
-        """Quit the application."""
-        if not self.app:
-            return
-
-        self.close_document(save_changes)
-        with catch_com_error():
-            self.app.Quit()
-
-        self.app = None
 
     def add_new_workbook(self) -> None:
         """Adds new workbook for Excel application"""

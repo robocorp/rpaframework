@@ -1,49 +1,13 @@
-import atexit
-import logging
-import platform
-import struct
 import time
-from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import Any, List, Union, Optional
 
 from RPA.Email.common import counter_duplicate_path
-
-if platform.system() == "Windows":
-    import win32api
-    import win32com.client
-    import pywintypes
-else:
-    logging.getLogger(__name__).warning(
-        "RPA.Outlook.Application library works only on Windows platform"
-    )
+from RPA.application import BaseApplication, COMError
 
 
-def _to_unsigned(val):
-    return struct.unpack("L", struct.pack("l", val))[0]
-
-
-@contextmanager
-def catch_com_error():
-    """Try to convert COM errors to human readable format."""
-    try:
-        yield
-    except pywintypes.com_error as err:  # pylint: disable=no-member
-        if err.excepinfo:
-            try:
-                msg = win32api.FormatMessage(_to_unsigned(err.excepinfo[5]))
-            except Exception:  # pylint: disable=broad-except
-                msg = err.excepinfo[2]
-        else:
-            try:
-                msg = win32api.FormatMessage(_to_unsigned(err.hresult))
-            except Exception:  # pylint: disable=broad-except
-                msg = err.strerror
-        raise RuntimeError(msg) from err
-
-
-class Application:
+class Application(BaseApplication):
     # pylint: disable=C0301
     """`Outlook.Application` is a library for controlling the Outlook application.
 
@@ -111,58 +75,7 @@ class Application:
     For more information, see: https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12)
     """  # noqa: E501
 
-    ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
-
-    def __init__(self, autoexit: bool = True) -> None:
-        self.logger = logging.getLogger(__name__)
-        self.app = None
-
-        if platform.system() != "Windows":
-            self.logger.warning(
-                "Outlook application library requires Windows dependencies to work."
-            )
-        if autoexit:
-            atexit.register(self.quit_application)
-
-    def open_application(
-        self, visible: bool = False, display_alerts: bool = False
-    ) -> None:
-        """Open the Outlook application.
-
-        :param visible: show window after opening, default False
-        :param display_alerts: show alert popups, default False
-        """
-        with catch_com_error():
-            self.app = win32com.client.gencache.EnsureDispatch("Outlook.Application")
-
-            if hasattr(self.app, "Visible"):
-                self.app.Visible = visible
-
-            # show eg. file overwrite warning or not
-            if hasattr(self.app, "DisplayAlerts"):
-                self.app.DisplayAlerts = display_alerts
-
-    def close_document(self, save_changes: bool = False) -> None:
-        """Close the active document (if open).
-
-        :param save_changes: if changes should be saved on close, default False
-        """
-        if not self.app:
-            return
-        if hasattr(self.app, "ActiveDocument"):
-            self.app.ActiveDocument.Close(save_changes)
-
-    def quit_application(self, save_changes: bool = False) -> None:
-        """Quit the application.
-
-        :param save_changes: if changes should be saved on quit, default False
-        """
-        if not self.app:
-            return
-        self.close_document(save_changes)
-        self.app.Quit()
-        self.app = None
+    APP_DISPATCH = "Outlook.Application"
 
     def send_message(
         self,
@@ -275,7 +188,7 @@ class Application:
             else:
                 mail.Send()
                 self.logger.debug("Email sent")
-        except pywintypes.com_error as e:
+        except COMError as e:
             self.logger.error(
                 f"Mail {'saving' if save_as_draft else 'sending'} failed: %s", e
             )
@@ -464,7 +377,6 @@ class Application:
             self.logger.warning("Getting items from default account inbox")
             return namespace.GetDefaultFolder(6)
         email_folder = email_folder or "Inbox"
-        folder = None
         if account_name:
             account_folder = self._get_account_folder(namespace, account_name)
             if account_folder:
