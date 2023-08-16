@@ -97,6 +97,10 @@ class BaseApplication(metaclass=MetaApplication):
     APP_DISPATCH = None  # this has to be defined in every inheriting class
 
     def __init__(self, autoexit: bool = True):
+        """Initialize the library instance by wrapping the COM Windows app.
+
+        :param autoexit: Automatically close the app when the process finishes.
+        """
         self.logger = logging.getLogger(__name__)
         self._app_name = self.APP_DISPATCH.split(".")[0]
         self._app = None
@@ -142,7 +146,7 @@ class BaseApplication(metaclass=MetaApplication):
     def close_document(self, save_changes: bool = False) -> None:
         """Close the active document and app (if open).
 
-        :param save_changes: Enable to save changes on quit. (defaults to `False`)
+        :param save_changes: Enable changes saving on quit. (`False` by default)
         """
         if not self._app:  # no app open at all
             return
@@ -156,7 +160,7 @@ class BaseApplication(metaclass=MetaApplication):
     def quit_application(self, save_changes: bool = False) -> None:
         """Quit the application.
 
-        :param save_changes: Enable to save changes on quit. (defaults to False)
+        :param save_changes: Enable to save changes on quit. (`False` by default)
         """
         if not self._app:
             return
