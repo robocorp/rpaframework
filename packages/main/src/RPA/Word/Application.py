@@ -76,7 +76,7 @@ class Application(BaseApplication):
         """
         path = to_path(filename)
         if not path.is_file():
-            raise FileNotFoundError(f"{path} doesn't exist")
+            raise FileNotFoundError(f"{str(path)!r} doesn't exist")
 
         state = "read-only" if read_only else "read-write"
         self.logger.info("Opening document (%s): %s", state, path)

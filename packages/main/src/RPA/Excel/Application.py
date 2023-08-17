@@ -109,7 +109,7 @@ class Application(BaseApplication):
 
         path = to_path(filename)
         if not path.is_file():
-            raise FileNotFoundError(f"{path} doesn't exist")
+            raise FileNotFoundError(f"{str(path)!r} doesn't exist")
         path = str(path)
         self.logger.info("Opening workbook: %s", path)
 

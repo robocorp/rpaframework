@@ -155,11 +155,21 @@ class BaseApplication(metaclass=MetaApplication):
         if not self._app:  # no app open at all
             return
 
-        if hasattr(self.app, "ActiveDocument"):
-            state = "saving" if save_changes else "not saving"
-            self.logger.debug("Closing the opened document and %s changes.", state)
+        try:
             with catch_com_error():
-                self.app.ActiveDocument.Close(save_changes)
+                if hasattr(self.app, "ActiveDocument"):
+                    state = "saving" if save_changes else "not saving"
+                    self.logger.debug(
+                        "Closing the open document and %s changes.", state
+                    )
+                    self.app.ActiveDocument.Close(save_changes)
+        except RuntimeError as exc:
+            if "no document is open" in str(exc):
+                self.logger.warning(
+                    "Failed attempt on closing a document when there's none open!"
+                )
+            else:
+                raise
 
     def quit_application(self, save_changes: bool = False) -> None:
         """Quit the application.
