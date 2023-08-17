@@ -10,7 +10,7 @@ from pathlib import Path
 if platform.system() == "Windows":
     import win32api
     import win32com.client
-    from pywintypes import com_error as COMError
+    from pywintypes import com_error as COMError  # pylint: disable=no-name-in-module
     from win32com.client import constants  # pylint: disable=unused-import
 else:
     logging.getLogger(__name__).warning(
