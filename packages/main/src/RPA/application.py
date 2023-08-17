@@ -81,7 +81,11 @@ class BaseApplication(metaclass=MetaApplication):
 
     This library works on a Windows operating system with UI enabled only, and you must
     ensure that you open the app first with ``Open Application`` before running any
-    other relevant keyword which requires to operate on an open app.
+    other relevant keyword which requires to operate on an open app. Check the
+    documentation below for more info:
+
+    - https://robocorp.com/docs/control-room/unattended/worker-setups/windows-desktop
+    - https://robocorp.com/docs/faq/windows-server-2016
 
     If you're running the Process by Control Room through a custom self-hosted Worker
     service, then please make sure that you enable an RDP session by ticking "Use

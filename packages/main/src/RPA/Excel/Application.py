@@ -2,7 +2,7 @@ import functools
 from itertools import count
 from typing import Any
 
-from RPA.application import BaseApplication, catch_com_error, to_str_path
+from RPA.application import BaseApplication, catch_com_error, to_path, to_str_path
 
 
 def requires_workbook(func):
@@ -20,15 +20,14 @@ def requires_workbook(func):
 class Application(BaseApplication):
     """`Excel.Application` is a library for controlling an Excel application.
 
-    *Note*. Library works only Windows platform.
-
-    Library will automatically close the Excel application at the end of the
-    task execution. This can be changed by importing library with `autoexit` setting.
+    The library will automatically close the Excel application at the end of the
+    task execution. This can be changed by importing library with the
+    `autoexit=${False}` setting.
 
     .. code-block:: robotframework
 
         *** Settings ***
-        Library                 RPA.Excel.Application   autoexit=${FALSE}
+        Library                 RPA.Excel.Application   autoexit=${False}
 
     **Examples**
 
@@ -108,7 +107,10 @@ class Application(BaseApplication):
         if not self._app:
             self.open_application()
 
-        path = to_str_path(filename)
+        path = to_path(filename)
+        if not path.is_file():
+            raise FileNotFoundError(f"{path} doesn't exist")
+        path = str(path)
         self.logger.info("Opening workbook: %s", path)
 
         with catch_com_error():
@@ -116,7 +118,7 @@ class Application(BaseApplication):
                 self.workbook = self.app.Workbooks(path)
             except Exception as exc:  # pylint: disable=broad-except
                 self.logger.debug(str(exc))
-                self.logger.info("Trying to open workbook by another method")
+                self.logger.info("Trying to open workbook by another method...")
                 self.workbook = self.app.Workbooks.Open(path)
 
         self.set_active_worksheet(sheetnumber=1)

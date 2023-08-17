@@ -11,20 +11,19 @@ class Application(BaseApplication):
     # pylint: disable=C0301
     """`Outlook.Application` is a library for controlling the Outlook application.
 
-    *Note*. Library works only Windows platform.
-
-    Library will automatically close the Outlook application at the end of the
-    task execution. This can be changed by importing library with `autoexit` setting.
+    The library will automatically close the Outlook application at the end of the
+    task execution. This can be changed by importing library with the
+    `autoexit=${False}` setting.
 
     .. code-block:: robotframework
 
         *** Settings ***
-        Library                 RPA.Outlook.Application   autoexit=${FALSE}
+        Library                 RPA.Outlook.Application   autoexit=${False}
 
     **About Email Filtering**
 
-    Emails can be filtered according to specification set by Restrict method of the Item
-    class https://docs.microsoft.com/en-us/office/vba/api/outlook.items.restrict.
+    Emails can be filtered according to specification set by Restrict method of the
+    Item class https://docs.microsoft.com/en-us/office/vba/api/outlook.items.restrict.
 
     Couple of examples:
 

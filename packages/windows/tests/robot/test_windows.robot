@@ -6,7 +6,7 @@ Library           String
 
 Test Setup      Set Wait Time    0.7
 
-Default Tags      skip
+Default Tags      windows   skip
 
 
 *** Variables ***
