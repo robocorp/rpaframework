@@ -64,13 +64,11 @@ Does alert not contain
 Screenshot Robocorp Google search result
     # NOTE(cmin764): As of 19.05.2023 this test passes in CI, Mac, Windows and
     #  Control Room, without any consent popup blocker.
-    # NOTE(mikahanninen): Skipped on 02.06.2023 as this fails on
-    #  local build on consent form which for me is also using Finnish Google site.
-    [Tags]  skip  # since this relies on English language
+    # NOTE(mikahanninen): Skipped on 02.06.2023 as this fails on the local build on
+    #  consent form, which for me is also using the Finnish Google site.
+    [Tags]  skip  # since this might fail in the future if the website changes
     Go To    www.google.com
-    Click Element If Visible    No thanks
-    Click Element If Visible    xpath://button/div[contains(text(), 'I agree')]
-    Click Element If Visible    xpath://button/div[contains(text(), 'Reject all')]
+    Click Element If Visible    xpath://button[2]  # test fails if this is missed
     Wait Until Element Is Visible    q
 
     Input Text    q    Robocorp
@@ -162,7 +160,7 @@ Test enhanced clicking
     Does Alert Contain    after
 
 Test Shadow Root
-    [Tags]    skip    # flaky test during async runs
+    [Tags]    skip  # flaky test during async runs
     [Setup]    Is Alert Present
 
     Go To    http://watir.com/examples/shadow_dom.html
@@ -173,17 +171,18 @@ Test Shadow Root
     Should Be Equal    ${text}    some text
 
 Download PDF in custom Firefox directory
-    [Tags]    skip    # no support for the Firefox browser in CI
+    [Tags]    manual  # no support for the Firefox browser in CI (or on dev machine)
     Download With Specific Browser    Firefox
 
 Download PDF in custom Chrome directory
-    [Tags]    skip    # flaky test in CI, mainly on Windows with Python 3.7, 3.8
+    [Tags]    skip  # flaky test in CI, mainly on Windows with Python 3.7, 3.8
     Download With Specific Browser    Chrome
 
 Open Browser With Dict Options
+    [Tags]    skip  # flaky test in CI, on Windows and Linux, but not on Mac
     [Setup]    Close Browser
 
-    @{args} =    Create List    --headless=new
+    @{args} =    Create List    --headless=new  # this is a newly introduced argument
     &{caps} =    Create Dictionary    acceptInsecureCerts    ${True}
     &{options} =    Create Dictionary
     ...     arguments    ${args}
