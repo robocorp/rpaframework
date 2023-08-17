@@ -117,7 +117,7 @@ class Application(BaseApplication):
         """
         path = to_str_path(filename)
         with catch_com_error():
-            self.app.ActiveDocument.ExportAsFixedFormat(
+            self._active_document.ExportAsFixedFormat(
                 OutputFileName=path, ExportFormat=constants.wdExportFormatPDF
             )
 
@@ -138,14 +138,14 @@ class Application(BaseApplication):
         :param find: text to replace
         :param replace: new text
         """
-        self.app.ActiveDocument.Content.Find.Execute(FindText=find, ReplaceWith=replace)
+        self._active_document.Content.Find.Execute(FindText=find, ReplaceWith=replace)
 
     def set_header(self, text: str) -> None:
         """Set header for the active document
 
         :param text: header text to set
         """
-        for section in self.app.ActiveDocument.Sections:
+        for section in self._active_document.Sections:
             for header in section.Headers:
                 header.Range.Text = text
 
@@ -154,19 +154,19 @@ class Application(BaseApplication):
 
         :param text: footer text to set
         """
-        for section in self.app.ActiveDocument.Sections:
+        for section in self._active_document.Sections:
             for footer in section.Footers:
                 footer.Range.Text = text
 
     def save_document(self) -> None:
         """Save active document"""
         # Accept all revisions
-        self.app.ActiveDocument.Revisions.AcceptAll()
+        self._active_document.Revisions.AcceptAll()
         # Delete all comments
-        if self.app.ActiveDocument.Comments.Count >= 1:
-            self.app.ActiveDocument.DeleteAllComments()
+        if self._active_document.Comments.Count >= 1:
+            self._active_document.DeleteAllComments()
 
-        self.app.ActiveDocument.Save()
+        self._active_document.Save()
 
     def save_document_as(self, filename: str, fileformat: str = None) -> None:
         """Save document with filename and optionally with given fileformat
@@ -178,10 +178,10 @@ class Application(BaseApplication):
         path = to_str_path(filename)
 
         # Accept all revisions
-        self.app.ActiveDocument.Revisions.AcceptAll()
+        self._active_document.Revisions.AcceptAll()
         # Delete all comments
-        if self.app.ActiveDocument.Comments.Count >= 1:
-            self.app.ActiveDocument.DeleteAllComments()
+        if self._active_document.Comments.Count >= 1:
+            self._active_document.DeleteAllComments()
 
         if fileformat and fileformat.upper() in self.FILEFORMATS:
             self.logger.debug("Saving with file format: %s", fileformat)
@@ -191,9 +191,9 @@ class Application(BaseApplication):
             format_type = constants.wdFormatDocumentDefault
 
         try:
-            self.app.ActiveDocument.SaveAs2(path, FileFormat=format_type)
+            self._active_document.SaveAs2(path, FileFormat=format_type)
         except AttributeError:
-            self.app.ActiveDocument.SaveAs(path, FileFormat=format_type)
+            self._active_document.SaveAs(path, FileFormat=format_type)
 
         self.logger.info("File saved to: %s", path)
 
@@ -202,4 +202,4 @@ class Application(BaseApplication):
 
         :return: texts
         """
-        return self.app.ActiveDocument.Content.Text
+        return self._active_document.Content.Text

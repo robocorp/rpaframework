@@ -81,14 +81,11 @@ class Application(BaseApplication):
         self.workbook = None
         self.worksheet = None
 
-    @functools.wraps(BaseApplication.close_document)
-    def close_document(self, *args, **kwargs):
-        if not self.workbook:
-            return
+    @property
+    def _active_document(self):
+        return self.workbook
 
-        self.app.ActiveDocument = self.workbook
-        super().close_document(*args, **kwargs)
-
+    def _deactivate_document(self):
         self.workbook = None
         self.worksheet = None
 

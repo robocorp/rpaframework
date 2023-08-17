@@ -147,6 +147,15 @@ class BaseApplication(metaclass=MetaApplication):
                 self.logger.debug("%s the application alerts.", state)
                 self.app.DisplayAlerts = display_alerts
 
+    @property
+    def _active_document(self):
+        # Retrieves the currently active document. (raises COMError if there's none)
+        return self.app.ActiveDocument
+
+    def _deactivate_document(self):
+        # Cleans-up a just closed previously active document.
+        pass
+
     def close_document(self, save_changes: bool = False) -> None:
         """Close the active document and app (if open).
 
@@ -157,12 +166,13 @@ class BaseApplication(metaclass=MetaApplication):
 
         try:
             with catch_com_error():
-                if hasattr(self.app, "ActiveDocument"):
+                if self._active_document:
                     state = "saving" if save_changes else "not saving"
                     self.logger.debug(
                         "Closing the open document and %s changes.", state
                     )
-                    self.app.ActiveDocument.Close(save_changes)
+                    self._active_document.Close(save_changes)
+                    self._deactivate_document()
         except RuntimeError as exc:
             if "no document is open" in str(exc):
                 self.logger.warning(
