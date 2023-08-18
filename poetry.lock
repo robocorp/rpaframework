@@ -335,18 +335,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.28.24"
+version = "1.28.29"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.28.24-py3-none-any.whl", hash = "sha256:0300ca6ec8bc136eb316b32cc1e30c66b85bc497f5a5fe42e095ae4280569708"},
-    {file = "boto3-1.28.24.tar.gz", hash = "sha256:9d1b4713c888e53a218648ad71522bee9bec9d83f2999fff2494675af810b632"},
+    {file = "boto3-1.28.29-py3-none-any.whl", hash = "sha256:7b8e7deee9f665612b3cd7412989aaab0337d8006a0490a188c814af137bd32d"},
+    {file = "boto3-1.28.29.tar.gz", hash = "sha256:1ab375c231547db4c9ce760e29cbe90d0341fe44910571b1bc4967a72fd8276f"},
 ]
 
 [package.dependencies]
-botocore = ">=1.31.24,<1.32.0"
+botocore = ">=1.31.29,<1.32.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -355,14 +355,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.31.24"
+version = "1.31.29"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.31.24-py3-none-any.whl", hash = "sha256:8c7ba9b09e9104e2d473214e1ffcf84b77e04cf6f5f2344942c1eed9e299f947"},
-    {file = "botocore-1.31.24.tar.gz", hash = "sha256:2d8f412c67f9285219f52d5dbbb6ef0dfa9f606da29cbdd41b6d6474bcc4bbd4"},
+    {file = "botocore-1.31.29-py3-none-any.whl", hash = "sha256:d3dc422491b3a30667f188f3434541a1dd86d6f8ed7f98ca26e056ae7d912c85"},
+    {file = "botocore-1.31.29.tar.gz", hash = "sha256:71b335a47ee061994ac12f15ffe63c5c783cb055dc48079b7d755a46b9c1918c"},
 ]
 
 [package.dependencies]
@@ -585,14 +585,14 @@ files = [
 
 [[package]]
 name = "click"
-version = "8.1.6"
+version = "8.1.7"
 description = "Composable command line interface toolkit"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "click-8.1.6-py3-none-any.whl", hash = "sha256:fa244bb30b3b5ee2cae3da8f55c9e5e0c0e86093306301fb418eb9dc40fbded5"},
-    {file = "click-8.1.6.tar.gz", hash = "sha256:48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd"},
+    {file = "click-8.1.7-py3-none-any.whl", hash = "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28"},
+    {file = "click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"},
 ]
 
 [package.dependencies]
@@ -758,14 +758,14 @@ files = [
 
 [[package]]
 name = "exceptiongroup"
-version = "1.1.2"
+version = "1.1.3"
 description = "Backport of PEP 654 (exception groups)"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "exceptiongroup-1.1.2-py3-none-any.whl", hash = "sha256:e346e69d186172ca7cf029c8c1d16235aa0e04035e5750b4b95039e65204328f"},
-    {file = "exceptiongroup-1.1.2.tar.gz", hash = "sha256:12c3e887d6485d16943a309616de20ae5582633e0a2eda17f4e10fd61c1e8af5"},
+    {file = "exceptiongroup-1.1.3-py3-none-any.whl", hash = "sha256:343280667a4585d195ca1cf9cef84a4e178c4b6cf2274caef9859782b567d5e3"},
+    {file = "exceptiongroup-1.1.3.tar.gz", hash = "sha256:097acd85d473d75af5bb98e41b61ff7fe35efe6675e4f9370ec6ec5126d160e9"},
 ]
 
 [package.extras]
@@ -1107,14 +1107,14 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0.dev0)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.96.0"
+version = "2.97.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-api-python-client-2.96.0.tar.gz", hash = "sha256:f712373d03d338af57b9f5fe98c91f4b5baaa8765469b015bc623c4681c5bd51"},
-    {file = "google_api_python_client-2.96.0-py2.py3-none-any.whl", hash = "sha256:38c2b61b10d15bb41ec8f89303e3837ec2d2c3e4e38de5800c05ee322492f937"},
+    {file = "google-api-python-client-2.97.0.tar.gz", hash = "sha256:48277291894876a1ca7ed4127e055e81f81e6343ced1b544a7200ae2c119dcd7"},
+    {file = "google_api_python_client-2.97.0-py2.py3-none-any.whl", hash = "sha256:5215f4cd577753fc4192ccfbe0bb8b55d4bb5fd68fa6268ac5cf271b6305de31"},
 ]
 
 [package.dependencies]
@@ -1227,14 +1227,14 @@ protobuf = ">=3.19.5,<3.20.0 || >3.20.0,<3.20.1 || >3.20.1,<4.21.0 || >4.21.0,<4
 
 [[package]]
 name = "google-cloud-language"
-version = "2.10.1"
+version = "2.11.0"
 description = "Google Cloud Language API client library"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-cloud-language-2.10.1.tar.gz", hash = "sha256:140c0753585a45977bb9c7d1c707e7f8ab5633cff56bded9ef852f9016b732af"},
-    {file = "google_cloud_language-2.10.1-py2.py3-none-any.whl", hash = "sha256:c971572b436e0946b3fb7467da138c78f08498ce32413a4600550ca9d6b42efb"},
+    {file = "google-cloud-language-2.11.0.tar.gz", hash = "sha256:95d235f503d904e8854117e928ef36ac930c24825fcb8400c3f368a908fdbe14"},
+    {file = "google_cloud_language-2.11.0-py2.py3-none-any.whl", hash = "sha256:cdcc83dac47c5268140429af584844f3a913301f4195883b134d2690cde69308"},
 ]
 
 [package.dependencies]
@@ -3229,14 +3229,14 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pypdf"
-version = "3.15.0"
+version = "3.15.1"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pypdf-3.15.0-py3-none-any.whl", hash = "sha256:2e29ddb62561ec91157c784783714703ddd3ce08f070ecbc57404fb86cd9fc97"},
-    {file = "pypdf-3.15.0.tar.gz", hash = "sha256:8a6264e1c47c63dc2484e29bdfa76b121435896a84e94b7c5ae82c6ae96354bb"},
+    {file = "pypdf-3.15.1-py3-none-any.whl", hash = "sha256:99b337af7da8046d1e2e94354846e8c56753e1cdc817ac0fbe770c1e2281902b"},
+    {file = "pypdf-3.15.1.tar.gz", hash = "sha256:d0dfaf4f10dfb06ac39e1d6a9cbffd63e77621d1e89c0ef08f346fd902df7b4b"},
 ]
 
 [package.dependencies]
@@ -4084,7 +4084,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "25.0.1"
+version = "26.0.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -4456,14 +4456,14 @@ pyasn1 = ">=0.1.3"
 
 [[package]]
 name = "s3transfer"
-version = "0.6.1"
+version = "0.6.2"
 description = "An Amazon S3 Transfer Manager"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "s3transfer-0.6.1-py3-none-any.whl", hash = "sha256:3c0da2d074bf35d6870ef157158641178a4204a6e689e82546083e31e0311346"},
-    {file = "s3transfer-0.6.1.tar.gz", hash = "sha256:640bb492711f4c0c0905e1f62b6aaeb771881935ad27884852411f8e9cacbca9"},
+    {file = "s3transfer-0.6.2-py3-none-any.whl", hash = "sha256:b014be3a8a2aab98cfe1abc7229cc5a9a0cf05eb9c1f2b86b230fd8df3f78084"},
+    {file = "s3transfer-0.6.2.tar.gz", hash = "sha256:cab66d3380cca3e70939ef2255d01cd8aece6a4907a9528740f668c4b0611861"},
 ]
 
 [package.dependencies]
@@ -4508,19 +4508,19 @@ urllib3 = {version = ">=1.26,<3", extras = ["socks"]}
 
 [[package]]
 name = "setuptools"
-version = "68.0.0"
+version = "68.1.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "setuptools-68.0.0-py3-none-any.whl", hash = "sha256:11e52c67415a381d10d6b462ced9cfb97066179f0e871399e006c4ab101fc85f"},
-    {file = "setuptools-68.0.0.tar.gz", hash = "sha256:baf1fdb41c6da4cd2eae722e135500da913332ab3f2f5c7d33af9b492acb5235"},
+    {file = "setuptools-68.1.0-py3-none-any.whl", hash = "sha256:e13e1b0bc760e9b0127eda042845999b2f913e12437046e663b833aa96d89715"},
+    {file = "setuptools-68.1.0.tar.gz", hash = "sha256:d59c97e7b774979a5ccb96388efc9eb65518004537e85d52e81eaee89ab6dd91"},
 ]
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
-testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
@@ -4858,14 +4858,14 @@ files = [
 
 [[package]]
 name = "tenacity"
-version = "8.2.2"
+version = "8.2.3"
 description = "Retry code until it succeeds"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "tenacity-8.2.2-py3-none-any.whl", hash = "sha256:2f277afb21b851637e8f52e6a613ff08734c347dc19ade928e519d7d2d8569b0"},
-    {file = "tenacity-8.2.2.tar.gz", hash = "sha256:43af037822bd0029025877f3b2d97cc4d7bb0c2991000a3d59d71517c5c969e0"},
+    {file = "tenacity-8.2.3-py3-none-any.whl", hash = "sha256:ce510e327a630c9e1beaf17d42e6ffacc88185044ad85cf74c0a8887c6a0f88c"},
+    {file = "tenacity-8.2.3.tar.gz", hash = "sha256:5398ef0d78e63f40007c1fb4c0bff96e1911394d2fa8d194f77619c05ff6cc8a"},
 ]
 
 [package.extras]

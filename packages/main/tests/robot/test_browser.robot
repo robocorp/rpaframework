@@ -1,4 +1,5 @@
 *** Settings ***
+Library             Collections
 Library             OperatingSystem
 Library             RPA.Browser.Selenium    locators_path=${LOCATORS}
 Library             RPA.FileSystem
@@ -17,8 +18,34 @@ ${RESULTS}          ${CURDIR}${/}..${/}results
 ${BROWSER_DATA}     ${RESULTS}${/}browser
 ${LOCATORS}         ${RESOURCES}${/}locators.json
 ${ALERT_HTML}       file://${RESOURCES}${/}alert.html
-${USER_AGENT}
-...                 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1337.0.0.0 Safari/1337.36
+${USER_AGENT}       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1337.0.0.0 Safari/1337.36
+
+
+*** Keywords ***
+My Custom Keyword
+    Get Value    id:notexist
+
+Create Browser Data Directory
+    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
+    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
+    RETURN    ${data_dir}
+
+Download With Specific Browser
+    [Arguments]    ${browser}
+    Close Browser
+
+    Set Download Directory    ${OUTPUT_DIR}
+    Open Available Browser    https://robocorp.com/docs/security
+    ...    browser_selection=${browser}
+    ...    headless=${True}    # PDF downloading now works in headless as well
+    Click Link    Data protection whitepaper
+
+    ${file_path} =    Set Variable
+    ...    ${OUTPUT_DIR}${/}security-and-data-protection-whitepaper.pdf
+    Wait Until Keyword Succeeds    3x    1s    File Should Exist    ${file_path}
+
+    [Teardown]    Run Keyword And Ignore Error
+    ...    RPA.FileSystem.Remove File    ${file_path}
 
 
 *** Tasks ***
@@ -35,12 +62,13 @@ Does alert not contain
     Handle Alert    DISMISS
 
 Screenshot Robocorp Google search result
-    [Tags]    skip
     # NOTE(cmin764): As of 19.05.2023 this test passes in CI, Mac, Windows and
-    #    Control Room, without any consent popup blocker.
-    # NOTE(mikahanninen): Skipped on 02.06.2023 as this fails on
-    # local build on consent form which for me is also using Finnish Google site.
+    #  Control Room, without any consent popup blocker.
+    # NOTE(mikahanninen): Skipped on 02.06.2023 as this fails on the local build on
+    #  consent form, which for me is also using the Finnish Google site.
+    [Tags]  skip  # since this might fail in the future if the website changes
     Go To    www.google.com
+    Click Element If Visible    xpath://button[2]  # test fails if this is missed
     Wait Until Element Is Visible    q
 
     Input Text    q    Robocorp
@@ -86,14 +114,6 @@ Print page as PDF document
     [Teardown]    Run Keyword And Ignore Error
     ...    RPA.FileSystem.Remove File    ${output_path}
 
-Download PDF in custom Chrome directory
-    [Tags]    skip    # flaky test in CI, mainly on Windows with Python 3.7, 3.8
-    Download With Specific Browser    Chrome
-
-Download PDF in custom Firefox directory
-    [Tags]    skip    # no support for the Firefox browser in CI
-    Download With Specific Browser    Firefox
-
 Highlight elements
     [Setup]    Go To    https://robocorp.com/docs/quickstart-guide
 
@@ -115,47 +135,6 @@ Mute browser failures
     Mute run on failure    My Custom Keyword
     Run keyword and expect error    *    My Custom Keyword
     Run keyword and expect error    *    Get Value    id:notexist
-
-Open In Incognito With Custom Options
-    [Documentation]    Test Chrome with custom options (incognito), port and explicit
-    ...    profile directory.
-    [Setup]    Close Browser
-    # NOTE(cmin764): In CI, Chrome may attract a buggy webdriver which makes the custom
-    #    profile usage to break in headless mode. (unknown error: unable to discover open
-    #    pages)
-#    [Tags]    skip
-
-    ${data_dir} =    Create Browser Data Directory
-    ${options} =    Set Variable    add_argument("--incognito")
-
-    Open Available Browser    https://robocorp.com    browser_selection=Chrome
-    ...    headless=${True}    options=${options}    port=${18888}
-    # Custom profile usage now works in headless mode as well. (but not guaranteed
-    #    with older browser versions)
-    ...    use_profile=${True}    profile_path=${data_dir}
-
-    ${visible} =    Is Element Visible    xpath://button[2]
-    Should Be True    ${visible}
-    Directory Should Not Be Empty    ${data_dir}
-
-    Close Browser
-    [Teardown]    RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
-
-Open Browser With Dict Options
-    [Setup]    Close Browser
-
-    @{args} =    Create List    --headless=new
-    &{caps} =    Create Dictionary    acceptInsecureCerts    ${True}
-    &{options} =    Create Dictionary    arguments    ${args}    capabilities    ${caps}
-
-    ${driver_path} =    Evaluate    RPA.core.webdriver.download("Chrome")
-    ...    modules=RPA.core.webdriver
-    Log To Console    Downloaded webdriver path: ${driver_path}
-
-    Open Browser    https://robocorp.com    browser=Chrome    options=${options}
-    ...    executable_path=${driver_path}
-    ${visible} =    Is Element Visible    xpath://button[2]
-    Should Be True    ${visible}
 
 Get and set an attribute
     [Setup]    Go To    https://robotsparebinindustries.com/
@@ -181,7 +160,7 @@ Test enhanced clicking
     Does Alert Contain    after
 
 Test Shadow Root
-    [Tags]    skip    # flaky test during async runs
+    [Tags]    skip  # flaky test during async runs
     [Setup]    Is Alert Present
 
     Go To    http://watir.com/examples/shadow_dom.html
@@ -191,29 +170,53 @@ Test Shadow Root
     ${text} =    Get Text    ${elem}
     Should Be Equal    ${text}    some text
 
+Download PDF in custom Firefox directory
+    [Tags]    manual  # no support for the Firefox browser in CI (or on dev machine)
+    Download With Specific Browser    Firefox
 
-*** Keywords ***
-My Custom Keyword
-    Get Value    id:notexist
+Download PDF in custom Chrome directory
+    [Tags]    skip  # flaky test in CI, mainly on Windows with Python 3.7, 3.8
+    Download With Specific Browser    Chrome
 
-Create Browser Data Directory
-    ${data_dir} =    Absolute Path    ${BROWSER_DATA}
-    RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
-    RETURN    ${data_dir}
+Open Browser With Dict Options
+    [Tags]    skip  # flaky test in CI, on Windows and Linux, but not on Mac
+    [Setup]    Close Browser
 
-Download With Specific Browser
-    [Arguments]    ${browser}
+    @{args} =    Create List    --headless=new  # this is a newly introduced argument
+    &{caps} =    Create Dictionary    acceptInsecureCerts    ${True}
+    &{options} =    Create Dictionary
+    ...     arguments    ${args}
+    ...     capabilities    ${caps}
+
+    ${driver_path} =    Evaluate    RPA.core.webdriver.download("Chrome")
+    ...    modules=RPA.core.webdriver
+    Log To Console    Downloaded webdriver path: ${driver_path}
+
+    Open Browser    https://robocorp.com/docs    browser=Chrome    options=${options}
+    ...    executable_path=${driver_path}
+    ${visible} =    Is Element Visible    xpath://button[contains(@class, "desktop")]
+    Should Be True    ${visible}
+
+Open In Incognito With Custom Options
+    [Documentation]    Test Chrome with custom options (incognito), port and explicit
+    ...    profile directory.
+    [Setup]    Close Browser
+    # NOTE(cmin764): In CI, Chrome may attract a buggy webdriver which makes the custom
+    #  profile usage to break in headless mode. (unknown error: unable to discover open
+    #  pages)
+
+    ${data_dir} =    Create Browser Data Directory
+    ${options} =    Set Variable    add_argument("--incognito")
+
+    Open Available Browser    https://robocorp.com/docs    browser_selection=Chrome
+    ...    headless=${True}    options=${options}    port=${18888}
+    # Custom profile usage now works in headless mode as well. (but not guaranteed
+    #    with older browser versions)
+    ...    use_profile=${True}    profile_path=${data_dir}
+
+    ${visible} =    Is Element Visible    xpath://button[contains(@class, "desktop")]
+    Should Be True    ${visible}
+    Directory Should Not Be Empty    ${data_dir}
+
     Close Browser
-
-    Set Download Directory    ${OUTPUT_DIR}
-    Open Available Browser    https://robocorp.com/docs/security
-    ...    browser_selection=${browser}
-    ...    headless=${True}    # PDF downloading now works in headless as well
-    Click Link    Data protection whitepaper
-
-    ${file_path} =    Set Variable
-    ...    ${OUTPUT_DIR}${/}security-and-data-protection-whitepaper.pdf
-    Wait Until Keyword Succeeds    3x    1s    File Should Exist    ${file_path}
-
-    [Teardown]    Run Keyword And Ignore Error
-    ...    RPA.FileSystem.Remove File    ${file_path}
+    [Teardown]    RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}

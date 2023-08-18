@@ -24,7 +24,7 @@ from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver import (
     ChromeOptions,
     EdgeOptions,
-    FirefoxOptions,
+    FirefoxOptions as _FirefoxOptions,
     FirefoxProfile,
     IeOptions,
 )
@@ -96,6 +96,15 @@ class RobocorpElementFinder(ElementFinder):
         # NOTE(cmin764): This will allow the finder to fully parse the locator and look
         #  for elements even under a shadow root.
         return isinstance(element, ShadowRoot) or super()._is_webelement(element)
+
+
+class FirefoxOptions(_FirefoxOptions):
+    """Wrapped Firefox options in order to fix behavior."""
+
+    @property
+    def binary_location(self) -> Optional[str]:
+        # pylint: disable=protected-access
+        return self.binary._start_cmd if self.binary else None
 
 
 class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
@@ -178,9 +187,10 @@ class Selenium(SeleniumLibrary):
     AVAILABLE_OPTIONS = {
         # Supporting options only for a specific range of browsers.
         "chrome": selenium_webdriver.ChromeOptions,
-        "firefox": selenium_webdriver.FirefoxOptions,
+        "firefox": FirefoxOptions,
         "edge": selenium_webdriver.EdgeOptions,
         "chromiumedge": selenium_webdriver.EdgeOptions,
+        "safari": selenium_webdriver.SafariOptions,
         "ie": selenium_webdriver.IeOptions,
     }
     AVAILABLE_SERVICES = {
@@ -753,10 +763,7 @@ class Selenium(SeleniumLibrary):
                 "Profiles are supported with Chromium-based browsers only!"
             )
 
-        try:
-            path = options.binary_location or None
-        except AttributeError:
-            path = None
+        path = getattr(options, "binary_location", None)
         if path:
             self.logger.warning(
                 f"The custom provided browser ({path}) might be "
