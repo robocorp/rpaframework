@@ -163,8 +163,9 @@ class BaseApplication(metaclass=MetaApplication):
 
     @property
     def _active_document(self):
-        # Retrieves the currently active document. (raises COMError if there's none)
-        return getattr(self.app, "ActiveDocument", None)
+        # Retrieves the currently active document. (raises if there's none active)
+        with catch_com_error():
+            return getattr(self.app, "ActiveDocument", None)
 
     def _deactivate_document(self):
         # Cleans-up a just closed previously active document.

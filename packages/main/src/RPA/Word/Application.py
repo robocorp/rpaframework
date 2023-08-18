@@ -54,11 +54,6 @@ class Application(BaseApplication):
         "OPENDOCUMENT": "wdFormatOpenDocumentText",
     }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.filename = None
-
     def open_file(self, filename: str, read_only: bool = True) -> None:
         """Open Word document with filename.
 
