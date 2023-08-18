@@ -159,3 +159,12 @@ RPA.Tasks:
    :widths: 10, 40
 
    "676", "Move all result object modifying here"
+
+RPA.application:
+================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "36", "(cmin764; 16 Aug 2023): Create a `handles_com_error` decorator if we get a little"

@@ -294,6 +294,17 @@ Similarly to exclude certain files, like dotfiles, the argument <cite>exclude</c
 <span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}</span><span class="p">               </span><span class="c">bzipped.zip</span><span class="p">      </span><span class="c">compression=bzip2</span>
 </pre></div>
 </div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Archive</span> <span class="kn">import</span> <span class="n">Archive</span>
+
+<span class="n">lib</span> <span class="o">=</span> <span class="n">Archive</span><span class="p">()</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_zip</span><span class="p">(</span><span class="s1">&#39;./documents&#39;</span><span class="p">,</span> <span class="s1">&#39;mydocs.zip&#39;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_zip</span><span class="p">(</span><span class="s1">&#39;./tasks&#39;</span><span class="p">,</span> <span class="s1">&#39;robottasks.zip&#39;</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="s1">&#39;*.robot&#39;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_zip</span><span class="p">(</span><span class="s1">&#39;./tasks&#39;</span><span class="p">,</span> <span class="s1">&#39;no_dotfiles.zip&#39;</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;/.*&#39;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_zip</span><span class="p">(</span><span class="s1">&#39;./documents&#39;</span><span class="p">,</span> <span class="s1">&#39;documents.zip&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_zip</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">,</span> <span class="s1">&#39;packagelzma.zip&#39;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;lzma&#39;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_zip</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">,</span> <span class="s1">&#39;bzipped.zip&#39;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;bzip2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">

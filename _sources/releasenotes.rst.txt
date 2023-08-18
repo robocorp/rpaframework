@@ -16,6 +16,34 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+26.0.0 - 18 Aug 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1058`):
+
+  - Fixed `options` passing with Firefox. (when a binary location is specified)
+
+- General improvements to **RPA.*.Application** libraries (:issue:`1055`):
+
+  - *All*: Better error handling (COM -> runtime), improved generic docs and
+    troubleshooting guiding, fixed document closing (if was closed already) and app
+    open/quit management, improved warnings and logging, file paths are tested for
+    existence when operating on documents and raise errors in their absence.
+
+  - **Excel**:
+
+    - Removed deprecated parameter `tabname` from ``Add New Sheet``. (use `sheetname`)
+    - ``Save Excel As`` raises when there's no workbook open. (use ``Open Workbook``
+      first)
+
+  - **Outlook**:
+
+    - Removed deprecated keywords: ``Send Message`` (use ``Send Email``) and
+      ``Wait For Message`` (use ``Wait For Email``).
+
+  .. warning::
+    **Breaking** changes in the **Application** libraries listed above.
+
 25.0.1 - 11 Aug 2023
 --------------------
 

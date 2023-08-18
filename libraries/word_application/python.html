@@ -160,15 +160,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Word.Application.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoexit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><cite>Word.Application</cite> is a library for controlling a Word application.</p>
-<p><em>Note</em>. Library works only Windows platform.</p>
-<p>Library will automatically close the Word application at the end of the
-task execution. This can be changed by importing library with <cite>autoexit</cite> setting.</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">                 </span><span class="nn">RPA.Word.Application</span><span class="p">   </span><span class="s">autoexit=</span><span class="p">${</span><span class="nv">FALSE</span><span class="p">}</span>
-</pre></div>
-</div>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseApplication</span></code></p>
+<p><cite>Word.Application</cite> is a library for controlling the Word application.</p>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
@@ -197,6 +190,36 @@ task execution. This can be changed by importing library with <cite>autoexit</ci
 <span class="n">app</span><span class="o">.</span><span class="n">quit_application</span><span class="p">()</span>
 </pre></div>
 </div>
+<p><strong>Caveats</strong></p>
+<p>This library works on a Windows operating system with UI enabled only, and you must
+ensure that you open the app first with <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Application</span></code> before running any
+other relevant keyword which requires to operate on an open app. The application is
+automatically closed at the end of the task execution, so this can be changed by
+importing the library with the <cite>autoexit=${False}</cite> setting.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Excel|Outlook|Word.Application</span><span class="p">    </span><span class="s">autoexit=</span><span class="p">${</span><span class="nv">False</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If you’re running the Process by Control Room through a custom self-hosted Worker
+service, then please make sure that you enable an RDP session by ticking “Use
+Desktop Connection” under the Step configuration.</p>
+<p>If you still encounter issues with opening a document, please ensure that file can
+be opened first manually and dismiss any alert potentially blocking the process.</p>
+<p>Check the documentation below for more info:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://robocorp.com/docs/control-room/unattended/worker-setups/windows-desktop">https://robocorp.com/docs/control-room/unattended/worker-setups/windows-desktop</a></p></li>
+<li><p><a class="reference external" href="https://robocorp.com/docs/faq/windows-server-2016">https://robocorp.com/docs/faq/windows-server-2016</a></p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Word.Application.Application.APP_DISPATCH">
+<span class="sig-name descname"><span class="pre">APP_DISPATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Word.Application'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.APP_DISPATCH" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Word.Application.Application.FILEFORMATS">
+<span class="sig-name descname"><span class="pre">FILEFORMATS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'DEFAULT':</span> <span class="pre">'wdFormatDocumentDefault',</span> <span class="pre">'HTML':</span> <span class="pre">'wdFormatHTML',</span> <span class="pre">'OPENDOCUMENT':</span> <span class="pre">'wdFormatOpenDocumentText',</span> <span class="pre">'PDF':</span> <span class="pre">'wdFormatPDF',</span> <span class="pre">'RTF':</span> <span class="pre">'wdFormatRTF',</span> <span class="pre">'WORD97':</span> <span class="pre">'wdFormatDocument97'}</span></em><a class="headerlink" href="#RPA.Word.Application.Application.FILEFORMATS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.ROBOT_LIBRARY_DOC_FORMAT">
 <span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
@@ -207,10 +230,20 @@ task execution. This can be changed by importing library with <cite>autoexit</ci
 <span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Word.Application.Application.app">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app</span></span><a class="headerlink" href="#RPA.Word.Application.Application.app" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.close_document">
 <span class="sig-name descname"><span class="pre">close_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.close_document" title="Permalink to this definition"></a></dt>
-<dd><p>Close the active document (if open).</p>
+<dd><p>Close the active document and app (if open).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>save_changes</strong> – Enable changes saving on quit. (<cite>False</cite> by default)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -244,12 +277,12 @@ task execution. This can be changed by importing library with <cite>autoexit</ci
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.open_application">
 <span class="sig-name descname"><span class="pre">open_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_alerts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.open_application" title="Permalink to this definition"></a></dt>
-<dd><p>Open the Word application.</p>
+<dd><p>Open the application.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>visible</strong> – show window after opening</p></li>
-<li><p><strong>display_alerts</strong> – show alert popups</p></li>
+<li><p><strong>visible</strong> – Show the window on opening. (<cite>False</cite> by default)</p></li>
+<li><p><strong>display_alerts</strong> – Display alert popups. (<cite>False</cite> by default)</p></li>
 </ul>
 </dd>
 </dl>
@@ -270,6 +303,11 @@ task execution. This can be changed by importing library with <cite>autoexit</ci
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.quit_application">
 <span class="sig-name descname"><span class="pre">quit_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.quit_application" title="Permalink to this definition"></a></dt>
 <dd><p>Quit the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>save_changes</strong> – Enable to save changes on quit. (<cite>False</cite> by default)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

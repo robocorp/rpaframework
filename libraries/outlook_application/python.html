@@ -160,18 +160,11 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Outlook.Application.Application">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Outlook.Application.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoexit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Outlook.Application.Application" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseApplication</span></code></p>
 <p><cite>Outlook.Application</cite> is a library for controlling the Outlook application.</p>
-<p><em>Note</em>. Library works only Windows platform.</p>
-<p>Library will automatically close the Outlook application at the end of the
-task execution. This can be changed by importing library with <cite>autoexit</cite> setting.</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">                 </span><span class="nn">RPA.Outlook.Application</span><span class="p">   </span><span class="s">autoexit=</span><span class="p">${</span><span class="nv">FALSE</span><span class="p">}</span>
-</pre></div>
-</div>
 <p><strong>About Email Filtering</strong></p>
-<p>Emails can be filtered according to specification set by Restrict method of the Item
-class <a class="reference external" href="https://docs.microsoft.com/en-us/office/vba/api/outlook.items.restrict">https://docs.microsoft.com/en-us/office/vba/api/outlook.items.restrict</a>.</p>
+<p>Emails can be filtered according to specification set by Restrict method of the
+Item class <a class="reference external" href="https://docs.microsoft.com/en-us/office/vba/api/outlook.items.restrict">https://docs.microsoft.com/en-us/office/vba/api/outlook.items.restrict</a>.</p>
 <p>Couple of examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Get Emails</span>
 <span class="c">...</span><span class="p">   </span><span class="c">email_filter=[Subject]=&#39;test email&#39;</span>
@@ -212,6 +205,31 @@ class <a class="reference external" href="https://docs.microsoft.com/en-us/offic
 </pre></div>
 </div>
 <p>For more information, see: <a class="reference external" href="https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12">https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12</a>)</p>
+<p><strong>Caveats</strong></p>
+<p>This library works on a Windows operating system with UI enabled only, and you must
+ensure that you open the app first with <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Application</span></code> before running any
+other relevant keyword which requires to operate on an open app. The application is
+automatically closed at the end of the task execution, so this can be changed by
+importing the library with the <cite>autoexit=${False}</cite> setting.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Excel|Outlook|Word.Application</span><span class="p">    </span><span class="s">autoexit=</span><span class="p">${</span><span class="nv">False</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If you’re running the Process by Control Room through a custom self-hosted Worker
+service, then please make sure that you enable an RDP session by ticking “Use
+Desktop Connection” under the Step configuration.</p>
+<p>If you still encounter issues with opening a document, please ensure that file can
+be opened first manually and dismiss any alert potentially blocking the process.</p>
+<p>Check the documentation below for more info:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://robocorp.com/docs/control-room/unattended/worker-setups/windows-desktop">https://robocorp.com/docs/control-room/unattended/worker-setups/windows-desktop</a></p></li>
+<li><p><a class="reference external" href="https://robocorp.com/docs/faq/windows-server-2016">https://robocorp.com/docs/faq/windows-server-2016</a></p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Outlook.Application.Application.APP_DISPATCH">
+<span class="sig-name descname"><span class="pre">APP_DISPATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Outlook.Application'</span></em><a class="headerlink" href="#RPA.Outlook.Application.Application.APP_DISPATCH" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Outlook.Application.Application.ROBOT_LIBRARY_DOC_FORMAT">
 <span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Outlook.Application.Application.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
@@ -222,13 +240,18 @@ class <a class="reference external" href="https://docs.microsoft.com/en-us/offic
 <span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Outlook.Application.Application.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Outlook.Application.Application.app">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app</span></span><a class="headerlink" href="#RPA.Outlook.Application.Application.app" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Outlook.Application.Application.close_document">
 <span class="sig-name descname"><span class="pre">close_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Outlook.Application.Application.close_document" title="Permalink to this definition"></a></dt>
-<dd><p>Close the active document (if open).</p>
+<dd><p>Close the active document and app (if open).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>save_changes</strong> – if changes should be saved on close, default False</p>
+<dd class="field-odd"><p><strong>save_changes</strong> – Enable changes saving on quit. (<cite>False</cite> by default)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -335,12 +358,12 @@ ie. all emails in folder</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Outlook.Application.Application.open_application">
 <span class="sig-name descname"><span class="pre">open_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_alerts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Outlook.Application.Application.open_application" title="Permalink to this definition"></a></dt>
-<dd><p>Open the Outlook application.</p>
+<dd><p>Open the application.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>visible</strong> – show window after opening, default False</p></li>
-<li><p><strong>display_alerts</strong> – show alert popups, default False</p></li>
+<li><p><strong>visible</strong> – Show the window on opening. (<cite>False</cite> by default)</p></li>
+<li><p><strong>display_alerts</strong> – Display alert popups. (<cite>False</cite> by default)</p></li>
 </ul>
 </dd>
 </dl>
@@ -352,7 +375,7 @@ ie. all emails in folder</p></li>
 <dd><p>Quit the application.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>save_changes</strong> – if changes should be saved on quit, default False</p>
+<dd class="field-odd"><p><strong>save_changes</strong> – Enable to save changes on quit. (<cite>False</cite> by default)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -440,28 +463,6 @@ defaults to current directory</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.Outlook.Application.Application.send_message">
-<span class="sig-name descname"><span class="pre">send_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recipients</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">html_body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_as_draft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cc_recipients</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bcc_recipients</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Outlook.Application.Application.send_message" title="Permalink to this definition"></a></dt>
-<dd><p>Send message with Outlook</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>recipients</strong> – list of addresses</p></li>
-<li><p><strong>subject</strong> – email subject</p></li>
-<li><p><strong>body</strong> – email body</p></li>
-<li><p><strong>html_body</strong> – True if body contains HTML, defaults to False</p></li>
-<li><p><strong>attachments</strong> – list of filepaths to include in the email, defaults to []</p></li>
-<li><p><strong>save_as_draft</strong> – message is saved as draft when <cite>True</cite>
-instead (and not sent)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><cite>True</cite> if there were no errors</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Outlook.Application.Application.wait_for_email">
 <span class="sig-name descname"><span class="pre">wait_for_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">criterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#RPA.Outlook.Application.Application.wait_for_email" title="Permalink to this definition"></a></dt>
 <dd><p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>
@@ -484,35 +485,6 @@ instead (and not sent)</p></li>
 </div>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Outlook.Application.Application.wait_for_message">
-<span class="sig-name descname"><span class="pre">wait_for_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">criterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#RPA.Outlook.Application.Application.wait_for_message" title="Permalink to this definition"></a></dt>
-<dd><p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>criterion</strong> – message filter to wait for, defaults to “”</p></li>
-<li><p><strong>timeout</strong> – total time in seconds to wait for email, defaults to 5.0</p></li>
-<li><p><strong>interval</strong> – time in seconds for new check, defaults to 1.0</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of messages or False</p>
-</dd>
-</dl>
-<p>Possible wait criterias are: SUBJECT, SENDER and BODY</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Wait for message</span><span class="p">     </span><span class="c">SUBJECT:rpa task calling</span><span class="p">    </span><span class="c">timeout=300</span><span class="p">    </span><span class="c">interval=10</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="RPA.Outlook.Application.catch_com_error">
-<span class="sig-prename descclassname"><span class="pre">RPA.Outlook.Application.</span></span><span class="sig-name descname"><span class="pre">catch_com_error</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Outlook.Application.catch_com_error" title="Permalink to this definition"></a></dt>
-<dd><p>Try to convert COM errors to human readable format.</p>
 </dd></dl>
 
 </div>

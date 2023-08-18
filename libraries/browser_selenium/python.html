@@ -828,6 +828,571 @@ set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Browser.Selenium.</span></span><span class="sig-name descname"><span class="pre">FirefoxOptions</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Options</span></code></p>
+<p>Wrapped Firefox options in order to fix behavior.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.BINARY_LOCATION_ERROR">
+<span class="sig-name descname"><span class="pre">BINARY_LOCATION_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Binary</span> <span class="pre">Location</span> <span class="pre">Must</span> <span class="pre">be</span> <span class="pre">a</span> <span class="pre">String'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.BINARY_LOCATION_ERROR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.KEY">
+<span class="sig-name descname"><span class="pre">KEY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'moz:firefoxOptions'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.KEY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.accept_insecure_certs">
+<span class="sig-name descname"><span class="pre">accept_insecure_certs</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.accept_insecure_certs" title="Permalink to this definition"></a></dt>
+<dd><p>Gets and Set wheather the session accepts insecure certificates.</p>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.accept_insecure_certs</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.accept_insecure_certs</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>bool</cite></p>
+</div>
+<div class="section" id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>bool</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.add_argument">
+<span class="sig-name descname"><span class="pre">add_argument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.add_argument" title="Permalink to this definition"></a></dt>
+<dd><p>Adds an argument to the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Args</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>Sets the arguments</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.arguments">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">arguments</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.arguments" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of arguments needed for the browser</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.binary">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">binary</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">FirefoxBinary</span></em><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.binary" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the FirefoxBinary instance.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.binary_location">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">binary_location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.binary_location" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The location of the binary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.browser_version">
+<span class="sig-name descname"><span class="pre">browser_version</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.browser_version" title="Permalink to this definition"></a></dt>
+<dd><p>Gets and Sets the version of the browser.</p>
+<div class="section" id="id1">
+<h3>Usage<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.browser_version</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.browser_version</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>str</cite></p>
+</div>
+<div class="section" id="id3">
+<h3>Returns<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>str</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.capabilities">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">capabilities</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.capabilities" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.default_capabilities">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_capabilities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.default_capabilities" title="Permalink to this definition"></a></dt>
+<dd><p>Return minimal capabilities necessary as a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.enable_mobile">
+<span class="sig-name descname"><span class="pre">enable_mobile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">android_package</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'org.mozilla.firefox'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">android_activity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_serial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.enable_mobile" title="Permalink to this definition"></a></dt>
+<dd><p>Enables mobile browser use for browsers that support it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Args</dt>
+<dd class="field-odd"><p>android_activity: The name of the android package to start</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.headless">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headless</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.headless" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the headless argument is set, else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.ignore_local_proxy_environment_variables">
+<span class="sig-name descname"><span class="pre">ignore_local_proxy_environment_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.ignore_local_proxy_environment_variables" title="Permalink to this definition"></a></dt>
+<dd><p>By calling this you will ignore HTTP_PROXY and HTTPS_PROXY from
+being picked up and used.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.page_load_strategy">
+<span class="sig-name descname"><span class="pre">page_load_strategy</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.page_load_strategy" title="Permalink to this definition"></a></dt>
+<dd><p>:Gets and Sets page load strategy, the default is “normal”.</p>
+<div class="section" id="id4">
+<h3>Usage<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.page_load_strategy</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.page_load_strategy</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>str</cite></p>
+</div>
+<div class="section" id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>str</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.platform_name">
+<span class="sig-name descname"><span class="pre">platform_name</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.platform_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets and Sets name of the platform.</p>
+<div class="section" id="id7">
+<h3>Usage<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.platform_name</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.platform_name</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>str</cite></p>
+</div>
+<div class="section" id="id9">
+<h3>Returns<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>str</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.preferences">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preferences</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.preferences" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dict of preferences.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.profile">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">profile</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">FirefoxProfile</span></em><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.profile" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The Firefox profile to use.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.proxy">
+<span class="sig-name descname"><span class="pre">proxy</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.proxy" title="Permalink to this definition"></a></dt>
+<dd><p>Sets and Gets Proxy.</p>
+<div class="section" id="id10">
+<h3>Usage<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.proxy</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.proxy</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>Proxy</cite></p>
+</div>
+<div class="section" id="id12">
+<h3>Returns<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>Proxy</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.set_capability">
+<span class="sig-name descname"><span class="pre">set_capability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.set_capability" title="Permalink to this definition"></a></dt>
+<dd><p>Sets a capability.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.set_preference">
+<span class="sig-name descname"><span class="pre">set_preference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.set_preference" title="Permalink to this definition"></a></dt>
+<dd><p>Sets a preference.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.set_window_rect">
+<span class="sig-name descname"><span class="pre">set_window_rect</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.set_window_rect" title="Permalink to this definition"></a></dt>
+<dd><p>Gets and Sets window size and position.</p>
+<div class="section" id="id13">
+<h3>Usage<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.set_window_rect</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.set_window_rect</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id14">
+<h3>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>bool</cite></p>
+</div>
+<div class="section" id="id15">
+<h3>Returns<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>bool</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.strict_file_interactability">
+<span class="sig-name descname"><span class="pre">strict_file_interactability</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.strict_file_interactability" title="Permalink to this definition"></a></dt>
+<dd><p>Gets and Sets wheather session is about file interactiability.</p>
+<div class="section" id="id16">
+<h3>Usage<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.strict_file_interactability</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.strict_file_interactability</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id17">
+<h3>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>bool</cite></p>
+</div>
+<div class="section" id="id18">
+<h3>Returns<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>bool</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.timeouts">
+<span class="sig-name descname"><span class="pre">timeouts</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.timeouts" title="Permalink to this definition"></a></dt>
+<dd><p>:Gets and Sets implicit timeout, pageLoad timeout and script timeout if set (in milliseconds)</p>
+<div class="section" id="id19">
+<h3>Usage<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.timeouts</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.timeouts</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id20">
+<h3>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>dict</cite></p>
+</div>
+<div class="section" id="id21">
+<h3>Returns<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>dict</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.to_capabilities">
+<span class="sig-name descname"><span class="pre">to_capabilities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.to_capabilities" title="Permalink to this definition"></a></dt>
+<dd><p>Marshals the Firefox options to a <cite>moz:firefoxOptions</cite> object.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.FirefoxOptions.unhandled_prompt_behavior">
+<span class="sig-name descname"><span class="pre">unhandled_prompt_behavior</span></span><a class="headerlink" href="#RPA.Browser.Selenium.FirefoxOptions.unhandled_prompt_behavior" title="Permalink to this definition"></a></dt>
+<dd><p>:Gets and Sets unhandled prompt behavior, the default is “dismiss and notify”</p>
+<div class="section" id="id22">
+<h3>Usage<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>self.unhandled_prompt_behavior</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>self.unhandled_prompt_behavior</cite> = <cite>value</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id23">
+<h3>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
+<p><cite>value</cite>: <cite>str</cite></p>
+</div>
+<div class="section" id="id24">
+<h3>Returns<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Get</dt><dd><ul>
+<li><p><cite>str</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set</dt><dd><ul>
+<li><p><cite>None</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.RobocorpElementFinder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Browser.Selenium.</span></span><span class="sig-name descname"><span class="pre">RobocorpElementFinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.RobocorpElementFinder" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ElementFinder</span></code></p>
@@ -1034,7 +1599,7 @@ get complex.</p>
 <div class="line"><cite>Click Element</cite> | id:foo                      | # Element with id ‘foo’. |</div>
 <div class="line"><cite>Click Element</cite> | css:div#foo h1              | # h1 element under div with id ‘foo’. |</div>
 <div class="line"><cite>Click Element</cite> | xpath: //div[&#64;id=”foo”]//h1 | # Same as the above using XPath, not CSS. |</div>
-<div class="line"><cite>Click Element</cite> | xpath: //<a href="#id1"><span class="problematic" id="id2">*</span></a>[contains(text(), “example”)] | # Element containing text ‘example’. |</div>
+<div class="line"><cite>Click Element</cite> | xpath: //<a href="#id25"><span class="problematic" id="id26">*</span></a>[contains(text(), “example”)] | # Element containing text ‘example’. |</div>
 </div>
 <p><em>NOTE:</em></p>
 <ul class="simple">
@@ -1069,13 +1634,13 @@ but it should not. Or if there is need to existing WebElement as locator.</p>
 <p>Although all locators support chaining, some locator strategies do not abey the chaining. This is because
 some locator strategies use JavaScript to find elements and JavaScript is executed for the whole browser context
 and not for the element found be the previous locator. Chaining is supported by locator strategies which
-are based on Selenium API, like <cite>xpath</cite> or <cite>css</cite>, but example chaining is not supported by <cite>sizzle</cite> or <a href="#id3"><span class="problematic" id="id4">`</span></a>jquery</p>
+are based on Selenium API, like <cite>xpath</cite> or <cite>css</cite>, but example chaining is not supported by <cite>sizzle</cite> or <a href="#id27"><span class="problematic" id="id28">`</span></a>jquery</p>
 <p>Examples:
 | <cite>Click Element</cite> | css:.bar &gt;&gt; xpath://a | # To find a link which is present after an element with class “bar” |</p>
 <p>List examples:
-| ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | xpath://<a href="#id5"><span class="problematic" id="id6">*</span></a>[text(), ” &gt;&gt; “] |
+| ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | xpath://<a href="#id29"><span class="problematic" id="id30">*</span></a>[text(), ” &gt;&gt; “] |
 | <cite>Page Should Contain Element</cite> | ${locator_list} |                           |                           |
-| ${element} =                  | Get WebElement  | xpath://<a href="#id7"><span class="problematic" id="id8">*</span></a>[text(), ” &gt;&gt; “] |                           |
+| ${element} =                  | Get WebElement  | xpath://<a href="#id31"><span class="problematic" id="id32">*</span></a>[text(), ” &gt;&gt; “] |                           |
 | ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | ${element}                |
 | <cite>Page Should Contain Element</cite> | ${locator_list} |                           |                           |</p>
 <p>Chaining locators in new in SeleniumLibrary 5.0</p>
@@ -1267,7 +1832,7 @@ false (see <cite>Boolean arguments</cite>).</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS">
-<span class="sig-name descname"><span class="pre">AVAILABLE_OPTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'chrome':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.chrome.options.Options'&gt;,</span> <span class="pre">'chromiumedge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'edge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'firefox':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.firefox.options.Options'&gt;,</span> <span class="pre">'ie':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.ie.options.Options'&gt;}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">AVAILABLE_OPTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'chrome':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.chrome.options.Options'&gt;,</span> <span class="pre">'chromiumedge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'edge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'firefox':</span> <span class="pre">&lt;class</span> <span class="pre">'RPA.Browser.Selenium.FirefoxOptions'&gt;,</span> <span class="pre">'ie':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.ie.options.Options'&gt;,</span> <span class="pre">'safari':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.safari.options.Options'&gt;}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -2237,7 +2802,7 @@ document. By default, it is saved to the output folder with the default name
 of <cite>out.pdf</cite>.
 Parameter <code class="docutils literal notranslate"><span class="pre">params</span></code> specify parameters for the browser printing method. By
 default, it uses the following values:
-<a href="#id9"><span class="problematic" id="id10">``</span></a>`
+<a href="#id33"><span class="problematic" id="id34">``</span></a>`
 {</p>
 <blockquote>
 <div><p>“landscape”: False,
@@ -2245,8 +2810,8 @@ default, it uses the following values:
 “printBackground”: True,
 “preferCSSPageSize”: True,</p>
 </div></blockquote>
-<div class="section" id="id11">
-<h3>}<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<div class="section" id="id35">
+<h3>}<a class="headerlink" href="#id35" title="Permalink to this heading"></a></h3>
 </div>
 </dd></dl>
 
