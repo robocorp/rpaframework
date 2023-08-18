@@ -18,16 +18,7 @@ def requires_workbook(func):
 
 
 class Application(BaseApplication):
-    """`Excel.Application` is a library for controlling an Excel application.
-
-    The library will automatically close the Excel application at the end of the
-    task execution. This can be changed by importing library with the
-    `autoexit=${False}` setting.
-
-    .. code-block:: robotframework
-
-        *** Settings ***
-        Library                 RPA.Excel.Application   autoexit=${False}
+    """`Excel.Application` is a library for controlling the Excel application.
 
     **Examples**
 
@@ -136,25 +127,15 @@ class Application(BaseApplication):
             elif sheetname:
                 self.worksheet = self.workbook.Worksheets(sheetname)
 
-    def add_new_sheet(
-        self, sheetname: str, tabname: str = None, create_workbook: bool = True
-    ) -> None:
+    def add_new_sheet(self, sheetname: str, create_workbook: bool = True) -> None:
         """Add new worksheet to workbook. Workbook is created by default if
         it does not exist.
 
         :param sheetname: name for sheet
-        :param tabname: name for tab (deprecated)
         :param create_workbook: create workbook if True, defaults to True
         :raises ValueError: error is raised if workbook does not exist and
             `create_workbook` is False
         """
-        if tabname:
-            sheetname = tabname
-            self.logger.warning(
-                "Argument 'tabname' is deprecated, "
-                "and will be removed in a future version"
-            )
-
         if not self.workbook:
             if not create_workbook:
                 raise ValueError("No workbook open")
@@ -177,8 +158,6 @@ class Application(BaseApplication):
         :return: row or None
         """
         cell = self.find_first_available_cell(worksheet, row, column)
-        # Note: keep return type for backward compability for now
-        # return cell[0] if cell else None
         return cell
 
     @requires_workbook

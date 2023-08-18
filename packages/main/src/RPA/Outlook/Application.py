@@ -11,15 +11,6 @@ class Application(BaseApplication):
     # pylint: disable=C0301
     """`Outlook.Application` is a library for controlling the Outlook application.
 
-    The library will automatically close the Outlook application at the end of the
-    task execution. This can be changed by importing library with the
-    `autoexit=${False}` setting.
-
-    .. code-block:: robotframework
-
-        *** Settings ***
-        Library                 RPA.Outlook.Application   autoexit=${False}
-
     **About Email Filtering**
 
     Emails can be filtered according to specification set by Restrict method of the
@@ -75,44 +66,6 @@ class Application(BaseApplication):
     """  # noqa: E501
 
     APP_DISPATCH = "Outlook.Application"
-
-    def send_message(
-        self,
-        recipients: Union[str, List[str]],
-        subject: str,
-        body: str,
-        html_body: bool = False,
-        attachments: Optional[Union[str, List[str]]] = None,
-        save_as_draft: bool = False,
-        cc_recipients: Optional[Union[str, List[str]]] = None,
-        bcc_recipients: Optional[Union[str, List[str]]] = None,
-    ) -> bool:
-        """Send message with Outlook
-
-        :param recipients: list of addresses
-        :param subject: email subject
-        :param body: email body
-        :param html_body: True if body contains HTML, defaults to False
-        :param attachments: list of filepaths to include in the email, defaults to []
-        :param save_as_draft: message is saved as draft when `True`
-         instead (and not sent)
-        :return: `True` if there were no errors
-        """
-        self.logger.warning(
-            "Keyword 'Send Message' is deprecated, "
-            "and will be removed in a future version."
-            "Use 'Send Email' instead."
-        )
-        return self.send_email(
-            recipients,
-            subject,
-            body,
-            html_body,
-            attachments,
-            save_as_draft,
-            cc_recipients,
-            bcc_recipients,
-        )
 
     def send_email(
         self,
@@ -236,31 +189,6 @@ class Application(BaseApplication):
             match_found = email
 
         return match_found
-
-    def wait_for_message(
-        self, criterion: str = None, timeout: float = 5.0, interval: float = 1.0
-    ) -> Any:
-        """Wait for email matching `criterion` to arrive into mailbox.
-
-        :param criterion: message filter to wait for, defaults to ""
-        :param timeout: total time in seconds to wait for email, defaults to 5.0
-        :param interval: time in seconds for new check, defaults to 1.0
-        :return: list of messages or False
-
-        Possible wait criterias are: SUBJECT, SENDER and BODY
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Wait for message     SUBJECT:rpa task calling    timeout=300    interval=10
-        """
-        self.logger.warning(
-            "Keyword 'Wait For Message' is deprecated, "
-            "and will be removed in a future version."
-            "Use 'Wait For Email' instead."
-        )
-        return self.wait_for_email(criterion, timeout, interval)
 
     def wait_for_email(
         self, criterion: str = None, timeout: float = 5.0, interval: float = 1.0

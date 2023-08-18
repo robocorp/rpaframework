@@ -81,11 +81,14 @@ class BaseApplication(metaclass=MetaApplication):
 
     This library works on a Windows operating system with UI enabled only, and you must
     ensure that you open the app first with ``Open Application`` before running any
-    other relevant keyword which requires to operate on an open app. Check the
-    documentation below for more info:
+    other relevant keyword which requires to operate on an open app. The application is
+    automatically closed at the end of the task execution, so this can be changed by
+    importing the library with the `autoexit=${False}` setting.
 
-    - https://robocorp.com/docs/control-room/unattended/worker-setups/windows-desktop
-    - https://robocorp.com/docs/faq/windows-server-2016
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library     RPA.Excel|Outlook|Word.Application    autoexit=${False}
 
     If you're running the Process by Control Room through a custom self-hosted Worker
     service, then please make sure that you enable an RDP session by ticking "Use
@@ -93,6 +96,11 @@ class BaseApplication(metaclass=MetaApplication):
 
     If you still encounter issues with opening a document, please ensure that file can
     be opened first manually and dismiss any alert potentially blocking the process.
+
+    Check the documentation below for more info:
+
+    - https://robocorp.com/docs/control-room/unattended/worker-setups/windows-desktop
+    - https://robocorp.com/docs/faq/windows-server-2016
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -140,17 +148,23 @@ class BaseApplication(metaclass=MetaApplication):
                 state = "visible" if visible else "invisible"
                 self.logger.debug("Making the application %s.", state)
                 self.app.Visible = visible
+            elif visible:
+                self.logger.warning("Visibility cannot be controlled on this app.")
 
             # Show for e.g. a file overwrite warning or not.
             if hasattr(self.app, "DisplayAlerts"):
                 state = "Displaying" if display_alerts else "Hiding"
                 self.logger.debug("%s the application alerts.", state)
                 self.app.DisplayAlerts = display_alerts
+            elif display_alerts:
+                self.logger.warning(
+                    "Alerts displaying cannot be controlled on this app."
+                )
 
     @property
     def _active_document(self):
         # Retrieves the currently active document. (raises COMError if there's none)
-        return self.app.ActiveDocument
+        return getattr(self.app, "ActiveDocument", None)
 
     def _deactivate_document(self):
         # Cleans-up a just closed previously active document.

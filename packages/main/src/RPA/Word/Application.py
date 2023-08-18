@@ -8,17 +8,7 @@ from RPA.application import (
 
 
 class Application(BaseApplication):
-    """`Word.Application` is a library for controlling a Word application.
-
-    *Note*. Library works only Windows platform.
-
-    Library will automatically close the Word application at the end of the
-    task execution. This can be changed by importing library with `autoexit` setting.
-
-    .. code-block:: robotframework
-
-        *** Settings ***
-        Library                 RPA.Word.Application   autoexit=${FALSE}
+    """`Word.Application` is a library for controlling the Word application.
 
     **Examples**
 
