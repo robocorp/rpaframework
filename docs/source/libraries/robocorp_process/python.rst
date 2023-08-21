@@ -6,8 +6,7 @@ Python API
 Process
 *******
 
-.. automodule:: RPA.Robocorp.Process
+.. autoclass:: RPA.Robocorp.Process.Process
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

@@ -6,8 +6,7 @@ Python API
 MSGraph
 ********
 
-.. automodule:: RPA.MSGraph
+.. autoclass:: RPA.MSGraph.MSGraph
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

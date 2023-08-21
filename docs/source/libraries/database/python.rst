@@ -6,8 +6,7 @@ Python API
 Database
 ********
 
-.. automodule:: RPA.Database
+.. autoclass:: RPA.Database.Database
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

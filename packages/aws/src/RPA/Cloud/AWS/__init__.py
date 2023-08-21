@@ -1,4 +1,8 @@
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,ungrouped-imports
+# NOTE: Importing rpaframework-core here to trigger OpenSSL monkey-patching
+#  before anything else tries to access it
+from RPA import core
+
 from collections import OrderedDict
 import importlib
 import json
@@ -21,7 +25,7 @@ except ImportError:
 
 
 from RPA.core.logger import RobotLogListener
-from RPA.core.helpers import required_param, required_env
+from RPA.core.helpers import required_param
 
 from .textract import TextractDocument
 

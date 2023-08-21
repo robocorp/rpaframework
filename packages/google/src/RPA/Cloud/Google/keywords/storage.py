@@ -200,7 +200,7 @@ class StorageKeywords(LibraryContext):
         """Upload files into a bucket
 
         Example `files`:
-        files = {"mytestimg": "image1.png", "mydoc": "google.pdf"}
+        `files = {"mytestimg": "image1.png", "mydoc": "google.pdf"}`
 
         :param bucket_name: name as string
         :param files: dictionary of object names and filepaths
@@ -228,7 +228,7 @@ class StorageKeywords(LibraryContext):
         """Download files from a bucket
 
         Example `files`:
-        files = {"mytestimg": "image1.png", "mydoc": "google.pdf"}
+        `files = {"mytestimg": "image1.png", "mydoc": "google.pdf"}`
 
         :param bucket_name: name as string
         :param files: list of object names or dictionary of

@@ -3,6 +3,7 @@ which can be accessed via dot notation. Use ``invoke --list``
 to review all available tasks.
 """
 import platform
+
 from invoke import Collection
 
 # Exportable config options must be defined before invocation imports
@@ -11,7 +12,7 @@ ROBOT_BUILD_STRATEGY = "robot"
 PYTHON_BUILD_STRATEGY = "python"
 
 try:
-    from invocations import analysis, build, config, docs, libspec, bootstrap
+    from invocations import analysis, bootstrap, build, config, docs, libspec
 
     bootstrap_mode = False
     if not bootstrap.check_dependancy_versions():
@@ -30,7 +31,6 @@ except ModuleNotFoundError as e:
         "again. "
         f'The error encountered was "{e}"'
     )
-
 
 DEFAULT_NS_CONFIGURATION = {"run": {"echo": True}, "is_ci_cd": False}
 if platform.system() != "Windows":

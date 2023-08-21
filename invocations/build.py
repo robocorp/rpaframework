@@ -1,14 +1,17 @@
 """Collection of tasks associated with building and publishing 
 packages.
 """
+from pathlib import Path
+
 import keyring
 import yaml
+from invoke import Collection, Context, ParseError
+from invoke import config as inv_config
+from invoke import task
 from keyring.errors import KeyringError
-from pathlib import Path
-from invoke import task, Collection, ParseError, Context, config as inv_config
 
-from invocations import shell, config, libspec, ROBOT_BUILD_STRATEGY
-from invocations.util import require_package, safely_load_config, REPO_ROOT
+from invocations import ROBOT_BUILD_STRATEGY, config, libspec, shell
+from invocations.util import REPO_ROOT, require_package, safely_load_config
 
 
 @task(

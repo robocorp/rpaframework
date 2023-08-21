@@ -4,9 +4,9 @@ import re
 from glob import glob
 from pathlib import Path
 
-from invoke import task, Collection
+from invoke import Collection, task
 
-from invocations import shell, config
+from invocations import config, shell
 from invocations.docs import DOCGEN_EXCLUDES
 
 
