@@ -12,13 +12,16 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Browser.Selenium** (:issue:`1059`): Fix webdriver management and
-  automation issues related to Edge in IE mode. Updated Portal example:
-  https://robocorp.com/portal/robot/robocorp/example-ie-mode-edge
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+26.0.1 - 22 Aug 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`1059`): Fix webdriver management and
+  automation issues related to Edge in IE mode. Updated Portal example:
+  https://robocorp.com/portal/robot/robocorp/example-ie-mode-edge
 
 26.0.0 - 18 Aug 2023
 --------------------
