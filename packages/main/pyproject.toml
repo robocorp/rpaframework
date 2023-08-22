@@ -35,7 +35,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 docutils = "*"
-rpaframework-core = "^11.0.5"
+rpaframework-core = "^11.0.6"
 rpaframework-pdf = "^7.1.6"
 rpaframework-windows = { version = "^7.3.2", platform = "win32" }
 java-access-bridge-wrapper = "0.14.1"

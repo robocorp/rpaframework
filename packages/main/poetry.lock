@@ -2749,14 +2749,14 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "11.0.5"
+version = "11.0.6"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_core-11.0.5-py3-none-any.whl", hash = "sha256:05a829ff66f4bf0d6de0934fa7946f1e5f199a48026ddd51664ddc272a32a6fa"},
-    {file = "rpaframework_core-11.0.5.tar.gz", hash = "sha256:7e354b275d3a940921b842004c2dbfc2f71b957a73ba1db0be1c41458e2e08d4"},
+    {file = "rpaframework_core-11.0.6-py3-none-any.whl", hash = "sha256:d2e7fb820a8afb5cf1fad6a43568b883cbfdaafe3e91b845785c39977b1cfed7"},
+    {file = "rpaframework_core-11.0.6.tar.gz", hash = "sha256:41f081f14f8c61fd8afd9c2debc62ea27c1990275f75fa24d500f7373a1355f8"},
 ]
 
 [package.dependencies]
@@ -2766,7 +2766,7 @@ psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
 pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 selenium = ">=4.6.1,<5.0.0"
 uiautomation = {version = ">=2.0.15,<3.0.0", markers = "sys_platform == \"win32\""}
-webdriver-manager = ">=3.9.1,<4.0.0"
+webdriver-manager = "4.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
@@ -3522,14 +3522,14 @@ test = ["flake8 (>=2.4.0)", "isort (>=4.2.2)", "pytest (>=2.2.3)"]
 
 [[package]]
 name = "webdriver-manager"
-version = "3.9.1"
+version = "4.0.0"
 description = "Library provides the way to automatically manage drivers for different browsers"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "webdriver_manager-3.9.1-py2.py3-none-any.whl", hash = "sha256:1dfc29a786abb97ba28076d4766d931064eeeac71a9685a3e8d46f5d363fcbe3"},
-    {file = "webdriver_manager-3.9.1.tar.gz", hash = "sha256:cd1f49ebb325a98b4dc3c41056f5b645e82fff3f83e346607844ec0bdf561c0b"},
+    {file = "webdriver_manager-4.0.0-py2.py3-none-any.whl", hash = "sha256:05f58ab599b907b03e0aa8d6b43624b1ca8c12d5d48455c79c531b9052ae2356"},
+    {file = "webdriver_manager-4.0.0.tar.gz", hash = "sha256:2b8d1c2cb590d296ade18bc7bc2589578a868f5587133922d744641f6a757a20"},
 ]
 
 [package.dependencies]
@@ -3724,4 +3724,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "1882d721065f98c119130427fffc06a73e524f26ea875d8a1dc54286954bce43"
+content-hash = "26bdf6114f232e2e46080f009265b4f9ff7dfb58b1fcbefdd7adb70df32ff598"
