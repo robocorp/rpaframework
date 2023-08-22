@@ -7,29 +7,25 @@ import stat
 from pathlib import Path
 from typing import Dict, List, Optional
 
-import packaging
-import requests
-from requests import Response
+from packaging import version as version_parser
 from selenium import webdriver
 from selenium.webdriver.common.service import Service
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager as _ChromeDriverManager
-from webdriver_manager.core.download_manager import DownloadManager, WDMDownloadManager
+from webdriver_manager.core.download_manager import DownloadManager
 from webdriver_manager.core.driver_cache import DriverCacheManager
-from webdriver_manager.core.http import WDMHttpClient
 from webdriver_manager.core.logger import log
 from webdriver_manager.core.manager import DriverManager
 from webdriver_manager.core.os_manager import ChromeType, OperationSystemManager
 from webdriver_manager.drivers.chrome import ChromeDriver as _ChromeDriver
 from webdriver_manager.firefox import GeckoDriverManager
-from webdriver_manager.microsoft import EdgeChromiumDriverManager, IEDriverManager
+from webdriver_manager.microsoft import (
+    EdgeChromiumDriverManager,
+    IEDriverManager as _IEDriverManager,
+)
 from webdriver_manager.opera import OperaDriverManager
 
 from RPA.core.robocorp import robocorp_home
-
-# FIXME(cmin764; 24 Jul 2023): Remove the derived classes below when the following
-#  upstream Issue is solved:
-#  https://github.com/SergeyPirogov/webdriver_manager/issues/550
 
 
 class ChromeDriver(_ChromeDriver):
@@ -50,7 +46,10 @@ class ChromeDriver(_ChromeDriver):
 
         latest_release_url = (
             self._latest_release_url
-            if (self._driver_version == "latest" or determined_browser_version is None)
+            if (
+                self._driver_version_to_download == "latest"
+                or determined_browser_version is None
+            )
             else f"{self._latest_release_url}_{determined_browser_version}"
         )
         resp = self._http_client.get(url=latest_release_url)
@@ -60,7 +59,7 @@ class ChromeDriver(_ChromeDriver):
         # This is activated for any chromedriver version.
         determined_browser_version = self.get_browser_version_from_os()
         if determined_browser_version and not self._resolve_version:
-            parts = packaging.version.parse(determined_browser_version).release
+            parts = version_parser.parse(determined_browser_version).release
             if len(parts) == 4:
                 # Got a fully downloadable version that MAY be available, but we are
                 #  not sure until we don't try it.
@@ -83,7 +82,9 @@ class ChromeDriver(_ChromeDriver):
         for dld in downloads:
             # There's also a chance for platform mismatch.
             if dld["platform"] == driver_platform:
-                self._driver_to_download_version = version["version"]
+                # Ensure the caching key and driver path matches the exact resolved
+                #  version.
+                self._driver_version_to_download = version["version"]
                 return dld["url"]
 
         return None
@@ -93,9 +94,9 @@ class ChromeDriver(_ChromeDriver):
         self, browser_version: str, driver_platform: str
     ) -> str:
         # This is activated for chromedriver 115 or higher only.
-        parse_version = lambda ver: packaging.version.parse(ver).release  # noqa: E731
+        parse_version = lambda ver: version_parser.parse(ver).release  # noqa: E731
         parse_floating_version = lambda ver: parse_version(ver)[:3]  # noqa: E731
-        parsed_version = parse_floating_version(browser_version)
+        parsed_floating_version = parse_floating_version(browser_version)
         resolve_modern_url = functools.partial(
             self._resolve_modern_url, driver_platform=driver_platform
         )
@@ -114,7 +115,7 @@ class ChromeDriver(_ChromeDriver):
                 url = resolve_modern_url(version)
                 if url:
                     return url
-            elif parsed_version == parse_floating_version(version["version"]):
+            elif parsed_floating_version == parse_floating_version(version["version"]):
                 candidates.append(version)
 
         # No exact version found, let's return the latest from the matching candidates.
@@ -129,14 +130,14 @@ class ChromeDriver(_ChromeDriver):
         raise Exception(f"No such driver version {browser_version} for {platform}")
 
     # pylint: disable=arguments-differ
-    def get_driver_download_url(self, resolve: bool = False) -> str:
+    def get_driver_download_url(self, os_type: str, resolve: bool = False) -> str:
         if resolve:
             # This time we want a resolved version based on the previously parsed
             #  non-existing one on the server.
-            self._resolve_version = True
-            self._driver_to_download_version = None
+            self._resolve_version = True  # force resolve
+            self._driver_version_to_download = None  # resets cache
 
-        return super().get_driver_download_url()
+        return super().get_driver_download_url(os_type)
 
 
 class ChromeDriverManager(_ChromeDriverManager):
@@ -183,15 +184,30 @@ class ChromeDriverManager(_ChromeDriverManager):
         try:
             return super()._get_driver_binary_path(driver)
         except ValueError:  # parsed version isn't found, let's try to resolve it
-            resolved_url = driver.get_driver_download_url(resolve=True)
+            os_type = self.get_os_type()
+            resolved_url = driver.get_driver_download_url(os_type, resolve=True)
             file = self._download_manager.download_file(resolved_url)
             binary_path = self._cache_manager.save_file_to_cache(driver, file)
             return binary_path
 
 
+class IEDriverManager(_IEDriverManager):
+    """Custom driver manager class for IE webdriver. (running Edge in IE mode)"""
+
+    # Forcefully download the 32bit version of the webdriver no matter the architecture
+    #  of the Windows system since it is known that the 64bit version is limited and
+    #  also creates issues, like freezing browser automation with Selenium.
+    # https://www.selenium.dev/documentation/webdriver/browsers/internet_explorer/
+    FORCE_32BIT = True
+
+    def get_os_type(self) -> str:
+        return "Win32" if self.FORCE_32BIT else super().get_os_type()
+
+
 LOGGER = logging.getLogger(__name__)
 
 DRIVER_ROOT = robocorp_home() / "webdrivers"
+DRIVER_ROOT.mkdir(parents=True, exist_ok=True)
 AVAILABLE_DRIVERS = {
     # Driver names taken from `webdrivermanager` and adapted to `webdriver_manager`.
     "chrome": ChromeDriverManager,
@@ -219,7 +235,7 @@ _DRIVER_PREFERENCE = {
     "default": ["Chrome", "Firefox"],
 }
 
-OPS_MANAGER = OperationSystemManager()
+_OPS_MANAGER = OperationSystemManager()
 
 
 def _get_browser_order_from_env() -> Optional[List[str]]:
@@ -241,16 +257,6 @@ def get_browser_order() -> List[str]:
         return browsers
 
     return _DRIVER_PREFERENCE.get(platform.system(), _DRIVER_PREFERENCE["default"])
-
-
-class Downloader(WDMHttpClient):
-
-    """Custom downloader which disables download progress reporting."""
-
-    def get(self, url, **kwargs) -> Response:
-        resp = requests.get(url=url, verify=self._ssl_verify, stream=True, **kwargs)
-        self.validate_response(resp)
-        return resp
 
 
 @contextlib.contextmanager
@@ -280,7 +286,7 @@ def start(browser: str, service: Optional[Service] = None, **options) -> WebDriv
 def _is_chromium() -> bool:
     """Detects if Chromium is used instead of Chrome no matter the platform."""
     is_browser = lambda browser_type: bool(  # noqa: E731
-        OPS_MANAGER.get_browser_version_from_os(browser_type)
+        _OPS_MANAGER.get_browser_version_from_os(browser_type)
     )
     return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
 
@@ -298,12 +304,8 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
         manager_factory = functools.partial(
             manager_factory, chrome_type=ChromeType.CHROMIUM
         )
-    downloader = Downloader()
-    download_manager = WDMDownloadManager(downloader)
     cache_manager = DriverCacheManager(root_dir=str(root))
-    manager = manager_factory(
-        cache_manager=cache_manager, download_manager=download_manager
-    )
+    manager = manager_factory(cache_manager=cache_manager)
     return manager
 
 
@@ -315,21 +317,9 @@ def _set_executable(path: str) -> None:
     )
 
 
-def download(browser: str, root: Path = DRIVER_ROOT) -> Optional[str]:
+def download(browser: str, root: Path = DRIVER_ROOT) -> str:
     """Download a webdriver binary for the given browser and return the path to it."""
     manager = _to_manager(browser, root=root)
-    driver = manager.driver
-    resolved_os = getattr(driver, "os_type", driver.get_os_type())
-    os_name = OPS_MANAGER.get_os_name()
-    # FIXME(cmin764; 24 Jul 2023): Not interested in matching OS architecture as well.
-    if os_name.lower() not in resolved_os.lower():
-        LOGGER.warning(
-            "Attempting to download incompatible driver for OS %r on OS %r! Skip",
-            resolved_os,
-            os_name,
-        )
-        return None  # incompatible driver download attempt
-
     with suppress_logging():
         path: str = manager.install()
     if platform.system() != "Windows":
