@@ -7,7 +7,7 @@ Library             RPA.RobotLogListener
 
 Suite Setup         Open Available Browser    about:blank    headless=${True}
 ...                     browser_selection=Chrome
-Suite Teardown      Close All Browsers
+Suite Teardown      RPA.Browser.Selenium.Close All Browsers
 
 Default Tags        rpa.browser
 
@@ -219,4 +219,29 @@ Open In Incognito With Custom Options
     Directory Should Not Be Empty    ${data_dir}
 
     Close Browser
-    [Teardown]    RPA.FileSystem.Remove directory    ${data_dir}    recursive=${True}
+    [Teardown]    RPA.FileSystem.Remove Directory    ${data_dir}    recursive=${True}
+
+Open Edge in normal and IE mode without closing
+    [Documentation]     Downloads fresh webdrivers and starts Edge in normal and IE
+    ...     mode on a Windows machine.
+    [Tags]  skip    windows  # requires Windows OS with UI
+    [Setup]    Close Browser
+
+    ${webdrivers_dir} =     Evaluate    RPA.core.webdriver.DRIVER_ROOT
+    ...     modules=RPA.core.webdriver
+    RPA.FileSystem.Remove Directory    ${webdrivers_dir}    recursive=${True}
+
+    ${msg} =    Catenate    SEPARATOR=${SPACE}   This test will leave the browsers open
+    ...     intentionally in order to test the driver shutdown without affecting the
+    ...     left open browser instances.
+    Log To Console     ${msg}
+    Import Library      RPA.Browser.Selenium    auto_close=${False}
+    ...     WITH NAME   Selenium
+
+    ${url} =    Set Variable    https://robocorp.com/docs
+    @{browsers} =   Create List     Edge    Ie
+    FOR    ${browser}    IN    @{browsers}
+        Selenium.Open Available Browser   ${url}   browser_selection=${browser}
+        ...     headless=${False}   download=${True}
+        Selenium.Page Should Contain Link   Portal
+    END
