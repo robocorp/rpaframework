@@ -30,7 +30,6 @@ from selenium.webdriver import (
 )
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
-from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
 from selenium.webdriver.remote.shadowroot import ShadowRoot
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
@@ -230,7 +229,7 @@ class Selenium(SeleniumLibrary):
         # Refresh plugins list
         kwargs["plugins"] = ",".join(plugins)
 
-        SeleniumLibrary.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._element_finder = RobocorpElementFinder(self)
 
         # Add inherit/overridden library keywords.
@@ -277,17 +276,13 @@ class Selenium(SeleniumLibrary):
         for driver in connections:
             try:
                 if driver_only:
-                    if isinstance(driver, IeWebDriver):
-                        service = driver.iedriver
-                    else:
-                        service = driver.service
                     # A `service.stop()` will hang here, so killing the process
                     #  directly is the only way.
-                    service.process.kill()
+                    driver.service.process.kill()
                 else:
-                    driver.quit()
+                    driver.quit()  # quits the browser as well
             except Exception as exc:  # pylint: disable=broad-except
-                self.logger.debug("Encountered error during auto-close: %s", exc)
+                self.logger.warning("Encountered error during auto-close: %s", exc)
 
     @property
     def location(self) -> str:
