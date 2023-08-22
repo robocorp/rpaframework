@@ -361,7 +361,7 @@ class Assistant:
                 assistant.add_text("There was an error while requesting user information")
                 assistant.add_text(f"{error}", size="small")
                 assistant.run_dialog()
-        """
+        """  # noqa: E501
         if not isinstance(size, Size):
             size = Size(size)
 
@@ -457,7 +457,7 @@ class Assistant:
                 assistant.add_heading("To start, please press the Continue button", size="small")
                 assistant.add_submit_buttons("Continue")
                 assistant.run_dialog()
-        """
+        """  # noqa: E501
 
         self._client.add_element(
             Container(content=Image(src=url_or_path, width=width, height=height))
@@ -672,7 +672,8 @@ class Assistant:
                 assistant.add_heading("Check icon")
                 assistant.add_flet_icon(icon="check_circle_rounded", color="FF00FF", size="48")
                 assistant.run_dialog()
-        """
+        """  # noqa: E501
+
         self._client.add_element(flet.Icon(name=icon, color=color, size=size))
 
     @keyword(tags=["input"])
@@ -966,7 +967,7 @@ class Assistant:
                 assistant.add_file_input(name="multiple", multiple=True)
 
                 # This opens the select dialog to a custom folder
-                assistant.add_file_input(name="src", source="C:\Temp\Output")
+                assistant.add_file_input(name="src", source="C:\\Temp\\Output")
 
                 # This restricts files to certain types
                 assistant.add_file_input(name="types", file_type="pdf")
@@ -1102,7 +1103,7 @@ class Assistant:
                 assistant.add_date_input("birthdate", default="1993-04-26")
                 result = assistant.run_dialog()
                 print("User birthdate year should be: ", result.birthdate.year)
-        """
+        """  # noqa: E501
 
         def validate(e: ControlEvent):
             date_text: str = e.data
@@ -1240,8 +1241,7 @@ class Assistant:
                 if(result.vault):
                     enable_vault()
 
-
-        """
+        """  # noqa: E501
         self._client.results[name] = default
         self._client.add_element(
             name=str(name), element=Checkbox(label=str(label), value=bool(default))
