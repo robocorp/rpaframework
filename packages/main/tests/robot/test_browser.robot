@@ -73,6 +73,7 @@ Screenshot Robocorp Google search result
 
     Input Text    q    Robocorp
     Click Element    q
+    Sleep   1s
     Press Keys    q    ENTER
     Wait Until Element Is Visible    css:div.logo
 
