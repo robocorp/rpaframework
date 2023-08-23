@@ -614,7 +614,6 @@ class Assistant:
                 Add submit buttons    buttons=No,Yes
                 ${result}=    Run dialog
 
-
         .. code-block:: python
 
             def confirmation_dialog():
@@ -1046,6 +1045,7 @@ class Assistant:
                 Log    User type should be: ${result.user_type}
 
         .. code-block:: python
+
             def select_user_type_from_drop_down():
                 assistant = Assistant()
                 assistant.add_heading("Select user type")
@@ -1395,7 +1395,6 @@ class Assistant:
                 Add text input  name=username
                 ${result}=      Ask User
                 Log    The username is: ${result.username}
-
 
         .. code-block:: python
 
@@ -1863,24 +1862,24 @@ class Assistant:
         .. code-block:: robotframework
 
             *** Keywords ***
-                Absolutely Positioned Elements
-                    # Positioning containers with relative location values requires
-                    # absolute size for the Stack
-                    Open Stack  height=360  width=360
+            Absolutely Positioned Elements
+                # Positioning containers with relative location values requires
+                # absolute size for the Stack
+                Open Stack  height=360  width=360
 
-                    Open Container  width=64  height=64  location=Center
-                    Add Text  center
-                    Close Container
+                Open Container  width=64  height=64  location=Center
+                Add Text  center
+                Close Container
 
-                    Open Container  width=64  height=64  location=TopRight
-                    Add Text  top right
-                    Close Container
+                Open Container  width=64  height=64  location=TopRight
+                Add Text  top right
+                Close Container
 
-                    Open Container  width=64  height=64  location=BottomRight
-                    Add Text  bottom right
-                    Close Container
+                Open Container  width=64  height=64  location=BottomRight
+                Add Text  bottom right
+                Close Container
 
-                    Close Stack
+                Close Stack
 
         .. code-block:: python
 
