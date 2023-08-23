@@ -1369,9 +1369,9 @@ class Assistant:
 
     def _get_results(self) -> DotDict:
         results = self._client.results
-        for item in results.keys():
-            if item in self._client.date_inputs:
-                results[item] = date.fromisoformat(results[item])
+        for name, value in results.items():
+            if name in self._client.date_inputs and isinstance(value, str):
+                results[name] = date.fromisoformat(value)
         return DotDict(**results)
 
     @keyword(tags=["dialog"])
