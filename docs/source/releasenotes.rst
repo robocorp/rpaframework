@@ -13,7 +13,7 @@ Latest versions
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 26.1.0 - 24 Aug 2023
------------
+--------------------
 
 - General update on *all* packages (:pr:`950`):
 
@@ -34,7 +34,7 @@ Latest versions
   - Library **RPA.Assistant** (:pr:`1068`; ``rpaframework-assistant`` **3.0.0**):
 
     - Fix Date Input validations and return value as Date object instead of string.
-    - Add Python examples for every Keyword.
+    - Add Python examples for every keyword.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
