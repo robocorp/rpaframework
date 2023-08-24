@@ -139,6 +139,7 @@ class Assistant:
 
     .. code-block:: robotframework
 
+        *** Keywords ***
         Success dialog
             Add icon      Success
             Add heading   Your orders have been processed
@@ -175,7 +176,50 @@ class Assistant:
             ...    maximum_rows=5
             ${result}=    Run dialog
             Send feedback message    ${result.email}  ${result.message}
-    """
+
+
+    .. code-block:: python
+
+        def success_dialog():
+            assistant = Assistant()
+            assistant.add_icon("success")
+            assistant.add_heading("Your orders have been processed")
+            assistant.add_files("*.txt")
+            assistant.run_dialog(title="Success")
+
+        def failure_dialog():
+            assistant = Assistant()
+            assistant.add_icon("failure")
+            assistant.add_heading("There was an error")
+            assistant.add_text("The assistant failed to login to the Enterprise portal")
+            assistant.add_link("https://robocorp.com/docs", label="Troubleshooting guide")
+            assistant.add_files("*.txt")
+            assistant.run_dialog(title="Failure")
+
+        def large_dialog():
+            assistant = Assistant()
+            assistant.add_heading("A real chonker", size="large")
+            assistant.add_image("fat-cat.jpeg")
+            assistant.run_dialog(title="Large", height=1024, width=1024)
+
+        def confirmation_dialog():
+            assistant = Assistant()
+            assistant.add_icon("warning")
+            assistant.add_heading("Delete user ${username}?")
+            assistant.add_submit_buttons(buttons="No, Yes", default="Yes")
+            result = assistant.run_dialog()
+            if result.submit == "Yes":
+                delete_user(username)
+
+        def input_from_dialog():
+            assistant = Assistant()
+            assistant.add_heading("Send feedback")
+            assistant.add_text_input("email", label="E-mail address")
+            assistant.add_text_input("message", label="Feedback", placeholder="Enter feedback here", maximum_rows=5)
+            assistant.add_submit_buttons("Submit", default="Submit")
+            result = assistant.run_dialog()
+            send_feedback_message(result.email, result.message)
+    """  # noqa: E501
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
@@ -255,10 +299,22 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading     User information  size=Large
-            Add heading     Location          size=Small
-            Add text input  address           label=User address
-            Run dialog
+            *** Keywords ***
+            Add dialog heading
+                Add heading     User information  size=Large
+                Add heading     Location          size=Small
+                Add text input  address           label=User address
+                Run dialog
+
+
+        .. code-block:: python
+
+            def add_dialog_heading():
+                assistant = Assistant()
+                assistant.add_heading("User information", size="large")
+                assistant.add_heading("Location", size="small")
+                assistant.add_text_input("address", label="User address")
+                assistant.run_dialog()
         """
         if not isinstance(size, Size):
             size = Size(size)
@@ -289,11 +345,23 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading   An error occurred
-            Add text      There was an error while requesting user information
-            Add text      ${error}   size=Small
-            Run dialog
-        """
+            *** Keywords ***
+            Show error dialog
+                Add heading   An error occurred
+                Add text      There was an error while requesting user information
+                Add text      ${error}   size=Small
+                Run dialog
+
+        .. code-block:: python
+
+            def show_error_dialog():
+                error = "Your error message"
+                assistant = Assistant()
+                assistant.add_heading("An error occurred")
+                assistant.add_text("There was an error while requesting user information")
+                assistant.add_text(f"{error}", size="small")
+                assistant.run_dialog()
+        """  # noqa: E501
         if not isinstance(size, Size):
             size = Size(size)
 
@@ -323,10 +391,21 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading    An error occurred
-            Add text       See link for documentation
-            Add link       https://robocorp.com/docs    label=Troubleshooting
-            Run dialog
+            *** Keywords ***
+            Display troubleshoot link
+                Add heading    An error occurred
+                Add text       See link for documentation
+                Add link       https://robocorp.com/docs    label=Troubleshooting
+                Run dialog
+
+        .. code-block:: python
+
+            def add_troubleshoot_link():
+                assistant = Assistant()
+                assistant.add_heading("An error occurred")
+                assistant.add_text("See link for documentation")
+                assistant.add_link("https://robocorp.com/docs", label="Troubleshooting")
+                assistant.run_dialog()
         """
         if not label:
             label = url
@@ -363,11 +442,22 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add image      company-logo.png
-            Add heading    To start, please press the Continue button   size=Small
-            Add submit buttons    Continue
-            Run dialog
-        """
+            *** Keywords ***
+            Display image
+                Add image      company-logo.png
+                Add heading    To start, please press the Continue button   size=Small
+                Add submit buttons    Continue
+                Run dialog
+
+        .. code-block:: python
+
+            def display_image():
+                assistant = Assistant()
+                assistant.add_image("company-logo.png")
+                assistant.add_heading("To start, please press the Continue button", size="small")
+                assistant.add_submit_buttons("Continue")
+                assistant.run_dialog()
+        """  # noqa: E501
 
         self._client.add_element(
             Container(content=Image(src=url_or_path, width=width, height=height))
@@ -395,10 +485,21 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            ${path}=   Generate order files
-            Add heading    Current orders
-            Add file    ${path}    label=Current
-            Run dialog
+            *** Keywords ***
+            Open file button
+                ${path}=   Generate order files
+                Add heading    Current orders
+                Add file    ${path}    label=Current
+                Run dialog
+
+        .. code-block:: python
+
+            def open_file_button():
+                path = generate_order_files()
+                assistant = Assistant()
+                assistant.add_heading("Current orders")
+                assistant.add_file(path, label="Current")
+                assistant.run_dialog()
         """
         resolved = Path(path).resolve()
         self.logger.info("Adding file: %s", resolved)
@@ -452,14 +553,28 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            # Add all excel files
-            Add files    *.xlsx
+            *** Keywords ***
+            Open multiple files buttons
+                # Add all excel files
+                Add files    *.xlsx
 
-            # Add all log files in any subdirectory
-            Add files    **/*.log
+                # Add all log files in any subdirectory
+                Add files    **/*.log
 
-            # Add all PDFs between order0 and order9
-            Add files    order[0-9].pdf
+                # Add all PDFs between order0 and order9
+                Add files    order[0-9].pdf
+
+        .. code-block:: python
+
+            def open_multiple_files_buttons():
+                assistant = Assistant()
+                # Add all excel files
+                assistant.add_file("*.xlsx")
+                # Add all log files in any subdirectory
+                assistant.add_file("**/*.log")
+                # Add all PDFs between order0 and order9
+                assistant.add_file("order[0-9].pdf")
+                assistant.run_dialog()
         """
         matches = glob.glob(pattern, recursive=True)
         for match in sorted(matches):
@@ -492,10 +607,21 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add icon              Warning    size=64
-            Add heading           Do you want to delete this order?
-            Add submit buttons    buttons=No,Yes
-            ${result}=    Run dialog
+            *** Keywords ***
+            Confirmation dialog
+                Add icon              Warning    size=64
+                Add heading           Do you want to delete this order?
+                Add submit buttons    buttons=No,Yes
+                ${result}=    Run dialog
+
+        .. code-block:: python
+
+            def confirmation_dialog():
+                assistant = Assistant()
+                assistant.add_icon("warning", size="64")
+                assistant.add_heading("Do you want to delete this order?")
+                assistant.add_submit_buttons(buttons="No, Yes")
+                result = assistant.run_dialog()
         """
         if not isinstance(variant, Icon):
             variant = Icon(variant)
@@ -532,10 +658,21 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add Heading    Check icon
-            Add Flet Icon  icon_name=check_circle_rounded  color=FF00FF  size=48
-            Run Dialog
-        """
+            *** Keywords ***
+            Add custom icon
+                Add Heading    Check icon
+                Add Flet Icon  icon_name=check_circle_rounded  color=FF00FF  size=48
+                Run Dialog
+
+        .. code-block:: python
+
+            def add_custom_icon()
+                assistant = Assistant()
+                assistant.add_heading("Check icon")
+                assistant.add_flet_icon(icon="check_circle_rounded", color="FF00FF", size="48")
+                assistant.run_dialog()
+        """  # noqa: E501
+
         self._client.add_element(flet.Icon(name=icon, color=color, size=size))
 
     @keyword(tags=["input"])
@@ -579,18 +716,21 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading    Send feedback
-            Add text input    email    label=E-mail address
-            Add text input    message
-            ...    label=Feedback
-            ...    placeholder=Enter feedback here
-            ${result}=    Run dialog
-            Send feedback message    ${result.email}  ${result.message}
+            *** Keywords ***
+            Send feedback
+                Add heading    Send feedback
+                Add text input    email    label=E-mail address
+                Add text input    message
+                ...    label=Feedback
+                ...    placeholder=Enter feedback here
+                ${result}=    Run dialog
+                Send feedback message    ${result.email}  ${result.message}
 
         Validation example:
 
         .. code-block:: robotframework
 
+            *** Keywords ***
             Validate Email
                 [Arguments]    ${email}
                 # E-mail specification is complicated, this matches that the e-mail has
@@ -694,11 +834,25 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading    Change password
-            Add text input        username    label=Current username
-            Add password input    password    label=New password
-            ${result}=    Run dialog
-            Change user password    ${result.username}  ${result.password}
+            *** Keywords ***
+            Change password
+                Add heading    Change password
+                Add text input        username    label=Current username
+                Add password input    password    label=New password
+                Add submit buttons    buttons=Submit
+                ${result}=    Run dialog
+                Change user password    ${result.username}  ${result.password}
+
+        .. code-block:: python
+
+            def change_password():
+                assistant = Assistant()
+                assistant.add_heading("Change password")
+                assistant.add_text_input("username", label="Current username")
+                assistant.add_password_input("password", label="New password")
+                assistant.add_submit_buttons(buttons="Submit")
+                result = assistant.run_dialog()
+                change_user_password(result.username, result.password)
         """
         self._client.add_element(
             name=name, element=TextField(label=label, value=placeholder, password=True)
@@ -726,10 +880,22 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add hidden input   user_id   ${USER_ID}
-            Add text input     username
-            ${result}=         Run dialog
-            Enter user information    ${result.user_id}    ${result.username}
+            *** Keywords ***
+            Get user information
+                Add hidden input   user_id   ${USER_ID}
+                Add text input     username
+                ${result}=         Run dialog
+                Enter user information    ${result.user_id}    ${result.username}
+
+        .. code-block:: python
+
+            def get_user_information():
+                assistant = Assistant()
+                user_id = "Your user value"
+                assistant.add_hidden_input("user_id", user_id)
+                assistant.add_text_input("username")
+                result = assistant.run_dialog()
+                enter_user_information(result.user_id, result.username)
         """
         self._client.results[name] = value
 
@@ -769,23 +935,46 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            # This can be any one file
-            Add file input    name=anything
+            *** Keywords ***
+            Multiple file selections
+                # This can be any one file
+                Add file input    name=anything
 
-            # This can be multiple files
-            Add file input    name=multiple  multiple=True
+                # This can be multiple files
+                Add file input    name=multiple  multiple=True
 
-            # This opens the select dialog to a custom folder
-            Add file input    name=src       source=C:\\Temp\\Output\\
+                # This opens the select dialog to a custom folder
+                Add file input    name=src       source=C:\\Temp\\Output\\
 
-            # This restricts files to certain types
-            Add file input    name=types     file_type=pdf
+                # This restricts files to certain types
+                Add file input    name=types     file_type=pdf
 
-            # Every file input result is a list of paths
-            ${result}=    Run dialog
-            FOR    ${path}    IN    @{result.multiple}
-                Log    Selected file: ${path}
-            END
+                # Every file input result is a list of paths
+                ${result}=    Run dialog
+                FOR    ${path}    IN    @{result.multiple}
+                    Log    Selected file: ${path}
+                END
+
+        .. code-block:: python
+
+            def multiple_file_selections():
+                assistant = Assistant()
+                # This can be any one file
+                assistant.add_file_input(name="anything")
+
+                # This can be multiple files
+                assistant.add_file_input(name="multiple", multiple=True)
+
+                # This opens the select dialog to a custom folder
+                assistant.add_file_input(name="src", source="C:\\Temp\\Output")
+
+                # This restricts files to certain types
+                assistant.add_file_input(name="types", file_type="pdf")
+
+                # Every file input result is a list of paths
+                result = assistant.run_dialog()
+                for path in result.multiple:
+                    print("Selected file: ", path)
         """
 
         def on_pick_result(event: FilePickerResultEvent):
@@ -844,15 +1033,30 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading     Select user type
-            Add drop-down
-            ...    name=user_type
-            ...    options=Admin,Maintainer,Operator
-            ...    default=Operator
-            ...    label=User type
-            ${result}=      Run dialog
-            Log    User type should be: ${result.user_type}
+            *** Keywords ***
+            Select user type from drop down
+                Add heading     Select user type
+                Add drop-down
+                ...    name=user_type
+                ...    options=Admin,Maintainer,Operator
+                ...    default=Operator
+                ...    label=User type
+                ${result}=      Run dialog
+                Log    User type should be: ${result.user_type}
 
+        .. code-block:: python
+
+            def select_user_type_from_drop_down():
+                assistant = Assistant()
+                assistant.add_heading("Select user type")
+                assistant.add_drop_down(
+                    name="user_type",
+                    options="Admin,Maintainer,Operator",
+                    default="Operator",
+                    label="User type"
+                )
+                result = assistant.run_dialog()
+                print("User type should be: ", result.user_type)
         """
         options, default = to_options(options, default)
         options: List[Control] = list(map(Option, options))
@@ -884,11 +1088,22 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading       Enter your birthdate
-            Add Date Input    birthdate    default=1993-04-26
-            ${result} =       Run dialog
-            Log To Console    User birthdate year should be: ${result.birthdate.year}
-        """
+            *** Keywords ***
+            Select birthdate
+                Add heading       Enter your birthdate
+                Add Date Input    birthdate    default=1993-04-26
+                ${result} =       Run dialog
+                Log To Console    User birthdate year should be: ${result.birthdate.year}
+
+        .. code-block:: python
+
+            def select_birthdate():
+                assistant = Assistant()
+                assistant.add_heading("Enter your birthdate")
+                assistant.add_date_input("birthdate", default="1993-04-26")
+                result = assistant.run_dialog()
+                print("User birthdate year should be: ", result.birthdate.year)
+        """  # noqa: E501
 
         def validate(e: ControlEvent):
             date_text: str = e.data
@@ -944,14 +1159,30 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading     Select user type
-            Add radio buttons
-            ...    name=user_type
-            ...    options=Admin,Maintainer,Operator
-            ...    default=Operator
-            ...    label=User type
-            ${result}=      Run dialog
-            Log    User type should be: ${result.user_type}
+            *** Keywords ***
+            Select user type from radio buttons
+                Add heading     Select user type
+                Add radio buttons
+                ...    name=user_type
+                ...    options=Admin,Maintainer,Operator
+                ...    default=Operator
+                ...    label=User type
+                ${result}=      Run dialog
+                Log    User type should be: ${result.user_type}
+
+        .. code-block:: python
+
+            def select_user_type_from_radio_buttons():
+                assistant = Assistant()
+                assistant.add_heading("Select user type")
+                assistant.add_radio_buttons(
+                    name="user_type",
+                    options="Admin,Maintainer,Operator",
+                    default="Operator",
+                    label="User type"
+                )
+                result = assistant.run_dialog()
+                print("User type should be: ", result.user_type)
         """
         options, default = to_options(options, default)
         radios: List[Control] = [
@@ -987,15 +1218,30 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading     Enable features
-            Add checkbox    name=vault        label=Enable vault       default=True
-            Add checkbox    name=triggers     label=Enable triggers    default=False
-            Add checkbox    name=assistants   label=Enable assistants  default=True
-            ${result}=      Run dialog
-            IF    $result.vault
-                Enable vault
-            END
-        """
+            *** Keywords ***
+            Select checkboxes
+                Add heading     Enable features
+                Add checkbox    name=vault        label=Enable vault       default=True
+                Add checkbox    name=triggers     label=Enable triggers    default=False
+                Add checkbox    name=assistants   label=Enable assistants  default=True
+                ${result}=      Run dialog
+                IF    $result.vault
+                    Enable vault
+                END
+
+        .. code-block:: python
+
+            def select_checkboxes():
+                assistant = Assistant()
+                assistant.add_heading("Enable features")
+                assistant.add_checkbox(name="vault", label="Enable vault", default=True)
+                assistant.add_checkbox(name="triggers", label="Enable triggers", default=False)
+                assistant.add_checkbox(name="assistants", label="Enable assistants", default=True)
+                result = assistant.run_dialog()
+                if(result.vault):
+                    enable_vault()
+
+        """  # noqa: E501
         self._client.results[name] = default
         self._client.add_element(
             name=str(name), element=Checkbox(label=str(label), value=bool(default))
@@ -1021,13 +1267,27 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add icon      Warning
-            Add heading   Delete user ${username}?
-            Add submit buttons    buttons=No,Yes    default=Yes
-            ${result}=    Run dialog
-            IF   $result.submit == "Yes"
-                Delete user    ${username}
-            END
+            *** Keywords ***
+            Delete user warning
+                Add icon      Warning
+                Add heading   Delete user ${username}?
+                Add submit buttons    buttons=No,Yes    default=Yes
+                ${result}=    Run dialog
+                IF   $result.submit == "Yes"
+                    Delete user    ${username}
+                END
+
+        .. code-block:: python
+
+            def delete_user_warning():
+                assistant = Assistant()
+                username = "user_01"
+                assistant.add_icon("warning")
+                assistant.add_heading(f"Delete user {username}?")
+                assistant.add_submit_buttons(buttons="No, Yes", default="Yes")
+                result = assistant.run_dialog()
+                if result.submit == "Yes":
+                    delete_user(username)
         """
         button_labels, default = to_options(buttons, default)
 
@@ -1073,10 +1333,21 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading     Please enter your username
-            Add text input  name=username
-            ${result}=      Run dialog
-            Log    The username is: ${result.username}
+            *** Keywords ***
+            Open dialog
+                Add heading     Please enter your username
+                Add text input  name=username
+                ${result}=      Run dialog
+                Log    The username is: ${result.username}
+
+        .. code-block:: python
+
+            def open_dialog():
+                assistant = Assistant()
+                assistant.add_heading("Please enter your username")
+                assistant.add_text_input("username")
+                result = assistant.run_dialog()
+                print("The username is: ", result.username)
         """
 
         # height has to be either AUTO or an int value
@@ -1118,10 +1389,21 @@ class Assistant:
 
         .. code-block:: robotframework
 
-            Add heading     Please enter your username
-            Add text input  name=username
-            ${result}=      Ask User
-            Log    The username is: ${result.username}
+            *** Keywords ***
+            Ask user dialog
+                Add heading     Please enter your username
+                Add text input  name=username
+                ${result}=      Ask User
+                Log    The username is: ${result.username}
+
+        .. code-block:: python
+
+            def ask_user_dialog():
+                assistant = Assistant()
+                assistant.add_heading("Please enter your username")
+                assistant.add_text_input("username")
+                result = assistant.ask_user()
+                print("The username is: ", result.username)
         """
 
         self.add_submit_buttons(["Submit", "Close"], "Submit")
@@ -1162,48 +1444,19 @@ class Assistant:
                 Add Heading  Let's build an infinite loop
                 Add Button  Change View  First View
 
-
         .. code-block:: python
 
-            def success_dialog():
+            def first_view():
                 assistant = Assistant()
-                assistant.add_icon("success")
-                assistant.add_heading("Your orders have been processed")
-                assistant.add_files("*.txt")
-                assistant.run_dialog(title="Success")
+                assistant.add_heading("Here is the first view of the app")
+                assistant.add_button("Change view", second_view)
+                assistant.run_dialog()
 
-            def failure_dialog():
+            def second_view():
                 assistant = Assistant()
-                assistant.add_icon("failure")
-                assistant.add_heading("There was an error")
-                assistant.add_text("The assistant failed to login to the Enterprise portal")
-                assistant.add_link("https://robocorp.com/docs", label="Troubleshooting guide")
-                assistant.add_files("*.txt")
-                assistant.run_dialog(title="Failure")
-
-            def large_dialog():
-                assistant = Assistant()
-                assistant.add_heading("A real chonker", size="large")
-                assistant.add_image("fat-cat.jpeg")
-                assistant.run_dialog(title="Large", height=1024, width=1024)
-
-            def confirmation_dialog():
-                assistant = Assistant()
-                assistant.add_icon("warning")
-                assistant.add_heading("Delete user ${username}?")
-                assistant.add_submit_buttons(buttons="No, Yes", default="Yes")
-                result = assistant.run_dialog()
-                if result.submit == "Yes":
-                    delete_user(username)
-
-            def input_from_dialog():
-                assistant = Assistant()
-                assistant.add_heading("Send feedback")
-                assistant.add_text_input("email", label="E-mail address")
-                assistant.add_text_input("message", label="Feedback", placeholder="Enter feedback here", maximum_rows=5)
-                assistant.add_submit_buttons("Submit", default="Submit")
-                result = assistant.run_dialog()
-                send_feedback_message(result.email, result.message)
+                assistant.add_heading("Let's build an infinite loop")
+                assistant.add_button("Change view", first_view)
+                assistant.run_dialog()
         """  # noqa: E501
 
         def on_click(_: ControlEvent):
@@ -1243,6 +1496,23 @@ class Assistant:
                 Add Heading  Retrieved Data
                 Add Text  ${user_data}[phone_number]
                 Add Text  ${user_data}[address]
+
+        .. code-block:: python
+
+            def main_form():
+                assistant = Assistant()
+                assistant.add_heading("Username input")
+                assistant.add_text_input("username_1", placeholder="username")
+                assistant.add_next_ui_button("Show customer details", customer_details)
+                assistant.run_dialog()
+
+            def customer_details(form):
+                assistant = Assistant()
+                user_data = retrieve_user_data(form.username_1)
+                assistant.add_heading("Retrieved Data")
+                assistant.add_text(user_data[phone_number])
+                assistant.add_text(user_data[address])
+                assistant.run_dialog()
         """
 
         def on_click(_: ControlEvent):
@@ -1287,6 +1557,20 @@ class Assistant:
                 Add Slider  name=percentage  slider_min=0  slider_max=100
                             thumb_text={value}%  steps=100  round=1
 
+        .. code-block:: python
+
+            def create_percentage_slider():
+                assistant = Assistant()
+                assistant.add_text("Percentage slider")
+                assistant.add_slider(
+                    name="percentage",
+                    slider_min=0,
+                    slider_max=100,
+                    thumb_text="{value}%",
+                    steps=100,
+                    decimals=1
+                )
+                assistant.run_dialog()
         """
         if default:
             default = float(default)
@@ -1413,6 +1697,16 @@ class Assistant:
                 Add Text  First item on the row
                 Add Text  Second item on the row
                 Close Row
+
+        .. code-block:: python
+
+            def side_by_side_elements():
+                assistant = Assistant()
+                assistant.open_row()
+                assistant.add_text("First item on the row")
+                assistant.add_text("Second item on the row")
+                assistant.close_row()
+                assistant.run_dialog()
         """
         self._open_layouting.append("Row")
         self._client.add_layout(Row())
@@ -1467,7 +1761,14 @@ class Assistant:
                 Add Text        sample text
                 Close Container
 
+        .. code-block:: python
 
+            def padded_element_with_background():
+                assistant = Assistant()
+                assistant.open_container(padding=20, background_color="blue500")
+                assistant.add_text("Sample text")
+                assistant.close_container()
+                assistant.run_dialog()
         """  # noqa: E501
         self._open_layouting.append("Container")
         if not location:
@@ -1525,6 +1826,21 @@ class Assistant:
                     Open Navbar  title=Assistant
                     Add Button   menu  Go To Start Menu
                     Close Navbar
+
+        .. code-block:: python
+
+            def go_to_start_menu():
+                assistant = Assistant()
+                assistant.add_heading("Start menu")
+                assistant.add_text("Start menu content")
+                assistant.run_dialog()
+
+            def assistant_navbar():
+                assistant = Assistant()
+                assistant.open_navbar(title="Assistant")
+                assistant.add_button("menu", go_to_start_menu)
+                assistant.close_navbar()
+                assistant.run_dialog()
         """
         self._open_layouting.append("AppBar")
         self._client.set_appbar(AppBar(title=Text(title)))
@@ -1546,24 +1862,47 @@ class Assistant:
         .. code-block:: robotframework
 
             *** Keywords ***
-                Absolutely Positioned Elements
-                    # Positioning containers with relative location values requires
-                    # absolute size for the Stack
-                    Open Stack  height=360  width=360
+            Absolutely Positioned Elements
+                # Positioning containers with relative location values requires
+                # absolute size for the Stack
+                Open Stack  height=360  width=360
 
-                    Open Container  width=64  height=64  location=Center
-                    Add Text  center
-                    Close Container
+                Open Container  width=64  height=64  location=Center
+                Add Text  center
+                Close Container
 
-                    Open Container  width=64  height=64  location=TopRight
-                    Add Text  top right
-                    Close Container
+                Open Container  width=64  height=64  location=TopRight
+                Add Text  top right
+                Close Container
 
-                    Open Container  width=64  height=64  location=BottomRight
-                    Add Text  bottom right
-                    Close Container
+                Open Container  width=64  height=64  location=BottomRight
+                Add Text  bottom right
+                Close Container
 
-                    Close Stack
+                Close Stack
+
+        .. code-block:: python
+
+            def absolutely_positioned_elements():
+                # Positioning containers with relative location values requires
+                # absolute size for the Stack
+                assistant = Assistant()
+                assistant.open_stack(height=360, width=360)
+
+                assistant.open_container(width=64, height=64, location=Center)
+                assistant.add_text("center")
+                assistant.close_container()
+
+                assistant.open_container(width=64, height=64, location=TopRight)
+                assistant.add_text("top right")
+                assistant.close_container()
+
+                assistant.open_container(width=64, height=64, location=BottomRight)
+                assistant.add_text("bottom right")
+                assistant.close_container()
+
+                assistant.close_stack()
+                assistant.run_dialog()
 
         """
         self._open_layouting.append("Stack")
@@ -1596,6 +1935,23 @@ class Assistant:
                 Add Text      First item on the second column
                 Close Column
                 Close Row
+
+        .. code-block:: python
+
+            def double_column_layout():
+                assistant = Assistant()
+                assistant.open_row()
+                assistant.open_column()
+                assistant.add_text("First item in the first column")
+                assistant.add_text("Second item on the first column")
+                assistant.close_column()
+
+                assistant.open_column()
+                assistant.add_text("First item on the second column")
+                assistant.close_column()
+                assistant.close_row()
+
+                assistant.run_dialog()
         """
         self._open_layouting.append("Column")
         self._client.add_layout(Column())

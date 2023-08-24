@@ -348,14 +348,14 @@ files = [
 
 [[package]]
 name = "click"
-version = "8.1.6"
+version = "8.1.7"
 description = "Composable command line interface toolkit"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "click-8.1.6-py3-none-any.whl", hash = "sha256:fa244bb30b3b5ee2cae3da8f55c9e5e0c0e86093306301fb418eb9dc40fbded5"},
-    {file = "click-8.1.6.tar.gz", hash = "sha256:48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd"},
+    {file = "click-8.1.7-py3-none-any.whl", hash = "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28"},
+    {file = "click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"},
 ]
 
 [package.dependencies]
@@ -635,6 +635,21 @@ kerberos = ["requests-gssapi"]
 sspi = ["requests-negotiate-sspi"]
 
 [[package]]
+name = "fire"
+version = "0.4.0"
+description = "A library for automatically generating command line interfaces."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
+]
+
+[package.dependencies]
+six = "*"
+termcolor = "*"
+
+[[package]]
 name = "flake8"
 version = "3.9.2"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -683,6 +698,81 @@ files = [
 flake8 = ">=3.0.0"
 pygments = "*"
 restructuredtext-lint = "*"
+
+[[package]]
+name = "fonttools"
+version = "4.42.1"
+description = "Tools to manipulate font files"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "fonttools-4.42.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:ed1a13a27f59d1fc1920394a7f596792e9d546c9ca5a044419dca70c37815d7c"},
+    {file = "fonttools-4.42.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:c9b1ce7a45978b821a06d375b83763b27a3a5e8a2e4570b3065abad240a18760"},
+    {file = "fonttools-4.42.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f720fa82a11c0f9042376fd509b5ed88dab7e3cd602eee63a1af08883b37342b"},
+    {file = "fonttools-4.42.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:db55cbaea02a20b49fefbd8e9d62bd481aaabe1f2301dabc575acc6b358874fa"},
+    {file = "fonttools-4.42.1-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:3a35981d90feebeaef05e46e33e6b9e5b5e618504672ca9cd0ff96b171e4bfff"},
+    {file = "fonttools-4.42.1-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:68a02bbe020dc22ee0540e040117535f06df9358106d3775e8817d826047f3fd"},
+    {file = "fonttools-4.42.1-cp310-cp310-win32.whl", hash = "sha256:12a7c247d1b946829bfa2f331107a629ea77dc5391dfd34fdcd78efa61f354ca"},
+    {file = "fonttools-4.42.1-cp310-cp310-win_amd64.whl", hash = "sha256:a398bdadb055f8de69f62b0fc70625f7cbdab436bbb31eef5816e28cab083ee8"},
+    {file = "fonttools-4.42.1-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:689508b918332fb40ce117131633647731d098b1b10d092234aa959b4251add5"},
+    {file = "fonttools-4.42.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:9e36344e48af3e3bde867a1ca54f97c308735dd8697005c2d24a86054a114a71"},
+    {file = "fonttools-4.42.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:19b7db825c8adee96fac0692e6e1ecd858cae9affb3b4812cdb9d934a898b29e"},
+    {file = "fonttools-4.42.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:113337c2d29665839b7d90b39f99b3cac731f72a0eda9306165a305c7c31d341"},
+    {file = "fonttools-4.42.1-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:37983b6bdab42c501202500a2be3a572f50d4efe3237e0686ee9d5f794d76b35"},
+    {file = "fonttools-4.42.1-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:6ed2662a3d9c832afa36405f8748c250be94ae5dfc5283d668308391f2102861"},
+    {file = "fonttools-4.42.1-cp311-cp311-win32.whl", hash = "sha256:179737095eb98332a2744e8f12037b2977f22948cf23ff96656928923ddf560a"},
+    {file = "fonttools-4.42.1-cp311-cp311-win_amd64.whl", hash = "sha256:f2b82f46917d8722e6b5eafeefb4fb585d23babd15d8246c664cd88a5bddd19c"},
+    {file = "fonttools-4.42.1-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:62f481ac772fd68901573956231aea3e4b1ad87b9b1089a61613a91e2b50bb9b"},
+    {file = "fonttools-4.42.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:f2f806990160d1ce42d287aa419df3ffc42dfefe60d473695fb048355fe0c6a0"},
+    {file = "fonttools-4.42.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:db372213d39fa33af667c2aa586a0c1235e88e9c850f5dd5c8e1f17515861868"},
+    {file = "fonttools-4.42.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5d18fc642fd0ac29236ff88ecfccff229ec0386090a839dd3f1162e9a7944a40"},
+    {file = "fonttools-4.42.1-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:8708b98c278012ad267ee8a7433baeb809948855e81922878118464b274c909d"},
+    {file = "fonttools-4.42.1-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:c95b0724a6deea2c8c5d3222191783ced0a2f09bd6d33f93e563f6f1a4b3b3a4"},
+    {file = "fonttools-4.42.1-cp38-cp38-win32.whl", hash = "sha256:4aa79366e442dbca6e2c8595645a3a605d9eeabdb7a094d745ed6106816bef5d"},
+    {file = "fonttools-4.42.1-cp38-cp38-win_amd64.whl", hash = "sha256:acb47f6f8680de24c1ab65ebde39dd035768e2a9b571a07c7b8da95f6c8815fd"},
+    {file = "fonttools-4.42.1-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:5fb289b7a815638a7613d46bcf324c9106804725b2bb8ad913c12b6958ffc4ec"},
+    {file = "fonttools-4.42.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:53eb5091ddc8b1199330bb7b4a8a2e7995ad5d43376cadce84523d8223ef3136"},
+    {file = "fonttools-4.42.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:46a0ec8adbc6ff13494eb0c9c2e643b6f009ce7320cf640de106fb614e4d4360"},
+    {file = "fonttools-4.42.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7cc7d685b8eeca7ae69dc6416833fbfea61660684b7089bca666067cb2937dcf"},
+    {file = "fonttools-4.42.1-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:be24fcb80493b2c94eae21df70017351851652a37de514de553435b256b2f249"},
+    {file = "fonttools-4.42.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:515607ec756d7865f23070682622c49d922901943697871fc292277cf1e71967"},
+    {file = "fonttools-4.42.1-cp39-cp39-win32.whl", hash = "sha256:0eb79a2da5eb6457a6f8ab904838454accc7d4cccdaff1fd2bd3a0679ea33d64"},
+    {file = "fonttools-4.42.1-cp39-cp39-win_amd64.whl", hash = "sha256:7286aed4ea271df9eab8d7a9b29e507094b51397812f7ce051ecd77915a6e26b"},
+    {file = "fonttools-4.42.1-py3-none-any.whl", hash = "sha256:9398f244e28e0596e2ee6024f808b06060109e33ed38dcc9bded452fd9bbb853"},
+    {file = "fonttools-4.42.1.tar.gz", hash = "sha256:c391cd5af88aacaf41dd7cfb96eeedfad297b5899a39e12f4c2c3706d0a3329d"},
+]
+
+[package.extras]
+all = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "fs (>=2.2.0,<3)", "lxml (>=4.0,<5)", "lz4 (>=1.7.4.2)", "matplotlib", "munkres", "scipy", "skia-pathops (>=0.5.0)", "sympy", "uharfbuzz (>=0.23.0)", "unicodedata2 (>=15.0.0)", "xattr", "zopfli (>=0.1.4)"]
+graphite = ["lz4 (>=1.7.4.2)"]
+interpolatable = ["munkres", "scipy"]
+lxml = ["lxml (>=4.0,<5)"]
+pathops = ["skia-pathops (>=0.5.0)"]
+plot = ["matplotlib"]
+repacker = ["uharfbuzz (>=0.23.0)"]
+symfont = ["sympy"]
+type1 = ["xattr"]
+ufo = ["fs (>=2.2.0,<3)"]
+unicode = ["unicodedata2 (>=15.0.0)"]
+woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
+
+[[package]]
+name = "fpdf2"
+version = "2.7.5"
+description = "Simple & fast PDF generation for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "fpdf2-2.7.5-py2.py3-none-any.whl", hash = "sha256:84266b0f9c0ece84e7a60b8e302c98d8082b814be58c9b222fc057a85f86dd6f"},
+    {file = "fpdf2-2.7.5.tar.gz", hash = "sha256:770392316614b4087ec78a393db1c3fc5c46bf7d2a0d673bf1ea95a6a0ba8258"},
+]
+
+[package.dependencies]
+defusedxml = "*"
+fonttools = ">=4.34.0"
+Pillow = ">=6.2.2,<9.2.0 || >=9.3.0"
 
 [[package]]
 name = "freezegun"
@@ -1376,34 +1466,39 @@ files = [
 
 [[package]]
 name = "mypy"
-version = "1.5.0"
+version = "1.5.1"
 description = "Optional static typing for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "mypy-1.5.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:ad3109bec37cc33654de8db30fe8ff3a1bb57ea65144167d68185e6dced9868d"},
-    {file = "mypy-1.5.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:b4ea3a0241cb005b0ccdbd318fb99619b21ae51bcf1660b95fc22e0e7d3ba4a1"},
-    {file = "mypy-1.5.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1fe816e26e676c1311b9e04fd576543b873576d39439f7c24c8e5c7728391ecf"},
-    {file = "mypy-1.5.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:42170e68adb1603ccdc55a30068f72bcfcde2ce650188e4c1b2a93018b826735"},
-    {file = "mypy-1.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:d145b81a8214687cfc1f85c03663a5bbe736777410e5580e54d526e7e904f564"},
-    {file = "mypy-1.5.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:c36011320e452eb30bec38b9fd3ba20569dc9545d7d4540d967f3ea1fab9c374"},
-    {file = "mypy-1.5.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:f3940cf5845b2512b3ab95463198b0cdf87975dfd17fdcc6ce9709a9abe09e69"},
-    {file = "mypy-1.5.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9166186c498170e1ff478a7f540846b2169243feb95bc228d39a67a1a450cdc6"},
-    {file = "mypy-1.5.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:725b57a19b7408ef66a0fd9db59b5d3e528922250fb56e50bded27fea9ff28f0"},
-    {file = "mypy-1.5.0-cp311-cp311-win_amd64.whl", hash = "sha256:eec5c927aa4b3e8b4781840f1550079969926d0a22ce38075f6cfcf4b13e3eb4"},
-    {file = "mypy-1.5.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:79c520aa24f21852206b5ff2cf746dc13020113aa73fa55af504635a96e62718"},
-    {file = "mypy-1.5.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:769ddb6bfe55c2bd9c7d6d7020885a5ea14289619db7ee650e06b1ef0852c6f4"},
-    {file = "mypy-1.5.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cbf18f8db7e5f060d61c91e334d3b96d6bb624ddc9ee8a1cde407b737acbca2c"},
-    {file = "mypy-1.5.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:a2500ad063413bc873ae102cf655bf49889e0763b260a3a7cf544a0cbbf7e70a"},
-    {file = "mypy-1.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:84cf9f7d8a8a22bb6a36444480f4cbf089c917a4179fbf7eea003ea931944a7f"},
-    {file = "mypy-1.5.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:a551ed0fc02455fe2c1fb0145160df8336b90ab80224739627b15ebe2b45e9dc"},
-    {file = "mypy-1.5.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:372fd97293ed0076d52695849f59acbbb8461c4ab447858cdaeaf734a396d823"},
-    {file = "mypy-1.5.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c8a7444d6fcac7e2585b10abb91ad900a576da7af8f5cffffbff6065d9115813"},
-    {file = "mypy-1.5.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:35b13335c6c46a386577a51f3d38b2b5d14aa619e9633bb756bd77205e4bd09f"},
-    {file = "mypy-1.5.0-cp39-cp39-win_amd64.whl", hash = "sha256:2c9d570f53908cbea326ad8f96028a673b814d9dca7515bf71d95fa662c3eb6f"},
-    {file = "mypy-1.5.0-py3-none-any.whl", hash = "sha256:69b32d0dedd211b80f1b7435644e1ef83033a2af2ac65adcdc87c38db68a86be"},
-    {file = "mypy-1.5.0.tar.gz", hash = "sha256:f3460f34b3839b9bc84ee3ed65076eb827cd99ed13ed08d723f9083cada4a212"},
+    {file = "mypy-1.5.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:f33592ddf9655a4894aef22d134de7393e95fcbdc2d15c1ab65828eee5c66c70"},
+    {file = "mypy-1.5.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:258b22210a4a258ccd077426c7a181d789d1121aca6db73a83f79372f5569ae0"},
+    {file = "mypy-1.5.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a9ec1f695f0c25986e6f7f8778e5ce61659063268836a38c951200c57479cc12"},
+    {file = "mypy-1.5.1-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:abed92d9c8f08643c7d831300b739562b0a6c9fcb028d211134fc9ab20ccad5d"},
+    {file = "mypy-1.5.1-cp310-cp310-win_amd64.whl", hash = "sha256:a156e6390944c265eb56afa67c74c0636f10283429171018446b732f1a05af25"},
+    {file = "mypy-1.5.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:6ac9c21bfe7bc9f7f1b6fae441746e6a106e48fc9de530dea29e8cd37a2c0cc4"},
+    {file = "mypy-1.5.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:51cb1323064b1099e177098cb939eab2da42fea5d818d40113957ec954fc85f4"},
+    {file = "mypy-1.5.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:596fae69f2bfcb7305808c75c00f81fe2829b6236eadda536f00610ac5ec2243"},
+    {file = "mypy-1.5.1-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:32cb59609b0534f0bd67faebb6e022fe534bdb0e2ecab4290d683d248be1b275"},
+    {file = "mypy-1.5.1-cp311-cp311-win_amd64.whl", hash = "sha256:159aa9acb16086b79bbb0016145034a1a05360626046a929f84579ce1666b315"},
+    {file = "mypy-1.5.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:f6b0e77db9ff4fda74de7df13f30016a0a663928d669c9f2c057048ba44f09bb"},
+    {file = "mypy-1.5.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:26f71b535dfc158a71264e6dc805a9f8d2e60b67215ca0bfa26e2e1aa4d4d373"},
+    {file = "mypy-1.5.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2fc3a600f749b1008cc75e02b6fb3d4db8dbcca2d733030fe7a3b3502902f161"},
+    {file = "mypy-1.5.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:26fb32e4d4afa205b24bf645eddfbb36a1e17e995c5c99d6d00edb24b693406a"},
+    {file = "mypy-1.5.1-cp312-cp312-win_amd64.whl", hash = "sha256:82cb6193de9bbb3844bab4c7cf80e6227d5225cc7625b068a06d005d861ad5f1"},
+    {file = "mypy-1.5.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:4a465ea2ca12804d5b34bb056be3a29dc47aea5973b892d0417c6a10a40b2d65"},
+    {file = "mypy-1.5.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:9fece120dbb041771a63eb95e4896791386fe287fefb2837258925b8326d6160"},
+    {file = "mypy-1.5.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d28ddc3e3dfeab553e743e532fb95b4e6afad51d4706dd22f28e1e5e664828d2"},
+    {file = "mypy-1.5.1-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:57b10c56016adce71fba6bc6e9fd45d8083f74361f629390c556738565af8eeb"},
+    {file = "mypy-1.5.1-cp38-cp38-win_amd64.whl", hash = "sha256:ff0cedc84184115202475bbb46dd99f8dcb87fe24d5d0ddfc0fe6b8575c88d2f"},
+    {file = "mypy-1.5.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:8f772942d372c8cbac575be99f9cc9d9fb3bd95c8bc2de6c01411e2c84ebca8a"},
+    {file = "mypy-1.5.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:5d627124700b92b6bbaa99f27cbe615c8ea7b3402960f6372ea7d65faf376c14"},
+    {file = "mypy-1.5.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:361da43c4f5a96173220eb53340ace68cda81845cd88218f8862dfb0adc8cddb"},
+    {file = "mypy-1.5.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:330857f9507c24de5c5724235e66858f8364a0693894342485e543f5b07c8693"},
+    {file = "mypy-1.5.1-cp39-cp39-win_amd64.whl", hash = "sha256:c543214ffdd422623e9fedd0869166c2f16affe4ba37463975043ef7d2ea8770"},
+    {file = "mypy-1.5.1-py3-none-any.whl", hash = "sha256:f757063a83970d67c444f6e01d9550a7402322af3557ce7630d3c957386fa8f5"},
+    {file = "mypy-1.5.1.tar.gz", hash = "sha256:b031b9601f1060bf1281feab89697324726ba0c0bae9d7cd7ab4b690940f0b92"},
 ]
 
 [package.dependencies]
@@ -1566,6 +1661,27 @@ files = [
     {file = "pathspec-0.11.2-py3-none-any.whl", hash = "sha256:1d6ed233af05e679efb96b1851550ea95bbb64b7c490b0f5aa52996c11e92a20"},
     {file = "pathspec-0.11.2.tar.gz", hash = "sha256:e0d8d0ac2f12da61956eb2306b69f9469b42f4deb0f3cb6ed47b9cce9996ced3"},
 ]
+
+[[package]]
+name = "pdfminer-six"
+version = "20221105"
+description = "PDF parser and analyzer"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "pdfminer.six-20221105-py3-none-any.whl", hash = "sha256:1eaddd712d5b2732f8ac8486824533514f8ba12a0787b3d5fe1e686cd826532d"},
+    {file = "pdfminer.six-20221105.tar.gz", hash = "sha256:8448ab7b939d18b64820478ecac5394f482d7a79f5f7eaa7703c6c959c175e1d"},
+]
+
+[package.dependencies]
+charset-normalizer = ">=2.0.0"
+cryptography = ">=36.0.0"
+
+[package.extras]
+dev = ["black", "mypy (==0.931)", "nox", "pytest"]
+docs = ["sphinx", "sphinx-argparse"]
+image = ["Pillow"]
 
 [[package]]
 name = "pendulum"
@@ -2019,6 +2135,28 @@ files = [
 
 [package.extras]
 test = ["coverage", "mypy", "ruff", "wheel"]
+
+[[package]]
+name = "pypdf"
+version = "3.15.2"
+description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "pypdf-3.15.2-py3-none-any.whl", hash = "sha256:f6e598292be34187287a609c72815c1502b3dc2c997b374ba0870ce79d2e975a"},
+    {file = "pypdf-3.15.2.tar.gz", hash = "sha256:cdf7d75ebb8901f3352cf9488c5f662c6de9c52e432c429d15cada67ba372fce"},
+]
+
+[package.dependencies]
+typing_extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
+
+[package.extras]
+crypto = ["PyCryptodome", "cryptography"]
+dev = ["black", "flit", "pip-tools", "pre-commit (<2.18.0)", "pytest-cov", "pytest-socket", "pytest-timeout", "wheel"]
+docs = ["myst_parser", "sphinx", "sphinx_rtd_theme"]
+full = ["Pillow (>=8.0.0)", "PyCryptodome", "cryptography"]
+image = ["Pillow (>=8.0.0)"]
 
 [[package]]
 name = "pyperclip"
@@ -2609,14 +2747,14 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "11.0.5"
+version = "11.0.6"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_core-11.0.5-py3-none-any.whl", hash = "sha256:05a829ff66f4bf0d6de0934fa7946f1e5f199a48026ddd51664ddc272a32a6fa"},
-    {file = "rpaframework_core-11.0.5.tar.gz", hash = "sha256:7e354b275d3a940921b842004c2dbfc2f71b957a73ba1db0be1c41458e2e08d4"},
+    {file = "rpaframework_core-11.0.6-py3-none-any.whl", hash = "sha256:d2e7fb820a8afb5cf1fad6a43568b883cbfdaafe3e91b845785c39977b1cfed7"},
+    {file = "rpaframework_core-11.0.6.tar.gz", hash = "sha256:41f081f14f8c61fd8afd9c2debc62ea27c1990275f75fa24d500f7373a1355f8"},
 ]
 
 [package.dependencies]
@@ -2626,7 +2764,50 @@ psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
 pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 selenium = ">=4.6.1,<5.0.0"
 uiautomation = {version = ">=2.0.15,<3.0.0", markers = "sys_platform == \"win32\""}
-webdriver-manager = ">=3.9.1,<4.0.0"
+webdriver-manager = "4.0.0"
+
+[[package]]
+name = "rpaframework-pdf"
+version = "7.1.6"
+description = "PDF library of RPA Framework"
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "rpaframework_pdf-7.1.6-py3-none-any.whl", hash = "sha256:3cbfb2e35f6d3ba9e222ce4cb0a2f2e857f992338862895bb8db67bd181e3864"},
+    {file = "rpaframework_pdf-7.1.6.tar.gz", hash = "sha256:341a663ce7afd00f8666fc31059c802ad2f549616736b496b3d1f895336fb6bf"},
+]
+
+[package.dependencies]
+fpdf2 = ">=2.7.3,<3.0.0"
+"pdfminer.six" = "20221105"
+pypdf = ">=3.15.0,<4.0.0"
+robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
+robotframework-pythonlibcore = ">=4.0.0,<5.0.0"
+rpaframework-core = ">=11.0.0,<12.0.0"
+
+[[package]]
+name = "rpaframework-windows"
+version = "7.3.2"
+description = "Windows library for RPA Framework"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "rpaframework_windows-7.3.2-py3-none-any.whl", hash = "sha256:b812b15191d959a96772c210d3c4bbfaf49ac20c404ac17dd2598399f8342893"},
+    {file = "rpaframework_windows-7.3.2.tar.gz", hash = "sha256:e90940c831c7dc0d7f31ec7cf18819bfdc6871a08d273ea9c90a102c8a122b8f"},
+]
+
+[package.dependencies]
+comtypes = {version = ">=1.1.11,<2.0.0", markers = "sys_platform == \"win32\""}
+fire = ">=0.4.0,<0.5.0"
+psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
+pynput-robocorp-fork = ">=5.0.0,<6.0.0"
+pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
+robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.0.0"
+robotframework-pythonlibcore = ">=4.0.0,<5.0.0"
+rpaframework-core = ">=11.0.0,<12.0.0"
+uiautomation = ">=2.0.15,<3.0.0"
 
 [[package]]
 name = "rpds-py"
@@ -2771,19 +2952,19 @@ urllib3 = {version = ">=1.26,<3", extras = ["socks"]}
 
 [[package]]
 name = "setuptools"
-version = "68.0.0"
+version = "68.1.2"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "setuptools-68.0.0-py3-none-any.whl", hash = "sha256:11e52c67415a381d10d6b462ced9cfb97066179f0e871399e006c4ab101fc85f"},
-    {file = "setuptools-68.0.0.tar.gz", hash = "sha256:baf1fdb41c6da4cd2eae722e135500da913332ab3f2f5c7d33af9b492acb5235"},
+    {file = "setuptools-68.1.2-py3-none-any.whl", hash = "sha256:3d8083eed2d13afc9426f227b24fd1659489ec107c0e86cec2ffdde5c92e790b"},
+    {file = "setuptools-68.1.2.tar.gz", hash = "sha256:3d4dfa6d95f1b101d695a6160a7626e15583af71a5f52176efa5d39a054d475d"},
 ]
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
-testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5,<=7.1.2)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
@@ -2964,19 +3145,19 @@ yapf = "*"
 
 [[package]]
 name = "sphinx-rtd-theme"
-version = "1.2.2"
+version = "1.3.0"
 description = "Read the Docs theme for Sphinx"
 category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 files = [
-    {file = "sphinx_rtd_theme-1.2.2-py2.py3-none-any.whl", hash = "sha256:6a7e7d8af34eb8fc57d52a09c6b6b9c46ff44aea5951bc831eeb9245378f3689"},
-    {file = "sphinx_rtd_theme-1.2.2.tar.gz", hash = "sha256:01c5c5a72e2d025bd23d1f06c59a4831b06e6ce6c01fdd5ebfe9986c0a880fc7"},
+    {file = "sphinx_rtd_theme-1.3.0-py2.py3-none-any.whl", hash = "sha256:46ddef89cc2416a81ecfbeaceab1881948c014b1b6e4450b815311a89fb977b0"},
+    {file = "sphinx_rtd_theme-1.3.0.tar.gz", hash = "sha256:590b030c7abb9cf038ec053b95e5380b5c70d61591eb0b552063fbe7c41f0931"},
 ]
 
 [package.dependencies]
 docutils = "<0.19"
-sphinx = ">=1.6,<7"
+sphinx = ">=1.6,<8"
 sphinxcontrib-jquery = ">=4,<5"
 
 [package.extras]
@@ -3119,6 +3300,21 @@ files = [
 doc = ["reno", "sphinx", "tornado (>=4.5)"]
 
 [[package]]
+name = "termcolor"
+version = "2.3.0"
+description = "ANSI color formatting for output in terminal"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "termcolor-2.3.0-py3-none-any.whl", hash = "sha256:3afb05607b89aed0ffe25202399ee0867ad4d3cb4180d98aaf8eefa6a5f7d475"},
+    {file = "termcolor-2.3.0.tar.gz", hash = "sha256:b5b08f68937f138fe92f6c089b99f1e2da0ae56c52b78bf7075fd95420fd9a5a"},
+]
+
+[package.extras]
+tests = ["pytest", "pytest-cov"]
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -3205,7 +3401,7 @@ test = ["mock (>=1.0.1)", "nose (>=1.3.3)", "vcrpy (>=1.10.3)"]
 name = "typing-extensions"
 version = "4.7.1"
 description = "Backported and Experimental Type Hints for Python 3.7+"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -3324,14 +3520,14 @@ test = ["flake8 (>=2.4.0)", "isort (>=4.2.2)", "pytest (>=2.2.3)"]
 
 [[package]]
 name = "webdriver-manager"
-version = "3.9.1"
+version = "4.0.0"
 description = "Library provides the way to automatically manage drivers for different browsers"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "webdriver_manager-3.9.1-py2.py3-none-any.whl", hash = "sha256:1dfc29a786abb97ba28076d4766d931064eeeac71a9685a3e8d46f5d363fcbe3"},
-    {file = "webdriver_manager-3.9.1.tar.gz", hash = "sha256:cd1f49ebb325a98b4dc3c41056f5b645e82fff3f83e346607844ec0bdf561c0b"},
+    {file = "webdriver_manager-4.0.0-py2.py3-none-any.whl", hash = "sha256:05f58ab599b907b03e0aa8d6b43624b1ca8c12d5d48455c79c531b9052ae2356"},
+    {file = "webdriver_manager-4.0.0.tar.gz", hash = "sha256:2b8d1c2cb590d296ade18bc7bc2589578a868f5587133922d744641f6a757a20"},
 ]
 
 [package.dependencies]
@@ -3526,4 +3722,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "9343b1b04e4dc292605f64fc2e4977debc99cb576c4c1f9154200935d340667a"
+content-hash = "673de47c0fd40afb1cb168282de20afa0609a2504dbec10e11107a187b75a502"

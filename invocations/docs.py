@@ -22,6 +22,7 @@ EXCLUDES = [
     "RPA.Robocorp.utils*",
     "RPA.Windows.keywords*",
     "RPA.Windows.utils*",
+    "RPA.application*",
     "RPA.core*",
     "RPA.recognition*",
     "RPA.scripts*",

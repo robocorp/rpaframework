@@ -1,39 +1,14 @@
-import atexit
-import logging
-from pathlib import Path
-import platform
-
-if platform.system() == "Windows":
-    import win32com.client
-    from win32com.client import constants
-else:
-    logging.getLogger(__name__).warning(
-        "RPA.Word.Application library works only on Windows platform"
-    )
+from RPA.application import (
+    BaseApplication,
+    catch_com_error,
+    constants,
+    to_path,
+    to_str_path,
+)
 
 
-FILEFORMATS = {
-    "DEFAULT": "wdFormatDocumentDefault",
-    "PDF": "wdFormatPDF",
-    "RTF": "wdFormatRTF",
-    "HTML": "wdFormatHTML",
-    "WORD97": "wdFormatDocument97",
-    "OPENDOCUMENT": "wdFormatOpenDocumentText",
-}
-
-
-class Application:
-    """`Word.Application` is a library for controlling a Word application.
-
-    *Note*. Library works only Windows platform.
-
-    Library will automatically close the Word application at the end of the
-    task execution. This can be changed by importing library with `autoexit` setting.
-
-    .. code-block:: robotframework
-
-        *** Settings ***
-        Library                 RPA.Word.Application   autoexit=${FALSE}
+class Application(BaseApplication):
+    """`Word.Application` is a library for controlling the Word application.
 
     **Examples**
 
@@ -69,73 +44,55 @@ class Application:
         app.quit_application()
     """
 
-    ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
-
-    def __init__(self, autoexit: bool = True) -> None:
-        self.logger = logging.getLogger(__name__)
-        self.app = None
-        self.filename = None
-
-        if platform.system() != "Windows":
-            self.logger.warning(
-                "Word application library requires Windows dependencies to work."
-            )
-
-        if autoexit:
-            atexit.register(self.quit_application)
-
-    def open_application(
-        self, visible: bool = False, display_alerts: bool = False
-    ) -> None:
-        """Open the Word application.
-
-        :param visible: show window after opening
-        :param display_alerts: show alert popups
-        """
-        self.app = win32com.client.gencache.EnsureDispatch("Word.Application")
-
-        if hasattr(self.app, "Visible"):
-            self.app.Visible = visible
-
-        # show eg. file overwrite warning or not
-        if hasattr(self.app, "DisplayAlerts"):
-            self.app.DisplayAlerts = display_alerts
-
-    def close_document(self, save_changes: bool = False) -> None:
-        """Close the active document (if open)."""
-        if self.app is not None:
-            self.app.ActiveDocument.Close(save_changes)
-
-    def quit_application(self, save_changes: bool = False) -> None:
-        """Quit the application."""
-        if self.app is not None:
-            self.close_document(save_changes)
-            self.app.Quit()
-            self.app = None
+    APP_DISPATCH = "Word.Application"
+    FILEFORMATS = {
+        "DEFAULT": "wdFormatDocumentDefault",
+        "PDF": "wdFormatPDF",
+        "RTF": "wdFormatRTF",
+        "HTML": "wdFormatHTML",
+        "WORD97": "wdFormatDocument97",
+        "OPENDOCUMENT": "wdFormatOpenDocumentText",
+    }
 
     def open_file(self, filename: str, read_only: bool = True) -> None:
         """Open Word document with filename.
 
         :param filename: Word document path
         """
-        path = str(Path(filename).resolve())
-        self.logger.info("Opening document: %s", path)
+        path = to_path(filename)
+        if not path.is_file():
+            raise FileNotFoundError(f"{str(path)!r} doesn't exist")
 
-        doc = self.app.Documents.Open(
-            FileName=path,
-            ConfirmConversions=False,
-            ReadOnly=read_only,
-            AddToRecentFiles=False,
-        )
+        state = "read-only" if read_only else "read-write"
+        self.logger.info("Opening document (%s): %s", state, path)
+        with catch_com_error():
+            doc = self.app.Documents.Open(
+                FileName=str(path),
+                ConfirmConversions=False,
+                ReadOnly=read_only,
+                AddToRecentFiles=False,
+            )
+
+        err_msg = None
+        if doc is None:
+            err_msg = (
+                "Got null object when opening the document, enable RDP connection if"
+                " running by Control Room through a Worker service"
+            )
+        elif not hasattr(doc, "Activate"):
+            err_msg = (
+                "The document can't be activated, open it manually and dismiss any"
+                " alert you may encounter first"
+            )
+        if err_msg:
+            raise IOError(err_msg)
 
         doc.Activate()
         self.app.ActiveWindow.View.ReadingLayout = False
-        self.filename = path
 
     def create_new_document(self) -> None:
         """Create new document for Word application"""
-        if self.app:
+        with catch_com_error():
             self.app.Documents.Add()
 
     def export_to_pdf(self, filename: str) -> None:
@@ -143,10 +100,11 @@ class Application:
 
         :param filename: PDF to export WORD into
         """
-        path = str(Path(filename).resolve())
-        self.app.ActiveDocument.ExportAsFixedFormat(
-            OutputFileName=path, ExportFormat=constants.wdExportFormatPDF
-        )
+        path = to_str_path(filename)
+        with catch_com_error():
+            self._active_document.ExportAsFixedFormat(
+                OutputFileName=path, ExportFormat=constants.wdExportFormatPDF
+            )
 
     def write_text(self, text: str, newline: bool = True) -> None:
         """Writes given text at the end of the document
@@ -158,7 +116,6 @@ class Application:
         if newline:
             text = f"\n{text}"
         self.app.Selection.TypeText(text)
-        # self.app.ActiveDocument.Content.InsertAfter(text)
 
     def replace_text(self, find: str, replace: str) -> None:
         """Replace text in active document
@@ -166,14 +123,14 @@ class Application:
         :param find: text to replace
         :param replace: new text
         """
-        self.app.ActiveDocument.Content.Find.Execute(FindText=find, ReplaceWith=replace)
+        self._active_document.Content.Find.Execute(FindText=find, ReplaceWith=replace)
 
     def set_header(self, text: str) -> None:
         """Set header for the active document
 
         :param text: header text to set
         """
-        for section in self.app.ActiveDocument.Sections:
+        for section in self._active_document.Sections:
             for header in section.Headers:
                 header.Range.Text = text
 
@@ -182,19 +139,19 @@ class Application:
 
         :param text: footer text to set
         """
-        for section in self.app.ActiveDocument.Sections:
+        for section in self._active_document.Sections:
             for footer in section.Footers:
                 footer.Range.Text = text
 
     def save_document(self) -> None:
         """Save active document"""
         # Accept all revisions
-        self.app.ActiveDocument.Revisions.AcceptAll()
+        self._active_document.Revisions.AcceptAll()
         # Delete all comments
-        if self.app.ActiveDocument.Comments.Count >= 1:
-            self.app.ActiveDocument.DeleteAllComments()
+        if self._active_document.Comments.Count >= 1:
+            self._active_document.DeleteAllComments()
 
-        self.app.ActiveDocument.Save()
+        self._active_document.Save()
 
     def save_document_as(self, filename: str, fileformat: str = None) -> None:
         """Save document with filename and optionally with given fileformat
@@ -203,25 +160,25 @@ class Application:
         :param fileformat: see @FILEFORMATS dictionary for possible format,
             defaults to None
         """
-        path = str(Path(filename).resolve())
+        path = to_str_path(filename)
 
         # Accept all revisions
-        self.app.ActiveDocument.Revisions.AcceptAll()
+        self._active_document.Revisions.AcceptAll()
         # Delete all comments
-        if self.app.ActiveDocument.Comments.Count >= 1:
-            self.app.ActiveDocument.DeleteAllComments()
+        if self._active_document.Comments.Count >= 1:
+            self._active_document.DeleteAllComments()
 
-        if fileformat and fileformat.upper() in FILEFORMATS.keys():
+        if fileformat and fileformat.upper() in self.FILEFORMATS:
             self.logger.debug("Saving with file format: %s", fileformat)
-            format_name = FILEFORMATS[fileformat.upper()]
+            format_name = self.FILEFORMATS[fileformat.upper()]
             format_type = getattr(constants, format_name)
         else:
             format_type = constants.wdFormatDocumentDefault
 
         try:
-            self.app.ActiveDocument.SaveAs2(path, FileFormat=format_type)
+            self._active_document.SaveAs2(path, FileFormat=format_type)
         except AttributeError:
-            self.app.ActiveDocument.SaveAs(path, FileFormat=format_type)
+            self._active_document.SaveAs(path, FileFormat=format_type)
 
         self.logger.info("File saved to: %s", path)
 
@@ -230,4 +187,4 @@ class Application:
 
         :return: texts
         """
-        return self.app.ActiveDocument.Content.Text
+        return self._active_document.Content.Text

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "25.0.1"
+version = "26.0.1"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -35,7 +35,9 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 docutils = "*"
-rpaframework-core = "^11.0.5"
+rpaframework-core = "^11.0.6"
+rpaframework-pdf = "^7.1.6"
+rpaframework-windows = { version = "^7.3.2", platform = "win32" }
 java-access-bridge-wrapper = "0.14.1"
 robocorp-storage = "^0.3.2"
 jsonpath-ng = "^1.5.2"
@@ -68,7 +70,7 @@ cryptography = "^41.0.3"
 mss = "^6.0.0"
 chardet = "^3.0.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
-selenium = "^4.6.1,!=4.10.0"
+selenium = "4.11.2"
 click = "^8.1.2"
 PyYAML = ">=5.4.1,<7.0.0"
 tenacity = "^8.0.1"

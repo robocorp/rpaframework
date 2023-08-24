@@ -24,13 +24,12 @@ from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver import (
     ChromeOptions,
     EdgeOptions,
-    FirefoxOptions,
+    FirefoxOptions as _FirefoxOptions,
     FirefoxProfile,
     IeOptions,
 )
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
-from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
 from selenium.webdriver.remote.shadowroot import ShadowRoot
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
@@ -96,6 +95,15 @@ class RobocorpElementFinder(ElementFinder):
         # NOTE(cmin764): This will allow the finder to fully parse the locator and look
         #  for elements even under a shadow root.
         return isinstance(element, ShadowRoot) or super()._is_webelement(element)
+
+
+class FirefoxOptions(_FirefoxOptions):
+    """Wrapped Firefox options in order to fix behavior."""
+
+    @property
+    def binary_location(self) -> Optional[str]:
+        # pylint: disable=protected-access
+        return self.binary._start_cmd if self.binary else None
 
 
 class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
@@ -178,9 +186,10 @@ class Selenium(SeleniumLibrary):
     AVAILABLE_OPTIONS = {
         # Supporting options only for a specific range of browsers.
         "chrome": selenium_webdriver.ChromeOptions,
-        "firefox": selenium_webdriver.FirefoxOptions,
+        "firefox": FirefoxOptions,
         "edge": selenium_webdriver.EdgeOptions,
         "chromiumedge": selenium_webdriver.EdgeOptions,
+        "safari": selenium_webdriver.SafariOptions,
         "ie": selenium_webdriver.IeOptions,
     }
     AVAILABLE_SERVICES = {
@@ -220,7 +229,7 @@ class Selenium(SeleniumLibrary):
         # Refresh plugins list
         kwargs["plugins"] = ",".join(plugins)
 
-        SeleniumLibrary.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._element_finder = RobocorpElementFinder(self)
 
         # Add inherit/overridden library keywords.
@@ -267,17 +276,13 @@ class Selenium(SeleniumLibrary):
         for driver in connections:
             try:
                 if driver_only:
-                    if isinstance(driver, IeWebDriver):
-                        service = driver.iedriver
-                    else:
-                        service = driver.service
                     # A `service.stop()` will hang here, so killing the process
                     #  directly is the only way.
-                    service.process.kill()
+                    driver.service.process.kill()
                 else:
-                    driver.quit()
+                    driver.quit()  # quits the browser as well
             except Exception as exc:  # pylint: disable=broad-except
-                self.logger.debug("Encountered error during auto-close: %s", exc)
+                self.logger.warning("Encountered error during auto-close: %s", exc)
 
     @property
     def location(self) -> str:
@@ -753,10 +758,7 @@ class Selenium(SeleniumLibrary):
                 "Profiles are supported with Chromium-based browsers only!"
             )
 
-        try:
-            path = options.binary_location or None
-        except AttributeError:
-            path = None
+        path = getattr(options, "binary_location", None)
         if path:
             self.logger.warning(
                 f"The custom provided browser ({path}) might be "
