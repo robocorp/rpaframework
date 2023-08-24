@@ -8,13 +8,13 @@ authors = ["RPA Framework <rpafw@robocorp.com>"]
 python = "^3.8"
 robotframework-browser = { version = "^17.2.0", python = ">=3.8,<4.0" }
 rpaframework = { path = "packages/main", develop = true }
-rpaframework-assistant = "^2.3.0"
-rpaframework-aws = "^5.2.8"
+rpaframework-assistant = "^3.0.0"
+rpaframework-aws = "^5.3.0"
 rpaframework-dialogs = "^4.0.4"
-rpaframework-google = "^7.0.3"
-rpaframework-openai = "^1.2.0"
-rpaframework-recognition = "^5.1.2"
-rpaframework-windows = "^7.3.2"
+rpaframework-google = "^7.1.0"
+rpaframework-openai = "^1.3.0"
+rpaframework-recognition = "^5.2.0"
+rpaframework-windows = "^7.4.0"
 
 [tool.poetry.group.dev.dependencies]
 robotframeworklexer = "^1.1"
