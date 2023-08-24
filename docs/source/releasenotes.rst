@@ -19,7 +19,7 @@ Latest versions
 
   - All packages will be taking into use the latest `robotframework`
     version (**6.1.1**).
-  - The minimum Python version has set to **3.8**.
+  - The minimum Python version is set to **3.8**.
 
   - All new package versions are listed below.
 
