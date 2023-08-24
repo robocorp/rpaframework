@@ -1079,7 +1079,7 @@ class Assistant:
         :param default: The default set date
         :param label:   Label for the date input field
 
-        Displays a date input widget. The selection the user makes will be available
+        Displays a date input. The selection the user makes will be available
         as a ``date`` object in the ``name`` field of the result.
         The ``default`` argument can be a pre-set date as object or string in
         "YYYY-MM-DD" format, otherwise the current date is used.
@@ -1105,8 +1105,7 @@ class Assistant:
                 print("User birthdate year should be: ", result.birthdate.year)
         """  # noqa: E501
 
-        def validate(e: ControlEvent):
-            date_text: str = e.data
+        def validate(date_text: str):
             if not date_text:
                 return None
             try:
@@ -1126,10 +1125,11 @@ class Assistant:
                     raise e
             self._client.results[name] = default
 
+        self._client.date_inputs.append(name)
         self._client.add_element(
             name=name,
             element=TextField(label=label, hint_text="YYYY-MM-DD", value=default),
-            validation_func=validate,
+            validation_func=self._callbacks.python_validation(name, validate),
         )
 
     @keyword(tags=["input"])
@@ -1369,6 +1369,9 @@ class Assistant:
 
     def _get_results(self) -> DotDict:
         results = self._client.results
+        for name, value in results.items():
+            if name in self._client.date_inputs and isinstance(value, str):
+                results[name] = date.fromisoformat(value)
         return DotDict(**results)
 
     @keyword(tags=["dialog"])
