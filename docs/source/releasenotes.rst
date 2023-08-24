@@ -12,15 +12,21 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-3.0.0 - 24 Aug 2023
---------------------
-- Library **RPA.Assistant** (:pr:`1068`):
-  - Fix Date Input validations and return value as Date object instead of string.
-  - Add Python examples for every Keyword.
+- Library **RPA.Assistant** (:pr:`1068`; ``rpaframework-assistant`` **3.0.0**):
+
+  - Fix ``Add Date Input`` validation and return value as `Date` object instead of a
+    string.
+  - Add Python examples for every keyword.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+26.0.3 - 24 Aug 2023
+--------------------
+
+- Library **RPA.Browser.Selenium**: Properly show webdriver errors in case the initial
+  default is not found in PATH.
 
 26.0.2 - 24 Aug 2023
 --------------------
