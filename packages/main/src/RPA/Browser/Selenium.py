@@ -881,7 +881,9 @@ class Selenium(SeleniumLibrary):
                 #  `SeleniumManager` from early stage, otherwise it will be activated
                 #  when the `WebDriver` class itself is instantiated with a null
                 #  executable path.
-                if not (executable_path and shutil.which(executable_path)):
+                if executable_path:
+                    executable_path = shutil.which(executable_path)
+                if not executable_path:
                     raise WebDriverException(
                         f"Webdriver executable {executable_path!r} is not in PATH"
                         " (with disabled Selenium Manager)"
