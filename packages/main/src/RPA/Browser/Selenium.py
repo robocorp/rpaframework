@@ -193,13 +193,14 @@ class Selenium(SeleniumLibrary):
         "ie": selenium_webdriver.IeOptions,
     }
     AVAILABLE_SERVICES = {
-        # Supporting services only for a specific range of browsers.
-        "chrome": selenium_webdriver.chrome.service.Service,
-        "firefox": selenium_webdriver.firefox.service.Service,
-        "edge": selenium_webdriver.edge.service.Service,
-        "chromiumedge": selenium_webdriver.edge.service.Service,
-        "safari": selenium_webdriver.safari.service.Service,
-        "ie": selenium_webdriver.ie.service.Service,
+        # Supporting services and their default webdriver binaries only for a specific
+        #  range of browsers.
+        "chrome": (selenium_webdriver.chrome.service.Service, "chromedriver"),
+        "firefox": (selenium_webdriver.firefox.service.Service, "geckodriver"),
+        "edge": (selenium_webdriver.edge.service.Service, "msedgedriver"),
+        "chromiumedge": (selenium_webdriver.edge.service.Service, "msedgedriver"),
+        "safari": (selenium_webdriver.safari.service.Service, "safaridriver"),
+        "ie": (selenium_webdriver.ie.service.Service, "IEDriverServer"),
     }
     SUPPORTED_BROWSERS = dict(
         {name: name.capitalize() for name in AVAILABLE_SERVICES},
@@ -207,10 +208,6 @@ class Selenium(SeleniumLibrary):
     )
     # Both driver and browser lower-case names.
     CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge", "msedge"]
-
-    ERR_WEBDRIVER_NOT_AVAILABLE = OSError(
-        "Webdriver executable not in PATH (with disabled Selenium manager)"
-    )
 
     def __init__(self, *args, **kwargs):
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
@@ -871,23 +868,28 @@ class Selenium(SeleniumLibrary):
         if profile_name is not None:
             options.add_argument(f"--profile-directory={profile_name}")
 
-    def _augment_service_class(self, Service: type) -> type:
+    def _get_service_class(self, lower_browser: str) -> type:
+        Service, default_webdriver = self.AVAILABLE_SERVICES[lower_browser]
+
         class BrowserService(Service):
             """Custom service class wrapping the picked browser's one."""
 
-            # pylint: disable=no-self-argument
-            def _start_process(this, *args, **kwargs):
-                try:
-                    return super()._start_process(*args, **kwargs)
-                except WebDriverException as exc:
-                    if "path" in str(exc).lower():
-                        # Raises differently in order to not trigger the default
-                        #  Selenium Manager webdriver download, while letting the error
-                        #  bubble up. (so it's caught and handled by us instead, in
-                        #  order to let our core's webdriver-manager to handle the
-                        #  download)
-                        raise self.ERR_WEBDRIVER_NOT_AVAILABLE from exc
-                    raise
+            def __init__(
+                self, *args, executable_path: str = default_webdriver, **kwargs
+            ):
+                # NOTE(cmin764): Starting with Selenium 4.9.1, we have to block their
+                #  `SeleniumManager` from early stage, otherwise it will be activated
+                #  when the `WebDriver` class itself is instantiated with a null
+                #  executable path.
+                if executable_path:
+                    executable_path = shutil.which(executable_path)
+                if not executable_path:
+                    raise WebDriverException(
+                        f"Webdriver executable {executable_path!r} is not in PATH"
+                        " (with disabled Selenium Manager)"
+                    )
+
+                super().__init__(*args, executable_path=executable_path, **kwargs)
 
             # pylint: disable=no-self-argument
             def __del__(this) -> None:
@@ -915,7 +917,6 @@ class Selenium(SeleniumLibrary):
                 "service_log_path": None,
                 "port": 0,
             }
-            service_args = None  # for unsupported manual injection
             for name, default in service_kwargs.items():
                 service_kwargs[name] = kwargs.pop(name, default)
             service_kwargs["log_path"] = service_kwargs.pop("service_log_path")
@@ -923,21 +924,13 @@ class Selenium(SeleniumLibrary):
                 service_kwargs["executable_path"] = path
 
             # Instantiate the right service to be passed during the webdriver creation.
-            Service = self.AVAILABLE_SERVICES[browser.lower()]
-            if Service is selenium_webdriver.safari.service.Service:
+            lower_browser = browser.lower()
+            if lower_browser == "safari":
                 service_kwargs.pop("log_path")  # not supported at all
-            elif Service is selenium_webdriver.ie.service.Service:
+            elif lower_browser == "ie":
                 service_kwargs["log_file"] = service_kwargs.pop("log_path")
-                service_args = service_kwargs.pop("service_args")
-            BrowserService = self._augment_service_class(Service)
+            BrowserService = self._get_service_class(lower_browser)
             service = BrowserService(**service_kwargs)
-            if service_args:
-                service.service_args.extend(service_args)
-            # NOTE(cmin764): Starting with Selenium 4.9.1, we have to block their
-            #  `SeleniumManager` from early stage, otherwise it will be activated when
-            #  the WebDriver class itself is instantiated without throwing any error.
-            if not shutil.which(service.path):
-                raise self.ERR_WEBDRIVER_NOT_AVAILABLE
 
             # Capitalize browser name just to ensure it works if passed as lower case.
             # NOTE: But don't break a browser name like "ChromiumEdge".
