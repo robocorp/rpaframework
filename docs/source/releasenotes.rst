@@ -22,6 +22,12 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+26.0.3 - 24 Aug 2023
+--------------------
+
+- Library **RPA.Browser.Selenium**: Properly show webdriver errors in case the initial
+  default is not found in PATH.
+
 26.0.2 - 24 Aug 2023
 --------------------
 
