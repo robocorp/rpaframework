@@ -12,6 +12,10 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 26.1.0 - 24 Aug 2023
 --------------------
 
@@ -36,9 +40,6 @@ Latest versions
     - Fix ``Add Date Input`` validation and return value as `Date` object instead of
       a string.
     - Add Python examples for every keyword.
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 26.0.3 - 24 Aug 2023
 --------------------
