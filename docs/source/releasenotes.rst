@@ -33,7 +33,8 @@ Latest versions
 
   - Library **RPA.Assistant** (:pr:`1068`; ``rpaframework-assistant`` **3.0.0**):
 
-    - Fix Date Input validations and return value as Date object instead of string.
+    - Fix ``Add Date Input`` validation and return value as `Date` object instead of
+      a string.
     - Add Python examples for every keyword.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
