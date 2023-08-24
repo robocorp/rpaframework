@@ -19,8 +19,8 @@ Latest versions
 26.0.2 - 24 Aug 2023
 --------------------
 
-- Library **RPA.Browser.Selenium** (:pr:``): Use an already existing webdriver found
-  in PATH if one is present. Only if such default expected executable isn't found, a
+- Library **RPA.Browser.Selenium** (:pr:`1069`): Use an already existing webdriver
+  found in PATH if present. Only if such a default expected executable isn't found, a
   newly cached one will be downloaded and used. (affects all supported browsers)
 
 26.0.1 - 22 Aug 2023
