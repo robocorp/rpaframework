@@ -32,6 +32,7 @@ Latest versions
     - ``rpaframework-windows`` **7.4.0**
 
   - Library **RPA.Assistant** (:pr:`1068`; ``rpaframework-assistant`` **3.0.0**):
+
     - Fix Date Input validations and return value as Date object instead of string.
     - Add Python examples for every Keyword.
 
