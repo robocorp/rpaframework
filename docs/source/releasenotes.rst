@@ -14,7 +14,7 @@ Latest versions
 
 3.0.0 - 24 Aug 2023
 --------------------
-- Library **RPA.Assistant**:
+- Library **RPA.Assistant** (:pr:`1068`):
   - Fix Date Input validations and return value as Date object instead of string.
   - Add Python examples for every Keyword.
 
