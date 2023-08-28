@@ -237,11 +237,13 @@ class LibraryContext:
             #     ) as token:
             #         token.write(credentials.to_json())
             if use_robocorp_vault:
-                self.ctx.secrets_library().set_secret(
-                    self.ctx.robocorp_vault_name,
-                    self.ctx.robocorp_vault_secret_key,
-                    base64.b64encode(pickle.dumps(credentials)).decode("utf-8"),
+                secrets = self.ctx.secrets_library().get_secret(
+                    self.ctx.robocorp_vault_name
                 )
+                secrets[self.ctx.robocorp_vault_secret_key] = base64.b64encode(
+                    pickle.dumps(credentials)
+                ).decode("utf-8")
+                self.ctx.secrets_library().set_secret(secrets)
                 self.logger.debug("Credentials refreshed")
         if not credentials:
             raise GoogleOAuthAuthenticationError(
