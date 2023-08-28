@@ -18,6 +18,10 @@ Latest versions
 24 Aug 2023
 -----------
 
+- Library **RPA.Cloud.Google** (``rpaframework-google`` **7.1.2**):
+
+  - Fix how OAuth token is updated into Control Room Vault.
+
 - Library **RPA.Cloud.Google** (:pr:`1057`; ``rpaframework-google`` **7.1.1**):
 
   - Fix mimetype handling in overall and for Excel documents in ``Send Message``
