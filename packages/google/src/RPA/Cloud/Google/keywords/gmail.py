@@ -57,7 +57,6 @@ class GmailKeywords(LibraryContext):
         use_robocorp_vault: Optional[bool] = None,
         scopes: list = None,
         token_file: str = None,
-        save_token: bool = False,
     ) -> None:
         """Initialize Google Gmail client
 
@@ -66,7 +65,6 @@ class GmailKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param scopes: list of extra authentication scopes
         :param token_file: file path to token file
-        :param save_token: should possibly updated token be saved to file
         """
         gmail_scopes = ["gmail.send", "gmail.compose", "gmail.modify", "gmail.labels"]
         if scopes:
@@ -79,7 +77,6 @@ class GmailKeywords(LibraryContext):
             credentials_file=credentials,
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
-            save_token=save_token,
         )
 
     def create_message(

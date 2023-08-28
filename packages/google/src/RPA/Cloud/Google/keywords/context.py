@@ -229,12 +229,19 @@ class LibraryContext:
                     credentials_file, scopes
                 )
                 credentials = flow.run_local_server()
-            if save_token:
-                with open(  # pylint: disable=unspecified-encoding
-                    token_file_location, "w"
-                ) as token:
-                    token.write(credentials.to_json())
-            self.logger.debug(f"Credentials refreshed (save_token={save_token})")
+            # TODO. Commented out for now as this brings up an security warning
+            # if save_token:
+            #     with open(  # pylint: disable=unspecified-encoding
+            #         token_file_location, "w"
+            #     ) as token:
+            #         token.write(credentials.to_json())
+            if use_robocorp_vault:
+                self.ctx.secrets_library().set_secret(
+                    self.ctx.robocorp_vault_name,
+                    self.ctx.robocorp_vault_secret_key,
+                    base64.b64encode(pickle.dumps(credentials)).decode("utf-8"),
+                )
+                self.logger.debug("Credentials refreshed")
         if not credentials:
             raise GoogleOAuthAuthenticationError(
                 "Could not get Google OAuth credentials"
