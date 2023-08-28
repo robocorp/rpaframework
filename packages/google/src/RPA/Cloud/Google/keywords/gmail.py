@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from typing import Optional
 
+from email.mime.application import MIMEApplication
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
@@ -56,6 +57,7 @@ class GmailKeywords(LibraryContext):
         use_robocorp_vault: Optional[bool] = None,
         scopes: list = None,
         token_file: str = None,
+        save_token: bool = False,
     ) -> None:
         """Initialize Google Gmail client
 
@@ -64,10 +66,11 @@ class GmailKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param scopes: list of extra authentication scopes
         :param token_file: file path to token file
+        :param save_token: should possibly updated token be saved to file
         """
         gmail_scopes = ["gmail.send", "gmail.compose", "gmail.modify", "gmail.labels"]
         if scopes:
-            gmail_scopes += scopes
+            gmail_scopes = scopes
         self.service = self.init_service(
             service_name="gmail",
             api_version="v1",
@@ -76,6 +79,7 @@ class GmailKeywords(LibraryContext):
             credentials_file=credentials,
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
+            save_token=save_token,
         )
 
     def create_message(
@@ -108,19 +112,20 @@ class GmailKeywords(LibraryContext):
         if content_type is None or encoding is not None:
             content_type = "application/octet-stream"
         main_type, sub_type = content_type.split("/", 1)
-        if main_type == "text":
-            with open(attachment, "r") as fp:  # pylint: disable=unspecified-encoding
-                msg = MIMEText(fp.read(), _subtype=sub_type)
-        elif main_type == "image":
-            with open(attachment, "rb") as fp:
-                msg = MIMEImage(fp.read(), _subtype=sub_type)
-        elif main_type == "audio":
-            with open(attachment, "rb") as fp:
-                msg = MIMEAudio(fp.read(), _subtype=sub_type)
-        else:
-            with open(attachment, "rb") as fp:
-                msg = MIMEBase(main_type, sub_type)
-                msg.set_payload(fp.read())
+        self.logger.debug(
+            f"Adding attachment of main_type: {main_type} and sub_type: {sub_type}"
+        )
+        mime_type_mapping = {
+            "text": MIMEText,
+            "image": MIMEImage,
+            "audio": MIMEAudio,
+            "application": MIMEApplication,
+        }
+        read_mode = "r" if main_type == "text" else "rb"
+        with open(attachment, read_mode) as fp:  # pylint: disable=unspecified-encoding
+            mime_class = mime_type_mapping.get(main_type, MIMEBase)
+            msg = mime_class(fp.read(), _subtype=sub_type)
+
         filename = os.path.basename(attachment)
         msg.add_header("Content-Disposition", "attachment", filename=filename)
         mimeMessage.attach(msg)

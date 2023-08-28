@@ -9,6 +9,7 @@ from apiclient import discovery
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account as oauth_service_account
+from google.oauth2.credentials import Credentials
 
 
 class ElementNotFound(ValueError):
@@ -215,10 +216,11 @@ class LibraryContext:
         else:
             token_file_location = Path(token_file).absolute()
             if os.path.exists(token_file_location):
-                with open(  # pylint: disable=unspecified-encoding
-                    token_file_location, "r"
-                ) as token:
-                    credentials = pickle.loads(base64.b64decode(token.read()))
+                credentials = Credentials.from_authorized_user_file(
+                    token_file_location, scopes
+                )
+            else:
+                raise GoogleOAuthAuthenticationError(f"Could not find {token_file}")
         if not credentials or not credentials.valid:
             if credentials and credentials.expired and credentials.refresh_token:
                 credentials.refresh(Request())
@@ -228,8 +230,11 @@ class LibraryContext:
                 )
                 credentials = flow.run_local_server()
             if save_token:
-                with open(token_file_location, "wb") as token:
-                    pickle.dump(credentials, token)
+                with open(
+                    token_file_location, "w"
+                ) as token:  # pylint: disable=unspecified-encoding
+                    token.write(credentials.to_json())
+            self.logger.debug(f"Credentials refreshed (save_token={save_token})")
         if not credentials:
             raise GoogleOAuthAuthenticationError(
                 "Could not get Google OAuth credentials"
