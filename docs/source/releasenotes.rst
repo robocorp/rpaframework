@@ -12,17 +12,17 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 24 Aug 2023
 -----------
 
-- Library **RPA.Cloud.Gmail** (:pr:`1057`; ``rpaframework-google`` **7.1.1**):
+- Library **RPA.Cloud.Google** (:pr:`1057`; ``rpaframework-google`` **7.1.1**):
 
   - Fix mimetype handling in overall and for Excel documents in ``Send Message``
     keyword. (:issue:`994`)
   - Improve token handling in authentication flow.
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 26.1.0 - 24 Aug 2023
 --------------------
