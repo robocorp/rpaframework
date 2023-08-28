@@ -1,6 +1,5 @@
 import logging
 from typing import Optional, List
-from robot.api.deco import keyword
 import openai
 
 
@@ -53,7 +52,6 @@ class OpenAI:
         self.logger = logging.getLogger(__name__)
         self.service_type = "OpenAI"
 
-    @keyword
     def authorize_to_azure_openai(
         self,
         api_key: str,
@@ -99,7 +97,6 @@ class OpenAI:
         openai.api_version = api_version
         self.service_type = "Azure"
 
-    @keyword
     def authorize_to_openai(self, api_key: str) -> None:
         """Keyword for authorize to OpenAI with your API key obtained from your account.
 
@@ -123,7 +120,6 @@ class OpenAI:
         """
         openai.api_key = api_key
 
-    @keyword
     def completion_create(
         self,
         prompt: str,
@@ -198,7 +194,6 @@ class OpenAI:
         else:
             return None
 
-    @keyword
     def chat_completion_create(
         self,
         user_content: str = None,
@@ -285,7 +280,6 @@ class OpenAI:
         self.logger.info(return_list)
         return return_list
 
-    @keyword
     def image_create(
         self,
         prompt: str,
@@ -346,7 +340,6 @@ class OpenAI:
         else:
             return None
 
-    @keyword
     def image_create_variation(
         self,
         src_image: str,

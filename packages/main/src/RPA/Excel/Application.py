@@ -1,57 +1,24 @@
-import atexit
-import logging
-import platform
-import struct
+import functools
 from itertools import count
-from pathlib import Path
 from typing import Any
-from contextlib import contextmanager
 
-if platform.system() == "Windows":
-    import win32api
-    import win32com.client
-    import pywintypes
-else:
-    logging.getLogger(__name__).warning(
-        "RPA.Excel.Application library works only on Windows platform"
-    )
+from RPA.application import BaseApplication, catch_com_error, to_path, to_str_path
 
 
-def _to_unsigned(val):
-    return struct.unpack("L", struct.pack("l", val))[0]
+def requires_workbook(func):
+    """Ensures a workbook is open."""
+
+    @functools.wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if self.workbook is None:
+            raise ValueError("No workbook open")
+        return func(self, *args, **kwargs)
+
+    return wrapper
 
 
-@contextmanager
-def catch_com_error():
-    """Try to convert COM errors to human readable format."""
-    try:
-        yield
-    except pywintypes.com_error as err:  # pylint: disable=no-member
-        if err.excepinfo:
-            try:
-                msg = win32api.FormatMessage(_to_unsigned(err.excepinfo[5]))
-            except Exception:  # pylint: disable=broad-except
-                msg = err.excepinfo[2]
-        else:
-            try:
-                msg = win32api.FormatMessage(_to_unsigned(err.hresult))
-            except Exception:  # pylint: disable=broad-except
-                msg = err.strerror
-        raise RuntimeError(msg) from err
-
-
-class Application:
-    """`Excel.Application` is a library for controlling an Excel application.
-
-    *Note*. Library works only Windows platform.
-
-    Library will automatically close the Excel application at the end of the
-    task execution. This can be changed by importing library with `autoexit` setting.
-
-    .. code-block:: robotframework
-
-        *** Settings ***
-        Library                 RPA.Excel.Application   autoexit=${FALSE}
+class Application(BaseApplication):
+    """`Excel.Application` is a library for controlling the Excel application.
 
     **Examples**
 
@@ -97,68 +64,24 @@ class Application:
         app.quit_application()
     """
 
-    ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    APP_DISPATCH = "Excel.Application"
 
-    def __init__(self, autoexit: bool = True) -> None:
-        self.logger = logging.getLogger(__name__)
-        self.app = None
-        self.workbook = None
-        self.worksheet = None
-
-        if platform.system() != "Windows":
-            self.logger.warning(
-                "Excel application library requires Windows dependencies to work."
-            )
-        if autoexit:
-            atexit.register(self.quit_application)
-
-    def open_application(
-        self, visible: bool = False, display_alerts: bool = False
-    ) -> None:
-        """Open the Excel application.
-
-        :param visible: show window after opening
-        :param display_alerts: show alert popups
-        """
-        with catch_com_error():
-            self.app = win32com.client.gencache.EnsureDispatch("Excel.Application")
-            self.logger.debug("Opened application: %s", self.app)
-
-            if hasattr(self.app, "Visible"):
-                self.app.Visible = visible
-
-            # Show eg. file overwrite warning or not
-            if hasattr(self.app, "DisplayAlerts"):
-                self.app.DisplayAlerts = display_alerts
-
-    def close_document(self, save_changes: bool = False) -> None:
-        """Close the active document (if open)."""
-        if not self.workbook:
-            return
-
-        with catch_com_error():
-            self.workbook.Close(save_changes)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.workbook = None
         self.worksheet = None
 
-    def quit_application(self, save_changes: bool = False) -> None:
-        """Quit the application."""
-        if not self.app:
-            return
+    @property
+    def _active_document(self):
+        return self.workbook
 
-        self.close_document(save_changes)
-        with catch_com_error():
-            self.app.Quit()
-
-        self.app = None
+    def _deactivate_document(self):
+        self.workbook = None
+        self.worksheet = None
 
     def add_new_workbook(self) -> None:
         """Adds new workbook for Excel application"""
-        if not self.app:
-            raise ValueError("Excel application is not open")
-
         with catch_com_error():
             self.workbook = self.app.Workbooks.Add()
 
@@ -169,10 +92,13 @@ class Application:
 
         :param filename: path to filename
         """
-        if not self.app:
+        if not self._app:
             self.open_application()
 
-        path = str(Path(filename).resolve())
+        path = to_path(filename)
+        if not path.is_file():
+            raise FileNotFoundError(f"{str(path)!r} doesn't exist")
+        path = str(path)
         self.logger.info("Opening workbook: %s", path)
 
         with catch_com_error():
@@ -180,12 +106,13 @@ class Application:
                 self.workbook = self.app.Workbooks(path)
             except Exception as exc:  # pylint: disable=broad-except
                 self.logger.debug(str(exc))
-                self.logger.info("Trying to open workbook by another method")
+                self.logger.info("Trying to open workbook by another method...")
                 self.workbook = self.app.Workbooks.Open(path)
 
         self.set_active_worksheet(sheetnumber=1)
         self.logger.debug("Current workbook: %s", self.workbook)
 
+    @requires_workbook
     def set_active_worksheet(
         self, sheetname: str = None, sheetnumber: int = None
     ) -> None:
@@ -194,34 +121,21 @@ class Application:
         :param sheetname: name of Excel sheet, defaults to None
         :param sheetnumber: index of Excel sheet, defaults to None
         """
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         with catch_com_error():
             if sheetnumber:
                 self.worksheet = self.workbook.Worksheets(int(sheetnumber))
             elif sheetname:
                 self.worksheet = self.workbook.Worksheets(sheetname)
 
-    def add_new_sheet(
-        self, sheetname: str, tabname: str = None, create_workbook: bool = True
-    ) -> None:
+    def add_new_sheet(self, sheetname: str, create_workbook: bool = True) -> None:
         """Add new worksheet to workbook. Workbook is created by default if
         it does not exist.
 
         :param sheetname: name for sheet
-        :param tabname: name for tab (deprecated)
         :param create_workbook: create workbook if True, defaults to True
         :raises ValueError: error is raised if workbook does not exist and
             `create_workbook` is False
         """
-        if tabname:
-            sheetname = tabname
-            self.logger.warning(
-                "Argument 'tabname' is deprecated, "
-                "and will be removed in a future version"
-            )
-
         if not self.workbook:
             if not create_workbook:
                 raise ValueError("No workbook open")
@@ -244,10 +158,9 @@ class Application:
         :return: row or None
         """
         cell = self.find_first_available_cell(worksheet, row, column)
-        # Note: keep return type for backward compability for now
-        # return cell[0] if cell else None
         return cell
 
+    @requires_workbook
     def find_first_available_cell(
         self, worksheet: Any = None, row: int = 1, column: int = 1
     ) -> Any:
@@ -258,9 +171,6 @@ class Application:
         :param column: starting column for search, defaults to 1
         :return: tuple (row, column) or (None, None) if not found
         """
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         if worksheet:
             self.set_active_worksheet(worksheet)
 
@@ -272,6 +182,7 @@ class Application:
 
         return None, None
 
+    @requires_workbook
     def write_to_cells(
         self,
         worksheet: Any = None,
@@ -291,9 +202,6 @@ class Application:
         :param formula: possible format to set, defaults to None
         :raises ValueError: if cell is not given
         """
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         if row is None or column is None:
             raise ValueError("No cell was given")
 
@@ -310,6 +218,7 @@ class Application:
             if formula:
                 cell.Formula = formula
 
+    @requires_workbook
     def read_from_cells(
         self,
         worksheet: Any = None,
@@ -323,9 +232,6 @@ class Application:
         :param column: target row, defaults to None
         :raises ValueError: if cell is not given
         """
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         if row is None or column is None:
             raise ValueError("No cell was given")
 
@@ -336,14 +242,13 @@ class Application:
             cell = self.worksheet.Cells(int(row), int(column))
             return cell.Value
 
+    @requires_workbook
     def save_excel(self) -> None:
         """Saves Excel file"""
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         with catch_com_error():
             self.workbook.Save()
 
+    @requires_workbook
     def save_excel_as(
         self, filename: str, autofit: bool = False, file_format=None
     ) -> None:
@@ -369,35 +274,24 @@ class Application:
             # Save workbook in Excel 97 format (format from above URL)
             Save excel as    legacy.xls   file_format=${56}
         """
-        if not self.workbook:
-            # Doesn't raise error for backwards compatibility
-            self.logger.warning("No workbook open")
-            return
-
         with catch_com_error():
             if autofit:
                 self.worksheet.Rows.AutoFit()
                 self.worksheet.Columns.AutoFit()
 
-            path = str(Path(filename).resolve())
-
+            path = to_str_path(filename)
             if file_format is not None:
                 self.workbook.SaveAs(path, FileFormat=file_format)
             else:
                 self.workbook.SaveAs(path)
 
+    @requires_workbook
     def run_macro(self, macro_name: str, *args: Any):
         """Run Excel macro with given name
 
         :param macro_name: macro to run
         :param args: arguments to pass to macro
         """
-        if not self.app:
-            raise ValueError("Excel application is not open")
-
-        if not self.workbook:
-            raise ValueError("No workbook open")
-
         with catch_com_error():
             self.app.Application.Run(f"'{self.workbook.Name}'!{macro_name}", *args)
 
@@ -414,7 +308,7 @@ class Application:
             self.open_workbook(excel_filename)
         else:
             if not self.workbook:
-                raise ValueError("No workbook open. Can't export PDF.")
+                raise ValueError("No workbook open, can't export PDF")
         with catch_com_error():
-            path = str(Path(pdf_filename).resolve())
-            self.workbook.ExportAsFixedFormat(0, path)
+            pdf_path = to_str_path(pdf_filename)
+            self.workbook.ExportAsFixedFormat(0, pdf_path)

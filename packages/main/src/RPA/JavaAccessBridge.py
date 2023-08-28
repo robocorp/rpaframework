@@ -246,7 +246,7 @@ class JavaAccessBridge:
 
     **About Java wrapper callbacks and actions**
 
-    There might be a compability issue with callbacks and actions on target Java application. Possible reasons:
+    There might be a compatibility issue with callbacks and actions on target Java application. Possible reasons:
 
     - target application is executed with 32-bit Java
     - target application does not support callbacks and/or actions

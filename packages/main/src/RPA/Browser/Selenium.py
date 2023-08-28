@@ -24,13 +24,12 @@ from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver import (
     ChromeOptions,
     EdgeOptions,
-    FirefoxOptions,
+    FirefoxOptions as _FirefoxOptions,
     FirefoxProfile,
     IeOptions,
 )
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
-from selenium.webdriver.ie.webdriver import WebDriver as IeWebDriver
 from selenium.webdriver.remote.shadowroot import ShadowRoot
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
@@ -96,6 +95,15 @@ class RobocorpElementFinder(ElementFinder):
         # NOTE(cmin764): This will allow the finder to fully parse the locator and look
         #  for elements even under a shadow root.
         return isinstance(element, ShadowRoot) or super()._is_webelement(element)
+
+
+class FirefoxOptions(_FirefoxOptions):
+    """Wrapped Firefox options in order to fix behavior."""
+
+    @property
+    def binary_location(self) -> Optional[str]:
+        # pylint: disable=protected-access
+        return self.binary._start_cmd if self.binary else None
 
 
 class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
@@ -178,19 +186,21 @@ class Selenium(SeleniumLibrary):
     AVAILABLE_OPTIONS = {
         # Supporting options only for a specific range of browsers.
         "chrome": selenium_webdriver.ChromeOptions,
-        "firefox": selenium_webdriver.FirefoxOptions,
+        "firefox": FirefoxOptions,
         "edge": selenium_webdriver.EdgeOptions,
         "chromiumedge": selenium_webdriver.EdgeOptions,
+        "safari": selenium_webdriver.SafariOptions,
         "ie": selenium_webdriver.IeOptions,
     }
     AVAILABLE_SERVICES = {
-        # Supporting services only for a specific range of browsers.
-        "chrome": selenium_webdriver.chrome.service.Service,
-        "firefox": selenium_webdriver.firefox.service.Service,
-        "edge": selenium_webdriver.edge.service.Service,
-        "chromiumedge": selenium_webdriver.edge.service.Service,
-        "safari": selenium_webdriver.safari.service.Service,
-        "ie": selenium_webdriver.ie.service.Service,
+        # Supporting services and their default webdriver binaries only for a specific
+        #  range of browsers.
+        "chrome": (selenium_webdriver.chrome.service.Service, "chromedriver"),
+        "firefox": (selenium_webdriver.firefox.service.Service, "geckodriver"),
+        "edge": (selenium_webdriver.edge.service.Service, "msedgedriver"),
+        "chromiumedge": (selenium_webdriver.edge.service.Service, "msedgedriver"),
+        "safari": (selenium_webdriver.safari.service.Service, "safaridriver"),
+        "ie": (selenium_webdriver.ie.service.Service, "IEDriverServer"),
     }
     SUPPORTED_BROWSERS = dict(
         {name: name.capitalize() for name in AVAILABLE_SERVICES},
@@ -198,10 +208,6 @@ class Selenium(SeleniumLibrary):
     )
     # Both driver and browser lower-case names.
     CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge", "msedge"]
-
-    ERR_WEBDRIVER_NOT_AVAILABLE = OSError(
-        "Webdriver executable not in PATH (with disabled Selenium manager)"
-    )
 
     def __init__(self, *args, **kwargs):
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
@@ -220,7 +226,7 @@ class Selenium(SeleniumLibrary):
         # Refresh plugins list
         kwargs["plugins"] = ",".join(plugins)
 
-        SeleniumLibrary.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._element_finder = RobocorpElementFinder(self)
 
         # Add inherit/overridden library keywords.
@@ -267,17 +273,13 @@ class Selenium(SeleniumLibrary):
         for driver in connections:
             try:
                 if driver_only:
-                    if isinstance(driver, IeWebDriver):
-                        service = driver.iedriver
-                    else:
-                        service = driver.service
                     # A `service.stop()` will hang here, so killing the process
                     #  directly is the only way.
-                    service.process.kill()
+                    driver.service.process.kill()
                 else:
-                    driver.quit()
+                    driver.quit()  # quits the browser as well
             except Exception as exc:  # pylint: disable=broad-except
-                self.logger.debug("Encountered error during auto-close: %s", exc)
+                self.logger.warning("Encountered error during auto-close: %s", exc)
 
     @property
     def location(self) -> str:
@@ -753,10 +755,7 @@ class Selenium(SeleniumLibrary):
                 "Profiles are supported with Chromium-based browsers only!"
             )
 
-        try:
-            path = options.binary_location or None
-        except AttributeError:
-            path = None
+        path = getattr(options, "binary_location", None)
         if path:
             self.logger.warning(
                 f"The custom provided browser ({path}) might be "
@@ -869,23 +868,29 @@ class Selenium(SeleniumLibrary):
         if profile_name is not None:
             options.add_argument(f"--profile-directory={profile_name}")
 
-    def _augment_service_class(self, Service: type) -> type:
+    def _get_service_class(self, lower_browser: str) -> type:
+        Service, default_webdriver = self.AVAILABLE_SERVICES[lower_browser]
+
         class BrowserService(Service):
             """Custom service class wrapping the picked browser's one."""
 
-            # pylint: disable=no-self-argument
-            def _start_process(this, *args, **kwargs):
-                try:
-                    return super()._start_process(*args, **kwargs)
-                except WebDriverException as exc:
-                    if "path" in str(exc).lower():
-                        # Raises differently in order to not trigger the default
-                        #  Selenium Manager webdriver download, while letting the error
-                        #  bubble up. (so it's caught and handled by us instead, in
-                        #  order to let our core's webdriver-manager to handle the
-                        #  download)
-                        raise self.ERR_WEBDRIVER_NOT_AVAILABLE from exc
-                    raise
+            def __init__(
+                self, *args, executable_path: str = default_webdriver, **kwargs
+            ):
+                # NOTE(cmin764): Starting with Selenium 4.9.1, we have to block their
+                #  `SeleniumManager` from early stage, otherwise it will be activated
+                #  when the `WebDriver` class itself is instantiated with a null
+                #  executable path.
+                resolved_path = (
+                    shutil.which(executable_path) if executable_path else None
+                )
+                if not resolved_path:
+                    raise WebDriverException(
+                        f"Webdriver executable {executable_path!r} is not in PATH"
+                        " (with disabled Selenium Manager)"
+                    )
+
+                super().__init__(*args, executable_path=resolved_path, **kwargs)
 
             # pylint: disable=no-self-argument
             def __del__(this) -> None:
@@ -913,7 +918,6 @@ class Selenium(SeleniumLibrary):
                 "service_log_path": None,
                 "port": 0,
             }
-            service_args = None  # for unsupported manual injection
             for name, default in service_kwargs.items():
                 service_kwargs[name] = kwargs.pop(name, default)
             service_kwargs["log_path"] = service_kwargs.pop("service_log_path")
@@ -921,21 +925,13 @@ class Selenium(SeleniumLibrary):
                 service_kwargs["executable_path"] = path
 
             # Instantiate the right service to be passed during the webdriver creation.
-            Service = self.AVAILABLE_SERVICES[browser.lower()]
-            if Service is selenium_webdriver.safari.service.Service:
+            lower_browser = browser.lower()
+            if lower_browser == "safari":
                 service_kwargs.pop("log_path")  # not supported at all
-            elif Service is selenium_webdriver.ie.service.Service:
+            elif lower_browser == "ie":
                 service_kwargs["log_file"] = service_kwargs.pop("log_path")
-                service_args = service_kwargs.pop("service_args")
-            BrowserService = self._augment_service_class(Service)
+            BrowserService = self._get_service_class(lower_browser)
             service = BrowserService(**service_kwargs)
-            if service_args:
-                service.service_args.extend(service_args)
-            # NOTE(cmin764): Starting with Selenium 4.9.1, we have to block their
-            #  `SeleniumManager` from early stage, otherwise it will be activated when
-            #  the WebDriver class itself is instantiated without throwing any error.
-            if not shutil.which(service.path):
-                raise self.ERR_WEBDRIVER_NOT_AVAILABLE
 
             # Capitalize browser name just to ensure it works if passed as lower case.
             # NOTE: But don't break a browser name like "ChromiumEdge".

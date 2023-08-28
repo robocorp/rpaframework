@@ -116,15 +116,16 @@ Get figures from PDF
         END
     END
 
-Get input fields from PDF
-    # vero.pdf
-    &{fields} =    Get Input Fields    ${VERO_PDF}    replace_no_value=${TRUE}
-    Log Many    &{fields}
+Get Input Fields From PDF
+    &{fields} =    Get Input Fields    ${VERO_PDF}    replace_none_value=${TRUE}
+    Log Dictionary    ${fields}
+
     Should Be Equal    ${fields}[Paivays][value]    Paivays
     Should Be Equal    ${fields}[Allekirjoitus][value]    Allekirjoitus
     Should Be Equal    ${fields}[Puhelinnumero][value]    Puhelinnumero
     Should Be Equal    ${fields}[Tulosta][value]    Tulosta
-    Should Be Equal    ${fields}[Tyhjennä][value]    Tyhjennä
+
+    Should Contain     ${fields}[Tyhjennä][states]     ${fields}[Tyhjennä][value]
 
 Adding Files to PDF
     ${files} =    Create List

@@ -2,7 +2,7 @@
 various engines.
 
 Currently, supporting the following:
-- Google Document AI
+- Google Document AI (`rpaframework-google`)
 - Base64
 - Nanonets
 """
@@ -52,7 +52,7 @@ class DocumentAI:
 
     This is a helper facade for the following libraries:
 
-    - RPA.Cloud.Google
+    - RPA.Cloud.Google (requires `rpaframework-google`)
     - RPA.DocumentAI.Base64AI
     - RPA.DocumentAI.Nanonets
 
@@ -204,9 +204,11 @@ class DocumentAI:
         elif secret_value:
             # Vault not used, therefore the provided secret is a file path pointing to
             #  a service account or token JSON file.
-            assert isinstance(
-                secret_value, Path
-            ), f"secret {secret_value!r} not supported, a file path is needed"
+            if not isinstance(secret_value, Path):
+                raise ValueError(
+                    f"secret {secret_value!r} not supported,"
+                    " a file path holding the content is needed"
+                )
             if (auth_type or "serviceaccount") == "serviceaccount":
                 secret_type = "service_account"
             else:
@@ -306,7 +308,7 @@ class DocumentAI:
     def init_engine(
         self,
         name: Union[EngineName, str],
-        secret: SecretType = None,
+        secret: Optional[SecretType] = None,
         vault: Optional[Union[Dict, str]] = None,
         **kwargs,
     ) -> None:
@@ -324,6 +326,21 @@ class DocumentAI:
         :param secret: Authenticate with a string/file/object secret directly.
         :param vault: Specify the Vault storage `name` and secret `key` in order to
             authenticate. ('name:key' or {name: key} formats are supported)
+
+        **How secret resolution works**
+
+        When `vault` is passed in, the corresponding Vault is retrieved and the value
+        belonging to specified field is returned as a secret. If a `secret` is used,
+        then this value is returned as it is if this isn't a path pointing to the file
+        holding the value to be returned. We'll be relying on environment variables in
+        the absence of both the `secret` and `vault`.
+
+        Expected secret value formats:
+
+        - google: `<json-service/token>` (``RPA.Cloud.Google.Init Document AI``)
+        - base64ai: `<e-mail>,<api-key>`
+          (``RPA.DocumentAI.Base64AI.Set Authorization``)
+        - nanonets: `<api-key>` (``RPA.DocumentAI.Nanonets.Set Authorization``)
 
         **Example: Robot Framework**
 

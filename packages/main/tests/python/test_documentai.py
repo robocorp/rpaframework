@@ -174,11 +174,14 @@ class TestBase64AI:
             files["driving-license"], files["payment-check"]
         )
         args, kwargs = mock_requests.post.call_args
-        assert args == ("https://base64.ai/api/signature/recognize",)
+        assert args == ("https://base64.ai/api/signature",)
         payload = kwargs["json"]
-        suffix = "Image" if source == "paths" else "Url"
-        assert payload[f"reference{suffix}"].endswith(field_ending[0])
-        assert payload[f"query{suffix}"].endswith(field_ending[1])
+        if source == "paths":
+            ref_key, qry_key = "document", "queryDocument"
+        else:
+            ref_key, qry_key = "url", "queryUrl"
+        assert payload[ref_key].endswith(field_ending[0])
+        assert payload[qry_key].endswith(field_ending[1])
 
     @pytest.mark.parametrize(
         "threshold,ref_idx,qry_idxes,similarities",

@@ -2,16 +2,113 @@ Release notes
 =============
 
 
+Latest versions
++++++++++++++++
+
+.. include:: packages.rst
+   :start-after: include-packages
+
+
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Salesforce** (:pr:`1003`): Add keywords
-  ``Authenticate with connected app`` and ``Execute APEX``.
-- Library **RPA.Email.ImapSmtp** (:pr:`1054`): Fix handling of `To`, `Cc` and `Bcc`
-  fields in `Send Message` keyword.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+26.1.0 - 24 Aug 2023
+--------------------
+
+- General update on *all* packages (:pr:`950`):
+
+  - All packages will be taking into use the latest `robotframework`
+    version (**6.1.1**).
+  - The minimum Python version is set to **3.8**.
+
+  - All new package versions are listed below.
+
+    - ``rpaframework-assistant`` **3.0.0** (additional release note included below)
+    - ``rpaframework-aws`` **5.3.0**
+    - ``rpaframework-google`` **7.1.0**
+    - ``rpaframework-openai`` **1.3.0**
+    - ``rpaframework-pdf`` **7.2.0**
+    - ``rpaframework-recognition`` **5.2.0**
+    - ``rpaframework-windows`` **7.4.0**
+
+  - Library **RPA.Assistant** (:pr:`1068`; ``rpaframework-assistant`` **3.0.0**):
+
+    - Fix ``Add Date Input`` validation and return value as `Date` object instead of
+      a string.
+    - Add Python examples for every keyword.
+
+26.0.3 - 24 Aug 2023
+--------------------
+
+- Library **RPA.Browser.Selenium**: Properly show webdriver errors in case the initial
+  default is not found in PATH.
+
+26.0.2 - 24 Aug 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1069`): Use an already existing webdriver
+  found in PATH if present. Only if such a default expected executable isn't found, a
+  newly cached one will be downloaded and used. (affects all supported browsers)
+
+26.0.1 - 22 Aug 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:issue:`1059`): Fix webdriver management and
+  automation issues related to Edge in IE mode. Updated Portal example:
+  https://robocorp.com/portal/robot/robocorp/example-ie-mode-edge
+
+26.0.0 - 18 Aug 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1058`):
+
+  - Fixed `options` passing with Firefox. (when a binary location is specified)
+
+- General improvements to **RPA.*.Application** libraries (:issue:`1055`):
+
+  - *All*: Better error handling (COM -> runtime), improved generic docs and
+    troubleshooting guiding, fixed document closing (if was closed already) and app
+    open/quit management, improved warnings and logging, file paths are tested for
+    existence when operating on documents and raise errors in their absence.
+
+  - **Excel**:
+
+    - Removed deprecated parameter `tabname` from ``Add New Sheet``. (use `sheetname`)
+    - ``Save Excel As`` raises when there's no workbook open. (use ``Open Workbook``
+      first)
+
+  - **Outlook**:
+
+    - Removed deprecated keywords: ``Send Message`` (use ``Send Email``) and
+      ``Wait For Message`` (use ``Wait For Email``).
+
+  .. warning::
+    **Breaking** changes in the **Application** libraries listed above.
+
+25.0.1 - 11 Aug 2023
+--------------------
+
+- Library **RPA.DocumentAI.Base64AI** (:issue:`719`):
+
+  - Fix signature matching API.
+  - Better documentation and errors.
+
+- Library **RPA.PDF** (:pr:`1051`; ``rpaframework-pdf`` **7.1.6**):
+
+  - Make the `reader` parameter optional in the ``Save PDF`` keyword.
+  - Fix PDF fields retrieval, value decoding and setting. (:issue:`872`)
+
+25.0.0 - 10 Aug 2023
+--------------------
+
+- Library **RPA.Salesforce** (:pr:`1003`): Add keywords
+  ``Auth with connected app`` and ``Execute APEX``.
+- Library **RPA.Email.ImapSmtp** (:pr:`1054`): Fix handling of `To`, `Cc` and `Bcc`
+  fields in `Send Message` keyword.
 
 24.1.2 - 27 Jul 2023
 --------------------

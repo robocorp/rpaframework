@@ -53,11 +53,12 @@ class FletClient:
     def __init__(self) -> None:
         self.logger = getLogger(__name__)
         self.results: Result = {}
+        self.date_inputs: List[str] = []
         self.page: Optional[Page] = None
         self.pending_operation: Optional[Callable] = None
 
         self._elements: Elements = Elements([], {}, [], None, set())
-        self._to_disable: List[flet.Control] = []
+        self._to_disable: List[Control] = []
         self._layout_stack: List[Union[SupportedFletLayout, AppBar]] = []
 
         self._background_flet = BackgroundFlet()
