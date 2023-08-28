@@ -9,6 +9,7 @@ from apiclient import discovery
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account as oauth_service_account
+from google.oauth2.credentials import Credentials
 
 
 class ElementNotFound(ValueError):
@@ -128,11 +129,7 @@ class LibraryContext:
         elif token_file:
             self.logger.info("Authenticating with oauth token file")
             credentials = self.get_credentials_with_oauth_token(
-                use_cloud,
-                token_file,
-                credentials_file,
-                scopes,
-                save_token,
+                use_cloud, token_file, credentials_file, scopes, save_token
             )
         elif self.ctx.service_account_file:
             self.logger.info("Authenticating with service account file")
@@ -206,7 +203,12 @@ class LibraryContext:
                 f.write(response.__class__.to_json(response))
 
     def get_credentials_with_oauth_token(
-        self, use_robocorp_vault, token_file, credentials_file, scopes, save_token
+        self,
+        use_robocorp_vault,
+        token_file,
+        credentials_file,
+        scopes,
+        save_token,  # pylint: disable=unused-argument
     ):
         credentials = None
         if use_robocorp_vault:
@@ -215,10 +217,11 @@ class LibraryContext:
         else:
             token_file_location = Path(token_file).absolute()
             if os.path.exists(token_file_location):
-                with open(  # pylint: disable=unspecified-encoding
-                    token_file_location, "r"
-                ) as token:
-                    credentials = pickle.loads(base64.b64decode(token.read()))
+                credentials = Credentials.from_authorized_user_file(
+                    token_file_location, scopes
+                )
+            else:
+                raise GoogleOAuthAuthenticationError(f"Could not find {token_file}")
         if not credentials or not credentials.valid:
             if credentials and credentials.expired and credentials.refresh_token:
                 credentials.refresh(Request())
@@ -227,9 +230,19 @@ class LibraryContext:
                     credentials_file, scopes
                 )
                 credentials = flow.run_local_server()
-            if save_token:
-                with open(token_file_location, "wb") as token:
-                    pickle.dump(credentials, token)
+            # TODO. Commented out for now as this brings up an security warning
+            # if save_token:
+            #     with open(  # pylint: disable=unspecified-encoding
+            #         token_file_location, "w"
+            #     ) as token:
+            #         token.write(credentials.to_json())
+            if use_robocorp_vault:
+                self.ctx.secrets_library().set_secret(
+                    self.ctx.robocorp_vault_name,
+                    self.ctx.robocorp_vault_secret_key,
+                    base64.b64encode(pickle.dumps(credentials)).decode("utf-8"),
+                )
+                self.logger.debug("Credentials refreshed")
         if not credentials:
             raise GoogleOAuthAuthenticationError(
                 "Could not get Google OAuth credentials"
