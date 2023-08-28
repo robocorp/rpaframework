@@ -129,11 +129,7 @@ class LibraryContext:
         elif token_file:
             self.logger.info("Authenticating with oauth token file")
             credentials = self.get_credentials_with_oauth_token(
-                use_cloud,
-                token_file,
-                credentials_file,
-                scopes,
-                save_token,
+                use_cloud, token_file, credentials_file, scopes, save_token
             )
         elif self.ctx.service_account_file:
             self.logger.info("Authenticating with service account file")
@@ -207,7 +203,12 @@ class LibraryContext:
                 f.write(response.__class__.to_json(response))
 
     def get_credentials_with_oauth_token(
-        self, use_robocorp_vault, token_file, credentials_file, scopes, save_token
+        self,
+        use_robocorp_vault,
+        token_file,
+        credentials_file,
+        scopes,
+        save_token,  # pylint: disable=unused-argument
     ):
         credentials = None
         if use_robocorp_vault:
