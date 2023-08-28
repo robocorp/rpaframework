@@ -230,9 +230,9 @@ class LibraryContext:
                 )
                 credentials = flow.run_local_server()
             if save_token:
-                with open(
+                with open(  # pylint: disable=unspecified-encoding
                     token_file_location, "w"
-                ) as token:  # pylint: disable=unspecified-encoding
+                ) as token:
                     token.write(credentials.to_json())
             self.logger.debug(f"Credentials refreshed (save_token={save_token})")
         if not credentials:
