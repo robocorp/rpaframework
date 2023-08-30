@@ -449,7 +449,6 @@ class JavaAccessBridge:
         self.jab_wrapper = None
         self.context_info_tree = None
         self.pumper_thread = None
-        self.refresh_counter = 1
         self.display_scale_factor = ScalingFactor
         self.ignore_callbacks = ignore_callbacks
         self.pid = None
