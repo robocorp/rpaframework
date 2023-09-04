@@ -15,6 +15,35 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+04 Sep 2023
+-----------
+
+- Library **RPA.Cloud.Google** (:pr:`1082`; ``rpaframework-google`` **8.0.0**):
+
+  - Add new keywords for Google Sheets
+
+    - ``Copy spreadsheet``
+    - ``Create spreadsheet``
+    - ``Delete sheet``
+    - ``Generic spreadsheet batch update``
+    - ``Get all sheet values``
+    - ``Get spreadsheet basic information``
+    - ``Get spreadsheet details``
+    - ``Rename sheet``
+    - ``To column letter``
+
+  - Repurposed keywords
+
+    - ``Copy sheet`` (now will copy a sheet within a spreadsheet)
+    - ``Create sheet`` (now will create a sheet within a spreadsheet)
+
+  .. warning::
+    **Breaking** changes in the ``Sheets`` keywords. All actions/properties
+    related to a whole spreadsheet will use `spreadsheet` name and `sheet` will
+    be used to indicate a single sheet in a spreadsheet. This is to be consistent
+    with Google API naming.
+
+
 24 Aug 2023
 -----------
 

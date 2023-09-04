@@ -182,6 +182,41 @@
 </div>
 <div class="section" id="id4">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<div class="section" id="sep-2023">
+<h3>04 Sep 2023<a class="headerlink" href="#sep-2023" title="Permalink to this heading"></a></h3>
+<ul>
+<li><p>Library <strong>RPA.Cloud.Google</strong> (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/1082">#1082</a>; <code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> <strong>8.0.0</strong>):</p>
+<ul class="simple">
+<li><p>Add new keywords for Google Sheets</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Copy</span> <span class="pre">spreadsheet</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">spreadsheet</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Delete</span> <span class="pre">sheet</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Generic</span> <span class="pre">spreadsheet</span> <span class="pre">batch</span> <span class="pre">update</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">all</span> <span class="pre">sheet</span> <span class="pre">values</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">spreadsheet</span> <span class="pre">basic</span> <span class="pre">information</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">spreadsheet</span> <span class="pre">details</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Rename</span> <span class="pre">sheet</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">To</span> <span class="pre">column</span> <span class="pre">letter</span></code></p></li>
+</ul>
+</li>
+<li><p>Repurposed keywords</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Copy</span> <span class="pre">sheet</span></code> (now will copy a sheet within a spreadsheet)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">sheet</span></code> (now will create a sheet within a spreadsheet)</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Breaking</strong> changes in the <code class="docutils literal notranslate"><span class="pre">Sheets</span></code> keywords. All actions/properties
+related to a whole spreadsheet will use <cite>spreadsheet</cite> name and <cite>sheet</cite> will
+be used to indicate a single sheet in a spreadsheet. This is to be consistent
+with Google API naming.</p>
+</div>
+</li>
+</ul>
+</div>
 <div class="section" id="aug-2023">
 <h3>24 Aug 2023<a class="headerlink" href="#aug-2023" title="Permalink to this heading"></a></h3>
 <ul class="simple">
