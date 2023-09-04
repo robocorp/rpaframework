@@ -230,7 +230,7 @@ class SheetsKeywords(LibraryContext):
             found_sheet = sheet_info["sheets"][0]
 
         sheet_title = found_sheet["title"]
-        target_column = self.to_A1_notation(found_sheet["columns"])
+        target_column = self.to_column_letter(found_sheet["columns"])
         rows = found_sheet["rows"]
         parameters["range"] = f"{sheet_title}!A1:{target_column}{rows}"
 
@@ -330,7 +330,7 @@ class SheetsKeywords(LibraryContext):
         return self.service.spreadsheets().get(spreadsheetId=sheet_id).execute()
 
     @keyword(tags=["sheets"])
-    def to_A1_notation(self, number: int):
+    def to_column_letter(self, number: int):
         """
         Convert a number into its Excel A1 notation character(s).
 

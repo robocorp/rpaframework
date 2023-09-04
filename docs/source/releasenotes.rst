@@ -15,6 +15,18 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+04 Sep 2023
+-----------
+
+- Library **RPA.Cloud.Google** (:pr:`1082`; ``rpaframework-google`` **7.2.0**):
+
+  - Add new keywords for Google Sheets
+
+    - ``Get sheet basic information``
+    - ``Get sheet details``
+    - ``Get all sheet values``
+    - ``To column letter``
+
 24 Aug 2023
 -----------
 
