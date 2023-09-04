@@ -330,7 +330,7 @@ class SheetsKeywords(LibraryContext):
         return self.service.spreadsheets().get(spreadsheetId=sheet_id).execute()
 
     @keyword(tags=["sheets"])
-    def to_A1_notation(self, number):
+    def to_A1_notation(self, number: int):
         """
         Convert a number into its Excel A1 notation character(s).
 
