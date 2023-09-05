@@ -6,6 +6,7 @@ import platform
 import stat
 from pathlib import Path
 from typing import Dict, List, Optional
+from urllib.parse import urljoin
 
 from packaging import version as version_parser
 from selenium import webdriver
@@ -31,9 +32,10 @@ from RPA.core.robocorp import robocorp_home
 class ChromeDriver(_ChromeDriver):
     """Custom class which correctly obtains the chromedriver download URL."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, versions_url: str, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self._versions_url = versions_url
         self._resolve_version = False
 
     def _get_resolved_version(self, determined_browser_version: Optional[str]) -> str:
@@ -101,11 +103,7 @@ class ChromeDriver(_ChromeDriver):
             self._resolve_modern_url, driver_platform=driver_platform
         )
 
-        versions_url = (
-            "https://googlechromelabs.github.io/chrome-for-testing/"
-            "known-good-versions-with-downloads.json"
-        )
-        response = self._http_client.get(versions_url)
+        response = self._http_client.get(self._versions_url)
         data = response.json()
         versions = data["versions"]
 
@@ -155,6 +153,10 @@ class ChromeDriverManager(_ChromeDriverManager):
         download_manager: Optional[DownloadManager] = None,
         cache_manager: Optional[DriverCacheManager] = None,
         os_system_manager: Optional[OperationSystemManager] = None,
+        versions_url: str = (
+            "https://googlechromelabs.github.io/chrome-for-testing/"
+            "known-good-versions-with-downloads.json"
+        ),
     ):
         super().__init__(
             driver_version=driver_version,
@@ -177,6 +179,7 @@ class ChromeDriverManager(_ChromeDriverManager):
             chrome_type=chrome_type,
             http_client=self.http_client,
             os_system_manager=os_system_manager,
+            versions_url=versions_url,
         )
 
     def _get_driver_binary_path(self, driver: ChromeDriver) -> str:
@@ -196,9 +199,9 @@ class IEDriverManager(_IEDriverManager):
 
     # Forcefully download the 32bit version of the webdriver no matter the architecture
     #  of the Windows system since it is known that the 64bit version is limited and
-    #  also creates issues, like freezing browser automation with Selenium.
+    #  also creates issues, like freezing browser automation with Selenium sometimes.
     # https://www.selenium.dev/documentation/webdriver/browsers/internet_explorer/
-    FORCE_32BIT = True
+    FORCE_32BIT = not os.getenv("RPA_ALLOW_64BIT_IE")
 
     def get_os_type(self) -> str:
         return "Win32" if self.FORCE_32BIT else super().get_os_type()
@@ -222,6 +225,21 @@ AVAILABLE_DRIVERS = {
     "chromiumedge": EdgeChromiumDriverManager,
     # NOTE: IE is discontinued and not supported/encouraged anymore.
     "ie": IEDriverManager,
+}
+# Control Room decides from where the webdrivers should be downloaded, but the user
+#  can opt out from using our own trusted internal source and default to
+#  `webdriver-manager`'s implicit locations.
+_USE_EXTERNAL_WEBDRIVERS = bool(os.getenv("RPA_EXTERNAL_WEBDRIVERS"))
+_SOURCE_BASE = os.getenv("RC_WEBDRIVER_SOURCE", "https://dependencies.robocorp.com")
+_join_base = functools.partial(urljoin, _SOURCE_BASE)
+_DRIVER_SOURCES = {
+    "chrome": {
+        "url": _join_base("/webdrivers/chrome/v1"),
+        "latest_release_url": _join_base("/webdrivers/chrome/v1/LATEST_RELEASE"),
+        "versions_url": _join_base(
+            "/webdrivers/chrome/v2/known-good-versions-with-downloads.json"
+        ),
+    },
 }
 # Available `WebDriver` classes in Selenium.
 SUPPORTED_BROWSERS = dict(
@@ -293,7 +311,8 @@ def _is_chromium() -> bool:
 
 def _to_manager(browser: str, *, root: Path) -> DriverManager:
     browser = browser.strip()
-    manager_factory = AVAILABLE_DRIVERS.get(browser.lower())
+    browser_lower = browser.lower()
+    manager_factory = AVAILABLE_DRIVERS.get(browser_lower)
     if not manager_factory:
         raise ValueError(
             f"Unsupported browser {browser!r} for webdriver download!"
@@ -304,6 +323,13 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
         manager_factory = functools.partial(
             manager_factory, chrome_type=ChromeType.CHROMIUM
         )
+    if not _USE_EXTERNAL_WEBDRIVERS:
+        url_kwargs = _DRIVER_SOURCES.get(browser_lower)
+        if url_kwargs:
+            manager_factory = functools.partial(manager_factory, **url_kwargs)
+        else:
+            LOGGER.warning("Can't set an internal webdriver source for %r!", browser)
+
     cache_manager = DriverCacheManager(root_dir=str(root))
     manager = manager_factory(cache_manager=cache_manager)
     return manager
