@@ -1,0 +1,52 @@
+import logging
+import sys
+from importlib.metadata import PackageNotFoundError, version as get_version
+
+from packaging import version as version_parser
+
+
+LOGGER = logging.getLogger(__name__)
+
+
+def _check_pip_version(min_version: str) -> bool:
+    try:
+        pip_version = get_version("pip")
+    except PackageNotFoundError:
+        LOGGER.debug("'pip' is not installed!")
+        return False
+
+    if version_parser.parse(pip_version) >= version_parser.parse(min_version):
+        LOGGER.debug(
+            "Current 'pip' version %s satisfies minimum of %s.",
+            pip_version,
+            min_version,
+        )
+        return True
+
+    LOGGER.debug(
+        "Current 'pip' version %s doesn't satisfy minimum of %s.",
+        pip_version,
+        min_version,
+    )
+    return False
+
+
+def use_system_certificates():
+    """Exposes native system certificate stores.
+
+    Call this before importing anything else.
+    """
+    # Works with Python 3.10.12, pip 23.2.1 and above.
+    if sys.version_info >= (3, 10, 12) and _check_pip_version("23.2.1"):
+        import truststore  # pylint: disable=import-outside-toplevel
+
+        truststore.inject_into_ssl()
+        logging.info(
+            "Truststore injection done, using system certificate store to validate"
+            " HTTPS."
+        )
+    else:
+        logging.info(
+            "Truststore not in use, HTTPS traffic validated against `certifi` package."
+            " (requires Python 3.10.12 and 'pip' 23.2.1 at minimum)"
+        )

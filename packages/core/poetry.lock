@@ -1384,6 +1384,18 @@ trio = ">=0.11"
 wsproto = ">=0.14"
 
 [[package]]
+name = "truststore"
+version = "0.7.0"
+description = "Verify certificates using native system trust stores"
+category = "main"
+optional = false
+python-versions = ">= 3.10"
+files = [
+    {file = "truststore-0.7.0-py3-none-any.whl", hash = "sha256:a4b410a365cafec4c2b386b30df53d89a6a4466cc229c7026e41c2d847f94fe9"},
+    {file = "truststore-0.7.0.tar.gz", hash = "sha256:72e784507a624375434381e4bad3eff8614bc8c845a7f5ae16a25a2624d0683f"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.7.1"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -1542,4 +1554,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "c902d29ff034e5aa16436cd6c11eea48e7043e74e3bddfc11617dd4c6c576ba7"
+content-hash = "2ea20303075220e77df931843e45f19c7515c839b52cb2f7fc1aa9703cf663c6"
