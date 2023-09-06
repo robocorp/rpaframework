@@ -230,14 +230,14 @@ AVAILABLE_DRIVERS = {
 #  can opt out from using our own trusted internal source and default to
 #  `webdriver-manager`'s implicit locations.
 _USE_EXTERNAL_WEBDRIVERS = bool(os.getenv("RPA_EXTERNAL_WEBDRIVERS"))
-_SOURCE_BASE = os.getenv("RC_WEBDRIVER_SOURCE", "https://dependencies.robocorp.com")
+_SOURCE_BASE = os.getenv("RC_WEBDRIVER_SOURCE", "https://downloads.robocorp.com/ext/webdrivers/")
 _join_base = functools.partial(urljoin, _SOURCE_BASE)
 _DRIVER_SOURCES = {
     "chrome": {
-        "url": _join_base("/webdrivers/chrome/v1"),
-        "latest_release_url": _join_base("/webdrivers/chrome/v1/LATEST_RELEASE"),
+        "url": _join_base("chrome/v1"),
+        "latest_release_url": _join_base("chrome/v1/LATEST_RELEASE"),
         "versions_url": _join_base(
-            "/webdrivers/chrome/v2/known-good-versions-with-downloads.json"
+            "chrome/v2/known-good-versions-with-downloads.json"
         ),
     },
 }
