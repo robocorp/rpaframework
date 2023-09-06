@@ -14,7 +14,9 @@ from selenium.webdriver.common.service import Service
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager as _ChromeDriverManager
 from webdriver_manager.core.download_manager import DownloadManager
-from webdriver_manager.core.driver_cache import DriverCacheManager
+from webdriver_manager.core.driver_cache import (
+    DriverCacheManager as _DriverCacheManager,
+)
 from webdriver_manager.core.logger import log
 from webdriver_manager.core.manager import DriverManager
 from webdriver_manager.core.os_manager import ChromeType, OperationSystemManager
@@ -27,6 +29,20 @@ from webdriver_manager.microsoft import (
 from webdriver_manager.opera import OperaDriverManager
 
 from RPA.core.robocorp import robocorp_home
+
+
+# FIXME(cmin764; 6 Sep 2023): Remove this once the following issue is solved:
+#  https://github.com/SergeyPirogov/webdriver_manager/issues/618
+class DriverCacheManager(_DriverCacheManager):
+    """Fixes caching when retrieving an existing already downloaded webdriver."""
+
+    # pylint: disable=unused-private-member
+    def __get_metadata_key(self, *args, **kwargs) -> str:
+        # pylint: disable=super-with-arguments
+        call = lambda: super(  # noqa: E731
+            DriverCacheManager, self
+        )._DriverCacheManager__get_metadata_key(*args, **kwargs)
+        return call() or call()
 
 
 class ChromeDriver(_ChromeDriver):
@@ -57,10 +73,17 @@ class ChromeDriver(_ChromeDriver):
         resp = self._http_client.get(url=latest_release_url)
         return resp.text.rstrip()
 
-    def get_latest_release_version(self) -> str:
+    def get_driver_version_to_download(self) -> str:
+        if self._resolve_version:
+            return self.get_latest_release_version(resolve_version=True)
+
+        return super().get_driver_version_to_download()
+
+    # pylint: disable=arguments-differ
+    def get_latest_release_version(self, resolve_version: bool = False) -> str:
         # This is activated for any chromedriver version.
         determined_browser_version = self.get_browser_version_from_os()
-        if determined_browser_version and not self._resolve_version:
+        if determined_browser_version and not resolve_version:
             parts = version_parser.parse(determined_browser_version).release
             if len(parts) == 4:
                 # Got a fully downloadable version that MAY be available, but we are
@@ -133,7 +156,7 @@ class ChromeDriver(_ChromeDriver):
             # This time we want a resolved version based on the previously parsed
             #  non-existing one on the server.
             self._resolve_version = True  # force resolve
-            self._driver_version_to_download = None  # resets cache
+            self._driver_version_to_download = None  # ensures resolving
 
         return super().get_driver_download_url(os_type)
 
@@ -230,15 +253,19 @@ AVAILABLE_DRIVERS = {
 #  can opt out from using our own trusted internal source and default to
 #  `webdriver-manager`'s implicit locations.
 _USE_EXTERNAL_WEBDRIVERS = bool(os.getenv("RPA_EXTERNAL_WEBDRIVERS"))
-_SOURCE_BASE = os.getenv("RC_WEBDRIVER_SOURCE", "https://downloads.robocorp.com/ext/webdrivers/")
+_SOURCE_BASE = os.getenv(
+    "RC_WEBDRIVER_SOURCE", "https://downloads.robocorp.com/ext/webdrivers/"
+)
 _join_base = functools.partial(urljoin, _SOURCE_BASE)
 _DRIVER_SOURCES = {
     "chrome": {
         "url": _join_base("chrome/v1"),
         "latest_release_url": _join_base("chrome/v1/LATEST_RELEASE"),
-        "versions_url": _join_base(
-            "chrome/v2/known-good-versions-with-downloads.json"
-        ),
+        "versions_url": _join_base("chrome/v2/known-good-versions-with-downloads.json"),
+    },
+    "edge": {
+        "url": _join_base("edge"),
+        "latest_release_url": _join_base("edge/LATEST_RELEASE"),
     },
 }
 # Available `WebDriver` classes in Selenium.
@@ -332,6 +359,10 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
 
     cache_manager = DriverCacheManager(root_dir=str(root))
     manager = manager_factory(cache_manager=cache_manager)
+    driver = manager.driver
+    driver.get_latest_release_version = functools.cache(
+        driver.get_latest_release_version
+    )
     return manager
 
 
