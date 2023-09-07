@@ -37,7 +37,9 @@ def use_system_certificates():
     Call this before importing anything else.
     """
     # Works with Python 3.10.12, pip 23.2.1 and above.
-    if sys.version_info >= (3, 10, 12) and _check_pip_version("23.2.1"):
+    py_version = (3, 10, 12)
+    pip_version_str = "23.2.1"
+    if sys.version_info >= py_version and _check_pip_version(pip_version_str):
         import truststore  # pylint: disable=import-outside-toplevel
 
         truststore.inject_into_ssl()
@@ -48,5 +50,7 @@ def use_system_certificates():
     else:
         logging.info(
             "Truststore not in use, HTTPS traffic validated against `certifi` package."
-            " (requires Python 3.10.12 and 'pip' 23.2.1 at minimum)"
+            " (requires Python %s and 'pip' %s at minimum)",
+            ".".join(str(nr) for nr in py_version),
+            pip_version_str
         )
