@@ -19,13 +19,13 @@
 #  execute the SSL injection (and ony other runtime patch) as soon as possible, way
 #  before importing any other package, thus risking failing the injection.
 # pylint: disable=unused-import
-import RPA.core
+import RPA.core  # noqa: F401
 
 import sys
 
 if __name__ == "__main__" and "robot" not in sys.modules:
     # pylint: disable=unused-import
-    import pythonpathsetter
+    import pythonpathsetter  # noqa: F401
 
 from robot import run_cli
 
