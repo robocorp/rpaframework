@@ -8,6 +8,33 @@ from packaging import version as version_parser
 LOGGER = logging.getLogger(__name__)
 
 
+def init_logger(args):
+    level_param = "INFO"
+    for idx, param in enumerate(args):
+        if param in ("-L", "--loglevel"):
+            level_param_idx = idx + 1
+            if level_param_idx < len(args):
+                level_param = args[level_param_idx]
+                break
+    robot_level = level_param.split(":", 1)[0]
+    levels = {
+        "TRACE": logging.DEBUG,
+        "DEBUG": logging.DEBUG,
+        "INFO": logging.INFO,
+        "WARN": logging.WARNING,
+        "NONE": logging.CRITICAL,
+    }
+    level = levels.get(robot_level, logging.INFO)
+    LOGGER.setLevel(level)
+    handler = logging.StreamHandler()
+    handler.setLevel(level)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    handler.setFormatter(formatter)
+    LOGGER.addHandler(handler)
+
+
 def _check_pip_version(min_version: str) -> bool:
     try:
         pip_version = get_version("pip")
@@ -58,3 +85,6 @@ def use_system_certificates():
         ".".join(str(nr) for nr in py_version),
         pip_version_str,
     )
+
+
+init_logger(sys.argv[1:])
