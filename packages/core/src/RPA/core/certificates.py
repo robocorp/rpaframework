@@ -43,16 +43,16 @@ def use_system_certificates():
         try:
             import truststore  # pylint: disable=import-outside-toplevel
         except ImportError:
-            LOGGER.debug("Dependency `truststore` is not installed.")
+            LOGGER.debug("Dependency `truststore` is not installed!")
         else:
             truststore.inject_into_ssl()
-            logging.info(
+            LOGGER.info(
                 "Truststore injection done, using system certificate store to validate"
                 " HTTPS."
             )
             return
 
-    logging.info(
+    LOGGER.info(
         "Truststore not in use, HTTPS traffic validated against `certifi` package."
         " (requires Python %s and 'pip' %s at minimum)",
         ".".join(str(nr) for nr in py_version),
