@@ -1,5 +1,5 @@
 invoke~=1.7.1
-pip>=21.3
+pip>=23.2.1
 poetry~=1.4.0
 keyring~=23.9.0
 toml~=0.10.2
