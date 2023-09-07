@@ -15,11 +15,16 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+# NOTE(cmin764; 7 Sep 2023): Vendorizing `robotframework`'s entry-point in order to
+#  execute the SSL injection (and ony other runtime patch) as soon as possible, way
+#  before importing any other package, thus risking failing the injection.
+# pylint: disable=unused-import
 import RPA.core
 
 import sys
 
 if __name__ == "__main__" and "robot" not in sys.modules:
+    # pylint: disable=unused-import
     import pythonpathsetter
 
 from robot import run_cli
