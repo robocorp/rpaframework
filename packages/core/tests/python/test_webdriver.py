@@ -35,6 +35,16 @@ def test_chrome_download(version_override):
         assert "chromedriver" in path
 
 
+def test_firefox_download():
+    path = webdriver.download("Firefox", root=RESULTS_DIR)
+    assert "geckodriver" in path
+
+
 def test_edge_download():
     path = webdriver.download("Edge", root=RESULTS_DIR)
     assert "msedgedriver" in path
+
+
+def test_ie_download():
+    path = webdriver.download("Ie", root=RESULTS_DIR)
+    assert "IEDriverServer.exe" in path

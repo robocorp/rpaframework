@@ -265,11 +265,23 @@ _DRIVER_SOURCES = {
         "latest_release_url": _join_base("chrome/v1/LATEST_RELEASE"),
         "versions_url": _join_base("chrome/v2/known-good-versions-with-downloads.json"),
     },
+    "firefox": {
+        "url": _join_base("firefox/download"),
+        "latest_release_url": _join_base("firefox/releases/latest"),
+        "mozila_release_tag": _join_base("firefox/releases/tags/{0}"),
+    },
     "edge": {
         "url": _join_base("edge"),
         "latest_release_url": _join_base("edge/LATEST_RELEASE"),
     },
+    "ie": {
+        "url": _join_base("ie/download"),
+        "latest_release_url": _join_base("ie/releases"),
+        "ie_release_tag": _join_base("ie/releases/tags/selenium-{0}"),
+    },
 }
+_DRIVER_SOURCES["gecko"] = _DRIVER_SOURCES["mozilla"] = _DRIVER_SOURCES["firefox"]
+_DRIVER_SOURCES["chromiumedge"] = _DRIVER_SOURCES["edge"]
 # Available `WebDriver` classes in Selenium.
 SUPPORTED_BROWSERS = dict(
     {name: name.capitalize() for name in AVAILABLE_DRIVERS},
