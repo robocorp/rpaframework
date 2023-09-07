@@ -15,6 +15,12 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+26.1.1 - 07 Sep 2023
+--------------------
+
+- Library **RPA.JavaAccessBridge** (:pr:`xxx`): Fix problem with ``Select Window By Title`` keyword,
+  which caused all but full title match to fail to select window successfully.
+
 04 Sep 2023
 -----------
 

@@ -1156,7 +1156,7 @@ class JavaAccessBridge:
         :param timeout: selection timeout
         """
         self._select_window(
-            title=title, bring_foreground=bring_foreground, timeout=timeout
+            title=title, pid=None, bring_foreground=bring_foreground, timeout=timeout
         )
 
     @keyword
@@ -1172,7 +1172,7 @@ class JavaAccessBridge:
         """
         self._select_window(pid=pid, bring_foreground=bring_foreground, timeout=timeout)
 
-    def _find_window(self, title, pid):
+    def _find_window(self, title: str = None, pid: int = None):
         window_found = False
         try:
             if title:
@@ -1221,23 +1221,24 @@ class JavaAccessBridge:
             self.version_printed = True
 
         if bring_foreground:
-            self._bring_window_to_foreground(title, pid)
+            self._bring_window_to_foreground()
 
         self.application_refresh()
 
         return self.pid
 
-    def _bring_window_to_foreground(self, title, pid):
-        if title:
-            self.windows.foreground_window(title)
-        # TODO. need to implement reliable way to foreground
+    def _bring_window_to_foreground(self):
         # correct window identifiable by the PID
-        if pid:
+        if self.pid:
             handle = self.jab_wrapper.get_current_windows_handle()
             # pylint: disable=c-extension-no-member
             win32gui.ShowWindow(handle, win32con.SW_SHOW)
             # pylint: disable=c-extension-no-member
             win32gui.SetForegroundWindow(handle)
+        else:
+            self.logger.warning(
+                "Window pid is unknown, can't bring to window to foreground."
+            )
 
     @keyword
     def wait_until_element_exists(self, locator: str, timeout: int = 10):
