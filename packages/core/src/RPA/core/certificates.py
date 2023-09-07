@@ -52,5 +52,5 @@ def use_system_certificates():
             "Truststore not in use, HTTPS traffic validated against `certifi` package."
             " (requires Python %s and 'pip' %s at minimum)",
             ".".join(str(nr) for nr in py_version),
-            pip_version_str
+            pip_version_str,
         )

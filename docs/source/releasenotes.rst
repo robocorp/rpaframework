@@ -12,6 +12,22 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Enables system certificate store usage with ``truststore`` automatic injection.
+  Minimum versions for this to happen are Python **3.10.12** and ``pip`` **23.2.1**.
+  (:issue:`1083`)
+- Library **RPA.Browser.Selenium** (:pr:`1084`; ``rpaframework-core`` **11.1.0**):
+
+  - Fixes webdriver caching when attempting previously downloaded executable reuse and
+    latest release version retrieval optimization.
+  - Use Robocorp controlled secure sources for querying and downloading webdrivers.
+    Base URL to whitelist (:issue:`1080`) -- set `RPA_EXTERNAL_WEBDRIVERS` to any value
+    if you want to default to the previously used external sources:
+    https://downloads.robocorp.com/ext/webdrivers/
+  - Ability to take into use a 64bit webdriver version for IE on a 64bit Windows system
+    by setting `RPA_ALLOW_64BIT_IE` to any value. (by default the 32bit version is used
+    as that's the recommendation provided by Selenium)
+
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -42,7 +58,6 @@ Latest versions
     related to a whole spreadsheet will use `spreadsheet` name and `sheet` will
     be used to indicate a single sheet in a spreadsheet. This is to be consistent
     with Google API naming.
-
 
 24 Aug 2023
 -----------
