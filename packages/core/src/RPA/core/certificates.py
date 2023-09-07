@@ -40,17 +40,21 @@ def use_system_certificates():
     py_version = (3, 10, 12)
     pip_version_str = "23.2.1"
     if sys.version_info >= py_version and _check_pip_version(pip_version_str):
-        import truststore  # pylint: disable=import-outside-toplevel
+        try:
+            import truststore  # pylint: disable=import-outside-toplevel
+        except ImportError:
+            LOGGER.debug("Dependency `truststore` is not installed.")
+        else:
+            truststore.inject_into_ssl()
+            logging.info(
+                "Truststore injection done, using system certificate store to validate"
+                " HTTPS."
+            )
+            return
 
-        truststore.inject_into_ssl()
-        logging.info(
-            "Truststore injection done, using system certificate store to validate"
-            " HTTPS."
-        )
-    else:
-        logging.info(
-            "Truststore not in use, HTTPS traffic validated against `certifi` package."
-            " (requires Python %s and 'pip' %s at minimum)",
-            ".".join(str(nr) for nr in py_version),
-            pip_version_str,
-        )
+    logging.info(
+        "Truststore not in use, HTTPS traffic validated against `certifi` package."
+        " (requires Python %s and 'pip' %s at minimum)",
+        ".".join(str(nr) for nr in py_version),
+        pip_version_str,
+    )
