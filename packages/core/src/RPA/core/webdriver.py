@@ -39,10 +39,12 @@ class DriverCacheManager(_DriverCacheManager):
     # pylint: disable=unused-private-member
     def __get_metadata_key(self, *args, **kwargs) -> str:
         # pylint: disable=super-with-arguments
-        call = lambda: super(  # noqa: E731
-            DriverCacheManager, self
-        )._DriverCacheManager__get_metadata_key(*args, **kwargs)
-        return call() or call()
+        get_metadata_key = functools.partial(
+            super(DriverCacheManager, self)._DriverCacheManager__get_metadata_key,
+            *args,
+            **kwargs,
+        )
+        return get_metadata_key() or get_metadata_key()
 
 
 class ChromeDriver(_ChromeDriver):
@@ -360,9 +362,8 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
     cache_manager = DriverCacheManager(root_dir=str(root))
     manager = manager_factory(cache_manager=cache_manager)
     driver = manager.driver
-    driver.get_latest_release_version = functools.cache(
-        driver.get_latest_release_version
-    )
+    cache = getattr(functools, "cache", functools.lru_cache(maxsize=None))
+    driver.get_latest_release_version = cache(driver.get_latest_release_version)
     return manager
 
 
