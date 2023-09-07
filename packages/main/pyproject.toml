@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "26.1.1"
+version = "27.0.0-alpha"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -29,17 +29,18 @@ include = ["*.libspec"]
 
 packages = [
 	{ include = "RPA", from = "src" },
+	{ include = "robot", from = "src" },
 	{ include = "tests", format = "sdist" },
 ]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 docutils = "*"
-rpaframework-core = "11.0.6"
+rpaframework-core = "^11.1.1"
 rpaframework-pdf = "^7.2.0"
 rpaframework-windows = { version = "^7.4.0", platform = "win32" }
 java-access-bridge-wrapper = "0.14.1"
-robocorp-storage = "^0.3.2"
+robocorp-storage = "^0.4.0"
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
