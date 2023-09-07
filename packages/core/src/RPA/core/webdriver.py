@@ -282,7 +282,8 @@ _DRIVER_SOURCES = {
 }
 _DRIVER_SOURCES["gecko"] = _DRIVER_SOURCES["mozilla"] = _DRIVER_SOURCES["firefox"]
 _DRIVER_SOURCES["chromiumedge"] = _DRIVER_SOURCES["edge"]
-# Available `WebDriver` classes in Selenium.
+# Available `WebDriver` classes in Selenium which also support automatic webdriver
+#  download with `webdriver-manager`.
 SUPPORTED_BROWSERS = dict(
     {name: name.capitalize() for name in AVAILABLE_DRIVERS},
     **{"chromiumedge": "ChromiumEdge"},
