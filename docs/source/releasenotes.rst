@@ -12,6 +12,13 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+27.0.0-alpha - 07 Sep 2023
+--------------------------
+
 - Enables system certificate store usage with ``truststore`` automatic injection.
   Minimum versions for this to happen are Python **3.10.12** and ``pip`` **23.2.1**.
   (:issue:`1083`)
@@ -20,16 +27,12 @@ Latest versions
   - Fixes webdriver caching when attempting previously downloaded executable reuse and
     latest release version retrieval optimization.
   - Use Robocorp controlled secure sources for querying and downloading webdrivers.
-    Base URL to whitelist (:issue:`1080`) -- set `RPA_EXTERNAL_WEBDRIVERS` to any value
-    if you want to default to the previously used external sources:
-    https://downloads.robocorp.com/ext/webdrivers/
+    Base URL to whitelist: https://downloads.robocorp.com/ext/webdrivers/
+    -- set `RPA_EXTERNAL_WEBDRIVERS` to any value if you want to default to the
+    previously used external sources (:issue:`1080`)
   - Ability to take into use a 64bit webdriver version for IE on a 64bit Windows system
     by setting `RPA_ALLOW_64BIT_IE` to any value. (by default the 32bit version is used
     as that's the recommendation provided by Selenium)
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 26.1.1 - 07 Sep 2023
 --------------------
