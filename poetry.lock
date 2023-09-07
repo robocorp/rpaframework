@@ -4086,7 +4086,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "26.1.2"
+version = "27.0.0-alpha"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -4135,7 +4135,7 @@ robotframework-requests = "^0.9.1"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
-rpaframework-core = "^11.1.0"
+rpaframework-core = "^11.1.1"
 rpaframework-pdf = "^7.2.0"
 rpaframework-windows = {version = "^7.4.0", markers = "sys_platform == \"win32\""}
 selenium = "4.11.2"
@@ -4192,14 +4192,14 @@ rpaframework-core = ">=11.0.0,<12.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "11.1.0"
+version = "11.1.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_core-11.1.0-py3-none-any.whl", hash = "sha256:8cc580066204f4c78f5fc354f8e442295c6b9643e028874c154c0d52fddc79cf"},
-    {file = "rpaframework_core-11.1.0.tar.gz", hash = "sha256:74e457aec4c33e85e66335380e2649e5c8eb35633eaacaddbbf87e70d21ef070"},
+    {file = "rpaframework_core-11.1.1-py3-none-any.whl", hash = "sha256:0e972559274b91487fcf08cde1004b4a48b6a50f0edad5ccaa8fba09d4f169b0"},
+    {file = "rpaframework_core-11.1.1.tar.gz", hash = "sha256:e15e8bc3a4b058e4bb627c7cc42fe594f3ff750f7cdfa178b886b18fe6514af2"},
 ]
 
 [package.dependencies]
