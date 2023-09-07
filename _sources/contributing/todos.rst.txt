@@ -120,7 +120,6 @@ RPA.JavaAccessBridge:
 
    "420", "add keyword for taking screenshots of elements and window"
    "421", "implement proper XPath syntax support"
-   "1233", "need to implement reliable way to foreground"
 
 RPA.MSGraph:
 ============
