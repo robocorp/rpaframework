@@ -16,8 +16,15 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-27.0.0-alpha - 07 Sep 2023
---------------------------
+27.0.1 - 11 Sep 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage**: Internal fix for the updated asset API upload URL
+  and ability to set the `RC_DISABLE_SSL` env var in order to disable SSL checks when
+  operating on assets.
+
+27.0.0 - 07 Sep 2023
+--------------------
 
 - Enables system certificate store usage with ``truststore`` automatic injection.
   Minimum versions for this to happen are Python **3.10.12** and ``pip`` **23.2.1**.

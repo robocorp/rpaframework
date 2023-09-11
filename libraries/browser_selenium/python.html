@@ -206,10 +206,7 @@ Selenium API documentation] for details about the supported arguments.</p>
 | # Use proxy with Firefox   |                |                              |                                      |
 | ${proxy}=                  | <cite>Evaluate</cite>     | selenium.webdriver.Proxy()   | modules=selenium, selenium.webdriver |
 | ${proxy.http_proxy}=       | <cite>Set Variable</cite> | localhost:8888               |                                      |
-| <cite>Create Webdriver</cite>         | Firefox        | proxy=${proxy}               |                                      |
-| # Use proxy with PhantomJS |                |                              |                                      |
-| ${service args}=           | <cite>Create List</cite>  | –proxy=192.168.132.104:8888 |                                      |
-| <cite>Create Webdriver</cite>         | PhantomJS      | service_args=${service args} |                                      |</p>
+| <cite>Create Webdriver</cite>         | Firefox        | proxy=${proxy}               |                                      |</p>
 <p>Returns the index of this browser instance which can be used later to
 switch back to it. Index starts from 1 and is reset back to it when
 <cite>Close All Browsers</cite> keyword is used. See <cite>Switch Browser</cite> for an
@@ -497,10 +494,6 @@ are case-insensitive and some browsers have multiple supported names.</p>
 <div class="line">Internet Explorer | internetexplorer, ie     |</div>
 <div class="line">Edge              | edge                     |</div>
 <div class="line">Safari            | safari                   |</div>
-<div class="line">Iphone            | iphone                   |</div>
-<div class="line">PhantomJS         | phantomjs                |</div>
-<div class="line">HTMLUnit          | htmlunit                 |</div>
-<div class="line">HTMLUnit with Javascript | htmlunitwithjs    |</div>
 </div>
 <p>To be able to actually use one of these browsers, you need to have
 a matching Selenium browser driver available. See the
@@ -548,9 +541,7 @@ and for Firefox these
 are available. Please note that not all browsers, supported by the
 SeleniumLibrary, have Selenium options available. Therefore please
 consult the Selenium documentation which browsers do support
-the Selenium options. If <code class="docutils literal notranslate"><span class="pre">browser</span></code> argument is <cite>android</cite> then
-[<a class="reference external" href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options">https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options</a>.Options|Chrome options]
-is used. Selenium options are also supported, when <code class="docutils literal notranslate"><span class="pre">remote_url</span></code>
+the Selenium options. Selenium options are also supported, when <code class="docutils literal notranslate"><span class="pre">remote_url</span></code>
 argument is used.</p>
 <p>The SeleniumLibrary <code class="docutils literal notranslate"><span class="pre">options</span></code> argument accepts Selenium
 options in two different formats: as a string and as Python object
@@ -1842,7 +1833,7 @@ false (see <cite>Boolean arguments</cite>).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.BROWSER_NAMES">
-<span class="sig-name descname"><span class="pre">BROWSER_NAMES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'android':</span> <span class="pre">'android',</span> <span class="pre">'chrome':</span> <span class="pre">'chrome',</span> <span class="pre">'chromiumedge':</span> <span class="pre">'edge',</span> <span class="pre">'edge':</span> <span class="pre">'edge',</span> <span class="pre">'ff':</span> <span class="pre">'firefox',</span> <span class="pre">'firefox':</span> <span class="pre">'firefox',</span> <span class="pre">'gc':</span> <span class="pre">'chrome',</span> <span class="pre">'googlechrome':</span> <span class="pre">'chrome',</span> <span class="pre">'headlesschrome':</span> <span class="pre">'headless_chrome',</span> <span class="pre">'headlessfirefox':</span> <span class="pre">'headless_firefox',</span> <span class="pre">'htmlunit':</span> <span class="pre">'htmlunit',</span> <span class="pre">'htmlunitwithjs':</span> <span class="pre">'htmlunit_with_js',</span> <span class="pre">'ie':</span> <span class="pre">'ie',</span> <span class="pre">'internetexplorer':</span> <span class="pre">'ie',</span> <span class="pre">'iphone':</span> <span class="pre">'iphone',</span> <span class="pre">'phantomjs':</span> <span class="pre">'phantomjs',</span> <span class="pre">'safari':</span> <span class="pre">'safari'}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.BROWSER_NAMES" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">BROWSER_NAMES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'chrome':</span> <span class="pre">'chrome',</span> <span class="pre">'chromiumedge':</span> <span class="pre">'edge',</span> <span class="pre">'edge':</span> <span class="pre">'edge',</span> <span class="pre">'ff':</span> <span class="pre">'firefox',</span> <span class="pre">'firefox':</span> <span class="pre">'firefox',</span> <span class="pre">'gc':</span> <span class="pre">'chrome',</span> <span class="pre">'googlechrome':</span> <span class="pre">'chrome',</span> <span class="pre">'headlesschrome':</span> <span class="pre">'headless_chrome',</span> <span class="pre">'headlessfirefox':</span> <span class="pre">'headless_firefox',</span> <span class="pre">'ie':</span> <span class="pre">'ie',</span> <span class="pre">'internetexplorer':</span> <span class="pre">'ie',</span> <span class="pre">'safari':</span> <span class="pre">'safari'}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.BROWSER_NAMES" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1862,7 +1853,7 @@ false (see <cite>Boolean arguments</cite>).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.1.1'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.1.2'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
