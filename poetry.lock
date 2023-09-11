@@ -335,18 +335,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.28.42"
+version = "1.28.44"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.28.42-py3-none-any.whl", hash = "sha256:734bf24b9240a366b4a0d7e37433ef01664a3568d8bb65be583cc2a4ed2947c5"},
-    {file = "boto3-1.28.42.tar.gz", hash = "sha256:9f36834a1a777002b4b4600415ced83bc62d42b9c36d8c75f5fc007a58d0ae17"},
+    {file = "boto3-1.28.44-py3-none-any.whl", hash = "sha256:c53c92dfe22489ba31e918c2e7b59ff43e2e778bd3d3559e62351a739382bb5c"},
+    {file = "boto3-1.28.44.tar.gz", hash = "sha256:eea3b07e0f28c9f92bccab972af24a3b0dd951c69d93da75227b8ecd3e18f6c4"},
 ]
 
 [package.dependencies]
-botocore = ">=1.31.42,<1.32.0"
+botocore = ">=1.31.44,<1.32.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -355,14 +355,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.31.42"
+version = "1.31.44"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.31.42-py3-none-any.whl", hash = "sha256:a51607e9f367e53768d37eacde244bc31dbaff4e7dde453cc772a8f75648f04a"},
-    {file = "botocore-1.31.42.tar.gz", hash = "sha256:cedf7d5eb55f120faadd56d3bced2139523479adb4df62c0c5ee5d46b2ffa836"},
+    {file = "botocore-1.31.44-py3-none-any.whl", hash = "sha256:83d61c1ca781e6ede19fcc4d5dd73004eee3825a2b220f0d7727e32069209d98"},
+    {file = "botocore-1.31.44.tar.gz", hash = "sha256:84f90919fecb4a4f417fd10145c8a87ff2c4b14d6381cd34d9babf02110b3315"},
 ]
 
 [package.dependencies]
@@ -3229,14 +3229,14 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pypdf"
-version = "3.15.5"
+version = "3.16.0"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pypdf-3.15.5-py3-none-any.whl", hash = "sha256:8e003c4ee4875450612c2571ba9a5cc12d63a46b226a484314b21b7f013d2717"},
-    {file = "pypdf-3.15.5.tar.gz", hash = "sha256:81cf6e8a206450726555023a36c13fb40f680c047b8fcc0bcbfd4d1908c33d31"},
+    {file = "pypdf-3.16.0-py3-none-any.whl", hash = "sha256:887bf97029d9317a1a48da71c3fae7d6fab905a8b2e82999004e9d1385616a6a"},
+    {file = "pypdf-3.16.0.tar.gz", hash = "sha256:71fd274f5e02c7122f688f5b2609407d5dd92ecb4140d498108fc94ea9573800"},
 ]
 
 [package.dependencies]
@@ -3910,14 +3910,14 @@ pywebview = {version = "3.6.3", markers = "sys_platform == \"linux\""}
 
 [[package]]
 name = "robocorp-storage"
-version = "0.4.0"
+version = "1.0.0"
 description = "Robocorp Asset Storage library"
 category = "main"
 optional = false
 python-versions = ">=3.7.2,<4.0.0"
 files = [
-    {file = "robocorp_storage-0.4.0-py3-none-any.whl", hash = "sha256:d266b88563aaa7a98d953eb50bc136ef5dba4fa7329bec94e7ca5453d2c4e0ec"},
-    {file = "robocorp_storage-0.4.0.tar.gz", hash = "sha256:8558741c4d90bffde0c4399cda6b3aa2aae686b5b16b91b079a1cd2f2da677a8"},
+    {file = "robocorp_storage-1.0.0-py3-none-any.whl", hash = "sha256:6a330b6e4240ab0734549c1e3b85598a319e36e68124a70e7cb1120fb56409a9"},
+    {file = "robocorp_storage-1.0.0.tar.gz", hash = "sha256:98a305998fdfeb1fe481c3357c856f018e22b7fd01e96f27ef3dafe66c3de23c"},
 ]
 
 [package.dependencies]
@@ -4040,14 +4040,14 @@ robotframework = ">=2.9"
 
 [[package]]
 name = "robotframework-seleniumlibrary"
-version = "6.1.1"
+version = "6.1.2"
 description = "Web testing library for Robot Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6, <4"
 files = [
-    {file = "robotframework-seleniumlibrary-6.1.1.tar.gz", hash = "sha256:a62262f1e2f9cba34537fe391d06e7253504efd31fe3914c417a63aa9919a7ee"},
-    {file = "robotframework_seleniumlibrary-6.1.1-py2.py3-none-any.whl", hash = "sha256:2c0c94b21aec948d1bdff7c77249783b3836718d8c45ca83cc91b481243fed5c"},
+    {file = "robotframework-seleniumlibrary-6.1.2.tar.gz", hash = "sha256:81130a4eb8c34177e6cd8b51c2cdb29fde56078adf934f8758d2eb7bf9407309"},
+    {file = "robotframework_seleniumlibrary-6.1.2-py2.py3-none-any.whl", hash = "sha256:e2f83006e2b2e61c63a777986e157e8722ff7d80c7cb5bb1c1bbf0e80b9cf31c"},
 ]
 
 [package.dependencies]
@@ -4086,7 +4086,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "27.0.0-alpha"
+version = "27.0.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -4128,7 +4128,7 @@ pywinauto = {version = "^0.6.8", markers = "python_full_version != \"3.7.6\" and
 PyYAML = ">=5.4.1,<7.0.0"
 requests = "^2.28.1"
 requests-oauthlib = "^1.3.1"
-robocorp-storage = "^0.4.0"
+robocorp-storage = "^1.0.0"
 robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
 robotframework-pythonlibcore = "^4.2.0"
 robotframework-requests = "^0.9.1"
@@ -5199,14 +5199,14 @@ requests = "*"
 
 [[package]]
 name = "websocket-client"
-version = "1.6.2"
+version = "1.6.3"
 description = "WebSocket client for Python with low level API options"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "websocket-client-1.6.2.tar.gz", hash = "sha256:53e95c826bf800c4c465f50093a8c4ff091c7327023b10bfaff40cf1ef170eaa"},
-    {file = "websocket_client-1.6.2-py3-none-any.whl", hash = "sha256:ce54f419dfae71f4bdba69ebe65bf7f0a93fe71bc009ad3a010aacc3eebad537"},
+    {file = "websocket-client-1.6.3.tar.gz", hash = "sha256:3aad25d31284266bcfcfd1fd8a743f63282305a364b8d0948a43bd606acc652f"},
+    {file = "websocket_client-1.6.3-py3-none-any.whl", hash = "sha256:6cfc30d051ebabb73a5fa246efdcc14c8fbebbd0330f8984ac3bb6d9edd2ad03"},
 ]
 
 [package.extras]

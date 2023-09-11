@@ -2140,14 +2140,14 @@ test = ["coverage", "mypy", "ruff", "wheel"]
 
 [[package]]
 name = "pypdf"
-version = "3.15.5"
+version = "3.16.0"
 description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pypdf-3.15.5-py3-none-any.whl", hash = "sha256:8e003c4ee4875450612c2571ba9a5cc12d63a46b226a484314b21b7f013d2717"},
-    {file = "pypdf-3.15.5.tar.gz", hash = "sha256:81cf6e8a206450726555023a36c13fb40f680c047b8fcc0bcbfd4d1908c33d31"},
+    {file = "pypdf-3.16.0-py3-none-any.whl", hash = "sha256:887bf97029d9317a1a48da71c3fae7d6fab905a8b2e82999004e9d1385616a6a"},
+    {file = "pypdf-3.16.0.tar.gz", hash = "sha256:71fd274f5e02c7122f688f5b2609407d5dd92ecb4140d498108fc94ea9573800"},
 ]
 
 [package.dependencies]
@@ -2217,14 +2217,14 @@ yaml = ["ruamel.yaml"]
 
 [[package]]
 name = "pytest"
-version = "7.4.1"
+version = "7.4.2"
 description = "pytest: simple powerful testing with Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pytest-7.4.1-py3-none-any.whl", hash = "sha256:460c9a59b14e27c602eb5ece2e47bec99dc5fc5f6513cf924a7d03a578991b1f"},
-    {file = "pytest-7.4.1.tar.gz", hash = "sha256:2f2301e797521b23e4d2585a0a3d7b5e50fdddaaf7e7d6773ea26ddb17c213ab"},
+    {file = "pytest-7.4.2-py3-none-any.whl", hash = "sha256:1d881c6124e08ff0a1bb75ba3ec0bfd8b5354a01c194ddd5a0a870a48d99b002"},
+    {file = "pytest-7.4.2.tar.gz", hash = "sha256:a766259cfab564a2ad52cb1aae1b881a75c3eb7e34ca3779697c23ed47c47069"},
 ]
 
 [package.dependencies]
@@ -2627,14 +2627,14 @@ docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "robocorp-storage"
-version = "0.4.0"
+version = "1.0.0"
 description = "Robocorp Asset Storage library"
 category = "main"
 optional = false
 python-versions = ">=3.7.2,<4.0.0"
 files = [
-    {file = "robocorp_storage-0.4.0-py3-none-any.whl", hash = "sha256:d266b88563aaa7a98d953eb50bc136ef5dba4fa7329bec94e7ca5453d2c4e0ec"},
-    {file = "robocorp_storage-0.4.0.tar.gz", hash = "sha256:8558741c4d90bffde0c4399cda6b3aa2aae686b5b16b91b079a1cd2f2da677a8"},
+    {file = "robocorp_storage-1.0.0-py3-none-any.whl", hash = "sha256:6a330b6e4240ab0734549c1e3b85598a319e36e68124a70e7cb1120fb56409a9"},
+    {file = "robocorp_storage-1.0.0.tar.gz", hash = "sha256:98a305998fdfeb1fe481c3357c856f018e22b7fd01e96f27ef3dafe66c3de23c"},
 ]
 
 [package.dependencies]
@@ -2717,14 +2717,14 @@ robotframework = ">=2.9"
 
 [[package]]
 name = "robotframework-seleniumlibrary"
-version = "6.1.1"
+version = "6.1.2"
 description = "Web testing library for Robot Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6, <4"
 files = [
-    {file = "robotframework-seleniumlibrary-6.1.1.tar.gz", hash = "sha256:a62262f1e2f9cba34537fe391d06e7253504efd31fe3914c417a63aa9919a7ee"},
-    {file = "robotframework_seleniumlibrary-6.1.1-py2.py3-none-any.whl", hash = "sha256:2c0c94b21aec948d1bdff7c77249783b3836718d8c45ca83cc91b481243fed5c"},
+    {file = "robotframework-seleniumlibrary-6.1.2.tar.gz", hash = "sha256:81130a4eb8c34177e6cd8b51c2cdb29fde56078adf934f8758d2eb7bf9407309"},
+    {file = "robotframework_seleniumlibrary-6.1.2-py2.py3-none-any.whl", hash = "sha256:e2f83006e2b2e61c63a777986e157e8722ff7d80c7cb5bb1c1bbf0e80b9cf31c"},
 ]
 
 [package.dependencies]
@@ -3741,4 +3741,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "8d6b515ca7ebb5e83b225aa15062c18af8231a69afcd2d61132e68f24e1a1709"
+content-hash = "5f6b679facc12150cd043cbfbb6ca51e18b27cd865a5403f4b9e26e3b743e80d"
