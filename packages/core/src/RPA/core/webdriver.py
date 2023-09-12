@@ -19,7 +19,17 @@ from webdriver_manager.core.driver_cache import (
 )
 from webdriver_manager.core.logger import log
 from webdriver_manager.core.manager import DriverManager
-from webdriver_manager.core.os_manager import ChromeType, OperationSystemManager
+from webdriver_manager.core.os_manager import (
+    ChromeType,
+    OSType,
+    OperationSystemManager,
+    PATTERN,
+)
+from webdriver_manager.core.utils import (
+    linux_browser_apps_to_cmd,
+    read_version_from_cmd,
+    windows_browser_apps_to_cmd,
+)
 from webdriver_manager.drivers.chrome import ChromeDriver as _ChromeDriver
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import (
@@ -351,16 +361,21 @@ def _is_chromium() -> bool:
     return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
 
 
-def _to_manager(browser: str, *, root: Path) -> DriverManager:
+def _get_browser_lower(browser: str) -> str:
     browser = browser.strip()
     browser_lower = browser.lower()
-    manager_factory = AVAILABLE_DRIVERS.get(browser_lower)
-    if not manager_factory:
+    if browser_lower not in AVAILABLE_DRIVERS:
         raise ValueError(
             f"Unsupported browser {browser!r} for webdriver download!"
             f" (choose from: {', '.join(SUPPORTED_BROWSERS.values())})"
         )
 
+    return browser_lower
+
+
+def _to_manager(browser: str, *, root: Path) -> DriverManager:
+    browser_lower = _get_browser_lower(browser)
+    manager_factory = AVAILABLE_DRIVERS[browser_lower]
     if manager_factory == ChromeDriverManager and _is_chromium():
         manager_factory = functools.partial(
             manager_factory, chrome_type=ChromeType.CHROMIUM
@@ -397,3 +412,50 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> str:
         _set_executable(path)
     LOGGER.info("Downloaded webdriver to: %s", path)
     return path
+
+
+def get_browser_version(browser: str, path=Optional[str]) -> Optional[str]:
+    """Returns the detected browser version from OS in the absence of a given `path`."""
+    browser_lower = _get_browser_lower(browser)
+    chrome_type = ChromeType.CHROMIUM if _is_chromium() else ChromeType.GOOGLE
+    browser_types = {
+        # NOTE(cmin764; 12 Sep 2023): There's no upstream support on getting the
+        #  automatically detected browser version from the OS for IE, Safari and Opera.
+        "chrome": chrome_type,
+        "firefox": "firefox",
+        "gecko": "firefox",
+        "mozilla": "firefox",
+        "edge": ChromeType.MSEDGE,
+        "chromiumedge": ChromeType.MSEDGE,
+        "ie": ChromeType.MSEDGE,
+    }
+    browser_type = browser_types.get(browser_lower)
+    if not browser_type:
+        LOGGER.warning("Can't determine browser version for %r!", browser)
+        return None
+
+    if not path:
+        return _OPS_MANAGER.get_browser_version_from_os(browser_type)
+
+    common_cmds = {
+        OSType.LINUX: linux_browser_apps_to_cmd(path),
+        OSType.MAC: f"{path} --version",
+        OSType.WIN: windows_browser_apps_to_cmd(
+            f'(Get-Item -Path "{path}").VersionInfo.FileVersion'
+        ),
+    }
+    cmd_mapping = {
+        ChromeType.GOOGLE: common_cmds,
+        ChromeType.CHROMIUM: common_cmds,
+        ChromeType.MSEDGE: common_cmds,
+        "firefox": common_cmds,
+    }
+    try:
+        cmd_mapping = cmd_mapping[browser_type][OperationSystemManager.get_os_name()]
+        pattern = PATTERN[browser_type]
+        version = read_version_from_cmd(cmd_mapping, pattern)
+        return version
+    # pylint: disable=broad-except
+    except Exception as exc:
+        LOGGER.warning("Can't read %r browser version due to: %s", browser, exc)
+        return None
