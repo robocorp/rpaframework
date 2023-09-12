@@ -7,6 +7,7 @@ import logging
 import os
 import platform
 import shutil
+import subprocess
 import time
 import traceback
 import urllib.parse
@@ -608,7 +609,7 @@ class Selenium(SeleniumLibrary):
         binary_location = getattr(options, "binary_location", None)
         if binary_location:
             options.edge_executable_path = binary_location
-        # An invalid default URL will make the automation freeze.
+        # An invalid default URL might make the automation freeze.
         options.initial_browser_url = (
             options.initial_browser_url or url or "https://robocorp.com/"
         )
@@ -875,11 +876,11 @@ class Selenium(SeleniumLibrary):
             """Custom service class wrapping the picked browser's one."""
 
             def __init__(
-                self, *args, executable_path: str = default_webdriver, **kwargs
+                this, *args, executable_path: str = default_webdriver, **kwargs
             ):
                 # NOTE(cmin764): Starting with Selenium 4.9.1, we have to block their
                 #  `SeleniumManager` from early stage, otherwise it will be activated
-                #  when the `WebDriver` class itself is instantiated with a null
+                #  when the `WebDriver` class itself if instantiated with a null
                 #  executable path.
                 resolved_path = (
                     shutil.which(executable_path) if executable_path else None
@@ -890,7 +891,24 @@ class Selenium(SeleniumLibrary):
                         " (with disabled Selenium Manager)"
                     )
 
+                this._log_webdriver_version(resolved_path)
                 super().__init__(*args, executable_path=resolved_path, **kwargs)
+
+            @staticmethod
+            def _log_webdriver_version(path: str):
+                args = [path, "--version"]
+                try:
+                    result = subprocess.run(
+                        args, check=True, capture_output=True, text=True
+                    )
+                except Exception as exc:
+                    self.logger.warning(
+                        "Webdriver version couldn't be read due to: %s", exc
+                    )
+                else:
+                    self.logger.info(
+                        "Webdriver version taken into use: %s", result.stdout
+                    )
 
             # pylint: disable=no-self-argument
             def __del__(this) -> None:
@@ -901,6 +919,11 @@ class Selenium(SeleniumLibrary):
                     super().__del__()
 
         return BrowserService
+
+    def _log_browser_version(self, browser: str, *, options: ArgOptions):
+        binary_location = getattr(options, "binary_location", None)
+        version = core_webdriver.get_browser_version(browser, path=binary_location)
+        self.logger.info("Targeted browser version: %s", version)
 
     def _create_webdriver(
         self, browser: str, alias: Optional[str], download: bool, **kwargs
@@ -937,6 +960,7 @@ class Selenium(SeleniumLibrary):
             # NOTE: But don't break a browser name like "ChromiumEdge".
             cap_browser = browser[0].upper() + browser[1:]
             kwargs["service"] = service
+            self._log_browser_version(cap_browser, options=kwargs["options"])
             return self.browser_management.create_webdriver(
                 cap_browser, alias, **kwargs
             )
