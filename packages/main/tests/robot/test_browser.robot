@@ -212,7 +212,7 @@ Open In Incognito With Custom Options
     Open Available Browser    https://robocorp.com/docs    browser_selection=Chrome
     ...    headless=${True}    options=${options}    port=${18888}
     # Custom profile usage now works in headless mode as well. (but not guaranteed
-    #    with older browser versions)
+    #  with older browser versions)
     ...    use_profile=${True}    profile_path=${data_dir}
 
     ${visible} =    Is Element Visible    xpath://button[contains(@class, "desktop")]
@@ -239,10 +239,19 @@ Open Edge in normal and IE mode without closing
     Import Library      RPA.Browser.Selenium    auto_close=${False}
     ...     WITH NAME   Selenium
 
-    ${url} =    Set Variable    https://robocorp.com/docs
-    @{browsers} =   Create List     Edge    Ie
-    FOR    ${browser}    IN    @{browsers}
-        Selenium.Open Available Browser   ${url}   browser_selection=${browser}
+    &{edge_check} =  Create Dictionary
+    ...    browser     Edge
+    ...    url   https://robocorp.com/docs
+    ...    text     Portal
+    &{ie_check} =  Create Dictionary
+    ...    browser     Ie
+    ...    url   https://demos.telerik.com/aspnet-ajax/salesdashboard/views/about.aspx
+    ...    text     Telerik
+    @{checks} =   Create List    ${edge_check}     ${ie_check}
+
+    FOR    ${check}    IN    @{checks}
+        Selenium.Open Available Browser   ${check}[url]
+        ...     browser_selection=${check}[browser]
         ...     headless=${False}   download=${True}
-        Selenium.Page Should Contain Link   Portal
+        Selenium.Page Should Contain   ${check}[text]
     END

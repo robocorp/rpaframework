@@ -208,7 +208,7 @@ class Selenium(SeleniumLibrary):
         **{"chromiumedge": "ChromiumEdge"},
     )
     # Both driver and browser lower-case names.
-    CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge", "msedge"]
+    CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge", "msedge", "ie"]
 
     def __init__(self, *args, **kwargs):
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
@@ -561,23 +561,9 @@ class Selenium(SeleniumLibrary):
         else:
             return [bool(download)]
 
-    def _set_chromium_options(
-        self,
-        browser_lower: str,
-        kwargs: dict,
-        options: ChromiumOptions,
-        use_profile: bool = False,
-        profile_name: Optional[str] = None,
-        profile_path: Optional[str] = None,
-        preferences: Optional[dict] = None,
-        proxy: str = None,
+    def _set_experimental_options(
+        self, browser_lower: str, options: ArgOptions, preferences: Optional[dict]
     ):
-        if proxy:
-            options.add_argument(f"--proxy-server={proxy}")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--disable-web-security")
-        options.add_argument("--allow-running-insecure-content")
-        options.add_argument("--no-sandbox")
         default_preferences = {
             "safebrowsing.enabled": True,
             "credentials_enable_service": False,
@@ -597,6 +583,28 @@ class Selenium(SeleniumLibrary):
         if not self.auto_close:
             # Leave the browser window open if auto-closing is disabled.
             options.add_experimental_option("detach", True)
+
+    def _set_chromium_options(
+        self,
+        browser_lower: str,
+        kwargs: dict,
+        options: ArgOptions,
+        use_profile: bool = False,
+        profile_name: Optional[str] = None,
+        profile_path: Optional[str] = None,
+        preferences: Optional[dict] = None,
+        proxy: str = None,
+    ):
+        if proxy:
+            options.add_argument(f"--proxy-server={proxy}")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--allow-running-insecure-content")
+        options.add_argument("--no-sandbox")
+
+        if browser_lower != "ie":
+            # While Edge supports experimental options, Edge in IE mode doesn't.
+            self._set_experimental_options(browser_lower, options, preferences)
         if use_profile:
             self._set_user_profile(browser_lower, options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
@@ -743,8 +751,8 @@ class Selenium(SeleniumLibrary):
                 preferences=preferences,
                 proxy=proxy,
             )
-        elif browser_lower == "ie":
-            self._set_ie_options(options, url=url)
+            if browser_lower == "ie":
+                self._set_ie_options(options, url=url)
         elif browser_lower == "firefox":
             self._set_firefox_options(options, preferences=preferences)
         if self.download_preferences and browser_lower not in self.download_preferences:
@@ -805,16 +813,16 @@ class Selenium(SeleniumLibrary):
     def _set_user_profile(
         self,
         browser_lower: str,
-        options: ChromiumOptions,
+        options: ArgOptions,
         profile_path: Optional[str] = None,
         profile_name: Optional[str] = None,
     ) -> None:
-        """Set user profile configuration into browser options
+        """Set user profile configuration into the browser options.
 
-        Requires environment variable ``RPA_CHROME_USER_PROFILE_DIR``
-        to point into user profile directory.
-
-        ``options`` dictionary of browser options
+        In the absence of an explicit `profile_path` an `RPA_CHROME_USER_PROFILE_DIR`
+        environment variable is required to point into the user profile directory
+        instead. Optionally, if a `profile_name` is passed, then we'll be using that
+        instead of the default one.
         """
         data_dir = profile_path or os.getenv("RPA_CHROME_USER_PROFILE_DIR")
         system = platform.system()
@@ -875,6 +883,7 @@ class Selenium(SeleniumLibrary):
         class BrowserService(Service):
             """Custom service class wrapping the picked browser's one."""
 
+            # pylint: disable=no-self-argument
             def __init__(
                 this, *args, executable_path: str = default_webdriver, **kwargs
             ):
@@ -901,6 +910,7 @@ class Selenium(SeleniumLibrary):
                     result = subprocess.run(
                         args, check=True, capture_output=True, text=True
                     )
+                # pylint: disable=broad-except
                 except Exception as exc:
                     self.logger.warning(
                         "Webdriver version couldn't be read due to: %s", exc
