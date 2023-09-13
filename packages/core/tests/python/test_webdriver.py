@@ -1,4 +1,7 @@
+import platform
+import re
 import unittest.mock as mock
+from pathlib import Path
 
 import pytest
 from webdriver_manager.core.os_manager import ChromeType
@@ -48,3 +51,24 @@ def test_edge_download():
 def test_ie_download():
     path = webdriver.download("Ie", root=RESULTS_DIR)
     assert "IEDriverServer.exe" in path
+
+
+@pytest.mark.parametrize("browser", ["Chrome", "Firefox", "Edge", "Ie"])
+def test_get_browser_version(browser):
+    version = webdriver.get_browser_version(browser)
+    print(f"{browser}: {version}")
+
+
+@pytest.mark.skipif(
+    platform.system() != "Darwin", reason="requires Mac with Chrome installed"
+)
+def test_get_chrome_version_path_mac():
+    path = (
+        Path("/Applications")
+        / r"Google\ Chrome.app"
+        / "Contents"
+        / "MacOS"
+        / r"Google\ Chrome"
+    )
+    version = webdriver.get_browser_version("Chrome", path=str(path))
+    assert re.match(r"\d+(\.\d+){2,3}$", version)  # 3-4 atoms in the version

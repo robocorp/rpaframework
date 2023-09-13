@@ -414,7 +414,7 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> str:
     return path
 
 
-def get_browser_version(browser: str, path=Optional[str]) -> Optional[str]:
+def get_browser_version(browser: str, path: Optional[str] = None) -> Optional[str]:
     """Returns the detected browser version from OS in the absence of a given `path`."""
     browser_lower = _get_browser_lower(browser)
     chrome_type = ChromeType.CHROMIUM if _is_chromium() else ChromeType.GOOGLE
