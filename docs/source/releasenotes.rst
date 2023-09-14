@@ -16,6 +16,13 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+14 Sep 2023
+-----------
+
+- Library **RPA.Cloud.Google** (:pr:`1092`; ``rpaframework-google`` **8.1.0**): Add
+  possibility to send HTML email by adding `html` parameter for ``Send Message``
+  keyword.
+
 27.0.1 - 11 Sep 2023
 --------------------
 
