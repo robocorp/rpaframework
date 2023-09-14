@@ -606,6 +606,9 @@ class Selenium(SeleniumLibrary):
             # While Edge supports experimental options, Edge in IE mode doesn't.
             self._set_experimental_options(browser_lower, options, preferences)
         if use_profile:
+            # NOTE(cmin764; 14 Sep 2023): This doesn't currently work with IE due to a
+            #  bug in the webdriver.
+            # Issue: https://github.com/MicrosoftEdge/EdgeWebDriver/issues/29
             self._set_user_profile(browser_lower, options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
             # Deprecated params, but no worries as they get popped then bundled in a
@@ -779,9 +782,8 @@ class Selenium(SeleniumLibrary):
     def _set_headless_options(self, browser_lower: str, options: ArgOptions) -> None:
         """Set headless mode for the browser, if possible.
 
-        ``browser`` string name of the browser
-
-        ``options`` browser options class instance
+        ``browser_lower`` is the lower-case string name of the browser.
+        ``options`` are the browser options to be updated to match the headless config.
         """
         if browser_lower == "safari":
             self.logger.warning(

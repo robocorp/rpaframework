@@ -28,6 +28,7 @@ My Custom Keyword
 Create Browser Data Directory
     ${data_dir} =    Absolute Path    ${BROWSER_DATA}
     RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
+    RPA.FileSystem.Empty Directory     ${data_dir}
     RETURN    ${data_dir}
 
 Download With Specific Browser
@@ -222,10 +223,23 @@ Open In Incognito With Custom Options
     Close Browser
     [Teardown]    RPA.FileSystem.Remove Directory    ${data_dir}    recursive=${True}
 
+Open Edge in IE mode with profile
+    [Setup]     Close Browser
+    [Tags]      windows     skip
+
+    ${data_dir} =    Create Browser Data Directory
+    Open Available Browser    https://robocorp.com/docs    browser_selection=Ie
+    ...    use_profile=${True}    profile_path=${data_dir}    profile_name=Default
+    # NOTE(cmin764; 14 Sep 2023): Currently there's a patch in the webdriver binary not
+    #  overriding the user data dir we're trying to set.
+    Run Keyword And Ignore Error    Directory Should Not Be Empty    ${data_dir}
+
+    [Teardown]      RPA.FileSystem.Remove Directory    ${data_dir}    recursive=${True}
+
 Open Edge in normal and IE mode without closing
     [Documentation]     Downloads fresh webdrivers and starts Edge in normal and IE
     ...     mode on a Windows machine.
-    [Tags]  skip    windows  # requires Windows OS with UI
+    [Tags]      windows     skip  # requires Windows OS with UI
     [Setup]    Close Browser
 
     ${webdrivers_dir} =     Evaluate    RPA.core.webdriver.DRIVER_ROOT
