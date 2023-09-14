@@ -115,7 +115,7 @@ class OperationSystemManager(_OperationSystemManager):
 class DriverCacheManager(_DriverCacheManager):
     """Fixes caching when retrieving an existing already downloaded webdriver."""
 
-    def __int__(self, *args, file_manager: Optional[FileManager] = None, **kwargs):
+    def __init__(self, *args, file_manager: Optional[FileManager] = None, **kwargs):
         super().__init__(*args, **kwargs)
         self._os_system_manager = OperationSystemManager()
         self._file_manager = file_manager or FileManager(self._os_system_manager)
