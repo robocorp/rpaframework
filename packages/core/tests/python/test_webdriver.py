@@ -16,7 +16,7 @@ def disable_caching():
     with mock.patch(
         "webdriver_manager.core.driver_cache.DriverCacheManager.find_driver",
         new=mock.Mock(return_value=None),
-    ):
+    ), mock.patch("RPA.core.webdriver.suppress_logging"):
         yield
 
 
@@ -57,6 +57,17 @@ def test_ie_download():
 def test_get_browser_version(browser):
     version = webdriver.get_browser_version(browser)
     print(f"{browser}: {version}")
+
+
+@pytest.mark.skipif(
+    platform.system() != "Windows", reason="requires Windows with IE installed"
+)
+@pytest.mark.parametrize(
+    "path", [None, r"C:\Program Files\Internet Explorer\iexplore.exe"]
+)
+def test_get_ie_version(path):
+    version = webdriver.get_browser_version("Ie", path=path)
+    assert re.match(r"\d+(\.\d+){3}$", version)  # 4 atoms in the version
 
 
 @pytest.mark.skipif(

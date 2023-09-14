@@ -12,9 +12,20 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Browser.Selenium** (:issue:`1078`; ``rpaframework-core`` **11.2.0**):
+
+  - Display the used webdriver and browser versions in the logs.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+14 Sep 2023
+-----------
+
+- Library **RPA.Cloud.Google** (:pr:`1092`; ``rpaframework-google`` **8.1.0**): Add
+  possibility to send HTML email by adding `html` parameter for ``Send Message``
+  keyword.
 
 27.0.1 - 11 Sep 2023
 --------------------
