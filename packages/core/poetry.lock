@@ -1270,14 +1270,14 @@ urllib3 = {version = ">=1.26,<3", extras = ["socks"]}
 
 [[package]]
 name = "setuptools"
-version = "68.2.1"
+version = "68.2.2"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "setuptools-68.2.1-py3-none-any.whl", hash = "sha256:eff96148eb336377ab11beee0c73ed84f1709a40c0b870298b0d058828761bae"},
-    {file = "setuptools-68.2.1.tar.gz", hash = "sha256:56ee14884fd8d0cd015411f4a13f40b4356775a0aefd9ebc1d3bfb9a1acb32f1"},
+    {file = "setuptools-68.2.2-py3-none-any.whl", hash = "sha256:b454a35605876da60632df1a60f736524eb73cc47bbc9f3f1ef1b644de74fd2a"},
+    {file = "setuptools-68.2.2.tar.gz", hash = "sha256:4ac1475276d2f1c48684874089fefcd83bd7162ddaafb81fac866ba0db282a87"},
 ]
 
 [package.extras]
@@ -1382,18 +1382,6 @@ files = [
 exceptiongroup = "*"
 trio = ">=0.11"
 wsproto = ">=0.14"
-
-[[package]]
-name = "truststore"
-version = "0.7.0"
-description = "Verify certificates using native system trust stores"
-category = "main"
-optional = false
-python-versions = ">= 3.10"
-files = [
-    {file = "truststore-0.7.0-py3-none-any.whl", hash = "sha256:a4b410a365cafec4c2b386b30df53d89a6a4466cc229c7026e41c2d847f94fe9"},
-    {file = "truststore-0.7.0.tar.gz", hash = "sha256:72e784507a624375434381e4bad3eff8614bc8c845a7f5ae16a25a2624d0683f"},
-]
 
 [[package]]
 name = "typing-extensions"
@@ -1554,4 +1542,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "2ea20303075220e77df931843e45f19c7515c839b52cb2f7fc1aa9703cf663c6"
+content-hash = "487b0e4a43d2e60ed50a1e1bb3614fea3e2ce5e5e2050f2cc5f04980b8bdb086"
