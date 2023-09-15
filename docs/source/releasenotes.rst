@@ -12,15 +12,20 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Browser.Selenium** (:issue:`1078`; ``rpaframework-core`` **11.2.0**):
-
-  - Display the used webdriver and browser versions in the logs.
-  - Reminder: You can disable webdriver-manager SSL checks during downloads by setting
-    ``WDM_SSL_VERIFY=false`` in the environment.
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+27.1.0 - 15 Sep 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1091`; ``rpaframework-core`` **11.2.0**):
+
+  - Display the used webdriver and browser versions in the logs. (:issue:`1078`)
+  - Support profile usage with Edge in IE mode as well. (:issue:`1079`)
+  - Warn when maximizing the browser in headless mode and offer help. (:issue:`1075`)
+  - Reminder: You can disable webdriver-manager SSL checks during downloads by setting
+    ``WDM_SSL_VERIFY=false`` in the environment.
 
 14 Sep 2023
 -----------

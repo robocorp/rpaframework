@@ -202,8 +202,9 @@ Open Browser With Dict Options
     ...    modules=RPA.core.webdriver
     Log To Console    Downloaded webdriver path: ${driver_path}
 
+    ${log_path} =   Set Variable    ${BROWSER_DATA}${/}browser.log
     Open Browser    https://robocorp.com/docs    browser=Chrome    options=${options}
-    ...    executable_path=${driver_path}
+    ...    executable_path=${driver_path}   service_log_path=${log_path}
     ${visible} =    Is Element Visible    xpath://button[contains(@class, "desktop")]
     Should Be True    ${visible}
 
