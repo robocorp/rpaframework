@@ -1,4 +1,7 @@
+import platform
+import re
 import unittest.mock as mock
+from pathlib import Path
 
 import pytest
 from webdriver_manager.core.os_manager import ChromeType
@@ -13,7 +16,7 @@ def disable_caching():
     with mock.patch(
         "webdriver_manager.core.driver_cache.DriverCacheManager.find_driver",
         new=mock.Mock(return_value=None),
-    ):
+    ), mock.patch("RPA.core.webdriver.suppress_logging"):
         yield
 
 
@@ -48,3 +51,35 @@ def test_edge_download():
 def test_ie_download():
     path = webdriver.download("Ie", root=RESULTS_DIR)
     assert "IEDriverServer.exe" in path
+
+
+@pytest.mark.parametrize("browser", ["Chrome", "Firefox", "Edge", "Ie"])
+def test_get_browser_version(browser):
+    version = webdriver.get_browser_version(browser)
+    print(f"{browser}: {version}")
+
+
+@pytest.mark.skipif(
+    platform.system() != "Windows", reason="requires Windows with IE installed"
+)
+@pytest.mark.parametrize(
+    "path", [None, r"C:\Program Files\Internet Explorer\iexplore.exe"]
+)
+def test_get_ie_version(path):
+    version = webdriver.get_browser_version("Ie", path=path)
+    assert re.match(r"\d+(\.\d+){3}$", version)  # 4 atoms in the version
+
+
+@pytest.mark.skipif(
+    platform.system() != "Darwin", reason="requires Mac with Chrome installed"
+)
+def test_get_chrome_version_path_mac():
+    path = (
+        Path("/Applications")
+        / r"Google\ Chrome.app"
+        / "Contents"
+        / "MacOS"
+        / r"Google\ Chrome"
+    )
+    version = webdriver.get_browser_version("Chrome", path=str(path))
+    assert re.match(r"\d+(\.\d+){2,3}$", version)  # 3-4 atoms in the version

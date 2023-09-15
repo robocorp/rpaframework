@@ -17,9 +17,20 @@ from webdriver_manager.core.download_manager import DownloadManager
 from webdriver_manager.core.driver_cache import (
     DriverCacheManager as _DriverCacheManager,
 )
+from webdriver_manager.core.file_manager import FileManager
 from webdriver_manager.core.logger import log
 from webdriver_manager.core.manager import DriverManager
-from webdriver_manager.core.os_manager import ChromeType, OperationSystemManager
+from webdriver_manager.core.os_manager import (
+    ChromeType,
+    OSType,
+    OperationSystemManager as _OperationSystemManager,
+    PATTERN as _PATTERN,
+)
+from webdriver_manager.core.utils import (
+    linux_browser_apps_to_cmd,
+    read_version_from_cmd,
+    windows_browser_apps_to_cmd,
+)
 from webdriver_manager.drivers.chrome import ChromeDriver as _ChromeDriver
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import (
@@ -31,11 +42,88 @@ from webdriver_manager.opera import OperaDriverManager
 from RPA.core.robocorp import robocorp_home
 
 
-# FIXME(cmin764; 6 Sep 2023): Remove this once the following issue is solved:
-#  https://github.com/SergeyPirogov/webdriver_manager/issues/618
+class BrowserType:
+    """Constants for the browser types. (expands the internal one)"""
+
+    MSIE = "msie"
+    FIREFOX = "firefox"
+
+
+PATTERN = _PATTERN.copy()
+PATTERN[BrowserType.MSIE] = r"\d+\.\d+\.\d+\.\d+"
+
+
+class OperationSystemManager(_OperationSystemManager):
+    """Custom manager for browser version retrieval which works with explicit paths."""
+
+    @staticmethod
+    def _get_browser_version(browser_type: str, paths: List[str]) -> Optional[str]:
+        common_cmds = {
+            OSType.LINUX: linux_browser_apps_to_cmd(*paths),
+            OSType.MAC: f"{paths[0]} --version",
+            OSType.WIN: windows_browser_apps_to_cmd(
+                *(
+                    f"(Get-Item -Path '{path}').VersionInfo.FileVersion"
+                    for path in paths
+                )
+            ),
+        }
+        cmd_mapping = {
+            ChromeType.GOOGLE: common_cmds,
+            ChromeType.CHROMIUM: common_cmds,
+            ChromeType.MSEDGE: common_cmds,
+            BrowserType.FIREFOX: common_cmds,
+            BrowserType.MSIE: common_cmds,
+        }
+        try:
+            cmd_mapping = cmd_mapping[browser_type][
+                OperationSystemManager.get_os_name()
+            ]
+            pattern = PATTERN[browser_type]
+            version = read_version_from_cmd(cmd_mapping, pattern)
+            return version
+        # pylint: disable=broad-except
+        except Exception as exc:
+            LOGGER.warning(
+                "Can't read %r browser version due to: %s", browser_type, exc
+            )
+            return None
+
+    def get_browser_version_from_os(
+        self, browser_type: Optional[str] = None
+    ) -> Optional[str]:
+        if browser_type != BrowserType.MSIE:
+            return super().get_browser_version_from_os(browser_type)
+
+        # Add support for IE version retrieval.
+        # NOTE(cmin764; 15 Sep 2023): This got slightly different due to posted issue:
+        #  https://github.com/SergeyPirogov/webdriver_manager/issues/625
+        program_files = os.getenv("PROGRAMFILES", r"C:\Program Files")
+        paths = [
+            rf"{program_files}\Internet Explorer\iexplore.exe",
+            rf"{program_files} (x86)\Internet Explorer\iexplore.exe",
+        ]
+        return self._get_browser_version(BrowserType.MSIE, paths=paths)
+
+    def get_browser_version(
+        self, browser_type: str, path: Optional[str] = None
+    ) -> Optional[str]:
+        if path:
+            return self._get_browser_version(browser_type, paths=[path])
+
+        return self.get_browser_version_from_os(browser_type)
+
+
 class DriverCacheManager(_DriverCacheManager):
     """Fixes caching when retrieving an existing already downloaded webdriver."""
 
+    def __init__(self, *args, file_manager: Optional[FileManager] = None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._os_system_manager = OperationSystemManager()
+        self._file_manager = file_manager or FileManager(self._os_system_manager)
+
+    # FIXME(cmin764; 6 Sep 2023): Remove this once the following issue is solved:
+    #  https://github.com/SergeyPirogov/webdriver_manager/issues/618
     # pylint: disable=unused-private-member
     def __get_metadata_key(self, *args, **kwargs) -> str:
         # pylint: disable=super-with-arguments
@@ -351,16 +439,21 @@ def _is_chromium() -> bool:
     return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
 
 
-def _to_manager(browser: str, *, root: Path) -> DriverManager:
+def _get_browser_lower(browser: str) -> str:
     browser = browser.strip()
     browser_lower = browser.lower()
-    manager_factory = AVAILABLE_DRIVERS.get(browser_lower)
-    if not manager_factory:
+    if browser_lower not in AVAILABLE_DRIVERS:
         raise ValueError(
             f"Unsupported browser {browser!r} for webdriver download!"
             f" (choose from: {', '.join(SUPPORTED_BROWSERS.values())})"
         )
 
+    return browser_lower
+
+
+def _to_manager(browser: str, *, root: Path) -> DriverManager:
+    browser_lower = _get_browser_lower(browser)
+    manager_factory = AVAILABLE_DRIVERS[browser_lower]
     if manager_factory == ChromeDriverManager and _is_chromium():
         manager_factory = functools.partial(
             manager_factory, chrome_type=ChromeType.CHROMIUM
@@ -373,7 +466,9 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
             LOGGER.warning("Can't set an internal webdriver source for %r!", browser)
 
     cache_manager = DriverCacheManager(root_dir=str(root))
-    manager = manager_factory(cache_manager=cache_manager)
+    manager = manager_factory(
+        cache_manager=cache_manager, os_system_manager=_OPS_MANAGER
+    )
     driver = manager.driver
     cache = getattr(functools, "cache", functools.lru_cache(maxsize=None))
     driver.get_latest_release_version = cache(driver.get_latest_release_version)
@@ -397,3 +492,27 @@ def download(browser: str, root: Path = DRIVER_ROOT) -> str:
         _set_executable(path)
     LOGGER.info("Downloaded webdriver to: %s", path)
     return path
+
+
+def get_browser_version(browser: str, path: Optional[str] = None) -> Optional[str]:
+    """Returns the detected browser version from OS in the absence of a given `path`."""
+    browser_lower = _get_browser_lower(browser)
+    chrome_type = ChromeType.CHROMIUM if _is_chromium() else ChromeType.GOOGLE
+    browser_types = {
+        # NOTE(cmin764; 12 Sep 2023): There's no upstream support on getting the
+        #  automatically detected browser version from the OS for IE, Safari and Opera.
+        #  But we introduce one here for IE only.
+        "chrome": chrome_type,
+        "firefox": BrowserType.FIREFOX,
+        "gecko": BrowserType.FIREFOX,
+        "mozilla": BrowserType.FIREFOX,
+        "edge": ChromeType.MSEDGE,
+        "chromiumedge": ChromeType.MSEDGE,
+        "ie": BrowserType.MSIE,
+    }
+    browser_type = browser_types.get(browser_lower)
+    if not browser_type:
+        LOGGER.warning("Can't determine browser version for %r!", browser)
+        return None
+
+    return _OPS_MANAGER.get_browser_version(browser_type, path=path)
