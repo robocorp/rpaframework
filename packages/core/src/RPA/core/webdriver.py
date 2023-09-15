@@ -96,6 +96,8 @@ class OperationSystemManager(_OperationSystemManager):
             return super().get_browser_version_from_os(browser_type)
 
         # Add support for IE version retrieval.
+        # NOTE(cmin764; 15 Sep 2023): This got slightly different due to posted issue:
+        #  https://github.com/SergeyPirogov/webdriver_manager/issues/625
         program_files = os.getenv("PROGRAMFILES", r"C:\Program Files")
         paths = [
             rf"{program_files}\Internet Explorer\iexplore.exe",

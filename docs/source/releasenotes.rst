@@ -15,6 +15,8 @@ Latest versions
 - Library **RPA.Browser.Selenium** (:issue:`1078`; ``rpaframework-core`` **11.2.0**):
 
   - Display the used webdriver and browser versions in the logs.
+  - Reminder: You can disable webdriver-manager SSL checks during downloads by setting
+    ``WDM_SSL_VERIFY=false`` in the environment.
 
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
