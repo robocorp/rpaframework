@@ -7,6 +7,7 @@ import logging
 import os
 import platform
 import shutil
+import subprocess
 import time
 import traceback
 import urllib.parse
@@ -38,8 +39,9 @@ from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
 from SeleniumLibrary.keywords import (
     AlertKeywords,
-    BrowserManagementKeywords,
+    BrowserManagementKeywords as _BrowserManagementKeywords,
     ScreenshotKeywords,
+    WindowKeywords as _WindowKeywords,
 )
 from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCreator
 from SeleniumLibrary.locators import ElementFinder
@@ -106,7 +108,7 @@ class FirefoxOptions(_FirefoxOptions):
         return self.binary._start_cmd if self.binary else None
 
 
-class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
+class BrowserManagementKeywords(_BrowserManagementKeywords):
     """Overridden keywords for browser management."""
 
     def __init__(self, ctx):
@@ -127,7 +129,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         url = ensure_scheme(url, default=self._default_scheme)
         super().go_to(url)
 
-    go_to.__doc__ = BrowserManagementKeywords.go_to.__doc__
+    go_to.__doc__ = _BrowserManagementKeywords.go_to.__doc__
 
     @keyword
     def open_browser(
@@ -158,7 +160,35 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
             executable_path=executable_path,
         )
 
-    open_browser.__doc__ = BrowserManagementKeywords.open_browser.__doc__
+    open_browser.__doc__ = _BrowserManagementKeywords.open_browser.__doc__
+
+
+# pylint: disable=missing-class-docstring
+class WindowKeywords(_WindowKeywords):
+
+    # pylint: disable=arguments-differ
+    @keyword
+    def maximize_browser_window(self, *args, force: bool = False, **kwargs):
+        """Maximizes current browser window.
+
+        The window won't be maximized in headless mode since there's no way to know the
+        screen size to set the window size to in the absence of an UI. Use the
+        ``Set Window Size`` keyword with a specific side or set the `force` param to
+        `True` if you still want to enforce this undefined behaviour.
+        """
+        if self.ctx.headless:
+            decision = (
+                "continuing with maximization" if force else "ignoring maximization"
+            )
+            self.ctx.logger.warning(
+                "Attempting to maximize browser in headless mode without knowning the"
+                " screen resolution. (%s)",
+                decision,
+            )
+            if not force:
+                return
+
+        super().maximize_browser_window(*args, **kwargs)
 
 
 class Selenium(SeleniumLibrary):
@@ -207,12 +237,13 @@ class Selenium(SeleniumLibrary):
         **{"chromiumedge": "ChromiumEdge"},
     )
     # Both driver and browser lower-case names.
-    CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge", "msedge"]
+    CHROMIUM_BROWSERS = ["chrome", "edge", "chromiumedge", "msedge", "ie"]
 
     def __init__(self, *args, **kwargs):
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
         self.auto_close = kwargs.pop("auto_close", True)
         self.locators_path = kwargs.pop("locators_path", None)
+        self.headless: Optional[bool] = None  # will be set once the browser starts
 
         # Parse user-given plugins
         plugins = kwargs.get("plugins", "")
@@ -230,8 +261,9 @@ class Selenium(SeleniumLibrary):
         self._element_finder = RobocorpElementFinder(self)
 
         # Add inherit/overridden library keywords.
-        self.browser_management = BrowserManagementKeywordsOverride(self)
-        override_plugins = [self.browser_management]
+        self.browser_management = BrowserManagementKeywords(self)
+        window_kw = WindowKeywords(self)
+        override_plugins = [self.browser_management, window_kw]
         self.add_library_components(override_plugins)
 
         self.logger = logging.getLogger(__name__)
@@ -475,6 +507,7 @@ class Selenium(SeleniumLibrary):
 
         attempts = []
         index_or_alias = None
+        self.headless: bool = headless  # it's resolved through the decorator
 
         # Try all browsers in preferred order
         for browser, download in product(browsers, downloads):
@@ -560,23 +593,9 @@ class Selenium(SeleniumLibrary):
         else:
             return [bool(download)]
 
-    def _set_chromium_options(
-        self,
-        browser_lower: str,
-        kwargs: dict,
-        options: ChromiumOptions,
-        use_profile: bool = False,
-        profile_name: Optional[str] = None,
-        profile_path: Optional[str] = None,
-        preferences: Optional[dict] = None,
-        proxy: str = None,
+    def _set_experimental_options(
+        self, browser_lower: str, options: ArgOptions, preferences: Optional[dict]
     ):
-        if proxy:
-            options.add_argument(f"--proxy-server={proxy}")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--disable-web-security")
-        options.add_argument("--allow-running-insecure-content")
-        options.add_argument("--no-sandbox")
         default_preferences = {
             "safebrowsing.enabled": True,
             "credentials_enable_service": False,
@@ -596,7 +615,32 @@ class Selenium(SeleniumLibrary):
         if not self.auto_close:
             # Leave the browser window open if auto-closing is disabled.
             options.add_experimental_option("detach", True)
+
+    def _set_chromium_options(
+        self,
+        browser_lower: str,
+        kwargs: dict,
+        options: ArgOptions,
+        use_profile: bool = False,
+        profile_name: Optional[str] = None,
+        profile_path: Optional[str] = None,
+        preferences: Optional[dict] = None,
+        proxy: str = None,
+    ):
+        if proxy:
+            options.add_argument(f"--proxy-server={proxy}")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--allow-running-insecure-content")
+        options.add_argument("--no-sandbox")
+
+        if browser_lower != "ie":
+            # While Edge supports experimental options, Edge in IE mode doesn't.
+            self._set_experimental_options(browser_lower, options, preferences)
         if use_profile:
+            # NOTE(cmin764; 14 Sep 2023): This doesn't currently work with IE due to a
+            #  bug in the webdriver.
+            # Issue: https://github.com/MicrosoftEdge/EdgeWebDriver/issues/29
             self._set_user_profile(browser_lower, options, profile_path, profile_name)
         if self.logger.isEnabledFor(logging.DEBUG):
             # Deprecated params, but no worries as they get popped then bundled in a
@@ -608,7 +652,7 @@ class Selenium(SeleniumLibrary):
         binary_location = getattr(options, "binary_location", None)
         if binary_location:
             options.edge_executable_path = binary_location
-        # An invalid default URL will make the automation freeze.
+        # An invalid default URL might make the automation freeze.
         options.initial_browser_url = (
             options.initial_browser_url or url or "https://robocorp.com/"
         )
@@ -722,7 +766,7 @@ class Selenium(SeleniumLibrary):
         options: ArgOptions = self.normalize_options(options, browser=browser)
         if headless:
             self._set_headless_options(browser_lower, options)
-        if maximized:
+        if maximized and not headless:
             options.add_argument("--start-maximized")
         if user_agent:
             options.add_argument(f"user-agent={user_agent}")
@@ -742,8 +786,8 @@ class Selenium(SeleniumLibrary):
                 preferences=preferences,
                 proxy=proxy,
             )
-        elif browser_lower == "ie":
-            self._set_ie_options(options, url=url)
+            if browser_lower == "ie":
+                self._set_ie_options(options, url=url)
         elif browser_lower == "firefox":
             self._set_firefox_options(options, preferences=preferences)
         if self.download_preferences and browser_lower not in self.download_preferences:
@@ -770,9 +814,8 @@ class Selenium(SeleniumLibrary):
     def _set_headless_options(self, browser_lower: str, options: ArgOptions) -> None:
         """Set headless mode for the browser, if possible.
 
-        ``browser`` string name of the browser
-
-        ``options`` browser options class instance
+        ``browser_lower`` is the lower-case string name of the browser.
+        ``options`` are the browser options to be updated to match the headless config.
         """
         if browser_lower == "safari":
             self.logger.warning(
@@ -804,16 +847,16 @@ class Selenium(SeleniumLibrary):
     def _set_user_profile(
         self,
         browser_lower: str,
-        options: ChromiumOptions,
+        options: ArgOptions,
         profile_path: Optional[str] = None,
         profile_name: Optional[str] = None,
     ) -> None:
-        """Set user profile configuration into browser options
+        """Set user profile configuration into the browser options.
 
-        Requires environment variable ``RPA_CHROME_USER_PROFILE_DIR``
-        to point into user profile directory.
-
-        ``options`` dictionary of browser options
+        In the absence of an explicit `profile_path` an `RPA_CHROME_USER_PROFILE_DIR`
+        environment variable is required to point into the user profile directory
+        instead. Optionally, if a `profile_name` is passed, then we'll be using that
+        instead of the default one.
         """
         data_dir = profile_path or os.getenv("RPA_CHROME_USER_PROFILE_DIR")
         system = platform.system()
@@ -874,12 +917,13 @@ class Selenium(SeleniumLibrary):
         class BrowserService(Service):
             """Custom service class wrapping the picked browser's one."""
 
+            # pylint: disable=no-self-argument
             def __init__(
-                self, *args, executable_path: str = default_webdriver, **kwargs
+                this, *args, executable_path: str = default_webdriver, **kwargs
             ):
                 # NOTE(cmin764): Starting with Selenium 4.9.1, we have to block their
                 #  `SeleniumManager` from early stage, otherwise it will be activated
-                #  when the `WebDriver` class itself is instantiated with a null
+                #  when the `WebDriver` class itself if instantiated with a null
                 #  executable path.
                 resolved_path = (
                     shutil.which(executable_path) if executable_path else None
@@ -890,7 +934,25 @@ class Selenium(SeleniumLibrary):
                         " (with disabled Selenium Manager)"
                     )
 
+                this._log_webdriver_version(resolved_path)
                 super().__init__(*args, executable_path=resolved_path, **kwargs)
+
+            @staticmethod
+            def _log_webdriver_version(path: str):
+                args = [path, "--version"]
+                try:
+                    result = subprocess.run(
+                        args, check=True, capture_output=True, text=True
+                    )
+                # pylint: disable=broad-except
+                except Exception as exc:
+                    self.logger.warning(
+                        "Webdriver version couldn't be read due to: %s", exc
+                    )
+                else:
+                    self.logger.info(
+                        "Webdriver version taken into use: %s", result.stdout
+                    )
 
             # pylint: disable=no-self-argument
             def __del__(this) -> None:
@@ -901,6 +963,11 @@ class Selenium(SeleniumLibrary):
                     super().__del__()
 
         return BrowserService
+
+    def _log_browser_version(self, browser: str, *, options: ArgOptions):
+        binary_location = getattr(options, "binary_location", None)
+        version = core_webdriver.get_browser_version(browser, path=binary_location)
+        self.logger.info("Targeted browser version: %s", version)
 
     def _create_webdriver(
         self, browser: str, alias: Optional[str], download: bool, **kwargs
@@ -937,6 +1004,7 @@ class Selenium(SeleniumLibrary):
             # NOTE: But don't break a browser name like "ChromiumEdge".
             cap_browser = browser[0].upper() + browser[1:]
             kwargs["service"] = service
+            self._log_browser_version(cap_browser, options=kwargs["options"])
             return self.browser_management.create_webdriver(
                 cap_browser, alias, **kwargs
             )
