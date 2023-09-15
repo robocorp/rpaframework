@@ -174,7 +174,7 @@ Test Shadow Root
     Should Be Equal    ${text}    some text
 
 Maximize window in headless mode
-    Maximize Browser Window     force=${True}
+    Maximize Browser Window     force=${False}  # forcing it works locally only
 
 
 # Tasks which close the already open browser and opens a new one, most probably in
