@@ -39,8 +39,9 @@ from SeleniumLibrary.base import keyword
 from SeleniumLibrary.errors import ElementNotFound
 from SeleniumLibrary.keywords import (
     AlertKeywords,
-    BrowserManagementKeywords,
+    BrowserManagementKeywords as _BrowserManagementKeywords,
     ScreenshotKeywords,
+    WindowKeywords as _WindowKeywords,
 )
 from SeleniumLibrary.keywords.webdrivertools import SeleniumOptions, WebDriverCreator
 from SeleniumLibrary.locators import ElementFinder
@@ -107,7 +108,7 @@ class FirefoxOptions(_FirefoxOptions):
         return self.binary._start_cmd if self.binary else None
 
 
-class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
+class BrowserManagementKeywords(_BrowserManagementKeywords):
     """Overridden keywords for browser management."""
 
     def __init__(self, ctx):
@@ -128,7 +129,7 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
         url = ensure_scheme(url, default=self._default_scheme)
         super().go_to(url)
 
-    go_to.__doc__ = BrowserManagementKeywords.go_to.__doc__
+    go_to.__doc__ = _BrowserManagementKeywords.go_to.__doc__
 
     @keyword
     def open_browser(
@@ -159,7 +160,35 @@ class BrowserManagementKeywordsOverride(BrowserManagementKeywords):
             executable_path=executable_path,
         )
 
-    open_browser.__doc__ = BrowserManagementKeywords.open_browser.__doc__
+    open_browser.__doc__ = _BrowserManagementKeywords.open_browser.__doc__
+
+
+# pylint: disable=missing-class-docstring
+class WindowKeywords(_WindowKeywords):
+
+    # pylint: disable=arguments-differ
+    @keyword
+    def maximize_browser_window(self, *args, force: bool = False, **kwargs):
+        """Maximizes current browser window.
+
+        The window won't be maximized in headless mode since there's no way to know the
+        screen size to set the window size to in the absence of an UI. Use the
+        ``Set Window Size`` keyword with a specific side or set the `force` param to
+        `True` if you still want to enforce this undefined behaviour.
+        """
+        if self.ctx.headless:
+            decision = (
+                "continuing with maximization" if force else "ignoring maximization"
+            )
+            self.ctx.logger.warning(
+                "Attempting to maximize browser in headless mode without knowning the"
+                " screen resolution. (%s)",
+                decision,
+            )
+            if not force:
+                return
+
+        super().maximize_browser_window(*args, **kwargs)
 
 
 class Selenium(SeleniumLibrary):
@@ -214,6 +243,7 @@ class Selenium(SeleniumLibrary):
         # We need to pop our kwargs before passing kwargs to SeleniumLibrary
         self.auto_close = kwargs.pop("auto_close", True)
         self.locators_path = kwargs.pop("locators_path", None)
+        self.headless: Optional[bool] = None  # will be set once the browser starts
 
         # Parse user-given plugins
         plugins = kwargs.get("plugins", "")
@@ -231,8 +261,9 @@ class Selenium(SeleniumLibrary):
         self._element_finder = RobocorpElementFinder(self)
 
         # Add inherit/overridden library keywords.
-        self.browser_management = BrowserManagementKeywordsOverride(self)
-        override_plugins = [self.browser_management]
+        self.browser_management = BrowserManagementKeywords(self)
+        window_kw = WindowKeywords(self)
+        override_plugins = [self.browser_management, window_kw]
         self.add_library_components(override_plugins)
 
         self.logger = logging.getLogger(__name__)
@@ -476,6 +507,7 @@ class Selenium(SeleniumLibrary):
 
         attempts = []
         index_or_alias = None
+        self.headless: bool = headless  # it's resolved through the decorator
 
         # Try all browsers in preferred order
         for browser, download in product(browsers, downloads):
@@ -734,7 +766,7 @@ class Selenium(SeleniumLibrary):
         options: ArgOptions = self.normalize_options(options, browser=browser)
         if headless:
             self._set_headless_options(browser_lower, options)
-        if maximized:
+        if maximized and not headless:
             options.add_argument("--start-maximized")
         if user_agent:
             options.add_argument(f"user-agent={user_agent}")

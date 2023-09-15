@@ -49,6 +49,7 @@ Download With Specific Browser
     ...    RPA.FileSystem.Remove File    ${file_path}
 
 
+# Tasks which rely on the already open browser in headless mode.
 *** Tasks ***
 Does alert contain
     Go To    ${ALERT_HTML}
@@ -172,12 +173,19 @@ Test Shadow Root
     ${text} =    Get Text    ${elem}
     Should Be Equal    ${text}    some text
 
+Maximize window in headless mode
+    Maximize Browser Window     force=${True}
+
+
+# Tasks which close the already open browser and opens a new one, most probably in
+#  non-headless mode.
+*** Tasks ***
 Download PDF in custom Firefox directory
-    [Tags]    manual  # no support for the Firefox browser in CI (or on dev machine)
+    [Tags]    manual  # no guaranteed support for the Firefox browser in CI/dev env
     Download With Specific Browser    Firefox
 
 Download PDF in custom Chrome directory
-    [Tags]    skip  # flaky test in CI, mainly on Windows with Python 3.7, 3.8
+    [Tags]    skip  # flaky test in CI, mainly on Windows with Python 3.8
     Download With Specific Browser    Chrome
 
 Open Browser With Dict Options
@@ -224,8 +232,11 @@ Open In Incognito With Custom Options
     [Teardown]    RPA.FileSystem.Remove Directory    ${data_dir}    recursive=${True}
 
 Open Edge in IE mode with profile
+    [Documentation]     Prove that we have support for profile usage since the IE
+    ...    webdriver still opens Edge but in IE mode and still supports setting an user
+    ...    data dir.
     [Setup]     Close Browser
-    [Tags]      windows     skip
+    [Tags]      windows     skip  # windows specific test without headless support
 
     ${data_dir} =    Create Browser Data Directory
     Open Available Browser    https://robocorp.com/docs    browser_selection=Ie
@@ -238,7 +249,9 @@ Open Edge in IE mode with profile
 
 Open Edge in normal and IE mode without closing
     [Documentation]     Downloads fresh webdrivers and starts Edge in normal and IE
-    ...     mode on a Windows machine.
+    ...    mode on a Windows machine without auto-closing the browser at the end of
+    ...    the execution. (on Windows the webdrivers will be closed but the browser
+    ...    stays open)
     [Tags]      windows     skip  # requires Windows OS with UI
     [Setup]    Close Browser
 
