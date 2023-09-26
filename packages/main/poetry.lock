@@ -1057,18 +1057,18 @@ testing = ["pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)",
 
 [[package]]
 name = "java-access-bridge-wrapper"
-version = "0.14.1"
+version = "1.0.0"
 description = "Python wrapper for the Windows Java Access Bridge"
 category = "main"
 optional = false
-python-versions = ">=3.6.2,<4.0.0"
+python-versions = ">=3.8.1,<4.0.0"
 files = [
-    {file = "java_access_bridge_wrapper-0.14.1-py3-none-any.whl", hash = "sha256:5e3a5afbb5a42a50d33b355ad74b7fe1e1109c4f7a90c363ec49542fcd605806"},
-    {file = "java_access_bridge_wrapper-0.14.1.tar.gz", hash = "sha256:8ee085b6257b23037e84c0572821e636402b14450ec7d396b0b04ab85ce40476"},
+    {file = "java_access_bridge_wrapper-1.0.0-py3-none-any.whl", hash = "sha256:ecca6061be0775fb3f01ebc857b4160dae4c529e45d0593498f71cb746657a68"},
+    {file = "java_access_bridge_wrapper-1.0.0.tar.gz", hash = "sha256:979c05b9d625240abd55a9ce7aee516a115155ab68d98b42c58840271a9806f6"},
 ]
 
 [package.dependencies]
-pywin32 = {version = ">=300,<304", markers = "python_full_version != \"3.7.6\" and python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
+pywin32 = {version = ">=300,<307", markers = "python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 
 [[package]]
 name = "jeepney"
@@ -3722,5 +3722,5 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.8"
-content-hash = "09bae3a7bf042b06a7152222ab11adfb90ce5c9942d34e46fdf9bf8e28084b72"
+python-versions = "^3.8.1"
+content-hash = "f9603d3ff03e19e32affed7da90819a8f6238d4937a8e4500b067fec1f5ea77d"
