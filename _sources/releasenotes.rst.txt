@@ -16,6 +16,13 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+27.2.0 - 26 Sep 2023
+--------------------
+
+- Add regular expression support for `RPA.JavaAccessBridge` library locators by
+  updating `java-access-bridge-wrapper` package to the version **1.0.0**.
+- Update `selenium` package to the version **4.13.0**.
+
 27.1.0 - 15 Sep 2023
 --------------------
 
