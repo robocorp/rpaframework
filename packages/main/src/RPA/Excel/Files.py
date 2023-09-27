@@ -1014,7 +1014,7 @@ class Files:
             fmt = image.format
             width = int(image.width * float(scale))
             height = int(image.height * float(scale))
-            image = image.resize((width, height), Image.ANTIALIAS)
+            image = image.resize((width, height), Image.LANCZOS)
             image.format = fmt
 
         self.workbook.insert_image(row, column, image, name)
