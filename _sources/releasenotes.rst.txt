@@ -16,6 +16,24 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+27.3.0 - 29 Sep 2023
+--------------------
+
+- Library **RPA.RPA** (:pr:`1102`; ``rpaframework-pdf`` **7.3.0**):
+
+  - Keywords ``HTML to PDF`` and ``Template HTML to PDF`` now support
+    parameters `margin` and `working_dir`. Latter can be used to set
+    directory for example image files referenced in the HTML content.
+  - Keyword ``HTML to PDF`` can be given a single HTML string to create
+    single page PDF or list of HTML strings to create multi-page PDF.
+
+27 Sep 2023
+-----------
+
+- Security update for ``rpaframework`` (**27.2.1**) and ``rpaframework-recognition``
+ (**5.2.1**): Bumps ``pillow`` to version **10.0.1**.
+
+
 27.2.0 - 26 Sep 2023
 --------------------
 
