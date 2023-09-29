@@ -7,7 +7,7 @@ from typing import List, Optional, Tuple, Union
 
 import pdfminer
 import pypdf
-from fpdf import FPDF, HTMLMixin
+from fpdf import FPDF
 from pdfminer.image import ImageWriter
 from pdfminer.layout import LTImage
 from pdfminer.pdfdocument import PDFDocument
@@ -40,7 +40,21 @@ def get_output_dir() -> Path:
     return output_dir
 
 
-class PDF(FPDF, HTMLMixin):
+class change_dir:
+    """Context manager for switching working directory temporarily."""
+
+    def __init__(self, path):
+        self.path = path
+        self.original_path = os.getcwd()
+
+    def __enter__(self):
+        os.chdir(self.path)
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        os.chdir(self.original_path)
+
+
+class PDF(FPDF):
     """
     FDPF helper class.
 
@@ -188,6 +202,8 @@ class DocumentKeywords(LibraryContext):
         output_path: str,
         variables: dict = None,
         encoding: str = ENCODING,
+        margin: float = 0,
+        working_directory: str = None,
     ) -> None:
         """Use HTML template file to generate PDF file.
 
@@ -230,10 +246,13 @@ class DocumentKeywords(LibraryContext):
             }
             p.template_html_to_pdf("order.template", "order.pdf", data)
 
-        :param template: Filepath to the HTML template.
-        :param output_path: Filepath where to save PDF document.
-        :param variables: Dictionary of variables to fill into template, defaults to {}.
-        :param encoding: Codec used for text I/O.
+        :param template: filepath to the HTML template
+        :param output_path: filepath where to save PDF document
+        :param variables: dictionary of variables to fill into template, defaults to {}
+        :param encoding: codec used for text I/O
+        :param margin: page margin, default is set to 0
+        :param working_directory: directory where to look for HTML linked
+         resources, by default uses the current working directory
         """
         variables = variables or {}
 
@@ -242,14 +261,22 @@ class DocumentKeywords(LibraryContext):
         for key, value in variables.items():
             html = html.replace("{{" + key + "}}", str(value))
 
-        self.html_to_pdf(html, output_path, encoding=encoding)
+        self.html_to_pdf(
+            html,
+            output_path,
+            encoding=encoding,
+            margin=margin,
+            working_directory=working_directory,
+        )
 
     @keyword
     def html_to_pdf(
         self,
-        content: str,
+        content: Union[str, List[str]],
         output_path: str,
         encoding: str = ENCODING,
+        margin: float = 0,
+        working_directory: str = None,
     ) -> None:
         """Generate a PDF file from HTML content.
 
@@ -265,6 +292,14 @@ class DocumentKeywords(LibraryContext):
             Create PDF from HTML
                 HTML to PDF    ${html_content_as_string}  /tmp/output.pdf
 
+            Multi Page PDF
+                @{pages}=    Create List    ${page1_html}    ${page2_html}
+                HTML To PDF   ${pages}    output.pdf
+                ...  margin=10
+                ...  working_directory=subdir
+
+        **Python**
+
         .. code-block:: python
 
             from RPA.PDF import PDF
@@ -274,21 +309,42 @@ class DocumentKeywords(LibraryContext):
             def create_pdf_from_html():
                 pdf.html_to_pdf(html_content_as_string, "/tmp/output.pdf")
 
-        :param content: HTML content.
-        :param output_path: Filepath where to save the PDF document.
-        :param encoding: Codec used for text I/O.
+            def multi_page_pdf():
+                pages = [page1_html, page2_html, page3_html]
+                pdf.html_to_pdf(pages, "output.pdf", margin=10)
+                # if I have images in the HTML in the 'subdir'
+                pdf.html_to_pdf(pages, "output.pdf",
+                    margin=10, working_directory="subdir"
+                )
+
+        :param content: HTML content
+        :param output_path: filepath where to save the PDF document
+        :param encoding: codec used for text I/O
+        :param margin: page margin, default is set to 0
+        :param working_directory: directory where to look for HTML linked
+         resources, by default uses the current working directory
         """
         output_path = self.resolve_output(output_path)
         self.logger.info("Writing output to file %s", output_path)
 
+        pdf_content = [content] if isinstance(content, str) else content
         fpdf = PDF()
-        # Support unicode content with a font capable of rendering it.
         fpdf.core_fonts_encoding = encoding
         fpdf.add_unicode_fonts()
-        fpdf.set_margin(0)
-        fpdf.add_page()
-        fpdf.write_html(content)
+        fpdf.set_margin(margin)
+        # Support unicode content with a font capable of rendering it.
+        if working_directory:
+            with change_dir(working_directory):
+                for pdf_html in pdf_content:
+                    self._write_html_to_page(fpdf, pdf_html)
+        else:
+            for pdf_html in pdf_content:
+                self._write_html_to_page(fpdf, pdf_html)
         fpdf.output(name=output_path)
+
+    def _write_html_to_page(self, fpdf, html):
+        fpdf.add_page()
+        fpdf.write_html(html)
 
     @keyword
     def get_pdf_info(self, source_path: str = None) -> dict:
