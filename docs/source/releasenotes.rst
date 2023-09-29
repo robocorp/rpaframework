@@ -33,7 +33,6 @@ Latest versions
 - Security update for ``rpaframework`` (**27.2.1**) and ``rpaframework-recognition``
   (**5.2.1**): Bumps ``pillow`` to version **10.0.1**.
 
-
 27.2.0 - 26 Sep 2023
 --------------------
 
