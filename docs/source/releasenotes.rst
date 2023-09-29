@@ -19,7 +19,7 @@ Latest versions
 27.3.0 - 29 Sep 2023
 --------------------
 
-- Library **RPA.RPA** (:pr:`1102`; ``rpaframework-pdf`` **7.3.0**):
+- Library **RPA.PDF** (:pr:`1102`; ``rpaframework-pdf`` **7.3.0**):
 
   - Keywords ``HTML to PDF`` and ``Template HTML to PDF`` now support
     parameters `margin` and `working_dir`. Latter can be used to set
