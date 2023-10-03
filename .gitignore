@@ -51,3 +51,7 @@ jab_wrapper.log
 
 # invoke config
 invoke.yaml
+
+# Ignore Java output files
+*.class
+*.jar
