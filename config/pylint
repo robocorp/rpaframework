@@ -76,11 +76,13 @@ disable=fixme,
         too-many-locals,
         too-many-public-methods,
         duplicate-code,
-	  line-too-long,
+        line-too-long,
         consider-using-f-string,
         consider-iterating-dictionary,
         logging-fstring-interpolation,
-        logging-not-lazy
+        logging-not-lazy,
+        wrong-import-order,
+        wrong-import-position
 
 
 # Enable the message, report, category or checker with the given id(s). You can

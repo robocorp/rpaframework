@@ -12,8 +12,111 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+27.3.0 - 29 Sep 2023
+--------------------
+
+- Library **RPA.PDF** (:pr:`1102`; ``rpaframework-pdf`` **7.3.0**):
+
+  - Keywords ``HTML to PDF`` and ``Template HTML to PDF`` now support
+    parameters `margin` and `working_dir`. Latter can be used to set
+    directory for example image files referenced in the HTML content.
+  - Keyword ``HTML to PDF`` can be given a single HTML string to create
+    single page PDF or list of HTML strings to create multi-page PDF.
+
+27 Sep 2023
+-----------
+
+- Security update for ``rpaframework`` (**27.2.1**) and ``rpaframework-recognition``
+  (**5.2.1**): Bumps ``pillow`` to version **10.0.1**.
+
+27.2.0 - 26 Sep 2023
+--------------------
+
+- Add regular expression support for ``RPA.JavaAccessBridge`` library locators by
+  updating ``java-access-bridge-wrapper`` package to the version **1.0.0**.
+- Update ``selenium`` package to the version **4.13.0**.
+
+27.1.0 - 15 Sep 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1091`; ``rpaframework-core`` **11.2.0**):
+
+  - Display the used webdriver and browser versions in the logs. (:issue:`1078`)
+  - Support profile usage with Edge in IE mode as well. (:issue:`1079`)
+  - Warn when maximizing the browser in headless mode and offer help. (:issue:`1075`)
+  - Reminder: You can disable webdriver-manager SSL checks during downloads by setting
+    ``WDM_SSL_VERIFY=false`` in the environment.
+
+14 Sep 2023
+-----------
+
+- Library **RPA.Cloud.Google** (:pr:`1092`; ``rpaframework-google`` **8.1.0**): Add
+  possibility to send HTML email by adding `html` parameter for ``Send Message``
+  keyword.
+
+27.0.1 - 11 Sep 2023
+--------------------
+
+- Library **RPA.Robocorp.Storage**: Internal fix for the updated asset API upload URL
+  and ability to set the `RC_DISABLE_SSL` env var in order to disable SSL checks when
+  operating on assets.
+
+27.0.0 - 07 Sep 2023
+--------------------
+
+- Enables system certificate store usage with ``truststore`` automatic injection.
+  Minimum versions for this to happen are Python **3.10.12** and ``pip`` **23.2.1**.
+  (:issue:`1083`)
+- Library **RPA.Browser.Selenium** (:pr:`1084`; ``rpaframework-core`` **11.1.0**):
+
+  - Fixes webdriver caching when attempting previously downloaded executable reuse and
+    latest release version retrieval optimization.
+  - Use Robocorp controlled secure sources for querying and downloading webdrivers.
+    Base URL to whitelist: https://downloads.robocorp.com/ext/webdrivers/
+    -- set `RPA_EXTERNAL_WEBDRIVERS` to any value if you want to default to the
+    previously used external sources (:issue:`1080`)
+  - Ability to take into use a 64bit webdriver version for IE on a 64bit Windows system
+    by setting `RPA_ALLOW_64BIT_IE` to any value. (by default the 32bit version is used
+    as that's the recommendation provided by Selenium)
+
+26.1.1 - 07 Sep 2023
+--------------------
+
+- Library **RPA.JavaAccessBridge** (:pr:`1087`): Fix problem with
+  ``Select Window By Title`` keyword, which caused all but full title match to fail
+  to select window successfully.
+
+04 Sep 2023
+-----------
+
+- Library **RPA.Cloud.Google** (:pr:`1082`; ``rpaframework-google`` **8.0.0**):
+
+  - Add new keywords for Google Sheets
+
+    - ``Copy spreadsheet``
+    - ``Create spreadsheet``
+    - ``Delete sheet``
+    - ``Generic spreadsheet batch update``
+    - ``Get all sheet values``
+    - ``Get spreadsheet basic information``
+    - ``Get spreadsheet details``
+    - ``Rename sheet``
+    - ``To column letter``
+
+  - Repurposed keywords
+
+    - ``Copy sheet`` (now will copy a sheet within a spreadsheet)
+    - ``Create sheet`` (now will create a sheet within a spreadsheet)
+
+  .. warning::
+    **Breaking** changes in the ``Sheets`` keywords. All actions/properties
+    related to a whole spreadsheet will use `spreadsheet` name and `sheet` will
+    be used to indicate a single sheet in a spreadsheet. This is to be consistent
+    with Google API naming.
 
 24 Aug 2023
 -----------

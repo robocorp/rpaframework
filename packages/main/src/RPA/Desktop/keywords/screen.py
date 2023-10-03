@@ -100,7 +100,7 @@ def log_image(image: Image.Image, size=1024):
         return
 
     image = image.copy()
-    image.thumbnail((int(size), int(size)), Image.ANTIALIAS)
+    image.thumbnail((int(size), int(size)), Image.Resampling.LANCZOS)
 
     buf = BytesIO()
     image.save(buf, format="PNG")

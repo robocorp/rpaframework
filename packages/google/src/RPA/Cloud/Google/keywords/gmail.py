@@ -85,6 +85,7 @@ class GmailKeywords(LibraryContext):
         subject: str,
         message_text: str,
         attachments: list = None,
+        html: bool = False,
     ):
         """Create a message for an email.
 
@@ -92,12 +93,17 @@ class GmailKeywords(LibraryContext):
         :param subject: message subject
         :param message_text: message body text
         :param attachment: list of files to add as message attachments
+        :param html: set to True if message body is HTML (default False, plain text)
         :return: An object containing a base64url encoded email object
         """
         mimeMessage = MIMEMultipart()
         mimeMessage["to"] = to
         mimeMessage["subject"] = subject
-        mimeMessage.attach(MIMEText(message_text, "plain"))
+
+        if html:
+            mimeMessage.attach(MIMEText(message_text, "html"))
+        else:
+            mimeMessage.attach(MIMEText(message_text, "plain"))
 
         for at in attachments:
             self.add_attachment_to_message(mimeMessage, at)
@@ -135,6 +141,7 @@ class GmailKeywords(LibraryContext):
         subject: str,
         message_text: str,
         attachments: list = None,
+        html: bool = False,
     ):
         """Send an email message.
 
@@ -143,6 +150,7 @@ class GmailKeywords(LibraryContext):
         :param subject: message subject
         :param message_text: message body text
         :param attachment: list of files to add as message attachments
+        :param html: set to True if message body is HTML (default False, plain text)
         :return: sent message
 
         Example:
@@ -161,7 +169,7 @@ class GmailKeywords(LibraryContext):
         if not self.service:
             raise AssertionError("Gmail service has not been initialized")
         attachments = attachments or []
-        message = self.create_message(to, subject, message_text, attachments)
+        message = self.create_message(to, subject, message_text, attachments, html)
         try:
             response = (
                 self.service.users()

@@ -28,6 +28,7 @@ My Custom Keyword
 Create Browser Data Directory
     ${data_dir} =    Absolute Path    ${BROWSER_DATA}
     RPA.FileSystem.Create Directory    ${data_dir}    parents=${True}
+    RPA.FileSystem.Empty Directory     ${data_dir}
     RETURN    ${data_dir}
 
 Download With Specific Browser
@@ -48,6 +49,7 @@ Download With Specific Browser
     ...    RPA.FileSystem.Remove File    ${file_path}
 
 
+# Tasks which rely on the already open browser in headless mode.
 *** Tasks ***
 Does alert contain
     Go To    ${ALERT_HTML}
@@ -171,12 +173,19 @@ Test Shadow Root
     ${text} =    Get Text    ${elem}
     Should Be Equal    ${text}    some text
 
+Maximize window in headless mode
+    Maximize Browser Window     force=${False}  # forcing it works locally only
+
+
+# Tasks which close the already open browser and opens a new one, most probably in
+#  non-headless mode.
+*** Tasks ***
 Download PDF in custom Firefox directory
-    [Tags]    manual  # no support for the Firefox browser in CI (or on dev machine)
+    [Tags]    manual  # no guaranteed support for the Firefox browser in CI/dev env
     Download With Specific Browser    Firefox
 
 Download PDF in custom Chrome directory
-    [Tags]    skip  # flaky test in CI, mainly on Windows with Python 3.7, 3.8
+    [Tags]    skip  # flaky test in CI, mainly on Windows with Python 3.8
     Download With Specific Browser    Chrome
 
 Open Browser With Dict Options
@@ -193,8 +202,9 @@ Open Browser With Dict Options
     ...    modules=RPA.core.webdriver
     Log To Console    Downloaded webdriver path: ${driver_path}
 
+    ${log_path} =   Set Variable    ${BROWSER_DATA}${/}browser.log
     Open Browser    https://robocorp.com/docs    browser=Chrome    options=${options}
-    ...    executable_path=${driver_path}
+    ...    executable_path=${driver_path}   service_log_path=${log_path}
     ${visible} =    Is Element Visible    xpath://button[contains(@class, "desktop")]
     Should Be True    ${visible}
 
@@ -212,7 +222,7 @@ Open In Incognito With Custom Options
     Open Available Browser    https://robocorp.com/docs    browser_selection=Chrome
     ...    headless=${True}    options=${options}    port=${18888}
     # Custom profile usage now works in headless mode as well. (but not guaranteed
-    #    with older browser versions)
+    #  with older browser versions)
     ...    use_profile=${True}    profile_path=${data_dir}
 
     ${visible} =    Is Element Visible    xpath://button[contains(@class, "desktop")]
@@ -222,10 +232,28 @@ Open In Incognito With Custom Options
     Close Browser
     [Teardown]    RPA.FileSystem.Remove Directory    ${data_dir}    recursive=${True}
 
+Open Edge in IE mode with profile
+    [Documentation]     Prove that we have support for profile usage since the IE
+    ...    webdriver still opens Edge but in IE mode and still supports setting an user
+    ...    data dir.
+    [Setup]     Close Browser
+    [Tags]      windows     skip  # windows specific test without headless support
+
+    ${data_dir} =    Create Browser Data Directory
+    Open Available Browser    https://robocorp.com/docs    browser_selection=Ie
+    ...    use_profile=${True}    profile_path=${data_dir}    profile_name=Default
+    # NOTE(cmin764; 14 Sep 2023): Currently there's a patch in the webdriver binary not
+    #  overriding the user data dir we're trying to set.
+    Run Keyword And Ignore Error    Directory Should Not Be Empty    ${data_dir}
+
+    [Teardown]      RPA.FileSystem.Remove Directory    ${data_dir}    recursive=${True}
+
 Open Edge in normal and IE mode without closing
     [Documentation]     Downloads fresh webdrivers and starts Edge in normal and IE
-    ...     mode on a Windows machine.
-    [Tags]  skip    windows  # requires Windows OS with UI
+    ...    mode on a Windows machine without auto-closing the browser at the end of
+    ...    the execution. (on Windows the webdrivers will be closed but the browser
+    ...    stays open)
+    [Tags]      windows     skip  # requires Windows OS with UI
     [Setup]    Close Browser
 
     ${webdrivers_dir} =     Evaluate    RPA.core.webdriver.DRIVER_ROOT
@@ -239,10 +267,19 @@ Open Edge in normal and IE mode without closing
     Import Library      RPA.Browser.Selenium    auto_close=${False}
     ...     WITH NAME   Selenium
 
-    ${url} =    Set Variable    https://robocorp.com/docs
-    @{browsers} =   Create List     Edge    Ie
-    FOR    ${browser}    IN    @{browsers}
-        Selenium.Open Available Browser   ${url}   browser_selection=${browser}
+    &{edge_check} =  Create Dictionary
+    ...    browser     Edge
+    ...    url   https://robocorp.com/docs
+    ...    text     Portal
+    &{ie_check} =  Create Dictionary
+    ...    browser     Ie
+    ...    url   https://demos.telerik.com/aspnet-ajax/salesdashboard/views/about.aspx
+    ...    text     Telerik
+    @{checks} =   Create List    ${edge_check}     ${ie_check}
+
+    FOR    ${check}    IN    @{checks}
+        Selenium.Open Available Browser   ${check}[url]
+        ...     browser_selection=${check}[browser]
         ...     headless=${False}   download=${True}
-        Selenium.Page Should Contain Link   Portal
+        Selenium.Page Should Contain   ${check}[text]
     END
