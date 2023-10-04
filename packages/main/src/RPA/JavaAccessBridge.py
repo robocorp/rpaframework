@@ -634,20 +634,6 @@ class JavaAccessBridge:
             if enter:
                 DESKTOP.press_keys("enter")
 
-    def _clear_element(self, element):
-        self.wait_until_element_is_focused(element)
-        element_cleared = False
-        for _ in range(10):
-            DESKTOP.press_keys("ctrl", "a")
-            DESKTOP.press_keys("delete")
-            try:
-                self.wait_until_element_text_equals(element, "")
-                element_cleared = True
-            except ValueError:
-                pass
-        if not element_cleared:
-            raise ValueError(f"Element={element} not cleared")
-
     @keyword
     def get_elements(
         self, locator: str, java_elements: bool = False, strict: bool = False
