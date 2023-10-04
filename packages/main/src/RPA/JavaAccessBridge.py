@@ -619,7 +619,7 @@ class JavaAccessBridge:
 
         if not self.ignore_callbacks:
             target.request_focus()
-            time.sleep(0.5)
+            time.sleep(1)  # this takes time and interferes with the keys sending below
         if clear:
             DESKTOP.press_keys("ctrl", "a")
             time.sleep(0.2)
@@ -858,7 +858,7 @@ class JavaAccessBridge:
         try:
             if action:
                 self.logger.info("Element click action type: %s", type(element))
-                element.click("click")  # works for both `ContextNode` & `JavaElement`
+                element.click()  # works for both `ContextNode` & `JavaElement`
             else:
                 self._click_element_middle(element, click_type)
         except NotImplementedError:

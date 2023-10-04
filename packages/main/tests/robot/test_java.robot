@@ -74,7 +74,7 @@ Test print element tree
     ${tree} =    Print Element Tree
 
 Test typing text
-    [Tags]   manual  # inconsistent behaviour
+    [Tags]   manual  # flaky inconsistent behaviour
 
     Type Text    role:text    Textarea text
     Sleep   1s
