@@ -47,7 +47,7 @@ if platform.system() == "Windows":  # noqa: C901
     GetMessage = ctypes.windll.user32.GetMessageW
     TranslateMessage = ctypes.windll.user32.TranslateMessage
     DispatchMessage = ctypes.windll.user32.DispatchMessageW
-    ScalingFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+    ScalingFactor: float = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
 
     @dataclass
     class JavaElement:
@@ -500,7 +500,7 @@ class JavaAccessBridge:
             self.logger.info("Stopped processing events")
 
     @keyword
-    def set_display_scale_factor(self, factor: float):
+    def set_display_scale_factor(self, factor: float) -> float:
         """Override library display scale factor.
 
         Keyword returns previous value.
@@ -509,7 +509,7 @@ class JavaAccessBridge:
         :return: previous display scale factor value
         """
         previous_factor = self.display_scale_factor
-        self.display_scale_factor(factor)
+        self.display_scale_factor = factor
         return previous_factor
 
     @keyword
@@ -782,14 +782,13 @@ class JavaAccessBridge:
         )
 
     @keyword
-    def get_element_actions(self, locator: LocatorType):
+    def get_element_actions(self, locator: LocatorType) -> List[str]:
         """Get list of possible element actions
 
         :param locator: target element
         """
         if isinstance(locator, str):
-            elements = self._find_elements(locator)
-            target = elements[0]
+            target = self._find_elements(locator, index=0)
         elif isinstance(locator, ContextNode):
             target = locator
         else:

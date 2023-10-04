@@ -1,4 +1,5 @@
 *** Settings ***
+Library         Collections
 Library         Process
 Library         RPA.FileSystem
 Library         String
@@ -91,13 +92,23 @@ Test get elements
     @{elements} =    Get Elements    role:text
     ${len} =    Get Length    ${elements}
     Should Be Equal As Integers    ${len}    2
-    Log Many    ${elements}[0]
-    Log Many    ${elements}[1]
-    Highlight Element    ${elements}[0]
-    Highlight Element    ${elements}[1]
+    ${first_text_elem} =    Set Variable    ${elements}[${0}]
+    ${second_text_elem} =    Set Variable    ${elements}[${1}]
+
+    Log    First text element: ${first_text_elem}
+    Highlight Element    ${first_text_elem}
+    Log    Second text element: ${second_text_elem}
+    Highlight Element    ${second_text_elem}
+
+    @{actions} =    Get Element Actions     ${first_text_elem}
+    Log List    ${actions}
 
 Test Java elements
+    ${previous} =   Set Display Scale Factor    ${2}
+    Set Display Scale Factor    ${previous}
+
     @{elements} =    Get Elements    role:table > role:text
+    Log To Console  ${elements}
     Log    Text elements in the table: ${elements}
 
 Test listing Java windows
