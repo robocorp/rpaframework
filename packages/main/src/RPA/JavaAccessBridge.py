@@ -24,10 +24,6 @@ def get_scaled_coordinate(coordinate, scaling_factor):
 
 
 if platform.system() == "Windows":  # noqa: C901
-    try:
-        from RPA.Windows import Windows
-    except ImportError:
-        Windows = object()
     import ctypes
     from ctypes import wintypes, byref
     from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
@@ -463,7 +459,6 @@ class JavaAccessBridge:
         self.max_depth = max_depth
         self.disable_refresh = disable_refresh
         self.pid = None
-        self.windows = Windows()
 
     def _initialize(self):
         pipe = queue.Queue()
@@ -627,9 +622,9 @@ class JavaAccessBridge:
             time.sleep(0.5)
         if clear:
             DESKTOP.press_keys("ctrl", "a")
-            time.sleep(0.5)
+            time.sleep(0.2)
             DESKTOP.press_keys("delete")
-            time.sleep(0.5)
+            time.sleep(0.2)
         self.logger.info("type text: %s", text)
         if typing:
             DESKTOP.type_text(text, enter=enter)
