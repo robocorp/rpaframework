@@ -81,10 +81,9 @@ if platform.system() == "Windows":  # noqa: C901
         def __init__(
             self,
             node,
-            scaling_factor=None,
-            internal_node=None,
-            index=0,
-            column_count=None,
+            scaling_factor: Optional[float] = None,
+            index: int = 0,
+            column_count: Optional[int] = None,
         ):
             scaling_factor = scaling_factor or ScalingFactor
             self.name = node.context_info.name
@@ -99,7 +98,6 @@ if platform.system() == "Windows":  # noqa: C901
             self.showing = "showing" in self.states
             self.focusable = "focusable" in self.states
             self.node = node
-            self.internal = internal_node
             self.states_string = node.context_info.states
             self.x = get_scaled_coordinate(node.context_info.x, scaling_factor)
             self.y = get_scaled_coordinate(node.context_info.y, scaling_factor)
@@ -113,7 +111,22 @@ if platform.system() == "Windows":  # noqa: C901
             self.visible_children = node.get_visible_children()
             self.visible_children_count = node.visible_children_count
             self.index_in_parent = node.context_info.indexInParent
-            self.column_count = column_count or len(self.visible_children)
+            self.column_count = column_count
+            self.set_rows_columns(self.visible_children, index=index)
+
+        def set_rows_columns(self, children: List[ContextNode], index: int = 0):
+            if self.column_count is None:
+                self.column_count = 0
+                if children:
+                    self.column_count = 1
+                    java_child = JavaElement(children[0])
+                    x_pos, y_pos = java_child.x, java_child.y
+                    for child in children[1:]:
+                        java_child = JavaElement(child)
+                        if java_child.x == x_pos or java_child.y != y_pos:
+                            break
+                        self.column_count += 1
+
             if self.column_count > 0:
                 self.row = (
                     0 if index < self.column_count else int(index / self.column_count)
@@ -1042,12 +1055,13 @@ class JavaAccessBridge:
         return version_info
 
     @keyword
-    def read_table(self, locator: LocatorType):
+    def read_table(self, locator: LocatorType, visible_only: bool = True):
         """Return Java table as list of lists (rows containing columns).
 
         Each cell element is represented by ``JavaElement`` class.
 
         :param locator: locator to match element with type of table
+        :param visible_only: return all the children when this is `False`
         :return: list of lists
 
         Example.
@@ -1064,28 +1078,35 @@ class JavaAccessBridge:
         """
         # Refresh the table before encapsulating it in a `JavaElement` object.
         table = self._get_matching_element(locator, as_java_element=True, refresh=True)
+        if visible_only:
+            active_children = table.visible_children
+        else:
+            active_children = table.node.children
+            # Reset the column counter when dealing with all the children.
+            # NOTE(cmin764; 4 Oct 23): Node's children are having the wrong
+            #  coordinates (-1), thus not reliable when computing the number of columns
+            #  if we don't keep the previously set counter.
+            table.set_rows_columns(active_children)
         self.logger.info("Read table: %s", table)
-        columnCount = table.column_count
-        if not columnCount or columnCount == 0:
-            raise InvalidLocatorError(
-                "Locator '%s' does not match 'table' element" % locator
-            )
-        visible_children = table.visible_children
 
-        indexes = range(len(visible_children))
-        table_elements = [
-            JavaElement(
-                vc,
-                scaling_factor=self.display_scale_factor,
-                internal_node=c,
-                index=index,
-                column_count=columnCount,
+        column_count = table.column_count
+        if not column_count:
+            raise InvalidLocatorError(
+                f"Locator {locator!r} does not match the 'table' element"
             )
-            for index, vc, c in zip(indexes, visible_children, table.node.children)
-        ]
+
+        table_elements = []
+        for index, active_child in enumerate(active_children):
+            java_elem = JavaElement(
+                active_child,
+                scaling_factor=self.display_scale_factor,
+                index=index,
+                column_count=column_count,
+            )
+            table_elements.append(java_elem)
         table_rows = [
-            table_elements[i : i + columnCount]
-            for i in range(0, len(table_elements), columnCount)
+            table_elements[idx : idx + column_count]
+            for idx in range(0, len(table_elements), column_count)
         ]
         return table_rows
 

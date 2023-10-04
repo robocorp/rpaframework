@@ -107,9 +107,9 @@ Test Java elements
     ${previous} =   Set Display Scale Factor    ${2}
     Set Display Scale Factor    ${previous}
 
-    @{elements} =    Get Elements    role:table > role:text
-    Log To Console  ${elements}
-    Log    Text elements in the table: ${elements}
+    @{elements} =    Get Elements    role:table > role:label
+    Log    Text elements inside the table:
+    Log List    ${elements}
 
 Test listing Java windows
     [Tags]  manual  # requires window with specific title
@@ -147,3 +147,17 @@ Test refreshing updated text area
     Refresh Element     ${text_elem}
     ${post_refresh_text} =    Get Element Text    ${text_elem}
     Should Not Be Empty     ${post_refresh_text}
+
+Test table rows retrieval
+    [Documentation]   Check for visible vs. all children.
+    [Setup]     Init Library And Reset App   ignore_callbacks=${True}
+    ...     disable_refresh=${False}  # for table auto-refresh
+
+    @{visible_rows} =    Read Table    role:table
+    Log List    ${visible_rows}
+    @{all_rows} =    Read Table    role:table   visible_only=${False}
+    Log List    ${all_rows}
+
+    ${visible_count} =      Get Length   ${visible_rows}
+    ${all_count} =      Get Length   ${all_rows}
+    Should Not Be Equal As Integers     ${visible_count}    ${all_count}
