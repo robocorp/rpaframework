@@ -436,7 +436,13 @@ class JavaAccessBridge:
     # TODO: add keyword for taking screenshots of elements and window
     # TODO. implement proper XPath syntax support
 
-    def __init__(self, ignore_callbacks: bool = False, access_bridge_path: str = None, max_depth: Optional[int] = None, disable_refresh: bool = False):
+    def __init__(
+        self,
+        ignore_callbacks: bool = False,
+        access_bridge_path: str = None,
+        max_depth: Optional[int] = None,
+        disable_refresh: bool = False,
+    ):
         """If library is not given ``access_bridge_path`` then path needs to be given
         by the environment variable ``RC_JAVA_ACCESS_BRIDGE_DLL``.
 
@@ -444,10 +450,11 @@ class JavaAccessBridge:
         does not support Java callback feature (property value change listeners).
 
         :param ignore_callbacks: set to `True` if application does not support
-         Java callback feature, defaults to False
+            Java callback feature, defaults to False
         :param access_bridge_path: absolute filepath to the DLL, defaults to None
         :param max_depth: limit the height of the element tree (how deep the search goes)
-        :param disable_refresh: disables automatic app/element refresh when this is `True` (saves time)
+        :param disable_refresh: disables automatic app/element refresh when this is
+            `True` (saves time)
         """
         self.logger = logging.getLogger(__name__)
         desktoplogger = logging.getLogger("RPA.Desktop")
@@ -572,7 +579,9 @@ class JavaAccessBridge:
             searches.append(lvl_search)
         return searches
 
-    def _find_elements(self, locator: str, index: Optional[int] = None, strict: bool = False) -> Union[ContextNode, List[ContextNode]]:
+    def _find_elements(
+        self, locator: str, index: Optional[int] = None, strict: bool = False
+    ) -> Union[ContextNode, List[ContextNode]]:
         if not self.context_info_tree:
             raise ValueError("ContextTree has not been initialized")
         searches = self._parse_locator(locator, strict)
@@ -773,7 +782,11 @@ class JavaAccessBridge:
         return matching.text._items.sentence
 
     def _get_matching_element(
-        self, locator: LocatorType, index: int = 0, as_java_element: bool = False, refresh: bool = False
+        self,
+        locator: LocatorType,
+        index: int = 0,
+        as_java_element: bool = False,
+        refresh: bool = False,
     ) -> Union[ContextNode, JavaElement]:
         matching = None
         if isinstance(locator, str):
@@ -938,7 +951,11 @@ class JavaAccessBridge:
             return
 
         action = "Forcibly" if force else "Automatically"
-        self.logger.info("%s refreshing the entire app to a maximum depth of %d.", action, self.max_depth if self.max_depth is not None else -1)
+        self.logger.info(
+            "%s refreshing the entire app to a maximum depth of %d.",
+            action,
+            self.max_depth if self.max_depth is not None else -1,
+        )
         self.context_info_tree = ContextTree(self.jab_wrapper, max_depth=self.max_depth)
 
     @keyword
@@ -1236,7 +1253,8 @@ class JavaAccessBridge:
                 raise ValueError("Did not find window with pid '%s'" % pid)
             else:
                 raise ValueError(
-                    "Window selection was called without 'title' or 'pid'. Can't select window."  # noqa: E501
+                    "Window selection was called without 'title' or 'pid'."
+                    " Can't select window."
                 )
 
         if not self.version_printed:
