@@ -138,7 +138,7 @@ if platform.system() == "Windows":  # noqa: C901
                 DESKTOP.press_keys("ctrl", "a")
                 time.sleep(0.2)
                 DESKTOP.press_keys("delete")
-            time.sleep(0.2)
+                time.sleep(0.2)
             for c in text:
                 DESKTOP.press_keys(c)
 
@@ -858,7 +858,6 @@ class JavaAccessBridge:
         :param click_type: default `click`, see `RPA.Desktop` for different
          click options
         """
-        element = None
         if isinstance(locator, str):
             elements = self.wait_until_element_exists(locator, timeout)
             if len(elements) < (index + 1):
@@ -872,8 +871,8 @@ class JavaAccessBridge:
             element = locator
         try:
             if action:
-                self.logger.info("Element click action type:%s", type(element))
-                element.do_action("click")
+                self.logger.info("Element click action type: %s", type(element))
+                element.click("click")  # works for both `ContextNode` & `JavaElement`
             else:
                 self._click_element_middle(element, click_type)
         except NotImplementedError:
