@@ -434,7 +434,7 @@ class JavaAccessBridge:
          Java callback feature, defaults to False
         :param access_bridge_path: absolute filepath to the DLL, defaults to None
         :param max_depth: limit the height of the element tree (how deep the search goes)
-        :param disable_refresh: disables automatic app refresh when this is `True` (saves time)
+        :param disable_refresh: disables automatic app/element refresh when this is `True` (saves time)
         """
         self.logger = logging.getLogger(__name__)
         desktoplogger = logging.getLogger("RPA.Desktop")
@@ -737,17 +737,16 @@ class JavaAccessBridge:
         :param index: target element index if multiple are returned
         :param timeout: timeout in seconds to wait, default 0.5 seconds
         """
-        matching = self._get_matching_element(locator, index)
+        java_element = self._get_matching_element(locator, index, as_java_element=True)
         end_time = time.time() + float(timeout)
-        java_element = JavaElement(matching, self.display_scale_factor)
-        self.logger.warning(java_element)
+        self.logger.info("Focusing on element: %s", java_element)
 
         while time.time() <= end_time:
             if "focused" in java_element.states:
                 return
             time.sleep(0.05)
 
-        raise ValueError(f"Element={matching} not focused")
+        raise ValueError(f"Element={java_element} not focused")
 
     @keyword
     def get_element_text(self, locator: LocatorType, index: int = 0):
@@ -761,8 +760,8 @@ class JavaAccessBridge:
         return matching.text._items.sentence
 
     def _get_matching_element(
-        self, locator: LocatorType, index: int = 0, as_java_element: bool = False
-    ) -> ContextNode:
+        self, locator: LocatorType, index: int = 0, as_java_element: bool = False, refresh: bool = False
+    ) -> Union[ContextNode, JavaElement]:
         matching = None
         if isinstance(locator, str):
             elements = self._find_elements(locator)
@@ -775,6 +774,9 @@ class JavaAccessBridge:
             matching = locator
         elif isinstance(locator, JavaElement):
             matching = locator.node
+
+        if refresh and not self.disable_refresh:
+            matching.refresh()
         return (
             JavaElement(matching, self.display_scale_factor)
             if as_java_element
@@ -1060,8 +1062,9 @@ class JavaAccessBridge:
                     else:
                         print(cell.row, cell.col, cell.name)
         """
-        table = self._get_matching_element(locator, as_java_element=True)
-        self.logger.warning(table)
+        # Refresh the table before encapsulating it in a `JavaElement` object.
+        table = self._get_matching_element(locator, as_java_element=True, refresh=True)
+        self.logger.info("Read table: %s", table)
         columnCount = table.column_count
         if not columnCount or columnCount == 0:
             raise InvalidLocatorError(
