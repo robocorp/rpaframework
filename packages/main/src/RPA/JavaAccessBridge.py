@@ -115,7 +115,7 @@ if platform.system() == "Windows":  # noqa: C901
             self.set_rows_columns(self.visible_children, index=index)
 
         def set_rows_columns(self, children: List[ContextNode], index: int = 0):
-            if self.column_count is None:
+            if not self.column_count:
                 self.column_count = 0
                 if children:
                     self.column_count = 1
