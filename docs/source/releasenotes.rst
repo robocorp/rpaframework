@@ -15,8 +15,8 @@ Latest versions
 06 Oct 2023
 -----------
 
-- Security update for ``rpaframework-recognition`` **5.2.2**: Bumps
-  ``opencv-python-headless`` to version **4.8.1.78**.
+- Security update for ``rpaframework-recognition`` (:pr:`1105` **5.2.2**):
+  Bumps ``opencv-python-headless`` to version **4.8.1.78**.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
