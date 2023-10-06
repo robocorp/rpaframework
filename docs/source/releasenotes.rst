@@ -12,14 +12,14 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 06 Oct 2023
 -----------
 
 - Security update for ``rpaframework-recognition`` (:pr:`1105` **5.2.2**):
   Bumps ``opencv-python-headless`` to version **4.8.1.78**.
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 27.3.0 - 29 Sep 2023
 --------------------
