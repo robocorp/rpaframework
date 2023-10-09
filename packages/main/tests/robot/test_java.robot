@@ -134,17 +134,17 @@ Test refreshing updated text area
     [Setup]     Init Library And Reset App   ignore_callbacks=${True}
     ...     disable_refresh=${True}  # just to make sure we don't get any at all
 
+    # Get the initially empty text area as Java element.
     @{text_elems} =  Get Elements    role:text   java_elements=${True}
     ${text_elem} =      Set Variable    ${text_elems}[${0}]
     Refresh Element     ${text_elem}
-
     # Insert one line in the text area.
     Click Element    role:push button and name:Send
 
     # Now check if the text area really contains that line after the refresh happens.
-    ${pre_refresh_text} =    Get Element Text    ${text_elem}
+    ${pre_refresh_text} =    Get Element Text    role:text
     Should Be Empty     ${pre_refresh_text}  # since there was nothing before
-    Refresh Element     ${text_elem}
+    ${text_elem} =      Refresh Element     role:text
     ${post_refresh_text} =    Get Element Text    ${text_elem}
     Should Not Be Empty     ${post_refresh_text}
 
@@ -161,3 +161,22 @@ Test table rows retrieval
     ${visible_count} =      Get Length   ${visible_rows}
     ${all_count} =      Get Length   ${all_rows}
     Should Not Be Equal As Integers     ${visible_count}    ${all_count}
+
+Test clicking after moving window
+    [Documentation]   Get a button and click it after moving the window to see if the
+    ...     explicit refresh updates the coordinates accordingly.
+    [Tags]   manual  # since it requires manual intervetion to prove useful
+    [Setup]     Init Library And Reset App      ignore_callbacks=${True}
+
+    @{send_elems} =     Get Elements    role:push button and name:Send
+    ${send_elem} =  Set Variable    ${send_elems}[${0}]
+    Log     Pre-refresh: ${send_elem}  # initial coordinates before moving the window
+
+    Log To Console      Move the window within 5 seconds...
+    Sleep   5s
+
+    # Clicking works even without a refresh.
+    Refresh Element     ${send_elem}
+    Log     Post-refresh: ${send_elem}  # displays different coordinates now
+    Click Element   ${send_elem}
+    Sleep   2s      # to observe the result

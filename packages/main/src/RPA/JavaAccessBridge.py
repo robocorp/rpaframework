@@ -439,7 +439,7 @@ class JavaAccessBridge:
     def __init__(
         self,
         ignore_callbacks: bool = False,
-        access_bridge_path: str = None,
+        access_bridge_path: Optional[str] = None,
         max_depth: Optional[int] = None,
         disable_refresh: bool = False,
     ):
@@ -452,9 +452,13 @@ class JavaAccessBridge:
         :param ignore_callbacks: set to `True` if application does not support
             Java callback feature, defaults to False
         :param access_bridge_path: absolute filepath to the DLL, defaults to None
-        :param max_depth: limit the height of the element tree (how deep the search goes)
+        :param max_depth: limit the height of the element tree (how deep the search
+            goes); by default every element is taken into account and the tree of
+            elements is built until reaching the last leaf (which might be
+            time-consuming)
         :param disable_refresh: disables automatic app/element refresh when this is
-            `True` (saves time)
+            `True` (saves time); by default, automatic app/element refreshes are
+            triggered with keywords like ``Read Table``, ``Wait Until Element Exists``
         """
         self.logger = logging.getLogger(__name__)
         desktoplogger = logging.getLogger("RPA.Desktop")
@@ -950,10 +954,9 @@ class JavaAccessBridge:
             self.logger.debug("Refresh triggered, but disabled globally by user.")
             return
 
-        action = "Forcibly" if force else "Automatically"
         self.logger.info(
             "%s refreshing the entire app to a maximum depth of %d.",
-            action,
+            "Forcibly" if force else "Automatically",
             self.max_depth if self.max_depth is not None else -1,
         )
         self.context_info_tree = ContextTree(self.jab_wrapper, max_depth=self.max_depth)
@@ -980,7 +983,7 @@ class JavaAccessBridge:
         DESKTOP.press_keys(*keys)
 
     @keyword
-    def print_element_tree(self, filename: str = None):
+    def print_element_tree(self, filename: Optional[str] = None):
         """Print current element into log and possibly into a file
 
         :param filename: filepath to save element tree
@@ -1011,7 +1014,7 @@ class JavaAccessBridge:
         return self.context_info_tree.get_search_element_tree()
 
     @keyword
-    def print_locator_tree(self, filename: str = None):
+    def print_locator_tree(self, filename: Optional[str] = None):
         """Print current Java window locator list into log and possibly
         into a file.
 
@@ -1094,15 +1097,18 @@ class JavaAccessBridge:
                         print(cell.row, cell.col, cell.name)
         """
         # Refresh the table before encapsulating it in a `JavaElement` object.
-        table = self._get_matching_element(locator, as_java_element=True, refresh=True)
+        table = self._get_matching_element(
+            locator, as_java_element=True, refresh=self.ignore_callbacks
+        )
         if visible_only:
             active_children = table.visible_children
         else:
             active_children = table.node.children
-            # Reset the column counter when dealing with all the children.
-            # NOTE(cmin764; 4 Oct 23): Node's children are having the wrong
+            # Reset the column counter when dealing with all the children this time.
+            # NOTE(cmin764; 4 Oct 23): Normally, we would set `table.column_count` to
+            #  `None` first, but node's all children are not having any visible
             #  coordinates (-1), thus not reliable when computing the number of columns
-            #  if we don't keep the previously set counter.
+            #  again if we don't keep the previously set counter.
             table.set_rows_columns(active_children)
         self.logger.info("Read table: %s", table)
 
@@ -1212,7 +1218,7 @@ class JavaAccessBridge:
         """
         self._select_window(pid=pid, bring_foreground=bring_foreground, timeout=timeout)
 
-    def _find_window(self, title: str = None, pid: int = None):
+    def _find_window(self, title: Optional[str] = None, pid: Optional[int] = None):
         window_found = False
         try:
             if title:
@@ -1226,8 +1232,8 @@ class JavaAccessBridge:
 
     def _select_window(
         self,
-        title: str = None,
-        pid: int = None,
+        title: Optional[str] = None,
+        pid: Optional[int] = None,
         bring_foreground: bool = True,
         timeout: int = 30,
     ):
@@ -1309,12 +1315,13 @@ class JavaAccessBridge:
         return elements
 
     @keyword
-    def refresh_element(self, locator: LocatorType, index: int = 0):
+    def refresh_element(self, locator: LocatorType, index: int = 0) -> JavaElement:
         """Refresh an element alone, thus gaining speed when dealing with big apps.
 
         :param locator: element to refresh
         :param index: target element index if multiple are returned
         """
-        node = self._get_matching_element(locator, index)
-        self.logger.info("Refreshing element: %r", node)
-        node.refresh()
+        elem = self._get_matching_element(locator, index, as_java_element=True)
+        self.logger.info("Refreshing element: %r", elem)
+        elem.node.refresh()
+        return elem
