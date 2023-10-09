@@ -32,6 +32,7 @@ except ModuleNotFoundError as e:
         f'The error encountered was "{e}"'
     )
 
+
 DEFAULT_NS_CONFIGURATION = {"run": {"echo": True}, "is_ci_cd": False}
 if platform.system() != "Windows":
     DEFAULT_NS_CONFIGURATION["run"]["pty"] = True
