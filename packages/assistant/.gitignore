@@ -20,6 +20,7 @@ testvars.py
 
 # Robot Framework
 tests/robot/results
+tests/results
 tests/robot/output
 tests/robot/temp
 tests/robot/*.html
