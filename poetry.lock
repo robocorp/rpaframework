@@ -4008,13 +4008,13 @@ webdriver-manager = "4.0.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "4.0.4"
+version = "4.0.5"
 description = "Dialogs library of RPA Framework"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_dialogs-4.0.4-py3-none-any.whl", hash = "sha256:773b61867688c940e315f985a067b7f980205271a5657ccaf564f2ae3933962f"},
-    {file = "rpaframework_dialogs-4.0.4.tar.gz", hash = "sha256:2a716102c11c0b80d312d697196a0a89360bcca838d1f64c69a47be9d39a1373"},
+    {file = "rpaframework_dialogs-4.0.5-py3-none-any.whl", hash = "sha256:8539bd3228f9d4ea487d7a62ebd89ed6f48b42532ee51739a3ae37eab84942c3"},
+    {file = "rpaframework_dialogs-4.0.5.tar.gz", hash = "sha256:c4efc61d72e532cde0a264b93080399dd766af8ef4317735c47914323f6d2386"},
 ]
 
 [package.dependencies]
