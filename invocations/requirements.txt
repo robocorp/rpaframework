@@ -1,7 +1,7 @@
-invoke~=1.7.1
+invoke~=2.2.0
 pip>=23.2.1
-poetry~=1.4.0
-keyring~=23.9.0
+poetry~=1.6.1
+keyring~=24.2.0
 toml~=0.10.2
 PyYAML~=6.0.1
 colorama~=0.4.5
