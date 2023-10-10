@@ -12,8 +12,14 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+27.3.1 - 10 Oct 2023
+--------------------
+
+- Casual dependencies upgrades and alignment.
 
 06 Oct 2023
 -----------
