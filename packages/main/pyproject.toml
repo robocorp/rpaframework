@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "27.3.0"
+version = "27.3.1"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -47,8 +47,8 @@ robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
 robotframework-requests = "^0.9.1"
-pywinauto = { version = "^0.6.8", platform = "win32", python = "!=3.8.1,!=3.7.6" }
-pywin32 = { version = ">=302,<304", platform = "win32", python = "!=3.8.1,!=3.7.6" }
+pywinauto = { version = "^0.6.8", platform = "win32", python = "!=3.8.1" }
+pywin32 = { version = ">=302,<307", platform = "win32", python = "!=3.8.1" }
 comtypes = { version = "^1.1.11", platform = "win32" }
 robotframework-pythonlibcore = "^4.2.0"
 pynput-robocorp-fork = "^5.0.0"
@@ -100,7 +100,7 @@ mock = "^5.0.0"
 mypy = "^1.4.1"
 python-docx = "^0.8.11"
 pytest-env = "^0.6.2"
-invoke = "^1.6.0"
+invoke = "^2.2.0"
 sphinx = "^5.3.0"
 sphinx-rtd-theme = "^1.1.1"
 toml = "^0.10.2"
@@ -109,11 +109,12 @@ robotframework-docgen = "^0.16.0"
 sphinx-issues = "^3.0.1"
 docutils = "^0.16"
 colorama = "^0.4.5"
-keyring = "^23.9.0"
+keyring = "^24.2.0"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.7"
 pytest-freezegun = "^0.4.2"
 isort = "^5.11.5"
+poetry = "^1.6.1"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
