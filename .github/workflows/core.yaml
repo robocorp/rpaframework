@@ -90,7 +90,7 @@ jobs:
         path: .venv
         key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
     - name: Install invocation package
-      run: invoke install-invocations
+      run: invoke install-invocations || invoke self.install-invocations
     - name: Install dependencies
       run: invoke install
     - name: Lint
@@ -117,7 +117,7 @@ jobs:
     - name: Install invocation prerequisites
       run: pip install -Ur ../../invocations/requirements.txt
     - name: Install invocation package
-      run: invoke install-invocations
+      run: invoke install-invocations || invoke self.install-invocations
     - name: Install dependencies
       run: invoke install
     - name: Build and publish package
