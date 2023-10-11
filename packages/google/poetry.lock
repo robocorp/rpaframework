@@ -622,14 +622,14 @@ grpc = ["grpcio (>=1.38.0,<2.0dev)"]
 
 [[package]]
 name = "google-cloud-documentai"
-version = "2.20.0"
+version = "2.20.1"
 description = "Google Cloud Documentai API client library"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-cloud-documentai-2.20.0.tar.gz", hash = "sha256:ab5071511adf4915f4192063e47b99e47c3b3974c3e884137c9a784a415559a7"},
-    {file = "google_cloud_documentai-2.20.0-py2.py3-none-any.whl", hash = "sha256:23d0646421ff4c1c777ccf9aa838ca6c23db5aece221b0f04e6e42deefa61774"},
+    {file = "google-cloud-documentai-2.20.1.tar.gz", hash = "sha256:eba90546c80177bab7ee8aa3f4b7b1f89cf3ce9752032e359a15d0fbf2225fb0"},
+    {file = "google_cloud_documentai-2.20.1-py2.py3-none-any.whl", hash = "sha256:793a2e59c425655c951055810635798b5ef56fed164e35b2bd521e5c30ab279e"},
 ]
 
 [package.dependencies]
@@ -1854,6 +1854,21 @@ files = [
 ]
 
 [[package]]
+name = "robotframework-docgen"
+version = "0.16.0"
+description = "Robot Framework documentation finder and generator"
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4.0"
+files = [
+    {file = "robotframework_docgen-0.16.0-py3-none-any.whl", hash = "sha256:19bcf8d907f90f6f5831d12baac658600acd9faf9e37e1fa01688983182e4d3b"},
+    {file = "robotframework_docgen-0.16.0.tar.gz", hash = "sha256:31067587431a483e2b8ebdb79fe7fe8fca91786867630c47fbd10da17befce56"},
+]
+
+[package.dependencies]
+robotframework = ">=3.2.2,<4.0.1 || >4.0.1,<6.1.0 || >6.1.0,<7.0.0"
+
+[[package]]
 name = "robotframework-pythonlibcore"
 version = "4.2.0"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
@@ -2221,4 +2236,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "688d5f69835ad8180eeb5cf6843624ad75e02810f29082aee7b982859c7a446f"
+content-hash = "e93844f465ea362b10f1825cc6e76105c67e45839ae891de99a9ba8a55dd0a8d"
