@@ -1427,6 +1427,21 @@ files = [
 ]
 
 [[package]]
+name = "robotframework-docgen"
+version = "0.16.0"
+description = "Robot Framework documentation finder and generator"
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4.0"
+files = [
+    {file = "robotframework_docgen-0.16.0-py3-none-any.whl", hash = "sha256:19bcf8d907f90f6f5831d12baac658600acd9faf9e37e1fa01688983182e4d3b"},
+    {file = "robotframework_docgen-0.16.0.tar.gz", hash = "sha256:31067587431a483e2b8ebdb79fe7fe8fca91786867630c47fbd10da17befce56"},
+]
+
+[package.dependencies]
+robotframework = ">=3.2.2,<4.0.1 || >4.0.1,<6.1.0 || >6.1.0,<7.0.0"
+
+[[package]]
 name = "rpaframework-core"
 version = "11.2.2"
 description = "Core utilities used by RPA Framework"
@@ -1767,4 +1782,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "af16e9ab9dea56d8140bb473a954eecaf5f3556bfbc85c8b06b370e62322bae1"
+content-hash = "c118f7d8099ce917dad1dcd60a980091ce4217e2cab4966aab65135db7e9f1d5"
