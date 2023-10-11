@@ -1331,6 +1331,33 @@ files = [
 docutils = ">=0.11,<1.0"
 
 [[package]]
+name = "robotframework"
+version = "6.1.1"
+description = "Generic automation framework for acceptance testing and robotic process automation (RPA)"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "robotframework-6.1.1-py3-none-any.whl", hash = "sha256:ee0d512d557e72ed760dd075525f6226baaab309010a48f9c9bf1f416ca434f7"},
+    {file = "robotframework-6.1.1.zip", hash = "sha256:3fa18f2596a4df2418c4b59abf43248327c15ed38ad8665f6a9a9c75c95d7789"},
+]
+
+[[package]]
+name = "robotframework-docgen"
+version = "0.16.0"
+description = "Robot Framework documentation finder and generator"
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4.0"
+files = [
+    {file = "robotframework_docgen-0.16.0-py3-none-any.whl", hash = "sha256:19bcf8d907f90f6f5831d12baac658600acd9faf9e37e1fa01688983182e4d3b"},
+    {file = "robotframework_docgen-0.16.0.tar.gz", hash = "sha256:31067587431a483e2b8ebdb79fe7fe8fca91786867630c47fbd10da17befce56"},
+]
+
+[package.dependencies]
+robotframework = ">=3.2.2,<4.0.1 || >4.0.1,<6.1.0 || >6.1.0,<7.0.0"
+
+[[package]]
 name = "secretstorage"
 version = "3.3.3"
 description = "Python bindings to FreeDesktop.org Secret Service API"
@@ -1618,4 +1645,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "33ae938547cdf8d18f6be9037eb09da3a8cba2272721c08d8e6bc08477178573"
+content-hash = "7e43266205a28f4c4745548bbd9d851099a47bfe0525a54e47055b4e3c3f0651"
