@@ -3234,17 +3234,16 @@ six = ">=1.5"
 
 [[package]]
 name = "python-docx"
-version = "1.0.0"
-description = "Create, read, and update Microsoft Word .docx files."
+version = "0.8.11"
+description = "Create and update Microsoft Word .docx files."
 optional = false
-python-versions = ">=3.7"
+python-versions = "*"
 files = [
-    {file = "python_docx-1.0.0-py3-none-any.whl", hash = "sha256:496e729ffcf5fc3cf85676f402cedfc48e68475f10a94edfbd06dde2da67ce76"},
+    {file = "python-docx-0.8.11.tar.gz", hash = "sha256:1105d233a0956dd8dd1e710d20b159e2d72ac3c301041b95f4d4ceb3e0ebebc4"},
 ]
 
 [package.dependencies]
-lxml = ">=3.1.0"
-typing-extensions = "*"
+lxml = ">=2.3.2"
 
 [[package]]
 name = "python-dotenv"
@@ -3855,7 +3854,7 @@ files = [
 
 [[package]]
 name = "rpaframework"
-version = "27.4.0"
+version = "27.4.1"
 description = "A collection of tools and libraries for RPA"
 optional = false
 python-versions = "^3.8.1"
@@ -3890,6 +3889,7 @@ pynput-robocorp-fork = "^5.0.0"
 pyotp = "^2.6.0"
 pyperclip = "^1.8.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
+python-docx = "^0.8.11"
 python-xlib = {version = ">=0.17", markers = "sys_platform == \"linux\""}
 pywin32 = {version = ">=302,<307", markers = "python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 pywinauto = {version = "^0.6.8", markers = "python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
