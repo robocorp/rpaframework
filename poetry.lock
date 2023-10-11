@@ -3940,13 +3940,13 @@ typing-extensions = ">=4.4.0,<5.0.0"
 
 [[package]]
 name = "rpaframework-aws"
-version = "5.3.1"
+version = "5.3.2"
 description = "AWS library for RPA Framework"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_aws-5.3.1-py3-none-any.whl", hash = "sha256:590baadd32afd8ce66e07c7221e072270651ad0cefed475d79eefe395d7ec1d8"},
-    {file = "rpaframework_aws-5.3.1.tar.gz", hash = "sha256:9a040b76f796956411bb22ac239d5afc7444a0fc4c94330744ae55b03ae54b90"},
+    {file = "rpaframework_aws-5.3.2-py3-none-any.whl", hash = "sha256:edcbbbe1372e606d9144ce32c1873fcd52b8d476bcef1693724fe79d9e52d199"},
+    {file = "rpaframework_aws-5.3.2.tar.gz", hash = "sha256:230b500fb2e4f550a479da41f7d0c70f8fe0c0c6a21d83d9b4131d82891a92d8"},
 ]
 
 [package.dependencies]
@@ -5302,4 +5302,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "622fa5fe75fa621c73f1876fa317787b5473bddcab14404fa884aeced6bb304d"
+content-hash = "aa07fb4e01f0c9aa90117521450784a486069a81bf563b0126cd11838c843cce"
