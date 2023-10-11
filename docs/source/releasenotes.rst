@@ -16,6 +16,17 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+27.4.1 - 11 Oct 2023
+--------------------
+
+- Fix keyword ``Email To Document`` in library **RPA.Email.ImapSmtp** by restricting
+  the ``python-docx`` package version to the maximum working one.
+
+  .. warning::
+    This affected both this library and **RPA.Robocorp.WorkItems** due to a slipped
+    sub-dependency breaking change. We strongly suggest to upgrade to the latest
+    ``rpaframework`` in order to benefit from the fix, and if you're not ready for it
+    yet, pin in your `conda.yaml` ``python-docx==0.8.11`` for the time being.
 
 27.4.0 - 11 Oct 2023
 --------------------
