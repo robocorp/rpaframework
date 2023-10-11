@@ -1316,10 +1316,15 @@ class JavaAccessBridge:
 
     @keyword
     def refresh_element(self, locator: LocatorType, index: int = 0) -> JavaElement:
-        """Refresh an element alone, thus gaining speed when dealing with big apps.
+        """Refresh an element alone.
+
+        This will ensure the latest data is available in the targeted element, thus
+        gaining speed when dealing with big apps that won't require an entire global
+        refresh. The obtained Java element is returned.
 
         :param locator: element to refresh
         :param index: target element index if multiple are returned
+        :returns: the Java element found by the passed locator
         """
         elem = self._get_matching_element(locator, index, as_java_element=True)
         self.logger.info("Refreshing element: %r", elem)
