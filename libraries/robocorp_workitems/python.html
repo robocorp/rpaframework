@@ -155,6 +155,813 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.WorkItems.</span></span><span class="sig-name descname"><span class="pre">WorkItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">autoload:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">root:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">default_adapter:</span> <span class="pre">~typing.Union[~typing.Type[~RPA.Robocorp.WorkItems.BaseAdapter],</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'RPA.Robocorp.WorkItems.RobocorpAdapter'&gt;,</span> <span class="pre">auto_parse_email:</span> <span class="pre">~typing.Optional[~typing.Dict[~typing.Union[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">...]],</span> <span class="pre">~typing.Union[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">...]]]]</span> <span class="pre">=</span> <span class="pre">{('email.text',</span> <span class="pre">'__mail.html'):</span> <span class="pre">('email.body',</span> <span class="pre">'parsedEmail.Body'),</span> <span class="pre">'rawEmail':</span> <span class="pre">'parsedEmail'}</span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Permalink to this definition"></a></dt>
+<dd><p>A library for interacting with Control Room work items.</p>
+<p>Work items are used for managing data that go through multiple
+steps and tasks inside a process. Each step of a process receives
+input work items from the previous step, and creates output work items for
+the next step.</p>
+<p><strong>Item structure</strong></p>
+<p>A work item’s data payload is JSON and allows storing anything that is
+serializable. This library by default interacts with payloads that
+are a dictionary of key-value pairs, which it treats as individual
+variables. These variables can be exposed to the Robot Framework task
+to be used directly.</p>
+<p>In addition to the data section, a work item can also contain files,
+which are stored by default in Robocorp Control Room. Adding and using
+files with work items requires no additional setup from the user.</p>
+<p><strong>Loading inputs</strong></p>
+<p>The library automatically loads the first input work item, if the
+library input argument <code class="docutils literal notranslate"><span class="pre">autoload</span></code> is truthy (default).</p>
+<p>After an input has been loaded its payload and files can be accessed
+through corresponding keywords, and optionally these values can be modified.</p>
+<p><strong>E-mail triggering</strong></p>
+<p>Since a process can be started in Control Room by sending an e-mail, a body
+in Text/JSON/YAML/HTML format can be sent as well and this gets attached to the
+input work item with the <code class="docutils literal notranslate"><span class="pre">rawEmail</span></code> payload variable. This library automatically
+parses the content of it and saves into <code class="docutils literal notranslate"><span class="pre">parsedEmail</span></code> the dictionary
+transformation of the original e-mail.</p>
+<p>If “Parse email” Control Room configuration option is enabled (recommended), then
+your e-mail is automatically parsed in the work item under the <code class="docutils literal notranslate"><span class="pre">email</span></code> payload
+variable, which is a dictionary containing a <code class="docutils literal notranslate"><span class="pre">body</span></code> holding the final parsed form
+of the interpreted e-mail body. The payload variable <code class="docutils literal notranslate"><span class="pre">parsedEmail</span></code> is still
+available for backwards compatibility reasons and holds the very same body inside
+the <code class="docutils literal notranslate"><span class="pre">parsedEmail[Body]</span></code>.</p>
+<p>E-mail attachments will be added into the work item as files. Read more on:
+<a class="reference external" href="https://robocorp.com/docs/control-room/attended-or-unattended/email-trigger">https://robocorp.com/docs/control-room/attended-or-unattended/email-trigger</a></p>
+<p>Example:</p>
+<p>After starting the process by sending an e-mail with a body like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello world!&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The robot can use the parsed e-mail body’s dictionary:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Using Parsed Emails</span>
+<span class="p">    ${</span><span class="nv">mail</span><span class="p">} =    </span><span class="nf">Get Work Item Variable</span><span class="p">    </span><span class="s">email</span>
+<span class="p">    </span><span class="nf">Set Work Item Variables</span><span class="p">    &amp;{</span><span class="nv">mail</span><span class="p">}[</span><span class="nv">body</span><span class="p">]</span>
+<span class="p">    ${</span><span class="nv">message</span><span class="p">} =     </span><span class="nf">Get Work Item Variable</span><span class="p">     </span><span class="s">message</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    ${</span><span class="nv">message</span><span class="p">}    </span><span class="c"># will print &quot;Hello world!&quot;</span>
+</pre></div>
+</div>
+<p>The behaviour can be disabled by loading the library with
+<code class="docutils literal notranslate"><span class="pre">auto_parse_email=${None}</span></code> or altered by providing to it a dictionary with one
+“key: value” where the key is usually “email.text” (deprecated “rawEmail”, the
+variable set by Control Room, which acts as source for the parsed (deprecated raw)
+e-mail data) and the value can be “email.body” (deprecated “parsedEmail”, where the
+parsed e-mail data gets stored into), value which can be customized and retrieved
+with <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Work</span> <span class="pre">Item</span> <span class="pre">Variable</span></code>.</p>
+<p><strong>Creating outputs</strong></p>
+<p>It’s possible to create multiple new work items as an output from a
+task. With the keyword <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code> a new empty item
+is created as a child for the currently loaded input.</p>
+<p>All created output items are sent into the input queue of the next
+step in the process.</p>
+<p><strong>Active work item</strong></p>
+<p>Keywords that read or write from a work item always operate on the currently
+active work item. Usually that is the input item that has been automatically
+loaded when the execution started, but the currently active item is changed
+whenever the keywords <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code> or <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code>
+are called. It’s also possible to change the active item manually with the
+keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">current</span> <span class="pre">work</span> <span class="pre">item</span></code>.</p>
+<p><strong>Saving changes</strong></p>
+<p>While a work item is loaded automatically when a suite starts, changes are
+not automatically reflected back to the source. The work item will be modified
+locally and then saved when the keyword <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Work</span> <span class="pre">Item</span></code> is called.
+This also applies to created output work items.</p>
+<p>It is recommended to defer saves until all changes have been made to prevent
+leaving work items in a half-modified state in case of failures.</p>
+<p><strong>Local Development</strong></p>
+<p>While Control Room is the default implementation, it can also be replaced
+with a custom adapter. The selection is based on either the <code class="docutils literal notranslate"><span class="pre">default_adapter</span></code>
+argument for the library, or the <code class="docutils literal notranslate"><span class="pre">RPA_WORKITEMS_ADAPTER</span></code> environment
+variable. The library has a built-in alternative adapter called FileAdapter for
+storing work items to disk.</p>
+<p>The FileAdapter uses a local JSON file for input work items.
+It’s a list of work items, each of which has a data payload and files.</p>
+<p>An example of a local file with one work item:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;payload&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;variable1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a-string-value&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;variable2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;list&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;file1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path/to/file.ext&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Output work items (if any) are saved to an adjacent file
+with the same name, but with the extension <code class="docutils literal notranslate"><span class="pre">.output.json</span></code>. You can specify
+through the “RPA_OUTPUT_WORKITEM_PATH” env var a different path and name for this
+file.</p>
+<p><strong>Simulating the Cloud with Robocorp Code VSCode Extension</strong></p>
+<p>If you are developing in VSCode with the <a class="reference external" href="https://robocorp.com/docs/setup/development-environment#visual-studio-code-with-robocorp-extensions">Robocorp Code extension</a>, you can
+utilize the built in local development features described in the
+<a class="reference external" href="https://robocorp.com/docs/development-guide/control-room/work-items#developing-with-work-items-locally">Developing with work items locally</a> section of the
+<a class="reference external" href="https://robocorp.com/docs/development-guide/control-room/work-items">Using work items</a> development guide.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<p>In the following example a task creates an output work item,
+and attaches some variables to it.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocorp.WorkItems</span>
+
+<span class="gh">*** Tasks ***</span>
+<span class="gu">Save variables to Control Room</span>
+<span class="p">    </span><span class="nf">Create Output Work Item</span>
+<span class="p">    </span><span class="nf">Set work item variables</span><span class="p">    </span><span class="s">user=Dude</span><span class="p">    </span><span class="s">mail=address@company.com</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+</pre></div>
+</div>
+<p>In the next step of the process inside a different robot, we can use
+previously saved work item variables. Also note how the input work item is
+loaded implicitly when the suite starts.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocorp.WorkItems</span>
+
+<span class="gh">*** Tasks ***</span>
+<span class="gu">Use variables from Control Room</span>
+<span class="p">    </span><span class="nf">Set task variables from work item</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Variables are now available: s</span><span class="p">${</span><span class="nv">user</span><span class="p">}</span><span class="s">, </span><span class="p">${</span><span class="nv">mail</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<p>The library can also be used through Python, but it does not implicitly
+load the first work item.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="k">def</span> <span class="nf">list_variables</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+    <span class="n">library</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_work_item_variables</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.EMAIL_BODY_LOADERS">
+<span class="sig-name descname"><span class="pre">EMAIL_BODY_LOADERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('JSON',</span> <span class="pre">&lt;function</span> <span class="pre">loads&gt;),</span> <span class="pre">('YAML',</span> <span class="pre">&lt;function</span> <span class="pre">full_load&gt;)]</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.EMAIL_BODY_LOADERS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_AUTO_KEYWORDS">
+<span class="sig-name descname"><span class="pre">ROBOT_AUTO_KEYWORDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_DOC_FORMAT">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_SCOPE">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_LISTENER_API_VERSION">
+<span class="sig-name descname"><span class="pre">ROBOT_LISTENER_API_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LISTENER_API_VERSION" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.adapter">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adapter</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.adapter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.add_work_item_file">
+<span class="sig-name descname"><span class="pre">add_work_item_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.add_work_item_file" title="Permalink to this definition"></a></dt>
+<dd><p>Add given file to work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Path to file on disk</p></li>
+<li><p><strong>name</strong> – Destination name for file. If not given, current name
+of local file is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>NOTE</strong>: Files are not uploaded before work item is saved</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="nf">Add work item file</span><span class="p">    </span><span class="s">output.xls</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.add_work_item_files">
+<span class="sig-name descname"><span class="pre">add_work_item_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.add_work_item_files" title="Permalink to this definition"></a></dt>
+<dd><p>Add all files that match given pattern to work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pattern</strong> – Path wildcard pattern</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="nf">Add work item files</span><span class="p">    %{</span><span class="nv">ROBOT_ROOT</span><span class="p">}</span><span class="s">/generated/*.csv</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.clear_work_item">
+<span class="sig-name descname"><span class="pre">clear_work_item</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.clear_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all data and files in the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Clearing a work item</span>
+<span class="p">    </span><span class="nf">Clear work item</span>
+<span class="p">    </span><span class="nf">Save work item</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">clear_work_item</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">save_work_item</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.create_output_work_item">
+<span class="sig-name descname"><span class="pre">create_output_work_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WorkItem</span></span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.create_output_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Create a new output work item with optional variables and files.</p>
+<p>An output work item is always created as a child for an input item, therefore
+a non-released input is required to be loaded first.
+All changes to the work item are done locally and are sent to the output queue
+after the keyword <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Work</span> <span class="pre">Item</span></code> is called only, except when <cite>save</cite> is
+<cite>True</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variables</strong> – Optional dictionary with variables to be set into the new
+output work item.</p></li>
+<li><p><strong>files</strong> – Optional list or comma separated paths to files to be included
+into the new output work item.</p></li>
+<li><p><strong>save</strong> – Automatically call <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Work</span> <span class="pre">Item</span></code> over the newly created
+output work item.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The newly created output work item object.</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Create output items with variables then save</span>
+<span class="p">    ${</span><span class="nv">customers</span><span class="p">} =  </span><span class="nf">Load customer data</span>
+<span class="p">    FOR     ${</span><span class="nv">customer</span><span class="p">}    IN    @{</span><span class="nv">customers</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Create Output Work Item</span>
+<span class="p">        </span><span class="nf">Set Work Item Variables</span><span class="p">    </span><span class="s">id=</span><span class="p">${</span><span class="nv">customer.id</span><span class="p">}</span>
+<span class="p">        ...     </span><span class="s">name=</span><span class="p">${</span><span class="nv">customer.name</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Save Work Item</span>
+<span class="p">    END</span>
+
+<span class="gu">Create and save output items with variables and files in one go</span>
+<span class="p">    ${</span><span class="nv">customers</span><span class="p">} =  </span><span class="nf">Load customer data</span>
+<span class="p">    FOR     ${</span><span class="nv">customer</span><span class="p">}    IN    @{</span><span class="nv">customers</span><span class="p">}</span>
+<span class="p">        &amp;{</span><span class="nv">customer_vars</span><span class="p">} =    </span><span class="nf">Create Dictionary</span><span class="p">    </span><span class="s">id=</span><span class="p">${</span><span class="nv">customer.id</span><span class="p">}</span>
+<span class="p">        ...     </span><span class="s">name=</span><span class="p">${</span><span class="nv">customer.name</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Create Output Work Item</span><span class="p">     </span><span class="s">variables=</span><span class="p">${</span><span class="nv">customer_vars</span><span class="p">}</span>
+<span class="p">        ...     </span><span class="s">files=devdata</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">report.csv</span><span class="p">   </span><span class="s">save=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">customers</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">get_work_item_variable</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">customer</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
+    <span class="n">wi</span><span class="o">.</span><span class="n">create_output_work_item</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.current">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.current" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.delete_work_item_variables">
+<span class="sig-name descname"><span class="pre">delete_work_item_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.delete_work_item_variables" title="Permalink to this definition"></a></dt>
+<dd><p>Delete variable(s) from the current work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>names</strong> – Names of variables to remove</p></li>
+<li><p><strong>force</strong> – Ignore variables that don’t exist in work item</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="nf">Delete work item variables</span><span class="p">    </span><span class="s">username</span><span class="p">    </span><span class="s">email</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item">
+<span class="sig-name descname"><span class="pre">for_each_input_work_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyword_or_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Run a keyword or function for each work item in the input queue.</p>
+<p>Automatically collects and returns a list of results, switch
+<code class="docutils literal notranslate"><span class="pre">return_results</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> for avoiding this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyword_or_func</strong> – The RF keyword or Py function you want to map through
+all the work items</p></li>
+<li><p><strong>args</strong> – Variable list of arguments that go into the called keyword/function</p></li>
+<li><p><strong>kwargs</strong> – Variable list of keyword arguments that go into the called
+keyword/function</p></li>
+<li><p><strong>items_limit</strong> – Limit the queue item retrieval to a certain amount,
+otherwise all the items are retrieved from the queue until depletion</p></li>
+<li><p><strong>return_results</strong> – Collect and return a list of results given each
+keyword/function call if truthy</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Log Payloads</span>
+<span class="p">    @{</span><span class="nv">lengths</span><span class="p">} =     </span><span class="nf">For Each Input Work Item</span><span class="p">    </span><span class="s">Log Payload</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">   </span><span class="s">Payload lengths: </span><span class="p">@{</span><span class="nv">lengths</span><span class="p">}</span>
+
+<span class="gh">*** Keywords ***</span>
+<span class="gu">Log Payload</span>
+<span class="p">    ${</span><span class="nv">payload</span><span class="p">} =     </span><span class="nf">Get Work Item Payload</span>
+<span class="p">    </span><span class="nf">Log To Console</span><span class="p">    ${</span><span class="nv">payload</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">len</span><span class="p">} =     </span><span class="nf">Get Length</span><span class="p">    ${</span><span class="nv">payload</span><span class="p">}</span>
+<span class="p">    [</span><span class="kn">Return</span><span class="p">]    ${</span><span class="nv">len</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">log_payload</span><span class="p">():</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_work_item_payload</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">log_payloads</span><span class="p">():</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+    <span class="n">lengths</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">for_each_input_work_item</span><span class="p">(</span><span class="n">log_payload</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Payload lengths: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">lengths</span><span class="p">)</span>
+
+<span class="n">log_payloads</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.get_current_work_item">
+<span class="sig-name descname"><span class="pre">get_current_work_item</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WorkItem</span></span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_current_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Get the currently active work item.</p>
+<p>The current work item is used as the target by other keywords
+in this library.</p>
+<p>Keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code>
+set the active work item automatically, and return the created
+instance.</p>
+<p>With this keyword the active work item can be retrieved manually.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    ${</span><span class="nv">input</span><span class="p">} =    </span><span class="nf">Get Current Work Item</span>
+<span class="p">    ${</span><span class="nv">output</span><span class="p">} =   </span><span class="nf">Create Output Work Item</span>
+<span class="p">    </span><span class="nf">Set Current Work Item</span><span class="p">    ${</span><span class="nv">input</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.get_input_work_item">
+<span class="sig-name descname"><span class="pre">get_input_work_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_internal_call</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_input_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Load the next work item from the input queue, and set it as the active work
+item.</p>
+<p>Each time this is called, the previous input work item is released (as DONE)
+prior to reserving the next one.
+If the library import argument <code class="docutils literal notranslate"><span class="pre">autoload</span></code> is truthy (default),
+this is called automatically when the Robot Framework suite
+starts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_file">
+<span class="sig-name descname"><span class="pre">get_work_item_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_file" title="Permalink to this definition"></a></dt>
+<dd><p>Get attached file from work item to disk.
+Returns the absolute path to the created file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of attached file</p></li>
+<li><p><strong>path</strong> – Destination path of file. If not given, current
+working directory is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    ${</span><span class="nv">path</span><span class="p">}=    </span><span class="nf">Get work item file</span><span class="p">    </span><span class="s">input.xls</span>
+<span class="p">    </span><span class="nf">Open workbook</span><span class="p">    ${</span><span class="nv">path</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_files">
+<span class="sig-name descname"><span class="pre">get_work_item_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_files" title="Permalink to this definition"></a></dt>
+<dd><p>Get files attached to work item that match given pattern.
+Returns a list of absolute paths to the downloaded files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pattern</strong> – Filename wildcard pattern</p></li>
+<li><p><strong>dirname</strong> – Destination directory, if not given robot root is used</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    ${</span><span class="nv">paths</span><span class="p">}=    </span><span class="nf">Get work item files</span><span class="p">    </span><span class="s">customer_*.xlsx</span>
+<span class="p">    FOR  ${</span><span class="nv">path</span><span class="p">}  IN  @{</span><span class="nv">paths</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Handle customer file</span><span class="p">    ${</span><span class="nv">path</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_payload">
+<span class="sig-name descname"><span class="pre">get_work_item_payload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_payload" title="Permalink to this definition"></a></dt>
+<dd><p>Get the full JSON payload for a work item.</p>
+<p><strong>NOTE</strong>: Most use cases should prefer higher-level keywords.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    ${</span><span class="nv">payload</span><span class="p">}=    </span><span class="nf">Get work item payload</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Entire payload as dictionary: </span><span class="p">${</span><span class="nv">payload</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_variable">
+<span class="sig-name descname"><span class="pre">get_work_item_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;object</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_variable" title="Permalink to this definition"></a></dt>
+<dd><p>Return a single variable value from the work item,
+or default value if defined and key does not exist.</p>
+<p>If key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of variable</p></li>
+<li><p><strong>default</strong> – Default value if key does not exist</p></li>
+</ul>
+</dd>
+</dl>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Using a work item</span>
+<span class="p">    ${</span><span class="nv">username</span><span class="p">}=    </span><span class="nf">Get work item variable</span><span class="p">    </span><span class="s">username</span><span class="p">    </span><span class="s">default=guest</span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">customers</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">get_work_item_variable</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">customers</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_variables">
+<span class="sig-name descname"><span class="pre">get_work_item_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_variables" title="Permalink to this definition"></a></dt>
+<dd><p>Read all variables from the current work item and
+return their names and values as a dictionary.</p>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    ${</span><span class="nv">variables</span><span class="p">}=    </span><span class="nf">Get work item variables</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Username: </span><span class="p">${</span><span class="nv">variables</span><span class="p">}[</span><span class="nv">username</span><span class="p">]</span><span class="s">, Email: </span><span class="p">${</span><span class="nv">variables</span><span class="p">}[</span><span class="nv">email</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<blockquote>
+<div><p>from RPA.Robocorp.WorkItems import WorkItems
+wi = WorkItems()
+wi.get_input_work_item()
+input_wi = wi.get_work_item_variables()
+print(input_wi[“username”])
+print(input_wi[“email”])</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.inputs">
+<span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">WorkItem</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.inputs" title="Permalink to this definition"></a></dt>
+<dd><p>Input work items</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.list_work_item_files">
+<span class="sig-name descname"><span class="pre">list_work_item_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.list_work_item_files" title="Permalink to this definition"></a></dt>
+<dd><p>List the names of files attached to the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    ${</span><span class="nv">names</span><span class="p">}=    </span><span class="nf">List work item files</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Work item has files with names: </span><span class="p">${</span><span class="nv">names</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.list_work_item_variables">
+<span class="sig-name descname"><span class="pre">list_work_item_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.list_work_item_variables" title="Permalink to this definition"></a></dt>
+<dd><p>List the variable names for the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    ${</span><span class="nv">variables</span><span class="p">}=    </span><span class="nf">List work item variables</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Available variables in work item: </span><span class="p">${</span><span class="nv">variables</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.outputs">
+<span class="sig-name descname"><span class="pre">outputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">WorkItem</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.outputs" title="Permalink to this definition"></a></dt>
+<dd><p>Output work items</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.release_input_work_item">
+<span class="sig-name descname"><span class="pre">release_input_work_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">State</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exception_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Error</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_auto_release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.release_input_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Release the lastly retrieved input work item and set its state.</p>
+<p>This can be released with DONE or FAILED states. With the FAILED state, an
+additional exception can be sent to Control Room describing the problem that
+you encountered by specifying a type and optionally a code and/or message.
+After this has been called, no more output work items can be created
+unless a new input work item has been loaded again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The status on the last processed input work item</p></li>
+<li><p><strong>exception_type</strong> – Error type (BUSINESS, APPLICATION). If this is not
+specified, then the cloud will assume UNSPECIFIED</p></li>
+<li><p><strong>code</strong> – Optional error code identifying the exception for future
+filtering, grouping and custom retrying behaviour in the cloud</p></li>
+<li><p><strong>message</strong> – Optional human-friendly error message supplying additional
+details regarding the sent exception</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="nf">Login into portal</span>
+<span class="p">        ${</span><span class="nv">user</span><span class="p">} =     </span><span class="nf">Get Work Item Variable</span><span class="p">    </span><span class="s">user</span>
+<span class="p">        ${</span><span class="nv">doc</span><span class="p">} =    </span><span class="nf">Get Work Item Variable</span><span class="p">    </span><span class="s">doc</span>
+<span class="p">        </span><span class="nf">TRY</span>
+<span class="p">            </span><span class="nf">Login Keyword</span><span class="p">    ${</span><span class="nv">user</span><span class="p">}</span>
+<span class="p">            </span><span class="nf">Upload Doc Keyword</span><span class="p">    ${</span><span class="nv">doc</span><span class="p">}</span>
+
+<span class="p">        </span><span class="nf">EXCEPT</span><span class="p">    </span><span class="s">Login Failed</span>
+<span class="p">            </span><span class="nf">Release Input Work Item</span><span class="p">     </span><span class="s">FAILED</span>
+<span class="p">            ...    </span><span class="s">exception_type=APPLICATION</span>
+<span class="p">            ...    </span><span class="s">code=LOGIN_PORTAL_DOWN</span>
+<span class="p">            ...    </span><span class="s">message=Unable to login, retry again later.</span>
+
+<span class="p">        </span><span class="nf">EXCEPT</span><span class="p">    </span><span class="s">Format Error</span><span class="p">    </span><span class="s">AS</span><span class="p">    ${</span><span class="nv">err</span><span class="p">}</span>
+<span class="p">            ${</span><span class="nv">message</span><span class="p">} =    </span><span class="nf">Catenate</span>
+<span class="p">            ...    </span><span class="s">Document format is not correct and cannot be uploaded.</span>
+<span class="p">            ...    </span><span class="s">Correct the format in this work item and try again.</span>
+<span class="p">            ...    </span><span class="s">Full error message received: </span><span class="p">${</span><span class="nv">err</span><span class="p">}</span>
+<span class="p">            </span><span class="nf">Release Input Work Item</span><span class="p">     </span><span class="s">FAILED</span>
+<span class="p">            ...    </span><span class="s">exception_type=BUSINESS</span>
+<span class="p">            ...    </span><span class="s">code=DOC_FORMAT_ERROR</span>
+<span class="p">            ...    </span><span class="s">message=</span><span class="p">${</span><span class="nv">message</span><span class="p">}</span>
+
+<span class="p">        END</span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">WorkItems</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">process_and_set_state</span><span class="p">():</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">release_input_work_item</span><span class="p">(</span><span class="n">State</span><span class="o">.</span><span class="n">DONE</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">library</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>  <span class="c1"># would print &quot;State.DONE&quot;</span>
+
+<span class="n">process_and_set_state</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.remove_work_item_file">
+<span class="sig-name descname"><span class="pre">remove_work_item_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.remove_work_item_file" title="Permalink to this definition"></a></dt>
+<dd><p>Remove attached file from work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of attached file</p></li>
+<li><p><strong>missing_ok</strong> – Do not raise exception if file doesn’t exist</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>NOTE</strong>: Files are not deleted before work item is saved</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="nf">Remove work item file</span><span class="p">    </span><span class="s">input.xls</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.remove_work_item_files">
+<span class="sig-name descname"><span class="pre">remove_work_item_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_ok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.remove_work_item_files" title="Permalink to this definition"></a></dt>
+<dd><p>Removes files attached to work item that match the given pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pattern</strong> – Filename wildcard pattern</p></li>
+<li><p><strong>missing_ok</strong> – Do not raise exception if file doesn’t exist</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="nf">Remove work item files</span><span class="p">    </span><span class="s">*.xlsx</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.root">
+<span class="sig-name descname"><span class="pre">root</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.root" title="Permalink to this definition"></a></dt>
+<dd><p>Variables root object in payload</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.save_work_item">
+<span class="sig-name descname"><span class="pre">save_work_item</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.save_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Save the current data and files in the work item. If not saved,
+all changes are discarded when the library goes out of scope.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.set_current_work_item">
+<span class="sig-name descname"><span class="pre">set_current_work_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WorkItem</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.set_current_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Set the currently active work item.</p>
+<p>The current work item is used as the target by other keywords
+in this library.</p>
+<p>Keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code>
+set the active work item automatically, and return the created
+instance.</p>
+<p>With this keyword the active work item can be set manually.</p>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Creating outputs</span>
+<span class="p">    ${</span><span class="nv">input</span><span class="p">}=    </span><span class="nf">Get Input Work Item</span>
+<span class="p">    ${</span><span class="nv">output</span><span class="p">}=   </span><span class="nf">Create Output Work Item</span>
+<span class="p">    </span><span class="nf">Set current work item</span><span class="p">    ${</span><span class="nv">input</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">parent_wi</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">child_wi</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">create_output_work_item</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">set_current_work_item</span><span class="p">(</span><span class="n">parent_wi</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.set_task_variables_from_work_item">
+<span class="sig-name descname"><span class="pre">set_task_variables_from_work_item</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.set_task_variables_from_work_item" title="Permalink to this definition"></a></dt>
+<dd><p>Convert all variables in the current work item to
+Robot Framework task variables, see <a class="reference external" href="https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#variable-scopes">variable scopes</a>.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="c"># Work item has variable INPUT_URL</span>
+<span class="p">    </span><span class="nf">Set task variables from work item</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">The variable is now available: </span><span class="p">${</span><span class="nv">INPUT_URL</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.set_work_item_payload">
+<span class="sig-name descname"><span class="pre">set_work_item_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.set_work_item_payload" title="Permalink to this definition"></a></dt>
+<dd><p>Set the full JSON payload for a work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> – Content of payload, must be JSON-serializable</p>
+</dd>
+</dl>
+<p><strong>NOTE</strong>: Most use cases should prefer higher-level keywords.
+Using this keyword may cause errors when getting the payload via
+the normal <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">work</span> <span class="pre">item</span> <span class="pre">variable</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">work</span> <span class="pre">item</span> <span class="pre">variables</span></code> keywords if you do not set the payload
+to a <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    ${</span><span class="nv">output</span><span class="p">}=    </span><span class="nf">Create dictionary</span><span class="p">    </span><span class="s">url=example.com</span><span class="p">    </span><span class="s">username=Mark</span>
+<span class="p">    </span><span class="nf">Set work item payload</span><span class="p">    ${</span><span class="nv">output</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.set_work_item_variable">
+<span class="sig-name descname"><span class="pre">set_work_item_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.set_work_item_variable" title="Permalink to this definition"></a></dt>
+<dd><p>Set a single variable value in the current work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of variable</p></li>
+<li><p><strong>value</strong> – Value of variable</p></li>
+</ul>
+</dd>
+</dl>
+<p>Robot Framework Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="nf">Set work item variable</span><span class="p">    </span><span class="s">username</span><span class="p">    </span><span class="s">MarkyMark</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+</pre></div>
+</div>
+<p>Python Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">customers</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Apple&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Microsoft&quot;</span><span class="p">}]</span>
+<span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+<span class="n">wi</span><span class="o">.</span><span class="n">set_work_item_variable</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">customers</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.set_work_item_variables">
+<span class="sig-name descname"><span class="pre">set_work_item_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.set_work_item_variables" title="Permalink to this definition"></a></dt>
+<dd><p>Set multiple variables in the current work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Pairs of variable names and values</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span>
+<span class="gu">Example task</span>
+<span class="p">    </span><span class="nf">Set work item variables</span><span class="p">    </span><span class="s">username=MarkyMark</span><span class="p">    </span><span class="s">email=mark@example.com</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
