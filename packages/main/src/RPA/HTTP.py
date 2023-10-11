@@ -42,7 +42,6 @@ def log_request(response):
 
 
 def format_data_to_log_string(data, limit=LOG_CHAR_LIMIT):
-
     if not data:
         return None
 

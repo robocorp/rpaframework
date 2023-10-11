@@ -52,7 +52,17 @@ class BasicSwing extends JFrame implements WindowListener, ActionListener, ItemL
         taButtonPanel.add(clear);
 
         String[] columnNames = { "Column1", "Column2" };
-        Object[][] data = { { "Cell11", "Cell12" }, { "Cell21", "Cell22" }, { "Cell31", "Cell32" } };
+        Object[][] data = {
+            { "Cell11", "Cell12" },
+            { "Cell21", "Cell22" },
+            { "Cell31", "Cell32" },
+            { "Cell41", "Cell42" },
+            { "Cell51", "Cell52" },
+            { "Cell61", "Cell62" },
+            { "Cell71", "Cell72" },
+            { "Cell81", "Cell82" },
+            { "Cell91", "Cell92" },
+        };
         JTable table = new JTable(data, columnNames);
         table.setFillsViewportHeight(true);
 

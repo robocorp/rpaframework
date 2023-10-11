@@ -6,7 +6,7 @@ import platform
 import queue
 import threading
 import time
-from typing import Union
+from typing import List, Optional, Union
 import warnings
 
 from robot.api.deco import library, keyword
@@ -24,10 +24,6 @@ def get_scaled_coordinate(coordinate, scaling_factor):
 
 
 if platform.system() == "Windows":  # noqa: C901
-    try:
-        from RPA.Windows import Windows
-    except ImportError:
-        Windows = object()
     import ctypes
     from ctypes import wintypes, byref
     from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
@@ -51,7 +47,7 @@ if platform.system() == "Windows":  # noqa: C901
     GetMessage = ctypes.windll.user32.GetMessageW
     TranslateMessage = ctypes.windll.user32.TranslateMessage
     DispatchMessage = ctypes.windll.user32.DispatchMessageW
-    ScalingFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+    ScalingFactor: float = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
 
     @dataclass
     class JavaElement:
@@ -85,10 +81,9 @@ if platform.system() == "Windows":  # noqa: C901
         def __init__(
             self,
             node,
-            scaling_factor=None,
-            internal_node=None,
-            index=0,
-            column_count=None,
+            scaling_factor: Optional[float] = None,
+            index: int = 0,
+            column_count: Optional[int] = None,
         ):
             scaling_factor = scaling_factor or ScalingFactor
             self.name = node.context_info.name
@@ -103,7 +98,6 @@ if platform.system() == "Windows":  # noqa: C901
             self.showing = "showing" in self.states
             self.focusable = "focusable" in self.states
             self.node = node
-            self.internal = internal_node
             self.states_string = node.context_info.states
             self.x = get_scaled_coordinate(node.context_info.x, scaling_factor)
             self.y = get_scaled_coordinate(node.context_info.y, scaling_factor)
@@ -117,7 +111,22 @@ if platform.system() == "Windows":  # noqa: C901
             self.visible_children = node.get_visible_children()
             self.visible_children_count = node.visible_children_count
             self.index_in_parent = node.context_info.indexInParent
-            self.column_count = column_count or len(self.visible_children)
+            self.column_count = column_count
+            self.set_rows_columns(self.visible_children, index=index)
+
+        def set_rows_columns(self, children: List[ContextNode], index: int = 0):
+            if not self.column_count:
+                self.column_count = 0
+                if children:
+                    self.column_count = 1
+                    java_child = JavaElement(children[0])
+                    x_pos, y_pos = java_child.x, java_child.y
+                    for child in children[1:]:
+                        java_child = JavaElement(child)
+                        if java_child.x == x_pos or java_child.y != y_pos:
+                            break
+                        self.column_count += 1
+
             if self.column_count > 0:
                 self.row = (
                     0 if index < self.column_count else int(index / self.column_count)
@@ -142,7 +151,7 @@ if platform.system() == "Windows":  # noqa: C901
                 DESKTOP.press_keys("ctrl", "a")
                 time.sleep(0.2)
                 DESKTOP.press_keys("delete")
-            time.sleep(0.2)
+                time.sleep(0.2)
             for c in text:
                 DESKTOP.press_keys(c)
 
@@ -212,7 +221,7 @@ class JavaAccessBridge:
     **Inspecting elements**
 
     We have built an `Assistant`_ for working with Java application's element structure and `Java locators`_.
-    The Assistant provides copy pasteable locators for each element and also allows testing locators against
+    The Assistant provides copy-paste-able locators for each element and also allows testing locators against
     selected application.
 
     If our tools fail to pick the locator from your target application, there is always the
@@ -221,7 +230,7 @@ class JavaAccessBridge:
     maintained.
 
     The `Accessibility Insights for Windows`_ can show element properties if application framework
-    supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_. Then recommended
+    supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_. Then the recommended
     library would be `RPA.Windows`_ library.
 
     **Steps to enable**
@@ -253,9 +262,10 @@ class JavaAccessBridge:
 
     Workaround for this situation is to initialize `JavaAccessBridge` library with parameter `ignore_callbacks=True`.
     Then application's element information is still accessible and any actions on those elements can be performed
-    with `RPA.Desktop` library.
+    with `RPA.Desktop` library. Keep in mind that you can still manuall refresh an element with ``Refresh Element``.
 
-    *Note.* There are still keywords, for example. ``Call Element Action``, which will cause error if used in this situation.
+    *Note.* There are still keywords, for example. ``Call Element Action``, which will cause error if used in this
+    situation.
 
     .. code:: robotframework
 
@@ -264,9 +274,9 @@ class JavaAccessBridge:
 
     **Controlling the Java window**
 
-    Keyword for this purpose is ``Select Window``. Window selection is based on the ``title`` parameter, which can be given
-    regular expressions to match the correct window. The keyword brings the window into focus and initially reads window's
-    element structure.
+    Keyword for this purpose is ``Select Window``. Window selection is based on the ``title`` parameter, which can be
+    given as a regular expressions to match the correct window. The keyword brings the window into focus and initially
+    reads window's element structure.
 
     **Locating elements**
 
@@ -328,24 +338,30 @@ class JavaAccessBridge:
 
     - name: str
     - role: str
-    - states: list      # list presentation of states (string)
+    - description: str
+    - states: list            # list presentation of states (string)
+    - ancestry: int           # you can set the maximum depth based on this
     - checked: bool
     - selected: bool
     - visible: bool
     - enabled: bool
+    - showing: bool
+    - focusable: bool
     - states_string: str
-    - x: int           # left coordinate of the element
-    - y: int           # top coordinate of the element
+    - x: int                  # left coordinate of the element
+    - y: int                  # top coordinate of the element
     - width: int
     - height: int
-    - node: ContextNode  # original ContextNode
-    - row: int           # table row, -1 if element is not member of table
-    - col: int           # table column, -1 if element is not member of table
-    - text: str          # text content of the element
-    - column_count: int   # table column count
-    - visible_children: list    #visible_children elements of this element
-    - click()       # method for clicking element center
-    - type_text()   # method for typing text into element (if possible)
+    - node: ContextNode       # original ContextNode
+    - row: int                # table row, -1 if element is not member of table
+    - col: int                # table column, -1 if element is not member of table
+    - text: str               # text content of the element
+    - column_count: int       # table column count
+    - visible_children: list  # visible children elements of this element
+    - visible_children_count: int
+    - index_in_parent: int    # position in the parent
+    - click()                 # method for clicking element center
+    - type_text()             # method for typing text into element (if possible)
 
     **Interacting with elements**
 
@@ -420,7 +436,13 @@ class JavaAccessBridge:
     # TODO: add keyword for taking screenshots of elements and window
     # TODO. implement proper XPath syntax support
 
-    def __init__(self, ignore_callbacks: bool = False, access_bridge_path: str = None):
+    def __init__(
+        self,
+        ignore_callbacks: bool = False,
+        access_bridge_path: Optional[str] = None,
+        max_depth: Optional[int] = None,
+        disable_refresh: bool = False,
+    ):
         """If library is not given ``access_bridge_path`` then path needs to be given
         by the environment variable ``RC_JAVA_ACCESS_BRIDGE_DLL``.
 
@@ -428,8 +450,15 @@ class JavaAccessBridge:
         does not support Java callback feature (property value change listeners).
 
         :param ignore_callbacks: set to `True` if application does not support
-         Java callback feature, defaults to False
+            Java callback feature, defaults to False
         :param access_bridge_path: absolute filepath to the DLL, defaults to None
+        :param max_depth: limit the height of the element tree (how deep the search
+            goes); by default every element is taken into account and the tree of
+            elements is built until reaching the last leaf (which might be
+            time-consuming)
+        :param disable_refresh: disables automatic app/element refresh when this is
+            `True` (saves time); by default, automatic app/element refreshes are
+            triggered with keywords like ``Read Table``, ``Wait Until Element Exists``
         """
         self.logger = logging.getLogger(__name__)
         desktoplogger = logging.getLogger("RPA.Desktop")
@@ -449,11 +478,11 @@ class JavaAccessBridge:
         self.jab_wrapper = None
         self.context_info_tree = None
         self.pumper_thread = None
-        self.refresh_counter = 1
         self.display_scale_factor = ScalingFactor
         self.ignore_callbacks = ignore_callbacks
+        self.max_depth = max_depth
+        self.disable_refresh = disable_refresh
         self.pid = None
-        self.windows = Windows()
 
     def _initialize(self):
         pipe = queue.Queue()
@@ -495,7 +524,7 @@ class JavaAccessBridge:
             self.logger.info("Stopped processing events")
 
     @keyword
-    def set_display_scale_factor(self, factor: float):
+    def set_display_scale_factor(self, factor: float) -> float:
         """Override library display scale factor.
 
         Keyword returns previous value.
@@ -504,7 +533,7 @@ class JavaAccessBridge:
         :return: previous display scale factor value
         """
         previous_factor = self.display_scale_factor
-        self.display_scale_factor(factor)
+        self.display_scale_factor = factor
         return previous_factor
 
     @keyword
@@ -554,7 +583,9 @@ class JavaAccessBridge:
             searches.append(lvl_search)
         return searches
 
-    def _find_elements(self, locator: str, index: int = None, strict: bool = False):
+    def _find_elements(
+        self, locator: str, index: Optional[int] = None, strict: bool = False
+    ) -> Union[ContextNode, List[ContextNode]]:
         if not self.context_info_tree:
             raise ValueError("ContextTree has not been initialized")
         searches = self._parse_locator(locator, strict)
@@ -614,38 +645,25 @@ class JavaAccessBridge:
 
         if not self.ignore_callbacks:
             target.request_focus()
+            time.sleep(1)  # this takes time and interferes with the keys sending below
         if clear:
             DESKTOP.press_keys("ctrl", "a")
             time.sleep(0.2)
             DESKTOP.press_keys("delete")
-            time.sleep(1.0)
+            time.sleep(0.2)
         self.logger.info("type text: %s", text)
         if typing:
             DESKTOP.type_text(text, enter=enter)
         else:
             for c in text:
                 DESKTOP.press_keys(c)
-        if enter:
-            DESKTOP.press_keys("enter")
-
-    def _clear_element(self, element):
-        self.wait_until_element_is_focused(element)
-        element_cleared = False
-        for _ in range(10):
-            DESKTOP.press_keys("ctrl", "a")
-            DESKTOP.press_keys("delete")
-            try:
-                self.wait_until_element_text_equals(element, "")
-                element_cleared = True
-            except ValueError:
-                pass
-        if not element_cleared:
-            raise ValueError(f"Element={element} not cleared")
+            if enter:
+                DESKTOP.press_keys("enter")
 
     @keyword
     def get_elements(
         self, locator: str, java_elements: bool = False, strict: bool = False
-    ):
+    ) -> List[Union[ContextNode, JavaElement]]:
         """Get matching elements
 
         :param locator: elements to get
@@ -745,17 +763,16 @@ class JavaAccessBridge:
         :param index: target element index if multiple are returned
         :param timeout: timeout in seconds to wait, default 0.5 seconds
         """
-        matching = self._get_matching_element(locator, index)
+        java_element = self._get_matching_element(locator, index, as_java_element=True)
         end_time = time.time() + float(timeout)
-        java_element = JavaElement(matching, self.display_scale_factor)
-        self.logger.warning(java_element)
+        self.logger.info("Focusing on element: %s", java_element)
 
         while time.time() <= end_time:
             if "focused" in java_element.states:
                 return
             time.sleep(0.05)
 
-        raise ValueError(f"Element={matching} not focused")
+        raise ValueError(f"Element={java_element} not focused")
 
     @keyword
     def get_element_text(self, locator: LocatorType, index: int = 0):
@@ -769,8 +786,12 @@ class JavaAccessBridge:
         return matching.text._items.sentence
 
     def _get_matching_element(
-        self, locator: LocatorType, index: int = 0, as_java_element: bool = False
-    ):
+        self,
+        locator: LocatorType,
+        index: int = 0,
+        as_java_element: bool = False,
+        refresh: bool = False,
+    ) -> Union[ContextNode, JavaElement]:
         matching = None
         if isinstance(locator, str):
             elements = self._find_elements(locator)
@@ -783,6 +804,9 @@ class JavaAccessBridge:
             matching = locator
         elif isinstance(locator, JavaElement):
             matching = locator.node
+
+        if refresh and not self.disable_refresh:
+            matching.refresh()
         return (
             JavaElement(matching, self.display_scale_factor)
             if as_java_element
@@ -790,19 +814,18 @@ class JavaAccessBridge:
         )
 
     @keyword
-    def get_element_actions(self, locator: LocatorType):
+    def get_element_actions(self, locator: LocatorType) -> List[str]:
         """Get list of possible element actions
 
         :param locator: target element
         """
         if isinstance(locator, str):
-            elements = self._find_elements(locator)
-            target = elements[0]
+            target = self._find_elements(locator, index=0)
         elif isinstance(locator, ContextNode):
             target = locator
         else:
             target = locator.node
-        return target.get_actions().keys()
+        return target.get_actions()
 
     def _elements_to_console(self, elements, function=""):
         BuiltIn().log_to_console(f"\nElements to Console: {function}")
@@ -852,7 +875,6 @@ class JavaAccessBridge:
         :param click_type: default `click`, see `RPA.Desktop` for different
          click options
         """
-        element = None
         if isinstance(locator, str):
             elements = self.wait_until_element_exists(locator, timeout)
             if len(elements) < (index + 1):
@@ -866,8 +888,8 @@ class JavaAccessBridge:
             element = locator
         try:
             if action:
-                self.logger.info("Element click action type:%s", type(element))
-                element.do_action("click")
+                self.logger.info("Element click action type: %s", type(element))
+                element.click()  # works for both `ContextNode` & `JavaElement`
             else:
                 self._click_element_middle(element, click_type)
         except NotImplementedError:
@@ -927,6 +949,18 @@ class JavaAccessBridge:
         matching = self._get_matching_element(locator, index)
         matching.toggle_drop_down()
 
+    def _application_refresh(self, force: bool = False):
+        if self.disable_refresh and not force:
+            self.logger.debug("Refresh triggered, but disabled globally by user.")
+            return
+
+        self.logger.info(
+            "%s refreshing the entire app to a maximum depth of %d.",
+            "Forcibly" if force else "Automatically",
+            self.max_depth if self.max_depth is not None else -1,
+        )
+        self.context_info_tree = ContextTree(self.jab_wrapper, max_depth=self.max_depth)
+
     @keyword
     def application_refresh(self):
         """Refresh application element tree
@@ -934,7 +968,7 @@ class JavaAccessBridge:
         Might be required action after application element
         structure changes after window refresh.
         """
-        self.context_info_tree = ContextTree(self.jab_wrapper)
+        self._application_refresh(force=True)
 
     @keyword
     def press_keys(self, *keys):
@@ -949,7 +983,7 @@ class JavaAccessBridge:
         DESKTOP.press_keys(*keys)
 
     @keyword
-    def print_element_tree(self, filename: str = None):
+    def print_element_tree(self, filename: Optional[str] = None):
         """Print current element into log and possibly into a file
 
         :param filename: filepath to save element tree
@@ -980,7 +1014,7 @@ class JavaAccessBridge:
         return self.context_info_tree.get_search_element_tree()
 
     @keyword
-    def print_locator_tree(self, filename: str = None):
+    def print_locator_tree(self, filename: Optional[str] = None):
         """Print current Java window locator list into log and possibly
         into a file.
 
@@ -1041,12 +1075,13 @@ class JavaAccessBridge:
         return version_info
 
     @keyword
-    def read_table(self, locator: LocatorType):
+    def read_table(self, locator: LocatorType, visible_only: bool = True):
         """Return Java table as list of lists (rows containing columns).
 
         Each cell element is represented by ``JavaElement`` class.
 
         :param locator: locator to match element with type of table
+        :param visible_only: return all the children when this is `False`
         :return: list of lists
 
         Example.
@@ -1061,29 +1096,40 @@ class JavaAccessBridge:
                     else:
                         print(cell.row, cell.col, cell.name)
         """
-        table = self._get_matching_element(locator, as_java_element=True)
-        self.logger.warning(table)
-        columnCount = table.column_count
-        if not columnCount or columnCount == 0:
-            raise InvalidLocatorError(
-                "Locator '%s' does not match 'table' element" % locator
-            )
-        visible_children = table.visible_children
+        # Refresh the table before encapsulating it in a `JavaElement` object.
+        table = self._get_matching_element(
+            locator, as_java_element=True, refresh=self.ignore_callbacks
+        )
+        if visible_only:
+            active_children = table.visible_children
+        else:
+            active_children = table.node.children
+            # Reset the column counter when dealing with all the children this time.
+            # NOTE(cmin764; 4 Oct 23): Normally, we would set `table.column_count` to
+            #  `None` first, but node's all children are not having any visible
+            #  coordinates (-1), thus not reliable when computing the number of columns
+            #  again if we don't keep the previously set counter.
+            table.set_rows_columns(active_children)
+        self.logger.info("Read table: %s", table)
 
-        indexes = range(len(visible_children))
-        table_elements = [
-            JavaElement(
-                vc,
-                scaling_factor=self.display_scale_factor,
-                internal_node=c,
-                index=index,
-                column_count=columnCount,
+        column_count = table.column_count
+        if not column_count:
+            raise InvalidLocatorError(
+                f"Locator {locator!r} does not match the 'table' element"
             )
-            for index, vc, c in zip(indexes, visible_children, table.node.children)
-        ]
+
+        table_elements = []
+        for index, active_child in enumerate(active_children):
+            java_elem = JavaElement(
+                active_child,
+                scaling_factor=self.display_scale_factor,
+                index=index,
+                column_count=column_count,
+            )
+            table_elements.append(java_elem)
         table_rows = [
-            table_elements[i : i + columnCount]
-            for i in range(0, len(table_elements), columnCount)
+            table_elements[idx : idx + column_count]
+            for idx in range(0, len(table_elements), column_count)
         ]
         return table_rows
 
@@ -1172,7 +1218,7 @@ class JavaAccessBridge:
         """
         self._select_window(pid=pid, bring_foreground=bring_foreground, timeout=timeout)
 
-    def _find_window(self, title: str = None, pid: int = None):
+    def _find_window(self, title: Optional[str] = None, pid: Optional[int] = None):
         window_found = False
         try:
             if title:
@@ -1186,8 +1232,8 @@ class JavaAccessBridge:
 
     def _select_window(
         self,
-        title: str = None,
-        pid: int = None,
+        title: Optional[str] = None,
+        pid: Optional[int] = None,
         bring_foreground: bool = True,
         timeout: int = 30,
     ):
@@ -1213,7 +1259,8 @@ class JavaAccessBridge:
                 raise ValueError("Did not find window with pid '%s'" % pid)
             else:
                 raise ValueError(
-                    "Window selection was called without 'title' or 'pid'. Can't select window."  # noqa: E501
+                    "Window selection was called without 'title' or 'pid'."
+                    " Can't select window."
                 )
 
         if not self.version_printed:
@@ -1223,7 +1270,7 @@ class JavaAccessBridge:
         if bring_foreground:
             self._bring_window_to_foreground()
 
-        self.application_refresh()
+        self._application_refresh(force=True)
 
         return self.pid
 
@@ -1256,7 +1303,7 @@ class JavaAccessBridge:
             elements = self._find_elements(locator)
             if len(elements) > 0:
                 break
-            self.application_refresh()
+            self._application_refresh()
             # sleep at least a second per iteration
             duration = time.time() - start_time
             if duration < 1.0:
@@ -1266,3 +1313,20 @@ class JavaAccessBridge:
             self.print_element_tree()
             raise ElementNotFound("Locator '%s' did not match any elements" % locator)
         return elements
+
+    @keyword
+    def refresh_element(self, locator: LocatorType, index: int = 0) -> JavaElement:
+        """Refresh an element alone.
+
+        This will ensure the latest data is available in the targeted element, thus
+        gaining speed when dealing with big apps that won't require an entire global
+        refresh. The obtained Java element is returned.
+
+        :param locator: element to refresh
+        :param index: target element index if multiple are returned
+        :returns: the Java element found by the passed locator
+        """
+        elem = self._get_matching_element(locator, index, as_java_element=True)
+        self.logger.info("Refreshing element: %r", elem)
+        elem.node.refresh()
+        return elem

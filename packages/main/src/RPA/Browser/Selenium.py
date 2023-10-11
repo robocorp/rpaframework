@@ -165,7 +165,6 @@ class BrowserManagementKeywords(_BrowserManagementKeywords):
 
 # pylint: disable=missing-class-docstring
 class WindowKeywords(_WindowKeywords):
-
     # pylint: disable=arguments-differ
     @keyword
     def maximize_browser_window(self, *args, force: bool = False, **kwargs):
