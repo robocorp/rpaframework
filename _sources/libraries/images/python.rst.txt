@@ -6,8 +6,7 @@ Python API
 Images
 ******
 
-.. automodule:: RPA.Images
+.. autoclass:: RPA.Images.Images
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

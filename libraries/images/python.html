@@ -155,32 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.Images">
-<span id="images"></span><h2>Images<a class="headerlink" href="#module-RPA.Images" title="Permalink to this heading"></a></h2>
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Images.ImageNotFoundError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Images.</span></span><span class="sig-name descname"><span class="pre">ImageNotFoundError</span></span><a class="headerlink" href="#RPA.Images.ImageNotFoundError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised when template matching fails.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Images.ImageNotFoundError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Images.ImageNotFoundError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Images.ImageNotFoundError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.ImageNotFoundError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="images">
+<h2>Images<a class="headerlink" href="#images" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Images.Images">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Images.</span></span><span class="sig-name descname"><span class="pre">Images</span></span><a class="headerlink" href="#RPA.Images.Images" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><cite>Images</cite> is a library for general image manipulation.
+<dd><p><cite>Images</cite> is a library for general image manipulation.
 For image-based desktop automation, use the <code class="docutils literal notranslate"><span class="pre">RPA.Desktop</span></code> library.</p>
 <p><strong>Coordinates</strong></p>
 <p>The coordinates used in the library are pairs of x and y values that
@@ -275,7 +255,7 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#RPA.Images.ImageNotFoundError" title="RPA.Images.ImageNotFoundError"><strong>ImageNotFoundError</strong></a> – No match was found</p></li>
+<li><p><strong>ImageNotFoundError</strong> – No match was found</p></li>
 <li><p><strong>ValueError</strong> – Template is larger than search region</p></li>
 </ul>
 </dd>
@@ -284,7 +264,7 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Images.Images.get_pixel_color_in_image">
-<span class="sig-name descname"><span class="pre">get_pixel_color_in_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#RPA.Images.RGB" title="RPA.Images.RGB"><span class="pre">RGB</span></a></span></span><a class="headerlink" href="#RPA.Images.Images.get_pixel_color_in_image" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_pixel_color_in_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">RGB</span></span></span><a class="headerlink" href="#RPA.Images.Images.get_pixel_color_in_image" title="Permalink to this definition"></a></dt>
 <dd><p>Get the RGB value of a pixel in the image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -318,99 +298,6 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Images.RGB">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Images.</span></span><span class="sig-name descname"><span class="pre">RGB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">red</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.RGB" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Container for a single RGB value.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Images.RGB.blue">
-<span class="sig-name descname"><span class="pre">blue</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.Images.RGB.blue" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Images.RGB.from_pixel">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_pixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.RGB.from_pixel" title="Permalink to this definition"></a></dt>
-<dd><p>Create RGB value from pillow getpixel() return value.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Images.RGB.green">
-<span class="sig-name descname"><span class="pre">green</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.Images.RGB.green" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Images.RGB.luminance">
-<span class="sig-name descname"><span class="pre">luminance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#RPA.Images.RGB.luminance" title="Permalink to this definition"></a></dt>
-<dd><p>Approximate (perceived) luminance for RGB value.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Images.RGB.red">
-<span class="sig-name descname"><span class="pre">red</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.Images.RGB.red" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Images.TemplateMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Images.</span></span><span class="sig-name descname"><span class="pre">TemplateMatcher</span></span><a class="headerlink" href="#RPA.Images.TemplateMatcher" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Container class for different template matching methods.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Images.TemplateMatcher.DEFAULT_TOLERANCE">
-<span class="sig-name descname"><span class="pre">DEFAULT_TOLERANCE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.95</span></em><a class="headerlink" href="#RPA.Images.TemplateMatcher.DEFAULT_TOLERANCE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Images.TemplateMatcher.LIMIT_FAILSAFE">
-<span class="sig-name descname"><span class="pre">LIMIT_FAILSAFE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">256</span></em><a class="headerlink" href="#RPA.Images.TemplateMatcher.LIMIT_FAILSAFE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Images.TemplateMatcher.match">
-<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Region</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Images.TemplateMatcher.match" title="Permalink to this definition"></a></dt>
-<dd><p>Attempt to find the template in the given image.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>image</strong> – image to search from</p></li>
-<li><p><strong>template</strong> – image to search with</p></li>
-<li><p><strong>limit</strong> – maximum number of returned matches</p></li>
-<li><p><strong>tolerance</strong> – minimum correlation factor between template and image</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of regions that match the criteria</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Images.TemplateMatcher.tolerance">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tolerance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#RPA.Images.TemplateMatcher.tolerance" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="RPA.Images.chunks">
-<span class="sig-prename descclassname"><span class="pre">RPA.Images.</span></span><span class="sig-name descname"><span class="pre">chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.chunks" title="Permalink to this definition"></a></dt>
-<dd><p>Convert <cite>obj</cite> container to list of chunks of <cite>size</cite>.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="RPA.Images.clamp">
-<span class="sig-prename descclassname"><span class="pre">RPA.Images.</span></span><span class="sig-name descname"><span class="pre">clamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.clamp" title="Permalink to this definition"></a></dt>
-<dd><p>Clamp value between given minimum and maximum.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="RPA.Images.to_image">
-<span class="sig-prename descclassname"><span class="pre">RPA.Images.</span></span><span class="sig-name descname"><span class="pre">to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.to_image" title="Permalink to this definition"></a></dt>
-<dd><p>Convert <cite>obj</cite> to instance of Pillow’s Image class.</p>
 </dd></dl>
 
 </div>

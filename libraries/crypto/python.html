@@ -155,13 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.Crypto">
-<span id="crypto"></span><h2>Crypto<a class="headerlink" href="#module-RPA.Crypto" title="Permalink to this heading"></a></h2>
+<div class="section" id="crypto">
+<h2>Crypto<a class="headerlink" href="#crypto" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Crypto.Crypto">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Crypto.</span></span><span class="sig-name descname"><span class="pre">Crypto</span></span><a class="headerlink" href="#RPA.Crypto.Crypto" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Library for common encryption and hashing operations.</p>
+<dd><p>Library for common encryption and hashing operations.</p>
 <p>It uses the <a class="reference external" href="https://github.com/fernet/spec/blob/master/Spec.md">Fernet</a>
 format for encryption. More specifically, it uses AES in
 CBC mode with a 128-bit key for encryption and HMAC with SHA256 for
@@ -314,7 +313,7 @@ If anyone else gains access to it, they can decrypt your data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Crypto.Crypto.hash_file">
-<span class="sig-name descname"><span class="pre">hash_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.Crypto.Hash" title="RPA.Crypto.Hash"><span class="pre">Hash</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Hash.SHA1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Crypto.Crypto.hash_file" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">hash_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hash</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Hash.SHA1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Crypto.Crypto.hash_file" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate a hash from a file, in base64 format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -336,7 +335,7 @@ If anyone else gains access to it, they can decrypt your data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Crypto.Crypto.hash_string">
-<span class="sig-name descname"><span class="pre">hash_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.Crypto.Hash" title="RPA.Crypto.Hash"><span class="pre">Hash</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Hash.SHA1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Crypto.Crypto.hash_string" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">hash_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Hash</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Hash.SHA1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Crypto.Crypto.hash_string" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate a hash from a string, in base64 format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -398,79 +397,6 @@ line utility.</p>
 </div>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Crypto.</span></span><span class="sig-name descname"><span class="pre">Hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Crypto.Hash" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Supported hashing algorithms.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.MD5">
-<span class="sig-name descname"><span class="pre">MD5</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#RPA.Crypto.Hash.MD5" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA1">
-<span class="sig-name descname"><span class="pre">SHA1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA1" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA224">
-<span class="sig-name descname"><span class="pre">SHA224</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA224" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA256">
-<span class="sig-name descname"><span class="pre">SHA256</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA256" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA384">
-<span class="sig-name descname"><span class="pre">SHA384</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA384" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA3_224">
-<span class="sig-name descname"><span class="pre">SHA3_224</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA3_224" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA3_256">
-<span class="sig-name descname"><span class="pre">SHA3_256</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA3_256" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA3_384">
-<span class="sig-name descname"><span class="pre">SHA3_384</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA3_384" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA3_512">
-<span class="sig-name descname"><span class="pre">SHA3_512</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA3_512" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA512">
-<span class="sig-name descname"><span class="pre">SHA512</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA512" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA512_224">
-<span class="sig-name descname"><span class="pre">SHA512_224</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA512_224" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Crypto.Hash.SHA512_256">
-<span class="sig-name descname"><span class="pre">SHA512_256</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#RPA.Crypto.Hash.SHA512_256" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="RPA.Crypto.to_hash_context">
-<span class="sig-prename descclassname"><span class="pre">RPA.Crypto.</span></span><span class="sig-name descname"><span class="pre">to_hash_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.Crypto.Hash" title="RPA.Crypto.Hash"><span class="pre">Hash</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HashContext</span></span></span><a class="headerlink" href="#RPA.Crypto.to_hash_context" title="Permalink to this definition"></a></dt>
-<dd><p>Convert hash enum value to hash context instance.</p>
 </dd></dl>
 
 </div>

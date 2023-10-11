@@ -2,8 +2,7 @@
 Python API
 ##########
 
-.. automodule:: RPA.Robocorp.WorkItems
+.. autoclass:: RPA.Robocorp.WorkItems.WorkItems
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

@@ -155,311 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.Hubspot">
-<span id="hubspot"></span><h2>Hubspot<a class="headerlink" href="#module-RPA.Hubspot" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchInputFactory">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">BatchInputFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.Hubspot.BatchMode" title="RPA.Hubspot.BatchMode"><span class="pre">BatchMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">BatchMode.INVALID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A factory class which can be used to build up a set of inputs
-for a Hubspot Batch Input process and then used to generate the
-final object to be passed to the Hubspot API client.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchInputFactory.add_input">
-<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.add_input" title="Permalink to this definition"></a></dt>
-<dd><p>Add the provided dictionary of Hubspot properties as an input
-to this batch’s <code class="docutils literal notranslate"><span class="pre">inputs</span></code> property. If <code class="docutils literal notranslate"><span class="pre">object_id</span></code> is provided, the
-input will be considered an <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode input.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchInputFactory.create_hubspot_batch_object">
-<span class="sig-name descname"><span class="pre">create_hubspot_batch_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">BatchInputSimplePublicObjectInput</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">BatchInputSimplePublicObjectBatchInput</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.create_hubspot_batch_object" title="Permalink to this definition"></a></dt>
-<dd><p>Generates either a BatchInputSimplePublicObjectInput or
-BatchInputSimplePublicObjectBatchInput depending on whether this
-factory is in <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> or <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode. If <code class="docutils literal notranslate"><span class="pre">start</span></code> or <code class="docutils literal notranslate"><span class="pre">end</span></code>
-is provided, it will return a batch object including only a slice
-of the current inputs (useful when total number of inputs is more
-than 100, which requires batches to be batch due to API restrictions).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchInputFactory.extend_inputs">
-<span class="sig-name descname"><span class="pre">extend_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.extend_inputs" title="Permalink to this definition"></a></dt>
-<dd><p>Extends this batch’s <code class="docutils literal notranslate"><span class="pre">inputs</span></code> based on the provided list of
-<code class="docutils literal notranslate"><span class="pre">properties</span></code> and <code class="docutils literal notranslate"><span class="pre">ids</span></code>. If <code class="docutils literal notranslate"><span class="pre">ids</span></code> is provided, it will be
-zipped with the provided <code class="docutils literal notranslate"><span class="pre">properties</span></code>. <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode is assumed
-in such a case.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchInputFactory.inputs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObjectInput</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObjectBatchInput</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.inputs" title="Permalink to this definition"></a></dt>
-<dd><p>A list of inputs to be sent into the Batch API, returned type
-depends on <code class="docutils literal notranslate"><span class="pre">mode</span></code>. Can be set directly, but the <code class="docutils literal notranslate"><span class="pre">add_input</span></code> and
-<code class="docutils literal notranslate"><span class="pre">extend_inputs</span></code> methods are more useful.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchInputFactory.mode">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Hubspot.BatchMode" title="RPA.Hubspot.BatchMode"><span class="pre">BatchMode</span></a></em><a class="headerlink" href="#RPA.Hubspot.BatchInputFactory.mode" title="Permalink to this definition"></a></dt>
-<dd><p>The batch mode, either <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> or <code class="docutils literal notranslate"><span class="pre">CREATE</span></code>.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchMode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">BatchMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.BatchMode" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Enumeration that returns the appropriate class to create a single
-object inside of a batch input list.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchMode.CREATE">
-<span class="sig-name descname"><span class="pre">CREATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CREATE'</span></em><a class="headerlink" href="#RPA.Hubspot.BatchMode.CREATE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchMode.INVALID">
-<span class="sig-name descname"><span class="pre">INVALID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'INVALID'</span></em><a class="headerlink" href="#RPA.Hubspot.BatchMode.INVALID" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.BatchMode.UPDATE">
-<span class="sig-name descname"><span class="pre">UPDATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'UPDATE'</span></em><a class="headerlink" href="#RPA.Hubspot.BatchMode.UPDATE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">ExtendedFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_vars_configuration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></p>
-<p>Extends the <code class="docutils literal notranslate"><span class="pre">Filter</span></code> class provided by <code class="docutils literal notranslate"><span class="pre">hubspot-api-client</span></code>
-to include the following additional attributes supported by
-the REST API:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">values</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">high_value</span></code></p></li>
-</ul>
-<p>It also overloads the implementation of <code class="docutils literal notranslate"><span class="pre">value</span></code> to support the
-existence of the other attributes.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.attribute_map">
-<span class="sig-name descname"><span class="pre">attribute_map</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'high_value':</span> <span class="pre">'highValue',</span> <span class="pre">'operator':</span> <span class="pre">'operator',</span> <span class="pre">'property_name':</span> <span class="pre">'propertyName',</span> <span class="pre">'value':</span> <span class="pre">'value',</span> <span class="pre">'values':</span> <span class="pre">'values'}</span></em><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.attribute_map" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.high_value">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">high_value</span></span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.high_value" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.openapi_types">
-<span class="sig-name descname"><span class="pre">openapi_types</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'high_value':</span> <span class="pre">'str',</span> <span class="pre">'operator':</span> <span class="pre">'str',</span> <span class="pre">'property_name':</span> <span class="pre">'str',</span> <span class="pre">'value':</span> <span class="pre">'str',</span> <span class="pre">'values':</span> <span class="pre">'list'}</span></em><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.openapi_types" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.operator">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">operator</span></span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.operator" title="Permalink to this definition"></a></dt>
-<dd><p>Gets the operator of this Filter.  # noqa: E501</p>
-<p>null  # noqa: E501</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The operator of this Filter.  # noqa: E501</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.property_name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_name</span></span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.property_name" title="Permalink to this definition"></a></dt>
-<dd><p>Gets the property_name of this Filter.  # noqa: E501</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The property_name of this Filter.  # noqa: E501</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.to_dict">
-<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.to_dict" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the model properties as a dict</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.to_str">
-<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.to_str" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the string representation of the model</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.value">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.value" title="Permalink to this definition"></a></dt>
-<dd><p>Gets the value of this Filter.  # noqa: E501</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The value of this Filter.  # noqa: E501</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Hubspot.ExtendedFilter.values">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><a class="headerlink" href="#RPA.Hubspot.ExtendedFilter.values" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotAuthenticationError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">HubSpotAuthenticationError</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotAuthenticationError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when authenticated HubSpot instance does not exist.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotAuthenticationError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotAuthenticationError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotAuthenticationError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotAuthenticationError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotBatchInputInvalidError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">HubSpotBatchInputInvalidError</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchInputInvalidError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when the provided batch input is invalid and cannot be sent
-to the Hubspot API.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotBatchInputInvalidError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchInputInvalidError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotBatchInputInvalidError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchInputInvalidError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotBatchResponseError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">HubSpotBatchResponseError</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchResponseError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when the entire batch response is nothing but errors.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotBatchResponseError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchResponseError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotBatchResponseError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotBatchResponseError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotNoPipelineError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">HubSpotNoPipelineError</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotNoPipelineError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when there is no pipeline associated with an object.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotNoPipelineError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotNoPipelineError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotNoPipelineError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotNoPipelineError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotObjectTypeError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">HubSpotObjectTypeError</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotObjectTypeError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when the object type provided does not exist.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotObjectTypeError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotObjectTypeError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotObjectTypeError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotObjectTypeError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotRateLimitError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">HubSpotRateLimitError</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotRateLimitError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when the API’s rate limits are exceeded.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotRateLimitError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotRateLimitError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotRateLimitError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotRateLimitError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotSearchParseError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">HubSpotSearchParseError</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotSearchParseError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when the natural word search engine cannot parse the provided words.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotSearchParseError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Hubspot.HubSpotSearchParseError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.HubSpotSearchParseError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.HubSpotSearchParseError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="hubspot">
+<h2>Hubspot<a class="headerlink" href="#hubspot" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">Hubspot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hubspot_apikey</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hubspot_access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><em>Hubspot</em> is a library for accessing HubSpot using REST API. It
+<dd><p><em>Hubspot</em> is a library for accessing HubSpot using REST API. It
 extends <a class="reference external" href="https://pypi.org/project/hubspot-api-client/">hubspot-api-client</a>.</p>
 <p>Current features of this library focus on retrieving CRM object data
 from HubSpot via API. For additional information, see
@@ -869,12 +570,12 @@ in your HubSpot account.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.batch_input">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">batch_input</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Hubspot.BatchInputFactory" title="RPA.Hubspot.BatchInputFactory"><span class="pre">BatchInputFactory</span></a></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.batch_input" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">batch_input</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BatchInputFactory</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.batch_input" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.clear_current_batch">
-<span class="sig-name descname"><span class="pre">clear_current_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#RPA.Hubspot.BatchInputFactory" title="RPA.Hubspot.BatchInputFactory"><span class="pre">BatchInputFactory</span></a></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.clear_current_batch" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">clear_current_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BatchInputFactory</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.clear_current_batch" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the current batch and then clears it.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
@@ -882,7 +583,7 @@ input API.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.create_new_batch">
-<span class="sig-name descname"><span class="pre">create_new_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.Hubspot.BatchMode" title="RPA.Hubspot.BatchMode"><span class="pre">BatchMode</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.create_new_batch" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">create_new_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BatchMode</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.create_new_batch" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new blank batch input for the provided <code class="docutils literal notranslate"><span class="pre">object_type</span></code> in
 either the <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> or <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> mode.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
@@ -966,7 +667,7 @@ mode and has any inputs already.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_current_batch">
-<span class="sig-name descname"><span class="pre">get_current_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#RPA.Hubspot.BatchInputFactory" title="RPA.Hubspot.BatchInputFactory"><span class="pre">BatchInputFactory</span></a></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_current_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BatchInputFactory</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the current batch.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
@@ -1537,7 +1238,7 @@ returned object’s <code class="docutils literal notranslate"><span class="pre"
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.set_current_batch_input">
-<span class="sig-name descname"><span class="pre">set_current_batch_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.Hubspot.BatchInputFactory" title="RPA.Hubspot.BatchInputFactory"><span class="pre">BatchInputFactory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.set_current_batch_input" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_current_batch_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BatchInputFactory</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.set_current_batch_input" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the current batch input to the provided one.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
@@ -1579,18 +1280,6 @@ object. Read-only or nonexistent properties will be ignored.</p></li>
 </div>
 </div>
 </div>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Hubspot.SearchLexer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">SearchLexer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_terms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Logger</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.SearchLexer" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class for analyzing a natural search list for <code class="docutils literal notranslate"><span class="pre">RPA.Hubspot</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Hubspot.SearchLexer.create_search_object">
-<span class="sig-name descname"><span class="pre">create_search_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.SearchLexer.create_search_object" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div>

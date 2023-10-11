@@ -6,8 +6,7 @@ Python API
 Twitter
 *******
 
-.. automodule:: RPA.Twitter
+.. autoclass:: RPA.Twitter.Twitter
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

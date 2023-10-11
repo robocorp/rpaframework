@@ -6,8 +6,7 @@ Python API
 OpenAI
 ******
 
-.. automodule:: RPA.OpenAI
+.. autoclass:: RPA.OpenAI.OpenAI
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

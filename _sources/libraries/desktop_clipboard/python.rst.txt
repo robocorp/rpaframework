@@ -6,8 +6,7 @@ Python API
 Clipboard
 *********
 
-.. automodule:: RPA.Desktop.Clipboard
+.. autoclass:: RPA.Desktop.Clipboard.Clipboard
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

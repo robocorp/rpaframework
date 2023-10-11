@@ -155,8 +155,895 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.Dialogs">
-<span id="dialogs"></span><h2>Dialogs<a class="headerlink" href="#module-RPA.Dialogs" title="Permalink to this heading"></a></h2>
+<div class="section" id="dialogs">
+<h2>Dialogs<a class="headerlink" href="#dialogs" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Dialogs.</span></span><span class="sig-name descname"><span class="pre">Dialogs</span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs" title="Permalink to this definition"></a></dt>
+<dd><p><strong>NOTICE:</strong> The <cite>Dialogs</cite> library is now marked for deprecation.
+The library will be replaced by <cite>Assistant</cite>. In order to get more
+information about the changes and the migration guide, please
+check the release note: <a class="reference external" href="https://updates.robocorp.com/release/Gfko5-rpaframework-2200">https://updates.robocorp.com/release/Gfko5-rpaframework-2200</a></p>
+<p>The <cite>Dialogs</cite> library provides a way to display information to a user
+and request input while a robot is running. It allows building processes
+that require human interaction.</p>
+<p>Some examples of use-cases could be the following:</p>
+<ul class="simple">
+<li><p>Displaying generated files after an execution is finished</p></li>
+<li><p>Displaying dynamic and user-friendly error messages</p></li>
+<li><p>Requesting passwords or other personal information</p></li>
+<li><p>Automating based on files created by the user</p></li>
+</ul>
+<p><strong>Workflow</strong></p>
+<p>The library is used to create dialogs, i.e. windows, that can be composed
+on-the-fly based on the current state of the execution.</p>
+<p>The content of the dialog is defined by calling relevant keywords
+such as <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">text</span></code> or <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">file</span> <span class="pre">input</span></code>. When the dialog is opened
+the content is generated based on the previous keywords.</p>
+<p>Depending on the way the dialog is started, the execution will either
+block or continue while the dialog is open. During this time the user
+can freely edit any possible input fields or handle other tasks.</p>
+<p>After the user has successfully submitted the dialog, any possible
+entered input will be returned as a result. The user also has the option
+to abort by closing the dialog window forcefully.</p>
+<p><strong>Results</strong></p>
+<p>Each input field has a required <code class="docutils literal notranslate"><span class="pre">name</span></code> argument that controls what
+the value will be called in the result object. Each input name should be
+unique, and must not be called <code class="docutils literal notranslate"><span class="pre">submit</span></code> as that is reserved for the submit
+button value.</p>
+<p>A result object is a Robot Framework DotDict, where each key
+is the name of the input field and the value is what the user entered.
+The data type of each field depends on the input. For instance,
+a text input will have a string, a checkbox will have a boolean, and
+a file input will have a list of paths.</p>
+<p>If the user closed the window before submitting or there was an internal
+error, the library will raise an exception and the result values will
+not be available.</p>
+<p><strong>Examples</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Success dialog</span>
+<span class="p">    </span><span class="c">Add icon</span><span class="p">      </span><span class="c">Success</span>
+<span class="p">    </span><span class="c">Add heading</span><span class="p">   </span><span class="c">Your orders have been processed</span>
+<span class="p">    </span><span class="c">Add files</span><span class="p">     </span><span class="c">*.txt</span>
+<span class="p">    </span><span class="c">Run dialog</span><span class="p">    </span><span class="c">title=Success</span>
+
+<span class="c">Failure dialog</span>
+<span class="p">    </span><span class="c">Add icon</span><span class="p">      </span><span class="c">Failure</span>
+<span class="p">    </span><span class="c">Add heading</span><span class="p">   </span><span class="c">There was an error</span>
+<span class="p">    </span><span class="c">Add text</span><span class="p">      </span><span class="c">The assistant failed to login to the Enterprise portal</span>
+<span class="p">    </span><span class="c">Add link</span><span class="p">      </span><span class="c">https://robocorp.com/docs</span><span class="p">    </span><span class="c">label=Troubleshooting guide</span>
+<span class="p">    </span><span class="c">Run dialog</span><span class="p">    </span><span class="c">title=Failure</span>
+
+<span class="c">Large dialog</span>
+<span class="p">    </span><span class="c">Add heading</span><span class="p">    </span><span class="c">A real chonker</span><span class="p">   </span><span class="c">size=large</span>
+<span class="p">    </span><span class="c">Add image</span><span class="p">      </span><span class="c">fat-cat.jpeg</span>
+<span class="p">    </span><span class="c">Run dialog</span><span class="p">     </span><span class="c">title=Large</span><span class="p">    </span><span class="c">height=1024</span><span class="p">    </span><span class="c">width=1024</span>
+
+<span class="c">Confirmation dialog</span>
+<span class="p">    </span><span class="c">Add icon</span><span class="p">      </span><span class="c">Warning</span>
+<span class="p">    </span><span class="c">Add heading</span><span class="p">   </span><span class="c">Delete user ${username}?</span>
+<span class="p">    </span><span class="c">Add submit buttons</span><span class="p">    </span><span class="c">buttons=No,Yes</span><span class="p">    </span><span class="c">default=Yes</span>
+<span class="p">    </span><span class="c">${result}=</span><span class="p">    </span><span class="c">Run dialog</span>
+<span class="p">    </span><span class="c">IF</span><span class="p">   </span><span class="c">$result.submit == &quot;Yes&quot;</span>
+<span class="p">        </span><span class="c">Delete user</span><span class="p">    </span><span class="c">${username}</span>
+<span class="p">    </span><span class="c">END</span>
+
+<span class="c">Input form dialog</span>
+<span class="p">    </span><span class="c">Add heading</span><span class="p">       </span><span class="c">Send feedback</span>
+<span class="p">    </span><span class="c">Add text input</span><span class="p">    </span><span class="c">email</span><span class="p">    </span><span class="c">label=E-mail address</span>
+<span class="p">    </span><span class="c">Add text input</span><span class="p">    </span><span class="c">message</span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">label=Feedback</span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">placeholder=Enter feedback here</span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">rows=5</span>
+<span class="p">    </span><span class="c">${result}=</span><span class="p">    </span><span class="c">Run dialog</span>
+<span class="p">    </span><span class="c">Send feedback message</span><span class="p">    </span><span class="c">${result.email}</span><span class="p">  </span><span class="c">${result.message}</span>
+
+<span class="c">Dialog as progress indicator</span>
+<span class="p">    </span><span class="c">Add heading</span><span class="p">    </span><span class="c">Please wait while I open a browser</span>
+<span class="p">    </span><span class="c">${dialog}=</span><span class="p">     </span><span class="c">Show dialog</span><span class="p">    </span><span class="c">title=Please wait</span><span class="p">    </span><span class="c">on_top=${TRUE}</span>
+<span class="p">    </span><span class="c">Open available browser</span><span class="p">    </span><span class="c">https://robocorp.com</span>
+<span class="p">    </span><span class="c">Close dialog</span><span class="p">   </span><span class="c">${dialog}</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.ROBOT_AUTO_KEYWORDS">
+<span class="sig-name descname"><span class="pre">ROBOT_AUTO_KEYWORDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#RPA.Dialogs.Dialogs.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.ROBOT_LIBRARY_DOC_FORMAT">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Dialogs.Dialogs.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.ROBOT_LIBRARY_SCOPE">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Dialogs.Dialogs.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_checkbox">
+<span class="sig-name descname"><span class="pre">add_checkbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_checkbox" title="Permalink to this definition"></a></dt>
+<dd><p>Add a checkbox element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of result field</p></li>
+<li><p><strong>label</strong> – Label text for checkbox</p></li>
+<li><p><strong>default</strong> – Default checked state</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds a checkbox that indicates a true or false value.
+The selection will be available in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the result,
+and the <code class="docutils literal notranslate"><span class="pre">label</span></code> text will be shown next to the checkbox.</p>
+<p>The boolean <code class="docutils literal notranslate"><span class="pre">default</span></code> value will define the initial checked
+state of the element.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">     </span><span class="c">Enable features</span>
+<span class="c">Add checkbox</span><span class="p">    </span><span class="c">name=vault</span><span class="p">        </span><span class="c">label=Enable vault</span><span class="p">       </span><span class="c">default=True</span>
+<span class="c">Add checkbox</span><span class="p">    </span><span class="c">name=triggers</span><span class="p">     </span><span class="c">label=Enable triggers</span><span class="p">    </span><span class="c">default=False</span>
+<span class="c">Add checkbox</span><span class="p">    </span><span class="c">name=assistants</span><span class="p">   </span><span class="c">label=Enable assistants</span><span class="p">  </span><span class="c">default=True</span>
+<span class="c">${result}=</span><span class="p">      </span><span class="c">Run dialog</span>
+<span class="c">IF</span><span class="p">    </span><span class="c">$result.vault</span>
+<span class="p">    </span><span class="c">Enable vault</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_date_input">
+<span class="sig-name descname"><span class="pre">add_date_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_date_input" title="Permalink to this definition"></a></dt>
+<dd><p>Add a date input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of the result field</p></li>
+<li><p><strong>default</strong> – The default set date</p></li>
+<li><p><strong>label</strong> – Label for the date input field</p></li>
+</ul>
+</dd>
+</dl>
+<p>Displays a date input widget. The selection the user makes will be available
+as a <code class="docutils literal notranslate"><span class="pre">date</span></code> object in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the result.
+The <code class="docutils literal notranslate"><span class="pre">default</span></code> argument can be a pre-set date as object or string in
+“YYYY-MM-DD” format, otherwise the current date is used.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">       </span><span class="c">Enter your birthdate</span>
+<span class="c">Add Date Input</span><span class="p">    </span><span class="c">birthdate</span><span class="p">    </span><span class="c">default=1993-04-26</span>
+<span class="c">${result} =</span><span class="p">       </span><span class="c">Run dialog</span>
+<span class="c">Log To Console</span><span class="p">    </span><span class="c">User birthdate year should be: ${result.birthdate.year}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_dialog_next_page_button">
+<span class="sig-name descname"><span class="pre">add_dialog_next_page_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_dialog_next_page_button" title="Permalink to this definition"></a></dt>
+<dd><p>Add a next page button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>label</strong> – The text displayed on the button</p>
+</dd>
+</dl>
+<p>The next page button will delimit the next elements of
+the dialog in a separate view, so that they will only be displayed after
+pressing the button, creating a wizard experience in the dialog.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">       </span><span class="c">Send feedback</span>
+<span class="c">Add text input</span><span class="p">    </span><span class="c">email</span><span class="p">             </span><span class="c">label=E-mail address</span>
+<span class="c">Add dialog next page button</span><span class="p">         </span><span class="c">label=next</span>
+<span class="c">Add text input</span><span class="p">    </span><span class="c">name</span><span class="p">              </span><span class="c">label=Name</span>
+<span class="c">Add dialog next page button</span><span class="p">         </span><span class="c">label=next</span>
+<span class="c">Add checkbox</span><span class="p">      </span><span class="c">name=contact</span>
+<span class="c">...</span><span class="p">     </span><span class="c">label=Do you want us to contact you?</span>
+<span class="c">...</span><span class="p">     </span><span class="c">default=True</span>
+<span class="c">Add dialog next page button</span><span class="p">         </span><span class="c">label=next</span>
+<span class="c">Add text input</span><span class="p">    </span><span class="c">message</span>
+<span class="c">...</span><span class="p">    </span><span class="c">label=Feedback</span>
+<span class="c">...</span><span class="p">    </span><span class="c">placeholder=Enter feedback here</span>
+<span class="c">...</span><span class="p">    </span><span class="c">rows=5</span>
+<span class="c">Add submit buttons</span><span class="p">  </span><span class="c">buttons=submit</span>
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Run dialog</span>
+<span class="c">Send feedback message</span><span class="p">    </span><span class="c">${result.email}</span><span class="p">  </span><span class="c">${result.message}</span>
+<span class="c">Run dialog</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_drop_down">
+<span class="sig-name descname"><span class="pre">add_drop_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_drop_down" title="Permalink to this definition"></a></dt>
+<dd><p>Add a drop-down element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of result field</p></li>
+<li><p><strong>options</strong> – List of drop-down options</p></li>
+<li><p><strong>default</strong> – The default selection</p></li>
+<li><p><strong>label</strong> – Label for input field</p></li>
+</ul>
+</dd>
+</dl>
+<p>Creates a drop-down menu with the given <code class="docutils literal notranslate"><span class="pre">options</span></code>. The selection
+the user makes will be available in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the result.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">default</span></code> argument can be one of the defined options,
+and the dialog automatically selects that option for the input.</p>
+<p>A custom <code class="docutils literal notranslate"><span class="pre">label</span></code> text can also be added.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">     </span><span class="c">Select user type</span>
+<span class="c">Add drop-down</span>
+<span class="c">...</span><span class="p">    </span><span class="c">name=user_type</span>
+<span class="c">...</span><span class="p">    </span><span class="c">options=Admin,Maintainer,Operator</span>
+<span class="c">...</span><span class="p">    </span><span class="c">default=Operator</span>
+<span class="c">...</span><span class="p">    </span><span class="c">label=User type</span>
+<span class="c">${result}=</span><span class="p">      </span><span class="c">Run dialog</span>
+<span class="c">Log</span><span class="p">    </span><span class="c">User type should be: ${result.user_type}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_element">
+<span class="sig-name descname"><span class="pre">add_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_element" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_file">
+<span class="sig-name descname"><span class="pre">add_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_file" title="Permalink to this definition"></a></dt>
+<dd><p>Add a file element, which links to a local file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – The path to the file</p></li>
+<li><p><strong>label</strong> – A custom label text for the file</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds a button which opens a local file with the corresponding
+default application. Can be used for instance to display generated
+files from the robot to the end-user.</p>
+<p>Optionally a custom <code class="docutils literal notranslate"><span class="pre">label</span></code> can be given for the button text.
+By default uses the filename of the linked file.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${path}=</span><span class="p">   </span><span class="c">Generate order files</span>
+<span class="c">Add heading</span><span class="p">    </span><span class="c">Current orders</span>
+<span class="c">Add file</span><span class="p">    </span><span class="c">${path}</span><span class="p">    </span><span class="c">label=Current</span>
+<span class="c">Run dialog</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_file_input">
+<span class="sig-name descname"><span class="pre">add_file_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_file_input" title="Permalink to this definition"></a></dt>
+<dd><p>Add a file input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of result field</p></li>
+<li><p><strong>label</strong> – Label for input field</p></li>
+<li><p><strong>source</strong> – Default source directory</p></li>
+<li><p><strong>destination</strong> – Target directory for selected files</p></li>
+<li><p><strong>file_type</strong> – Accepted file types</p></li>
+<li><p><strong>multiple</strong> – Allow selecting multiple files</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds a native file selection dialog for inputting one or more files.
+The list of selected files will be available in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field
+of the result.</p>
+<p>By default opens up in the user’s home directory, but it can be
+set to a custom path with the <code class="docutils literal notranslate"><span class="pre">source</span></code> argument.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">destination</span></code> argument is not set, it returns the original
+paths to the selected files. If the <code class="docutils literal notranslate"><span class="pre">destination</span></code> directory
+is set, the files are copied there first and the new paths are
+returned.</p>
+<p>The argument <code class="docutils literal notranslate"><span class="pre">file_type</span></code> restricts the possible file extensions
+that the user can select. The format of the argument is as follows:
+<code class="docutils literal notranslate"><span class="pre">Description</span> <span class="pre">text</span> <span class="pre">(*.ext1;*.ext2;...)</span></code>. For instance, an argument
+to limit options to Excel files could be: <code class="docutils literal notranslate"><span class="pre">Excel</span> <span class="pre">files</span> <span class="pre">(*.xls;*.xlsx)</span></code>.</p>
+<p>To allow selecting more than one file, the <code class="docutils literal notranslate"><span class="pre">multiple</span></code> argument
+can be enabled.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># This can be any one file</span>
+<span class="c">Add file input</span><span class="p">    </span><span class="c">name=anyting</span>
+
+<span class="c"># This can be multiple files</span>
+<span class="c">Add file input</span><span class="p">    </span><span class="c">name=multiple</span><span class="p">  </span><span class="c">multiple=True</span>
+
+<span class="c"># This opens the select dialog to a custom folder</span>
+<span class="c">Add file input</span><span class="p">    </span><span class="c">name=src</span><span class="p">       </span><span class="c">source=C:\Temp\Output\</span>
+
+<span class="c"># This copies selected files to a custom folder</span>
+<span class="c">Add file input</span><span class="p">    </span><span class="c">name=dest</span><span class="p">      </span><span class="c">destination=%{ROBOT_ROOT}</span>
+
+<span class="c"># This restricts files to certain types</span>
+<span class="c">Add file input</span><span class="p">    </span><span class="c">name=types</span><span class="p">     </span><span class="c">file_type=PDF files (*.pdf)</span>
+
+<span class="c"># Every file input result is a list of paths</span>
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Run dialog</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${path}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{result.multiple}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">Selected file: ${path}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_files">
+<span class="sig-name descname"><span class="pre">add_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_files" title="Permalink to this definition"></a></dt>
+<dd><p>Add multiple file elements according to the given file pattern</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pattern</strong> – File matching pattern</p>
+</dd>
+</dl>
+<p>See the keyword <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">file</span></code> for information about the inserted
+element itself.</p>
+<p>The keyword uses Unix-style glob patterns for finding matching files,
+and the supported pattern expressions are as follow:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Pattern</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">*</span></code></p></td>
+<td><p>Match everything</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">?</span></code></p></td>
+<td><p>Match any single character</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[seq]</span></code></p></td>
+<td><p>Match any character in seq</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[!seq]</span></code></p></td>
+<td><p>Match any character not in seq</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">**</span></code></p></td>
+<td><p>Match all files, directories, and subdirectories</p></td>
+</tr>
+</tbody>
+</table>
+<p>If a filename has any of these special characters, they
+can be escaped by wrapping them with square brackets.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Add all excel files</span>
+<span class="c">Add files</span><span class="p">    </span><span class="c">*.xlsx</span>
+
+<span class="c"># Add all log files in any subdirectory</span>
+<span class="c">Add files</span><span class="p">    </span><span class="c">**/*.log</span>
+
+<span class="c"># Add all PDFs between order0 and order9</span>
+<span class="c">Add files</span><span class="p">    </span><span class="c">order[0-9].pdf</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_heading">
+<span class="sig-name descname"><span class="pre">add_heading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">heading</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Size</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Size.Medium</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_heading" title="Permalink to this definition"></a></dt>
+<dd><p>Add a centered heading text element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>heading</strong> – The text content for the heading</p></li>
+<li><p><strong>size</strong> – The size of the heading</p></li>
+</ul>
+</dd>
+</dl>
+<p>Supported <code class="docutils literal notranslate"><span class="pre">size</span></code> values are Small, Medium, and Large. By default uses
+the value Medium.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">     </span><span class="c">User information</span><span class="p">  </span><span class="c">size=Large</span>
+<span class="c">Add heading</span><span class="p">     </span><span class="c">Location</span><span class="p">          </span><span class="c">size=Small</span>
+<span class="c">Add text input</span><span class="p">  </span><span class="c">address</span><span class="p">           </span><span class="c">label=User address</span>
+<span class="c">Run dialog</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_hidden_input">
+<span class="sig-name descname"><span class="pre">add_hidden_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_hidden_input" title="Permalink to this definition"></a></dt>
+<dd><p>Add a hidden input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of result feild</p></li>
+<li><p><strong>value</strong> – Value for input</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds a special hidden result field that is not visible
+to the user and always contains the given static value.</p>
+<p>Can be used to keep user input together with already known
+values such as user IDs, or to ensure that dialogs with differing
+elements all have the same fields in results.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add hidden input</span><span class="p">   </span><span class="c">user_id</span><span class="p">   </span><span class="c">${USER_ID}</span>
+<span class="c">Add text input</span><span class="p">     </span><span class="c">username</span>
+<span class="c">${result}=</span><span class="p">         </span><span class="c">Run dialog</span>
+<span class="c">Enter user information</span><span class="p">    </span><span class="c">${result.user_id}</span><span class="p">    </span><span class="c">${result.username}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_icon">
+<span class="sig-name descname"><span class="pre">add_icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Icon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">48</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_icon" title="Permalink to this definition"></a></dt>
+<dd><p>Add an icon element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variant</strong> – The icon type</p></li>
+<li><p><strong>size</strong> – The size of the icon</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds an icon which can be used to indicate status
+or the type of dialog being presented.</p>
+<p>The currently supported icon types are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Success</p></td>
+<td><p>A green check mark</p></td>
+</tr>
+<tr class="row-odd"><td><p>Warning</p></td>
+<td><p>An orange warning triangle</p></td>
+</tr>
+<tr class="row-even"><td><p>Failure</p></td>
+<td><p>A red cross or X mark</p></td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">size</span></code> of the icon can also be changed,
+to a given height/width of pixels.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add icon</span><span class="p">              </span><span class="c">Warning</span><span class="p">    </span><span class="c">size=64</span>
+<span class="c">Add heading</span><span class="p">           </span><span class="c">Do you want to delete this order?</span>
+<span class="c">Add submit buttons</span><span class="p">    </span><span class="c">buttons=No,Yes</span>
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Run dialog</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_image">
+<span class="sig-name descname"><span class="pre">add_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url_or_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_image" title="Permalink to this definition"></a></dt>
+<dd><p>Add an image element, from a local file or remote URL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url_or_path</strong> – The location of the image</p></li>
+<li><p><strong>width</strong> – The static width of the image, in pixels</p></li>
+<li><p><strong>height</strong> – The static height of the image, in pixels</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds an inline image to the dialog, which can either
+point to a local file path on the executing machine or to
+a remote URL.</p>
+<p>By default the image is resized to fit the width of the dialog
+window, but the width and/or height can be explicitly defined
+to a custom value. If only one of the dimensions is given,
+the other is automatically changed to maintain the correct aspect ratio.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add image</span><span class="p">      </span><span class="c">company-logo.png</span>
+<span class="c">Add heading</span><span class="p">    </span><span class="c">To start, please press the Continue button</span><span class="p">   </span><span class="c">size=Small</span>
+<span class="c">Add submit buttons</span><span class="p">    </span><span class="c">Continue</span>
+<span class="c">Run dialog</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_link">
+<span class="sig-name descname"><span class="pre">add_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_link" title="Permalink to this definition"></a></dt>
+<dd><p>Add an external URL link element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – The URL for the link</p></li>
+<li><p><strong>label</strong> – A custom label text for the link</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds a clickable link element, which opens the user’s default
+browser to the given <code class="docutils literal notranslate"><span class="pre">url</span></code>. Optionally a <code class="docutils literal notranslate"><span class="pre">label</span></code> can be given
+which is shown as the link text, instead of the raw URL.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">    </span><span class="c">An error occurred</span>
+<span class="c">Add text</span><span class="p">       </span><span class="c">See link for documentation</span>
+<span class="c">Add link</span><span class="p">       </span><span class="c">https://robocorp.com/docs</span><span class="p">    </span><span class="c">label=Troubleshooting</span>
+<span class="c">Run dialog</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_password_input">
+<span class="sig-name descname"><span class="pre">add_password_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">placeholder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_password_input" title="Permalink to this definition"></a></dt>
+<dd><p>Add a password input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of result field</p></li>
+<li><p><strong>label</strong> – Label for field</p></li>
+<li><p><strong>placeholder</strong> – Placeholder text in input field</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds a text field that hides the user’s input. The entered
+content will be available in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the result.</p>
+<p>For customizing the look of the input, the <code class="docutils literal notranslate"><span class="pre">label</span></code> text can be given
+to add a descriptive label and the <code class="docutils literal notranslate"><span class="pre">placholder</span></code> text can be given
+to act as an example of the input value.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">    </span><span class="c">Change password</span>
+<span class="c">Add text input</span><span class="p">        </span><span class="c">username</span><span class="p">    </span><span class="c">label=Current username</span>
+<span class="c">Add password input</span><span class="p">    </span><span class="c">password</span><span class="p">    </span><span class="c">label=New password</span>
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Run dialog</span>
+<span class="c">Change user password</span><span class="p">    </span><span class="c">${result.username}</span><span class="p">  </span><span class="c">${result.password}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_radio_buttons">
+<span class="sig-name descname"><span class="pre">add_radio_buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_radio_buttons" title="Permalink to this definition"></a></dt>
+<dd><p>Add radio button elements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of result field</p></li>
+<li><p><strong>options</strong> – List of drop-down options</p></li>
+<li><p><strong>default</strong> – The default selection</p></li>
+<li><p><strong>label</strong> – Label for input field</p></li>
+</ul>
+</dd>
+</dl>
+<p>Creates a set of radio buttons with the given <code class="docutils literal notranslate"><span class="pre">options</span></code>. The selection
+the user makes will be available in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the result.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">default</span></code> argument can be one of the defined options,
+and the dialog automatically selects that option for the input.</p>
+<p>A custom <code class="docutils literal notranslate"><span class="pre">label</span></code> text can also be added.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">     </span><span class="c">Select user type</span>
+<span class="c">Add radio buttons</span>
+<span class="c">...</span><span class="p">    </span><span class="c">name=user_type</span>
+<span class="c">...</span><span class="p">    </span><span class="c">options=Admin,Maintainer,Operator</span>
+<span class="c">...</span><span class="p">    </span><span class="c">default=Operator</span>
+<span class="c">...</span><span class="p">    </span><span class="c">label=User type</span>
+<span class="c">${result}=</span><span class="p">      </span><span class="c">Run dialog</span>
+<span class="c">Log</span><span class="p">    </span><span class="c">User type should be: ${result.user_type}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_submit_buttons">
+<span class="sig-name descname"><span class="pre">add_submit_buttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buttons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_submit_buttons" title="Permalink to this definition"></a></dt>
+<dd><p>Add custom submit buttons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buttons</strong> – Submit button options</p></li>
+<li><p><strong>default</strong> – The primary button</p></li>
+</ul>
+</dd>
+</dl>
+<p>The dialog automatically creates a button for closing itself.
+If there are no input fields, the button will say “Close”.
+If there are one or more input fields, the button will say “Submit”.</p>
+<p>If the submit button should have a custom label or there should be
+multiple options to choose from  when submitting, this keyword can
+be used to replace the automatically generated ones.</p>
+<p>The result field will always be called <code class="docutils literal notranslate"><span class="pre">submit</span></code> and will contain
+the pressed button text as a value.</p>
+<p>If one of the custom <code class="docutils literal notranslate"><span class="pre">options</span></code> should be the preferred option,
+the <code class="docutils literal notranslate"><span class="pre">default</span></code> argument controls which one is highlighted with
+an accent color.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add icon</span><span class="p">      </span><span class="c">Warning</span>
+<span class="c">Add heading</span><span class="p">   </span><span class="c">Delete user ${username}?</span>
+<span class="c">Add submit buttons</span><span class="p">    </span><span class="c">buttons=No,Yes</span><span class="p">    </span><span class="c">default=Yes</span>
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Run dialog</span>
+<span class="c">IF</span><span class="p">   </span><span class="c">$result.submit == &quot;Yes&quot;</span>
+<span class="p">    </span><span class="c">Delete user</span><span class="p">    </span><span class="c">${username}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_text">
+<span class="sig-name descname"><span class="pre">add_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Size</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Size.Medium</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text" title="Permalink to this definition"></a></dt>
+<dd><p>Add a text paragraph element, for larger bodies of text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – The text content for the paragraph</p></li>
+<li><p><strong>size</strong> – The size of the text</p></li>
+</ul>
+</dd>
+</dl>
+<p>Supported <code class="docutils literal notranslate"><span class="pre">size</span></code> values are Small, Medium, and Large. By default uses
+the value Medium.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">   </span><span class="c">An error occurred</span>
+<span class="c">Add text</span><span class="p">      </span><span class="c">There was an error while requesting user information</span>
+<span class="c">Add text</span><span class="p">      </span><span class="c">${error}</span><span class="p">   </span><span class="c">size=Small</span>
+<span class="c">Run dialog</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.add_text_input">
+<span class="sig-name descname"><span class="pre">add_text_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">placeholder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text_input" title="Permalink to this definition"></a></dt>
+<dd><p>Add a text input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of result field</p></li>
+<li><p><strong>label</strong> – Label for field</p></li>
+<li><p><strong>placeholder</strong> – Placeholder text in input field</p></li>
+<li><p><strong>rows</strong> – Number of input rows</p></li>
+</ul>
+</dd>
+</dl>
+<p>Adds a text field that can be filled by the user. The entered
+content will be available in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field of the result.</p>
+<p>For customizing the look of the input, the <code class="docutils literal notranslate"><span class="pre">label</span></code> text can be given
+to add a descriptive label and the <code class="docutils literal notranslate"><span class="pre">placholder</span></code> text can be given
+to act as an example of the input value.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">rows</span></code> argument is given as a number, the input is converted
+into a larger text area input with the given amount of rows by default.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">    </span><span class="c">Send feedback</span>
+<span class="c">Add text input</span><span class="p">    </span><span class="c">email</span><span class="p">    </span><span class="c">label=E-mail address</span>
+<span class="c">Add text input</span><span class="p">    </span><span class="c">message</span>
+<span class="c">...</span><span class="p">    </span><span class="c">label=Feedback</span>
+<span class="c">...</span><span class="p">    </span><span class="c">placeholder=Enter feedback here</span>
+<span class="c">...</span><span class="p">    </span><span class="c">rows=5</span>
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Run dialog</span>
+<span class="c">Send feedback message</span><span class="p">    </span><span class="c">${result.email}</span><span class="p">  </span><span class="c">${result.message}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.clear_elements">
+<span class="sig-name descname"><span class="pre">clear_elements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.clear_elements" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all previously defined elements and start from a clean state</p>
+<p>By default this is done automatically when a dialog is created.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">     </span><span class="c">Please input user information</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${user}</span><span class="p">   </span><span class="c">IN</span><span class="p">    </span><span class="c">@{users}</span>
+<span class="p">    </span><span class="c">Run dialog</span><span class="p">    </span><span class="c">clear=False</span>
+<span class="p">    </span><span class="c">Process page</span>
+<span class="c">END</span>
+<span class="c">Clear elements</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.close_all_dialogs">
+<span class="sig-name descname"><span class="pre">close_all_dialogs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.close_all_dialogs" title="Permalink to this definition"></a></dt>
+<dd><p>Close all dialogs opened by this library.</p>
+<p>See the keyword <code class="docutils literal notranslate"><span class="pre">Close</span> <span class="pre">dialog</span></code> for further information
+about usage and implications.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${dialog1}=</span><span class="p">    </span><span class="c">Show dialog</span>
+<span class="c">A keyword which runs during the dialog</span>
+
+<span class="c">${dialog2}=</span><span class="p">    </span><span class="c">Show dialog</span>
+<span class="c">A keyword that fails during the dialog</span>
+
+<span class="c"># Close all dialogs without knowing which have been created</span>
+<span class="c">[Teardown]</span><span class="p">    </span><span class="c">Close all dialogs</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.close_dialog">
+<span class="sig-name descname"><span class="pre">close_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dialog</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dialog</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.close_dialog" title="Permalink to this definition"></a></dt>
+<dd><p>Close a dialog that has been created with the keyword
+<code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">dialog</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dialog</strong> – An instance of a Dialog</p>
+</dd>
+</dl>
+<p>Calling this keyword is not required if the user correctly
+submits a dialog or closes it manually. However, it can be used
+to forcefully hide a dialog if the result is no longer relevant.</p>
+<p>If a forcefully closed dialog is waited, it will throw
+an exception to indicate that it was closed before receiving
+a valid result.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Display notification dialog while operation runs</span>
+<span class="c">${dialog}=</span><span class="p">    </span><span class="c">Show dialog</span><span class="p">    </span><span class="c">title=Please wait</span>
+<span class="c">Run process that takes a while</span>
+<span class="c">Close dialog</span><span class="p">    </span><span class="c">${dialog}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.run_dialog">
+<span class="sig-name descname"><span class="pre">run_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">180</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.run_dialog" title="Permalink to this definition"></a></dt>
+<dd><p>Create a dialog from all the defined elements and block
+until the user has handled it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeout</strong> – Time to wait for dialog to complete, in seconds</p></li>
+<li><p><strong>options</strong> – Options for the dialog</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns a result object with all input values.
+This keyword is a shorthand for the following expression:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Run dialog</span>
+<span class="p">    </span><span class="c">[Arguments]</span><span class="p">  </span><span class="c">${timeout}=180</span><span class="p">  </span><span class="c">&amp;{options}</span>
+<span class="p">    </span><span class="c">${dialog}=</span><span class="p">   </span><span class="c">Show dialog</span><span class="p">     </span><span class="c">&amp;{options}</span>
+<span class="p">    </span><span class="c">${result}=</span><span class="p">   </span><span class="c">Wait dialog</span><span class="p">     </span><span class="c">${dialog}</span><span class="p">  </span><span class="c">timeout=${timeout}</span>
+<span class="p">    </span><span class="c">[Return]</span><span class="p">     </span><span class="c">${result}</span>
+</pre></div>
+</div>
+<p>For more information about possible options for opening the dialog,
+see the documentation for the keyword <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">dialog</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add heading</span><span class="p">     </span><span class="c">Please enter your username</span>
+<span class="c">Add text input</span><span class="p">  </span><span class="c">name=username</span>
+<span class="c">${result}=</span><span class="p">      </span><span class="c">Run dialog</span>
+<span class="c">Log</span><span class="p">    </span><span class="c">The username is: ${result.username}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.show_dialog">
+<span class="sig-name descname"><span class="pre">show_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Dialog'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'AUTO'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">480</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dialog</span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.show_dialog" title="Permalink to this definition"></a></dt>
+<dd><p>Create a new dialog with all the defined elements, and show
+it to the user. Does not block, but instead immediately returns
+a new <code class="docutils literal notranslate"><span class="pre">Dialog</span></code> instance.</p>
+<p>The return value can later be used to wait for
+the user to close the dialog and inspect the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> – Title of dialog</p></li>
+<li><p><strong>height</strong> – Height of dialog (in pixels or ‘AUTO’)</p></li>
+<li><p><strong>width</strong> – Width of dialog (in pixels)</p></li>
+<li><p><strong>on_top</strong> – Show dialog always on top of other windows</p></li>
+<li><p><strong>clear</strong> – Remove all defined elements</p></li>
+<li><p><strong>debug</strong> – Allow opening developer tools in Dialog window</p></li>
+</ul>
+</dd>
+</dl>
+<p>By default the window has the title <code class="docutils literal notranslate"><span class="pre">Dialog</span></code>, but it can be changed
+with the argument <code class="docutils literal notranslate"><span class="pre">title</span></code> to any string.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">height</span></code> argument accepts a static number in pixels, but
+defaults to the string value <code class="docutils literal notranslate"><span class="pre">AUTO</span></code>. In this mode the Dialog window
+tries to automatically resize itself to fit the defined content.</p>
+<p>In comparison, the <code class="docutils literal notranslate"><span class="pre">width</span></code> argument only accepts pixel values, as all
+element types by default resize to fit the given window width.</p>
+<p>With the <code class="docutils literal notranslate"><span class="pre">clear</span></code> argument it’s possible to control if defined elements
+should be cleared after the dialog has been created. It can be set
+to <code class="docutils literal notranslate"><span class="pre">False</span></code> if the same content should be shown multiple times.</p>
+<p>In certain applications it’s useful to have the dialog always be
+on top of already opened applications. This can be set with the
+argument <code class="docutils literal notranslate"><span class="pre">on_top</span></code>, which is disabled by default.</p>
+<p>For development purposes the <code class="docutils literal notranslate"><span class="pre">debug</span></code> agument can be enabled to
+allow opening browser developer tools.</p>
+<p>If the dialog is still open when the execution ends, it’s closed
+automatically.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add text input</span><span class="p">    </span><span class="c">name=username</span><span class="p">    </span><span class="c">label=Username</span>
+<span class="c">Add text input</span><span class="p">    </span><span class="c">name=address</span><span class="p">     </span><span class="c">label=Address</span>
+<span class="c">${dialog}=</span><span class="p">    </span><span class="c">Show dialog</span><span class="p">    </span><span class="c">title=Input form</span>
+<span class="c">Open browser to form page</span>
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Wait dialog</span><span class="p">    </span><span class="c">${dialog}</span>
+<span class="c">Insert user information</span><span class="p">      </span><span class="c">${result.username}</span><span class="p">  </span><span class="c">${result.address}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.wait_all_dialogs">
+<span class="sig-name descname"><span class="pre">wait_all_dialogs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.wait_all_dialogs" title="Permalink to this definition"></a></dt>
+<dd><p>Wait for all opened dialogs to be handled by the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>timeout</strong> – Time to wait for dialogs to complete, in seconds</p>
+</dd>
+</dl>
+<p>Returns a list of results from all dialogs that have not been handled
+before calling this keyword, in the order the dialogs
+were originally created.</p>
+<p>If any dialog fails, this keyword throws the corresponding exception
+immediately and doesn’t keep waiting for further results.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Create multiple dialogs</span>
+<span class="c">Show dialog</span><span class="p">    </span><span class="c">title=One</span>
+<span class="c">Show dialog</span><span class="p">    </span><span class="c">title=Two</span>
+<span class="c">Show dialog</span><span class="p">    </span><span class="c">title=Three</span>
+
+<span class="c"># Wait for all of them to complete</span>
+<span class="c">@{results}=</span><span class="p">    </span><span class="c">Wait all dialogs</span>
+
+<span class="c"># Loop through results</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${result}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{results}</span>
+<span class="p">    </span><span class="c">Log many</span><span class="p">    </span><span class="c">&amp;{result}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.wait_dialog">
+<span class="sig-name descname"><span class="pre">wait_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dialog</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dialog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.wait_dialog" title="Permalink to this definition"></a></dt>
+<dd><p>Wait for a dialog to complete that has been created with the
+keyword <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">dialog</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dialog</strong> – An instance of a Dialog</p></li>
+<li><p><strong>timeout</strong> – Time to wait for dialog to complete, in seconds</p></li>
+</ul>
+</dd>
+</dl>
+<p>Blocks until a user has closed the dialog or until <code class="docutils literal notranslate"><span class="pre">timeout</span></code>
+amount of seconds has been reached.</p>
+<p>If the user submitted the dialog, returns a result object.
+If the user closed the dialog window or <code class="docutils literal notranslate"><span class="pre">timeout</span></code> was reached,
+raises an exception.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add text input</span><span class="p">    </span><span class="c">name=username</span><span class="p">    </span><span class="c">label=Username</span>
+<span class="c">Add text input</span><span class="p">    </span><span class="c">name=address</span><span class="p">     </span><span class="c">label=Address</span>
+<span class="c">${dialog}=</span><span class="p">    </span><span class="c">Show dialog</span><span class="p">    </span><span class="c">title=Input form</span>
+<span class="c">Open browser to form page</span>
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Wait dialog</span><span class="p">    </span><span class="c">${dialog}</span>
+<span class="c">Insert user information</span><span class="p">      </span><span class="c">${result.username}</span><span class="p">  </span><span class="c">${result.address}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Dialogs.Dialogs.wait_dialogs_as_completed">
+<span class="sig-name descname"><span class="pre">wait_dialogs_as_completed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">dialogs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dialog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Dialog</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Dialogs.Dialogs.wait_dialogs_as_completed" title="Permalink to this definition"></a></dt>
+<dd><p>Create a generator that yields dialogs as they complete.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dialogs</strong> – Dialogs to wait</p></li>
+<li><p><strong>timeout</strong> – Time in seconds to wait for all dialogs</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 

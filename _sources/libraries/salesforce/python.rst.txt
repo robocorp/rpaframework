@@ -6,8 +6,7 @@ Python API
 Salesforce
 **********
 
-.. automodule:: RPA.Salesforce
+.. autoclass:: RPA.Salesforce.Salesforce
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

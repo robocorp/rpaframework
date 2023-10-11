@@ -155,13 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.Salesforce">
-<span id="salesforce"></span><h2>Salesforce<a class="headerlink" href="#module-RPA.Salesforce" title="Permalink to this heading"></a></h2>
+<div class="section" id="salesforce">
+<h2>Salesforce<a class="headerlink" href="#salesforce" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Salesforce.Salesforce">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Salesforce.</span></span><span class="sig-name descname"><span class="pre">Salesforce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sandbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'login'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><cite>Salesforce</cite> is a library for accessing Salesforce using REST API.
+<dd><p><cite>Salesforce</cite> is a library for accessing Salesforce using REST API.
 The library extends <a class="reference external" href="https://github.com/simple-salesforce/simple-salesforce">simple-salesforce library</a>.</p>
 <p>More information available at <a class="reference external" href="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_what_is_rest_api.htm">Salesforce REST API Developer Guide</a>.</p>
 <p><strong>Dataloader</strong></p>
@@ -435,7 +434,7 @@ defaults to “Closed Won”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#RPA.Salesforce.SalesforceDataNotAnDictionary" title="RPA.Salesforce.SalesforceDataNotAnDictionary"><strong>SalesforceDataNotAnDictionary</strong></a> – when <cite>object_data</cite> is not dictionary</p>
+<dd class="field-even"><p><strong>SalesforceDataNotAnDictionary</strong> – when <cite>object_data</cite> is not dictionary</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>resulting object as dictionary</p>
@@ -552,13 +551,13 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Salesforce.Salesforce.get_dataloader_error_table">
-<span class="sig-name descname"><span class="pre">get_dataloader_error_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a></span></span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_error_table" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_dataloader_error_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Table</span></span></span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_error_table" title="Permalink to this definition"></a></dt>
 <dd><p>Return Dataloader error entries as <cite>RPA.Table</cite></p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Salesforce.Salesforce.get_dataloader_success_table">
-<span class="sig-name descname"><span class="pre">get_dataloader_success_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a></span></span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_success_table" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_dataloader_success_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Table</span></span></span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_success_table" title="Permalink to this definition"></a></dt>
 <dd><p>Return Dataloader success entries as <cite>RPA.Table</cite></p>
 </dd></dl>
 
@@ -679,7 +678,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Salesforce.Salesforce.salesforce_query">
-<span class="sig-name descname"><span class="pre">salesforce_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">salesforce_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Table</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition"></a></dt>
 <dd><p>Perform SQL query and return result as <cite>dict</cite> or <cite>Table</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -697,7 +696,7 @@ type. (dictionary is returned by default)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Salesforce.Salesforce.salesforce_query_result_as_table">
-<span class="sig-name descname"><span class="pre">salesforce_query_result_as_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a></span></span><a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query_result_as_table" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">salesforce_query_result_as_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Table</span></span></span><a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query_result_as_table" title="Permalink to this definition"></a></dt>
 <dd><p>Shorthand for <code class="docutils literal notranslate"><span class="pre">Salesforce</span> <span class="pre">Query</span>&#160;&#160;&#160; <span class="pre">${sql_string}</span>&#160;&#160;&#160; <span class="pre">as_table=${True}</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -777,7 +776,7 @@ if no argument provided defaults to “login”</p>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#RPA.Salesforce.SalesforceDataNotAnDictionary" title="RPA.Salesforce.SalesforceDataNotAnDictionary"><strong>SalesforceDataNotAnDictionary</strong></a> – when <cite>object_data</cite> is not dictionary</p>
+<dd class="field-even"><p><strong>SalesforceDataNotAnDictionary</strong> – when <cite>object_data</cite> is not dictionary</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>True if successful</p>
@@ -798,69 +797,12 @@ if no argument provided defaults to “login”</p>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#RPA.Salesforce.SalesforceDataNotAnDictionary" title="RPA.Salesforce.SalesforceDataNotAnDictionary"><strong>SalesforceDataNotAnDictionary</strong></a> – when <cite>object_data</cite> is not dictionary</p>
+<dd class="field-even"><p><strong>SalesforceDataNotAnDictionary</strong> – when <cite>object_data</cite> is not dictionary</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>True if successful</p>
 </dd>
 </dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceAuthenticationError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Salesforce.</span></span><span class="sig-name descname"><span class="pre">SalesforceAuthenticationError</span></span><a class="headerlink" href="#RPA.Salesforce.SalesforceAuthenticationError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when authenticated Salesforce instance does not exist.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceAuthenticationError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Salesforce.SalesforceAuthenticationError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceAuthenticationError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.SalesforceAuthenticationError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceDataNotAnDictionary">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Salesforce.</span></span><span class="sig-name descname"><span class="pre">SalesforceDataNotAnDictionary</span></span><a class="headerlink" href="#RPA.Salesforce.SalesforceDataNotAnDictionary" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when parameter is not dictionary as expected.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceDataNotAnDictionary.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Salesforce.SalesforceDataNotAnDictionary.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceDataNotAnDictionary.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.SalesforceDataNotAnDictionary.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceDomainChangeError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Salesforce.</span></span><span class="sig-name descname"><span class="pre">SalesforceDomainChangeError</span></span><a class="headerlink" href="#RPA.Salesforce.SalesforceDomainChangeError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error when changing domains while a session is active.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceDomainChangeError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Salesforce.SalesforceDomainChangeError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Salesforce.SalesforceDomainChangeError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.SalesforceDomainChangeError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 </dd></dl>

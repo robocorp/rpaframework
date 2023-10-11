@@ -155,37 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.MFA">
-<span id="mfa"></span><h2>MFA<a class="headerlink" href="#module-RPA.MFA" title="Permalink to this heading"></a></h2>
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.MFA.HOTPNotSetError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.MFA.</span></span><span class="sig-name descname"><span class="pre">HOTPNotSetError</span></span><a class="headerlink" href="#RPA.MFA.HOTPNotSetError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised when HOTP (HMAC One-Time Password) has not been set.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.MFA.HOTPNotSetError.ERROR_MSG">
-<span class="sig-name descname"><span class="pre">ERROR_MSG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'HOTP</span> <span class="pre">(HMAC</span> <span class="pre">One-Time</span> <span class="pre">Password)</span> <span class="pre">can</span> <span class="pre">be</span> <span class="pre">set</span> <span class="pre">during</span> <span class="pre">the</span> <span class="pre">library</span> <span class="pre">initialization.</span> <span class="pre">With</span> <span class="pre">`Use</span> <span class="pre">MFA</span> <span class="pre">Secret</span> <span class="pre">From</span> <span class="pre">Vault`</span> <span class="pre">keyword</span> <span class="pre">or</span> <span class="pre">with</span> <span class="pre">`Set</span> <span class="pre">Counter</span> <span class="pre">Based</span> <span class="pre">OTP`</span> <span class="pre">keyword.'</span></em><a class="headerlink" href="#RPA.MFA.HOTPNotSetError.ERROR_MSG" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.MFA.HOTPNotSetError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.MFA.HOTPNotSetError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.MFA.HOTPNotSetError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.HOTPNotSetError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="mfa">
+<h2>MFA<a class="headerlink" href="#mfa" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.MFA.MFA">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.MFA.</span></span><span class="sig-name descname"><span class="pre">MFA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#RPA.MFA.OTPMode" title="RPA.MFA.OTPMode"><span class="pre">OTPMode</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">OTPMode.TIME</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><strong>RPA.MFA</strong> is a library intended mainly for generating one-time passwords (OTP)
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.MFA.</span></span><span class="sig-name descname"><span class="pre">MFA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">OTPMode</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">OTPMode.TIME</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA" title="Permalink to this definition"></a></dt>
+<dd><p><strong>RPA.MFA</strong> is a library intended mainly for generating one-time passwords (OTP)
 and not only, as OAuth2 support was introduced lately.</p>
 <p>Library requires at the minimum <cite>rpaframework</cite> version <strong>19.4.0</strong>.</p>
 <p>Based on the <a class="reference external" href="https://pypi.org/project/pyotp/">pyotp</a> and
@@ -429,7 +404,7 @@ metadata. (the refresh token inside isn’t guaranteed to remain constant)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.use_mfa_secret_from_vault">
-<span class="sig-name descname"><span class="pre">use_mfa_secret_from_vault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.MFA.OTPMode" title="RPA.MFA.OTPMode"><span class="pre">OTPMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">OTPMode.TIME</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.use_mfa_secret_from_vault" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">use_mfa_secret_from_vault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OTPMode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">OTPMode.TIME</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.use_mfa_secret_from_vault" title="Permalink to this definition"></a></dt>
 <dd><p>Set <cite>time</cite> or <cite>counter</cite> based OTP with passcode stored in
 the Robocorp Vault named with <cite>vault_name</cite> under key of <cite>vault_key</cite>.</p>
 <dl class="field-list simple">
@@ -440,71 +415,6 @@ the Robocorp Vault named with <cite>vault_name</cite> under key of <cite>vault_k
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.MFA.OAuth2NotSetError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.MFA.</span></span><span class="sig-name descname"><span class="pre">OAuth2NotSetError</span></span><a class="headerlink" href="#RPA.MFA.OAuth2NotSetError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised when OAuth2 session object isn’t initialized but used.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.MFA.OAuth2NotSetError.ERROR_MSG">
-<span class="sig-name descname"><span class="pre">ERROR_MSG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'OAuth2</span> <span class="pre">session</span> <span class="pre">required</span> <span class="pre">but</span> <span class="pre">not</span> <span class="pre">initialized,</span> <span class="pre">please</span> <span class="pre">call</span> <span class="pre">the</span> <span class="pre">`Generate</span> <span class="pre">OAuth</span> <span class="pre">URL`</span> <span class="pre">keyword</span> <span class="pre">first.'</span></em><a class="headerlink" href="#RPA.MFA.OAuth2NotSetError.ERROR_MSG" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.MFA.OAuth2NotSetError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.MFA.OAuth2NotSetError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.MFA.OAuth2NotSetError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.OAuth2NotSetError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.MFA.OTPMode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.MFA.</span></span><span class="sig-name descname"><span class="pre">OTPMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.OTPMode" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Enumeration for type of OTP to use.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.MFA.OTPMode.COUNTER">
-<span class="sig-name descname"><span class="pre">COUNTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'COUNTER'</span></em><a class="headerlink" href="#RPA.MFA.OTPMode.COUNTER" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.MFA.OTPMode.TIME">
-<span class="sig-name descname"><span class="pre">TIME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TIME'</span></em><a class="headerlink" href="#RPA.MFA.OTPMode.TIME" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.MFA.TOTPNotSetError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.MFA.</span></span><span class="sig-name descname"><span class="pre">TOTPNotSetError</span></span><a class="headerlink" href="#RPA.MFA.TOTPNotSetError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised when TOTP (Time-based One-Time Password) has not been set.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.MFA.TOTPNotSetError.ERROR_MSG">
-<span class="sig-name descname"><span class="pre">ERROR_MSG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TOTP</span> <span class="pre">(Time-based</span> <span class="pre">One-Time</span> <span class="pre">Password)</span> <span class="pre">can</span> <span class="pre">be</span> <span class="pre">set</span> <span class="pre">during</span> <span class="pre">the</span> <span class="pre">library</span> <span class="pre">initialization.</span> <span class="pre">With</span> <span class="pre">`Use</span> <span class="pre">MFA</span> <span class="pre">Secret</span> <span class="pre">From</span> <span class="pre">Vault`</span> <span class="pre">keyword</span> <span class="pre">or</span> <span class="pre">with</span> <span class="pre">`Set</span> <span class="pre">Time</span> <span class="pre">Based</span> <span class="pre">OTP`</span> <span class="pre">keyword.'</span></em><a class="headerlink" href="#RPA.MFA.TOTPNotSetError.ERROR_MSG" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.MFA.TOTPNotSetError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.MFA.TOTPNotSetError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.MFA.TOTPNotSetError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.TOTPNotSetError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 </dd></dl>

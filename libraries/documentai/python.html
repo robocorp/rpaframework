@@ -155,19 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.DocumentAI.DocumentAI">
-<span id="documentai"></span><h2>DocumentAI<a class="headerlink" href="#module-RPA.DocumentAI.DocumentAI" title="Permalink to this heading"></a></h2>
-<p>Generic Intelligent Document Processing generic keywords capable of working with
-various engines.</p>
-<p>Currently, supporting the following:
-- Google Document AI (<cite>rpaframework-google</cite>)
-- Base64
-- Nanonets</p>
+<div class="section" id="documentai">
+<h2>DocumentAI<a class="headerlink" href="#documentai" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.DocumentAI.DocumentAI.DocumentAI">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.DocumentAI.DocumentAI.</span></span><span class="sig-name descname"><span class="pre">DocumentAI</span></span><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Wrapper library offering generic keywords for initializing, scanning and
+<dd><p>Wrapper library offering generic keywords for initializing, scanning and
 retrieving results as fields from documents (PDF, PNG etc.).</p>
 <p>Library requires at the minimum <cite>rpaframework</cite> version <strong>19.0.0</strong>.</p>
 <p>This is a helper facade for the following libraries:</p>
@@ -275,7 +268,7 @@ by default)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.DocumentAI.DocumentAI.DocumentAI.init_engine">
-<span class="sig-name descname"><span class="pre">init_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#RPA.DocumentAI.DocumentAI.EngineName" title="RPA.DocumentAI.DocumentAI.EngineName"><span class="pre">EngineName</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.init_engine" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">EngineName</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.init_engine" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize the engine you want to scan documents with.</p>
 <p>This is required before being able to run <code class="docutils literal notranslate"><span class="pre">Predict</span></code>. Once initialized, you
 don’t need to run this again, simply use <code class="docutils literal notranslate"><span class="pre">Switch</span> <span class="pre">Engine</span></code> to jump between
@@ -363,7 +356,7 @@ not specified)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.DocumentAI.DocumentAI.DocumentAI.switch_engine">
-<span class="sig-name descname"><span class="pre">switch_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#RPA.DocumentAI.DocumentAI.EngineName" title="RPA.DocumentAI.DocumentAI.EngineName"><span class="pre">EngineName</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.switch_engine" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">switch_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">EngineName</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.DocumentAI.switch_engine" title="Permalink to this definition"></a></dt>
 <dd><p>Switch between already initialized engines.</p>
 <p>Use this to jump between engines when scanning with multiple of them.</p>
 <dl class="field-list simple">
@@ -390,28 +383,6 @@ not specified)</p></li>
 </pre></div>
 </div>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.DocumentAI.DocumentAI.EngineName">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.DocumentAI.DocumentAI.</span></span><span class="sig-name descname"><span class="pre">EngineName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.EngineName" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Supported engines to process documents with.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.DocumentAI.DocumentAI.EngineName.BASE64">
-<span class="sig-name descname"><span class="pre">BASE64</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'base64ai'</span></em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.EngineName.BASE64" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.DocumentAI.DocumentAI.EngineName.GOOGLE">
-<span class="sig-name descname"><span class="pre">GOOGLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'google'</span></em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.EngineName.GOOGLE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.DocumentAI.DocumentAI.EngineName.NANONETS">
-<span class="sig-name descname"><span class="pre">NANONETS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'nanonets'</span></em><a class="headerlink" href="#RPA.DocumentAI.DocumentAI.EngineName.NANONETS" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 

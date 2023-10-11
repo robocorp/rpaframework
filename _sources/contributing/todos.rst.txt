@@ -128,8 +128,8 @@ RPA.MSGraph:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "124", "Implement a `TokenBackend` that uses Robocorp vault,"
-   "299", "Does this fail when we define a path we want?"
+   "122", "Implement a `TokenBackend` that uses Robocorp vault,"
+   "297", "Does this fail when we define a path we want?"
 
 RPA.Robocorp.Process:
 =====================

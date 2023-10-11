@@ -6,8 +6,7 @@ Python API
 JSON
 ****
 
-.. automodule:: RPA.JSON
+.. autoclass:: RPA.JSON.JSON
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

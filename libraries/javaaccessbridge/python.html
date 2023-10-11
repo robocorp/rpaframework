@@ -155,51 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.JavaAccessBridge">
-<span id="javaaccessbridge"></span><h2>JavaAccessBridge<a class="headerlink" href="#module-RPA.JavaAccessBridge" title="Permalink to this heading"></a></h2>
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.ElementNotFound">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.JavaAccessBridge.</span></span><span class="sig-name descname"><span class="pre">ElementNotFound</span></span><a class="headerlink" href="#RPA.JavaAccessBridge.ElementNotFound" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
-<p>No matching elements were found.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.ElementNotFound.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.JavaAccessBridge.ElementNotFound.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.ElementNotFound.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.ElementNotFound.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.InvalidLocatorError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.JavaAccessBridge.</span></span><span class="sig-name descname"><span class="pre">InvalidLocatorError</span></span><a class="headerlink" href="#RPA.JavaAccessBridge.InvalidLocatorError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AttributeError</span></code></p>
-<p>Invalid locator string.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.InvalidLocatorError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.JavaAccessBridge.InvalidLocatorError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.InvalidLocatorError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.InvalidLocatorError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="javaaccessbridge">
+<h2>JavaAccessBridge<a class="headerlink" href="#javaaccessbridge" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.JavaAccessBridge.</span></span><span class="sig-name descname"><span class="pre">JavaAccessBridge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore_callbacks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_bridge_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Java application UI automation library using <a class="reference external" href="https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html">Java Access Bridge technology</a>.</p>
+<dd><p>Java application UI automation library using <a class="reference external" href="https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html">Java Access Bridge technology</a>.</p>
 <p>The library utilizes <a class="reference external" href="https://github.com/robocorp/java-access-bridge-wrapper">java-access-bridge-wrapper</a> package to interact with
 Java UI. Currently only the 64-bit Windows OS is supported.</p>
 <p><strong>Inspecting elements</strong></p>
@@ -428,7 +389,7 @@ click options</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.click_element">
-<span class="sig-name descname"><span class="pre">click_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">click_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'click'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_element" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">click_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">click_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'click'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_element" title="Permalink to this definition"></a></dt>
 <dd><p>Click element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -464,7 +425,7 @@ via <code class="docutils literal notranslate"><span class="pre">`Select</span> 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions">
-<span class="sig-name descname"><span class="pre">get_element_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_element_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions" title="Permalink to this definition"></a></dt>
 <dd><p>Get list of possible element actions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -475,7 +436,7 @@ via <code class="docutils literal notranslate"><span class="pre">`Select</span> 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.get_element_text">
-<span class="sig-name descname"><span class="pre">get_element_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_text" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_element_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_text" title="Permalink to this definition"></a></dt>
 <dd><p>Get element text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -563,7 +524,7 @@ False will be using startsWith matching on non-integer properties</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.highlight_element">
-<span class="sig-name descname"><span class="pre">highlight_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.highlight_element" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">highlight_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.highlight_element" title="Permalink to this definition"></a></dt>
 <dd><p>Highlight an element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -663,7 +624,7 @@ into a file.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.read_table">
-<span class="sig-name descname"><span class="pre">read_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.read_table" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">read_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.read_table" title="Permalink to this definition"></a></dt>
 <dd><p>Return Java table as list of lists (rows containing columns).</p>
 <p>Each cell element is represented by <code class="docutils literal notranslate"><span class="pre">JavaElement</span></code> class.</p>
 <dl class="field-list simple">
@@ -782,7 +743,7 @@ Java window title.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down">
-<span class="sig-name descname"><span class="pre">toggle_drop_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">toggle_drop_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down" title="Permalink to this definition"></a></dt>
 <dd><p>Toggle dropdown action on element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -796,7 +757,7 @@ Java window title.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.type_text">
-<span class="sig-name descname"><span class="pre">type_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.type_text" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">type_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.type_text" title="Permalink to this definition"></a></dt>
 <dd><p>Type text into coordinates defined by locator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -833,7 +794,7 @@ given timeout or raises <code class="docutils literal notranslate"><span class="
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused">
-<span class="sig-name descname"><span class="pre">wait_until_element_is_focused</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">wait_until_element_is_focused</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused" title="Permalink to this definition"></a></dt>
 <dd><p>Wait until element is focused</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -848,7 +809,7 @@ given timeout or raises <code class="docutils literal notranslate"><span class="
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains">
-<span class="sig-name descname"><span class="pre">wait_until_element_text_contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">wait_until_element_text_contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains" title="Permalink to this definition"></a></dt>
 <dd><p>Wait until element text contains expected text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -864,7 +825,7 @@ given timeout or raises <code class="docutils literal notranslate"><span class="
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals">
-<span class="sig-name descname"><span class="pre">wait_until_element_text_equals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.JavaAccessBridge.JavaElement" title="RPA.JavaAccessBridge.JavaElement"><span class="pre">JavaElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">wait_until_element_text_equals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ContextNode</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JavaElement</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals" title="Permalink to this definition"></a></dt>
 <dd><p>Wait until element text equals expected text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -879,167 +840,6 @@ given timeout or raises <code class="docutils literal notranslate"><span class="
 </dd></dl>
 
 </dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.JavaAccessBridge.</span></span><span class="sig-name descname"><span class="pre">JavaElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Abstraction for Java object properties</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.ancestry">
-<span class="sig-name descname"><span class="pre">ancestry</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.ancestry" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.checked">
-<span class="sig-name descname"><span class="pre">checked</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.checked" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.click">
-<span class="sig-name descname"><span class="pre">click</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">click_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'click'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.click" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.col">
-<span class="sig-name descname"><span class="pre">col</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.col" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.column_count">
-<span class="sig-name descname"><span class="pre">column_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.column_count" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.description">
-<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.description" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.enabled">
-<span class="sig-name descname"><span class="pre">enabled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.enabled" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.focusable">
-<span class="sig-name descname"><span class="pre">focusable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.focusable" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.height">
-<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.height" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.index_in_parent">
-<span class="sig-name descname"><span class="pre">index_in_parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.index_in_parent" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.name" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.node">
-<span class="sig-name descname"><span class="pre">node</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ContextNode</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.node" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.role">
-<span class="sig-name descname"><span class="pre">role</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.role" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.row">
-<span class="sig-name descname"><span class="pre">row</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.row" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.selected">
-<span class="sig-name descname"><span class="pre">selected</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.selected" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.showing">
-<span class="sig-name descname"><span class="pre">showing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.showing" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.states">
-<span class="sig-name descname"><span class="pre">states</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.states" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.states_string">
-<span class="sig-name descname"><span class="pre">states_string</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.states_string" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.text">
-<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.text" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.type_text">
-<span class="sig-name descname"><span class="pre">type_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.type_text" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.visible">
-<span class="sig-name descname"><span class="pre">visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.visible" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.visible_children">
-<span class="sig-name descname"><span class="pre">visible_children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.visible_children" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.visible_children_count">
-<span class="sig-name descname"><span class="pre">visible_children_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.visible_children_count" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.width">
-<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.width" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.x">
-<span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.x" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaElement.y">
-<span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.y" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaWindowNotFound">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.JavaAccessBridge.</span></span><span class="sig-name descname"><span class="pre">JavaWindowNotFound</span></span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaWindowNotFound" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
-<p>No active Java window were found.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaWindowNotFound.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaWindowNotFound.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.JavaWindowNotFound.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaWindowNotFound.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="RPA.JavaAccessBridge.get_scaled_coordinate">
-<span class="sig-prename descclassname"><span class="pre">RPA.JavaAccessBridge.</span></span><span class="sig-name descname"><span class="pre">get_scaled_coordinate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.get_scaled_coordinate" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </div>
 </div>

@@ -155,102 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.FileSystem">
-<span id="filesystem"></span><h2>FileSystem<a class="headerlink" href="#module-RPA.FileSystem" title="Permalink to this heading"></a></h2>
-<p>Files and filesystems library for Robot Framework</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.FileSystem.Directory">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.FileSystem.</span></span><span class="sig-name descname"><span class="pre">Directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
-<p>Robot Framework -friendly container for directories.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.FileSystem.Directory.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory.count" title="Permalink to this definition"></a></dt>
-<dd><p>Return number of occurrences of value.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.FileSystem.Directory.from_path">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory.from_path" title="Permalink to this definition"></a></dt>
-<dd><p>Create a directory object from pathlib.Path or a path string.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.FileSystem.Directory.index">
-<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory.index" title="Permalink to this definition"></a></dt>
-<dd><p>Return first index of value.</p>
-<p>Raises ValueError if the value is not present.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.FileSystem.Directory.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.FileSystem.Directory.name" title="Permalink to this definition"></a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.FileSystem.Directory.path">
-<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.FileSystem.Directory.path" title="Permalink to this definition"></a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.FileSystem.File">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.FileSystem.</span></span><span class="sig-name descname"><span class="pre">File</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mtime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
-<p>Robot Framework -friendly container for files.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.FileSystem.File.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File.count" title="Permalink to this definition"></a></dt>
-<dd><p>Return number of occurrences of value.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.FileSystem.File.from_path">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File.from_path" title="Permalink to this definition"></a></dt>
-<dd><p>Create a File object from pathlib.Path or a path string.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.FileSystem.File.index">
-<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File.index" title="Permalink to this definition"></a></dt>
-<dd><p>Return first index of value.</p>
-<p>Raises ValueError if the value is not present.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.FileSystem.File.mtime">
-<span class="sig-name descname"><span class="pre">mtime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#RPA.FileSystem.File.mtime" title="Permalink to this definition"></a></dt>
-<dd><p>Alias for field number 3</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.FileSystem.File.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.FileSystem.File.name" title="Permalink to this definition"></a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.FileSystem.File.path">
-<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#RPA.FileSystem.File.path" title="Permalink to this definition"></a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.FileSystem.File.size">
-<span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#RPA.FileSystem.File.size" title="Permalink to this definition"></a></dt>
-<dd><p>Alias for field number 2</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="filesystem">
+<h2>FileSystem<a class="headerlink" href="#filesystem" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.FileSystem.FileSystem">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.FileSystem.</span></span><span class="sig-name descname"><span class="pre">FileSystem</span></span><a class="headerlink" href="#RPA.FileSystem.FileSystem" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>The <cite>FileSystem</cite> library can be used to interact with files and directories
+<dd><p>The <cite>FileSystem</cite> library can be used to interact with files and directories
 on the local computer. It can inspect and list files, remove and create them,
 read contents from files, and write data out.</p>
 <p>It shadows the built-in <cite>OperatingSystem</cite> library but contains keywords
@@ -1163,25 +1073,6 @@ is reached.</p>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.FileSystem.TimeoutException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.FileSystem.</span></span><span class="sig-name descname"><span class="pre">TimeoutException</span></span><a class="headerlink" href="#RPA.FileSystem.TimeoutException" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Exception raised from wait-prefixed keywords</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.FileSystem.TimeoutException.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.FileSystem.TimeoutException.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.FileSystem.TimeoutException.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.TimeoutException.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 </dd></dl>

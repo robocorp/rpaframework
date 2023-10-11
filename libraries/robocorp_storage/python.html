@@ -155,266 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.Robocorp.Vault">
-<span id="secrets"></span><h2>Secrets<a class="headerlink" href="#module-RPA.Robocorp.Vault" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.BaseSecretManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.Vault.</span></span><span class="sig-name descname"><span class="pre">BaseSecretManager</span></span><a class="headerlink" href="#RPA.Robocorp.Vault.BaseSecretManager" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Abstract class for secrets management. Should be used as a
-base-class for any adapter implementation.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.BaseSecretManager.get_secret">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.BaseSecretManager.get_secret" title="Permalink to this definition"></a></dt>
-<dd><p>Return <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object with given name.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.BaseSecretManager.set_secret">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../robocorp_vault/python.html#RPA.Robocorp.Vault.Secret" title="RPA.Robocorp.Vault.Secret"><span class="pre">Secret</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.BaseSecretManager.set_secret" title="Permalink to this definition"></a></dt>
-<dd><p>Set a secret with a new value.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.FileSecrets">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.Vault.</span></span><span class="sig-name descname"><span class="pre">FileSecrets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'secrets.json'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../robocorp_vault/python.html#RPA.Robocorp.Vault.BaseSecretManager" title="RPA.Robocorp.Vault.BaseSecretManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSecretManager</span></code></a></p>
-<p>Adapter for secrets stored in a database file. Supports only
-plaintext secrets, and should be used mainly for debugging.</p>
-<p>The path to the secrets file can be set with the
-environment variable <code class="docutils literal notranslate"><span class="pre">RPA_SECRET_FILE</span></code>, or as
-an argument to the library.</p>
-<p>The format of the secrets file should be one of the following:</p>
-<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;name1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;key1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value1&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;key2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value2&quot;</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;name2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;key1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value1&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>OR</p>
-<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">name1</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">key1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value1</span>
-<span class="w">  </span><span class="nt">key2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value2</span>
-<span class="nt">name2</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">key1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value1</span>
-</pre></div>
-</div>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.FileSecrets.SERIALIZERS">
-<span class="sig-name descname"><span class="pre">SERIALIZERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'.json':</span> <span class="pre">(&lt;function</span> <span class="pre">load&gt;,</span> <span class="pre">&lt;function</span> <span class="pre">dump&gt;),</span> <span class="pre">'.yaml':</span> <span class="pre">(&lt;function</span> <span class="pre">full_load&gt;,</span> <span class="pre">&lt;function</span> <span class="pre">dump&gt;)}</span></em><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets.SERIALIZERS" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.FileSecrets.get_secret">
-<span class="sig-name descname"><span class="pre">get_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets.get_secret" title="Permalink to this definition"></a></dt>
-<dd><p>Get secret defined with given name from file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret_name</strong> – Name of secret to fetch</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Secret object</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>KeyError</strong> – No secret with given name</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.FileSecrets.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets.load" title="Permalink to this definition"></a></dt>
-<dd><p>Load secrets file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.FileSecrets.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets.save" title="Permalink to this definition"></a></dt>
-<dd><p>Save the secrets content to disk.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.FileSecrets.set_secret">
-<span class="sig-name descname"><span class="pre">set_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../robocorp_vault/python.html#RPA.Robocorp.Vault.Secret" title="RPA.Robocorp.Vault.Secret"><span class="pre">Secret</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets.set_secret" title="Permalink to this definition"></a></dt>
-<dd><p>Set the secret value in the local Vault
-with the given <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret</strong> – A <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object.</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>IOError</strong><strong>, </strong><strong>ValueError</strong> – Writing the local vault failed.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.Vault.</span></span><span class="sig-name descname"><span class="pre">RobocorpVault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../robocorp_vault/python.html#RPA.Robocorp.Vault.BaseSecretManager" title="RPA.Robocorp.Vault.BaseSecretManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSecretManager</span></code></a></p>
-<p>Adapter for secrets stored in Robocorp Vault.</p>
-<p>The following environment variables should exist:</p>
-<ul class="simple">
-<li><p>RC_API_SECRET_HOST:   URL to Robocorp Secrets API</p></li>
-<li><p>RC_API_SECRET_TOKEN:  API token with access to Robocorp Secrets API</p></li>
-<li><p>RC_WORKSPACE_ID:      Robocorp Workspace ID</p></li>
-</ul>
-<p>If the robot run is started from the Robocorp Control Room these environment
-variables will be configured automatically.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault.ENCRYPTION_SCHEME">
-<span class="sig-name descname"><span class="pre">ENCRYPTION_SCHEME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'robocloud-vault-transit-v2'</span></em><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.ENCRYPTION_SCHEME" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault.create_public_key_url">
-<span class="sig-name descname"><span class="pre">create_public_key_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.create_public_key_url" title="Permalink to this definition"></a></dt>
-<dd><p>Create a URL for encryption public key.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault.create_secret_url">
-<span class="sig-name descname"><span class="pre">create_secret_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.create_secret_url" title="Permalink to this definition"></a></dt>
-<dd><p>Create a URL for a specific secret.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault.get_publickey">
-<span class="sig-name descname"><span class="pre">get_publickey</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.get_publickey" title="Permalink to this definition"></a></dt>
-<dd><p>Get the public key for AES encryption with the existing token.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault.get_secret">
-<span class="sig-name descname"><span class="pre">get_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.get_secret" title="Permalink to this definition"></a></dt>
-<dd><p>Get secret defined with given name from Robocorp Vault.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret_name</strong> – Name of secret to fetch</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Secret object</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../robocorp_vault/python.html#RPA.Robocorp.Vault.RobocorpVaultError" title="RPA.Robocorp.Vault.RobocorpVaultError"><strong>RobocorpVaultError</strong></a> – Error with API request or response payload</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault.headers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">headers</span></span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.headers" title="Permalink to this definition"></a></dt>
-<dd><p>Default request headers.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault.params">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.params" title="Permalink to this definition"></a></dt>
-<dd><p>Default request parameters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVault.set_secret">
-<span class="sig-name descname"><span class="pre">set_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../robocorp_vault/python.html#RPA.Robocorp.Vault.Secret" title="RPA.Robocorp.Vault.Secret"><span class="pre">Secret</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVault.set_secret" title="Permalink to this definition"></a></dt>
-<dd><p>Set the secret value in the Vault. Note that the secret possibly
-consists of multiple key-value pairs, which will all be overwritten
-with the values given here. So don’t try to update only one item
-of the secret, update all of them.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret</strong> – A <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVaultError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.Vault.</span></span><span class="sig-name descname"><span class="pre">RobocorpVaultError</span></span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVaultError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
-<p>Raised when there’s problem with reading from Robocorp Vault.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVaultError.args">
-<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVaultError.args" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.RobocorpVaultError.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.RobocorpVaultError.with_traceback" title="Permalink to this definition"></a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.Secret">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.Vault.</span></span><span class="sig-name descname"><span class="pre">Secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.Secret" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></p>
-<p>Container for a secret with name, description, and
-multiple key-value pairs. Immutable and avoids logging
-internal values when possible.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – Name of secret</p></li>
-<li><p><strong>description</strong> – Human-friendly description for secret</p></li>
-<li><p><strong>values</strong> – Dictionary of key-value pairs stored in secret</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.Secret.description">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Secret.description" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.Secret.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">D[k]</span> <span class="pre">if</span> <span class="pre">k</span> <span class="pre">in</span> <span class="pre">D,</span> <span class="pre">else</span> <span class="pre">d.</span>&#160; <span class="pre">d</span> <span class="pre">defaults</span> <span class="pre">to</span> <span class="pre">None.</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Secret.get" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.Secret.items">
-<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">items</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Secret.items" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.Secret.keys">
-<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">keys</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Secret.keys" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.Secret.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Secret.name" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.Secret.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kvpairs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.Secret.update" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Robocorp.Vault.Secret.values">
-<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">an</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">values</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Secret.values" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="secrets">
+<h2>Secrets<a class="headerlink" href="#secrets" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Robocorp.Vault.Vault">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.Vault.</span></span><span class="sig-name descname"><span class="pre">Vault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.Vault" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><cite>Vault</cite> is a library for interacting with secrets stored in the <a class="reference external" href="https://robocorp.com/docs/development-guide/variables-and-secrets/vault">Robocorp
+<dd><p><cite>Vault</cite> is a library for interacting with secrets stored in the <a class="reference external" href="https://robocorp.com/docs/development-guide/variables-and-secrets/vault">Robocorp
 Control Room Vault</a> (by default) or file-based secrets, which can be taken
 into use by setting some environment variables.</p>
 <p>Robocorp Vault relies on environment variables, which are normally set
@@ -500,7 +246,7 @@ must exist are:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Robocorp.Vault.Vault.get_secret">
-<span class="sig-name descname"><span class="pre">get_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../robocorp_vault/python.html#RPA.Robocorp.Vault.Secret" title="RPA.Robocorp.Vault.Secret"><span class="pre">Secret</span></a></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Vault.get_secret" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Secret</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Vault.get_secret" title="Permalink to this definition"></a></dt>
 <dd><p>Read a secret from the configured source, e.g. Robocorp Vault,
 and return it as a <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object.</p>
 <dl class="field-list simple">
@@ -512,7 +258,7 @@ and return it as a <code class="docutils literal notranslate"><span class="pre">
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Robocorp.Vault.Vault.set_secret">
-<span class="sig-name descname"><span class="pre">set_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../robocorp_vault/python.html#RPA.Robocorp.Vault.Secret" title="RPA.Robocorp.Vault.Secret"><span class="pre">Secret</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Vault.set_secret" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Secret</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Robocorp.Vault.Vault.set_secret" title="Permalink to this definition"></a></dt>
 <dd><p>Overwrite an existing secret with new values.</p>
 <dl class="simple">
 <dt>Note: Only allows modifying existing secrets, and replaces</dt><dd><p>all values contained within it.</p>

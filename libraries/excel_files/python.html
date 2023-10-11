@@ -155,25 +155,12 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.Excel.Files">
-<span id="excel-files"></span><h2>Excel.Files<a class="headerlink" href="#module-RPA.Excel.Files" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Excel.Files.BaseWorkbook">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Excel.Files.</span></span><span class="sig-name descname"><span class="pre">BaseWorkbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.BaseWorkbook" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Common logic for both .xls and .xlsx files management.</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.BaseWorkbook.book">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">book</span></span><a class="headerlink" href="#RPA.Excel.Files.BaseWorkbook.book" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="excel-files">
+<h2>Excel.Files<a class="headerlink" href="#excel-files" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Excel.Files.Files">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Excel.Files.</span></span><span class="sig-name descname"><span class="pre">Files</span></span><a class="headerlink" href="#RPA.Excel.Files.Files" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>The <cite>Excel.Files</cite> library can be used to read and write Excel
+<dd><p>The <cite>Excel.Files</cite> library can be used to read and write Excel
 files without the need to start the actual Excel application.</p>
 <p>It supports both legacy <code class="docutils literal notranslate"><span class="pre">.xls</span></code> files and modern <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> files.</p>
 <p><strong>Note:</strong> To run macros or load password protected worksheets,
@@ -431,7 +418,7 @@ will auto_size</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Excel.Files.Files.create_workbook">
-<span class="sig-name descname"><span class="pre">create_workbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#RPA.Excel.Files.XlsWorkbook" title="RPA.Excel.Files.XlsWorkbook"><span class="pre">XlsWorkbook</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Excel.Files.XlsxWorkbook" title="RPA.Excel.Files.XlsxWorkbook"><span class="pre">XlsxWorkbook</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.Files.create_workbook" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">create_workbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">XlsWorkbook</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">XlsxWorkbook</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.Files.create_workbook" title="Permalink to this definition"></a></dt>
 <dd><p>Create and open a new Excel workbook.</p>
 <p>Automatically also creates a new worksheet with the name <cite>sheet_name</cite>.
 (defaults to “Sheet”)</p>
@@ -915,7 +902,7 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Excel.Files.Files.open_workbook">
-<span class="sig-name descname"><span class="pre">open_workbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#RPA.Excel.Files.XlsWorkbook" title="RPA.Excel.Files.XlsWorkbook"><span class="pre">XlsWorkbook</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Excel.Files.XlsxWorkbook" title="RPA.Excel.Files.XlsxWorkbook"><span class="pre">XlsxWorkbook</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">open_workbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">XlsWorkbook</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">XlsxWorkbook</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition"></a></dt>
 <dd><p>Open an existing Excel workbook.</p>
 <p>Opens the workbook in memory and sets it as the active workbook.
 <strong>This library can only have one workbook open at a time, and
@@ -1001,7 +988,7 @@ Default value is row 1.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Excel.Files.Files.read_worksheet_as_table">
-<span class="sig-name descname"><span class="pre">read_worksheet_as_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a></span></span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">read_worksheet_as_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Table</span></span></span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition"></a></dt>
 <dd><p>Read the contents of a worksheet into a Table container. Allows
 sorting/filtering/manipulating using the <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> library.</p>
 <dl class="field-list simple">
@@ -1096,7 +1083,7 @@ Defaults to the active worksheet.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Excel.Files.Files.save_workbook">
-<span class="sig-name descname"><span class="pre">save_workbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#RPA.Excel.Files.XlsWorkbook" title="RPA.Excel.Files.XlsWorkbook"><span class="pre">XlsWorkbook</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Excel.Files.XlsxWorkbook" title="RPA.Excel.Files.XlsxWorkbook"><span class="pre">XlsxWorkbook</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.Files.save_workbook" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">save_workbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">XlsWorkbook</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">XlsxWorkbook</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.Files.save_workbook" title="Permalink to this definition"></a></dt>
 <dd><p>Save the active workbook.</p>
 <p><strong>Note:</strong> No changes to the workbook are saved to the actual file unless
 this keyword is called.</p>
@@ -1295,7 +1282,7 @@ to that cell.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Excel.Files.Files.set_cell_values">
-<span class="sig-name descname"><span class="pre">set_cell_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_cell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../tables/python.html#RPA.Tables.Table" title="RPA.Tables.Table"><span class="pre">Table</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_heading</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_values" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_cell_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_cell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Table</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_heading</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_values" title="Permalink to this definition"></a></dt>
 <dd><p>Set cell values given as list of lists or as a <cite>RPA.Tables.Table</cite>.</p>
 <p><em>Note.</em> Will overwrite cells if table structure causes cells to overlap.</p>
 <dl class="field-list simple">
@@ -1482,240 +1469,6 @@ for documentation.</p>
 </div>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Excel.Files.</span></span><span class="sig-name descname"><span class="pre">XlsWorkbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#RPA.Excel.Files.BaseWorkbook" title="RPA.Excel.Files.BaseWorkbook"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseWorkbook</span></code></a></p>
-<p>Container for manipulating legacy Excel files (.xls)</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.active">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">active</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.active" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.append_worksheet">
-<span class="sig-name descname"><span class="pre">append_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatting_as_empty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.append_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.book">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">book</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.book" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.close" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sheet'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.create" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.create_worksheet">
-<span class="sig-name descname"><span class="pre">create_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.create_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.extension">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.extension" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.find_empty_row">
-<span class="sig-name descname"><span class="pre">find_empty_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.find_empty_row" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.get_cell_value">
-<span class="sig-name descname"><span class="pre">get_cell_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.get_cell_value" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.insert_image">
-<span class="sig-name descname"><span class="pre">insert_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.insert_image" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.is_sheet_empty">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_sheet_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.is_sheet_empty" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.open">
-<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.open" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.read_worksheet">
-<span class="sig-name descname"><span class="pre">read_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.read_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.remove_worksheet">
-<span class="sig-name descname"><span class="pre">remove_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.remove_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.rename_worksheet">
-<span class="sig-name descname"><span class="pre">rename_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.rename_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.save" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.set_cell_format">
-<span class="sig-name descname"><span class="pre">set_cell_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.set_cell_format" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.set_cell_value">
-<span class="sig-name descname"><span class="pre">set_cell_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.set_cell_value" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.sheetnames">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sheetnames</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.sheetnames" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsWorkbook.validate_content">
-<span class="sig-name descname"><span class="pre">validate_content</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.validate_content" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Excel.Files.</span></span><span class="sig-name descname"><span class="pre">XlsxWorkbook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#RPA.Excel.Files.BaseWorkbook" title="RPA.Excel.Files.BaseWorkbook"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseWorkbook</span></code></a></p>
-<p>Container for manipulating modern Excel files (.xlsx)</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.active">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">active</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.active" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.append_worksheet">
-<span class="sig-name descname"><span class="pre">append_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatting_as_empty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.append_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.book">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">book</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.book" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.close" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.create" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.create_worksheet">
-<span class="sig-name descname"><span class="pre">create_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.create_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.extension">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.extension" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.find_empty_row">
-<span class="sig-name descname"><span class="pre">find_empty_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.find_empty_row" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.get_cell_value">
-<span class="sig-name descname"><span class="pre">get_cell_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.get_cell_value" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.insert_image">
-<span class="sig-name descname"><span class="pre">insert_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.insert_image" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.is_sheet_empty">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_sheet_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.is_sheet_empty" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.open">
-<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.open" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.read_only">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_only</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.read_only" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.read_worksheet">
-<span class="sig-name descname"><span class="pre">read_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.read_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.remove_worksheet">
-<span class="sig-name descname"><span class="pre">remove_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.remove_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.rename_worksheet">
-<span class="sig-name descname"><span class="pre">rename_worksheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.rename_worksheet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.save" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.set_cell_format">
-<span class="sig-name descname"><span class="pre">set_cell_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.set_cell_format" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.set_cell_value">
-<span class="sig-name descname"><span class="pre">set_cell_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.set_cell_value" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.sheetnames">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sheetnames</span></span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.sheetnames" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.Excel.Files.XlsxWorkbook.validate_content">
-<span class="sig-name descname"><span class="pre">validate_content</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.validate_content" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="RPA.Excel.Files.ensure_unique">
-<span class="sig-prename descclassname"><span class="pre">RPA.Excel.Files.</span></span><span class="sig-name descname"><span class="pre">ensure_unique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Excel.Files.ensure_unique" title="Permalink to this definition"></a></dt>
-<dd><p>Ensures that each string value in the list is unique.
-Adds a suffix to each value that has duplicates,
-e.g. [Banana, Apple, Lemon, Apple] -&gt; [Banana, Apple, Lemon, Apple_2]</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="RPA.Excel.Files.get_column_index">
-<span class="sig-prename descclassname"><span class="pre">RPA.Excel.Files.</span></span><span class="sig-name descname"><span class="pre">get_column_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#RPA.Excel.Files.get_column_index" title="Permalink to this definition"></a></dt>
-<dd><p>Get column index from name, e.g. A -&gt; 1, D -&gt; 4, AC -&gt; 29.
-Reverse of <cite>get_column_letter()</cite></p>
 </dd></dl>
 
 </div>

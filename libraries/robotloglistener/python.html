@@ -155,11 +155,220 @@
              
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="module-RPA.RobotLogListener">
-<span id="robotloglistener"></span><h2>RobotLogListener<a class="headerlink" href="#module-RPA.RobotLogListener" title="Permalink to this heading"></a></h2>
-<p>Dummy module importing core library <cite>RobotLogListener</cite>,
-because imports to core package should be done only by
-the library itself.</p>
+<div class="section" id="robotloglistener">
+<h2>RobotLogListener<a class="headerlink" href="#robotloglistener" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.RobotLogListener.</span></span><span class="sig-name descname"><span class="pre">RobotLogListener</span></span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener" title="Permalink to this definition"></a></dt>
+<dd><p><cite>RobotLogListener</cite> is a library for controlling logging during
+a Robot Framework execution using the listener API.</p>
+<p><strong>About keyword parameters</strong></p>
+<p>Parameters <cite>names</cite> and <cite>keywords</cite> for keywords <cite>Mute Run On Failure</cite> and <cite>Register Protected Keywords</cite>
+do not need to be full names of keywords, ie. all keywords matching even partially will be affected.
+<cite>Run Keyword</cite> would match all <cite>BuiltIn</cite> library keywords (17 keywords in RF 3.2.1) and of course all
+<cite>Run Keyword</cite> named keywords in any resource and/or library file which are imported would be matched also.</p>
+<p><strong>Mute Run On Failure</strong></p>
+<p>This keyword is to be used specifically with <cite>RPA.Browser.Selenium</cite> library, which extends
+<cite>SeleniumLibrary</cite>.  Normally most of the <cite>SeleniumLibrary</cite> keywords execute <cite>run_on_failure</cite>
+behaviour, which can be set at library initialization. By default this behaviour is running
+<cite>Capture Page Screenshot</cite> keyword on failure.</p>
+<p>In the example task <cite>Check the official website</cite> below the keyword <cite>Run Keyword</cite> is muted and when
+it runs the keyword <cite>Element Should Be Visible</cite> then those failures do not create page screenshots
+into log file.</p>
+<p>It is also possible to change default failure behaviour by giving parameter
+<cite>optional_keyword_to_run</cite> for <cite>Mute Run On Failure</cite>, see task <cite>Check the official website with error log</cite>.
+This optional keyword would be then executed on failure. Due to the underlying <cite>SeleniumLibrary</cite>
+implementation this keyword can’t have arguments.</p>
+<p>Example of using <cite>Mute Run On Failure</cite> without and with optional keyword to run.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.Browser.Selenium</span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.RobotLogListener</span>
+<span class="kn">Task Setup</span><span class="p">      </span><span class="nf">Set Task Variable</span><span class="p">   ${</span><span class="nv">TRIES</span><span class="p">}   </span><span class="s">1</span>
+<span class="kn">Task Teardown</span><span class="p">   </span><span class="nf">Close All Browsers</span>
+
+<span class="gh">*** Tasks ***</span>
+<span class="gu">Check the official website</span>
+<span class="p">   </span><span class="nf">Mute Run On Failure</span><span class="p">   </span><span class="s">Run Keyword</span>
+<span class="p">   </span><span class="nf">Open Available Browser</span><span class="p">   </span><span class="s">https://www.robocorp.com</span>
+<span class="p">   </span><span class="nf">Check for visible element</span>
+<span class="p">   </span><span class="nf">Capture Page Screenshot</span>
+
+<span class="gu">Check the official website with error log</span>
+<span class="p">   </span><span class="nf">Mute Run On Failure</span><span class="p">   </span><span class="s">Run Keyword</span><span class="p">  </span><span class="s">optional_keyword_to_run=Log tries</span>
+<span class="p">   </span><span class="nf">Open Available Browser</span><span class="p">   </span><span class="s">https://www.robocorp.com</span>
+<span class="p">   </span><span class="nf">Check for visible element</span>
+<span class="p">   </span><span class="nf">Capture Page Screenshot</span>
+
+<span class="gh">*** Keywords ***</span>
+<span class="gu">Check for visible element</span>
+<span class="p">   FOR  ${</span><span class="nv">idx</span><span class="p">}  IN RANGE  </span><span class="s">1</span><span class="p">   </span><span class="s">20</span>
+<span class="p">      </span><span class="nf">Set Task Variable</span><span class="p">   ${</span><span class="nv">TRIES</span><span class="p">}   ${</span><span class="nv">idx</span><span class="p">}</span>
+<span class="p">      ${</span><span class="nv">status</span><span class="p">}   </span><span class="nf">Run Keyword And Return Status</span><span class="p">   </span><span class="s">Element Should Be Visible</span><span class="p">  </span><span class="s">id:xyz</span>
+<span class="p">      </span><span class="nf">Exit For Loop If</span><span class="p">   </span><span class="s">&#39;</span><span class="p">${</span><span class="nv">status</span><span class="p">}</span><span class="s">&#39; == &#39;PASS&#39;</span>
+<span class="p">      </span><span class="nf">Sleep</span><span class="p">  </span><span class="s">2s</span>
+<span class="p">   END</span>
+
+<span class="gu">Log tries</span>
+<span class="p">   </span><span class="nf">Log</span><span class="p">  </span><span class="s">Checked element visibility </span><span class="p">${</span><span class="nv">TRIES</span><span class="p">}</span><span class="s"> times</span>
+</pre></div>
+</div>
+<p><strong>Register Protected Keywords</strong></p>
+<p>This keyword is used to totally disable logging for named keywords. In the example below
+the keyword <cite>This will not output</cite> is protected and it will not be logging into Robot Framework
+log files.</p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.RobotLogListener</span>
+
+<span class="gh">*** Tasks ***</span>
+<span class="gu">Protecting keywords</span>
+<span class="p">   </span><span class="nf">This will not output</span><span class="p">        </span><span class="c"># will output because called before register</span>
+<span class="p">   </span><span class="nf">Register Protected Keywords</span><span class="p">    </span><span class="s">This will not output</span>
+<span class="p">   </span><span class="nf">This will not output</span><span class="p">        </span><span class="c"># is now registered</span>
+<span class="p">   </span><span class="nf">This will output</span>
+
+<span class="gh">*** Keywords ***</span>
+<span class="gu">This will not output</span>
+<span class="p">   </span><span class="nf">Log</span><span class="p">   </span><span class="s">1</span>
+
+<span class="gu">This will output</span>
+<span class="p">   </span><span class="nf">Log</span><span class="p">   </span><span class="s">2</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robot.libraries.BuiltIn</span> <span class="kn">import</span> <span class="n">BuiltIn</span><span class="p">,</span> <span class="n">RobotNotRunningError</span>
+<span class="kn">from</span> <span class="nn">RPA.RobotLogListener</span> <span class="kn">import</span> <span class="n">RobotLogListener</span>
+
+<span class="k">try</span><span class="p">:</span>
+   <span class="n">BuiltIn</span><span class="p">()</span><span class="o">.</span><span class="n">import_library</span><span class="p">(</span><span class="s2">&quot;RPA.RobotLogListener&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">RobotNotRunningError</span><span class="p">:</span>
+   <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">CustomLibrary</span><span class="p">:</span>
+
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="n">listener</span> <span class="o">=</span> <span class="n">RobotLogListener</span><span class="p">()</span>
+      <span class="n">listener</span><span class="o">.</span><span class="n">register_protected_keywords</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;CustomLibrary.special_keyword&quot;</span><span class="p">]</span>
+      <span class="p">)</span>
+
+   <span class="k">def</span> <span class="nf">special_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;will not be written to log&#39;</span><span class="p">)</span>
+      <span class="k">return</span> <span class="s1">&#39;not shown in the log&#39;</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.INFO_LEVEL_KEYWORDS">
+<span class="sig-name descname"><span class="pre">INFO_LEVEL_KEYWORDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.INFO_LEVEL_KEYWORDS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.KEYWORDS_TO_MUTE">
+<span class="sig-name descname"><span class="pre">KEYWORDS_TO_MUTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.KEYWORDS_TO_MUTE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.KEYWORDS_TO_PROTECT">
+<span class="sig-name descname"><span class="pre">KEYWORDS_TO_PROTECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['rpa.robocloud.secrets.',</span> <span class="pre">'rpa.robocorp.vault.',</span> <span class="pre">'rpa.mfa.get_oauth_token',</span> <span class="pre">'rpa.mfa.refresh_oauth_token']</span></em><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.KEYWORDS_TO_PROTECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.ROBOT_LIBRARY_DOC_FORMAT">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.ROBOT_LIBRARY_SCOPE">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.ROBOT_LISTENER_API_VERSION">
+<span class="sig-name descname"><span class="pre">ROBOT_LISTENER_API_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.ROBOT_LISTENER_API_VERSION" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.end_keyword">
+<span class="sig-name descname"><span class="pre">end_keyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.end_keyword" title="Permalink to this definition"></a></dt>
+<dd><p>Listener method for keyword end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – keyword name</p></li>
+<li><p><strong>attributes</strong> – keyword attributes</p></li>
+</ul>
+</dd>
+</dl>
+<p>If <cite>name</cite> exists in the protected keywords list then log level is
+restored back to level it was before settings to NONE.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.mute_run_on_failure">
+<span class="sig-name descname"><span class="pre">mute_run_on_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keywords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optional_keyword_to_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.mute_run_on_failure" title="Permalink to this definition"></a></dt>
+<dd><p>Set keywords which should not execute <cite>SeleniumLibrary</cite>
+default behaviour of running keyword on failure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keywords</strong> – list of keywords to mute</p></li>
+<li><p><strong>optional_keyword_to_run</strong> – name of the keyword to execute
+if keyword defined by <cite>keywords</cite> fail</p></li>
+</ul>
+</dd>
+</dl>
+<p>Keyword names do not need to be full names of keywords, ie. all keywords
+matching even partially will be affected. <cite>Run Keyword</cite> would match all
+<cite>BuiltIn</cite> library keywords (17 keywords in RF 3.2.1) and of course all
+<cite>Run Keyword</cite> named keywords in any resource and/or library file which
+are imported would be matched also.</p>
+<p>By default <cite>SeleniumLibrary</cite> executes <cite>Capture Page Screenshot</cite>
+on failure.</p>
+<p>If <cite>optional_keyword_to_run</cite> is not given then nothing is done
+on failure, but this can be set to override <cite>SeleniumLibrary</cite>
+default behaviour for a set of keywords.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.only_info_level">
+<span class="sig-name descname"><span class="pre">only_info_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.only_info_level" title="Permalink to this definition"></a></dt>
+<dd><p>Register keywords that are allowed only INFO level logging</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>names</strong> – list of keywords to protect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.register_protected_keywords">
+<span class="sig-name descname"><span class="pre">register_protected_keywords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.register_protected_keywords" title="Permalink to this definition"></a></dt>
+<dd><p>Register keywords that are not going to be logged into Robot Framework logs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>names</strong> – list of keywords to protect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.RobotLogListener.RobotLogListener.start_keyword">
+<span class="sig-name descname"><span class="pre">start_keyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.start_keyword" title="Permalink to this definition"></a></dt>
+<dd><p>Listener method for keyword start.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – keyword name</p></li>
+<li><p><strong>attributes</strong> – keyword attributes</p></li>
+</ul>
+</dd>
+</dl>
+<p>If <cite>name</cite> exists in the protected keywords list then log level is
+temporarily set to NONE.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
