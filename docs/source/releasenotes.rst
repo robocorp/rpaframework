@@ -16,6 +16,7 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 27.4.0 - 11 Oct 2023
 --------------------
 
@@ -34,6 +35,11 @@ Latest versions
     global refresh is enabled.
   - Bugfixes in the following keywords: ``Click Element``,
     ``Set Display Scale Factor``, ``Get Element Actions``.
+
+27.3.1 - 10 Oct 2023
+--------------------
+
+- Casual dependencies upgrades and alignment.
 
 06 Oct 2023
 -----------

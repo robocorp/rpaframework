@@ -6,8 +6,7 @@ Python API
 Excel.Files
 ***********
 
-.. automodule:: RPA.Excel.Files
+.. autoclass:: RPA.Excel.Files.Files
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

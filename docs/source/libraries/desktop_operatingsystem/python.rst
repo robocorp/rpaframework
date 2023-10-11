@@ -6,8 +6,7 @@ Python API
 OperatingSystem
 ***************
 
-.. automodule:: RPA.Desktop.OperatingSystem
+.. autoclass:: RPA.Desktop.OperatingSystem.OperatingSystem
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

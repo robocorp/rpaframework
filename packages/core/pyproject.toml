@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-core"
-version = "11.2.1"
+version = "11.2.2"
 description = "Core utilities used by RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -32,7 +32,7 @@ python = "^3.8"
 selenium = "^4.6.1"
 webdriver-manager = "4.0.0"
 psutil = { version = "^5.9.0", platform = "win32" }
-pywin32 = { version = ">=300,<304", platform = "win32", python = "!=3.8.1" }
+pywin32 = { version = ">=300,<307", platform = "win32", python = "!=3.8.1" }
 uiautomation = { version = "^2.0.15", platform = "win32" }
 pillow = "^10.0.1"
 packaging = "^23.1"
@@ -48,7 +48,7 @@ mock = "^5.0.0"
 mypy = "^1.4.1"
 toml = "^0.10.2"
 colorama = "^0.4.5"
-keyring = "^23.9.0"
+keyring = "^24.2.0"
 PyYAML = ">=5.4.1,<7.0.0"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.7"

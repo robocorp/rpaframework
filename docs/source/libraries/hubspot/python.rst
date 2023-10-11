@@ -6,8 +6,7 @@ Python API
 Hubspot
 *******
 
-.. automodule:: RPA.Hubspot
+.. autoclass:: RPA.Hubspot.Hubspot
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

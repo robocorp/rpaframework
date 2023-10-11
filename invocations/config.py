@@ -7,13 +7,13 @@ import json
 import os
 import re
 import shutil
-import toml
 from glob import glob
 from pathlib import Path
 from typing import Dict, List, Union
 
+import toml
 from colorama import Fore, Style
-from invoke import task, ParseError, Collection
+from invoke import Collection, ParseError, task
 
 from invocations import shell
 from invocations.util import (
@@ -296,7 +296,7 @@ def install(ctx, reset=False, extra=None, all_extras=False):
     if not is_poetry_configured(poetry_config_path):
         shell.invoke(ctx, "install.setup-poetry", echo=False)
     if all_extras:
-        extras_cmd = f"--all-extras"
+        extras_cmd = "--all-extras"
     elif extra:
         extras_cmd = f"--extras \"{' '.join(extra)}\""
     else:

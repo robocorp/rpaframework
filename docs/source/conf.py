@@ -22,6 +22,12 @@ author = "Ossi Rajuvaara, Mika Hänninen, Cosmin Poieana"
 
 # -- General configuration ---------------------------------------------------
 
+# Add local extensions to PYTHONPATH
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(".", "_ext").absolute()))
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
@@ -30,6 +36,7 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx_markdown_builder",
     "sphinx_issues",
+    "libdoc_markdown",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

@@ -2,14 +2,17 @@
 This module should not be added to any package invoke collections.
 """
 
-from functools import reduce
 import os
 import subprocess
-from pathlib import Path
-import toml
+from functools import reduce
 from glob import glob
+from pathlib import Path
+from typing import TypeVar
 
-from invoke import task, ParseError, Context
+import toml
+from invoke import Context, ParseError, task
+
+T = TypeVar("T")
 
 
 def _get_package_root():
@@ -67,7 +70,7 @@ def remove_blank_lines(text):
     return os.linesep.join([s for s in text.splitlines() if s])
 
 
-def safely_load_config(ctx, config_path, default=None):
+def safely_load_config(ctx: Context, config_path: str, default: T = None) -> T:
     """Tries to load a configuration item from the context provided,
     if it fails to find that configuration item, returns the default.
 
@@ -94,6 +97,7 @@ def safely_load_config(ctx, config_path, default=None):
     path_components = config_path.split(".")
     try:
         config_value = reduce(getattr, path_components, ctx)
+        assert not isinstance(config_value, Context)
         return config_value if config_value is not None else default
     except AttributeError:
         return default

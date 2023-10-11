@@ -50,8 +50,8 @@ class NaturalLanguageKeywords(LibraryContext):
         :param lang: language code of the source, defaults to None
         :return: analysis response
 
-        # For list of supported languages:
-        # https://cloud.google.com/natural-language/docs/languages
+        For list of supported languages:
+        https://cloud.google.com/natural-language/docs/languages
 
         **Examples**
 
@@ -84,8 +84,8 @@ class NaturalLanguageKeywords(LibraryContext):
         :param lang: language code of the source, defaults to None
         :return: classify response
 
-        # For list of supported languages:
-        # https://cloud.google.com/natural-language/docs/languages
+        For list of supported languages:
+        https://cloud.google.com/natural-language/docs/languages
 
         **Examples**
 

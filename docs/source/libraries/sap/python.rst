@@ -6,8 +6,7 @@ Python API
 SAP
 ***
 
-.. automodule:: RPA.SAP
+.. autoclass:: RPA.SAP.SAP
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

@@ -6,8 +6,7 @@ Python API
 Archive
 *******
 
-.. automodule:: RPA.Archive
+.. autoclass:: RPA.Archive.Archive
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

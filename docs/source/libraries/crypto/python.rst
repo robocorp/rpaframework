@@ -6,8 +6,7 @@ Python API
 Crypto
 ******
 
-.. automodule:: RPA.Crypto
+.. autoclass:: RPA.Crypto.Crypto
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

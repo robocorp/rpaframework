@@ -6,8 +6,7 @@ Python API
 Desktop
 *******
 
-.. automodule:: RPA.Desktop
+.. autoclass:: RPA.Desktop.Desktop
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:
