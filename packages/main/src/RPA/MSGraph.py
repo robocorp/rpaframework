@@ -63,8 +63,7 @@ class MSGraph:
     The *MSGraph* library wraps the `O365 package`_, giving robots
     the ability to access the Microsoft Graph API programmatically.
 
-    OAuth Configuration
-    -------------------
+    *OAuth Configuration*
 
     Graph's API primarily authenticates via the OAuth 2.0 authorization code grant
     flow or OpenID Connect. This library exposes the OAuth 2.0 flow for robots to
@@ -84,7 +83,6 @@ class MSGraph:
     .. _OAuth Graph Example Bot: https://robocorp.com/portal/
     .. _register an app: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade
     .. _Microsoft Graph permissions reference: https://docs.microsoft.com/en-us/graph/permissions-reference
-
 
     """  # noqa: E501
 

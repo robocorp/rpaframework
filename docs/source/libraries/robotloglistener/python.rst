@@ -6,8 +6,7 @@ Python API
 RobotLogListener
 ****************
 
-.. automodule:: RPA.RobotLogListener
+.. autoclass:: RPA.RobotLogListener.RobotLogListener
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

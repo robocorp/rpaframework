@@ -6,8 +6,7 @@ Python API
 Google
 ******
 
-.. automodule:: RPA.Cloud.Google
+.. autoclass:: RPA.Cloud.Google.Google
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

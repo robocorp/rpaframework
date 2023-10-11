@@ -6,8 +6,7 @@ Python API
 Secrets
 ********
 
-.. automodule:: RPA.Robocorp.Vault
+.. autoclass:: RPA.Robocorp.Vault.Vault
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

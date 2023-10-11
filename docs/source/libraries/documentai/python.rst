@@ -6,8 +6,7 @@ Python API
 DocumentAI
 **********
 
-.. automodule:: RPA.DocumentAI.DocumentAI
+.. autoclass:: RPA.DocumentAI.DocumentAI.DocumentAI
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

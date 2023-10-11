@@ -16,7 +16,6 @@ class WrongBranchError(RpaInvokeError, ParseError):
     def __init__(
         self, current_branch: str, expected_branch: str, context: Context = None
     ) -> None:
-
         self.current_branch = current_branch
         self.expected_branch = expected_branch
         self.message = f"On branch '{self.current_branch}' but expected branch '{self.expected_branch}'"

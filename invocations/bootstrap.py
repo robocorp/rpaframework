@@ -1,8 +1,9 @@
 """A small optional task collection used only when dependencies such
 as ``toml`` are not installed in the system."""
 import re
-import pkg_resources
 from pathlib import Path
+
+import pkg_resources
 from invoke import task
 
 REQUIREMENTS = (Path(__file__).parent / "requirements.txt").resolve()

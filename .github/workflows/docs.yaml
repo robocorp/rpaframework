@@ -46,6 +46,8 @@ jobs:
         run: invoke install
       - name: Build HTML documentation
         run: invoke docs
+      - name: Build markdown documentation
+        run: invoke docs.python-markdown
       - name: Publish HTML documentation
         if: success()
         uses: peaceiris/actions-gh-pages@v3

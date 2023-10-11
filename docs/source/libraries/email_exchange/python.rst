@@ -7,8 +7,7 @@ Python API
 Exchange
 ********
 
-.. automodule:: RPA.Email.Exchange
+.. autoclass:: RPA.Email.Exchange.Exchange
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

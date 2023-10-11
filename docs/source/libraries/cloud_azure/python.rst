@@ -6,7 +6,6 @@ Python API
 Azure
 *****
 
-.. automodule:: RPA.Cloud.Azure
+.. autoclass:: RPA.Cloud.Azure.Azure
    :members:
    :undoc-members:
-   :show-inheritance:

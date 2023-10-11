@@ -1,18 +1,18 @@
 """Collection of tasks associated with static code analysis and testing
 of the code base.
 """
-import platform
 import os
+import platform
 from pathlib import Path
 
-from invoke import task, Collection
+from invoke import Collection, task
 
-from invocations import shell, config, docs
+from invocations import config, docs, shell
 from invocations.util import (
-    REPO_ROOT,
     MAIN_PACKAGE,
-    safely_load_config,
+    REPO_ROOT,
     remove_blank_lines,
+    safely_load_config,
 )
 
 try:

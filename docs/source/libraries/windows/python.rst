@@ -6,8 +6,7 @@ Python API
 Windows
 *******
 
-.. automodule:: RPA.Windows
+.. autoclass:: RPA.Windows.Windows
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

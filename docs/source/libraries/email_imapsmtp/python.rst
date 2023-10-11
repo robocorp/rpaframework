@@ -6,8 +6,7 @@ Python API
 ImapSmtp
 ********
 
-.. automodule:: RPA.Email.ImapSmtp
+.. autoclass:: RPA.Email.ImapSmtp.ImapSmtp
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:

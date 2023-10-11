@@ -6,8 +6,7 @@ Python API
 MFA
 ***
 
-.. automodule:: RPA.MFA
+.. autoclass:: RPA.MFA.MFA
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:
