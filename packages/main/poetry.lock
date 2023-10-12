@@ -886,13 +886,13 @@ woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
 
 [[package]]
 name = "fpdf2"
-version = "2.7.5"
+version = "2.7.6"
 description = "Simple & fast PDF generation for Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "fpdf2-2.7.5-py2.py3-none-any.whl", hash = "sha256:84266b0f9c0ece84e7a60b8e302c98d8082b814be58c9b222fc057a85f86dd6f"},
-    {file = "fpdf2-2.7.5.tar.gz", hash = "sha256:770392316614b4087ec78a393db1c3fc5c46bf7d2a0d673bf1ea95a6a0ba8258"},
+    {file = "fpdf2-2.7.6-py2.py3-none-any.whl", hash = "sha256:2a2fd8f1416cbdad49cc2e54e69c52bbc8ee3339576492effd2e57d48ced48dd"},
+    {file = "fpdf2-2.7.6.tar.gz", hash = "sha256:116eb372660d3da55aa0200c09ddca8cd09dae20084e87f08ebc82c9bfe8466e"},
 ]
 
 [package.dependencies]
@@ -2920,13 +2920,13 @@ robotframework = ">=2.9"
 
 [[package]]
 name = "robotframework-seleniumlibrary"
-version = "6.1.2"
+version = "6.1.3"
 description = "Web testing library for Robot Framework"
 optional = false
 python-versions = ">=3.6, <4"
 files = [
-    {file = "robotframework-seleniumlibrary-6.1.2.tar.gz", hash = "sha256:81130a4eb8c34177e6cd8b51c2cdb29fde56078adf934f8758d2eb7bf9407309"},
-    {file = "robotframework_seleniumlibrary-6.1.2-py2.py3-none-any.whl", hash = "sha256:e2f83006e2b2e61c63a777986e157e8722ff7d80c7cb5bb1c1bbf0e80b9cf31c"},
+    {file = "robotframework-seleniumlibrary-6.1.3.tar.gz", hash = "sha256:2cbe8954c7201c510a1d197381aace6f3a9a8a4b0abea3fa13f4d947fe47ea49"},
+    {file = "robotframework_seleniumlibrary-6.1.3-py2.py3-none-any.whl", hash = "sha256:078649982b535be21a44def15da609d6b9518e47bdfb71e9c2a8e0ab0c7f5556"},
 ]
 
 [package.dependencies]

@@ -18,7 +18,6 @@ from robot.libraries.BuiltIn import BuiltIn
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
-from RPA.Email.ImapSmtp import ImapSmtp
 from RPA.FileSystem import FileSystem
 from RPA.Robocorp.utils import (
     JSONType,
@@ -1066,6 +1065,9 @@ class WorkItems:
             # pylint: disable=no-member
             message = email.message_from_string(content)
             message_dict = dict(message.items())
+            # pylint: disable=import-outside-toplevel
+            from RPA.Email.ImapSmtp import ImapSmtp
+
             body, has_attachments = ImapSmtp().get_decoded_email_body(message)
             message_dict["Body"] = self._interpret_content(body)
             message_dict["Has-Attachments"] = has_attachments
