@@ -64,7 +64,7 @@ class MetaApplication(type):
             return final_class
 
         super_class = bases[0]
-        final_class.__doc__ += super_class.__doc__
+        final_class.__doc__ = (final_class.__doc__ or "") + (super_class.__doc__ or "")
         if final_class.APP_DISPATCH is None:
             raise ValueError(
                 "An `APP_DISPATCH` has to be defined in this"
