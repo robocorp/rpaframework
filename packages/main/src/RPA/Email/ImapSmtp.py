@@ -35,8 +35,6 @@ from smtplib import (
 )
 from typing import Any, BinaryIO, List, Optional, Tuple, Union, Dict
 
-from htmldocx import HtmlToDocx
-
 from RPA.Email.common import (
     OAuthMixin,
     OAuthProvider,
@@ -1898,8 +1896,6 @@ class ImapSmtp(OAuthMixin):
                 lib_work.get_input_work_item()
                 mail_file = lib_work.get_work_item_file("mail.eml")
                 lib_mail.email_to_document(mail_file, Path("./output") / "mail.docx")
-
-            convert_email_to_docx()
         """
 
         if hasattr(input_source, "read"):
@@ -1912,17 +1908,19 @@ class ImapSmtp(OAuthMixin):
             input_source = self._ensure_path_object(input_source)
             self.logger.info("Reading raw e-mail bytes from: %s", input_source)
             data = input_source.read_bytes()
-        assert isinstance(
-            data, bytes
-        ), "bytes expected for e-mail parsing, got %s" % type(data)
+        if not isinstance(data, bytes):
+            raise ValueError(f"bytes expected for e-mail parsing, got {type(data)}")
 
         self.logger.info("Getting the html/text from the raw e-mail")
         message = message_from_bytes(data)
         body, _ = self.get_decoded_email_body(message, html_first=True)
 
-        h2d_parser = HtmlToDocx()
         self.logger.debug("Converting html/text content:\n%s", body)
-        docx = h2d_parser.parse_html_string(body)
+        # pylint: disable=import-outside-toplevel
+        from htmldocx import HtmlToDocx
+
+        h2d_parser = HtmlToDocx()
+        docx = h2d_parser.parse_html_string(body.strip())
         output_path = self._ensure_path_object(output_path)
         self.logger.info("Writing converted document into: %s", output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
