@@ -4,10 +4,11 @@ import re
 import shutil
 from pathlib import Path
 
-from invoke import Collection, task
+from invoke import Collection, Result, task
 
 from invocations import config, shell
 from invocations.util import MAIN_PACKAGE, REPO_ROOT, safely_load_config
+
 
 EXCLUDES = [
     "RPA.Cloud.AWS.textract*",
@@ -32,6 +33,8 @@ DOCGEN_EXCLUDES = [f"--exclude {package}" for package in EXCLUDES]
 DOCS_ROOT = REPO_ROOT / "docs"
 DOCS_SOURCE_DIR = DOCS_ROOT / "source"
 DOCS_BUILD_DIR = DOCS_ROOT / "build" / "html"
+
+FAILURE_TRACES = ["WARNING: autodoc:"]
 
 
 @task(pre=[config.install, config.install_node], aliases=("libdocs",))
@@ -73,6 +76,13 @@ def build_libdocs(ctx):
     )
 
 
+def _check_documentation_build(run_result: Result):
+    lines = f"{run_result.stdout}\n{run_result.stderr}".splitlines()
+    for line in lines:
+        if any(trace in line for trace in FAILURE_TRACES):
+            raise RuntimeError(line)
+
+
 @task(pre=[config.install, build_libdocs], default=True, aliases=("build",))
 def build_docs(ctx):
     """Builds documentation locally. These can then be browsed directly
@@ -104,7 +114,8 @@ def build_docs(ctx):
         docs_source / "json",
         docs_source / "include" / "latest.json",
     )
-    shell.sphinx(ctx, f"-b html -j auto {docs_source} {docs_target}")
+    run_result = shell.sphinx(ctx, f"-b html -j auto {docs_source} {docs_target}")
+    _check_documentation_build(run_result)
     shell.meta_tool(ctx, "rss")
 
 

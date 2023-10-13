@@ -3,7 +3,6 @@ import logging
 import platform
 import time
 from typing import Optional
-from comtypes import COMError
 
 
 if platform.system() == "Windows":
@@ -11,10 +10,12 @@ if platform.system() == "Windows":
     # pylint: disable=unused-import
     import win32com.client  # noqa: F401
     from SapGuiLibrary import SapGuiLibrary
+    from comtypes import COMError
 else:
     logging.getLogger(__name__).warning(
         "RPA.SapGuiLibrary library works only on Windows platform"
     )
+    COMError = Exception
 
     class SapGuiLibrary:
         """Keywords are only available in Windows."""
