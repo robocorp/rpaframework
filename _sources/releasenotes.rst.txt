@@ -16,6 +16,18 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+27.4.2 - 13 Oct 2023
+--------------------
+
+- `Application` classes from **RPA.*.Application** libraries can be further inherited
+  and extended without the need of adding a mandatory class-level docstring.
+- Library **RPA.Robocorp.WorkItems** won't get easily affected anymore by any issue
+  within the **RPA.Email.ImapSmtp** library.
+- Keyword ``Email To Document`` raises appropriately when the input value is of an
+  unexpected type.
+- Takes into use the latest ``robocorp-storage`` **1.0.1**, adding various fixes into
+  the **RPA.Robocorp.Storage** library.
+
 27.4.1 - 11 Oct 2023
 --------------------
 
