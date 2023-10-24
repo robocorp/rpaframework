@@ -968,7 +968,7 @@ class WorkItems:
         return self._adapter
 
     @property
-    def current(self):
+    def current(self) -> WorkItem:
         if self._current is None:
             raise RuntimeError("No active work item")
 
@@ -983,8 +983,8 @@ class WorkItems:
 
     @property
     def active_input(self) -> Optional[WorkItem]:
-        if self.current and self.current.parent_id is None:  # input set as current
-            return self.current
+        if self._current and self._current.parent_id is None:  # input set as current
+            return self._current
         if self.inputs:  # other current item set, and taking the last input
             return self.inputs[-1]
         return None
@@ -1097,7 +1097,7 @@ class WorkItems:
             return
 
         try:
-            self.get_input_work_item()
+            self.get_input_work_item(_internal_call=True)
         # pylint: disable=broad-except
         except Exception as exc:
             logging.warning("Failed to load input work item: %s", exc)
@@ -1125,9 +1125,7 @@ class WorkItems:
         # pylint: disable=unused-argument
         for item in self.inputs + self.outputs:
             if item.is_dirty:
-                logging.warning(
-                    "%s has unsaved changes that will be discarded", self.current
-                )
+                logging.warning("%s has unsaved changes that will be discarded", item)
 
         self._release_on_failure(attributes)
 
@@ -1328,7 +1326,7 @@ class WorkItems:
             wi.clear_work_item()
             wi.save_work_item()
         """
-        self.current.payload = {}
+        self.current.payload.clear()
         self.remove_work_item_files("*")
 
     @keyword
