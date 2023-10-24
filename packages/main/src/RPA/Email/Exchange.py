@@ -472,6 +472,7 @@ class Exchange(OAuthMixin):
         cc: Optional[Union[List[str], str]] = None,
         bcc: Optional[Union[List[str], str]] = None,
         save: Optional[bool] = False,
+        reply_to: Optional[str] = None,
     ) -> None:
         """Keyword for sending message through connected Exchange account.
 
@@ -485,6 +486,7 @@ class Exchange(OAuthMixin):
         :param bcc: list of email addresses
         :param save: is sent message saved to Sent messages folder or not,
             defaults to False
+        :param reply_to: email address to reply to
 
         Email addresses can be prefixed with ``ex:`` to indicate an Exchange
         account address.
@@ -510,6 +512,8 @@ class Exchange(OAuthMixin):
             cc_recipients=cc,
             bcc_recipients=bcc,
         )
+        if reply_to:
+            m.reply_to = [reply_to]
 
         self._add_attachments_to_msg(attachments, m)
         self._add_images_inline_to_msg(images, html, body, m)
