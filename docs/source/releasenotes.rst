@@ -12,14 +12,14 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-24 Oct 2023
------------
-
-- Library **RPA.Email.Exchange**: Add `reply_to` parameter for ``Send Message`` keyword.
-- Library **RPA.Email.ImapSmtp**: Add `reply_to` parameter for ``Send Message`` keyword.
-
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+27.5.0 - 24 Oct 2023
+--------------------
+
+- Add `reply_to` parameter for ``Send Message`` keyword for **RPA.Email.Exchange**
+  and **RPA.Email.ImapSmtp** libraries.
 
 27.4.2 - 13 Oct 2023
 --------------------
