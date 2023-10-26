@@ -1171,9 +1171,7 @@ class WorkItems:
         self.current = item
 
     @keyword
-    def get_input_work_item(
-        self, auto_release: bool = True, _internal_call: bool = False
-    ) -> WorkItem:
+    def get_input_work_item(self, _internal_call: bool = False) -> WorkItem:
         """Load the next work item from the input queue, and set it as the active work
         item.
 
@@ -1182,17 +1180,13 @@ class WorkItems:
         If the library import argument ``autoload`` is truthy (default),
         this is called automatically when the Robot Framework suite
         starts.
-
-        :param auto_release: Automatically release the lastly retrieved (or currently
-            set) input item when this is `True`.
         """
         if not _internal_call:
             self._raise_under_iteration("Get Input Work Item")
 
         # Automatically release (with success) the lastly retrieved input work item
-        # when asking for the next one. (or the currently set input if such set)
-        if auto_release:
-            self.release_input_work_item(State.DONE, _internal_release=True)
+        # when asking for the next one. (or the currently set input if such)
+        self.release_input_work_item(State.DONE, _internal_release=True)
 
         item_id = self.adapter.reserve_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
@@ -1742,7 +1736,6 @@ class WorkItems:
         *args,
         items_limit: int = 0,
         return_results: bool = True,
-        auto_release: bool = True,
         **kwargs,
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
@@ -1759,8 +1752,6 @@ class WorkItems:
             otherwise all the items are retrieved from the queue until depletion
         :param return_results: Collect and return a list of results given each
             keyword/function call if truthy
-        :param auto_release: Automatically release the lastly retrieved (or currently
-            set) input item when this is `True`.
 
         Example:
 
@@ -1821,9 +1812,7 @@ class WorkItems:
                 result = to_call()
                 if return_results:
                     results.append(result)
-                if auto_release:
-                    self.release_input_work_item(State.DONE, _internal_release=True)
-
+                self.release_input_work_item(State.DONE, _internal_release=True)
                 count += 1
                 if items_limit and count >= items_limit:
                     break
