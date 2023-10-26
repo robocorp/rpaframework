@@ -968,7 +968,7 @@ class WorkItems:
         return self._adapter
 
     @property
-    def current(self):
+    def current(self) -> WorkItem:
         if self._current is None:
             raise RuntimeError("No active work item")
 
@@ -980,6 +980,14 @@ class WorkItems:
             raise ValueError(f"Not a work item: {value}")
 
         self._current = value
+
+    @property
+    def active_input(self) -> Optional[WorkItem]:
+        if self._current and self._current.parent_id is None:  # input set as current
+            return self._current
+        if self.inputs:  # other current item set, and taking the last input
+            return self.inputs[-1]
+        return None
 
     def _load_adapter(self, default) -> Type[BaseAdapter]:
         """Load adapter by name, using env or given default."""
@@ -1089,7 +1097,7 @@ class WorkItems:
             return
 
         try:
-            self.get_input_work_item()
+            self.get_input_work_item(_internal_call=True)
         # pylint: disable=broad-except
         except Exception as exc:
             logging.warning("Failed to load input work item: %s", exc)
@@ -1109,7 +1117,7 @@ class WorkItems:
             state=State.FAILED,
             exception_type=Error.APPLICATION,
             message=message,
-            _auto_release=True,
+            _internal_release=True,
         )
 
     def _end_suite(self, _, attributes):
@@ -1117,9 +1125,7 @@ class WorkItems:
         # pylint: disable=unused-argument
         for item in self.inputs + self.outputs:
             if item.is_dirty:
-                logging.warning(
-                    "%s has unsaved changes that will be discarded", self.current
-                )
+                logging.warning("%s has unsaved changes that will be discarded", item)
 
         self._release_on_failure(attributes)
 
@@ -1165,7 +1171,7 @@ class WorkItems:
         self.current = item
 
     @keyword
-    def get_input_work_item(self, _internal_call: bool = False):
+    def get_input_work_item(self, _internal_call: bool = False) -> WorkItem:
         """Load the next work item from the input queue, and set it as the active work
         item.
 
@@ -1179,8 +1185,8 @@ class WorkItems:
             self._raise_under_iteration("Get Input Work Item")
 
         # Automatically release (with success) the lastly retrieved input work item
-        # when asking for the next one.
-        self.release_input_work_item(State.DONE, _auto_release=True)
+        # when asking for the next one. (or the currently set input if such)
+        self.release_input_work_item(State.DONE, _internal_release=True)
 
         item_id = self.adapter.reserve_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
@@ -1261,7 +1267,7 @@ class WorkItems:
                 "call `Get Input Work Item` first"
             )
 
-        parent = self.inputs[-1]
+        parent = self.active_input
         if parent.state is not None:
             raise RuntimeError(
                 "Can't create any more output work items since the last input was "
@@ -1314,7 +1320,7 @@ class WorkItems:
             wi.clear_work_item()
             wi.save_work_item()
         """
-        self.current.payload = {}
+        self.current.payload.clear()
         self.remove_work_item_files("*")
 
     @keyword
@@ -1711,11 +1717,11 @@ class WorkItems:
             raise RuntimeError(f"Can't {action} while iterating input work items")
 
     def _ensure_input_for_iteration(self) -> bool:
-        last_input = self.inputs[-1] if self.inputs else None
-        last_state = last_input.state if last_input else None
-        if not last_input or last_state:
-            # There are no inputs loaded yet or the last retrieved input work
-            # item is already processed. Time for trying to load a new one.
+        active_input = self.active_input
+        active_state = active_input.state if active_input else None
+        if not active_input or active_state:
+            # There are no inputs loaded yet or the lastly retrieved input work
+            #  item is already processed. Time for trying to load a new one.
             try:
                 self.get_input_work_item(_internal_call=True)
             except EmptyQueue:
@@ -1806,8 +1812,7 @@ class WorkItems:
                 result = to_call()
                 if return_results:
                     results.append(result)
-                self.release_input_work_item(State.DONE, _auto_release=True)
-
+                self.release_input_work_item(State.DONE, _internal_release=True)
                 count += 1
                 if items_limit and count >= items_limit:
                     break
@@ -1823,7 +1828,7 @@ class WorkItems:
         exception_type: Optional[Union[Error, str]] = None,
         code: Optional[str] = None,
         message: Optional[str] = None,
-        _auto_release: bool = False,
+        _internal_release: bool = False,
     ):
         """Release the lastly retrieved input work item and set its state.
 
@@ -1887,26 +1892,26 @@ class WorkItems:
 
             process_and_set_state()
         """
-        # Note that `_auto_release` here is True when automatically releasing items.
-        # (internal call)
+        # Note that `_internal_release` here is True when automatically releasing items
+        #  within our internal library logic.
 
-        last_input = self.inputs[-1] if self.inputs else None
-        if not last_input:
-            if _auto_release:
+        active_input = self.active_input
+        if not active_input:
+            if _internal_release:
                 # Have nothing to release and that's normal (reserving for the first
                 # time).
                 return
             raise RuntimeError(
                 "Can't release without reserving first an input work item"
             )
-        if last_input.state is not None:
-            if _auto_release:
+        if active_input.state is not None:
+            if _internal_release:
                 # Item already released and that's normal when reaching an empty queue
                 # and we ask for another item again. We don't want to set states twice.
                 return
             raise RuntimeError("Input work item already released")
-        assert last_input.parent_id is None, "set state on output item"
-        assert last_input.id is not None, "set state on input item with null ID"
+        assert active_input.parent_id is None, "set state on output item"
+        assert active_input.id is not None, "set state on input item with null ID"
 
         # RF automatically converts string "DONE" to State.DONE object if only `State`
         #  type annotation is used in the keyword definition.
@@ -1933,8 +1938,8 @@ class WorkItems:
                 exc_types = ", ".join(list(Error.__members__))
                 raise RuntimeError(f"Must specify failure type from: {exc_types}")
 
-        self.adapter.release_input(last_input.id, state, exception=exception)
-        last_input.state = state
+        self.adapter.release_input(active_input.id, state, exception=exception)
+        active_input.state = state
 
     @keyword
     def get_current_work_item(self) -> WorkItem:
