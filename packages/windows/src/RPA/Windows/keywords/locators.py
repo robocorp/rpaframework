@@ -176,6 +176,13 @@ class LocatorKeywords(LocatorMethods):
         By default, only the siblings (similar elements on the same level) are taken
         into account. In order to search globally, turn `siblings_only` off, but be
         aware that this will take more time to process.
+
+        Note that if the syntax ``parent_locator > child_locator`` is used
+        in the locator, it is assumed that ``parent_locator`` returns a
+        singular element - i.e. if the locator ``parent_locator`` returns multiple
+        elements, only the first result is used for further processing, even if
+        `siblings_only` is off.
+
         For more details on the rest of parameters, take a look at the ``Get Element``
         keyword.
 
