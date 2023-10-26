@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 import base64
 import logging
 import mimetypes
@@ -520,6 +521,7 @@ class ImapSmtp(OAuthMixin):
         attachment_position: Optional[AttachmentPosition] = AttachmentPosition.TOP,
         in_reply_to: Optional[str] = None,
         return_path: Optional[str] = None,
+        reply_to: Optional[str] = None,
     ) -> bool:
         """Send SMTP email
 
@@ -536,6 +538,7 @@ class ImapSmtp(OAuthMixin):
         :param in_reply_to: the 'Message ID' to which this message is in reply to,
          for example `<message_id_for_reply_to>`
         :param return_path: email address which should receive "bounce messages"
+        :param reply_to: email address which should receive the reply
 
         **Valid sender values**
 
@@ -582,7 +585,8 @@ class ImapSmtp(OAuthMixin):
         msg = MIMEMultipart()
         msg["Subject"] = subject
         msg["From"] = sender
-
+        if reply_to:
+            msg["Reply-To"] = reply_to
         # The following lines optimize handling the parameters
         msg_recipients, attachments, images = self._handle_message_parameters(
             msg, recipients, cc, bcc, attachments, images
