@@ -405,12 +405,12 @@ def suppress_logging():
     old_wdm_log = os.getenv(wdm_log, "")
     old_wdm_log_level = os.getenv(wdm_log_level, "")
     try:
-        os.putenv(wdm_log, str(logging.NOTSET))
-        os.putenv(wdm_log_level, "0")
+        os.environ[wdm_log] = str(logging.NOTSET)
+        os.environ[wdm_log_level] = "0"
         yield
     finally:
-        os.putenv(wdm_log, old_wdm_log)
-        os.putenv(wdm_log_level, old_wdm_log_level)
+        os.environ[wdm_log] = old_wdm_log
+        os.environ[wdm_log_level] = old_wdm_log_level
 
 
 def start(browser: str, service: Optional[Service] = None, **options) -> WebDriver:
@@ -425,12 +425,14 @@ def start(browser: str, service: Optional[Service] = None, **options) -> WebDriv
     return driver
 
 
+@functools.lru_cache(maxsize=1)
 def _is_chromium() -> bool:
     """Detects if Chromium is used instead of Chrome no matter the platform."""
     is_browser = lambda browser_type: bool(  # noqa: E731
         _OPS_MANAGER.get_browser_version_from_os(browser_type)
     )
-    return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
+    with suppress_logging():
+        return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
 
 
 def _get_browser_lower(browser: str) -> str:
@@ -479,8 +481,8 @@ def _set_executable(path: str) -> None:
 
 def download(browser: str, root: Path = DRIVER_ROOT) -> str:
     """Download a webdriver binary for the given browser and return the path to it."""
-    manager = _to_manager(browser, root=root)
     with suppress_logging():
+        manager = _to_manager(browser, root=root)
         path: str = manager.install()
     if platform.system() != "Windows":
         _set_executable(path)

@@ -12,7 +12,7 @@ from . import RESULTS_DIR
 
 
 @pytest.fixture(autouse=True, scope="module")
-def disable_caching():
+def disable_caching_enable_logging():
     with mock.patch(
         "webdriver_manager.core.driver_cache.DriverCacheManager.find_driver",
         new=mock.Mock(return_value=None),
