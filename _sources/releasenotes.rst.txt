@@ -12,6 +12,9 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Browser.Selenium** (:pr:`1123`; ``rpaframework-core`` **11.2.3**): Fix
+  "There is no such driver by url" error with Chrome/Chromium versions above **114**
+  attempting a `chromedriver` version resolution.
 - Library **RPA.Robocorp.WorkItems**: Fix dirty items logging and documentation nits.
 
 
