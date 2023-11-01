@@ -401,12 +401,16 @@ def get_browser_order() -> List[str]:
 def suppress_logging():
     """Suppress webdriver-manager logging."""
     wdm_log = "WDM_LOG"
-    original_value = os.getenv(wdm_log, "")
+    wdm_log_level = "WDM_LOG_LEVEL"
+    old_wdm_log = os.getenv(wdm_log, "")
+    old_wdm_log_level = os.getenv(wdm_log_level, "")
     try:
-        os.environ[wdm_log] = str(logging.NOTSET)
+        os.putenv(wdm_log, str(logging.NOTSET))
+        os.putenv(wdm_log_level, "0")
         yield
     finally:
-        os.environ[wdm_log] = original_value
+        os.putenv(wdm_log, old_wdm_log)
+        os.putenv(wdm_log_level, old_wdm_log_level)
 
 
 def start(browser: str, service: Optional[Service] = None, **options) -> WebDriver:
