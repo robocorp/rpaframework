@@ -21,7 +21,9 @@ def disable_caching():
 
 
 # Tests with different Chrome versions, which trigger different download approaches.
-@pytest.mark.parametrize("version_override", [None, "114.0.5735.198", "115.0.5790.110"])
+@pytest.mark.parametrize(
+    "version_override", [None, "114.0.5735", "115.0.5790.110", "117.0.5938"]
+)
 def test_chrome_download(version_override):
     get_version_target = "RPA.core.webdriver.ChromeDriver.get_browser_version_from_os"
     browser_type = (
