@@ -468,8 +468,8 @@ class Assistant:
             )
         else:
             self.logger.warning(
-                "The image path you specified should be a valid URL or "
-                + f"absolute path to an existing file. The value provided: {url_or_path}"
+                "The image path you specified should be a valid URL or absolute path "
+                + f" to an existing file. The value provided: {url_or_path}"
             )
 
     @keyword
