@@ -467,8 +467,10 @@ class Assistant:
                 Container(content=Image(src=url_or_path, width=width, height=height))
             )
         else:
-            self.logger.warning(f"The image path you specified should be a valid URL or \
-                                absolute path to an existing file. The value provided: {url_or_path}")
+            self.logger.warning(
+                "The image path you specified should be a valid URL or "
+                + f"absolute path to an existing file. The value provided: {url_or_path}"
+            )
 
     @keyword
     def add_file(
@@ -987,9 +989,12 @@ class Assistant:
         def on_pick_result(event: FilePickerResultEvent):
             if event.files:
                 self._client.results[str(name)] = [f.path for f in event.files]
-                selected_files.value(
-                    ", ".join(map(lambda f: f.name, event.files)) if event.files else "Cancelled!"
+                selected_files.value = (
+                    ", ".join(map(lambda f: f.name, event.files))
+                    if event.files
+                    else "Cancelled!"
                 )
+                selected_files.update()
 
         file_picker = FilePicker(on_result=on_pick_result)
         self._client.add_invisible_element(file_picker)
@@ -1020,7 +1025,6 @@ class Assistant:
                     selected_files,
                 ]
             )
-
         )
 
     @keyword("Add Drop-Down", tags=["input"])
