@@ -431,7 +431,7 @@ class Assistant:
 
         Adds an inline image to the dialog, which can either
         point to a local file path on the executing machine or to
-        a remote URL.
+        a remote URL. If it's a local file path it has to be absolute path.
 
         By default the image is resized to fit the width of the dialog
         window, but the width and/or height can be explicitly defined
@@ -444,24 +444,33 @@ class Assistant:
 
             *** Keywords ***
             Display image
-                Add image      company-logo.png
+                Add image      C:\\Users\\me\\company-logo.png
                 Add heading    To start, please press the Continue button   size=Small
                 Add submit buttons    Continue
                 Run dialog
 
         .. code-block:: python
-
             def display_image():
                 assistant = Assistant()
-                assistant.add_image("company-logo.png")
+                assistant.add_image("C:\\Users\\me\\company-logo.png")
                 assistant.add_heading("To start, please press the Continue button", size="small")
                 assistant.add_submit_buttons("Continue")
                 assistant.run_dialog()
         """  # noqa: E501
 
-        self._client.add_element(
-            Container(content=Image(src=url_or_path, width=width, height=height))
-        )
+        is_url = url_or_path.startswith(("http://", "https://"))
+        is_absolute_path = os.path.isabs(url_or_path)
+        is_absolute_and_file_exists = is_absolute_path and os.path.isfile(url_or_path)
+
+        if is_url or is_absolute_and_file_exists:
+            self._client.add_element(
+                Container(content=Image(src=url_or_path, width=width, height=height))
+            )
+        else:
+            self.logger.warning(
+                "The image path you specified should be a valid URL or absolute path "
+                + f" to an existing file. The value provided: {url_or_path}"
+            )
 
     @keyword
     def add_file(
@@ -980,9 +989,16 @@ class Assistant:
         def on_pick_result(event: FilePickerResultEvent):
             if event.files:
                 self._client.results[str(name)] = [f.path for f in event.files]
+                selected_files.value = (
+                    ", ".join(map(lambda f: f.name, event.files))
+                    if event.files
+                    else "Cancelled!"
+                )
+                selected_files.update()
 
         file_picker = FilePicker(on_result=on_pick_result)
         self._client.add_invisible_element(file_picker)
+        selected_files = Text()
 
         options = {
             "source": optional_str(source),
@@ -996,13 +1012,18 @@ class Assistant:
             options["file_type"] = options["file_type"].split(",")
 
         self._client.add_element(
-            ElevatedButton(
-                label or "Choose files...",
-                on_click=lambda _: file_picker.pick_files(
-                    allow_multiple=bool(multiple),
-                    initial_directory=options["source"],
-                    allowed_extensions=options["file_type"],
-                ),
+            Row(
+                [
+                    ElevatedButton(
+                        label or "Choose files...",
+                        on_click=lambda _: file_picker.pick_files(
+                            allow_multiple=bool(multiple),
+                            initial_directory=options["source"],
+                            allowed_extensions=options["file_type"],
+                        ),
+                    ),
+                    selected_files,
+                ]
             )
         )
 

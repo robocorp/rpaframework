@@ -12,6 +12,10 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Assistant** (:pr:`1122`; ``rpaframework-assistant`` **3.0.2**): Show
+  files selected with ``Add File Input`` to make it easier for users to know it has
+  been used. Also shows a warning if the image path for ``Add Image`` is not valid or
+  file does not exist.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
