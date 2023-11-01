@@ -95,8 +95,8 @@ class OperationSystemManager(_OperationSystemManager):
         if browser_type != BrowserType.MSIE:
             return super().get_browser_version_from_os(browser_type)
 
-        # Add support for IE version retrieval.
-        # NOTE(cmin764; 15 Sep 2023): This got slightly different due to posted issue:
+        # Add support for IE version retrieval from OS.
+        # FIXME(cmin764, 15 Sep 2023): Remove this after fixing the issue below:
         #  https://github.com/SergeyPirogov/webdriver_manager/issues/625
         program_files = os.getenv("PROGRAMFILES", r"C:\Program Files")
         paths = [
@@ -121,18 +121,6 @@ class DriverCacheManager(_DriverCacheManager):
         super().__init__(*args, **kwargs)
         self._os_system_manager = OperationSystemManager()
         self._file_manager = file_manager or FileManager(self._os_system_manager)
-
-    # FIXME(cmin764; 6 Sep 2023): Remove this once the following issue is solved:
-    #  https://github.com/SergeyPirogov/webdriver_manager/issues/618
-    # pylint: disable=unused-private-member
-    def __get_metadata_key(self, *args, **kwargs) -> str:
-        # pylint: disable=super-with-arguments
-        get_metadata_key = functools.partial(
-            super(DriverCacheManager, self)._DriverCacheManager__get_metadata_key,
-            *args,
-            **kwargs,
-        )
-        return get_metadata_key() or get_metadata_key()
 
 
 class ChromeDriver(_ChromeDriver):
@@ -173,9 +161,11 @@ class ChromeDriver(_ChromeDriver):
     def get_latest_release_version(self, resolve_version: bool = False) -> str:
         # This is activated for any chromedriver version.
         determined_browser_version = self.get_browser_version_from_os()
-        if determined_browser_version and not resolve_version:
-            parts = version_parser.parse(determined_browser_version).release
-            if len(parts) == 4:
+        if determined_browser_version:
+            parsed_version = version_parser.parse(determined_browser_version)
+            non_solveable = parsed_version.major >= 115
+            solve_needed = resolve_version or len(parsed_version.release) < 4
+            if non_solveable or not solve_needed:
                 # Got a fully downloadable version that MAY be available, but we are
                 #  not sure until we don't try it.
                 log(
@@ -411,12 +401,16 @@ def get_browser_order() -> List[str]:
 def suppress_logging():
     """Suppress webdriver-manager logging."""
     wdm_log = "WDM_LOG"
-    original_value = os.getenv(wdm_log, "")
+    wdm_log_level = "WDM_LOG_LEVEL"
+    old_wdm_log = os.getenv(wdm_log, "")
+    old_wdm_log_level = os.getenv(wdm_log_level, "")
     try:
         os.environ[wdm_log] = str(logging.NOTSET)
+        os.environ[wdm_log_level] = "0"
         yield
     finally:
-        os.environ[wdm_log] = original_value
+        os.environ[wdm_log] = old_wdm_log
+        os.environ[wdm_log_level] = old_wdm_log_level
 
 
 def start(browser: str, service: Optional[Service] = None, **options) -> WebDriver:
@@ -431,12 +425,14 @@ def start(browser: str, service: Optional[Service] = None, **options) -> WebDriv
     return driver
 
 
+@functools.lru_cache(maxsize=1)
 def _is_chromium() -> bool:
     """Detects if Chromium is used instead of Chrome no matter the platform."""
     is_browser = lambda browser_type: bool(  # noqa: E731
         _OPS_MANAGER.get_browser_version_from_os(browser_type)
     )
-    return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
+    with suppress_logging():
+        return not is_browser(ChromeType.GOOGLE) and is_browser(ChromeType.CHROMIUM)
 
 
 def _get_browser_lower(browser: str) -> str:
@@ -485,8 +481,8 @@ def _set_executable(path: str) -> None:
 
 def download(browser: str, root: Path = DRIVER_ROOT) -> str:
     """Download a webdriver binary for the given browser and return the path to it."""
-    manager = _to_manager(browser, root=root)
     with suppress_logging():
+        manager = _to_manager(browser, root=root)
         path: str = manager.install()
     if platform.system() != "Windows":
         _set_executable(path)
@@ -499,7 +495,7 @@ def get_browser_version(browser: str, path: Optional[str] = None) -> Optional[st
     browser_lower = _get_browser_lower(browser)
     chrome_type = ChromeType.CHROMIUM if _is_chromium() else ChromeType.GOOGLE
     browser_types = {
-        # NOTE(cmin764; 12 Sep 2023): There's no upstream support on getting the
+        # NOTE(cmin764, 12 Sep 2023): There's no upstream support on getting the
         #  automatically detected browser version from the OS for IE, Safari and Opera.
         #  But we introduce one here for IE only.
         "chrome": chrome_type,
