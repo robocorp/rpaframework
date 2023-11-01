@@ -13,10 +13,10 @@ Latest versions
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 - Library **RPA.Robocorp.WorkItems**: Fix dirty items logging and documentation nits.
-- Library **RPA.Assistant 3.0.2**: Show files selected from ``Add File Input`` to make it
-  easier for users to know it has been used. Also shows a warning if the image path for
-  ``Add Image`` is not valid or file does not exist.
-
+- Library **RPA.Assistant** (:pr:`1122`; ``rpaframework-assistant`` **3.0.2**): Show
+  files selected with ``Add File Input`` to make it easier for users to know it has
+  been used. Also shows a warning if the image path for ``Add Image`` is not valid or
+  file does not exist.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
