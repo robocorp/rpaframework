@@ -23,7 +23,7 @@ Use Local Vault
 
 Load Mocked Library
     Use Local Vault
-    ${secret} =    Get Secret    asset_storage
+    ${secret} =    Get Secret    assets_storage
 
     Set Environment Variable    RC_API_URL_V1   ${secret}[api_url]
     Set Environment Variable    RC_API_TOKEN_V1   ${secret}[api_token]
