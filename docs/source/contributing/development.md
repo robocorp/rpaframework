@@ -476,10 +476,16 @@ A few things to take care first, right before publishing the package for real:
 - Previously released sub-package (e.g. `rpaframework-windows`) got bumped as well
   under the _main_'s _pyproject.toml_ pin. (if you intend to set this as a minimum
   version)
+  - If the released package is not part of _main_ then maybe it is included in _meta_,
+    therefore make sure you update the version there as well, so it makes it to the
+    docs.
+- You run `inv install.update` for both _main_ and _meta_.
 - There's a release note summarizing the change(s) about to be released.
-- The **Upcoming** release notes (if any) are moved under the **Released** section
-  altogether. (since you're releasing everything that was pushed so far)
-- Your Poetry setup is configured accordingly. (see [**Setup**](#setup))
+  - The **Upcoming** release notes (if any) are moved under the **Released** section
+    altogether. (since you're releasing everything that was pushed so far)
+  - Independent packages from _main_ can be announced the same, but without a version
+    number since there's no ``rpaframework`` package holding them. (only _meta_ & docs)
+- Your Poetry setup is configured accordingly for PyPI push. (see [**Setup**](#setup))
 
 ###### Release notes formatting
 
