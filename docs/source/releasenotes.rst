@@ -28,7 +28,7 @@ Latest versions
   if the file does not exist.
 
 .. note::
-  This version is compatible with with ``robocorp`` **1.2.1**.
+  This version is compatible with ``robocorp`` **1.2.1**.
 
 27.5.1 - 01 Nov 2023
 --------------------
