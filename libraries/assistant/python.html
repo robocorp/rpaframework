@@ -834,7 +834,7 @@ to a given height/width of pixels.</p>
 </dl>
 <p>Adds an inline image to the dialog, which can either
 point to a local file path on the executing machine or to
-a remote URL.</p>
+a remote URL. If it’s a local file path it has to be absolute path.</p>
 <p>By default the image is resized to fit the width of the dialog
 window, but the width and/or height can be explicitly defined
 to a custom value. If only one of the dimensions is given,
@@ -842,18 +842,10 @@ the other is automatically changed to maintain the correct aspect ratio.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
 <span class="gu">Display image</span>
-<span class="p">    </span><span class="nf">Add image</span><span class="p">      </span><span class="s">company-logo.png</span>
+<span class="p">    </span><span class="nf">Add image</span><span class="p">      </span><span class="s">C:\Users\me\company-logo.png</span>
 <span class="p">    </span><span class="nf">Add heading</span><span class="p">    </span><span class="s">To start, please press the Continue button</span><span class="p">   </span><span class="s">size=Small</span>
 <span class="p">    </span><span class="nf">Add submit buttons</span><span class="p">    </span><span class="s">Continue</span>
 <span class="p">    </span><span class="nf">Run dialog</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">display_image</span><span class="p">():</span>
-    <span class="n">assistant</span> <span class="o">=</span> <span class="n">Assistant</span><span class="p">()</span>
-    <span class="n">assistant</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="s2">&quot;company-logo.png&quot;</span><span class="p">)</span>
-    <span class="n">assistant</span><span class="o">.</span><span class="n">add_heading</span><span class="p">(</span><span class="s2">&quot;To start, please press the Continue button&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">)</span>
-    <span class="n">assistant</span><span class="o">.</span><span class="n">add_submit_buttons</span><span class="p">(</span><span class="s2">&quot;Continue&quot;</span><span class="p">)</span>
-    <span class="n">assistant</span><span class="o">.</span><span class="n">run_dialog</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
