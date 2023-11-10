@@ -415,7 +415,7 @@ class Application(BaseApplication):
         source_folder: str = None,
         email_filter: Any = None,
         target_folder: str = None,
-        mark_as_read: bool = False,
+        mark_as_read: bool = True,
     ) -> bool:
         """Move emails from source folder to target folder.
 
@@ -427,6 +427,7 @@ class Application(BaseApplication):
         :param email_filter: how to filter email, default no filter,
          ie. all emails in folder
         :param target_folder: folder where emails are moved into
+        :param mark_as_read: mark emails as read after move, defaults to True
         :return: True if move operation was success, False if not
 
         Python example.
