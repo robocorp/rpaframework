@@ -321,7 +321,7 @@ defaults to current directory</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Outlook.Application.Application.move_emails">
-<span class="sig-name descname"><span class="pre">move_emails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">account_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Outlook.Application.Application.move_emails" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">move_emails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">account_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark_as_read</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.Outlook.Application.Application.move_emails" title="Permalink to this definition"></a></dt>
 <dd><p>Move emails from source folder to target folder.</p>
 <p>Use of “account_name” is recommended if there are shared accounts in use.</p>
 <dl class="field-list simple">
@@ -333,13 +333,38 @@ defaults to None</p></li>
 <li><p><strong>email_filter</strong> – how to filter email, default no filter,
 ie. all emails in folder</p></li>
 <li><p><strong>target_folder</strong> – folder where emails are moved into</p></li>
+<li><p><strong>mark_as_read</strong> – mark emails as read after move, defaults to True</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>True if move operation was success, False if not</p>
 </dd>
 </dl>
-<p>Example:</p>
+<p>Python example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">outlook</span> <span class="o">=</span> <span class="n">RPA</span><span class="o">.</span><span class="n">Outlook</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
+
+<span class="c1"># moving messages from Inbox to target_folder</span>
+<span class="n">outlook</span><span class="o">.</span><span class="n">move_emails</span><span class="p">(</span>
+    <span class="n">target_folder</span><span class="o">=</span><span class="s1">&#39;Processed Invoices&#39;</span><span class="p">,</span>
+    <span class="n">email_filter</span><span class="o">=</span><span class="s2">&quot;[Subject]=&#39;incoming invoice&#39;&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># moving messages from source_folder to target_folder</span>
+<span class="n">outlook</span><span class="o">.</span><span class="n">move_emails</span><span class="p">(</span>
+    <span class="n">source_folder</span><span class="o">=</span><span class="s1">&#39;Incoming Invoices&#39;</span><span class="p">,</span>
+    <span class="n">target_folder</span><span class="o">=</span><span class="s1">&#39;Processed Invoices&#39;</span><span class="p">,</span>
+    <span class="n">email_filter</span><span class="o">=</span><span class="s2">&quot;[Subject]=&#39;incoming invoice&#39;&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># move message objects from `get_emails` result</span>
+<span class="n">emails</span> <span class="o">=</span> <span class="n">outlook</span><span class="o">.</span><span class="n">get_emails</span><span class="p">(</span><span class="s2">&quot;[Subject]=&#39;incoming invoice&#39;&quot;</span><span class="p">)</span>
+<span class="n">outlook</span><span class="o">.</span><span class="n">move_emails</span><span class="p">(</span>
+    <span class="n">target_folder</span><span class="o">=</span><span class="s1">&#39;Processed Invoices&#39;</span><span class="p">,</span>
+    <span class="n">email_filter</span><span class="o">=</span><span class="n">emails</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Robot Framework example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># moving messages from Inbox to target_folder</span>
 <span class="c">Move Emails</span>
 <span class="c">...</span><span class="p">    </span><span class="c">target_folder=Processed Invoices</span>
@@ -350,6 +375,12 @@ ie. all emails in folder</p></li>
 <span class="c">...</span><span class="p">    </span><span class="c">source_folder=Incoming Invoices</span>
 <span class="c">...</span><span class="p">    </span><span class="c">target_folder=Processed Invoices</span>
 <span class="c">...</span><span class="p">    </span><span class="c">email_filter=[Subject]=&#39;incoming invoice&#39;</span>
+
+<span class="c"># moving message objects from `Get Emails` result</span>
+<span class="c">${emails}=</span><span class="p">    </span><span class="c">Get Emails</span><span class="p">    </span><span class="c">[Subject]=&#39;incoming invoice&#39;</span>
+<span class="c">Move Emails</span>
+<span class="c">...</span><span class="p">    </span><span class="c">target_folder=Processed Invoices</span>
+<span class="c">...</span><span class="p">    </span><span class="c">email_filter=${emails}</span>
 </pre></div>
 </div>
 </dd></dl>
