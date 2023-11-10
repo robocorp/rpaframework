@@ -16,6 +16,12 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+27.5.3 - 10 Nov 2023
+--------------------
+
+- Library **RPA.Outlook.Application** (:pr:`1127`):
+  Fix how keyword ``Move Emails`` works. Read more from the pull request.
+
 27.5.2 - 06 Nov 2023
 --------------------
 
