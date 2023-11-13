@@ -193,7 +193,11 @@ class FileSecrets(BaseSecretManager):
 
 
 def _raise_invalid_configuration():
-    missing_env_vars = [var for var in ["RC_API_SECRET_HOST", "RC_API_SECRET_TOKEN", "RC_WORKSPACE_ID"] if not os.getenv(var)]
+    missing_env_vars = [
+        var
+        for var in ["RC_API_SECRET_HOST", "RC_API_SECRET_TOKEN", "RC_WORKSPACE_ID"]
+        if not os.getenv(var)
+    ]
     if missing_env_vars:  # Only proceed if there are missing variables.
         missing_vars_str = ", ".join(missing_env_vars)
 
