@@ -193,21 +193,23 @@ class FileSecrets(BaseSecretManager):
 
 
 def _raise_invalid_configuration():
-    missing_env_vars = [var for var in ["RC_API_SECRET_HOST", "RC_API_SECRET_TOKEN", "RC_WORKSPACE_ID"] if
-                        not os.getenv(var)]
-    missing_vars_str = ", ".join(missing_env_vars)
+    missing_env_vars = [var for var in ["RC_API_SECRET_HOST", "RC_API_SECRET_TOKEN", "RC_WORKSPACE_ID"] if not os.getenv(var)]
+    if missing_env_vars:  # Only proceed if there are missing variables.
+        missing_vars_str = ", ".join(missing_env_vars)
 
-    error_message = (
-        f"Configuration Error: Missing required environment variable(s): {missing_vars_str}. "
-        "To connect to the Robocorp Control Room, these variables are essential. "
-        "Please verify your configuration to ensure that all required environment variables are set. "
-        "For local runs, configure these variables in your 'devdata/env.json' file. "
-        "Consult the 'Configure file vault support' section in the documentation for step-by-step setup instructions: "
-        "https://robocorp.com/docs/development-guide/variables-and-secrets/vault. "
-        "When running from the Control Room, these variables should be configured automatically."
-    )
+        error_message = (
+            f"Configuration Error: Missing required environment variable(s): {missing_vars_str}.\n\n"
+            "To connect to the Robocorp Control Room, these variables are essential. "
+            "Please verify your configuration to ensure that all required environment variables are set.\n\n"
+            "For local runs, configure these variables in your 'devdata/env.json' file.\n\n"
+            "Consult the 'Configure file vault support' section in the documentation for step-by-step setup instructions:\n"
+            "https://robocorp.com/docs/development-guide/variables-and-secrets/vault\n\n"
+            "When running from the Control Room, these variables should be configured automatically.\n"
+            "If running with Robocorp Visual Studio Code extension, ensure that the project is linked to Control Room:\n"
+            "https://robocorp.com/docs/developer-tools/visual-studio-code/extension-features#linking-to-control-room"
+        )
 
-    raise OSError(error_message)
+        raise OSError(error_message)
 
 
 class RobocorpVault(BaseSecretManager):
