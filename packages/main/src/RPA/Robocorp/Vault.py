@@ -202,8 +202,8 @@ def _raise_invalid_configuration():
         missing_vars_str = ", ".join(missing_env_vars)
 
         error_message = (
-            f"Configuration Error: Missing required environment variable(s):"
-            " {missing_vars_str}.\n\n"
+            "Configuration Error: Missing required environment variable(s):"
+            f" {missing_vars_str}.\n\n"
             "To connect to the Robocorp Control Room, these variables are essential. "
             "Please verify your configuration to ensure that all required environment"
             " variables are set.\n\n"
