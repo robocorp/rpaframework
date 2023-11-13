@@ -209,7 +209,7 @@ def _raise_invalid_configuration():
             "https://robocorp.com/docs/developer-tools/visual-studio-code/extension-features#linking-to-control-room"
         )
 
-        raise OSError(error_message)
+        raise KeyError(error_message)
 
 
 class RobocorpVault(BaseSecretManager):
