@@ -43,13 +43,17 @@ class EncryptionType(Enum):
     AES256 = auto()
 
 
+class UnknownEncryptionTypeError(Exception):
+    """Raised when unknown encryption type is used."""
+
+
 def to_hash_context(element: Hash) -> hashes.HashContext:
     """Convert hash enum value to hash context instance."""
     method = getattr(hashes, str(element.name))
     return hashes.Hash(method(), backend=default_backend())
 
 
-class CustomCrypto:
+class Crypto:
     """Library for common encryption and hashing operations.
 
     It uses the `Fernet <https://github.com/fernet/spec/blob/master/Spec.md>`_
@@ -120,6 +124,8 @@ class CustomCrypto:
         elif encryption_type == EncryptionType.AES256:
             key = os.urandom(32)
             return base64.urlsafe_b64encode(key)
+        else:
+            raise UnknownEncryptionTypeError
 
     def use_encryption_key(
         self,
@@ -145,6 +151,8 @@ class CustomCrypto:
             self._key = Fernet(key)
         elif encryption_type == EncryptionType.AES256:
             self._key = key
+        else:
+            raise UnknownEncryptionTypeError
 
     def use_encryption_key_from_vault(
         self,
@@ -260,6 +268,8 @@ class CustomCrypto:
             return self._key.encrypt(text)
         elif encryption_type == EncryptionType.AES256:
             return self._encrypt_aes256(text)
+        else:
+            raise UnknownEncryptionTypeError
 
     def decrypt_string(
         self,
@@ -299,7 +309,8 @@ class CustomCrypto:
                 ) from err
             except AttributeError as err:
                 raise ValueError(
-                    "Failed to decrypt string as Fernet encryption type (invalid key or key type)"
+                    "Failed to decrypt string as Fernet encryption type "
+                    "(invalid key or key type)"
                 ) from err
 
             if encoding is not None:
@@ -308,6 +319,8 @@ class CustomCrypto:
             return text
         elif encryption_type == EncryptionType.AES256:
             return self._decrypt_aes256(data)
+        else:
+            raise UnknownEncryptionTypeError
 
     def encrypt_file(
         self,
