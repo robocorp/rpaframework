@@ -1,10 +1,12 @@
 import base64
 from enum import Enum, auto
+import os
 from pathlib import Path
 from typing import Optional, Union
 
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
@@ -34,13 +36,20 @@ class Hash(Enum):
     SHA512_256 = auto()
 
 
+class EncryptionType(Enum):
+    """Enum to specify encryption type"""
+
+    FERNET = auto()
+    AES256 = auto()
+
+
 def to_hash_context(element: Hash) -> hashes.HashContext:
     """Convert hash enum value to hash context instance."""
     method = getattr(hashes, str(element.name))
     return hashes.Hash(method(), backend=default_backend())
 
 
-class Crypto:
+class CustomCrypto:
     """Library for common encryption and hashing operations.
 
     It uses the `Fernet <https://github.com/fernet/spec/blob/master/Spec.md>`_
@@ -92,7 +101,9 @@ class Crypto:
             ["RPA.Crypto.generate_key", "RPA.Crypto.use_encryption_key"]
         )
 
-    def generate_key(self) -> str:
+    def generate_key(
+        self, encryption_type: EncryptionType = EncryptionType.FERNET
+    ) -> str:
         """Generate a Fernet encryption key as base64 string.
 
         :return: Generated key as a string
@@ -104,9 +115,17 @@ class Crypto:
         If the key is lost, the encrypted data can not be recovered.
         If anyone else gains access to it, they can decrypt your data.
         """
-        return Fernet.generate_key().decode("utf-8")
+        if encryption_type == EncryptionType.FERNET:
+            return Fernet.generate_key().decode("utf-8")
+        elif encryption_type == EncryptionType.AES256:
+            key = os.urandom(32)
+            return base64.urlsafe_b64encode(key)
 
-    def use_encryption_key(self, key: str) -> None:
+    def use_encryption_key(
+        self,
+        key: Union[bytes, str],
+        encryption_type: EncryptionType = EncryptionType.FERNET,
+    ) -> None:
         """Set key for all following encryption/decryption operations.
 
         :param key: Encryption key as base64 string
@@ -122,10 +141,16 @@ class Crypto:
             ${key}=    Read file    encryption.key
             Use encryption key      ${key}
         """
-        self._key = Fernet(key)
+        if encryption_type == EncryptionType.FERNET:
+            self._key = Fernet(key)
+        elif encryption_type == EncryptionType.AES256:
+            self._key = key
 
     def use_encryption_key_from_vault(
-        self, name: str, key: Optional[str] = None
+        self,
+        name: str,
+        key: Optional[str] = None,
+        encryption_type: EncryptionType = EncryptionType.FERNET,
     ) -> None:
         """Load an encryption key from Robocorp Vault.
 
@@ -155,7 +180,7 @@ class Crypto:
             options = ", ".join(str(k) for k in secret.keys())
             raise ValueError(f"Secret '{name}' has multiple values: {options}")
 
-        self.use_encryption_key(value)
+        self.use_encryption_key(value, encryption_type=encryption_type)
 
     def hash_string(self, text: str, method: Hash = Hash.SHA1, encoding="utf-8") -> str:
         """Calculate a hash from a string, in base64 format.
@@ -206,7 +231,12 @@ class Crypto:
         digest = context.finalize()
         return base64.b64encode(digest).decode("utf-8")
 
-    def encrypt_string(self, text: Union[bytes, str], encoding: str = "utf-8") -> bytes:
+    def encrypt_string(
+        self,
+        text: Union[bytes, str],
+        encoding: str = "utf-8",
+        encryption_type: EncryptionType = EncryptionType.FERNET,
+    ) -> bytes:
         """Encrypt a string.
 
         :param text: Source text to encrypt
@@ -226,11 +256,16 @@ class Crypto:
         if isinstance(text, str):
             text = text.encode(encoding)
 
-        token = self._key.encrypt(text)
-        return token
+        if encryption_type == EncryptionType.FERNET:
+            return self._key.encrypt(text)
+        elif encryption_type == EncryptionType.AES256:
+            return self._encrypt_aes256(text)
 
     def decrypt_string(
-        self, data: Union[bytes, str], encoding: str = "utf-8"
+        self,
+        data: Union[bytes, str],
+        encoding: str = "utf-8",
+        encryption_type: EncryptionType = EncryptionType.FERNET,
     ) -> Union[str, bytes]:
         """Decrypt a string.
 
@@ -255,19 +290,31 @@ class Crypto:
         if isinstance(data, str):
             data = data.encode("utf-8")
 
-        try:
-            text = self._key.decrypt(data)
-        except InvalidToken as err:
-            raise ValueError(
-                "Failed to decrypt string (malformed content or invalid signature)"
-            ) from err
+        if encryption_type == EncryptionType.FERNET:
+            try:
+                text = self._key.decrypt(data)
+            except InvalidToken as err:
+                raise ValueError(
+                    "Failed to decrypt string (malformed content or invalid signature)"
+                ) from err
+            except AttributeError as err:
+                raise ValueError(
+                    "Failed to decrypt string as Fernet encryption type (invalid key or key type)"
+                ) from err
 
-        if encoding is not None:
-            text = text.decode(encoding)
+            if encoding is not None:
+                text = text.decode(encoding)
 
-        return text
+            return text
+        elif encryption_type == EncryptionType.AES256:
+            return self._decrypt_aes256(data)
 
-    def encrypt_file(self, path: str, output: Optional[str] = None) -> str:
+    def encrypt_file(
+        self,
+        path: str,
+        output: Optional[str] = None,
+        encryption_type: EncryptionType = EncryptionType.FERNET,
+    ) -> str:
         """Encrypt a file.
 
         :param path: Path to source input file
@@ -296,13 +343,21 @@ class Crypto:
 
         with open(path, "rb") as infile:
             data = infile.read()
-            token = self._key.encrypt(data)
+            if encryption_type == EncryptionType.FERNET:
+                token = self._key.encrypt(data)
+            elif encryption_type == EncryptionType.AES256:
+                token = self._encrypt_aes256(data)
 
         with open(output, "wb") as outfile:
             outfile.write(token)
             return str(output)
 
-    def decrypt_file(self, path: str, output: Optional[str] = None) -> str:
+    def decrypt_file(
+        self,
+        path: str,
+        output: Optional[str] = None,
+        encryption_type: EncryptionType = EncryptionType.FERNET,
+    ) -> str:
         """Decrypt a file.
 
         :param path: Path to encrypted input file
@@ -335,7 +390,10 @@ class Crypto:
         try:
             with open(path, "rb") as infile:
                 token = infile.read()
-                data = self._key.decrypt(token)
+                if encryption_type == EncryptionType.FERNET:
+                    data = self._key.decrypt(token)
+                elif encryption_type == EncryptionType.AES256:
+                    data = self._decrypt_aes256(token)
         except InvalidToken as err:
             raise ValueError(
                 "Failed to decrypt file (malformed content or invalid signature)"
@@ -344,3 +402,33 @@ class Crypto:
         with open(output, "wb") as outfile:
             outfile.write(data)
             return str(output)
+
+    # Helper methods for AES256 (same as before)
+    def _generate_aes256_key(self) -> bytes:
+        key = os.urandom(32)
+        return base64.urlsafe_b64encode(key)
+
+    def _encrypt_aes256(self, data: bytes) -> bytes:
+        backend = default_backend()
+        iv = os.urandom(12)
+        cipher = Cipher(
+            algorithms.AES(base64.urlsafe_b64decode(self._key)),
+            modes.GCM(iv),
+            backend=backend,
+        )
+        encryptor = cipher.encryptor()
+        ciphertext = encryptor.update(data) + encryptor.finalize()
+        return iv + encryptor.tag + ciphertext
+
+    def _decrypt_aes256(self, data: bytes) -> bytes:
+        backend = default_backend()
+        iv = data[:12]
+        tag = data[12:28]
+        ciphertext = data[28:]
+        cipher = Cipher(
+            algorithms.AES(base64.urlsafe_b64decode(self._key)),
+            modes.GCM(iv, tag),
+            backend=backend,
+        )
+        decryptor = cipher.decryptor()
+        return decryptor.update(ciphertext) + decryptor.finalize()
