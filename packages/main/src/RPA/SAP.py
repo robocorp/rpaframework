@@ -217,5 +217,5 @@ class SAP(SapGuiLibrary):
             self.session.findById(element_id).pressF4()
         except COMError as ex:
             self.take_screenshot()
-            message = "Cannot press F1 on the element with id '%s'." % element_id
+            message = "Cannot press F4 on the element with id '%s'." % element_id
             raise ValueError(message) from ex
