@@ -194,11 +194,11 @@ class SAP(SapGuiLibrary):
             message = "Cannot find Column_id '%s'." % col_id
             raise ValueError(message) from ex
     
-    def press_f1(self, element_id):
+    def press_f1(self, element_id: str):
         """Calls the PressF1 function on the passed element id.
         The element can be a textfield or a GridView inside a shell.
         
-        :param element: SAP element
+        :param element_id: id of the SAP element
         """
         try:
             self.session.findById(element_id).pressF1()
@@ -207,11 +207,11 @@ class SAP(SapGuiLibrary):
             message = "Cannot press F1 on the element with id '%s'." % element_id
             raise ValueError(message) from ex
 
-    def press_f4(self, element_id):
+    def press_f4(self, element_id: str):
         """Calls the PressF4 function on the passed element id.
         The element can be a textfield or a GridView inside a shell.
         
-        :param element: SAP element
+        :param element_id: id of the SAP element
         """
         try:
             self.session.findById(element_id).pressF4()
