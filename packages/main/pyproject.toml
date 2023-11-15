@@ -80,7 +80,7 @@ python-docx = "^0.8.11"  # htmldocx
 beautifulsoup4 = "^4.7.0"  # htmldocx, O365
 hubspot-api-client = "^4.0.6"
 pyotp = "^2.6.0"
-importlib-metadata = "^4.13.0"
+importlib-metadata = ">=4.13.0"
 O365 = ">=2.0.21,<2.0.27"
 requests = "^2.28.1"
 oauthlib = "^3.2.2"
