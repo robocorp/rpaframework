@@ -153,8 +153,6 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Desktop.OperatingSystem`_ | Read OS information and manipulate processes          | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
-| `Dialogs`_                 | Request user input during executions                  | dialogs                |
-+----------------------------+-------------------------------------------------------+------------------------+
 | `DocumentAI`_              | Intelligent Document Processing wrapper               | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `DocumentAI.Base64AI`_     | Intelligent Document Processing service               | x                      |
@@ -231,7 +229,6 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Desktop: https://rpaframework.org/libraries/desktop/
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
 .. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
-.. _Dialogs: https://rpaframework.org/libraries/dialogs/
 .. _DocumentAI: https://rpaframework.org/libraries/documentai
 .. _DocumentAI.Base64AI: https://rpaframework.org/libraries/documentai_base64ai/
 .. _DocumentAI.Nanonets: https://rpaframework.org/libraries/documentai_nanonets/

@@ -413,8 +413,9 @@ class Application(BaseApplication):
         self,
         account_name: str = None,
         source_folder: str = None,
-        email_filter: str = None,
+        email_filter: Any = None,
         target_folder: str = None,
+        mark_as_read: bool = True,
     ) -> bool:
         """Move emails from source folder to target folder.
 
@@ -426,9 +427,36 @@ class Application(BaseApplication):
         :param email_filter: how to filter email, default no filter,
          ie. all emails in folder
         :param target_folder: folder where emails are moved into
+        :param mark_as_read: mark emails as read after move, defaults to True
         :return: True if move operation was success, False if not
 
-        Example:
+        Python example.
+
+        .. code-block:: python
+
+            outlook = RPA.Outlook.Application()
+
+            # moving messages from Inbox to target_folder
+            outlook.move_emails(
+                target_folder='Processed Invoices',
+                email_filter="[Subject]='incoming invoice'"
+            )
+
+            # moving messages from source_folder to target_folder
+            outlook.move_emails(
+                source_folder='Incoming Invoices',
+                target_folder='Processed Invoices',
+                email_filter="[Subject]='incoming invoice'"
+            )
+
+            # move message objects from `get_emails` result
+            emails = outlook.get_emails("[Subject]='incoming invoice'")
+            outlook.move_emails(
+                target_folder='Processed Invoices',
+                email_filter=emails
+            )
+
+        Robot Framework example.
 
         .. code-block:: robotframework
 
@@ -442,31 +470,41 @@ class Application(BaseApplication):
             ...    source_folder=Incoming Invoices
             ...    target_folder=Processed Invoices
             ...    email_filter=[Subject]='incoming invoice'
+
+            # moving message objects from `Get Emails` result
+            ${emails}=    Get Emails    [Subject]='incoming invoice'
+            Move Emails
+            ...    target_folder=Processed Invoices
+            ...    email_filter=${emails}
         """
         if not target_folder:
             raise AttributeError("Can't move emails without target_folder")
-        folder = self._get_folder(account_name, source_folder)
-        folder_messages = folder.Items if folder else []
-        if folder_messages and email_filter:
+        tf = self._get_folder(account_name, target_folder)
+        if not tf or tf.Name != target_folder:
+            raise AttributeError("Did not find target folder")
+        self.logger.info("Found target folder: %s", tf.Name)
+        if email_filter and not isinstance(email_filter, str):
+            folder_messages = (
+                email_filter if isinstance(email_filter, list) else [email_filter]
+            )
+        else:
+            folder = self._get_folder(account_name, source_folder)
+            folder_messages = folder.Items if folder else []
             try:
                 folder_messages = folder_messages.Restrict(email_filter)
             except Exception:  # pylint: disable=broad-except
                 raise AttributeError(  # pylint: disable=raise-missing-from
                     "Invalid email filter '%s'" % email_filter
                 )
-        if not folder_messages:
+        if not folder_messages or len(folder_messages) == 0:
             self.logger.warning("Did not find emails to move")
             return False
-        tf = self._get_folder(account_name, target_folder)
-        if not tf or tf.Name != target_folder:
-            self.logger.warning("Did not find target folder")
-            return False
         self.logger.info("Found %d emails to move", len(folder_messages))
-        self.logger.info("Found target folder: %s", tf.Name)
         for m in folder_messages:
-            m.UnRead = False
+            m = m["object"] if isinstance(m, dict) else m
+            if mark_as_read:
+                m.UnRead = False
             m.Move(tf)
-            m.Save()
         return True
 
     def _mail_item_to_dict(self, mail_item):
