@@ -100,6 +100,7 @@ class Crypto:
     def __init__(self):
         self._vault = Vault()
         self._key = None
+        self._encryption_method = EncryptionType.FERNET
         listener = RobotLogListener()
         listener.register_protected_keywords(
             ["RPA.Crypto.generate_key", "RPA.Crypto.use_encryption_key"]
@@ -153,6 +154,7 @@ class Crypto:
             self._key = key
         else:
             raise UnknownEncryptionTypeError
+        self._encryption_method = encryption_type
 
     def use_encryption_key_from_vault(
         self,
@@ -243,7 +245,7 @@ class Crypto:
         self,
         text: Union[bytes, str],
         encoding: str = "utf-8",
-        encryption_type: EncryptionType = EncryptionType.FERNET,
+        encryption_type: Optional[EncryptionType] = None,
     ) -> bytes:
         """Encrypt a string.
 
@@ -264,6 +266,8 @@ class Crypto:
         if isinstance(text, str):
             text = text.encode(encoding)
 
+        encryption_type = encryption_type or self._encryption_method
+
         if encryption_type == EncryptionType.FERNET:
             return self._key.encrypt(text)
         elif encryption_type == EncryptionType.AES256:
@@ -275,7 +279,7 @@ class Crypto:
         self,
         data: Union[bytes, str],
         encoding: str = "utf-8",
-        encryption_type: EncryptionType = EncryptionType.FERNET,
+        encryption_type: Optional[EncryptionType] = None,
     ) -> Union[str, bytes]:
         """Decrypt a string.
 
@@ -299,6 +303,8 @@ class Crypto:
 
         if isinstance(data, str):
             data = data.encode("utf-8")
+
+        encryption_type = encryption_type or self._encryption_method
 
         if encryption_type == EncryptionType.FERNET:
             try:
@@ -326,7 +332,7 @@ class Crypto:
         self,
         path: str,
         output: Optional[str] = None,
-        encryption_type: EncryptionType = EncryptionType.FERNET,
+        encryption_type: Optional[EncryptionType] = None,
     ) -> str:
         """Encrypt a file.
 
@@ -345,6 +351,8 @@ class Crypto:
             ${path}=    Encrypt file    orders.xlsx
             Log    Path to encrypted file is: ${path}
         """
+        encryption_type = encryption_type or self._encryption_method
+
         path = Path(path)
         if not self._key:
             raise ValueError("No encryption key set")
@@ -369,7 +377,7 @@ class Crypto:
         self,
         path: str,
         output: Optional[str] = None,
-        encryption_type: EncryptionType = EncryptionType.FERNET,
+        encryption_type: Optional[EncryptionType] = None,
     ) -> str:
         """Decrypt a file.
 
@@ -388,6 +396,8 @@ class Crypto:
             ${path}=    Decrypt file    orders.xlsx.enc
             Log    Path to decrypted file is: ${path}
         """
+        encryption_type = encryption_type or self._encryption_method
+
         path = Path(path)
         if not self._key:
             raise ValueError("No encryption key set")
