@@ -1,7 +1,7 @@
 import base64
 from enum import Enum, auto
-import os
 from pathlib import Path
+from secrets import token_bytes
 from typing import Optional, Union
 
 from cryptography.fernet import Fernet, InvalidToken
@@ -123,8 +123,7 @@ class Crypto:
         if encryption_type == EncryptionType.FERNET:
             return Fernet.generate_key().decode("utf-8")
         elif encryption_type == EncryptionType.AES256:
-            key = os.urandom(32)
-            return base64.urlsafe_b64encode(key)
+            return self._generate_aes256_key()
         else:
             raise UnknownEncryptionTypeError
 
@@ -428,12 +427,12 @@ class Crypto:
 
     # Helper methods for AES256 (same as before)
     def _generate_aes256_key(self) -> bytes:
-        key = os.urandom(32)
+        key = token_bytes(32)
         return base64.urlsafe_b64encode(key)
 
     def _encrypt_aes256(self, data: bytes) -> bytes:
         backend = default_backend()
-        iv = os.urandom(12)
+        iv = token_bytes(12)
         cipher = Cipher(
             algorithms.AES(base64.urlsafe_b64decode(self._key)),
             modes.GCM(iv),
