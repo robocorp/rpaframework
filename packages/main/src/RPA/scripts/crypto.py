@@ -66,13 +66,12 @@ def key_parser(parent):
     """Create parser for 'key' subcommand."""
     parser = parent.add_parser("key", help="generate encryption key")
     parser.set_defaults(func=key_command)
+    parser.add_argument("-e", "--encryption-type", help="encryption type")
 
 
 def key_command(args):
     """Execute 'key' subcommand."""
-    del args  # unused
-
-    key = Crypto().generate_key()
+    key = Crypto().generate_key(encryption_type=args.encryption_type)
     print(key)
 
     logging.warning(
@@ -130,7 +129,7 @@ def encrypt_parser(parent):
 def encrypt_command(args):
     """Execute 'encrypt' subcommand."""
     lib = load_key(args)
-    token = lib.encrypt_string(args.input.read())
+    token = lib.encrypt_string(args.input.read(), encryption_type=args.encryption_type)
     args.output.write(token)
 
 
@@ -158,7 +157,9 @@ def decrypt_parser(parent):
 def decrypt_command(args):
     """Execute 'decrypt' subcommand."""
     lib = load_key(args)
-    token = lib.decrypt_string(args.input.read(), encoding=None)
+    token = lib.decrypt_string(
+        args.input.read(), encoding=None, encryption_type=args.encryption_type
+    )
     args.output.write(token)
 
 

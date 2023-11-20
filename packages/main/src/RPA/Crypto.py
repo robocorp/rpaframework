@@ -43,6 +43,21 @@ class EncryptionType(Enum):
     AES256 = auto()
 
 
+def to_encryption_type(value, default_value):
+    """Convert value to EncryptionType enum."""
+    if not value:
+        return default_value
+
+    if isinstance(value, EncryptionType):
+        return value
+
+    sanitized = str(value).upper().strip().replace(" ", "_")
+    try:
+        return EncryptionType[sanitized]
+    except KeyError as err:
+        raise ValueError(f"Unknown EncryptionType: {value}") from err
+
+
 class UnknownEncryptionTypeError(Exception):
     """Raised when unknown encryption type is used."""
 
@@ -56,10 +71,13 @@ def to_hash_context(element: Hash) -> hashes.HashContext:
 class Crypto:
     """Library for common encryption and hashing operations.
 
-    It uses the `Fernet <https://github.com/fernet/spec/blob/master/Spec.md>`_
-    format for encryption. More specifically, it uses AES in
-    CBC mode with a 128-bit key for encryption and HMAC with SHA256 for
-    authentication.
+    Library uses by default the
+    `Fernet <https://github.com/fernet/spec/blob/master/Spec.md>`_ format
+    for encryption. More specifically, it uses AES in CBC mode with
+    a 128-bit key for encryption and HMAC with SHA256 for authentication.
+
+    Alternative encryption format for the library is
+    `AES256 <https://en.wikipedia.org/wiki/Advanced_Encryption_Standard>`_.
 
     To use the encryption features, generate a key with the command line
     utility ``rpa-crypto`` or with the keyword ``Generate Key``. Store
@@ -97,17 +115,19 @@ class Crypto:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self):
+    def __init__(self, encryption_type: Optional[Union[str, EncryptionType]] = None):
         self._vault = Vault()
         self._key = None
-        self._encryption_method = EncryptionType.FERNET
+        self._encryption_method = to_encryption_type(
+            encryption_type, EncryptionType.FERNET
+        )
         listener = RobotLogListener()
         listener.register_protected_keywords(
             ["RPA.Crypto.generate_key", "RPA.Crypto.use_encryption_key"]
         )
 
     def generate_key(
-        self, encryption_type: EncryptionType = EncryptionType.FERNET
+        self, encryption_type: Optional[Union[str, EncryptionType]] = None
     ) -> str:
         """Generate a Fernet encryption key as base64 string.
 
@@ -120,6 +140,7 @@ class Crypto:
         If the key is lost, the encrypted data can not be recovered.
         If anyone else gains access to it, they can decrypt your data.
         """
+        encryption_type = to_encryption_type(encryption_type, self._encryption_method)
         if encryption_type == EncryptionType.FERNET:
             return Fernet.generate_key().decode("utf-8")
         elif encryption_type == EncryptionType.AES256:
@@ -130,7 +151,7 @@ class Crypto:
     def use_encryption_key(
         self,
         key: Union[bytes, str],
-        encryption_type: EncryptionType = EncryptionType.FERNET,
+        encryption_type: Optional[Union[str, EncryptionType]] = None,
     ) -> None:
         """Set key for all following encryption/decryption operations.
 
@@ -147,6 +168,7 @@ class Crypto:
             ${key}=    Read file    encryption.key
             Use encryption key      ${key}
         """
+        encryption_type = to_encryption_type(encryption_type, self._encryption_method)
         if encryption_type == EncryptionType.FERNET:
             self._key = Fernet(key)
         elif encryption_type == EncryptionType.AES256:
@@ -159,7 +181,7 @@ class Crypto:
         self,
         name: str,
         key: Optional[str] = None,
-        encryption_type: EncryptionType = EncryptionType.FERNET,
+        encryption_type: Optional[Union[str, EncryptionType]] = None,
     ) -> None:
         """Load an encryption key from Robocorp Vault.
 
@@ -177,6 +199,7 @@ class Crypto:
             # Secret with multiple values
             Use encryption key from vault    name=Encryption    key=CryptoKey
         """
+        encryption_type = to_encryption_type(encryption_type, self._encryption_method)
         secret = self._vault.get_secret(name)
 
         if key:
@@ -244,7 +267,7 @@ class Crypto:
         self,
         text: Union[bytes, str],
         encoding: str = "utf-8",
-        encryption_type: Optional[EncryptionType] = None,
+        encryption_type: Optional[Union[str, EncryptionType]] = None,
     ) -> bytes:
         """Encrypt a string.
 
@@ -265,7 +288,7 @@ class Crypto:
         if isinstance(text, str):
             text = text.encode(encoding)
 
-        encryption_type = encryption_type or self._encryption_method
+        encryption_type = to_encryption_type(encryption_type, self._encryption_method)
 
         if encryption_type == EncryptionType.FERNET:
             return self._key.encrypt(text)
@@ -278,7 +301,7 @@ class Crypto:
         self,
         data: Union[bytes, str],
         encoding: str = "utf-8",
-        encryption_type: Optional[EncryptionType] = None,
+        encryption_type: Optional[Union[str, EncryptionType]] = None,
     ) -> Union[str, bytes]:
         """Decrypt a string.
 
@@ -303,7 +326,7 @@ class Crypto:
         if isinstance(data, str):
             data = data.encode("utf-8")
 
-        encryption_type = encryption_type or self._encryption_method
+        encryption_type = to_encryption_type(encryption_type, self._encryption_method)
 
         if encryption_type == EncryptionType.FERNET:
             try:
@@ -331,7 +354,7 @@ class Crypto:
         self,
         path: str,
         output: Optional[str] = None,
-        encryption_type: Optional[EncryptionType] = None,
+        encryption_type: Optional[Union[str, EncryptionType]] = None,
     ) -> str:
         """Encrypt a file.
 
@@ -350,7 +373,7 @@ class Crypto:
             ${path}=    Encrypt file    orders.xlsx
             Log    Path to encrypted file is: ${path}
         """
-        encryption_type = encryption_type or self._encryption_method
+        encryption_type = to_encryption_type(encryption_type, self._encryption_method)
 
         path = Path(path)
         if not self._key:
@@ -376,7 +399,7 @@ class Crypto:
         self,
         path: str,
         output: Optional[str] = None,
-        encryption_type: Optional[EncryptionType] = None,
+        encryption_type: Optional[Union[str, EncryptionType]] = None,
     ) -> str:
         """Decrypt a file.
 
@@ -395,7 +418,7 @@ class Crypto:
             ${path}=    Decrypt file    orders.xlsx.enc
             Log    Path to decrypted file is: ${path}
         """
-        encryption_type = encryption_type or self._encryption_method
+        encryption_type = to_encryption_type(encryption_type, self._encryption_method)
 
         path = Path(path)
         if not self._key:
