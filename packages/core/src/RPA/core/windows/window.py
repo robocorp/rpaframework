@@ -70,10 +70,9 @@ class WindowMethods(WindowsContext):
         self,
         icons: bool = False,
         icon_save_directory: Optional[str] = None,
-        get_process_info: bool = True,
     ) -> List[Dict]:
         windows = auto.GetRootControl().GetChildren()
-        process_list = get_process_list(get_process_info)
+        process_list = get_process_list(self.ctx.list_processes)
         win_list = []
         for win in windows:
             pid = win.ProcessId
@@ -90,10 +89,14 @@ class WindowMethods(WindowsContext):
             rectangle = (
                 [rect.left, rect.top, rect.right, rect.bottom] if rect else [None] * 4
             )
+            if self.ctx.list_processes:
+                name = process_list[pid] if pid in process_list else None
+            else:
+                name = Path(fullpath).name if fullpath else None
             info = {
                 "title": win.Name,
                 "pid": pid,
-                "name": process_list[pid] if pid in process_list else None,
+                "name": name,
                 "path": fullpath,
                 "handle": handle,
                 "icon": icon_string,
