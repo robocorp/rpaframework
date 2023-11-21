@@ -12,6 +12,11 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Update ``selenium`` package to the version **4.15.2**.
+- Library **RPA.Crypto** (:pr:`1128`): Add `AES256` encryption method support.
+- Library **RPA.Windows** (:pr:`1134`; ``rpaframework-windows`` **7.5.0**): Add keywords
+  ``Enable Process Listing`` and ``Disable Process Listing`` to enable/disable the listing
+  of processes in the ``List Windows`` keyword.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
