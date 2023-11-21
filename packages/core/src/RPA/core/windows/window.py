@@ -89,10 +89,9 @@ class WindowMethods(WindowsContext):
             rectangle = (
                 [rect.left, rect.top, rect.right, rect.bottom] if rect else [None] * 4
             )
-            if self.ctx.list_processes:
-                name = process_list[pid] if pid in process_list else None
-            else:
-                name = Path(fullpath).name if fullpath else None
+            name = process_list[pid] if pid in process_list else None
+            if not name and fullpath:
+                name = Path(fullpath).name
             info = {
                 "title": win.Name,
                 "pid": pid,
