@@ -72,7 +72,7 @@ class WindowMethods(WindowsContext):
         icon_save_directory: Optional[str] = None,
     ) -> List[Dict]:
         windows = auto.GetRootControl().GetChildren()
-        process_list = get_process_list(self.ctx.list_processes)
+        process_list = get_process_list() if self.ctx.list_processes else {}
         win_list = []
         for win in windows:
             pid = win.ProcessId
