@@ -67,10 +67,10 @@ class WindowMethods(WindowsContext):
 
     @method
     def list_windows(
-        self, icons: bool = False, icon_save_directory: Optional[str] = None
+        self, icons: bool = False, icon_save_directory: Optional[str] = None, get_process_info: bool = True
     ) -> List[Dict]:
         windows = auto.GetRootControl().GetChildren()
-        process_list = get_process_list()
+        process_list = get_process_list(get_process_info)
         win_list = []
         for win in windows:
             pid = win.ProcessId
