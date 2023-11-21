@@ -55,3 +55,6 @@ invoke.yaml
 # Ignore Java output files
 *.class
 *.jar
+
+# PyTest
+**/.pytest_cache/
