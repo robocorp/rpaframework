@@ -7,9 +7,12 @@ if IS_WINDOWS:
     import psutil
 
 
-def get_process_list() -> Dict:
+def get_process_list(get_process_info: bool = True) -> Dict:
     """Get process list.
 
     Returns dictionary mapping process id to process name
     """
-    return {proc.pid: proc.name() for proc in psutil.process_iter()}
+    if get_process_info:
+        return {proc.pid: proc.name() for proc in psutil.process_iter()}
+    else:
+        return {}
