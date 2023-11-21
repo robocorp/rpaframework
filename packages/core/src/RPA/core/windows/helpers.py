@@ -13,4 +13,3 @@ def get_process_list() -> Dict:
     Returns dictionary mapping process id to process name
     """
     return {proc.pid: proc.name() for proc in psutil.process_iter()}
-
