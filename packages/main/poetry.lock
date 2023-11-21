@@ -700,13 +700,13 @@ files = [
 
 [[package]]
 name = "exceptiongroup"
-version = "1.1.3"
+version = "1.2.0"
 description = "Backport of PEP 654 (exception groups)"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "exceptiongroup-1.1.3-py3-none-any.whl", hash = "sha256:343280667a4585d195ca1cf9cef84a4e178c4b6cf2274caef9859782b567d5e3"},
-    {file = "exceptiongroup-1.1.3.tar.gz", hash = "sha256:097acd85d473d75af5bb98e41b61ff7fe35efe6675e4f9370ec6ec5126d160e9"},
+    {file = "exceptiongroup-1.2.0-py3-none-any.whl", hash = "sha256:4bfd3996ac73b41e9b9628b04e079f193850720ea5945fc96a08633c66912f14"},
+    {file = "exceptiongroup-1.2.0.tar.gz", hash = "sha256:91f5c769735f051a4290d52edd0858999b57e5876e9f85937691bd4c9fa3ed68"},
 ]
 
 [package.extras]
@@ -2959,13 +2959,13 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "11.2.3"
+version = "11.3.0"
 description = "Core utilities used by RPA Framework"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_core-11.2.3-py3-none-any.whl", hash = "sha256:860d36c616e314ccaa5536d8c23b2bb6c0a8d70c7c7319bf315a8e8fd7a86fb5"},
-    {file = "rpaframework_core-11.2.3.tar.gz", hash = "sha256:cc565fef0976d2bdbcdddd1319a56ed58b2ba06b78e24c5e3ea29bc80a23f045"},
+    {file = "rpaframework_core-11.3.0-py3-none-any.whl", hash = "sha256:7b6ad15af0c91fd2f1434052ae2c3dc30c62663e7bd4851d03892db3429d7785"},
+    {file = "rpaframework_core-11.3.0.tar.gz", hash = "sha256:bf446cb28b5c5836c62e10a8673cd44e5ad20f3c7eb013000cc45e5796ee6417"},
 ]
 
 [package.dependencies]
@@ -2998,13 +2998,13 @@ rpaframework-core = ">=11.2.1,<12.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "7.4.1"
+version = "7.5.0"
 description = "Windows library for RPA Framework"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_windows-7.4.1-py3-none-any.whl", hash = "sha256:acb684d7a9dce861fa37085d155ea36ade94049a00706540fddd38c7f466d9b7"},
-    {file = "rpaframework_windows-7.4.1.tar.gz", hash = "sha256:540f565764b5947dc9713e4597c7fc68119e7ff110287064080f059a3111ebb7"},
+    {file = "rpaframework_windows-7.5.0-py3-none-any.whl", hash = "sha256:deaae12edee8d773b3af008881d4570bfa2d79fa0e9051916166d2d4b09f904b"},
+    {file = "rpaframework_windows-7.5.0.tar.gz", hash = "sha256:d2f0cc69c2a9634f1fda59960b138e6018979f629de2597209ead2d56923e63b"},
 ]
 
 [package.dependencies]
@@ -3015,7 +3015,7 @@ pynput-robocorp-fork = ">=5.0.0,<6.0.0"
 pywin32 = {version = ">=300,<307", markers = "python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.1.0 || >6.1.0,<7.0.0"
 robotframework-pythonlibcore = ">=4.2.0,<5.0.0"
-rpaframework-core = ">=11.0.0,<12.0.0"
+rpaframework-core = ">=11.3.0,<12.0.0"
 uiautomation = ">=2.0.15,<3.0.0"
 
 [[package]]
@@ -3160,17 +3160,17 @@ urllib3 = {version = ">=1.26,<3", extras = ["socks"]}
 
 [[package]]
 name = "setuptools"
-version = "68.2.2"
+version = "69.0.1"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "setuptools-68.2.2-py3-none-any.whl", hash = "sha256:b454a35605876da60632df1a60f736524eb73cc47bbc9f3f1ef1b644de74fd2a"},
-    {file = "setuptools-68.2.2.tar.gz", hash = "sha256:4ac1475276d2f1c48684874089fefcd83bd7162ddaafb81fac866ba0db282a87"},
+    {file = "setuptools-69.0.1-py3-none-any.whl", hash = "sha256:6875bbd06382d857b1b90cd07cee6a2df701a164f241095706b5192bc56c5c62"},
+    {file = "setuptools-69.0.1.tar.gz", hash = "sha256:f25195d54deb649832182d6455bffba7ac3d8fe71d35185e738d2198a4310044"},
 ]
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (<7.2.5)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
 testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "packaging (>=23.1)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
@@ -3833,4 +3833,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "cabe057e0e8d743306d0ec14823e9c4cb36f9316a6c3ba9099fc3bcb88b4be77"
+content-hash = "acf819adfd39e6ec9f19be83d846a73f99d5188760874428f471398b8c3f467e"
