@@ -192,6 +192,38 @@ class FileSecrets(BaseSecretManager):
         self.save()
 
 
+def _raise_invalid_configuration():
+    missing_env_vars = [
+        var
+        for var in ["RC_API_SECRET_HOST", "RC_API_SECRET_TOKEN", "RC_WORKSPACE_ID"]
+        if not os.getenv(var)
+    ]
+    if missing_env_vars:  # Only proceed if there are missing variables.
+        missing_vars_str = ", ".join(missing_env_vars)
+
+        error_message = (
+            "Configuration Error: Missing required environment variable(s):"
+            f" {missing_vars_str}.\n\n"
+            "To connect to the Robocorp Control Room, these variables are essential. "
+            "Please verify your configuration to ensure that all required environment"
+            " variables are set.\n\n"
+            "For local runs, configure these variables in your 'devdata/env.json'"
+            " file.\n\n"
+            "Consult the 'Configure file vault support' section in the documentation"
+            " for step-by-step setup instructions:\n"
+            "https://robocorp.com/docs/development-guide/"
+            "variables-and-secrets/vault\n\n"
+            "When running from the Control Room, these variables should be "
+            "configured automatically.\n"
+            "If running with Robocorp Visual Studio Code extension, ensure that"
+            " the project is linked to Control Room:\n"
+            "https://robocorp.com/docs/developer-tools/visual-studio-code/"
+            "extension-features#linking-to-control-room"
+        )
+
+        raise KeyError(error_message)
+
+
 class RobocorpVault(BaseSecretManager):
     """Adapter for secrets stored in Robocorp Vault.
 
@@ -211,9 +243,12 @@ class RobocorpVault(BaseSecretManager):
         # pylint: disable=unused-argument
         self.logger = logging.getLogger(__name__)
         # Environment variables set by runner
-        self._host = required_env("RC_API_SECRET_HOST")
-        self._token = required_env("RC_API_SECRET_TOKEN")
-        self._workspace = required_env("RC_WORKSPACE_ID")
+        try:
+            self._host = required_env("RC_API_SECRET_HOST")
+            self._token = required_env("RC_API_SECRET_TOKEN")
+            self._workspace = required_env("RC_WORKSPACE_ID")
+        except KeyError:
+            _raise_invalid_configuration()
         # Generated lazily on request
         self.__private_key = None
         self.__public_bytes = None

@@ -2,7 +2,7 @@ import argparse
 import logging
 import sys
 import traceback
-from RPA.Crypto import Crypto, Hash
+from RPA.Crypto import Crypto, Hash, EncryptionType
 
 
 DESCRIPTION = """
@@ -37,20 +37,25 @@ def key_args(parser):
     mxg.add_argument("-t", "--text", help="encryption key as text")
     mxg.add_argument("-f", "--file", help="encryption key as file")
     mxg.add_argument("-s", "--secret", help="encryption key as Robocorp Vault secret")
+    mxg.add_argument("-e", "--encryption-type", help="encryption type")
 
 
 def load_key(args):
     """Parse encryption key arguments into a Crypto library instance."""
     lib = Crypto()
 
+    encryption_type = EncryptionType.FERNET
+    if args.encryption_type:
+        encryption_type = EncryptionType[args.encryption_type]
+
     if args.text:
-        lib.use_encryption_key(args.text)
+        lib.use_encryption_key(args.text, encryption_type=encryption_type)
     elif args.file:
         with open(args.file, encoding="utf-8") as infile:
-            lib.use_encryption_key(infile.read())
+            lib.use_encryption_key(infile.read(), encryption_type=encryption_type)
     elif args.secret:
         name, _, key = args.secret.partition(".")
-        lib.use_encryption_key_from_vault(name, key)
+        lib.use_encryption_key_from_vault(name, key, encryption_type=encryption_type)
     else:
         raise RuntimeError("Unhandled encryption key type")
 
@@ -61,13 +66,12 @@ def key_parser(parent):
     """Create parser for 'key' subcommand."""
     parser = parent.add_parser("key", help="generate encryption key")
     parser.set_defaults(func=key_command)
+    parser.add_argument("-e", "--encryption-type", help="encryption type")
 
 
 def key_command(args):
     """Execute 'key' subcommand."""
-    del args  # unused
-
-    key = Crypto().generate_key()
+    key = Crypto().generate_key(encryption_type=args.encryption_type)
     print(key)
 
     logging.warning(
@@ -125,7 +129,7 @@ def encrypt_parser(parent):
 def encrypt_command(args):
     """Execute 'encrypt' subcommand."""
     lib = load_key(args)
-    token = lib.encrypt_string(args.input.read())
+    token = lib.encrypt_string(args.input.read(), encryption_type=args.encryption_type)
     args.output.write(token)
 
 
@@ -153,7 +157,9 @@ def decrypt_parser(parent):
 def decrypt_command(args):
     """Execute 'decrypt' subcommand."""
     lib = load_key(args)
-    token = lib.decrypt_string(args.input.read(), encoding=None)
+    token = lib.decrypt_string(
+        args.input.read(), encoding=None, encryption_type=args.encryption_type
+    )
     args.output.write(token)
 
 

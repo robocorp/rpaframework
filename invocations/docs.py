@@ -16,7 +16,6 @@ EXCLUDES = [
     "RPA.Cloud.objects*",
     "RPA.Desktop.keywords*",
     "RPA.Desktop.utils*",
-    "RPA.Dialogs.*",
     "RPA.Assistant.*",
     "RPA.Email.common*",
     "RPA.PDF.keywords*",

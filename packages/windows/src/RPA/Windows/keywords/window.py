@@ -400,3 +400,13 @@ class WindowKeywords(WindowMethods):
             Log     ${ver}  # 10
         """
         return utils.get_win_version()
+
+    @keyword(tags=["window"])
+    def enable_process_listing(self) -> None:
+        """Enables process iteration in `List Windows` keyword."""
+        self.ctx.list_processes = True
+
+    @keyword(tags=["window"])
+    def disable_process_listing(self) -> None:
+        """Disables process iteration in `List Windows` keyword."""
+        self.ctx.list_processes = False

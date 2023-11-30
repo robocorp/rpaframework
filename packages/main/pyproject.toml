@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "27.5.3"
+version = "27.7.0"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -36,9 +36,9 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8.1"
 docutils = "*"
-rpaframework-core = "^11.2.3"
+rpaframework-core = "^11.3.0"
 rpaframework-pdf = "^7.3.0"
-rpaframework-windows = { version = "^7.4.0", platform = "win32" }
+rpaframework-windows = { version = "^7.5.0", platform = "win32" }
 java-access-bridge-wrapper = "^1.1.0"
 robocorp-storage = "^1.0.2"
 jsonpath-ng = "^1.5.2"
@@ -71,7 +71,7 @@ cryptography = "^41.0.3"
 mss = "^6.0.0"
 chardet = "^3.0.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
-selenium = "4.13.0"
+selenium = "4.15.2"
 click = "^8.1.2"
 PyYAML = ">=5.4.1,<7.0.0"
 tenacity = "^8.0.1"
@@ -79,7 +79,7 @@ htmldocx = "^0.0.6"
 python-docx = "^0.8.11"                                                      # htmldocx
 beautifulsoup4 = "^4.7.0"                                                    # htmldocx, O365
 pyotp = "^2.6.0"
-importlib-metadata = "^4.13.0"
+importlib-metadata = ">=4.13.0"
 O365 = ">=2.0.21,<2.0.27"
 requests = "^2.28.1"
 oauthlib = "^3.2.2"

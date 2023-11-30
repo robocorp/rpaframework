@@ -12,15 +12,33 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+27.7.0 - 21 Nov 2023
+--------------------
+
+- Update ``selenium`` package to the version **4.15.2**.
+- Library **RPA.Crypto** (:pr:`1128`): Add `AES256` encryption method support.
+- Library **RPA.Windows** (:pr:`1134`; ``rpaframework-windows`` **7.5.0**): Add keywords
+  ``Enable Process Listing`` and ``Disable Process Listing`` to enable/disable the listing
+  of processes in the ``List Windows`` keyword.
+
+27.6.0 - 15 Nov 2023
+--------------------
+
+- Library **RPA.Robocorp.Vault** (:pr:`1129`): Improve error message when trying to
+  connect to Control Room Vault without valid connection details.
+- Library **RPA.SAP** (:pr:`1130`): Add keywords for pressing F1 or F4 on textfield
+  and gridview elements. Thanks to `Enrico Franzelli <https://github.com/wisenrico>`_
+  for the contribution!
+- Relax `importlib-metadata` version requirement to allow `4.13.0` and above.
 
 27.5.3 - 10 Nov 2023
 --------------------
 
-- Library **RPA.Outlook.Application** (:pr:`1127`):
-  Fix how keyword ``Move Emails`` works. Read more from the pull request.
+- Library **RPA.Outlook.Application** (:pr:`1127`): Fix how keyword ``Move Emails`` works.
+  Read more from the pull request.
 
 27.5.2 - 06 Nov 2023
 --------------------
