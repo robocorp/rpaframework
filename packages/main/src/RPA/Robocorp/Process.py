@@ -3,12 +3,12 @@ import json
 import logging
 import os
 from pathlib import Path
+import requests
 from typing import Optional, Dict, List, Union, Any, Tuple
 
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
-from RPA.HTTP import HTTP
 from RPA.RobotLogListener import RobotLogListener
 
 try:
@@ -236,7 +236,7 @@ class Process:
             "robocorp_api_server", f"{process_api_host_env}/process-v1"
         )
         self.set_credentials(workspace_id, process_id, workspace_api_key)
-        self.http = HTTP()
+        # self.http = HTTP()
 
     @keyword(tags=["set"])
     def set_workspace_id(self, workspace_id: Optional[str] = None) -> None:
@@ -328,12 +328,11 @@ class Process:
         ========== ====== =======
         """  # noqa: E501
         endpoint = "runs-batch" if batch else "runs"
-        response = self.http.session_less_post(
+        response = requests.post(
             url=f"{self.process_api(process_id)}/{endpoint}",
             headers=self.headers,
             json=work_items or [],
         )
-
         return response.json()
 
     @keyword(tags=["process", "post", "work item", "start"])
@@ -359,7 +358,7 @@ class Process:
             request_data["workItemIds"] = extra_info
         # elif ctype == ConfigurationType.storages:
         #    request_data["storages"] = extra_info
-        response = self.http.session_less_post(
+        response = requests.post(
             url=f"{self.process_api(process_id)}/run-request",
             headers=self.headers,
             data=json.dumps(request_data),
@@ -381,7 +380,7 @@ class Process:
         :return: The integer that represents the work item id
         """
         files = [files] if isinstance(files, str) else files or []
-        response = self.http.session_less_post(
+        response = requests.post(
             url=f"{self.process_api(process_id)}/work-items",
             headers=self.headers,
             json={"payload": payload or {}},
@@ -410,7 +409,7 @@ class Process:
         process_id: Optional[str] = None,
     ) -> Tuple[str, Dict[str, Any]]:
         upload_filesize = Path(filepath).stat().st_size
-        response = self.http.session_less_post(
+        response = requests.post(
             url=f"{self.process_api(process_id)}/work-items/{workitem_id}/files/upload",
             headers=self.headers,
             data=json.dumps(
@@ -427,7 +426,7 @@ class Process:
             url = data["url"]
             fields = data["fields"]
             files = {"file": (workitem_filename, infile.read())}
-            response = self.http.session_less_post(url, data=fields, files=files)
+            response = requests.post(url, data=fields, files=files)
             response.raise_for_status()
             return response.status_code, response.text
 
@@ -438,7 +437,7 @@ class Process:
         :param workspace_id: specific Control Room workspace to which process belongs to
         :return: the JSON data of the process runs based on the provided parameters
         """
-        response = self.http.session_less_get(
+        response = requests.get(
             url=f"{self.workspace_api(workspace_id)}/processes",
             headers=self.headers,
         )
@@ -460,7 +459,7 @@ class Process:
         :param process_id: specific process to which items belongs to
         :return: the JSON data of the process runs based on the provided parameters
         """
-        response = self.http.session_less_get(
+        response = requests.get(
             url=f"{self.process_api(process_id)}/work-items",
             headers=self.headers,
             params={"includeData": str(include_data).lower()},
@@ -490,7 +489,7 @@ class Process:
          the response (default False)
         :param item_state: state of work items to return (default all)
         """
-        response = self.http.session_less_get(
+        response = requests.get(
             url=f"{self.process_api(process_id)}/runs/{process_run_id}/work-items",
             headers=self.headers,
             params={
@@ -522,7 +521,7 @@ class Process:
         :param process_id: specific process to which runs belongs to
         :return: the JSON of the work items associated with a given process
         """
-        response = self.http.session_less_get(
+        response = requests.get(
             url=f"{self.process_api(process_id)}/work-items/{workitem_id}",
             headers=self.headers,
             params={"includeData": str(include_data).lower()},
@@ -544,7 +543,7 @@ class Process:
         :param process_id: specific process to which runs belongs to
         :return: the JSON data of the process runs based on the provided parameters
         """
-        response = self.http.session_less_get(
+        response = requests.get(
             url=f"{self.process_api(process_id)}/runs",
             headers=self.headers,
             params={"limit": limit},
@@ -571,7 +570,7 @@ class Process:
         :param workspace_id: specific Control Room workspace to which process belongs to
         :return: the JSON data of the process runs based on the provided parameters
         """
-        response = self.http.session_less_get(
+        response = requests.get(
             url=f"{self.workspace_api(workspace_id)}/pruns",
             headers=self.headers,
             params={"limit": limit},
@@ -601,7 +600,7 @@ class Process:
         request_url = f"{self.process_api(process_id)}/runs/{process_run_id}"
         if step_run_id:
             request_url = f"{request_url}/robotRuns/{step_run_id}"
-        response = self.http.session_less_get(
+        response = requests.get(
             url=request_url,
             headers=self.headers,
         )
@@ -633,7 +632,7 @@ class Process:
         :param process_id: specific process to start
         :return: the response JSON
         """
-        response = self.http.session_less_post(
+        response = requests.post(
             url=f"{self.process_api(process_id)}/work-items/{work_item_id}/retry",
             headers=self.headers,
         )
@@ -657,7 +656,7 @@ class Process:
         request_url = f"{self.process_api(process_id)}/runs/{process_run_id}"
         request_url = f"{request_url}/robotRuns/{step_run_id}/artifacts"
         self.logger.info("GET %s", request_url)
-        response = self.http.session_less_get(
+        response = requests.get(
             url=request_url,
             headers=self.headers,
         )
@@ -687,7 +686,7 @@ class Process:
             f"{request_url}/robotRuns/{step_run_id}/artifacts/{artifact_id}/{filename}"
         )
         self.logger.info("GET %s", request_url)
-        response = self.http.session_less_get(
+        response = requests.get(
             url=request_url,
             headers=self.headers,
         )
