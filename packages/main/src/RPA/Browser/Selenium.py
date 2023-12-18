@@ -345,7 +345,7 @@ class Selenium(SeleniumLibrary):
 
     @keyword
     @auto_headless
-    def open_available_browser(
+    def open_available_browser(  # noqa: C901
         self,
         url: Optional[str] = None,
         use_profile: bool = False,
@@ -506,18 +506,19 @@ class Selenium(SeleniumLibrary):
 
         attempts = []
         index_or_alias = None
+        browser_found = True
+        current_browser = None
         self.headless: bool = headless  # it's resolved through the decorator
 
         # Try all browsers in preferred order
         for browser, download in product(browsers, downloads):
+            if current_browser != browser:
+                current_browser = browser
+                browser_found = True
+            elif not browser_found:
+                continue
             try:
-                self.logger.debug(
-                    "Creating webdriver for %r (headless: %s, download: %s)",
-                    browser,
-                    headless,
-                    download,
-                )
-                kwargs, arguments = self._get_driver_args(
+                kwargs, arguments, browser_version = self._get_driver_args(
                     browser,
                     headless,
                     maximized,
@@ -531,13 +532,29 @@ class Selenium(SeleniumLibrary):
                     port,
                     url,
                 )
+                if not browser_version:
+                    attempts.append(
+                        (browser, download, "Could not get browser version")
+                    )
+                    self.logger.info(
+                        "Could not detect version of the %s browser", browser
+                    )
+                    browser_found = False
+                    continue
+                self.logger.debug(
+                    "Creating webdriver for %r (headless: %s, download: %s)",
+                    browser,
+                    headless,
+                    download,
+                )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
                 )
                 attempts.append((browser, download, ""))
                 self.logger.info(
-                    "Created %s browser with arguments: %s",
+                    "Created %s browser (version %s) with arguments: %s",
                     browser,
+                    browser_version,
                     " ".join(arguments),
                 )
                 break
@@ -756,11 +773,11 @@ class Selenium(SeleniumLibrary):
         options: Optional[OptionsType] = None,
         port: Optional[int] = None,
         url: Optional[str] = None,
-    ) -> Tuple[dict, Any]:
+    ) -> Tuple[dict, Any, str]:
         """Get browser and webdriver arguments for given options."""
         browser_lower = browser.lower()
         if browser_lower not in self.AVAILABLE_OPTIONS:
-            return {}, []
+            return {}, [], None
 
         options: ArgOptions = self.normalize_options(options, browser=browser)
         if headless:
@@ -808,7 +825,8 @@ class Selenium(SeleniumLibrary):
             )
 
         kwargs["options"] = options  # legitimate webdriver kwarg separate from service
-        return kwargs, options.arguments
+        browser_version = self._get_browser_version(browser, options=options)
+        return kwargs, options.arguments, browser_version
 
     def _set_headless_options(self, browser_lower: str, options: ArgOptions) -> None:
         """Set headless mode for the browser, if possible.
@@ -963,10 +981,16 @@ class Selenium(SeleniumLibrary):
 
         return BrowserService
 
-    def _log_browser_version(self, browser: str, *, options: ArgOptions):
+    def _get_browser_version(self, browser: str, *, options: ArgOptions):
+        cap_browser = browser[0].upper() + browser[1:]
         binary_location = getattr(options, "binary_location", None)
-        version = core_webdriver.get_browser_version(browser, path=binary_location)
-        self.logger.info("Targeted browser version: %s", version)
+        try:
+            version = core_webdriver.get_browser_version(
+                cap_browser, path=binary_location
+            )
+        except Exception:  # pylint: disable=broad-except
+            return None
+        return version
 
     def _create_webdriver(
         self, browser: str, alias: Optional[str], download: bool, **kwargs
@@ -1003,7 +1027,6 @@ class Selenium(SeleniumLibrary):
             # NOTE: But don't break a browser name like "ChromiumEdge".
             cap_browser = browser[0].upper() + browser[1:]
             kwargs["service"] = service
-            self._log_browser_version(cap_browser, options=kwargs["options"])
             return self.browser_management.create_webdriver(
                 cap_browser, alias, **kwargs
             )
