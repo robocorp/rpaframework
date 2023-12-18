@@ -18,6 +18,8 @@ Latest versions
 28.0.0 - 18 Dec 2023
 --------------------
 
+- Library **RPA.Browser.Selenium** (:pr:`1139`): Keyword ``Open Available Browser`` won't
+  anymore try to initialize webdrivers for browsers that are not installed in the system.
 - Library **RPA.Hubspot** (:issue:`1106`): Extract the ``RPA.Hubspot`` library out of the
   main package and into its own package ``rpaframework-hubspot``. This is a breaking
   change, please update your ``conda.yaml`` accordingly.
