@@ -144,7 +144,7 @@ class Crypto:
         if encryption_type == EncryptionType.FERNET:
             return Fernet.generate_key().decode("utf-8")
         elif encryption_type == EncryptionType.AES256:
-            return self._generate_aes256_key()
+            return self._generate_aes256_key().decode("utf-8")
         else:
             raise UnknownEncryptionTypeError
 
@@ -343,10 +343,12 @@ class Crypto:
 
             if encoding is not None:
                 text = text.decode(encoding)
-
             return text
         elif encryption_type == EncryptionType.AES256:
-            return self._decrypt_aes256(data)
+            text = self._decrypt_aes256(data)
+            if encoding is not None:
+                text = text.decode(encoding)
+            return text
         else:
             raise UnknownEncryptionTypeError
 
