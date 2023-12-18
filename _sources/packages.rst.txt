@@ -62,6 +62,10 @@
    :target: https://pypi.python.org/pypi/rpaframework-google
    :alt: rpaframework-google latest version
 
+.. image:: https://img.shields.io/pypi/v/rpaframework-hubspot.svg?label=rpaframework-hubspot&style=for-the-badge&color=blue
+   :target: https://pypi.python.org/pypi/rpaframework-hubspot
+   :alt: rpaframework-hubspot latest version
+
 .. image:: https://img.shields.io/pypi/v/rpaframework-openai.svg?label=rpaframework-openai&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-openai
    :alt: rpaframework-openai latest version
