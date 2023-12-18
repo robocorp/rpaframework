@@ -15,6 +15,17 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28.0.0 - 18 Dec 2023
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1139`): Keyword ``Open Available Browser`` won't
+  anymore try to initialize webdrivers for browsers that are not installed in the system.
+- Library **RPA.Crypto** (:pr:`1140`): Fix `AES256`` return types for keywords
+  ``Generate Key`` and ``Decrypt String``.
+- Library **RPA.Hubspot** (:issue:`1106`): Extract the ``RPA.Hubspot`` library out of the
+  main package and into its own package ``rpaframework-hubspot``. This is a breaking
+  change, please update your ``conda.yaml`` accordingly.
+
 27.7.0 - 21 Nov 2023
 --------------------
 
