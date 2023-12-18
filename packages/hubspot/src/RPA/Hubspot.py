@@ -6,6 +6,14 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import requests
+from robot.api.deco import keyword, library
+from tenacity import (
+    before_sleep_log,
+    retry,
+    retry_if_exception,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 # pylint: disable=no-name-in-module
 from hubspot import HubSpot as HubSpotApi
@@ -36,15 +44,6 @@ from hubspot.crm.pipelines.exceptions import ApiException as PipelineApiExceptio
 from hubspot.crm.pipelines.models import Pipeline
 from hubspot.crm.schemas.exceptions import ApiException as SchemaApiException
 from hubspot.crm.schemas.models import ObjectSchema
-from robot.api.deco import keyword, library
-from tenacity import (
-    before_sleep_log,
-    retry,
-    retry_if_exception,
-    stop_after_attempt,
-    wait_exponential,
-)
-
 from RPA.core.logger import deprecation
 
 

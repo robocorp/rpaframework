@@ -31,8 +31,6 @@ packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-# docutils = "*"
-# rpaframework-core = "^11.2.3"
 robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
 rpaframework-core = "^11.2.3"
 tenacity = "^8.0.1"
