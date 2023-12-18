@@ -55,8 +55,7 @@ PACKAGE_VENV_CLEAN_PATTERNS = [
 ]
 
 EXPECTED_POETRY_CONFIG = {
-    "virtualenvs": {"in-project": True, "create": True, "path": "null"},
-    "installer": {"parallel": True},
+    "virtualenvs": {"in-project": True, "create": True},
 }
 ROBOCORP_DEVPI_URL = "https://devpi.robocorp.cloud/ci/test"
 
@@ -215,8 +214,6 @@ def setup_poetry(
     # TODO. the config --no-interaction --local virtualenvs.in-project true is needed by the Docs run
     shell.poetry(ctx, "config --no-interaction --local virtualenvs.in-project true")
     shell.poetry(ctx, "config --no-interaction --local virtualenvs.create true")
-    shell.poetry(ctx, "config --no-interaction --local virtualenvs.path null")
-    shell.poetry(ctx, "config --no-interaction --local installer.parallel true")
 
     if username is not None:
         print(f"Setting username and password for repository '{repository}'.")
