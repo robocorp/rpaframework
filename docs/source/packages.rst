@@ -31,6 +31,10 @@
    :target: https://pypi.python.org/pypi/robocorp-browser
    :alt: robocorp-browser latest version
 
+.. image:: https://img.shields.io/pypi/v/robocorp-windows.svg?label=robocorp-windows&style=for-the-badge
+   :target: https://pypi.python.org/pypi/robocorp-windows
+   :alt: robocorp-windows latest version
+
 `RPA Framework <https://github.com/robocorp/rpaframework/>`_
 ------------------------------------------------------------
 

@@ -336,8 +336,16 @@ Separate installation of AWS, Dialogs, PDF and Windows libraries without the mai
        - rpaframework-pdf==7.1.5  # included in the rpaframework by default
        - rpaframework-windows==7.3.2  # included in the rpaframework by default
 
-.. note:: Python 3.8 or higher is required
+Installation method with `pip` using Python `venv`_:
 
+.. code-block:: shell
+
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install rpaframework
+
+
+.. note:: Python 3.8 or higher is required
 
 Example
 -------
@@ -514,6 +522,7 @@ Some recommended tools for development
 .. _Python extension: https://marketplace.visualstudio.com/items?itemName=ms-python.python
 .. _black: https://pypi.org/project/black/
 .. _flake8: https://pypi.org/project/flake8/
+.. _venv: https://docs.python.org/3/library/venv.html
 
 License
 -------
