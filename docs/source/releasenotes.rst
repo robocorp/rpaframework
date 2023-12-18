@@ -15,7 +15,7 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-28.0.0 - 05 Dec 2023
+28.0.0 - 18 Dec 2023
 --------------------
 
 - Library **RPA.Hubspot** (:issue:`1106`): Extract the ``RPA.Hubspot`` library out of the
