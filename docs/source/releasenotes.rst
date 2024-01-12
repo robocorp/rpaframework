@@ -15,6 +15,12 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28.1.0 - 12 Jan 2024
+--------------------
+
+- Library **RPA.Outlook.Application** (:pr:`1144`): Add ``reply_to`` and ``check_names``
+  parameters for ``Send Email``.
+
 28.0.0 - 18 Dec 2023
 --------------------
 
