@@ -6,6 +6,14 @@ from typing import Any, List, Optional, Union
 from RPA.application import BaseApplication, COMError
 from RPA.Email.common import counter_duplicate_path
 
+RECIPIENT_TYPE_TO = 1
+RECIPIENT_TYPE_CC = 2
+RECIPIENT_TYPE_BCC = 3
+
+
+class InvalidNamesError(Exception):
+    """Raised when email recipient names are not recognized."""
+
 
 class Application(BaseApplication):
     # pylint: disable=C0301
@@ -41,8 +49,8 @@ class Application(BaseApplication):
         ${RECIPIENT}            address@domain.com
 
         *** Tasks ***
-        Send message
-            Send Message       recipients=${RECIPIENT}
+        Send email
+            Send Email         recipients=${RECIPIENT}
             ...                subject=This is the subject
             ...                body=This is the message body
             ..                 attachments=approved.png
@@ -53,10 +61,10 @@ class Application(BaseApplication):
 
         from RPA.Outlook.Application import Application
 
-        def send_message():
+        def send_email():
             app = Application()
             app.open_application()
-            app.send_message(
+            app.send_email(
                 recipients='EMAILADDRESS_1, EMAILADDRESS_2',
                 subject='email subject',
                 body='email body message',
@@ -77,6 +85,8 @@ class Application(BaseApplication):
         save_as_draft: bool = False,
         cc_recipients: Optional[Union[str, List[str]]] = None,
         bcc_recipients: Optional[Union[str, List[str]]] = None,
+        reply_to: Optional[Union[str, List[str]]] = None,
+        check_names: bool = False,
     ) -> bool:
         """Send email with Outlook
 
@@ -88,6 +98,10 @@ class Application(BaseApplication):
         :param save_as_draft: email is saved as draft when `True`
         :param cc_recipients: list of addresses for CC field, default None
         :param bcc_recipients: list of addresses for BCC field, default None
+        :param reply_to: list of addresses for changing email's reply-to field,
+         default None
+        :param check_names: all recipients are checked if the email address is
+         recognized on `True`, default `False`
         :return: `True` if there were no errors
 
         Example:
@@ -125,7 +139,9 @@ class Application(BaseApplication):
         try:
             mail = self.app.CreateItem(0)
             mail.Subject = subject
-            self._add_all_recipients(mail, recipients, cc_recipients, bcc_recipients)
+            self._add_all_recipients(
+                mail, recipients, cc_recipients, bcc_recipients, reply_to, check_names
+            )
 
             if html_body:
                 mail.HTMLBody = body
@@ -148,21 +164,49 @@ class Application(BaseApplication):
             return False
         return True
 
-    def _add_all_recipients(self, email, recipients, cc_recipients, bcc_recipients):
-        if isinstance(recipients, list):
-            email.To = ";".join(recipients)
-        else:
-            email.To = recipients
-        if cc_recipients:
-            if isinstance(cc_recipients, list):
-                email.CC = ";".join(cc_recipients)
-            else:
-                email.CC = cc_recipients
-        if bcc_recipients:
-            if isinstance(bcc_recipients, list):
-                email.BCC = ";".join(bcc_recipients)
-            else:
-                email.BCC = bcc_recipients
+    def _add_all_recipients(
+        self, email, recipients, cc_recipients, bcc_recipients, reply_to, check_names
+    ):
+        invalid_names = []
+
+        self._recipients_to_email(
+            email, invalid_names, check_names, recipients, RECIPIENT_TYPE_TO
+        )
+        self._recipients_to_email(
+            email, invalid_names, check_names, cc_recipients, RECIPIENT_TYPE_CC
+        )
+        self._recipients_to_email(
+            email, invalid_names, check_names, bcc_recipients, RECIPIENT_TYPE_BCC
+        )
+
+        if len(invalid_names) > 0:
+            raise InvalidNamesError(
+                f"Failed to resolve recipient(s): {';'.join(invalid_names)}"
+            )
+
+        reply_to = self._recipients_to_list(reply_to)
+        for recipient in reply_to:
+            email.ReplyRecipients.Add(recipient)
+
+    def _recipients_to_email(
+        self, email, invalid_names, check_names, recipients, recipient_type
+    ):
+        recipients = self._recipients_to_list(recipients)
+        for recipient in recipients:
+            rec = email.Recipients.Add(recipient)
+            # 1 = To, 2 = CC, 3 = BCC
+            rec.Type = recipient_type
+            if check_names:
+                result = rec.Resolve()  # Attempt to resolve each recipient
+                if not result:
+                    invalid_names.append(recipient)
+
+    def _recipients_to_list(self, recipients):
+        recipients = recipients or []
+        recipients = (
+            recipients if isinstance(recipients, list) else recipients.split(";")
+        )
+        return recipients
 
     def _add_attachments(self, email, attachments):
         for attachment in attachments:
