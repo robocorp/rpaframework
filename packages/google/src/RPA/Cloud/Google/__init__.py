@@ -33,6 +33,8 @@ def import_vault():
 class Google(DynamicCore):
     """`Google` is a library for operating with Google API endpoints.
 
+    **Installation**
+
     Usage requires the following steps:
 
     - Create a GCP project
@@ -40,20 +42,31 @@ class Google(DynamicCore):
     - Create credentials (OAuth or service account)
     - Install ``rpaframework-google`` package
 
+    Check the latest package version from `PyPI`_.
+
     **Google authentication**
 
     Authentication for Google is set with `service account JSON file` which can be given to the library
     in three different ways or with `OAuth2 token`, which is used for OAuth authentication.
 
-    See `Google Cloud authentication`_ for more information.
+    See `library authentication examples`_ for more information.
 
-    **Installation**
+    **Basic usage examples**
 
-    This library, ``RPA.Cloud.Google`` is available via **rpaframework-google** package.
+    **Python**
 
-    Check the latest package version from `PyPI`_.
+    .. code-block:: python
 
-    .. _PyPI: https://pypi.org/project/rpaframework-google/
+        from RPA.Cloud.Google import Google
+
+        library = Google()
+        service_account = '/path/to/service_account.json'
+
+        library.init_vision(service_account)
+        library.init_text_to_speech(service_account)
+
+        response = library.detect_text('imagefile.png', 'result.json')
+        library.synthesize_speech('I want this said aloud', target_file='said.mp3')
 
     **Robot Framework**
 
@@ -78,20 +91,8 @@ class Google(DynamicCore):
                 Log  ${file}
             END
 
-    **Python**
-
-    .. code-block:: python
-
-        from RPA.Cloud.Google import Google
-
-        library = Google()
-        service_account = '/path/to/service_account.json'
-
-        library.init_vision(service_account)
-        library.init_text_to_speech(service_account)
-
-        response = library.detect_text('imagefile.png', 'result.json')
-        library.synthesize_speech('I want this said aloud', target_file='said.mp3')
+    .. _PyPI: https://pypi.org/project/rpaframework-google/
+    .. _library authentication examples: https://github.com/robocorp/rpaframework/blob/master/packages/google/docs/authentication.md
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
