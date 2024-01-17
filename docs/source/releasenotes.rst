@@ -15,6 +15,15 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+17 Jan 2024
+-----------
+
+- Library **RPA.Cloud.Google** (:pr:`1145`, ``rpaframework-google`` **8.2.0**):
+
+  - All ``init_`` keywords will return initialized ``service`` instance.
+  - Library level documentation refactoring. Authentication related examples are now
+    in their own markdown file.
+
 28.1.0 - 12 Jan 2024
 --------------------
 

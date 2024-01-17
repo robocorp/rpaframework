@@ -81,6 +81,7 @@ class DocumentAIKeywords(LibraryContext):
             token_file,
             **kwargs,
         )
+        return self.service
 
     @keyword(tags=["document ai"])
     def process_document(

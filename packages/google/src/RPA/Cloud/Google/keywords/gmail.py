@@ -78,6 +78,7 @@ class GmailKeywords(LibraryContext):
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
         )
+        return self.service
 
     def create_message(
         self,

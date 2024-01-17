@@ -44,6 +44,7 @@ class TextToSpeechKeywords(LibraryContext):
             use_robocorp_vault,
             token_file,
         )
+        return self.service
 
     @keyword(tags=["text to speech"])
     def list_supported_voices(self, language_code: str = None) -> List:

@@ -33,6 +33,7 @@ class VisionKeywords(LibraryContext):
             use_robocorp_vault,
             token_file,
         )
+        return self.service
 
     def set_image_type(self, image_file: str = None, image_uri: str = None):
         if image_file:

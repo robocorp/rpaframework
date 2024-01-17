@@ -31,6 +31,7 @@ class VideoIntelligenceKeywords(LibraryContext):
             use_robocorp_vault,
             token_file,
         )
+        return self.service
 
     @keyword(tags=["video intelligence"])
     def annotate_video(
