@@ -304,17 +304,17 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.34.17"
+version = "1.34.20"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">= 3.8"
 files = [
-    {file = "boto3-1.34.17-py3-none-any.whl", hash = "sha256:1efc02be786884034d503d59c018cf7650d0cff9fcb37cd2eb49b802a6fe6111"},
-    {file = "boto3-1.34.17.tar.gz", hash = "sha256:8ca248cc84e7e859e4e276eb9c4309fa01a3e58473bf48d6c33448be870c2bb8"},
+    {file = "boto3-1.34.20-py3-none-any.whl", hash = "sha256:a21da54634bd09dcad9e80d106512b6aabe493b1d4260688180156ef27afedc9"},
+    {file = "boto3-1.34.20.tar.gz", hash = "sha256:7f662b0c833e7a4d1272b7ec60ded3f14affd54d08620b708ba3abeb0e49d15e"},
 ]
 
 [package.dependencies]
-botocore = ">=1.34.17,<1.35.0"
+botocore = ">=1.34.20,<1.35.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -323,13 +323,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.34.17"
+version = "1.34.20"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">= 3.8"
 files = [
-    {file = "botocore-1.34.17-py3-none-any.whl", hash = "sha256:7272c39032c6f1d62781e4c8445d9a1d9140c2bf52ba7ee66bf6db559c4b2427"},
-    {file = "botocore-1.34.17.tar.gz", hash = "sha256:e48a662f3a6919219276b55085e8f73c3347966675f55e9d448be30cf79678ee"},
+    {file = "botocore-1.34.20-py3-none-any.whl", hash = "sha256:f931f13d03e94b3350ad898b21ae2d40240f6571e8a8cdaa487951b51fe3a1fd"},
+    {file = "botocore-1.34.20.tar.gz", hash = "sha256:e944bc085222a13359933f4c0a1cce228bdd8aa90e1f2274e94bd55f561db307"},
 ]
 
 [package.dependencies]
@@ -1075,13 +1075,13 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0.dev0)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.113.0"
+version = "2.114.0"
 description = "Google API Client Library for Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-api-python-client-2.113.0.tar.gz", hash = "sha256:bcffbc8ffbad631f699cf85aa91993f3dc03060b234ca9e6e2f9135028bd9b52"},
-    {file = "google_api_python_client-2.113.0-py2.py3-none-any.whl", hash = "sha256:25659d488df6c8a69615b2a510af0e63b4c47ab2cb87d71c1e13b28715906e27"},
+    {file = "google-api-python-client-2.114.0.tar.gz", hash = "sha256:e041bbbf60e682261281e9d64b4660035f04db1cccba19d1d68eebc24d1465ed"},
+    {file = "google_api_python_client-2.114.0-py2.py3-none-any.whl", hash = "sha256:690e0bb67d70ff6dea4e8a5d3738639c105a478ac35da153d3b2a384064e9e1a"},
 ]
 
 [package.dependencies]
@@ -1905,13 +1905,13 @@ ply = "*"
 
 [[package]]
 name = "jsonschema"
-version = "4.20.0"
+version = "4.21.0"
 description = "An implementation of JSON Schema validation for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jsonschema-4.20.0-py3-none-any.whl", hash = "sha256:ed6231f0429ecf966f5bc8dfef245998220549cbbcf140f913b7464c52c3b6b3"},
-    {file = "jsonschema-4.20.0.tar.gz", hash = "sha256:4f614fd46d8d61258610998997743ec5492a648b33cf478c1ddc23ed4598a5fa"},
+    {file = "jsonschema-4.21.0-py3-none-any.whl", hash = "sha256:70a09719d375c0a2874571b363c8a24be7df8071b80c9aa76bc4551e7297c63c"},
+    {file = "jsonschema-4.21.0.tar.gz", hash = "sha256:3ba18e27f7491ea4a1b22edce00fb820eec968d397feb3f9cb61d5894bb38167"},
 ]
 
 [package.dependencies]
@@ -3582,13 +3582,13 @@ idna2008 = ["idna"]
 
 [[package]]
 name = "robocorp-storage"
-version = "1.0.2"
+version = "1.0.3"
 description = "Robocorp Asset Storage library"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "robocorp_storage-1.0.2-py3-none-any.whl", hash = "sha256:a6a3966b854e63b1ccdf4f6e0835b9694452dc4ff9151508ea9d477aa84c3d8e"},
-    {file = "robocorp_storage-1.0.2.tar.gz", hash = "sha256:b669df33ca728dbbb00b6be562f42bbaa2aec8cbeec3a56a9a57e162d437aaed"},
+    {file = "robocorp_storage-1.0.3-py3-none-any.whl", hash = "sha256:d613db9f09cc039b78dc0ae456afcb4a5423dd3136e93c297013fb8920f96d76"},
+    {file = "robocorp_storage-1.0.3.tar.gz", hash = "sha256:b378e7fce65ed1140cc13f8253b260fde35e72a79c8c8b02f1763281a34839ef"},
 ]
 
 [package.dependencies]
@@ -3872,13 +3872,13 @@ webdriver-manager = "4.0.1"
 
 [[package]]
 name = "rpaframework-google"
-version = "8.1.1"
+version = "8.2.0"
 description = "Google library for RPA Framework"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "rpaframework_google-8.1.1-py3-none-any.whl", hash = "sha256:ea81d5b0c7608ff5798435c47d0a56f6447a0377f4cad8288ec742f36604a339"},
-    {file = "rpaframework_google-8.1.1.tar.gz", hash = "sha256:bf3e4e32873da1c3f8847575079131ccb9142822eeab646f6188157613520cc6"},
+    {file = "rpaframework_google-8.2.0-py3-none-any.whl", hash = "sha256:7d6c2e608c35fa5dbeef5fd190323d15a0a15c34db7ac9b22c921a809bdad494"},
+    {file = "rpaframework_google-8.2.0.tar.gz", hash = "sha256:e480b2b19c8c7bdd2527668fad5c9526f7963fe3fdb03d0291f6bc47054626b8"},
 ]
 
 [package.dependencies]
@@ -4342,22 +4342,22 @@ regex = "*"
 
 [[package]]
 name = "sphinx-markdown-builder"
-version = "0.6.5"
+version = "0.6.6"
 description = "A Sphinx extension to add markdown generation support."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "sphinx-markdown-builder-0.6.5.tar.gz", hash = "sha256:dae3184cfefdfe9ee1af69ae9e6e09cf2768f51afeb81ae1b3c219dbfdb33e97"},
-    {file = "sphinx_markdown_builder-0.6.5-py3-none-any.whl", hash = "sha256:59c8e841b56bbf04a2c11e1984f7258fa28a20c0257aa54ea3ae7a0013a27d4a"},
+    {file = "sphinx-markdown-builder-0.6.6.tar.gz", hash = "sha256:febd8e03e20e357e624c52efdc7ef9d5ab70d58549784158033c9657d040f44e"},
+    {file = "sphinx_markdown_builder-0.6.6-py3-none-any.whl", hash = "sha256:e6fd4626c6daf1c25a464fd7d6d64e4a97e69abca1684fb2a12fba44cb6db363"},
 ]
 
 [package.dependencies]
 docutils = "*"
-sphinx = ">=2.2.0"
+sphinx = ">=5.1.0"
 tabulate = "*"
 
 [package.extras]
-dev = ["black", "bumpver", "coveralls", "flake8", "isort", "pip-tools", "pylint", "pytest", "pytest-cov", "sphinx-needs", "sphinxcontrib-plantuml"]
+dev = ["black", "bumpver", "coveralls", "flake8", "isort", "pip-tools", "pylint", "pytest", "pytest-cov", "sphinx (>=5.3.0)", "sphinx-needs", "sphinxcontrib-plantuml", "sphinxcontrib.httpdomain"]
 
 [[package]]
 name = "sphinx-rtd-theme"
@@ -5208,4 +5208,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "24c7c81cf43232b60523731a814069c2108b899a8409c349959daf7897ee0980"
+content-hash = "379910fb80d2ee108db70a02fdaa01348f972b87294fc1c941f74246e13e9cfa"
