@@ -58,6 +58,7 @@ class SpeechToTextKeywords(LibraryContext):
         self.service = self.init_service_with_object(
             speech.SpeechClient, service_account, use_robocorp_vault, token_file
         )
+        return self.service
 
     @keyword(tags=["speech to text"])
     def recognize_text_from_audio(

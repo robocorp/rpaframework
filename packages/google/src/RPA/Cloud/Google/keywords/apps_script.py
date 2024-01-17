@@ -47,6 +47,7 @@ class AppsScriptKeywords(LibraryContext):
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
         )
+        return self.service
 
     @keyword(tags=["apps script"])
     def run_script(

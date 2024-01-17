@@ -37,6 +37,7 @@ class StorageKeywords(LibraryContext):
         self.service = self.init_service_with_object(
             storage.Client, service_account, use_robocorp_vault, token_file
         )
+        return self.service
 
     @keyword(tags=["storage"])
     def create_storage_bucket(self, bucket_name: str) -> Dict:
