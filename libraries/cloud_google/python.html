@@ -160,119 +160,33 @@
 <dt class="sig sig-object py" id="RPA.Cloud.Google.Google">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Cloud.Google.</span></span><span class="sig-name descname"><span class="pre">Google</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service_account</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_secret_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cloud_auth_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'serviceaccount'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google" title="Permalink to this definition"></a></dt>
 <dd><p><cite>Google</cite> is a library for operating with Google API endpoints.</p>
+<p><strong>Installation</strong></p>
 <p>Usage requires the following steps:</p>
 <ul class="simple">
 <li><p>Create a GCP project</p></li>
 <li><p>Enable approriate APIs</p></li>
 <li><p>Create credentials (OAuth or service account)</p></li>
-<li><p>Install rpaframework-google package</p></li>
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> package</p></li>
 </ul>
+<p>Check the latest package version from <a class="reference external" href="https://pypi.org/project/rpaframework-google/">PyPI</a>.</p>
 <p><strong>Google authentication</strong></p>
 <p>Authentication for Google is set with <cite>service account JSON file</cite> which can be given to the library
 in three different ways or with <cite>OAuth2 token</cite>, which is used for OAuth authentication.</p>
-<p>Methods when using service account:</p>
-<ul class="simple">
-<li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> with path to service account file.</p></li>
-<li><p>Method 2 as keyword parameter to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span></code> for example.</p></li>
-<li><p>Method 3 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
-or with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocorp</span> <span class="pre">Vault</span></code>. Secret value should contain JSON file contents.</p></li>
-</ul>
-<p>Method 1. service account using environment variable</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span>
+<p>See <a class="reference external" href="https://github.com/robocorp/rpaframework/blob/master/packages/google/docs/authentication.md">library authentication examples</a> for more information.</p>
+<p><strong>Basic usage examples</strong></p>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Cloud.Google</span> <span class="kn">import</span> <span class="n">Google</span>
 
-<span class="gh">*** Tasks ***</span>
-<span class="gu">Init Google services</span>
-<span class="p">    </span><span class="c"># NO parameters for Init Vision, expecting to get JSON</span>
-<span class="p">    </span><span class="c"># with GOOGLE_APPLICATION_CREDENTIALS environment variable</span>
-<span class="p">    </span><span class="nf">Init Vision</span>
-</pre></div>
-</div>
-<p>Method 2. service account with keyword parameter</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span>
+<span class="n">library</span> <span class="o">=</span> <span class="n">Google</span><span class="p">()</span>
+<span class="n">service_account</span> <span class="o">=</span> <span class="s1">&#39;/path/to/service_account.json&#39;</span>
 
-<span class="gh">*** Tasks ***</span>
-<span class="gu">Init Google services</span>
-<span class="p">    </span><span class="nf">Init Speech To Text</span><span class="p">   </span><span class="s">/path/to/service_account.json</span>
-</pre></div>
-</div>
-<p>Method 3. setting Robocorp Vault in the library init</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span>
-<span class="p">...       </span><span class="s">vault_name=googlecloud</span>
-<span class="p">...       </span><span class="s">vault_secret_key=servicecreds</span>
+<span class="n">library</span><span class="o">.</span><span class="n">init_vision</span><span class="p">(</span><span class="n">service_account</span><span class="p">)</span>
+<span class="n">library</span><span class="o">.</span><span class="n">init_text_to_speech</span><span class="p">(</span><span class="n">service_account</span><span class="p">)</span>
 
-<span class="gh">*** Tasks ***</span>
-<span class="gu">Init Google services</span>
-<span class="p">    </span><span class="nf">Init Storage</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">detect_text</span><span class="p">(</span><span class="s1">&#39;imagefile.png&#39;</span><span class="p">,</span> <span class="s1">&#39;result.json&#39;</span><span class="p">)</span>
+<span class="n">library</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="s1">&#39;I want this said aloud&#39;</span><span class="p">,</span> <span class="n">target_file</span><span class="o">=</span><span class="s1">&#39;said.mp3&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Method 3. setting Robocorp Vault with keyword</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span>
-
-<span class="gh">*** Tasks ***</span>
-<span class="gu">Init Google services</span>
-<span class="p">    </span><span class="nf">Set Robocorp Vault</span><span class="p">   </span><span class="s">vault_name=googlecloud</span><span class="p">  </span><span class="s">vault_secret_key=servicecreds</span>
-<span class="p">    </span><span class="nf">Init Storage</span><span class="p">    </span><span class="s">use_robocorp_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
-</pre></div>
-</div>
-<p>Methods when using OAuth token:</p>
-<ul class="simple">
-<li><p>Method 1 as keyword parameter <code class="docutils literal notranslate"><span class="pre">token_file</span></code> to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span></code> for example.</p></li>
-<li><p>Method 2 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
-or with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocorp</span> <span class="pre">Vault</span></code>. Secret value should contain JSON file contents.</p></li>
-</ul>
-<p>Method 1. The Google Apps Script and Google Drive services are authenticated using this method.</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span>
-
-<span class="gh">*** Variables ***</span>
-<span class="p">@{</span><span class="nv">SCRIPT_SCOPES</span><span class="p">}     </span><span class="s">forms</span><span class="p">   </span><span class="s">spreadsheets</span>
-
-<span class="gh">*** Tasks ***</span>
-<span class="gu">Init Google OAuth services</span>
-<span class="p">    </span><span class="nf">Init Apps Script</span><span class="p">    </span><span class="s">token_file=oauth_token</span><span class="p">   ${</span><span class="nv">SCRIPT_SCOPES</span><span class="p">}</span>
-</pre></div>
-</div>
-<p>Method 2. setting Robocorp Vault in the library init</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span>
-<span class="p">...       </span><span class="s">vault_name=googlecloud</span>
-<span class="p">...       </span><span class="s">vault_secret_key=oauth</span>
-<span class="p">...       </span><span class="s">cloud_auth_type=token</span>
-
-<span class="gh">*** Tasks ***</span>
-<span class="gu">Init Google services</span>
-<span class="p">    </span><span class="nf">Init Storage</span>
-</pre></div>
-</div>
-<p><strong>Creating and using OAuth token file</strong></p>
-<p>The token file can be created using <cite>credentials.json</cite> by running command:</p>
-<p><code class="docutils literal notranslate"><span class="pre">rpa-google-oauth</span> <span class="pre">--credentials</span> <span class="pre">&lt;filepath&gt;</span> <span class="pre">--service</span> <span class="pre">drive</span></code> or
-<code class="docutils literal notranslate"><span class="pre">rpa-google-oauth</span> <span class="pre">--credentials</span> <span class="pre">&lt;filepath&gt;</span> <span class="pre">--scopes</span> <span class="pre">drive.appdata,drive.file,drive.install</span></code></p>
-<p>This will start web based authentication process, which outputs the token at the end.
-Token could be stored into <code class="docutils literal notranslate"><span class="pre">Robocorp</span> <span class="pre">Vault</span></code>.</p>
-<p>Example Vault content.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;googlecloud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;oauth-token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gANfd123321aabeedYsc&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Using the Vault.</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
-<span class="gu">Set up Google Drive authentication</span>
-<span class="p">    </span><span class="nf">Set Robocorp Vault</span><span class="p">   </span><span class="s">vault_name=googlecloud</span>
-<span class="p">    ...  </span><span class="s">vault_secret_key=oauth-token</span>
-<span class="p">    ...  </span><span class="s">cloud_auth_type=token</span>
-<span class="p">    </span><span class="nf">Init Drive</span>
-</pre></div>
-</div>
-<p><strong>Installation</strong></p>
-<p>This library, <code class="docutils literal notranslate"><span class="pre">RPA.Cloud.Google</span></code> is available via <strong>rpaframework-google</strong> package.</p>
-<p>Check the latest package version from <a class="reference external" href="https://pypi.org/project/rpaframework-google/">PyPI</a>.</p>
-<p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
 <span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span>
@@ -292,19 +206,6 @@ Token could be stored into <code class="docutils literal notranslate"><span clas
 <span class="p">    FOR   ${</span><span class="nv">file</span><span class="p">}  IN   @{</span><span class="nv">files</span><span class="p">}</span>
 <span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
 <span class="p">    END</span>
-</pre></div>
-</div>
-<p><strong>Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Cloud.Google</span> <span class="kn">import</span> <span class="n">Google</span>
-
-<span class="n">library</span> <span class="o">=</span> <span class="n">Google</span>
-<span class="n">service_account</span> <span class="o">=</span> <span class="s1">&#39;/path/to/service_account.json&#39;</span>
-
-<span class="n">library</span><span class="o">.</span><span class="n">init_vision</span><span class="p">(</span><span class="n">service_account</span><span class="p">)</span>
-<span class="n">library</span><span class="o">.</span><span class="n">init_text_to_speech</span><span class="p">(</span><span class="n">service_account</span><span class="p">)</span>
-
-<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">detect_text</span><span class="p">(</span><span class="s1">&#39;imagefile.png&#39;</span><span class="p">,</span> <span class="s1">&#39;result.json&#39;</span><span class="p">)</span>
-<span class="n">library</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="s1">&#39;I want this said aloud&#39;</span><span class="p">,</span> <span class="n">target_file</span><span class="o">=</span><span class="s1">&#39;said.mp3&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py attribute">
