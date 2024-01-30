@@ -3087,46 +3087,50 @@ webdriver-manager = "4.0.1"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "7.3.1"
+version = "7.3.2"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.8.1,<4.0.0"
-files = [
-    {file = "rpaframework_pdf-7.3.1-py3-none-any.whl", hash = "sha256:dfccfa3ed68052a0413ed4863243c12ce742862bb293fb20fbdad32f9aac1a51"},
-    {file = "rpaframework_pdf-7.3.1.tar.gz", hash = "sha256:2a48209a3c44182aa74cb10a35e94edeabcccfe13aeff1970a2ca7dc701138b5"},
-]
+python-versions = "^3.8.1"
+files = []
+develop = false
 
 [package.dependencies]
-fpdf2 = ">=2.7.5,<3.0.0"
+fpdf2 = "^2.7.5"
 "pdfminer.six" = "20221105"
-pypdf = ">=3.16.2,<4.0.0"
-robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.1.0 || >6.1.0,<7.0.0"
-robotframework-pythonlibcore = ">=4.2.0,<5.0.0"
-rpaframework-core = ">=11.2.1,<12.0.0"
+pypdf = "^3.16.2"
+robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
+robotframework-pythonlibcore = "^4.2.0"
+rpaframework-core = "^11.2.1"
+
+[package.source]
+type = "directory"
+url = "../pdf"
 
 [[package]]
 name = "rpaframework-windows"
-version = "7.5.0"
+version = "7.5.1"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.8,<4.0"
-files = [
-    {file = "rpaframework_windows-7.5.0-py3-none-any.whl", hash = "sha256:deaae12edee8d773b3af008881d4570bfa2d79fa0e9051916166d2d4b09f904b"},
-    {file = "rpaframework_windows-7.5.0.tar.gz", hash = "sha256:d2f0cc69c2a9634f1fda59960b138e6018979f629de2597209ead2d56923e63b"},
-]
+python-versions = "^3.8"
+files = []
+develop = false
 
 [package.dependencies]
-comtypes = {version = ">=1.1.11,<2.0.0", markers = "sys_platform == \"win32\""}
-fire = ">=0.4.0,<0.5.0"
-psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
-pynput-robocorp-fork = ">=5.0.0,<6.0.0"
+comtypes = {version = "^1.1.11", markers = "sys_platform == \"win32\""}
+fire = "^0.4.0"
+psutil = {version = "^5.9.0", markers = "sys_platform == \"win32\""}
+pynput-robocorp-fork = "^5.0.0"
 pywin32 = {version = ">=300,<307", markers = "python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
-robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<6.1.0 || >6.1.0,<7.0.0"
-robotframework-pythonlibcore = ">=4.2.0,<5.0.0"
-rpaframework-core = ">=11.3.0,<12.0.0"
-uiautomation = ">=2.0.15,<3.0.0"
+robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
+robotframework-pythonlibcore = "^4.2.0"
+rpaframework-core = "^11.3.0"
+uiautomation = "^2.0.15"
+
+[package.source]
+type = "directory"
+url = "../windows"
 
 [[package]]
 name = "rpds-py"
@@ -3984,4 +3988,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "bb24fca12faf35e5565ef1f84dfc768e6dad16dd8868b6fc1bbd27e7328d4e72"
+content-hash = "18d00ecece4f243e973775eef72c9176de757e30c8980dbe5aecd2e31e097291"
