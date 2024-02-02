@@ -366,6 +366,27 @@ defaults to None</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Word.Application.Application.set_object_property">
+<span class="sig-name descname"><span class="pre">set_object_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.set_object_property" title="Permalink to this definition"></a></dt>
+<dd><p>Set the property of any object.</p>
+<p>This is a utility keyword for Robot Framework syntax to set object
+property values.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${new_value}=</span><span class="p">    </span><span class="c">Replace String</span><span class="p">    </span><span class="c">${value}</span><span class="p">    </span><span class="c">10.132.</span><span class="p">    </span><span class="c">5511.11.</span>
+<span class="c">Set Object Property</span><span class="p">    </span><span class="c">${result}</span><span class="p">    </span><span class="c">Value</span><span class="p">    </span><span class="c">${new_value}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_instance</strong> – object instance to set the property</p></li>
+<li><p><strong>property_name</strong> – property name to set</p></li>
+<li><p><strong>value</strong> – value to set</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.write_text">
 <span class="sig-name descname"><span class="pre">write_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.write_text" title="Permalink to this definition"></a></dt>
 <dd><p>Writes given text at the end of the document</p>
