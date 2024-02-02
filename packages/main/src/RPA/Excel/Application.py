@@ -1,8 +1,17 @@
+from dataclasses import dataclass
+from enum import Enum
 import functools
 from itertools import count
-from typing import Any
+from random import randint
+from typing import Any, Dict, List
 
-from RPA.application import BaseApplication, catch_com_error, to_path, to_str_path
+from RPA.application import (
+    BaseApplication,
+    catch_com_error,
+    to_path,
+    to_str_path,
+    constants,
+)
 
 
 def requires_workbook(func):
@@ -15,6 +24,39 @@ def requires_workbook(func):
         return func(self, *args, **kwargs)
 
     return wrapper
+
+
+class SearchOrder(Enum):
+    """Enumeration for search order."""
+
+    ROWS = "ROWS"
+    COLUMNS = "COLUMNS"
+
+
+@dataclass
+class PivotField:
+    """Data class for pivot field parameters."""
+
+    data_column: str
+    operation: str
+    numberformat: str
+
+
+def to_pivot_operation(operation_name: str):
+    result = None
+    if operation_name.upper() == "SUM":
+        result = constants.xlSum
+    elif operation_name.upper() == "AVERAGE":
+        result = constants.xlAverage
+    elif operation_name.upper() == "MAX":
+        result = constants.xlMax
+    elif operation_name.upper() == "MIN":
+        result = constants.xlMin
+    elif operation_name.upper() == "COUNT":
+        result = constants.xlCount
+    elif operation_name.upper() == "DISTINCT COUNT":
+        result = constants.xlDistinctCount
+    return result
 
 
 class Application(BaseApplication):
@@ -286,7 +328,7 @@ class Application(BaseApplication):
                 self.workbook.SaveAs(path)
 
     @requires_workbook
-    def run_macro(self, macro_name: str, *args: Any):
+    def run_macro(self, macro_name: str, *args: Any) -> None:
         """Run Excel macro with given name
 
         :param macro_name: macro to run
@@ -295,7 +337,7 @@ class Application(BaseApplication):
         with catch_com_error():
             self.app.Application.Run(f"'{self.workbook.Name}'!{macro_name}", *args)
 
-    def export_as_pdf(self, pdf_filename: str, excel_filename: str = None):
+    def export_as_pdf(self, pdf_filename: str, excel_filename: str = None) -> None:
         """Export Excel as PDF file
 
         If Excel filename is not given, the currently open workbook
@@ -312,3 +354,381 @@ class Application(BaseApplication):
         with catch_com_error():
             pdf_path = to_str_path(pdf_filename)
             self.workbook.ExportAsFixedFormat(0, pdf_path)
+
+    def create_pivot_field(
+        self,
+        data_column: str,
+        operation: str,
+        numberformat: str = None,
+    ) -> PivotField:
+        """Create pivot field object parameters.
+
+        *Note.* At the moment operation "DISTINCT COUNT" is not
+        supported as there seems to be issues in the COM interface,
+        which have not been resolved yet (regarding this library
+        implementation).
+
+        Python example:
+
+        .. code-block:: python
+
+            field_count = excel.create_pivot_field("price", "count", "#")
+            field_avg = excel.create_pivot_field("price", "average", "#0,#0")
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${field_sum}=    Create Pivot Field    price    sum    #,#0
+            ${field_max}=    Create Pivot Field    price    max    #,#0
+
+        :param data_column: name of the data column
+        :param operation: name of the possible operations
+         (SUM, AVERAGE, MAX, MIN, COUNT)
+        :param numberformat: Excel cell number format, by default
+         number format is not set for the field
+        :return: field object
+        """
+        return PivotField(data_column, operation, numberformat)
+
+    def create_pivot_table(
+        self,
+        source_worksheet: str,
+        pivot_worksheet: str,
+        rows: List[str],
+        fields: List[PivotField],
+        sort_field: PivotField = None,
+        sort_direction: str = "descending",
+        data_range: str = None,
+        pivot_name: str = "PivotTable1",
+        collapse_rows: bool = True,
+        show_grand_total: bool = True,
+    ) -> Any:
+        """Create a pivot table in the specified worksheet.
+
+        This is a initial implementation of the pivot table creation,
+        which might not work in all cases. The alternative way
+        of creating pivot tables is to use a macro an run it.
+
+        Python example:
+
+        .. code-block:: python
+
+            rows = ["products", "expense_type"]
+            field_count = excel.create_pivot_field("price", "count", "#")
+            field_avg = excel.create_pivot_field("price", "average", "#0,#0")
+            pivottable = excel.create_pivot_table(
+                source_worksheet="data",
+                pivot_worksheet="test!R5C5",
+                rows=rows,
+                fields=[field_count, field_avg]
+            )
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            @{rows}=    Create List    products    expense_type
+            ${field_sum}=    Create Pivot Field    price    sum    #,#0
+            ${field_max}=    Create Pivot Field    price    max    #,#0
+            @{fields}=   Create List   ${field_sum}    ${field_max}
+            ${pivottable}=    Create Pivot Table
+            ...    source_worksheet=data
+            ...    pivot_worksheet=test!R5C5
+            ...    rows=${rows}
+            ...    fields=${fields}
+
+        :param source_worksheet: name of the source worksheet
+        :param pivot_worksheet: name of the pivot worksheet, can
+         be the same as the source worksheet but then cell location
+         of the pivot table needs to be given in the format "R1C1"
+         (R is a column numbe and C is a row number, e.g. "R1C1" is A1)
+        :param rows: columns in the `source_worksheet` which are used
+         as pivot table rows
+        :param fields: columns for the pivot table data fields
+        :param sort_field: field to sort the pivot table by (one of the
+         `fields`)
+        :param sort_direction: sort direction (ascending or descending),
+         default is descending
+        :param data_range: source data range, if not given then
+         the whole used range of `source_worksheet` will be used
+        :param pivot_name: name of the pivot table, if not given
+         then the name is "PivotTable1"
+        :param collapse_rows: if `True` then the first row will be collapsed
+        :param show_grand_total: if `True` then the grand total will be shown
+         for the columns
+        :return: created `PivotTable` object
+        """
+
+        self.set_active_worksheet(source_worksheet)
+        excel_range = (
+            self.worksheet.Range(data_range) if data_range else self.worksheet.UsedRange
+        )
+
+        # Grab the pivot table source data
+        pivot_cache = self.workbook.PivotCaches().Create(
+            SourceType=constants.xlDatabase,
+            SourceData=excel_range,
+            Version=constants.xlPivotTableVersion15,
+        )
+
+        # Create the pivot table object
+        table_destination = (
+            f"{pivot_worksheet}!R1C1" if "!" not in pivot_worksheet else pivot_worksheet
+        )
+
+        pivot_table = pivot_cache.CreatePivotTable(
+            TableDestination=table_destination,
+            TableName=pivot_name,
+            ReadData=True,
+            DefaultVersion=constants.xlPivotTableVersion15,
+        )
+
+        for index, row in enumerate(rows):
+            row_field = pivot_table.PivotFields(row)
+            row_field.Orientation = constants.xlRowField
+            row_field.Position = index + 1
+
+        if len(rows) > 0 and collapse_rows:
+            pivot_table.PivotFields(rows[0]).ShowDetail = False
+
+        for pt_field in fields:
+            self.logger.info(pt_field)
+            pivot_operation = to_pivot_operation(pt_field.operation)
+
+            # Access the field from the PivotFields collection
+            field = pivot_table.PivotFields(pt_field.data_column)
+            # Add the field to the values area
+            data_field = pivot_table.AddDataField(field)
+            data_field.Orientation = constants.xlDataField
+            with catch_com_error():
+                data_field.Name = f"{pt_field.data_column}_{randint(1000,9999)}"
+                data_field.Function = pivot_operation
+                if pt_field.numberformat:
+                    data_field.NumberFormat = pt_field.numberformat
+
+        if sort_field:
+
+            def to_sort_direction(sort_direction: str):
+                if sort_direction.upper() == "ASCENDING":
+                    return constants.xlAscending
+                else:
+                    return constants.xlDescending
+
+            # Access the pivot field (row or column) you want to sort
+            pivot_field = pivot_table.PivotFields(rows[0])
+
+            # Access the data field (value field) you want to sort by
+            item_name = (
+                f"{sort_field.operation.capitalize()} of {sort_field.data_column}"
+            )
+            data_field = pivot_table.DataPivotField.PivotItems(item_name)
+
+            field_sort_direction = to_sort_direction(sort_direction)
+            # Sort the pivot field in descending order based on the data field
+            pivot_field.AutoSort(Order=field_sort_direction, Field=data_field.Name)
+
+        # Visiblity True or Valse
+        pivot_table.ShowValuesRow = False
+        pivot_table.ColumnGrand = show_grand_total
+        pivot_table.RefreshTable()
+        return pivot_table
+
+    def find(
+        self,
+        search_string: str,
+        search_range: str = None,
+        max_results: int = None,
+        search_order: SearchOrder = SearchOrder.ROWS,
+        match_case: bool = False,
+    ) -> List[Any]:
+        """Keyword for finding text in the current worksheet.
+
+        Wildcard can be used in a search string. The asterisk (*) represents
+        any series of characters, and the question mark (?) represents a single
+        character.
+
+        Python example:
+
+        .. code-block:: python
+
+            ranges = excel.find("32.145.???.1", "IP!E1:E9999", 6)
+            for r in ranges:
+                print(f"ADDR = {r.Address} VALUE = {r.Value}")
+                r.Value = r.Value.replace("32.145.", "192.168.")
+                r.BorderAround()
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${ranges}=    Find
+            ...    search_string=32.145.*
+            ...    search_range=IP!A1:A9999
+            ...    max_results=6
+            ...    search_order=COLUMNS
+
+            FOR    ${ranges}    IN    @{ranges}
+                ${value}=    Set Variable    ${range.Value}
+                Log to console    ADDR = ${range.Address} VALUE = ${value}
+                ${new_value}=    Replace String    ${value}    32.145.    192.168.
+                Set Object Property    ${range}    Value    ${new_value}
+                Call Method    ${range}    BorderAround
+            END
+
+        :param search_string: what to search for
+        :param search_range: if not given will search the current
+         worksheet
+        :param max_results: can be used to limit number of results
+        :param search_order: by default search is executed by ROWS,
+         can be changed to COLUMNS
+        :param match_case: if `True` then the search is case sensitive
+        :return: list of `Range` objects
+        """
+        search_order = (
+            constants.xlByRows
+            if search_order == SearchOrder.ROWS
+            else constants.xlByColumns
+        )
+        if search_range:
+            search_area = self._app.Range(search_range)
+        else:
+            search_area = self.worksheet.Cells
+        found = search_area.Find(
+            What=search_string, MatchCase=match_case, SearchOrder=search_order
+        )
+        if not found:
+            # TODO. add the name of the worksheet into the log message
+            self.logger.info(
+                f"Did not find the '{search_string}' in the current worksheet"
+            )
+            return []
+        results = []
+        addresses = set()
+        while found and max_results is None or len(results) < max_results:
+            if found.Address in addresses:
+                break
+            addresses.add(found.Address)
+            if found:
+                results.append(found)
+            found = search_area.FindNext(found)
+        return results
+
+    def create_table(self, table_name: str, table_range: str = None) -> None:
+        """Create a table in the current worksheet.
+
+        :param table_name: name for the table
+        :param table_range: source table range, if not given then
+         the whole used range of `source_worksheet` will be used
+        """
+        excel_range = (
+            self.worksheet.Range(table_range)
+            if table_range
+            else self.worksheet.UsedRange
+        )
+        self.worksheet.ListObjects.Add(
+            SourceType=constants.xlSrcRange,
+            Source=excel_range,
+            XlListObjectHasHeaders=constants.xlYes,
+        ).Name = table_name
+
+    def list_tables(self) -> List[str]:
+        """Return tables in the current worksheet.
+
+        :return: list of table names
+        """
+        return [table.Name for table in self.worksheet.ListObjects]
+
+    def get_range(self, table_range: str) -> Any:
+        """Get range object for the given range address.
+
+        These object properties and methods can be then called.
+
+        Python example:
+
+        .. code-block:: python
+
+            source = excel.get_range('A1:B2')
+            for r in source:
+                print(f"ADDR = {r.Address} VAL = {r.Value}")
+                r.BorderAround()
+            source.Merge()
+            # Creating a formula and copying it to another range
+            excel.get_range("E4").Formula = "=SUM(C4:D4)"
+            destination = excel.get_range("E5:E10")
+            excel.get_range("E4").Copy(destination)
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${range}=    Get Range    data!A1:A4
+            FOR    ${r}    IN    @{range}
+                Log To Console    ADDR = ${r.Address} VAL = ${r.Value}
+                Call Method  ${r}    BorderAround
+            END
+            Call Method    ${range}    Merge
+
+        :param table_range: range to return
+        :return: range object
+        """
+        return self._app.Range(table_range)
+
+    def get_pivot_tables(
+        self, pivot_table_name: str = None, as_list: bool = True
+    ) -> Dict[str, Any]:
+        """Return pivot tables in the current worksheet.
+
+        Python example:
+
+        .. code-block:: python
+
+            from RPA.Tables import Tables
+
+            pivot_tables = excel.get_pivot_tables()
+
+            for tbl_name, tbl_list in pivot_tables.items():
+                print(f"TABLE NAME: {tbl_name}")
+                table = Tables().create_table(data=tbl_list[1:], columns=tbl_list[0])
+                print(table)
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${pivots}=    Get Pivot Tables
+            FOR    ${tablename}    ${pivot}    IN    &{pivots}
+                Log To Console    ${tablename}
+                ${table}=    RPA.Tables.Create Table
+                ...   data=${{$pivot[1:]}}
+                ...   columns=${{$pivot[0]}}
+                Log To Console    ${table}
+            END
+
+        :param pivot_table_name: name of the pivot table to return,
+         will return by default all pivot tables
+        :param as_list: if `True` then the pivot table data is returned as list
+         of lists, if `False` then the data is returned as list of `Range` objects
+        :return: dictionary of pivot tables (names as keys and table data as values)
+        """
+        pivot_tables = {}
+        tables = self.worksheet.PivotTables()
+        for table in tables:
+            data = []
+            if as_list:
+                previous_row = -1
+                row = []
+                for r in table.TableRange1:
+                    if previous_row == -1 or previous_row != r.Row:
+                        if len(row) > 0:
+                            data.append(row)
+                        row = [r.Value]
+                        previous_row = r.Row
+                    else:
+                        row.append(r.Value)
+            else:
+                data = table.TableRange1
+            if pivot_table_name and table.Name != pivot_table_name:
+                continue
+            pivot_tables[table.Name] = data
+        return pivot_tables
