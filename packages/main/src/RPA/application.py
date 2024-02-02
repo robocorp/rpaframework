@@ -208,3 +208,26 @@ class BaseApplication(metaclass=MetaApplication):
         with catch_com_error():
             self.app.Quit()
         self._app = None
+
+    def set_object_property(self, object_instance, property_name: str, value: str):
+        """Set the property of any object.
+
+        This is a utility keyword for Robot Framework syntax to set object
+        property values.
+
+        .. code-block:: robotframework
+
+            ${new_value}=    Replace String    ${value}    10.132.    5511.11.
+            Set Object Property    ${result}    Value    ${new_value}
+
+        :param object_instance: object instance to set the property
+        :param property_name: property name to set
+        :param value: value to set
+        """
+        if hasattr(object_instance, property_name):
+            setattr(object_instance, property_name, value)
+        else:
+            raise AttributeError(
+                f"Object {type(object_instance)} does not "
+                f"have property '{property_name}'"
+            )

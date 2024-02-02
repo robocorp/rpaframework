@@ -15,6 +15,25 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28.2.0 - 02 Feb 2024
+--------------------
+
+- Library **RPA.Excel.Application** (:pr:`1149`):
+
+  - Add new keyword ``Create Pivot Field`` for creating pivot fields for the pivot table.
+  - Add new keyword ``Create Pivot Table`` for creating pivot tables in a spreadsheet.
+  - Add new keyword ``Create Table`` for creating a table in a spreadsheet.
+  - Add new keyword ``Find`` for finding a value in a range.
+  - Add new keyword ``Get Pivot Tables`` for getting pivot tables in a spreadsheet.
+  - Add new keyword ``Get Range`` for getting a range in a spreadsheet.
+  - Add new keyword ``List Tables`` for listing tables in a spreadsheet.
+
+- For all **RPA.*.Application** libraries (:pr:`1149`): Add new utility keyword for
+  Robot Framework syntax ``Set Object Property``
+
+- Security dependency fix given the bump of ``cryptography`` package to version **42.0.2**.
+  (:pr:`1149`)
+
 17 Jan 2024
 -----------
 
