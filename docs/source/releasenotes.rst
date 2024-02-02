@@ -28,7 +28,7 @@ Latest versions
   - Add new keyword ``Get Range`` for getting a range in a spreadsheet.
   - Add new keyword ``List Tables`` for listing tables in a spreadsheet.
 
-- For all **RPA.*.Application** (:pr:`1148`) Add new utility keyword for
+- For all **RPA.*.Application** libraries (:pr:`1148`): Add new utility keyword for
   Robot Framework syntax ``Set Object Property``
 
 - Security dependency fix given the bump of ``cryptography`` package to version **42.0.2**.
