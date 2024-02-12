@@ -3,7 +3,7 @@ from enum import Enum
 import functools
 from itertools import count
 from random import randint
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 from RPA.application import (
     BaseApplication,
@@ -12,6 +12,7 @@ from RPA.application import (
     to_str_path,
     constants,
 )
+from RPA.Tables import Table
 
 
 def requires_workbook(func):
@@ -57,6 +58,26 @@ def to_pivot_operation(operation_name: str):
     elif operation_name.upper() == "DISTINCT COUNT":
         result = constants.xlDistinctCount
     return result
+
+
+def _split_rows_into_range_blocks(rows, ranges):
+    range_blocks = []
+    start = 0
+    for r in ranges:
+        end = start + r.Columns.Count
+        range_blocks.append((start, end))
+        start = end
+    return [[row[i:j] for row in rows] for i, j in range_blocks]
+
+
+def _get_rows_from_table(table_object: Table):
+    rows = []
+    for index in table_object.index:
+        row = []
+        for column in table_object._columns:  # pylint: disable=protected-access
+            row.append(table_object.get_cell(index, column))
+        rows.append(row)
+    return rows
 
 
 class Application(BaseApplication):
@@ -732,3 +753,73 @@ class Application(BaseApplication):
                 continue
             pivot_tables[table.Name] = data
         return pivot_tables
+
+    def write_data_to_range(
+        self,
+        target_range: Any,
+        values: Union[Table, List[List]],
+        log_warnings: bool = True,
+    ):
+        """Writes data to the specified range(s) in the Excel worksheet.
+
+        The range width should match the number of columns in the data.
+
+        Multiple ranges can be specified by separating them with a semicolon, but
+        still the total width of ranges should match the number of columns in the data.
+
+        Python example:
+
+        .. code-block:: python
+
+            from RPA.Tables import Tables
+            from RPA.Excel.Application import Application
+
+            excel = Application()
+
+            table = Tables().read_table_from_csv("input.csv", header=True)
+            excel.open_workbook("result.xslx)
+            excel.write_data_to_range("A2:P100", table)
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${input_table}=    Read table from CSV    input.csv    header=True
+            Open Workbook      result.xlsx
+            Write Data To Range    A2:L21    ${input_table}   # Single range
+            Write Data To Range    C2:E21;G2:I21    ${input_table}   # Multiple ranges
+
+        :param target_range: A1 string presentation of the range(s) to write or
+         Range object.
+        :param values: `Table` or list of lists to write to the range(s).
+        :param log_warnings: on `False` will suppress logging warning, default
+         is `True` (warnings are logged)
+        """
+        try:
+            if isinstance(target_range, str):
+                target_ranges = target_range.split(";")
+                ranges = [self.worksheet.Range(range) for range in target_ranges]
+            else:
+                ranges = [target_range]
+        except Exception as err:
+            raise AttributeError(
+                "Unable to form valid Excel range(s) from "
+                f"incoming 'target_range': f{str(err)}"
+            ) from err
+        rows = _get_rows_from_table(values) if isinstance(values, Table) else values
+        datas = _split_rows_into_range_blocks(rows, ranges)
+        row_columns = len(rows[0])
+        self.logger.info(f"Data contains {len(rows)} rows and {row_columns} columns.")
+        range_columns = 0
+        for range_, data in zip(ranges, datas):
+            columns = range_.Columns.Count
+            range_columns += columns
+            self.logger.info(
+                f"Range contains {range_.Rows.Count} rows and {columns} columns."
+            )
+            range_.Value = data
+        if log_warnings and range_columns != row_columns:
+            self.logger.warning(
+                f"Total range column count {range_columns} "
+                f"is different from data to write column count {row_columns}"
+            )
