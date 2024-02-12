@@ -12,7 +12,7 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Excel.Application**: Add keyword ``Write data to range`` for writing data to
+- Library **RPA.Excel.Application** (:pr:`1152`): Add keyword ``Write data to range`` for writing data to
   range(s) in a spreadsheet. This will be significantly faster than using ``Write to cells`` keyword
   for large data sets.
 
