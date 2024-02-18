@@ -21,13 +21,19 @@ class TextKeywords(LibraryContext):
     """Keywords for reading screen information and content."""
 
     @keyword
-    def read_text(self, locator: Optional[str] = None, invert: bool = False):
+    def read_text(self, locator: Optional[str] = None, invert: bool = False, language: str = None, configuration: str = None):
         """Read text using OCR from the screen, or an area of the
         screen defined by the given locator.
 
         :param locator: Location of element to read text from
         :param invert:  Invert image colors, useful for reading white text
                         on dark background
+        :param language: 3-character ISO 639-2 language code of the text.
+        This is passed directly to the pytesseract lib in the lang parameter.
+         See https://tesseract-ocr.github.io/tessdoc/Command-Line-Usage.html#using-one-language
+        :param configuration: Tesseract specific parameters like Page Segmentation Modes(psm) or OCR Engine Mode (oem).
+        This is passed directly to the pytesseract lib in the config parameter.
+         See https://tesseract-ocr.github.io/tessdoc/Command-Line-Usage.html
 
         Usage examples:
 
@@ -51,10 +57,10 @@ class TextKeywords(LibraryContext):
             if not isinstance(element, Region):
                 raise ValueError("Locator must resolve to a region")
 
-            self.logger.info("Reading text from element: %s", element)
+            area = "element: %s" % element
             image = screen.grab(element)
         else:
-            self.logger.info("Reading text from screen")
+            area = "screen"
             image = screen.grab()
 
         screen.log_image(image)
@@ -62,8 +68,16 @@ class TextKeywords(LibraryContext):
         if invert:
             image = ImageOps.invert(image)
 
+        self.logger.info(
+            "Reading text from %s (invert: %s, language: %s, configuration: %s)",
+            area,
+            invert or "Not set",
+            language or "Not set",
+            configuration or "Not set",
+        )
+
         start_time = time.time()
-        text = ocr.read(image)
+        text = ocr.read(image, language, configuration)
         self.logger.info("Read text in %.2f seconds", time.time() - start_time)
 
         return text

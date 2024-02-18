@@ -199,12 +199,14 @@ class FinderKeywords(LibraryContext):
 
         confidence = locator.confidence or self.confidence
         language = locator.language
+        configuration = locator.configuration
         self.logger.info(
-            "Searching for text '%s' (region: %s, confidence: %.1f, language: %s)",
+            "Searching for text '%s' (region: %s, confidence: %.1f, language: %s, configuration: %s)",
             locator.text,
             region or "display",
             confidence,
             language or "Not set",
+            configuration or "Not set",
         )
 
         def finder(image: Image.Image) -> List[Region]:
@@ -214,6 +216,7 @@ class FinderKeywords(LibraryContext):
                 confidence=confidence,
                 region=region,
                 language=language,
+                configuration=configuration,
             )
 
             return [match["region"] for match in matches]
