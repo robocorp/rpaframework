@@ -12,6 +12,18 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Excel.Application** (:pr:`1152`): Add keyword ``Write data to range`` for writing data to
+  range(s) in a spreadsheet. This will be significantly faster than using ``Write to cells`` keyword
+  for large data sets.
+- Library **RPA.Word.Application** (:pr:`1152`):
+
+  - Add keywords starting with ``Move_`` for positioning cursor position in a document.
+  - Add keyword ``Find text`` for finding text in a document.
+  - Add keyword ``Paste from clipboard `` for pasting text from clipboard to a current cursor position.
+  - Add keyword ``Get current line`` to get text from the current line.
+  - Add keyword ``Get number of lines`` to get number of lines in a current document.
+  - Refactor keyword ``Write text`` to take cursor positioning into consideration.
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

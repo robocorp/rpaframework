@@ -711,6 +711,44 @@ property values.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Excel.Application.Application.write_data_to_range">
+<span class="sig-name descname"><span class="pre">write_data_to_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Table</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_warnings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.write_data_to_range" title="Permalink to this definition"></a></dt>
+<dd><p>Writes data to the specified range(s) in the Excel worksheet.</p>
+<p>The range width should match the number of columns in the data.</p>
+<p>Multiple ranges can be specified by separating them with a semicolon, but
+still the total width of ranges should match the number of columns in the data.</p>
+<p>Python example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Tables</span> <span class="kn">import</span> <span class="n">Tables</span>
+<span class="kn">from</span> <span class="nn">RPA.Excel.Application</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="n">excel</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">Tables</span><span class="p">()</span><span class="o">.</span><span class="n">read_table_from_csv</span><span class="p">(</span><span class="s2">&quot;input.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">excel</span><span class="o">.</span><span class="n">open_workbook</span><span class="p">(</span><span class="s2">&quot;result.xslx)</span>
+<span class="n">excel</span><span class="o">.</span><span class="n">write_data_to_range</span><span class="p">(</span><span class="s2">&quot;A2:P100&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${input_table}=</span><span class="p">    </span><span class="c">Read table from CSV</span><span class="p">    </span><span class="c">input.csv</span><span class="p">    </span><span class="c">header=True</span>
+<span class="c">Open Workbook</span><span class="p">      </span><span class="c">result.xlsx</span>
+<span class="c">Write Data To Range</span><span class="p">    </span><span class="c">A2:L21</span><span class="p">    </span><span class="c">${input_table}</span><span class="p">   </span><span class="c"># Single range</span>
+<span class="c">Write Data To Range</span><span class="p">    </span><span class="c">C2:E21;G2:I21</span><span class="p">    </span><span class="c">${input_table}</span><span class="p">   </span><span class="c"># Multiple ranges</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_range</strong> – A1 string presentation of the range(s) to write or
+Range object.</p></li>
+<li><p><strong>values</strong> – <cite>Table</cite> or list of lists to write to the range(s).</p></li>
+<li><p><strong>log_warnings</strong> – on <cite>False</cite> will suppress logging warning, default
+is <cite>True</cite> (warnings are logged)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Excel.Application.Application.write_to_cells">
 <span class="sig-name descname"><span class="pre">write_to_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worksheet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Excel.Application.Application.write_to_cells" title="Permalink to this definition"></a></dt>
 <dd><p>Write value, number_format and/or formula into cell.</p>
