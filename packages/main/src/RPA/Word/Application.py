@@ -5,6 +5,16 @@ from RPA.application import (
     to_path,
     to_str_path,
 )
+from enum import Enum
+from typing import Any
+
+
+class CursorPosition(Enum):
+    """Enum for moving cursor position"""
+
+    NO_MOVE = 0
+    START = 1
+    END = 2
 
 
 class Application(BaseApplication):
@@ -106,17 +116,6 @@ class Application(BaseApplication):
                 OutputFileName=path, ExportFormat=constants.wdExportFormatPDF
             )
 
-    def write_text(self, text: str, newline: bool = True) -> None:
-        """Writes given text at the end of the document
-
-        :param text: string to write
-        :param newline: write text to newline if True, default to True
-        """
-        self.app.Selection.EndKey(Unit=constants.wdStory)
-        if newline:
-            text = f"\n{text}"
-        self.app.Selection.TypeText(text)
-
     def replace_text(self, find: str, replace: str) -> None:
         """Replace text in active document
 
@@ -188,3 +187,138 @@ class Application(BaseApplication):
         :return: texts
         """
         return self._active_document.Content.Text
+
+    def paste_from_clipboard(self) -> None:
+        """Paste content from clipboard to the document's
+        current cursor position."""
+        self.app.Selection.Paste()
+
+    def get_current_line(self) -> str:
+        """Get the text of the current line in the document."""
+        original_range = self.app.Selection.Range
+        self.app.Selection.Expand(Unit=constants.wdLine)
+        text = self.app.Selection.Text
+        original_range.Select()
+        return text
+
+    def get_number_of_lines(self) -> int:
+        """Get the number of lines in the document."""
+        if self.app.Documents.Count >= 1:
+            return self.app.Documents.Item(1).ComputeStatistics(
+                constants.wdStatisticLines
+            )
+        else:
+            raise AssertionError("No document is open")
+
+    def move_to_top(self) -> None:
+        """Move cursor to the top of the document."""
+        self.app.Selection.HomeKey(Unit=constants.wdStory)
+
+    def move_to_end(self) -> None:
+        """Move cursor to the end of the document."""
+        self.app.Selection.EndKey(Unit=constants.wdStory)
+
+    def move_to_line_start(self) -> None:
+        """Move cursor to start of the line on the current cursor position."""
+        self.app.Selection.HomeKey(Unit=constants.wdLine)
+
+    def move_to_line_end(self) -> None:
+        """Move cursor to end of the line on the current cursor position."""
+        self.app.Selection.EndKey(Unit=constants.wdLine)
+
+    def move_vertically(
+        self,
+        lines: int = 0,
+    ) -> Any:
+        """Move cursor vertically from current cursor position.
+
+        Remember that if cursor is already at the top the cursor can't
+        move up and if cursor is already at the bottom the cursor can't
+        move down.
+
+        :param lines: lines to move
+        """
+        if lines > 0:
+            self.app.Selection.MoveDown(Unit=constants.wdLine, Count=lines)
+        elif lines < 0:
+            self.app.Selection.MoveUp(Unit=constants.wdLine, Count=-lines)
+        self.app.Selection.Select()
+
+    def move_horizontally(
+        self,
+        characters: int = 0,
+    ) -> Any:
+        """Move cursor horizontally from current cursor position.
+
+        Remember that if cursor is already at the start the cursor can't move
+        left and if cursor is already at the end the cursor can't move right.
+
+        :param characters: characters to move
+        """
+        if characters > 0:
+            self.app.Selection.MoveRight(Unit=constants.wdCharacter, Count=characters)
+        elif characters < 0:
+            self.app.Selection.MoveLeft(Unit=constants.wdCharacter, Count=-characters)
+        self.app.Selection.Select()
+
+    def find_text(
+        self,
+        text: str,
+        cursor_position: CursorPosition = CursorPosition.NO_MOVE,
+        copy: bool = False,
+    ) -> None:
+        """Find text in the document.
+
+        :param text: text to find
+        :param cursor_position: where to move cursor after finding text
+        :param copy: copy found text into clipboard
+        :raises AssertionError: if text is not found
+        """
+        found = False
+        content_range = None
+        if self.app.Documents.Count >= 1:
+            content_range = self.app.Documents.Item(1).Content
+            content_range.Find.ClearFormatting()
+            found = content_range.Find.Execute(FindText=text)
+        else:
+            raise AssertionError("No document is open")
+        if not found:
+            raise AssertionError(f"Text '{text}' not found in the document")
+        if copy:
+            content_range.Copy()
+        if cursor_position != CursorPosition.NO_MOVE:
+            direction = (
+                constants.wdCollapseStart
+                if cursor_position == CursorPosition.START
+                else constants.wdCollapseEnd
+            )
+            content_range.Collapse(Direction=direction)
+
+    def write_text(
+        self,
+        text: str,
+        cursor_position: CursorPosition = CursorPosition.NO_MOVE,
+        end_of_text: bool = True,
+    ) -> None:
+        """Writes given text at the end of the document
+
+        :param text: string to write
+        :param cursor_position: where to move cursor before writing
+        :param end_of_text: if True moves cursor to the end of the text
+         before writing
+        """
+
+        if end_of_text:
+            self.move_to_end()
+
+        if cursor_position != CursorPosition.NO_MOVE:
+            direction = (
+                constants.wdCollapseStart
+                if cursor_position == CursorPosition.START
+                else constants.wdCollapseEnd
+            )
+
+            self.app.Selection.Collapse(Direction=direction)
+
+        self.app.Selection.TypeText(text)
+        self.app.Selection.Select()

@@ -1,5 +1,6 @@
 """A small optional task collection used only when dependencies such
 as ``toml`` are not installed in the system."""
+
 import re
 from pathlib import Path
 
@@ -31,7 +32,8 @@ def install_invocations(ctx, force=False):
     """
     temp_requirements = create_temp_requirements()
     ctx.run(
-        f"pip install -r {temp_requirements}" f"{' --force-reinstall' if force else ''}"
+        f"pip install -Ur {temp_requirements}"
+        f"{' --force-reinstall' if force else ''}"
     )
     # Delete the temporary requirements file
     Path(temp_requirements).unlink(missing_ok=True)
