@@ -1,11 +1,11 @@
 *** Settings ***
-Library         Collections
-Library         RPA.Outlook.Application   autoexit=${False}
+Library             Collections
+Library             RPA.Outlook.Application    autoexit=${False}
 
-Suite Setup         Open Application    visible=${True}     display_alerts=${True}
+Suite Setup         Open Application    visible=${True}    display_alerts=${True}
 Suite Teardown      Quit Application
 
-Default Tags      windows   skip  # no Outlook app in CI
+Default Tags        windows    skip    # no Outlook app in CI
 
 
 *** Variables ***
@@ -15,7 +15,7 @@ ${RESOURCES}    ${CURDIR}${/}..${/}resources
 *** Tasks ***
 Save email as draft
     Send Email    recipient@domain.com    Drafted message    Containing draft body
-    ...    attachments=${RESOURCES}${/}vero2.pdf
+    ...    attachments=${RESOURCES}${/}invoice.png
     ...    save_as_draft=${True}
 
 Send email with cc recipients
@@ -24,12 +24,12 @@ Send email with cc recipients
     ...    mika@robocorp.com;cosmin@robocorp.com;robocorp.tester@gmail.com
     ...    All recipient fields - message from rpaframwork tests - part 3
     ...    Contained body
-    ...    attachments=${RESOURCES}${/}vero2.pdf;${RESOURCES}${/}invoice.png
+    ...    attachments=${RESOURCES}${/}invoice.png
     ...    cc_recipients=${cc}
     ...    bcc_recipients=robocorp.tester.2@gmail.com;mika@beissi.onmicrosoft.com
 
 Retrieve emails
-    @{emails} =     Get Emails      folder_name=Sent Items
+    @{emails} =    Get Emails    folder_name=Sent Items
     Log List    ${emails}
-    ${length} =     Get Length    ${emails}
+    ${length} =    Get Length    ${emails}
     Log To Console    Sent e-mails: ${length}
