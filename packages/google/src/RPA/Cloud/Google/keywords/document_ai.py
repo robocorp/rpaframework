@@ -5,10 +5,10 @@ from typing import List, Optional
 from google.api_core.client_options import ClientOptions
 from google.cloud import documentai_v1 as documentai
 
-from . import LibraryContext, keyword
+from . import keyword
 
 
-class DocumentAIKeywords(LibraryContext):
+class DocumentAIKeywords:
     """Keywords for Google Cloud Document AI service.
 
     Added on **rpaframework-google** version: 6.1.1
@@ -25,7 +25,7 @@ class DocumentAIKeywords(LibraryContext):
     """
 
     def __init__(self, ctx):
-        super().__init__(ctx)
+        self.ctx = ctx
         self.service = None
 
     @keyword(name="Init Document AI", tags=["init", "document ai"])
@@ -73,8 +73,8 @@ class DocumentAIKeywords(LibraryContext):
                 api_endpoint=f"{region.lower()}-documentai.googleapis.com"
             )
             kwargs["client_options"] = opts
-        self.logger.info(f"Using Document AI from '{region.upper()}' region")
-        self.service = self.init_service_with_object(
+        self.ctx.logger.info(f"Using Document AI from '{region.upper()}' region")
+        self.service = self.ctx.init_service_with_object(
             documentai.DocumentProcessorServiceClient,
             service_account,
             use_robocorp_vault,
@@ -148,7 +148,9 @@ class DocumentAIKeywords(LibraryContext):
             binary_content = binary.read()
 
         mime = mime_type or mimetypes.guess_type(file_path)[0]
-        self.logger.info(f"Processing document '{file_path}' with mimetype '{mime}'")
+        self.ctx.logger.info(
+            f"Processing document '{file_path}' with mimetype '{mime}'"
+        )
         # Load Binary Data into Document AI RawDocument Object
         raw_document = documentai.RawDocument(content=binary_content, mime_type=mime)
 

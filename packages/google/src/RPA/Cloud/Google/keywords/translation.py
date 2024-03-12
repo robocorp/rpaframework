@@ -2,10 +2,10 @@ from typing import Dict, Union, Optional
 
 from google.cloud import translate_v3
 
-from . import LibraryContext, keyword, TextType, to_texttype
+from . import keyword, TextType, to_texttype
 
 
-class TranslationKeywords(LibraryContext):
+class TranslationKeywords:
     """Class for Google Cloud Translation API
 
     Link to `Translation PyPI`_ page.
@@ -14,7 +14,7 @@ class TranslationKeywords(LibraryContext):
     """
 
     def __init__(self, ctx):
-        super().__init__(ctx)
+        self.ctx = ctx
         self.service = None
         self.project_id = None
 
@@ -34,7 +34,7 @@ class TranslationKeywords(LibraryContext):
         :param token_file: file path to token file
         """
         self.project_id = project_identifier
-        self.service = self.init_service_with_object(
+        self.service = self.ctx.init_service_with_object(
             translate_v3.TranslationServiceClient,
             service_account,
             use_robocorp_vault,

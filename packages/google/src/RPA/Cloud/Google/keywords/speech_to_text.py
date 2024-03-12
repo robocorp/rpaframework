@@ -2,10 +2,7 @@ from typing import Dict, Optional
 from google.cloud import speech
 from google.cloud.speech_v1.types import RecognitionConfig, RecognitionAudio
 
-from . import (
-    LibraryContext,
-    keyword,
-)
+from . import keyword
 
 ENCODING = {
     "AMR": RecognitionConfig.AudioEncoding.AMR,
@@ -19,7 +16,7 @@ ENCODING = {
 }
 
 
-class SpeechToTextKeywords(LibraryContext):
+class SpeechToTextKeywords:
     """Class for Google Cloud Speech-To-Text API
 
     Possible input audio encodings:
@@ -39,7 +36,7 @@ class SpeechToTextKeywords(LibraryContext):
     """
 
     def __init__(self, ctx):
-        super().__init__(ctx)
+        self.ctx = ctx
         self.service = None
 
     @keyword(tags=["init", "speech to text"])
@@ -55,7 +52,7 @@ class SpeechToTextKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.init_service_with_object(
+        self.service = self.ctx.init_service_with_object(
             speech.SpeechClient, service_account, use_robocorp_vault, token_file
         )
         return self.service

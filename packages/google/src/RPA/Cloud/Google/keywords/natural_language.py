@@ -2,14 +2,14 @@ from typing import Dict, Optional
 from google.cloud import language_v1
 
 
-from . import LibraryContext, keyword, TextType, to_texttype
+from . import keyword, TextType, to_texttype
 
 
-class NaturalLanguageKeywords(LibraryContext):
+class NaturalLanguageKeywords:
     """Keywords for Google Cloud Natural Language API"""
 
     def __init__(self, ctx):
-        super().__init__(ctx)
+        self.ctx = ctx
         self.service = None
 
     @keyword(tags=["init", "natural language"])
@@ -25,7 +25,7 @@ class NaturalLanguageKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.init_service_with_object(
+        self.service = self.ctx.init_service_with_object(
             language_v1.LanguageServiceClient,
             service_account,
             use_robocorp_vault,
@@ -126,5 +126,5 @@ class NaturalLanguageKeywords(LibraryContext):
             response = self.service.analyze_sentiment(
                 document=document, encoding_type="UTF8"
             )
-        self.write_json(json_file, response)
+        self.ctx.write_json(json_file, response)
         return response

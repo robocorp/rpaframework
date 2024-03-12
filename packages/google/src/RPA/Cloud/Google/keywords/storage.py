@@ -2,13 +2,10 @@ from typing import Any, Dict, List, Optional
 
 from google.cloud import storage
 
-from . import (
-    LibraryContext,
-    keyword,
-)
+from . import keyword
 
 
-class StorageKeywords(LibraryContext):
+class StorageKeywords:
     """Class for Google Cloud Storage API
      and Google Cloud Storage JSON API
 
@@ -18,7 +15,7 @@ class StorageKeywords(LibraryContext):
     """
 
     def __init__(self, ctx):
-        super().__init__(ctx)
+        self.ctx = ctx
         self.service = None
 
     @keyword(tags=["init", "storage"])
@@ -34,7 +31,7 @@ class StorageKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.init_service_with_object(
+        self.service = self.ctx.init_service_with_object(
             storage.Client, service_account, use_robocorp_vault, token_file
         )
         return self.service
@@ -254,7 +251,7 @@ class StorageKeywords(LibraryContext):
                 if blob:
                     with open(filename, "wb") as f:
                         blob.download_to_file(f)
-                        self.logger.info(
+                        self.ctx.logger.info(
                             "Downloaded object %s from Google to filepath %s",
                             object_name,
                             filename,
@@ -268,7 +265,7 @@ class StorageKeywords(LibraryContext):
                 if blob:
                     with open(filename, "wb") as f:
                         blob.download_to_file(f)
-                        self.logger.info(
+                        self.ctx.logger.info(
                             "Downloaded object %s from Google to filepath %s",
                             filename,
                             filename,

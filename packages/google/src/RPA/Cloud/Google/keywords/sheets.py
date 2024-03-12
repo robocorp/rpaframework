@@ -1,16 +1,13 @@
 from typing import Dict, List, Optional
 
-from . import (
-    LibraryContext,
-    keyword,
-)
+from . import keyword
 
 
-class SheetsKeywords(LibraryContext):
+class SheetsKeywords:
     """Keywords for Google Sheets operations"""
 
     def __init__(self, ctx):
-        super().__init__(ctx)
+        self.ctx = ctx
         self.service = None
 
     @keyword(tags=["init", "sheets"])
@@ -33,7 +30,7 @@ class SheetsKeywords(LibraryContext):
         sheets_scopes = ["drive", "drive.file", "spreadsheets"]
         if scopes:
             sheets_scopes += scopes
-        self.service = self.init_service(
+        self.service = self.ctx.init_service(
             service_name="sheets",
             api_version="v4",
             scopes=sheets_scopes,

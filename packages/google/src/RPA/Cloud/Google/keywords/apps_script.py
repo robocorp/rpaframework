@@ -1,12 +1,9 @@
 from typing import Optional
 
-from . import (
-    LibraryContext,
-    keyword,
-)
+from . import keyword
 
 
-class AppsScriptKeywords(LibraryContext):
+class AppsScriptKeywords:
     """Class for Google Apps Script API
 
     For more information about Google Apps Script API link_.
@@ -15,7 +12,7 @@ class AppsScriptKeywords(LibraryContext):
     """
 
     def __init__(self, ctx):
-        super().__init__(ctx)
+        self.ctx = ctx
         self.service = None
 
     @keyword(tags=["init", "apps script"])
@@ -38,7 +35,7 @@ class AppsScriptKeywords(LibraryContext):
         apps_scopes = ["script.projects", "drive.scripts", "script.external_request"]
         if scopes:
             apps_scopes += scopes
-        self.service = self.init_service(
+        self.service = self.ctx.init_service(
             service_name="script",
             api_version="v1",
             scopes=apps_scopes,

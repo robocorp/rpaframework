@@ -1,9 +1,9 @@
 import importlib
 import logging
 import os
-from robotlibcore import DynamicCore
 
 
+from .keywords.context import LibraryContext
 from .keywords import (
     AppsScriptKeywords,
     BaseKeywords,
@@ -30,7 +30,21 @@ def import_vault():
         return None
 
 
-class Google(DynamicCore):
+class Google(
+    AppsScriptKeywords,
+    BaseKeywords,
+    DocumentAIKeywords,
+    DriveKeywords,
+    GmailKeywords,
+    NaturalLanguageKeywords,
+    SheetsKeywords,
+    SpeechToTextKeywords,
+    StorageKeywords,
+    TextToSpeechKeywords,
+    TranslationKeywords,
+    VideoIntelligenceKeywords,
+    VisionKeywords,
+):  # pylint: disable=too-many-ancestors
     """`Google` is a library for operating with Google API endpoints.
 
     **Installation**
@@ -124,21 +138,34 @@ class Google(DynamicCore):
         if self.service_account_file is None:
             self.service_account_file = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
         self.secrets_library = import_vault()
+        ctx = LibraryContext(self)
+        AppsScriptKeywords.__init__(self, ctx)
+        BaseKeywords.__init__(self, ctx)
+        DocumentAIKeywords.__init__(self, ctx)
+        DriveKeywords.__init__(self, ctx)
+        GmailKeywords.__init__(self, ctx)
+        NaturalLanguageKeywords.__init__(self, ctx)
+        SheetsKeywords.__init__(self, ctx)
+        SpeechToTextKeywords.__init__(self, ctx)
+        StorageKeywords.__init__(self, ctx)
+        TextToSpeechKeywords.__init__(self, ctx)
+        TranslationKeywords.__init__(self, ctx)
+        VideoIntelligenceKeywords.__init__(self, ctx)
+        VisionKeywords.__init__(self, ctx)
 
-        # Register keyword libraries to LibCore
-        libraries = [
-            AppsScriptKeywords(self),
-            BaseKeywords(self),
-            DocumentAIKeywords(self),
-            DriveKeywords(self),
-            GmailKeywords(self),
-            NaturalLanguageKeywords(self),
-            SheetsKeywords(self),
-            SpeechToTextKeywords(self),
-            StorageKeywords(self),
-            TextToSpeechKeywords(self),
-            TranslationKeywords(self),
-            VideoIntelligenceKeywords(self),
-            VisionKeywords(self),
-        ]
-        super().__init__(libraries)
+
+__all__ = [
+    "AppsScriptKeywords",
+    "BaseKeywords",
+    "DocumentAIKeywords",
+    "DriveKeywords",
+    "GmailKeywords",
+    "NaturalLanguageKeywords",
+    "SheetsKeywords",
+    "SpeechToTextKeywords",
+    "StorageKeywords",
+    "TextToSpeechKeywords",
+    "TranslationKeywords",
+    "VideoIntelligenceKeywords",
+    "VisionKeywords",
+]

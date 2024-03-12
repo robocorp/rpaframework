@@ -7,13 +7,10 @@ from google.cloud.texttospeech_v1.types import (
     SynthesisInput,
 )
 
-from . import (
-    LibraryContext,
-    keyword,
-)
+from . import keyword
 
 
-class TextToSpeechKeywords(LibraryContext):
+class TextToSpeechKeywords:
     """Class for Google Cloud Text-to-Speech API
 
     Link to `Text To Speech PyPI`_ page.
@@ -22,7 +19,7 @@ class TextToSpeechKeywords(LibraryContext):
     """
 
     def __init__(self, ctx):
-        super().__init__(ctx)
+        self.ctx = ctx
         self.service = None
 
     @keyword(tags=["init", "text to speech"])
@@ -38,7 +35,7 @@ class TextToSpeechKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.init_service_with_object(
+        self.service = self.ctx.init_service_with_object(
             texttospeech_v1.TextToSpeechClient,
             service_account,
             use_robocorp_vault,
