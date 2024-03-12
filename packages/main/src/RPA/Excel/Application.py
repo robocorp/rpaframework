@@ -837,7 +837,9 @@ class Application(BaseApplication):
                 f"is different from data to write column count {row_columns}"
             )
 
-    def remove_hidden_columns_and_rows(self, initial_range: Any, worksheet: Any = None):
+    def remove_hidden_columns_and_rows(
+        self, initial_range: Any, worksheet: Any = None
+    ) -> Any:
         """Removes hidden columns and rows from a range and returns a new range.
 
         :param initial_range: range of cells to remove hidden columns and rows from
@@ -858,11 +860,10 @@ class Application(BaseApplication):
             self.logger.error("No visible cells found or an error occurred:", e)
         return initial_range
 
-    def unmerge_range(self, initial_range: Any):
+    def unmerge_range(self, initial_range: Any) -> None:
         """Unmerges a range of cells.
 
         :param initial_range: range of cells to unmerge
-        :return: unmerged range
         """
         initial_range = (
             self.get_range(initial_range)
@@ -871,11 +872,10 @@ class Application(BaseApplication):
         )
         initial_range.UnMerge()
 
-    def merge_range(self, initial_range: Any):
+    def merge_range(self, initial_range: Any) -> None:
         """Merges a range of cells.
 
         :param initial_range: range of cells to merge
-        :return: merged range
         """
         initial_range = (
             self.get_range(initial_range)
