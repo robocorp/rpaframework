@@ -657,3 +657,148 @@ class SheetsKeywords:
             )
             .execute()
         )
+
+    @keyword(tags=["sheets"])
+    def detect_tables(self, spreadsheet_id: str, sheet_name: str = None):
+        """Detect tables in the sheet.
+
+        :param spreadsheet_id: id of the spreadsheet
+        :param sheet_name: name of the sheet, or leave None for all sheets
+        :return: tables arranged by sheets
+        """
+        if sheet_name:
+            sheets = [sheet_name]
+        else:
+            result = self.get_spreadsheet_basic_information(spreadsheet_id)
+            sheets = [sheet["title"] for sheet in result["sheets"]]
+
+        tables = {}
+        for sheet in sheets:
+            tables[sheet] = self._detect_tables_in_sheet(spreadsheet_id, sheet)
+
+        return tables
+
+    def _detect_tables_in_sheet(self, spreadsheet_id: str, sheet_name: str):
+        result = self.get_all_sheet_values(spreadsheet_id, sheet_name)
+        rows = []
+        if "values" in result.keys():
+            rows = result["values"]
+
+        # Identify header rows and their columns.
+        areas = self._identify_header_rows_and_columns(rows)
+
+        data_sorted = sorted(areas, key=lambda x: (x["row"], x["column"]))
+        combined = []
+
+        for item in data_sorted:
+            row = item["row"]
+            column = item["column"]
+            size = item["size"]
+            if (
+                combined
+                and row == combined[-1]["row"]
+                and column == combined[-1]["column_end"] + 1
+            ):
+                # If the current item is in the same row and adjacent column, merge it
+                combined[-1]["headers"].append(item["header"])
+                combined[-1]["column_end"] = column
+                combined[-1][
+                    "range"
+                ] = f'{combined[-1]["start"]}:{self.to_A1_notation(column, row+size-1)}'
+
+            else:
+                # Otherwise, start a new entry
+                start = self.to_A1_notation(column, row)
+                combined.append(
+                    {
+                        "start": start,
+                        "range": f"{start}:{self.to_A1_notation(column, row+size-1)}",
+                        "column_end": column,
+                        "row": row,
+                        "headers": [item["header"]],
+                        "size": size,
+                    }
+                )
+
+        return [
+            {
+                k: v
+                for k, v in d.items()
+                if k not in ["column_end", "start", "end", "row"]
+            }
+            for d in combined
+        ]
+
+    def _identify_header_rows_and_columns(self, rows):
+        areas = []
+        header_indices = []
+        for row_idx, row in enumerate(rows):
+            for col_idx, cell in enumerate(row):
+                if cell:  # Found a non-empty cell, possibly a header.
+                    # Check if this cell is a new segment header.
+                    is_new_header = True
+                    for header_index in header_indices:
+                        if header_index[1] == col_idx:
+                            is_new_header = False
+                            break
+                    if is_new_header:
+                        header_indices.append((row_idx, col_idx))
+
+        # For each header, determine the segment size.
+        for header_idx, header_col in header_indices:
+            segment_size = 0
+            row_idx = header_idx
+            while row_idx < len(rows) and any(
+                rows[row_idx][header_col : header_col + 1]
+            ):
+                segment_size += 1
+                row_idx += 1
+            areas.append(
+                {
+                    "column": header_col + 1,
+                    "row": header_idx + 1,
+                    "header": rows[header_idx][header_col],
+                    "size": segment_size,
+                }
+            )
+        return areas
+
+    @keyword(tags=["sheets"])
+    def get_sheet_formulas(self, spreadsheet_id: str, sheet_name: str):
+        """Get formulas from the sheet.
+
+        :param spreadsheet_id: id of the spreadsheet
+        :param sheet_name: name of the sheet
+        :return: _description_
+        """
+        result = self.get_all_sheet_values(
+            spreadsheet_id, sheet_name, value_render_option="FORMULA"
+        )
+        rows = []
+        if "values" in result.keys():
+            rows = result["values"]
+
+        formula_cells = [
+            (row_idx, col_idx)
+            for row_idx, row in enumerate(rows)
+            for col_idx, cell in enumerate(row)
+            if isinstance(cell, str) and cell.startswith("=")
+        ]
+        formula_cells_dict = [
+            {"range": self.to_A1_notation(col + 1, row + 1), "formula": rows[row][col]}
+            for row, col in formula_cells
+        ]
+        return formula_cells_dict
+
+    @keyword(tags=["sheets"])
+    def to_A1_notation(self, column_number: int, row_number: int):
+        """Convert a column number and a row number into a cell reference.
+
+        :param column_number: column number to convert
+        :param row_number: row number to convert
+        :return: cell reference string
+        """
+        if row_number < 1 or column_number < 1:
+            raise ValueError("Number must be greater than 0")
+
+        return f"{self.to_column_letter(column_number)}{row_number}"
