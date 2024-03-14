@@ -856,8 +856,8 @@ class Application(BaseApplication):
         try:
             visible_range = initial_range.SpecialCells(constants.xlCellTypeVisible)
             return visible_range
-        except Exception as e:
-            self.logger.error("No visible cells found or an error occurred:", e)
+        except Exception as e:  # pylint: disable=broad-except
+            self.logger.error(f"No visible cells found or an error occurred:f{str(e)}")
         return initial_range
 
     def unmerge_range(self, initial_range: Any) -> None:
