@@ -12,6 +12,12 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Word.Application** (:pr:`1159`):
+
+  - Add keyword ``Select current paragraph`` for selecting the current paragraph.
+  - Add keyword ``Select paragraphs`` for selecting previous/next paragraphs.
+  - Add keyword ``Copy selection to clipboard`` for copying the selection to the clipboard.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
