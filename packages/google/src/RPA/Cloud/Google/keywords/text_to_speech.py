@@ -20,7 +20,7 @@ class TextToSpeechKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.text_service = None
 
     @keyword(tags=["init", "text to speech"])
     def init_text_to_speech(
@@ -35,13 +35,13 @@ class TextToSpeechKeywords:
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.ctx.init_service_with_object(
+        self.text_service = self.ctx.init_service_with_object(
             texttospeech_v1.TextToSpeechClient,
             service_account,
             use_robocorp_vault,
             token_file,
         )
-        return self.service
+        return self.text_service
 
     @keyword(tags=["text to speech"])
     def list_supported_voices(self, language_code: str = None) -> List:
@@ -59,9 +59,9 @@ class TextToSpeechKeywords:
             ${result}=   List Supported Voices   en-US
         """
         if language_code:
-            voices = self.service.list_voices(language_code)
+            voices = self.text_service.list_voices(language_code)
         else:
-            voices = self.service.list_voices()
+            voices = self.text_service.list_voices()
         return voices.voices
 
     @keyword(tags=["text to speech"])
@@ -98,7 +98,7 @@ class TextToSpeechKeywords:
             language_code=language, name=name, ssml_gender=gender
         )
         audio_config = AudioConfig(audio_encoding=encoding)
-        response = self.service.synthesize_speech(
+        response = self.text_service.synthesize_speech(
             request={
                 "input": synth_input,
                 "voice": voice_selection,

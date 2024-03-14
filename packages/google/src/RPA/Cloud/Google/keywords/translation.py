@@ -15,7 +15,7 @@ class TranslationKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.translation_service = None
         self.project_id = None
 
     @keyword(tags=["init", "translation"])
@@ -34,13 +34,13 @@ class TranslationKeywords:
         :param token_file: file path to token file
         """
         self.project_id = project_identifier
-        self.service = self.ctx.init_service_with_object(
+        self.translation_service = self.ctx.init_service_with_object(
             translate_v3.TranslationServiceClient,
             service_account,
             use_robocorp_vault,
             token_file,
         )
-        return self.service
+        return self.translation_service
 
     @keyword(tags=["translation"])
     def translate(
@@ -79,5 +79,5 @@ class TranslationKeywords:
         if mime_type:
             mimetype = to_texttype(mime_type)
             parameters["mime_type"] = mimetype
-        response = self.service.translate_text(**parameters)
+        response = self.translation_service.translate_text(**parameters)
         return response

@@ -8,7 +8,7 @@ class SheetsKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.sheets_service = None
 
     @keyword(tags=["init", "sheets"])
     def init_sheets(
@@ -30,7 +30,7 @@ class SheetsKeywords:
         sheets_scopes = ["drive", "drive.file", "spreadsheets"]
         if scopes:
             sheets_scopes += scopes
-        self.service = self.ctx.init_service(
+        self.sheets_service = self.ctx.init_service(
             service_name="sheets",
             api_version="v4",
             scopes=sheets_scopes,
@@ -39,7 +39,7 @@ class SheetsKeywords:
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
         )
-        return self.service
+        return self.sheets_service
 
     @keyword(tags=["sheets"])
     def create_spreadsheet(self, title: str) -> str:
@@ -67,7 +67,7 @@ class SheetsKeywords:
 
         data = {"properties": {"title": title}}
         spreadsheet = (
-            self.service.spreadsheets()
+            self.sheets_service.spreadsheets()
             .create(body=data, fields="spreadsheetId")
             .execute()
         )
@@ -111,7 +111,7 @@ class SheetsKeywords:
         """
         resource = {"majorDimension": major_dimension, "values": values}
         return (
-            self.service.spreadsheets()
+            self.sheets_service.spreadsheets()
             .values()
             .append(
                 spreadsheetId=spreadsheet_id,
@@ -168,7 +168,7 @@ class SheetsKeywords:
         """
         resource = {"majorDimension": major_dimension, "values": values}
         return (
-            self.service.spreadsheets()
+            self.sheets_service.spreadsheets()
             .values()
             .update(
                 spreadsheetId=spreadsheet_id,
@@ -218,7 +218,7 @@ class SheetsKeywords:
             "dateTimeRenderOption": datetime_render_option,
         }
 
-        return self.service.spreadsheets().values().get(**parameters).execute()
+        return self.sheets_service.spreadsheets().values().get(**parameters).execute()
 
     @keyword(tags=["sheets"])
     def get_all_sheet_values(
@@ -273,7 +273,7 @@ class SheetsKeywords:
         rows = found_sheet["rows"]
         parameters["range"] = f"{sheet_title}!A1:{target_column}{rows}"
 
-        return self.service.spreadsheets().values().get(**parameters).execute()
+        return self.sheets_service.spreadsheets().values().get(**parameters).execute()
 
     @keyword(tags=["sheets"])
     def clear_sheet_values(self, spreadsheet_id: str, sheet_range: str) -> Dict:
@@ -298,7 +298,7 @@ class SheetsKeywords:
             ${result}=  Clear Sheet Values  ${SPREADSHEET_ID}  A1:C1
         """
         return (
-            self.service.spreadsheets()
+            self.sheets_service.spreadsheets()
             .values()
             .clear(
                 spreadsheetId=spreadsheet_id,
@@ -339,7 +339,7 @@ class SheetsKeywords:
             "destination_spreadsheet_id": target_spreadsheet_id,
         }
         return (
-            self.service.spreadsheets()
+            self.sheets_service.spreadsheets()
             .sheets()
             .copyTo(
                 spreadsheetId=spreadsheet_id,
@@ -381,7 +381,11 @@ class SheetsKeywords:
         :param spreadsheet_id: ID of the spreadsheet
         :return: operation result as an dictionary
         """
-        return self.service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
+        return (
+            self.sheets_service.spreadsheets()
+            .get(spreadsheetId=spreadsheet_id)
+            .execute()
+        )
 
     @keyword(tags=["sheets"])
     def to_column_letter(self, number: int):
@@ -650,7 +654,7 @@ class SheetsKeywords:
             ${result}=    Generic Spreadsheet Batch Update    ${SPREADSHEET_ID}    ${body}
         """  # noqa: E501
         return (
-            self.service.spreadsheets()
+            self.sheets_service.spreadsheets()
             .batchUpdate(
                 spreadsheetId=spreadsheet_id,
                 body=body,
@@ -675,6 +679,9 @@ class SheetsKeywords:
         tables = {}
         for sheet in sheets:
             tables[sheet] = self._detect_tables_in_sheet(spreadsheet_id, sheet)
+            self.ctx.logger.info(
+                f"found {len(tables[sheet])} table(s) in sheet: {sheet}"
+            )
 
         return tables
 
@@ -686,11 +693,12 @@ class SheetsKeywords:
 
         # Identify header rows and their columns.
         areas = self._identify_header_rows_and_columns(rows)
+        return self._combine_areas(areas)
 
-        data_sorted = sorted(areas, key=lambda x: (x["row"], x["column"]))
+    def _combine_areas(self, areas):
         combined = []
 
-        for item in data_sorted:
+        for item in areas:
             row = item["row"]
             column = item["column"]
             size = item["size"]
@@ -761,7 +769,8 @@ class SheetsKeywords:
                     "size": segment_size,
                 }
             )
-        return areas
+        sorted_areas = sorted(areas, key=lambda x: (x["row"], x["column"]))
+        return sorted_areas
 
     @keyword(tags=["sheets"])
     def get_sheet_formulas(self, spreadsheet_id: str, sheet_name: str):

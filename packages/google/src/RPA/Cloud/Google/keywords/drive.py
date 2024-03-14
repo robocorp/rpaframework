@@ -26,7 +26,7 @@ class DriveKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.drive_service = None
 
     @keyword(tags=["init", "drive"])
     def init_drive(
@@ -54,7 +54,7 @@ class DriveKeywords:
         ]
         if scopes:
             drive_scopes += scopes
-        self.service = self.ctx.init_service(
+        self.drive_service = self.ctx.init_service(
             service_name="drive",
             api_version="v3",
             scopes=drive_scopes,
@@ -63,7 +63,7 @@ class DriveKeywords:
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
         )
-        return self.service
+        return self.drive_service
 
     @keyword(tags=["drive"])
     def upload_drive_file(
@@ -138,7 +138,7 @@ class DriveKeywords:
     def _file_create(self, file_metadata, media):
         try:
             result = (
-                self.service.files()
+                self.drive_service.files()
                 .create(
                     body=file_metadata,
                     media_body=media,
@@ -153,7 +153,7 @@ class DriveKeywords:
     def _file_update(self, target_file, media):
         try:
             result = (
-                self.service.files()
+                self.drive_service.files()
                 .update(fileId=target_file[0]["id"], media_body=media, fields="id")
                 .execute()
             )
@@ -163,7 +163,7 @@ class DriveKeywords:
 
     def _download_with_fileobject(self, file_object):
         try:
-            request = self.service.files().get_media(fileId=file_object["id"])
+            request = self.drive_service.files().get_media(fileId=file_object["id"])
         except HttpError as err:
             raise GoogleDriveError(str(err)) from err
         fh = BytesIO()
@@ -326,7 +326,7 @@ class DriveKeywords:
         self.ctx.logger.debug(body)
         try:
             updated_file = (
-                self.service.files().update(fileId=file_id, body=body).execute()
+                self.drive_service.files().update(fileId=file_id, body=body).execute()
             )
         except HttpError as err:
             raise GoogleDriveError(str(err)) from err
@@ -368,7 +368,7 @@ class DriveKeywords:
         delete_count = 0
         for tf in target_files:
             try:
-                self.service.files().delete(fileId=tf).execute()
+                self.drive_service.files().delete(fileId=tf).execute()
             except HttpError as err:
                 if suppress_errors:
                     self.ctx.logger.warn(str(err))
@@ -403,7 +403,7 @@ class DriveKeywords:
         if folder is None:
             try:
                 drive_file = (
-                    self.service.files().get(fileId="root", fields="id").execute()
+                    self.drive_service.files().get(fileId="root", fields="id").execute()
                 )
             except HttpError as err:
                 raise GoogleDriveError(str(err)) from err
@@ -470,11 +470,15 @@ class DriveKeywords:
                 "Unable to find target folder: '%s'" % (target if target else "root")
             )
         for tf in target_files:
-            file = self.service.files().get(fileId=tf["id"], fields="parents").execute()
+            file = (
+                self.drive_service.files()
+                .get(fileId=tf["id"], fields="parents")
+                .execute()
+            )
             previous_parents = ",".join(file.get("parents"))
             try:
                 result_file = (
-                    self.service.files()
+                    self.drive_service.files()
                     .update(
                         fileId=tf["id"],
                         addParents=target_parent,
@@ -543,7 +547,7 @@ class DriveKeywords:
                 parameters["pageToken"] = page_token
             try:
                 self.ctx.logger.debug("Searching with parameters: '%s'" % parameters)
-                response = self.service.files().list(**parameters).execute()
+                response = self.drive_service.files().list(**parameters).execute()
                 for file_details in response.get("files", []):
                     file_dict = self._drive_file_details_into_file_dict(file_details)
                     filelist.append(file_dict)
@@ -657,7 +661,9 @@ class DriveKeywords:
             file_metadata["parents"] = [parent_folder_id]
         try:
             added_folder = (
-                self.service.files().create(body=file_metadata, fields="id").execute()
+                self.drive_service.files()
+                .create(body=file_metadata, fields="id")
+                .execute()
             )
             return self._folder_response(added_folder["id"])
         except HttpError as err:
@@ -700,7 +706,7 @@ class DriveKeywords:
         if len(target_files) != 1:
             raise ValueError("Did not find the Google Drive file to export")
         try:
-            request = self.service.files().export(
+            request = self.drive_service.files().export(
                 fileId=target_files[0], mimeType=mimetype
             )
         except HttpError as err:
@@ -812,7 +818,9 @@ class DriveKeywords:
             request_parameters["emailMessage"] = notification_message
 
         try:
-            response = self.service.permissions().create(**request_parameters).execute()
+            response = (
+                self.drive_service.permissions().create(**request_parameters).execute()
+            )
             return {"file_id": target_file[0], "permission_id": response["id"]}
         except HttpError as err:
             raise GoogleDriveError(str(err)) from err
@@ -868,7 +876,7 @@ class DriveKeywords:
         response = None
         try:
             response = (
-                self.service.permissions()
+                self.drive_service.permissions()
                 .delete(fileId=target_file[0], permissionId=permission_id)
                 .execute()
             )
@@ -976,7 +984,7 @@ class DriveKeywords:
         self, drive_file, permission, permissions_removed, suppress_errors
     ):
         try:
-            self.service.permissions().delete(
+            self.drive_service.permissions().delete(
                 fileId=drive_file["id"], permissionId=permission["id"]
             ).execute()
             permissions_removed.append(permission)
@@ -1047,7 +1055,7 @@ class DriveKeywords:
         response = None
         try:
             raw_response = (
-                self.service.files().get(fileId=file_id, fields="*").execute()
+                self.drive_service.files().get(fileId=file_id, fields="*").execute()
             )
             response = self._drive_file_details_into_file_dict(raw_response)
         except HttpError as err:

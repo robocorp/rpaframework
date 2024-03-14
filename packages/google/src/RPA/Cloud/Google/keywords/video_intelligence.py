@@ -10,7 +10,7 @@ class VideoIntelligenceKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.video_service = None
 
     @keyword(tags=["init", "video intelligence"])
     def init_video_intelligence(
@@ -25,13 +25,13 @@ class VideoIntelligenceKeywords:
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.ctx.init_service_with_object(
+        self.video_service = self.ctx.init_service_with_object(
             videointelligence.VideoIntelligenceServiceClient,
             service_account,
             use_robocorp_vault,
             token_file,
         )
-        return self.service
+        return self.video_service
 
     @keyword(tags=["video intelligence"])
     def annotate_video(
@@ -97,7 +97,7 @@ class VideoIntelligenceKeywords:
         if output_uri:
             parameters["output_uri"] = output_uri
 
-        operation = self.service.annotate_video(request=parameters)
+        operation = self.video_service.annotate_video(request=parameters)
         result = operation.result(timeout=timeout)
         self.ctx.write_json(json_file, result)
         return result

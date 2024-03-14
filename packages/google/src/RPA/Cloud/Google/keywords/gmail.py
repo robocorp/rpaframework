@@ -47,7 +47,7 @@ class GmailKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.gmail_service = None
 
     @keyword(tags=["init", "gmail"])
     def init_gmail(
@@ -69,7 +69,7 @@ class GmailKeywords:
         gmail_scopes = ["gmail.send", "gmail.compose", "gmail.modify", "gmail.labels"]
         if scopes:
             gmail_scopes = scopes
-        self.service = self.ctx.init_service(
+        self.gmail_service = self.ctx.init_service(
             service_name="gmail",
             api_version="v1",
             scopes=gmail_scopes,
@@ -78,7 +78,7 @@ class GmailKeywords:
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
         )
-        return self.service
+        return self.gmail_service
 
     def create_message(
         self,
@@ -167,13 +167,13 @@ class GmailKeywords:
             ...    body of the message
             ...    ${attachments}
         """
-        if not self.service:
+        if not self.gmail_service:
             raise AssertionError("Gmail service has not been initialized")
         attachments = attachments or []
         message = self.create_message(to, subject, message_text, attachments, html)
         try:
             response = (
-                self.service.users()
+                self.gmail_service.users()
                 .messages()
                 .send(userId=sender, body=message)
                 .execute()
@@ -244,7 +244,7 @@ class GmailKeywords:
                         )
                         attachment_id = body.get("attachmentId")
                         attachment = (
-                            self.service.users()
+                            self.gmail_service.users()
                             .messages()
                             .attachments()
                             .get(
@@ -305,13 +305,15 @@ class GmailKeywords:
         folder_name = Path(folder_name) if folder_name else Path().absolute()
         messages = []
         try:
-            response = self.service.users().messages().list(**parameters).execute()
+            response = (
+                self.gmail_service.users().messages().list(**parameters).execute()
+            )
             message_ids = [
                 m["id"] for m in response["messages"] if "messages" in response.keys()
             ]
             for message_id in message_ids:
                 response = (
-                    self.service.users()
+                    self.gmail_service.users()
                     .messages()
                     .get(userId=user_id, id=message_id)
                     .execute()

@@ -33,6 +33,7 @@ class LibraryContext:
 
     def __init__(self, ctx):
         self.ctx = ctx
+        self.logger = ctx.logger
 
     def get_secret_from_robocorp_vault(self, secret_type="serviceaccount"):
         if self.ctx.secrets_library is None:

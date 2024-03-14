@@ -13,7 +13,7 @@ class AppsScriptKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.script_service = None
 
     @keyword(tags=["init", "apps script"])
     def init_apps_script(
@@ -35,7 +35,7 @@ class AppsScriptKeywords:
         apps_scopes = ["script.projects", "drive.scripts", "script.external_request"]
         if scopes:
             apps_scopes += scopes
-        self.service = self.ctx.init_service(
+        self.script_service = self.ctx.init_service(
             service_name="script",
             api_version="v1",
             scopes=apps_scopes,
@@ -44,7 +44,7 @@ class AppsScriptKeywords:
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
         )
-        return self.service
+        return self.script_service
 
     @keyword(tags=["apps script"])
     def run_script(
@@ -71,7 +71,7 @@ class AppsScriptKeywords:
         if parameters:
             request["parameters"] = [parameters]
         response = (
-            self.service.scripts()
+            self.script_service.scripts()
             .run(
                 body=request,
                 scriptId=script_id,

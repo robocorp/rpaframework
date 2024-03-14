@@ -37,7 +37,7 @@ class SpeechToTextKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.speech_service = None
 
     @keyword(tags=["init", "speech to text"])
     def init_speech_to_text(
@@ -52,10 +52,10 @@ class SpeechToTextKeywords:
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.ctx.init_service_with_object(
+        self.speech_service = self.ctx.init_service_with_object(
             speech.SpeechClient, service_account, use_robocorp_vault, token_file
         )
-        return self.service
+        return self.speech_service
 
     @keyword(tags=["speech to text"])
     def recognize_text_from_audio(
@@ -87,7 +87,7 @@ class SpeechToTextKeywords:
         """
         audio = self.set_audio_type(audio_file, audio_uri)
         parameters = {"use_enhanced": True}
-        # audio_encoding = ENCODING["UNSPECIFIED"]
+        parameters["encoding"] = ENCODING["UNSPECIFIED"]
         if encoding and encoding.upper() in ENCODING.keys():
             parameters["encoding"] = ENCODING[encoding.upper()]
         if sample_rate:
@@ -97,7 +97,7 @@ class SpeechToTextKeywords:
         if audio_channel_count:
             parameters["audio_channel_count"] = audio_channel_count
         config = RecognitionConfig(**parameters)  # pylint: disable=E1101
-        rec = self.service.recognize(config=config, audio=audio)
+        rec = self.speech_service.recognize(config=config, audio=audio)
         return rec.results
 
     def set_audio_type(self, audio_file, audio_uri):

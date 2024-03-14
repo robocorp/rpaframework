@@ -16,7 +16,7 @@ class StorageKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.storage_service = None
 
     @keyword(tags=["init", "storage"])
     def init_storage(
@@ -31,10 +31,10 @@ class StorageKeywords:
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.ctx.init_service_with_object(
+        self.storage_service = self.ctx.init_service_with_object(
             storage.Client, service_account, use_robocorp_vault, token_file
         )
-        return self.service
+        return self.storage_service
 
     @keyword(tags=["storage"])
     def create_storage_bucket(self, bucket_name: str) -> Dict:
@@ -51,7 +51,7 @@ class StorageKeywords:
 
             ${result}=   Create Storage Bucket   visionfolder
         """
-        bucket = self.service.create_bucket(bucket_name)
+        bucket = self.storage_service.create_bucket(bucket_name)
         return bucket
 
     @keyword(tags=["storage"])
@@ -91,7 +91,7 @@ class StorageKeywords:
 
             ${result}=   Get Bucket   visionfolder
         """
-        bucket = self.service.get_bucket(bucket_name)
+        bucket = self.storage_service.get_bucket(bucket_name)
         return bucket
 
     @keyword(tags=["storage"])
@@ -111,7 +111,7 @@ class StorageKeywords:
                 Log  ${bucket}
             END
         """
-        return list(self.service.list_buckets())
+        return list(self.storage_service.list_buckets())
 
     @keyword(tags=["storage"])
     def delete_storage_files(self, bucket_name: str, files: Any) -> List:

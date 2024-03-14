@@ -26,7 +26,7 @@ class DocumentAIKeywords:
 
     def __init__(self, ctx):
         self.ctx = ctx
-        self.service = None
+        self.ai_service = None
 
     @keyword(name="Init Document AI", tags=["init", "document ai"])
     def init_document_ai(
@@ -74,14 +74,14 @@ class DocumentAIKeywords:
             )
             kwargs["client_options"] = opts
         self.ctx.logger.info(f"Using Document AI from '{region.upper()}' region")
-        self.service = self.ctx.init_service_with_object(
+        self.ai_service = self.ctx.init_service_with_object(
             documentai.DocumentProcessorServiceClient,
             service_account,
             use_robocorp_vault,
             token_file,
             **kwargs,
         )
-        return self.service
+        return self.ai_service
 
     @keyword(tags=["document ai"])
     def process_document(
@@ -141,7 +141,7 @@ class DocumentAIKeywords:
             for lang in languages:
                 print(lang)
         """  # noqa: E501
-        name = self.service.processor_path(project_id, region, processor_id)
+        name = self.ai_service.processor_path(project_id, region, processor_id)
 
         # Read the file into memory
         with open(file_path, "rb") as binary:
@@ -157,7 +157,7 @@ class DocumentAIKeywords:
         # Configure the process request
         request = documentai.ProcessRequest(name=name, raw_document=raw_document)
 
-        result = self.service.process_document(request=request)
+        result = self.ai_service.process_document(request=request)
 
         document = result.document
         return document
@@ -316,10 +316,10 @@ class DocumentAIKeywords:
                 print(f"Processor type: {p.type_}")
                 print(f"Processor name: {p.display_name}")
         """
-        parent_value = self.service.common_location_path(project_id, region)
+        parent_value = self.ai_service.common_location_path(project_id, region)
         # Initialize request argument(s)
         request = documentai.ListProcessorsRequest(
             parent=parent_value,
         )
-        processor_list = self.service.list_processors(request=request)
+        processor_list = self.ai_service.list_processors(request=request)
         return processor_list
