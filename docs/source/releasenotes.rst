@@ -12,6 +12,11 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Excel.Application** (:pr:`1158`):
+
+  - Add keyword ``Remove hidden columns and rows`` from given range.
+  - Add keyword ``Merge range`` for merging cells in a range.
+  - Add keyword ``Unmerge range`` for unmerging cells in a range.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
