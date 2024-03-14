@@ -1,8 +1,11 @@
-from . import LibraryContext, keyword
+from . import keyword
 
 
-class BaseKeywords(LibraryContext):
+class BaseKeywords:
     """Base keywords for the Google library"""
+
+    def __init__(self, ctx):
+        self.ctx = ctx
 
     @keyword
     def set_robocorp_vault(

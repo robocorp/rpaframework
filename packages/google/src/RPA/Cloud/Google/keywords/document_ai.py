@@ -5,10 +5,10 @@ from typing import List, Optional
 from google.api_core.client_options import ClientOptions
 from google.cloud import documentai_v1 as documentai
 
-from . import LibraryContext, keyword
+from . import keyword
 
 
-class DocumentAIKeywords(LibraryContext):
+class DocumentAIKeywords:
     """Keywords for Google Cloud Document AI service.
 
     Added on **rpaframework-google** version: 6.1.1
@@ -25,8 +25,8 @@ class DocumentAIKeywords(LibraryContext):
     """
 
     def __init__(self, ctx):
-        super().__init__(ctx)
-        self.service = None
+        self.ctx = ctx
+        self.ai_service = None
 
     @keyword(name="Init Document AI", tags=["init", "document ai"])
     def init_document_ai(
@@ -73,15 +73,15 @@ class DocumentAIKeywords(LibraryContext):
                 api_endpoint=f"{region.lower()}-documentai.googleapis.com"
             )
             kwargs["client_options"] = opts
-        self.logger.info(f"Using Document AI from '{region.upper()}' region")
-        self.service = self.init_service_with_object(
+        self.ctx.logger.info(f"Using Document AI from '{region.upper()}' region")
+        self.ai_service = self.ctx.init_service_with_object(
             documentai.DocumentProcessorServiceClient,
             service_account,
             use_robocorp_vault,
             token_file,
             **kwargs,
         )
-        return self.service
+        return self.ai_service
 
     @keyword(tags=["document ai"])
     def process_document(
@@ -141,21 +141,23 @@ class DocumentAIKeywords(LibraryContext):
             for lang in languages:
                 print(lang)
         """  # noqa: E501
-        name = self.service.processor_path(project_id, region, processor_id)
+        name = self.ai_service.processor_path(project_id, region, processor_id)
 
         # Read the file into memory
         with open(file_path, "rb") as binary:
             binary_content = binary.read()
 
         mime = mime_type or mimetypes.guess_type(file_path)[0]
-        self.logger.info(f"Processing document '{file_path}' with mimetype '{mime}'")
+        self.ctx.logger.info(
+            f"Processing document '{file_path}' with mimetype '{mime}'"
+        )
         # Load Binary Data into Document AI RawDocument Object
         raw_document = documentai.RawDocument(content=binary_content, mime_type=mime)
 
         # Configure the process request
         request = documentai.ProcessRequest(name=name, raw_document=raw_document)
 
-        result = self.service.process_document(request=request)
+        result = self.ai_service.process_document(request=request)
 
         document = result.document
         return document
@@ -314,10 +316,10 @@ class DocumentAIKeywords(LibraryContext):
                 print(f"Processor type: {p.type_}")
                 print(f"Processor name: {p.display_name}")
         """
-        parent_value = self.service.common_location_path(project_id, region)
+        parent_value = self.ai_service.common_location_path(project_id, region)
         # Initialize request argument(s)
         request = documentai.ListProcessorsRequest(
             parent=parent_value,
         )
-        processor_list = self.service.list_processors(request=request)
+        processor_list = self.ai_service.list_processors(request=request)
         return processor_list

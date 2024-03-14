@@ -2,15 +2,15 @@ from typing import Dict, Optional
 from google.cloud import language_v1
 
 
-from . import LibraryContext, keyword, TextType, to_texttype
+from . import keyword, TextType, to_texttype
 
 
-class NaturalLanguageKeywords(LibraryContext):
+class NaturalLanguageKeywords:
     """Keywords for Google Cloud Natural Language API"""
 
     def __init__(self, ctx):
-        super().__init__(ctx)
-        self.service = None
+        self.ctx = ctx
+        self.lang_service = None
 
     @keyword(tags=["init", "natural language"])
     def init_natural_language(
@@ -25,13 +25,13 @@ class NaturalLanguageKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.init_service_with_object(
+        self.lang_service = self.ctx.init_service_with_object(
             language_v1.LanguageServiceClient,
             service_account,
             use_robocorp_vault,
             token_file,
         )
-        return self.service
+        return self.lang_service
 
     @keyword(tags=["natural language"])
     def analyze_sentiment(
@@ -119,12 +119,12 @@ class NaturalLanguageKeywords(LibraryContext):
 
         document = language_v1.Document(**parameters)
         if analyze_method == "classify":
-            response = self.service.classify_text(document=document)
+            response = self.lang_service.classify_text(document=document)
         elif analyze_method == "sentiment":
             # Available values: NONE, UTF8, UTF16, UTF32
             # encoding_type = enums.EncodingType.UTF8
-            response = self.service.analyze_sentiment(
+            response = self.lang_service.analyze_sentiment(
                 document=document, encoding_type="UTF8"
             )
-        self.write_json(json_file, response)
+        self.ctx.write_json(json_file, response)
         return response

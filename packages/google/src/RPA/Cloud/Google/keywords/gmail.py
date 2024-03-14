@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 from googleapiclient import errors
 
 
-from . import LibraryContext, keyword
+from . import keyword
 
 
 def get_size_format(b, factor=1024, suffix="B"):
@@ -35,7 +35,7 @@ def clean(text):
     return "".join(c if c.isalnum() else "_" for c in text)
 
 
-class GmailKeywords(LibraryContext):
+class GmailKeywords:
     """Class for Google Gmail API
 
     **Note:** The Gmail API does not work with _service accounts_
@@ -46,8 +46,8 @@ class GmailKeywords(LibraryContext):
     """
 
     def __init__(self, ctx):
-        super().__init__(ctx)
-        self.service = None
+        self.ctx = ctx
+        self.gmail_service = None
 
     @keyword(tags=["init", "gmail"])
     def init_gmail(
@@ -69,7 +69,7 @@ class GmailKeywords(LibraryContext):
         gmail_scopes = ["gmail.send", "gmail.compose", "gmail.modify", "gmail.labels"]
         if scopes:
             gmail_scopes = scopes
-        self.service = self.init_service(
+        self.gmail_service = self.ctx.init_service(
             service_name="gmail",
             api_version="v1",
             scopes=gmail_scopes,
@@ -78,7 +78,7 @@ class GmailKeywords(LibraryContext):
             use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
         )
-        return self.service
+        return self.gmail_service
 
     def create_message(
         self,
@@ -116,7 +116,7 @@ class GmailKeywords(LibraryContext):
         if content_type is None or encoding is not None:
             content_type = "application/octet-stream"
         main_type, sub_type = content_type.split("/", 1)
-        self.logger.debug(
+        self.ctx.logger.debug(
             f"Adding attachment of main_type: {main_type} and sub_type: {sub_type}"
         )
         mime_type_mapping = {
@@ -167,20 +167,20 @@ class GmailKeywords(LibraryContext):
             ...    body of the message
             ...    ${attachments}
         """
-        if not self.service:
+        if not self.gmail_service:
             raise AssertionError("Gmail service has not been initialized")
         attachments = attachments or []
         message = self.create_message(to, subject, message_text, attachments, html)
         try:
             response = (
-                self.service.users()
+                self.gmail_service.users()
                 .messages()
                 .send(userId=sender, body=message)
                 .execute()
             )
-            self.logger.debug("Message Id: %s" % response["id"])
+            self.ctx.logger.debug("Message Id: %s" % response["id"])
         except errors.HttpError as he:
-            self.logger.warning(str(he))
+            self.ctx.logger.warning(str(he))
             raise he
         return response
 
@@ -238,13 +238,13 @@ class GmailKeywords(LibraryContext):
                     if "attachment" in part_header_value:
                         # we get the attachment ID
                         # and make another request to get the attachment itself
-                        self.logger.info(
+                        self.ctx.logger.info(
                             "Saving the file: %s, size:%s"
                             % (filename, get_size_format(filesize))
                         )
                         attachment_id = body.get("attachmentId")
                         attachment = (
-                            self.service.users()
+                            self.gmail_service.users()
                             .messages()
                             .attachments()
                             .get(
@@ -305,13 +305,15 @@ class GmailKeywords(LibraryContext):
         folder_name = Path(folder_name) if folder_name else Path().absolute()
         messages = []
         try:
-            response = self.service.users().messages().list(**parameters).execute()
+            response = (
+                self.gmail_service.users().messages().list(**parameters).execute()
+            )
             message_ids = [
                 m["id"] for m in response["messages"] if "messages" in response.keys()
             ]
             for message_id in message_ids:
                 response = (
-                    self.service.users()
+                    self.gmail_service.users()
                     .messages()
                     .get(userId=user_id, id=message_id)
                     .execute()
@@ -329,7 +331,7 @@ class GmailKeywords(LibraryContext):
                 message_dict["parts"] = parsed_parts
                 messages.append(message_dict)
         except errors.HttpError as he:
-            self.logger.warning(str(he))
+            self.ctx.logger.warning(str(he))
             raise he
         return messages
 

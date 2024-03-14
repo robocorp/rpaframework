@@ -33,30 +33,7 @@ class LibraryContext:
 
     def __init__(self, ctx):
         self.ctx = ctx
-
-    @property
-    def logger(self):
-        return self.ctx.logger
-
-    @property
-    def robocorp_vault_name(self):
-        return self.ctx.robocorp_vault_name
-
-    @property
-    def robocorp_vault_secret_key(self):
-        return self.ctx.robocorp_vault_secret_key
-
-    @property
-    def use_robocorp_vault(self):
-        return self.ctx.use_robocorp_vault
-
-    @property
-    def service_account_file(self):
-        return self.ctx.service_account_file
-
-    @property
-    def cloud_auth_type(self):
-        return self.ctx.cloud_auth_type
+        self.logger = ctx.logger
 
     def get_secret_from_robocorp_vault(self, secret_type="serviceaccount"):
         if self.ctx.secrets_library is None:
@@ -105,7 +82,7 @@ class LibraryContext:
         """
         service = None
         credentials = None
-        self.logger.debug("Init service with scopes: %s", scopes)
+        self.ctx.logger.debug("Init service with scopes: %s", scopes)
         scopes = [f"https://www.googleapis.com/auth/{scope}" for scope in scopes]
         if use_robocorp_vault is not None:
             use_cloud = bool(use_robocorp_vault)
@@ -122,17 +99,17 @@ class LibraryContext:
                 save_token,
             )
         elif service_account_file:
-            self.logger.info("Authenticating with service account file")
+            self.ctx.logger.info("Authenticating with service account file")
             credentials = oauth_service_account.Credentials.from_service_account_file(
                 service_account_file, scopes=scopes
             )
         elif token_file:
-            self.logger.info("Authenticating with oauth token file")
+            self.ctx.logger.info("Authenticating with oauth token file")
             credentials = self.get_credentials_with_oauth_token(
                 use_cloud, token_file, credentials_file, scopes, save_token
             )
         elif self.ctx.service_account_file:
-            self.logger.info("Authenticating with service account file")
+            self.ctx.logger.info("Authenticating with service account file")
             credentials = oauth_service_account.Credentials.from_service_account_file(
                 self.ctx.service_account_file, scopes=scopes
             )
@@ -172,24 +149,24 @@ class LibraryContext:
                 client_object, cloud_auth_type, service_account_file, **kwargs
             )
         elif service_account_file:
-            self.logger.info("Authenticating with service account file")
+            self.ctx.logger.info("Authenticating with service account file")
             service = client_object.from_service_account_json(
                 service_account_file, **kwargs
             )
         elif token_file:
-            self.logger.info("Authenticating with oauth token file")
+            self.ctx.logger.info("Authenticating with oauth token file")
             token_file_location = Path(token_file).absolute()
             if os.path.exists(token_file_location):
                 with open(token_file_location, "rb") as token:
                     credentials = pickle.loads(token)
                     service = client_object(credentials=credentials, **kwargs)
         elif self.ctx.service_account_file:
-            self.logger.info("Authenticating with service account file")
+            self.ctx.logger.info("Authenticating with service account file")
             service = client_object.from_service_account_json(
                 self.ctx.service_account_file, **kwargs
             )
         else:
-            self.logger.info("Authenticating with default client object")
+            self.ctx.logger.info("Authenticating with default client object")
             service = client_object(**kwargs)
 
         if service is None:
@@ -244,7 +221,7 @@ class LibraryContext:
                     pickle.dumps(credentials)
                 ).decode("utf-8")
                 self.ctx.secrets_library().set_secret(secrets)
-                self.logger.debug("Credentials refreshed")
+                self.ctx.logger.debug("Credentials refreshed")
         if not credentials:
             raise GoogleOAuthAuthenticationError(
                 "Could not get Google OAuth credentials"
@@ -262,7 +239,7 @@ class LibraryContext:
     ):
         credentials = None
         if cloud_auth_type == "serviceaccount":
-            self.logger.info(
+            self.ctx.logger.info(
                 "Authenticating with service account file from Robocorp Vault"
             )
             service_account_file = self.get_secret_from_robocorp_vault("serviceaccount")
@@ -270,7 +247,9 @@ class LibraryContext:
                 service_account_file, scopes=scopes
             )
         else:
-            self.logger.info("Authenticating with oauth token file from Robocorp Vault")
+            self.ctx.logger.info(
+                "Authenticating with oauth token file from Robocorp Vault"
+            )
             credentials = self.get_credentials_with_oauth_token(
                 True,
                 token_file,
@@ -286,7 +265,7 @@ class LibraryContext:
         service = None
         if cloud_auth_type == "serviceaccount":
             try:
-                self.logger.info(
+                self.ctx.logger.info(
                     "Authenticating with service account file from Robocorp Vault"
                 )
                 service_account_file = self.get_secret_from_robocorp_vault(
@@ -299,7 +278,9 @@ class LibraryContext:
                 if service_account_file:
                     os.remove(service_account_file)
         else:
-            self.logger.info("Authenticating with oauth token file from Robocorp Vault")
+            self.ctx.logger.info(
+                "Authenticating with oauth token file from Robocorp Vault"
+            )
             token = self.get_secret_from_robocorp_vault("token")
             credentials = pickle.loads(base64.b64decode(token))
             service = client_object(credentials=credentials, **kwargs)

@@ -1,18 +1,15 @@
 from typing import Dict, Optional
 from google.cloud import vision
 
-from . import (
-    LibraryContext,
-    keyword,
-)
+from . import keyword
 
 
-class VisionKeywords(LibraryContext):
+class VisionKeywords:
     """Keywords for Google Vision operations"""
 
     def __init__(self, ctx):
-        super().__init__(ctx)
-        self.service = None
+        self.ctx = ctx
+        self.vision_service = None
 
     @keyword(tags=["init", "vision"])
     def init_vision(
@@ -27,13 +24,13 @@ class VisionKeywords(LibraryContext):
         :param use_robocorp_vault: use credentials in `Robocorp Vault`
         :param token_file: file path to token file
         """
-        self.service = self.init_service_with_object(
+        self.vision_service = self.ctx.init_service_with_object(
             vision.ImageAnnotatorClient,
             service_account,
             use_robocorp_vault,
             token_file,
         )
-        return self.service
+        return self.vision_service
 
     def set_image_type(self, image_file: str = None, image_uri: str = None):
         if image_file:
@@ -66,8 +63,8 @@ class VisionKeywords(LibraryContext):
             ...  json_file=${CURDIR}${/}result.json
         """
         parameters = self.set_image_type(image_file, image_uri)
-        response = self.service.label_detection(**parameters)
-        self.write_json(json_file, response)
+        response = self.vision_service.label_detection(**parameters)
+        self.ctx.write_json(json_file, response)
         return response
 
     @keyword(tags=["vision"])
@@ -91,8 +88,8 @@ class VisionKeywords(LibraryContext):
             ...  json_file=${CURDIR}${/}result.json
         """
         parameters = self.set_image_type(image_file, image_uri)
-        response = self.service.text_detection(**parameters)
-        self.write_json(json_file, response)
+        response = self.vision_service.text_detection(**parameters)
+        self.ctx.write_json(json_file, response)
         return response
 
     @keyword(tags=["vision"])
@@ -116,8 +113,8 @@ class VisionKeywords(LibraryContext):
             ...  json_file=${CURDIR}${/}result.json
         """
         parameters = self.set_image_type(image_file, image_uri)
-        response = self.service.document_text_detection(**parameters)
-        self.write_json(json_file, response)
+        response = self.vision_service.document_text_detection(**parameters)
+        self.ctx.write_json(json_file, response)
         return response
 
     @keyword(tags=["vision"])
@@ -141,8 +138,8 @@ class VisionKeywords(LibraryContext):
             ...  json_file=${CURDIR}${/}result.json
         """
         parameters = self.set_image_type(image_file, image_uri)
-        response = self.service.annotate_image(**parameters)
-        self.write_json(json_file, response)
+        response = self.vision_service.annotate_image(**parameters)
+        self.ctx.write_json(json_file, response)
         return response
 
     @keyword(tags=["vision"])
@@ -166,6 +163,6 @@ class VisionKeywords(LibraryContext):
             ...  json_file=${CURDIR}${/}result.json
         """
         parameters = self.set_image_type(image_file, image_uri)
-        response = self.service.face_detection(**parameters)
-        self.write_json(json_file, response)
+        response = self.vision_service.face_detection(**parameters)
+        self.ctx.write_json(json_file, response)
         return response

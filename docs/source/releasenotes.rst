@@ -30,6 +30,13 @@ Latest versions
   - Add keyword ``Merge range`` for merging cells in a range.
   - Add keyword ``Unmerge range`` for unmerging cells in a range.
 
+- Library **RPA.Cloud.Google** (:pr:`1157``, `rpaframework-google`` **9.0.0**):
+
+  - Fix problem with method intellisense in Python development environments.
+  - Add keyword ``Detect Tables`` for detecting table-like structures in spreadsheet's sheets.
+  - Add keyword ``Get Sheet Formulas``  for getting formulas from a sheet.
+  - Add keyword ``To A1 notation`` for converting column number to A1 notation.
+
 28.3.0 - 22 Feb 2024
 --------------------
 
