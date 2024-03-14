@@ -86,7 +86,7 @@ RPA.Excel.Application:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "622", "add the name of the worksheet into the log message"
+   "631", "add the name of the worksheet into the log message"
 
 RPA.Excel.Files:
 ================
