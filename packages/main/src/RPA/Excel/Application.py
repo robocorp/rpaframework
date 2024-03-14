@@ -420,7 +420,7 @@ class Application(BaseApplication):
         fields: List[PivotField],
         sort_field: PivotField = None,
         sort_direction: str = "descending",
-        data_range: str = None,
+        data_range: Any = None,
         pivot_name: str = "PivotTable1",
         collapse_rows: bool = True,
         show_grand_total: bool = True,
@@ -482,9 +482,14 @@ class Application(BaseApplication):
         """
 
         self.set_active_worksheet(source_worksheet)
-        excel_range = (
-            self.worksheet.Range(data_range) if data_range else self.worksheet.UsedRange
-        )
+        if data_range:
+            excel_range = (
+                self.get_range(data_range)
+                if isinstance(data_range, str)
+                else data_range
+            )
+        else:
+            excel_range = self.worksheet.UsedRange
 
         # Grab the pivot table source data
         pivot_cache = self.workbook.PivotCaches().Create(
@@ -558,7 +563,7 @@ class Application(BaseApplication):
     def find(
         self,
         search_string: str,
-        search_range: str = None,
+        search_range: Any = None,
         max_results: int = None,
         search_order: SearchOrder = SearchOrder.ROWS,
         match_case: bool = False,
@@ -612,9 +617,13 @@ class Application(BaseApplication):
             else constants.xlByColumns
         )
         if search_range:
-            search_area = self._app.Range(search_range)
+            search_area = (
+                self._app.Range(search_range)
+                if isinstance(search_range, str)
+                else search_range
+            )
         else:
-            search_area = self.worksheet.Cells
+            search_area = self.worksheet.UsedRange  # self.worksheet.Cells
         found = search_area.Find(
             What=search_string, MatchCase=match_case, SearchOrder=search_order
         )
@@ -635,18 +644,22 @@ class Application(BaseApplication):
             found = search_area.FindNext(found)
         return results
 
-    def create_table(self, table_name: str, table_range: str = None) -> None:
+    def create_table(self, table_name: str, table_range: Any = None) -> None:
         """Create a table in the current worksheet.
 
         :param table_name: name for the table
         :param table_range: source table range, if not given then
          the whole used range of `source_worksheet` will be used
         """
-        excel_range = (
-            self.worksheet.Range(table_range)
-            if table_range
-            else self.worksheet.UsedRange
-        )
+        if table_range:
+            excel_range = (
+                self.get_range(table_range)
+                if isinstance(table_range, str)
+                else table_range
+            )
+        else:
+            excel_range = self.worksheet.UsedRange
+
         self.worksheet.ListObjects.Add(
             SourceType=constants.xlSrcRange,
             Source=excel_range,
@@ -823,3 +836,50 @@ class Application(BaseApplication):
                 f"Total range column count {range_columns} "
                 f"is different from data to write column count {row_columns}"
             )
+
+    def remove_hidden_columns_and_rows(
+        self, initial_range: Any, worksheet: Any = None
+    ) -> Any:
+        """Removes hidden columns and rows from a range and returns a new range.
+
+        :param initial_range: range of cells to remove hidden columns and rows from
+        :param worksheet: set active worksheet before removing hidden columns and rows
+        :return: new range or initial range if no hidden cells found
+        """
+        initial_range = (
+            self.get_range(initial_range)
+            if isinstance(initial_range, str)
+            else initial_range
+        )
+        if worksheet:
+            self.set_active_worksheet(worksheet)
+        try:
+            visible_range = initial_range.SpecialCells(constants.xlCellTypeVisible)
+            return visible_range
+        except Exception as e:  # pylint: disable=broad-except
+            self.logger.error(f"No visible cells found or an error occurred:f{str(e)}")
+        return initial_range
+
+    def unmerge_range(self, initial_range: Any) -> None:
+        """Unmerges a range of cells.
+
+        :param initial_range: range of cells to unmerge
+        """
+        initial_range = (
+            self.get_range(initial_range)
+            if isinstance(initial_range, str)
+            else initial_range
+        )
+        initial_range.UnMerge()
+
+    def merge_range(self, initial_range: Any) -> None:
+        """Merges a range of cells.
+
+        :param initial_range: range of cells to merge
+        """
+        initial_range = (
+            self.get_range(initial_range)
+            if isinstance(initial_range, str)
+            else initial_range
+        )
+        initial_range.Merge()
