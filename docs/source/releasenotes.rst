@@ -12,6 +12,12 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+28.4.0 - 14 Mar 2024
+--------------------
+
 - Library **RPA.Word.Application** (:pr:`1159`):
 
   - Add keyword ``Select current paragraph`` for selecting the current paragraph.
@@ -23,9 +29,6 @@ Latest versions
   - Add keyword ``Remove hidden columns and rows`` from given range.
   - Add keyword ``Merge range`` for merging cells in a range.
   - Add keyword ``Unmerge range`` for unmerging cells in a range.
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 28.3.0 - 22 Feb 2024
 --------------------
