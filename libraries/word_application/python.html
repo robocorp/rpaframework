@@ -245,6 +245,12 @@ be opened first manually and dismiss any alert potentially blocking the process.
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Word.Application.Application.copy_selection_to_clipboard">
+<span class="sig-name descname"><span class="pre">copy_selection_to_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.copy_selection_to_clipboard" title="Permalink to this definition"></a></dt>
+<dd><p>Copy current text selection to clipboard.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.create_new_document">
 <span class="sig-name descname"><span class="pre">create_new_document</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.create_new_document" title="Permalink to this definition"></a></dt>
 <dd><p>Create new document for Word application</p>
@@ -427,6 +433,25 @@ current cursor position.</p>
 <li><p><strong>fileformat</strong> – see &#64;FILEFORMATS dictionary for possible format,
 defaults to None</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Word.Application.Application.select_current_paragraph">
+<span class="sig-name descname"><span class="pre">select_current_paragraph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.select_current_paragraph" title="Permalink to this definition"></a></dt>
+<dd><p>Select text in current active paragraph.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Word.Application.Application.select_paragraph">
+<span class="sig-name descname"><span class="pre">select_paragraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.select_paragraph" title="Permalink to this definition"></a></dt>
+<dd><p>Select paragraph(s) from current cursor position.</p>
+<p>Negative <cite>count</cite> moves cursor up number of paragraphs and
+positive <cite>count</cite> moves cursor down number of paragraphs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> – number of paragraphs to select</p>
 </dd>
 </dl>
 </dd></dl>
