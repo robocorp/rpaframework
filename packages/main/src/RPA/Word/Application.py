@@ -322,3 +322,24 @@ class Application(BaseApplication):
 
         self.app.Selection.TypeText(text)
         self.app.Selection.Select()
+
+    def select_current_paragraph(self):
+        """Select text in current active paragraph."""
+        self.app.Selection.Paragraphs(1).Range.Select()
+
+    def copy_selection_to_clipboard(self):
+        """Copy current text selection to clipboard."""
+        self.app.Selection.Copy()
+
+    def select_paragraph(self, count: int = 1):
+        """Select paragraph(s) from current cursor position.
+
+        Negative `count` moves cursor up number of paragraphs and
+        positive `count` moves cursor down number of paragraphs.
+
+        :param count: number of paragraphs to select
+        """
+        start = self.app.Selection.Range.Start
+        self.app.Selection.MoveDown(Unit=constants.wdParagraph, Count=count)
+        end = self.app.Selection.Range.End
+        self.app.Selection.SetRange(start, end)
