@@ -12,6 +12,12 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Cloud.Google** (:pr:`1157`):
+
+  - Fix problem with method intellisense in Python development environments.
+  - Add keyword ``Detect Tables`` for detecting table-like structures in spreadsheet's sheets.
+  - Add keyword ``Get Sheet Formulas``  for getting formulas from a sheet.
+  - Add keyword ``To A1 notation`` for converting column number to A1 notation.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
