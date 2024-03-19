@@ -18,7 +18,7 @@ Latest versions
 28.4.1 - 19 Mar 2024
 --------------------
 
-- Library **RPA.Excel.Application** (:pr:`1160`): Fix problem with ``Get Range`` using
+- Library **RPA.Excel.Application** (:issue:`1160`): Fix problem with ``Get Range`` using
   active worksheet.
 
 28.4.0 - 14 Mar 2024
