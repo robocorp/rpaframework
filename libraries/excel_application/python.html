@@ -641,13 +641,14 @@ of lists, if <cite>False</cite> then the data is returned as list of <cite>Range
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Excel.Application.Application.remove_hidden_columns_and_rows">
-<span class="sig-name descname"><span class="pre">remove_hidden_columns_and_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#RPA.Excel.Application.Application.remove_hidden_columns_and_rows" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">remove_hidden_columns_and_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#RPA.Excel.Application.Application.remove_hidden_columns_and_rows" title="Permalink to this definition"></a></dt>
 <dd><p>Removes hidden columns and rows from a range and returns a new range.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>initial_range</strong> – range of cells to remove hidden columns and rows from</p></li>
-<li><p><strong>worksheet</strong> – set active worksheet before removing hidden columns and rows</p></li>
+<li><p><strong>worksheet</strong> – set active worksheet (name) before removing hidden
+columns and rows</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
