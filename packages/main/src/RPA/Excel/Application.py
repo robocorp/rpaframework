@@ -706,7 +706,7 @@ class Application(BaseApplication):
         :param table_range: range to return
         :return: range object
         """
-        return self._app.Range(table_range)
+        return self.worksheet.Range(table_range)
 
     def get_pivot_tables(
         self, pivot_table_name: str = None, as_list: bool = True
@@ -838,12 +838,13 @@ class Application(BaseApplication):
             )
 
     def remove_hidden_columns_and_rows(
-        self, initial_range: Any, worksheet: Any = None
+        self, initial_range: Any, worksheet: str = None
     ) -> Any:
         """Removes hidden columns and rows from a range and returns a new range.
 
         :param initial_range: range of cells to remove hidden columns and rows from
-        :param worksheet: set active worksheet before removing hidden columns and rows
+        :param worksheet: set active worksheet (name) before removing hidden
+         columns and rows
         :return: new range or initial range if no hidden cells found
         """
         initial_range = (
