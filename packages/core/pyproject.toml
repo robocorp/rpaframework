@@ -38,7 +38,7 @@ pillow = "^10.2.0"
 packaging = "^23.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "^22.3.0"
+black = ">=22.3,<25.0"
 flake8 = "^3.7.9"
 importlib-metadata = "^4.13.0"
 pylint = "^2.4.4, <2.13"
