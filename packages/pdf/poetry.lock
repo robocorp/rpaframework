@@ -552,13 +552,13 @@ woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
 
 [[package]]
 name = "fpdf2"
-version = "2.7.8"
+version = "2.7.5"
 description = "Simple & fast PDF generation for Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "fpdf2-2.7.8-py2.py3-none-any.whl", hash = "sha256:b09a297cbb14878ec4443ea2bef504d15e5cf4d92903118f013cb05e204fd491"},
-    {file = "fpdf2-2.7.8.tar.gz", hash = "sha256:21733fe27cc75021e5a4d7d69de95e185adf9717b1f9b1e14aa27d277d5c10fd"},
+    {file = "fpdf2-2.7.5-py2.py3-none-any.whl", hash = "sha256:84266b0f9c0ece84e7a60b8e302c98d8082b814be58c9b222fc057a85f86dd6f"},
+    {file = "fpdf2-2.7.5.tar.gz", hash = "sha256:770392316614b4087ec78a393db1c3fc5c46bf7d2a0d673bf1ea95a6a0ba8258"},
 ]
 
 [package.dependencies]
@@ -1661,4 +1661,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "f3acf8fca649cbe0427041fb3afd8db158390ce068f072c403a6a3f4dc769c2b"
+content-hash = "8fe72539960c7a2d5744f0a6ea7c9f9be6e7749247fd8139a159b88be3cbdec1"
