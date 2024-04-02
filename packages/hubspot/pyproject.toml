@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-hubspot"
-version = "1.0.0"
+version = "1.0.1"
 description = "Robot Framework wrapper around the hubspot-api-client library."
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -32,7 +32,7 @@ packages = [{ include = "RPA", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.8.1"
 robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
-rpaframework-core = "^11.2.3"
+rpaframework-core = "^11.3.1"
 tenacity = "^8.0.1"
 hubspot-api-client = "^4.0.6"
 
