@@ -27,6 +27,7 @@ Security releases regarding dependency packages `pillow`, `cryptography` and `ai
 - package ``rpaframework-hubspot`` **1.0.1**
 - package ``rpaframework-openai`` **1.3.2**
 - package ``rpaframework-pdf`` **7.3.2**
+- package ``rpaframework-recognition`` **5.2.4**
 - package ``rpaframework-windows`` **7.5.1**
 
 .. note::
