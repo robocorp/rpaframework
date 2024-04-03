@@ -18,7 +18,7 @@ Latest versions
 03 Apr 2024
 -----------
 
-Security releases regarding dependency packages `pillow`, `cryptography` and `aiohttp`.
+Security releases regarding dependency packages ``pillow``, ``cryptography`` and ``aiohttp``.
 
 - package ``rpaframework`` **28.4.2**
 - package ``rpaframework-aws`` **5.3.3**
