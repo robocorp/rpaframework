@@ -15,6 +15,24 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+03 Apr 2024
+-----------
+
+Security releases regarding dependency packages `pillow`, `cryptography` and `aiohttp`.
+
+- package ``rpaframework`` **28.4.2**
+- package ``rpaframework-aws`` **5.3.3**
+- package ``rpaframework-assistant`` **3.0.3**
+- package ``rpaframework-google`` **9.0.1**
+- package ``rpaframework-hubspot`` **1.0.1**
+- package ``rpaframework-openai`` **1.3.2**
+- package ``rpaframework-pdf`` **7.3.2**
+- package ``rpaframework-windows`` **7.5.1**
+
+.. note::
+  The ``dialogs`` package has been deprecated since 07 Apr 2023 and will be removed from
+  the repository during the next week as a maintenance chore.
+
 28.4.1 - 19 Mar 2024
 --------------------
 
