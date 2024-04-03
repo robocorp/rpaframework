@@ -1,6 +1,7 @@
 """Collection of tasks associated with static code analysis and testing
 of the code base.
 """
+
 import os
 import platform
 from pathlib import Path
@@ -11,6 +12,7 @@ from invocations import config, docs, shell
 from invocations.util import (
     MAIN_PACKAGE,
     REPO_ROOT,
+    get_current_package_name,
     remove_blank_lines,
     safely_load_config,
 )
@@ -56,6 +58,13 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
     also have it run the lint command for all packages by setting
     ``--all``.
     """
+    global PYLINT_CONFIG
+    current_package_name = get_current_package_name(ctx)
+    # The pylinting on hubspot package is stuck on MacOS with
+    # RuntimeError if pylint config "jobs" value is set to 0 (auto-detect).
+    # This is a temporary workaround setting jobs to 1 until the issue
+    # is resolved.
+    pylint_jobs = " -j 1" if current_package_name == "rpaframework-hubspot" else ""
     warn_setting = not exit_on_failure
     flake8_config = Path(safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG))
     pylint_config = Path(safely_load_config(ctx, "ctx.linters.pylint", PYLINT_CONFIG))
@@ -90,7 +99,11 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
             f"run flake8 --config {flake8_config} {ignore_codes_cmd} src",
             warn=warn_setting,
         )
-        shell.poetry(ctx, f"run pylint --rcfile {pylint_config} src", warn=warn_setting)
+        shell.poetry(
+            ctx,
+            f"run pylint --rcfile {pylint_config}{pylint_jobs} src",
+            warn=warn_setting,
+        )
 
 
 @task(config.install, aliases=["pretty"])
