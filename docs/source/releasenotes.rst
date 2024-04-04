@@ -12,10 +12,17 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- package ``rpaframework-assistant`` **3.0.4** (:issue:`1178`): Replace flet with robocorp-flet
-
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+04 Apr 2024
+-----------
+
+- Package ``rpaframework-assistant`` **3.0.4** (:issue:`1178`): Replaces ``flet`` with ``robocorp-flet``.
+
+  The ``flet`` package had some released versions removed from the PyPI package index (speficically versions
+  we were depending on). This caused all new installations using ``rpaframework-assistant`` to fail.
+  We have now replaced the dependency with ``robocorp-flet`` which is a fork of the original package.
 
 03 Apr 2024
 -----------
