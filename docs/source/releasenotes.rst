@@ -12,6 +12,8 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- package ``rpaframework-assistant`` **3.0.4** (:issue:`1178`): Replace flet with robocorp-flet
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
