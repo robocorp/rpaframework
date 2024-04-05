@@ -1135,6 +1135,7 @@ class Exchange(OAuthMixin):
         :param recipients: email address or list of email addresses
         """
         recipients = recipients if isinstance(recipients, list) else [recipients]
+        # pylint: disable=no-member
         m = self.account.sent.get(id=message["id"], changekey=message["changekey"])
         m.forward(to_recipients=recipients, subject=message["subject"], body=None)
 
@@ -1143,5 +1144,6 @@ class Exchange(OAuthMixin):
 
         :param message: dictionary containing message details
         """
+        # pylint: disable=no-member
         m = self.account.sent.get(id=message["id"], changekey=message["changekey"])
         m.move(to_folder=self.account.trash)
