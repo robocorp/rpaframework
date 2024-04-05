@@ -20,6 +20,7 @@ from exchangelib import (
     Credentials,
     FileAttachment,
     Folder,
+    FolderCollection,
     HTMLBody,
     Identity,
     ItemAttachment,
@@ -62,10 +63,23 @@ lib_vault = Vault()
 def mailbox_to_email_address(mailbox):
     return {
         "name": mailbox.name if hasattr(mailbox, "name") else "",
-        "email_address": mailbox.email_address
-        if hasattr(mailbox, "email_address")
-        else "",
+        "email_address": (
+            mailbox.email_address if hasattr(mailbox, "email_address") else ""
+        ),
     }
+
+
+def _resolve_child_and_parent(folder_name):
+    # Normalize the separator
+    normalized_name = folder_name.replace(" // ", " / ")
+    # Split into parts
+    parts = normalized_name.split(" / ")
+    # Extract child and parent
+    child = parts[-1] if parts else None
+    parent = parts[-2] if len(parts) > 1 else None
+    child = child if child and child.lower() != "inbox" else None
+    parent = parent if parent and parent.lower() != "inbox" else None
+    return child, parent
 
 
 class AccessType(Enum):
@@ -76,7 +90,6 @@ class AccessType(Enum):
 
 
 class OAuth2Creds(OAuth2AuthorizationCodeCredentials):
-
     """OAuth2 auth code flow credentials wrapper supporting token state on refresh."""
 
     def __init__(
@@ -452,6 +465,13 @@ class Exchange(OAuthMixin):
         messages = self.list_messages(folder_name, criterion, contains, count, save_dir)
         return [m for m in messages if not m["is_read"]]
 
+    def _get_parent_folder(self, parent_folder: Optional[str] = None) -> Inbox:
+        if parent_folder is None or parent_folder is self.account.inbox:
+            parent = self.account.inbox
+        else:
+            parent = self._get_folder_object(f"INBOX / {parent_folder}")
+        return parent
+
     def _get_inbox_folder(
         self, folder_name: str, parent_folder: Optional[str] = None
     ) -> Inbox:
@@ -638,10 +658,11 @@ class Exchange(OAuthMixin):
         :param folder_name: name for the new folder (required)
         :param parent_folder: name for the parent folder, by default INBOX
         """
-        parent = self._get_inbox_folder(folder_name, parent_folder)
+        parent = self._get_parent_folder(parent_folder)
         self.logger.info("Create folder %r", folder_name)
         new_folder = Folder(parent=parent, name=folder_name)
         new_folder.save()
+        new_folder.refresh()
 
     def delete_folder(self, folder_name: str, parent_folder: Optional[str] = None):
         """Delete email folder.
@@ -763,21 +784,25 @@ class Exchange(OAuthMixin):
         target_folder = self._get_folder_object(target)
         self.account.bulk_move(ids=message_id, to_folder=target_folder)
 
-    def _get_folder_object(self, folder_name):
+    def _get_folder_object(self, folder_name: str):
         if not folder_name:
             return self.account.inbox
 
-        folders = folder_name.split("/")
-        if "inbox" in folders[0].lower():
-            folders[0] = self.account.inbox
-        folder_object = None
-        for folder in folders:
-            if folder_object:
-                folder_object /= folder.strip()
-            else:
-                folder_object = folder
-
-        return folder_object
+        child, parent = _resolve_child_and_parent(folder_name)
+        if child is None and parent is None:
+            return self.account.inbox
+        inbox_folders = FolderCollection(
+            account=self.account, folders=[self.account.inbox]
+        )
+        folder_to_find = parent if parent else child
+        for folder in inbox_folders.find_folders():
+            if folder.name == folder_to_find:
+                if child and parent:
+                    folder_to_find = child
+                    child = None
+                else:
+                    return folder
+        raise ValueError(f"Folder '{folder_name}' not found")
 
     def _get_filter_key_value(self, criterion):
         regex1 = rf"({':|'.join(EMAIL_CRITERIA_KEYS)}:|or|and)'(.*?)'"
@@ -986,14 +1011,16 @@ class Exchange(OAuthMixin):
             "body": item.body,
             "text_body": item.text_body,
             "received_by": mailbox_to_email_address(item.received_by),
-            "cc_recipients": [mailbox_to_email_address(cc) for cc in item.cc_recipients]
-            if item.cc_recipients
-            else [],
-            "bcc_recipients": [
-                mailbox_to_email_address(bcc) for bcc in item.bcc_recipients
-            ]
-            if item.bcc_recipients
-            else [],
+            "cc_recipients": (
+                [mailbox_to_email_address(cc) for cc in item.cc_recipients]
+                if item.cc_recipients
+                else []
+            ),
+            "bcc_recipients": (
+                [mailbox_to_email_address(bcc) for bcc in item.bcc_recipients]
+                if item.bcc_recipients
+                else []
+            ),
             "is_read": item.is_read,
             "importance": item.importance,
             "message_id": item.message_id,
