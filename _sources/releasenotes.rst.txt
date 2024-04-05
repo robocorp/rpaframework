@@ -15,6 +15,11 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28.5.1 - 05 Apr 2024
+--------------------
+
+- Relax ``exchangelib`` version requirements to allow ``5.1.0`` and above.
+
 28.5.0 - 05 Apr 2024
 --------------------
 
