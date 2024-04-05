@@ -1128,12 +1128,20 @@ class Exchange(OAuthMixin):
         with open(absolute_filepath, "wb") as message_out:
             message_out.write(message["mime_content"])
 
-    def forward_message(self, msg: dict, recipients: list):
-        a = self.account
-        m = a.sent.get(id=msg["id"], changekey=msg["changekey"])
-        m.forward(to_recipients=recipients, subject=msg['subject'], body=None)
+    def forward_message(self, message: Dict, recipients: Union[str, List]):
+        """Forward message.
 
-    def delete_message(self, msg: dict):
-        a = self.account
-        m = a.sent.get(id=msg["id"], changekey=msg["changekey"])
-        m.move(to_folder=a.trash)
+        :param message: dictionary containing message details
+        :param recipients: email address or list of email addresses
+        """
+        recipients = recipients if isinstance(recipients, list) else [recipients]
+        m = self.account.sent.get(id=message["id"], changekey=message["changekey"])
+        m.forward(to_recipients=recipients, subject=message["subject"], body=None)
+
+    def delete_message(self, message: Dict):
+        """Delete message.
+
+        :param message: dictionary containing message details
+        """
+        m = self.account.sent.get(id=message["id"], changekey=message["changekey"])
+        m.move(to_folder=self.account.trash)
