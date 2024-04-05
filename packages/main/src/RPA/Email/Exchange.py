@@ -1127,3 +1127,23 @@ class Exchange(OAuthMixin):
             raise ValueError("Filename extension needs to be '.eml'")
         with open(absolute_filepath, "wb") as message_out:
             message_out.write(message["mime_content"])
+
+    def forward_message(self, message: Dict, recipients: Union[str, List]):
+        """Forward message.
+
+        :param message: dictionary containing message details
+        :param recipients: email address or list of email addresses
+        """
+        recipients = recipients if isinstance(recipients, list) else [recipients]
+        # pylint: disable=no-member
+        m = self.account.sent.get(id=message["id"], changekey=message["changekey"])
+        m.forward(to_recipients=recipients, subject=message["subject"], body=None)
+
+    def delete_message(self, message: Dict):
+        """Delete message.
+
+        :param message: dictionary containing message details
+        """
+        # pylint: disable=no-member
+        m = self.account.sent.get(id=message["id"], changekey=message["changekey"])
+        m.move(to_folder=self.account.trash)
