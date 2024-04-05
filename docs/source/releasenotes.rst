@@ -15,6 +15,14 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28.5.0 - 05 Apr 2024
+--------------------
+
+- Library **RPA.Email.Exchange**:
+
+  - Fix problem with email subfolder selection (:pr:`1182`).
+  - Add keywords ``Delete message`` and ``Forward message`` (:pr:`1179`).
+
 04 Apr 2024
 -----------
 
