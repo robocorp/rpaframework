@@ -60,6 +60,19 @@ def to_pivot_operation(operation_name: str):
     return result
 
 
+def to_look_in(look_in: str):
+    result = None
+    if look_in.upper() == "FORMULAS":
+        result = constants.xlFormulas
+    elif look_in.upper() == "VALUES":
+        result = constants.xlValues
+    elif look_in.upper() == "COMMENTS":
+        result = constants.xlComments
+    elif look_in.upper() == "COMMENTS THREADED":
+        result = constants.xlCommentsThreaded
+    return result
+
+
 def _split_rows_into_range_blocks(rows, ranges):
     range_blocks = []
     start = 0
@@ -158,19 +171,22 @@ class Application(BaseApplication):
         if not self._app:
             self.open_application()
 
-        path = to_path(filename)
-        if not path.is_file():
-            raise FileNotFoundError(f"{str(path)!r} doesn't exist")
-        path = str(path)
-        self.logger.info("Opening workbook: %s", path)
+        if filename.startswith("http"):
+            workbook_path = filename
+        else:
+            workbook_path = to_path(filename)
+            if not workbook_path.is_file():
+                raise FileNotFoundError(f"{str(workbook_path)!r} doesn't exist")
+            workbook_path = str(workbook_path)
+        self.logger.info("Opening workbook: %s", workbook_path)
 
         with catch_com_error():
             try:
-                self.workbook = self.app.Workbooks(path)
+                self.workbook = self.app.Workbooks(workbook_path)
             except Exception as exc:  # pylint: disable=broad-except
                 self.logger.debug(str(exc))
                 self.logger.info("Trying to open workbook by another method...")
-                self.workbook = self.app.Workbooks.Open(path)
+                self.workbook = self.app.Workbooks.Open(workbook_path)
 
         self.set_active_worksheet(sheetnumber=1)
         self.logger.debug("Current workbook: %s", self.workbook)
@@ -567,6 +583,9 @@ class Application(BaseApplication):
         max_results: int = None,
         search_order: SearchOrder = SearchOrder.ROWS,
         match_case: bool = False,
+        search_type: str = None,
+        search_after: str = None,
+        exact: bool = False,
     ) -> List[Any]:
         """Keyword for finding text in the current worksheet.
 
@@ -609,13 +628,25 @@ class Application(BaseApplication):
         :param search_order: by default search is executed by ROWS,
          can be changed to COLUMNS
         :param match_case: if `True` then the search is case sensitive
+        :param search_type: can be FORMULAS, VALUES, COMMENTS or COMMENTS THREADED
+        :param search_after: search after this cell
+        :param exact: if `True` then the search is expected to be a exact match
         :return: list of `Range` objects
         """
-        search_order = (
-            constants.xlByRows
-            if search_order == SearchOrder.ROWS
-            else constants.xlByColumns
-        )
+        parameters = {
+            "SearchOrder": (
+                constants.xlByRows
+                if search_order == SearchOrder.ROWS
+                else constants.xlByColumns
+            ),
+            "MatchCase": match_case,
+            "What": search_string,
+        }
+        if search_type:
+            parameters["LookIn"] = to_look_in(search_type)
+        if search_after:
+            parameters["After"] = search_after
+        results = []
         if search_range:
             search_area = (
                 self._app.Range(search_range)
@@ -624,23 +655,25 @@ class Application(BaseApplication):
             )
         else:
             search_area = self.worksheet.UsedRange  # self.worksheet.Cells
-        found = search_area.Find(
-            What=search_string, MatchCase=match_case, SearchOrder=search_order
-        )
+        found = search_area.Find(**parameters)
         if not found:
-            # TODO. add the name of the worksheet into the log message
             self.logger.info(
-                f"Did not find the '{search_string}' in the current worksheet"
+                f"Did not find the '{search_string}' in the current "
+                f"{self.worksheet.Name}' worksheet"
             )
-            return []
-        results = []
+            return results
         addresses = set()
-        while found and max_results is None or len(results) < max_results:
+        while found:
+            if max_results and len(results) >= max_results:
+                break
             if found.Address in addresses:
                 break
             addresses.add(found.Address)
             if found:
-                results.append(found)
+                expected = search_string if match_case else search_string.lower()
+                actual = found.Value if match_case else found.Value.lower()
+                if (exact and actual == expected) or not exact:
+                    results.append(found)
             found = search_area.FindNext(found)
         return results
 
