@@ -361,6 +361,7 @@ class Selenium(SeleniumLibrary):
         download: Any = AUTO,
         options: Optional[OptionsType] = None,
         port: Optional[int] = None,
+        sandbox: bool = False,
     ) -> AliasType:
         # pylint: disable=C0301
         """Attempts to open a browser on the user's device from a set of
@@ -396,6 +397,11 @@ class Selenium(SeleniumLibrary):
         For incompatible web apps designed to work in Internet Explorer only, Edge can
         run in IE mode by simply setting `ie` in the ``browser_selection`` param.
         Robot example: https://github.com/robocorp/example-ie-mode-edge
+
+        The ``sandbox`` argument can be used to enable the sandbox mode for the browser.
+        By default browser is opened in `--no-sandbox` mode, but this started to cause
+        issues on Chromium version 124. The `--no-sandbox` flag is set by default to
+        preserve the older behavior.
 
         Example:
 
@@ -531,6 +537,7 @@ class Selenium(SeleniumLibrary):
                     options,
                     port,
                     url,
+                    sandbox,
                 )
                 if not browser_version:
                     attempts.append(
@@ -642,13 +649,15 @@ class Selenium(SeleniumLibrary):
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
         proxy: str = None,
+        sandbox: bool = False,
     ):
         if proxy:
             options.add_argument(f"--proxy-server={proxy}")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-web-security")
         options.add_argument("--allow-running-insecure-content")
-        options.add_argument("--no-sandbox")
+        if not sandbox:
+            options.add_argument("--no-sandbox")
 
         if browser_lower != "ie":
             # While Edge supports experimental options, Edge in IE mode doesn't.
@@ -773,6 +782,7 @@ class Selenium(SeleniumLibrary):
         options: Optional[OptionsType] = None,
         port: Optional[int] = None,
         url: Optional[str] = None,
+        sandbox: bool = False,
     ) -> Tuple[dict, Any, str]:
         """Get browser and webdriver arguments for given options."""
         browser_lower = browser.lower()
@@ -801,6 +811,7 @@ class Selenium(SeleniumLibrary):
                 profile_path=profile_path,
                 preferences=preferences,
                 proxy=proxy,
+                sandbox=sandbox,
             )
             if browser_lower == "ie":
                 self._set_ie_options(options, url=url)
@@ -1052,6 +1063,7 @@ class Selenium(SeleniumLibrary):
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
+        sandbox: bool = False,
     ) -> AliasType:
         """Opens a Chrome browser.
 
@@ -1069,6 +1081,7 @@ class Selenium(SeleniumLibrary):
             preferences=preferences,
             proxy=proxy,
             user_agent=user_agent,
+            sandbox=sandbox,
         )
 
     @keyword
