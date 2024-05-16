@@ -12,6 +12,22 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28.6.0 - 17 May 2024
+--------------------
+
+- Library **RPA.Browser.Selenium** (:pr:`1191`):
+
+  - Fix/workaround for Chromium browser all instances not closing after the run. Which affects methods ``open_available_browser``
+    and ``open_chrome_browser``. The default behavior can be changed with new parameter ``sandbox=True``.
+
+- Library **RPA.Excel.Application** (:pr:`1191`):
+
+  - Enhance ``find`` with new parameters ``search_type``, ``start_after``, and ``exact``
+  - Allow ``open_workbook`` to load workbooks from URLs
+  - Improve all ``RPA.*.Application.quit_application`` methods to perform garbage collection before calling ``app.quit()`` to
+    avoid problem with unreleased COM objects
+  - Add ``rgb_to_excel_color(red, green, blue)`` method for get suitable color value for ``Range.Font.Color`` and ``Range.Interior.Color``
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
