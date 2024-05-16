@@ -192,7 +192,8 @@ and <code class="docutils literal notranslate"><span class="pre">open_chrome_bro
 <ul>
 <li><p>Enhance <code class="docutils literal notranslate"><span class="pre">find</span></code> with new parameters <code class="docutils literal notranslate"><span class="pre">search_type</span></code>, <code class="docutils literal notranslate"><span class="pre">start_after</span></code>, and <code class="docutils literal notranslate"><span class="pre">exact</span></code></p></li>
 <li><p>Allow <code class="docutils literal notranslate"><span class="pre">open_workbook</span></code> to load workbooks from URLs</p></li>
-<li><p>Improve all <code class="docutils literal notranslate"><span class="pre">RPA.*.Application.quit_application</span></code> methods to perform garbage collection before calling <code class="docutils literal notranslate"><span class="pre">app.quit()</span></code> to avoid exceptions</p></li>
+<li><p>Improve all <code class="docutils literal notranslate"><span class="pre">RPA.*.Application.quit_application</span></code> methods to perform garbage collection before calling <code class="docutils literal notranslate"><span class="pre">app.quit()</span></code> to
+avoid problem with unreleased COM objects</p></li>
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">rgb_to_excel_color(red,</span> <span class="pre">green,</span> <span class="pre">blue)</span></code> method for get suitable color value for <code class="docutils literal notranslate"><span class="pre">Range.Font.Color</span></code> and <code class="docutils literal notranslate"><span class="pre">Range.Interior.Color</span></code></p></li>
 </ul>
 </li>
