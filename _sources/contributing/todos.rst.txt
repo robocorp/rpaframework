@@ -79,15 +79,6 @@ RPA.Email.ImapSmtp:
 
    "958", "mypy should handle enum exhaustivity validation"
 
-RPA.Excel.Application:
-======================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "631", "add the name of the worksheet into the log message"
-
 RPA.Excel.Files:
 ================
 
@@ -175,4 +166,4 @@ RPA.application:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "36", "(cmin764; 16 Aug 2023): Create a `handles_com_error` decorator if we get a little"
+   "41", "(cmin764; 16 Aug 2023): Create a `handles_com_error` decorator if we get a little"
