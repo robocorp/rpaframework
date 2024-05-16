@@ -1,6 +1,7 @@
 """Base utilities for COM applications like Word, Excel, Outlook."""
 
 import atexit
+import gc
 import logging
 import platform
 import struct
@@ -19,6 +20,10 @@ else:
     # As these are imported anyway from here and should be defined on non-Windows OSes.
     COMError = Exception
     constants = None
+
+
+def rgb_to_excel_color(red, green, blue):
+    return red + (green * 256) + (blue * 256**2)
 
 
 def _to_unsigned(val):
@@ -206,8 +211,10 @@ class BaseApplication(metaclass=MetaApplication):
 
         self.close_document(save_changes)
         with catch_com_error():
+            gc.collect()
             self.app.Quit()
         self._app = None
+        gc.collect()
 
     def set_object_property(self, object_instance, property_name: str, value: str):
         """Set the property of any object.
