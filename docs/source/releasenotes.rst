@@ -12,6 +12,9 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 28.6.0 - 17 May 2024
 --------------------
 
@@ -27,9 +30,6 @@ Latest versions
   - Improve all ``RPA.*.Application.quit_application`` methods to perform garbage collection before calling ``app.quit()`` to
     avoid problem with unreleased COM objects
   - Add ``rgb_to_excel_color(red, green, blue)`` method for get suitable color value for ``Range.Font.Color`` and ``Range.Interior.Color``
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 28.5.1 - 05 Apr 2024
 --------------------
