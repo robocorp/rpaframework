@@ -321,9 +321,16 @@ class RobocorpVault(BaseSecretManager):
 
             payload = response.json()
             payload = self._decrypt_payload(payload)
-        except InvalidTag as e:
+        except InvalidTag as exc:
             self.logger.debug(traceback.format_exc())
-            raise RobocorpVaultError("Failed to validate authentication tag") from e
+            raise RobocorpVaultError("Failed to validate authentication tag") from exc
+        except RecursionError as exc:
+            message = (
+                "Infinite recursion detected due to SSL patching bug, please"
+                " remove `truststore` from your dependencies file and opt in for `uv`"
+                " instead of `pip`"
+            )
+            raise RobocorpVaultError(message) from exc
         except Exception as exc:
             self.logger.debug(traceback.format_exc())
             raise RobocorpVaultError from exc
