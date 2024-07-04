@@ -18,7 +18,7 @@ Latest versions
 28.6.1 - 04 Jul 2024
 --------------------
 
-- Library **RPA.Robocorp.Vault** (:pr:``): Proper error message if caused by SSL `truststore` patching bug.
+- Library **RPA.Robocorp.Vault** (:pr:`1199`): Proper error message if caused by SSL `truststore` patching bug.
 
 28.6.0 - 17 May 2024
 --------------------
