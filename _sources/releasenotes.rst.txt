@@ -15,6 +15,13 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28.6.2 - 08 Aug 2024
+--------------------
+
+- Update ``rpaframework-core`` to version **11.3.3** including ``webdriver-manager`` upgrade to
+  version **4.0.2**. This should fix the issue with downloading the latest Chrome
+  driver version.
+
 28.6.1 - 04 Jul 2024
 --------------------
 
