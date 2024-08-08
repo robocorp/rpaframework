@@ -1048,6 +1048,7 @@ class Selenium(SeleniumLibrary):
 
         # Download web driver. (caching is tackled internally)
         driver_path = core_webdriver.download(browser)
+        self.logger.debug(f"web driver path: {driver_path}")
         return _create_driver(path=driver_path)
 
     @keyword
