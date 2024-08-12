@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-assistant"
-version = "3.0.5"
+version = "3.0.6"
 description = "Interactive UI library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -35,7 +35,7 @@ robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
 # Flet needs `packaging>=23`. Earlier rpaframework-core versions don't allow
 # installing it. This make resolution errors simpler and faster.
 rpaframework-core = "^11.3.1"
-robocorp-flet="0.4.2.2"
+robocorp-flet="0.4.2.3"
 # We only need the Literal type on python 3.7 from the module, but it has to be
 # installed on all pythons so the imports work
 typing-extensions = { version = "^4.4.0" }
@@ -75,3 +75,7 @@ filterwarnings = [
   # when running pytest
   "ignore:.*pkg_resources\\.declare_namespace.*:DeprecationWarning",
 ]
+
+[[tool.poetry.source]]
+name = "pypi-public"
+url = "https://pypi.org/simple/"
