@@ -75,7 +75,3 @@ filterwarnings = [
   # when running pytest
   "ignore:.*pkg_resources\\.declare_namespace.*:DeprecationWarning",
 ]
-
-[[tool.poetry.source]]
-name = "pypi-public"
-url = "https://pypi.org/simple/"
