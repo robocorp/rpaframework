@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-openai"
-version = "1.3.2"
+version = "1.3.3"
 description = "OpenAI library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
