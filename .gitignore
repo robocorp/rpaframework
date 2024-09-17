@@ -58,3 +58,6 @@ invoke.yaml
 
 # PyTest
 **/.pytest_cache/
+
+# Github Run Artifacts
+gh_runs/*
