@@ -1023,9 +1023,9 @@ class WorkItems:
         self, variables: Dict
     ) -> Optional[Tuple[str, bool, Tuple[str]]]:
         # Returns the extracted e-mail [parsed] content and its payload destination.
-        to_tuple = (
-            lambda keys: keys if isinstance(keys, tuple) else (keys,)
-        )  # noqa: E731
+        to_tuple = lambda keys: (  # noqa: E731
+            keys if isinstance(keys, tuple) else (keys,)
+        )
         file_list = self.list_work_item_files()
         for input_keys, output_keys in self._auto_parse_email.items():
             input_keys = to_tuple(input_keys)

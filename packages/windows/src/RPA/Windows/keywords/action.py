@@ -413,10 +413,8 @@ class ActionKeywords(ActionMethods):
                 " through keys! (insert them with the `enter` parameter only)"
             )
         get_text_pattern = getattr(element.item, "GetTextPattern", None)
-        get_text = (
-            lambda: get_text_pattern().DocumentRange.GetText()
-            if get_text_pattern
-            else None
+        get_text = lambda: (  # noqa: E731
+            get_text_pattern().DocumentRange.GetText() if get_text_pattern else None
         )
         if append:
             current_value: str = get_text() or ""

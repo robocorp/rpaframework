@@ -176,9 +176,11 @@ class FinderKeywords(LibraryContext):
         self.logger.info(
             "Searching for %s neighbour(s) to the %s of %r on page %d using regular "
             "expression: %s (case %s)",
-            f"closest {closest_neighbours}"
-            if closest_neighbours is not None
-            else "all",
+            (
+                f"closest {closest_neighbours}"
+                if closest_neighbours is not None
+                else "all"
+            ),
             direction,
             locator,
             pagenum,

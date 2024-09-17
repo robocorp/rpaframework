@@ -1,4 +1,5 @@
 """Files and filesystems library for Robot Framework"""
+
 import logging
 import os
 import platform

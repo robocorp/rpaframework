@@ -229,9 +229,11 @@ class Calendar:
             "days": diff.days,
             "hours": diff.hours,
             "minutes": diff.minutes,
-            "seconds": diff.seconds
-            if abs(diff.seconds) <= 60
-            else abs(diff.seconds) % 60 * modifier_for_seconds,
+            "seconds": (
+                diff.seconds
+                if abs(diff.seconds) <= 60
+                else abs(diff.seconds) % 60 * modifier_for_seconds
+            ),
         }
 
     @keyword
