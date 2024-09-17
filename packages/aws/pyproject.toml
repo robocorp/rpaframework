@@ -39,7 +39,7 @@ amazon-textract-response-parser = "^0.1.33"
 urllib3 = ">=1.25.4,<1.27"
 
 [tool.poetry.group.dev.dependencies]
-black = "^22.3.0"
+black = "^24.3.0"
 flake8 = "^3.7.9"
 pylint = "^2.4.4, <2.13"
 pytest = "^7.2.0"

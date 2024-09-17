@@ -1098,9 +1098,11 @@ class ServiceComprehend(AWSBase):
         response = client.detect_sentiment(Text=text, LanguageCode=lang)
         return {
             "Sentiment": response["Sentiment"] if "Sentiment" in response else False,
-            "Score": response["SentimentScore"]
-            if "SentimentScore" in response
-            else False,
+            "Score": (
+                response["SentimentScore"]
+                if "SentimentScore" in response
+                else False
+            ),
         }
 
     @aws_dependency_required
