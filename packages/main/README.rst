@@ -122,7 +122,7 @@ Libraries
 
 The RPA Framework project currently includes the following libraries:
 
-The ``x`` in the **PACKAGE** column means that library **is** included in the **rpaframework** package and for example. ``x,dialogs`` means that ``RPA.Dialogs`` library is provided in both the **rpaframework** and **rpaframework-dialogs** packages.
+The ``x`` in the **PACKAGE** column means that library **is** included in the **rpaframework** package and for example. ``x,pdf`` means that ``RPA.PDF`` library is provided in both the **rpaframework** and **rpaframework-pdf** packages.
 
 +----------------------------+-------------------------------------------------------+------------------------+
 | **LIBRARY NAME**           | **DESCRIPTION**                                       | **PACKAGE**            |
@@ -320,7 +320,7 @@ To install all extra packages (including Playwright dependencies), you can use:
    rccPostInstall:
      - rfbrowser init
 
-Separate installation of AWS, Dialogs, PDF and Windows libraries without the main
+Separate installation of AWS, PDF and Windows libraries without the main
 ``rpaframework``:
 
 .. code-block:: yaml
@@ -332,7 +332,6 @@ Separate installation of AWS, Dialogs, PDF and Windows libraries without the mai
      - pip=22.1.2
      - pip:
        - rpaframework-aws==5.2.8  # included in the rpaframework as an extra
-       - rpaframework-dialogs==4.0.4  # included in the rpaframework by default
        - rpaframework-pdf==7.1.5  # included in the rpaframework by default
        - rpaframework-windows==7.3.2  # included in the rpaframework by default
 
