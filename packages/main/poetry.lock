@@ -3140,13 +3140,13 @@ webdriver-manager = ">=4.0.2,<4.1.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "7.3.2"
+version = "7.3.3"
 description = "PDF library of RPA Framework"
 optional = false
 python-versions = "<4.0.0,>=3.8.1"
 files = [
-    {file = "rpaframework_pdf-7.3.2-py3-none-any.whl", hash = "sha256:2d4245da44925ec6bb4402351bb25dc49319837449256b8b9e8f12458cf384cd"},
-    {file = "rpaframework_pdf-7.3.2.tar.gz", hash = "sha256:648776d3c7fbb80374b90a38defe1723c7b2c9d2fc79442e1a1afc0db32f8864"},
+    {file = "rpaframework_pdf-7.3.3-py3-none-any.whl", hash = "sha256:19aaaaaa06bcf81bb8e48590bed730c42ce0cc4d97b42feeb1a79b8ceba3ce08"},
+    {file = "rpaframework_pdf-7.3.3.tar.gz", hash = "sha256:057d40de769e6db3524ac3b2695640c4bf38a77f091038c7dfb07e6758ff5aa2"},
 ]
 
 [package.dependencies]
@@ -3159,13 +3159,13 @@ rpaframework-core = ">=11.3.1,<12.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "7.5.1"
+version = "7.5.2"
 description = "Windows library for RPA Framework"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "rpaframework_windows-7.5.1-py3-none-any.whl", hash = "sha256:b308c5ee7d6069fde91c33f49a09cf2b22e3a7b1da8e04b1b59b708dada495b0"},
-    {file = "rpaframework_windows-7.5.1.tar.gz", hash = "sha256:63af629f564a627420f3c8d4e4b11805e3c3d722a2fd4963b19c96e2797b1ef3"},
+    {file = "rpaframework_windows-7.5.2-py3-none-any.whl", hash = "sha256:f4833e78fa675a19f7d8c41903193bf81241af29f378bcd6b35e33057350409f"},
+    {file = "rpaframework_windows-7.5.2.tar.gz", hash = "sha256:6b5c1e0c4c13f53f054433e2c02de945e27d14eb6799a8f1d1919e206efe3e46"},
 ]
 
 [package.dependencies]
@@ -3995,4 +3995,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "2a2c3a06008fcf46a895421c3011aaf1c2f9d63a6ef706f2d4056948b35bb64c"
+content-hash = "16d0d2341067b6bbd657edc37b642338b4cfa204b31baa9d782096bea23f0d1b"
