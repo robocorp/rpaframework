@@ -212,6 +212,8 @@ Open In Incognito With Custom Options
     [Documentation]    Test Chrome with custom options (incognito), port and explicit
     ...    profile directory.
     [Setup]    Close Browser
+    [Tags]    skip   #  NOTE(mikahanninen): Test broken in Github, permissions issue
+    # with the custom profile
     # NOTE(cmin764): In CI, Chrome may attract a buggy webdriver which makes the custom
     #  profile usage to break in headless mode. (unknown error: unable to discover open
     #  pages)
