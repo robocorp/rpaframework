@@ -215,7 +215,7 @@ support packages, which alone do <strong>not</strong> contain any libraries.</p>
 <div class="section" id="libraries">
 <h2><a class="toc-backref" href="#id3">Libraries</a><a class="headerlink" href="#libraries" title="Permalink to this heading"></a></h2>
 <p>The RPA Framework project currently includes the following libraries:</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">x</span></code> in the <strong>PACKAGE</strong> column means that library <strong>is</strong> included in the <strong>rpaframework</strong> package and for example. <code class="docutils literal notranslate"><span class="pre">x,dialogs</span></code> means that <code class="docutils literal notranslate"><span class="pre">RPA.Dialogs</span></code> library is provided in both the <strong>rpaframework</strong> and <strong>rpaframework-dialogs</strong> packages.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">x</span></code> in the <strong>PACKAGE</strong> column means that library <strong>is</strong> included in the <strong>rpaframework</strong> package and for example. <code class="docutils literal notranslate"><span class="pre">x,pdf</span></code> means that <code class="docutils literal notranslate"><span class="pre">RPA.PDF</span></code> library is provided in both the <strong>rpaframework</strong> and <strong>rpaframework-pdf</strong> packages.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 26%" />
@@ -456,7 +456,7 @@ of the package size and the post install step it needs to be fully installed.</p
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rfbrowser init</span>
 </pre></div>
 </div>
-<p>Separate installation of AWS, Dialogs, PDF and Windows libraries without the main
+<p>Separate installation of AWS, PDF and Windows libraries without the main
 <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
@@ -465,7 +465,6 @@ of the package size and the post install step it needs to be fully installed.</p
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=22.1.2</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==5.2.8</span><span class="w">  </span><span class="c1"># included in the rpaframework as an extra</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-dialogs==4.0.4</span><span class="w">  </span><span class="c1"># included in the rpaframework by default</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-pdf==7.1.5</span><span class="w">  </span><span class="c1"># included in the rpaframework by default</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-windows==7.3.2</span><span class="w">  </span><span class="c1"># included in the rpaframework by default</span>
 </pre></div>
