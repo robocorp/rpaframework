@@ -393,9 +393,9 @@ class DocumentKeywords(LibraryContext):
         except KeyError:
             fields = None
 
-        optional = (
-            lambda attr: getattr(docinfo, attr) if docinfo is not None else None
-        )  # noqa
+        optional = lambda attr: (  # noqa
+            getattr(docinfo, attr) if docinfo is not None else None
+        )
         return {
             "Author": optional("author"),
             "Creator": optional("creator"),
