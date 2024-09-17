@@ -86,7 +86,7 @@ RPA.Excel.Files:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "2259", "target worksheet cell formatting is overwritten."
+   "2258", "target worksheet cell formatting is overwritten."
 
 RPA.FileSystem:
 ===============
@@ -95,12 +95,12 @@ RPA.FileSystem:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "573", "glob support"
-   "611", "Should it remove all subdirectories too?"
-   "651", "glob support"
-   "872", "Convert to proper date"
-   "882", "Convert to proper date"
-   "891", "Convert to human-friendly?"
+   "574", "glob support"
+   "612", "Should it remove all subdirectories too?"
+   "652", "glob support"
+   "873", "Convert to proper date"
+   "883", "Convert to proper date"
+   "892", "Convert to human-friendly?"
 
 RPA.JSON:
 =========
