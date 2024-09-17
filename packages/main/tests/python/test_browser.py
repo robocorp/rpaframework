@@ -39,7 +39,7 @@ class TestSelenium:
             library.print_to_pdf(tmp_file)
             with open(tmp_file, "rb") as stream:
                 data = stream.read()
-            assert b"selenium" in data
+            assert b"browser_docs.html" in data
 
     @pytest.mark.xfail(reason="Firefox not available")
     def test_print_to_pdf_exception_on_non_supported_driver(self, library):
