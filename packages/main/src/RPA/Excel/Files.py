@@ -1723,13 +1723,12 @@ class Files:
             else:
                 column = start_col + row_index
                 row = start_row
-                self.workbook.book.active[
-                    f"{get_column_letter(column)}{row}"
-                ].value = row
+                self.workbook.book.active[f"{get_column_letter(column)}{row}"].value = (
+                    row
+                )
 
 
 class BaseWorkbook:
-
     """Common logic for both .xls and .xlsx files management."""
 
     def __init__(self, path: Optional[PathType] = None):

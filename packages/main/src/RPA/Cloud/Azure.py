@@ -56,9 +56,9 @@ class AzureBase:
                     raise KeyError(
                         "Missing subscription key for service: %s" % service_name
                     )
-                request_parameters["headers"][
-                    "Ocp-Apim-Subscription-Key"
-                ] = self.services[service_name]
+                request_parameters["headers"]["Ocp-Apim-Subscription-Key"] = (
+                    self.services[service_name]
+                )
 
             request_parameters["headers"]["Content-Type"] = content_type
         if filepath:

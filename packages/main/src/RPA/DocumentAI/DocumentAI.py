@@ -7,7 +7,6 @@ Currently, supporting the following:
 - Nanonets
 """
 
-
 import functools
 import logging
 from enum import Enum

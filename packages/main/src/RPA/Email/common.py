@@ -1,6 +1,5 @@
 """Common utilities shared by any e-mail related library."""
 
-
 import os
 from dataclasses import dataclass
 from enum import Enum

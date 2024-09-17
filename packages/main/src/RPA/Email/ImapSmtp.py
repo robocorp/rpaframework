@@ -1137,9 +1137,11 @@ class ImapSmtp(OAuthMixin):
             if v:
                 converted.append(
                     {
-                        str(key): value
-                        if isinstance(value, (str, bool, int, Message))
-                        else str(value)
+                        str(key): (
+                            value
+                            if isinstance(value, (str, bool, int, Message))
+                            else str(value)
+                        )
                         for key, value in v.items()
                     }
                 )
