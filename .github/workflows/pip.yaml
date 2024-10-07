@@ -28,7 +28,7 @@ jobs:
         # adding macos and windows to the matrix adds a bunch of running and delay because of mac and windows
         # runners being slower to allocate
         include:
-          - os: macos-latest
+          - os: macos-13
             python-version: "3.10.14"
             pip-version: "24.2"
           - os: windows-latest
