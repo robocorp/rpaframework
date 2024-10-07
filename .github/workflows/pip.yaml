@@ -2,17 +2,17 @@ name: daily installation tests
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: "0 6 * * *"
   push:
     branches:
       - master
     paths:
-      - '.github/workflows/pip.yaml'
+      - ".github/workflows/pip.yaml"
   pull_request:
     branches:
       - master
     paths:
-      - '.github/workflows/pip.yaml'
+      - ".github/workflows/pip.yaml"
 
 jobs:
   install_and_check:
@@ -61,8 +61,7 @@ jobs:
         # Only run scans for latest template version from https://github.com/robocorp/template-standard/blob/master/conda.yaml
         if: ${{ matrix.python-version == '3.10.14' && matrix.pip-version == '24.2' }}
       - uses: actions/upload-artifact@v4
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         with:
           name: pip_freeze_${{ matrix.python-version }}_${{ matrix.pip-version }}.txt
           path: requirements.txt
-
