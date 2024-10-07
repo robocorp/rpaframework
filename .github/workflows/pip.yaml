@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-22.04"] # seems like ubuntu-latest can be unstable
+        os: ["ubuntu-20.04"] # seems like ubuntu-latest can be unstable, 20.04 has most support
         python-version: [3.8.1, 3.9.13, 3.10.14]
         pip-version: [22.1.2, 23.0.1, 24.2]
         # test the latest template on macos and windows, and other pip versions and pythons on ubuntu for speed
