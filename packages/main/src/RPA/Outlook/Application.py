@@ -53,7 +53,7 @@ class Application(BaseApplication):
             Send Email         recipients=${RECIPIENT}
             ...                subject=This is the subject
             ...                body=This is the message body
-            ..                 attachments=approved.png
+            ...                attachments=approved.png
 
     **Python**
 

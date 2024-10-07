@@ -37,7 +37,7 @@ Learn more about RPA at `Robocorp Documentation`_.
 .. _Robot Framework Foundation: https://robotframework.org/foundation/
 .. _Python: https://www.python.org/
 .. _Robocorp: https://robocorp.com
-.. _Robocorp Documentation: https://robocorp.com/docs/
+.. _Robocorp Documentation: https://robocorp.com/docs-robot-framework
 .. _Control Room: https://robocorp.com/docs/control-room
 .. _Developer Tools: https://robocorp.com/downloads
 .. _Installing Python Packages: https://robocorp.com/docs/setup/installing-python-package-dependencies
@@ -274,12 +274,12 @@ Minimum required `conda.yaml` to install Playwright:
     channels:
       - conda-forge
     dependencies:
-      - python=3.9.16
-      - nodejs=16.14.2
-      - pip=22.1.2
+      - python=3.10.14
+      - nodejs=22.9.0
+      - pip=24.0
       - pip:
-        - robotframework-browser==17.2.0
-        - rpaframework==24.1.2
+        - robotframework-browser==18.8.1
+        - rpaframework==28.6.3
     rccPostInstall:
       - rfbrowser init
 
@@ -295,10 +295,10 @@ Default installation method with Robocorp `Developer Tools`_ using `conda.yaml`:
    channels:
      - conda-forge
    dependencies:
-     - python=3.9.16
-     - pip=22.1.2
+     - python=3.10.14
+     - pip=24.0
      - pip:
-       - rpaframework==24.1.2
+       - rpaframework==28.6.3
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -307,16 +307,16 @@ To install all extra packages (including Playwright dependencies), you can use:
    channels:
      - conda-forge
    dependencies:
-     - python=3.9.16
-     - tesseract=4.1.1
-     - nodejs=16.14.2
-     - pip=22.1.2
+     - python=3.10.14
+     - tesseract=5.4.1
+     - nodejs=22.9.0
+     - pip=24.0
      - pip:
-       - robotframework-browser==17.2.0
-       - rpaframework==24.1.2
-       - rpaframework-aws==5.2.8
-       - rpaframework-google==7.0.3
-       - rpaframework-recognition==5.1.2
+       - robotframework-browser==18.8.1
+       - rpaframework==28.6.3
+       - rpaframework-aws==5.3.3
+       - rpaframework-google==9.0.2
+       - rpaframework-recognition==5.2.5
    rccPostInstall:
      - rfbrowser init
 
@@ -328,12 +328,12 @@ Separate installation of AWS, PDF and Windows libraries without the main
    channels:
      - conda-forge
    dependencies:
-     - python=3.9.16
-     - pip=22.1.2
+     - python=3.10.14
+     - pip=24.0
      - pip:
-       - rpaframework-aws==5.2.8  # included in the rpaframework as an extra
-       - rpaframework-pdf==7.1.5  # included in the rpaframework by default
-       - rpaframework-windows==7.3.2  # included in the rpaframework by default
+       - rpaframework-aws==5.3.3  # included in the rpaframework as an extra
+       - rpaframework-pdf==7.3.3  # included in the rpaframework by default
+       - rpaframework-windows==7.5.2  # included in the rpaframework by default
 
 Installation method with `pip` using Python `venv`_:
 
@@ -382,12 +382,10 @@ Support and contact
 - `Robocorp Documentation`_ for guides and tutorials
 - **#rpaframework** channel in `Robot Framework Slack`_ if you
   have open questions or want to contribute
-- `Robocorp Forum`_ for discussions about RPA
 - Communicate with your fellow Software Robot Developers and Robocorp experts
   at `Robocorp Developers Slack`_
 
 .. _Robot Framework Slack: https://robotframework-slack-invite.herokuapp.com/
-.. _Robocorp Forum: https://forum.robocorp.com
 .. _Robocorp Developers Slack: https://robocorp-developers.slack.com
 
 Contributing
@@ -402,9 +400,9 @@ Development
 
 Repository development is `Python`_ based and requires at minimum
 Python version 3.8+ installed on the development machine. The default Python version used in the
-Robocorp Robot template is 3.9.16 so it is a good choice for the version to install. Not recommended
+Robocorp Robot template is 3.10.14 so it is a good choice for the version to install. Not recommended
 versions are 3.7.6 and 3.8.1, because they have issues with some of the dependencies related to ``rpaframework``.
-At the time the newer Python versions starting from 3.11 are also not recommended, because some of
+At the time the newer Python versions starting from 3.12 are also not recommended, because some of
 the dependencies might cause issues.
 
 Repository development tooling is based on `poetry`_ and `invoke`_. Poetry is the
@@ -504,7 +502,7 @@ Some recommended tools for development
 
 - `Visual Studio Code`_ as a code editor with following extensions:
 
-   - `Robocorp Code`_
+   - `Sema4.ai`_
    - `Robot Framework Language Server`_
    - `GitLens`_
    - `Python extension`_
@@ -515,7 +513,7 @@ Some recommended tools for development
 .. _invoke: https://www.pyinvoke.org
 .. _Visual Studio Code: https://code.visualstudio.com
 .. _GitHub Desktop: https://desktop.github.com
-.. _Robocorp Code: https://marketplace.visualstudio.com/items?itemName=robocorp.robocorp-code
+.. _Sema4.ai: https://marketplace.visualstudio.com/items?itemName=sema4ai.sema4ai
 .. _Robot Framework Language Server: https://marketplace.visualstudio.com/items?itemName=robocorp.robotframework-lsp
 .. _GitLens: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
 .. _Python extension: https://marketplace.visualstudio.com/items?itemName=ms-python.python
