@@ -18,7 +18,6 @@ class AzureBase:
     """
 
     __base_url: str = None
-    # pylint: disable=unused-private-member
     __region: str = None
     COGNITIVE_API = "api.cognitive.microsoft.com"
     TOKEN_LIFESPAN = 570.0

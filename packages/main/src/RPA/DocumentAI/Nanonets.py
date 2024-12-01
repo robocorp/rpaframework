@@ -144,7 +144,6 @@ class Nanonets:
         """
         _, mime = self._get_file_base64_and_mimetype(filepath)
 
-        # pylint: disable=R1732
         files = [("file", (filename, open(filepath, "rb"), mime))]
 
         response = requests.request(
@@ -233,7 +232,6 @@ class Nanonets:
 
         url = f"{self.base_url}/OCR/Model/{model_id}/LabelFile/"
 
-        # pylint: disable=R1732
         data = {"file": open(filepath, "rb")}
 
         response = requests.post(

@@ -189,7 +189,6 @@ class FTP:
         :return: true or false based on success or failure
         """
         cmd = f"STOR {remotefile}"
-        # pylint: disable=consider-using-with
         self.instance.storbinary(cmd, open(localfile, "rb"))
 
     def download(self, remotefile: str, localfile: str = None) -> bool:

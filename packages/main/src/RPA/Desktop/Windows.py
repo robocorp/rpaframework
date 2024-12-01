@@ -797,7 +797,6 @@ class Windows(OperatingSystem):
         self.dlg.set_focus()
         params = None
         if existing_app:
-            # pylint: disable=consider-using-dict-items
             for key in self._apps:
                 if self._apps[key]["handle"] == handle:
                     app_instance = key
