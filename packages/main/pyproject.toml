@@ -88,7 +88,7 @@ PyJWT = "^2.6.0"
 validators = "^0.34.0"
 smartsheet-python-sdk = "3.0.2"
 pendulum = "^2.1.2"
-holidays = "^0.21"
+holidays = "^0.45"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"
