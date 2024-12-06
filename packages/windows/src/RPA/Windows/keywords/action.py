@@ -245,6 +245,47 @@ class ActionKeywords(ActionMethods):
             )
         return element
 
+    @keyword(tags=["action"])
+    def is_selected(self, locator: Locator) -> Optional[bool]:
+        """Get the selection state of the element defined by the provided `locator`.
+
+        The ``ActionNotPossible`` exception is raised if the identified element doesn't
+        support selection item retrieval.
+
+        :param locator: String locator or element object.
+        :returns: Optionally the selection state of the identified element, as a boolean.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${value} =   Is Selected   type:RadioButtonControl name:Apple
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib_win = Windows()
+            value = lib_win.is_selected("type:RadioButtonControl name:Apple")
+            print(value)
+        """
+        element = self.ctx.get_element(locator)
+        get_selection_item_pattern = getattr(element.item, "GetSelectionItemPattern", None)
+
+        if get_selection_item_pattern:
+            func_name = get_selection_item_pattern.__name__
+            self.logger.info(
+                "Retrieving the element selection state with the %r method.", func_name
+            )
+            selection_item_pattern = get_selection_item_pattern()
+            return selection_item_pattern.IsSelected if selection_item_pattern else None
+
+        raise ActionNotPossible(
+            f"Element found with {locator!r} doesn't support selection item retrieval"
+        )
+
     @keyword(tags=["action", "keyboard"])
     def send_keys(
         self,
