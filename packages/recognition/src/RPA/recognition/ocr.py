@@ -23,15 +23,25 @@ INSTALL_PROMPT = (
 DEFAULT_CONFIDENCE = 80.0
 
 
-def read(image: Union[Image.Image, Path]):
+def read(
+    image: Union[Image.Image, Path],
+    language: Optional[str] = None,
+    configuration: Optional[str] = None
+):
     """Scan image for text and return it as one string.
 
     :param image: Path to image or Image object
+    :param language: 3-character ISO 639-2 language code of the text.
+    This is passed directly to the pytesseract lib in the lang parameter.
+     See https://tesseract-ocr.github.io/tessdoc/Command-Line-Usage.html#using-one-language
+    :param configuration: Tesseract specific parameters like Page Segmentation Modes(psm) or OCR Engine Mode (oem).
+    This is passed directly to the pytesseract lib in the config parameter.
+     See https://tesseract-ocr.github.io/tessdoc/Command-Line-Usage.html
     """
     image = to_image(image)
 
     try:
-        return pytesseract.image_to_string(image).strip()
+        return pytesseract.image_to_string(image, lang=language, config=configuration).strip()
     except TesseractNotFoundError as err:
         raise EnvironmentError(INSTALL_PROMPT) from err
 
@@ -42,6 +52,7 @@ def find(
     confidence: float = DEFAULT_CONFIDENCE,
     region: Optional[Region] = None,
     language: Optional[str] = None,
+    configuration: Optional[str] = None
 ):
     """Scan image for text and return a list of regions
     that contain it (or something close to it).
@@ -67,7 +78,7 @@ def find(
 
     try:
         data = pytesseract.image_to_data(
-            image, lang=language, output_type=pytesseract.Output.DICT
+            image, lang=language, config=configuration, output_type=pytesseract.Output.DICT
         )
     except TesseractNotFoundError as err:
         raise EnvironmentError(INSTALL_PROMPT) from err

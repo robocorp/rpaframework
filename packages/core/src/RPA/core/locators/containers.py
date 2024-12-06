@@ -124,6 +124,8 @@ class OcrLocator(Locator):
     confidence: Optional[float] = None
     """3-character ISO 639-2 language code. Passed to pytesseract lang parameter."""
     language: Optional[str] = None
+    """Tesseract specific parameters (like psm or oem). Passed to pytesserect config parameter."""
+    configuration: Optional[str] = None
 
     def __post_init__(self):
         self.text = str(self.text)
