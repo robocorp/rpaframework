@@ -1,3 +1,4 @@
+# pylint: disable=cyclic-import
 from robot.api.deco import keyword
 from .context import (
     LibraryContext,
