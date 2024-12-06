@@ -94,7 +94,7 @@ holidays = "^0.45"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"
-flake8 = "^3.7.9"
+flake8 = "^7.1.1"
 pylint = "^3.3.2"
 pytest = "^7.2.0"
 pytest-cov = "^4.0.0"
