@@ -201,7 +201,8 @@ class FinderKeywords(LibraryContext):
         language = locator.language
         configuration = locator.configuration
         self.logger.info(
-            "Searching for text '%s' (region: %s, confidence: %.1f, language: %s, configuration: %s)",
+            "Searching for text '%s' (region: %s, confidence: %.1f, "
+            "language: %s, configuration: %s)",
             locator.text,
             region or "display",
             confidence,
