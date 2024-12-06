@@ -26,55 +26,64 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-          "windows-py38",
           "windows-py39",
           "windows-py310",
+          "windows-py311",
+          "windows-py312",
 
-          "ubuntu-py38",
           "ubuntu-py39",
           "ubuntu-py310",
+          "ubuntu-py311",
+          "ubuntu-py312",
 
-          "macos-py38",
           "macos-py39",
           "macos-py310",
+          "macos-py311",
+          "macos-py312",
         ]
 
         include:
-          - name: "windows-py38"
-            python: "3.8"
-            os: windows-latest
           - name: "windows-py39"
             python: "3.9"
             os: windows-latest
           - name: "windows-py310"
             python: "3.10"
             os: windows-latest
-          - name: "ubuntu-py38"
-            python: "3.8"
-            os: ubuntu-latest
+          - name: "windows-py311"
+            python: "3.11"
+            os: windows-latest
+          - name: "windows-py312"
+            python: "3.12"
+            os: windows-latest
           - name: "ubuntu-py39"
             python: "3.9"
             os: ubuntu-latest
           - name: "ubuntu-py310"
             python: "3.10"
             os: ubuntu-latest
-          - name: "macos-py38"
-            python: "3.8"
-            os: macos-13
+          - name: "ubuntu-py311"
+            python: "3.11"
+            os: ubuntu-latest
           - name: "macos-py39"
             python: "3.9"
             os: macos-13
           - name: "macos-py310"
             python: "3.10"
             os: macos-13
+          - name: "macos-py311"
+            python: "3.11"
+            os: macos-13
+          - name: "macos-py312"
+            python: "3.12"
+            os: macos-13
 
     env:
       INVOKE_IS_CI_CD: 1
       SYSTEM_VERSION_COMPAT: "0"
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python }}
     - name: Upgrade pip
@@ -100,9 +109,9 @@ jobs:
       INVOKE_IS_CI_CD: 1
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: '3.9'
     - name: Upgrade pip

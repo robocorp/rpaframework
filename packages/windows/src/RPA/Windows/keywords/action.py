@@ -11,6 +11,8 @@ from RPA.Windows.keywords.context import ActionNotPossible
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
+else:
+    auto = None
 
 
 PatternType = Union["auto.ValuePattern", "auto.LegacyIAccessiblePattern"]
@@ -270,9 +272,11 @@ class ActionKeywords(ActionMethods):
             lib_win = Windows()
             value = lib_win.is_selected("type:RadioButtonControl name:Apple")
             print(value)
-        """
+        """  # noqa: E501
         element = self.ctx.get_element(locator)
-        get_selection_item_pattern = getattr(element.item, "GetSelectionItemPattern", None)
+        get_selection_item_pattern = getattr(
+            element.item, "GetSelectionItemPattern", None
+        )
 
         if get_selection_item_pattern:
             func_name = get_selection_item_pattern.__name__
@@ -454,8 +458,10 @@ class ActionKeywords(ActionMethods):
                 " through keys! (insert them with the `enter` parameter only)"
             )
         get_text_pattern = getattr(element.item, "GetTextPattern", None)
-        get_text = lambda: (  # noqa: E731
-            get_text_pattern().DocumentRange.GetText() if get_text_pattern else None
+        get_text = (
+            lambda: (  # noqa: E731, pylint: disable=unnecessary-lambda-assignment
+                get_text_pattern().DocumentRange.GetText() if get_text_pattern else None
+            )
         )
         if append:
             current_value: str = get_text() or ""
@@ -795,7 +801,11 @@ class ActionKeywords(ActionMethods):
             previous = lib_win.set_mouse_movement(True)
             print(f"Previous mouse simulation: {previous} (now enabled)")
         """
-        to_str = lambda state: "ON" if state else "OFF"  # noqa: E731
+        to_str = (
+            lambda state: (  # noqa: E731, pylint: disable=unnecessary-lambda-assignment
+                "ON" if state else "OFF"
+            )
+        )
         previous = self.ctx.simulate_move
         self.logger.info("Previous mouse movement simulation: %s", to_str(previous))
         self.ctx.simulate_move = simulate

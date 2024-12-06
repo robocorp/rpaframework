@@ -1,3 +1,4 @@
+# pylint: disable=cyclic-import
 from robot.api.deco import keyword  # imported from here by keyword modules
 
 from .action import ActionKeywords
