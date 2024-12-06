@@ -125,7 +125,7 @@ class Base64AI:
             )
             payload["modelTypes"] = req_model_types
 
-        response = requests.post(
+        response = requests.post(  # pylint: disable=missing-timeout
             scan_endpoint,
             headers=self._request_headers,
             json=payload,
@@ -290,7 +290,7 @@ class Base64AI:
             userdata = baselib.get_user_data()
             print(f"I have still {userdata['remainingCredits']} credits left")
         """
-        response = requests.get(
+        response = requests.get(  # pylint: disable=missing-timeout
             self._to_endpoint("auth/user"),
             headers=self._request_headers,
         )
@@ -367,7 +367,7 @@ class Base64AI:
             f"{'queryUrl' if query[1] else 'queryDocument'}": query[0],
         }
 
-        response = requests.post(
+        response = requests.post(  # pylint: disable=missing-timeout
             recognize_endpoint,
             headers=self._request_headers,
             json=payload,
@@ -433,11 +433,13 @@ class Base64AI:
         ]
         candidates = {}
         # As (left, top, right, bottom) tuple.
-        to_coords = lambda item: (  # noqa: E731
-            item["left"],
-            item["top"],
-            item["left"] + item["width"],  # right corner
-            item["top"] + item["height"],  # bottom corner
+        to_coords = (
+            lambda item: (  # noqa: E731, pylint: disable=unnecessary-lambda-assignment
+                item["left"],
+                item["top"],
+                item["left"] + item["width"],  # right corner
+                item["top"] + item["height"],  # bottom corner
+            )
         )
 
         for qry_idx, candidate in enumerate(match_response["query"]):

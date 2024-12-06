@@ -7,6 +7,8 @@ from RPA.Desktop.keywords import LibraryContext, keyword, screen, HAS_RECOGNITIO
 
 if HAS_RECOGNITION:
     from RPA.recognition import ocr  # pylint: disable=no-name-in-module
+else:
+    ocr = None
 
 
 def ensure_recognition():

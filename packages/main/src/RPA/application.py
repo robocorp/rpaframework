@@ -13,7 +13,13 @@ if platform.system() == "Windows":
     import win32com.client
     from pywintypes import com_error as COMError  # pylint: disable=no-name-in-module
     from win32com.client import constants  # pylint: disable=unused-import
+    import win32com
 else:
+    # Define dummy objects for non-Windows platforms
+    win32api = None
+    win32com = None
+    COMError = Exception
+    constants = None
     logging.getLogger(__name__).warning(
         "Any `RPA.*.Application` library works only on Windows platform!"
     )

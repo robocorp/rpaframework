@@ -274,10 +274,10 @@ class Database:
                 "host": self.config.get("host"),
                 "port": self.config.get("port"),
             }
-            self._add_to_parameters_íf_not_none(parameters, "charset")
-            self._add_to_parameters_íf_not_none(parameters, "ssl_ca")
-            self._add_to_parameters_íf_not_none(parameters, "ssl_cert")
-            self._add_to_parameters_íf_not_none(parameters, "ssl_key")
+            self._add_to_parameters_if_not_none(parameters, "charset")
+            self._add_to_parameters_if_not_none(parameters, "ssl_ca")
+            self._add_to_parameters_if_not_none(parameters, "ssl_cert")
+            self._add_to_parameters_if_not_none(parameters, "ssl_key")
             self._set_mysql_client_flags(module_name, parameters)
             self._dbconnection = dbmodule.connect(**parameters)
         elif module_name.startswith("psycopg"):
@@ -389,7 +389,7 @@ class Database:
             if module_name == "sqlite3":
                 self._dbconnection.isolation_level = None if autocommit else "IMMEDIATE"
 
-    def _add_to_parameters_íf_not_none(self, parameters, config_key):
+    def _add_to_parameters_if_not_none(self, parameters, config_key):
         config_value = self.config.get(config_key)
         if config_value:
             parameters[config_key] = config_value

@@ -27,6 +27,9 @@ from RPA.core.locators import (
 
 if HAS_RECOGNITION:
     from RPA.recognition import templates, ocr  # pylint: disable=no-name-in-module
+else:
+    templates = None
+    ocr = None
 
 Geometry = Union[Point, Region, Undefined]
 

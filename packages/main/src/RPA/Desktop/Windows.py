@@ -1,5 +1,10 @@
 # pylint: disable=c-extension-no-member
 # pylint: disable=too-many-lines
+# pylint: disable=possibly-used-before-assignment
+# pylint: disable=consider-using-dict-items
+# pylint: disable=used-before-assignment
+# pylint: disable=consider-using-min-builtin
+# pylint: disable=consider-using-max-builtin
 from enum import Enum
 import json
 import logging

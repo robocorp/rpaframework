@@ -37,7 +37,9 @@ class Slack:
         }
         if icon_emoji:
             payload["icon_emoji"] = icon_emoji
-        response = requests.post(webhook_url, headers=headers, data=json.dumps(payload))
+        response = requests.post(  # pylint: disable=missing-timeout
+            webhook_url, headers=headers, data=json.dumps(payload)
+        )
         self.logger.debug(response.status_code)
 
     def slack_raw_message(
@@ -59,5 +61,7 @@ class Slack:
             self.logger.warning("Can't set channel as 'json_data' is a string.")
             return
         data_for_message = message if isinstance(message, str) else json.dumps(message)
-        response = requests.post(webhook, headers=headers, data=data_for_message)
+        response = requests.post(  # pylint: disable=missing-timeout
+            webhook, headers=headers, data=data_for_message
+        )
         self.logger.debug(response.status_code)
