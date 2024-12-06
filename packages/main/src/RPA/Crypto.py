@@ -376,7 +376,7 @@ class Crypto:
             Log    Path to encrypted file is: ${path}
         """
         encryption_type = to_encryption_type(encryption_type, self._encryption_method)
-
+        token = None
         path = Path(path)
         if not self._key:
             raise ValueError("No encryption key set")
@@ -393,9 +393,10 @@ class Crypto:
             elif encryption_type == EncryptionType.AES256:
                 token = self._encrypt_aes256(data)
 
-        with open(output, "wb") as outfile:
-            outfile.write(token)
-            return str(output)
+        if token:
+            with open(output, "wb") as outfile:
+                outfile.write(token)
+        return str(output)
 
     def decrypt_file(
         self,
@@ -421,7 +422,7 @@ class Crypto:
             Log    Path to decrypted file is: ${path}
         """
         encryption_type = to_encryption_type(encryption_type, self._encryption_method)
-
+        data = None
         path = Path(path)
         if not self._key:
             raise ValueError("No encryption key set")
@@ -446,9 +447,10 @@ class Crypto:
                 "Failed to decrypt file (malformed content or invalid signature)"
             ) from err
 
-        with open(output, "wb") as outfile:
-            outfile.write(data)
-            return str(output)
+        if data:
+            with open(output, "wb") as outfile:
+                outfile.write(data)
+        return str(output)
 
     # Helper methods for AES256 (same as before)
     def _generate_aes256_key(self) -> bytes:

@@ -1023,8 +1023,10 @@ class WorkItems:
         self, variables: Dict
     ) -> Optional[Tuple[str, bool, Tuple[str]]]:
         # Returns the extracted e-mail [parsed] content and its payload destination.
-        to_tuple = lambda keys: (  # noqa: E731
-            keys if isinstance(keys, tuple) else (keys,)
+        to_tuple = (
+            lambda keys: (  # noqa: E731, pylint: disable=unnecessary-lambda-assignment
+                keys if isinstance(keys, tuple) else (keys,)
+            )
         )
         file_list = self.list_work_item_files()
         for input_keys, output_keys in self._auto_parse_email.items():
@@ -1794,11 +1796,13 @@ class WorkItems:
         self._raise_under_iteration("iterate input work items")
 
         if isinstance(keyword_or_func, str):
-            to_call = lambda: BuiltIn().run_keyword(  # noqa: E731
+            to_call = lambda: BuiltIn().run_keyword(  # noqa: E731,E501, pylint: disable=unnecessary-lambda-assignment
                 keyword_or_func, *args, **kwargs
             )
         else:
-            to_call = lambda: keyword_or_func(*args, **kwargs)  # noqa: E731
+            to_call = lambda: keyword_or_func(  # noqa: E731,E501, pylint: disable=unnecessary-lambda-assignment
+                *args, **kwargs
+            )
         results = []
 
         try:

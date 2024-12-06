@@ -8,6 +8,8 @@ from RPA.Desktop.keywords import LibraryContext, keyword
 
 if utils.is_windows():
     import winreg
+else:
+    winreg = None
 
 
 def output(*args):
@@ -42,8 +44,9 @@ class Application:
         if self._proc:
             raise RuntimeError("Application already started")
 
-        # pylint: disable=consider-using-with
-        self._proc = subprocess.Popen(self._args, shell=self._shell)
+        self._proc = subprocess.Popen(  # pylint: disable=consider-using-with
+            self._args, shell=self._shell
+        )
 
     def stop(self):
         if self._proc:

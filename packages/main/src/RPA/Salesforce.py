@@ -331,7 +331,7 @@ class Salesforce:
             "client_secret": consumer_secret,
             "grant_type": "password",
         }
-        response = requests.post(
+        response = requests.post(  # pylint: disable=missing-timeout
             f"https://{self.domain}.salesforce.com/services/oauth2/token",
             headers={"Content-Type": "application/x-www-form-urlencoded"},
             data=request_data,

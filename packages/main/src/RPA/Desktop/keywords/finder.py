@@ -27,6 +27,9 @@ from RPA.core.locators import (
 
 if HAS_RECOGNITION:
     from RPA.recognition import templates, ocr  # pylint: disable=no-name-in-module
+else:
+    templates = None
+    ocr = None
 
 Geometry = Union[Point, Region, Undefined]
 
@@ -201,7 +204,8 @@ class FinderKeywords(LibraryContext):
         language = locator.language
         configuration = locator.configuration
         self.logger.info(
-            "Searching for text '%s' (region: %s, confidence: %.1f, language: %s, configuration: %s)",
+            "Searching for text '%s' (region: %s, confidence: %.1f, "
+            "language: %s, configuration: %s)",
             locator.text,
             region or "display",
             confidence,

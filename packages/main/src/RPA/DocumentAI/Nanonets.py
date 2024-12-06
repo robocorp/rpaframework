@@ -144,10 +144,10 @@ class Nanonets:
         """
         _, mime = self._get_file_base64_and_mimetype(filepath)
 
-        # pylint: disable=R1732
-        files = [("file", (filename, open(filepath, "rb"), mime))]
+        with open(filepath, "rb") as lfile:
+            files = [("file", (filename, lfile, mime))]
 
-        response = requests.request(
+        response = requests.request(  # pylint: disable=missing-timeout
             "POST",
             f"{self.base_url}/OCR/FullText",
             files=files,
@@ -181,7 +181,7 @@ class Nanonets:
                 print(f"model id: {model['model_id']}")
                 print(f"model type: {model['model_type']}")
         """
-        response = requests.request(
+        response = requests.request(  # pylint: disable=missing-timeout
             "GET",
             f"{self.base_url}/ImageCategorization/Models/",
             auth=requests.auth.HTTPBasicAuth(self.apikey, ""),
@@ -233,10 +233,10 @@ class Nanonets:
 
         url = f"{self.base_url}/OCR/Model/{model_id}/LabelFile/"
 
-        # pylint: disable=R1732
-        data = {"file": open(filepath, "rb")}
+        with open(filepath, "rb") as lfile:
+            data = {"file": lfile}
 
-        response = requests.post(
+        response = requests.post(  # pylint: disable=missing-timeout
             url,
             headers={},
             auth=requests.auth.HTTPBasicAuth(self.apikey, ""),

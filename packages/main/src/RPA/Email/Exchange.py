@@ -1089,7 +1089,7 @@ class Exchange(OAuthMixin):
         """
         # ensure that an output dir exists
         attachments = []
-        with open(filename, "r") as f:  # pylint: disable=unspecified-encoding
+        with open(filename, "r", encoding="utf-8") as f:
             msg = email.message_from_file(  # pylint: disable=no-member
                 f, policy=policy.default
             )

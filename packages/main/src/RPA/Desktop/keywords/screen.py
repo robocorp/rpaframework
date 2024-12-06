@@ -21,6 +21,11 @@ if utils.is_windows():
     from pywinauto import win32structures
     from pywinauto import win32defines
     from pywinauto import win32functions
+else:
+    ctypes = None
+    win32structures = None
+    win32defines = None
+    win32functions = None
 
 
 def _draw_outline(region: Region):

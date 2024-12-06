@@ -316,7 +316,9 @@ class RobocorpVault(BaseSecretManager):
         url = self.create_secret_url(secret_name)
 
         try:
-            response = requests.get(url, headers=self.headers, params=self.params)
+            response = requests.get(  # pylint: disable=missing-timeout
+                url, headers=self.headers, params=self.params
+            )
             response.raise_for_status()
 
             payload = response.json()
@@ -395,7 +397,9 @@ class RobocorpVault(BaseSecretManager):
 
         url = self.create_secret_url(secret.name)
         try:
-            response = requests.put(url, headers=self.headers, json=payload)
+            response = requests.put(  # pylint: disable=missing-timeout
+                url, headers=self.headers, json=payload
+            )
             response.raise_for_status()
         except Exception as e:
             self.logger.debug(traceback.format_exc())
@@ -409,7 +413,9 @@ class RobocorpVault(BaseSecretManager):
         """Get the public key for AES encryption with the existing token."""
         url = self.create_public_key_url()
         try:
-            response = requests.get(url, headers=self.headers)
+            response = requests.get(  # pylint: disable=missing-timeout
+                url, headers=self.headers
+            )
             response.raise_for_status()
         except Exception as e:
             self.logger.debug(traceback.format_exc())

@@ -199,6 +199,10 @@ class InvalidLocatorError(AttributeError):
     """Invalid locator string."""
 
 
+class JavaAccessBridgeError(RuntimeError):
+    """Base exception for Java Access Bridge errors."""
+
+
 IntegerLocatorTypes = [
     "x",
     "y",
@@ -496,7 +500,9 @@ class JavaAccessBridge:
         if isinstance(obj, JavaAccessBridgeWrapper):
             self.jab_wrapper = obj
         if not self.jab_wrapper:
-            raise Exception("Failed to initialize Java Access Bridge Wrapper")
+            raise JavaAccessBridgeError(
+                "Failed to initialize Java Access Bridge Wrapper"
+            )
         time.sleep(1)
         atexit.register(self._handle_shutdown)
         self.logger.info("Java Access Bridge Wrapper initialized")

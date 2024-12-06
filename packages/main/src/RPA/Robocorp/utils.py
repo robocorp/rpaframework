@@ -1,3 +1,4 @@
+# pylint: disable=too-many-function-args
 import json
 import logging
 import os
@@ -162,6 +163,7 @@ class Requests:
         no_retry_messages = []
 
         if isinstance(exc, RequestsHTTPError):
+            exc: RequestsHTTPError
             if (
                 exc.status_code in no_retry_codes
                 or exc.status_message in no_retry_messages

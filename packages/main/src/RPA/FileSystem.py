@@ -1,3 +1,4 @@
+# pylint: disable=inherit-non-class
 """Files and filesystems library for Robot Framework"""
 
 import logging

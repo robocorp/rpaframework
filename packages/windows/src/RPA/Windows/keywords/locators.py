@@ -14,6 +14,9 @@ from RPA.Windows.keywords.context import with_timeout
 if utils.IS_WINDOWS:
     import uiautomation as auto
     from uiautomation import Control
+else:
+    auto = None
+    Control = None
 
 
 class LocatorKeywords(LocatorMethods):

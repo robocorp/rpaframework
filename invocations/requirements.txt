@@ -5,3 +5,4 @@ keyring>=24.2.0,<25.0.0
 toml~=0.10.2
 PyYAML~=6.0.1
 colorama~=0.4.5
+setuptools>=65.5.1; python_version >= "3.12"

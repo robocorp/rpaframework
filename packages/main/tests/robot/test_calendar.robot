@@ -1,7 +1,7 @@
 *** Settings ***
 Library     RPA.Calendar
 Library     Collections
-
+Test Teardown    Reset Business Days
 
 *** Variables ***
 ${RESOURCES}    ${CURDIR}${/}..${/}resources
@@ -15,7 +15,7 @@ Setting Locale
     Should Be Equal As Strings    de    ${previous}
 
 Setting Business Days
-    @{default_business_days}=    Evaluate    [1,2,3,4,5]
+    @{default_business_days}=    Evaluate    [0,1,2,3,4]
     @{new_business_days}=    Evaluate    [1,2]
     @{previous}=    Set Business Days    ${new_business_days}
     Lists Should Be Equal    ${previous}    ${default_business_days}

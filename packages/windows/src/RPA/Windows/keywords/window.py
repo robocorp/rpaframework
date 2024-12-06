@@ -389,7 +389,8 @@ class WindowKeywords(WindowMethods):
         return closed
 
     @keyword(tags=["window"])
-    def get_os_version(self) -> str:
+    @staticmethod
+    def get_os_version() -> str:
         """Returns the current Windows major version as string.
 
         Example:

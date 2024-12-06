@@ -44,8 +44,14 @@ class Calendar:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
-        self.BUSINESS_DAYS = [1, 2, 3, 4, 5]  # Monday - Friday
+        self.DEFAULT_BUSINESS_DAYS = [0, 1, 2, 3, 4]  # Monday - Friday as a constant
+        self.BUSINESS_DAYS = self.DEFAULT_BUSINESS_DAYS.copy()  # Working copy
         self.custom_holidays = holidays.HolidayBase()
+
+    @keyword
+    def reset_business_days(self) -> None:
+        """Reset business days back to default Monday-Friday schedule."""
+        self.BUSINESS_DAYS = self.DEFAULT_BUSINESS_DAYS.copy()
 
     @keyword
     def set_locale(self, locale_name: str) -> str:
@@ -609,24 +615,40 @@ class Calendar:
             given_dt = pdl.parse(given_date, strict=False)
         else:
             given_dt = given_date
-        previous_dt = given_dt
+
+        current_dt = given_dt
         years = [given_dt.year - 1, given_dt.year, given_dt.year + 1]
         holiday_list = self.return_holidays(years, country)
+
+        # Skip the current date for previous/next business day
+        current_dt = current_dt.add(days=direction)
+
         while True:
-            is_business_day = False
-            previous_dt = previous_dt.add(days=direction)
-            prev_day = pdl.date(previous_dt.year, previous_dt.month, previous_dt.day)
-            if previous_dt.day_of_week in self.BUSINESS_DAYS:
-                is_business_day = True
+            current_date = pdl.date(current_dt.year, current_dt.month, current_dt.day)
+            weekday = current_dt.day_of_week
+
+            self.logger.debug(f"Checking date: {current_date}, weekday: {weekday}")
+            self.logger.debug(f"Business days: {self.BUSINESS_DAYS}")
+
+            # Check if it's a business day
+            is_business_day = weekday in self.BUSINESS_DAYS
+
+            self.logger.debug(f"Is business day? {is_business_day}")
+
+            # Check if it's not a holiday (if country is specified)
             if country and is_business_day:
-                is_business_day = prev_day not in holiday_list
+                is_holiday = current_date in holiday_list
+                is_business_day = not is_holiday
+                self.logger.debug(f"Is holiday? {is_holiday}")
+
             if is_business_day:
                 break
 
+            current_dt = current_dt.add(days=direction)
+
         if return_format:
-            return previous_dt.format(fmt=return_format, locale=locale)
-        else:
-            return previous_dt
+            return current_dt.format(fmt=return_format, locale=locale)
+        return current_dt
 
     @keyword
     def return_holidays(
