@@ -803,16 +803,15 @@ typing = ["typing-extensions (>=4.12.2)"]
 
 [[package]]
 name = "fire"
-version = "0.4.0"
+version = "0.7.0"
 description = "A library for automatically generating command line interfaces."
 optional = false
 python-versions = "*"
 files = [
-    {file = "fire-0.4.0.tar.gz", hash = "sha256:c5e2b8763699d1142393a46d0e3e790c5eb2f0706082df8f647878842c216a62"},
+    {file = "fire-0.7.0.tar.gz", hash = "sha256:961550f07936eaf65ad1dc8360f2b2bf8408fad46abbfa4d2a3794f8d2a95cdf"},
 ]
 
 [package.dependencies]
-six = "*"
 termcolor = "*"
 
 [[package]]
@@ -3054,18 +3053,18 @@ rpaframework-core = ">=11.3.1,<12.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "7.5.2"
+version = "8.0.0"
 description = "Windows library for RPA Framework"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "rpaframework_windows-7.5.2-py3-none-any.whl", hash = "sha256:f4833e78fa675a19f7d8c41903193bf81241af29f378bcd6b35e33057350409f"},
-    {file = "rpaframework_windows-7.5.2.tar.gz", hash = "sha256:6b5c1e0c4c13f53f054433e2c02de945e27d14eb6799a8f1d1919e206efe3e46"},
+    {file = "rpaframework_windows-8.0.0-py3-none-any.whl", hash = "sha256:e1d6aa5fabb7f04c381ad6aa500fc56d1a069dc840743501319504e2cc6d1372"},
+    {file = "rpaframework_windows-8.0.0.tar.gz", hash = "sha256:262d5cd31cfbaf7ae3a8a115f55cc8deabfb98ec52379c8bfe1731e88fe19a75"},
 ]
 
 [package.dependencies]
 comtypes = {version = ">=1.1.11,<2.0.0", markers = "sys_platform == \"win32\""}
-fire = ">=0.4.0,<0.5.0"
+fire = ">=0.7.0,<0.8.0"
 psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
 pynput-robocorp-fork = ">=5.0.0,<6.0.0"
 pywin32 = {version = ">=300,<307", markers = "python_full_version != \"3.8.1\" and sys_platform == \"win32\""}
@@ -3917,4 +3916,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "583c0c8ed693363f300350f15901b092f4b656fda8a4026f3f17b1f091520378"
+content-hash = "875680e1d4dfc6076be50dd4757108a72cb0cd8423eda13bd88407f0eb2e0627"
