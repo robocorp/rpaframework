@@ -172,7 +172,7 @@
 Robotic Process Automation (RPA), and it is designed to be used with both
 <a class="reference external" href="https://robotframework.org">Robot Framework</a> and <a class="reference external" href="https://www.python.org/">Python</a>. The goal is to offer well-documented and
 actively maintained core libraries for Software Robot Developers.</p>
-<p>Learn more about RPA at <a class="reference external" href="https://robocorp.com/docs/">Robocorp Documentation</a>.</p>
+<p>Learn more about RPA at <a class="reference external" href="https://robocorp.com/docs-robot-framework">Robocorp Documentation</a>.</p>
 <p><strong>The project is:</strong></p>
 <ul class="simple">
 <li><p>100% Open Source</p></li>
@@ -414,12 +414,12 @@ of the package size and the post install step it needs to be fully installed.</p
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
 <span class="nt">dependencies</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.9.16</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nodejs=16.14.2</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=22.1.2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.10.14</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nodejs=22.9.0</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=24.0</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotframework-browser==17.2.0</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==24.1.2</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotframework-browser==18.8.1</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==28.6.3</span>
 <span class="nt">rccPostInstall</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rfbrowser init</span>
 </pre></div>
@@ -432,26 +432,26 @@ of the package size and the post install step it needs to be fully installed.</p
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
 <span class="nt">dependencies</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.9.16</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=22.1.2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.10.14</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=24.0</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==24.1.2</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==28.6.3</span>
 </pre></div>
 </div>
 <p>To install all extra packages (including Playwright dependencies), you can use:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
 <span class="nt">dependencies</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.9.16</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tesseract=4.1.1</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nodejs=16.14.2</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=22.1.2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.10.14</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tesseract=5.4.1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nodejs=22.9.0</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=24.0</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotframework-browser==17.2.0</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==24.1.2</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==5.2.8</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-google==7.0.3</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-recognition==5.1.2</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotframework-browser==18.8.1</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==28.6.3</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==5.3.3</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-google==9.0.2</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-recognition==5.2.5</span>
 <span class="nt">rccPostInstall</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rfbrowser init</span>
 </pre></div>
@@ -461,12 +461,12 @@ of the package size and the post install step it needs to be fully installed.</p
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
 <span class="nt">dependencies</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.9.16</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=22.1.2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.10.14</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=24.0</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==5.2.8</span><span class="w">  </span><span class="c1"># included in the rpaframework as an extra</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-pdf==7.1.5</span><span class="w">  </span><span class="c1"># included in the rpaframework by default</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-windows==7.3.2</span><span class="w">  </span><span class="c1"># included in the rpaframework by default</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==5.3.3</span><span class="w">  </span><span class="c1"># included in the rpaframework as an extra</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-pdf==7.3.3</span><span class="w">  </span><span class="c1"># included in the rpaframework by default</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-windows==7.5.2</span><span class="w">  </span><span class="c1"># included in the rpaframework by default</span>
 </pre></div>
 </div>
 <p>Installation method with <cite>pip</cite> using Python <a class="reference external" href="https://docs.python.org/3/library/venv.html">venv</a>:</p>
@@ -509,10 +509,9 @@ pip<span class="w"> </span>install<span class="w"> </span>rpaframework
 <h2><a class="toc-backref" href="#id7">Support and contact</a><a class="headerlink" href="#support-and-contact" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://rpaframework.org/">rpaframework.org</a> for library documentation</p></li>
-<li><p><a class="reference external" href="https://robocorp.com/docs/">Robocorp Documentation</a> for guides and tutorials</p></li>
+<li><p><a class="reference external" href="https://robocorp.com/docs-robot-framework">Robocorp Documentation</a> for guides and tutorials</p></li>
 <li><p><strong>#rpaframework</strong> channel in <a class="reference external" href="https://robotframework-slack-invite.herokuapp.com/">Robot Framework Slack</a> if you
 have open questions or want to contribute</p></li>
-<li><p><a class="reference external" href="https://forum.robocorp.com">Robocorp Forum</a> for discussions about RPA</p></li>
 <li><p>Communicate with your fellow Software Robot Developers and Robocorp experts
 at <a class="reference external" href="https://robocorp-developers.slack.com">Robocorp Developers Slack</a></p></li>
 </ul>
@@ -527,9 +526,9 @@ to see where to get started.</p>
 <h2><a class="toc-backref" href="#id9">Development</a><a class="headerlink" href="#development" title="Permalink to this heading"></a></h2>
 <p>Repository development is <a class="reference external" href="https://www.python.org/">Python</a> based and requires at minimum
 Python version 3.8+ installed on the development machine. The default Python version used in the
-Robocorp Robot template is 3.9.16 so it is a good choice for the version to install. Not recommended
+Robocorp Robot template is 3.10.14 so it is a good choice for the version to install. Not recommended
 versions are 3.7.6 and 3.8.1, because they have issues with some of the dependencies related to <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.
-At the time the newer Python versions starting from 3.11 are also not recommended, because some of
+At the time the newer Python versions starting from 3.12 are also not recommended, because some of
 the dependencies might cause issues.</p>
 <p>Repository development tooling is based on <a class="reference external" href="https://python-poetry.org">poetry</a> and <a class="reference external" href="https://www.pyinvoke.org">invoke</a>. Poetry is the
 underlying tool used for compiling, building and running the package. Invoke is used
@@ -629,7 +628,7 @@ and <strong>pyproject.toml</strong> with message “PACKAGE. version x.y.z”</p
 <li><p><a class="reference external" href="https://code.visualstudio.com">Visual Studio Code</a> as a code editor with following extensions:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=robocorp.robocorp-code">Robocorp Code</a></p></li>
+<li><p><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=sema4ai.sema4ai">Sema4.ai</a></p></li>
 <li><p><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=robocorp.robotframework-lsp">Robot Framework Language Server</a></p></li>
 <li><p><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens">GitLens</a></p></li>
 <li><p><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python extension</a></p></li>
