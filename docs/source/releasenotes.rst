@@ -12,10 +12,15 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28.6.4 - 04 Dec 2024
+--------------------
+
+- Bump `holidays` to `0.45` and `validators` to `0.34.0`, in order to fix [CWE-1333](https://cwe.mitre.org/data/definitions/1333.html)
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-17 Sep 2024
+28.6.3 - 17 Sep 2024
 -----------
 
 Security releases regarding dependency package ``cryptography``. Other security updates have been done as well and
