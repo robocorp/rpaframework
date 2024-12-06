@@ -118,7 +118,7 @@ rpa-crypto = 'RPA.scripts.crypto:main'
 use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 
 [tool.black]
-target-version = ["py39", "py310", "py311"]
+target-version = ["py39", "py310", "py311", "py312"]
 
 [tool.isort]
 profile = "black"
