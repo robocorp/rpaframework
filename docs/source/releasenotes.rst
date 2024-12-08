@@ -12,16 +12,21 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-28.6.4 - 04 Dec 2024
---------------------
-
-- Bump `holidays` to `0.45` and `validators` to `0.34.0`, in order to fix [CWE-1333](https://cwe.mitre.org/data/definitions/1333.html)
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+29.0.0 - 08 Dec 2024
+--------------------
+
+- Support added for Python version **3.12**
+- Minimum supported Python version is now **3.9**
+- Update ``rpaframework-windows`` to version **8.0.0**
+- Bump `holidays` to `0.45` and `validators` to `0.34.0`, in order to fix [CWE-1333](https://cwe.mitre.org/data/definitions/1333.html)
+- A lot of other dependencies have been updated
+
 28.6.3 - 17 Sep 2024
------------
+--------------------
 
 Security releases regarding dependency package ``cryptography``. Other security updates have been done as well and
 because of that multiple package releases have been done.
