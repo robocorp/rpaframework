@@ -18,10 +18,10 @@ RPA.Desktop.Windows:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "651", "Handle too compled method"
-   "1137", "return more valuable information about what should"
-   "1390", "supporting multiple search criterias at same time to identify ONE element"
-   "1416", "supporting multiple search criterias at same time to identify ONE element"
+   "656", "Handle too compled method"
+   "1141", "return more valuable information about what should"
+   "1394", "supporting multiple search criterias at same time to identify ONE element"
+   "1420", "supporting multiple search criterias at same time to identify ONE element"
 
 RPA.Desktop.keywords.application:
 =================================
@@ -30,8 +30,8 @@ RPA.Desktop.keywords.application:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "114", "Move implementations to platform-specific adapters"
-   "170", "Find out way to get actual default application,"
+   "117", "Move implementations to platform-specific adapters"
+   "173", "Find out way to get actual default application,"
 
 RPA.Desktop.keywords.finder:
 ============================
@@ -40,7 +40,7 @@ RPA.Desktop.keywords.finder:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "307", "Add run-on-error support and maybe screenshotting matches?"
+   "314", "Add run-on-error support and maybe screenshotting matches?"
 
 RPA.Desktop.keywords.mouse:
 ===========================
@@ -59,7 +59,7 @@ RPA.Desktop.keywords.screen:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "177", "Draw a circle instead?"
+   "182", "Draw a circle instead?"
 
 RPA.Email.Exchange:
 ===================
@@ -95,12 +95,12 @@ RPA.FileSystem:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "574", "glob support"
-   "612", "Should it remove all subdirectories too?"
-   "652", "glob support"
-   "873", "Convert to proper date"
-   "883", "Convert to proper date"
-   "892", "Convert to human-friendly?"
+   "575", "glob support"
+   "613", "Should it remove all subdirectories too?"
+   "653", "glob support"
+   "874", "Convert to proper date"
+   "884", "Convert to proper date"
+   "893", "Convert to human-friendly?"
 
 RPA.JSON:
 =========
@@ -118,8 +118,8 @@ RPA.JavaAccessBridge:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "436", "add keyword for taking screenshots of elements and window"
-   "437", "implement proper XPath syntax support"
+   "440", "add keyword for taking screenshots of elements and window"
+   "441", "implement proper XPath syntax support"
 
 RPA.MSGraph:
 ============
@@ -166,4 +166,4 @@ RPA.application:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "41", "(cmin764; 16 Aug 2023): Create a `handles_com_error` decorator if we get a little"
+   "47", "(cmin764; 16 Aug 2023): Create a `handles_com_error` decorator if we get a little"
