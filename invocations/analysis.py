@@ -66,7 +66,7 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
     # is resolved.
     pylint_jobs = " -j 1" if current_package_name == "rpaframework-hubspot" else ""
     warn_setting = not exit_on_failure
-    flake8_config = Path(safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG))
+    #flake8_config = Path(safely_load_config(ctx, "ctx.linters.flake8", FLAKE8_CONFIG))
     pylint_config = Path(safely_load_config(ctx, "ctx.linters.pylint", PYLINT_CONFIG))
     if docstrings:
         ignore_codes_cmd = ""
@@ -85,20 +85,20 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
             f"-b dummy -a -n --keep-going {docs.DOCS_SOURCE_DIR} {docs.DOCS_BUILD_DIR}",
             warn=warn_setting,
         )
-        shell.poetry(
-            ctx,
-            f"run flake8 --config {flake8_config} {docs.DOCS_SOURCE_DIR}",
-            warn=warn_setting,
-        )
+        # shell.poetry(
+        #     ctx,
+        #     f"run flake8 --config {flake8_config} {docs.DOCS_SOURCE_DIR}",
+        #     warn=warn_setting,
+        # )
         if all:
             shell.invoke_each(ctx, f"code.lint {all_docstrings_cmd}")
     else:
-        shell.poetry(ctx, "run black --diff --check src", warn=warn_setting)
-        shell.poetry(
-            ctx,
-            f"run flake8 --config {flake8_config} {ignore_codes_cmd} src",
-            warn=warn_setting,
-        )
+        # shell.poetry(ctx, "run black --diff --check src", warn=warn_setting)
+        # shell.poetry(
+        #     ctx,
+        #     f"run flake8 --config {flake8_config} {ignore_codes_cmd} src",
+        #     warn=warn_setting,
+        # )
         shell.poetry(
             ctx,
             f"run pylint --rcfile {pylint_config}{pylint_jobs} src",
@@ -111,8 +111,8 @@ def format_code(ctx):
     """Run code formatter on source files"""
     if getattr(ctx, "is_meta", False):
         shell.invoke_each(ctx, "code.format-code")
-    else:
-        shell.run_in_venv(ctx, "black", "src")
+    #else:
+     #   shell.run_in_venv(ctx, "black", "src")
 
 
 @task(

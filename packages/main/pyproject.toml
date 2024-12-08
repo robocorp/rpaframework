@@ -93,39 +93,22 @@ wrapt = ">=1.14.0,<2.0.0"
 holidays = "^0.45"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.3.0"
-flake8 = "^7.1.1"
-pylint = "^3.3.2"
-pytest = "^7.2.0"
-pytest-cov = "^4.0.0"
-pytest-mock = "^3.8.2"
+rpaframework-devutils = { path = "../devutils/", develop = true }
 mock = "^5.0.0"
 mypy = "^1.4.1"
 pytest-env = "^0.6.2"
-invoke = "^2.2.0"
-robotframework-docgen = "^0.16.0"
-toml = "^0.10.2"
-colorama = "^0.4.5"
-keyring = "^24.2.0"
-flake8-docstrings = "^1.6.0"
-flake8-rst-docstrings = "^0.2.7"
 pytest-freezegun = "^0.4.2"
-isort = "^5.11.5"
 poetry = "^1.6.1"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
 use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 
-[tool.black]
-target-version = ["py39", "py310", "py311", "py312"]
-
-[tool.isort]
-profile = "black"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-branch"
