@@ -207,7 +207,7 @@ def test_set_key_vault_error_empty():
     lib = Crypto()
     lib._vault = mock_vault = mock.Mock()
 
-    key = lib.generate_key()
+    _ = lib.generate_key()
     mock_vault.get_secret.return_value = Secret("MockSecret", "", {})
 
     with pytest.raises(ValueError):

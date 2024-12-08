@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 from RPA.Email.ImapSmtp import ImapSmtp
-from RPA.Email.common import counter_duplicate_path, NoRecipientsError
+from RPA.Email.common import counter_duplicate_path
 from docx import Document
 
 from . import RESOURCES_DIR
@@ -11,7 +11,7 @@ from . import RESOURCES_DIR
 
 class Resources:
     image = RESOURCES_DIR / "approved.png"
-    email = RESOURCES_DIR / "emails" / f"work-item-documentation.eml"
+    email = RESOURCES_DIR / "emails" / "work-item-documentation.eml"
 
 
 @pytest.fixture

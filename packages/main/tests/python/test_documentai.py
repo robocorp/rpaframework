@@ -170,7 +170,7 @@ class TestBase64AI:
         self, mock_requests, library, input_files, source, field_ending
     ):
         files = input_files[source]
-        sigs = library.get_matching_signatures(
+        _ = library.get_matching_signatures(
             files["driving-license"], files["payment-check"]
         )
         args, kwargs = mock_requests.post.call_args

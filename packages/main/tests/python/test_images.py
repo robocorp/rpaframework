@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from RPA.Images import Images, TemplateMatcher, Region, to_image, HAS_RECOGNITION
+from RPA.Images import Images, Region, HAS_RECOGNITION
 
 IMAGES = Path(__file__).resolve().parent / ".." / "resources" / "images"
 

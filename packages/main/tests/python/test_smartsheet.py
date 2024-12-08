@@ -1,30 +1,5 @@
-import os
-from itertools import chain
-from json.encoder import JSONEncoder
-from pathlib import Path
-from typing import Iterable, List, Union
-
-import pytest
-import smartsheet.smartsheet as smart_sdk
-from mock import MagicMock, patch
-from pytest_mock import MockerFixture
-from requests.models import PreparedRequest, Response
-
-OperationResult = smart_sdk.OperationResult
-OperationErrorResult = smart_sdk.OperationErrorResult
-
 import RPA.Smartsheet as ss
 from RPA.Tables import Table
-
-Smartsheet = ss.Smartsheet
-
-# You can set a personal testing token via the smartsheet_testvars.py file
-try:
-    from .smartsheet_testvars import ACCESS_TOKEN
-
-    VARS = True
-except ImportError:
-    VARS = False
 
 # Import mock data
 from .smartsheet_vars import (
@@ -49,6 +24,31 @@ from .smartsheet_vars import (
     UPDATED_ROWS,
     ZIP_COLUMN_ID,
 )
+from itertools import chain
+from json.encoder import JSONEncoder
+from pathlib import Path
+from typing import Iterable, List, Union
+
+import pytest
+import smartsheet.smartsheet as smart_sdk
+from mock import MagicMock
+from pytest_mock import MockerFixture
+from requests.models import PreparedRequest, Response
+
+OperationResult = smart_sdk.OperationResult
+OperationErrorResult = smart_sdk.OperationErrorResult
+
+Smartsheet = ss.Smartsheet
+
+# You can set a personal testing token via the smartsheet_testvars.py file
+try:
+    from .smartsheet_testvars import ACCESS_TOKEN
+
+    VARS = True
+except ImportError:
+    VARS = False
+
+
 
 # Testing Constants
 TEMP_DIR = Path(__file__).parent.parent / "results"
@@ -60,7 +60,7 @@ def test_debugging():
     """This test should always be skipped for automated tests."""
     lib = Smartsheet(access_token=ACCESS_TOKEN)
     orders = lib.get_sheet(sheet_name="orders", native=True)
-    revisions = lib.get_cell_history(row=orders.rows[0], column=orders.columns[0])
+    _ = lib.get_cell_history(row=orders.rows[0], column=orders.columns[0])
     attachments = lib.list_attachments()
     for a in attachments:
         lib.download_attachment(a, TEMP_DIR)

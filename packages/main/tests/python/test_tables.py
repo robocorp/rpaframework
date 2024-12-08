@@ -135,7 +135,7 @@ def test_table_negative_row_index(table):
 
 def test_table_negative_column_index(table):
     assert table[0, 1] == 2
-    assert table[0, -1] == None
+    assert table[0, -1] is None
     assert table[0, -2] == 3
 
 
@@ -645,7 +645,7 @@ def test_import_with_integer_keys():
 
     table = Table(data)
     assert table.dimensions == (3, 3)
-    assert table[0, 0] == None
+    assert table[0, 0] is None
 
     table = Table(data, columns=("Field", "Value"))
     assert table.dimensions == (3, 2)

@@ -237,7 +237,7 @@ def test_adapter_filesecrets_unknown_secret(monkeypatch, secrets_file):
 
     adapter = FileSecrets()
     with pytest.raises(KeyError):
-        secret = adapter.get_secret("not-exist")
+        _ = adapter.get_secret("not-exist")
 
 
 def test_adapter_filesecrets_saving(monkeypatch, tmp_path, secrets_file):

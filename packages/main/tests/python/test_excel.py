@@ -331,14 +331,14 @@ def test_set_worksheet_value(library):
     assert row["C"] == "Third"
 
 
-def test_get_worksheet_value(library):
+def test_get_cell_value(library):
     assert library.get_cell_value(5, "A") == 4
     assert library.get_cell_value(5, "C") == 3549
     assert library.get_cell_value(3, 3) == 1582
     assert library.get_cell_value(9, "E", "First") == "United States"
 
 
-def test_set_worksheet_value(library):
+def test_set_cell_value(library):
     library.set_cell_value(11, "A", "First")
     library.set_cell_value(11, 2, "Second")
     library.set_cell_value(11, "3", "Third", fmt="00.0")
