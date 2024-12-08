@@ -612,6 +612,23 @@ files = [
 pytest = ">=5.0"
 
 [[package]]
+name = "pytest-mock"
+version = "3.14.0"
+description = "Thin-wrapper around the mock package for easier use with pytest"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest-mock-3.14.0.tar.gz", hash = "sha256:2719255a1efeceadbc056d6bf3df3d1c5015530fb40cf347c0f9afac88410bd0"},
+    {file = "pytest_mock-3.14.0-py3-none-any.whl", hash = "sha256:0b72c38033392a5f4621342fe11e9219ac11ec9d375f8e2a0c164539e0d70f6f"},
+]
+
+[package.dependencies]
+pytest = ">=6.2.5"
+
+[package.extras]
+dev = ["pre-commit", "pytest-asyncio", "tox"]
+
+[[package]]
 name = "pytest-regressions"
 version = "1.0.6"
 description = "Easy to use fixtures to write regression tests."
@@ -908,4 +925,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "8ed75dc1bd8dd7bce39fc27552ceb7a39292ff9732d093ea8f989c2b2e96a169"
+content-hash = "60d0e93470c723ad924cfd443728b3131e74bc58fc1e0607beb7bc96129b51cf"
