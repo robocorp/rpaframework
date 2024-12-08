@@ -56,6 +56,7 @@ jobs:
             os: windows-latest
           - name: "windows-py312"
             python: "3.12"
+            node-version: 20.x
             os: windows-latest
           - name: "ubuntu-py39"
             python: "3.9"
@@ -68,6 +69,7 @@ jobs:
             os: ubuntu-latest
           - name: "ubuntu-py312"
             python: "3.12"
+            node-version: 20.x
             os: ubuntu-latest
           - name: "macos-py39"
             python: "3.9"
@@ -80,6 +82,7 @@ jobs:
             os: macos-13
           - name: "macos-py312"
             python: "3.12"
+            node-version: 20.x
             os: macos-13
     env:
       SETUPTOOLS_USE_DISTUTILS: stdlib
