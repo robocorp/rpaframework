@@ -7,6 +7,7 @@ on:
     paths:
       - "packages/main/**"
       - ".github/workflows/main.yaml"
+      - "invocations/requirements.txt"
   pull_request:
     branches:
       - master
