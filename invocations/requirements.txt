@@ -1,5 +1,4 @@
 setuptools>=69.0.2
-distutils-precedence>=0.1.0
 invoke~=2.2.0
 pip>=23.3.1,<25.0
 poetry~=1.7.0
