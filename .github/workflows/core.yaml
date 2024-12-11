@@ -41,7 +41,7 @@ jobs:
             "macos-py310",
             "macos-py311",
             "macos-py312",
-        ]
+          ]
 
         include:
           - name: "windows-py39"
