@@ -43,15 +43,6 @@ jobs:
         ]
 
         include:
-          - name: "windows-py38"
-            python: "3.8"
-            os: windows-latest
-          - name: "windows-py39"
-            python: "3.9"
-            os: windows-latest
-          - name: "windows-py310"
-            python: "3.10"
-            os: windows-latest
           - name: "windows-py39"
             python: "3.9"
             os: windows-latest
