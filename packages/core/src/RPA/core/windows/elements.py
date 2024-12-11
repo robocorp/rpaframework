@@ -6,6 +6,10 @@ from RPA.core.windows.context import WindowsContext
 from RPA.core.windows.helpers import IS_WINDOWS
 from RPA.core.windows.locators import Locator, MatchObject, WindowsElement
 
+# Define placeholder objects
+auto = None
+Control = None
+
 if IS_WINDOWS:
     import uiautomation as auto
     from uiautomation.uiautomation import Control

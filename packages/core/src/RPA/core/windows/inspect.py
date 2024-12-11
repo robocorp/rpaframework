@@ -6,6 +6,10 @@ from RPA.core.windows.helpers import IS_WINDOWS
 from RPA.core.windows.locators import MatchObject, WindowsElement
 from RPA.core.windows.window import WindowMethods
 
+# Define placeholder objects
+auto = None
+Control = None
+
 if IS_WINDOWS:
     import uiautomation as auto
     from uiautomation import Control  # pylint: disable=unused-import

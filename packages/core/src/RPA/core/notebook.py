@@ -5,6 +5,15 @@ import os
 from typing import Any
 
 IPYTHON_AVAILABLE = False
+# Define placeholder objects
+display = None
+Markdown = None
+FileLink = None
+FileLinks = None
+Image = None
+JSON = None
+Video = None
+Audio = None
 
 ipython_module = util.find_spec("IPython")
 if ipython_module:

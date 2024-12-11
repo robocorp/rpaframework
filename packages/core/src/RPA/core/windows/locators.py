@@ -14,6 +14,10 @@ from RPA.core.windows.context import (
 )
 from RPA.core.windows.helpers import IS_WINDOWS
 
+# Define placeholder objects
+auto = None
+Control = None
+
 if IS_WINDOWS:
     import uiautomation as auto
     from uiautomation.uiautomation import Control
@@ -301,7 +305,7 @@ class LocatorMethods(WindowsContext):
         search_params = search_params.copy()  # to keep idempotent behaviour
         path = search_params["path"]
         current = root_control
-        to_path = lambda idx: (  # noqa: E731
+        to_path = lambda idx: (  # noqa: E731, pylint: disable=unnecessary-lambda-assignment
             MatchObject.PATH_SEP.join(str(pos) for pos in path[:idx])
         )
 

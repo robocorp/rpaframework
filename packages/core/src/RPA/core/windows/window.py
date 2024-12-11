@@ -9,6 +9,14 @@ from RPA.core.vendor.deco import keyword as method
 from RPA.core.windows.context import WindowsContext
 from RPA.core.windows.helpers import IS_WINDOWS, get_process_list
 
+# Define placeholder objects
+auto = None
+win32api = None
+win32con = None
+win32gui = None
+win32process = None
+win32ui = None
+
 if IS_WINDOWS:
     import uiautomation as auto
     import win32api

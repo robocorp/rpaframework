@@ -4,6 +4,9 @@ from typing import Optional
 
 from RPA.core.windows.helpers import IS_WINDOWS
 
+# Define placeholder objects
+auto = None
+COMError = None
 if IS_WINDOWS:
     import uiautomation as auto
     from comtypes import COMError  # noqa

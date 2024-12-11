@@ -42,6 +42,9 @@ from webdriver_manager.opera import OperaDriverManager
 from RPA.core.robocorp import robocorp_home
 
 
+class UnknownDriverError(Exception):
+    """Exception raised for unknown drivers."""
+
 class BrowserType:
     """Constants for the browser types. (expands the internal one)"""
 
@@ -199,8 +202,8 @@ class ChromeDriver(_ChromeDriver):
         self, browser_version: str, driver_platform: str
     ) -> str:
         # This is activated for chromedriver 115 or higher only.
-        parse_version = lambda ver: version_parser.parse(ver).release  # noqa: E731
-        parse_floating_version = lambda ver: parse_version(ver)[:3]  # noqa: E731
+        parse_version = lambda ver: version_parser.parse(ver).release  # noqa: E731, pylint: disable=unnecessary-lambda-assignment
+        parse_floating_version = lambda ver: parse_version(ver)[:3]  # noqa: E731, pylint: disable=unnecessary-lambda-assignment
         parsed_floating_version = parse_floating_version(browser_version)
         resolve_modern_url = functools.partial(
             self._resolve_modern_url, driver_platform=driver_platform
@@ -228,7 +231,7 @@ class ChromeDriver(_ChromeDriver):
             if url:
                 return url
 
-        raise Exception(f"No such driver version {browser_version} for {platform}")
+        raise UnknownDriverError(f"No such driver version {browser_version} for {platform}")
 
     # pylint: disable=arguments-differ
     def get_driver_download_url(self, os_type: str, resolve: bool = False) -> str:
@@ -428,7 +431,7 @@ def start(browser: str, service: Optional[Service] = None, **options) -> WebDriv
 @functools.lru_cache(maxsize=1)
 def _is_chromium() -> bool:
     """Detects if Chromium is used instead of Chrome no matter the platform."""
-    is_browser = lambda browser_type: bool(  # noqa: E731
+    is_browser = lambda browser_type: bool(  # noqa: E731, pylint: disable=unnecessary-lambda-assignment
         _OPS_MANAGER.get_browser_version_from_os(browser_type)
     )
     with suppress_logging():

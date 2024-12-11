@@ -1,3 +1,4 @@
+# pylint: disable=cyclic-import
 # flake8: noqa
 from dataclasses import fields
 from .containers import (
