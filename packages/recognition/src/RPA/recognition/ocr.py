@@ -76,9 +76,14 @@ def find(
         region = geometry.to_region(region)
         image = image.crop(region.as_tuple())
 
+    params = {}
+    if language:
+        params["lang"] = language
+    if configuration:
+        params["config"] = configuration
     try:
         data = pytesseract.image_to_data(
-            image, lang=language, config=configuration, output_type=pytesseract.Output.DICT
+            image, **params, output_type=pytesseract.Output.DICT
         )
     except TesseractNotFoundError as err:
         raise EnvironmentError(INSTALL_PROMPT) from err
