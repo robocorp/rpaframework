@@ -25,7 +25,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [
+        name:
+          [
             "windows-py39",
             "windows-py310",
             "windows-py311",
