@@ -86,9 +86,9 @@ jobs:
     env:
       INVOKE_IS_CI_CD: 1
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python }}
     - name: Upgrade pip
@@ -101,7 +101,7 @@ jobs:
       run: |
         echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")
     - name: Set up cache
-      uses: actions/cache@v1
+      uses: actions/cache@v4
       with:
         path: .venv
         key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
