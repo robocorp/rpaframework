@@ -379,8 +379,8 @@ class JavaAccessBridge:
     .. _Accessibility Insights for Windows: https://accessibilityinsights.io/en/downloads/
     .. _Access Bridge Explorer: https://github.com/google/access-bridge-explorer
     .. _using Accessibility Insights: https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java
-    .. _RPA.Windows: https://robocorp.com/docs/libraries/rpa-framework/rpa-windows
-    .. _Java locators: https://robocorp.com/docs/development-guide/locators#java-locators
+    .. _RPA.Windows: https://robocorp.com/docs-robot-framework/libraries/rpa-framework/rpa-windows
+    .. _Java locators: https://robocorp.com/docs-robot-framework/development-guide/locators#java-locators
 
     **Examples**
 

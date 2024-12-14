@@ -33,10 +33,10 @@ class Windows(WindowsElementsMixin, DynamicCore):
         channels:
           - conda-forge
         dependencies:
-          - python=3.9.13
-          - pip=22.1.2
+          - python=3.12.8
+          - pip=24.3.1
           - pip:
-            - rpaframework-windows==7.0.2 # standalone Windows library (`rpaframework` includes this library)
+            - rpaframework-windows==8.0.0 # standalone Windows library (`rpaframework` includes this library)
 
 
     **About terminology**
@@ -391,7 +391,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
     A more programmatic approach is to run ``Print Tree    log_as_warnings=${True}``
     keyword and then observe in the logs the found elements structure starting from
     Desktop (or the currently set anchor / active window) as root. (refer to keyword's
-    `documentation <https://robocorp.com/docs/libraries/rpa-framework/rpa-windows/keywords#print-tree>`_
+    `documentation <https://robocorp.com/docs-robot-framework/libraries/rpa-framework/rpa-windows/keywords#print-tree>`_
     for more details)
 
     .. _Accessibility Insights: https://accessibilityinsights.io/

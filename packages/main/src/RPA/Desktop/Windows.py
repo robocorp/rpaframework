@@ -221,7 +221,7 @@ class Windows(OperatingSystem):
         deprecation(
             "`RPA.Desktop.Windows` got deprecated and will be no longer maintained, "
             "please use `RPA.Windows` instead "
-            "(https://robocorp.com/docs/libraries/rpa-framework/rpa-windows)"
+            "(https://robocorp.com/docs-robot-framework/libraries/rpa-framework/rpa-windows)"
         )
 
         OperatingSystem.__init__(self)
