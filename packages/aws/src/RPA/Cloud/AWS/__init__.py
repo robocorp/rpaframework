@@ -382,7 +382,7 @@ class ServiceS3(AWSBase):
             self.logger.error(e)
         return files
 
-    def _set_list_files_arguments(self, prefix=None, limit=None):
+    def _set_list_files_arguments(self, prefix=None, limit=None):  # pylint: disable=no-self-use
         kwargs = {}
         if prefix:
             kwargs["Prefix"] = prefix
@@ -888,7 +888,7 @@ class ServiceTextract(AWSBase):
             self.logger.info("Returning %s blocks" % len(total_result["Blocks"]))
         return total_result
 
-    def get_pages_and_text(self, textract_response: dict) -> dict:
+    def get_pages_and_text(self, textract_response: dict) -> dict:  # pylint: disable=no-self-use
         """Get pages and text out of Textract response json
 
         :param textract_response: JSON from Textract
@@ -1492,7 +1492,7 @@ class ServiceRedshiftData(AWSBase):
         else:
             return finished_statement.get("ResultRows", 0)
 
-    def create_redshift_statement_parameters(self, **params) -> List[Dict[str, str]]:
+    def create_redshift_statement_parameters(self, **params) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
         r"""Returns a formatted dictionary to be used in
         Redshift Data Api SQL statements.
 
@@ -1517,7 +1517,7 @@ class ServiceRedshiftData(AWSBase):
         """
         return [{"name": k, "value": v} for (k, v) in params.items()]
 
-    def _parse_tagged_union(self, tagged_union: dict):
+    def _parse_tagged_union(self, tagged_union: dict):  # pylint: disable=no-self-use
         TAGGED_TYPES = {
             "blobValue": bytes,
             "booleanValue": bool,
@@ -1534,7 +1534,7 @@ class ServiceRedshiftData(AWSBase):
                 output = "UNKNOWN_DATA_MEMBER"
         return output
 
-    def _create_waiter_for_results(
+    def _create_waiter_for_results(  # pylint: disable=no-self-use
         self,
         redshift_data_client,
         delay: int = 2,
