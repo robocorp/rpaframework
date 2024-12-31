@@ -1,24 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script src="../../_static/iframeResizer.min.js"></script>
-        <script src="../../_static/custom.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/iframeResizer.min.js?v=a9f7dbe8"></script>
+      <script src="../../_static/custom.js?v=9670dbcd"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -152,13 +152,13 @@
 	
            <div itemprop="articleBody">
              
-  <div class="section" id="python-api">
-<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="excel-application">
-<h2>Excel.Application<a class="headerlink" href="#excel-application" title="Permalink to this heading"></a></h2>
+  <section id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h1>
+<section id="excel-application">
+<h2>Excel.Application<a class="headerlink" href="#excel-application" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Word.Application.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoexit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Word.Application.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">autoexit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application" title="Link to this definition"></a></dt>
 <dd><p><cite>Word.Application</cite> is a library for controlling the Word application.</p>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
@@ -210,35 +210,35 @@ be opened first manually and dismiss any alert potentially blocking the process.
 </ul>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.APP_DISPATCH">
-<span class="sig-name descname"><span class="pre">APP_DISPATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Word.Application'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.APP_DISPATCH" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">APP_DISPATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Word.Application'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.APP_DISPATCH" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.FILEFORMATS">
-<span class="sig-name descname"><span class="pre">FILEFORMATS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'DEFAULT':</span> <span class="pre">'wdFormatDocumentDefault',</span> <span class="pre">'HTML':</span> <span class="pre">'wdFormatHTML',</span> <span class="pre">'OPENDOCUMENT':</span> <span class="pre">'wdFormatOpenDocumentText',</span> <span class="pre">'PDF':</span> <span class="pre">'wdFormatPDF',</span> <span class="pre">'RTF':</span> <span class="pre">'wdFormatRTF',</span> <span class="pre">'WORD97':</span> <span class="pre">'wdFormatDocument97'}</span></em><a class="headerlink" href="#RPA.Word.Application.Application.FILEFORMATS" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">FILEFORMATS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'DEFAULT':</span> <span class="pre">'wdFormatDocumentDefault',</span> <span class="pre">'HTML':</span> <span class="pre">'wdFormatHTML',</span> <span class="pre">'OPENDOCUMENT':</span> <span class="pre">'wdFormatOpenDocumentText',</span> <span class="pre">'PDF':</span> <span class="pre">'wdFormatPDF',</span> <span class="pre">'RTF':</span> <span class="pre">'wdFormatRTF',</span> <span class="pre">'WORD97':</span> <span class="pre">'wdFormatDocument97'}</span></em><a class="headerlink" href="#RPA.Word.Application.Application.FILEFORMATS" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.ROBOT_LIBRARY_DOC_FORMAT">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.ROBOT_LIBRARY_DOC_FORMAT" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.ROBOT_LIBRARY_SCOPE">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Word.Application.Application.ROBOT_LIBRARY_SCOPE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.app">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app</span></span><a class="headerlink" href="#RPA.Word.Application.Application.app" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app</span></span><a class="headerlink" href="#RPA.Word.Application.Application.app" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.close_document">
-<span class="sig-name descname"><span class="pre">close_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.close_document" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">close_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.close_document" title="Link to this definition"></a></dt>
 <dd><p>Close the active document and app (if open).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>save_changes</strong> – Enable changes saving on quit. (<cite>False</cite> by default)</p>
 </dd>
 </dl>
@@ -246,22 +246,22 @@ be opened first manually and dismiss any alert potentially blocking the process.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.copy_selection_to_clipboard">
-<span class="sig-name descname"><span class="pre">copy_selection_to_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.copy_selection_to_clipboard" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">copy_selection_to_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.copy_selection_to_clipboard" title="Link to this definition"></a></dt>
 <dd><p>Copy current text selection to clipboard.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.create_new_document">
-<span class="sig-name descname"><span class="pre">create_new_document</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.create_new_document" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">create_new_document</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.create_new_document" title="Link to this definition"></a></dt>
 <dd><p>Create new document for Word application</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.export_to_pdf">
-<span class="sig-name descname"><span class="pre">export_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.export_to_pdf" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">export_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.export_to_pdf" title="Link to this definition"></a></dt>
 <dd><p>Export active document into PDF file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> – PDF to export WORD into</p>
 </dd>
 </dl>
@@ -269,17 +269,17 @@ be opened first manually and dismiss any alert potentially blocking the process.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.find_text">
-<span class="sig-name descname"><span class="pre">find_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CursorPosition</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CursorPosition.NO_MOVE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.find_text" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">find_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CursorPosition</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CursorPosition.NO_MOVE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.find_text" title="Link to this definition"></a></dt>
 <dd><p>Find text in the document.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> – text to find</p></li>
 <li><p><strong>cursor_position</strong> – where to move cursor after finding text</p></li>
 <li><p><strong>copy</strong> – copy found text into clipboard</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>AssertionError</strong> – if text is not found</p>
 </dd>
 </dl>
@@ -287,10 +287,10 @@ be opened first manually and dismiss any alert potentially blocking the process.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.get_all_texts">
-<span class="sig-name descname"><span class="pre">get_all_texts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.get_all_texts" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_all_texts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.get_all_texts" title="Link to this definition"></a></dt>
 <dd><p>Get all texts from active document</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>texts</p>
 </dd>
 </dl>
@@ -298,24 +298,24 @@ be opened first manually and dismiss any alert potentially blocking the process.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.get_current_line">
-<span class="sig-name descname"><span class="pre">get_current_line</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.get_current_line" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_current_line</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.get_current_line" title="Link to this definition"></a></dt>
 <dd><p>Get the text of the current line in the document.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.get_number_of_lines">
-<span class="sig-name descname"><span class="pre">get_number_of_lines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.get_number_of_lines" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_number_of_lines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.get_number_of_lines" title="Link to this definition"></a></dt>
 <dd><p>Get the number of lines in the document.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.move_horizontally">
-<span class="sig-name descname"><span class="pre">move_horizontally</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_horizontally" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">move_horizontally</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_horizontally" title="Link to this definition"></a></dt>
 <dd><p>Move cursor horizontally from current cursor position.</p>
 <p>Remember that if cursor is already at the start the cursor can’t move
 left and if cursor is already at the end the cursor can’t move right.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>characters</strong> – characters to move</p>
 </dd>
 </dl>
@@ -323,37 +323,37 @@ left and if cursor is already at the end the cursor can’t move right.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.move_to_end">
-<span class="sig-name descname"><span class="pre">move_to_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_to_end" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">move_to_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_to_end" title="Link to this definition"></a></dt>
 <dd><p>Move cursor to the end of the document.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.move_to_line_end">
-<span class="sig-name descname"><span class="pre">move_to_line_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_to_line_end" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">move_to_line_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_to_line_end" title="Link to this definition"></a></dt>
 <dd><p>Move cursor to end of the line on the current cursor position.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.move_to_line_start">
-<span class="sig-name descname"><span class="pre">move_to_line_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_to_line_start" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">move_to_line_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_to_line_start" title="Link to this definition"></a></dt>
 <dd><p>Move cursor to start of the line on the current cursor position.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.move_to_top">
-<span class="sig-name descname"><span class="pre">move_to_top</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_to_top" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">move_to_top</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_to_top" title="Link to this definition"></a></dt>
 <dd><p>Move cursor to the top of the document.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.move_vertically">
-<span class="sig-name descname"><span class="pre">move_vertically</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_vertically" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">move_vertically</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.move_vertically" title="Link to this definition"></a></dt>
 <dd><p>Move cursor vertically from current cursor position.</p>
 <p>Remember that if cursor is already at the top the cursor can’t
 move up and if cursor is already at the bottom the cursor can’t
 move down.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>lines</strong> – lines to move</p>
 </dd>
 </dl>
@@ -361,10 +361,10 @@ move down.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.open_application">
-<span class="sig-name descname"><span class="pre">open_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_alerts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.open_application" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">open_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_alerts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.open_application" title="Link to this definition"></a></dt>
 <dd><p>Open the application.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>visible</strong> – Show the window on opening. (<cite>False</cite> by default)</p></li>
 <li><p><strong>display_alerts</strong> – Display alert popups. (<cite>False</cite> by default)</p></li>
@@ -375,10 +375,10 @@ move down.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.open_file">
-<span class="sig-name descname"><span class="pre">open_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.open_file" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">open_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.open_file" title="Link to this definition"></a></dt>
 <dd><p>Open Word document with filename.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> – Word document path</p>
 </dd>
 </dl>
@@ -386,17 +386,17 @@ move down.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.paste_from_clipboard">
-<span class="sig-name descname"><span class="pre">paste_from_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.paste_from_clipboard" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">paste_from_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.paste_from_clipboard" title="Link to this definition"></a></dt>
 <dd><p>Paste content from clipboard to the document’s
 current cursor position.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.quit_application">
-<span class="sig-name descname"><span class="pre">quit_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.quit_application" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">quit_application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_changes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.quit_application" title="Link to this definition"></a></dt>
 <dd><p>Quit the application.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>save_changes</strong> – Enable to save changes on quit. (<cite>False</cite> by default)</p>
 </dd>
 </dl>
@@ -404,10 +404,10 @@ current cursor position.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.replace_text">
-<span class="sig-name descname"><span class="pre">replace_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">find</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.replace_text" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">replace_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">find</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.replace_text" title="Link to this definition"></a></dt>
 <dd><p>Replace text in active document</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>find</strong> – text to replace</p></li>
 <li><p><strong>replace</strong> – new text</p></li>
@@ -418,16 +418,16 @@ current cursor position.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.save_document">
-<span class="sig-name descname"><span class="pre">save_document</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.save_document" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">save_document</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.save_document" title="Link to this definition"></a></dt>
 <dd><p>Save active document</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.save_document_as">
-<span class="sig-name descname"><span class="pre">save_document_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileformat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.save_document_as" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">save_document_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileformat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.save_document_as" title="Link to this definition"></a></dt>
 <dd><p>Save document with filename and optionally with given fileformat</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> – where to save document</p></li>
 <li><p><strong>fileformat</strong> – see &#64;FILEFORMATS dictionary for possible format,
@@ -439,18 +439,18 @@ defaults to None</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.select_current_paragraph">
-<span class="sig-name descname"><span class="pre">select_current_paragraph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.select_current_paragraph" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">select_current_paragraph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.select_current_paragraph" title="Link to this definition"></a></dt>
 <dd><p>Select text in current active paragraph.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.select_paragraph">
-<span class="sig-name descname"><span class="pre">select_paragraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.select_paragraph" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">select_paragraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.select_paragraph" title="Link to this definition"></a></dt>
 <dd><p>Select paragraph(s) from current cursor position.</p>
 <p>Negative <cite>count</cite> moves cursor up number of paragraphs and
 positive <cite>count</cite> moves cursor down number of paragraphs.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>count</strong> – number of paragraphs to select</p>
 </dd>
 </dl>
@@ -458,10 +458,10 @@ positive <cite>count</cite> moves cursor down number of paragraphs.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.set_footer">
-<span class="sig-name descname"><span class="pre">set_footer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.set_footer" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_footer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.set_footer" title="Link to this definition"></a></dt>
 <dd><p>Set footer for the active document</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>text</strong> – footer text to set</p>
 </dd>
 </dl>
@@ -469,10 +469,10 @@ positive <cite>count</cite> moves cursor down number of paragraphs.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.set_header">
-<span class="sig-name descname"><span class="pre">set_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.set_header" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.set_header" title="Link to this definition"></a></dt>
 <dd><p>Set header for the active document</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>text</strong> – header text to set</p>
 </dd>
 </dl>
@@ -480,7 +480,7 @@ positive <cite>count</cite> moves cursor down number of paragraphs.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.set_object_property">
-<span class="sig-name descname"><span class="pre">set_object_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.set_object_property" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_object_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.set_object_property" title="Link to this definition"></a></dt>
 <dd><p>Set the property of any object.</p>
 <p>This is a utility keyword for Robot Framework syntax to set object
 property values.</p>
@@ -489,7 +489,7 @@ property values.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_instance</strong> – object instance to set the property</p></li>
 <li><p><strong>property_name</strong> – property name to set</p></li>
@@ -501,10 +501,10 @@ property values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Word.Application.Application.write_text">
-<span class="sig-name descname"><span class="pre">write_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CursorPosition</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CursorPosition.NO_MOVE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_of_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.write_text" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">write_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CursorPosition</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CursorPosition.NO_MOVE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_of_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Word.Application.Application.write_text" title="Link to this definition"></a></dt>
 <dd><p>Writes given text at the end of the document</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> – string to write</p></li>
 <li><p><strong>cursor_position</strong> – where to move cursor before writing</p></li>
@@ -517,8 +517,8 @@ before writing</p></li>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

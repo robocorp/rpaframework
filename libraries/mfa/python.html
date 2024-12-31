@@ -1,24 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script src="../../_static/iframeResizer.min.js"></script>
-        <script src="../../_static/custom.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/iframeResizer.min.js?v=a9f7dbe8"></script>
+      <script src="../../_static/custom.js?v=9670dbcd"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -152,13 +152,13 @@
 	
            <div itemprop="articleBody">
              
-  <div class="section" id="python-api">
-<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="mfa">
-<h2>MFA<a class="headerlink" href="#mfa" title="Permalink to this heading"></a></h2>
+  <section id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h1>
+<section id="mfa">
+<h2>MFA<a class="headerlink" href="#mfa" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.MFA.MFA">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.MFA.</span></span><span class="sig-name descname"><span class="pre">MFA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">OTPMode</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">OTPMode.TIME</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.MFA.</span></span><span class="sig-name descname"><span class="pre">MFA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OTPMode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">OTPMode.TIME</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA" title="Link to this definition"></a></dt>
 <dd><p><strong>RPA.MFA</strong> is a library intended mainly for generating one-time passwords (OTP)
 and not only, as OAuth2 support was introduced lately.</p>
 <p>Library requires at the minimum <cite>rpaframework</cite> version <strong>19.4.0</strong>.</p>
@@ -196,17 +196,17 @@ device at the same time when the same code is added into the Vault.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.ROBOT_LIBRARY_DOC_FORMAT">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.MFA.MFA.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.MFA.MFA.ROBOT_LIBRARY_DOC_FORMAT" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.ROBOT_LIBRARY_SCOPE">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.MFA.MFA.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.MFA.MFA.ROBOT_LIBRARY_SCOPE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.generate_oauth_url">
-<span class="sig-name descname"><span class="pre">generate_oauth_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.MFA.MFA.generate_oauth_url" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">generate_oauth_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.MFA.MFA.generate_oauth_url" title="Link to this definition"></a></dt>
 <dd><p>Generates an authorization URL which must be opened by the user to start the
 OAuth2 flow and obtain an authorization code as response.</p>
 <p>The received response URL should be passed further with <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">OAuth</span> <span class="pre">Token</span></code> in
@@ -214,7 +214,7 @@ order to complete the flow. Arbitrary keyword arguments can be passed to the
 keyword, which will be redirected to the wrapped <cite>oauthlib</cite> library method
 call.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>auth_url</strong> – Authorization endpoint to call the request on. (https URL
 usually ending with ‘/authorize’)</p></li>
@@ -225,7 +225,7 @@ necessary for getting the <cite>code</cite> response)</p></li>
 consent screen)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Authorization URL string not containing any sensitive info in it.
 (call it with <cite>access_type=”offline”</cite> or set the right <cite>scope</cite> in the
 authorization URL for ensuring the existence of the refresh token)</p>
@@ -257,12 +257,12 @@ authorization URL for ensuring the existence of the refresh token)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.get_counter_based_otp">
-<span class="sig-name descname"><span class="pre">get_counter_based_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">counter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">otp_passcode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.get_counter_based_otp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_counter_based_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">counter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">otp_passcode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.get_counter_based_otp" title="Link to this definition"></a></dt>
 <dd><p>Get <cite>counter</cite> based one time password using separately set
 passcode or by parameter <cite>otp_passcode</cite>. The counter index is
 given by the <cite>counter</cite> parameter.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>counter</strong> – the index of the counter</p></li>
 <li><p><strong>otp_passcode</strong> – the passcode provided by the Authenticator</p></li>
@@ -273,7 +273,7 @@ given by the <cite>counter</cite> parameter.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.get_oauth_token">
-<span class="sig-name descname"><span class="pre">get_oauth_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.MFA.MFA.get_oauth_token" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_oauth_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.MFA.MFA.get_oauth_token" title="Link to this definition"></a></dt>
 <dd><p>Exchanges the code obtained previously with <code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">OAuth</span> <span class="pre">URL</span></code> for a
 token.</p>
 <p>The refresh token from the returned dictionary can be used further with the
@@ -282,7 +282,7 @@ previous one expires. (usually after one hour)
 Arbitrary keyword arguments can be passed to the keyword, which will be
 redirected to the wrapped <cite>oauthlib</cite> library method call.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>token_url</strong> – Token endpoint used with a POST request in order to retrieve
 the token data. (https URL usually ending with ‘/token’)</p></li>
@@ -292,7 +292,7 @@ the address bar after authenticating and authorizing the Client app
 through the authorization URL.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A dictionary containing the access token, metadata and optionally the
 refresh token.</p>
 </dd>
@@ -317,11 +317,11 @@ refresh token.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.get_time_based_otp">
-<span class="sig-name descname"><span class="pre">get_time_based_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otp_passcode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.get_time_based_otp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_time_based_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otp_passcode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.get_time_based_otp" title="Link to this definition"></a></dt>
 <dd><p>Get <cite>time</cite> based one time password using separately set
 passcode or by parameter <cite>otp_passcode</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>otp_passcode</strong> – the passcode provided by the Authenticator</p>
 </dd>
 </dl>
@@ -329,13 +329,13 @@ passcode or by parameter <cite>otp_passcode</cite>.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.oauth">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">oauth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">OAuth2Session</span></em><a class="headerlink" href="#RPA.MFA.MFA.oauth" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">oauth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">OAuth2Session</span></em><a class="headerlink" href="#RPA.MFA.MFA.oauth" title="Link to this definition"></a></dt>
 <dd><p>Raises if there’s no OAuth2 session already created.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.refresh_oauth_token">
-<span class="sig-name descname"><span class="pre">refresh_oauth_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.MFA.MFA.refresh_oauth_token" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">refresh_oauth_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.MFA.MFA.refresh_oauth_token" title="Link to this definition"></a></dt>
 <dd><p>Refreshes the token as the access one usually expires after 1h and the
 refresh one never expires. (as long as it doesn’t get revoked)</p>
 <p>The effect of this keyword is similar to <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">OAuth</span> <span class="pre">Token</span></code>, but this time you
@@ -343,7 +343,7 @@ refresh unattended an already existing token by receiving a new one instead.
 Arbitrary keyword arguments can be passed to the keyword, which will be
 redirected to the wrapped <cite>oauthlib</cite> library method call.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>token_url</strong> – Token endpoint used with a POST request in order to refresh
 the token data. (https URL usually ending with ‘/token’)</p></li>
@@ -353,7 +353,7 @@ the token data. (https URL usually ending with ‘/token’)</p></li>
 with <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">OAuth</span> <span class="pre">Token</span></code> or <code class="docutils literal notranslate"><span class="pre">Refresh</span> <span class="pre">OAuth</span> <span class="pre">Token</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A token dictionary containing a new access token and updated
 metadata. (the refresh token inside isn’t guaranteed to remain constant)</p>
 </dd>
@@ -381,10 +381,10 @@ metadata. (the refresh token inside isn’t guaranteed to remain constant)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.set_counter_based_otp">
-<span class="sig-name descname"><span class="pre">set_counter_based_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otp_passcode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.set_counter_based_otp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_counter_based_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otp_passcode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.set_counter_based_otp" title="Link to this definition"></a></dt>
 <dd><p>Set <cite>counter</cite> based OTP with passcode.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>otp_passcode</strong> – the passcode provided by the Authenticator</p>
 </dd>
 </dl>
@@ -392,10 +392,10 @@ metadata. (the refresh token inside isn’t guaranteed to remain constant)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.set_time_based_otp">
-<span class="sig-name descname"><span class="pre">set_time_based_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otp_passcode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.set_time_based_otp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_time_based_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otp_passcode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.set_time_based_otp" title="Link to this definition"></a></dt>
 <dd><p>Set <cite>time</cite> based OTP with passcode.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>otp_passcode</strong> – the passcode provided by the Authenticator</p>
 </dd>
 </dl>
@@ -403,11 +403,11 @@ metadata. (the refresh token inside isn’t guaranteed to remain constant)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.MFA.MFA.use_mfa_secret_from_vault">
-<span class="sig-name descname"><span class="pre">use_mfa_secret_from_vault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OTPMode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">OTPMode.TIME</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.use_mfa_secret_from_vault" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">use_mfa_secret_from_vault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vault_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vault_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OTPMode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">OTPMode.TIME</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.MFA.MFA.use_mfa_secret_from_vault" title="Link to this definition"></a></dt>
 <dd><p>Set <cite>time</cite> or <cite>counter</cite> based OTP with passcode stored in
 the Robocorp Vault named with <cite>vault_name</cite> under key of <cite>vault_key</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vault_name</strong> – name of the vault storing the passcode</p></li>
 <li><p><strong>vault_key</strong> – name of the vault key storing the passcode value</p></li>
@@ -418,8 +418,8 @@ the Robocorp Vault named with <cite>vault_name</cite> under key of <cite>vault_k
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

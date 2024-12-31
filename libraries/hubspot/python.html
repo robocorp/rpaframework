@@ -1,24 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script src="../../_static/iframeResizer.min.js"></script>
-        <script src="../../_static/custom.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/iframeResizer.min.js?v=a9f7dbe8"></script>
+      <script src="../../_static/custom.js?v=9670dbcd"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -152,20 +152,20 @@
 	
            <div itemprop="articleBody">
              
-  <div class="section" id="python-api">
-<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this heading"></a></h1>
-<div class="section" id="hubspot">
-<h2>Hubspot<a class="headerlink" href="#hubspot" title="Permalink to this heading"></a></h2>
+  <section id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h1>
+<section id="hubspot">
+<h2>Hubspot<a class="headerlink" href="#hubspot" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">Hubspot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hubspot_apikey</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hubspot_access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Hubspot.</span></span><span class="sig-name descname"><span class="pre">Hubspot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hubspot_apikey</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hubspot_access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Hubspot.Hubspot" title="Link to this definition"></a></dt>
 <dd><p><em>Hubspot</em> is a library for accessing HubSpot using REST API. It
 extends <a class="reference external" href="https://pypi.org/project/hubspot-api-client/">hubspot-api-client</a>.</p>
 <p>Current features of this library focus on retrieving CRM object data
 from HubSpot via API. For additional information, see
 <a class="reference external" href="https://developers.hubspot.com/docs/api/crm/understanding-the-crm">Understanding the CRM</a>.</p>
-<div class="section" id="using-date-times-when-searching">
-<h3>Using Date Times When Searching<a class="headerlink" href="#using-date-times-when-searching" title="Permalink to this heading"></a></h3>
+<section id="using-date-times-when-searching">
+<h3>Using Date Times When Searching<a class="headerlink" href="#using-date-times-when-searching" title="Link to this heading"></a></h3>
 <p>When using date times with the Hubspot API, you must provide
 them as Unix-style epoch timestamps (with milliseconds), which can be obtained
 using the <code class="docutils literal notranslate"><span class="pre">DateTime</span></code> library’s <code class="docutils literal notranslate"><span class="pre">Convert</span> <span class="pre">Date</span></code> with the
@@ -203,9 +203,9 @@ integer sent to the API must have 13 digits as of March 18, 2022).</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">deals</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="batch-inputs">
-<span id="id1"></span><h3>Batch Inputs<a class="headerlink" href="#batch-inputs" title="Permalink to this heading"></a></h3>
+</section>
+<section id="batch-inputs">
+<span id="id1"></span><h3>Batch Inputs<a class="headerlink" href="#batch-inputs" title="Link to this heading"></a></h3>
 <p>When retrieving information, the library automatically batches requests
 that are provided as lists, see <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">object</span></code> keyword for an example,
 but when wishing to create or update many objects, the library provides
@@ -269,28 +269,28 @@ executing the batch.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="information-caching">
-<h3>Information Caching<a class="headerlink" href="#information-caching" title="Permalink to this heading"></a></h3>
+</section>
+<section id="information-caching">
+<h3>Information Caching<a class="headerlink" href="#information-caching" title="Link to this heading"></a></h3>
 <p>This library loads custom object schemas and pipelines into memory
 the first time when keywords using them are called. These cached versions
 are recalled unless the <code class="docutils literal notranslate"><span class="pre">use_cache</span></code> is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, where available.</p>
-</div>
-<div class="section" id="custom-object-types">
-<h3>Custom Object Types<a class="headerlink" href="#custom-object-types" title="Permalink to this heading"></a></h3>
+</section>
+<section id="custom-object-types">
+<h3>Custom Object Types<a class="headerlink" href="#custom-object-types" title="Link to this heading"></a></h3>
 <p>All keywords that request a parameter of <code class="docutils literal notranslate"><span class="pre">object_type</span></code> can accept
 custom object type names as long as they are properly configured in
 HubSpot. The system will lookup the custom object ID using the
 provided name against the configured name or one of the configured
 labels (e.g., “singular” and “plural” types of the name).</p>
-</div>
-<div class="section" id="hubspot-object-reference">
-<h3>HubSpot Object Reference<a class="headerlink" href="#hubspot-object-reference" title="Permalink to this heading"></a></h3>
+</section>
+<section id="hubspot-object-reference">
+<h3>HubSpot Object Reference<a class="headerlink" href="#hubspot-object-reference" title="Link to this heading"></a></h3>
 <p>This section describes the types of objects returned by this Library
 and their associated attributes. These attributes can be accessed via
 dot-notation as described in the <a class="reference internal" href="#attribute-access">Attribute Access</a> section below.</p>
-<div class="section" id="attribute-access">
-<h4>Attribute Access<a class="headerlink" href="#attribute-access" title="Permalink to this heading"></a></h4>
+<section id="attribute-access">
+<h4>Attribute Access<a class="headerlink" href="#attribute-access" title="Link to this heading"></a></h4>
 <p>Keywords return native Python Hubspot objects, rather than common Robot
 Framework types. These types have sets of defined attributes allowing
 for dot-notation access of object properties. Properties (e.g.,
@@ -334,14 +334,14 @@ library.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The city for account number </span><span class="si">{</span><span class="n">nokia_account_id</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">account</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="attribute-definitions">
-<h4>Attribute Definitions<a class="headerlink" href="#attribute-definitions" title="Permalink to this heading"></a></h4>
+</section>
+<section id="attribute-definitions">
+<h4>Attribute Definitions<a class="headerlink" href="#attribute-definitions" title="Link to this heading"></a></h4>
 <p>This library can return various types of objects, whose attributes
 are only accessible via dot-notation. The below reference describes
 the attributes available on these objects.</p>
-<div class="section" id="simplepublicobject">
-<h5>SimplePublicObject<a class="headerlink" href="#simplepublicobject" title="Permalink to this heading"></a></h5>
+<section id="simplepublicobject">
+<h5>SimplePublicObject<a class="headerlink" href="#simplepublicobject" title="Link to this heading"></a></h5>
 <p>An object in HubSpot. The object itself does not describe what type
 it represents.</p>
 <dl>
@@ -360,9 +360,9 @@ dictionary subscription, e.g., <code class="docutils literal notranslate"><span 
 <dt><em>archived_at</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">datetime</span></code></span></dt><dd><p>The timestamp when this object was archived.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="simplepublicobjectwithassociations">
-<h5>SimplePublicObjectWithAssociations<a class="headerlink" href="#simplepublicobjectwithassociations" title="Permalink to this heading"></a></h5>
+</section>
+<section id="simplepublicobjectwithassociations">
+<h5>SimplePublicObjectWithAssociations<a class="headerlink" href="#simplepublicobjectwithassociations" title="Link to this heading"></a></h5>
 <p>An object in HubSpot including associations to other objects. The
 object itself does not describe what type it represents.</p>
 <dl>
@@ -385,9 +385,9 @@ dictionary subscription, e.g., <code class="docutils literal notranslate"><span 
 with all the associations. See <a class="reference internal" href="#collectionresponseassociatedid">CollectionResponseAssociatedId</a>.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="associatedid">
-<h5>AssociatedId<a class="headerlink" href="#associatedid" title="Permalink to this heading"></a></h5>
+</section>
+<section id="associatedid">
+<h5>AssociatedId<a class="headerlink" href="#associatedid" title="Link to this heading"></a></h5>
 <p>The ID of an associated object, as well as the type of association.</p>
 <dl>
 <dt><em>id</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>The ID of the associated HubSpot object.</p>
@@ -395,9 +395,9 @@ with all the associations. See <a class="reference internal" href="#collectionre
 <dt><em>type</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>The type of association, e.g., <code class="docutils literal notranslate"><span class="pre">deals_to_companies</span></code>.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="collectionresponseassociatedid">
-<h5>CollectionResponseAssociatedId<a class="headerlink" href="#collectionresponseassociatedid" title="Permalink to this heading"></a></h5>
+</section>
+<section id="collectionresponseassociatedid">
+<h5>CollectionResponseAssociatedId<a class="headerlink" href="#collectionresponseassociatedid" title="Link to this heading"></a></h5>
 <p>A container object for a collection of <a class="reference internal" href="#associatedid">AssociatedId</a> objects returned
 by the API.</p>
 <dl>
@@ -407,9 +407,9 @@ by the API.</p>
 API responses.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="pipeline">
-<h5>Pipeline<a class="headerlink" href="#pipeline" title="Permalink to this heading"></a></h5>
+</section>
+<section id="pipeline">
+<h5>Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading"></a></h5>
 <p>A pipeline represents the steps objects travel through within HubSpot.</p>
 <dl>
 <dt><em>id</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>The HubSpot ID for the pipeline. All accounts start with one
@@ -430,9 +430,9 @@ follow through the pipeline.</p>
 in the HubSpot UI.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="pipelinestage">
-<h5>PipelineStage<a class="headerlink" href="#pipelinestage" title="Permalink to this heading"></a></h5>
+</section>
+<section id="pipelinestage">
+<h5>PipelineStage<a class="headerlink" href="#pipelinestage" title="Link to this heading"></a></h5>
 <p>A pipeline stage is one of the various stages defined in a <a class="reference internal" href="#pipeline">Pipeline</a>.</p>
 <dl>
 <dt><em>id</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>The HubSpot ID of the stage.</p>
@@ -451,9 +451,9 @@ as <code class="docutils literal notranslate"><span class="pre">probability</spa
 <dt><em>archived_at</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">datetime</span></code></span></dt><dd><p>The timestamp when this stage was archived.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="publicowner">
-<h5>PublicOwner<a class="headerlink" href="#publicowner" title="Permalink to this heading"></a></h5>
+</section>
+<section id="publicowner">
+<h5>PublicOwner<a class="headerlink" href="#publicowner" title="Link to this heading"></a></h5>
 <p>An owner in HubSpot. Owners of companies and deals are responsible
 for driving a sale to close or similar.</p>
 <dl>
@@ -476,9 +476,9 @@ for driving a sale to close or similar.</p>
 <dt><em>teams</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">List[PublicTeam]</span></code></span></dt><dd><p>A list of teams the owner is in. See <a class="reference internal" href="#publicteam">PublicTeam</a>.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="publicteam">
-<h5>PublicTeam<a class="headerlink" href="#publicteam" title="Permalink to this heading"></a></h5>
+</section>
+<section id="publicteam">
+<h5>PublicTeam<a class="headerlink" href="#publicteam" title="Link to this heading"></a></h5>
 <p>A team of owners in HubSpot</p>
 <dl>
 <dt><em>id</em><span class="classifier"><code class="docutils literal notranslate"><span class="pre">str</span></code></span></dt><dd><p>The HubSpot ID of the Team.</p>
@@ -490,32 +490,32 @@ for driving a sale to close or similar.</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.BUILTIN_PLURAL_MAP">
-<span class="sig-name descname"><span class="pre">BUILTIN_PLURAL_MAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'companies':</span> <span class="pre">'companies',</span> <span class="pre">'company':</span> <span class="pre">'companies',</span> <span class="pre">'contact':</span> <span class="pre">'contacts',</span> <span class="pre">'contacts':</span> <span class="pre">'contacts',</span> <span class="pre">'deal':</span> <span class="pre">'deals',</span> <span class="pre">'deals':</span> <span class="pre">'deals',</span> <span class="pre">'feedback</span> <span class="pre">submission':</span> <span class="pre">'feadback</span> <span class="pre">submissions',</span> <span class="pre">'feedback</span> <span class="pre">submissions':</span> <span class="pre">'feadback</span> <span class="pre">submissions',</span> <span class="pre">'line</span> <span class="pre">item':</span> <span class="pre">'line</span> <span class="pre">items',</span> <span class="pre">'line</span> <span class="pre">items':</span> <span class="pre">'line</span> <span class="pre">items',</span> <span class="pre">'product':</span> <span class="pre">'products',</span> <span class="pre">'products':</span> <span class="pre">'products',</span> <span class="pre">'quote':</span> <span class="pre">'quotes',</span> <span class="pre">'quotes':</span> <span class="pre">'quotes',</span> <span class="pre">'ticket':</span> <span class="pre">'tickets',</span> <span class="pre">'tickets':</span> <span class="pre">'tickets'}</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.BUILTIN_PLURAL_MAP" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">BUILTIN_PLURAL_MAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'companies':</span> <span class="pre">'companies',</span> <span class="pre">'company':</span> <span class="pre">'companies',</span> <span class="pre">'contact':</span> <span class="pre">'contacts',</span> <span class="pre">'contacts':</span> <span class="pre">'contacts',</span> <span class="pre">'deal':</span> <span class="pre">'deals',</span> <span class="pre">'deals':</span> <span class="pre">'deals',</span> <span class="pre">'feedback</span> <span class="pre">submission':</span> <span class="pre">'feadback</span> <span class="pre">submissions',</span> <span class="pre">'feedback</span> <span class="pre">submissions':</span> <span class="pre">'feadback</span> <span class="pre">submissions',</span> <span class="pre">'line</span> <span class="pre">item':</span> <span class="pre">'line</span> <span class="pre">items',</span> <span class="pre">'line</span> <span class="pre">items':</span> <span class="pre">'line</span> <span class="pre">items',</span> <span class="pre">'product':</span> <span class="pre">'products',</span> <span class="pre">'products':</span> <span class="pre">'products',</span> <span class="pre">'quote':</span> <span class="pre">'quotes',</span> <span class="pre">'quotes':</span> <span class="pre">'quotes',</span> <span class="pre">'ticket':</span> <span class="pre">'tickets',</span> <span class="pre">'tickets':</span> <span class="pre">'tickets'}</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.BUILTIN_PLURAL_MAP" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.BUILTIN_SINGULAR_MAP">
-<span class="sig-name descname"><span class="pre">BUILTIN_SINGULAR_MAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'companies':</span> <span class="pre">'company',</span> <span class="pre">'company':</span> <span class="pre">'company',</span> <span class="pre">'contact':</span> <span class="pre">'contact',</span> <span class="pre">'contacts':</span> <span class="pre">'contact',</span> <span class="pre">'deal':</span> <span class="pre">'deal',</span> <span class="pre">'deals':</span> <span class="pre">'deal',</span> <span class="pre">'feedback</span> <span class="pre">submission':</span> <span class="pre">'feadback</span> <span class="pre">submission',</span> <span class="pre">'feedback</span> <span class="pre">submissions':</span> <span class="pre">'feadback</span> <span class="pre">submission',</span> <span class="pre">'line</span> <span class="pre">item':</span> <span class="pre">'line</span> <span class="pre">item',</span> <span class="pre">'line</span> <span class="pre">items':</span> <span class="pre">'line</span> <span class="pre">item',</span> <span class="pre">'product':</span> <span class="pre">'product',</span> <span class="pre">'products':</span> <span class="pre">'product',</span> <span class="pre">'quote':</span> <span class="pre">'quote',</span> <span class="pre">'quotes':</span> <span class="pre">'quote',</span> <span class="pre">'ticket':</span> <span class="pre">'ticket',</span> <span class="pre">'tickets':</span> <span class="pre">'ticket'}</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.BUILTIN_SINGULAR_MAP" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">BUILTIN_SINGULAR_MAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'companies':</span> <span class="pre">'company',</span> <span class="pre">'company':</span> <span class="pre">'company',</span> <span class="pre">'contact':</span> <span class="pre">'contact',</span> <span class="pre">'contacts':</span> <span class="pre">'contact',</span> <span class="pre">'deal':</span> <span class="pre">'deal',</span> <span class="pre">'deals':</span> <span class="pre">'deal',</span> <span class="pre">'feedback</span> <span class="pre">submission':</span> <span class="pre">'feadback</span> <span class="pre">submission',</span> <span class="pre">'feedback</span> <span class="pre">submissions':</span> <span class="pre">'feadback</span> <span class="pre">submission',</span> <span class="pre">'line</span> <span class="pre">item':</span> <span class="pre">'line</span> <span class="pre">item',</span> <span class="pre">'line</span> <span class="pre">items':</span> <span class="pre">'line</span> <span class="pre">item',</span> <span class="pre">'product':</span> <span class="pre">'product',</span> <span class="pre">'products':</span> <span class="pre">'product',</span> <span class="pre">'quote':</span> <span class="pre">'quote',</span> <span class="pre">'quotes':</span> <span class="pre">'quote',</span> <span class="pre">'ticket':</span> <span class="pre">'ticket',</span> <span class="pre">'tickets':</span> <span class="pre">'ticket'}</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.BUILTIN_SINGULAR_MAP" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.ROBOT_AUTO_KEYWORDS">
-<span class="sig-name descname"><span class="pre">ROBOT_AUTO_KEYWORDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_AUTO_KEYWORDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.ROBOT_AUTO_KEYWORDS" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.ROBOT_LIBRARY_DOC_FORMAT">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.ROBOT_LIBRARY_DOC_FORMAT" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.ROBOT_LIBRARY_SCOPE">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Global'</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Global'</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.ROBOT_LIBRARY_SCOPE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.add_input_to_batch">
-<span class="sig-name descname"><span class="pre">add_input_to_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.add_input_to_batch" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_input_to_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.add_input_to_batch" title="Link to this definition"></a></dt>
 <dd><p>Add the provided free-named keyword arguments to the current
 batch input. If creating an <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> batch, you must also provide
 the Hubspot object <code class="docutils literal notranslate"><span class="pre">id</span></code> (an alternate ID property cannot be used).</p>
@@ -524,7 +524,7 @@ currently in CREATE mode and has any inputs already.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>properties</strong> – A dictionary of HubSpot properties to set to
 the HubSpot object being created or updated.</p></li>
@@ -539,13 +539,13 @@ mode and has any inputs already.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.auth_with_api_key">
-<span class="sig-name descname"><span class="pre">auth_with_api_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.auth_with_api_key" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">auth_with_api_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.auth_with_api_key" title="Link to this definition"></a></dt>
 <dd><p>Deprecated! Use <code class="docutils literal notranslate"><span class="pre">Auth</span> <span class="pre">With</span> <span class="pre">Token</span></code> instead.</p>
 <p>Authorize to HubSpot with an account-wide API key. This
 keyword verifies the provided credentials by retrieving the
 custom object schema from the API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>api_key</strong> – The API key for the account to authenticate to.</p>
 </dd>
 </dl>
@@ -553,14 +553,14 @@ custom object schema from the API.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.auth_with_token">
-<span class="sig-name descname"><span class="pre">auth_with_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.auth_with_token" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">auth_with_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.auth_with_token" title="Link to this definition"></a></dt>
 <dd><p>Authorize to HubSpot with Private App access token. This
 keyword verifies the provided credentials by retrieving the
 custom object schema from the API.</p>
 <p>Learn more about Private Apps:
 <a class="reference external" href="https://developers.hubspot.com/docs/api/private-apps">https://developers.hubspot.com/docs/api/private-apps</a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>access_token</strong> – The access token created for the Private App
 in your HubSpot account.</p>
 </dd>
@@ -569,12 +569,12 @@ in your HubSpot account.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.batch_input">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">batch_input</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BatchInputFactory</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.batch_input" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">batch_input</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BatchInputFactory</span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.batch_input" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.clear_current_batch">
-<span class="sig-name descname"><span class="pre">clear_current_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BatchInputFactory</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.clear_current_batch" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">clear_current_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BatchInputFactory</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.clear_current_batch" title="Link to this definition"></a></dt>
 <dd><p>Returns the current batch and then clears it.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
@@ -582,13 +582,13 @@ input API.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.create_new_batch">
-<span class="sig-name descname"><span class="pre">create_new_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BatchMode</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.create_new_batch" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">create_new_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BatchMode</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.create_new_batch" title="Link to this definition"></a></dt>
 <dd><p>Creates a new blank batch input for the provided <code class="docutils literal notranslate"><span class="pre">object_type</span></code> in
 either the <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> or <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> mode.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The object type to be created or updated by
 the batch.</p></li>
@@ -600,7 +600,7 @@ the batch.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.create_object">
-<span class="sig-name descname"><span class="pre">create_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SimplePublicObject</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.create_object" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">create_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SimplePublicObject</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.create_object" title="Link to this definition"></a></dt>
 <dd><p>Creates a new Hubspot object of the provided <code class="docutils literal notranslate"><span class="pre">object_type</span></code>
 and with the provided properties in Hubspot. Read-only or
 nonexistent properties are ignored. The <code class="docutils literal notranslate"><span class="pre">object_type</span></code>
@@ -611,7 +611,7 @@ labeled paremeters to this keyword.</p>
 <p>Returns the newly created object. The new object’s <code class="docutils literal notranslate"><span class="pre">id</span></code> is available
 via the property <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The object type to be created.</p></li>
 <li><p><strong>properties</strong> – All remaining labeled parameters passed into
@@ -624,14 +624,14 @@ object. Read-only or nonexistent properties will be ignored.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.execute_batch">
-<span class="sig-name descname"><span class="pre">execute_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.execute_batch" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">execute_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.execute_batch" title="Link to this definition"></a></dt>
 <dd><p>Sends the current batch input to the Hubspot API.</p>
 <p>Keyword will only fail if all inputs resulted in error. Partial
 failures are reported as warnings.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The updated or created objects as a list of
 <code class="docutils literal notranslate"><span class="pre">SimplePublicObject</span></code> types.</p>
 </dd>
@@ -640,7 +640,7 @@ input API.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.extend_batch_with_inputs">
-<span class="sig-name descname"><span class="pre">extend_batch_with_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.extend_batch_with_inputs" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">extend_batch_with_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.extend_batch_with_inputs" title="Link to this definition"></a></dt>
 <dd><p>Extends the current batch input with the provided lists of
 Hubspot <code class="docutils literal notranslate"><span class="pre">properties</span></code> and Hubspot object <code class="docutils literal notranslate"><span class="pre">ids</span></code>. The <code class="docutils literal notranslate"><span class="pre">ids</span></code>
 parameter must be provided when extending an <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> batch.
@@ -651,7 +651,7 @@ currently in CREATE mode and has any inputs already.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>properties</strong> – A list of dictionaries of HubSpot properties to
 set to the HubSpot objects being created or updated.</p></li>
@@ -666,12 +666,12 @@ mode and has any inputs already.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_current_batch">
-<span class="sig-name descname"><span class="pre">get_current_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BatchInputFactory</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_current_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BatchInputFactory</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch" title="Link to this definition"></a></dt>
 <dd><p>Returns the current batch.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The current batch input object.</p>
 </dd>
 </dl>
@@ -679,7 +679,7 @@ input API.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_current_batch_inputs">
-<span class="sig-name descname"><span class="pre">get_current_batch_inputs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch_inputs" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_current_batch_inputs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_batch_inputs" title="Link to this definition"></a></dt>
 <dd><p>Returns the inputs in the current batch. The returned list will
 be a list of dictionaries each with either 1 or 2 keys depending
 on if the batch is in <code class="docutils literal notranslate"><span class="pre">CREATE</span></code> or <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> mode. If in <code class="docutils literal notranslate"><span class="pre">UPDATE</span></code>
@@ -689,7 +689,7 @@ but if in <code class="docutils literal notranslate"><span class="pre">CREATE</s
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list of dictionaries representing the current inputs.</p>
 </dd>
 </dl>
@@ -697,7 +697,7 @@ input API.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_current_stage_of_object">
-<span class="sig-name descname"><span class="pre">get_current_stage_of_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_as_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_stage_of_object" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_current_stage_of_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_as_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_current_stage_of_object" title="Link to this definition"></a></dt>
 <dd><p>Returns the current pipeline stage for the object as a tuple of
 the stage label and that stage’s associated metadata as a dictionary.
 If you want the label to be returned as the numerical API ID, set
@@ -707,7 +707,7 @@ will fail.</p>
 <p>This keyword caches results for future use, to refresh results from
 Hupspot, set <code class="docutils literal notranslate"><span class="pre">use_cache</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The object type to be returned and that has
 the ID indicated. Custom objects will be validated against the
@@ -723,7 +723,7 @@ instead of <code class="docutils literal notranslate"><span class="pre">label</s
 the system to recache the pipelines from Hubspot.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple where index 0 is the label or ID of the object’s
 current stage and index 1 is associated data.</p>
 </dd>
@@ -732,7 +732,7 @@ current stage and index 1 is associated data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_object">
-<span class="sig-name descname"><span class="pre">get_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">associations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObject</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SimplePublicObjectWithAssociations</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObject</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_object" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">associations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SimplePublicObject</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SimplePublicObjectWithAssociations</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_object" title="Link to this definition"></a></dt>
 <dd><p>Reads objects of <code class="docutils literal notranslate"><span class="pre">object_type</span></code> from HubSpot with the
 provided <code class="docutils literal notranslate"><span class="pre">object_id</span></code>. The objects can be found using an
 alternate ID by providing the name of that HubSpot property
@@ -749,7 +749,7 @@ object IDs associated to the returned object of that type will
 be returned as well. Object types passed to this parameter are
 also validated against built-in objects and custom object schemas.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The object type to be returned and that has
 the ID indicated.</p></li>
@@ -764,7 +764,7 @@ Nonexistent properties are ignored.</p></li>
 object types to retrieve as associated object IDs.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The requested object as a <code class="docutils literal notranslate"><span class="pre">SimplePublicObject</span></code> or
 <code class="docutils literal notranslate"><span class="pre">SimplePublicObjectWithAssociations</span></code> type. If a batch request
 was made, it returns a list of <code class="docutils literal notranslate"><span class="pre">SimplePublicObject</span></code>.</p>
@@ -774,7 +774,7 @@ was made, it returns a list of <code class="docutils literal notranslate"><span 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_owner_by_id">
-<span class="sig-name descname"><span class="pre">get_owner_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">owner_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PublicOwner</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_owner_by_id" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_owner_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">owner_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PublicOwner</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_owner_by_id" title="Link to this definition"></a></dt>
 <dd><p>Returns an owner object with details about a HubSpot user denoted
 as an owner of another HubSpot object, such as a contact or company.
 You may provide the identifier as <code class="docutils literal notranslate"><span class="pre">owner_id</span></code>, <code class="docutils literal notranslate"><span class="pre">owner_email</span></code>, or
@@ -786,14 +786,14 @@ dot notation):</p>
 <p>If more than one of these IDs are provided, the keyword prefers
 the <code class="docutils literal notranslate"><span class="pre">owner_id</span></code>, then <code class="docutils literal notranslate"><span class="pre">owner_email</span></code>, then the <code class="docutils literal notranslate"><span class="pre">user_id</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>owner_id</strong> – The owner’s HubSpot ID.</p></li>
 <li><p><strong>owner_email</strong> – The email address registered to the owner.</p></li>
 <li><p><strong>user_id</strong> – The owner’s associated HubSpot user ID.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The requested <code class="docutils literal notranslate"><span class="pre">PublicOwner</span></code> object.</p>
 </dd>
 </dl>
@@ -801,7 +801,7 @@ the <code class="docutils literal notranslate"><span class="pre">owner_id</span>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_owner_of_object">
-<span class="sig-name descname"><span class="pre">get_owner_of_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hs_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObject</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SimplePublicObjectWithAssociations</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PublicOwner</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_owner_of_object" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_owner_of_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hs_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SimplePublicObject</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SimplePublicObjectWithAssociations</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PublicOwner</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_owner_of_object" title="Link to this definition"></a></dt>
 <dd><p>Looks up the owner of a given Hubspot object, the provided object
 should be from this library or it should be a dictionary with an
 <code class="docutils literal notranslate"><span class="pre">hubspot_owner_id</span></code> key. If the object has no owner, this keyword
@@ -811,7 +811,7 @@ the returned object.</p>
 it with argument <code class="docutils literal notranslate"><span class="pre">owner_property</span></code>. If that property does not exist
 this keyword will try the default <code class="docutils literal notranslate"><span class="pre">hubspot_owner_id</span></code> property, instead.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object</strong> – A HubSpot object, best if the object was obtained
 via another keyword such as <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">owner</span> <span class="pre">by</span> <span class="pre">ID</span></code></p></li>
@@ -819,7 +819,7 @@ via another keyword such as <code class="docutils literal notranslate"><span cla
 object to use as the field containing the Owner to be looked up.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The <code class="docutils literal notranslate"><span class="pre">PublicOwner</span></code> of the provided object.</p>
 </dd>
 </dl>
@@ -827,7 +827,7 @@ object to use as the field containing the Owner to be looked up.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_pipeline">
-<span class="sig-name descname"><span class="pre">get_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pipeline</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_pipeline" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pipeline</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_pipeline" title="Link to this definition"></a></dt>
 <dd><p>Returns the <code class="docutils literal notranslate"><span class="pre">object_type</span></code> pipeline identified by <code class="docutils literal notranslate"><span class="pre">pipeline_id</span></code>.
 The provided <code class="docutils literal notranslate"><span class="pre">pipeline_id</span></code> can be provided as the label (case sensitive)
 or API ID code.</p>
@@ -850,7 +850,7 @@ get an ordered dictionary of the stages from first to last.</p>
 <p>This keyword caches results for future use, to refresh results from
 Hupspot, set <code class="docutils literal notranslate"><span class="pre">use_cache</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The object type to be returned and that has
 the ID indicated. Custom objects will be validated against the
@@ -861,7 +861,7 @@ label visibal in the HubSpot UI (case sensitive).</p></li>
 the system to recache the pipelines from Hubspot.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> object requested.</p>
 </dd>
 </dl>
@@ -869,7 +869,7 @@ the system to recache the pipelines from Hubspot.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_pipeline_stages">
-<span class="sig-name descname"><span class="pre">get_pipeline_stages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_as_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_pipeline_stages" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_pipeline_stages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_as_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_pipeline_stages" title="Link to this definition"></a></dt>
 <dd><p>Returns a dictionary representing the stages available in the
 requested pipeline. Only pipelines for <code class="docutils literal notranslate"><span class="pre">object_type</span></code> are searched
 using the <code class="docutils literal notranslate"><span class="pre">pipeline_id</span></code> as the label or Hubspot API identifier code.</p>
@@ -907,7 +907,7 @@ is unique per pipeline.</p>
 <p>This keyword caches results for future use, to refresh results from
 Hupspot, set <code class="docutils literal notranslate"><span class="pre">use_cache</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The object type to be returned and that has
 the ID indicated. Custom objects will be validated against the
@@ -921,7 +921,7 @@ instead of <code class="docutils literal notranslate"><span class="pre">label</s
 the system to recache the pipelines from Hubspot.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A dictionary representing the pipeline stages and associated
 data.</p>
 </dd>
@@ -930,7 +930,7 @@ data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.get_user">
-<span class="sig-name descname"><span class="pre">get_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_user" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.get_user" title="Link to this definition"></a></dt>
 <dd><p>Returns a dictionary with the keys <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">email</span></code> based on the
 provided <code class="docutils literal notranslate"><span class="pre">user_id</span></code> or <code class="docutils literal notranslate"><span class="pre">user_email</span></code>. If both are provided, this
 keyword will prefer the <code class="docutils literal notranslate"><span class="pre">user_id</span></code>.</p>
@@ -943,7 +943,7 @@ owners database.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.list_associations">
-<span class="sig-name descname"><span class="pre">list_associations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">AssociatedId</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">AssociatedId</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.list_associations" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">list_associations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">AssociatedId</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">AssociatedId</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.list_associations" title="Link to this definition"></a></dt>
 <dd><p>List associations of an object by type, you must define the <code class="docutils literal notranslate"><span class="pre">object_type</span></code>
 with its <code class="docutils literal notranslate"><span class="pre">object_id</span></code>. You must also provide the associated objects with
 <code class="docutils literal notranslate"><span class="pre">to_object_type</span></code>. The API will return a list of dictionaries with
@@ -953,7 +953,7 @@ the associated object <code class="docutils literal notranslate"><span class="pr
 dictionary where the keys are the requested IDs and the value associated
 to each key is a list of associated objects (like a single search).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The type of object for the object ID
 provided, e.g. <code class="docutils literal notranslate"><span class="pre">contact</span></code>.</p></li>
@@ -963,7 +963,7 @@ batch read API.</p></li>
 <li><p><strong>to_object_type</strong> – The type of object associations to return.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A list of dictionaries representing the associated objects.
 The associated objects are returned as <code class="docutils literal notranslate"><span class="pre">AssociatedId</span></code> objects.</p>
 </dd>
@@ -972,14 +972,14 @@ The associated objects are returned as <code class="docutils literal notranslate
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.list_pipelines">
-<span class="sig-name descname"><span class="pre">list_pipelines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archived</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Pipeline</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.list_pipelines" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">list_pipelines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archived</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Pipeline</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.list_pipelines" title="Link to this definition"></a></dt>
 <dd><p>Returns a list of all pipelines configured in Hubspot for the
 provided <code class="docutils literal notranslate"><span class="pre">object_type</span></code>. By default only active, unarchived pipelines
 are returned.</p>
 <p>This keyword caches results for future use, to refresh results from
 Hupspot, set <code class="docutils literal notranslate"><span class="pre">use_cache</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The object type to be returned and that has
 the ID indicated. Custom objects will be validated against the
@@ -990,7 +990,7 @@ archived pipelines as well.</p></li>
 the system to recache the pipelines from Hubspot.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A list of <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> objects representing the pipelines
 associated with the provided <code class="docutils literal notranslate"><span class="pre">object_type</span></code>.</p>
 </dd>
@@ -999,17 +999,17 @@ associated with the provided <code class="docutils literal notranslate"><span cl
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.pipelines">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pipelines</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Pipeline</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.pipelines" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pipelines</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Pipeline</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.pipelines" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.schemas">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schemas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ObjectSchema</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.schemas" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schemas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ObjectSchema</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Hubspot.Hubspot.schemas" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.search_for_objects">
-<span class="sig-name descname"><span class="pre">search_for_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">natural_search</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.search_for_objects" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">search_for_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">natural_search</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SimplePublicObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.search_for_objects" title="Link to this definition"></a></dt>
 <dd><p>Returns a list of objects of the specified <code class="docutils literal notranslate"><span class="pre">type</span></code> based on the
 provided <code class="docutils literal notranslate"><span class="pre">search</span></code> criteria. The following types are supported:</p>
 <ul class="simple">
@@ -1036,10 +1036,6 @@ groups of filters combined with <code class="docutils literal notranslate"><span
 have no more than three filters combined with <code class="docutils literal notranslate"><span class="pre">AND</span></code>.</p>
 <p>You can use the following operators in your search:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>OPERATOR</p></th>
 <th class="head"><p>DESCRIPTION</p></th>
@@ -1111,8 +1107,8 @@ property.</p></td>
 <span class="p">    </span><span class="nf">Auth with api key</span><span class="p">    ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">API_KEY</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="section" id="object-searching">
-<h6>Object Searching<a class="headerlink" href="#object-searching" title="Permalink to this heading"></a></h6>
+<section id="object-searching">
+<h6>Object Searching<a class="headerlink" href="#object-searching" title="Link to this heading"></a></h6>
 <p>Alternatively, search criteria can be passed as a list of
 dictionaries to the label-only parameter <code class="docutils literal notranslate"><span class="pre">search</span></code>.</p>
 <p>To include multiple filter criteria, you can group filters within
@@ -1158,54 +1154,54 @@ filters in each group.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="controlling-returned-properties">
-<h7>Controlling Returned Properties<a class="headerlink" href="#controlling-returned-properties" title="Permalink to this heading"></a></h7>
+<section id="controlling-returned-properties">
+<h6 aria-level="7">Controlling Returned Properties<a class="headerlink" href="#controlling-returned-properties" title="Link to this heading"></a></h6>
 <p>You can retrieve additional properties for the objects by defining
 them with <code class="docutils literal notranslate"><span class="pre">properties</span></code>. Properties must be provided as a single
 property as a string, or a list of properties as a list. If a
 requested property does not exist, it will be ignored.</p>
-</div>
-<div class="section" id="using-associations">
-<h7>Using Associations<a class="headerlink" href="#using-associations" title="Permalink to this heading"></a></h7>
+</section>
+<section id="using-associations">
+<h6 aria-level="7">Using Associations<a class="headerlink" href="#using-associations" title="Link to this heading"></a></h6>
 <p>Associated objects can be used as search criteria by using the
 pseudo-property <code class="docutils literal notranslate"><span class="pre">associations.{object_type}</span></code>, where <code class="docutils literal notranslate"><span class="pre">{object_type}</span></code>
 is a valid object type, such as <code class="docutils literal notranslate"><span class="pre">contact</span></code>, but this is not
 supported when seaching custom objects.</p>
-</div>
-<div class="section" id="text-based-search-query">
-<h7>Text-based Search Query<a class="headerlink" href="#text-based-search-query" title="Permalink to this heading"></a></h7>
+</section>
+<section id="text-based-search-query">
+<h6 aria-level="7">Text-based Search Query<a class="headerlink" href="#text-based-search-query" title="Link to this heading"></a></h6>
 <p>If you want to search all text-based fields with a simple string,
 it can be provided via the optional label-only parameter
 <code class="docutils literal notranslate"><span class="pre">string_query</span></code>. This cannot be used at the same time with
 <code class="docutils literal notranslate"><span class="pre">search_object</span></code> or <code class="docutils literal notranslate"><span class="pre">natural_search</span></code> parameters.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param natural_search</dt>
+<dt class="field-odd">param natural_search<span class="colon">:</span></dt>
 <dd class="field-odd"><p>all additional unlabeled parameters will
 be parsed as a natural language search.</p>
 </dd>
-<dt class="field-even">param search</dt>
+<dt class="field-even">param search<span class="colon">:</span></dt>
 <dd class="field-even"><p>the search object to use as search criteria.</p>
 </dd>
-<dt class="field-odd">param string_query</dt>
+<dt class="field-odd">param string_query<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a string query can be provided instead of a
 search object which is used as a text-based search in all default
 searchable properties in Hubspot.</p>
 </dd>
-<dt class="field-even">param properties</dt>
+<dt class="field-even">param properties<span class="colon">:</span></dt>
 <dd class="field-even"><p>a list of strings representing return properties
 to be included in the returned data.</p>
 </dd>
-<dt class="field-odd">return</dt>
+<dt class="field-odd">return<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list of found HubSpot objects of type <code class="docutils literal notranslate"><span class="pre">SimplePublicObject</span></code>.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.set_association">
-<span class="sig-name descname"><span class="pre">set_association</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">association_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SimplePublicObjectWithAssociations</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.set_association" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_association</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">association_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SimplePublicObjectWithAssociations</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.set_association" title="Link to this definition"></a></dt>
 <dd><p>Sets an association between two Hubspot objects. You must define
 the primary <code class="docutils literal notranslate"><span class="pre">object_type</span></code> and it’s Hubspot <code class="docutils literal notranslate"><span class="pre">object_id</span></code>, as well
 as the Hubspot object it is to be associated with by using the
@@ -1216,7 +1212,7 @@ on the provided object types, for example, if <code class="docutils literal notr
 <code class="docutils literal notranslate"><span class="pre">association_type</span></code> will be <code class="docutils literal notranslate"><span class="pre">company_to_contact</span></code>.</p>
 <p>Returns the object with it’s associations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The type of object for the object ID
 provided, e.g. <code class="docutils literal notranslate"><span class="pre">contact</span></code>.</p></li>
@@ -1227,7 +1223,7 @@ to.</p></li>
 <code class="docutils literal notranslate"><span class="pre">object_id</span></code> to.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The object represented by the <code class="docutils literal notranslate"><span class="pre">object_id</span></code> with the
 new association. The associations will be available on the
 returned object’s <code class="docutils literal notranslate"><span class="pre">associations</span></code> property.</p>
@@ -1237,12 +1233,12 @@ returned object’s <code class="docutils literal notranslate"><span class="pre"
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.set_current_batch_input">
-<span class="sig-name descname"><span class="pre">set_current_batch_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BatchInputFactory</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.set_current_batch_input" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_current_batch_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BatchInputFactory</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.set_current_batch_input" title="Link to this definition"></a></dt>
 <dd><p>Sets the current batch input to the provided one.</p>
 <p>See <cite>Batch Inputs`</cite> for complete information on using the batch
 input API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>batch_input</strong> – A batch object such as one returned from
 the <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">current</span> <span class="pre">batch</span></code> keyword.</p>
 </dd>
@@ -1251,7 +1247,7 @@ the <code class="docutils literal notranslate"><span class="pre">Get</span> <spa
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Hubspot.Hubspot.update_object">
-<span class="sig-name descname"><span class="pre">update_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SimplePublicObject</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.update_object" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SimplePublicObject</span></span></span><a class="headerlink" href="#RPA.Hubspot.Hubspot.update_object" title="Link to this definition"></a></dt>
 <dd><p>Performs a partial update of an Object identified by
 <code class="docutils literal notranslate"><span class="pre">object_type</span></code> and <code class="docutils literal notranslate"><span class="pre">object_id</span></code> with the provided properties
 in Hubspot. The objects can be found using an
@@ -1264,7 +1260,7 @@ labeled paremeters to this keyword.</p>
 <p>Returns the newly created object. The new object’s <code class="docutils literal notranslate"><span class="pre">id</span></code> is available
 via the property <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>object_type</strong> – The object type to be created.</p></li>
 <li><p><strong>object_id</strong> – The HubSpot ID of the object to be updated</p></li>
@@ -1276,13 +1272,13 @@ object. Read-only or nonexistent properties will be ignored.</p></li>
 </dl>
 </dd></dl>
 
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
