@@ -16,6 +16,11 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+31 Dec 2024
+--------------------
+
+- Update ``rpaframework-aws`` to version **5.3.4**. Security update for ``boto3`` package.
+
 29.0.0 - 08 Dec 2024
 --------------------
 
