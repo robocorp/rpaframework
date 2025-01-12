@@ -26,20 +26,15 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-          "windows-py39",
-          "windows-py310",
-          "windows-py311",
-          "windows-py312",
-
-          "ubuntu-py39",
-          "ubuntu-py310",
-          "ubuntu-py311",
-          "ubuntu-py312",
-
-          "macos-py39",
-          "macos-py310",
-          "macos-py311",
-          "macos-py312",
+            "windows-py39",
+            "windows-py310",
+            "windows-py311",
+            "ubuntu-py39",
+            "ubuntu-py310",
+            "ubuntu-py311",
+            "macos-py39",
+            "macos-py310",
+            "macos-py311",
         ]
 
         include:
@@ -51,9 +46,6 @@ jobs:
             os: windows-latest
           - name: "windows-py311"
             python: "3.11"
-            os: windows-latest
-          - name: "windows-py312"
-            python: "3.12"
             os: windows-latest
           - name: "ubuntu-py39"
             python: "3.9"
@@ -72,9 +64,6 @@ jobs:
             os: macos-13
           - name: "macos-py311"
             python: "3.11"
-            os: macos-13
-          - name: "macos-py312"
-            python: "3.12"
             os: macos-13
 
     env:
