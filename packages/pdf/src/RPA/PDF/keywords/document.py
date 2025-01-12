@@ -342,7 +342,7 @@ class DocumentKeywords(LibraryContext):
                 self._write_html_to_page(fpdf, pdf_html)
         fpdf.output(name=output_path)
 
-    def _write_html_to_page(self, fpdf, html):
+    def _write_html_to_page(self, fpdf, html):  # pylint: disable=no-self-use
         fpdf.add_page()
         fpdf.write_html(html)
 

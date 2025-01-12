@@ -100,7 +100,7 @@ class SpeechToTextKeywords:
         rec = self.speech_service.recognize(config=config, audio=audio)
         return rec.results
 
-    def set_audio_type(self, audio_file, audio_uri):
+    def set_audio_type(self, audio_file, audio_uri):  # pylint: disable=no-self-use
         # flac or wav, does not require encoding type
         if audio_file:
             with open(audio_file, "rb") as f:

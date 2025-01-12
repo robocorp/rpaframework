@@ -32,7 +32,9 @@ class VisionKeywords:
         )
         return self.vision_service
 
-    def set_image_type(self, image_file: str = None, image_uri: str = None):
+    def set_image_type(  # pylint: disable=no-self-use
+        self, image_file: str = None, image_uri: str = None
+    ):
         if image_file:
             with open(image_file, "rb") as f:
                 content = f.read()

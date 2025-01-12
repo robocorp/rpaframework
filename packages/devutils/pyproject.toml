@@ -23,7 +23,7 @@ invoke = "^2.2.0"  # keep in sync with requirements.txt
 tomlkit = "^0.11.8"  # keep in sync with requirements.txt
 semver = "^3.0.0"  # keep in sync with requirements.txt
 pylint = "^3.3.2"
-robotframework-docgen = "^0.16.0"
+robotframework-docgen = "^0.17.0"
 colorama = "^0.4.5"
 keyring = "^24.2.0"
 PyYAML = ">=5.4.1,<7.0.0"

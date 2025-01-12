@@ -97,7 +97,7 @@ class OpenAI:
         openai.api_version = api_version
         self.service_type = "Azure"
 
-    def authorize_to_openai(self, api_key: str) -> None:
+    def authorize_to_openai(self, api_key: str) -> None:  # pylint: disable=no-self-use
         """Keyword for authorize to OpenAI with your API key obtained from your account.
 
         :param api_key: Your OpenAI API key

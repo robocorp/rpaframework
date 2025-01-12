@@ -174,7 +174,7 @@ class LibraryContext:
 
         return service
 
-    def write_json(self, json_file, response):
+    def write_json(self, json_file, response):  # pylint: disable=no-self-use
         if json_file and response:
             with open(json_file, "w") as f:  # pylint: disable=unspecified-encoding
                 f.write(response.__class__.to_json(response))

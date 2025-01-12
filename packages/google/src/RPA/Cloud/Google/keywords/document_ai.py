@@ -163,7 +163,7 @@ class DocumentAIKeywords:
         return document
 
     @keyword(tags=["document ai"])
-    def save_document_response(
+    def save_document_response(  # pylint: disable=no-self-use
         self, document: documentai.Document, filepath: str
     ) -> None:
         """Save ``Process Document`` response into a binary file.
@@ -199,7 +199,9 @@ class DocumentAIKeywords:
             pickle.dump(document, response_file)
 
     @keyword(tags=["document ai"])
-    def load_document_response(self, filepath: str) -> documentai.Document:
+    def load_document_response(  # pylint: disable=no-self-use
+        self, filepath: str
+    ) -> documentai.Document:
         """Loads the binary object saved by ``Save Document Response`` into
         ``documentai.Document`` format which is accessible by helper keywords.
 
@@ -239,7 +241,9 @@ class DocumentAIKeywords:
         return document
 
     @keyword(tags=["document ai", "get"])
-    def get_document_entities(self, document: documentai.Document) -> List:
+    def get_document_entities(  # pylint: disable=no-self-use
+        self, document: documentai.Document
+    ) -> List:
         """Helper keyword for getting document `entities` from a ``Process Document``
         response object.
 
@@ -263,7 +267,9 @@ class DocumentAIKeywords:
         return entities
 
     @keyword(tags=["document ai", "get"])
-    def get_document_languages(self, document: documentai.Document) -> List:
+    def get_document_languages(  # pylint: disable=no-self-use
+        self, document: documentai.Document
+    ) -> List:
         """Helper keyword for getting detected `languages` from a ``Process Document``
         response object.
 

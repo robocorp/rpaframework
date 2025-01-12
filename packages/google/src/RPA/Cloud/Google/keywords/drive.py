@@ -578,7 +578,9 @@ class DriveKeywords:
                 parameters["q"] = f"'{folder_id}' in parents"
         return parameters
 
-    def _drive_file_details_into_file_dict(self, details):
+    def _drive_file_details_into_file_dict(
+        self, details
+    ):  # pylint: disable=no-self-use
         filesize = details.get("size")
         file_id = details.get("id")
         parents = details.get("parents")
@@ -669,7 +671,7 @@ class DriveKeywords:
         except HttpError as err:
             raise GoogleDriveError(str(err)) from err
 
-    def _folder_response(self, folder_id):
+    def _folder_response(self, folder_id):  # pylint: disable=no-self-use
         return {
             "id": folder_id,
             "url": f"https://drive.google.com/drive/folders/{folder_id}?usp=sharing",
@@ -965,7 +967,9 @@ class DriveKeywords:
                 )
         return permissions_removed
 
-    def _is_permission_removable(self, permission, email, domain, permission_id):
+    def _is_permission_removable(  # pylint: disable=no-self-use
+        self, permission, email, domain, permission_id
+    ):
         return (
             (
                 email

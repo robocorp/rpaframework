@@ -452,7 +452,9 @@ class FinderKeywords(LibraryContext):
 
         return self._check_text_match(candidate, regexp)
 
-    def _is_match_in_box(self, candidate: TextBox, *, anchor: TextBox) -> bool:
+    def _is_match_in_box(  # pylint: disable=no-self-use
+        self, candidate: TextBox, *, anchor: TextBox
+    ) -> bool:
         (left, bottom, right, top) = anchor.bbox
         return (
             left <= candidate.left

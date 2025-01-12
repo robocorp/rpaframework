@@ -1315,7 +1315,7 @@ class Hubspot:
             after = page.paging.next.after
         return results
 
-    def _batch_batch_requests(
+    def _batch_batch_requests(  # pylint: disable=no-self-use
         self, ids: List[str], max_batch_size: int = 100
     ) -> List[List[str]]:
         """Breaks batch inputs down to a max size for the API, Hubspot
@@ -1586,7 +1586,7 @@ class Hubspot:
                 object_type, object_id, id_property, properties, associations
             )
 
-    def _create_simple_input_object(
+    def _create_simple_input_object(  # pylint: disable=no-self-use
         self, properties: Dict[str, Any]
     ) -> CreateObjectInput:
         """Creates a ``SimplePublicObjectInput`` from the provided
