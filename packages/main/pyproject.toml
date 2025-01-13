@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "29.0.0"
+version = "30.0.0"
 description = "A collection of tools and libraries for RPA"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -43,7 +43,7 @@ rpaframework-windows = { version = "^8.0.0", platform = "win32" }
 java-access-bridge-wrapper = "^1.1.0"
 robocorp-storage = "^1.0.2"
 jsonpath-ng = "^1.5.2"
-robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
+robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
 robotframework-seleniumlibrary = "^6.0.0"
 robotframework-seleniumtestability = "^2.0.0"
@@ -94,21 +94,14 @@ holidays = "^0.45"
 
 [tool.poetry.group.dev.dependencies]
 rpaframework-devutils = { path = "../devutils/", develop = true }
-mock = "^5.0.0"
-mypy = "^1.4.1"
-pytest-env = "^0.6.2"
-pytest-freezegun = "^0.4.2"
-poetry = "^1.6.1"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
 use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-branch"

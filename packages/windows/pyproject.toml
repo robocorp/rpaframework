@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-windows"
-version = "8.0.0"
+version = "9.0.0-rc.1"
 description = "Windows library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -34,7 +34,7 @@ packages = [{ include = "RPA", from = "src" }]
 python = "^3.9"
 dataclasses = { version = "^0.7", python = ">=3.6,<3.7" }
 rpaframework-core = "^11.3.1"
-robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
+robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
 robotframework-pythonlibcore = "^4.2.0"
 pynput-robocorp-fork = "^5.0.0"
 uiautomation = "^2.0.15"
@@ -44,26 +44,7 @@ pywin32 = { version = ">=300,<307", platform = "win32", python = "!=3.8.1" }
 fire = "^0.7.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.3.0"
-flake8 = "^3.7.9"
-pylint = "^3.3.2"
-pytest = "^7.2.0"
-mock = "^5.0.0"
-pytest-cov = "^4.0.0"
-invoke = "^2.2.0"
-robotframework-docgen = "^0.16.0"
-toml = "^0.10.2"
-colorama = "^0.4.5"
-keyring = "^24.2.0"
-PyYAML = ">=5.4.1,<7.0.0"
-flake8-docstrings = "^1.6.0"
-flake8-rst-docstrings = "^0.2.7"
-
-[tool.poetry.scripts]
-windows-record = 'RPA.scripts.record:main'
-
-[tool.black]
-target-version = ["py39", "py310", "py311", "py312"]
+rpaframework-devutils = { path = "../devutils/", develop = true }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,4 +1,3 @@
-import imghdr
 import io
 import os
 import tempfile
@@ -393,8 +392,10 @@ class DocumentKeywords(LibraryContext):
         except KeyError:
             fields = None
 
-        optional = lambda attr: (  # noqa
-            getattr(docinfo, attr) if docinfo is not None else None
+        optional = (
+            lambda attr: (  # noqa  # pylint: disable=unnecessary-lambda-assignment
+                getattr(docinfo, attr) if docinfo is not None else None
+            )
         )
         return {
             "Author": optional("author"),
@@ -1113,7 +1114,7 @@ class DocumentKeywords(LibraryContext):
         lt_image = figure.item
         if hasattr(lt_image, "stream") and lt_image.stream:
             file_stream = lt_image.stream.get_rawdata()
-            file_ext = imghdr.what("", file_stream)
+            file_ext = _get_image_file_ext(file_stream)
             if file_ext:
                 filename = "".join([str(file_prefix), lt_image.name, ".", file_ext])
                 imagepath = images_folder / filename
@@ -1315,7 +1316,7 @@ class DocumentKeywords(LibraryContext):
             basename = namesplit[0]
             parameters = namesplit[1] if len(namesplit) == 2 else None
             file_to_add = file_to_add.parent / basename
-            image_filetype = imghdr.what(str(file_to_add))
+            image_filetype = Path(str(file_to_add)).suffix
             self.logger.info("File %s type: %s", str(file_to_add), image_filetype)
             if basename.lower().endswith(".pdf"):
                 reader = pypdf.PdfReader(str(file_to_add), strict=False)
@@ -1370,12 +1371,12 @@ class DocumentKeywords(LibraryContext):
     def _get_pages(pagecount: int, page_reference: Optional[str]) -> List[int]:
         """Returns a flattened list of pages based on provided 1-indexed ranges."""
         page_reference = page_reference or f"1-{pagecount}"
-        temp = [
-            (lambda sub: range(sub[0], sub[-1] + 1))(
-                list(map(int, ele.strip().split("-")))
-            )
-            for ele in page_reference.split(",")
-        ]
+
+        def expand_range(range_str: str) -> range:
+            numbers = list(map(int, range_str.strip().split("-")))
+            return range(numbers[0], numbers[-1] + 1)
+
+        temp = [expand_range(ele) for ele in page_reference.split(",")]
         return [b for a in temp for b in a]
 
     def _get_image_settings(self, imagepath, parameters):
@@ -1428,3 +1429,14 @@ class DocumentKeywords(LibraryContext):
             settings["height"] = height
         im.close()
         return settings
+
+
+def _get_image_file_ext(file_stream):
+    file_ext = None
+    try:
+        # Use PIL to identify the image format
+        with Image.open(io.BytesIO(file_stream)) as img:
+            file_ext = img.format.lower()
+    except Exception:  # pylint: disable=broad-except
+        file_ext = None
+    return file_ext

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-aws"
-version = "5.3.4"
+version = "6.0.0"
 description = "AWS library for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -20,9 +20,10 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.8",
 	"Programming Language :: Python :: 3.9",
 	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
 ]
 
 include = ["*.libspec"]
@@ -32,32 +33,14 @@ packages = [{ include = "RPA", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.9"
 rpaframework-core = "^11.3.1"
-robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
+robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
 robotframework-pythonlibcore = "^4.2.0"
 boto3 = "^1.35.90"
 amazon-textract-response-parser = "^0.1.33"
 urllib3 = ">=1.25.4,<1.27"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.3.0"
-flake8 = "^3.7.9"
-pylint = "^2.4.4, <2.13"
-pytest = "^7.2.0"
-mock = "^5.0.0"
-pytest-cov = "^4.0.0"
-invoke = "^2.2.0"
-toml = "^0.10.2"
-robotframework-docgen = "^0.16.0"
-moto = "3.1.8"
-colorama = "^0.4.5"
-keyring = "^24.2.0"
-PyYAML = ">=5.4.1,<7.0.0"
-importlib-metadata = "^4.13.0"
-flake8-docstrings = "^1.6.0"
-flake8-rst-docstrings = "^0.2.7"
-
-[tool.black]
-target-version = ["py38", "py39", "py310"]
+rpaframework-devutils = { path = "../devutils/", develop = true }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

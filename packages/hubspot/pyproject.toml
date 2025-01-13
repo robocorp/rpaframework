@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-hubspot"
-version = "1.0.2"
+version = "2.0.0"
 description = "Robot Framework wrapper around the hubspot-api-client library."
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -20,9 +20,10 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.8",
 	"Programming Language :: Python :: 3.9",
 	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
 ]
 
 include = ["*.libspec"]
@@ -30,41 +31,17 @@ include = ["*.libspec"]
 packages = [{ include = "RPA", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
-robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<7.0.0"
+python = "^3.9"
+robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
 rpaframework-core = "^11.3.1"
 tenacity = "^8.0.1"
 hubspot-api-client = "^4.0.6"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.3.0"
-flake8 = "^3.7.9"
-pylint = "^2.4.4, <2.13"
-pytest = "^7.2.0"
-pytest-cov = "^4.0.0"
-pytest-mock = "^3.8.2"
-mock = "^5.0.0"
-mypy = "^1.4.1"
-pytest-env = "^0.6.2"
-invoke = "^2.2.0"
-robotframework-docgen = "^0.16.0"
-toml = "^0.10.2"
-colorama = "^0.4.5"
-keyring = "^24.2.0"
-flake8-docstrings = "^1.6.0"
-flake8-rst-docstrings = "^0.2.7"
-pytest-freezegun = "^0.4.2"
-isort = "^5.11.5"
-poetry = "^1.7.0"
-wrapt = "^1.14.0"
-pyyaml = "^6.0.1"
-pip = "^23.3.1"
+rpaframework-devutils = { path = "../devutils/", develop = true }
 
 [tool.black]
-target-version = ["py38", "py39", "py310"]
-
-[tool.isort]
-profile = "black"
+target-version = ["py39", "py310", "py311"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -349,19 +349,21 @@ class FinderKeywords(LibraryContext):
         self.logger.info("Searching for matching text boxes with: %r", locator)
 
         if isinstance(locator, str):
-            get_text = lambda string: (  # noqa: E731
+            get_text = lambda string: (  # noqa: E731  # pylint: disable=unnecessary-lambda-assignment
                 string.lower() if ignore_case else string
             )
             if is_subtext:
-                matches_anchor = lambda _anchor: (  # noqa: E731
+                matches_anchor = lambda _anchor: (  # noqa: E731  # pylint: disable=unnecessary-lambda-assignment
                     get_text(locator) in get_text(_anchor.text)
                 )
             else:
-                matches_anchor = lambda _anchor: (  # noqa: E731
+                matches_anchor = lambda _anchor: (  # noqa: E731 # pylint: disable=unnecessary-lambda-assignment
                     get_text(_anchor.text) == get_text(locator)
                 )
         else:
-            matches_anchor = lambda _anchor: locator.match(_anchor.text)  # noqa: E731
+            matches_anchor = lambda _anchor: locator.match(  # noqa: E731  # pylint: disable=unnecessary-lambda-assignment
+                _anchor.text
+            )
 
         anchors = []
         for anchor in self._get_textboxes_on_page(pagenum):
@@ -465,7 +467,7 @@ class FinderKeywords(LibraryContext):
     def _sort_candidates_by_anchor(
         candidates: List[TextBox], *, anchor: TextBox
     ) -> None:
-        get_center = lambda item: (  # noqa: E731
+        get_center = lambda item: (  # noqa: E731  # pylint: disable=unnecessary-lambda-assignment
             (item.left + item.right) / 2,
             (item.bottom + item.top) / 2,
         )

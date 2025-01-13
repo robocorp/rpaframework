@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-core"
-version = "11.3.4"
+version = "12.0.1"
 description = "Core utilities used by RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -40,9 +40,6 @@ packaging = "^24.0"
 
 [tool.poetry.group.dev.dependencies]
 rpaframework-devutils = { path = "../devutils/", develop = true }
-importlib-metadata = "^4.13.0"
-mock = "^5.0.0"
-toml = "^0.10.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

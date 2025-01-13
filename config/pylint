@@ -82,7 +82,8 @@ disable=fixme,
         wrong-import-order,
         wrong-import-position,
         unsubscriptable-object,
-        too-many-positional-arguments
+        too-many-positional-arguments,
+        too-many-function-args
 
 
 # Enable the message, report, category or checker with the given id(s). You can

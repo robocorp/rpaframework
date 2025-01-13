@@ -2188,7 +2188,7 @@ class Hubspot:
             "Authorization": f"Bearer {self.hs.access_token}",
         }
 
-        response = requests.request("GET", url, headers=headers, params=params)
+        response = requests.request("GET", url, headers=headers, params=params)  # pylint: disable=missing-timeout
         response.raise_for_status()
         self.logger.debug(
             f"Response is:\nStatus: {response.status_code} {response.reason}\n"

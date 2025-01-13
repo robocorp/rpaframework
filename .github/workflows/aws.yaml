@@ -26,14 +26,15 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-          "windows-py39",
-          "windows-py310",
-
-          "ubuntu-py39",
-          "ubuntu-py310",
-
-          "macos-py39",
-          "macos-py310",
+            "windows-py39",
+            "windows-py310",
+            "windows-py311",
+            "ubuntu-py39",
+            "ubuntu-py310",
+            "ubuntu-py311",
+            "macos-py39",
+            "macos-py310",
+            "macos-py311",
         ]
 
         include:
@@ -43,17 +44,26 @@ jobs:
           - name: "windows-py310"
             python: "3.10"
             os: windows-latest
+          - name: "windows-py311"
+            python: "3.11"
+            os: windows-latest
           - name: "ubuntu-py39"
             python: "3.9"
             os: ubuntu-latest
           - name: "ubuntu-py310"
             python: "3.10"
             os: ubuntu-latest
+          - name: "ubuntu-py311"
+            python: "3.11"
+            os: ubuntu-latest
           - name: "macos-py39"
             python: "3.9"
             os: macos-13
           - name: "macos-py310"
             python: "3.10"
+            os: macos-13
+          - name: "macos-py311"
+            python: "3.11"
             os: macos-13
 
     steps:

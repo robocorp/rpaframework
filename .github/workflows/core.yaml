@@ -25,23 +25,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name:
-          [
+        name: [
             "windows-py39",
             "windows-py310",
             "windows-py311",
-            "windows-py312",
-
             "ubuntu-py39",
             "ubuntu-py310",
             "ubuntu-py311",
-            "ubuntu-py312",
-
             "macos-py39",
             "macos-py310",
             "macos-py311",
-            "macos-py312",
-          ]
+        ]
 
         include:
           - name: "windows-py39"
@@ -53,10 +47,6 @@ jobs:
           - name: "windows-py311"
             python: "3.11"
             os: windows-latest
-          # - name: "windows-py312"
-          #   python: "3.12"
-          #   node-version: 20.x
-          #   os: windows-latest
           - name: "ubuntu-py39"
             python: "3.9"
             os: ubuntu-latest
@@ -66,10 +56,6 @@ jobs:
           - name: "ubuntu-py311"
             python: "3.11"
             os: ubuntu-latest
-          # - name: "ubuntu-py312"
-          #   python: "3.12"
-          #   node-version: 20.x
-          #   os: ubuntu-latest
           - name: "macos-py39"
             python: "3.9"
             os: macos-13
@@ -79,10 +65,7 @@ jobs:
           - name: "macos-py311"
             python: "3.11"
             os: macos-13
-          # - name: "macos-py312"
-          #   python: "3.12"
-          #   node-version: 20.x
-          #   os: macos-13
+
     env:
       INVOKE_IS_CI_CD: 1
     steps:
