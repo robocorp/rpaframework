@@ -33,7 +33,7 @@ packages = [{ include = "RPA", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.9"
 dataclasses = { version = "^0.7", python = ">=3.6,<3.7" }
-rpaframework-core = "^11.3.1"
+rpaframework-core = "^12.0.1"
 robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
 robotframework-pythonlibcore = "^4.2.0"
 pynput-robocorp-fork = "^5.0.0"

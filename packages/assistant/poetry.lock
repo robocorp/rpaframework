@@ -2097,13 +2097,13 @@ robotframework = ">=3.2.2,<4.0.1 || >4.0.1,<6.1.0 || >6.1.0,<8.0.0"
 
 [[package]]
 name = "rpaframework-core"
-version = "11.3.4"
+version = "12.0.1"
 description = "Core utilities used by RPA Framework"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "rpaframework_core-11.3.4-py3-none-any.whl", hash = "sha256:72d969817473cf60d71e0d047b3fb3cb9d0a277bb9523a7fef3e4f65ac6571b0"},
-    {file = "rpaframework_core-11.3.4.tar.gz", hash = "sha256:1878270fade77b924a26d8d112f9a9925774078f164704871921a362c9f97dd7"},
+    {file = "rpaframework_core-12.0.1-py3-none-any.whl", hash = "sha256:44b6f290d9ec0dffd240294f5d4fc3847672b625e54586a83ef2c12a582b9461"},
+    {file = "rpaframework_core-12.0.1.tar.gz", hash = "sha256:8501b05e243051242059a7b34969f677904e186246feacdc1d81fa92956cbebd"},
 ]
 
 [package.dependencies]
@@ -2789,4 +2789,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "3fd9420917daf38b11d55fb9c09bb00ed17ae886c2a94e7bb805e7bf0e32c2aa"
+content-hash = "47d5d69aa56dce0beb658d1f6190c3900ed06b2aa8e3bea8aa2b17e7ee9d8e64"
