@@ -94,21 +94,14 @@ holidays = "^0.45"
 
 [tool.poetry.group.dev.dependencies]
 rpaframework-devutils = { path = "../devutils/", develop = true }
-mock = "^5.0.0"
-mypy = "^1.4.1"
-pytest-env = "^0.6.2"
-pytest-freezegun = "^0.4.2"
-poetry = "^1.6.1"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
 use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-branch"

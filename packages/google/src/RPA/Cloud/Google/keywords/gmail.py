@@ -184,9 +184,7 @@ class GmailKeywords:
             raise he
         return response
 
-    def set_list_parameters(  # pylint: disable=no-self-use
-        self, user_id, query, label_ids, max_results, include_spam
-    ):
+    def set_list_parameters(self, user_id, query, label_ids, max_results, include_spam):
         parameters = {"userId": user_id, "q": query}
         if label_ids:
             parameters["labelIds"] = ",".join(label_ids)
@@ -196,9 +194,7 @@ class GmailKeywords:
             parameters["includeSpamTrash"] = include_spam
         return parameters
 
-    def set_headers_to_message_dict(  # pylint: disable=no-self-use
-        self, payload, message_id, response
-    ):
+    def set_headers_to_message_dict(self, payload, message_id, response):
         headers = payload.get("headers")
         message_dict = {"id": message_id, "label_ids": response["labelIds"]}
         for header in headers:

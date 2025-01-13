@@ -126,5 +126,7 @@ class NaturalLanguageKeywords:
             response = self.lang_service.analyze_sentiment(
                 document=document, encoding_type="UTF8"
             )
+        else:
+            raise ValueError(f"Invalid analyze method: {analyze_method}")
         self.ctx.write_json(json_file, response)
         return response

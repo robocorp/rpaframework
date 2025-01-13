@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-recognition"
-version = "5.2.7"
+version = "6.0.0"
 description = "OCR capabilities used by RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
 license = "Apache-2.0"
@@ -38,9 +38,6 @@ pytesseract = "^0.3.6"
 
 [tool.poetry.group.dev.dependencies]
 rpaframework-devutils = { path = "../devutils/", develop = true }
-
-[tool.black]
-target-version = ["py38", "py39", "py310"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

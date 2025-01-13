@@ -388,7 +388,7 @@ class SheetsKeywords:
         )
 
     @keyword(tags=["sheets"])
-    def to_column_letter(self, number: int):  # pylint: disable=no-self-use
+    def to_column_letter(self, number: int):
         """
         Convert a column number into a column letter(s).
 
@@ -737,7 +737,7 @@ class SheetsKeywords:
             for d in combined
         ]
 
-    def _identify_header_rows_and_columns(self, rows):  # pylint: disable=no-self-use
+    def _identify_header_rows_and_columns(self, rows):
         areas = []
         header_indices = []
         for row_idx, row in enumerate(rows):

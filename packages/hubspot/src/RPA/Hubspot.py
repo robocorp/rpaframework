@@ -1315,7 +1315,7 @@ class Hubspot:
             after = page.paging.next.after
         return results
 
-    def _batch_batch_requests(  # pylint: disable=no-self-use
+    def _batch_batch_requests(
         self, ids: List[str], max_batch_size: int = 100
     ) -> List[List[str]]:
         """Breaks batch inputs down to a max size for the API, Hubspot
@@ -1586,7 +1586,7 @@ class Hubspot:
                 object_type, object_id, id_property, properties, associations
             )
 
-    def _create_simple_input_object(  # pylint: disable=no-self-use
+    def _create_simple_input_object(
         self, properties: Dict[str, Any]
     ) -> CreateObjectInput:
         """Creates a ``SimplePublicObjectInput`` from the provided
@@ -2188,7 +2188,7 @@ class Hubspot:
             "Authorization": f"Bearer {self.hs.access_token}",
         }
 
-        response = requests.request("GET", url, headers=headers, params=params)
+        response = requests.request("GET", url, headers=headers, params=params)  # pylint: disable=missing-timeout
         response.raise_for_status()
         self.logger.debug(
             f"Response is:\nStatus: {response.status_code} {response.reason}\n"

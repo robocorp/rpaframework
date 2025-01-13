@@ -48,26 +48,10 @@ google-cloud-documentai = "^2.0.1"
 grpcio = "^1.48.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.3.0"
-flake8 = "^3.7.9"
-pylint = "^2.4.4, <2.13"
-pytest = "^7.2.0"
-mock = "^5.0.0"
-pytest-cov = "^4.0.0"
-invoke = "^2.2.0"
-robotframework-docgen = "^0.17.0"
-toml = "^0.10.2"
-colorama = "^0.4.5"
-keyring = "^24.2.0"
-PyYAML = ">=5.4.1,<7.0.0"
-flake8-docstrings = "^1.6.0"
-flake8-rst-docstrings = "^0.2.7"
+rpaframework-devutils = { path = "../devutils/", develop = true }
 
 [tool.poetry.scripts]
 rpa-google-oauth = 'RPA.scripts.google_authenticate:main'
-
-[tool.black]
-target-version = ["py39", "py310", "py311"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

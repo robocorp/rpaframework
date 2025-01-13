@@ -342,7 +342,7 @@ class DocumentKeywords(LibraryContext):
                 self._write_html_to_page(fpdf, pdf_html)
         fpdf.output(name=output_path)
 
-    def _write_html_to_page(self, fpdf, html):  # pylint: disable=no-self-use
+    def _write_html_to_page(self, fpdf, html):
         fpdf.add_page()
         fpdf.write_html(html)
 
@@ -393,7 +393,7 @@ class DocumentKeywords(LibraryContext):
         except KeyError:
             fields = None
 
-        optional = lambda attr: (  # noqa
+        optional = lambda attr: (  # noqa  # pylint: disable=unnecessary-lambda-assignment
             getattr(docinfo, attr) if docinfo is not None else None
         )
         return {
@@ -1371,7 +1371,7 @@ class DocumentKeywords(LibraryContext):
         """Returns a flattened list of pages based on provided 1-indexed ranges."""
         page_reference = page_reference or f"1-{pagecount}"
         temp = [
-            (lambda sub: range(sub[0], sub[-1] + 1))(
+            (lambda sub: range(sub[0], sub[-1] + 1))(  # pylint: disable=unnecessary-direct-lambda-call
                 list(map(int, ele.strip().split("-")))
             )
             for ele in page_reference.split(",")
