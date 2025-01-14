@@ -1955,7 +1955,7 @@ class Selenium(SeleniumLibrary):
         The keyword `Attach Chrome Browser` can be used to
         access an already open browser with Selenium keywords.
 
-        Read more: https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser
+        Read more: https://robocorp.com/portal/tutorial/how-to-attach-to-running-chrome-browser
 
         ``url`` URL to open
         ``tab`` defines is url is opened in a tab (defaults to ``True``) or
@@ -2042,9 +2042,9 @@ class Selenium(SeleniumLibrary):
         if download_pdf:
             # Disable the viewer when downloading is preferred instead of viewing.
             firefox_prefs["browser.download.viewableInternally.enabledTypes"] = ""
-            firefox_prefs[
-                "browser.helperApps.neverAsk.saveToDisk"
-            ] += " application/pdf"
+            firefox_prefs["browser.helperApps.neverAsk.saveToDisk"] += (
+                " application/pdf"
+            )
         self.download_preferences = {
             "firefox": firefox_prefs,
         }

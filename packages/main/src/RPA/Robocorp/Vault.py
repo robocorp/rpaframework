@@ -211,13 +211,13 @@ def _raise_invalid_configuration():
             " file.\n\n"
             "Consult the 'Configure file vault support' section in the documentation"
             " for step-by-step setup instructions:\n"
-            "https://robocorp.com/docs/development-guide/"
+            "https://robocorp.com/docs-robot-framework/development-guide/"
             "variables-and-secrets/vault\n\n"
             "When running from the Control Room, these variables should be "
             "configured automatically.\n"
             "If running with Robocorp Visual Studio Code extension, ensure that"
             " the project is linked to Control Room:\n"
-            "https://robocorp.com/docs/developer-tools/visual-studio-code/"
+            "https://robocorp.com/docs-robot-framework/developer-tools/visual-studio-code/"
             "extension-features#linking-to-control-room"
         )
 
@@ -493,8 +493,8 @@ class Vault:
     - ``RC_API_SECRET_TOKEN``: API Token for Robocorp Vault API
     - ``RC_WORKSPACE_ID``: Control Room Workspace ID
 
-    .. _Robocorp Control Room Vault: https://robocorp.com/docs/development-guide/variables-and-secrets/vault
-    .. _Robocorp Code Extension: https://robocorp.com/docs/developer-tools/visual-studio-code/extension-features#connecting-to-control-room-vault
+    .. _Robocorp Control Room Vault: https://robocorp.com/docs-robot-framework/development-guide/variables-and-secrets/vault
+    .. _Robocorp Code Extension: https://sema4.ai/docs/automation/visual-studio-code/extension-features#connecting-to-control-room-vault
     .. _rcc: https://robocorp.com/docs/rcc/workflow
 
     File-based secrets can be set by defining two environment variables.

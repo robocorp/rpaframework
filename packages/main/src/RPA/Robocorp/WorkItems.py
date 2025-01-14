@@ -423,7 +423,7 @@ class FileAdapter(BaseAdapter):
                 deprecation(
                     "Work items load - Old path style usage detected, please use the "
                     "'RPA_INPUT_WORKITEM_PATH' env var instead "
-                    "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
+                    "(more details under documentation: https://robocorp.com/docs-robot-framework/development-guide/control-room/work-items#developing-with-work-items-locally)"  # noqa: E501
                 )
             path = os.getenv("RPA_INPUT_WORKITEM_PATH", default=old_path)
             if path:
@@ -448,7 +448,7 @@ class FileAdapter(BaseAdapter):
                 deprecation(
                     "Work items save - Old path style usage detected, please use the "
                     "'RPA_OUTPUT_WORKITEM_PATH' env var instead "
-                    "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
+                    "(more details under documentation: https://robocorp.com/docs-robot-framework/development-guide/control-room/work-items#developing-with-work-items-locally)"  # noqa: E501
                 )
                 if not self.input_path:
                     raise RuntimeError(
@@ -770,7 +770,7 @@ class WorkItems:
     the ``parsedEmail[Body]``.
 
     E-mail attachments will be added into the work item as files. Read more on:
-    https://robocorp.com/docs/control-room/attended-or-unattended/email-trigger
+    https://robocorp.com/docs-robot-framework/control-room/unattended/email-trigger
 
     Example:
 
@@ -868,9 +868,9 @@ class WorkItems:
     `Developing with work items locally`_ section of the
     `Using work items`_ development guide.
 
-    .. _Robocorp Code extension: https://robocorp.com/docs/setup/development-environment#visual-studio-code-with-robocorp-extensions
-    .. _Developing with work items locally: https://robocorp.com/docs/development-guide/control-room/work-items#developing-with-work-items-locally
-    .. _Using work items: https://robocorp.com/docs/development-guide/control-room/work-items
+    .. _Robocorp Code extension: https://robocorp.com/docs-robot-framework/developer-tools/visual-studio-code/extension-features
+    .. _Developing with work items locally: https://robocorp.com/docs-robot-framework/development-guide/control-room/work-items#developing-with-work-items-locally
+    .. _Using work items: https://robocorp.com/docs-robot-framework/development-guide/control-room/work-items
 
     **Examples**
 
@@ -1046,8 +1046,8 @@ class WorkItems:
                         deprecation(
                             "Legacy non-parsed e-mail trigger detected! Please enable "
                             '"Parse email" configuration option in Control Room. (more'
-                            " details: https://robocorp.com/docs/control-room/attended"
-                            "-or-unattended/email-trigger#parse-email)"
+                            " details: https://robocorp.com/docs-robot-framework/control-room/"
+                            "unattended/email-trigger#parse-email)"
                         )
                     output_keys = to_tuple(output_keys)
                     return content, parsed, output_keys

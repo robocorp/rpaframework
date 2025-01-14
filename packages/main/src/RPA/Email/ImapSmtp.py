@@ -201,7 +201,7 @@ class ImapSmtp(OAuthMixin):
     to given criteria.
 
     Syntax needs to according to specification and more information about that
-    can be read from https://robocorp.com/docs/development-guide/email/sending-emails-with-gmail-smtp#listing-email-messages-by-criteria
+    can be read from https://robocorp.com/docs-robot-framework/development-guide/email/sending-emails-with-gmail-smtp#listing-email-messages-by-criteria
 
     **Troubleshooting**
 
