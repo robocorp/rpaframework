@@ -1,6 +1,6 @@
 setuptools>=69.0.2
 invoke~=2.2.0
-pip>=23.3.1,<25.0
+pip>=23.3.1,<26.0
 poetry~=1.7.0
 keyring>=24.2.0,<25.0.0
 toml~=0.10.2
