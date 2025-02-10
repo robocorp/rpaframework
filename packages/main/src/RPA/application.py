@@ -111,7 +111,6 @@ class BaseApplication(metaclass=MetaApplication):
     Check the documentation below for more info:
 
     - https://robocorp.com/docs/control-room/unattended/worker-setups/windows-desktop
-    - https://robocorp.com/docs/faq/windows-server-2016
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
