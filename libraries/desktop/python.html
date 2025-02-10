@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -455,7 +455,7 @@ done. Same formatting rules as function keys apply. They are as follows:</p>
 <span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Desktop</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Desktop</span> <span class="kn">import</span> <span class="n">Desktop</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Desktop</span><span class="w"> </span><span class="kn">import</span> <span class="n">Desktop</span>
 <span class="n">desktop</span> <span class="o">=</span> <span class="n">Desktop</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -471,7 +471,7 @@ keyboard and mouse events.</p>
 <span class="p">    </span><span class="nf">Press keys</span><span class="p">    </span><span class="s">enter</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">write_entry_in_accounting</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">write_entry_in_accounting</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">open_application</span><span class="p">(</span><span class="s2">&quot;erp_client.exe&quot;</span><span class="p">)</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;image:</span><span class="si">{</span><span class="n">ROBOT_ROOT</span><span class="si">}</span><span class="s2">/images/create.png&quot;</span><span class="p">)</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">type_text</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
@@ -491,7 +491,7 @@ but using template matching is preferred.</p>
 <span class="p">    </span><span class="nf">Press keys</span><span class="p">   </span><span class="s">enter</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">write_to_field</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">write_to_field</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">move_mouse</span><span class="p">(</span><span class="s2">&quot;image:input_label.png&quot;</span><span class="p">)</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">move_mouse</span><span class="p">(</span><span class="s2">&quot;offset:200,0&quot;</span><span class="p">)</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
@@ -505,7 +505,7 @@ but using template matching is preferred.</p>
 <span class="p">    </span><span class="nf">Click</span><span class="p">       </span><span class="s">ocr:New</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">click_new</span><span class="p">():</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">click_new</span><span class="p">():</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s1">&#39;ocr:&quot;New&quot;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -517,7 +517,7 @@ trying any interaction. You can also pass <code class="docutils literal notransl
 <span class="p">    </span><span class="nf">Click</span><span class="p">       ${</span><span class="nv">region</span><span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">click_new</span><span class="p">():</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">click_new</span><span class="p">():</span>
     <span class="n">region</span> <span class="o">=</span> <span class="n">desktop</span><span class="o">.</span><span class="n">wait_for_element</span><span class="p">(</span><span class="s2">&quot;ocr:New&quot;</span><span class="p">)</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
 </pre></div>
@@ -530,7 +530,7 @@ trying any interaction. You can also pass <code class="docutils literal notransl
 <span class="p">    </span><span class="nf">Type Text</span><span class="p">          ${</span><span class="nv">text</span><span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">type_notes</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">type_notes</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">click_with_offset</span><span class="p">(</span><span class="s2">&quot;ocr:Notes&quot;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">desktop</span><span class="o">.</span><span class="n">type_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>

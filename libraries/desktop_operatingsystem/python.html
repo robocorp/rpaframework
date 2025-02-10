@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -176,9 +176,9 @@ computer properties and actions.</p>
 </pre></div>
 </div>
 <p><strong>Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Desktop.OperatingSystem</span> <span class="kn">import</span> <span class="n">OperatingSystem</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Desktop.OperatingSystem</span><span class="w"> </span><span class="kn">import</span> <span class="n">OperatingSystem</span>
 
-<span class="k">def</span> <span class="nf">get_computer_information</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_computer_information</span><span class="p">():</span>
     <span class="n">ops</span> <span class="o">=</span> <span class="n">OperatingSystem</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Boot time    : </span><span class="si">{</span><span class="w"> </span><span class="n">ops</span><span class="o">.</span><span class="n">get_boot_time</span><span class="p">(</span><span class="n">as_datetime</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="w"> </span><span class="si">}</span><span class="s2">&quot;</span>
           <span class="sa">f</span><span class="s2">&quot;Machine name : </span><span class="si">{</span><span class="w"> </span><span class="n">ops</span><span class="o">.</span><span class="n">get_machine_name</span><span class="p">()</span><span class="w"> </span><span class="si">}</span><span class="s2">&quot;</span>

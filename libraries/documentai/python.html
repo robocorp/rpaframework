@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -201,7 +201,7 @@ with a model to scan the files with and an API key for authorizing the access.</
 </pre></div>
 </div>
 <p><strong>Example: Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.DocumentAI</span> <span class="kn">import</span> <span class="n">DocumentAI</span><span class="p">,</span> <span class="n">EngineName</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.DocumentAI</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentAI</span><span class="p">,</span> <span class="n">EngineName</span>
 
 <span class="n">lib_docai</span> <span class="o">=</span> <span class="n">DocumentAI</span><span class="p">()</span>
 <span class="n">lib_docai</span><span class="o">.</span><span class="n">init_engine</span><span class="p">(</span>
@@ -306,8 +306,8 @@ the absence of both the <cite>secret</cite> and <cite>vault</cite>.</p>
 </pre></div>
 </div>
 <p><strong>Example: Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.DocumentAI</span> <span class="kn">import</span> <span class="n">DocumentAI</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.DocumentAI</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Vault</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vault</span>
 
 <span class="n">lib_docai</span> <span class="o">=</span> <span class="n">DocumentAI</span><span class="p">()</span>
 <span class="n">mail_apikey</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;document_ai&quot;</span><span class="p">)[</span><span class="s2">&quot;base64ai&quot;</span><span class="p">]</span>

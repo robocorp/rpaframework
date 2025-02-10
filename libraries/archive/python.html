@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -175,7 +175,7 @@
 <span class="p">   &amp;{</span><span class="nv">info</span><span class="p">}                   </span><span class="nf">Get Archive Info</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Archive</span> <span class="kn">import</span> <span class="n">Archive</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Archive</span><span class="w"> </span><span class="kn">import</span> <span class="n">Archive</span>
 
 <span class="n">lib</span> <span class="o">=</span> <span class="n">Archive</span><span class="p">()</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_tar</span><span class="p">(</span><span class="s1">&#39;./tasks&#39;</span><span class="p">,</span> <span class="s1">&#39;tasks.tar&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -292,7 +292,7 @@ Similarly to exclude certain files, like dotfiles, the argument <cite>exclude</c
 <span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}</span><span class="p">               </span><span class="c">bzipped.zip</span><span class="p">      </span><span class="c">compression=bzip2</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Archive</span> <span class="kn">import</span> <span class="n">Archive</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Archive</span><span class="w"> </span><span class="kn">import</span> <span class="n">Archive</span>
 
 <span class="n">lib</span> <span class="o">=</span> <span class="n">Archive</span><span class="p">()</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_zip</span><span class="p">(</span><span class="s1">&#39;./documents&#39;</span><span class="p">,</span> <span class="s1">&#39;mydocs.zip&#39;</span><span class="p">)</span>

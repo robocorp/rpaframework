@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -195,8 +195,8 @@ JSON string is more than 8000 characters long.</p>
 </pre></div>
 </div>
 <p><strong>Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Database</span> <span class="kn">import</span> <span class="n">Database</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">FileSecrets</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Database</span><span class="w"> </span><span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Vault</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileSecrets</span>
 
 <span class="n">filesecrets</span> <span class="o">=</span> <span class="n">FileSecrets</span><span class="p">(</span><span class="s2">&quot;secrets.json&quot;</span><span class="p">)</span>
 <span class="n">secrets</span> <span class="o">=</span> <span class="n">filesecrets</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;databasesecrets&quot;</span><span class="p">)</span>
@@ -458,11 +458,11 @@ that the statement should return (raw rows or as <cite>Table</cite> if <cite>as_
 </pre></div>
 </div>
 <p><strong>Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Database</span> <span class="kn">import</span> <span class="n">Database</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Database</span><span class="w"> </span><span class="kn">import</span> <span class="n">Database</span>
 
 <span class="n">lib</span> <span class="o">=</span> <span class="n">Database</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">insert_and_return_names</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">insert_and_return_names</span><span class="p">():</span>
     <span class="n">lib</span><span class="o">.</span><span class="n">connect_to_database</span><span class="p">(</span><span class="s2">&quot;sqlite3&quot;</span><span class="p">,</span> <span class="s2">&quot;sqlite.db&quot;</span><span class="p">)</span>
     <span class="n">lib</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS orders;&quot;</span><span class="p">)</span>
     <span class="n">lib</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE orders(id INTEGER PRIMARY KEY, name TEXT);&quot;</span><span class="p">)</span>

@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -180,7 +180,7 @@ identified by a locator. (also referred as <strong>Control</strong>)</p>
 fact return <code class="docutils literal notranslate"><span class="pre">WindowsElement``s.</span> <span class="pre">The</span> <span class="pre">ones</span> <span class="pre">accepting</span> <span class="pre">``locator</span></code> or <code class="docutils literal notranslate"><span class="pre">root_element</span></code> as arguments, will accept
 <code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code> as an argument value. (<code class="docutils literal notranslate"><span class="pre">locator</span></code> accepts strings as well)</p>
 <p>Structure of the <code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">WindowsElement</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">WindowsElement</span><span class="p">:</span>
     <span class="n">item</span><span class="p">:</span> <span class="n">Control</span>        <span class="c1"># ``item`` contains object instance of the element</span>
     <span class="n">locator</span><span class="p">:</span> <span class="nb">str</span>         <span class="c1"># ``locator`` that found this element</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>            <span class="c1"># ``Name`` attribute of the element</span>
@@ -887,11 +887,11 @@ altered state of the app (changes under the element structure).</p></li>
 </pre></div>
 </div>
 <p><strong>Example: Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Windows</span> <span class="kn">import</span> <span class="n">Windows</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Windows</span><span class="w"> </span><span class="kn">import</span> <span class="n">Windows</span>
 
 <span class="n">library</span> <span class="o">=</span> <span class="n">Windows</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">test_do_some_calculations</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_do_some_calculations</span><span class="p">():</span>
     <span class="n">library</span><span class="o">.</span><span class="n">windows_run</span><span class="p">(</span><span class="s2">&quot;calc.exe&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">library</span><span class="o">.</span><span class="n">control_window</span><span class="p">(</span><span class="s2">&quot;name:Calculator&quot;</span><span class="p">)</span>

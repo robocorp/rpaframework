@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -225,15 +225,15 @@ documentation page.</p>
 </pre></div>
 </div>
 <p><strong>Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Desktop.Windows</span> <span class="kn">import</span> <span class="n">Windows</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Desktop.Windows</span><span class="w"> </span><span class="kn">import</span> <span class="n">Windows</span>
 
 <span class="n">win</span> <span class="o">=</span> <span class="n">Windows</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">open_calculator</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">open_calculator</span><span class="p">():</span>
     <span class="n">win</span><span class="o">.</span><span class="n">open_from_search</span><span class="p">(</span><span class="s2">&quot;calc.exe&quot;</span><span class="p">,</span> <span class="s2">&quot;Calculator&quot;</span><span class="p">)</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_window_elements</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">make_calculations</span><span class="p">(</span><span class="n">expression</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_calculations</span><span class="p">(</span><span class="n">expression</span><span class="p">):</span>
     <span class="n">win</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_element_rich_text</span><span class="p">(</span><span class="s1">&#39;id:CalculatorResults&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;Display is &#39;</span><span class="p">))</span>

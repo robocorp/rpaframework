@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -189,9 +189,9 @@ integer sent to the API must have 13 digits as of March 18, 2022).</p>
 </pre></div>
 </div>
 <p><strong>Python example usage</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robot.libraries.DateTime</span> <span class="kn">import</span> <span class="n">get_current_date</span><span class="p">,</span> <span class="n">subtract_time_from_date</span>
-<span class="kn">from</span> <span class="nn">RPA.Hubspot</span> <span class="kn">import</span> <span class="n">Hubspot</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">robot.libraries.DateTime</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_current_date</span><span class="p">,</span> <span class="n">subtract_time_from_date</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Hubspot</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hubspot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Vault</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vault</span>
 
 <span class="n">secrets</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;hubspot&quot;</span><span class="p">)</span>
 
@@ -244,8 +244,8 @@ property, see the <a class="reference internal" href="#simplepublicobject">Simpl
 <p><strong>NOTE:</strong> When executing a batch input in Python, you can directly import the
 <code class="docutils literal notranslate"><span class="pre">BatchInputFactory</span></code> class to use to create your batch input before
 executing the batch.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Hubspot</span> <span class="kn">import</span> <span class="n">Hubspot</span><span class="p">,</span> <span class="n">BatchInputFactory</span><span class="p">,</span> <span class="n">BatchMode</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">RobocorpVault</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Hubspot</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hubspot</span><span class="p">,</span> <span class="n">BatchInputFactory</span><span class="p">,</span> <span class="n">BatchMode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Vault</span><span class="w"> </span><span class="kn">import</span> <span class="n">RobocorpVault</span>
 
 
 <span class="n">vault</span> <span class="o">=</span> <span class="n">RobocorpVault</span><span class="p">()</span>
@@ -322,8 +322,8 @@ library.</p>
 </pre></div>
 </div>
 <p><strong>Python example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Hubspot</span> <span class="kn">import</span> <span class="n">Hubspot</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">RobocorpVault</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Hubspot</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hubspot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Vault</span><span class="w"> </span><span class="kn">import</span> <span class="n">RobocorpVault</span>
 
 <span class="n">vault</span> <span class="o">=</span> <span class="n">RobocorpVault</span><span class="p">()</span>
 <span class="n">secrets</span> <span class="o">=</span> <span class="n">vault</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;hubspot&quot;</span><span class="p">)</span>
@@ -1121,8 +1121,8 @@ they’ll be combined using a logical OR operator.</p></li>
 </ul>
 <p>You can include a maximum of three filterGroups with up to three
 filters in each group.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Hubspot</span> <span class="kn">import</span> <span class="n">Hubspot</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">RobocorpVault</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Hubspot</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hubspot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Vault</span><span class="w"> </span><span class="kn">import</span> <span class="n">RobocorpVault</span>
 
 <span class="n">vault</span> <span class="o">=</span> <span class="n">RobocorpVault</span><span class="p">()</span>
 <span class="n">secrets</span> <span class="o">=</span> <span class="n">vault</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;hubspot&quot;</span><span class="p">)</span>

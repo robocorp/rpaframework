@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -245,8 +245,8 @@ before starting the process (note. different start keyword than above).</p>
 </div>
 <p><strong>Python</strong></p>
 <p>List work items in Control Room and retry failed items.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.Process</span> <span class="kn">import</span> <span class="n">Process</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Process</span><span class="w"> </span><span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Vault</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vault</span>
 
 <span class="n">secrets</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;ProcessAPI&quot;</span><span class="p">)</span>
 <span class="n">process</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span>
@@ -256,7 +256,7 @@ before starting the process (note. different start keyword than above).</p>
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">retry_failed_items</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">retry_failed_items</span><span class="p">():</span>
     <span class="n">items</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">list_process_work_items</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;FAILED&quot;</span><span class="p">:</span>
@@ -269,10 +269,10 @@ before starting the process (note. different start keyword than above).</p>
 </pre></div>
 </div>
 <p>Download from process runs artifacts all “.xlsx” files</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.Process</span> <span class="kn">import</span> <span class="n">Process</span>
-<span class="kn">from</span> <span class="nn">RPA.HTTP</span> <span class="kn">import</span> <span class="n">HTTP</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.Process</span><span class="w"> </span><span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.HTTP</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTP</span>
 
-<span class="k">def</span> <span class="nf">download_artifacts_matching</span><span class="p">(</span><span class="n">filematch</span><span class="o">=</span><span class="s2">&quot;.xlsx&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">download_artifacts_matching</span><span class="p">(</span><span class="n">filematch</span><span class="o">=</span><span class="s2">&quot;.xlsx&quot;</span><span class="p">):</span>
     <span class="n">work_items</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">list_process_work_items</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">work_items</span><span class="p">:</span>
         <span class="n">artifacts</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">list_run_artifacts</span><span class="p">(</span>

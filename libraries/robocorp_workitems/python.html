@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -293,10 +293,10 @@ loaded implicitly when the suite starts.</p>
 <p><strong>Python</strong></p>
 <p>The library can also be used through Python, but it does not implicitly
 load the first work item.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.WorkItems</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkItems</span>
 
-<span class="k">def</span> <span class="nf">list_variables</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_variables</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
     <span class="n">library</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
     <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
 
@@ -392,7 +392,7 @@ of local file is used.</p></li>
 <span class="p">    </span><span class="nf">Save work item</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.WorkItems</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkItems</span>
 
 <span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
 <span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
@@ -449,7 +449,7 @@ output work item.</p></li>
 </pre></div>
 </div>
 <p><strong>Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.WorkItems</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkItems</span>
 
 <span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
 <span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
@@ -522,17 +522,17 @@ keyword/function call if truthy</p></li>
 </pre></div>
 </div>
 <p>OR</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.WorkItems</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkItems</span>
 
 <span class="n">library</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">log_payload</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_payload</span><span class="p">():</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_work_item_payload</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">log_payloads</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_payloads</span><span class="p">():</span>
     <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
     <span class="n">lengths</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">for_each_input_work_item</span><span class="p">(</span><span class="n">log_payload</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Payload lengths: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">lengths</span><span class="p">)</span>
@@ -656,7 +656,7 @@ or default value if defined and key does not exist.</p>
 </pre></div>
 </div>
 <p>Python Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.WorkItems</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkItems</span>
 
 <span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
 <span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
@@ -779,11 +779,11 @@ details regarding the sent exception</p></li>
 </pre></div>
 </div>
 <p>OR</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">WorkItems</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.WorkItems</span><span class="w"> </span><span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">WorkItems</span>
 
 <span class="n">library</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">process_and_set_state</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_and_set_state</span><span class="p">():</span>
     <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
     <span class="n">library</span><span class="o">.</span><span class="n">release_input_work_item</span><span class="p">(</span><span class="n">State</span><span class="o">.</span><span class="n">DONE</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">library</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>  <span class="c1"># would print &quot;State.DONE&quot;</span>
@@ -868,7 +868,7 @@ instance.</p>
 </pre></div>
 </div>
 <p>Python Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.WorkItems</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkItems</span>
 
 <span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
 <span class="n">parent_wi</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
@@ -936,7 +936,7 @@ to a <code class="docutils literal notranslate"><span class="pre">dict</span></c
 </pre></div>
 </div>
 <p>Python Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Robocorp.WorkItems</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkItems</span>
 
 <span class="n">customers</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Apple&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Microsoft&quot;</span><span class="p">}]</span>
 <span class="n">wi</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>

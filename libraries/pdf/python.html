@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Python API &mdash; RPA Framework  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
 
@@ -206,24 +206,24 @@ results, you have to use specialized external services wrapped by the
 <span class="p">    ...                  </span><span class="s">use_appearances_writer=</span><span class="p">${</span><span class="nv">True</span><span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.PDF</span> <span class="kn">import</span> <span class="n">PDF</span>
-<span class="kn">from</span> <span class="nn">robot.libraries.String</span> <span class="kn">import</span> <span class="n">String</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">robot.libraries.String</span><span class="w"> </span><span class="kn">import</span> <span class="n">String</span>
 
 <span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
 <span class="n">string</span> <span class="o">=</span> <span class="n">String</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">extract_data_from_first_page</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_data_from_first_page</span><span class="p">():</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_text_from_pdf</span><span class="p">(</span><span class="s2">&quot;report.pdf&quot;</span><span class="p">)</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">get_lines_matching_regexp</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;.+pain.+&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_invoice_number</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_invoice_number</span><span class="p">():</span>
     <span class="n">pdf</span><span class="o">.</span><span class="n">open_pdf</span><span class="p">(</span><span class="s2">&quot;invoice.pdf&quot;</span><span class="p">)</span>
     <span class="n">matches</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">find_text</span><span class="p">(</span><span class="s2">&quot;Invoice Number&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">fill_form_fields</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fill_form_fields</span><span class="p">():</span>
     <span class="n">pdf</span><span class="o">.</span><span class="n">switch_to_pdf</span><span class="p">(</span><span class="s2">&quot;form.pdf&quot;</span><span class="p">)</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_input_fields</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-16&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
