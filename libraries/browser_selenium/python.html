@@ -314,7 +314,7 @@ a WebElement that should be acted on:</p>
 <div class="line">Custom Locator Strategy | [Arguments] | ${browser} | ${locator} | ${tag} | ${constraints} |</div>
 <div class="line-block">
 <div class="line">| ${element}= | Execute Javascript | return window.document.getElementById(‘${locator}’); |</div>
-<div class="line">| [Return] | ${element} |</div>
+<div class="line">| RETURN | ${element} |</div>
 </div>
 </div>
 <p>This keyword is a reimplementation of the basic functionality of the
@@ -392,6 +392,98 @@ with browsers, and windows attached to these browsers.</p>
 contains the following items: <a class="reference external" href="https://robotframework.org/">https://robotframework.org/</a>,
 <a class="reference external" href="https://robocon.io/">https://robocon.io/</a>, <a class="reference external" href="https://github.com/robotframework/">https://github.com/robotframework/</a>’
 and ‘<a class="reference external" href="https://github.com/">https://github.com/</a>.</p>
+<p>= Browser and Driver options and service class =</p>
+<p>This section talks about how to configure either the browser or
+the driver using the options and service arguments of the <cite>Open
+Browser</cite> keyword.</p>
+<p>== Configuring the browser using the Selenium Options ==</p>
+<p>As noted within the keyword documentation for <cite>Open Browser</cite>, its
+<code class="docutils literal notranslate"><span class="pre">options</span></code> argument accepts Selenium options in two different
+formats: as a string and as Python object which is an instance of
+the Selenium options class.</p>
+<p>=== Options string format ===</p>
+<p>The string format allows defining Selenium options methods
+or attributes and their arguments in Robot Framework test data.
+The method and attributes names are case and space sensitive and
+must match to the Selenium options methods and attributes names.
+When defining a method, it must be defined in a similar way as in
+python: method name, opening parenthesis, zero to many arguments
+and closing parenthesis. If there is a need to define multiple
+arguments for a single method, arguments must be separated with
+comma, just like in Python. Example: <cite>add_argument(”–headless”)</cite>
+or <cite>add_experimental_option(“key”, “value”)</cite>. Attributes are
+defined in a similar way as in Python: attribute name, equal sign,
+and attribute value. Example, <cite>headless=True</cite>. Multiple methods
+and attributes must be separated by a semicolon. Example:
+<cite>add_argument(”–headless”);add_argument(”–start-maximized”)</cite>.</p>
+<p>Arguments allow defining Python data types and arguments are
+evaluated by using Python
+[<a class="reference external" href="https://docs.python.org/3/library/ast.html#ast">https://docs.python.org/3/library/ast.html#ast</a>.literal_eval|ast.literal_eval].
+Strings must be quoted with single or double quotes, example “value”
+or ‘value’. It is also possible to define other Python builtin
+data types, example <cite>True</cite> or <cite>None</cite>, by not using quotes
+around the arguments.</p>
+<p>The string format is space friendly. Usually, spaces do not alter
+the defining methods or attributes. There are two exceptions.
+In some Robot Framework test data formats, two or more spaces are
+considered as cell separator and instead of defining a single
+argument, two or more arguments may be defined. Spaces in string
+arguments are not removed and are left as is. Example
+<cite>add_argument ( “–headless” )</cite> is same as
+<cite>add_argument(”–headless”)</cite>. But <cite>add_argument(” –headless “)</cite> is
+not same same as <cite>add_argument ( “–headless” )</cite>, because
+spaces inside of quotes are not removed. Please note that if
+options string contains backslash, example a Windows OS path,
+the backslash needs escaping both in Robot Framework data and
+in Python side. This means single backslash must be writen using
+four backslash characters. Example, Windows path:
+“C:pathtoprofile” must be written as
+“C:\\path\to\\profile”. Another way to write
+backslash is use Python
+[https://docs.python.org/3/reference/lexical_analysis.html#string-and-bytes-literals|raw strings]
+and example write: r”C:\path\to\profile”.</p>
+<p>=== Selenium Options as Python class ===</p>
+<p>As last format, <code class="docutils literal notranslate"><span class="pre">options</span></code> argument also supports receiving
+the Selenium options as Python class instance. In this case, the
+instance is used as-is and the SeleniumLibrary will not convert
+the instance to other formats.
+For example, if the following code return value is saved to
+<cite>${options}</cite> variable in the Robot Framework data:
+| options = webdriver.ChromeOptions()
+| options.add_argument(’–disable-dev-shm-usage’)
+| return options</p>
+<p>Then the <cite>${options}</cite> variable can be used as an argument to
+<code class="docutils literal notranslate"><span class="pre">options</span></code>.</p>
+<p>Example the <code class="docutils literal notranslate"><span class="pre">options</span></code> argument can be used to launch Chomium-based
+applications which utilize the
+[<a class="reference external" href="https://bitbucket.org/chromiumembedded/cef/wiki">https://bitbucket.org/chromiumembedded/cef/wiki</a>/UsingChromeDriver|Chromium Embedded Framework]
+. To launch Chromium-based application, use <code class="docutils literal notranslate"><span class="pre">options</span></code> to define
+<cite>binary_location</cite> attribute and use <cite>add_argument</cite> method to define
+<cite>remote-debugging-port</cite> port for the application. Once the browser
+is opened, the test can interact with the embedded web-content of
+the system under test.</p>
+<p>== Configuring the driver using the Service class ==</p>
+<p>With the <code class="docutils literal notranslate"><span class="pre">service</span></code> argument, one can setup and configure the driver. For example
+one can set the driver location and/port or specify the command line arguments. There
+are several browser specific attributes related to logging as well. For the various
+Service Class attributes refer to
+[<a class="reference external" href="https://www.selenium.dev/documentation/webdriver/drivers/service/">https://www.selenium.dev/documentation/webdriver/drivers/service/</a><a href="#id9"><span class="problematic" id="id10">|</span></a>the Selenium documentation]
+. Currently the <code class="docutils literal notranslate"><span class="pre">service</span></code> argument only accepts Selenium service in the string format.</p>
+<p>=== Service string format ===</p>
+<p>The string format allows for defining Selenium service attributes
+and their values in the <cite>Open Browser</cite> keyword. The attributes names
+are case and space sensitive and must match to the Selenium attributes
+names. Attributes are defined in a similar way as in Python: attribute
+name, equal sign, and attribute value. Example, <cite>port=1234</cite>. Multiple
+attributes must be separated by a semicolon. Example:
+<cite>executable_path=’/path/to/driver’;port=1234</cite>. Don’t have duplicate
+attributes, like <cite>service_args=[’–append-log’, ‘–readable-timestamp’];
+service_args=[’–log-level=DEBUG’]</cite> as the second will override the first.
+Instead combine them as in
+<cite>service_args=[’–append-log’, ‘–readable-timestamp’, ‘–log-level=DEBUG’]</cite></p>
+<p>Arguments allow defining Python data types and arguments are
+evaluated by using Python. Strings must be quoted with single
+or double quotes, example “value” or ‘value’</p>
 <p>= Timeouts, waits, and delays =</p>
 <p>This section discusses different ways how to wait for elements to
 appear on web pages and to slow down execution speed otherwise.
@@ -475,6 +567,39 @@ functionality without creating a new library or hacking the source code. See
 [<a class="reference external" href="https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending">https://github.com/robotframework/SeleniumLibrary/blob/master/docs/extending/extending</a>.rst#Plugins|plugin API]
 documentation for further details.</p>
 <p>Plugin API is new SeleniumLibrary 4.0</p>
+<p>= Language =</p>
+<p>SeleniumLibrary offers the possibility to translate keyword names and documentation to new language. If language
+is defined, SeleniumLibrary will search from
+[<a class="reference external" href="https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#module-search-path">https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#module-search-path</a> | module search path]
+for Python packages starting with <cite>robotframework-seleniumlibrary-translation</cite> by using the
+[<a class="reference external" href="https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/">https://packaging.python.org/en/latest/guides/creating-and-discovering-plugins/</a> | Python pluging API]. The Library
+is using naming convention to find Python plugins.</p>
+<p>The package must implement a single API call, <code class="docutils literal notranslate"><span class="pre">get_language</span></code> without any arguments. The method must return a
+dictionary containing two keys: <code class="docutils literal notranslate"><span class="pre">language</span></code> and <code class="docutils literal notranslate"><span class="pre">path</span></code>. The language key value defines which language
+the package contains. Also the value should match (case insensitive) the library <code class="docutils literal notranslate"><span class="pre">language</span></code> import parameter.
+The path parameter value should be full path to the translation file.</p>
+<p>== Translation file ==</p>
+<p>The file name or extension is not important, but data must be in [<a class="reference external" href="https://www.json.org/json-en.html">https://www.json.org/json-en.html</a> | json]
+format. The keys of json are the methods names, not the keyword names, which implements keywords. Value of
+key is json object which contains two keys: <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">doc</span></code>. The <code class="docutils literal notranslate"><span class="pre">name</span></code> key contains the keyword
+translated name and <cite>doc</cite> contains translated documentation. Providing doc and name are optional, example
+translation json file can only provide translations to keyword names or only to documentation. But it is
+always recommended to provide translation to both name and doc. Special key <code class="docutils literal notranslate"><span class="pre">__intro__</span></code> is for class level
+documentation and <code class="docutils literal notranslate"><span class="pre">__init__</span></code> is for init level documentation. These special values <code class="docutils literal notranslate"><span class="pre">name</span></code> can not be
+translated, instead <code class="docutils literal notranslate"><span class="pre">name</span></code> should be kept the same.</p>
+<p>== Generating template translation file ==</p>
+<p>Template translation file, with English language can be created by running:
+<cite>rfselib translation /path/to/translation.json</cite> command. Command does not provide translations to other
+languages, it only provides easy way to create full list keywords and their documentation in correct
+format. It is also possible to add keywords from library plugins by providing <cite>–plugins</cite> arguments
+to command. Example: <cite>rfselib translation –plugins myplugin.SomePlugin /path/to/translation.json</cite> The
+generated json file contains <cite>sha256</cite> key, which contains the sha256 sum of the library documentation.
+The sha256 sum is used by <cite>rfselib translation –compare /path/to/translation.json</cite> command, which compares
+the translation to the library and prints outs a table which tells if there are changes needed for
+the translation file.</p>
+<p>Example project for translation can be found from
+[<a class="reference external" href="https://github.com/MarketSquare/robotframework-seleniumlibrary-translation-fi">https://github.com/MarketSquare/robotframework-seleniumlibrary-translation-fi</a> | robotframework-seleniumlibrary-translation-fi]
+repository.</p>
 </div></blockquote>
 <p>= Auto closing browser =</p>
 <blockquote>
@@ -516,7 +641,7 @@ false (see <cite>Boolean arguments</cite>).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.3.0'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'6.7.1'</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1455,7 +1580,7 @@ document. By default, it is saved to the output folder with the default name
 of <cite>out.pdf</cite>.
 Parameter <code class="docutils literal notranslate"><span class="pre">params</span></code> specify parameters for the browser printing method. By
 default, it uses the following values:
-<a href="#id9"><span class="problematic" id="id10">``</span></a>`
+<a href="#id11"><span class="problematic" id="id12">``</span></a>`
 {</p>
 <blockquote>
 <div><p>“landscape”: False,
@@ -1463,8 +1588,8 @@ default, it uses the following values:
 “printBackground”: True,
 “preferCSSPageSize”: True,</p>
 </div></blockquote>
-<section id="id11">
-<h3>}<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<section id="id13">
+<h3>}<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
 </section>
 </dd></dl>
 

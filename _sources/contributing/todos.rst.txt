@@ -2,15 +2,6 @@
 TODO
 ****
 
-RPA.Database:
-=============
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "258", "take autocommit into use for all database modules"
-
 RPA.Desktop.Windows:
 ====================
 
@@ -18,7 +9,6 @@ RPA.Desktop.Windows:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "656", "Handle too compled method"
    "1141", "return more valuable information about what should"
    "1394", "supporting multiple search criterias at same time to identify ONE element"
    "1420", "supporting multiple search criterias at same time to identify ONE element"
@@ -61,15 +51,6 @@ RPA.Desktop.keywords.screen:
 
    "182", "Draw a circle instead?"
 
-RPA.Email.Exchange:
-===================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "546", "The exchangelib does not seem to provide any straightforward way of"
-
 RPA.Email.ImapSmtp:
 ===================
 
@@ -78,15 +59,6 @@ RPA.Email.ImapSmtp:
    :widths: 10, 40
 
    "958", "mypy should handle enum exhaustivity validation"
-
-RPA.Excel.Files:
-================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "2258", "target worksheet cell formatting is overwritten."
 
 RPA.FileSystem:
 ===============
@@ -119,7 +91,6 @@ RPA.JavaAccessBridge:
    :widths: 10, 40
 
    "440", "add keyword for taking screenshots of elements and window"
-   "441", "implement proper XPath syntax support"
 
 RPA.MSGraph:
 ============
@@ -130,15 +101,6 @@ RPA.MSGraph:
 
    "122", "Implement a `TokenBackend` that uses Robocorp vault,"
    "297", "Does this fail when we define a path we want?"
-
-RPA.Robocorp.Process:
-=====================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "209", "Add support for all Process API endpoints"
 
 RPA.Smartsheet:
 ===============
@@ -159,11 +121,238 @@ RPA.Tasks:
 
    "676", "Move all result object modifying here"
 
-RPA.application:
+checkers.base.name_checker.checker:
+===================================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "621", "when py3.12 is minimum, remove this condition"
+
+checkers.classes.class_checker:
+===============================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "1343", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "2264", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+
+checkers.design_analysis:
+=========================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "26", "Unknown option value for 'disable', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
+
+checkers.imports:
+=================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "795", "# TODO - this isn't right for multiple on the same line..."
+
+checkers.logging:
+=================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "26", "Unknown option value for 'disable', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
+
+checkers.stdlib:
 ================
 
 .. csv-table::
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "47", "(cmin764; 16 Aug 2023): Create a `handles_com_error` decorator if we get a little"
+   "734", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+
+checkers.strings:
+=================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "69", "Unknown option value for 'disable', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
+
+checkers.symilar:
+=================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "831", "4.0 Fix current_name"
+
+checkers.typecheck:
+===================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "610", "The typing of the second return variable is actually Literal[0,1]"
+   "612", "The typing of the third return variable can be narrowed to a Literal"
+   "2051", "This check was disabled (by adding the leading underscore)"
+   "2059", "This check was disabled (by adding the leading underscore)"
+
+checkers.utils:
+===============
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "603", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "1374", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "2054", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+
+checkers.variables:
+===================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "1367", "(performance), merging both checks would streamline this"
+   "2627", "4.0: Consider using utils.is_terminating_func"
+
+config._pylint_config.utils:
+============================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "59", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
+   "78", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
+   "104", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
+
+config.callback_actions:
+========================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "246", "4.x: Deprecate this after the auto-upgrade functionality of"
+
+config.config_initialization:
+=============================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "113", "Change this to be checked only when upgrading the configuration"
+
+config.utils:
+=============
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "190", "Unknown option value for 'disable', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
+
+extensions.docparams:
+=====================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "478", "Unknown option value for 'disable', expected a valid pylint message and got 'useless-param-doc'"
+
+lint.message_state_handler:
+===========================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "371", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+
+lint.pylinter:
+==============
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "98", "Unknown option value for 'disable-next', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
+   "291", "Deprecate passing the pylintrc parameter"
+   "676", "Move the parallel invocation into step 3 of the checking process"
+
+pyreverse.diagrams:
+===================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "89", "Specify 'Any' after refactor of `DiagramEntity`"
+
+pyreverse.dot_printer:
+======================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "30", "Unknown option value for 'disable-next', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
+
+testutils._primer.primer_run_command:
+=====================================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "84", "Find a way to allow cyclic-import and compare output correctly"
+
+testutils.checker_test_case:
+============================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "22", "Figure out way to type this as type[BaseChecker] while also"
+
+testutils.functional.test_file:
+===============================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "59", "4.0: Deprecate FunctionalTestFile.options and related code"
+
+testutils.unittest_linter:
+==========================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "35", "Make node non optional"
+
+utils.ast_walker:
+=================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "81", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
