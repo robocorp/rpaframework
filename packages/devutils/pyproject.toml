@@ -27,13 +27,13 @@ semver = "^3.0.0"  # keep in sync with requirements.txt
 pylint = "^3.3.2"
 robotframework-docgen = "^0.17.0"
 colorama = "^0.4.5"
-keyring = "^24.2.0"
+keyring = "^25.1.0"
 PyYAML = ">=5.4.1,<7.0.0"
 mock = "^5.0.0"
-poetry = "^1.6.1"
+poetry = ">1.6.1"
 toml = "^0.10.2"
 importlib-metadata = ">=4.13.0"
-moto = "3.1.8"
+moto = "5.1.0"
 
 [build-system]
 requires = ["poetry-core"]
