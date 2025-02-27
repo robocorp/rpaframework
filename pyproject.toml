@@ -3,6 +3,7 @@ name = "rpaframework-meta"
 version = "0.0.1"
 description = "Metapackage for RPA Framework"
 authors = ["RPA Framework <rpafw@robocorp.com>"]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.9"
