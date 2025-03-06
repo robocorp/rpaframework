@@ -100,18 +100,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.37.5"
+version = "1.37.6"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "boto3-1.37.5-py3-none-any.whl", hash = "sha256:12166353519aca0cc8d9dcfbbb0d38f8915955a5912b8cb241b2b2314f0dbc14"},
-    {file = "boto3-1.37.5.tar.gz", hash = "sha256:ae6e7048beeaa4478368e554a4b290e3928beb0ae8d8767d108d72381a81af30"},
+    {file = "boto3-1.37.6-py3-none-any.whl", hash = "sha256:4c661389e68437a3fbc1f63decea24b88f7175e022c68622848d47fdf6e0144f"},
+    {file = "boto3-1.37.6.tar.gz", hash = "sha256:e2f4a1edb7e6dbd541c2962117e1c6fea8d5a42788c441a958700a43a3ca7c47"},
 ]
 
 [package.dependencies]
-botocore = ">=1.37.5,<1.38.0"
+botocore = ">=1.37.6,<1.38.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.11.0,<0.12.0"
 
@@ -120,14 +120,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.37.5"
+version = "1.37.6"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "botocore-1.37.5-py3-none-any.whl", hash = "sha256:e5cfbb8026d5b4fadd9b3a18b61d238a41a8b8f620ab75873dc1467d456150d6"},
-    {file = "botocore-1.37.5.tar.gz", hash = "sha256:f8f526d33ae74d242c577e0440b57b9ec7d53edd41db211155ec8087fe7a5a21"},
+    {file = "botocore-1.37.6-py3-none-any.whl", hash = "sha256:cd282fe9c8adbb55a08c7290982a98ac6cc4507fa1c493f48bc43fd6c8376a57"},
+    {file = "botocore-1.37.6.tar.gz", hash = "sha256:2cb121a403cbec047d76e2401a402a6b2efd3309169037fbac588e8f7125aec4"},
 ]
 
 [package.dependencies]
@@ -3363,30 +3363,11 @@ robotframework = ">=2.9"
 
 [[package]]
 name = "robotframework-seleniumlibrary"
-version = "6.3.0"
-description = "Web testing library for Robot Framework"
-optional = false
-python-versions = "<4,>=3.6"
-groups = ["main"]
-markers = "python_version >= \"3.12\""
-files = [
-    {file = "robotframework-seleniumlibrary-6.3.0.tar.gz", hash = "sha256:5846f5ca4f1729567f9c8b10a3bb191601c654e6c04b952194310434da8e6826"},
-    {file = "robotframework_seleniumlibrary-6.3.0-py2.py3-none-any.whl", hash = "sha256:ae16e3d88e9779157bdfba3405c34c2a83965652d2c7a1de9c1ea9734302cc24"},
-]
-
-[package.dependencies]
-robotframework = ">=4.1.3"
-robotframework-pythonlibcore = ">=3.0.0"
-selenium = ">=4.3.0"
-
-[[package]]
-name = "robotframework-seleniumlibrary"
 version = "6.7.1"
 description = "Web testing library for Robot Framework"
 optional = false
 python-versions = "<3.14,>=3.8"
 groups = ["main"]
-markers = "python_version < \"3.12\""
 files = [
     {file = "robotframework_seleniumlibrary-6.7.1-py2.py3-none-any.whl", hash = "sha256:88f02ec8e8a3be8bf415386bb248bbe6ca547e99a05f35d7e7b4026f8297439f"},
     {file = "robotframework_seleniumlibrary-6.7.1.tar.gz", hash = "sha256:3f3aaf7d683b3d619de0ce4849ff9ac33117dd8630f4d7528b4bf0a6d06d6616"},
@@ -3662,21 +3643,21 @@ files = [
 
 [[package]]
 name = "s3transfer"
-version = "0.11.3"
+version = "0.11.4"
 description = "An Amazon S3 Transfer Manager"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "s3transfer-0.11.3-py3-none-any.whl", hash = "sha256:ca855bdeb885174b5ffa95b9913622459d4ad8e331fc98eb01e6d5eb6a30655d"},
-    {file = "s3transfer-0.11.3.tar.gz", hash = "sha256:edae4977e3a122445660c7c114bba949f9d191bae3b34a096f18a1c8c354527a"},
+    {file = "s3transfer-0.11.4-py3-none-any.whl", hash = "sha256:ac265fa68318763a03bf2dc4f39d5cbd6a9e178d81cc9483ad27da33637e320d"},
+    {file = "s3transfer-0.11.4.tar.gz", hash = "sha256:559f161658e1cf0a911f45940552c696735f5c74e64362e515f333ebed87d679"},
 ]
 
 [package.dependencies]
-botocore = ">=1.36.0,<2.0a.0"
+botocore = ">=1.37.4,<2.0a.0"
 
 [package.extras]
-crt = ["botocore[crt] (>=1.36.0,<2.0a.0)"]
+crt = ["botocore[crt] (>=1.37.4,<2.0a.0)"]
 
 [[package]]
 name = "secretstorage"
@@ -4655,5 +4636,5 @@ cffi = ["cffi (>=1.11)"]
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">3.9.1,<4.0"
-content-hash = "e5b21c94952697fc97c77ce2a26b4a96f7a0eb643d5c66f45bd9d4a22a6cfe4c"
+python-versions = ">3.9.1,<3.14"
+content-hash = "a8ec45db2d5aa612201c065a8242293d1cb36945ba317531471a20e7642845be"

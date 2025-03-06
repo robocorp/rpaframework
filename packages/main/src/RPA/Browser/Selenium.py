@@ -143,6 +143,7 @@ class BrowserManagementKeywords(_BrowserManagementKeywords):
         options: Optional[OptionsType] = None,
         service_log_path: Optional[str] = None,
         executable_path: Optional[str] = None,
+        service: Any = None,
     ) -> str:
         if url:
             url = ensure_scheme(url, default=self._default_scheme)
@@ -158,6 +159,7 @@ class BrowserManagementKeywords(_BrowserManagementKeywords):
             options=options,
             service_log_path=service_log_path,
             executable_path=executable_path,
+            service=service,
         )
 
     open_browser.__doc__ = _BrowserManagementKeywords.open_browser.__doc__
@@ -2042,9 +2044,9 @@ class Selenium(SeleniumLibrary):
         if download_pdf:
             # Disable the viewer when downloading is preferred instead of viewing.
             firefox_prefs["browser.download.viewableInternally.enabledTypes"] = ""
-            firefox_prefs["browser.helperApps.neverAsk.saveToDisk"] += (
-                " application/pdf"
-            )
+            firefox_prefs[
+                "browser.helperApps.neverAsk.saveToDisk"
+            ] += " application/pdf"
         self.download_preferences = {
             "firefox": firefox_prefs,
         }
