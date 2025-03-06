@@ -16,6 +16,26 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+30.0.1 - 06 Mar 2025
+--------------------
+
+- Security release regarding dependency package ``cryptography``
+- Compability fix for **RPA.Browser.Selenium** with ``robotframework-seleniumlibrary``
+
+09 Feb 2025
+-----------
+
+- ``rpaframework`` **30.0.0**
+- ``rpaframework-aws`` **6.0.0**
+- ``rpaframework-assistant`` **4.0.0**
+- ``rpaframework-google`` **10.0.0**
+- ``rpaframework-hubspot`` **2.0.0**
+- ``rpaframework-openai`` **2.0.0**
+- ``rpaframework-pdf`` **8.0.0**
+- ``rpaframework-recognition`` **6.0.0**
+- ``rpaframework-windows`` **9.0.0**
+
 31 Dec 2024
 --------------------
 
