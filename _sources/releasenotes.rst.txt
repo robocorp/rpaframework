@@ -20,6 +20,7 @@ Latest versions
 ---------------------
 
 - Update ``rpaframework-pdf`` to version **8.0.1**. Fix issue with image files not being added to PDF.
+  Fix in ``RPA.PDF.add_files_to_pdf`` keyword (:pr:`1218`)
 
 
 30.0.1 - 06 Mar 2025
