@@ -1330,7 +1330,7 @@ class DocumentKeywords(LibraryContext):
                         self.logger.warning(
                             "File %s does not have page %d", file_to_add, page_nr
                         )
-            elif image_filetype in ["png", "jpg", "jpeg", "gif"]:
+            elif image_filetype.lower() in [".png", ".jpg", ".jpeg", ".gif"]:
                 temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
                 settings = self._get_image_settings(str(file_to_add), parameters)
                 if settings["format"]:
