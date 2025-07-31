@@ -36,7 +36,7 @@ rpaframework-core = "^12.0.1"
 robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
 robotframework-pythonlibcore = "^4.2.0"
 "pdfminer.six" = "20221105"
-pypdf = "^3.16.2"
+pypdf = "^5.9.0"
 fpdf2 = "2.7.5"
 
 [tool.poetry.group.dev.dependencies]
