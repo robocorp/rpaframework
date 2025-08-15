@@ -45,8 +45,8 @@ def build(ctx, test=True):
         if is_robot_build:
             libspec.clean_libspec(ctx)
             libspec.build_libspec(ctx)
-        shell.poetry(ctx, "build -vv -f sdist")
-        shell.poetry(ctx, "build -vv -f wheel")
+        shell.run(ctx, "uv", "build --sdist")
+        shell.run(ctx, "uv", "build --wheel")
         if is_robot_build:
             libspec.clean_libspec(ctx)
 
@@ -66,9 +66,9 @@ def version(ctx, version=None):
     or bump rule is supplied, it will update the version accordingly.
     """
     if version is not None:
-        shell.poetry(ctx, f"version {version}", echo=False)
+        shell.uv(ctx, f"version --bump {version}", echo=False)
     else:
-        shell.poetry(ctx, "version", echo=False)
+        shell.uv(ctx, "version", echo=False)
 
 
 @task(
@@ -145,9 +145,9 @@ def publish(ctx, ci=False, build_=True, version=None, yes_to_all=False):
     else:
         confirm = True
     if ci and confirm:
-        shell.poetry(ctx, "publish -v --no-interaction --repository devpi")
+        shell.uv(ctx, "publish --repository devpi")
     elif confirm:
-        shell.poetry(ctx, "publish -v")
+        shell.uv(ctx, "publish")
         shell.meta_tool(ctx, "tag")
     else:
         print("Aborting publish...")

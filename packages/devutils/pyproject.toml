@@ -1,40 +1,45 @@
-[tool.poetry]
+[project]
 name = "rpaframework-devutils"
 version = "0.0.1"
 description = "Utilities for development in monorepo."
 authors = [
-	"Mika H. <mika.hanninen@gmail.com>"
+	{name = "Mika H.", email = "mika.hanninen@gmail.com"}
 ]
 readme = "README.md"
-packages = [{include = "devutils", from="src"}]
+requires-python = ">=3.9.1"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-ruff = "^0.1.14"
-mypy = "^1.4.1"
-pytest = "^7.2.2"
-pytest-xdist = "^3.2.1"
-pytest-regressions = "1.0.6"
-pytest-cov = "^4.0.0"
-pytest-mock = "^3.8.2"
-pytest-env = "^0.6.2"
-pytest-freezegun = "^0.4.2"
-isort = { version = "^5.12.0", python = "^3.8" }
-types-invoke = "^2.0"
-invoke = "^2.2.0"  # keep in sync with requirements.txt
-tomlkit = "^0.11.8"  # keep in sync with requirements.txt
-semver = "^3.0.0"  # keep in sync with requirements.txt
-pylint = "^3.3.2"
-robotframework-docgen = "^0.17.0"
-colorama = "^0.4.5"
-keyring = "^25.1.0"
-PyYAML = ">=5.4.1,<7.0.0"
-mock = "^5.0.0"
-poetry = ">1.6.1"
-toml = "^0.10.2"
-importlib-metadata = ">=4.13.0"
-moto = "5.1.0"
+dependencies = [
+	"ruff>=0.1.14",
+	"mypy>=1.4.1",
+	"pytest>=7.2.2",
+	"pytest-xdist>=3.2.1",
+	"pytest-regressions==1.0.6",
+	"pytest-cov>=4.0.0",
+	"pytest-mock>=3.8.2",
+	"pytest-env>=0.6.2",
+	"pytest-freezegun>=0.4.2",
+	"isort>=5.12.0",
+	"types-invoke>=2.0",
+	"invoke>=2.2.0",  # keep in sync with requirements.txt
+	"tomlkit>=0.11.8",  # keep in sync with requirements.txt
+	"semver>=3.0.0",  # keep in sync with requirements.txt
+	"pylint>=3.3.2",
+	"robotframework-docgen>=0.17.0",
+	"colorama>=0.4.5",
+	"keyring>=25.1.0",
+	"PyYAML>=5.4.1,<7.0.0",
+	"mock>=5.0.0",
+	"toml>=0.10.2",
+	"importlib-metadata>=4.13.0",
+	"moto==5.1.0"
+]
+
+[tool.uv]
+package = true
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/devutils"]

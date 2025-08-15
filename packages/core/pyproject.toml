@@ -1,14 +1,11 @@
-[tool.poetry]
+[project]
 name = "rpaframework-core"
-version = "12.0.1"
+version = "12.0.2"
 description = "Core utilities used by RPA Framework"
-authors = ["RPA Framework <rpafw@robocorp.com>"]
-license = "Apache-2.0"
+authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
+license = {text = "Apache-2.0"}
 readme = "README.rst"
-
-homepage = "https://rpaframework.org/"
-documentation = "https://rpaframework.org/"
-repository = "https://github.com/robocorp/rpaframework"
+requires-python = ">=3.9.1"
 
 keywords = ["robotframework", "rpa", "automation"]
 classifiers = [
@@ -26,24 +23,37 @@ classifiers = [
 	"Programming Language :: Python :: 3.12",
 ]
 
-packages = [{ include = "RPA", from = "src" }]
+dependencies = [
+	"selenium >=4.0.0, <5.0.0",
+	"webdriver-manager >=4.0.2, <5.0.0",
+	"psutil >=5.9.0; platform_system == 'Windows'",
+	"pywin32 >=300, <400; platform_system == 'Windows' and python_version != '3.8.1'",
+	"uiautomation >=2.0.15; platform_system == 'Windows'",
+	"pillow >=10.2.0",
+	"packaging >=24.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-selenium = "^4.6.1"
-webdriver-manager = ">=4.0.2,<4.1.0"
-psutil = { version = "^5.9.0", platform = "win32" }
-pywin32 = { version = ">=300,<307", platform = "win32", python = "!=3.8.1" }
-uiautomation = { version = "^2.0.15", platform = "win32" }
-pillow = "^10.2.0"
-packaging = "^24.0"
+[project.urls]
+homepage = "https://rpaframework.org/"
+documentation = "https://rpaframework.org/"
+repository = "https://github.com/robocorp/rpaframework"
 
-[tool.poetry.group.dev.dependencies]
-rpaframework-devutils = { path = "../devutils/", develop = true }
+[dependency-groups]
+dev = [
+	"pytest>=7.0.0",
+	"pytest-cov>=4.0.0",
+	"pylint>=3.3.2",
+]
+
+[tool.uv]
+package = true
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/RPA"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=src --cov-report term-missing --cov-branch"

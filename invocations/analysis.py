@@ -75,7 +75,7 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
         ignore_codes_cmd = "--extend-ignore D,RST"
         all_docstrings_cmd = ""
     if getattr(ctx, "is_meta", False):
-        shell.poetry(
+        shell.uv(
             ctx,
             f"run py -m sphinxlint {docs.DOCS_SOURCE_DIR} {MAIN_README}",
             warn=warn_setting,
@@ -99,7 +99,7 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
         #     f"run flake8 --config {flake8_config} {ignore_codes_cmd} src",
         #     warn=warn_setting,
         # )
-        shell.poetry(
+        shell.uv(
             ctx,
             f"run pylint --rcfile {pylint_config}{pylint_jobs} src",
             warn=warn_setting,

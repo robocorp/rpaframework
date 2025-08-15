@@ -3,10 +3,11 @@ import functools
 import logging
 import os
 import platform
+import requests
 import stat
 from pathlib import Path
 from typing import Dict, List, Optional
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 from packaging import version as version_parser
 from selenium import webdriver
@@ -459,8 +460,10 @@ def _to_manager(browser: str, *, root: Path) -> DriverManager:
         )
     if not _USE_EXTERNAL_WEBDRIVERS:
         url_kwargs = _DRIVER_SOURCES.get(browser_lower)
-        if url_kwargs:
+        if url_kwargs and browser_lower != "edge":  # Skip Robocorp sources for Edge
             manager_factory = functools.partial(manager_factory, **url_kwargs)
+        elif url_kwargs and browser_lower == "edge":
+            LOGGER.warning("Skipping internal Edge webdriver source due to server issues")
         else:
             LOGGER.warning("Can't set an internal webdriver source for %r!", browser)
 
@@ -484,9 +487,35 @@ def _set_executable(path: str) -> None:
 
 def download(browser: str, root: Path = DRIVER_ROOT) -> str:
     """Download a webdriver binary for the given browser and return the path to it."""
+    # Workaround for MS Edge webdrivers
+    if browser.lower() == "edge":
+        # Patch HTTP requests to redirect azureedge.net to microsoft.com
+        original_get = requests.get
+
+        def patched_get(url, **kwargs):
+            # Securely check if this is specifically the failing azureedge.net domain
+            parsed = urlparse(url)
+            if parsed.netloc == "msedgedriver.azureedge.net":
+                # Replace only the hostname part to avoid security issues
+                url = url.replace("://msedgedriver.azureedge.net", "://msedgedriver.microsoft.com")
+            return original_get(url, **kwargs)
+
+        requests.get = patched_get
+
+        # Also try to suppress webdriver-manager logging
+        logging.getLogger("webdriver_manager").setLevel(logging.ERROR)
+
     with suppress_logging():
         manager = _to_manager(browser, root=root)
         path: str = manager.install()
+
+    # Restore original requests.get for Edge if it was patched
+    if browser.lower() == "edge":
+        try:
+            requests.get = original_get
+        except NameError:
+            pass  # Variable wasn't set if not edge
+
     if platform.system() != "Windows":
         _set_executable(path)
     LOGGER.info("Downloaded webdriver to: %s", path)

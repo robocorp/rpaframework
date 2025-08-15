@@ -63,7 +63,11 @@ def get_current_package_name(ctx: Context):
     else:
         pkg_dir = safely_load_config(ctx, "package_dir", None)
     project_config = toml.load(pkg_dir / "pyproject.toml")
-    return project_config["tool"]["poetry"]["name"]
+    # Support both poetry and standard pyproject.toml formats
+    if "tool" in project_config and "poetry" in project_config["tool"]:
+        return project_config["tool"]["poetry"]["name"]
+    else:
+        return project_config["project"]["name"]
 
 
 def remove_blank_lines(text):
