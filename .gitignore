@@ -22,7 +22,10 @@ docs/source/contributing/todos.rst
 # Virtualenv
 *venv/
 
-# Poetry
+# uv
+.python-version
+
+# Poetry (legacy)
 poetry.toml
 
 # VS Code
