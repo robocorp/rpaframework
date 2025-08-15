@@ -211,22 +211,17 @@ def setup_poetry(
     repository = "pypi" if devpi_url is None else "devpi"
 
     # if not safely_load_config(ctx, "ctx.is_ci_cd", False):
-    # TODO. the config --no-interaction --local virtualenvs.in-project true is needed by the Docs run
-    shell.poetry(ctx, "config --no-interaction --local virtualenvs.in-project true")
-    shell.poetry(ctx, "config --no-interaction --local virtualenvs.create true")
+    # Note: uv automatically creates virtual environments in .venv directory
+    # and manages them internally, so no explicit configuration needed
 
     if username is not None:
         print(f"Setting username and password for repository '{repository}'.")
-        shell.poetry(
-            ctx,
-            f"config --no-interaction http-basic.{repository} {username} {password}",
-            echo=False,
-        )
+        # TODO: Configure uv authentication - uv uses different auth methods
+        print("WARNING: uv authentication not yet implemented in this migration")
     elif token is not None:
         print(f"Setting token for repository '{repository}'.")
-        shell.poetry(
-            ctx, f"config --no-interaction pypi-token.{repository} {token}", echo=False
-        )
+        # TODO: Configure uv authentication - uv uses different auth methods
+        print("WARNING: uv authentication not yet implemented in this migration")
     else:
         print(
             "WARNING: PyPI credentials not configured, invoke "
@@ -236,10 +231,9 @@ def setup_poetry(
 
     if devpi_url is not None:
         clear_poetry_devpi(ctx)
-        shell.poetry(
-            ctx,
-            f"config --no-interaction --local repositories.devpi '{devpi_url}'",
-        )
+        # TODO: Configure uv devpi repository
+        print("WARNING: uv devpi configuration not yet implemented")
+        # shell.uv(ctx, f"config repositories.devpi '{devpi_url}'")
     else:
         print(
             "WARNING: Dev PyPI repository not configured, invoke "
@@ -300,10 +294,10 @@ def install(ctx, reset=False, extra=None, all_extras=False):
         extras_cmd = ""
     if reset:
         reset_local(ctx)
-        shell.poetry(ctx, f"install --sync {extras_cmd}")
+        shell.uv(ctx, f"sync {extras_cmd}")
 
     else:
-        shell.poetry(ctx, f"install {extras_cmd}")
+        shell.uv(ctx, f"sync {extras_cmd}")
 
 
 def _extract_json_payload(stdout: str) -> Union[List, Dict, None]:
@@ -427,7 +421,7 @@ def install_local(ctx, package, extra=None, all_extras=False):
         dependency_path = PACKAGES_ROOT / pkg_name
         opt_dependencies.append(str(relative_path(pkg_root, dependency_path)))
         add_arg = " ".join(opt_dependencies)
-    shell.poetry(ctx, f"add --editable {add_arg}")
+    shell.uv(ctx, f"add --editable {add_arg}")
 
 
 def relative_path(first_path: Path, second_path: Path) -> Path:
@@ -532,7 +526,7 @@ def install_updates(ctx, all=False):
     if all and safely_load_config(ctx, "is_meta", False):
         shell.invoke_each(ctx, "install.update")
     else:
-        shell.poetry(ctx, "update")
+        shell.uv(ctx, "lock --upgrade")
 
 
 @task(aliases=["node"])
@@ -562,9 +556,9 @@ def uninstall_hooks(ctx):
 @task
 def exports(ctx):
     """Create setup.py and requirements.txt files"""
-    shell.poetry(ctx, "export --without-hashes -f requirements.txt -o requirements.txt")
-    shell.poetry(
-        ctx, "export --dev --without-hashes -f requirements.txt -o requirements-dev.txt"
+    shell.uv(ctx, "export --no-hashes --format requirements-txt --output-file requirements.txt")
+    shell.uv(
+        ctx, "export --no-hashes --format requirements-txt --group dev --output-file requirements-dev.txt"
     )
     # TODO. fix setup.py
     # poetry(ctx, f'run python {TOOLS / "setup.py"}')
