@@ -5,7 +5,7 @@ description = "Core utilities used by RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">=3.9"
+requires-python = ">=3.9.1"
 
 keywords = ["robotframework", "rpa", "automation"]
 classifiers = [
