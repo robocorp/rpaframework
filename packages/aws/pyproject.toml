@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-aws"
-version = "6.0.0"
+version = "7.0.0"
 description = "AWS library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}

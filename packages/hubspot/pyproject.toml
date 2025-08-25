@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-hubspot"
-version = "2.0.1"
+version = "3.0.0"
 description = "Robot Framework wrapper around the hubspot-api-client library."
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}

@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-assistant"
-version = "4.0.0"
+version = "5.0.0"
 description = "Interactive UI library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}

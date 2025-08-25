@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-openai"
-version = "3.0.0"
+version = "4.0.0"
 description = "OpenAI library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
