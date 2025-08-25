@@ -26,7 +26,7 @@ from hubspot.crm.objects.models import (
     BatchInputSimplePublicObjectBatchInput as UpdateBatchInput,
 )
 from hubspot.crm.objects.models import (
-    BatchInputSimplePublicObjectInput as CreateBatchInput,
+    BatchInputSimplePublicObjectBatchInputForCreate as CreateBatchInput,
 )
 from hubspot.crm.objects.models import (
     BatchReadInputSimplePublicObjectId,
@@ -1302,7 +1302,7 @@ class Hubspot:
         results = []
         after = None
         while True:
-            page = self.hs.crm.objects.associations_api.get_all(
+            page = self.hs.crm.objects.associations_api.get_all(  # pylint: disable=no-member
                 self._validate_object_type(self._singularize_object(object_type)),
                 object_id,
                 self._validate_object_type(self._singularize_object(to_object_type)),
@@ -1451,7 +1451,7 @@ class Hubspot:
         self._require_authentication()
         if not association_type:
             association_type = f"{object_type}_to_{to_object_type}"
-        return self.hs.crm.objects.associations_api.create(
+        return self.hs.crm.objects.associations_api.create(  # pylint: disable=no-member
             self._validate_object_type(object_type),
             object_id,
             self._validate_object_type(to_object_type),

@@ -25,7 +25,7 @@ classifiers = [
 
 dependencies = [
 	"docutils>=0.21.2",
-	"rpaframework-core>=12.0.1",
+	"rpaframework-core>=12.0.2",
 	"rpaframework-pdf>=8.0.1",
 	"rpaframework-windows>=9.0.0; sys_platform == 'win32'",
 	"java-access-bridge-wrapper>=1.1.0",
