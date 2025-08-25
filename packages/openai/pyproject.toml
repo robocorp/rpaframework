@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-openai"
-version = "2.0.0"
+version = "3.0.0"
 description = "OpenAI library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -24,7 +24,8 @@ classifiers = [
 ]
 
 dependencies = [
-	"openai >=0.28.1",
+	"openai>=1.0.0",
+	"docutils>=0.21.2",
 ]
 
 [project.urls]
