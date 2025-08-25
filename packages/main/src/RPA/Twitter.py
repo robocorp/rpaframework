@@ -6,7 +6,7 @@ from robot.libraries.BuiltIn import (
     RobotNotRunningError,
 )
 import tweepy
-from tweepy.error import TweepError
+from tweepy.errors import TweepyException as TweepError
 
 from RPA.core.helpers import required_env, required_param
 from RPA.core.notebook import notebook_json
@@ -141,9 +141,9 @@ class Twitter:
         self._auth.set_access_token(access_token, access_token_secret)
         self.api = tweepy.API(self._auth, wait_on_rate_limit=True)
         try:
-            self.api.verify_credentials()
+            credentials = self.api.verify_credentials()
             self.logger.info("Twitter authentication success")
-            self._me = self.api.me()
+            self._me = credentials
         except TweepError as e:
             self.logger.error("Error during Twitter authentication: %s", str(e))
             raise TweepError from e
@@ -228,7 +228,7 @@ class Twitter:
         tweets = []
         try:
             # Pulling individual tweets from query
-            for tweet in self.api.search(
+            for tweet in self.api.search_tweets(
                 q=query,
                 count=count,
                 geocode=geocode,

@@ -105,7 +105,10 @@ def main():
 
     flow = InstalledAppFlow.from_client_secrets_file(args.credentials_file, uris)
     if args.console_flow:
-        credentials = flow.run_console()
+        credentials = flow.run_local_server(
+            open_browser=False,
+            authorization_prompt_message="Please visit this URL to authorize this application: {url}",
+        )
     else:
         credentials = flow.run_local_server()
 

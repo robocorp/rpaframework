@@ -8,8 +8,8 @@ from RPA.core.windows.helpers import IS_WINDOWS
 auto = None
 COMError = None
 if IS_WINDOWS:
-    import uiautomation as auto
-    from comtypes import COMError  # noqa
+    import uiautomation as auto  # pylint: disable=import-error
+    from comtypes import COMError  # pylint: disable=import-error
 
 
 class ActionNotPossible(ValueError):

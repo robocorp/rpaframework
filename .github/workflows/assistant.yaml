@@ -79,6 +79,8 @@ jobs:
         python-version: ${{ matrix.python }}
     - name: Upgrade pip
       run: python -m pip install --upgrade pip
+    - name: Install uv
+      run: pip install uv
     - name: Install invocation prerequisites
       run: pip install -Ur ../../invocations/requirements.txt
     - name: Install invocation package

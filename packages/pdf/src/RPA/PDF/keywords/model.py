@@ -1,8 +1,7 @@
 import re
 import sys
-import typing
 from collections import OrderedDict
-from typing import Any, Iterable, Optional, Set, Tuple, Union
+from typing import Any, BinaryIO, Iterable, List, Optional, Set, Tuple, Union
 
 import pdfminer
 import pypdf
@@ -167,12 +166,12 @@ class Document:
 
     ENCODING: str = "utf-8"
 
-    def __init__(self, path: str, *, fileobject: typing.BinaryIO):
+    def __init__(self, path: str, *, fileobject: BinaryIO):
         self._path = path
         self._fileobject = fileobject
 
         self._pages = OrderedDict()
-        self._xml_content_list: typing.List[bytes] = []
+        self._xml_content_list: List[bytes] = []
         self.fields: Optional[dict] = None
         self.has_converted_pages: Set[int] = set()
 
@@ -181,7 +180,7 @@ class Document:
         return self._path
 
     @property
-    def fileobject(self) -> typing.BinaryIO:
+    def fileobject(self) -> BinaryIO:
         if self._fileobject.closed:
             # pylint: disable=consider-using-with
             self._fileobject = open(self.path, "rb")
@@ -215,7 +214,14 @@ class Document:
 class Converter(PDFConverter):
     """Class for converting PDF into RPA classes"""
 
-    CONTROL = re.compile("[\x00-\x08\x0b-\x0c\x0e-\x1f]")
+    # Match control characters (ASCII 0-31) except useful whitespace: tab (9), LF (10), CR (13)
+    # Using explicit character list to avoid overly-large-range CodeQL warning
+    _CONTROL_CHARS = (
+        "\x00\x01\x02\x03\x04\x05\x06\x07\x08"  # 0-8
+        "\x0b\x0c"                                # 11-12 (skip 9=tab, 10=LF)
+        "\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f"  # 14-31 (skip 13=CR)
+    )
+    CONTROL = re.compile(f"[{re.escape(_CONTROL_CHARS)}]")
 
     def __init__(
         self,
@@ -282,6 +288,55 @@ class Converter(PDFConverter):
                 self._show_group(child)
             self.write("</textgroup>\n")
 
+    def _render_textline_grouped(self, item):
+        """Group consecutive characters with similar formatting into single text elements."""
+        chars = []
+        for child in item:
+            if isinstance(child, LTChar):
+                chars.append(child)
+            else:
+                # If we encounter non-char elements, flush any accumulated chars first
+                if chars:
+                    self._write_grouped_chars(chars)
+                    chars = []
+                # Render the non-char element normally
+                self._render(child)
+
+        # Flush any remaining chars at the end
+        if chars:
+            self._write_grouped_chars(chars)
+
+    def _write_grouped_chars(self, chars):
+        """Write a group of consecutive characters as a single text element."""
+        if not chars:
+            return
+
+        # Use the first character's formatting for the group
+        first_char = chars[0]
+        text_content = ''.join(char.get_text() for char in chars)
+
+        # Calculate bounding box for the entire group
+        min_x = min(char.bbox[0] for char in chars)
+        min_y = min(char.bbox[1] for char in chars)
+        max_x = max(char.bbox[2] for char in chars)
+        max_y = max(char.bbox[3] for char in chars)
+        group_bbox = (min_x, min_y, max_x, max_y)
+
+        s = (
+            '<text font="%s" bbox="%s" colourspace="%s" '
+            'ncolour="%s" size="%.3f">'
+            % (
+                enc(first_char.fontname),
+                bbox2str(group_bbox),
+                first_char.ncs.name,
+                first_char.graphicstate.ncolor,
+                first_char.size,
+            )
+        )
+        self.write(s)
+        self.write_text(text_content)
+        self.write("</text>\n")
+
     # pylint: disable = R0912, R0915
     def _render(self, item):  # noqa: C901
         if isinstance(item, LTPage):
@@ -329,8 +384,7 @@ class Converter(PDFConverter):
             self.write("</figure>\n")
         elif isinstance(item, LTTextLine):
             self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
-            for child in item:
-                self._render(child)
+            self._render_textline_grouped(item)
             self.write("</textline>\n")
         elif isinstance(item, LTTextBox):
             wmode = ""

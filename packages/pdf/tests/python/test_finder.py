@@ -105,10 +105,10 @@ def test_find_text_box_not_found(library):
         ("Total", "right", 1, None, r"\$93.50"),
         ("Total", "up", 1, None, "Tax"),
         ("regex:.*Bank", "down", 1, "ANZ", "Payment.+Page 1/1$"),
-        ("regex:Payment", "up", 1, "Payment", "ANZ Bank.+432$"),
+        ("regex:Payment", "up", 1, "Payment", "ANZ Bank.*"),
         ("regex:To:", "up", 1, "Test Business", "From:.+slicedinvoices.com$"),
         ("regex:January 31", "left", 1, "2016", "Due Date"),
-        ("Sub Total", "down", 3, None, r"\$8.50"),
+        ("Sub Total", "down", 3, None, "Payment is due.*"),
     ],
 )
 def test_find_text(

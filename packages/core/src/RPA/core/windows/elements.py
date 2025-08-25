@@ -11,8 +11,8 @@ auto = None
 Control = None
 
 if IS_WINDOWS:
-    import uiautomation as auto
-    from uiautomation.uiautomation import Control
+    import uiautomation as auto  # pylint: disable=import-error
+    from uiautomation.uiautomation import Control  # pylint: disable=import-error
 
 
 StructureType = Dict[int, List[WindowsElement]]

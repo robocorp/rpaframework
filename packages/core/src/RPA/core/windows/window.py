@@ -18,12 +18,12 @@ win32process = None
 win32ui = None
 
 if IS_WINDOWS:
-    import uiautomation as auto
-    import win32api
-    import win32con
-    import win32gui
-    import win32process
-    import win32ui
+    import uiautomation as auto  # pylint: disable=import-error
+    import win32api  # pylint: disable=import-error
+    import win32con  # pylint: disable=import-error
+    import win32gui  # pylint: disable=import-error
+    import win32process  # pylint: disable=import-error
+    import win32ui  # pylint: disable=import-error
 
 
 class WindowMethods(WindowsContext):

@@ -1,14 +1,11 @@
-[tool.poetry]
+[project]
 name = "rpaframework-assistant"
-version = "4.0.0"
+version = "5.0.0"
 description = "Interactive UI library for RPA Framework"
-authors = ["RPA Framework <rpafw@robocorp.com>"]
-license = "Apache-2.0"
+authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
+license = {text = "Apache-2.0"}
 readme = "README.rst"
-
-homepage = "https://rpaframework.org/"
-documentation = "https://rpaframework.org/"
-repository = "https://github.com/robocorp/rpaframework"
+requires-python = ">=3.9.1"
 
 keywords = ["robotframework", "rpa", "automation", "dialogs", "assistant"]
 classifiers = [
@@ -26,28 +23,35 @@ classifiers = [
 	"Programming Language :: Python :: 3.12",
 ]
 
-include = ["*.libspec"]
+dependencies = [
+	"robotframework>=4.0.0,!=4.0.1,!=6.1.0,<8.0.0",
+	"rpaframework-core>=12.0.1",
+	"robocorp-flet==0.4.2.3",
+	"typing-extensions>=4.4.0",
+]
 
-packages = [{ include = "RPA", from = "src" }]
+[project.urls]
+homepage = "https://rpaframework.org/"
+documentation = "https://rpaframework.org/"
+repository = "https://github.com/robocorp/rpaframework"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
-# Flet needs `packaging>=23`. Earlier rpaframework-core versions don't allow
-# installing it. This make resolution errors simpler and faster.
-rpaframework-core = "^12.0.1"
-robocorp-flet="0.4.2.3"
-# We only need the Literal type on python 3.7 from the module, but it has to be
-# installed on all pythons so the imports work
-typing-extensions = { version = "^4.4.0" }
+[dependency-groups]
+dev = [
+	"rpaframework-devutils",
+]
 
+[tool.uv]
+package = true
 
-[tool.poetry.group.dev.dependencies]
-rpaframework-devutils = { path = "../devutils/", develop = true }
+[tool.uv.sources]
+rpaframework-devutils = { path = "../devutils", editable = true }
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/RPA"]
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-report term-missing --cov-branch"

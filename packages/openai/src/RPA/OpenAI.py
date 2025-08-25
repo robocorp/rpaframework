@@ -1,6 +1,6 @@
 import logging
 from typing import Optional, List
-import openai
+from openai import OpenAI as OpenAIClient, AzureOpenAI
 
 
 class OpenAI:
@@ -51,12 +51,13 @@ class OpenAI:
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self.service_type = "OpenAI"
+        self.client = None
 
     def authorize_to_azure_openai(
         self,
         api_key: str,
         api_base: str,
-        api_type: Optional[str] = "azure",
+        api_type: Optional[str] = "azure",  # pylint: disable=unused-argument
         api_version: Optional[str] = "2023-05-15",
     ) -> None:
         """Keyword for authorize to Azure OpenAI.
@@ -90,11 +91,13 @@ class OpenAI:
                 "2023-05-15"
             )
 
-        """  # noqa: E501
-        openai.api_key = api_key
-        openai.api_base = api_base
-        openai.api_type = api_type
-        openai.api_version = api_version
+                """  # noqa: E501
+        # Create Azure OpenAI client
+        self.client = AzureOpenAI(
+            api_key=api_key,
+            azure_endpoint=api_base,
+            api_version=api_version
+        )
         self.service_type = "Azure"
 
     def authorize_to_openai(self, api_key: str) -> None:
@@ -117,8 +120,9 @@ class OpenAI:
             baselib = OpenAI()
             baselib.authorize_to_openai(secrets["key"])
 
-        """
-        openai.api_key = api_key
+                """
+        # Create OpenAI client
+        self.client = OpenAIClient(api_key=api_key)
 
     def completion_create(
         self,
@@ -172,25 +176,25 @@ class OpenAI:
             print(result)
 
         """  # noqa: E501
-        parameters = {
-            "prompt": prompt,
-            "temperature": temperature,
-            "max_tokens": max_tokens,
-            "top_p": top_probability,
-            "frequency_penalty": frequency_penalty,
-            "presence_penalty": presence_penalty,
-        }
-        if self.service_type == "Azure":
-            parameters["engine"] = model
-        else:
-            parameters["model"] = model
-        response = openai.Completion.create(**parameters)
+        # Use the new client API
+        if not self.client:
+            raise ValueError("OpenAI client not initialized. Please call authorize_to_openai() or authorize_to_azure_openai() first.")
+
+        response = self.client.completions.create(
+            model=model,
+            prompt=prompt,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=top_probability,
+            frequency_penalty=frequency_penalty,
+            presence_penalty=presence_penalty,
+        )
         self.logger.info(response)
         if result_format == "string":
-            text = response["choices"][0]["text"].strip()
+            text = response.choices[0].text.strip()
             return text
         if result_format == "json":
-            return response
+            return response.model_dump()
         else:
             return None
 
@@ -257,22 +261,20 @@ class OpenAI:
             {"role": "user", "content": user_content},
         )
 
-        parameters = {
-            "messages": conversation,
-            "temperature": temperature,
-            "top_p": top_probability,
-            "frequency_penalty": frequency_penalty,
-            "presence_penalty": presence_penalty,
-        }
+        # Use the new client API
+        if not self.client:
+            raise ValueError("OpenAI client not initialized. Please call authorize_to_openai() or authorize_to_azure_openai() first.")
 
-        if self.service_type == "Azure":
-            parameters["engine"] = model
-        else:
-            parameters["model"] = model
-
-        response = openai.ChatCompletion.create(**parameters)
+        response = self.client.chat.completions.create(
+            model=model,
+            messages=conversation,
+            temperature=temperature,
+            top_p=top_probability,
+            frequency_penalty=frequency_penalty,
+            presence_penalty=presence_penalty,
+        )
         self.logger.info(response)
-        text = response["choices"][0]["message"]["content"]
+        text = response.choices[0].message.content
         conversation.append(
             {"role": "assistant", "content": text},
         )
@@ -327,16 +329,21 @@ class OpenAI:
             raise NotImplementedError(
                 "Keyword 'Image Create' is not supported by Azure service"
             )
-        response = openai.Image.create(prompt=prompt, size=size, n=num_images)
+
+        # Use the new client API
+        if not self.client:
+            raise ValueError("OpenAI client not initialized. Please call authorize_to_openai() or authorize_to_azure_openai() first.")
+
+        response = self.client.images.generate(prompt=prompt, size=size, n=num_images)
         self.logger.info(response)
         urls = []
         if result_format == "list":
-            for _url in response["data"]:
-                urls.append(_url["url"])
-                self.logger.info(_url)
+            for image in response.data:
+                urls.append(image.url)
+                self.logger.info(image.url)
             return urls
         if result_format == "json":
-            return response
+            return response.model_dump()
         else:
             return None
 
@@ -389,19 +396,23 @@ class OpenAI:
             raise NotImplementedError(
                 "Keyword 'Image Create Variation' is not supported by Azure service"
             )
+
+        # Use the new client API
+        if not self.client:
+            raise ValueError("OpenAI client not initialized. Please call authorize_to_openai() or authorize_to_azure_openai() first.")
+
         with open(src_image, "rb") as image_file:
-            response = openai.Image.create_variation(
+            response = self.client.images.create_variation(
                 image=image_file, n=num_images, size=size
             )
         self.logger.info(response)
-
         urls = []
         if result_format == "list":
-            for _url in response["data"]:
-                urls.append(_url["url"])
-                self.logger.info(_url)
+            for image in response.data:
+                urls.append(image.url)
+                self.logger.info(image.url)
             return urls
         if result_format == "json":
-            return response
+            return response.model_dump()
         else:
             return None

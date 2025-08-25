@@ -1,5 +1,6 @@
 import io
 import os
+import re
 import tempfile
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
@@ -204,10 +205,10 @@ class DocumentKeywords(LibraryContext):
         margin: float = 0,
         working_directory: str = None,
     ) -> None:
-        """Use HTML template file to generate PDF file.
+        """Use HTML template file or content to generate PDF file.
 
         It provides an easy method of generating a PDF document from an HTML formatted
-        template file.
+        template file or HTML content string with variable substitution.
 
         **Examples**
 
@@ -216,7 +217,7 @@ class DocumentKeywords(LibraryContext):
         .. code-block:: robotframework
 
             *** Keywords ***
-            Create PDF from HTML template
+            Create PDF from HTML template file
                 ${TEMPLATE}=    Set Variable    order.template
                 ${PDF}=         Set Variable    result.pdf
                 &{DATA}=        Create Dictionary
@@ -229,6 +230,17 @@ class DocumentKeywords(LibraryContext):
                 ...    output_path=${PDF}
                 ...    variables=${DATA}
 
+            Create PDF from HTML content
+                ${HTML}=        Set Variable    <html><body><h1>{{title}}</h1><p>{{content}}</p></body></html>
+                ${PDF}=         Set Variable    result.pdf
+                &{DATA}=        Create Dictionary
+                ...             title=My Report
+                ...             content=This is the content
+                Template HTML to PDF
+                ...    template=${HTML}
+                ...    output_path=${PDF}
+                ...    variables=${DATA}
+
         **Python**
 
         .. code-block:: python
@@ -236,6 +248,8 @@ class DocumentKeywords(LibraryContext):
             from RPA.PDF import PDF
 
             p = PDF()
+
+            # Using template file
             orders = ["item 1", "item 2", "item 3"]
             data = {
                 "name": "Robot Process",
@@ -245,20 +259,57 @@ class DocumentKeywords(LibraryContext):
             }
             p.template_html_to_pdf("order.template", "order.pdf", data)
 
-        :param template: filepath to the HTML template
+            # Using HTML content directly
+            html_content = "<html><body><h1>{{title}}</h1><p>{{content}}</p></body></html>"
+            data = {"title": "My Report", "content": "This is the content"}
+            p.template_html_to_pdf(html_content, "report.pdf", data)
+
+        :param template: filepath to HTML template file OR HTML content string.
+         If the file path exists, it will be read as a template file.
+         If the file path does not exist, the string is treated as HTML content.
         :param output_path: filepath where to save PDF document
         :param variables: dictionary of variables to fill into template, defaults to {}
         :param encoding: codec used for text I/O
         :param margin: page margin, default is set to 0
         :param working_directory: directory where to look for HTML linked
          resources, by default uses the current working directory
+
+        .. note::
+            **Line Break Handling**: When using HTML content with ``<br/>`` or ``<br>`` tags,
+            these are automatically converted to paragraph breaks to improve text extraction.
+            However, for optimal line break preservation in ``get_text_from_pdf()``,
+            consider using proper HTML block elements like ``<p>`` or ``<div>`` instead of ``<br/>`` tags.
+
+            Example for better line breaks::
+
+                # Instead of: "<p>Line 1<br/>Line 2</p>"
+                # Use: "<p>Line 1</p><p>Line 2</p>"
         """
         variables = variables or {}
 
-        with open(template, "r", encoding=encoding or self.ENCODING) as templatefile:
-            html = templatefile.read()
+        # Determine if template is a file path or HTML content
+        # If file exists, treat as file path; otherwise treat as HTML content
+        is_html_content = not os.path.exists(template)
+
+        if is_html_content:
+            # Template is HTML content
+            html = template
+        else:
+            # Template is a file path
+            with open(template, "r", encoding=encoding or self.ENCODING) as templatefile:
+                html = templatefile.read()
+
+        # Perform variable substitution
         for key, value in variables.items():
             html = html.replace("{{" + key + "}}", str(value))
+
+        # Replace <br/> tags with paragraph breaks to create better line separation in PDF text extraction
+        # Convert br tags to paragraph breaks which create more reliable line breaks in extracted text
+        html = re.sub(r'<br\s*/?>', '</p>\n<p>', html, flags=re.IGNORECASE)
+
+        # Ensure we have proper paragraph structure
+        if not html.strip().startswith(('<html', '<body', '<div', '<p')):
+            html = f'<p>{html}</p>'
 
         self.html_to_pdf(
             html,

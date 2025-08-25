@@ -5,8 +5,8 @@ import shutil
 import time
 from typing import Dict, List, Optional
 
-from apiclient.errors import HttpError
-from apiclient.http import MediaFileUpload, MediaIoBaseDownload
+from googleapiclient.errors import HttpError
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 
 from . import keyword, UpdateAction
 from .enums import DriveRole, DriveType, to_drive_role, to_drive_type

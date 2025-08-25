@@ -9,7 +9,7 @@ from .locators import Locator, LocatorMethods
 from .window import WindowMethods
 
 if IS_WINDOWS:
-    import uiautomation as auto
+    import uiautomation as auto  # pylint: disable=import-error
 
 
 class WindowsElementsMixin:

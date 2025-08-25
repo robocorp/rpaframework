@@ -1,14 +1,11 @@
-[tool.poetry]
+[project]
 name = "rpaframework-google"
-version = "10.0.0"
+version = "11.0.0"
 description = "Google library for RPA Framework"
-authors = ["RPA Framework <rpafw@robocorp.com>"]
-license = "Apache-2.0"
+authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
+license = {text = "Apache-2.0"}
 readme = "README.rst"
-
-homepage = "https://rpaframework.org/"
-documentation = "https://rpaframework.org/"
-repository = "https://github.com/robocorp/rpaframework"
+requires-python = ">=3.9.1"
 
 keywords = ["robotframework", "rpa", "automation", "google"]
 classifiers = [
@@ -26,36 +23,49 @@ classifiers = [
 	"Programming Language :: Python :: 3.12",
 ]
 
-include = ["*.libspec"]
+dependencies = [
+	"rpaframework-core >=12.0.1",
+	"robotframework >=4.0.0, !=4.0.1, !=6.1.0, <8.0.0",
+	"google-api-python-client >=2.58.0",
+	"google-auth-httplib2 >=0.1.0",
+	"google-auth-oauthlib >=0.5.2",
+	"google-cloud-language >=2.5.2",
+	"google-cloud-speech >=2.15.1",
+	"google-cloud-storage >=2.5.0",
+	"google-cloud-texttospeech >=2.12.1",
+	"google-cloud-translate >=3.8.1",
+	"google-cloud-videointelligence >=2.8.1",
+	"google-cloud-vision >=3.1.1",
+	"google-cloud-documentai >=2.0.1",
+	"grpcio >=1.48.1",
+]
 
-packages = [{ include = "RPA", from = "src" }]
+[project.urls]
+homepage = "https://rpaframework.org/"
+documentation = "https://rpaframework.org/"
+repository = "https://github.com/robocorp/rpaframework"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-rpaframework-core = "^12.0.1"
-robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
-google-api-python-client = "^2.58.0"
-google-auth-httplib2 = "^0.1.0"
-google-auth-oauthlib = "^0.5.2"
-google-cloud-language = "^2.5.2"
-google-cloud-speech = "^2.15.1"
-google-cloud-storage = "^2.5.0"
-google-cloud-texttospeech = "^2.12.1"
-google-cloud-translate = "^3.8.1"
-google-cloud-videointelligence = "^2.8.1"
-google-cloud-vision = "^3.1.1"
-google-cloud-documentai = "^2.0.1"
-grpcio = "^1.48.1"
+[project.scripts]
+rpa-google-oauth = "RPA.scripts.google_authenticate:main"
 
-[tool.poetry.group.dev.dependencies]
-rpaframework-devutils = { path = "../devutils/", develop = true }
+[dependency-groups]
+dev = [
+	"rpaframework-devutils",
+]
 
-[tool.poetry.scripts]
-rpa-google-oauth = 'RPA.scripts.google_authenticate:main'
+[tool.uv]
+package = true
+
+[tool.uv.sources]
+rpaframework-devutils = { path = "../devutils/", editable = true }
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/RPA"]
+include = ["src/RPA/**/*.libspec"]
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-report term-missing --cov-branch"

@@ -1,14 +1,11 @@
-[tool.poetry]
+[project]
 name = "rpaframework"
-version = "30.0.2"
+version = "31.0.0"
 description = "A collection of tools and libraries for RPA"
-authors = ["RPA Framework <rpafw@robocorp.com>"]
-license = "Apache-2.0"
+authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
+license = {text = "Apache-2.0"}
 readme = "README.rst"
-
-homepage = "https://rpaframework.org/"
-documentation = "https://rpaframework.org/"
-repository = "https://github.com/robocorp/rpaframework"
+requires-python = ">3.9.1,<3.14"
 
 keywords = ["robotframework", "rpa", "automation"]
 classifiers = [
@@ -26,82 +23,93 @@ classifiers = [
 	"Programming Language :: Python :: 3.12",
 ]
 
-include = ["*.libspec"]
-
-packages = [
-	{ include = "RPA", from = "src" },
-	{ include = "robot", from = "src" },
-	{ include = "tests", format = "sdist" },
+dependencies = [
+	"docutils>=0.21.2",
+	"rpaframework-core>=12.0.2",
+	"rpaframework-pdf>=8.0.1",
+	"rpaframework-windows>=9.0.0; sys_platform == 'win32'",
+	"java-access-bridge-wrapper>=1.1.0",
+	"robocorp-storage>=1.0.2",
+	"jsonpath-ng>=1.5.2",
+	"robotframework>=4.0.0,!=4.0.1,!=6.1.0,<8.0.0",
+	"robotframework-sapguilibrary>=1.1; sys_platform == 'win32'",
+	"robotframework-seleniumlibrary>=6.7.1",
+	"robotframework-seleniumtestability>=2.0.0",
+	"robotframework-requests>=0.9.1",
+	"pywinauto>=0.6.8; sys_platform == 'win32'",
+	"pywin32>=302,<307; sys_platform == 'win32'",
+	"comtypes>=1.1.11; sys_platform == 'win32'",
+	"robotframework-pythonlibcore>=4.2.0",
+	"pynput-robocorp-fork>=5.0.0",
+	"python-xlib>=0.17; sys_platform == 'linux'",
+	"psutil>=5.7.0; sys_platform == 'win32'",
+	"pyperclip>=1.8.0",
+	"exchangelib>=5.1.0",
+	"tzlocal>=4.2",
+	"xlrd>=2.0.1",
+	"xlwt>=1.3.0",
+	"xlutils>=2.0.0",
+	"openpyxl>=3.0.9",
+	"pillow>=10.2.0",
+	"simple_salesforce>=1.0.0",
+	"netsuitesdk>=1.1.0",
+	"tweepy>=3.8.0",
+	"graphviz>=0.13.2",
+	"notifiers>=1.3.3",
+	"cryptography>=44.0.1,<45",
+	"mss>=6.0.0",
+	"chardet>=3.0.0",
+	"PySocks>=1.5.6,!=1.5.7,<2.0.0",
+	"selenium==4.15.2",
+	"click>=8.1.2",
+	"PyYAML>=5.4.1,<7.0.0",
+	"tenacity>=8.0.1",
+	"htmldocx>=0.0.6",
+	"python-docx>=0.8.11",
+	"beautifulsoup4>=4.7.0",
+	"pyotp>=2.6.0",
+	"importlib-metadata>=4.13.0",
+	"O365>=2.0.21,<2.0.27",
+	"requests>=2.28.1",
+	"oauthlib>=3.2.2",
+	"requests-oauthlib>=1.3.1",
+	"PyJWT>=2.6.0",
+	"validators>=0.34.0",
+	"smartsheet-python-sdk==3.0.2",
+	"pendulum>=3.0.0",
+	"wrapt>=1.14.0,<2.0.0",
+	"holidays>=0.45",
 ]
 
-[tool.poetry.dependencies]
-python = ">3.9.1,<3.14"
-docutils = "^0.21.2"
-rpaframework-core = "^12.0.1"
-rpaframework-pdf = { version = "^8.0.1", allow-prereleases = true }
-rpaframework-windows = { version = "^9.0.0", platform = "win32", allow-prereleases = true}
-java-access-bridge-wrapper = "^1.1.0"
-robocorp-storage = "^1.0.2"
-jsonpath-ng = "^1.5.2"
-robotframework = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0"
-robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
-robotframework-seleniumlibrary = "^6.7.1"
-robotframework-seleniumtestability = "^2.0.0"
-robotframework-requests = "^0.9.1"
-pywinauto = { version = "^0.6.8", platform = "win32", python = "!=3.8.1" }
-pywin32 = { version = ">=302,<307", platform = "win32", python = "!=3.8.1" }
-comtypes = { version = "^1.1.11", platform = "win32" }
-robotframework-pythonlibcore = "^4.2.0"
-pynput-robocorp-fork = "^5.0.0"
-python-xlib = { version = ">=0.17", platform = "linux" }
-psutil = { version = "^5.7.0", platform = "win32" }
-pyperclip = "^1.8.0"
-exchangelib = ">=5.1.0"
-tzlocal = "^4.2"
-xlrd = "^2.0.1"
-xlwt = "^1.3.0"
-xlutils = "^2.0.0"
-openpyxl = "^3.0.9"
-pillow = "^10.2.0"
-simple_salesforce = "^1.0.0"
-netsuitesdk = "^1.1.0"
-tweepy = "^3.8.0"
-graphviz = "^0.13.2"
-notifiers = "^1.3.3"
-cryptography = ">=44.0.1,<45"
-mss = "^6.0.0"
-chardet = "^3.0.0"
-PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
-selenium = "4.15.2"
-click = "^8.1.2"
-PyYAML = ">=5.4.1,<7.0.0"
-tenacity = "^8.0.1"
-htmldocx = "^0.0.6"
-python-docx = "^0.8.11"                                                      # htmldocx
-beautifulsoup4 = "^4.7.0"                                                    # htmldocx, O365
-pyotp = "^2.6.0"
-importlib-metadata = ">=4.13.0"
-O365 = ">=2.0.21,<2.0.27"
-requests = "^2.28.1"
-oauthlib = "^3.2.2"
-requests-oauthlib = "^1.3.1"
-PyJWT = "^2.6.0"
-validators = "^0.34.0"
-smartsheet-python-sdk = "3.0.2"
-pendulum = "^3.0.0"
-wrapt = ">=1.14.0,<2.0.0"
-holidays = "^0.45"
+[project.urls]
+homepage = "https://rpaframework.org/"
+documentation = "https://rpaframework.org/"
+repository = "https://github.com/robocorp/rpaframework"
 
-[tool.poetry.group.dev.dependencies]
-rpaframework-devutils = { path = "../devutils/", develop = true }
+[project.scripts]
+rpa-crypto = "RPA.scripts.crypto:main"
+use-robocorp-vault = "RPA.scripts.robocorp_cloud:main"
 
-[tool.poetry.scripts]
-rpa-crypto = 'RPA.scripts.crypto:main'
-use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
+[dependency-groups]
+dev = [
+	"rpaframework-devutils",
+]
+
+[tool.uv]
+package = true
+
+[tool.uv.sources]
+rpaframework-devutils = { path = "../devutils", editable = true }
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/RPA", "src/robot"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/tests"]
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-branch"

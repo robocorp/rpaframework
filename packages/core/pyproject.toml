@@ -31,6 +31,7 @@ dependencies = [
 	"uiautomation >=2.0.15; platform_system == 'Windows'",
 	"pillow >=10.2.0",
 	"packaging >=24.0",
+	"httpx>=0.28.1",
 ]
 
 [project.urls]

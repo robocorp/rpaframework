@@ -18,7 +18,7 @@ Audio = None
 ipython_module = util.find_spec("IPython")
 if ipython_module:
     # pylint: disable=C0415
-    from IPython.display import (  # noqa
+    from IPython.display import (  # pylint: disable=import-error
         Audio,
         display,
         FileLink,
@@ -112,7 +112,7 @@ def notebook_table(table: Any, count: int = 20, columns=None):
     :param index: List of indices for table rows
     """
     # pylint: disable=C0415,E0611
-    from RPA.Tables import Table, Tables  # noqa
+    from RPA.Tables import Table, Tables  # pylint: disable=import-error
 
     table = Table(table, columns)
     if count:
@@ -164,7 +164,7 @@ def notebook_json(json_object):
 
 def _get_table_output(table):
     # pylint: disable=C0415,E0611
-    from RPA.Tables import Tables, Table  # noqa
+    from RPA.Tables import Tables, Table  # pylint: disable=import-error
 
     output = ""
     try:
