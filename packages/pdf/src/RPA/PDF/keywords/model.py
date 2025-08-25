@@ -214,7 +214,14 @@ class Document:
 class Converter(PDFConverter):
     """Class for converting PDF into RPA classes"""
 
-    CONTROL = re.compile("[\x00-\x08\x0b-\x0c\x0e-\x1f]")
+    # Match control characters (ASCII 0-31) except useful whitespace: tab (9), LF (10), CR (13)
+    # Using explicit character list to avoid overly-large-range CodeQL warning
+    _CONTROL_CHARS = (
+        "\x00\x01\x02\x03\x04\x05\x06\x07\x08"  # 0-8
+        "\x0b\x0c"                                # 11-12 (skip 9=tab, 10=LF)
+        "\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f"  # 14-31 (skip 13=CR)
+    )
+    CONTROL = re.compile(f"[{re.escape(_CONTROL_CHARS)}]")
 
     def __init__(
         self,
