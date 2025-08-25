@@ -12,6 +12,10 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 25 Aug 2025
 -----------
 
@@ -27,11 +31,8 @@ Latest versions
 - ``rpaframework-openai`` **4.0.0**
 - ``rpaframework-pdf`` **10.0.0**
 - ``rpaframework-recognition`` **7.0.0**
-- ``rpaframework-windows`` **11.0.0**
+- ``rpaframework-windows`` **10.0.0**
 - ``rpaframework-core`` **12.0.2**
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 30.0.2 - 20 Mar 2025
 ---------------------

@@ -1407,7 +1407,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-windows"
-version = "9.0.0"
+version = "10.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "comtypes", marker = "sys_platform == 'win32'" },
@@ -1436,7 +1436,7 @@ requires-dist = [
     { name = "pywin32", marker = "sys_platform == 'win32'", specifier = ">=300,<307" },
     { name = "robotframework", specifier = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0" },
     { name = "robotframework-pythonlibcore", specifier = ">=4.2.0" },
-    { name = "rpaframework-core", specifier = ">=12.0.1" },
+    { name = "rpaframework-core", specifier = ">=12.0.2" },
     { name = "uiautomation", specifier = ">=2.0.15" },
 ]
 

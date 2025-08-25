@@ -1782,7 +1782,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-google"
-version = "10.0.0"
+version = "11.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "google-api-python-client" },

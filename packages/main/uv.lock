@@ -564,16 +564,16 @@ wheels = [
 
 [[package]]
 name = "fpdf2"
-version = "2.7.5"
+version = "2.8.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "defusedxml" },
     { name = "fonttools" },
     { name = "pillow" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/01/39/ca25897326fe02d16d55ddc87be0f31049a41cc8b46276612bfc49c1f665/fpdf2-2.7.5.tar.gz", hash = "sha256:770392316614b4087ec78a393db1c3fc5c46bf7d2a0d673bf1ea95a6a0ba8258", size = 195402, upload-time = "2023-08-04T16:13:13.81Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/87/ff/4a1dd414e5c5df5a11904118afdb544f3a446c9c512cc77e9741cf74fb30/fpdf2-2.8.4.tar.gz", hash = "sha256:12b1f1dd35d0c2f35284bcfe10b153d6ca4baf29377379843e73d3f971eab6b7", size = 284963, upload-time = "2025-08-11T10:47:21.193Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/77/5a/c2490583e5a9fcdf64819816f1d4daa62bc62455490d62b1c42027d8b82d/fpdf2-2.7.5-py2.py3-none-any.whl", hash = "sha256:84266b0f9c0ece84e7a60b8e302c98d8082b814be58c9b222fc057a85f86dd6f", size = 173118, upload-time = "2023-08-04T16:13:12.246Z" },
+    { url = "https://files.pythonhosted.org/packages/bf/e3/b1f6a8e864394d26ee25e90405670ba4d2cc89a7ca27b4f1d8bfe4001e45/fpdf2-2.8.4-py2.py3-none-any.whl", hash = "sha256:bce1afc437107906dcdb0b95c300c7501002fe412c2ed36fa33c8f0a2f87ef3e", size = 251700, upload-time = "2025-08-11T10:47:19.484Z" },
 ]
 
 [[package]]
@@ -1219,15 +1219,15 @@ wheels = [
 
 [[package]]
 name = "pdfminer-six"
-version = "20221105"
+version = "20250506"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "charset-normalizer" },
     { name = "cryptography" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ac/6e/89c532d108e362cbaf76fdb972e7a5e85723c225f08e1646fb86878d4f7f/pdfminer.six-20221105.tar.gz", hash = "sha256:8448ab7b939d18b64820478ecac5394f482d7a79f5f7eaa7703c6c959c175e1d", size = 7361391, upload-time = "2022-11-05T16:33:46.725Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/78/46/5223d613ac4963e1f7c07b2660fe0e9e770102ec6bda8c038400113fb215/pdfminer_six-20250506.tar.gz", hash = "sha256:b03cc8df09cf3c7aba8246deae52e0bca7ebb112a38895b5e1d4f5dd2b8ca2e7", size = 7387678, upload-time = "2025-05-06T16:17:00.787Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/46/68/b3fb5f073bcd3df9143a3520289c147351bfa3c1b096d44081f38fd1c247/pdfminer.six-20221105-py3-none-any.whl", hash = "sha256:1eaddd712d5b2732f8ac8486824533514f8ba12a0787b3d5fe1e686cd826532d", size = 5613896, upload-time = "2022-11-05T16:33:45.016Z" },
+    { url = "https://files.pythonhosted.org/packages/73/16/7a432c0101fa87457e75cb12c879e1749c5870a786525e2e0f42871d6462/pdfminer_six-20250506-py3-none-any.whl", hash = "sha256:d81ad173f62e5f841b53a8ba63af1a4a355933cfc0ffabd608e568b9193909e3", size = 5620187, upload-time = "2025-05-06T16:16:58.669Z" },
 ]
 
 [[package]]
@@ -1572,14 +1572,14 @@ wheels = [
 
 [[package]]
 name = "pypdf"
-version = "3.17.4"
+version = "6.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.10'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6a/28/81460a77a64bb1e5254e37d4fa855e0a0549634a717bd4e407cba5fc92c6/pypdf-3.17.4.tar.gz", hash = "sha256:ec96e2e4fc9648ac609d19c00d41e9d606e0ae2ce5a0bbe7691426f5f157166a", size = 276323, upload-time = "2023-12-24T10:41:09.674Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/20/ac/a300a03c3b34967c050677ccb16e7a4b65607ee5df9d51e8b6d713de4098/pypdf-6.0.0.tar.gz", hash = "sha256:282a99d2cc94a84a3a3159f0d9358c0af53f85b4d28d76ea38b96e9e5ac2a08d", size = 5033827, upload-time = "2025-08-11T14:22:02.352Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/29/10/055b649e914ad8c5d07113c22805014988825abbeff007b0e89255b481fa/pypdf-3.17.4-py3-none-any.whl", hash = "sha256:6aa0f61b33779b64486de3f42835d3668badd48dac4a536aeb87da187a5eacd2", size = 278159, upload-time = "2023-12-24T10:41:06.79Z" },
+    { url = "https://files.pythonhosted.org/packages/2c/83/2cacc506eb322bb31b747bc06ccb82cc9aa03e19ee9c1245e538e49d52be/pypdf-6.0.0-py3-none-any.whl", hash = "sha256:56ea60100ce9f11fc3eec4f359da15e9aec3821b036c1f06d2b660d35683abb8", size = 310465, upload-time = "2025-08-11T14:22:00.481Z" },
 ]
 
 [[package]]
@@ -2063,7 +2063,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "30.0.2"
+version = "31.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -2173,8 +2173,8 @@ requires-dist = [
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
     { name = "rpaframework-core", specifier = ">=12.0.2" },
-    { name = "rpaframework-pdf", specifier = ">=8.0.1" },
-    { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=9.0.0" },
+    { name = "rpaframework-pdf", specifier = ">=9.0.0" },
+    { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=10.0.0" },
     { name = "selenium", specifier = "==4.15.2" },
     { name = "simple-salesforce", specifier = ">=1.0.0" },
     { name = "smartsheet-python-sdk", specifier = "==3.0.2" },
@@ -2268,24 +2268,24 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "8.0.1"
+version = "10.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "docutils" },
     { name = "fpdf2" },
     { name = "pdfminer-six" },
     { name = "pypdf" },
     { name = "robotframework" },
-    { name = "robotframework-pythonlibcore" },
     { name = "rpaframework-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/38/e7/b560708195fceafcb679227ceadee12beaff30fbeb696e9c9add17802af6/rpaframework_pdf-8.0.1.tar.gz", hash = "sha256:c539b1dc4cef2f8b4afe33e31c89eb518d6c714902da57e57b0ca9c07649eceb", size = 622072, upload-time = "2025-03-20T10:35:47.012Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/00/a6/d46310dc6ce8dbed6de9e4389d3472ceed4dea84bd52dd0a986c8173077c/rpaframework_pdf-10.0.0.tar.gz", hash = "sha256:f27c546023a982ebb408babbba1baec7bfc059fb0a3d53203a5cfea2bc2adca2", size = 4515329, upload-time = "2025-08-25T15:45:01.407Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bd/73/78e4d2bff435382647442f5867b5f1c2ee77a79616e61bd67746c6e64ac0/rpaframework_pdf-8.0.1-py3-none-any.whl", hash = "sha256:afe02e86e13d10587c59192bfec8d2dbfe50ae0f5f31c964591503e67671f805", size = 611177, upload-time = "2025-03-20T10:35:43.631Z" },
+    { url = "https://files.pythonhosted.org/packages/21/a3/780b495d250cd708349384942c9f81759fa9d1b566c96ab99eb9d9eb551d/rpaframework_pdf-10.0.0-py3-none-any.whl", hash = "sha256:1a9b97e5cf7cd37a70498c1459fbe439b729d38b0739ccddabeef476b6a1b08e", size = 612604, upload-time = "2025-08-25T15:44:50.693Z" },
 ]
 
 [[package]]
 name = "rpaframework-windows"
-version = "9.0.0"
+version = "10.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "comtypes", marker = "sys_platform == 'win32'" },
@@ -2298,9 +2298,9 @@ dependencies = [
     { name = "rpaframework-core" },
     { name = "uiautomation" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/86/d2/c33b5fcd8fd744025e87d64b4fad8557fc5f6524b59bb2c8d32ad4ef4ae6/rpaframework_windows-9.0.0.tar.gz", hash = "sha256:f1faa59c8a3ec955a5c6864bc15b39678d2e28bca7801538bf1641ef42d2afb4", size = 44918, upload-time = "2025-02-09T15:38:54.596Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/12/5b/251599ec20b214ccfd3554f5e0e23498de03ee472748a3eb382dad4a624d/rpaframework_windows-10.0.0.tar.gz", hash = "sha256:87da28f29108687bf43c0eff26233fe3460ffce1174f1ea41d4fd6ea3915713c", size = 113810, upload-time = "2025-08-25T15:47:43.57Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b8/6f/7cb9d7c271b7fa081549c28bd488674625d1c21a588bd97396db1ec51886/rpaframework_windows-9.0.0-py3-none-any.whl", hash = "sha256:28a70271597a9884213b7c18ac512fceef20763a7860e20c3fb2d867375934c1", size = 49792, upload-time = "2025-02-09T15:38:52.44Z" },
+    { url = "https://files.pythonhosted.org/packages/bd/59/ec0c9dcf948abc81cd21bab583da8993a6d0bc2481c2e62234a21e17de7e/rpaframework_windows-10.0.0-py3-none-any.whl", hash = "sha256:268a1342bd8a2f9a0f9a75c58132796879bea08316aab219778bb69383d1cd5d", size = 32553, upload-time = "2025-08-25T15:47:42.163Z" },
 ]
 
 [[package]]

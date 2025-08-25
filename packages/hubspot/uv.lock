@@ -1335,7 +1335,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-hubspot"
-version = "2.0.1"
+version = "3.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "docutils" },

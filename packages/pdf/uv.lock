@@ -1431,7 +1431,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "9.0.0"
+version = "10.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "docutils" },
