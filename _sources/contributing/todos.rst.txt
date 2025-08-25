@@ -156,7 +156,7 @@ checkers.imports:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "795", "# TODO - this isn't right for multiple on the same line..."
+   "793", "# TODO - this isn't right for multiple on the same line..."
 
 checkers.logging:
 =================
@@ -201,10 +201,10 @@ checkers.typecheck:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "610", "The typing of the second return variable is actually Literal[0,1]"
-   "612", "The typing of the third return variable can be narrowed to a Literal"
-   "2051", "This check was disabled (by adding the leading underscore)"
-   "2059", "This check was disabled (by adding the leading underscore)"
+   "623", "The typing of the second return variable is actually Literal[0,1]"
+   "625", "The typing of the third return variable can be narrowed to a Literal"
+   "2064", "This check was disabled (by adding the leading underscore)"
+   "2072", "This check was disabled (by adding the leading underscore)"
 
 checkers.utils:
 ===============
@@ -224,8 +224,8 @@ checkers.variables:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "1367", "(performance), merging both checks would streamline this"
-   "2627", "4.0: Consider using utils.is_terminating_func"
+   "1381", "(performance), merging both checks would streamline this"
+   "2669", "4.0: Consider using utils.is_terminating_func"
 
 config._pylint_config.utils:
 ============================
@@ -272,7 +272,7 @@ extensions.docparams:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "478", "Unknown option value for 'disable', expected a valid pylint message and got 'useless-param-doc'"
+   "484", "Unknown option value for 'disable', expected a valid pylint message and got 'useless-param-doc'"
 
 lint.message_state_handler:
 ===========================

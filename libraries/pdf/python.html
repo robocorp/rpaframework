@@ -236,6 +236,21 @@ results, you have to use specialized external services wrapped by the
 </pre></div>
 </div>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.ENCODING">
+<span class="sig-name descname"><span class="pre">ENCODING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'utf-8'</span></em><a class="headerlink" href="#RPA.PDF.PDF.ENCODING" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.FIELDS_ENCODING">
+<span class="sig-name descname"><span class="pre">FIELDS_ENCODING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'iso-8859-1'</span></em><a class="headerlink" href="#RPA.PDF.PDF.FIELDS_ENCODING" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.RE_FLAGS">
+<span class="sig-name descname"><span class="pre">RE_FLAGS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24</span></em><a class="headerlink" href="#RPA.PDF.PDF.RE_FLAGS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.PDF.PDF.ROBOT_LIBRARY_DOC_FORMAT">
 <span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.PDF.PDF.ROBOT_LIBRARY_DOC_FORMAT" title="Link to this definition"></a></dt>
 <dd></dd></dl>
@@ -245,45 +260,1264 @@ results, you have to use specialized external services wrapped by the
 <span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.PDF.PDF.ROBOT_LIBRARY_SCOPE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="RPA.PDF.PDF.add_library_components">
-<span class="sig-name descname"><span class="pre">add_library_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">library_components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translated_kw_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.add_library_components" title="Link to this definition"></a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.active_pdf_document">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">active_pdf_document</span></span><a class="headerlink" href="#RPA.PDF.PDF.active_pdf_document" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.PDF.PDF.get_keyword_arguments">
-<span class="sig-name descname"><span class="pre">get_keyword_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_keyword_arguments" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="RPA.PDF.PDF.add_files_to_pdf">
+<span class="sig-name descname"><span class="pre">add_files_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_document</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.add_files_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Add images and/or pdfs to new PDF document.</p>
+<p>Supports merging and splitting PDFs.</p>
+<p>Image formats supported are JPEG, PNG and GIF.</p>
+<p>The file can be added with extra properties by
+denoting <cite>:</cite> at the end of the filename. Each
+property should be separated by comma.</p>
+<p>Supported extra properties for PDFs are:</p>
+<ul class="simple">
+<li><p>page and/or page ranges</p></li>
+<li><p>no extras means that all source PDF pages are added
+into new PDF</p></li>
+</ul>
+<p>Supported extra properties for images are:</p>
+<ul class="simple">
+<li><p>format, the PDF page format, for example. Letter or A4</p></li>
+<li><p>rotate, how many degrees image is rotated counter-clockwise</p></li>
+<li><p>align, only possible value at the moment is center</p></li>
+<li><p>orientation, the PDF page orientation for the image, possible
+values P (portrait) or L (landscape)</p></li>
+<li><p>x/y, coordinates for adjusting image position on the page</p></li>
+</ul>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Add files to pdf</span>
+<span class="p">    ${</span><span class="nv">files</span><span class="p">}=    </span><span class="nf">Create List</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">invoice.pdf</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">approved.png:align=center</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">robot.pdf:1</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">approved.png:x=0,y=0</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">robot.pdf:2-10,15</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">approved.png</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">landscape_image.png:rotate=-90,orientation=L</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">landscape_image.png:format=Letter</span>
+<span class="p">    </span><span class="nf">Add Files To PDF</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}    </span><span class="s">newdoc.pdf</span>
+
+<span class="gu">Merge pdfs</span>
+<span class="p">    ${</span><span class="nv">files</span><span class="p">}=    </span><span class="nf">Create List</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">invoice.pdf</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">robot.pdf:1</span>
+<span class="p">    ...    ${</span><span class="nv">TESTDATA_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">robot.pdf:2-10,15</span>
+<span class="p">    </span><span class="nf">Add Files To Pdf</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}    </span><span class="s">merged-doc.pdf</span>
+
+<span class="gu">Split pdf</span>
+<span class="p">    ${</span><span class="nv">files</span><span class="p">}=    </span><span class="nf">Create List</span>
+<span class="p">    ...    ${</span><span class="nv">OUTPUT_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">robot.pdf:2-10,15</span>
+<span class="p">    </span><span class="nf">Add Files To Pdf</span><span class="p">     ${</span><span class="nv">files</span><span class="p">}    </span><span class="s">split-doc.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_addfiles</span><span class="p">():</span>
+    <span class="n">list_of_files</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;invoice.pdf&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;approved.png:align=center&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;robot.pdf:1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;approved.png:x=0,y=0&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">add_files_to_pdf</span><span class="p">(</span>
+        <span class="n">files</span><span class="o">=</span><span class="n">list_of_files</span><span class="p">,</span>
+        <span class="n">target_document</span><span class="o">=</span><span class="s2">&quot;output/output.pdf&quot;</span>
+    <span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_merge</span><span class="p">():</span>
+    <span class="n">list_of_files</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;invoice.pdf&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;robot.pdf:1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;robot.pdf:2-10,15&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">add_files_to_pdf</span><span class="p">(</span>
+        <span class="n">files</span><span class="o">=</span><span class="n">list_of_files</span><span class="p">,</span>
+        <span class="n">target_document</span><span class="o">=</span><span class="s2">&quot;output/merged-doc.pdf&quot;</span>
+    <span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_split</span><span class="p">():</span>
+    <span class="n">list_of_files</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;robot.pdf:2-10,15&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">add_files_to_pdf</span><span class="p">(</span>
+        <span class="n">files</span><span class="o">=</span><span class="n">list_of_files</span><span class="p">,</span>
+        <span class="n">target_document</span><span class="o">=</span><span class="s2">&quot;output/split-doc.pdf&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>files</strong> – list of filepaths to add into PDF (can be either images or PDFs)</p></li>
+<li><p><strong>target_document</strong> – filepath of target PDF</p></li>
+<li><p><strong>append</strong> – appends files to existing document if <cite>append</cite> is <cite>True</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.add_watermark_image_to_pdf">
+<span class="sig-name descname"><span class="pre">add_watermark_image_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.add_watermark_image_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Add an image into an existing or new PDF.</p>
+<p>If no source path is given, assume a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keyword ***</span>
+<span class="gu">Indicate approved with watermark</span>
+<span class="p">    </span><span class="nf">Add Watermark Image To PDF</span>
+<span class="p">    ...             </span><span class="s">image_path=approved.png</span>
+<span class="p">    ...             </span><span class="s">source_path=/tmp/sample.pdf</span>
+<span class="p">    ...             </span><span class="s">output_path=output/output.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">indicate_approved_with_watermark</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">add_watermark_image_to_pdf</span><span class="p">(</span>
+        <span class="n">image_path</span><span class="o">=</span><span class="s2">&quot;approved.png&quot;</span>
+        <span class="n">source_path</span><span class="o">=</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span>
+        <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;output/output.pdf&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_path</strong> – filepath to image file to add into PDF</p></li>
+<li><p><strong>source</strong> – filepath to source, if not given add image to currently
+active PDF</p></li>
+<li><p><strong>output_path</strong> – filepath of target PDF</p></li>
+<li><p><strong>coverage</strong> – how the watermark image should be scaled on page,
+defaults to 0.2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.close_all_pdfs">
+<span class="sig-name descname"><span class="pre">close_all_pdfs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.close_all_pdfs" title="Link to this definition"></a></dt>
+<dd><p>Close all opened PDF file descriptors.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Close Multiple PDFs</span>
+<span class="p">    </span><span class="nf">Close all pdfs</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.close_pdf">
+<span class="sig-name descname"><span class="pre">close_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.close_pdf" title="Link to this definition"></a></dt>
+<dd><p>Close PDF file descriptor for a certain file.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Close just one pdf</span>
+<span class="p">    </span><span class="nf">Close pdf</span><span class="p">   </span><span class="s">path/to/the/pdf/file.pdf</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if file descriptor for the file is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pagenum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.convert" title="Link to this definition"></a></dt>
+<dd><p>Parse source PDF into entities.</p>
+<p>These entities can be used for text searches or XML dumping for example. The
+conversion will be done automatically when using the dependent keywords
+directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – source PDF filepath</p></li>
+<li><p><strong>trim</strong> – trim whitespace from the text is set to True (default)</p></li>
+<li><p><strong>pagenum</strong> – Page number where search is performed on, defaults to <cite>None</cite>.
+(meaning all pages get converted – numbers start from 1)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">***Settings***</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.PDF</span>
+
+<span class="gh">***Tasks***</span>
+<span class="gu">Example Keyword</span>
+<span class="p">    </span><span class="nf">Convert</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.decrypt_pdf">
+<span class="sig-name descname"><span class="pre">decrypt_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.decrypt_pdf" title="Link to this definition"></a></dt>
+<dd><p>Decrypt PDF with password.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Make PDF human readable</span>
+<span class="p">    ${</span><span class="nv">success</span><span class="p">}=  </span><span class="nf">Decrypt PDF</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_pdf_human_readable</span><span class="p">():</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">decrypt_pdf</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – filepath to the source pdf.</p></li>
+<li><p><strong>output_path</strong> – filepath to the decrypted pdf.</p></li>
+<li><p><strong>password</strong> – password as a string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if decrypt was successful, else False or Exception.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – on decryption errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.dump_pdf_as_xml">
+<span class="sig-name descname"><span class="pre">dump_pdf_as_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.dump_pdf_as_xml" title="Link to this definition"></a></dt>
+<dd><p>Get PDFMiner format XML dump of the PDF</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">***Settings***</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.PDF</span>
+
+<span class="gh">***Tasks***</span>
+<span class="gu">Example Keyword</span>
+<span class="p">    ${</span><span class="nv">xml</span><span class="p">}=  </span><span class="nf">Dump PDF as XML</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">xml</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">dump_pdf_as_xml</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source_path</strong> – filepath to the source PDF</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>XML content as a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.encrypt_pdf">
+<span class="sig-name descname"><span class="pre">encrypt_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_pwd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_pwd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_128bit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.encrypt_pdf" title="Link to this definition"></a></dt>
+<dd><p>Encrypt a PDF document.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Secure this PDF</span>
+<span class="p">    </span><span class="nf">Encrypt PDF</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+
+<span class="gu">Secure this PDF and set passwords</span>
+<span class="p">    </span><span class="nf">Encrypt PDF</span>
+<span class="p">    ...    </span><span class="s">source_path=/tmp/sample.pdf</span>
+<span class="p">    ...    </span><span class="s">output_path=/tmp/new/sample_encrypted.pdf</span>
+<span class="p">    ...    </span><span class="s">user_pwd=complex_password_here</span>
+<span class="p">    ...    </span><span class="s">owner_pwd=different_complex_password_here</span>
+<span class="p">    ...    </span><span class="s">use_128bit=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">secure_this_pdf</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">encrypt_pdf</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – filepath to the source pdf.</p></li>
+<li><p><strong>output_path</strong> – filepath to the target pdf, stored by default
+in the robot output directory as <code class="docutils literal notranslate"><span class="pre">output.pdf</span></code></p></li>
+<li><p><strong>user_pwd</strong> – allows opening and reading PDF with restrictions.</p></li>
+<li><p><strong>owner_pwd</strong> – allows opening PDF without any restrictions, by
+default same <cite>user_pwd</cite>.</p></li>
+<li><p><strong>use_128bit</strong> – whether to 128bit encryption, when false 40bit
+encryption is used, default True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.extract_pages_from_pdf">
+<span class="sig-name descname"><span class="pre">extract_pages_from_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.extract_pages_from_pdf" title="Link to this definition"></a></dt>
+<dd><p>Extract pages from source PDF and save to a new PDF document.</p>
+<p>Page numbers start from 1.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Save PDF pages to a new document</span>
+<span class="p">    ${</span><span class="nv">pages</span><span class="p">}=    </span><span class="nf">Extract Pages From PDF</span>
+<span class="p">    ...          </span><span class="s">source_path=/tmp/sample.pdf</span>
+<span class="p">    ...          </span><span class="s">output_path=/tmp/output.pdf</span>
+<span class="p">    ...          </span><span class="s">pages=5</span>
+
+<span class="gu">Save PDF pages from open PDF to a new document</span>
+<span class="p">    ${</span><span class="nv">pages</span><span class="p">}=    </span><span class="nf">Extract Pages From PDF</span>
+<span class="p">    ...          </span><span class="s">output_path=/tmp/output.pdf</span>
+<span class="p">    ...          </span><span class="s">pages=5</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">save_pdf_pages_to_a_new_document</span><span class="p">():</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">extract_pages_from_pdf</span><span class="p">(</span>
+        <span class="n">source_path</span><span class="o">=</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">,</span>
+        <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;/tmp/output.pdf&quot;</span><span class="p">,</span>
+        <span class="n">pages</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – filepath to the source pdf.</p></li>
+<li><p><strong>output_path</strong> – filepath to the target pdf, stored by default
+in the robot output directory as <code class="docutils literal notranslate"><span class="pre">output.pdf</span></code></p></li>
+<li><p><strong>pages</strong> – page numbers to extract from PDF (numbers start from 1)
+if None then extracts all pages.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.find_text">
+<span class="sig-name descname"><span class="pre">find_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pagenum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'right'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">closest_neighbours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regexp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_case</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Match</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.PDF.PDF.find_text" title="Link to this definition"></a></dt>
+<dd><p>Find the closest text elements near the set anchor(s) through <cite>locator</cite>.</p>
+<p>The PDF will be parsed automatically before elements can be searched.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – Element to set anchor to. This can be prefixed with either
+“text:”, “subtext:”, “regex:” or “coords:” to find the anchor by text or
+coordinates. The “text” strategy is assumed if no such prefix is specified.
+(text search is case-sensitive; use <cite>ignore_case</cite> param for controlling it)</p></li>
+<li><p><strong>pagenum</strong> – Page number where search is performed on, defaults to 1 (first
+page).</p></li>
+<li><p><strong>direction</strong> – In which direction to search for text elements. This can be
+any of ‘top’/’up’, ‘bottom’/’down’, ‘left’ or ‘right’. (defaults to
+‘right’)</p></li>
+<li><p><strong>closest_neighbours</strong> – How many neighbours to return at most, sorted by the
+distance from the current anchor.</p></li>
+<li><p><strong>strict</strong> – If element’s margins should be used for matching those which are
+aligned to the anchor. (turned off by default)</p></li>
+<li><p><strong>regexp</strong> – Expected format of the searched text value. By default all the
+candidates in range are considered valid neighbours.</p></li>
+<li><p><strong>trim</strong> – Automatically trim leading/trailing whitespace from the text
+elements. (switched on by default)</p></li>
+<li><p><strong>ignore_case</strong> – Do a case-insensitive search when set to <cite>True</cite>. (affects
+the passed <cite>locator</cite> and <cite>regexp</cite> filtering)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of <cite>Match</cite> objects where every match has the following
+attributes: <cite>.anchor</cite> - the matched text with the locator; <cite>.neighbours</cite> -
+a list of adjacent texts found on the specified direction</p>
+</dd>
+</dl>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Keep in mind that this keyword works with text-based PDFs, and it <strong>can’t
+extract information from an image-based (scan)</strong> PDF file. For accurate
+results, you have to use specialized external services wrapped by the
+<code class="docutils literal notranslate"><span class="pre">RPA.DocumentAI</span></code> library.</p>
+</div>
+<p>Portal example with video recording demo for parsing PDF invoices:
+<a class="reference external" href="https://github.com/robocorp/example-parse-pdf-invoice">https://github.com/robocorp/example-parse-pdf-invoice</a></p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">PDF Invoice Parsing</span>
+<span class="p">    </span><span class="c">Open Pdf</span><span class="p">    </span><span class="c">invoice.pdf</span>
+<span class="p">    </span><span class="c">${matches} =</span><span class="p">  </span><span class="c">Find Text</span><span class="p">    </span><span class="c">Invoice Number</span>
+<span class="p">    </span><span class="c">Log List</span><span class="p">      </span><span class="c">${matches}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">List</span> <span class="n">has</span> <span class="n">one</span> <span class="n">item</span><span class="p">:</span>
+<span class="n">Match</span><span class="p">(</span><span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;Invoice Number&#39;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">neighbours</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;INV-3337&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pdf_invoice_parsing</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">open_pdf</span><span class="p">(</span><span class="s2">&quot;invoice.pdf&quot;</span><span class="p">)</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">find_text</span><span class="p">(</span><span class="s2">&quot;Invoice Number&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+
+<span class="n">pdf_invoice_parsing</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Match</span><span class="p">(</span><span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;Invoice Number&#39;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">neighbours</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;INV-3337&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.fit_dimensions_to_box">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit_dimensions_to_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.PDF.PDF.fit_dimensions_to_box" title="Link to this definition"></a></dt>
+<dd><p>Fit dimensions of width and height to a given box.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.get_all_figures">
+<span class="sig-name descname"><span class="pre">get_all_figures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.get_all_figures" title="Link to this definition"></a></dt>
+<dd><p>Return all figures in the PDF document.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Image fetch</span>
+<span class="p">    &amp;{</span><span class="nv">figures</span><span class="p">}=  </span><span class="nf">Get All Figures</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+
+<span class="gu">Image fetch from open PDF</span>
+<span class="p">    &amp;{</span><span class="nv">figures</span><span class="p">}=  </span><span class="nf">Get All Figures</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">image_fetch</span><span class="p">():</span>
+    <span class="n">figures</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_all_figures</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source_path</strong> – filepath to the source pdf.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of figures divided into pages.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.get_input_fields">
+<span class="sig-name descname"><span class="pre">get_input_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_none_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'iso-8859-1'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.get_input_fields" title="Link to this definition"></a></dt>
+<dd><p>Get input fields in the PDF.</p>
+<p>Stores input fields internally so that they can be used without parsing the PDF
+again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – Filepath to source, if not given use the currently active
+PDF.</p></li>
+<li><p><strong>replace_none_value</strong> – Enable this to conveniently visualize the fields. (
+replaces the null value with field’s default or its name if absent)</p></li>
+<li><p><strong>encoding</strong> – Use an explicit encoding for field name/value parsing. (
+defaults to “iso-8859-1” but “utf-8/16” might be the one working for you)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with all the found fields. Use their key names when
+setting values into them.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – If no input fields are enabled in the PDF.</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Example Keyword</span>
+<span class="p">    </span><span class="c">${fields} =</span><span class="p">     </span><span class="c">Get Input Fields</span><span class="p">    </span><span class="c">form.pdf</span>
+<span class="p">    </span><span class="c">Log Dictionary</span><span class="p">    </span><span class="c">${fields}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_input_fields</span><span class="p">(</span><span class="s2">&quot;form.pdf&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+
+<span class="n">example_keyword</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.get_number_of_pages">
+<span class="sig-name descname"><span class="pre">get_number_of_pages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.get_number_of_pages" title="Link to this definition"></a></dt>
+<dd><p>Get number of pages in the document.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Number of pages in PDF</span>
+<span class="p">    ${</span><span class="nv">page_count</span><span class="p">}=    </span><span class="nf">Get Number Of Pages</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+
+<span class="gu">Number of pages in opened PDF</span>
+<span class="p">    ${</span><span class="nv">page_count</span><span class="p">}=    </span><span class="nf">Get Number Of Pages</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">number_of_pages_in_pdf</span><span class="p">():</span>
+    <span class="n">page_count</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_number_of_pages</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source_path</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>PdfReadError</strong> – if file is encrypted or other restrictions are in place</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.get_pdf_info">
+<span class="sig-name descname"><span class="pre">get_pdf_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.get_pdf_info" title="Link to this definition"></a></dt>
+<dd><p>Get metadata from a PDF document.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Get PDF metadata</span>
+<span class="p">    ${</span><span class="nv">metadata</span><span class="p">}=    </span><span class="nf">Get PDF Info</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+
+<span class="gh">*** Keywords ***</span>
+<span class="gu">Get metadata from an already opened PDF</span>
+<span class="p">    ${</span><span class="nv">metadata</span><span class="p">}=    </span><span class="nf">Get PDF Info</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pdf_metadata</span><span class="p">():</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_pdf_info</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source_path</strong> – filepath to the source PDF.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of PDF information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.get_text_from_pdf">
+<span class="sig-name descname"><span class="pre">get_text_from_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.get_text_from_pdf" title="Link to this definition"></a></dt>
+<dd><p>Get text from set of pages in source PDF document.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Text extraction from PDF</span>
+<span class="p">    ${</span><span class="nv">text</span><span class="p">}=    </span><span class="nf">Get Text From PDF</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+
+<span class="gu">Text extraction from open PDF</span>
+<span class="p">    ${</span><span class="nv">text</span><span class="p">}=    </span><span class="nf">Get Text From PDF</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">text_extraction_from_pdf</span><span class="p">():</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_text_from_pdf</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – filepath to the source pdf.</p></li>
+<li><p><strong>pages</strong> – page numbers to get text (numbers start from 1).</p></li>
+<li><p><strong>details</strong> – set to <cite>True</cite> to return textboxes, default <cite>False</cite>.</p></li>
+<li><p><strong>trim</strong> – set to <cite>False</cite> to return raw texts, default <cite>True</cite>
+means whitespace is trimmed from the text</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of pages and their texts.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.html_to_pdf">
+<span class="sig-name descname"><span class="pre">html_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.html_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Generate a PDF file from HTML content.</p>
+<p>Note that input must be well-formed and valid HTML.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Create PDF from HTML</span>
+<span class="p">    </span><span class="nf">HTML to PDF</span><span class="p">    ${</span><span class="nv">html_content_as_string</span><span class="p">}  </span><span class="s">/tmp/output.pdf</span>
+
+<span class="gu">Multi Page PDF</span>
+<span class="p">    @{</span><span class="nv">pages</span><span class="p">}=    </span><span class="nf">Create List</span><span class="p">    ${</span><span class="nv">page1_html</span><span class="p">}    ${</span><span class="nv">page2_html</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">HTML To PDF</span><span class="p">   ${</span><span class="nv">pages</span><span class="p">}    </span><span class="s">output.pdf</span>
+<span class="p">    ...  </span><span class="s">margin=10</span>
+<span class="p">    ...  </span><span class="s">working_directory=subdir</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_pdf_from_html</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">html_to_pdf</span><span class="p">(</span><span class="n">html_content_as_string</span><span class="p">,</span> <span class="s2">&quot;/tmp/output.pdf&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">multi_page_pdf</span><span class="p">():</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="p">[</span><span class="n">page1_html</span><span class="p">,</span> <span class="n">page2_html</span><span class="p">,</span> <span class="n">page3_html</span><span class="p">]</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">html_to_pdf</span><span class="p">(</span><span class="n">pages</span><span class="p">,</span> <span class="s2">&quot;output.pdf&quot;</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="c1"># if I have images in the HTML in the &#39;subdir&#39;</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">html_to_pdf</span><span class="p">(</span><span class="n">pages</span><span class="p">,</span> <span class="s2">&quot;output.pdf&quot;</span><span class="p">,</span>
+        <span class="n">margin</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">working_directory</span><span class="o">=</span><span class="s2">&quot;subdir&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>content</strong> – HTML content</p></li>
+<li><p><strong>output_path</strong> – filepath where to save the PDF document</p></li>
+<li><p><strong>encoding</strong> – codec used for text I/O</p></li>
+<li><p><strong>margin</strong> – page margin, default is set to 0</p></li>
+<li><p><strong>working_directory</strong> – directory where to look for HTML linked
+resources, by default uses the current working directory</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.is_pdf_encrypted">
+<span class="sig-name descname"><span class="pre">is_pdf_encrypted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.is_pdf_encrypted" title="Link to this definition"></a></dt>
+<dd><p>Check if PDF is encrypted.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source_path</strong> – filepath to the source pdf.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if file is encrypted.</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Is PDF encrypted</span>
+<span class="p">    ${</span><span class="nv">is_encrypted</span><span class="p">}=    </span><span class="nf">Is PDF Encrypted</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+
+<span class="gh">*** Keywords ***</span>
+<span class="gu">Is open PDF encrypted</span>
+<span class="p">    ${</span><span class="nv">is_encrypted</span><span class="p">}=    </span><span class="nf">Is PDF Encrypted</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">is_encrypted</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">is_pdf_encrypted</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.logger">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#RPA.PDF.PDF.logger" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.PDF.PDF.get_keyword_documentation">
-<span class="sig-name descname"><span class="pre">get_keyword_documentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_keyword_documentation" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="RPA.PDF.PDF.open_pdf">
+<span class="sig-name descname"><span class="pre">open_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.open_pdf" title="Link to this definition"></a></dt>
+<dd><p>Open a PDF document for reading.</p>
+<p>This is called automatically in the other PDF keywords
+when a path to the PDF file is given as an argument.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Open my pdf file</span>
+<span class="p">    </span><span class="nf">Open PDF</span><span class="p">    </span><span class="s">/tmp/sample.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">open_pdf</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source_path</strong> – filepath to the source pdf.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if PDF is already open.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.pages_count">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pages_count</span></span><a class="headerlink" href="#RPA.PDF.PDF.pages_count" title="Link to this definition"></a></dt>
+<dd><p>Get number of pages in active PDF document.</p>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.PDF.PDF.get_keyword_names">
-<span class="sig-name descname"><span class="pre">get_keyword_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_keyword_names" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="RPA.PDF.PDF.resolve_input">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resolve_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.resolve_input" title="Link to this definition"></a></dt>
+<dd><p>Normalizes input path and returns as string.</p>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.PDF.PDF.get_keyword_source">
-<span class="sig-name descname"><span class="pre">get_keyword_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keyword_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_keyword_source" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="RPA.PDF.PDF.resolve_output">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resolve_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.resolve_output" title="Link to this definition"></a></dt>
+<dd><p>Normalizes output path and returns as string.</p>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.PDF.PDF.get_keyword_tags">
-<span class="sig-name descname"><span class="pre">get_keyword_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_keyword_tags" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="RPA.PDF.PDF.rotate_page">
+<span class="sig-name descname"><span class="pre">rotate_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clockwise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">90</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.rotate_page" title="Link to this definition"></a></dt>
+<dd><p>Rotate pages in source PDF document and save to target PDF document.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">PDF page rotation</span>
+<span class="p">    </span><span class="nf">Rotate Page</span>
+<span class="p">    ...          </span><span class="s">source_path=/tmp/sample.pdf</span>
+<span class="p">    ...          </span><span class="s">output_path=/tmp/output.pdf</span>
+<span class="p">    ...          </span><span class="s">pages=5</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pdf_page_rotation</span><span class="p">():</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">rotate_page</span><span class="p">(</span>
+        <span class="n">source_path</span><span class="o">=</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">,</span>
+        <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;/tmp/output.pdf&quot;</span><span class="p">,</span>
+        <span class="n">pages</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pages</strong> – page numbers to extract from PDF (numbers start from 1).</p></li>
+<li><p><strong>source_path</strong> – filepath to the source pdf.</p></li>
+<li><p><strong>output_path</strong> – filepath to the target pdf, stored by default
+in the robot output directory as <code class="docutils literal notranslate"><span class="pre">output.pdf</span></code></p></li>
+<li><p><strong>clockwise</strong> – directorion that page will be rotated to, default True.</p></li>
+<li><p><strong>angle</strong> – number of degrees to rotate, default 90.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.PDF.PDF.get_keyword_types">
-<span class="sig-name descname"><span class="pre">get_keyword_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_keyword_types" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="RPA.PDF.PDF.save_field_values">
+<span class="sig-name descname"><span class="pre">save_field_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newvals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_appearances_writer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.save_field_values" title="Link to this definition"></a></dt>
+<dd><p>Save field values in PDF if it has fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – Source PDF with fields to update.</p></li>
+<li><p><strong>output_path</strong> – Updated target PDF.</p></li>
+<li><p><strong>newvals</strong> – New values when updating many at once.</p></li>
+<li><p><strong>use_appearances_writer</strong> – For some PDF documents the updated fields won’t
+be visible (or will look strange). When this happens, try to set this to
+<cite>True</cite> so the previewer will re-render these based on the actual values.
+(and viewing the output PDF in a browser might display the field values
+correcly then)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Example Keyword</span>
+<span class="p">    </span><span class="c">Open PDF</span><span class="p">    </span><span class="c">./tmp/sample.pdf</span>
+<span class="p">    </span><span class="c">Set Field Value</span><span class="p">    </span><span class="c">phone_nr</span><span class="p">    </span><span class="c">077123123</span>
+<span class="p">    </span><span class="c">Save Field Values</span><span class="p">    </span><span class="c">output_path=./tmp/output.pdf</span>
+
+<span class="c">Multiple operations</span>
+<span class="p">    </span><span class="c">&amp;{new_fields}=</span><span class="p">       </span><span class="c">Create Dictionary</span>
+<span class="p">    </span><span class="c">...</span><span class="p">                  </span><span class="c">phone_nr=077123123</span>
+<span class="p">    </span><span class="c">...</span><span class="p">                  </span><span class="c">title=dr</span>
+<span class="p">    </span><span class="c">Save Field Values</span><span class="p">    </span><span class="c">source_path=./tmp/sample.pdf</span>
+<span class="p">    </span><span class="c">...</span><span class="p">                  </span><span class="c">output_path=./tmp/output.pdf</span>
+<span class="p">    </span><span class="c">...</span><span class="p">                  </span><span class="c">newvals=${new_fields}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">open_pdf</span><span class="p">(</span><span class="s2">&quot;./tmp/sample.pdf&quot;</span><span class="p">)</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="s2">&quot;phone_nr&quot;</span><span class="p">,</span> <span class="s2">&quot;077123123&quot;</span><span class="p">)</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">save_field_values</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;./tmp/output.pdf&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">multiple_operations</span><span class="p">():</span>
+    <span class="n">new_fields</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;phone_nr&quot;</span><span class="p">:</span> <span class="s2">&quot;077123123&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;dr&quot;</span><span class="p">}</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">save_field_values</span><span class="p">(</span>
+        <span class="n">source_path</span><span class="o">=</span><span class="s2">&quot;./tmp/sample.pdf&quot;</span><span class="p">,</span>
+        <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;./tmp/output.pdf&quot;</span><span class="p">,</span>
+        <span class="n">newvals</span><span class="o">=</span><span class="n">new_fields</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="RPA.PDF.PDF.run_keyword">
-<span class="sig-name descname"><span class="pre">run_keyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.run_keyword" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="RPA.PDF.PDF.save_figure_as_image">
+<span class="sig-name descname"><span class="pre">save_figure_as_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Figure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">images_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.save_figure_as_image" title="Link to this definition"></a></dt>
+<dd><p>Try to save the image data from Figure object, and return
+the file name, if successful.</p>
+<p>Figure needs to have byte <cite>stream</cite> and that needs to be recognized
+as image format for successful save.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keyword ***</span>
+<span class="gu">Figure to Image</span>
+<span class="p">    ${</span><span class="nv">image_file_path</span><span class="p">} =     </span><span class="nf">Save figure as image</span>
+<span class="p">    ...             </span><span class="s">figure=pdf_figure_object</span>
+<span class="p">    ...             </span><span class="s">images_folder=/tmp/images</span>
+<span class="p">    ...             </span><span class="s">file_prefix=file_name_here</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">figure_to_image</span><span class="p">():</span>
+    <span class="n">image_file_path</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">save_figure_as_image</span><span class="p">(</span>
+        <span class="n">figure</span><span class="o">=</span><span class="s2">&quot;pdf_figure_object&quot;</span>
+        <span class="n">images_folder</span><span class="o">=</span><span class="s2">&quot;/tmp/images&quot;</span>
+        <span class="n">file_prefix</span><span class="o">=</span><span class="s2">&quot;file_name_here&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>figure</strong> – PDF Figure object which will be saved as an image.
+The PDF Figure object can be determined from the <cite>Get All Figures</cite> keyword</p></li>
+<li><p><strong>images_folder</strong> – directory where image files will be created</p></li>
+<li><p><strong>file_prefix</strong> – image filename prefix</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>image filepath or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.save_figures_as_images">
+<span class="sig-name descname"><span class="pre">save_figures_as_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">images_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.PDF.PDF.save_figures_as_images" title="Link to this definition"></a></dt>
+<dd><p>Save figures from given PDF document as image files.</p>
+<p>If no source path given, assumes a PDF is already opened.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keyword ***</span>
+<span class="gu">Figures to Images</span>
+<span class="p">    ${</span><span class="nv">image_filenames</span><span class="p">} =    </span><span class="nf">Save figures as images</span>
+<span class="p">    ...             </span><span class="s">source_path=/tmp/sample.pdf</span>
+<span class="p">    ...             </span><span class="s">images_folder=/tmp/images</span>
+<span class="p">    ...             </span><span class="s">pages=</span><span class="p">${</span><span class="nv">4</span><span class="p">}</span>
+<span class="p">    ...             </span><span class="s">file_prefix=file_name_here</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">figures_to_images</span><span class="p">():</span>
+    <span class="n">image_filenames</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">save_figures_as_image</span><span class="p">(</span>
+        <span class="n">source_path</span><span class="o">=</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span>
+        <span class="n">images_folder</span><span class="o">=</span><span class="s2">&quot;/tmp/images&quot;</span>
+        <span class="n">pages</span><span class="o">=</span><span class="mi">4</span>
+        <span class="n">file_prefix</span><span class="o">=</span><span class="s2">&quot;file_name_here&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – filepath to PDF document</p></li>
+<li><p><strong>images_folder</strong> – directory where image files will be created</p></li>
+<li><p><strong>pages</strong> – target figures in the pages, can be single page or range,
+default <cite>None</cite> means that all pages are scanned for figures to save
+(numbers start from 1)</p></li>
+<li><p><strong>file_prefix</strong> – image filename prefix</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of image filenames created</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.save_pdf">
+<span class="sig-name descname"><span class="pre">save_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PdfReader</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.save_pdf" title="Link to this definition"></a></dt>
+<dd><p>Save the contents of a pypdf reader to a new file.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keyword ***</span>
+<span class="gu">Save changes to PDF</span>
+<span class="p">    </span><span class="nf">Save PDF</span><span class="p">    </span><span class="s">/tmp/output.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">save_changes_to_pdf</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">save_pdf</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;output/output.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_path</strong> – filepath to target PDF</p></li>
+<li><p><strong>reader</strong> – a pypdf reader (defaults to currently active document)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.set_anchor_to_element">
+<span class="sig-name descname"><span class="pre">set_anchor_to_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pagenum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_case</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.set_anchor_to_element" title="Link to this definition"></a></dt>
+<dd><p>Sets main anchor point in the document for further searches.</p>
+<p>This is used internally in the library and can work with multiple anchors at
+the same time if such are found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – Element to set anchor to. This can be prefixed with either
+“text:”, “subtext:”, “regex:” or “coords:” to find the anchor by text or
+coordinates. The “text” strategy is assumed if no such prefix is specified.
+(text search is case-sensitive; use <cite>ignore_case</cite> param for controlling it)</p></li>
+<li><p><strong>trim</strong> – Automatically trim leading/trailing whitespace from the text
+elements. (switched on by default)</p></li>
+<li><p><strong>pagenum</strong> – Page number where search is performed on, defaults to 1 (first
+page).</p></li>
+<li><p><strong>ignore_case</strong> – Do a case-insensitive search when set to <cite>True</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if at least one anchor was found.</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Example Keyword</span>
+<span class="p">     </span><span class="c">${success} =</span><span class="p">  </span><span class="c">Set Anchor To Element</span><span class="p">    </span><span class="c">Invoice Number</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">set_anchor_to_element</span><span class="p">(</span><span class="s2">&quot;Invoice Number&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.set_convert_settings">
+<span class="sig-name descname"><span class="pre">set_convert_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line_margin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_margin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_margin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boxes_flow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_convert_settings" title="Link to this definition"></a></dt>
+<dd><p>Change settings for PDFMiner document conversion.</p>
+<p><cite>line_margin</cite> controls how textboxes are grouped - if conversion results in
+texts grouped into one group then set this to lower value</p>
+<p><cite>word_margin</cite> controls how spaces are inserted between words - if conversion
+results in text without spaces then set this to lower value</p>
+<p><cite>char_margin</cite> controls how characters are grouped into words - if conversion
+results in individual characters instead of then set this to higher value</p>
+<p><cite>boxes_flow</cite> controls how much horizontal and vertical position of the text
+matters when determining the order of text boxes. Value can be between range
+of -1.0 (only horizontal position matters) to +1.0 (only vertical position
+matters). This feature (advanced layout analysis) can be disabled by setting
+value to <cite>None</cite> thus bottom left corner of the text box is used to determine
+order of the text boxes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line_margin</strong> – relative margin between bounding lines, default 0.5</p></li>
+<li><p><strong>word_margin</strong> – relative margin between words, default 0.1</p></li>
+<li><p><strong>char_margin</strong> – relative margin between characters, default 2.0</p></li>
+<li><p><strong>boxes_flow</strong> – positioning of the text boxes based on text, default 0.5</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">***Settings***</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.PDF</span>
+
+<span class="gh">***Tasks***</span>
+<span class="gu">Example Keyword</span>
+<span class="p">    </span><span class="nf">Set Convert Settings</span><span class="p">  </span><span class="s">line_margin=0.00000001</span>
+<span class="p">    ${</span><span class="nv">texts</span><span class="p">}=  </span><span class="nf">Get Text From PDF</span><span class="p">  </span><span class="s">/tmp/sample.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">set_convert_settings</span><span class="p">(</span><span class="n">boxes_flow</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">texts</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_text_from_pdf</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.set_field_value">
+<span class="sig-name descname"><span class="pre">set_field_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.set_field_value" title="Link to this definition"></a></dt>
+<dd><p>Set value for field with given name on the active document.</p>
+<p>Tries to match with field’s identifier directly or its label. When ticking
+checkboxes, try with the <cite>/Yes</cite> string value as simply <cite>Yes</cite> might not work
+with most previewing apps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> – Field to update.</p></li>
+<li><p><strong>value</strong> – New value for the field.</p></li>
+<li><p><strong>source_path</strong> – Source PDF file path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – When field can’t be found or more than one field matches
+the given <cite>field_name</cite>.</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Example Keyword</span>
+<span class="p">    </span><span class="c">Open PDF</span><span class="p">    </span><span class="c">./tmp/sample.pdf</span>
+<span class="p">    </span><span class="c">Set Field Value</span><span class="p">    </span><span class="c">phone_nr</span><span class="p">    </span><span class="c">077123123</span>
+<span class="p">    </span><span class="c">Save Field Values</span><span class="p">    </span><span class="c">output_path=./tmp/output.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">example_keyword</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">open_pdf</span><span class="p">(</span><span class="s2">&quot;./tmp/sample.pdf&quot;</span><span class="p">)</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">set_field_value</span><span class="p">(</span><span class="s2">&quot;phone_nr&quot;</span><span class="p">,</span> <span class="s2">&quot;077123123&quot;</span><span class="p">)</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">save_field_values</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;./tmp/output.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.switch_to_pdf">
+<span class="sig-name descname"><span class="pre">switch_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.switch_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Switch library’s current fileobject to already opened file
+or open a new file if not opened.</p>
+<p>This is done automatically in the PDF library keywords.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Jump to another PDF</span>
+<span class="p">    </span><span class="nf">Switch to PDF</span><span class="p">    </span><span class="s">/tmp/another.pdf</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">jump_to_another_pdf</span><span class="p">():</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">switch_to_pdf</span><span class="p">(</span><span class="s2">&quot;/tmp/sample.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source_path</strong> – filepath to the source pdf.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if PDF filepath is not given and there are no active
+file to activate.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.PDF.PDF.template_html_to_pdf">
+<span class="sig-name descname"><span class="pre">template_html_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.PDF.PDF.template_html_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Use HTML template file or content to generate PDF file.</p>
+<p>It provides an easy method of generating a PDF document from an HTML formatted
+template file or HTML content string with variable substitution.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span>
+<span class="gu">Create PDF from HTML template file</span>
+<span class="p">    ${</span><span class="nv">TEMPLATE</span><span class="p">}=    </span><span class="nf">Set Variable</span><span class="p">    </span><span class="s">order.template</span>
+<span class="p">    ${</span><span class="nv">PDF</span><span class="p">}=         </span><span class="nf">Set Variable</span><span class="p">    </span><span class="s">result.pdf</span>
+<span class="p">    &amp;{</span><span class="nv">DATA</span><span class="p">}=        </span><span class="nf">Create Dictionary</span>
+<span class="p">    ...             </span><span class="s">name=Robot Generated</span>
+<span class="p">    ...             </span><span class="s">email=robot@domain.com</span>
+<span class="p">    ...             </span><span class="s">zip=00100</span>
+<span class="p">    ...             </span><span class="s">items=Item 1, Item 2</span>
+<span class="p">    </span><span class="nf">Template HTML to PDF</span>
+<span class="p">    ...    </span><span class="s">template=</span><span class="p">${</span><span class="nv">TEMPLATE</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">output_path=</span><span class="p">${</span><span class="nv">PDF</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">variables=</span><span class="p">${</span><span class="nv">DATA</span><span class="p">}</span>
+
+<span class="gu">Create PDF from HTML content</span>
+<span class="p">    ${</span><span class="nv">HTML</span><span class="p">}=        </span><span class="nf">Set Variable</span><span class="p">    </span><span class="s">&lt;html&gt;&lt;body&gt;&lt;h1&gt;{{title}}&lt;/h1&gt;&lt;p&gt;{{content}}&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</span>
+<span class="p">    ${</span><span class="nv">PDF</span><span class="p">}=         </span><span class="nf">Set Variable</span><span class="p">    </span><span class="s">result.pdf</span>
+<span class="p">    &amp;{</span><span class="nv">DATA</span><span class="p">}=        </span><span class="nf">Create Dictionary</span>
+<span class="p">    ...             </span><span class="s">title=My Report</span>
+<span class="p">    ...             </span><span class="s">content=This is the content</span>
+<span class="p">    </span><span class="nf">Template HTML to PDF</span>
+<span class="p">    ...    </span><span class="s">template=</span><span class="p">${</span><span class="nv">HTML</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">output_path=</span><span class="p">${</span><span class="nv">PDF</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">variables=</span><span class="p">${</span><span class="nv">DATA</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.PDF</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDF</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+
+<span class="c1"># Using template file</span>
+<span class="n">orders</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;item 1&quot;</span><span class="p">,</span> <span class="s2">&quot;item 2&quot;</span><span class="p">,</span> <span class="s2">&quot;item 3&quot;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Robot Process&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;robot@domain.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;zip&quot;</span><span class="p">:</span> <span class="s2">&quot;00100&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;br/&gt;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orders</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="n">p</span><span class="o">.</span><span class="n">template_html_to_pdf</span><span class="p">(</span><span class="s2">&quot;order.template&quot;</span><span class="p">,</span> <span class="s2">&quot;order.pdf&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Using HTML content directly</span>
+<span class="n">html_content</span> <span class="o">=</span> <span class="s2">&quot;&lt;html&gt;&lt;body&gt;&lt;h1&gt;{{title}}&lt;/h1&gt;&lt;p&gt;{{content}}&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;My Report&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;This is the content&quot;</span><span class="p">}</span>
+<span class="n">p</span><span class="o">.</span><span class="n">template_html_to_pdf</span><span class="p">(</span><span class="n">html_content</span><span class="p">,</span> <span class="s2">&quot;report.pdf&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template</strong> – filepath to HTML template file OR HTML content string.
+If the file path exists, it will be read as a template file.
+If the file path does not exist, the string is treated as HTML content.</p></li>
+<li><p><strong>output_path</strong> – filepath where to save PDF document</p></li>
+<li><p><strong>variables</strong> – dictionary of variables to fill into template, defaults to {}</p></li>
+<li><p><strong>encoding</strong> – codec used for text I/O</p></li>
+<li><p><strong>margin</strong> – page margin, default is set to 0</p></li>
+<li><p><strong>working_directory</strong> – directory where to look for HTML linked
+resources, by default uses the current working directory</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Line Break Handling</strong>: When using HTML content with <code class="docutils literal notranslate"><span class="pre">&lt;br/&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;br&gt;</span></code> tags,
+these are automatically converted to paragraph breaks to improve text extraction.
+However, for optimal line break preservation in <code class="docutils literal notranslate"><span class="pre">get_text_from_pdf()</span></code>,
+consider using proper HTML block elements like <code class="docutils literal notranslate"><span class="pre">&lt;p&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;div&gt;</span></code> instead of <code class="docutils literal notranslate"><span class="pre">&lt;br/&gt;</span></code> tags.</p>
+<p>Example for better line breaks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Instead of: &quot;&lt;p&gt;Line 1&lt;br/&gt;Line 2&lt;/p&gt;&quot;</span>
+<span class="c1"># Use: &quot;&lt;p&gt;Line 1&lt;/p&gt;&lt;p&gt;Line 2&lt;/p&gt;&quot;</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
 
 </dd></dl>
 
