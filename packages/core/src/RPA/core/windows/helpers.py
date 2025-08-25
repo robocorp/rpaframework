@@ -4,7 +4,7 @@ from typing import Dict
 IS_WINDOWS = platform.system() == "Windows"
 
 if IS_WINDOWS:
-    import psutil
+    import psutil  # pylint: disable=import-error
 
 
 def get_process_list() -> Dict:
