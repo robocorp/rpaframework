@@ -1,14 +1,13 @@
 import logging
 from typing import Dict
 
-from robotlibcore import DynamicCore
 from RPA.core.logger import RobotLogListener
 
 from RPA.PDF.keywords import DocumentKeywords, FinderKeywords, ModelKeywords
 from RPA.PDF.keywords.model import Document
 
 
-class PDF(DynamicCore):
+class PDF(DocumentKeywords, FinderKeywords, ModelKeywords):
     """`PDF` is a library for managing PDF documents.
 
     It can be used to extract text from PDFs, add watermarks to pages, and
@@ -99,20 +98,39 @@ class PDF(DynamicCore):
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
+        # Initialize parent classes first with self as context
+        DocumentKeywords.__init__(self, self)
+        FinderKeywords.__init__(self, self)
+        ModelKeywords.__init__(self, self)
+
+        # Set up attributes (logger is accessed via property from LibraryContext)
+        self._logger = logging.getLogger(__name__)
         self.documents: Dict[str, Document] = {}
-        self.active_pdf_document = None
+        self._active_pdf_document = None
         self.convert_settings = {}
 
-        # Register keyword libraries to LibCore
-        libraries = [
-            DocumentKeywords(self),
-            FinderKeywords(self),
-            ModelKeywords(self),
-        ]
-        super().__init__(libraries)
+        self.__post_init__()
 
+    @property
+    def logger(self):
+        return self._logger
+
+    @property
+    def active_pdf_document(self):
+        return self._active_pdf_document
+
+    @active_pdf_document.setter
+    def active_pdf_document(self, value):
+        self._active_pdf_document = value
+
+    @property
+    def pages_count(self):
+        """Get number of pages in active PDF document."""
+        if self._active_pdf_document is None:
+            return 0
+        return len(self._active_pdf_document.reader.pages)
+
+    def __post_init__(self):
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.PDF.Decrypt PDF"])
-
         logging.getLogger("pdfminer").setLevel(logging.WARNING)

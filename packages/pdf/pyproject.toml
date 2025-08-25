@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-pdf"
-version = "8.0.1"
+version = "9.0.0"
 description = "PDF library of RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -24,12 +24,12 @@ classifiers = [
 ]
 
 dependencies = [
-	"rpaframework-core >=12.0.1",
+	"rpaframework-core >=12.0.2",
 	"robotframework >=4.0.0, !=4.0.1, !=6.1.0, <8.0.0",
-	"robotframework-pythonlibcore >=4.2.0",
-	"pdfminer.six ==20221105",
-	"pypdf >=3.16.2",
-	"fpdf2 ==2.7.5",
+	"pdfminer.six ==20250506",
+	"pypdf >=6.0.0",
+	"fpdf2 >=2.8.4",
+	"docutils>=0.21.2",
 ]
 
 [project.urls]
