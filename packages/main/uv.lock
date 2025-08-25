@@ -2172,7 +2172,7 @@ requires-dist = [
     { name = "robotframework-sapguilibrary", marker = "sys_platform == 'win32'", specifier = ">=1.1" },
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
-    { name = "rpaframework-core", specifier = ">=12.0.1" },
+    { name = "rpaframework-core", specifier = ">=12.0.2" },
     { name = "rpaframework-pdf", specifier = ">=8.0.1" },
     { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=9.0.0" },
     { name = "selenium", specifier = "==4.15.2" },

@@ -33,7 +33,11 @@ Create test data
 Command
     [Arguments]   @{args}
     ${is_win}=    Evaluate         platform.system() == "Windows"    platform
-    ${script}=    Set variable if  ${is_win}    rpa-crypto.cmd    rpa-crypto
-    ${result}=    Run process      ${script}    --verbose    @{args}
+    ${python}=    Evaluate    sys.executable    sys
+    ${exists}=    Run Keyword And Return Status    File Should Exist    ${python}
+    IF    not ${exists}
+        ${python}=    Set Variable If    ${is_win}    py    python
+    END
+    ${result}=    Run process      ${python}    -m    RPA.scripts.crypto    --verbose    @{args}
     Should be equal as integers    ${result.rc}    0    message=${result.stderr}
-    [Return]      ${result}
+    RETURN      ${result}

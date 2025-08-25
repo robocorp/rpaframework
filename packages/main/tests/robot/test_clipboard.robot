@@ -4,7 +4,7 @@ Library         String
 Default Tags    RPA.Desktop.Clipboard
 Force tags      skip  # TODO. Does not work on Github Action Ubuntu
 
-*** Variable ***
+*** Variables ***
 ${DEFAULT_CLIPBOARD_CONTENT}   copying test text into clipboard
 
 *** Tasks ***
