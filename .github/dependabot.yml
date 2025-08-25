@@ -1,0 +1,60 @@
+version: 2
+
+updates:
+  # uv-based Python dependency updates (root)
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # uv-based Python dependency updates (packages)
+  - package-ecosystem: "uv"
+    directory: "/packages/assistant"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/aws"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/core"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/devutils"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/google"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/hubspot"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/main"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/openai"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/pdf"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/recognition"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "uv"
+    directory: "/packages/windows"
+    schedule:
+      interval: "weekly"
+
+  # Keep GitHub Actions up-to-date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
