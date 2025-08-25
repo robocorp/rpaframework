@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-recognition"
-version = "6.0.0"
+version = "6.0.1"
 description = "OCR capabilities used by RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -24,11 +24,12 @@ classifiers = [
 ]
 
 dependencies = [
-	"rpaframework-core >=12.0.1",
-	"pillow >=10.2.0",
-	"opencv-python-headless >=4.8.1, <4.9.0",
-	"numpy >=1.19.3",
-	"pytesseract >=0.3.6",
+	"rpaframework-core >=12.0.2",
+	"pillow >=10.2.0, <12.0.0",
+	"opencv-python-headless >=4.8.1, <4.11.0",
+	"numpy >=1.19.3, <2.0.0",
+	"pytesseract >=0.3.6, <0.4.0",
+	"docutils>=0.21.2",
 ]
 
 [project.urls]
