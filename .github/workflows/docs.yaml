@@ -19,7 +19,7 @@ jobs:
       SETUPTOOLS_USE_DISTUTILS: stdlib
       INVOKE_IS_CI_CD: 1
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Set up Python
