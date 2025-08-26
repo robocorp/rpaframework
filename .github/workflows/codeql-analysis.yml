@@ -60,7 +60,7 @@ jobs:
 
       # Initializes the CodeQL tools for scanning (with retry to avoid transient network errors).
       - name: Initialize CodeQL (with retry)
-        uses: Wandalen/wretry.action@v1.4.9
+        uses: Wandalen/wretry.action@v3.8.0
         with:
           action: github/codeql-action/init@v3
           attempt_limit: 3
@@ -90,7 +90,7 @@ jobs:
       #   ./location_of_script_within_repo/buildscript.sh
 
       - name: Perform CodeQL Analysis (with retry)
-        uses: Wandalen/wretry.action@v1.4.9
+        uses: Wandalen/wretry.action@v3.8.0
         with:
           action: github/codeql-action/analyze@v3
           attempt_limit: 3
