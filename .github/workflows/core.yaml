@@ -69,7 +69,7 @@ jobs:
     env:
       INVOKE_IS_CI_CD: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
         with:
