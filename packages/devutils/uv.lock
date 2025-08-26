@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.9.1"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -874,17 +874,16 @@ wheels = [
 
 [[package]]
 name = "pytest-regressions"
-version = "1.0.6"
+version = "2.8.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
     { name = "pytest-datadir" },
     { name = "pyyaml" },
-    { name = "six" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d6/98/2a8962432970e4af2dd7e4eb162b97711cfee51bccc1e7b4a42aec8839ae/pytest-regressions-1.0.6.tar.gz", hash = "sha256:14165dd7a452f0637083855f67aafe6afa61013a541efd2dedc98b7da5dd3970", size = 76927, upload-time = "2019-09-10T14:51:36.51Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c1/8e/e17b12ee49a9814ad86f544225331406e3bf23849a5bc83f91e119e2b72b/pytest_regressions-2.8.2.tar.gz", hash = "sha256:1d8f4767be58b9994bfa7d60271099469ad32b8ca9f9d9ceca1c1d6827156b19", size = 116642, upload-time = "2025-08-13T15:50:37.961Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c1/bc/14c812a9794e5b8605e44e73dbdff8efc409f0f5d2c70897a58b6d96f9e2/pytest_regressions-1.0.6-py3-none-any.whl", hash = "sha256:51aca72c6e75c5cfcf50ffbc234405b788afefecab1b3010dbe9a3e749df1eb3", size = 16948, upload-time = "2019-09-10T14:51:34.725Z" },
+    { url = "https://files.pythonhosted.org/packages/b6/c9/2c3ea968876f698035b1f00dbe5cd6bff76d3e441dfb1af32111f544b6bb/pytest_regressions-2.8.2-py3-none-any.whl", hash = "sha256:a0804c1ce66d8e4d9a3c7c68f42a3d436182edca8e86565c232caeaf9e080fc2", size = 24856, upload-time = "2025-08-13T15:50:36.431Z" },
 ]
 
 [[package]]
@@ -1072,7 +1071,7 @@ requires-dist = [
     { name = "pytest-env", specifier = ">=0.6.2" },
     { name = "pytest-freezegun", specifier = ">=0.4.2" },
     { name = "pytest-mock", specifier = ">=3.8.2" },
-    { name = "pytest-regressions", specifier = "==1.0.6" },
+    { name = "pytest-regressions", specifier = "==2.8.2" },
     { name = "pytest-xdist", specifier = ">=3.2.1" },
     { name = "pyyaml", specifier = ">=5.4.1,<7.0.0" },
     { name = "robotframework-docgen", specifier = ">=0.17.0" },
