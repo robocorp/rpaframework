@@ -17,7 +17,6 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.9",
 	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
@@ -26,7 +25,9 @@ classifiers = [
 dependencies = [
 	"sema4ai-actions>=1.4.2",
 	"robocorp>=3.0.0",
-	"pydantic>=2.11.7"
+	"pydantic>=2.11.7",
+	"setuptools>=65.0.0",
+	"wheel>=0.40.0"
 ]
 
 [dependency-groups]
