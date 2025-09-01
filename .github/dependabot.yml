@@ -32,6 +32,9 @@ updates:
     directory: "/packages/hubspot"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "hubspot-api-client"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "uv"
     directory: "/packages/main"
     schedule:

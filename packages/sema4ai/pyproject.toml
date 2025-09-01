@@ -1,0 +1,49 @@
+[project]
+name = "rpaframework-sema4ai"
+version = "1.0.0"
+description = "Sema4ai library for RPA Framework"
+authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
+license = {text = "Apache-2.0"}
+readme = "README.rst"
+requires-python = ">=3.10"
+
+keywords = ["robotframework", "rpa", "automation", "sema4ai"]
+classifiers = [
+	"License :: OSI Approved :: Apache Software License",
+	"Development Status :: 3 - Alpha",
+	"Operating System :: OS Independent",
+	"Intended Audience :: Developers",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+	"Topic :: Software Development :: Libraries",
+	"Framework :: Robot Framework :: Library",
+	"Framework :: Robot Framework",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+	"sema4ai-actions>=1.4.2",
+	"robocorp>=3.0.0",
+	"pydantic>=2.11.7",
+	"setuptools>=65.0.0",
+	"wheel>=0.40.0"
+]
+
+[dependency-groups]
+dev = [
+	"rpaframework-devutils",
+]
+
+[tool.uv]
+package = true
+
+[tool.uv.sources]
+rpaframework-devutils = { path = "../devutils", editable = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/RPA"]
