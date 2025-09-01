@@ -1,5 +1,5 @@
 ###############
-RPA.Sema4ai
+RPA.Sema4AI
 ###############
 
 .. contents:: Table of Contents
@@ -34,7 +34,7 @@ After installation the library can be directly imported inside
 .. code-block:: robotframework
 
     *** Settings ***
-    Library    RPA.Sema4ai
+    Library    RPA.Sema4AI
 
 .. _uv: https://github.com/astral-sh/uv
 .. _Robot Framework: https://robotframework.org
@@ -49,7 +49,7 @@ Robot Framework
 .. code-block:: robotframework
 
     *** Settings ***
-    Library    RPA.Sema4ai
+    Library    RPA.Sema4AI
 
     *** Tasks ***
     Ask Agent Simple
@@ -59,7 +59,7 @@ Robot Framework
 
     Ask Agent With Agent ID Bypass (Cloud)
         # If you know the agent ID and endpoint, you can bypass the name lookup
-        ${response}    Ask Agent    Hello!    your_api_key    
+        ${response}    Ask Agent    Hello!    your_agent_api_key    
         ...    agent_id=agent_123    
         ...    agent_api_endpoint=https://your-tenant.sema4ai.work/tenants/tenant-id
         Log    ${response.response}
@@ -79,15 +79,15 @@ Python
 
 .. code-block:: python
 
-    from RPA.Sema4ai import Sema4ai
+    from RPA.Sema4AI import Sema4AI
 
     # Initialize the library
-    sema4ai = Sema4ai()
+    sema4ai = Sema4AI()
 
     # Simple usage - find agent by name
     response = sema4ai.ask_agent(
         message="Hello, what can you do?",
-        api_key="LOCAL",  # Use "LOCAL" for Sema4ai Studio/SDK
+        agent_api_key="LOCAL",  # Use "LOCAL" for Sema4ai Studio/SDK
         agent_name="My Agent"
     )
     print(f"Agent response: {response.response}")
@@ -96,7 +96,7 @@ Python
     # Bypass agent lookup with agent_id and endpoint (cloud/tenant)
     response = sema4ai.ask_agent(
         message="Hello!",
-        api_key="your_api_key",
+        agent_api_key="your_agent_api_key",
         agent_id="agent_123",  # Skip name-to-ID lookup
         agent_api_endpoint="https://your-tenant.sema4ai.work/tenants/tenant-id"
     )
@@ -104,7 +104,7 @@ Python
     # Continue existing conversation
     response2 = sema4ai.ask_agent(
         message="How are you?",
-        api_key="LOCAL",
+        agent_api_key="LOCAL",
         agent_name="My Agent",
         conversation_id=response.conversation_id
     )
@@ -201,11 +201,11 @@ Troubleshooting
    .. code-block:: python
    
        # Wrong - will use local endpoint discovery
-       response = sema4ai.ask_agent("Hello", "api_key", agent_id="agent_123")
+       response = sema4ai.ask_agent("Hello", "agent_api_key", agent_id="agent_123")
        
        # Correct - provide the endpoint
        response = sema4ai.ask_agent(
-           "Hello", "api_key", 
+           "Hello", "agent_api_key", 
            agent_id="agent_123",
            agent_api_endpoint="https://your-tenant.sema4ai.work/tenants/tenant-id"
        )

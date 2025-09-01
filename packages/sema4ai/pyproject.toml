@@ -5,7 +5,7 @@ description = "Sema4ai library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">=3.9.1"
+requires-python = ">=3.10"
 
 keywords = ["robotframework", "rpa", "automation", "sema4ai"]
 classifiers = [
@@ -24,14 +24,10 @@ classifiers = [
 ]
 
 dependencies = [
-	"docutils>=0.21.2",
 	"sema4ai-actions>=1.4.2",
+	"robocorp>=3.0.0",
+	"pydantic>=2.11.7"
 ]
-
-[project.urls]
-homepage = "https://rpaframework.org/"
-documentation = "https://rpaframework.org/"
-repository = "https://github.com/robocorp/rpaframework"
 
 [dependency-groups]
 dev = [
@@ -42,7 +38,7 @@ dev = [
 package = true
 
 [tool.uv.sources]
-rpaframework-devutils = { path = "../devutils/", editable = true }
+rpaframework-devutils = { path = "../devutils", editable = true }
 
 [build-system]
 requires = ["hatchling"]
@@ -50,8 +46,3 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/RPA"]
-include = ["src/RPA/**/*.libspec"]
-
-[tool.pytest.ini_options]
-addopts = "-v --cov=src --cov-report term-missing --cov-branch"
-testpaths = ["tests"]
