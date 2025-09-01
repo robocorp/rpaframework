@@ -97,7 +97,9 @@ jobs:
     - name: Lint
       run: invoke code.lint -e
     - name: Test
-      run: invoke code.test -a
+      run: |
+        # Run tests directly with pytest to ensure only sema4ai package tests are executed
+        python -m pytest tests/python/ -v --tb=short
 
   # publish:
   #   # Only publish on master workflow runs
