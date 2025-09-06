@@ -31,7 +31,7 @@ dependencies = [
 	"mock>=5.0.0",
 	"toml>=0.10.2",
 	"importlib-metadata>=4.13.0",
-	"moto==5.1.0"
+	"moto==5.1.11"
 ]
 
 [tool.uv]
