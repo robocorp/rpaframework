@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.9.1"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -638,7 +638,7 @@ wheels = [
 
 [[package]]
 name = "moto"
-version = "5.1.0"
+version = "5.1.12"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -651,9 +651,9 @@ dependencies = [
     { name = "werkzeug" },
     { name = "xmltodict" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/df/fc/629a225bf615ed5e787aa36ef3c395ed9c702e6c14b51ee5bf174c5d7dd9/moto-5.1.0.tar.gz", hash = "sha256:879274a9d2213ca49706e3c8ea380d90953ec1ec642976f6315255394d36edc0", size = 6581832, upload-time = "2025-02-23T21:14:17.71Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fe/71/805c0a0b30e362cd759206d4723bad800bc8c6c83a7edd05e55747d03959/moto-5.1.12.tar.gz", hash = "sha256:6eca3a020cb89c188b763610c27c969c32b832205712d3bdcb1a6031a4005187", size = 7185928, upload-time = "2025-09-07T19:38:37.412Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/91/d7/0dadf1e7ee7be7920dc0d8d3ee9e0fa9af13f2eedec7fffc4475a91697a6/moto-5.1.0-py3-none-any.whl", hash = "sha256:4fada00cedfba661aa58fe0b33b3ba9a0ef96d0e9937c9bed5163053898b4a27", size = 4725360, upload-time = "2025-02-23T21:14:14.564Z" },
+    { url = "https://files.pythonhosted.org/packages/89/92/cfb9a8be3d6070bef53afb92e03a5a7eb6da0127b29a8438fe00b12f5ed2/moto-5.1.12-py3-none-any.whl", hash = "sha256:c9f1119ab57819ce4b88f793f51c6ca0361b6932a90c59865fd71022acfc5582", size = 5313196, upload-time = "2025-09-07T19:38:34.78Z" },
 ]
 
 [[package]]
@@ -1064,7 +1064,7 @@ requires-dist = [
     { name = "isort", specifier = ">=5.12.0" },
     { name = "keyring", specifier = ">=25.1.0" },
     { name = "mock", specifier = ">=5.0.0" },
-    { name = "moto", specifier = "==5.1.0" },
+    { name = "moto", specifier = "==5.1.12" },
     { name = "mypy", specifier = ">=1.4.1" },
     { name = "pylint", specifier = ">=3.3.2" },
     { name = "pytest", specifier = ">=7.2.2" },
