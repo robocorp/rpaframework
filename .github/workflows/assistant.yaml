@@ -70,7 +70,7 @@ jobs:
       INVOKE_IS_CI_CD: 1
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v5
       with:
         node-version: '18'
     - name: Set up Python ${{ matrix.python }}
@@ -103,7 +103,7 @@ jobs:
 
   #   steps:
   #   - uses: actions/checkout@v5
-  #   - uses: actions/setup-node@v4
+  #   - uses: actions/setup-node@v5
   #     with:
   #       node-version: 18.x
   #       registry-url: https://npm.pkg.github.com/
