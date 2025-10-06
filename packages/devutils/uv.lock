@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.9.1"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -638,7 +638,7 @@ wheels = [
 
 [[package]]
 name = "moto"
-version = "5.1.0"
+version = "5.1.14"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -651,9 +651,9 @@ dependencies = [
     { name = "werkzeug" },
     { name = "xmltodict" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/df/fc/629a225bf615ed5e787aa36ef3c395ed9c702e6c14b51ee5bf174c5d7dd9/moto-5.1.0.tar.gz", hash = "sha256:879274a9d2213ca49706e3c8ea380d90953ec1ec642976f6315255394d36edc0", size = 6581832, upload-time = "2025-02-23T21:14:17.71Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c0/d9/ec94955a1b14ef45ccbda81f2256b30bf1f21ae5c5739fca14130bb1f048/moto-5.1.14.tar.gz", hash = "sha256:450690abb0b152fea7f93e497ac2172f15d8a838b15f22b514db801a6b857ae4", size = 7264025, upload-time = "2025-10-05T13:32:38.023Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/91/d7/0dadf1e7ee7be7920dc0d8d3ee9e0fa9af13f2eedec7fffc4475a91697a6/moto-5.1.0-py3-none-any.whl", hash = "sha256:4fada00cedfba661aa58fe0b33b3ba9a0ef96d0e9937c9bed5163053898b4a27", size = 4725360, upload-time = "2025-02-23T21:14:14.564Z" },
+    { url = "https://files.pythonhosted.org/packages/07/a0/4c5955187853536c7d337709074a5f3ef391654a32a3379096b2d16bfd9b/moto-5.1.14-py3-none-any.whl", hash = "sha256:b9767848953beaf6650f1fd91615a3bcef84d93bd00603fa64dae38c656548e8", size = 5384022, upload-time = "2025-10-05T13:32:35.763Z" },
 ]
 
 [[package]]
@@ -1064,7 +1064,7 @@ requires-dist = [
     { name = "isort", specifier = ">=5.12.0" },
     { name = "keyring", specifier = ">=25.1.0" },
     { name = "mock", specifier = ">=5.0.0" },
-    { name = "moto", specifier = "==5.1.0" },
+    { name = "moto", specifier = "==5.1.14" },
     { name = "mypy", specifier = ">=1.4.1" },
     { name = "pylint", specifier = ">=3.3.2" },
     { name = "pytest", specifier = ">=7.2.2" },
