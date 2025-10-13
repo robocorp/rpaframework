@@ -1,4 +1,5 @@
 import platform
+import os
 import re
 import unittest.mock as mock
 from pathlib import Path

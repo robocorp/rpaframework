@@ -11,8 +11,8 @@ auto = None
 Control = None
 
 if IS_WINDOWS:
-    import uiautomation as auto
-    from uiautomation import Control  # pylint: disable=unused-import
+    import uiautomation as auto  # pylint: disable=import-error
+    from uiautomation import Control  # pylint: disable=unused-import,import-error
 
 
 RecordElement = Dict[str, Optional[Union[float, str, "Control", List[str]]]]

@@ -30,7 +30,7 @@ Read Rows From Worksheet
     Open Workbook    ${dest}
     ${rows}=    Read Worksheet    header=True
     Close Workbook
-    [Return]    ${rows}
+    RETURN   ${rows}
 
 Append Rows to Target
     [Arguments]    ${rows}    ${target_filepath}    ${expected_empty_row}    ${formatting}=${False}
@@ -47,7 +47,7 @@ Create Extended Test Excel
     [Arguments]    ${target_filename}
     ${target_file}=    Set Variable    ${OUTPUT_DIR}${/}${target_filename}
     Copy File    ${EXCELS}${/}extended.xlsx    ${target_file}
-    [Return]    ${target_file}
+    RETURN   ${target_file}
 
 *** Tasks ***
 Test single row sheet

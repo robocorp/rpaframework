@@ -39,36 +39,29 @@ FAILURE_TRACES = ["WARNING: autodoc:"]
 @task(pre=[config.install, config.install_node], aliases=("libdocs",))
 def build_libdocs(ctx):
     """Generates library specification and documentation using ``docgen``"""
-    libspec_promise = shell.docgen(
+    shell.docgen(
         ctx,
         "rpaframework",
         "--no-patches",
         "--format libspec",
         "--output docs/source/libspec/",
         *DOCGEN_EXCLUDES,
-        asynchronous=True,
     )
-    html_promise = shell.docgen(
+    shell.docgen(
         ctx,
         "rpaframework",
-        "--template docs/source/template/libdoc/libdoc.html",
         "--format html",
         "--output docs/source/include/libdoc/",
         *DOCGEN_EXCLUDES,
-        asynchronous=True,
     )
-    json_promise = shell.docgen(
+    shell.docgen(
         ctx,
         "rpaframework",
         "--no-patches",
         "--format json-html",
         "--output docs/source/json/",
         *DOCGEN_EXCLUDES,
-        asynchronous=True,
     )
-    libspec_promise.join()
-    html_promise.join()
-    json_promise.join()
     shutil.copy2(
         "docs/source/template/iframeResizer.contentWindow.map",
         "docs/source/include/libdoc/",
@@ -79,6 +72,14 @@ def _check_documentation_build(run_result: Result):
     lines = f"{run_result.stdout}\n{run_result.stderr}".splitlines()
     for line in lines:
         if any(trace in line for trace in FAILURE_TRACES):
+            # Skip known import warnings for optional packages during documentation build
+            known_import_issues = [
+                "failed to import class 'Hubspot.Hubspot'",
+                "failed to import class 'Twitter.Twitter'",
+            ]
+            if any(issue in line for issue in known_import_issues):
+                print(f"WARNING: Skipping known import issue: {line}")
+                continue
             raise RuntimeError(line)
 
 

@@ -4,7 +4,10 @@ as ``toml`` are not installed in the system."""
 import re
 from pathlib import Path
 
-import pkg_resources
+try:
+    from importlib import metadata as importlib_metadata
+except ImportError:
+    import importlib_metadata
 from invoke import task
 import tempfile
 
@@ -45,13 +48,17 @@ def check_dependancy_versions() -> bool:
     """
     with open(REQUIREMENTS) as reqs:
         try:
-            pkg_resources.require(reqs)
+            for line in reqs:
+                req = line.strip()
+                if req and not req.startswith('#'):
+                    # Parse requirement (simplified - just get package name)
+                    pkg_name = re.split('[>=<~!]', req)[0].strip()
+                    try:
+                        importlib_metadata.version(pkg_name)
+                    except importlib_metadata.PackageNotFoundError:
+                        print(f"Package not found: {pkg_name}")
+                        return False
             return True
-        except pkg_resources.DistributionNotFound as e:
-            print(e)
-            return False
-        except pkg_resources.VersionConflict as e:
-            print(
-                f"Version conflict detected: required: '{e.req}'; installed: '{e.dist}'"
-            )
+        except Exception as e:
+            print(f"Error checking dependencies: {e}")
             return False

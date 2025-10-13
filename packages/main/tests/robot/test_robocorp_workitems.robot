@@ -40,7 +40,7 @@ Log Payload
     ${payload} =     Get Work Item Payload
     Log    Payload: ${payload}
     ${len} =     Get Length    ${payload}
-    [Return]    ${len}
+    RETURN    ${len}
 
 
 *** Tasks ***

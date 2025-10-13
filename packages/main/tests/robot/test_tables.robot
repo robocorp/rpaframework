@@ -101,7 +101,7 @@ Find user name
     ...    two=Mika
     ...    three=Cosmin
     ${output}=     Get from dictionary    ${mapping}    ${key}
-    [Return]     ${output}
+    RETURN     ${output}
 
 Match Date
     [Arguments]    ${row}    ${target}
@@ -114,4 +114,4 @@ Match Date
     ...    date_format=%d.%m.%Y
     ...    result_format=%d.%m.%Y
     ${is_same_date}=    Evaluate    $submit_date == $target_date
-    [Return]    ${is_same_date}
+    RETURN    ${is_same_date}

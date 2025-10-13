@@ -16,6 +16,7 @@ from invocations.util import (
 )
 
 POETRY = "poetry"
+UV = "uv"
 PIP = "pip"
 SPHINX = "sphinx-build"
 DOCGEN = "docgen"
@@ -60,11 +61,16 @@ def poetry(ctx: Context, command: str, **kwargs):
     return run(ctx, POETRY, f"{command}", **kwargs)
 
 
+def uv(ctx: Context, command: str, **kwargs):
+    """Executes uv commands on the shell."""
+    return run(ctx, UV, f"{command}", **kwargs)
+
+
 def run_in_venv(ctx: Context, app: str, command: str, **kwargs):
-    """Execute a command within the poetry venv using
-    ``poetry run``
+    """Execute a command within the virtual environment using
+    ``uv run``
     """
-    return poetry(ctx, f"run {app} {command}", **kwargs)
+    return uv(ctx, f"run {app} {command}", **kwargs)
 
 
 def pip(ctx: Context, command: str, **kwargs):
