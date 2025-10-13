@@ -30,10 +30,10 @@ jobs:
         # runners being slower to allocate
         include:
           - os: macos-13
-            python-version: "3.11.9"
+            python-version: "3.11.11"
             pip-version: "24.2"
           - os: windows-latest
-            python-version: "3.11.9"
+            python-version: "3.11.11"
             pip-version: "24.2"
 
         exclude:
