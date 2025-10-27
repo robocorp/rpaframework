@@ -113,7 +113,7 @@ jobs:
         run: |
           export XDG_SESSION_TYPE=x11
           xvfb-run --server-args="-screen 0 1280x720x24" invoke code.test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: success() || failure()
         with:
           name: ${{ matrix.os }}-py${{ matrix.python }}-test-reports

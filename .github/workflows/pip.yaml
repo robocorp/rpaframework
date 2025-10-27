@@ -67,7 +67,7 @@ jobs:
           python -m pip_audit --no-deps -r requirements.txt
         # Only run scans for latest template version from https://github.com/robocorp/template-standard/blob/master/conda.yaml
         if: ${{ matrix.python-version == '3.12.9' && matrix.pip-version == '24.2' }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: ${{ success() || failure() }}
         with:
           name: pip_freeze_${{ matrix.os }}_${{ matrix.python-version }}_${{ matrix.pip-version }}.txt
