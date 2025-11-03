@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">3.9.1, <3.14"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -621,14 +621,14 @@ wheels = [
 
 [[package]]
 name = "holidays"
-version = "0.78"
+version = "0.83"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "python-dateutil" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/11/fa/f76b06623266ce008dfc2c334b80b3c8001fc93ac1462bae3775356ecacb/holidays-0.78.tar.gz", hash = "sha256:7f21d09a475f42d79344498363586d5dadce07bb74f361c80c2658d59c513348", size = 729772, upload-time = "2025-08-04T19:25:41.301Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ea/cf/c15e08bbeeb117186a49fd21067fcf3c0b140e9549b6eca246efd0083fd0/holidays-0.83.tar.gz", hash = "sha256:99b97b002079ab57dac93295933907d2aae2742ad9a4d64fe33864dfae6805fa", size = 795071, upload-time = "2025-10-20T20:04:00.496Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/73/f2/640890fb230515f350302b7172620fd54d89ec37469053c6f76e3c3244f7/holidays-0.78-py3-none-any.whl", hash = "sha256:d652a807f1cca89f0f9f0824f81979b2c4b99af6ac3aa2e54b8409fc0cda4e88", size = 1195146, upload-time = "2025-08-04T19:25:39.389Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/96/70e8c138643ad2895efd96b1b8ca4f00209beea1fed5f5d02b74ab057ee6/holidays-0.83-py3-none-any.whl", hash = "sha256:e36a368227b5b62129871463697bfde7e5212f6f77e43640320b727b79a875a8", size = 1307149, upload-time = "2025-10-20T20:03:58.887Z" },
 ]
 
 [[package]]
