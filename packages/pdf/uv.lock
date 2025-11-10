@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.9.1"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -1064,14 +1064,14 @@ wheels = [
 
 [[package]]
 name = "pypdf"
-version = "6.0.0"
+version = "6.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/20/ac/a300a03c3b34967c050677ccb16e7a4b65607ee5df9d51e8b6d713de4098/pypdf-6.0.0.tar.gz", hash = "sha256:282a99d2cc94a84a3a3159f0d9358c0af53f85b4d28d76ea38b96e9e5ac2a08d", size = 5033827, upload-time = "2025-08-11T14:22:02.352Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4e/2b/8795ec0378384000b0a37a2b5e6d67fa3d84802945aa2c612a78a784d7d4/pypdf-6.2.0.tar.gz", hash = "sha256:46b4d8495d68ae9c818e7964853cd9984e6a04c19fe7112760195395992dce48", size = 5272001, upload-time = "2025-11-09T11:10:41.911Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2c/83/2cacc506eb322bb31b747bc06ccb82cc9aa03e19ee9c1245e538e49d52be/pypdf-6.0.0-py3-none-any.whl", hash = "sha256:56ea60100ce9f11fc3eec4f359da15e9aec3821b036c1f06d2b660d35683abb8", size = 310465, upload-time = "2025-08-11T14:22:00.481Z" },
+    { url = "https://files.pythonhosted.org/packages/de/ba/743ddcaf1a8fb439342399645921e2cf2c600464cba5531a11f1cc0822b6/pypdf-6.2.0-py3-none-any.whl", hash = "sha256:4c0f3e62677217a777ab79abe22bf1285442d70efabf552f61c7a03b6f5c569f", size = 326592, upload-time = "2025-11-09T11:10:39.941Z" },
 ]
 
 [[package]]
