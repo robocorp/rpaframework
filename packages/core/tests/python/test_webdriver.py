@@ -58,6 +58,11 @@ def test_edge_download():
     assert "msedgedriver" in path
 
 
+@pytest.mark.skip(
+    reason="Internet Explorer is deprecated and discontinued. "
+    "IEDriverServer is no longer available in newer Selenium releases. "
+    "Use Microsoft Edge in IE mode instead."
+)
 def test_ie_download():
     path = webdriver.download("Ie", root=RESULTS_DIR)
     assert "IEDriverServer.exe" in path

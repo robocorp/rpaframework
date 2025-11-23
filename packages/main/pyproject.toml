@@ -37,7 +37,7 @@ dependencies = [
 	"robotframework-seleniumtestability>=2.0.0",
 	"robotframework-requests>=0.9.1",
 	"pywinauto>=0.6.8; sys_platform == 'win32'",
-	"pywin32>=302,<307; sys_platform == 'win32'",
+	"pywin32>=302,<=311; sys_platform == 'win32'",
 	"comtypes>=1.1.11; sys_platform == 'win32'",
 	"robotframework-pythonlibcore>=4.2.0",
 	"pynput-robocorp-fork>=5.0.0",

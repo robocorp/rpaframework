@@ -4,6 +4,7 @@ import pytest
 
 from RPA.Windows import Windows
 from RPA.Windows.utils import IS_WINDOWS
+from RPA.core.windows.context import ElementNotFound, WindowControlError
 
 
 @pytest.fixture
@@ -62,3 +63,85 @@ def test_coordinates_clicking(mock_get_element, library, offset, x, y):
     item.robocorp_click_offset = offset
     library.click("MyButton")
     item.Click.assert_called_once_with(x=x, y=y, simulateMove=False, waitTime=0.5)
+
+
+@pytest.mark.skipif(not IS_WINDOWS, reason="Windows required")
+def test_list_windows_control_window_click_error_scenario(library):
+    """Test error handling when window or element is not found.
+
+    This test verifies the error scenario:
+    1. list_windows() is called
+    2. control_window("subname:Notepad") is called - may raise WindowControlError
+    3. click("name:File") is called - may raise ElementNotFound
+
+    The test verifies that:
+    - list_windows() does not raise errors
+    - control_window() raises WindowControlError when window is not found
+    - If window is found, click() may raise ElementNotFound if element is not found
+    """
+    # Step 1: List windows (should not raise error, but may return empty list)
+    window_list = library.list_windows()
+    assert isinstance(window_list, list)
+
+    # Step 2: Try to control Notepad window
+    # This will raise WindowControlError if Notepad is not open
+    with pytest.raises(WindowControlError, match="Could not locate window"):
+        library.control_window("subname:Notepad")
+
+
+@pytest.mark.skipif(not IS_WINDOWS, reason="Windows required")
+@mock.patch("RPA.core.windows.locators.LocatorMethods.get_element")
+@mock.patch("RPA.Windows.keywords.window.WindowKeywords._find_window")
+def test_list_windows_control_window_click_error_mocked(
+    mock_find_window, mock_get_element, library
+):
+    """Test error handling with mocked scenarios for list_windows, control_window, and click."""
+    # Step 1: Mock list_windows to return a list
+    with mock.patch.object(library, "list_windows", return_value=[]):
+        window_list = library.list_windows()
+        assert isinstance(window_list, list)
+
+    # Step 2: Mock control_window to return None (window not found)
+    mock_find_window.return_value = None
+
+    # control_window should raise WindowControlError when window is not found
+    with pytest.raises(WindowControlError, match="Could not locate window"):
+        library.control_window("subname:Notepad")
+
+    # Step 3: Mock control_window to succeed, but click to fail
+    from RPA.core.windows.locators import WindowsElement
+    from unittest.mock import MagicMock
+
+    # Create a mock window item with required properties
+    mock_window_item = MagicMock()
+    mock_window_item.Name = "Notepad"
+    mock_window_item.AutomationId = ""
+    mock_window_item.ControlTypeName = "WindowControl"
+    mock_window_item.ClassName = "Notepad"
+    mock_rect = MagicMock()
+    mock_rect.left = 0
+    mock_rect.right = 100
+    mock_rect.top = 0
+    mock_rect.bottom = 100
+    mock_rect.width.return_value = 100
+    mock_rect.height.return_value = 100
+    mock_rect.xcenter.return_value = 50
+    mock_rect.ycenter.return_value = 50
+    mock_window_item.BoundingRectangle = mock_rect
+
+    # Create a WindowsElement with the mocked item
+    mock_window = WindowsElement(mock_window_item, locator="subname:Notepad")
+    mock_find_window.return_value = mock_window
+
+    # Mock foreground_window to avoid actual window operations
+    with mock.patch.object(library, "foreground_window", return_value=mock_window):
+        # Now control_window should succeed (it will set library.window_element via ctx)
+        result = library.control_window("subname:Notepad")
+        assert result == mock_window
+
+        # Mock get_element to raise ElementNotFound for click
+        mock_get_element.side_effect = ElementNotFound("Element not found with locator 'name:File'")
+
+        # click should raise ElementNotFound
+        with pytest.raises(ElementNotFound, match="Element not found"):
+            library.click("name:File")

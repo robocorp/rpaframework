@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-windows"
-version = "10.0.0"
+version = "10.0.1"
 description = "Windows library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -32,7 +32,7 @@ dependencies = [
 	"uiautomation >=2.0.15",
 	"comtypes >=1.1.11; platform_system == 'Windows'",
 	"psutil >=5.9.0; platform_system == 'Windows'",
-	"pywin32 >=300, <307; platform_system == 'Windows' and python_version != '3.8.1'",
+	"pywin32 >=300, <=311; platform_system == 'Windows' and python_version != '3.8.1'",
 	"fire >=0.7.0",
 ]
 
