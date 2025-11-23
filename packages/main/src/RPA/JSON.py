@@ -1,6 +1,7 @@
 import json
 import logging
-from typing import Any, Callable, Dict, Hashable, List, Optional, Union
+from collections.abc import Hashable
+from typing import Any, Callable, Dict, List, Optional, Union
 
 from jsonpath_ng import Index, Fields
 from jsonpath_ng.ext.filter import Filter
