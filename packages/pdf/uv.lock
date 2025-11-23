@@ -1696,20 +1696,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pytest-freezegun"
-version = "0.4.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "freezegun" },
-    { name = "pytest", version = "8.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
-    { name = "pytest", version = "9.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/f0/e3/c39d7c3d3afef5652f19323f3483267d7e6b0d9911c3867e10d6e2d3c9ae/pytest-freezegun-0.4.2.zip", hash = "sha256:19c82d5633751bf3ec92caa481fb5cffaac1787bd485f0df6436fd6242176949", size = 9059 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/9e/09/0bdd7d24b9d21453ad3364ae1efbd65082045bb6081b5fd5eade91a9b644/pytest_freezegun-0.4.2-py2.py3-none-any.whl", hash = "sha256:5318a6bfb8ba4b709c8471c94d0033113877b3ee02da5bfcd917c1889cde99a7", size = 4590 },
-]
-
-[[package]]
 name = "pytest-mock"
 version = "3.15.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1959,6 +1945,7 @@ version = "0.0.1"
 source = { editable = "../devutils" }
 dependencies = [
     { name = "colorama" },
+    { name = "freezegun" },
     { name = "importlib-metadata" },
     { name = "invoke" },
     { name = "isort", version = "6.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
@@ -1974,7 +1961,6 @@ dependencies = [
     { name = "pytest-cov" },
     { name = "pytest-env", version = "1.1.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "pytest-env", version = "1.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
-    { name = "pytest-freezegun" },
     { name = "pytest-mock" },
     { name = "pytest-regressions" },
     { name = "pytest-xdist" },
@@ -1990,6 +1976,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "colorama", specifier = ">=0.4.5" },
+    { name = "freezegun", specifier = ">=1.5.0" },
     { name = "importlib-metadata", specifier = ">=4.13.0" },
     { name = "invoke", specifier = ">=2.2.0" },
     { name = "isort", specifier = ">=5.12.0" },
@@ -2001,7 +1988,6 @@ requires-dist = [
     { name = "pytest", specifier = ">=7.2.2" },
     { name = "pytest-cov", specifier = ">=4.0.0" },
     { name = "pytest-env", specifier = ">=0.6.2" },
-    { name = "pytest-freezegun", specifier = ">=0.4.2" },
     { name = "pytest-mock", specifier = ">=3.8.2" },
     { name = "pytest-regressions", specifier = "==1.0.6" },
     { name = "pytest-xdist", specifier = ">=3.2.1" },

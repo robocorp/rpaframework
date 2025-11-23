@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework"
-version = "31.0.0"
+version = "31.1.0"
 description = "A collection of tools and libraries for RPA"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -25,9 +25,9 @@ classifiers = [
 
 dependencies = [
 	"docutils>=0.21.2",
-	"rpaframework-core>=12.0.2",
-	"rpaframework-pdf>=9.0.0",
-	"rpaframework-windows>=10.0.0; sys_platform == 'win32'",
+	"rpaframework-core>=12.1.0",
+	"rpaframework-pdf>=10.0.1",
+	"rpaframework-windows>=10.0.1; sys_platform == 'win32'",
 	"java-access-bridge-wrapper>=1.1.0",
 	"robocorp-storage>=1.0.2",
 	"jsonpath-ng>=1.5.2",
