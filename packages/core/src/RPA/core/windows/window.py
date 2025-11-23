@@ -73,6 +73,174 @@ class WindowMethods(WindowsContext):
         )
         return win32process.GetModuleFileNameEx(handle, 0)
 
+    def _get_window_rectangle(self, win, pid: int) -> Optional[List]:
+        """Get bounding rectangle for a window.
+
+        Args:
+            win: Window control object
+            pid: Process ID for logging
+        Returns:
+            Rectangle as [left, top, right, bottom] or None if error
+        """
+        try:
+            rect = win.BoundingRectangle
+            return (
+                [rect.left, rect.top, rect.right, rect.bottom] if rect else [None] * 4
+            )
+        except (COMError, Exception) as err:  # pylint: disable=broad-except
+            self.logger.debug(
+                "Skipping window (PID: %s) due to COM error accessing BoundingRectangle: %s",
+                pid,
+                err,
+            )
+            return None
+
+    def _get_window_name(
+        self, pid: int, fullpath: Optional[str], process_list: Dict
+    ) -> Optional[str]:
+        """Get window name from process list or file path.
+
+        Args:
+            pid: Process ID
+            fullpath: Full path to executable
+            process_list: Dictionary mapping PID to process name
+        Returns:
+            Window name or None
+        """
+        name = process_list.get(pid)
+        if not name and fullpath:
+            name = Path(fullpath).name
+        return name
+
+    def _get_window_icon(
+        self, fullpath: Optional[str], icon_save_directory: Optional[str], pid: int
+    ) -> Optional[str]:
+        """Get icon string for a window.
+
+        Args:
+            fullpath: Full path to executable
+            icon_save_directory: Directory to save icon
+            pid: Process ID for logging
+        Returns:
+            Base64 encoded icon string or None
+        """
+        try:
+            return self.get_icon(fullpath, icon_save_directory)
+        except Exception as err:  # pylint: disable=broad-except
+            self.logger.debug("Failed to get icon for window (PID: %s): %s", pid, err)
+            return None
+
+    def _build_window_info(
+        self,
+        win,
+        pid: int,
+        name: Optional[str],
+        fullpath: Optional[str],
+        handle: int,
+        icon_string: Optional[str],
+        rectangle: List,
+    ) -> Optional[Dict]:
+        """Build window info dictionary.
+
+        Args:
+            win: Window control object
+            pid: Process ID
+            name: Window name
+            fullpath: Full path to executable
+            handle: Window handle
+            icon_string: Base64 encoded icon string
+            rectangle: Bounding rectangle
+        Returns:
+            Window info dictionary or None if error
+        """
+        try:
+            return {
+                "title": win.Name,
+                "pid": pid,
+                "name": name,
+                "path": fullpath,
+                "handle": handle,
+                "icon": icon_string,
+                "automation_id": win.AutomationId,
+                "control_type": win.ControlTypeName,
+                "class_name": win.ClassName,
+                "rectangle": rectangle,
+                "keyboard_focus": win.HasKeyboardFocus,
+                "is_active": handle == auto.GetForegroundWindow(),
+                "object": win,
+            }
+        except (COMError, Exception) as err:  # pylint: disable=broad-except
+            self.logger.debug(
+                "Skipping window (PID: %s) due to COM error accessing properties: %s",
+                pid,
+                err,
+            )
+            return None
+
+    def _process_single_window(
+        self, win, icons: bool, icon_save_directory: Optional[str], process_list: Dict
+    ) -> Optional[Dict]:
+        """Process a single window and return its info.
+
+        Args:
+            win: Window control object
+            icons: Whether to include icons
+            icon_save_directory: Directory to save icons
+            process_list: Dictionary mapping PID to process name
+        Returns:
+            Window info dictionary or None if processing fails
+        """
+        try:
+            pid = win.ProcessId
+        except (COMError, Exception) as err:  # pylint: disable=broad-except
+            self.logger.debug(
+                "Skipping window due to COM error accessing ProcessId: %s", err
+            )
+            return None
+
+        try:
+            fullpath = None
+            try:
+                fullpath = self.get_fullpath(pid)
+            except Exception as err:  # pylint: disable=broad-except
+                self.logger.info("Open process error in `List Windows`: %s", err)
+
+            try:
+                handle = win.NativeWindowHandle
+            except (COMError, Exception) as err:  # pylint: disable=broad-except
+                self.logger.debug(
+                    "Skipping window (PID: %s) due to COM error accessing NativeWindowHandle: %s",
+                    pid,
+                    err,
+                )
+                return None
+
+            icon_string = None
+            if icons:
+                icon_string = self._get_window_icon(fullpath, icon_save_directory, pid)
+
+            rectangle = self._get_window_rectangle(win, pid)
+            if rectangle is None:
+                return None
+
+            name = self._get_window_name(pid, fullpath, process_list)
+            info = self._build_window_info(
+                win, pid, name, fullpath, handle, icon_string, rectangle
+            )
+            if info is None:
+                return None
+
+            if icons and not icon_string:
+                self.logger.info(
+                    "Icon for %s returned empty", info.get("title", "unknown")
+                )
+            return info
+        except (COMError, Exception) as err:  # pylint: disable=broad-except
+            self.logger.debug(
+                "Skipping window (PID: %s) due to COM error: %s", pid, err
+            )
+            return None
+
     @method
     def list_windows(
         self,
@@ -92,78 +260,15 @@ class WindowMethods(WindowsContext):
         win_list = []
         try:
             for win in windows:
-                try:
-                    pid = win.ProcessId
-                except (COMError, Exception) as err:  # pylint: disable=broad-except
-                    # Skip windows that can't be accessed due to COM errors
-                    self.logger.debug("Skipping window due to COM error accessing ProcessId: %s", err)
-                    continue
-
-                # Wrap the entire window processing in try-except to catch iteration errors
-                try:
-                    fullpath = None
-                    try:
-                        fullpath = self.get_fullpath(pid)
-                    except Exception as err:  # pylint: disable=broad-except
-                        self.logger.info("Open process error in `List Windows`: %s", err)
-
-                    try:
-                        handle = win.NativeWindowHandle
-                    except (COMError, Exception) as err:  # pylint: disable=broad-except
-                        self.logger.debug("Skipping window (PID: %s) due to COM error accessing NativeWindowHandle: %s", pid, err)
-                        continue
-
-                    icon_string = None
-                    if icons:
-                        try:
-                            icon_string = self.get_icon(fullpath, icon_save_directory)
-                        except Exception as err:  # pylint: disable=broad-except
-                            self.logger.debug("Failed to get icon for window (PID: %s): %s", pid, err)
-
-                    try:
-                        rect = win.BoundingRectangle
-                        rectangle = (
-                            [rect.left, rect.top, rect.right, rect.bottom] if rect else [None] * 4
-                        )
-                    except (COMError, Exception) as err:  # pylint: disable=broad-except
-                        self.logger.debug("Skipping window (PID: %s) due to COM error accessing BoundingRectangle: %s", pid, err)
-                        continue
-
-                    name = process_list[pid] if pid in process_list else None
-                    if not name and fullpath:
-                        name = Path(fullpath).name
-
-                    try:
-                        info = {
-                            "title": win.Name,
-                            "pid": pid,
-                            "name": name,
-                            "path": fullpath,
-                            "handle": handle,
-                            "icon": icon_string,
-                            "automation_id": win.AutomationId,
-                            "control_type": win.ControlTypeName,
-                            "class_name": win.ClassName,
-                            "rectangle": rectangle,
-                            "keyboard_focus": win.HasKeyboardFocus,
-                            "is_active": handle == auto.GetForegroundWindow(),
-                            "object": win,
-                        }
-                    except (COMError, Exception) as err:  # pylint: disable=broad-except
-                        # If we can't access window properties, skip this window
-                        self.logger.debug("Skipping window (PID: %s) due to COM error accessing properties: %s", pid, err)
-                        continue
-
-                    if icons and not icon_string:
-                        self.logger.info("Icon for %s returned empty", info.get("title", "unknown"))
+                info = self._process_single_window(
+                    win, icons, icon_save_directory, process_list
+                )
+                if info:
                     win_list.append(info)
-                except (COMError, Exception) as err:  # pylint: disable=broad-except
-                    # Catch any COM errors during window processing (e.g., during iteration)
-                    self.logger.debug("Skipping window (PID: %s) due to COM error: %s", pid, err)
-                    continue
         except (COMError, Exception) as err:  # pylint: disable=broad-except
             # Catch COM errors that occur during iteration itself
             self.logger.warning(
-                "Error during window iteration in `List Windows`: %s. Returning partial list.", err
+                "Error during window iteration in `List Windows`: %s. Returning partial list.",
+                err,
             )
         return win_list

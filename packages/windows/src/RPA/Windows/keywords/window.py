@@ -129,7 +129,11 @@ class WindowKeywords(WindowMethods):
                 root_element = LocatorMethods.get_desktop_element(locator)
             window = self.ctx.get_element(locator, root_element=root_element)
             return window
-        except (ElementNotFound, LookupError):
+        except (ElementNotFound, LookupError, COMError):
+            # COMError may occur during element finding, especially 0x8001010d
+            # which happens when COM calls are made during synchronous input operations.
+            # The retry logic in locators should handle most cases, but we catch
+            # any remaining COM errors here to prevent crashes.
             return None
 
     @keyword(tags=["window"])

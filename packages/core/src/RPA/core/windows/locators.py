@@ -1,12 +1,14 @@
 import functools
 import logging
 import re
+import time
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple, Union
 
 from RPA.core.locators import LocatorsDatabase, WindowsLocator
 from RPA.core.vendor.deco import keyword as method
 from RPA.core.windows.context import (
+    COMError,
     ElementNotFound,
     WindowControlError,
     WindowsContext,
@@ -76,6 +78,28 @@ class WindowsElement:
             "control": "control_type",
             "type": "control_type",
         }
+
+    def __repr__(self) -> str:
+        """Safe string representation that avoids accessing underlying control.
+
+        This prevents deadlocks when logging tries to format WindowsElement objects,
+        as it uses only cached properties and doesn't access the uiautomation control
+        which might trigger additional logging operations.
+        """
+        parts = []
+        if self.name:
+            parts.append(f"name={self.name!r}")
+        if self.automation_id:
+            parts.append(f"id={self.automation_id!r}")
+        if self.control_type:
+            parts.append(f"type={self.control_type!r}")
+        if self.class_name:
+            parts.append(f"class={self.class_name!r}")
+        if self.locator:
+            parts.append(f"locator={self.locator!r}")
+        if parts:
+            return f"WindowsElement({', '.join(parts)})"
+        return "WindowsElement()"
 
     @staticmethod
     def _get_locator_value(locator: str, strategy: str) -> str:
@@ -250,16 +274,64 @@ class MatchObject:
 class LocatorMethods(WindowsContext):
     """Keywords for finding Windows GUI elements"""
 
+    # COM error code for RPC_E_CANTCALLOUT_ININPUTSYNCCALL
+    # This occurs when COM calls are made during synchronous input operations
+    _COM_ERROR_CANTCALLOUT = 0x8001010D
+
     def __init__(self, ctx, locators_path: Optional[str] = None):
         super().__init__(ctx)
         self._locators_path = locators_path
 
     @staticmethod
+    def _is_com_cantcallout_error(err: Exception) -> bool:
+        """Check if the error is the specific COM error 0x8001010d.
+
+        Args:
+            err: The exception to check
+        Returns:
+            True if the error is the COM cantcallout error
+        """
+        if not isinstance(err, COMError):
+            return False
+        # Check hresult attribute if available
+        if hasattr(err, "hresult"):
+            return err.hresult == LocatorMethods._COM_ERROR_CANTCALLOUT
+        # Check args for error code
+        if err.args and len(err.args) > 0:
+            # Sometimes the error code is in the first argument
+            error_code = err.args[0]
+            if isinstance(error_code, int):
+                return error_code == LocatorMethods._COM_ERROR_CANTCALLOUT
+        return False
+
+    @staticmethod
     def _get_desktop_control() -> "Control":
-        root_control = auto.GetRootControl()
-        new_control = Control.CreateControlFromControl(root_control)
-        new_control.robocorp_click_offset = None
-        return new_control
+        """Get desktop control with retry logic for COM errors.
+
+        Returns:
+            Desktop control object
+        Raises:
+            COMError: If control cannot be created after retries
+        """
+        max_retries = 3
+        retry_delay = 0.1
+
+        for attempt in range(max_retries):
+            try:
+                root_control = auto.GetRootControl()
+                new_control = Control.CreateControlFromControl(root_control)
+                new_control.robocorp_click_offset = None
+                return new_control
+            except COMError as err:
+                if LocatorMethods._is_com_cantcallout_error(err) and attempt < max_retries - 1:
+                    logging.getLogger(__name__).debug(
+                        "COM error 0x8001010d during desktop control creation (attempt %d/%d), retrying...",
+                        attempt + 1,
+                        max_retries,
+                    )
+                    time.sleep(retry_delay)
+                    continue
+                raise
 
     @classmethod
     def get_desktop_element(cls, locator: Optional[Locator] = None) -> WindowsElement:
@@ -270,14 +342,43 @@ class LocatorMethods(WindowsContext):
     def _get_control_from_params(
         search_params: SearchType, root_control: Optional["Control"] = None
     ) -> "Control":
+        """Get control from search parameters with retry logic for COM errors.
+
+        Args:
+            search_params: Search parameters dictionary
+            root_control: Optional root control to search from
+        Returns:
+            Control object matching the search parameters
+        Raises:
+            LookupError: If control cannot be found after retries
+        """
         search_params = search_params.copy()  # to keep idempotent behaviour
         offset = search_params.pop("offset", None)
         control_type = search_params.pop("ControlType", "Control")
         ElementControl = getattr(root_control, control_type, Control)
-        control = ElementControl(**search_params)
-        new_control = Control.CreateControlFromControl(control)
-        new_control.robocorp_click_offset = offset
-        return new_control
+
+        # Retry logic for COM errors, especially 0x8001010d
+        max_retries = 3
+        retry_delay = 0.1  # 100ms delay between retries
+
+        for attempt in range(max_retries):
+            try:
+                control = ElementControl(**search_params)
+                new_control = Control.CreateControlFromControl(control)
+                new_control.robocorp_click_offset = offset
+                return new_control
+            except COMError as err:
+                if LocatorMethods._is_com_cantcallout_error(err) and attempt < max_retries - 1:
+                    # Log and retry for COM cantcallout errors
+                    logging.getLogger(__name__).debug(
+                        "COM error 0x8001010d during control creation (attempt %d/%d), retrying...",
+                        attempt + 1,
+                        max_retries,
+                    )
+                    time.sleep(retry_delay)
+                    continue
+                # Re-raise if not retryable or out of retries
+                raise
 
     def _get_control_from_listed_windows(
         self, search_params: SearchType, *, param_type: str, win_type: str
@@ -301,6 +402,16 @@ class LocatorMethods(WindowsContext):
     def _get_control_from_path(
         self, search_params: SearchType, root_control: "Control"
     ) -> "Control":
+        """Follow a path in the tree of controls until reaching the final target.
+
+        Args:
+            search_params: Search parameters containing the path
+            root_control: Root control to start from
+        Returns:
+            Control at the end of the path
+        Raises:
+            ElementNotFound: If path cannot be followed
+        """
         # Follow a path in the tree of controls until reaching the final target.
         search_params = search_params.copy()  # to keep idempotent behaviour
         path = search_params["path"]
@@ -309,8 +420,33 @@ class LocatorMethods(WindowsContext):
             MatchObject.PATH_SEP.join(str(pos) for pos in path[:idx])
         )
 
+        max_retries = 3
+        retry_delay = 0.1
+
         for index, position in enumerate(path):
-            children = current.GetChildren()
+            # Retry logic for GetChildren() which can raise COM errors
+            last_error = None
+            children = None
+            for attempt in range(max_retries):
+                try:
+                    children = current.GetChildren()
+                    break
+                except COMError as err:
+                    last_error = err
+                    if LocatorMethods._is_com_cantcallout_error(err) and attempt < max_retries - 1:
+                        self.logger.debug(
+                            "COM error 0x8001010d during GetChildren (attempt %d/%d), retrying...",
+                            attempt + 1,
+                            max_retries,
+                        )
+                        time.sleep(retry_delay)
+                        continue
+                    # Non-retryable error or last attempt, raise immediately
+                    raise
+            if children is None and last_error is not None:
+                # If we exhausted retries, re-raise the last error
+                raise last_error
+
             if position > len(children):
                 raise ElementNotFound(
                     f"Unable to retrieve child on position {position!r} under a parent"
@@ -318,8 +454,9 @@ class LocatorMethods(WindowsContext):
                 )
 
             current = children[position - 1]
+            # Log position only to avoid deadlock from control.__repr__
             self.logger.debug(
-                "On child position %d found control: %s", position, current
+                "On child position %d found control", position
             )
 
         offset = search_params.get("offset")
@@ -385,13 +522,25 @@ class LocatorMethods(WindowsContext):
     def _get_element_by_locator_string(
         self, locator: str, search_depth: int, root_element: Optional[WindowsElement]
     ) -> WindowsElement:
+        """Get element by locator string with COM error handling.
+
+        Args:
+            locator: Locator string to search for
+            search_depth: Maximum search depth
+            root_element: Optional root element to start from
+        Returns:
+            WindowsElement matching the locator
+        Raises:
+            ElementNotFound: If element cannot be found
+        """
         root_control = self._resolve_root(root_element).item
         locator_parts = locator.split(MatchObject.TREE_SEP)
         assert locator_parts, "empty locator"
 
         try:
             for locator_part in locator_parts:
-                self.logger.debug("Active root element: %r", root_control)
+                # Log locator part instead of control to avoid deadlock from control.__repr__
+                self.logger.debug("Searching for locator part: %r", locator_part)
                 control = self._get_control_with_locator_part(
                     locator_part, search_depth, root_control
                 )
@@ -399,6 +548,18 @@ class LocatorMethods(WindowsContext):
         except LookupError as err:
             raise ElementNotFound(
                 f"Element not found with locator {locator!r}"
+            ) from err
+        except COMError as err:
+            # Handle COM errors that might occur during element finding
+            if LocatorMethods._is_com_cantcallout_error(err):
+                self.logger.warning(
+                    "COM error 0x8001010d during element search with locator %r. "
+                    "This may occur during synchronous input operations. "
+                    "Consider adding a small delay before this operation.",
+                    locator,
+                )
+            raise ElementNotFound(
+                f"Element not found with locator {locator!r} due to COM error: {err}"
             ) from err
 
         # If we get here, a `control` item was found.
