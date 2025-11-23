@@ -16,7 +16,7 @@ from RPA._support import (
     MessagesResult,
     Sema4aiException,
     _AgentAPIClient,
-    timed_method
+    timed_method,
 )
 
 # Export public classes for easier imports
@@ -78,7 +78,9 @@ class Sema4AI:
         self.logger = logging.getLogger(__name__)
         self._client_cache: dict = {}
 
-    def _get_client(self, agent_api_key: str, agent_api_endpoint: str) -> _AgentAPIClient:
+    def _get_client(
+        self, agent_api_key: str, agent_api_endpoint: str
+    ) -> _AgentAPIClient:
         """Get or create a cached API client for the given credentials.
 
         :param agent_api_key: The API key for authentication
@@ -92,15 +94,12 @@ class Sema4AI:
 
         if cache_key not in self._client_cache:
             self._client_cache[cache_key] = _AgentAPIClient(
-                agent_api_key=agent_api_key,
-                api_url=agent_api_endpoint
+                agent_api_key=agent_api_key, api_url=agent_api_endpoint
             )
         return self._client_cache[cache_key]
 
     def _validate_agent_params(
-        self,
-        agent_id: Optional[str],
-        agent_name: Optional[str]
+        self, agent_id: Optional[str], agent_name: Optional[str]
     ) -> None:
         """Validate that agent identification parameters are valid.
 
@@ -111,13 +110,15 @@ class Sema4AI:
         if not agent_id and not agent_name:
             raise ValueError("Either agent_id or agent_name must be provided")
         if agent_id and agent_name:
-            raise ValueError("Cannot provide both agent_id and agent_name - use only one")
+            raise ValueError(
+                "Cannot provide both agent_id and agent_name - use only one"
+            )
 
     def _resolve_agent(
         self,
         client: _AgentAPIClient,
         agent_id: Optional[str],
-        agent_name: Optional[str]
+        agent_name: Optional[str],
     ) -> Agent:
         """Resolve agent from either agent_id or agent_name.
 
@@ -143,7 +144,7 @@ class Sema4AI:
         self,
         client: _AgentAPIClient,
         agent_id: Optional[str],
-        agent_name: Optional[str]
+        agent_name: Optional[str],
     ) -> str:
         """Resolve agent ID from either agent_id or agent_name.
 
@@ -167,7 +168,7 @@ class Sema4AI:
         agent_id: Optional[str] = None,
         agent_name: Optional[str] = None,
         conversation_id: Optional[str] = None,
-        conversation_name: Optional[str] = None
+        conversation_name: Optional[str] = None,
     ) -> MessageResponse:
         """Ask an agent a question and get a response.
 
@@ -206,16 +207,13 @@ class Sema4AI:
                 conversation_name = f"Conversation with {agent.agent_name}"
 
             conversation = client.create_conversation(
-                agent_id=agent.agent_id,
-                conversation_name=conversation_name
+                agent_id=agent.agent_id, conversation_name=conversation_name
             )
             conversation_id = conversation.conversation_id
 
         # Send the message
         response_text = client.send_message(
-            conversation_id=conversation_id,
-            agent_id=agent.agent_id,
-            message=message
+            conversation_id=conversation_id, agent_id=agent.agent_id, message=message
         )
 
         execution_time = round(time.time() - start_time, 3)
@@ -225,7 +223,7 @@ class Sema4AI:
             response=response_text,
             agent_name=agent.agent_name,
             agent_id=agent.agent_id,
-            execution_time=execution_time
+            execution_time=execution_time,
         )
 
     @log.suppress_variables()
@@ -235,7 +233,7 @@ class Sema4AI:
         agent_api_key: str,
         agent_api_endpoint: str,
         agent_id: Optional[str] = None,
-        agent_name: Optional[str] = None
+        agent_name: Optional[str] = None,
     ) -> ConversationsResult:
         """Get all conversations for an agent.
 
@@ -271,7 +269,7 @@ class Sema4AI:
         agent_api_endpoint: str,
         conversation_id: str,
         agent_id: Optional[str] = None,
-        agent_name: Optional[str] = None
+        agent_name: Optional[str] = None,
     ) -> MessagesResult:
         """Get all messages in a conversation.
 
@@ -303,6 +301,8 @@ class Sema4AI:
 
     # Async methods for non-blocking operations
 
+    @log.suppress_variables()
+    @timed_method
     async def ask_agent_async(
         self,
         message: str,
@@ -311,7 +311,7 @@ class Sema4AI:
         agent_id: Optional[str] = None,
         agent_name: Optional[str] = None,
         conversation_id: Optional[str] = None,
-        conversation_name: Optional[str] = None
+        conversation_name: Optional[str] = None,
     ) -> MessageResponse:
         """Async version of ask_agent for non-blocking operations.
 
@@ -355,16 +355,18 @@ class Sema4AI:
             agent_id=agent_id,
             agent_name=agent_name,
             conversation_id=conversation_id,
-            conversation_name=conversation_name
+            conversation_name=conversation_name,
         )
         return await asyncio.to_thread(func)
 
+    @log.suppress_variables()
+    @timed_method
     async def get_conversations_async(
         self,
         agent_api_key: str,
         agent_api_endpoint: str,
         agent_id: Optional[str] = None,
-        agent_name: Optional[str] = None
+        agent_name: Optional[str] = None,
     ) -> ConversationsResult:
         """Async version of get_conversations for non-blocking operations.
 
@@ -398,17 +400,19 @@ class Sema4AI:
             agent_api_key=agent_api_key,
             agent_api_endpoint=agent_api_endpoint,
             agent_id=agent_id,
-            agent_name=agent_name
+            agent_name=agent_name,
         )
         return await asyncio.to_thread(func)
 
+    @log.suppress_variables()
+    @timed_method
     async def get_messages_async(
         self,
         agent_api_key: str,
         agent_api_endpoint: str,
         conversation_id: str,
         agent_id: Optional[str] = None,
-        agent_name: Optional[str] = None
+        agent_name: Optional[str] = None,
     ) -> MessagesResult:
         """Async version of get_messages for non-blocking operations.
 
@@ -445,6 +449,6 @@ class Sema4AI:
             agent_api_endpoint=agent_api_endpoint,
             conversation_id=conversation_id,
             agent_id=agent_id,
-            agent_name=agent_name
+            agent_name=agent_name,
         )
         return await asyncio.to_thread(func)
