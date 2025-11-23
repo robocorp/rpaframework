@@ -11,7 +11,6 @@ dependencies = [
 	"h11>=0.16.0",
 	"robotframework-browser>=17.2.0",
 	"rpaframework>=31.0.0",
-	"rpaframework-assistant>=5.0.0",
 	"rpaframework-aws>=7.0.0",
 	"rpaframework-google>=11.0.0",
 	"rpaframework-hubspot>=3.0.0",
