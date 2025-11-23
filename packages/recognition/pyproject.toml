@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-recognition"
-version = "7.0.0"
+version = "7.0.1"
 description = "OCR capabilities used by RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
