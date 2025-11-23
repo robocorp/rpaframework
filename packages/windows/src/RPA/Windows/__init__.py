@@ -1,3 +1,4 @@
+import faulthandler
 import logging
 from typing import Optional
 
@@ -10,6 +11,11 @@ from . import utils
 from .keywords import ActionKeywords, ElementKeywords, LocatorKeywords, WindowKeywords
 
 if utils.IS_WINDOWS:
+    # Disable faulthandler to suppress "Windows fatal exception: code 0x8001010d"
+    # messages that occur during UI automation COM operations. These are non-fatal
+    # exceptions that don't crash the application but spam the console output.
+    faulthandler.disable()
+
     # Configure comtypes to not generate DLL bindings into
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
@@ -17,6 +23,31 @@ if utils.IS_WINDOWS:
     from uiautomation.uiautomation import Logger
 
     comtypes.client.gen_dir = None
+
+    # Suppress uiautomation Logger console output by patching the Write method
+    # to disable stdout printing. This prevents verbose timeout and debug messages
+    # from cluttering the console during normal operations.
+    _original_logger_write = Logger.Write
+
+    def _patched_logger_write(
+        log,
+        consoleColor=0,
+        writeToFile=True,
+        printToStdout=False,
+        logFile=None,
+        printTruncateLen=0,
+    ):
+        # Always disable stdout printing to suppress verbose console output
+        _original_logger_write(
+            log,
+            consoleColor,
+            writeToFile,
+            printToStdout=printToStdout,
+            logFile=logFile,
+            printTruncateLen=printTruncateLen,
+        )
+
+    Logger.Write = staticmethod(_patched_logger_write)
 
 
 # NOTE(cmiN): We use as base the robotframework `DynamicCore` this time instead of the
