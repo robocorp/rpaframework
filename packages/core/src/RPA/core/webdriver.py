@@ -316,7 +316,14 @@ class IEDriver(_IEDriver):
         """Check if URL is from internal Robocorp source."""
         if not url:
             return False
-        return "robocorp.com" in url or "downloads.robocorp.com" in url
+        parsed = urlparse(url)
+        host = parsed.hostname or ""
+        # Check if host is exactly robocorp.com or downloads.robocorp.com, or a subdomain of robocorp.com
+        return (
+            host == "robocorp.com"
+            or host == "downloads.robocorp.com"
+            or host.endswith(".robocorp.com")
+        )
 
     def _is_valid_version(self, version: str) -> bool:
         """Check if version string looks like a valid version."""
