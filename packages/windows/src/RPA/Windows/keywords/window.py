@@ -3,6 +3,7 @@ import signal
 import time
 from typing import Dict, List, Optional
 
+from RPA.core.windows.context import COMError
 from RPA.core.windows.locators import Locator, LocatorMethods, WindowsElement
 from RPA.core.windows.window import WindowMethods
 
@@ -256,7 +257,19 @@ class WindowKeywords(WindowMethods):
         # the list of dict, contains "object" key, add to each dict a new key "window"
         # which would be WindowsElement with the value of the object
         for window in window_list:
-            window["window"] = WindowsElement(window["object"], locator=None)
+            try:
+                window["window"] = WindowsElement(window["object"], locator=None)
+            except (COMError, Exception) as err:  # pylint: disable=broad-except
+                # Handle COM errors when accessing window properties in WindowsElement constructor
+                # (e.g., Name, AutomationId, ControlTypeName, ClassName, BoundingRectangle)
+                # Set window to None to maintain consistent structure even when creation fails
+                window["window"] = None
+                pid = window.get("pid", "unknown")
+                self.logger.debug(
+                    "Skipping WindowsElement creation for window (PID: %s) due to COM error: %s",
+                    pid,
+                    err,
+                )
         return window_list
 
     @keyword(tags=["window"])
