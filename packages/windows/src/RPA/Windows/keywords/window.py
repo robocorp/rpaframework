@@ -250,9 +250,14 @@ class WindowKeywords(WindowMethods):
                 Log  Window process handle:${window}[handle]
             END
         """
-        return super().list_windows(
+        window_list = super().list_windows(
             icons=icons, icon_save_directory=icon_save_directory
         )
+        # the list of dict, contains "object" key, add to each dict a new key "window"
+        # which would be WindowsElement with the value of the object
+        for window in window_list:
+            window["window"] = WindowsElement(window["object"], locator=None)
+        return window_list
 
     @keyword(tags=["window"])
     def windows_run(self, text: str, wait_time: float = 3.0) -> None:

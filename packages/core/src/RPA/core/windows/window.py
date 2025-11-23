@@ -6,7 +6,7 @@ from typing import Dict, List, Optional
 from PIL import Image
 
 from RPA.core.vendor.deco import keyword as method
-from RPA.core.windows.context import WindowsContext
+from RPA.core.windows.context import COMError, WindowsContext
 from RPA.core.windows.helpers import IS_WINDOWS, get_process_list
 
 # Define placeholder objects
@@ -79,43 +79,91 @@ class WindowMethods(WindowsContext):
         icons: bool = False,
         icon_save_directory: Optional[str] = None,
     ) -> List[Dict]:
-        windows = auto.GetRootControl().GetChildren()
+        try:
+            windows = auto.GetRootControl().GetChildren()
+        except (COMError, Exception) as err:  # pylint: disable=broad-except
+            # Handle COM threading errors (e.g., 0x8001010d) gracefully
+            self.logger.warning(
+                "Failed to get root control children in `List Windows`: %s", err
+            )
+            return []
+
         process_list = get_process_list() if self.ctx.list_processes else {}
         win_list = []
-        for win in windows:
-            pid = win.ProcessId
-            fullpath = None
-            try:
-                fullpath = self.get_fullpath(pid)
-            except Exception as err:  # pylint: disable=broad-except
-                self.logger.info("Open process error in `List Windows`: %s", err)
-            handle = win.NativeWindowHandle
-            icon_string = (
-                self.get_icon(fullpath, icon_save_directory) if icons else None
+        try:
+            for win in windows:
+                try:
+                    pid = win.ProcessId
+                except (COMError, Exception) as err:  # pylint: disable=broad-except
+                    # Skip windows that can't be accessed due to COM errors
+                    self.logger.debug("Skipping window due to COM error accessing ProcessId: %s", err)
+                    continue
+
+                # Wrap the entire window processing in try-except to catch iteration errors
+                try:
+                    fullpath = None
+                    try:
+                        fullpath = self.get_fullpath(pid)
+                    except Exception as err:  # pylint: disable=broad-except
+                        self.logger.info("Open process error in `List Windows`: %s", err)
+
+                    try:
+                        handle = win.NativeWindowHandle
+                    except (COMError, Exception) as err:  # pylint: disable=broad-except
+                        self.logger.debug("Skipping window (PID: %s) due to COM error accessing NativeWindowHandle: %s", pid, err)
+                        continue
+
+                    icon_string = None
+                    if icons:
+                        try:
+                            icon_string = self.get_icon(fullpath, icon_save_directory)
+                        except Exception as err:  # pylint: disable=broad-except
+                            self.logger.debug("Failed to get icon for window (PID: %s): %s", pid, err)
+
+                    try:
+                        rect = win.BoundingRectangle
+                        rectangle = (
+                            [rect.left, rect.top, rect.right, rect.bottom] if rect else [None] * 4
+                        )
+                    except (COMError, Exception) as err:  # pylint: disable=broad-except
+                        self.logger.debug("Skipping window (PID: %s) due to COM error accessing BoundingRectangle: %s", pid, err)
+                        continue
+
+                    name = process_list[pid] if pid in process_list else None
+                    if not name and fullpath:
+                        name = Path(fullpath).name
+
+                    try:
+                        info = {
+                            "title": win.Name,
+                            "pid": pid,
+                            "name": name,
+                            "path": fullpath,
+                            "handle": handle,
+                            "icon": icon_string,
+                            "automation_id": win.AutomationId,
+                            "control_type": win.ControlTypeName,
+                            "class_name": win.ClassName,
+                            "rectangle": rectangle,
+                            "keyboard_focus": win.HasKeyboardFocus,
+                            "is_active": handle == auto.GetForegroundWindow(),
+                            "object": win,
+                        }
+                    except (COMError, Exception) as err:  # pylint: disable=broad-except
+                        # If we can't access window properties, skip this window
+                        self.logger.debug("Skipping window (PID: %s) due to COM error accessing properties: %s", pid, err)
+                        continue
+
+                    if icons and not icon_string:
+                        self.logger.info("Icon for %s returned empty", info.get("title", "unknown"))
+                    win_list.append(info)
+                except (COMError, Exception) as err:  # pylint: disable=broad-except
+                    # Catch any COM errors during window processing (e.g., during iteration)
+                    self.logger.debug("Skipping window (PID: %s) due to COM error: %s", pid, err)
+                    continue
+        except (COMError, Exception) as err:  # pylint: disable=broad-except
+            # Catch COM errors that occur during iteration itself
+            self.logger.warning(
+                "Error during window iteration in `List Windows`: %s. Returning partial list.", err
             )
-            rect = win.BoundingRectangle
-            rectangle = (
-                [rect.left, rect.top, rect.right, rect.bottom] if rect else [None] * 4
-            )
-            name = process_list[pid] if pid in process_list else None
-            if not name and fullpath:
-                name = Path(fullpath).name
-            info = {
-                "title": win.Name,
-                "pid": pid,
-                "name": name,
-                "path": fullpath,
-                "handle": handle,
-                "icon": icon_string,
-                "automation_id": win.AutomationId,
-                "control_type": win.ControlTypeName,
-                "class_name": win.ClassName,
-                "rectangle": rectangle,
-                "keyboard_focus": win.HasKeyboardFocus,
-                "is_active": handle == auto.GetForegroundWindow(),
-                "object": win,
-            }
-            if icons and not icon_string:
-                self.logger.info("Icon for %s returned empty", win.Name)
-            win_list.append(info)
         return win_list
