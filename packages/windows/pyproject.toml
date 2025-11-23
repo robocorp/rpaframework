@@ -32,7 +32,7 @@ dependencies = [
 	"uiautomation >=2.0.15",
 	"comtypes >=1.1.11; platform_system == 'Windows'",
 	"psutil >=5.9.0; platform_system == 'Windows'",
-	"pywin32 >=300, <307; platform_system == 'Windows' and python_version != '3.8.1'",
+	"pywin32 >=300, <=311; platform_system == 'Windows' and python_version != '3.8.1'",
 	"fire >=0.7.0",
 ]
 
