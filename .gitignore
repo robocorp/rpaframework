@@ -66,4 +66,4 @@ invoke.yaml
 gh_runs/*
 
 # AI stuff
-.claude/settings.local.json
+**/settings.local.json

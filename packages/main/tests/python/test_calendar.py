@@ -1,4 +1,5 @@
 import pytest
+from freezegun import freeze_time
 from RPA.Calendar import Calendar
 
 
@@ -14,7 +15,7 @@ def test_returning_holidays(library):
     assert len(holidays) == 15
 
 
-@pytest.mark.freeze_time("2023-03-09")
+@freeze_time("2023-03-09")
 def test_set_locale_spanish(library):
     library.set_locale("es")
     now = library.time_now(
@@ -23,7 +24,7 @@ def test_set_locale_spanish(library):
     assert now == "jueves 09 marzo 2023"
 
 
-@pytest.mark.freeze_time("2023-03-09")
+@freeze_time("2023-03-09")
 def test_set_locale_english(library):
     library.set_locale("en")
     now = library.time_now(
