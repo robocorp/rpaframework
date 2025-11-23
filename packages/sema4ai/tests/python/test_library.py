@@ -1,7 +1,16 @@
+import asyncio
 import pytest
 from unittest.mock import Mock, patch
-from RPA.Sema4AI import Sema4AI
-from RPA._support import Sema4aiException, Agent, MessageResponse, Conversation, ConversationsResult, MessagesResult
+from RPA.Sema4AI import (
+    Sema4AI,
+    Sema4aiException,
+    Agent,
+    Conversation,
+    MessageResponse,
+    ConversationsResult,
+    MessagesResult,
+)
+from RPA._support import Sema4aiException as _Sema4aiException
 
 
 class TestSema4AI:
@@ -454,3 +463,207 @@ class TestSema4AI:
         assert hasattr(result, 'execution_time')
         assert isinstance(result.execution_time, float)
         assert result.execution_time >= 0
+
+    def test_exports_from_main_module(self):
+        """Test that all public classes are exported from main module."""
+        # Verify classes can be imported from RPA.Sema4AI
+        assert Sema4aiException is _Sema4aiException
+        assert Sema4AI is not None
+        assert Agent is not None
+        assert Conversation is not None
+        assert MessageResponse is not None
+        assert ConversationsResult is not None
+        assert MessagesResult is not None
+
+    def test_exception_with_status_code(self):
+        """Test that Sema4aiException includes status_code attribute."""
+        # Test without status_code
+        exc1 = Sema4aiException("Test error")
+        assert str(exc1) == "Test error"
+        assert exc1.status_code is None
+
+        # Test with status_code
+        exc2 = Sema4aiException("HTTP error", status_code=404)
+        assert str(exc2) == "HTTP error"
+        assert exc2.status_code == 404
+
+        # Test with different status codes
+        exc3 = Sema4aiException("Server error", status_code=500)
+        assert exc3.status_code == 500
+
+    @patch('RPA.Sema4AI._AgentAPIClient')
+    def test_client_caching(self, mock_client_class):
+        """Test that API clients are cached and reused."""
+        mock_client = Mock()
+        mock_client_class.return_value = mock_client
+        mock_client.send_message.return_value = "Response"
+        mock_conversation = Mock()
+        mock_conversation.conversation_id = "conv_123"
+        mock_client.create_conversation.return_value = mock_conversation
+
+        sema4ai = Sema4AI()
+
+        # First call
+        sema4ai.ask_agent(
+            message="Hello",
+            agent_api_key="test_key",
+            agent_id="agent_123",
+            agent_api_endpoint="https://api.example.com/v1"
+        )
+
+        # Second call with same credentials
+        sema4ai.ask_agent(
+            message="Hello again",
+            agent_api_key="test_key",
+            agent_id="agent_123",
+            agent_api_endpoint="https://api.example.com/v1"
+        )
+
+        # Client should only be created once due to caching
+        assert mock_client_class.call_count == 1
+
+        # Different credentials should create new client
+        sema4ai.ask_agent(
+            message="Different key",
+            agent_api_key="different_key",
+            agent_id="agent_123",
+            agent_api_endpoint="https://api.example.com/v1"
+        )
+
+        assert mock_client_class.call_count == 2
+
+    def test_client_cache_initialization(self):
+        """Test that client cache is initialized properly."""
+        sema4ai = Sema4AI()
+        assert hasattr(sema4ai, '_client_cache')
+        assert isinstance(sema4ai._client_cache, dict)
+        assert len(sema4ai._client_cache) == 0
+
+    @patch('RPA.Sema4AI._AgentAPIClient')
+    def test_ask_agent_async(self, mock_client_class):
+        """Test async version of ask_agent."""
+        mock_client = Mock()
+        mock_client_class.return_value = mock_client
+        mock_conversation = Mock()
+        mock_conversation.conversation_id = "conv_async"
+        mock_client.create_conversation.return_value = mock_conversation
+        mock_client.send_message.return_value = "Async response!"
+
+        sema4ai = Sema4AI()
+
+        async def run_test():
+            result = await sema4ai.ask_agent_async(
+                message="Hello async",
+                agent_api_key="test_key",
+                agent_id="agent_123",
+                agent_api_endpoint="https://api.example.com/v1"
+            )
+            return result
+
+        result = asyncio.run(run_test())
+
+        assert isinstance(result, MessageResponse)
+        assert result.conversation_id == "conv_async"
+        assert result.response == "Async response!"
+
+    @patch('RPA.Sema4AI._AgentAPIClient')
+    def test_get_conversations_async(self, mock_client_class):
+        """Test async version of get_conversations."""
+        mock_client = Mock()
+        mock_client_class.return_value = mock_client
+        mock_conversations = [
+            Conversation(conversation_id="conv1", name="Conv 1", agent_id="agent_123")
+        ]
+        mock_client.get_conversations.return_value = mock_conversations
+
+        sema4ai = Sema4AI()
+
+        async def run_test():
+            result = await sema4ai.get_conversations_async(
+                agent_api_key="test_key",
+                agent_api_endpoint="https://api.example.com/v1",
+                agent_id="agent_123"
+            )
+            return result
+
+        result = asyncio.run(run_test())
+
+        assert isinstance(result, ConversationsResult)
+        assert len(result) == 1
+        assert result[0].conversation_id == "conv1"
+
+    @patch('RPA.Sema4AI._AgentAPIClient')
+    def test_get_messages_async(self, mock_client_class):
+        """Test async version of get_messages."""
+        mock_client = Mock()
+        mock_client_class.return_value = mock_client
+        mock_messages = [{"id": "msg1", "content": "Test", "role": "user"}]
+        mock_client.get_messages.return_value = mock_messages
+
+        sema4ai = Sema4AI()
+
+        async def run_test():
+            result = await sema4ai.get_messages_async(
+                agent_api_key="test_key",
+                agent_api_endpoint="https://api.example.com/v1",
+                conversation_id="conv_123",
+                agent_id="agent_123"
+            )
+            return result
+
+        result = asyncio.run(run_test())
+
+        assert isinstance(result, MessagesResult)
+        assert len(result) == 1
+        assert result[0]["id"] == "msg1"
+
+    @patch('RPA.Sema4AI._AgentAPIClient')
+    def test_concurrent_async_requests(self, mock_client_class):
+        """Test that multiple async requests can run concurrently."""
+        mock_client = Mock()
+        mock_client_class.return_value = mock_client
+        mock_conversation = Mock()
+        mock_conversation.conversation_id = "conv_concurrent"
+        mock_client.create_conversation.return_value = mock_conversation
+        mock_client.send_message.side_effect = lambda **kwargs: f"Response to: {kwargs['message']}"
+
+        sema4ai = Sema4AI()
+
+        async def run_test():
+            tasks = [
+                sema4ai.ask_agent_async(
+                    message=f"Message {i}",
+                    agent_api_key="test_key",
+                    agent_id="agent_123",
+                    agent_api_endpoint="https://api.example.com/v1"
+                )
+                for i in range(3)
+            ]
+            results = await asyncio.gather(*tasks)
+            return results
+
+        results = asyncio.run(run_test())
+
+        assert len(results) == 3
+        for result in results:
+            assert isinstance(result, MessageResponse)
+
+    def test_http_error_includes_status_code(self):
+        """Test that HTTP errors include the status code."""
+        from RPA._support import _AgentAPIClient
+
+        with patch('RPA._support.sema4ai_http') as mock_http:
+            mock_response = Mock()
+            mock_response.status_code = 403
+            mock_response.text = "Forbidden"
+            mock_response.reason = "Access Denied"
+            mock_http.get.return_value = mock_response
+
+            client = _AgentAPIClient(agent_api_key="test", api_url="https://api.example.com/v1")
+
+            with pytest.raises(Sema4aiException) as exc_info:
+                client.request("agents")
+
+            assert exc_info.value.status_code == 403
+            assert "HTTP 403" in str(exc_info.value)
+            assert "Forbidden" in str(exc_info.value)

@@ -164,8 +164,7 @@ def timed_method(func):
             # Check if it's a list of Conversation objects or dict objects
             if result and isinstance(result[0], Conversation):
                 return ConversationsResult(conversations=result, execution_time=execution_time)
-            else:
-                return MessagesResult(messages=result, execution_time=execution_time)
+            return MessagesResult(messages=result, execution_time=execution_time)
 
         # For other types, just add execution_time attribute
         if hasattr(result, '__dict__'):
@@ -177,7 +176,15 @@ def timed_method(func):
 
 
 class Sema4aiException(Exception):
-    """Exception raised when the Sema4ai client encounters an error."""
+    """Exception raised when the Sema4ai client encounters an error.
+
+    Attributes:
+        status_code: HTTP status code if the error was from an HTTP response.
+    """
+
+    def __init__(self, message: str, status_code: int = None):
+        super().__init__(message)
+        self.status_code = status_code
 
 
 class _AgentAPIClient:
@@ -251,7 +258,7 @@ class _AgentAPIClient:
                 error_msg += f": {response.reason or 'Unknown error'}"
             # Add URL information for debugging
             error_msg += f" (URL: {url})"
-            raise Sema4aiException(error_msg)
+            raise Sema4aiException(error_msg, status_code=response.status_code)
 
         return response
 
@@ -329,9 +336,9 @@ class _AgentAPIClient:
         if isinstance(response_json, dict):
             if "data" in response_json:
                 return response_json["data"]
-            elif "messages" in response_json:
+            if "messages" in response_json:
                 return response_json["messages"]
-        elif isinstance(response_json, list):
+        if isinstance(response_json, list):
             return response_json
 
         return []

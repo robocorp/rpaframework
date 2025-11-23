@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-sema4ai"
-version = "1.0.0"
+version = "1.1.0"
 description = "Sema4ai library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -20,12 +20,13 @@ classifiers = [
 	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
 ]
 
 dependencies = [
-	"sema4ai-actions>=1.4.2",
+	"sema4ai-actions>=1.6.4",
 	"robocorp>=3.0.0",
-	"pydantic>=2.11.7",
+	"pydantic>=2.12.4",
 	"setuptools>=65.0.0",
 	"wheel>=0.40.0"
 ]
