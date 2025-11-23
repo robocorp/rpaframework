@@ -64,3 +64,6 @@ invoke.yaml
 
 # Github Run Artifacts
 gh_runs/*
+
+# AI stuff
+.claude/settings.local.json
