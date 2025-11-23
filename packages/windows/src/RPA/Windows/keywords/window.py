@@ -3,6 +3,7 @@ import signal
 import time
 from typing import Dict, List, Optional
 
+from RPA.core.windows.context import COMError
 from RPA.core.windows.locators import Locator, LocatorMethods, WindowsElement
 from RPA.core.windows.window import WindowMethods
 
@@ -128,7 +129,11 @@ class WindowKeywords(WindowMethods):
                 root_element = LocatorMethods.get_desktop_element(locator)
             window = self.ctx.get_element(locator, root_element=root_element)
             return window
-        except (ElementNotFound, LookupError):
+        except (ElementNotFound, LookupError, COMError):
+            # COMError may occur during element finding, especially 0x8001010d
+            # which happens when COM calls are made during synchronous input operations.
+            # The retry logic in locators should handle most cases, but we catch
+            # any remaining COM errors here to prevent crashes.
             return None
 
     @keyword(tags=["window"])
@@ -250,9 +255,26 @@ class WindowKeywords(WindowMethods):
                 Log  Window process handle:${window}[handle]
             END
         """
-        return super().list_windows(
+        window_list = super().list_windows(
             icons=icons, icon_save_directory=icon_save_directory
         )
+        # the list of dict, contains "object" key, add to each dict a new key "window"
+        # which would be WindowsElement with the value of the object
+        for window in window_list:
+            try:
+                window["window"] = WindowsElement(window["object"], locator=None)
+            except (COMError, Exception) as err:  # pylint: disable=broad-except
+                # Handle COM errors when accessing window properties in WindowsElement constructor
+                # (e.g., Name, AutomationId, ControlTypeName, ClassName, BoundingRectangle)
+                # Set window to None to maintain consistent structure even when creation fails
+                window["window"] = None
+                pid = window.get("pid", "unknown")
+                self.logger.debug(
+                    "Skipping WindowsElement creation for window (PID: %s) due to COM error: %s",
+                    pid,
+                    err,
+                )
+        return window_list
 
     @keyword(tags=["window"])
     def windows_run(self, text: str, wait_time: float = 3.0) -> None:
