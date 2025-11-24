@@ -16,6 +16,26 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+24 Nov 2025
+-----------
+
+- New package: ``rpaframework-sema4ai`` for Sema4 AI platform integration (:pr:`1237`).
+- Security: Upgrade ``pdfminer.six`` to ``>=20251107`` (:pr:`1305`).
+- Windows: Bug fixes, log message improvements, and dependency updates (:pr:`1306`, :pr:`1307`).
+- Core: Add common decorators; fix JSON deprecation warnings.
+- Packaging: Remove assistant from meta package; update lock files.
+
+- ``rpaframework`` **31.1.0**
+- ``rpaframework-aws`` **7.0.1**
+- ``rpaframework-google`` **11.0.1**
+- ``rpaframework-hubspot`` **3.0.1**
+- ``rpaframework-openai`` **4.0.0**
+- ``rpaframework-pdf`` **10.0.1**
+- ``rpaframework-recognition`` **7.0.1**
+- ``rpaframework-sema4ai`` **1.1.0**
+- ``rpaframework-windows`` **10.0.3**
+- ``rpaframework-core`` **12.1.0**
+
 25 Aug 2025
 -----------
 
