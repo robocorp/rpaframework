@@ -17,8 +17,8 @@
 # -- Project information -----------------------------------------------------
 
 project = "RPA Framework"
-copyright = "2023 Robocorp Technologies, Inc."
-author = "Ossi Rajuvaara, Mika Hänninen, Cosmin Poieana"
+copyright = "2025 Sema4.ai"
+author = "Mika Hänninen"
 
 # -- General configuration ---------------------------------------------------
 

@@ -36,9 +36,6 @@ dev = [
 
 [tool.uv]
 package = false
-dev-dependencies = [
-	"rpaframework-devutils"
-]
 
 override-dependencies = [
 	"h11>=0.16.0"
