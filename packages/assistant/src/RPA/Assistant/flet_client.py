@@ -107,7 +107,6 @@ class FletClient:
                     self.pending_operation()  # pylint: disable=not-callable
                     self.pending_operation = None
                 if timer() - view_start_time >= timeout:
-                    self._background_flet.close_flet_view()
                     raise TimeoutException(
                         "Reached timeout while waiting for Assistant Dialog"
                     )
@@ -121,6 +120,7 @@ class FletClient:
             self.page = None
             self.clear_elements()
             self._to_disable.clear()
+            self._background_flet.close_flet_view()
 
     def _checkbox_data_saver(self, name: str, handler: Optional[Callable] = None):
         """_make_on_change_data_saver special case for checkboxes, until
