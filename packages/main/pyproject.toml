@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework"
-version = "31.1.0"
+version = "31.1.1"
 description = "A collection of tools and libraries for RPA"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}

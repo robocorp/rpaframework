@@ -2093,7 +2093,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "31.1.0"
+version = "31.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
