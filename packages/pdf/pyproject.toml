@@ -27,7 +27,7 @@ dependencies = [
 	"rpaframework-core >=12.1.0",
 	"robotframework >=4.0.0, !=4.0.1, !=6.1.0, <8.0.0",
 	"pdfminer.six >=20251107",
-	"pypdf >=6.0.0",
+	"pypdf >=6.6.2",
 	"fpdf2 >=2.8.4",
 	"docutils>=0.21.2",
 ]
