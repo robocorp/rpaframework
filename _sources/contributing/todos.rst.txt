@@ -174,7 +174,7 @@ checkers.stdlib:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "734", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "728", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 checkers.strings:
 =================
@@ -215,7 +215,7 @@ checkers.utils:
 
    "603", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
    "1374", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
-   "2054", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "2061", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 checkers.variables:
 ===================
@@ -224,8 +224,8 @@ checkers.variables:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "1381", "(performance), merging both checks would streamline this"
-   "2669", "4.0: Consider using utils.is_terminating_func"
+   "1386", "(performance), merging both checks would streamline this"
+   "2673", "4.0: Consider using utils.is_terminating_func"
 
 config._pylint_config.utils:
 ============================

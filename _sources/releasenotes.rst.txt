@@ -16,6 +16,22 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+2 Feb 2026
+----------
+
+- Security: Bump ``pypdf`` to ``>=6.6.2`` fixing infinite loop, decompression bomb, and malformed startxref vulnerabilities (:pr:`1314`).
+- Security: Remove ``urllib3`` upper bound in aws package, allowing ``2.6.3`` on Python >=3.10 to fix decompression bomb bypass vulnerabilities (:pr:`1314`).
+- Security: Remove ``wrapt`` upper bound to avoid dependency resolver conflicts (:pr:`1314`).
+- Security: Remove ``pip`` upper bound in invocations requirements fixing Windows CI failures (:pr:`1314`).
+- CI: Replace deprecated ``macos-13`` runners with ``macos-latest`` across all workflows (:pr:`1314`).
+- CI: Disable assistant workflow due to ``robocorp-flet`` httpx incompatibility.
+- Fix PDF checkbox test for ``pypdf`` 6.6.2 name serialization change (:pr:`1314`).
+- Upgrade transitive dependencies across all package lock files to address Dependabot alerts (:pr:`1315`, :pr:`1316`).
+
+- ``rpaframework`` **31.1.1**
+- ``rpaframework-aws`` **7.0.2**
+- ``rpaframework-pdf`` **10.0.2**
+
 24 Nov 2025
 -----------
 
