@@ -58,13 +58,13 @@ jobs:
             os: ubuntu-latest
           - name: "macos-py39"
             python: "3.9"
-            os: macos-13
+            os: macos-latest
           - name: "macos-py310"
             python: "3.10"
-            os: macos-13
+            os: macos-latest
           - name: "macos-py311"
             python: "3.11"
-            os: macos-13
+            os: macos-latest
 
     steps:
     - uses: actions/checkout@v5
