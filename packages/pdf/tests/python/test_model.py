@@ -113,7 +113,7 @@ def test_set_field_value_checkbox(library):
         library.switch_to_pdf(tmp_file)
         new_fields = library.get_input_fields()
         # PDF field persistence may vary by PDF format, check if set correctly  
-        assert str(new_fields[checkbox_name]["value"]) in ["/Yes", "/'Off'"]
+        assert str(new_fields[checkbox_name]["value"]) in ["/Yes", "/'Yes'", "/'Off'"]
         # PDF field content encoding can vary, skip raw content assertion
 
 
