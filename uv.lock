@@ -5001,7 +5001,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework-recognition"
-version = "7.0.1"
+version = "7.0.2"
 source = { editable = "packages/recognition" }
 dependencies = [
     { name = "docutils", version = "0.21.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
