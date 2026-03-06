@@ -38,7 +38,8 @@ dev = [
 package = false
 
 override-dependencies = [
-	"h11>=0.16.0"
+	"h11>=0.16.0",
+	"protobuf>=6.33.5",
 ]
 
 [tool.uv.sources]
