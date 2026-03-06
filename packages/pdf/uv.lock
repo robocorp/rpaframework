@@ -2231,7 +2231,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "10.0.2"
+version = "10.0.3"
 source = { editable = "." }
 dependencies = [
     { name = "docutils" },
@@ -2254,7 +2254,7 @@ requires-dist = [
     { name = "docutils", specifier = ">=0.21.2" },
     { name = "fpdf2", specifier = ">=2.8.4" },
     { name = "pdfminer-six", specifier = ">=20251107" },
-    { name = "pypdf", specifier = ">=6.6.2" },
+    { name = "pypdf", specifier = ">=6.7.5" },
     { name = "robotframework", specifier = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0" },
     { name = "rpaframework-core", specifier = ">=12.1.0" },
 ]
