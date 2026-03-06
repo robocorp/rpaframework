@@ -39,6 +39,10 @@ dev = [
 [tool.uv]
 package = true
 
+override-dependencies = [
+	"cryptography>=46.0.5",
+]
+
 [tool.uv.sources]
 rpaframework-devutils = { path = "../devutils", editable = true }
 
