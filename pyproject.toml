@@ -44,6 +44,8 @@ override-dependencies = [
 [tool.uv.sources]
 rpaframework = { path = "packages/main", editable = true }
 rpaframework-devutils = { path = "packages/devutils", editable = true }
+rpaframework-recognition = { path = "packages/recognition", editable = true }
+rpaframework-pdf = { path = "packages/pdf", editable = true }
 
 [build-system]
 requires = ["hatchling"]

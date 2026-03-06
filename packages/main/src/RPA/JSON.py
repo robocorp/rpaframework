@@ -21,7 +21,11 @@ class RPAFilter(Filter):
         for datum in reversed(self.find(data)):
             index_obj = datum.path
             if isinstance(data, dict):
-                index_obj.index = list(data)[index_obj.index]
+                # Convert numeric index to dictionary key.
+                # jsonpath-ng 1.8.0+ uses 'indices' tuple instead of 'index'.
+                numeric_index = index_obj.indices[0]
+                dict_key = list(data)[numeric_index]
+                index_obj.indices = (dict_key,)
             index_obj.filter(fn, data)
         return data
 
