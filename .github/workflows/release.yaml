@@ -1,32 +1,36 @@
 name: release
 
 on:
-  workflow_dispatch:
-    inputs:
-      package:
-        type: choice
-        description: Select the package
-        required: False
-        default: 'rpaframework'
-        options:
-        - rpaframework
-        - rpaframework-aws
-        - rpaframework-core
-        - rpaframework-dialogs
-        - rpaframework-google
-        - rpaframework-pdf
-        - rpaframework-recognition
-        - rpaframework-windows
-      version:
-        type: string
-        description: Version number
-        required: False
-
+  push:
+    tags:
+      - "rpaframework-*"
 
 jobs:
-  selections-done:
-    runs-on: windows-latest
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Print selections to STDOUT
-        run: echo  The package is ${{ github.event.inputs.package }} and version is ${{ github.event.inputs.version }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Parse tag
+        id: parse
+        run: |
+          TAG="${{ github.ref_name }}"
+          VERSION=$(echo "$TAG" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+$')
+          PACKAGE=$(echo "$TAG" | sed "s/-${VERSION}$//")
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "package=$PACKAGE" >> $GITHUB_OUTPUT
+          echo "Tag: $TAG | Package: $PACKAGE | Version: $VERSION"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.parse.outputs.tag }}" \
+            --title "${{ steps.parse.outputs.package }} ${{ steps.parse.outputs.version }}" \
+            --generate-notes \
+            --verify-tag
