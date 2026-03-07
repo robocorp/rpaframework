@@ -2198,15 +2198,7 @@ class Selenium(SeleniumLibrary):
         return self._send_command_and_get_result(command, parameters)
 
     def _send_command_and_get_result(self, cmd, params):
-        resource = (
-            f"session/{self.driver.session_id}/chromium/send_command_and_get_result"
-        )
-        # pylint: disable=protected-access
-        url = f"{self.driver.command_executor._url}/{resource}"
-        body = json.dumps({"cmd": cmd, "params": params})
-        response = self.driver.command_executor._request("POST", url, body)
-
-        return response.get("value")
+        return self.driver.execute_cdp_cmd(cmd, params)
 
     @keyword
     def set_element_attribute(
