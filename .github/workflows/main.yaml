@@ -119,6 +119,61 @@ jobs:
           name: ${{ matrix.os }}-py${{ matrix.python }}-test-reports
           path: packages/main/tests/results
 
+  build-wheel:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install uv
+        run: pip install uv
+      - name: Build wheel
+        run: uv build --wheel
+      - name: Upload wheel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpaframework-wheel
+          path: packages/main/dist/*.whl
+          retention-days: 14
+      - name: Comment on PR with artifact link
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const sha = context.payload.pull_request.head.sha.slice(0, 7);
+            const marker = '<!-- rpaframework-wheel-artifact -->';
+            const body = [
+              marker,
+              '## Wheel artifact',
+              '',
+              `Built from commit \`${sha}\` — download from the [workflow run](${runUrl}) (Artifacts section at the bottom of the page).`,
+              '',
+              'Artifact name: `rpaframework-wheel` (retained 14 days)',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body,
+              });
+            }
+
   # publish:
   #   # Only publish on master workflow runs
   #   if: github.ref == 'refs/heads/master'
