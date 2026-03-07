@@ -293,22 +293,23 @@ class TestVirtualAuthenticator:
 def test_selenium_api_imports():
     """All selenium APIs used by RPA.Browser.Selenium must remain importable.
 
-    Regression guard: if a newer selenium 4.x removes any of these, this test fails
-    before the constraint is widened further.
+    Import paths must match exactly what production code uses — if selenium
+    reorganises its package structure in a future release this test catches it.
     """
+    from selenium import webdriver as selenium_webdriver  # noqa: F401
     from selenium.common import WebDriverException  # noqa: F401
     from selenium.common.exceptions import ElementClickInterceptedException  # noqa: F401
-    from selenium.webdriver import (  # noqa: F401
-        ChromeOptions,
-        EdgeOptions,
-        FirefoxOptions,
-        FirefoxProfile,
-        IeOptions,
-    )
+    from selenium.webdriver.chrome.options import Options as ChromeOptions  # noqa: F401
+    from selenium.webdriver.edge.options import Options as EdgeOptions  # noqa: F401
+    from selenium.webdriver.firefox.firefox_profile import FirefoxProfile  # noqa: F401
+    from selenium.webdriver.firefox.options import Options as FirefoxOptions  # noqa: F401
+    from selenium.webdriver.ie.options import Options as IeOptions  # noqa: F401
     from selenium.webdriver.common.by import By  # noqa: F401
     from selenium.webdriver.common.options import ArgOptions  # noqa: F401
+    from selenium.webdriver.common.virtual_authenticator import VirtualAuthenticatorOptions  # noqa: F401
     from selenium.webdriver.remote.shadowroot import ShadowRoot  # noqa: F401
     from selenium.webdriver.support import expected_conditions  # noqa: F401
+    from selenium.webdriver.support.relative_locator import locate_with  # noqa: F401
     from selenium.webdriver.support.ui import WebDriverWait  # noqa: F401
 
 
