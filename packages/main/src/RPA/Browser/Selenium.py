@@ -2404,6 +2404,13 @@ class Selenium(SeleniumLibrary):
         | Open Browser    https://example.com |
         | ...    options=set_capability('goog:loggingPrefs', {'performance': 'ALL'}) |
         """
+        _CHROMIUM_ONLY_LOG_TYPES = {"performance", "client"}
+        if log_type in _CHROMIUM_ONLY_LOG_TYPES and not self.is_chromium:
+            raise NotImplementedError(
+                f"Log type '{log_type}' is only available in Chromium-based browsers"
+                f" (Chrome, Edge), got: {self.driver.name}. "
+                f"Use log_type='browser' or 'driver' for cross-browser log retrieval."
+            )
         return self.driver.get_log(log_type)
 
     # ------------------------------------------------------------------ #
@@ -2538,6 +2545,24 @@ class Selenium(SeleniumLibrary):
         | # ... interact with WebAuthn registration or assertion flow ... |
         | Remove Virtual Authenticator |
         """
+        _VALID_PROTOCOLS = {"ctap2", "ctap1/u2f"}
+        _VALID_TRANSPORTS = {"usb", "nfc", "ble", "hybrid", "internal"}
+
+        if not self.is_chromium:
+            raise NotImplementedError(
+                "Add Virtual Authenticator requires a Chromium-based browser"
+                f" (Chrome, Edge), got: {self.driver.name}."
+            )
+        if protocol not in _VALID_PROTOCOLS:
+            raise ValueError(
+                f"Invalid protocol '{protocol}'. "
+                f"Valid values: {', '.join(sorted(_VALID_PROTOCOLS))}."
+            )
+        if transport not in _VALID_TRANSPORTS:
+            raise ValueError(
+                f"Invalid transport '{transport}'. "
+                f"Valid values: {', '.join(sorted(_VALID_TRANSPORTS))}."
+            )
         options = VirtualAuthenticatorOptions()
         options.protocol = protocol
         options.transport = transport
@@ -2553,4 +2578,9 @@ class Selenium(SeleniumLibrary):
 
         See `Add Virtual Authenticator` for the full usage example.
         """
+        if not self.is_chromium:
+            raise NotImplementedError(
+                "Remove Virtual Authenticator requires a Chromium-based browser"
+                f" (Chrome, Edge), got: {self.driver.name}."
+            )
         self.driver.remove_virtual_authenticator()

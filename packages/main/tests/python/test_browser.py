@@ -176,8 +176,28 @@ class TestNetworkInterception:
             "about:blank", headless=True, browser_selection="Chrome"
         )
         with patch.object(type(library), "is_chromium", new_callable=PropertyMock, return_value=False):
-            with pytest.raises(NotImplementedError):
+            with pytest.raises(NotImplementedError, match="Chromium"):
                 library.block_urls("*test*")
+
+    def test_unblock_urls_raises_for_non_chromium(self, library):
+        from unittest.mock import patch, PropertyMock
+
+        library.open_available_browser(
+            "about:blank", headless=True, browser_selection="Chrome"
+        )
+        with patch.object(type(library), "is_chromium", new_callable=PropertyMock, return_value=False):
+            with pytest.raises(NotImplementedError, match="Chromium"):
+                library.unblock_urls()
+
+    def test_get_browser_logs_performance_raises_for_non_chromium(self, library):
+        from unittest.mock import patch, PropertyMock
+
+        library.open_available_browser(
+            "about:blank", headless=True, browser_selection="Chrome"
+        )
+        with patch.object(type(library), "is_chromium", new_callable=PropertyMock, return_value=False):
+            with pytest.raises(NotImplementedError, match="performance"):
+                library.get_browser_logs(log_type="performance")
 
     def test_wait_for_network_request(self, library):
         library.open_available_browser(
@@ -234,6 +254,40 @@ class TestVirtualAuthenticator:
         auth_id = library.add_virtual_authenticator(transport="internal")
         assert auth_id
         library.remove_virtual_authenticator()
+
+    def test_add_virtual_authenticator_invalid_protocol(self, library):
+        library.open_available_browser(
+            "about:blank", headless=True, browser_selection="Chrome"
+        )
+        with pytest.raises(ValueError, match="protocol"):
+            library.add_virtual_authenticator(protocol="fido3")
+
+    def test_add_virtual_authenticator_invalid_transport(self, library):
+        library.open_available_browser(
+            "about:blank", headless=True, browser_selection="Chrome"
+        )
+        with pytest.raises(ValueError, match="transport"):
+            library.add_virtual_authenticator(transport="wifi")
+
+    def test_add_virtual_authenticator_raises_for_non_chromium(self, library):
+        from unittest.mock import patch, PropertyMock
+
+        library.open_available_browser(
+            "about:blank", headless=True, browser_selection="Chrome"
+        )
+        with patch.object(type(library), "is_chromium", new_callable=PropertyMock, return_value=False):
+            with pytest.raises(NotImplementedError, match="Chromium"):
+                library.add_virtual_authenticator()
+
+    def test_remove_virtual_authenticator_raises_for_non_chromium(self, library):
+        from unittest.mock import patch, PropertyMock
+
+        library.open_available_browser(
+            "about:blank", headless=True, browser_selection="Chrome"
+        )
+        with patch.object(type(library), "is_chromium", new_callable=PropertyMock, return_value=False):
+            with pytest.raises(NotImplementedError, match="Chromium"):
+                library.remove_virtual_authenticator()
 
 
 def test_selenium_api_imports():
