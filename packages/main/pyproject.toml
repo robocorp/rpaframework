@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework"
-version = "31.1.2"
+version = "31.2.0"
 description = "A collection of tools and libraries for RPA"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -60,7 +60,7 @@ dependencies = [
 	"mss>=6.0.0",
 	"chardet>=3.0.0",
 	"PySocks>=1.5.6,!=1.5.7,<2.0.0",
-	"selenium==4.15.2",
+	"selenium>=4.15.2,<5.0.0",
 	"click>=8.1.2",
 	"PyYAML>=5.4.1,<7.0.0",
 	"tenacity>=8.0.1",

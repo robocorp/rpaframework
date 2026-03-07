@@ -4630,7 +4630,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "31.1.1"
+version = "31.2.0"
 source = { editable = "packages/main" }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -4740,9 +4740,9 @@ requires-dist = [
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
     { name = "rpaframework-core", specifier = ">=12.1.0" },
-    { name = "rpaframework-pdf", specifier = ">=10.0.2" },
+    { name = "rpaframework-pdf", specifier = ">=10.0.3" },
     { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=10.0.2" },
-    { name = "selenium", specifier = "==4.15.2" },
+    { name = "selenium", specifier = ">=4.15.2,<5.0.0" },
     { name = "simple-salesforce", specifier = ">=1.0.0" },
     { name = "smartsheet-python-sdk", specifier = "==3.0.2" },
     { name = "tenacity", specifier = ">=8.0.1" },
@@ -4981,7 +4981,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "10.0.2"
+version = "10.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docutils", version = "0.21.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -4994,9 +4994,9 @@ dependencies = [
     { name = "robotframework" },
     { name = "rpaframework-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b0/a4/1eb030ca50a8c89455b4ae9e9d093dd356d163c9aacaca5dcbe635086cfe/rpaframework_pdf-10.0.2.tar.gz", hash = "sha256:5ae5343c4035e6facceb943a0303a5bf472d68b1c7ab29402ab618bba51010c9", size = 4559220, upload-time = "2026-02-02T12:36:14.549Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/74/a0/f36fa3a1211f0ea16ff9050a0a4bc973b49c671726f1ebd793db08e53c87/rpaframework_pdf-10.0.3.tar.gz", hash = "sha256:6d36aeacbe02625738cf57ada6dbac5fc584bf711d455da6c2004a9ecc5fb111", size = 4575911, upload-time = "2026-03-06T17:42:04.473Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f1/c3/03e175076042133c2199eab6a341c788c06adfc654dbbebb899ef638d3c1/rpaframework_pdf-10.0.2-py3-none-any.whl", hash = "sha256:343da57943a575a9ecc21d681543d3008e7350b00b5d608788bac83030a175bb", size = 612605, upload-time = "2026-02-02T12:36:11.24Z" },
+    { url = "https://files.pythonhosted.org/packages/eb/4f/f815398a6b4b2777d91657e82fc35430682f5fe157f3067133332db7d753/rpaframework_pdf-10.0.3-py3-none-any.whl", hash = "sha256:095d73c37aff2fa601560650cfaf9ad511da5832250c779a611eed146ddecc83", size = 612603, upload-time = "2026-03-06T17:42:01.059Z" },
 ]
 
 [[package]]

@@ -84,6 +84,47 @@ class TestSelenium:
         assert options_obj.binary_location == path
 
 
+def test_selenium_api_imports():
+    """All selenium APIs used by RPA.Browser.Selenium must remain importable.
+
+    Regression guard: if a newer selenium 4.x removes any of these, this test fails
+    before the constraint is widened further.
+    """
+    from selenium.common import WebDriverException  # noqa: F401
+    from selenium.common.exceptions import ElementClickInterceptedException  # noqa: F401
+    from selenium.webdriver import (  # noqa: F401
+        ChromeOptions,
+        EdgeOptions,
+        FirefoxOptions,
+        FirefoxProfile,
+        IeOptions,
+    )
+    from selenium.webdriver.common.by import By  # noqa: F401
+    from selenium.webdriver.common.options import ArgOptions  # noqa: F401
+    from selenium.webdriver.remote.shadowroot import ShadowRoot  # noqa: F401
+    from selenium.webdriver.support import expected_conditions  # noqa: F401
+    from selenium.webdriver.support.ui import WebDriverWait  # noqa: F401
+
+
+def test_selenium_constraint_is_not_exact_pin():
+    """Regression: selenium must not be pinned to an exact version (issue #1312).
+
+    An exact selenium==x.y.z pin blocks users from installing packages that require
+    a different selenium version (e.g. appium-python-client for Appium 3).
+    """
+    import re
+    from pathlib import Path
+
+    pyproject = (Path(__file__).parent.parent.parent / "pyproject.toml").read_text()
+    match = re.search(r'"selenium([^"]*)"', pyproject)
+    assert match, "selenium dependency not found in pyproject.toml"
+    constraint = match.group(1)
+    assert not constraint.startswith("=="), (
+        f"selenium must not be exact-pinned; got 'selenium{constraint}'. "
+        "Exact pins block Appium 3 and other selenium-dependent packages (issue #1312)."
+    )
+
+
 @pytest.mark.parametrize(
     "url,default,scheme",
     [
