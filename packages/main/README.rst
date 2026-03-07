@@ -1,14 +1,6 @@
 RPA Framework
 =============
 
-REQUEST for user input!
------------------------
-
-We are looking at improving our keyword usage to cover situations where developer might be
-struggling to smoothly write task for a Robot. Describe the situation where your **implementation speed slows** due to the lack of easier syntax.
-
-`Comment HERE <https://github.com/robocorp/rpaframework/issues/738>`_
-
 .. contents:: Table of Contents
    :local:
    :depth: 1
@@ -183,6 +175,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `MFA`_                     | Authenticate using one-time passwords (OTP) & OAuth2  | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `MSGraph`_                 | Access Microsoft 365 via the Microsoft Graph API      | x                      |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services              | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `OpenAI`_                  | Artificial Intelligence service                       | openai                 |
@@ -202,6 +196,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 | `Salesforce`_              | Salesforce operations                                 | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `SAP`_                     | Control SAP GUI desktop client                        | x                      |
++----------------------------+-------------------------------------------------------+------------------------+
+| `Slack`_                   | Send messages and interact with Slack workspaces      | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Smartsheet`_              | Access Smartsheet sheets                              | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
@@ -228,7 +224,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Database: https://rpaframework.org/libraries/database/
 .. _Desktop: https://rpaframework.org/libraries/desktop/
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
-.. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
+.. _Desktop.OperatingSystem: https://rpaframework.org/libraries/desktop_operatingsystem/
 .. _DocumentAI: https://rpaframework.org/libraries/documentai
 .. _DocumentAI.Base64AI: https://rpaframework.org/libraries/documentai_base64ai/
 .. _DocumentAI.Nanonets: https://rpaframework.org/libraries/documentai_nanonets/
@@ -244,6 +240,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _JavaAccessBridge: https://rpaframework.org/libraries/javaaccessbridge/
 .. _JSON: https://rpaframework.org/libraries/json/
 .. _MFA: https://rpaframework.org/libraries/mfa/
+.. _MSGraph: https://rpaframework.org/libraries/msgraph/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _OpenAI: https://rpaframework.org/libraries/openai/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
@@ -254,6 +251,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Robocorp.Storage: https://rpaframework.org/libraries/robocorp_storage/
 .. _Salesforce: https://rpaframework.org/libraries/salesforce/
 .. _SAP: https://rpaframework.org/libraries/sap/
+.. _Slack: https://rpaframework.org/libraries/slack/
 .. _Smartsheet: https://rpaframework.org/libraries/smartsheet/
 .. _Tables: https://rpaframework.org/libraries/tables/
 .. _Tasks: https://rpaframework.org/libraries/tasks/
@@ -279,7 +277,7 @@ Minimum required `conda.yaml` to install Playwright:
       - pip=24.0
       - pip:
         - robotframework-browser==18.8.1
-        - rpaframework==28.6.3
+        - rpaframework==31.1.2
     rccPostInstall:
       - rfbrowser init
 
@@ -298,7 +296,7 @@ Default installation method with Robocorp `Developer Tools`_ using `conda.yaml`:
      - python=3.10.14
      - pip=24.0
      - pip:
-       - rpaframework==28.6.3
+       - rpaframework==31.1.2
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -313,7 +311,7 @@ To install all extra packages (including Playwright dependencies), you can use:
      - pip=24.0
      - pip:
        - robotframework-browser==18.8.1
-       - rpaframework==28.6.3
+       - rpaframework==31.1.2
        - rpaframework-aws==5.3.3
        - rpaframework-google==9.0.2
        - rpaframework-recognition==5.2.5
@@ -344,7 +342,7 @@ Installation method with `pip` using Python `venv`_:
    pip install rpaframework
 
 
-.. note:: Python 3.8 or higher is required
+.. note:: Python 3.9.2 or higher is required (tested up to 3.13)
 
 Example
 -------
@@ -375,6 +373,40 @@ The libraries are also available inside Python_:
     lib.input_text("id:user-name", username)
     lib.input_text("id:password", password)
 
+Here is another example showing how to read an Excel file and filter rows
+using `RPA.Excel.Files`_ and `RPA.Tables`_ together:
+
+.. code:: robotframework
+
+    *** Settings ***
+    Library    RPA.Excel.Files
+    Library    RPA.Tables
+
+    *** Tasks ***
+    Filter active employees
+        Open workbook    employees.xlsx
+        ${table}=    Read worksheet as table    header=True
+        Close workbook
+        ${active}=    Filter table by column    ${table}    Status    ==    Active
+        Log    Found ${active.size} active employees
+
+And the same example in Python_:
+
+.. code:: python
+
+    from RPA.Excel.Files import Files
+    from RPA.Tables import Tables
+
+    excel = Files()
+    tables = Tables()
+
+    excel.open_workbook("employees.xlsx")
+    table = excel.read_worksheet_as_table(header=True)
+    excel.close_workbook()
+
+    active = tables.filter_table_by_column(table, "Status", "==", "Active")
+    print(f"Found {active.size} active employees")
+
 Support and contact
 -------------------
 
@@ -398,16 +430,14 @@ to see where to get started.
 Development
 -----------
 
-Repository development is `Python`_ based and requires at minimum
-Python version 3.8+ installed on the development machine. The default Python version used in the
-Robocorp Robot template is 3.10.14 so it is a good choice for the version to install. Not recommended
-versions are 3.7.6 and 3.8.1, because they have issues with some of the dependencies related to ``rpaframework``.
-At the time the newer Python versions starting from 3.12 are also not recommended, because some of
-the dependencies might cause issues.
+Repository development is `Python`_ based and requires Python **3.9.2 or higher**
+(tested up to 3.13) installed on the development machine. Python 3.10.14 is the
+default version used in the Robocorp Robot template and is a solid choice. Versions
+3.7.6 and 3.8.1 are known to have issues with some dependencies and are not supported.
 
-Repository development tooling is based on `poetry`_ and `invoke`_. Poetry is the
-underlying tool used for compiling, building and running the package. Invoke is used
-for scripting purposes, for example for linting, testing and publishing tasks.
+Repository development tooling is based on `uv`_ and `invoke`_. ``uv`` is used for
+dependency management, building and running the package. Invoke is used for
+scripting purposes, for example for linting, testing and publishing tasks.
 
 Before writing any code, please read and acknowledge our extensive `Dev Guide`_.
 
@@ -415,74 +445,64 @@ Before writing any code, please read and acknowledge our extensive `Dev Guide`_.
 
 First steps to start developing:
 
-1. initial poetry configuration
-
-.. code:: shell
-
-   poetry config virtualenvs.path null
-   poetry config virtualenvs.in-project true
-   poetry config repositories.devpi "https://devpi.robocorp.cloud/ci/test"
+1. Install `uv`_ (see `uv installation docs <https://docs.astral.sh/uv/getting-started/installation/>`_)
 
 2. git clone the repository
+
 #. create a new Git branch or switch to correct branch or stay in master branch
 
-   - some branch naming conventions **feature/name-of-feature**, **hotfix/name-of-the-issue**, **release/number-of-release**
+   - branch naming conventions: **feature/name-of-feature**, **hotfix/name-of-the-issue**, **release/number-of-release**
 
-#. ``poetry install`` which install package with its dependencies into the **.venv** directory of the package, for example **packages/main/.venv**
-#. if testing against Robocorp Robot which is using **devdata/env.json**
+#. ``uv sync`` — installs the package and its dependencies into the **.venv** directory
+
+#. if testing against Robocorp Robot which is using **devdata/env.json**:
 
    - set environment variables
-   - or ``poetry build`` and use resulting .whl file (in the **dist/** directory) in the Robot **conda.yaml**
-   - or ``poetry build`` and push resulting .whl file  (in the **dist/** directory) into a repository and use raw url
-     to include it in the Robot **conda.yaml**
-   - another possibility for Robocorp internal development is to use Robocorp **devpi** instance, by ``poetry publish --ci``
-     and point **conda.yaml** to use rpaframework version in devpi
+   - or ``uv build`` and use the resulting .whl file (in the **dist/** directory) in the Robot **conda.yaml**
+   - or push the .whl to a repository and reference the raw URL in **conda.yaml**
 
-#. ``poetry run python -m robot <ROBOT_ARGS> <TARGET_ROBOT_FILE>``
+#. ``uv run python -m robot <ROBOT_ARGS> <TARGET_ROBOT_FILE>``
 
    - common *ROBOT_ARGS* from Robocorp Robot template: ``--report NONE --outputdir output --logtitle "Task log"``
 
-#. ``poetry run python <TARGET_PYTHON_FILE>``
-#. ``invoke lint`` to make sure that code formatting is according to **rpaframework** repository guidelines.
-   It is possible and likely that Github action will fail the if developer has not linted the code changes. Code
-   formatting is based on `black`_ and `flake8`_ and those are run with the ``invoke lint``.
-#. the library documentation can be created in the repository root (so called "meta" package level). The documentation is
-   built by the docgen tools using the locally installed version of the project, local changes for the main package
-   will be reflected each time you generate the docs, but if you want to see local changes for optional packages, you must
-   utilize ``invoke install-local --package <package_name>`` using the appropriate package name (e.g., ``rpaframework-aws``). This
-   will reinstall that package as a local editable version instead of from PyPI. Multiple such packages can be added by
-   repeating the use of the ``--package`` option. In order to reset this, use ``invoke install --reset``.
+#. ``uv run python <TARGET_PYTHON_FILE>``
 
-   - ``poetry update`` and/or ``invoke install-local --package <package name>``
+#. ``invoke lint`` to make sure that code formatting follows **rpaframework** repository guidelines.
+   Formatting is based on `black`_ and `flake8`_ and those are run with ``invoke lint``.
+
+#. Library documentation can be generated from the repository root (the "meta" package level).
+   Local changes to the main package are reflected automatically. For optional packages, use
+   ``invoke install-local --package <package_name>`` (e.g. ``rpaframework-aws``) to install them
+   as editable versions. Reset with ``invoke install --reset``.
+
+   - ``uv sync`` and/or ``invoke install-local --package <package name>``
    - ``make docs``
-   - open ``docs/build/html/index.html`` with the browser to view the changes or execute ``make local`` and navigate to
-     ``localhost:8000`` to view docs as a live local webpage.
+   - open ``docs/build/html/index.html`` in a browser, or run ``make local`` and navigate to
+     ``localhost:8000`` for a live preview.
 
    .. code-block:: toml
 
       # Before
-      [tool.poetry.dependencies]
-      python = "^3.8"
+      [tool.uv.sources]
       rpaframework = { path = "packages/main", extras = ["cv", "playwright", "aws"] }
-      rpaframework-google = "^4.0.0"
-      rpaframework-windows = "^4.0.0"
+      rpaframework-google = { version = "^4.0.0" }
+      rpaframework-windows = { version = "^4.0.0" }
 
       # After
-      [tool.poetry.dependencies]
-      python = "^3.8"
+      [tool.uv.sources]
       rpaframework = { path = "packages/main", extras = ["cv", "playwright"] }
       rpaframework-aws = { path = "packages/aws" }
-      rpaframework-google = "^4.0.0"
-      rpaframework-windows = "^4.0.0"
+      rpaframework-google = { version = "^4.0.0" }
+      rpaframework-windows = { version = "^4.0.0" }
 
-#. ``invoke test`` (this will run both Python unittests and robotframework tests defined in the packages **tests/ directory**)
+#. ``invoke test`` (runs both Python unittests and Robot Framework tests in the package **tests/** directory)
 
-   - to run specific Python test: ``poetry run pytest path/to/test.py::test_function``
-   - to run specific Robotframework test: ``inv testrobot -r <robot_name> -t <task_name>``
+   - to run a specific Python test: ``uv run pytest path/to/test.py::test_function``
+   - to run a specific Robot Framework test: ``inv testrobot -r <robot_name> -t <task_name>``
 
 #. git commit changes
 #. git push changes to remote
-#. create pull request from the branch describing changes included in the description
+#. create a pull request from the branch describing the changes in the description
 #. update **docs/source/releasenotes.rst** with changes (commit and push)
 
 Packaging and publishing are done after changes have been merged into master branch.
@@ -492,8 +512,8 @@ All the following steps should be done within master branch.
 #. in the package directory containing changes execute ``invoke lint`` and ``invoke test``
 #. update **pyproject.toml** with new version according to semantic versioning
 #. update **docs/source/releasenotes.rst** with changes
-#. in the repository root (so called "meta" package level) run command ``poetry update``
-#. git commit changed **poetry.lock** files (on meta and target package level), **releasenotes.rst**
+#. in the repository root (so called "meta" package level) run command ``uv sync``
+#. git commit changed **uv.lock** files (on meta and target package level), **releasenotes.rst**
    and **pyproject.toml** with message "PACKAGE. version x.y.z"
 #. git push
 #. ``invoke publish`` after Github action on master branch is all green
@@ -509,7 +529,7 @@ Some recommended tools for development
 
 - `GitHub Desktop`_ will make version management less prone to errors
 
-.. _poetry: https://python-poetry.org
+.. _uv: https://docs.astral.sh/uv/
 .. _invoke: https://www.pyinvoke.org
 .. _Visual Studio Code: https://code.visualstudio.com
 .. _GitHub Desktop: https://desktop.github.com
