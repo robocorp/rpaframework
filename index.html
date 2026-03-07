@@ -346,44 +346,52 @@ support packages, which alone do <strong>not</strong> contain any libraries.</p>
 <td><p>Authenticate using one-time passwords (OTP) &amp; OAuth2</p></td>
 <td><p>x</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/notifier/">Notifier</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/msgraph/">MSGraph</a></p></td>
+<td><p>Access Microsoft 365 via the Microsoft Graph API</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/notifier/">Notifier</a></p></td>
 <td><p>Notify messages using different services</p></td>
 <td><p>x</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/openai/">OpenAI</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/openai/">OpenAI</a></p></td>
 <td><p>Artificial Intelligence service</p></td>
 <td><p>openai</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/outlook_application/">Outlook.Application</a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/outlook_application/">Outlook.Application</a></p></td>
 <td><p>Control the Outlook desktop application</p></td>
 <td><p>x</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/pdf/">PDF</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/pdf/">PDF</a></p></td>
 <td><p>Read and create PDF documents</p></td>
 <td><p>x,pdf</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/robocorp_process/">Robocorp.Process</a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/robocorp_process/">Robocorp.Process</a></p></td>
 <td><p>Use the Robocorp Process API</p></td>
 <td><p>x</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/robocorp_workitems/">Robocorp.WorkItems</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/robocorp_workitems/">Robocorp.WorkItems</a></p></td>
 <td><p>Use the Robocorp Work Items API</p></td>
 <td><p>x</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/robocorp_vault/">Robocorp.Vault</a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/robocorp_vault/">Robocorp.Vault</a></p></td>
 <td><p>Use the Robocorp Secrets API</p></td>
 <td><p>x</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/robocorp_storage/">Robocorp.Storage</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/robocorp_storage/">Robocorp.Storage</a></p></td>
 <td><p>Use the Robocorp Asset Storage API</p></td>
 <td><p>x</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/salesforce/">Salesforce</a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/salesforce/">Salesforce</a></p></td>
 <td><p>Salesforce operations</p></td>
 <td><p>x</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/sap/">SAP</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/sap/">SAP</a></p></td>
 <td><p>Control SAP GUI desktop client</p></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://rpaframework.org/libraries/slack/">Slack</a></p></td>
+<td><p>Send messages and interact with Slack workspaces</p></td>
 <td><p>x</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference external" href="https://rpaframework.org/libraries/smartsheet/">Smartsheet</a></p></td>
@@ -426,7 +434,7 @@ of the package size and the post install step it needs to be fully installed.</p
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=24.0</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotframework-browser==18.8.1</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==28.6.3</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==31.1.2</span>
 <span class="nt">rccPostInstall</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rfbrowser init</span>
 </pre></div>
@@ -442,7 +450,7 @@ of the package size and the post install step it needs to be fully installed.</p
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python=3.10.14</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=24.0</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==28.6.3</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==31.1.2</span>
 </pre></div>
 </div>
 <p>To install all extra packages (including Playwright dependencies), you can use:</p>
@@ -455,7 +463,7 @@ of the package size and the post install step it needs to be fully installed.</p
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip=24.0</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pip</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robotframework-browser==18.8.1</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==28.6.3</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework==31.1.2</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-aws==5.3.3</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-google==9.0.2</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rpaframework-recognition==5.2.5</span>
@@ -484,7 +492,7 @@ pip<span class="w"> </span>install<span class="w"> </span>rpaframework
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Python 3.8 or higher is required</p>
+<p>Python 3.9.2 or higher is required (tested up to 3.13)</p>
 </div>
 </section>
 <section id="example">
@@ -511,6 +519,36 @@ pip<span class="w"> </span>install<span class="w"> </span>rpaframework
 <span class="n">lib</span><span class="o">.</span><span class="n">input_text</span><span class="p">(</span><span class="s2">&quot;id:password&quot;</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Here is another example showing how to read an Excel file and filter rows
+using <a href="#id13"><span class="problematic" id="id14">`RPA.Excel.Files`_</span></a> and <a href="#id15"><span class="problematic" id="id16">`RPA.Tables`_</span></a> together:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Excel.Files</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Tables</span>
+
+<span class="gh">*** Tasks ***</span>
+<span class="gu">Filter active employees</span>
+<span class="p">    </span><span class="nf">Open workbook</span><span class="p">    </span><span class="s">employees.xlsx</span>
+<span class="p">    ${</span><span class="nv">table</span><span class="p">}=    </span><span class="nf">Read worksheet as table</span><span class="p">    </span><span class="s">header=True</span>
+<span class="p">    </span><span class="nf">Close workbook</span>
+<span class="p">    ${</span><span class="nv">active</span><span class="p">}=    </span><span class="nf">Filter table by column</span><span class="p">    ${</span><span class="nv">table</span><span class="p">}    </span><span class="s">Status</span><span class="p">    </span><span class="s">==</span><span class="p">    </span><span class="s">Active</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Found </span><span class="p">${</span><span class="nv">active.size</span><span class="p">}</span><span class="s"> active employees</span>
+</pre></div>
+</div>
+<p>And the same example in <a class="reference external" href="https://www.python.org/">Python</a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Excel.Files</span><span class="w"> </span><span class="kn">import</span> <span class="n">Files</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tables</span>
+
+<span class="n">excel</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
+<span class="n">tables</span> <span class="o">=</span> <span class="n">Tables</span><span class="p">()</span>
+
+<span class="n">excel</span><span class="o">.</span><span class="n">open_workbook</span><span class="p">(</span><span class="s2">&quot;employees.xlsx&quot;</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">excel</span><span class="o">.</span><span class="n">read_worksheet_as_table</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">excel</span><span class="o">.</span><span class="n">close_workbook</span><span class="p">()</span>
+
+<span class="n">active</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">filter_table_by_column</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="s2">&quot;Active&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">active</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> active employees&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="support-and-contact">
 <h2><a class="toc-backref" href="#id7" role="doc-backlink">Support and contact</a><a class="headerlink" href="#support-and-contact" title="Link to this heading"></a></h2>
@@ -531,90 +569,73 @@ to see where to get started.</p>
 </section>
 <section id="development">
 <h2><a class="toc-backref" href="#id9" role="doc-backlink">Development</a><a class="headerlink" href="#development" title="Link to this heading"></a></h2>
-<p>Repository development is <a class="reference external" href="https://www.python.org/">Python</a> based and requires at minimum
-Python version 3.8+ installed on the development machine. The default Python version used in the
-Robocorp Robot template is 3.10.14 so it is a good choice for the version to install. Not recommended
-versions are 3.7.6 and 3.8.1, because they have issues with some of the dependencies related to <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.
-At the time the newer Python versions starting from 3.12 are also not recommended, because some of
-the dependencies might cause issues.</p>
-<p>Repository development tooling is based on <a class="reference external" href="https://python-poetry.org">poetry</a> and <a class="reference external" href="https://www.pyinvoke.org">invoke</a>. Poetry is the
-underlying tool used for compiling, building and running the package. Invoke is used
-for scripting purposes, for example for linting, testing and publishing tasks.</p>
+<p>Repository development is <a class="reference external" href="https://www.python.org/">Python</a> based and requires Python <strong>3.9.2 or higher</strong>
+(tested up to 3.13) installed on the development machine. Python 3.10.14 is the
+default version used in the Robocorp Robot template and is a solid choice. Versions
+3.7.6 and 3.8.1 are known to have issues with some dependencies and are not supported.</p>
+<p>Repository development tooling is based on <a class="reference external" href="https://docs.astral.sh/uv/">uv</a> and <a class="reference external" href="https://www.pyinvoke.org">invoke</a>. <code class="docutils literal notranslate"><span class="pre">uv</span></code> is used for
+dependency management, building and running the package. Invoke is used for
+scripting purposes, for example for linting, testing and publishing tasks.</p>
 <p>Before writing any code, please read and acknowledge our extensive <a class="reference external" href="https://github.com/robocorp/rpaframework/blob/master/docs/source/contributing/development.md">Dev Guide</a>.</p>
 <p>First steps to start developing:</p>
-<ol class="arabic simple">
-<li><p>initial poetry configuration</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>config<span class="w"> </span>virtualenvs.path<span class="w"> </span>null
-poetry<span class="w"> </span>config<span class="w"> </span>virtualenvs.in-project<span class="w"> </span><span class="nb">true</span>
-poetry<span class="w"> </span>config<span class="w"> </span>repositories.devpi<span class="w"> </span><span class="s2">&quot;https://devpi.robocorp.cloud/ci/test&quot;</span>
-</pre></div>
-</div>
-<ol class="arabic" start="2">
+<ol class="arabic">
+<li><p>Install <a class="reference external" href="https://docs.astral.sh/uv/">uv</a> (see <a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/">uv installation docs</a>)</p></li>
 <li><p>git clone the repository</p></li>
 <li><p>create a new Git branch or switch to correct branch or stay in master branch</p>
 <ul class="simple">
-<li><p>some branch naming conventions <strong>feature/name-of-feature</strong>, <strong>hotfix/name-of-the-issue</strong>, <strong>release/number-of-release</strong></p></li>
+<li><p>branch naming conventions: <strong>feature/name-of-feature</strong>, <strong>hotfix/name-of-the-issue</strong>, <strong>release/number-of-release</strong></p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code> which install package with its dependencies into the <strong>.venv</strong> directory of the package, for example <strong>packages/main/.venv</strong></p></li>
-<li><p>if testing against Robocorp Robot which is using <strong>devdata/env.json</strong></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span></code> — installs the package and its dependencies into the <strong>.venv</strong> directory</p></li>
+<li><p>if testing against Robocorp Robot which is using <strong>devdata/env.json</strong>:</p>
 <ul class="simple">
 <li><p>set environment variables</p></li>
-<li><p>or <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">build</span></code> and use resulting .whl file (in the <strong>dist/</strong> directory) in the Robot <strong>conda.yaml</strong></p></li>
-<li><p>or <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">build</span></code> and push resulting .whl file  (in the <strong>dist/</strong> directory) into a repository and use raw url
-to include it in the Robot <strong>conda.yaml</strong></p></li>
-<li><p>another possibility for Robocorp internal development is to use Robocorp <strong>devpi</strong> instance, by <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">publish</span> <span class="pre">--ci</span></code>
-and point <strong>conda.yaml</strong> to use rpaframework version in devpi</p></li>
+<li><p>or <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">build</span></code> and use the resulting .whl file (in the <strong>dist/</strong> directory) in the Robot <strong>conda.yaml</strong></p></li>
+<li><p>or push the .whl to a repository and reference the raw URL in <strong>conda.yaml</strong></p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">robot</span> <span class="pre">&lt;ROBOT_ARGS&gt;</span> <span class="pre">&lt;TARGET_ROBOT_FILE&gt;</span></code></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">robot</span> <span class="pre">&lt;ROBOT_ARGS&gt;</span> <span class="pre">&lt;TARGET_ROBOT_FILE&gt;</span></code></p>
 <ul class="simple">
 <li><p>common <em>ROBOT_ARGS</em> from Robocorp Robot template: <code class="docutils literal notranslate"><span class="pre">--report</span> <span class="pre">NONE</span> <span class="pre">--outputdir</span> <span class="pre">output</span> <span class="pre">--logtitle</span> <span class="pre">&quot;Task</span> <span class="pre">log&quot;</span></code></p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">python</span> <span class="pre">&lt;TARGET_PYTHON_FILE&gt;</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code> to make sure that code formatting is according to <strong>rpaframework</strong> repository guidelines.
-It is possible and likely that Github action will fail the if developer has not linted the code changes. Code
-formatting is based on <a class="reference external" href="https://pypi.org/project/black/">black</a> and <a class="reference external" href="https://pypi.org/project/flake8/">flake8</a> and those are run with the <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code>.</p></li>
-<li><p>the library documentation can be created in the repository root (so called “meta” package level). The documentation is
-built by the docgen tools using the locally installed version of the project, local changes for the main package
-will be reflected each time you generate the docs, but if you want to see local changes for optional packages, you must
-utilize <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install-local</span> <span class="pre">--package</span> <span class="pre">&lt;package_name&gt;</span></code> using the appropriate package name (e.g., <code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code>). This
-will reinstall that package as a local editable version instead of from PyPI. Multiple such packages can be added by
-repeating the use of the <code class="docutils literal notranslate"><span class="pre">--package</span></code> option. In order to reset this, use <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install</span> <span class="pre">--reset</span></code>.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">python</span> <span class="pre">&lt;TARGET_PYTHON_FILE&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code> to make sure that code formatting follows <strong>rpaframework</strong> repository guidelines.
+Formatting is based on <a class="reference external" href="https://pypi.org/project/black/">black</a> and <a class="reference external" href="https://pypi.org/project/flake8/">flake8</a> and those are run with <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code>.</p></li>
+<li><p>Library documentation can be generated from the repository root (the “meta” package level).
+Local changes to the main package are reflected automatically. For optional packages, use
+<code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install-local</span> <span class="pre">--package</span> <span class="pre">&lt;package_name&gt;</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code>) to install them
+as editable versions. Reset with <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install</span> <span class="pre">--reset</span></code>.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">update</span></code> and/or <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install-local</span> <span class="pre">--package</span> <span class="pre">&lt;package</span> <span class="pre">name&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span></code> and/or <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">install-local</span> <span class="pre">--package</span> <span class="pre">&lt;package</span> <span class="pre">name&gt;</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code></p></li>
-<li><p>open <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> with the browser to view the changes or execute <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">local</span></code> and navigate to
-<code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code> to view docs as a live local webpage.</p></li>
+<li><p>open <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> in a browser, or run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">local</span></code> and navigate to
+<code class="docutils literal notranslate"><span class="pre">localhost:8000</span></code> for a live preview.</p></li>
 </ul>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before</span>
-<span class="k">[tool.poetry.dependencies]</span>
-<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.8&quot;</span>
+<span class="k">[tool.uv.sources]</span>
 <span class="n">rpaframework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;packages/main&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">extras</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;cv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;playwright&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;aws&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
-<span class="n">rpaframework-google</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span>
-<span class="n">rpaframework-windows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span>
+<span class="n">rpaframework-google</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="n">rpaframework-windows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span><span class="w"> </span><span class="p">}</span>
 
 <span class="c1"># After</span>
-<span class="k">[tool.poetry.dependencies]</span>
-<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.8&quot;</span>
+<span class="k">[tool.uv.sources]</span>
 <span class="n">rpaframework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;packages/main&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">extras</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;cv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;playwright&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
 <span class="n">rpaframework-aws</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;packages/aws&quot;</span><span class="w"> </span><span class="p">}</span>
-<span class="n">rpaframework-google</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span>
-<span class="n">rpaframework-windows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span>
+<span class="n">rpaframework-google</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="n">rpaframework-windows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^4.0.0&quot;</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">test</span></code> (this will run both Python unittests and robotframework tests defined in the packages <strong>tests/ directory</strong>)</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">test</span></code> (runs both Python unittests and Robot Framework tests in the package <strong>tests/</strong> directory)</p>
 <ul class="simple">
-<li><p>to run specific Python test: <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">path/to/test.py::test_function</span></code></p></li>
-<li><p>to run specific Robotframework test: <code class="docutils literal notranslate"><span class="pre">inv</span> <span class="pre">testrobot</span> <span class="pre">-r</span> <span class="pre">&lt;robot_name&gt;</span> <span class="pre">-t</span> <span class="pre">&lt;task_name&gt;</span></code></p></li>
+<li><p>to run a specific Python test: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">path/to/test.py::test_function</span></code></p></li>
+<li><p>to run a specific Robot Framework test: <code class="docutils literal notranslate"><span class="pre">inv</span> <span class="pre">testrobot</span> <span class="pre">-r</span> <span class="pre">&lt;robot_name&gt;</span> <span class="pre">-t</span> <span class="pre">&lt;task_name&gt;</span></code></p></li>
 </ul>
 </li>
 <li><p>git commit changes</p></li>
 <li><p>git push changes to remote</p></li>
-<li><p>create pull request from the branch describing changes included in the description</p></li>
+<li><p>create a pull request from the branch describing the changes in the description</p></li>
 <li><p>update <strong>docs/source/releasenotes.rst</strong> with changes (commit and push)</p></li>
 </ol>
 <p>Packaging and publishing are done after changes have been merged into master branch.
@@ -624,8 +645,8 @@ All the following steps should be done within master branch.</p>
 <li><p>in the package directory containing changes execute <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">lint</span></code> and <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">test</span></code></p></li>
 <li><p>update <strong>pyproject.toml</strong> with new version according to semantic versioning</p></li>
 <li><p>update <strong>docs/source/releasenotes.rst</strong> with changes</p></li>
-<li><p>in the repository root (so called “meta” package level) run command <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">update</span></code></p></li>
-<li><p>git commit changed <strong>poetry.lock</strong> files (on meta and target package level), <strong>releasenotes.rst</strong>
+<li><p>in the repository root (so called “meta” package level) run command <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span></code></p></li>
+<li><p>git commit changed <strong>uv.lock</strong> files (on meta and target package level), <strong>releasenotes.rst</strong>
 and <strong>pyproject.toml</strong> with message “PACKAGE. version x.y.z”</p></li>
 <li><p>git push</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">publish</span></code> after Github action on master branch is all green</p></li>
