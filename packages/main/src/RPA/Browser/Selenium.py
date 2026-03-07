@@ -22,13 +22,11 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
 from selenium.common import WebDriverException
 from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.webdriver import (
-    ChromeOptions,
-    EdgeOptions,
-    FirefoxOptions as _FirefoxOptions,
-    FirefoxProfile,
-    IeOptions,
-)
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+from selenium.webdriver.firefox.options import Options as _FirefoxOptions
+from selenium.webdriver.ie.options import Options as IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
 from selenium.webdriver.common.virtual_authenticator import VirtualAuthenticatorOptions
@@ -101,13 +99,9 @@ class RobocorpElementFinder(ElementFinder):
         return isinstance(element, ShadowRoot) or super()._is_webelement(element)
 
 
-class FirefoxOptions(_FirefoxOptions):
-    """Wrapped Firefox options in order to fix behavior."""
-
-    @property
-    def binary_location(self) -> Optional[str]:
-        # pylint: disable=protected-access
-        return self.binary._start_cmd if self.binary else None
+# In selenium >=4.16, FirefoxOptions.binary_location is a native string property;
+# the binary._start_cmd workaround is no longer needed.
+FirefoxOptions = _FirefoxOptions
 
 
 class BrowserManagementKeywords(_BrowserManagementKeywords):
