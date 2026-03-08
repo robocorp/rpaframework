@@ -26,11 +26,75 @@ jobs:
           echo "package=$PACKAGE" >> $GITHUB_OUTPUT
           echo "Tag: $TAG | Package: $PACKAGE | Version: $VERSION"
 
+      - name: Extract changelog notes
+        id: notes
+        run: |
+          python3 - <<'PYEOF'
+          import re, os, sys
+
+          rst = open("docs/source/releasenotes.rst").read()
+
+          # Find all date-section blocks in "Released" area (after the +++ heading)
+          # Each block starts with a date heading (underlined with ----) and ends at the next.
+          blocks = re.split(r'\n(?=\d+ \w+ \d{4}\n-+)', rst)
+
+          version = os.environ["VERSION"]
+          package = os.environ["PACKAGE"]
+
+          notes_block = None
+          for block in blocks:
+              if version in block:
+                  notes_block = block
+                  break
+
+          if not notes_block:
+              print(f"No changelog entry found for {package} {version}", file=sys.stderr)
+              notes = f"See [release notes](https://rpaframework.org/releasenotes.html) for details."
+          else:
+              # Extract bullet lines
+              lines = notes_block.strip().splitlines()
+              bullets = []
+              for line in lines:
+                  if line.startswith("- "):
+                      # Convert RST to Markdown:
+                      # ``code`` -> `code`
+                      md = re.sub(r'``(.+?)``', r'`\1`', line)
+                      # :pr:`N` -> #N
+                      md = re.sub(r':pr:`(\d+)`', r'#\1', md)
+                      # :issue:`N` -> #N
+                      md = re.sub(r':issue:`(\d+)`', r'#\1', md)
+                      bullets.append(md)
+
+              # Extract package versions listed in the block
+              versions = re.findall(r'``([^`]+)``\s+\*\*([^*]+)\*\*', notes_block)
+              pkg_lines = [f"- `{p}` **{v}**" for p, v in versions] if versions else []
+
+              parts = []
+              if bullets:
+                  parts.append("## What's changed\n\n" + "\n".join(bullets))
+              if pkg_lines:
+                  parts.append("## Packages released\n\n" + "\n".join(pkg_lines))
+              parts.append(
+                  "## Links\n\n"
+                  "- [Full release notes](https://rpaframework.org/releasenotes.html)\n"
+                  "- [PyPI](https://pypi.org/project/" + package + "/#history)"
+              )
+              notes = "\n\n".join(parts)
+
+          # Write to GITHUB_OUTPUT as multiline
+          delimiter = "EOF_NOTES"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"notes<<{delimiter}\n{notes}\n{delimiter}\n")
+          PYEOF
+        env:
+          VERSION: ${{ steps.parse.outputs.version }}
+          PACKAGE: ${{ steps.parse.outputs.package }}
+
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "${{ steps.parse.outputs.tag }}" \
             --title "${{ steps.parse.outputs.package }} ${{ steps.parse.outputs.version }}" \
-            --generate-notes \
+            --notes "${{ steps.notes.outputs.notes }}" \
             --verify-tag

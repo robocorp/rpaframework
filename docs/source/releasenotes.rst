@@ -16,6 +16,17 @@ Latest versions
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+8 Mar 2026
+----------
+
+- Fix: Relax ``selenium`` exact pin (``==4.15.2`` → ``>=4.16.0,<5.0.0``) to allow co-installation with ``appium-python-client`` (Appium 3) (:pr:`1319`, fixes :issue:`1312`).
+- Fix: Strip UTF-16 BOM from EdgeDriver version string — Microsoft's ``LATEST_RELEASE`` endpoint returns UTF-16 LE, causing ``%EF%BB%BF`` in the download URL and a 404. Fixed in ``rpaframework-core`` by subclassing ``EdgeChromiumDriver`` (:pr:`1319`).
+- New ``RPA.Browser.Selenium`` keywords: ``Find Element Above/Below/To Left Of/To Right Of/Near`` (selenium 4.x relative locators), ``Get Browser Logs``, ``Block URLs``, ``Unblock URLs``, ``Wait For Network Request``, ``Add Virtual Authenticator``, ``Remove Virtual Authenticator`` (:pr:`1319`).
+- All new Chromium-only keywords raise ``NotImplementedError`` with a clear message on non-Chromium drivers (:pr:`1319`).
+
+- ``rpaframework`` **31.2.0**
+- ``rpaframework-core`` **12.1.1**
+
 2 Feb 2026
 ----------
 
