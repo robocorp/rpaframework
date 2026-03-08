@@ -2194,6 +2194,11 @@ class Selenium(SeleniumLibrary):
         return self._send_command_and_get_result(command, parameters)
 
     def _send_command_and_get_result(self, cmd, params):
+        if not self.is_chromium:
+            raise NotImplementedError(
+                f"CDP command '{cmd}' requires a Chromium-based browser"
+                f" (Chrome, Edge), got: {self.driver.name}."
+            )
         return self.driver.execute_cdp_cmd(cmd, params)
 
     @keyword
@@ -2560,12 +2565,13 @@ class Selenium(SeleniumLibrary):
                 f"Invalid transport '{transport}'. "
                 f"Valid values: {', '.join(sorted(_VALID_TRANSPORTS))}."
             )
-        options = VirtualAuthenticatorOptions()
-        options.protocol = protocol
-        options.transport = transport
-        options.has_resident_key = has_resident_key
-        options.has_user_verification = has_user_verification
-        options.is_user_verified = is_user_verified
+        options = VirtualAuthenticatorOptions(
+            protocol=protocol,
+            transport=transport,
+            has_resident_key=has_resident_key,
+            has_user_verification=has_user_verification,
+            is_user_verified=is_user_verified,
+        )
         self.driver.add_virtual_authenticator(options)
         return self.driver.virtual_authenticator_id
 

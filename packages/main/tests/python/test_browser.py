@@ -96,10 +96,10 @@ class TestRelativeLocators:
         return library
 
     def test_find_element_below(self, chrome):
-        # inp-password is below lbl-username (two rows down)
+        # inp-password is the input element below lbl-username (next flex row)
         el = chrome.find_element_below("input", "id:lbl-username")
         assert el is not None
-        assert el.get_attribute("id") in ("inp-username", "inp-password")
+        assert el.get_attribute("id") == "inp-password"
 
     def test_find_element_above(self, chrome):
         el = chrome.find_element_above("label", "id:lbl-password")

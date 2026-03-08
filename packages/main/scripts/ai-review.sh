@@ -12,6 +12,10 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 BASE_BRANCH="${AI_REVIEW_BASE:-master}"
+if ! [[ "$BASE_BRANCH" =~ ^[A-Za-z0-9/_.-]+$ ]]; then
+    echo ">>> ai-review: invalid AI_REVIEW_BASE value '$BASE_BRANCH' — aborting." >&2
+    exit 1
+fi
 STAGED_ONLY="${1:-}"
 
 if ! command -v claude &>/dev/null; then
