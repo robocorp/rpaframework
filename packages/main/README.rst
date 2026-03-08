@@ -540,6 +540,8 @@ Some recommended tools for development
 .. _black: https://pypi.org/project/black/
 .. _flake8: https://pypi.org/project/flake8/
 .. _venv: https://docs.python.org/3/library/venv.html
+.. _RPA.Excel.Files: https://rpaframework.org/libraries/excel_files/
+.. _RPA.Tables: https://rpaframework.org/libraries/tables/
 
 License
 -------
