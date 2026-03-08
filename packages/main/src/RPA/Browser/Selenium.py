@@ -2370,14 +2370,17 @@ class Selenium(SeleniumLibrary):
     def get_browser_logs(self, log_type: str = "browser") -> List[Dict]:
         """Returns browser log entries for the given ``log_type``.
 
+        Requires a Chromium-based browser (Chrome or Edge). Since Selenium 4.32
+        the ``get_log`` API is only available on Chromium drivers.
+
         Each entry is a dict with keys ``level``, ``message``, ``source``,
         and ``timestamp`` (epoch milliseconds).
 
-        Available log types (browser-dependent):
+        Available log types:
 
         - ``browser`` — JavaScript console output (console.log, errors, warnings)
-        - ``performance`` — network events and rendering metrics (Chromium only,
-          must be enabled at browser open time)
+        - ``performance`` — network events and rendering metrics (must be enabled
+          at browser open time via ``goog:loggingPrefs``)
         - ``driver`` — WebDriver-level events
         - ``client`` — client-side events
 
@@ -2386,7 +2389,7 @@ class Selenium(SeleniumLibrary):
 
         Example:
 
-        | Open Available Browser    https://example.com    headless=${True} |
+        | Open Available Browser    https://example.com    browser_selection=Chrome    headless=${True} |
         | Execute Javascript    console.error("boom") |
         | ${logs}=    Get Browser Logs |
         | FOR    ${entry}    IN    @{logs} |
@@ -2398,12 +2401,12 @@ class Selenium(SeleniumLibrary):
         | Open Browser    https://example.com |
         | ...    options=set_capability('goog:loggingPrefs', {'performance': 'ALL'}) |
         """
-        _CHROMIUM_ONLY_LOG_TYPES = {"performance", "client"}
-        if log_type in _CHROMIUM_ONLY_LOG_TYPES and not self.is_chromium:
+        if not self.is_chromium:
             raise NotImplementedError(
-                f"Log type '{log_type}' is only available in Chromium-based browsers"
-                f" (Chrome, Edge), got: {self.driver.name}. "
-                f"Use log_type='browser' or 'driver' for cross-browser log retrieval."
+                f"Get Browser Logs requires a Chromium-based browser (Chrome, Edge),"
+                f" got: {self.driver.name}. "
+                f"The get_log() API is not available on non-Chromium drivers"
+                f" since Selenium 4.32."
             )
         return self.driver.get_log(log_type)
 

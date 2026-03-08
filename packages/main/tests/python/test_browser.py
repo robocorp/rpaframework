@@ -189,15 +189,16 @@ class TestNetworkInterception:
             with pytest.raises(NotImplementedError, match="Chromium"):
                 library.unblock_urls()
 
-    def test_get_browser_logs_performance_raises_for_non_chromium(self, library):
+    @pytest.mark.parametrize("log_type", ["browser", "performance", "driver", "client"])
+    def test_get_browser_logs_raises_for_non_chromium(self, library, log_type):
         from unittest.mock import patch, PropertyMock
 
         library.open_available_browser(
             "about:blank", headless=True, browser_selection="Chrome"
         )
         with patch.object(type(library), "is_chromium", new_callable=PropertyMock, return_value=False):
-            with pytest.raises(NotImplementedError, match="performance"):
-                library.get_browser_logs(log_type="performance")
+            with pytest.raises(NotImplementedError, match="Chromium"):
+                library.get_browser_logs(log_type=log_type)
 
     def test_wait_for_network_request(self, library):
         library.open_available_browser(
