@@ -3,7 +3,7 @@
 # Install: cp packages/main/scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push
 # Skip AI review: AI_REVIEW=0 git push
 
-set -e
+set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT/packages/main"
 
