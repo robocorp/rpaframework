@@ -21,7 +21,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
 from selenium.common import WebDriverException
-from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
@@ -2491,7 +2491,7 @@ class Selenium(SeleniumLibrary):
                     return url
                 seen.add(url)
             time.sleep(0.5)
-        raise TimeoutError(
+        raise TimeoutException(
             f"No network request matching '{url_pattern}' detected"
             f" within {timeout_val}s"
         )

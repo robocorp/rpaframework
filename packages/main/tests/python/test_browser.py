@@ -213,7 +213,9 @@ class TestNetworkInterception:
             "var i = new Image(); i.src = 'about:blank?rpa_test=1'; document.body.appendChild(i);"
         )
         # about:blank?... won't appear as resource; test the timeout path is correct
-        with pytest.raises((TimeoutError, Exception)):
+        from selenium.common.exceptions import TimeoutException
+
+        with pytest.raises(TimeoutException, match="nonexistent_pattern_xyz"):
             library.wait_for_network_request("nonexistent_pattern_xyz", timeout=1)
 
 
@@ -298,7 +300,7 @@ def test_selenium_api_imports():
     """
     from selenium import webdriver as selenium_webdriver  # noqa: F401
     from selenium.common import WebDriverException  # noqa: F401
-    from selenium.common.exceptions import ElementClickInterceptedException  # noqa: F401
+    from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException  # noqa: F401
     from selenium.webdriver.chrome.options import Options as ChromeOptions  # noqa: F401
     from selenium.webdriver.edge.options import Options as EdgeOptions  # noqa: F401
     from selenium.webdriver.firefox.firefox_profile import FirefoxProfile  # noqa: F401
