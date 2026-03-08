@@ -59,10 +59,22 @@ def main() -> int:
     # Step 2: start a headless Edge session — requires Edge browser to be installed
     edge_binary = shutil.which("msedge") or shutil.which("microsoft-edge")
     if not edge_binary:
-        # Also check the standard macOS application path
+        # Check standard macOS application path
         macos_edge = Path("/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge")
         if macos_edge.exists():
             edge_binary = str(macos_edge)
+    if not edge_binary:
+        # Check standard Windows installation paths (msedge.exe is not on PATH by default)
+        import os
+        windows_paths = [
+            Path(os.environ.get("PROGRAMFILES(X86)", "")) / "Microsoft/Edge/Application/msedge.exe",
+            Path(os.environ.get("PROGRAMFILES", "")) / "Microsoft/Edge/Application/msedge.exe",
+            Path(os.environ.get("LOCALAPPDATA", "")) / "Microsoft/Edge/Application/msedge.exe",
+        ]
+        for p in windows_paths:
+            if p.exists():
+                edge_binary = str(p)
+                break
 
     if not edge_binary:
         print(
