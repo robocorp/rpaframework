@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Standalone EdgeDriver integration test for issue #1312.
+"""Standalone EdgeDriver integration test for issues #1312 and BOM bug.
 
 Verifies that:
-  1. EdgeDriver binary can be downloaded (tests azureedge.net -> microsoft.com
+  1. Microsoft's LATEST_RELEASE endpoint BOM is stripped before building the
+     download URL — without the fix, the URL contains %EF%BB%BF and returns 404
+  2. EdgeDriver binary can be downloaded (tests azureedge.net -> microsoft.com
      redirect fix from PR #1227) — this is the primary test
-  2. A headless Edge session can be started (end-to-end, requires Edge browser installed)
+  3. A headless Edge session can be started (end-to-end, requires Edge browser installed)
 
-Expected to FAIL with selenium==4.15.2 exact pin (old azureedge.net CDN issues).
-Expected to PASS after fix: selenium>=4.15.2,<5.0.0 (newer version resolved).
+Expected to FAIL without the BOM-strip fix (webdriver-manager 4.0.2 bug).
+Expected to PASS after fix: EdgeChromiumDriver.get_latest_release_version() strips \\ufeff.
 
 Exit codes:
     0 — download succeeded (session also started if Edge browser is installed)
@@ -28,6 +30,18 @@ def main() -> int:
 
     selenium_ver = importlib.metadata.version("selenium")
     print(f"Selenium version: {selenium_ver}")
+
+    # Step 0: verify BOM-strip fix in EdgeChromiumDriver
+    print("Checking BOM strip in EdgeChromiumDriver...")
+    try:
+        from RPA.core.webdriver import EdgeChromiumDriver
+        bom_version = "\ufeff145.0.3800.97"
+        stripped = EdgeChromiumDriver._strip_bom(bom_version)
+        assert stripped == "145.0.3800.97", f"BOM not stripped: {stripped!r}"
+        print(f"  BOM strip OK: {bom_version!r} -> {stripped!r}")
+    except Exception as exc:
+        print(f"\nFAIL (BOM strip check): {type(exc).__name__}: {exc}")
+        return 1
 
     # Step 1: download EdgeDriver — exercises the azureedge.net redirect patch
     try:
