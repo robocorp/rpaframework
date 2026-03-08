@@ -610,7 +610,7 @@ false (see <cite>Boolean arguments</cite>).</p>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS">
-<span class="sig-name descname"><span class="pre">AVAILABLE_OPTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'chrome':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.chrome.options.Options'&gt;,</span> <span class="pre">'chromiumedge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'edge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'firefox':</span> <span class="pre">&lt;class</span> <span class="pre">'RPA.Browser.Selenium.FirefoxOptions'&gt;,</span> <span class="pre">'ie':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.ie.options.Options'&gt;,</span> <span class="pre">'safari':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.safari.options.Options'&gt;}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">AVAILABLE_OPTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'chrome':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.chrome.options.Options'&gt;,</span> <span class="pre">'chromiumedge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'edge':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.edge.options.Options'&gt;,</span> <span class="pre">'firefox':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.firefox.options.Options'&gt;,</span> <span class="pre">'ie':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.ie.options.Options'&gt;,</span> <span class="pre">'safari':</span> <span class="pre">&lt;class</span> <span class="pre">'selenium.webdriver.safari.options.Options'&gt;}</span></em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -654,6 +654,33 @@ false (see <cite>Boolean arguments</cite>).</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.add_virtual_authenticator">
+<span class="sig-name descname"><span class="pre">add_virtual_authenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ctap2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transport</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'usb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_resident_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_user_verification</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_user_verified</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.add_virtual_authenticator" title="Link to this definition"></a></dt>
+<dd><p>Adds a virtual authenticator to the browser session for testing
+WebAuthn / passkey flows without a physical hardware key.</p>
+<p>Returns the authenticator ID string.</p>
+<p><code class="docutils literal notranslate"><span class="pre">protocol</span></code> authenticator protocol: <code class="docutils literal notranslate"><span class="pre">ctap2</span></code> (FIDO2, default) or
+<code class="docutils literal notranslate"><span class="pre">ctap1/u2f</span></code> (legacy U2F).</p>
+<p><code class="docutils literal notranslate"><span class="pre">transport</span></code> connection transport: <code class="docutils literal notranslate"><span class="pre">usb</span></code> (default), <code class="docutils literal notranslate"><span class="pre">nfc</span></code>, <code class="docutils literal notranslate"><span class="pre">ble</span></code>,
+<code class="docutils literal notranslate"><span class="pre">hybrid</span></code>, or <code class="docutils literal notranslate"><span class="pre">internal</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">has_resident_key</span></code> whether the authenticator supports discoverable
+credentials (resident keys). Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">has_user_verification</span></code> whether the authenticator supports user
+verification such as PIN or biometrics. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">is_user_verified</span></code> whether user verification is pre-satisfied.
+Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>Use <cite>Remove Virtual Authenticator</cite> to clean up after the test.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Open Available Browser    <a class="reference external" href="https://example.com">https://example.com</a>    browser_selection=Chrome    headless=${True} |</div>
+<div class="line">${auth_id}=    Add Virtual Authenticator |</div>
+<div class="line">Log    Authenticator ID: ${auth_id} |</div>
+<div class="line"># … interact with WebAuthn registration or assertion flow … |</div>
+<div class="line">Remove Virtual Authenticator |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.attach_chrome_browser">
 <span class="sig-name descname"><span class="pre">attach_chrome_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.attach_chrome_browser" title="Link to this definition"></a></dt>
 <dd><p>Attach to an existing instance of Chrome browser.</p>
@@ -666,6 +693,21 @@ started with this command line option or this won’t have an effect.</p>
 <p>Example:</p>
 <div class="line-block">
 <div class="line">Attach Chrome Browser | port=9222 |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.block_urls">
+<span class="sig-name descname"><span class="pre">block_urls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">patterns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.block_urls" title="Link to this definition"></a></dt>
+<dd><p>Blocks network requests whose URLs match the given <code class="docutils literal notranslate"><span class="pre">patterns</span></code>.</p>
+<p>Works only with Chromium-based browsers (Chrome, Edge).
+Supports <code class="docutils literal notranslate"><span class="pre">*</span></code> wildcards, e.g. <code class="docutils literal notranslate"><span class="pre">*analytics*</span></code>.</p>
+<p>Use <cite>Unblock URLs</cite> to clear all blocks.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Open Available Browser    <a class="reference external" href="https://example.com">https://example.com</a>    browser_selection=Chrome    headless=${True} |</div>
+<div class="line">Block URLs    <em>google-analytics</em>    <em>facebook.com/tr</em> |</div>
+<div class="line">Reload Page |</div>
 </div>
 </dd></dl>
 
@@ -1060,6 +1102,79 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.find_element_above">
+<span class="sig-name descname"><span class="pre">find_element_above</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WebElement</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ShadowRoot</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WebElement</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_element_above" title="Link to this definition"></a></dt>
+<dd><p>Returns the first element with the given HTML <code class="docutils literal notranslate"><span class="pre">tag</span></code> positioned
+above the <code class="docutils literal notranslate"><span class="pre">reference</span></code> element on the page.</p>
+<p>Uses selenium’s relative locator API (available since Selenium 4).</p>
+<p><code class="docutils literal notranslate"><span class="pre">tag</span></code> HTML tag name of the element to find, e.g. <code class="docutils literal notranslate"><span class="pre">input</span></code>, <code class="docutils literal notranslate"><span class="pre">button</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">reference</span></code> standard locator string or WebElement used as the
+spatial reference point.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">${field}=    Find Element Above    input    id:password-label |</div>
+</div>
+<p>See also <cite>Find Element Below</cite>, <cite>Find Element To Left Of</cite>,
+<cite>Find Element To Right Of</cite>, and <cite>Find Element Near</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.find_element_below">
+<span class="sig-name descname"><span class="pre">find_element_below</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WebElement</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ShadowRoot</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WebElement</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_element_below" title="Link to this definition"></a></dt>
+<dd><p>Returns the first element with the given HTML <code class="docutils literal notranslate"><span class="pre">tag</span></code> positioned
+below the <code class="docutils literal notranslate"><span class="pre">reference</span></code> element on the page.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tag</span></code> HTML tag name of the element to find.</p>
+<p><code class="docutils literal notranslate"><span class="pre">reference</span></code> standard locator string or WebElement used as the
+spatial reference point.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">${field}=    Find Element Below    input    id:username-label |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.find_element_near">
+<span class="sig-name descname"><span class="pre">find_element_near</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WebElement</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ShadowRoot</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WebElement</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_element_near" title="Link to this definition"></a></dt>
+<dd><p>Returns the first element with the given HTML <code class="docutils literal notranslate"><span class="pre">tag</span></code> that is
+within approximately 50 pixels of the <code class="docutils literal notranslate"><span class="pre">reference</span></code> element.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tag</span></code> HTML tag name of the element to find.</p>
+<p><code class="docutils literal notranslate"><span class="pre">reference</span></code> standard locator string or WebElement used as the
+spatial reference point.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">${field}=    Find Element Near    input    id:username-label |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.find_element_to_left_of">
+<span class="sig-name descname"><span class="pre">find_element_to_left_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WebElement</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ShadowRoot</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WebElement</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_element_to_left_of" title="Link to this definition"></a></dt>
+<dd><p>Returns the first element with the given HTML <code class="docutils literal notranslate"><span class="pre">tag</span></code> positioned
+to the left of the <code class="docutils literal notranslate"><span class="pre">reference</span></code> element on the page.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tag</span></code> HTML tag name of the element to find.</p>
+<p><code class="docutils literal notranslate"><span class="pre">reference</span></code> standard locator string or WebElement used as the
+spatial reference point.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">${label}=    Find Element To Left Of    label    id:username-input |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.find_element_to_right_of">
+<span class="sig-name descname"><span class="pre">find_element_to_right_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WebElement</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ShadowRoot</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WebElement</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_element_to_right_of" title="Link to this definition"></a></dt>
+<dd><p>Returns the first element with the given HTML <code class="docutils literal notranslate"><span class="pre">tag</span></code> positioned
+to the right of the <code class="docutils literal notranslate"><span class="pre">reference</span></code> element on the page.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tag</span></code> HTML tag name of the element to find.</p>
+<p><code class="docutils literal notranslate"><span class="pre">reference</span></code> standard locator string or WebElement used as the
+spatial reference point.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">${field}=    Find Element To Right Of    input    id:username-label |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.find_elements">
 <span class="sig-name descname"><span class="pre">find_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WebElement</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">WebElement</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_elements" title="Link to this definition"></a></dt>
 <dd><p>Find all elements matching <cite>locator</cite>.</p>
@@ -1088,6 +1203,42 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 <p>Example:</p>
 <div class="line-block">
 <div class="line">${caps}= | Get Browser Capabilities |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.get_browser_logs">
+<span class="sig-name descname"><span class="pre">get_browser_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'browser'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_browser_logs" title="Link to this definition"></a></dt>
+<dd><p>Returns browser log entries for the given <code class="docutils literal notranslate"><span class="pre">log_type</span></code>.</p>
+<p>Requires a Chromium-based browser (Chrome or Edge). Since Selenium 4.32
+the <code class="docutils literal notranslate"><span class="pre">get_log</span></code> API is only available on Chromium drivers.</p>
+<p>Each entry is a dict with keys <code class="docutils literal notranslate"><span class="pre">level</span></code>, <code class="docutils literal notranslate"><span class="pre">message</span></code>, <code class="docutils literal notranslate"><span class="pre">source</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">timestamp</span></code> (epoch milliseconds).</p>
+<p>Available log types:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">browser</span></code> — JavaScript console output (console.log, errors, warnings)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">performance</span></code> — network events and rendering metrics (must be enabled
+at browser open time via <code class="docutils literal notranslate"><span class="pre">goog:loggingPrefs</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">driver</span></code> — WebDriver-level events</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">client</span></code> — client-side events</p></li>
+</ul>
+<p>Note: log entries are consumed on retrieval and will not appear again
+in subsequent calls.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Open Available Browser    <a class="reference external" href="https://example.com">https://example.com</a>    browser_selection=Chrome    headless=${True} |</div>
+<div class="line">Execute Javascript    console.error(“boom”) |</div>
+<div class="line">${logs}=    Get Browser Logs |</div>
+<div class="line">FOR    ${entry}    IN    &#64;{logs} |</div>
+<div class="line-block">
+<div class="line">Log    ${entry}[level]: ${entry}[message] |</div>
+</div>
+<div class="line">END |</div>
+</div>
+<p>To capture <code class="docutils literal notranslate"><span class="pre">performance</span></code> logs, open the browser with the capability:</p>
+<div class="line-block">
+<div class="line">Open Browser    <a class="reference external" href="https://example.com">https://example.com</a> |</div>
+<div class="line">…    options=set_capability(‘goog:loggingPrefs’, {‘performance’: ‘ALL’}) |</div>
 </div>
 </dd></dl>
 
@@ -1613,6 +1764,13 @@ default, it uses the following values:
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.remove_virtual_authenticator">
+<span class="sig-name descname"><span class="pre">remove_virtual_authenticator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.remove_virtual_authenticator" title="Link to this definition"></a></dt>
+<dd><p>Removes the virtual authenticator from the current browser session.</p>
+<p>See <cite>Add Virtual Authenticator</cite> for the full usage example.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.run_keyword">
 <span class="sig-name descname"><span class="pre">run_keyword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.run_keyword" title="Link to this definition"></a></dt>
 <dd></dd></dl>
@@ -1676,6 +1834,19 @@ syntax.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.unblock_urls">
+<span class="sig-name descname"><span class="pre">unblock_urls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.unblock_urls" title="Link to this definition"></a></dt>
+<dd><p>Removes all URL blocks previously set by <cite>Block URLs</cite>.</p>
+<p>Works only with Chromium-based browsers.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Block URLs    <em>analytics</em> |</div>
+<div class="line">Reload Page |</div>
+<div class="line">Unblock URLs |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.wait_and_click_button">
 <span class="sig-name descname"><span class="pre">wait_and_click_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WebElement</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ShadowRoot</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.wait_and_click_button" title="Link to this definition"></a></dt>
 <dd><p>Click button identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
@@ -1684,6 +1855,26 @@ syntax.</p>
 <p>Example:</p>
 <div class="line-block">
 <div class="line">Click Button When Visible  | //button[&#64;class=”mybutton”] |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Browser.Selenium.Selenium.wait_for_network_request">
+<span class="sig-name descname"><span class="pre">wait_for_network_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">timedelta</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.wait_for_network_request" title="Link to this definition"></a></dt>
+<dd><p>Waits until a completed network request URL matching <code class="docutils literal notranslate"><span class="pre">url_pattern</span></code>
+appears in the browser’s performance resource timeline.</p>
+<p>Polls <code class="docutils literal notranslate"><span class="pre">window.performance.getEntriesByType('resource')</span></code>, which records
+all completed resource loads (XHR, fetch, images, scripts, stylesheets).
+No special browser configuration is required.</p>
+<p><code class="docutils literal notranslate"><span class="pre">url_pattern</span></code> regular expression matched against request URLs.</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> maximum wait time; uses the library default if omitted.</p>
+<p>Returns the first matched URL string.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Open Available Browser    <a class="reference external" href="https://example.com">https://example.com</a>    headless=${True} |</div>
+<div class="line">Click Button    id:load-data |</div>
+<div class="line">${url}=    Wait For Network Request    /api/v1/data |</div>
+<div class="line">Log    Captured: ${url} |</div>
 </div>
 </dd></dl>
 
