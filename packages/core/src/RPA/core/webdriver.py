@@ -33,10 +33,11 @@ from webdriver_manager.core.utils import (
     windows_browser_apps_to_cmd,
 )
 from webdriver_manager.drivers.chrome import ChromeDriver as _ChromeDriver
+from webdriver_manager.drivers.edge import EdgeChromiumDriver as _EdgeChromiumDriver
 from webdriver_manager.drivers.ie import IEDriver as _IEDriver
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import (
-    EdgeChromiumDriverManager,
+    EdgeChromiumDriverManager as _EdgeChromiumDriverManager,
     IEDriverManager as _IEDriverManager,
 )
 from webdriver_manager.opera import OperaDriverManager
@@ -300,6 +301,46 @@ class ChromeDriverManager(_ChromeDriverManager):
             file = self._download_manager.download_file(resolved_url)
             binary_path = self._cache_manager.save_file_to_cache(driver, file)
             return binary_path
+
+
+class EdgeChromiumDriver(_EdgeChromiumDriver):
+    """Strips the UTF-16 BOM that Microsoft's LATEST_RELEASE endpoint prepends.
+
+    webdriver-manager 4.0.2 calls ``resp.text.rstrip()`` on the response from
+    ``https://msedgedriver.microsoft.com/LATEST_RELEASE_<major>_WINDOWS``.
+    That endpoint returns a UTF-16 LE response (BOM ``\\xff\\xfe``), which
+    ``requests`` decodes to a string starting with ``\\ufeff`` (the BOM
+    codepoint). ``.rstrip()`` only strips trailing whitespace, leaving the
+    leading ``\\ufeff`` intact.  When that BOM-prefixed version is interpolated
+    into the download URL it becomes ``%EF%BB%BF145.0.3800.97/...`` which
+    returns 404.
+    """
+
+    @staticmethod
+    def _strip_bom(text: str) -> str:
+        return text.strip().lstrip("\ufeff")
+
+    def get_stable_release_version(self) -> str:
+        return self._strip_bom(super().get_stable_release_version())
+
+    def get_latest_release_version(self) -> str:
+        return self._strip_bom(super().get_latest_release_version())
+
+
+class EdgeChromiumDriverManager(_EdgeChromiumDriverManager):
+    """Custom Edge driver manager that uses :class:`EdgeChromiumDriver`."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        original = self.driver
+        self.driver = EdgeChromiumDriver(
+            name=getattr(original, "_name", "msedgedriver"),
+            driver_version=getattr(original, "_driver_version_to_download", None),
+            url=getattr(original, "_url", None),
+            latest_release_url=getattr(original, "_latest_release_url", None),
+            http_client=self.http_client,
+            os_system_manager=getattr(original, "_os_system_manager", None),
+        )
 
 
 class IEDriver(_IEDriver):
@@ -663,7 +704,7 @@ AVAILABLE_DRIVERS = {
     "opera": OperaDriverManager,
     # NOTE: In Selenium 4 `Edge` is the same with `ChromiumEdge`.
     "edge": EdgeChromiumDriverManager,
-    "chromiumedge": EdgeChromiumDriverManager,
+    "chromiumedge": EdgeChromiumDriverManager,  # uses BOM-stripping subclass
     # NOTE: IE is discontinued and not supported/encouraged anymore.
     "ie": IEDriverManager,
 }

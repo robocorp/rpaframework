@@ -2,10 +2,10 @@
 import atexit
 import base64
 import datetime
-import json
 import logging
 import os
 import platform
+import re
 import shutil
 import subprocess
 import time
@@ -21,18 +21,18 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from selenium import webdriver as selenium_webdriver
 from selenium.common import WebDriverException
-from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.webdriver import (
-    ChromeOptions,
-    EdgeOptions,
-    FirefoxOptions as _FirefoxOptions,
-    FirefoxProfile,
-    IeOptions,
-)
+from selenium.common.exceptions import ElementClickInterceptedException, TimeoutException
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+from selenium.webdriver.firefox.options import Options as _FirefoxOptions
+from selenium.webdriver.ie.options import Options as IeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.options import ArgOptions
+from selenium.webdriver.common.virtual_authenticator import VirtualAuthenticatorOptions
 from selenium.webdriver.remote.shadowroot import ShadowRoot
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver.support.ui import WebDriverWait
 from SeleniumLibrary import EMBED, SeleniumLibrary, WebElement
 from SeleniumLibrary.base import keyword
@@ -99,13 +99,9 @@ class RobocorpElementFinder(ElementFinder):
         return isinstance(element, ShadowRoot) or super()._is_webelement(element)
 
 
-class FirefoxOptions(_FirefoxOptions):
-    """Wrapped Firefox options in order to fix behavior."""
-
-    @property
-    def binary_location(self) -> Optional[str]:
-        # pylint: disable=protected-access
-        return self.binary._start_cmd if self.binary else None
+# In selenium >=4.16, FirefoxOptions.binary_location is a native string property;
+# the binary._start_cmd workaround is no longer needed.
+FirefoxOptions = _FirefoxOptions
 
 
 class BrowserManagementKeywords(_BrowserManagementKeywords):
@@ -2198,15 +2194,12 @@ class Selenium(SeleniumLibrary):
         return self._send_command_and_get_result(command, parameters)
 
     def _send_command_and_get_result(self, cmd, params):
-        resource = (
-            f"session/{self.driver.session_id}/chromium/send_command_and_get_result"
-        )
-        # pylint: disable=protected-access
-        url = f"{self.driver.command_executor._url}/{resource}"
-        body = json.dumps({"cmd": cmd, "params": params})
-        response = self.driver.command_executor._request("POST", url, body)
-
-        return response.get("value")
+        if not self.is_chromium:
+            raise NotImplementedError(
+                f"CDP command '{cmd}' requires a Chromium-based browser"
+                f" (Chrome, Edge), got: {self.driver.name}."
+            )
+        return self.driver.execute_cdp_cmd(cmd, params)
 
     @keyword
     def set_element_attribute(
@@ -2279,3 +2272,318 @@ class Selenium(SeleniumLibrary):
         """
         element = self.find_element(locator, parent=parent)
         return element.shadow_root if shadow else element
+
+    # ------------------------------------------------------------------ #
+    # Relative Locators (selenium 4.x)
+    # ------------------------------------------------------------------ #
+
+    @keyword
+    def find_element_above(self, tag: str, reference: Locator) -> WebElement:
+        """Returns the first element with the given HTML ``tag`` positioned
+        above the ``reference`` element on the page.
+
+        Uses selenium's relative locator API (available since Selenium 4).
+
+        ``tag`` HTML tag name of the element to find, e.g. ``input``, ``button``.
+
+        ``reference`` standard locator string or WebElement used as the
+        spatial reference point.
+
+        Example:
+
+        | ${field}=    Find Element Above    input    id:password-label |
+
+        See also `Find Element Below`, `Find Element To Left Of`,
+        `Find Element To Right Of`, and `Find Element Near`.
+        """
+        ref = self.find_element(reference)
+        return self.driver.find_element(locate_with(By.TAG_NAME, tag).above(ref))
+
+    @keyword
+    def find_element_below(self, tag: str, reference: Locator) -> WebElement:
+        """Returns the first element with the given HTML ``tag`` positioned
+        below the ``reference`` element on the page.
+
+        ``tag`` HTML tag name of the element to find.
+
+        ``reference`` standard locator string or WebElement used as the
+        spatial reference point.
+
+        Example:
+
+        | ${field}=    Find Element Below    input    id:username-label |
+        """
+        ref = self.find_element(reference)
+        return self.driver.find_element(locate_with(By.TAG_NAME, tag).below(ref))
+
+    @keyword
+    def find_element_to_left_of(self, tag: str, reference: Locator) -> WebElement:
+        """Returns the first element with the given HTML ``tag`` positioned
+        to the left of the ``reference`` element on the page.
+
+        ``tag`` HTML tag name of the element to find.
+
+        ``reference`` standard locator string or WebElement used as the
+        spatial reference point.
+
+        Example:
+
+        | ${label}=    Find Element To Left Of    label    id:username-input |
+        """
+        ref = self.find_element(reference)
+        return self.driver.find_element(locate_with(By.TAG_NAME, tag).to_left_of(ref))
+
+    @keyword
+    def find_element_to_right_of(self, tag: str, reference: Locator) -> WebElement:
+        """Returns the first element with the given HTML ``tag`` positioned
+        to the right of the ``reference`` element on the page.
+
+        ``tag`` HTML tag name of the element to find.
+
+        ``reference`` standard locator string or WebElement used as the
+        spatial reference point.
+
+        Example:
+
+        | ${field}=    Find Element To Right Of    input    id:username-label |
+        """
+        ref = self.find_element(reference)
+        return self.driver.find_element(locate_with(By.TAG_NAME, tag).to_right_of(ref))
+
+    @keyword
+    def find_element_near(self, tag: str, reference: Locator) -> WebElement:
+        """Returns the first element with the given HTML ``tag`` that is
+        within approximately 50 pixels of the ``reference`` element.
+
+        ``tag`` HTML tag name of the element to find.
+
+        ``reference`` standard locator string or WebElement used as the
+        spatial reference point.
+
+        Example:
+
+        | ${field}=    Find Element Near    input    id:username-label |
+        """
+        ref = self.find_element(reference)
+        return self.driver.find_element(locate_with(By.TAG_NAME, tag).near(ref))
+
+    # ------------------------------------------------------------------ #
+    # Browser Logs
+    # ------------------------------------------------------------------ #
+
+    @keyword
+    def get_browser_logs(self, log_type: str = "browser") -> List[Dict]:
+        """Returns browser log entries for the given ``log_type``.
+
+        Requires a Chromium-based browser (Chrome or Edge). Since Selenium 4.32
+        the ``get_log`` API is only available on Chromium drivers.
+
+        Each entry is a dict with keys ``level``, ``message``, ``source``,
+        and ``timestamp`` (epoch milliseconds).
+
+        Available log types:
+
+        - ``browser`` — JavaScript console output (console.log, errors, warnings)
+        - ``performance`` — network events and rendering metrics (must be enabled
+          at browser open time via ``goog:loggingPrefs``)
+        - ``driver`` — WebDriver-level events
+        - ``client`` — client-side events
+
+        Note: log entries are consumed on retrieval and will not appear again
+        in subsequent calls.
+
+        Example:
+
+        | Open Available Browser    https://example.com    browser_selection=Chrome    headless=${True} |
+        | Execute Javascript    console.error("boom") |
+        | ${logs}=    Get Browser Logs |
+        | FOR    ${entry}    IN    @{logs} |
+        |     Log    ${entry}[level]: ${entry}[message] |
+        | END |
+
+        To capture ``performance`` logs, open the browser with the capability:
+
+        | Open Browser    https://example.com |
+        | ...    options=set_capability('goog:loggingPrefs', {'performance': 'ALL'}) |
+        """
+        if not self.is_chromium:
+            raise NotImplementedError(
+                f"Get Browser Logs requires a Chromium-based browser (Chrome, Edge),"
+                f" got: {self.driver.name}. "
+                f"The get_log() API is not available on non-Chromium drivers"
+                f" since Selenium 4.32."
+            )
+        return self.driver.get_log(log_type)
+
+    # ------------------------------------------------------------------ #
+    # Network Interception (Chromium CDP)
+    # ------------------------------------------------------------------ #
+
+    @keyword
+    def block_urls(self, *patterns: str) -> None:
+        """Blocks network requests whose URLs match the given ``patterns``.
+
+        Works only with Chromium-based browsers (Chrome, Edge).
+        Supports ``*`` wildcards, e.g. ``*analytics*``.
+
+        Use `Unblock URLs` to clear all blocks.
+
+        Example:
+
+        | Open Available Browser    https://example.com    browser_selection=Chrome    headless=${True} |
+        | Block URLs    *google-analytics*    *facebook.com/tr* |
+        | Reload Page |
+        """
+        if not self.is_chromium:
+            raise NotImplementedError(
+                "Block URLs works only with Chromium-based browsers,"
+                f" got: {self.driver.name}"
+            )
+        self.driver.execute_cdp_cmd("Network.enable", {})
+        self.driver.execute_cdp_cmd("Network.setBlockedURLs", {"urls": list(patterns)})
+
+    @keyword
+    def unblock_urls(self) -> None:
+        """Removes all URL blocks previously set by `Block URLs`.
+
+        Works only with Chromium-based browsers.
+
+        Example:
+
+        | Block URLs    *analytics* |
+        | Reload Page |
+        | Unblock URLs |
+        """
+        if not self.is_chromium:
+            raise NotImplementedError(
+                "Unblock URLs works only with Chromium-based browsers,"
+                f" got: {self.driver.name}"
+            )
+        self.driver.execute_cdp_cmd("Network.setBlockedURLs", {"urls": []})
+
+    @keyword
+    def wait_for_network_request(
+        self, url_pattern: str, timeout: TimeoutType = None
+    ) -> str:
+        """Waits until a completed network request URL matching ``url_pattern``
+        appears in the browser's performance resource timeline.
+
+        Polls ``window.performance.getEntriesByType('resource')``, which records
+        all completed resource loads (XHR, fetch, images, scripts, stylesheets).
+        No special browser configuration is required.
+
+        ``url_pattern`` regular expression matched against request URLs.
+
+        ``timeout`` maximum wait time; uses the library default if omitted.
+
+        Returns the first matched URL string.
+
+        Example:
+
+        | Open Available Browser    https://example.com    headless=${True} |
+        | Click Button    id:load-data |
+        | ${url}=    Wait For Network Request    /api/v1/data |
+        | Log    Captured: ${url} |
+        """
+        timeout_val: float = self.browser_management.get_timeout(timeout)
+        pattern = re.compile(url_pattern)
+        end_time = time.time() + timeout_val
+        seen: set = set()
+        while time.time() < end_time:
+            urls: List[str] = self.driver.execute_script(
+                "return window.performance"
+                ".getEntriesByType('resource').map(r => r.name);"
+            )
+            for url in urls:
+                if url not in seen and pattern.search(url):
+                    return url
+                seen.add(url)
+            time.sleep(0.5)
+        raise TimeoutException(
+            f"No network request matching '{url_pattern}' detected"
+            f" within {timeout_val}s"
+        )
+
+    # ------------------------------------------------------------------ #
+    # Virtual Authenticator (WebAuthn / Passkey testing)
+    # ------------------------------------------------------------------ #
+
+    @keyword
+    def add_virtual_authenticator(
+        self,
+        protocol: str = "ctap2",
+        transport: str = "usb",
+        has_resident_key: bool = True,
+        has_user_verification: bool = True,
+        is_user_verified: bool = True,
+    ) -> str:
+        """Adds a virtual authenticator to the browser session for testing
+        WebAuthn / passkey flows without a physical hardware key.
+
+        Returns the authenticator ID string.
+
+        ``protocol`` authenticator protocol: ``ctap2`` (FIDO2, default) or
+        ``ctap1/u2f`` (legacy U2F).
+
+        ``transport`` connection transport: ``usb`` (default), ``nfc``, ``ble``,
+        ``hybrid``, or ``internal``.
+
+        ``has_resident_key`` whether the authenticator supports discoverable
+        credentials (resident keys). Default: ``True``.
+
+        ``has_user_verification`` whether the authenticator supports user
+        verification such as PIN or biometrics. Default: ``True``.
+
+        ``is_user_verified`` whether user verification is pre-satisfied.
+        Default: ``True``.
+
+        Use `Remove Virtual Authenticator` to clean up after the test.
+
+        Example:
+
+        | Open Available Browser    https://example.com    browser_selection=Chrome    headless=${True} |
+        | ${auth_id}=    Add Virtual Authenticator |
+        | Log    Authenticator ID: ${auth_id} |
+        | # ... interact with WebAuthn registration or assertion flow ... |
+        | Remove Virtual Authenticator |
+        """
+        _VALID_PROTOCOLS = {"ctap2", "ctap1/u2f"}
+        _VALID_TRANSPORTS = {"usb", "nfc", "ble", "hybrid", "internal"}
+
+        if not self.is_chromium:
+            raise NotImplementedError(
+                "Add Virtual Authenticator requires a Chromium-based browser"
+                f" (Chrome, Edge), got: {self.driver.name}."
+            )
+        if protocol not in _VALID_PROTOCOLS:
+            raise ValueError(
+                f"Invalid protocol '{protocol}'. "
+                f"Valid values: {', '.join(sorted(_VALID_PROTOCOLS))}."
+            )
+        if transport not in _VALID_TRANSPORTS:
+            raise ValueError(
+                f"Invalid transport '{transport}'. "
+                f"Valid values: {', '.join(sorted(_VALID_TRANSPORTS))}."
+            )
+        options = VirtualAuthenticatorOptions(
+            protocol=protocol,
+            transport=transport,
+            has_resident_key=has_resident_key,
+            has_user_verification=has_user_verification,
+            is_user_verified=is_user_verified,
+        )
+        self.driver.add_virtual_authenticator(options)
+        return self.driver.virtual_authenticator_id
+
+    @keyword
+    def remove_virtual_authenticator(self) -> None:
+        """Removes the virtual authenticator from the current browser session.
+
+        See `Add Virtual Authenticator` for the full usage example.
+        """
+        if not self.is_chromium:
+            raise NotImplementedError(
+                "Remove Virtual Authenticator requires a Chromium-based browser"
+                f" (Chrome, Edge), got: {self.driver.name}."
+            )
+        self.driver.remove_virtual_authenticator()

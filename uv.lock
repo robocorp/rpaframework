@@ -4589,7 +4589,8 @@ dependencies = [
     { name = "click", version = "8.3.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "robotframework" },
     { name = "robotframework-pythonlibcore" },
-    { name = "selenium" },
+    { name = "selenium", version = "4.32.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "selenium", version = "4.41.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/2d/d5/aa063b493a14cdb2771c23e6d5fdaa90c3d4712f8a086077bc5595aae9b9/robotframework_seleniumlibrary-6.8.0.tar.gz", hash = "sha256:60fb0584b11eabc687e8433134093b764ec011e0e8a9ec417bfdeeab59d748bb", size = 171793, upload-time = "2025-10-04T13:37:07.776Z" }
 wheels = [
@@ -4630,7 +4631,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "31.1.1"
+version = "31.2.0"
 source = { editable = "packages/main" }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -4683,7 +4684,8 @@ dependencies = [
     { name = "rpaframework-core" },
     { name = "rpaframework-pdf" },
     { name = "rpaframework-windows", marker = "sys_platform == 'win32'" },
-    { name = "selenium" },
+    { name = "selenium", version = "4.32.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "selenium", version = "4.41.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "simple-salesforce" },
     { name = "smartsheet-python-sdk" },
     { name = "tenacity" },
@@ -4740,9 +4742,9 @@ requires-dist = [
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
     { name = "rpaframework-core", specifier = ">=12.1.0" },
-    { name = "rpaframework-pdf", specifier = ">=10.0.2" },
+    { name = "rpaframework-pdf", specifier = ">=10.0.3" },
     { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=10.0.2" },
-    { name = "selenium", specifier = "==4.15.2" },
+    { name = "selenium", specifier = ">=4.16.0,<5.0.0" },
     { name = "simple-salesforce", specifier = ">=1.0.0" },
     { name = "smartsheet-python-sdk", specifier = "==3.0.2" },
     { name = "tenacity", specifier = ">=8.0.1" },
@@ -4787,7 +4789,8 @@ dependencies = [
     { name = "pillow", version = "12.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "psutil", marker = "sys_platform == 'win32'" },
     { name = "pywin32", marker = "sys_platform == 'win32'" },
-    { name = "selenium" },
+    { name = "selenium", version = "4.32.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "selenium", version = "4.41.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "uiautomation", marker = "sys_platform == 'win32'" },
     { name = "webdriver-manager" },
 ]
@@ -4981,7 +4984,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "10.0.2"
+version = "10.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docutils", version = "0.21.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -4994,9 +4997,9 @@ dependencies = [
     { name = "robotframework" },
     { name = "rpaframework-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b0/a4/1eb030ca50a8c89455b4ae9e9d093dd356d163c9aacaca5dcbe635086cfe/rpaframework_pdf-10.0.2.tar.gz", hash = "sha256:5ae5343c4035e6facceb943a0303a5bf472d68b1c7ab29402ab618bba51010c9", size = 4559220, upload-time = "2026-02-02T12:36:14.549Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/74/a0/f36fa3a1211f0ea16ff9050a0a4bc973b49c671726f1ebd793db08e53c87/rpaframework_pdf-10.0.3.tar.gz", hash = "sha256:6d36aeacbe02625738cf57ada6dbac5fc584bf711d455da6c2004a9ecc5fb111", size = 4575911, upload-time = "2026-03-06T17:42:04.473Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f1/c3/03e175076042133c2199eab6a341c788c06adfc654dbbebb899ef638d3c1/rpaframework_pdf-10.0.2-py3-none-any.whl", hash = "sha256:343da57943a575a9ecc21d681543d3008e7350b00b5d608788bac83030a175bb", size = 612605, upload-time = "2026-02-02T12:36:11.24Z" },
+    { url = "https://files.pythonhosted.org/packages/eb/4f/f815398a6b4b2777d91657e82fc35430682f5fe157f3067133332db7d753/rpaframework_pdf-10.0.3-py3-none-any.whl", hash = "sha256:095d73c37aff2fa601560650cfaf9ad511da5832250c779a611eed146ddecc83", size = 612603, upload-time = "2026-03-06T17:42:01.059Z" },
 ]
 
 [[package]]
@@ -5395,19 +5398,55 @@ wheels = [
 
 [[package]]
 name = "selenium"
-version = "4.15.2"
+version = "4.32.0"
 source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "certifi" },
-    { name = "trio", version = "0.31.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
-    { name = "trio", version = "0.33.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
-    { name = "trio-websocket" },
-    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, extra = ["socks"], marker = "python_full_version < '3.10'" },
-    { name = "urllib3", version = "2.6.3", source = { registry = "https://pypi.org/simple" }, extra = ["socks"], marker = "python_full_version >= '3.10'" },
+resolution-markers = [
+    "python_full_version < '3.10' and platform_machine == 'arm64' and sys_platform == 'darwin'",
+    "python_full_version < '3.10' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "(python_full_version < '3.10' and platform_machine != 'arm64' and sys_platform == 'darwin') or (python_full_version < '3.10' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.10' and sys_platform != 'darwin' and sys_platform != 'linux')",
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/04/44/e86a333a57dd81739126f78c73f2243af2bfb728787a7c66046eb923c02e/selenium-4.15.2.tar.gz", hash = "sha256:22eab5a1724c73d51b240a69ca702997b717eee4ba1f6065bf5d6b44dba01d48", size = 9954413, upload-time = "2023-11-03T21:57:15.432Z" }
+dependencies = [
+    { name = "certifi", marker = "python_full_version < '3.10'" },
+    { name = "trio", version = "0.31.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "trio-websocket", marker = "python_full_version < '3.10'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.10'" },
+    { name = "urllib3", version = "1.26.20", source = { registry = "https://pypi.org/simple" }, extra = ["socks"], marker = "python_full_version < '3.10'" },
+    { name = "websocket-client", marker = "python_full_version < '3.10'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/54/2d/fafffe946099033ccf22bf89e12eede14c1d3c5936110c5f6f2b9830722c/selenium-4.32.0.tar.gz", hash = "sha256:b9509bef4056f4083772abb1ae19ff57247d617a29255384b26be6956615b206", size = 870997, upload-time = "2025-05-02T20:35:27.325Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0e/59/aae37fa93e2d4292c3148efcc3066c8ecfe5cfaa72bf8c0b1a5614622cf7/selenium-4.15.2-py3-none-any.whl", hash = "sha256:9e82cd1ac647fb73cf0d4a6e280284102aaa3c9d94f0fa6e6cc4b5db6a30afbf", size = 10175338, upload-time = "2023-11-03T21:57:11.019Z" },
+    { url = "https://files.pythonhosted.org/packages/ea/37/d07ed9d13e571b2115d4ed6956d156c66816ceec0b03b2e463e80d09f572/selenium-4.32.0-py3-none-any.whl", hash = "sha256:c4d9613f8a45693d61530c9660560fadb52db7d730237bc788ddedf442391f97", size = 9369668, upload-time = "2025-05-02T20:35:24.726Z" },
+]
+
+[[package]]
+name = "selenium"
+version = "4.41.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.13' and sys_platform == 'darwin'",
+    "python_full_version >= '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version == '3.12.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.12.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "(python_full_version == '3.12.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.12.*' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version == '3.10.*' and sys_platform == 'darwin'",
+    "python_full_version == '3.10.*' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "(python_full_version == '3.10.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.10.*' and sys_platform != 'darwin' and sys_platform != 'linux')",
+]
+dependencies = [
+    { name = "certifi", marker = "python_full_version >= '3.10'" },
+    { name = "trio", version = "0.33.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+    { name = "trio-websocket", marker = "python_full_version >= '3.10'" },
+    { name = "typing-extensions", marker = "python_full_version >= '3.10'" },
+    { name = "urllib3", version = "2.6.3", source = { registry = "https://pypi.org/simple" }, extra = ["socks"], marker = "python_full_version >= '3.10'" },
+    { name = "websocket-client", marker = "python_full_version >= '3.10'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/04/7c/133d00d6d013a17d3f39199f27f1a780ec2e95d7b9aa997dc1b8ac2e62a7/selenium-4.41.0.tar.gz", hash = "sha256:003e971f805231ad63e671783a2b91a299355d10cefb9de964c36ff3819115aa", size = 937872, upload-time = "2026-02-20T03:42:06.216Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/d6/e4160989ef6b272779af6f3e5c43c3ba9be6687bdc21c68c3fb220e555b3/selenium-4.41.0-py3-none-any.whl", hash = "sha256:b8ccde8d2e7642221ca64af184a92c19eee6accf2e27f20f30472f5efae18eb1", size = 9532858, upload-time = "2026-02-20T03:42:03.218Z" },
 ]
 
 [[package]]
@@ -6177,6 +6216,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/24/4f/6e44478908c5133f680378d687f14ecaa99feed2c535344fcf68d8d21500/webdriver_manager-4.0.2.tar.gz", hash = "sha256:efedf428f92fd6d5c924a0d054e6d1322dd77aab790e834ee767af392b35590f", size = 25940, upload-time = "2024-07-25T08:13:49.331Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b5/b5/3bd0b038d80950ec13e6a2c8d03ed8354867dc60064b172f2f4ffac8afbe/webdriver_manager-4.0.2-py2.py3-none-any.whl", hash = "sha256:75908d92ecc45ff2b9953614459c633db8f9aa1ff30181cefe8696e312908129", size = 27778, upload-time = "2024-07-25T08:13:47.917Z" },
+]
+
+[[package]]
+name = "websocket-client"
+version = "1.9.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/2c/41/aa4bf9664e4cda14c3b39865b12251e8e7d239f4cd0e3cc1b6c2ccde25c1/websocket_client-1.9.0.tar.gz", hash = "sha256:9e813624b6eb619999a97dc7958469217c3176312b3a16a4bd1bc7e08a46ec98", size = 70576, upload-time = "2025-10-07T21:16:36.495Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/db/b10e48aa8fff7407e67470363eac595018441cf32d5e1001567a7aeba5d2/websocket_client-1.9.0-py3-none-any.whl", hash = "sha256:af248a825037ef591efbf6ed20cc5faa03d3b47b9e5a2230a529eeee1c1fc3ef", size = 82616, upload-time = "2025-10-07T21:16:34.951Z" },
 ]
 
 [[package]]
