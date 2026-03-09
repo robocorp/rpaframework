@@ -16,6 +16,9 @@ ${RESULTS}        ${CURDIR}${/}..${/}results
 ${EXE_UIDEMO}       UIDemo.exe
 ${EXE_CALCULATOR}   calc.exe
 ${EXE_SPOTIFY}      Spotify.exe
+${EXE_TESTAPP}      python    ${RESOURCES}${/}testapp.py
+
+${LOC_TESTAPP}      name:"RPA Windows Test App"
 
 ${LOC_NOTEPAD}      name:Notepad class:Notepad
 ${LOC_CALCULATOR}   subname:Calc control:WindowControl
@@ -484,3 +487,128 @@ Click and set values in WordPad
     Should Be Equal     ${text}     This i\rs my test text.\r\r\r2nd line text.\r\r
 
     [Teardown]  Close Current Window
+
+
+# ---------------------------------------------------------------------------
+# Test App — testapp.py
+# ---------------------------------------------------------------------------
+
+Start Test App
+    [Documentation]     Launch the local testapp.py and return its window element.
+    Start Process    python    ${RESOURCES}${/}testapp.py    alias=testapp
+    Sleep    1.5s
+    ${win} =    Control Window    ${LOC_TESTAPP}
+    RETURN    ${win}
+
+Stop Test App
+    Send Signal To Process    TERM    handle=testapp    group=${True}
+    Wait For Process    handle=testapp    timeout=5s    on_timeout=kill
+
+
+Test App Checkboxes
+    [Documentation]     Verify Get Checkbox State returns correct values for
+    ...                 checked, unchecked and indeterminate checkboxes (issue #1166).
+    [Setup]     Start Test App
+
+    # Navigate to the "Basic Controls" tab (it is the first tab, already active).
+    Control Window    ${LOC_TESTAPP}
+
+    # Checked checkbox — should return True
+    ${state} =    Get Checkbox State    name:"RPA Windows Test App" > name:Checked
+    Should Be True    ${state}    msg=Expected 'Checked' checkbox to be True
+
+    # Unchecked checkbox — should return False
+    ${state} =    Get Checkbox State    name:"RPA Windows Test App" > name:Unchecked
+    Should Be True    ${state} == ${False}    msg=Expected 'Unchecked' checkbox to be False
+
+    # Indeterminate checkbox — should return None
+    ${state} =    Get Checkbox State
+    ...    name:"RPA Windows Test App" > name:"Indeterminate (tri-state)"
+    Should Be Equal    ${state}    ${None}    msg=Expected indeterminate checkbox to be None
+
+    [Teardown]  Stop Test App
+
+Test App Radio Buttons
+    [Documentation]     Verify Is Selected works on radio buttons inside the test app.
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    # "Option A" starts selected
+    ${selected} =    Is Selected    name:"RPA Windows Test App" > name:"Option A"
+    Should Be True    ${selected}
+
+    # "Option B" starts unselected
+    ${selected} =    Is Selected    name:"RPA Windows Test App" > name:"Option B"
+    Should Be True    ${selected} == ${False}
+
+    [Teardown]  Stop Test App
+
+Test App Text Entry
+    [Documentation]     Set and get values in single-line text entry.
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    # Clear and set a new value
+    Set Value    name:"RPA Windows Test App" > name:"Single-line:"    New text value
+    ${val} =    Get Value    name:"RPA Windows Test App" > name:"Single-line:"
+    Should Contain    ${val}    New text value
+
+    [Teardown]  Stop Test App
+
+Test App Combobox
+    [Documentation]     Select a value from the combobox and verify the status bar.
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    # Switch to the "Input Controls" tab
+    Click    name:"RPA Windows Test App" > name:"Input Controls"
+
+    Select    name:"RPA Windows Test App" > name:"Select fruit:"    Banana
+    ${status} =    Get Attribute    name:"RPA Windows Test App" > name:lbl_status    Name
+    Should Contain    ${status}    Banana
+
+    [Teardown]  Stop Test App
+
+Test App Slider
+    [Documentation]     Move the slider and verify its value changes.
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    Click    name:"RPA Windows Test App" > name:"Input Controls"
+
+    ${slider} =    Get Element    name:"RPA Windows Test App" > name:slider_volume
+    Set Value    ${slider}    75
+    ${val} =    Get Value    ${slider}
+    Should Be True    ${val} >= 70
+
+    [Teardown]  Stop Test App
+
+Test App Path Locator Timeout
+    [Documentation]     Trigger a delayed element (3 s) and assert that a locator with
+    ...                 timeout=5 finds it while timeout=1 raises ElementNotFound
+    ...                 (exercises the path: timeout fix, issue #1125).
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    Click    name:"RPA Windows Test App" > name:"Dynamic Controls"
+
+    # The label should NOT exist yet — a short timeout must raise quickly.
+    ${result} =    Run Keyword And Ignore Error
+    ...    Get Element
+    ...    name:"RPA Windows Test App" > name:dynamic_label
+    ...    timeout=0.5
+    Should Be Equal    ${result}[0]    FAIL    msg=Short timeout should have failed
+
+    # Now show after 3 s delay, then find it within 5 s timeout.
+    Click    name:"RPA Windows Test App" > name:"Show after 3s"
+    ${elem} =    Get Element
+    ...    name:"RPA Windows Test App" > name:dynamic_label
+    ...    timeout=5
+    Should Not Be Equal    ${elem}    ${None}
+
+    [Teardown]  Stop Test App
