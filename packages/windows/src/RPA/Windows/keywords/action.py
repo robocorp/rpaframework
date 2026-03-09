@@ -332,12 +332,11 @@ class ActionKeywords(ActionMethods):
                     f"Element found with {locator!r} doesn't support the toggle pattern"
                 )
             toggle_state = toggle_pattern.ToggleState
-            if utils.IS_WINDOWS:
-                if toggle_state == auto.ToggleState.On:
-                    return True
-                if toggle_state == auto.ToggleState.Off:
-                    return False
-                return None  # Indeterminate
+            if toggle_state == auto.ToggleState.On:
+                return True
+            if toggle_state == auto.ToggleState.Off:
+                return False
+            return None  # Indeterminate
         raise ActionNotPossible(
             f"Element found with {locator!r} doesn't support the toggle pattern"
         )
