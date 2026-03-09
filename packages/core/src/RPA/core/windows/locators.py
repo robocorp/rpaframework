@@ -410,7 +410,7 @@ class LocatorMethods(WindowsContext):
         Returns:
             Control at the end of the path
         Raises:
-            ElementNotFound: If path cannot be followed
+            ElementNotFound: If path cannot be followed within the active timeout
         """
         # Follow a path in the tree of controls until reaching the final target.
         search_params = search_params.copy()  # to keep idempotent behaviour
@@ -422,42 +422,63 @@ class LocatorMethods(WindowsContext):
 
         max_retries = 3
         retry_delay = 0.1
+        # Respect the active timeout (set via @with_timeout / SetGlobalSearchTimeout).
+        # self.current_timeout reads auto.uiautomation.TIME_OUT_SECOND which is kept
+        # in sync by the set_timeout() context manager.
+        timeout = self.current_timeout if IS_WINDOWS else 0.0
+        deadline = time.monotonic() + timeout
 
         for index, position in enumerate(path):
-            # Retry logic for GetChildren() which can raise COM errors
-            last_error = None
-            children = None
-            for attempt in range(max_retries):
-                try:
-                    children = current.GetChildren()
-                    break
-                except COMError as err:
-                    last_error = err
-                    if LocatorMethods._is_com_cantcallout_error(err) and attempt < max_retries - 1:
-                        self.logger.debug(
-                            "COM error 0x8001010d during GetChildren (attempt %d/%d), retrying...",
-                            attempt + 1,
-                            max_retries,
-                        )
-                        time.sleep(retry_delay)
-                        continue
-                    # Non-retryable error or last attempt, raise immediately
-                    raise
-            if children is None and last_error is not None:
-                # If we exhausted retries, re-raise the last error
-                raise last_error
+            # Retry at this path step until the child appears or the timeout expires.
+            while True:
+                # Inner retry loop for transient COM errors on GetChildren().
+                last_error = None
+                children = None
+                for attempt in range(max_retries):
+                    try:
+                        children = current.GetChildren()
+                        break
+                    except COMError as err:
+                        last_error = err
+                        if (
+                            LocatorMethods._is_com_cantcallout_error(err)
+                            and attempt < max_retries - 1
+                        ):
+                            self.logger.debug(
+                                "COM error 0x8001010d during GetChildren"
+                                " (attempt %d/%d), retrying...",
+                                attempt + 1,
+                                max_retries,
+                            )
+                            time.sleep(retry_delay)
+                            continue
+                        # Non-retryable error or last attempt, raise immediately
+                        raise
+                if children is None and last_error is not None:
+                    raise last_error
 
-            if position > len(children):
-                raise ElementNotFound(
-                    f"Unable to retrieve child on position {position!r} under a parent"
-                    f" with partial path {to_path(index)!r}"
+                if position <= len(children):
+                    break  # Child is available — proceed
+
+                # Child not present yet; wait if the timeout allows it.
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise ElementNotFound(
+                        f"Unable to retrieve child on position {position!r} under a"
+                        f" parent with partial path {to_path(index)!r}"
+                    )
+                self.logger.debug(
+                    "Child at position %d not yet available (%d children found),"
+                    " retrying for %.2fs...",
+                    position,
+                    len(children),
+                    remaining,
                 )
+                time.sleep(min(retry_delay, remaining))
 
             current = children[position - 1]
             # Log position only to avoid deadlock from control.__repr__
-            self.logger.debug(
-                "On child position %d found control", position
-            )
+            self.logger.debug("On child position %d found control", position)
 
         offset = search_params.get("offset")
         current.robocorp_click_offset = offset
