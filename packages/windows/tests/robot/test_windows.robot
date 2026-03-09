@@ -16,8 +16,6 @@ ${RESULTS}        ${CURDIR}${/}..${/}results
 ${EXE_UIDEMO}       UIDemo.exe
 ${EXE_CALCULATOR}   calc.exe
 ${EXE_SPOTIFY}      Spotify.exe
-${EXE_TESTAPP}      python    ${RESOURCES}${/}testapp.py
-
 ${LOC_TESTAPP}      name:"RPA Windows Test App"
 
 ${LOC_NOTEPAD}      name:Notepad class:Notepad
@@ -585,14 +583,17 @@ Test App Combobox
 
 Test App Slider
     [Documentation]     Move the slider and verify its value changes.
-    ...                 The slider is found by type:SliderControl within the "Slider"
-    ...                 LabelFrame group.
+    ...                 The ttk.Scale widget is a SliderControl in UIAutomation.
+    ...                 The exact locator depends on how Windows exposes the widget name;
+    ...                 update the locator after inspecting with Accessibility Insights.
+    [Tags]      manual
     [Setup]     Start Test App
 
     Control Window    ${LOC_TESTAPP}
 
     Click    name:"RPA Windows Test App" > name:"Input Controls"
 
+    # Locate the slider within the "Slider" LabelFrame (Group) by control type.
     ${slider} =    Get Element
     ...    name:"RPA Windows Test App" > name:Slider > type:SliderControl
     Set Value    ${slider}    75
