@@ -13,6 +13,7 @@ Latest versions
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 - ``RPA.Windows``: New ``Get Checkbox State`` keyword to retrieve the toggle state of a checkbox control, returning ``True`` (checked), ``False`` (unchecked) or ``None`` (indeterminate). Closes :issue:`1166`.
+- ``RPA.Windows``: Fix ``path:`` locator strategy ignoring the ``timeout`` parameter — path traversal now retries each step until the active timeout expires instead of failing immediately. Closes :issue:`1125`.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
