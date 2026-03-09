@@ -501,7 +501,7 @@ Start Test App
     RETURN    ${win}
 
 Stop Test App
-    Send Signal To Process    TERM    handle=testapp    group=${True}
+    Terminate Process    handle=testapp
     Wait For Process    handle=testapp    timeout=5s    on_timeout=kill
 
 
@@ -546,19 +546,27 @@ Test App Radio Buttons
 
 Test App Text Entry
     [Documentation]     Set and get values in single-line text entry.
+    ...                 The entry is found by type:EditControl within the "Text Entry"
+    ...                 LabelFrame group — the tkinter widget name ("entry_single") is
+    ...                 a tk path component, not the UIAutomation Name property.
     [Setup]     Start Test App
 
     Control Window    ${LOC_TESTAPP}
 
-    # Clear and set a new value
-    Set Value    name:"RPA Windows Test App" > name:"Single-line:"    New text value
-    ${val} =    Get Value    name:"RPA Windows Test App" > name:"Single-line:"
+    # The LabelFrame "Text Entry" is a Group with Name="Text Entry".
+    # The first EditControl inside it is the single-line entry.
+    ${entry} =    Get Element
+    ...    name:"RPA Windows Test App" > name:"Text Entry" > type:EditControl
+    Set Value    ${entry}    New text value
+    ${val} =    Get Value    ${entry}
     Should Contain    ${val}    New text value
 
     [Teardown]  Stop Test App
 
 Test App Combobox
-    [Documentation]     Select a value from the combobox and verify the status bar.
+    [Documentation]     Select a value from the combobox and confirm via Get Value.
+    ...                 The combobox UIAutomation Name is its currently selected item,
+    ...                 so it is located by initial value "Apple" before the Select.
     [Setup]     Start Test App
 
     Control Window    ${LOC_TESTAPP}
@@ -566,21 +574,27 @@ Test App Combobox
     # Switch to the "Input Controls" tab
     Click    name:"RPA Windows Test App" > name:"Input Controls"
 
-    Select    name:"RPA Windows Test App" > name:"Select fruit:"    Banana
-    ${status} =    Get Attribute    name:"RPA Windows Test App" > name:lbl_status    Name
-    Should Contain    ${status}    Banana
+    # Combobox UIAutomation Name = currently selected value ("Apple" on start).
+    Select    name:"RPA Windows Test App" > name:Apple    Banana
+    # After selection the combobox Name changes to "Banana" — locate and confirm.
+    ${elem} =    Get Element    name:"RPA Windows Test App" > name:Banana
+    ${val} =    Get Value    ${elem}
+    Should Be Equal    ${val}    Banana
 
     [Teardown]  Stop Test App
 
 Test App Slider
     [Documentation]     Move the slider and verify its value changes.
+    ...                 The slider is found by type:SliderControl within the "Slider"
+    ...                 LabelFrame group.
     [Setup]     Start Test App
 
     Control Window    ${LOC_TESTAPP}
 
     Click    name:"RPA Windows Test App" > name:"Input Controls"
 
-    ${slider} =    Get Element    name:"RPA Windows Test App" > name:slider_volume
+    ${slider} =    Get Element
+    ...    name:"RPA Windows Test App" > name:Slider > type:SliderControl
     Set Value    ${slider}    75
     ${val} =    Get Value    ${slider}
     Should Be True    ${val} >= 70
