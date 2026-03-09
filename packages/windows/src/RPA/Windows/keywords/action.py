@@ -290,6 +290,58 @@ class ActionKeywords(ActionMethods):
             f"Element found with {locator!r} doesn't support selection item retrieval"
         )
 
+    @keyword(tags=["action"])
+    def get_checkbox_state(self, locator: Locator) -> Optional[bool]:
+        """Get the toggle state of a checkbox element defined by the provided `locator`.
+
+        Returns ``True`` if the checkbox is checked, ``False`` if unchecked, and
+        ``None`` if the state is indeterminate.
+
+        The ``ActionNotPossible`` exception is raised if the identified element doesn't
+        support the toggle pattern (i.e. is not a checkbox or similar toggleable control).
+
+        :param locator: String locator or element object.
+        :returns: ``True`` if checked, ``False`` if unchecked, ``None`` if indeterminate.
+
+        **Example: Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${checked} =    Get Checkbox State    type:CheckBoxControl name:Accept
+            IF    ${checked}
+                Log    Checkbox is checked
+            END
+
+        **Example: Python**
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            lib_win = Windows()
+            state = lib_win.get_checkbox_state("type:CheckBoxControl name:Accept")
+            print(state)  # True, False, or None
+        """
+        element = self.ctx.get_element(locator)
+        get_toggle_pattern = getattr(element.item, "GetTogglePattern", None)
+
+        if get_toggle_pattern:
+            toggle_pattern = get_toggle_pattern()
+            if toggle_pattern is None:
+                raise ActionNotPossible(
+                    f"Element found with {locator!r} doesn't support the toggle pattern"
+                )
+            toggle_state = toggle_pattern.ToggleState
+            if utils.IS_WINDOWS:
+                if toggle_state == auto.ToggleState.On:
+                    return True
+                if toggle_state == auto.ToggleState.Off:
+                    return False
+                return None  # Indeterminate
+        raise ActionNotPossible(
+            f"Element found with {locator!r} doesn't support the toggle pattern"
+        )
+
     @keyword(tags=["action", "keyboard"])
     def send_keys(
         self,
