@@ -32,9 +32,9 @@ class BackgroundFlet:
             return signal.getsignal(signalnum)
 
         with patch.object(signal, "signal", noop_signal):
-            ft.app(target=target)
+            ft.run(target)
 
-        # ft.app() returns when the window is closed/destroyed
+        # ft.run() returns when the window is closed/destroyed
         self._closed_event.set()
 
     def start_flet_view(self, target) -> None:

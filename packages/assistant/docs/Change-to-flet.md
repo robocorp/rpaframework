@@ -137,6 +137,54 @@ Changed `from flet_core import ControlEvent` to `from flet import ControlEvent`.
 | `packages/assistant/src/RPA/Assistant/library.py` | Renames, FilePicker (async), Icon enum, launch_url async, state cleanup, date input empty handling |
 | `packages/assistant/src/RPA/Assistant/types.py` | Import path, alignment constants |
 
+## Future Considerations
+
+### Improve window close error handling
+
+`close_flet_view()` in `background_flet.py` uses a broad `except Exception: pass` that silently swallows all errors from `window.destroy()`. This can mask real failures and make the dialog appear closed when the native window is still open. A future improvement would be to log the error instead of silently ignoring it, and ensure `_closed_event` is only set after the close operation actually succeeds or a real close/disconnect event is observed. Note that `close_flet_view` also serves as an `atexit` handler, so error propagation must be handled carefully.
+
+### Replace private flet service internals with public API
+
+`flet_client.py` uses `page._services.register_service()` and `page._services.unregister_services()` — private flet internals that may change without notice. This was necessary because the public `page.services.append()` does not properly mount controls (the `FilePicker` fails with "Control must be added to the page first"). If a future flet version provides a public service registration API, these calls should be migrated. Until then, this is documented tech debt.
+
+### Expose additional flet layout properties
+
+The Assistant library keywords expose only a subset of the underlying flet control properties. The following are available in flet 0.82+ and would be useful additions:
+
+**Quick wins — high impact, easy to add:**
+
+| Keyword | Property | Description |
+|---|---|---|
+| `open_row` | [`alignment`](https://flet.dev/docs/controls/row#alignment) | Position children along main axis (START, END, CENTER, SPACE_BETWEEN) |
+| `open_row` | [`vertical_alignment`](https://flet.dev/docs/controls/row#vertical_alignment) | Align items vertically within the row |
+| `open_row` | [`spacing`](https://flet.dev/docs/controls/row#spacing) | Gap between children (default 10) |
+| `open_column` | [`horizontal_alignment`](https://flet.dev/docs/controls/column#horizontal_alignment) | Left/center/right align content |
+| `open_column` | [`alignment`](https://flet.dev/docs/controls/column#alignment) | Vertical distribution of children |
+| `open_column` | [`spacing`](https://flet.dev/docs/controls/column#spacing) | Gap between children |
+| `open_container` | [`alignment`](https://flet.dev/docs/controls/container#alignment) | Position content within container |
+| `open_navbar` | [`bgcolor`](https://flet.dev/docs/controls/appbar#bgcolor) | Navbar background color |
+
+**Medium priority:**
+
+| Keyword | Property | Description |
+|---|---|---|
+| `open_row` / `open_column` | [`wrap`](https://flet.dev/docs/controls/row#wrap) | Wrap children to next line when out of space |
+| `open_container` | [`border_radius`](https://flet.dev/docs/controls/container#border_radius) | Rounded corners |
+| `open_container` | [`border`](https://flet.dev/docs/controls/container#border) | Border styling (color, width) |
+| `open_container` | [`shadow`](https://flet.dev/docs/controls/container#shadow) | Drop shadow effect |
+| `open_navbar` | [`center_title`](https://flet.dev/docs/controls/appbar#center_title) | Center the title text |
+| `open_navbar` | [`leading`](https://flet.dev/docs/controls/appbar#leading) | Back button or menu icon |
+| `open_stack` | [`alignment`](https://flet.dev/docs/controls/stack#alignment) | Default position for non-positioned children |
+| `add_submit_buttons` | [`icon`](https://flet.dev/docs/controls/elevatedbutton#icon) | Icons on buttons |
+
+**Advanced:**
+
+| Keyword | Property | Description |
+|---|---|---|
+| `open_container` | [`gradient`](https://flet.dev/docs/controls/container#gradient), [`image`](https://flet.dev/docs/controls/container#image) | Background gradient or image |
+| `open_stack` | [`fit`](https://flet.dev/docs/controls/stack#fit), [`clip_behavior`](https://flet.dev/docs/controls/stack#clip_behavior) | Child sizing strategy, overflow clipping |
+| `add_submit_buttons` | [`style`](https://flet.dev/docs/controls/elevatedbutton#style) | Per-button colors, elevation, shape |
+
 ## External References
 
 - [Flet 0.80 Release Announcement](https://flet.dev/blog/flet-v0-80-release-announcement) — breaking changes overview

@@ -261,18 +261,22 @@ Test Column Layout
 
 Test Stack With Containers
     [Tags]    manual
+    [Documentation]    Verify containers are positioned correctly inside the stack area.
+    ...    TopLeft=red (top-left corner), TopRight=green (top-right corner), Center=blue (centered).
     Add Heading    Stack Layout Test
+    Open Container    background_color=grey300
     Open Stack    width=360    height=360
-    Open Container    width=64    height=64    location=Center
-    Add Text    center
+    Open Container    width=80    height=40    location=Center    background_color=blue200
+    Add Text    Center
     Close Container
-    Open Container    width=64    height=64    location=TopRight
-    Add Text    top right
+    Open Container    width=80    height=40    location=TopRight    background_color=green200
+    Add Text    TopRight
     Close Container
-    Open Container    width=64    height=64    location=TopLeft
-    Add Text    top left
+    Open Container    width=80    height=40    location=TopLeft    background_color=red200
+    Add Text    TopLeft
     Close Container
     Close Stack
+    Close Container
     Add Submit Buttons    buttons=Pass,Fail
     ${result}=    Run Dialog    timeout=180
     Verify Pass    ${result}
