@@ -413,7 +413,9 @@ class Assistant:
         self._client.add_element(
             Markdown(
                 f"[{label}]({url})",
-                on_tap_link=lambda e: self._client.page.launch_url(e.data),
+                on_tap_link=lambda e: asyncio.ensure_future(
+                    self._client.page.launch_url(e.data)
+                ),
             )
         )
 
@@ -1386,8 +1388,10 @@ class Assistant:
         )
         results = self._get_results()
         self._client.results.clear()
+        self._client.date_inputs.clear()
         self._required_fields.clear()
         self._callbacks.validation_errors.clear()
+        self._open_layouting.clear()
 
         return results
 
@@ -1395,7 +1399,7 @@ class Assistant:
         results = self._client.results
         for name, value in results.items():
             if name in self._client.date_inputs and isinstance(value, str):
-                results[name] = date.fromisoformat(value)
+                results[name] = date.fromisoformat(value) if value else None
         return DotDict(**results)
 
     @keyword(tags=["dialog"])
