@@ -2,7 +2,7 @@ import logging
 import types
 from typing import Any, Callable, Dict, Optional, Union
 
-from flet_core import ControlEvent
+from flet import ControlEvent
 from robot.errors import RobotError
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.output.logger import LOGGER
@@ -39,7 +39,7 @@ class CallbackRunner:
         def validate(e: ControlEvent) -> None:
             error = self._run_python_callback(function, e.data)
             casted_error = str(error) if error else None
-            e.control.error_text = casted_error
+            e.control.error = casted_error
             self._client.flet_update()
             self.validation_errors[element_name] = casted_error
 
@@ -87,7 +87,7 @@ class CallbackRunner:
                 LOGGER.end_keyword = types.MethodType(_nothing, LOGGER)
 
                 error = self._run_robot_callback(kw_name, e.control.value)
-                e.control.error_text = error
+                e.control.error = error
                 self._client.flet_update()
                 self.validation_errors[element_name] = error
             finally:

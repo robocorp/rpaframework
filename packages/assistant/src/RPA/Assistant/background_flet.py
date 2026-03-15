@@ -1,111 +1,87 @@
+import asyncio
 import atexit
+import signal
+import threading
 from logging import getLogger
-from subprocess import Popen
-from typing import Optional, Tuple
-from typing_extensions import Literal
+from typing import Optional
+from unittest.mock import patch
 
-from flet import flet as ft
-from flet_core.page import Connection
-
-
-def _connect_internal_sync(
-    page_name,
-    view: Literal["flet_app"],
-    host,
-    port,
-    server,
-    auth_token,
-    session_handler,
-    assets_dir,
-    upload_dir,
-    web_renderer,
-    route_url_strategy,
-) -> ft.SyncLocalSocketConnection:
-    # For some reason this is necessary to disable getting `flet.flet` linting errors
-    # pylint: disable=all
-    return ft.__connect_internal_sync(  # pylint: disable=protected-access
-        page_name,
-        view,
-        host,
-        port,
-        server,
-        auth_token,
-        session_handler,
-        assets_dir,
-        upload_dir,
-        web_renderer,
-        route_url_strategy,
-    )
+import flet as ft
 
 
 class BackgroundFlet:
-    """Class that manages the graphical flet subrocess and related operations"""
+    """Class that manages the graphical flet window and related operations"""
 
     def __init__(self):
         atexit.register(self.close_flet_view)
         self.logger = getLogger(__name__)
-        self._conn: Optional[Connection] = None
-        self._fvp: Optional[Popen] = None
-        self._pid_file: Optional[str] = None
+        self._page: Optional[ft.Page] = None
+        self._closed_event = threading.Event()
+        self._thread: Optional[threading.Thread] = None
+        self._loop: Optional[asyncio.AbstractEventLoop] = None
 
-    def _app_sync(
-        self,
-        target,
-        name="",
-        host=None,
-        port=0,
-        view: ft.AppViewer = ft.FLET_APP,
-        assets_dir=None,
-        upload_dir=None,
-        web_renderer="canvaskit",
-        route_url_strategy="path",
-        auth_token=None,
-    ) -> Tuple[Connection, Popen, str]:
-        # Based on https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet/src/flet/flet.py#L96 # noqa: E501
-        # We access Flet internals because it is simplest way to control the specifics
-        # In the future we should migrate / ask for a stable API that fits our needs
-        # pylint: disable=protected-access
-        conn = _connect_internal_sync(
-            page_name=name,
-            view=ft.FLET_APP,
-            host=host,
-            port=port,
-            server=None,
-            auth_token=auth_token,
-            session_handler=target,
-            assets_dir=assets_dir,
-            upload_dir=upload_dir,
-            web_renderer=web_renderer,
-            route_url_strategy=route_url_strategy,
-        )
+    def _run_flet_in_thread(self, target) -> None:
+        """Run flet app, patching signal.signal to no-op since we're in a
+        non-main thread where signal handlers cannot be registered."""
 
-        self.logger.info("Connected to Flet app and handling user sessions...")
+        original_signal = signal.signal
 
-        fvp, pid_file = ft.open_flet_view(
-            conn.page_url, assets_dir, view == ft.FLET_APP_HIDDEN
-        )
-        return conn, fvp, pid_file
+        def noop_signal(signalnum, handler):
+            # Return current handler without registering, since we're not
+            # in the main thread
+            return signal.getsignal(signalnum)
+
+        with patch.object(signal, "signal", noop_signal):
+            ft.app(target=target)
+
+        # ft.app() returns when the window is closed/destroyed
+        self._closed_event.set()
 
     def start_flet_view(self, target) -> None:
-        """Starts the flet process and places the connection, view process Popen and
-        flet python server PID file into self
+        """Starts the flet app in a background daemon thread and waits until the
+        target function has been called (page is available).
         """
-        self._conn, self._fvp, self._pid_file = self._app_sync(target)
+        self._closed_event.clear()
+        page_ready = threading.Event()
+
+        def wrapped_target(page: ft.Page):
+            self._page = page
+            self._loop = asyncio.get_event_loop()
+            page_ready.set()
+            target(page)
+
+        self._thread = threading.Thread(
+            target=self._run_flet_in_thread,
+            args=(wrapped_target,),
+            daemon=True,
+        )
+        self._thread.start()
+        if not page_ready.wait(timeout=30):
+            self._closed_event.set()
+            raise RuntimeError(
+                "Flet app failed to start within 30 seconds"
+            )
 
     def close_flet_view(self) -> None:
         """Close the currently open flet view"""
-        if not all([self._conn, self._fvp, self._pid_file]):
-            # Library was not open
+        if self._page is None:
             return
-        assert self._conn is not None
-        assert self._fvp is not None
-        assert self._pid_file is not None
-        self._conn.close()
-        ft.close_flet_view(self._pid_file)
-        self._fvp.terminate()
-        self._conn = None
-        self._fvp = None
-        self._pid_file = None
+        try:
+            if self._loop is not None and self._loop.is_running():
+                asyncio.run_coroutine_threadsafe(
+                    self._page.window.destroy(), self._loop
+                ).result(timeout=5)
+        except Exception:  # pylint: disable=broad-except
+            pass
+        self._closed_event.set()
+        self._page = None
+        self._thread = None
+        self._loop = None
 
     def poll(self):
-        return self._fvp.poll()
+        """Returns None if the window is still open, non-None if closed.
+        Preserves the same interface as the old Popen.poll() approach.
+        """
+        if self._closed_event.is_set():
+            return 0
+        return None
