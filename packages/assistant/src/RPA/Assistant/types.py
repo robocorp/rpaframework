@@ -32,12 +32,12 @@ class WindowLocation(Enum):
     TopLeft = auto()
 
 
-class VerticalLocation(Enum):
-    """A vertical location"""
+class HorizontalLocation(Enum):
+    """A horizontal location"""
 
-    Left = Alignment(-1, 0)
-    Center = Alignment(0, 0)
-    Right = Alignment(1, 0)
+    Left = Alignment.CENTER_LEFT
+    Center = Alignment.CENTER
+    Right = Alignment.CENTER_RIGHT
 
 
 class Location(Enum):
@@ -45,15 +45,15 @@ class Location(Enum):
     location
     """
 
-    TopLeft = Alignment(-1, -1)
-    TopCenter = Alignment(0, -1)
-    TopRight = Alignment(1, -1)
-    CenterLeft = Alignment(-1, 0)
-    Center = Alignment(0, 0)
-    CenterRight = Alignment(1, 0)
-    BottomLeft = Alignment(-1, 1)
-    BottomCenter = Alignment(0, 1)
-    BottomRight = Alignment(1, 1)
+    TopLeft = auto()
+    TopCenter = auto()
+    TopRight = auto()
+    CenterLeft = auto()
+    Center = auto()
+    CenterRight = auto()
+    BottomLeft = auto()
+    BottomCenter = auto()
+    BottomRight = auto()
 
 
 SupportedFletLayout = Union[Row, Column, Container, Stack]

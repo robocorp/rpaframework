@@ -33,7 +33,7 @@ from flet import (
 from flet import Stack
 from flet import ControlEvent
 from flet.controls.alignment import Alignment
-from flet import Dropdown, DropdownOption
+from flet import DropdownOption
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.utils.dotdict import DotDict
@@ -48,7 +48,7 @@ from RPA.Assistant.types import (
     Options,
     Result,
     Size,
-    VerticalLocation,
+    HorizontalLocation,
     WindowLocation,
 )
 from RPA.Assistant.utils import location_to_absolute, optional_str, to_options
@@ -236,7 +236,9 @@ class Assistant:
                 "Ask user",
             ]
             BuiltIn().import_library(
-                "RPA.core.logger.RobotLogListener", "WITH NAME", "RPA.RobotLogListener"
+                "RPA.core.logger.RobotLogListener",
+                "WITH NAME",
+                "RPA.RobotLogListener",
             )
             listener = BuiltIn().get_library_instance("RPA.RobotLogListener")
             # useful to comment out when debugging
@@ -256,7 +258,9 @@ class Assistant:
             for field_name in self._required_fields:
                 value = self._client.results.get(field_name)
                 error_message = (
-                    None if value else "This field is required"
+                    None
+                    if value
+                    else f"Mandatory field {field_name} was not completed"
                 )
                 if error_message:
                     should_close = False
@@ -326,7 +330,9 @@ class Assistant:
             Size.Large: "headlineLarge",
         }
 
-        self._client.add_element(element=Text(heading, theme_style=size_dict[size]))
+        self._client.add_element(
+            element=Text(heading, theme_style=size_dict[size])
+        )
 
     @keyword
     def add_text(
@@ -367,11 +373,17 @@ class Assistant:
             size = Size(size)
 
         if size == Size.Small:
-            self._client.add_element(element=Text(text, theme_style="bodySmall"))
+            self._client.add_element(
+                element=Text(text, theme_style="bodySmall")
+            )
         elif size == Size.Medium:
-            self._client.add_element(element=Text(text, theme_style="bodyMedium"))
+            self._client.add_element(
+                element=Text(text, theme_style="bodyMedium")
+            )
         elif size == Size.Large:
-            self._client.add_element(element=Text(text, theme_style="bodyLarge"))
+            self._client.add_element(
+                element=Text(text, theme_style="bodyLarge")
+            )
 
     @keyword
     def add_link(
@@ -463,11 +475,15 @@ class Assistant:
 
         is_url = url_or_path.startswith(("http://", "https://"))
         is_absolute_path = os.path.isabs(url_or_path)
-        is_absolute_and_file_exists = is_absolute_path and os.path.isfile(url_or_path)
+        is_absolute_and_file_exists = is_absolute_path and os.path.isfile(
+            url_or_path
+        )
 
         if is_url or is_absolute_and_file_exists:
             self._client.add_element(
-                Container(content=Image(src=url_or_path, width=width, height=height))
+                Container(
+                    content=Image(src=url_or_path, width=width, height=height)
+                )
             )
         else:
             self.logger.warning(
@@ -529,7 +545,9 @@ class Assistant:
 
         self._client.add_element(
             element=ElevatedButton(
-                text=(label or str(resolved)), icon=Icons.FILE_OPEN, on_click=open_file
+                text=(label or str(resolved)),
+                icon=Icons.FILE_OPEN,
+                on_click=open_file,
             )
         )
 
@@ -645,7 +663,9 @@ class Assistant:
         }
         flet_icon, color = flet_icon_conversions[variant]
 
-        self._client.add_element(flet.Icon(icon=flet_icon, color=color, size=size))
+        self._client.add_element(
+            flet.Icon(icon=flet_icon, color=color, size=size)
+        )
 
     @keyword
     def add_flet_icon(
@@ -687,7 +707,9 @@ class Assistant:
 
         # Convert string icon name to Icons enum value (flet 0.82+ requires enum)
         icon_value = getattr(Icons, icon.upper(), icon)
-        self._client.add_element(flet.Icon(icon=icon_value, color=color, size=size))
+        self._client.add_element(
+            flet.Icon(icon=icon_value, color=color, size=size)
+        )
 
     @keyword(tags=["input"])
     def add_text_input(
@@ -788,7 +810,9 @@ class Assistant:
         validation_function = None
         if validation:
             if isinstance(validation, str):
-                validation_function = self._callbacks.robot_validation(name, validation)
+                validation_function = self._callbacks.robot_validation(
+                    name, validation
+                )
             elif isinstance(validation, Callable):
                 validation_function = self._callbacks.python_validation(
                     name, validation
@@ -869,7 +893,8 @@ class Assistant:
                 change_user_password(result.username, result.password)
         """
         self._client.add_element(
-            name=name, element=TextField(label=label, value=placeholder, password=True)
+            name=name,
+            element=TextField(label=label, value=placeholder, password=True),
         )
 
     @keyword(tags=["input"])
@@ -1153,7 +1178,9 @@ class Assistant:
         self._client.date_inputs.append(name)
         self._client.add_element(
             name=name,
-            element=TextField(label=label, hint_text="YYYY-MM-DD", value=default),
+            element=TextField(
+                label=label, hint_text="YYYY-MM-DD", value=default
+            ),
             validation_func=self._callbacks.python_validation(name, validate),
         )
 
@@ -1269,7 +1296,8 @@ class Assistant:
         """  # noqa: E501
         self._client.results[name] = default
         self._client.add_element(
-            name=str(name), element=Checkbox(label=str(label), value=bool(default))
+            name=str(name),
+            element=Checkbox(label=str(label), value=bool(default)),
         )
 
     @keyword(tags=["input"])
@@ -1453,7 +1481,7 @@ class Assistant:
         label: str,
         function: Union[Callable, str],
         *args,
-        location: VerticalLocation = VerticalLocation.Left,
+        location: HorizontalLocation = HorizontalLocation.Left,
         **kwargs,
     ) -> None:
         """Create a button and execute the `function` as a callback when pressed.
@@ -1494,7 +1522,7 @@ class Assistant:
             self._callbacks.queue_fn_or_kw(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
-        if location == VerticalLocation.Left:
+        if location == HorizontalLocation.Left:
             self._client.add_element(button)
         else:
             container = Container(alignment=location.value, content=button)
@@ -1614,7 +1642,9 @@ class Assistant:
                 default = int(default)
 
             if slider_min > default or slider_max < default:
-                raise ValueError(f"Slider {name} had an out of bounds default value.")
+                raise ValueError(
+                    f"Slider {name} had an out of bounds default value."
+                )
             self._client.results[name] = default
 
         slider = Slider(
@@ -1707,7 +1737,9 @@ class Assistant:
         otherwise raise `ValueError`. If the check passes, close the layout element.
         """
         if not self._open_layouting:
-            raise LayoutError(f"Cannot close {layouting_element}, no open layout")
+            raise LayoutError(
+                f"Cannot close {layouting_element}, no open layout"
+            )
 
         last_opened = self._open_layouting[-1]
         if not last_opened == layouting_element:
@@ -1888,7 +1920,9 @@ class Assistant:
         self._close_layouting_element("AppBar")
 
     @keyword(tags=["layout"])
-    def open_stack(self, width: Optional[int] = None, height: Optional[int] = None):
+    def open_stack(
+        self, width: Optional[int] = None, height: Optional[int] = None
+    ):
         """Create a "Stack" layout element. Stack can be used to position elements
         absolutely and to have overlapping elements in your layout. Use Container's
         `top` and `left` arguments to position the elements in a stack.
