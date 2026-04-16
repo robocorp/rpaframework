@@ -3,6 +3,8 @@ from unittest import mock
 import pytest
 
 from RPA.Windows import Windows
+from RPA.Windows.keywords.action import ActionKeywords
+from RPA.Windows.keywords.context import ActionNotPossible
 from RPA.Windows.utils import IS_WINDOWS
 from RPA.core.windows.context import ElementNotFound, WindowControlError
 
@@ -63,6 +65,25 @@ def test_coordinates_clicking(mock_get_element, library, offset, x, y):
     item.robocorp_click_offset = offset
     library.click("MyButton")
     item.Click.assert_called_once_with(x=x, y=y, simulateMove=False, waitTime=0.5)
+
+
+def test_select_raises_when_value_cannot_be_selected():
+    ctx = mock.Mock()
+    ctx.logger = mock.Mock()
+    ctx.simulate_move = False
+    ctx.wait_time = 0.5
+    element = mock.Mock()
+    element.item.Select.return_value = False
+    ctx.get_element.return_value = element
+
+    keywords = ActionKeywords(ctx)
+
+    with pytest.raises(ActionNotPossible, match="could not select value"):
+        keywords.select("id:FontSizeComboBox", "22")
+
+    element.item.Select.assert_called_once_with(
+        "22", simulateMove=False, waitTime=0.5
+    )
 
 
 @pytest.mark.skipif(not IS_WINDOWS, reason="Windows required")

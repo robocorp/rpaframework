@@ -237,9 +237,13 @@ class ActionKeywords(ActionMethods):
             # NOTE(cmin764): This is not supposed to work on `*Pattern` or `TextRange`
             #  objects. (works with `Control`s and its derived flavors only, like a
             #  combobox)
-            element.item.Select(
+            selected = element.item.Select(
                 value, simulateMove=self.ctx.simulate_move, waitTime=self.ctx.wait_time
             )
+            if selected is False:
+                raise ActionNotPossible(
+                    f"Element {locator!r} could not select value {value!r}"
+                )
         else:
             raise ActionNotPossible(
                 f"Element {locator!r} does not support selection (try with"
