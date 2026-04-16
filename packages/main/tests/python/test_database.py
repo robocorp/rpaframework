@@ -1,5 +1,6 @@
 import functools
 import sqlite3
+from unittest import mock
 
 try:
     from contextlib import nullcontext
@@ -127,3 +128,32 @@ def test_query_explicit_returning(library):
         returning=False,
     )
     assert cursor.fetchall()[0][0] == 3
+
+
+@pytest.mark.parametrize("module_name", ["psycopg", "psycopg2"])
+def test_connect_to_database_uses_dbname_for_psycopg_variants(module_name):
+    connection = mock.Mock()
+    dbmodule = mock.Mock()
+    dbmodule.connect.return_value = connection
+
+    with mock.patch("RPA.Database.importlib.import_module", return_value=dbmodule):
+        library = Database()
+        library.connect_to_database(
+            module_name,
+            "orders",
+            "robot",
+            "secret",
+            "db.example.com",
+            5432,
+            autocommit=True,
+        )
+
+    dbmodule.connect.assert_called_once_with(
+        dbname="orders",
+        user="robot",
+        password="secret",
+        host="db.example.com",
+        port=5432,
+    )
+    assert library._dbconnection is connection
+    assert connection.autocommit is True

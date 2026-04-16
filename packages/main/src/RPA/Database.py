@@ -283,7 +283,7 @@ class Database:
         elif module_name.startswith("psycopg"):
             self.config.set_default_port(5432)
             self._dbconnection = dbmodule.connect(
-                database=self.config.get("database"),
+                dbname=self.config.get("database"),
                 user=self.config.get("username"),
                 password=self.config.get("password"),
                 host=self.config.get("host"),
