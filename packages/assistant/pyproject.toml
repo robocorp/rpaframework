@@ -5,7 +5,7 @@ description = "Interactive UI library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">=3.9.1"
+requires-python = ">=3.10"
 
 keywords = ["robotframework", "rpa", "automation", "dialogs", "assistant"]
 classifiers = [
@@ -17,7 +17,6 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.9",
 	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
@@ -26,7 +25,8 @@ classifiers = [
 dependencies = [
 	"robotframework>=4.0.0,!=4.0.1,!=6.1.0,<8.0.0",
 	"rpaframework-core>=12.1.0",
-	"robocorp-flet==0.4.2.3",
+	"flet~=0.82.0",
+	"flet-desktop~=0.82.0",
 	"typing-extensions>=4.4.0",
 ]
 

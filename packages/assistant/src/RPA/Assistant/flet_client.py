@@ -1,3 +1,4 @@
+import asyncio
 from dataclasses import dataclass
 import time
 from logging import getLogger
@@ -6,8 +7,10 @@ from typing import Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
-from flet_core import Checkbox, Column, Control, AppBar, Row, Stack
-from flet_core.control_event import ControlEvent
+from flet.controls.alignment import Alignment
+from flet import Checkbox, Column, Control, AppBar, Dropdown, Row, Stack
+from flet import ControlEvent
+from flet.controls.services.service import Service
 from typing_extensions import Literal
 
 from RPA.Assistant.background_flet import BackgroundFlet
@@ -70,25 +73,28 @@ class FletClient:
         width: int,
         on_top: bool,
         location: Union[WindowLocation, Tuple[int, int], None],
+        theme: str = "SYSTEM",
     ) -> Callable[[Page], None]:
         def inner_execute(page: Page):
             page.title = title
+            page.theme_mode = flet.ThemeMode[theme.upper()]
             if height != "AUTO":
-                page.window_height = height
-            page.window_width = width
-            page.window_always_on_top = on_top
+                page.window.height = height
+            page.window.width = width
+            page.window.always_on_top = on_top
 
             # TODO: do we even allow None as argument?
             # or some Location.AUTO which would let OS handle position?
             if location is not None:
                 if location is WindowLocation.Center:
-                    page.window_center()
+                    page.window.alignment = Alignment(0, 0)
                 else:
                     coordinates = resolve_absolute_position(location=location)
-                    page.window_left = coordinates[0]
-                    page.window_top = coordinates[1]
+                    page.window.left = coordinates[0]
+                    page.window.top = coordinates[1]
             page.scroll = ScrollMode.AUTO
             page.on_disconnect = lambda _: self._background_flet.close_flet_view()
+            page.on_error = lambda e: self.logger.error(f"Flet error: {e.data}")
             self.page = page
             self.update_elements()
 
@@ -126,13 +132,15 @@ class FletClient:
         """_make_on_change_data_saver special case for checkboxes, until
         https://github.com/flet-dev/flet/issues/1251 is fixed"""
 
-        def handle_string_bool(bool_string: Literal["true", "false"]):
-            if bool_string == "true":
-                return True
-            elif bool_string == "false":
-                return False
-            else:
-                raise ValueError(f"Invalid checkbox value {bool_string}")
+        def handle_string_bool(value):
+            if isinstance(value, bool):
+                return value
+            if isinstance(value, str):
+                if value.lower() == "true":
+                    return True
+                elif value.lower() == "false":
+                    return False
+            raise ValueError(f"Invalid checkbox value {value}")
 
         # We don't want the if inside the change_listener so it doesn't have to run on
         # every on_change event
@@ -176,6 +184,8 @@ class FletClient:
         if isinstance(current_layout, (Row, Stack, Column)):
             current_layout.controls.append(child)
         elif isinstance(current_layout, AppBar):
+            if current_layout.actions is None:
+                current_layout.actions = []
             current_layout.actions.append(child)
         elif isinstance(current_layout, Container):
             if current_layout.content is not None:
@@ -200,7 +210,7 @@ class FletClient:
             new_element = element
         else:
             # make a container that adds margin around the element
-            new_element = Container(margin=5, content=element)
+            new_element = Container(margin=5, content=element)  # pylint: disable=unexpected-keyword-arg
 
         if self._layout_stack:
             self._add_child_to_layout(new_element)
@@ -224,7 +234,10 @@ class FletClient:
                     validation_func(event)
                 on_change_data_saver(event)
 
-            element.on_change = on_change
+            if isinstance(element, Dropdown):
+                element.on_select = on_change
+            else:
+                element.on_change = on_change
 
     def add_invisible_element(self, element: flet.Control, name: Optional[str] = None):
         self._elements.invisible.append(element)
@@ -239,19 +252,47 @@ class FletClient:
         on_top: bool,
         location: Union[WindowLocation, Tuple[int, int], None],
         timeout: int,
+        theme: str = "SYSTEM",
     ):
         self._show_flet(
-            self._create_flet_target_function(title, height, width, on_top, location),
+            self._create_flet_target_function(
+                title, height, width, on_top, location, theme
+            ),
             timeout,
         )
+
+    def _is_on_flet_thread(self) -> bool:
+        """Check if the current thread is the flet event loop thread."""
+        flet_loop = self._background_flet.event_loop
+        if not flet_loop:
+            return True
+        try:
+            running_loop = asyncio.get_running_loop()
+        except RuntimeError:
+            running_loop = None
+        return running_loop is flet_loop
+
+    def _run_on_flet_thread(self, func: Callable) -> None:
+        """Run a function on the flet event loop thread. If already on the
+        flet thread, runs directly. Otherwise dispatches via call_soon_threadsafe.
+        """
+        if self._is_on_flet_thread():
+            func()
+        else:
+            flet_loop = self._background_flet.event_loop
+            if flet_loop:
+                flet_loop.call_soon_threadsafe(func)
 
     def clear_elements(self):
         self._elements = Elements([], {}, [], None, set())
         if self.page:
-            if self.page.controls:
-                self.page.controls.clear()
-            self.page.overlay.clear()
-            self.page.update()
+            def _clear():
+                if self.page.controls:
+                    self.page.controls.clear()
+                self.page.overlay.clear()
+                self.page._services.unregister_services()  # pylint: disable=protected-access
+                self.page.update()
+            self._run_on_flet_thread(_clear)
 
     def update_elements(self):
         """Updates the UI and shows new elements which have been added into the element
@@ -260,27 +301,35 @@ class FletClient:
         if not self.page:
             raise PageNotOpenError("No page open when update_elements was called")
 
-        # invisible elements have to be added before visible ones, for file pickers
-        # to work correctly
-        for element in self._elements.invisible:
-            self.page.overlay.append(element)
-        for element in self._elements.visible:
-            self.page.add(element)
-        if self._elements.app_bar:
-            self.page.appbar = self._elements.app_bar
-        self.page.update()
+        def _update():
+            # invisible elements have to be added before visible ones, for file pickers
+            # to work correctly
+            for element in self._elements.invisible:
+                if isinstance(element, Service):
+                    self.page._services.register_service(element)  # pylint: disable=protected-access
+                else:
+                    self.page.overlay.append(element)
+            for element in self._elements.visible:
+                self.page.add(element)
+            if self._elements.app_bar:
+                self.page.appbar = self._elements.app_bar
+            self.page.update()
+
+        self._run_on_flet_thread(_update)
 
     def flet_update(self):
-        """Runs a plain update of the flet UI, updating existing elements"""
+        """Runs a plain update of the flet UI, updating existing elements."""
         if not self.page:
             raise PageNotOpenError("Flet update called when page is not open")
-        self.page.update()
+        self._run_on_flet_thread(self.page.update)
 
     def lock_elements(self):
+        self.logger.debug("Locking %d elements", len(self._to_disable))
         for element in self._to_disable:
             element.disabled = True
 
     def unlock_elements(self):
+        self.logger.debug("Unlocking %d elements", len(self._to_disable))
         for element in self._to_disable:
             element.disabled = False
 
@@ -322,12 +371,15 @@ class FletClient:
         return (current_layout.width, current_layout.height)
 
     def set_error(self, element_name: str, error: str):
-        """Set an error for an element. The element must be a TextField or other
-        Control that has error_text attribute."""
+        """Set an error for an element. The element must be a control that has
+        an error or error_text attribute."""
         element = self._elements.visible_by_name[element_name]
-        if not hasattr(element, "error_text"):
+        if hasattr(element, "error"):
+            element.error = error
+        elif hasattr(element, "error_text"):
+            element.error_text = error
+        else:
             raise RuntimeError(
-                "Tried to set error for element that does not have error_text attribute"
+                "Tried to set error for element that does not have error attribute"
             )
-        element.error_text = error
         self.flet_update()
