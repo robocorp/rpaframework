@@ -6,7 +6,7 @@ from RPA.Desktop.keywords import LibraryContext, keyword
 def to_key(key: str, escaped=False) -> Any:
     """Convert key string to correct enum value."""
     # pylint: disable=C0415
-    from pynput_robocorp.keyboard import Key, KeyCode
+    from pynput.keyboard import Key, KeyCode
 
     if isinstance(key, (Key, KeyCode)):
         return key
@@ -36,7 +36,7 @@ class KeyboardKeywords(LibraryContext):
         super().__init__(ctx)
         try:
             # pylint: disable=C0415
-            from pynput_robocorp.keyboard import Controller
+            from pynput.keyboard import Controller
 
             self._keyboard = Controller()
             self._error = None
