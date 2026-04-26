@@ -1,3 +1,4 @@
+# pylint: disable=unexpected-keyword-arg,too-many-lines
 import asyncio
 import glob
 import logging
@@ -32,7 +33,6 @@ from flet import (
 )
 from flet import Stack
 from flet import ControlEvent
-from flet.controls.alignment import Alignment
 from flet import DropdownOption
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -221,13 +221,14 @@ class Assistant:
             send_feedback_message(result.email, result.message)
     """  # noqa: E501
 
-    def __init__(self) -> None:
+    def __init__(self, theme: Literal["SYSTEM", "LIGHT", "DARK"] = "SYSTEM") -> None:
         self.logger = logging.getLogger(__name__)
         os.environ["FLET_LOG_LEVEL"] = "warning"
         self._client = FletClient()
         self._callbacks = CallbackRunner(self._client)
         self._required_fields: Set[str] = set()
         self._open_layouting: List[str] = []
+        self._theme: Literal["SYSTEM", "LIGHT", "DARK"] = theme
 
         try:
             # Prevent logging from keywords that return results
@@ -1362,6 +1363,7 @@ class Assistant:
         width: int = 480,
         on_top: bool = False,
         location: Union[WindowLocation, Tuple[int, int], None] = None,
+        theme: Optional[Literal["SYSTEM", "LIGHT", "DARK"]] = None,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -1373,6 +1375,9 @@ class Assistant:
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
+        :param theme: Color theme for the dialog window. Options are ``SYSTEM``
+                      (follow OS setting), ``LIGHT``, or ``DARK``. Defaults to
+                      the library-level theme (``SYSTEM`` if not set).
 
         If the `location` argument is `None` it will let the operating system
         place the window.
@@ -1412,7 +1417,7 @@ class Assistant:
             location = WindowLocation[location]
 
         self._client.display_flet_window(
-            title, height, width, on_top, location, timeout
+            title, height, width, on_top, location, timeout, theme or self._theme
         )
         results = self._get_results()
         self._client.results.clear()

@@ -1,6 +1,5 @@
 import asyncio
 from dataclasses import dataclass
-import threading
 import time
 from logging import getLogger
 from timeit import default_timer as timer
@@ -8,6 +7,7 @@ from typing import Callable, Dict, List, Optional, Set, Tuple, Union
 
 import flet
 from flet import Container, Page, ScrollMode
+from flet.controls.alignment import Alignment
 from flet import Checkbox, Column, Control, AppBar, Dropdown, Row, Stack
 from flet import ControlEvent
 from flet.controls.services.service import Service
@@ -73,9 +73,11 @@ class FletClient:
         width: int,
         on_top: bool,
         location: Union[WindowLocation, Tuple[int, int], None],
+        theme: str = "SYSTEM",
     ) -> Callable[[Page], None]:
         def inner_execute(page: Page):
             page.title = title
+            page.theme_mode = flet.ThemeMode[theme.upper()]
             if height != "AUTO":
                 page.window.height = height
             page.window.width = width
@@ -85,8 +87,6 @@ class FletClient:
             # or some Location.AUTO which would let OS handle position?
             if location is not None:
                 if location is WindowLocation.Center:
-                    from flet.controls.alignment import Alignment
-
                     page.window.alignment = Alignment(0, 0)
                 else:
                     coordinates = resolve_absolute_position(location=location)
@@ -210,7 +210,7 @@ class FletClient:
             new_element = element
         else:
             # make a container that adds margin around the element
-            new_element = Container(margin=5, content=element)
+            new_element = Container(margin=5, content=element)  # pylint: disable=unexpected-keyword-arg
 
         if self._layout_stack:
             self._add_child_to_layout(new_element)
@@ -252,15 +252,18 @@ class FletClient:
         on_top: bool,
         location: Union[WindowLocation, Tuple[int, int], None],
         timeout: int,
+        theme: str = "SYSTEM",
     ):
         self._show_flet(
-            self._create_flet_target_function(title, height, width, on_top, location),
+            self._create_flet_target_function(
+                title, height, width, on_top, location, theme
+            ),
             timeout,
         )
 
     def _is_on_flet_thread(self) -> bool:
         """Check if the current thread is the flet event loop thread."""
-        flet_loop = self._background_flet._loop
+        flet_loop = self._background_flet.event_loop
         if not flet_loop:
             return True
         try:
@@ -276,7 +279,7 @@ class FletClient:
         if self._is_on_flet_thread():
             func()
         else:
-            flet_loop = self._background_flet._loop
+            flet_loop = self._background_flet.event_loop
             if flet_loop:
                 flet_loop.call_soon_threadsafe(func)
 
@@ -287,7 +290,7 @@ class FletClient:
                 if self.page.controls:
                     self.page.controls.clear()
                 self.page.overlay.clear()
-                self.page._services.unregister_services()
+                self.page._services.unregister_services()  # pylint: disable=protected-access
                 self.page.update()
             self._run_on_flet_thread(_clear)
 
@@ -303,7 +306,7 @@ class FletClient:
             # to work correctly
             for element in self._elements.invisible:
                 if isinstance(element, Service):
-                    self.page._services.register_service(element)
+                    self.page._services.register_service(element)  # pylint: disable=protected-access
                 else:
                     self.page.overlay.append(element)
             for element in self._elements.visible:

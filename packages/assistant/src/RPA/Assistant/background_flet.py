@@ -24,9 +24,7 @@ class BackgroundFlet:
         """Run flet app, patching signal.signal to no-op since we're in a
         non-main thread where signal handlers cannot be registered."""
 
-        original_signal = signal.signal
-
-        def noop_signal(signalnum, handler):
+        def noop_signal(signalnum, _handler):
             # Return current handler without registering, since we're not
             # in the main thread
             return signal.getsignal(signalnum)
@@ -77,6 +75,11 @@ class BackgroundFlet:
         self._page = None
         self._thread = None
         self._loop = None
+
+    @property
+    def event_loop(self) -> Optional[asyncio.AbstractEventLoop]:
+        """The asyncio event loop running in the flet thread."""
+        return self._loop
 
     def poll(self):
         """Returns None if the window is still open, non-None if closed.
