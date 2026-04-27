@@ -75,7 +75,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Install xclip on linux
@@ -93,9 +93,9 @@ jobs:
         id: full-python-version
         shell: bash
         run: |
-          echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")
+          echo "version=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")" >> $GITHUB_OUTPUT
       - name: Set up cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('uv.lock') }}
@@ -113,7 +113,7 @@ jobs:
         run: |
           export XDG_SESSION_TYPE=x11
           xvfb-run --server-args="-screen 0 1280x720x24" invoke code.test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: success() || failure()
         with:
           name: ${{ matrix.os }}-py${{ matrix.python }}-test-reports
@@ -128,7 +128,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install uv
@@ -138,13 +138,13 @@ jobs:
         run: uv build --wheel
         working-directory: packages/main
       - name: Upload wheel artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: rpaframework-wheel
           path: packages/main/dist/*.whl
           retention-days: 14
       - name: Comment on PR with artifact link
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         continue-on-error: true
         with:
           script: |
