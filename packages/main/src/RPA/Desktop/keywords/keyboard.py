@@ -3,7 +3,7 @@ from RPA.core.locators import LocatorType
 from RPA.Desktop.keywords import LibraryContext, keyword
 
 
-def to_key(key: str) -> Any:
+def to_key(key: Any) -> Any:
     """Convert key string to correct enum value."""
     # pylint: disable=C0415
     from pynput.keyboard import Key, KeyCode
