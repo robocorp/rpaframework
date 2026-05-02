@@ -97,9 +97,10 @@ class TestFrame(wx.Frame):
     def _show_label(self) -> None:
         if self._dynamic_label:
             return
-        self._dynamic_label = wx.StaticText(
-            self._dyn_inner, label="DynamicContent"
-        )
+        # wx.StaticText is skipped by UIAutomation (non-interactive Win32 Static).
+        # Use a disabled Button instead — ButtonControl is always in the a11y tree.
+        self._dynamic_label = wx.Button(self._dyn_inner, label="DynamicContent")
+        self._dynamic_label.Disable()
         self._dyn_inner_sizer.Add(self._dynamic_label, 0, wx.ALL, 4)
         self._dyn_inner.Layout()
         self.Layout()
