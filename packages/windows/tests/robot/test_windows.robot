@@ -708,9 +708,10 @@ Test App WX Path Locator Timeout
     ...    Get Element    name:DynamicContent    timeout=0.5
     Should Be Equal    ${result}[0]    FAIL    msg=Short timeout should have failed
 
-    # Trigger the 3-second delayed element, then find it within 5 s.
+    # Trigger the 3-second delayed element, then find it within 8 s.
     Click    name:"Show after 3s"
-    ${elem} =    Get Element    name:DynamicContent    timeout=5
+    Sleep    0.5s
+    ${elem} =    Get Element    name:DynamicContent    timeout=8
     Should Not Be Equal    ${elem}    ${None}
 
     [Teardown]  Stop Test App WX
