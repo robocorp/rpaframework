@@ -663,7 +663,7 @@ Test App Path Locator Timeout
 
 Start Test App WX
     [Documentation]     Launch testapp_wx.py and set it as the active window.
-    Start Process    python    ${RESOURCES}${/}testapp_wx.py    alias=testapp_wx
+    Start Process    uv    run    python    ${RESOURCES}${/}testapp_wx.py    alias=testapp_wx
     Sleep    2s
     Control Window    ${LOC_TESTAPP_WX}
 
