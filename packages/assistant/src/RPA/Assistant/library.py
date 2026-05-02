@@ -1,3 +1,5 @@
+# pylint: disable=unexpected-keyword-arg,too-many-lines
+import asyncio
 import glob
 import logging
 import os
@@ -17,7 +19,6 @@ from flet import (
     Dropdown,
     ElevatedButton,
     FilePicker,
-    FilePickerResultEvent,
     Image,
     MainAxisAlignment,
     Markdown,
@@ -27,13 +28,12 @@ from flet import (
     Slider,
     Text,
     TextField,
-    alignment,
-    colors,
-    icons,
+    Colors,
+    Icons,
 )
-from flet_core import Stack
-from flet_core.control_event import ControlEvent
-from flet_core.dropdown import Option
+from flet import Stack
+from flet import ControlEvent
+from flet import DropdownOption
 from robot.api.deco import keyword, library
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from robot.utils.dotdict import DotDict
@@ -48,7 +48,7 @@ from RPA.Assistant.types import (
     Options,
     Result,
     Size,
-    VerticalLocation,
+    HorizontalLocation,
     WindowLocation,
 )
 from RPA.Assistant.utils import location_to_absolute, optional_str, to_options
@@ -221,13 +221,14 @@ class Assistant:
             send_feedback_message(result.email, result.message)
     """  # noqa: E501
 
-    def __init__(self) -> None:
+    def __init__(self, theme: Literal["SYSTEM", "LIGHT", "DARK"] = "SYSTEM") -> None:
         self.logger = logging.getLogger(__name__)
         os.environ["FLET_LOG_LEVEL"] = "warning"
         self._client = FletClient()
         self._callbacks = CallbackRunner(self._client)
         self._required_fields: Set[str] = set()
         self._open_layouting: List[str] = []
+        self._theme: Literal["SYSTEM", "LIGHT", "DARK"] = theme
 
         try:
             # Prevent logging from keywords that return results
@@ -236,7 +237,9 @@ class Assistant:
                 "Ask user",
             ]
             BuiltIn().import_library(
-                "RPA.core.logger.RobotLogListener", "WITH NAME", "RPA.RobotLogListener"
+                "RPA.core.logger.RobotLogListener",
+                "WITH NAME",
+                "RPA.RobotLogListener",
             )
             listener = BuiltIn().get_library_instance("RPA.RobotLogListener")
             # useful to comment out when debugging
@@ -256,7 +259,9 @@ class Assistant:
             for field_name in self._required_fields:
                 value = self._client.results.get(field_name)
                 error_message = (
-                    None if value else f"Mandatory field {field_name} was not completed"
+                    None
+                    if value
+                    else f"Mandatory field {field_name} was not completed"
                 )
                 if error_message:
                     should_close = False
@@ -271,7 +276,8 @@ class Assistant:
 
             if should_close:
                 self._client.results["submit"] = label
-                self._client.page.window_destroy()
+                loop = asyncio.get_event_loop()
+                loop.create_task(self._client.page.window.destroy())
 
         return ElevatedButton(label, on_click=validate_and_close)
 
@@ -325,7 +331,9 @@ class Assistant:
             Size.Large: "headlineLarge",
         }
 
-        self._client.add_element(element=Text(heading, style=size_dict[size]))
+        self._client.add_element(
+            element=Text(heading, theme_style=size_dict[size])
+        )
 
     @keyword
     def add_text(
@@ -366,11 +374,17 @@ class Assistant:
             size = Size(size)
 
         if size == Size.Small:
-            self._client.add_element(element=Text(text, style="bodySmall"))
+            self._client.add_element(
+                element=Text(text, theme_style="bodySmall")
+            )
         elif size == Size.Medium:
-            self._client.add_element(element=Text(text, style="bodyMedium"))
+            self._client.add_element(
+                element=Text(text, theme_style="bodyMedium")
+            )
         elif size == Size.Large:
-            self._client.add_element(element=Text(text, style="bodyLarge"))
+            self._client.add_element(
+                element=Text(text, theme_style="bodyLarge")
+            )
 
     @keyword
     def add_link(
@@ -412,7 +426,9 @@ class Assistant:
         self._client.add_element(
             Markdown(
                 f"[{label}]({url})",
-                on_tap_link=lambda e: self._client.page.launch_url(e.data),
+                on_tap_link=lambda e: asyncio.ensure_future(
+                    self._client.page.launch_url(e.data)
+                ),
             )
         )
 
@@ -460,11 +476,15 @@ class Assistant:
 
         is_url = url_or_path.startswith(("http://", "https://"))
         is_absolute_path = os.path.isabs(url_or_path)
-        is_absolute_and_file_exists = is_absolute_path and os.path.isfile(url_or_path)
+        is_absolute_and_file_exists = is_absolute_path and os.path.isfile(
+            url_or_path
+        )
 
         if is_url or is_absolute_and_file_exists:
             self._client.add_element(
-                Container(content=Image(src=url_or_path, width=width, height=height))
+                Container(
+                    content=Image(src=url_or_path, width=width, height=height)
+                )
             )
         else:
             self.logger.warning(
@@ -526,7 +546,9 @@ class Assistant:
 
         self._client.add_element(
             element=ElevatedButton(
-                text=(label or str(resolved)), icon=icons.FILE_OPEN, on_click=open_file
+                text=(label or str(resolved)),
+                icon=Icons.FILE_OPEN,
+                on_click=open_file,
             )
         )
 
@@ -636,13 +658,15 @@ class Assistant:
             variant = Icon(variant)
 
         flet_icon_conversions: Dict[Icon, Tuple[str, str]] = {
-            Icon.Success: (icons.CHECK, colors.GREEN_500),
-            Icon.Warning: (icons.WARNING, colors.YELLOW_500),
-            Icon.Failure: (icons.CLOSE, colors.RED_500),
+            Icon.Success: (Icons.CHECK, Colors.GREEN_500),
+            Icon.Warning: (Icons.WARNING, Colors.YELLOW_500),
+            Icon.Failure: (Icons.CLOSE, Colors.RED_500),
         }
         flet_icon, color = flet_icon_conversions[variant]
 
-        self._client.add_element(flet.Icon(name=flet_icon, color=color, size=size))
+        self._client.add_element(
+            flet.Icon(icon=flet_icon, color=color, size=size)
+        )
 
     @keyword
     def add_flet_icon(
@@ -651,14 +675,14 @@ class Assistant:
         color: Optional[str] = None,
         size: Optional[int] = 24,
     ):
-        """Add an icon from a large gallery of icons.
+        """Add an icon from a large gallery of Icons.
 
         :param icon:      Corresponding flet icon name. Check
-                          https://gallery.flet.dev/icons-browser/ for a list of icons.
+                          https://gallery.flet.dev/icons-browser/ for a list of Icons.
                           Write the name in ``lower_case``
         :param color:     Color for the icon. Default depends on icon. Allowed values
                           are colors from
-                          https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37
+                          https://flet.dev/docs/reference/colors
                           or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
         :param size:      Integer size for the icon.
 
@@ -682,7 +706,11 @@ class Assistant:
                 assistant.run_dialog()
         """  # noqa: E501
 
-        self._client.add_element(flet.Icon(name=icon, color=color, size=size))
+        # Convert string icon name to Icons enum value (flet 0.82+ requires enum)
+        icon_value = getattr(Icons, icon.upper(), icon)
+        self._client.add_element(
+            flet.Icon(icon=icon_value, color=color, size=size)
+        )
 
     @keyword(tags=["input"])
     def add_text_input(
@@ -783,7 +811,9 @@ class Assistant:
         validation_function = None
         if validation:
             if isinstance(validation, str):
-                validation_function = self._callbacks.robot_validation(name, validation)
+                validation_function = self._callbacks.robot_validation(
+                    name, validation
+                )
             elif isinstance(validation, Callable):
                 validation_function = self._callbacks.python_validation(
                     name, validation
@@ -864,7 +894,8 @@ class Assistant:
                 change_user_password(result.username, result.password)
         """
         self._client.add_element(
-            name=name, element=TextField(label=label, value=placeholder, password=True)
+            name=name,
+            element=TextField(label=label, value=placeholder, password=True),
         )
 
     @keyword(tags=["input"])
@@ -986,41 +1017,40 @@ class Assistant:
                     print("Selected file: ", path)
         """
 
-        def on_pick_result(event: FilePickerResultEvent):
-            if event.files:
-                self._client.results[str(name)] = [f.path for f in event.files]
-                selected_files.value = (
-                    ", ".join(map(lambda f: f.name, event.files))
-                    if event.files
-                    else "Cancelled!"
-                )
-                selected_files.update()
-
-        file_picker = FilePicker(on_result=on_pick_result)
+        file_picker = FilePicker()
         self._client.add_invisible_element(file_picker)
         selected_files = Text()
 
-        options = {
+        pick_options = {
             "source": optional_str(source),
             "file_type": optional_str(file_type),
         }
 
-        if not options["source"]:
-            options["source"] = os.path.expanduser("~")
+        if not pick_options["source"]:
+            pick_options["source"] = os.path.expanduser("~")
 
-        if options["file_type"]:
-            options["file_type"] = options["file_type"].split(",")
+        if pick_options["file_type"]:
+            pick_options["file_type"] = pick_options["file_type"].split(",")
+
+        async def on_pick_click(_):
+            files = await file_picker.pick_files(
+                allow_multiple=bool(multiple),
+                initial_directory=pick_options["source"],
+                allowed_extensions=pick_options["file_type"],
+            )
+            if files:
+                self._client.results[str(name)] = [f.path for f in files]
+                selected_files.value = ", ".join(f.name for f in files)
+            else:
+                selected_files.value = "Cancelled!"
+            selected_files.update()
 
         self._client.add_element(
             Row(
                 [
                     ElevatedButton(
                         label or "Choose files...",
-                        on_click=lambda _: file_picker.pick_files(
-                            allow_multiple=bool(multiple),
-                            initial_directory=options["source"],
-                            allowed_extensions=options["file_type"],
-                        ),
+                        on_click=on_pick_click,
                     ),
                     selected_files,
                 ]
@@ -1080,7 +1110,7 @@ class Assistant:
                 print("User type should be: ", result.user_type)
         """
         options, default = to_options(options, default)
-        options: List[Control] = list(map(Option, options))
+        options: List[Control] = list(map(DropdownOption, options))
         dropdown = Dropdown(options=options, value=default)
 
         self._client.results[name] = default
@@ -1149,7 +1179,9 @@ class Assistant:
         self._client.date_inputs.append(name)
         self._client.add_element(
             name=name,
-            element=TextField(label=label, hint_text="YYYY-MM-DD", value=default),
+            element=TextField(
+                label=label, hint_text="YYYY-MM-DD", value=default
+            ),
             validation_func=self._callbacks.python_validation(name, validate),
         )
 
@@ -1265,7 +1297,8 @@ class Assistant:
         """  # noqa: E501
         self._client.results[name] = default
         self._client.add_element(
-            name=str(name), element=Checkbox(label=str(label), value=bool(default))
+            name=str(name),
+            element=Checkbox(label=str(label), value=bool(default)),
         )
 
     @keyword(tags=["input"])
@@ -1319,8 +1352,7 @@ class Assistant:
             self._client.add_to_disablelist(button)
 
         button_row = Row(button_elements, alignment=MainAxisAlignment.END)
-        container = Container(button_row, alignment=alignment.bottom_right)
-        self._client.add_element(container)
+        self._client.add_element(button_row)
 
     @keyword(tags=["dialog"])
     def run_dialog(
@@ -1331,6 +1363,7 @@ class Assistant:
         width: int = 480,
         on_top: bool = False,
         location: Union[WindowLocation, Tuple[int, int], None] = None,
+        theme: Optional[Literal["SYSTEM", "LIGHT", "DARK"]] = None,
     ) -> Result:
         """Create a dialog from all the defined elements and block
         until the user has handled it.
@@ -1342,6 +1375,9 @@ class Assistant:
         :param on_top: Show dialog always on top of other windows
         :param location: Where to place the dialog (options are Center, TopLeft, or a
                          tuple of ints)
+        :param theme: Color theme for the dialog window. Options are ``SYSTEM``
+                      (follow OS setting), ``LIGHT``, or ``DARK``. Defaults to
+                      the library-level theme (``SYSTEM`` if not set).
 
         If the `location` argument is `None` it will let the operating system
         place the window.
@@ -1381,10 +1417,14 @@ class Assistant:
             location = WindowLocation[location]
 
         self._client.display_flet_window(
-            title, height, width, on_top, location, timeout
+            title, height, width, on_top, location, timeout, theme or self._theme
         )
         results = self._get_results()
         self._client.results.clear()
+        self._client.date_inputs.clear()
+        self._required_fields.clear()
+        self._callbacks.validation_errors.clear()
+        self._open_layouting.clear()
 
         return results
 
@@ -1392,7 +1432,7 @@ class Assistant:
         results = self._client.results
         for name, value in results.items():
             if name in self._client.date_inputs and isinstance(value, str):
-                results[name] = date.fromisoformat(value)
+                results[name] = date.fromisoformat(value) if value else None
         return DotDict(**results)
 
     @keyword(tags=["dialog"])
@@ -1446,7 +1486,7 @@ class Assistant:
         label: str,
         function: Union[Callable, str],
         *args,
-        location: VerticalLocation = VerticalLocation.Left,
+        location: HorizontalLocation = HorizontalLocation.Left,
         **kwargs,
     ) -> None:
         """Create a button and execute the `function` as a callback when pressed.
@@ -1487,8 +1527,11 @@ class Assistant:
             self._callbacks.queue_fn_or_kw(function, *args, **kwargs)
 
         button = ElevatedButton(label, on_click=on_click)
-        container = Container(alignment=location.value, content=button)
-        self._client.add_element(container)
+        if location == HorizontalLocation.Left:
+            self._client.add_element(button)
+        else:
+            container = Container(alignment=location.value, content=button)
+            self._client.add_element(container)
         self._client.add_to_disablelist(button)
 
     @keyword(tags=["dialog"])
@@ -1604,7 +1647,9 @@ class Assistant:
                 default = int(default)
 
             if slider_min > default or slider_max < default:
-                raise ValueError(f"Slider {name} had an out of bounds default value.")
+                raise ValueError(
+                    f"Slider {name} had an out of bounds default value."
+                )
             self._client.results[name] = default
 
         slider = Slider(
@@ -1636,8 +1681,8 @@ class Assistant:
         :param stroke_width: Width of the spinner's stroke
         :param color:       Color of the spinner's stroke.
                             Allowed values are colors from
-                            [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
-                            or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+                            [https://flet.dev/docs/reference/colors|Flet Documentation] (in the format ``black12``, ``red500``)
+                            or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
         :param tooltip:     Tooltip to be displayed
                             on mouse hover.
         :param value:       Between 0.0 and 1.0 if you want to manually control it's completion.
@@ -1671,8 +1716,8 @@ class Assistant:
         :param bar_height:  Height of the bar
         :param color:       Color of the bar's stroke.
                             Allowed values are colors from
-                            [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
-                            or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+                            [https://flet.dev/docs/reference/colors|Flet Documentation] (in the format ``black12``, ``red500``)
+                            or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
         :param tooltip:     Tooltip to be displayed on mouse hover.
         :param value:       Between 0.0 and 1.0 if you want to manually control it's completion.
                             Use `None` for indeterminate progress indicator.
@@ -1697,7 +1742,9 @@ class Assistant:
         otherwise raise `ValueError`. If the check passes, close the layout element.
         """
         if not self._open_layouting:
-            raise LayoutError(f"Cannot close {layouting_element}, no open layout")
+            raise LayoutError(
+                f"Cannot close {layouting_element}, no open layout"
+            )
 
         last_opened = self._open_layouting[-1]
         if not last_opened == layouting_element:
@@ -1768,8 +1815,8 @@ class Assistant:
 
         :param bgcolor:   Background color for the container. Default depends on icon.
                           Allowed values are colors from
-                          [https://github.com/flet-dev/flet/blob/035b00104f782498d084c2fd7ee96132a542ab7f/sdk/python/packages/flet-core/src/flet_core/colors.py#L37|Flet Documentation] (in the format ``black12``, ``red500``)
-                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).XXYYZZ
+                          [https://flet.dev/docs/reference/colors|Flet Documentation] (in the format ``black12``, ``red500``)
+                          or ARGB/RGB (#FFXXYYZZ or #XXYYZZ).
         :param location:  Where to place the container (A Location value or tuple of
                           ints). Only works inside a Stack layout element.
 
@@ -1878,7 +1925,9 @@ class Assistant:
         self._close_layouting_element("AppBar")
 
     @keyword(tags=["layout"])
-    def open_stack(self, width: Optional[int] = None, height: Optional[int] = None):
+    def open_stack(
+        self, width: Optional[int] = None, height: Optional[int] = None
+    ):
         """Create a "Stack" layout element. Stack can be used to position elements
         absolutely and to have overlapping elements in your layout. Use Container's
         `top` and `left` arguments to position the elements in a stack.
