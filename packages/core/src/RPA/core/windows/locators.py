@@ -186,8 +186,8 @@ class MatchObject:
     }
     TREE_SEP = " > "
     PATH_SEP = "|"  # path locator index separator
-    QUOTE = '"'  # enclosing quote character
-    _LOCATOR_REGEX = re.compile(rf"\S*{QUOTE}[^{QUOTE}]+{QUOTE}|\S+", re.IGNORECASE)
+    QUOTE = '"'  # enclosing quote character (double-quote; single-quote also accepted)
+    _LOCATOR_REGEX = re.compile(r"""\S*"[^"]+"|\S*'[^']+'|\S+""", re.IGNORECASE)
     _LOGGER = logging.getLogger(__name__)
 
     locators: List[Tuple] = field(default_factory=list)
@@ -245,7 +245,7 @@ class MatchObject:
             default_values.append(part_text)
 
     def add_locator(self, control_strategy: str, value: str, level: int = 0) -> None:
-        value = value.strip(f"{self.QUOTE} ")
+        value = value.strip("\"' ")
         if not value:
             return
 
