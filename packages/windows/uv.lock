@@ -640,6 +640,12 @@ wheels = [
 ]
 
 [[package]]
+name = "evdev"
+version = "1.9.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a5/f5/397b61091120a9ca5001041dd7bf76c385b3bfd67a0e5bcb74b852bd22a4/evdev-1.9.3.tar.gz", hash = "sha256:2c140e01ac8437758fa23fe5c871397412461f42d421aa20241dc8fe8cfccbc9", size = 32723, upload-time = "2026-02-05T21:54:24.987Z" }
+
+[[package]]
 name = "exceptiongroup"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1574,19 +1580,19 @@ wheels = [
 ]
 
 [[package]]
-name = "pynput-robocorp-fork"
-version = "5.0.0"
+name = "pynput"
+version = "1.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pyobjc-core", marker = "sys_platform == 'darwin'" },
+    { name = "evdev", marker = "'linux' in sys_platform" },
     { name = "pyobjc-framework-applicationservices", marker = "sys_platform == 'darwin'" },
     { name = "pyobjc-framework-quartz", marker = "sys_platform == 'darwin'" },
     { name = "python-xlib", marker = "'linux' in sys_platform" },
     { name = "six" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/35/69/de9c1c4fbd0a4aae6443740fe7b57ca5c77eeff235f9a6c750deeeec9aa4/pynput-robocorp-fork-5.0.0.tar.gz", hash = "sha256:9834c62ad5cb03b1bad6531412412681fcc4492e48e411d38285b5ed292b2b46", size = 76618, upload-time = "2022-12-29T14:04:29.425Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f0/c3/dccf44c68225046df5324db0cc7d563a560635355b3e5f1d249468268a6f/pynput-1.8.1.tar.gz", hash = "sha256:70d7c8373ee98911004a7c938742242840a5628c004573d84ba849d4601df81e", size = 82289, upload-time = "2025-03-17T17:12:01.481Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b9/ff/43544bb5f85bf8c433570bd6023991c90ff1ff5db801d7bf2478071fffc8/pynput_robocorp_fork-5.0.0-py2.py3-none-any.whl", hash = "sha256:1f9d76058bc6e5dfa8b8d31c74424909945f121b5893a3bace5e2dedcf71cefb", size = 84279, upload-time = "2022-12-29T14:04:27.507Z" },
+    { url = "https://files.pythonhosted.org/packages/59/4f/ac3fa906ae8a375a536b12794128c5efacade9eaa917a35dfd27ce0c7400/pynput-1.8.1-py2.py3-none-any.whl", hash = "sha256:42dfcf27404459ca16ca889c8fb8ffe42a9fe54f722fd1a3e130728e59e768d2", size = 91693, upload-time = "2025-03-17T17:12:00.094Z" },
 ]
 
 [[package]]
@@ -2117,7 +2123,7 @@ dependencies = [
     { name = "comtypes", marker = "sys_platform == 'win32'" },
     { name = "fire" },
     { name = "psutil", marker = "sys_platform == 'win32'" },
-    { name = "pynput-robocorp-fork" },
+    { name = "pynput" },
     { name = "pywin32", marker = "sys_platform == 'win32'" },
     { name = "robotframework" },
     { name = "robotframework-pythonlibcore" },
@@ -2136,7 +2142,7 @@ requires-dist = [
     { name = "dataclasses", marker = "python_full_version == '3.6.*'", specifier = ">=0.7" },
     { name = "fire", specifier = ">=0.7.0" },
     { name = "psutil", marker = "sys_platform == 'win32'", specifier = ">=5.9.0" },
-    { name = "pynput-robocorp-fork", specifier = ">=5.0.0" },
+    { name = "pynput", specifier = ">=1.8.1" },
     { name = "pywin32", marker = "sys_platform == 'win32'", specifier = ">=300,<=311" },
     { name = "robotframework", specifier = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0" },
     { name = "robotframework-pythonlibcore", specifier = ">=4.2.0" },
