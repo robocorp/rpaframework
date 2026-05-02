@@ -17,6 +17,7 @@ ${EXE_UIDEMO}       UIDemo.exe
 ${EXE_CALCULATOR}   calc.exe
 ${EXE_SPOTIFY}      Spotify.exe
 ${LOC_TESTAPP}      name:"RPA Windows Test App"
+${LOC_TESTAPP_WX}   name:"RPA Windows Test App WX"
 
 ${LOC_NOTEPAD}      name:Notepad class:Notepad
 ${LOC_CALCULATOR}   subname:Calc control:WindowControl
@@ -514,9 +515,23 @@ Click and set values in WordPad
 *** Test Cases ***
 
 
+Test App Inspect Tree
+    [Documentation]     Print the UIAutomation tree of the test app for locator discovery.
+    [Tags]    manual
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+    Print Tree    log_as_warnings=${True}
+
+    [Teardown]  Stop Test App
+
+
 Test App Checkboxes
     [Documentation]     Verify Get Checkbox State returns correct values for
     ...                 checked, unchecked and indeterminate checkboxes (issue #1166).
+    ...                 NOTE: tkinter does not expose UIAutomation attributes — run
+    ...                 Test App WX Checkboxes for the automated version of this test.
+    [Tags]    manual
     [Setup]     Start Test App
 
     # Navigate to the "Basic Controls" tab (it is the first tab, already active).
@@ -538,6 +553,7 @@ Test App Checkboxes
 
 Test App Radio Buttons
     [Documentation]     Verify Is Selected works on radio buttons inside the test app.
+    [Tags]    manual
     [Setup]     Start Test App
 
     Control Window    ${LOC_TESTAPP}
@@ -554,9 +570,8 @@ Test App Radio Buttons
 
 Test App Text Entry
     [Documentation]     Set and get values in single-line text entry.
-    ...                 The entry is found by type:EditControl within the "Text Entry"
-    ...                 LabelFrame group — the tkinter widget name ("entry_single") is
-    ...                 a tk path component, not the UIAutomation Name property.
+    ...                 NOTE: tkinter does not expose UIAutomation attributes — manual only.
+    [Tags]    manual
     [Setup]     Start Test App
 
     Control Window    ${LOC_TESTAPP}
@@ -573,8 +588,8 @@ Test App Text Entry
 
 Test App Combobox
     [Documentation]     Select a value from the combobox and confirm via Get Value.
-    ...                 The combobox UIAutomation Name is its currently selected item,
-    ...                 so it is located by initial value "Apple" before the Select.
+    ...                 NOTE: tkinter does not expose UIAutomation attributes — manual only.
+    [Tags]    manual
     [Setup]     Start Test App
 
     Control Window    ${LOC_TESTAPP}
@@ -616,6 +631,9 @@ Test App Path Locator Timeout
     [Documentation]     Trigger a delayed element (3 s) and assert that a locator with
     ...                 timeout=5 finds it while timeout=1 raises ElementNotFound
     ...                 (exercises the path: timeout fix, issue #1125).
+    ...                 NOTE: tkinter does not expose UIAutomation attributes — run
+    ...                 Test App WX Path Locator Timeout for the automated version.
+    [Tags]    manual
     [Setup]     Start Test App
 
     Control Window    ${LOC_TESTAPP}
@@ -637,3 +655,62 @@ Test App Path Locator Timeout
     Should Not Be Equal    ${elem}    ${None}
 
     [Teardown]  Stop Test App
+
+
+# ---------------------------------------------------------------------------
+# WX Test App — testapp_wx.py  (wxPython: proper UIAutomation exposure)
+# ---------------------------------------------------------------------------
+
+Start Test App WX
+    [Documentation]     Launch testapp_wx.py and set it as the active window.
+    Start Process    python    ${RESOURCES}${/}testapp_wx.py    alias=testapp_wx
+    Sleep    2s
+    Control Window    ${LOC_TESTAPP_WX}
+
+Stop Test App WX
+    Terminate Process    handle=testapp_wx
+    Wait For Process    handle=testapp_wx    timeout=5s    on_timeout=kill
+
+
+*** Test Cases ***
+
+
+Test App WX Checkboxes
+    [Documentation]     Verify Get Checkbox State against the wxPython test app.
+    ...                 wxPython uses native Win32 controls that expose proper
+    ...                 UIAutomation TogglePattern (issue #1166).
+    [Setup]     Start Test App WX
+
+    # Checked checkbox — should return True
+    ${state} =    Get Checkbox State    name:Checked
+    Should Be True    ${state}    msg=Expected 'Checked' checkbox to be True
+
+    # Unchecked checkbox — should return False
+    ${state} =    Get Checkbox State    name:Unchecked
+    Should Be True    ${state} == ${False}    msg=Expected 'Unchecked' checkbox to be False
+
+    # Indeterminate (tri-state) checkbox — should return None
+    ${state} =    Get Checkbox State    name:Indeterminate
+    Should Be Equal    ${state}    ${None}    msg=Expected indeterminate checkbox to be None
+
+    [Teardown]  Stop Test App WX
+
+
+Test App WX Path Locator Timeout
+    [Documentation]     Verify the path: locator timeout fix (issue #1125) using the
+    ...                 wxPython test app.  "Show after 3s" creates a StaticText
+    ...                 control after a 3-second delay.  A 0.5 s timeout must fail
+    ...                 fast; a 5 s timeout must succeed.
+    [Setup]     Start Test App WX
+
+    # Element does not exist yet — short timeout must fail quickly.
+    ${result} =    Run Keyword And Ignore Error
+    ...    Get Element    name:DynamicContent    timeout=0.5
+    Should Be Equal    ${result}[0]    FAIL    msg=Short timeout should have failed
+
+    # Trigger the 3-second delayed element, then find it within 5 s.
+    Click    name:"Show after 3s"
+    ${elem} =    Get Element    name:DynamicContent    timeout=5
+    Should Not Be Equal    ${elem}    ${None}
+
+    [Teardown]  Stop Test App WX

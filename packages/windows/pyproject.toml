@@ -44,6 +44,7 @@ repository = "https://github.com/robocorp/rpaframework"
 [dependency-groups]
 dev = [
 	"rpaframework-devutils",
+	"wxPython>=4.2.0; sys_platform == 'win32'",
 ]
 
 [tool.uv]
