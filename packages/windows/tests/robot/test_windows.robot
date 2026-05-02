@@ -118,6 +118,21 @@ Close Current Window And Sleep
     Close Current Window
     Sleep    1s
 
+# ---------------------------------------------------------------------------
+# Test App — testapp.py
+# ---------------------------------------------------------------------------
+
+Start Test App
+    [Documentation]     Launch the local testapp.py and return its window element.
+    Start Process    python    ${RESOURCES}${/}testapp.py    alias=testapp
+    Sleep    1.5s
+    ${win} =    Control Window    ${LOC_TESTAPP}
+    RETURN    ${win}
+
+Stop Test App
+    Terminate Process    handle=testapp
+    Wait For Process    handle=testapp    timeout=5s    on_timeout=kill
+
 
 *** Test Cases ***
 Windows search Calculator by clicking buttons
@@ -486,24 +501,7 @@ Click and set values in WordPad
 
     [Teardown]  Close Current Window
 
-
-*** Keywords ***
-
-
-# ---------------------------------------------------------------------------
-# Test App — testapp.py
-# ---------------------------------------------------------------------------
-
-Start Test App
-    [Documentation]     Launch the local testapp.py and return its window element.
-    Start Process    python    ${RESOURCES}${/}testapp.py    alias=testapp
-    Sleep    1.5s
-    ${win} =    Control Window    ${LOC_TESTAPP}
-    RETURN    ${win}
-
-Stop Test App
-    Terminate Process    handle=testapp
-    Wait For Process    handle=testapp    timeout=5s    on_timeout=kill
+*** Test Cases ***
 
 
 Test App Checkboxes
