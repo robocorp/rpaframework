@@ -513,16 +513,15 @@ Test App Checkboxes
     Control Window    ${LOC_TESTAPP}
 
     # Checked checkbox — should return True
-    ${state} =    Get Checkbox State    name:"RPA Windows Test App" > name:Checked
+    ${state} =    Get Checkbox State    name:Checked
     Should Be True    ${state}    msg=Expected 'Checked' checkbox to be True
 
     # Unchecked checkbox — should return False
-    ${state} =    Get Checkbox State    name:"RPA Windows Test App" > name:Unchecked
+    ${state} =    Get Checkbox State    name:Unchecked
     Should Be True    ${state} == ${False}    msg=Expected 'Unchecked' checkbox to be False
 
     # Indeterminate checkbox — should return None
-    ${state} =    Get Checkbox State
-    ...    name:"RPA Windows Test App" > name:"Indeterminate (tri-state)"
+    ${state} =    Get Checkbox State    name:"Indeterminate (tri-state)"
     Should Be Equal    ${state}    ${None}    msg=Expected indeterminate checkbox to be None
 
     [Teardown]  Stop Test App
@@ -534,11 +533,11 @@ Test App Radio Buttons
     Control Window    ${LOC_TESTAPP}
 
     # "Option A" starts selected
-    ${selected} =    Is Selected    name:"RPA Windows Test App" > name:"Option A"
+    ${selected} =    Is Selected    name:"Option A"
     Should Be True    ${selected}
 
     # "Option B" starts unselected
-    ${selected} =    Is Selected    name:"RPA Windows Test App" > name:"Option B"
+    ${selected} =    Is Selected    name:"Option B"
     Should Be True    ${selected} == ${False}
 
     [Teardown]  Stop Test App
@@ -555,7 +554,7 @@ Test App Text Entry
     # The LabelFrame "Text Entry" is a Group with Name="Text Entry".
     # The first EditControl inside it is the single-line entry.
     ${entry} =    Get Element
-    ...    name:"RPA Windows Test App" > name:"Text Entry" > type:EditControl
+    ...    name:"Text Entry" > type:EditControl
     Set Value    ${entry}    New text value
     ${val} =    Get Value    ${entry}
     Should Contain    ${val}    New text value
@@ -571,12 +570,12 @@ Test App Combobox
     Control Window    ${LOC_TESTAPP}
 
     # Switch to the "Input Controls" tab
-    Click    name:"RPA Windows Test App" > name:"Input Controls"
+    Click    name:"Input Controls"
 
     # Combobox UIAutomation Name = currently selected value ("Apple" on start).
-    Select    name:"RPA Windows Test App" > name:Apple    Banana
+    Select    name:Apple    Banana
     # After selection the combobox Name changes to "Banana" — locate and confirm.
-    ${elem} =    Get Element    name:"RPA Windows Test App" > name:Banana
+    ${elem} =    Get Element    name:Banana
     ${val} =    Get Value    ${elem}
     Should Be Equal    ${val}    Banana
 
@@ -592,11 +591,11 @@ Test App Slider
 
     Control Window    ${LOC_TESTAPP}
 
-    Click    name:"RPA Windows Test App" > name:"Input Controls"
+    Click    name:"Input Controls"
 
     # Locate the slider within the "Slider" LabelFrame (Group) by control type.
     ${slider} =    Get Element
-    ...    name:"RPA Windows Test App" > name:Slider > type:SliderControl
+    ...    name:Slider > type:SliderControl
     Set Value    ${slider}    75
     ${val} =    Get Value    ${slider}
     Should Be True    ${val} >= 70
@@ -611,19 +610,19 @@ Test App Path Locator Timeout
 
     Control Window    ${LOC_TESTAPP}
 
-    Click    name:"RPA Windows Test App" > name:"Dynamic Controls"
+    Click    name:"Dynamic Controls"
 
     # The label should NOT exist yet — a short timeout must raise quickly.
     ${result} =    Run Keyword And Ignore Error
     ...    Get Element
-    ...    name:"RPA Windows Test App" > name:dynamic_label
+    ...    name:dynamic_label
     ...    timeout=0.5
     Should Be Equal    ${result}[0]    FAIL    msg=Short timeout should have failed
 
     # Now show after 3 s delay, then find it within 5 s timeout.
-    Click    name:"RPA Windows Test App" > name:"Show after 3s"
+    Click    name:"Show after 3s"
     ${elem} =    Get Element
-    ...    name:"RPA Windows Test App" > name:dynamic_label
+    ...    name:dynamic_label
     ...    timeout=5
     Should Not Be Equal    ${elem}    ${None}
 
