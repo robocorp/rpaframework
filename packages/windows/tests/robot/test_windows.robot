@@ -135,6 +135,22 @@ Stop Test App
     Wait For Process    handle=testapp    timeout=5s    on_timeout=kill
 
 
+# ---------------------------------------------------------------------------
+# WX Test App — testapp_wx.py  (wxPython: proper UIAutomation exposure)
+# ---------------------------------------------------------------------------
+
+Start Test App WX
+    [Documentation]     Launch testapp_wx.py and set it as the active window.
+    Start Process    uv    run    python    ${RESOURCES}${/}testapp_wx.py    alias=testapp_wx
+    Sleep    2s
+    Control Window    ${LOC_TESTAPP_WX}
+
+Stop Test App WX
+    Terminate Process    handle=testapp_wx
+    Wait For Process    handle=testapp_wx    timeout=5s    on_timeout=kill
+
+
+
 *** Test Cases ***
 Test App Inspect Tree
     [Documentation]     Print the UIAutomation tree of the test app for locator discovery.
@@ -657,22 +673,6 @@ Test App Path Locator Timeout
     [Teardown]  Stop Test App
 
 
-# ---------------------------------------------------------------------------
-# WX Test App — testapp_wx.py  (wxPython: proper UIAutomation exposure)
-# ---------------------------------------------------------------------------
-
-Start Test App WX
-    [Documentation]     Launch testapp_wx.py and set it as the active window.
-    Start Process    uv    run    python    ${RESOURCES}${/}testapp_wx.py    alias=testapp_wx
-    Sleep    2s
-    Control Window    ${LOC_TESTAPP_WX}
-
-Stop Test App WX
-    Terminate Process    handle=testapp_wx
-    Wait For Process    handle=testapp_wx    timeout=5s    on_timeout=kill
-
-
-*** Test Cases ***
 
 
 Test App WX Checkboxes
