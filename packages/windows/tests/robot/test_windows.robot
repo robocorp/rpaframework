@@ -10,7 +10,7 @@ Default Tags      windows   skip
 
 
 *** Variables ***
-${RESOURCES}      ${CURDIR}${/}..${/}resources
+${RESOURCES}      ${CURDIR}${/}..${/}..${/}resources
 ${RESULTS}        ${CURDIR}${/}..${/}results
 
 ${EXE_UIDEMO}       UIDemo.exe
@@ -135,6 +135,16 @@ Stop Test App
 
 
 *** Test Cases ***
+Test App Inspect Tree
+    [Documentation]     Print the UIAutomation tree of the test app for locator discovery.
+    [Tags]    manual
+    [Setup]     Start Test App
+    
+    Control Window    ${LOC_TESTAPP}
+    Print Tree    log_as_warnings=${True}
+    
+    [Teardown]  Stop Test App
+      
 Windows search Calculator by clicking buttons
     Windows Search    Calculator    wait_time=1
     Calculator button actions
