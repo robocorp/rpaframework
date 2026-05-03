@@ -1524,7 +1524,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework-core"
-version = "12.1.0"
+version = "13.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -1536,9 +1536,9 @@ dependencies = [
     { name = "uiautomation", marker = "sys_platform == 'win32'" },
     { name = "webdriver-manager" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/19/de/8f660bb6407a800905b6779f8763b8e1731e994f683149578c71fb4f4196/rpaframework_core-12.1.0.tar.gz", hash = "sha256:85b8d8c3ce43fed4b8f815605c9a5306e9701350922555d517c5376efe377cd1", size = 140559, upload-time = "2025-11-23T16:56:45.686Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/25/ea/4e4ba42b844361d5f4e601cec25a6052fc378b7e262fc18b70bf25fa256d/rpaframework_core-13.0.0.tar.gz", hash = "sha256:d05cc834ab2cfdfb3d206b78e79b8e19bb5871fffcf722057edaff2c6d686f8e", size = 142696, upload-time = "2026-05-03T18:38:13.348Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/15/baaa39b82d703d938e159b02eb6b0a046ac0fc8403847677fd6ab5a136de/rpaframework_core-12.1.0-py3-none-any.whl", hash = "sha256:13695474f238023e1794705766b62611c7b97d20a9d90320ae91e2260b7d8405", size = 56192, upload-time = "2025-11-23T16:56:43.939Z" },
+    { url = "https://files.pythonhosted.org/packages/da/c9/820e18034c59d96afdb8ae214003e4014b6d17101c4f46f25118ac5cdeaf/rpaframework_core-13.0.0-py3-none-any.whl", hash = "sha256:33a4bf1ae09a27d4454583fe51871a8c08e4ee9f2ac7260beaa203015ee018a9", size = 56658, upload-time = "2026-05-03T18:38:11.926Z" },
 ]
 
 [[package]]
@@ -1600,7 +1600,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "10.0.3"
+version = "11.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "docutils" },
@@ -1623,7 +1623,7 @@ requires-dist = [
     { name = "pdfminer-six", specifier = ">=20251107" },
     { name = "pypdf", specifier = ">=6.10.2" },
     { name = "robotframework", specifier = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0" },
-    { name = "rpaframework-core", specifier = ">=12.1.0" },
+    { name = "rpaframework-core", specifier = ">=13.0.0" },
 ]
 
 [package.metadata.requires-dev]
