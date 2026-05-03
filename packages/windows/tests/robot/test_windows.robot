@@ -568,3 +568,38 @@ Test App WX Path Locator Timeout
     Should Not Be Equal    ${elem}    ${None}
 
     [Teardown]  Stop Test App WX
+
+Test App WX Radio Buttons
+    [Documentation]     Verify Is Selected returns correct values for radio buttons.
+    ...                 "Option A" starts selected; "Option B" starts unselected.
+    [Setup]     Start Test App WX
+
+    ${sel_a} =    Is Selected    name:"Option A"
+    Should Be True    ${sel_a}
+
+    ${sel_b} =    Is Selected    name:"Option B"
+    Should Be True    ${sel_b} == ${False}
+
+    [Teardown]  Stop Test App WX
+
+Test App WX Text Entry
+    [Documentation]     Set and read a value from the single-line text entry (EditControl).
+    [Setup]     Start Test App WX
+
+    ${entry} =    Get Element    type:EditControl
+    Set Value    ${entry}    Hello RPA
+    ${val} =    Get Value    ${entry}
+    Should Be Equal    ${val}    Hello RPA
+
+    [Teardown]  Stop Test App WX
+
+Test App WX Combobox
+    [Documentation]     Select "Banana" from the combobox and confirm via Get Value.
+    [Setup]     Start Test App WX
+
+    Select    type:ComboBoxControl    Banana
+    ${elem} =    Get Element    type:ComboBoxControl
+    ${val} =    Get Value    ${elem}
+    Should Be Equal    ${val}    Banana
+
+    [Teardown]  Stop Test App WX

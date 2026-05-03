@@ -5,9 +5,12 @@ UIAutomation accessibility attributes (control types, names, patterns).
 
 Controls exposed:
 
-    - wx.CheckBox  → CheckBoxControl  + TogglePattern  (name = label text)
-    - wx.Button    → ButtonControl    + InvokePattern  (name = label text)
-    - wx.StaticText → TextControl                      (name = label text)
+    - wx.CheckBox     → CheckBoxControl   + TogglePattern        (name = label text)
+    - wx.RadioButton  → RadioButtonControl + SelectionItemPattern (name = label text)
+    - wx.TextCtrl     → EditControl        + ValuePattern         (name = label from StaticText)
+    - wx.ComboBox     → ComboBoxControl    + ValuePattern         (name = label from StaticText)
+    - wx.Button       → ButtonControl      + InvokePattern        (name = label text)
+    - wx.StaticText   → TextControl                               (name = label text)
 
 Window title: "RPA Windows Test App WX"
 
@@ -21,7 +24,7 @@ import wx
 
 class TestFrame(wx.Frame):
     def __init__(self):
-        super().__init__(None, title="RPA Windows Test App WX", size=(420, 400))
+        super().__init__(None, title="RPA Windows Test App WX", size=(420, 560))
         panel = wx.Panel(self)
         vbox = wx.BoxSizer(wx.VERTICAL)
 
@@ -50,6 +53,49 @@ class TestFrame(wx.Frame):
         chk_sizer.Add(self.chk_unchecked, 0, wx.ALL, 6)
         chk_sizer.Add(self.chk_indeterminate, 0, wx.ALL, 6)
         vbox.Add(chk_sizer, 0, wx.EXPAND | wx.ALL, 10)
+
+        # ------------------------------------------------------------------ #
+        # Radio Buttons
+        # ------------------------------------------------------------------ #
+        rad_box = wx.StaticBox(panel, label="Radio Buttons")
+        rad_sizer = wx.StaticBoxSizer(rad_box, wx.VERTICAL)
+
+        # wx.RB_GROUP starts a new mutually-exclusive group.
+        # "Option A" is selected by default (first in group).
+        self.rad_a = wx.RadioButton(panel, label="Option A", style=wx.RB_GROUP)
+        self.rad_b = wx.RadioButton(panel, label="Option B")
+        self.rad_a.SetValue(True)
+
+        rad_sizer.Add(self.rad_a, 0, wx.ALL, 6)
+        rad_sizer.Add(self.rad_b, 0, wx.ALL, 6)
+        vbox.Add(rad_sizer, 0, wx.EXPAND | wx.ALL, 10)
+
+        # ------------------------------------------------------------------ #
+        # Text Entry
+        # ------------------------------------------------------------------ #
+        txt_box = wx.StaticBox(panel, label="Text Entry")
+        txt_sizer = wx.StaticBoxSizer(txt_box, wx.VERTICAL)
+
+        # wx.TextCtrl → EditControl + ValuePattern in UIAutomation.
+        self.txt_entry = wx.TextCtrl(panel, value="")
+        txt_sizer.Add(self.txt_entry, 0, wx.EXPAND | wx.ALL, 6)
+        vbox.Add(txt_sizer, 0, wx.EXPAND | wx.ALL, 10)
+
+        # ------------------------------------------------------------------ #
+        # Combobox
+        # ------------------------------------------------------------------ #
+        cmb_box = wx.StaticBox(panel, label="Combobox")
+        cmb_sizer = wx.StaticBoxSizer(cmb_box, wx.VERTICAL)
+
+        # wx.ComboBox → ComboBoxControl + ValuePattern in UIAutomation.
+        self.cmb = wx.ComboBox(
+            panel,
+            value="Apple",
+            choices=["Apple", "Banana", "Cherry"],
+            style=wx.CB_READONLY,
+        )
+        cmb_sizer.Add(self.cmb, 0, wx.EXPAND | wx.ALL, 6)
+        vbox.Add(cmb_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
         # ------------------------------------------------------------------ #
         # Dynamic element (for path-locator timeout testing)
