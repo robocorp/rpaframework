@@ -12,6 +12,10 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- ``RPA.Windows``: New ``Get Checkbox State`` keyword to retrieve the toggle state of a checkbox control, returning ``True`` (checked), ``False`` (unchecked) or ``None`` (indeterminate). Closes :issue:`1166`.
+- ``RPA.Windows``: Fix ``path:`` locator strategy ignoring the ``timeout`` parameter — path traversal now retries each step until the active timeout expires instead of failing immediately. Closes :issue:`1125`.
+- ``rpaframework-core``: Fix locator parser not handling single-quoted names with spaces (e.g. ``name:'My Window'``) — both single and double quotes are now accepted as value delimiters.
+- ``rpaframework-core``: Fix ``path:`` locator ignoring the active timeout — each path step now retries until the deadline expires instead of failing immediately when a child is not yet present.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
