@@ -23,6 +23,29 @@ INSTALL_PROMPT = (
 DEFAULT_CONFIDENCE = 80.0
 
 
+def _parse_ocr_confidence(
+    confidence: Optional[Union[str, float, int]]
+) -> Optional[float]:
+    try:
+        value = float(confidence)
+    except (TypeError, ValueError):
+        return None
+
+    return value if value >= 0 else None
+
+
+def _average_ocr_confidence(words: List[Dict]) -> Optional[float]:
+    confidences = [
+        word["ocr_confidence"]
+        for word in words
+        if word.get("ocr_confidence") is not None
+    ]
+    if not confidences:
+        return None
+
+    return sum(confidences) / len(confidences)
+
+
 def read(
     image: Union[Image.Image, Path],
     language: Optional[str] = None,
@@ -56,6 +79,9 @@ def find(
 ):
     """Scan image for text and return a list of regions
     that contain it (or something close to it).
+
+    Returned matches preserve the existing text similarity ``confidence`` value and
+    include ``ocr_confidence`` from the underlying Tesseract data when available.
 
     :param image: Path to image or Image object
     :param text: Text to find in image
@@ -114,8 +140,13 @@ def _dict_lines(data: Dict) -> List:
             word["left"], word["top"], word["width"], word["height"]
         )
 
-        # NOTE: Currently ignoring confidence in tesseract results
-        lines[key].append({"text": word["text"], "region": region})
+        lines[key].append(
+            {
+                "text": word["text"],
+                "region": region,
+                "ocr_confidence": _parse_ocr_confidence(word.get("conf")),
+            }
+        )
         assert len(lines[key]) == word["word_num"]
 
     return list(lines.values())
@@ -155,6 +186,7 @@ def _match_lines(lines: List[Dict], text: str, confidence: float) -> List[Dict]:
                     "text": sentence,
                     "region": Region.merge(regions),
                     "confidence": ratio,
+                    "ocr_confidence": _average_ocr_confidence(words),
                 }
 
         if match:
