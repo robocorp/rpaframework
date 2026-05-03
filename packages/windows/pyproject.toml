@@ -5,7 +5,7 @@ description = "Windows library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">=3.9.1"
+requires-python = ">=3.10"
 
 keywords = ["robotframework", "rpa", "automation", "windows", "uiautomation"]
 classifiers = [
@@ -17,7 +17,6 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.9",
 	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
@@ -28,7 +27,7 @@ dependencies = [
 	"rpaframework-core >=12.1.0",
 	"robotframework >=4.0.0, !=4.0.1, !=6.1.0, <8.0.0",
 	"robotframework-pythonlibcore >=4.2.0",
-	"pynput-robocorp-fork >=5.0.0",
+	"pynput>=1.8.1",
 	"uiautomation >=2.0.15",
 	"comtypes >=1.1.11; platform_system == 'Windows'",
 	"psutil >=5.9.0; platform_system == 'Windows'",
@@ -44,6 +43,7 @@ repository = "https://github.com/robocorp/rpaframework"
 [dependency-groups]
 dev = [
 	"rpaframework-devutils",
+	"wxPython>=4.2.0; sys_platform == 'win32'",
 ]
 
 [tool.uv]

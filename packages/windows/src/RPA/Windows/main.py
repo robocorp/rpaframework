@@ -3,7 +3,7 @@ from typing import List, Optional
 
 import fire
 from comtypes import COMError
-from pynput_robocorp import keyboard, mouse  # pylint: disable=C0415
+from pynput import keyboard, mouse  # pylint: disable=C0415
 from RPA.core.windows.inspect import ElementInspector, RecordElement
 
 

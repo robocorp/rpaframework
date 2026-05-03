@@ -32,7 +32,7 @@ def to_action(value):
 def to_button(value):
     """Convert value to Button enum."""
     # pylint: disable=C0415
-    from pynput_robocorp.mouse import Button
+    from pynput.mouse import Button
 
     if isinstance(value, Button):
         return value
@@ -61,7 +61,7 @@ class MouseKeywords(LibraryContext):
         super().__init__(ctx)
         try:
             # pylint: disable=C0415
-            from pynput_robocorp.mouse import Controller
+            from pynput.mouse import Controller
 
             self._mouse = Controller()
             self._error = None
@@ -84,7 +84,7 @@ class MouseKeywords(LibraryContext):
     ) -> None:
         """Perform defined mouse action, and optionally move to given point first."""
         # pylint: disable=C0415
-        from pynput_robocorp.mouse import Button
+        from pynput.mouse import Button
 
         action = to_action(action)
 
