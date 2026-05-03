@@ -2229,9 +2229,9 @@ requires-dist = [
     { name = "robotframework-sapguilibrary", marker = "sys_platform == 'win32'", specifier = ">=1.1" },
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
-    { name = "rpaframework-core", editable = "../core" },
+    { name = "rpaframework-core", specifier = ">=13.0.0" },
     { name = "rpaframework-pdf", specifier = ">=11.0.0" },
-    { name = "rpaframework-windows", marker = "sys_platform == 'win32'", editable = "../windows" },
+    { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=11.0.0" },
     { name = "selenium", specifier = ">=4.16.0,<5.0.0" },
     { name = "simple-salesforce", specifier = ">=1.0.0" },
     { name = "smartsheet-python-sdk", specifier = "==3.0.2" },
@@ -2251,7 +2251,7 @@ dev = [{ name = "rpaframework-devutils", editable = "../devutils" }]
 [[package]]
 name = "rpaframework-core"
 version = "13.0.0"
-source = { editable = "../core" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
     { name = "packaging" },
@@ -2262,24 +2262,9 @@ dependencies = [
     { name = "uiautomation", marker = "sys_platform == 'win32'" },
     { name = "webdriver-manager" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "packaging", specifier = ">=24.0" },
-    { name = "pillow", specifier = ">=10.2.0" },
-    { name = "psutil", marker = "sys_platform == 'win32'", specifier = ">=5.9.0" },
-    { name = "pywin32", marker = "sys_platform == 'win32'", specifier = ">=300,<400" },
-    { name = "selenium", specifier = ">=4.0.0,<5.0.0" },
-    { name = "uiautomation", marker = "sys_platform == 'win32'", specifier = ">=2.0.15" },
-    { name = "webdriver-manager", specifier = ">=4.0.2,<5.0.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pylint", specifier = ">=3.3.2" },
-    { name = "pytest", specifier = ">=7.0.0" },
-    { name = "pytest-cov", specifier = ">=4.0.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/25/ea/4e4ba42b844361d5f4e601cec25a6052fc378b7e262fc18b70bf25fa256d/rpaframework_core-13.0.0.tar.gz", hash = "sha256:d05cc834ab2cfdfb3d206b78e79b8e19bb5871fffcf722057edaff2c6d686f8e", size = 142696, upload-time = "2026-05-03T18:38:13.348Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/da/c9/820e18034c59d96afdb8ae214003e4014b6d17101c4f46f25118ac5cdeaf/rpaframework_core-13.0.0-py3-none-any.whl", hash = "sha256:33a4bf1ae09a27d4454583fe51871a8c08e4ee9f2ac7260beaa203015ee018a9", size = 56658, upload-time = "2026-05-03T18:38:11.926Z" },
 ]
 
 [[package]]
@@ -2359,7 +2344,7 @@ wheels = [
 [[package]]
 name = "rpaframework-windows"
 version = "11.0.0"
-source = { editable = "../windows" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "comtypes", marker = "sys_platform == 'win32'" },
     { name = "fire" },
@@ -2371,25 +2356,9 @@ dependencies = [
     { name = "rpaframework-core" },
     { name = "uiautomation" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "comtypes", marker = "sys_platform == 'win32'", specifier = ">=1.1.11" },
-    { name = "dataclasses", marker = "python_full_version == '3.6.*'", specifier = ">=0.7" },
-    { name = "fire", specifier = ">=0.7.0" },
-    { name = "psutil", marker = "sys_platform == 'win32'", specifier = ">=5.9.0" },
-    { name = "pynput", specifier = ">=1.8.1" },
-    { name = "pywin32", marker = "sys_platform == 'win32'", specifier = ">=300,<=311" },
-    { name = "robotframework", specifier = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0" },
-    { name = "robotframework-pythonlibcore", specifier = ">=4.2.0" },
-    { name = "rpaframework-core", specifier = ">=13.0.0" },
-    { name = "uiautomation", specifier = ">=2.0.15" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "rpaframework-devutils", editable = "../devutils" },
-    { name = "wxpython", marker = "sys_platform == 'win32'", specifier = ">=4.2.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/b9/2c/288c81f7d15d4db6207bd15fa0256f952fec64b509c89f41a1cdd9a5fd40/rpaframework_windows-11.0.0.tar.gz", hash = "sha256:45d14684af1fe138130716d9fc33eb0ae4cf4268417f7564a00d7bedb86ff78f", size = 145414, upload-time = "2026-05-03T18:53:36.137Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d6/44/6b9ba27e3a6336bab699044b97cc38261aacb116b514ce200dec18f7cd0c/rpaframework_windows-11.0.0-py3-none-any.whl", hash = "sha256:2bbadefc832d989ba9ee0b2c58724342b8f88967c87788d90e783cd5ec10a9ad", size = 33721, upload-time = "2026-05-03T18:53:37.536Z" },
 ]
 
 [[package]]

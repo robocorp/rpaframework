@@ -106,8 +106,6 @@ pyobjc-framework-quartz = ["setuptools"]
 
 [tool.uv.sources]
 rpaframework-devutils = { path = "../devutils", editable = true }
-rpaframework-windows = { path = "../windows", editable = true }
-rpaframework-core = { path = "../core", editable = true }
 
 [build-system]
 requires = ["hatchling"]
