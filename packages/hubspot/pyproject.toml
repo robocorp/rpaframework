@@ -5,7 +5,7 @@ description = "Robot Framework wrapper around the hubspot-api-client library."
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">=3.9.1"
+requires-python = ">=3.10"
 
 keywords = ["robotframework", "rpa", "automation", "hubspot"]
 classifiers = [
@@ -17,7 +17,6 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.9",
 	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
@@ -48,7 +47,7 @@ package = true
 rpaframework-devutils = { path = "../devutils/", editable = true }
 
 [tool.black]
-target-version = ["py39", "py310", "py311"]
+target-version = ["py310", "py311"]
 
 [build-system]
 requires = ["hatchling"]
