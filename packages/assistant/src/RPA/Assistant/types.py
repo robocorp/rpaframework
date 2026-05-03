@@ -1,7 +1,8 @@
 from enum import Enum, auto
 from typing import Any, Dict, List, Union
 
-from flet_core import Column, Container, Row, Stack, alignment
+from flet import Column, Container, Row, Stack
+from flet.controls.alignment import Alignment
 
 Element = Dict[str, Any]
 Options = Union[List[str], str]
@@ -31,12 +32,12 @@ class WindowLocation(Enum):
     TopLeft = auto()
 
 
-class VerticalLocation(Enum):
-    """A vertical location"""
+class HorizontalLocation(Enum):
+    """A horizontal location"""
 
-    Left = alignment.center_left
-    Center = alignment.center
-    Right = alignment.center_right
+    Left = Alignment.CENTER_LEFT
+    Center = Alignment.CENTER
+    Right = Alignment.CENTER_RIGHT
 
 
 class Location(Enum):
@@ -44,15 +45,15 @@ class Location(Enum):
     location
     """
 
-    TopLeft = alignment.top_left
-    TopCenter = alignment.top_center
-    TopRight = alignment.top_right
-    CenterLeft = alignment.center_left
-    Center = alignment.center
-    CenterRight = alignment.center_right
-    BottomLeft = alignment.bottom_left
-    BottomCenter = alignment.bottom_center
-    BottomRight = alignment.bottom_right
+    TopLeft = auto()
+    TopCenter = auto()
+    TopRight = auto()
+    CenterLeft = auto()
+    Center = auto()
+    CenterRight = auto()
+    BottomLeft = auto()
+    BottomCenter = auto()
+    BottomRight = auto()
 
 
 SupportedFletLayout = Union[Row, Column, Container, Stack]

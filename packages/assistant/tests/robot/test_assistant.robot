@@ -127,7 +127,7 @@ Control Buttons
     Add Slider     name=slider    slider_min=0    slider_max=1    default=0.5    steps=10
     Add Checkbox    name=true_checkbox    label=Checkbox  default=True
     Add Checkbox    name=false_checkbox   label=Checkbox  default=False
-    Add Flet Icon    icon_name=check_circle_rounded    color=FF00FF    size=48
+    Add Flet Icon    icon=check_circle_rounded    color=FF00FF    size=48
 
     Add Heading    good buttons
     Add Button    Set title    Set Title    testing_title

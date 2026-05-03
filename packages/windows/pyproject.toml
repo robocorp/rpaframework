@@ -28,7 +28,7 @@ dependencies = [
 	"rpaframework-core >=12.1.0",
 	"robotframework >=4.0.0, !=4.0.1, !=6.1.0, <8.0.0",
 	"robotframework-pythonlibcore >=4.2.0",
-	"pynput-robocorp-fork >=5.0.0",
+	"pynput>=1.8.1",
 	"uiautomation >=2.0.15",
 	"comtypes >=1.1.11; platform_system == 'Windows'",
 	"psutil >=5.9.0; platform_system == 'Windows'",
@@ -44,6 +44,7 @@ repository = "https://github.com/robocorp/rpaframework"
 [dependency-groups]
 dev = [
 	"rpaframework-devutils",
+	"wxPython>=4.2.0; sys_platform == 'win32'",
 ]
 
 [tool.uv]

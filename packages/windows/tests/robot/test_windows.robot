@@ -1,124 +1,20 @@
 *** Settings ***
-Library           Collections
-Library           Process
-Library           RPA.Windows
-Library           String
-
-Test Setup      Set Wait Time    0.7
-
-Default Tags      windows   skip
+Resource   keywords.robot
 
 
-*** Variables ***
-${RESOURCES}      ${CURDIR}${/}..${/}resources
-${RESULTS}        ${CURDIR}${/}..${/}results
-
-${EXE_UIDEMO}       UIDemo.exe
-${EXE_CALCULATOR}   calc.exe
-${EXE_SPOTIFY}      Spotify.exe
-
-${LOC_NOTEPAD}      name:Notepad class:Notepad
-${LOC_CALCULATOR}   subname:Calc control:WindowControl
-${LOC_WORDPAD}      name:"Document - WordPad" and type:WindowControl
-
-${TIMEOUT}        1
-
-
-*** Keywords ***
-Calculator Teardown
-    Send Keys    keys={Esc}
-    Sleep    1s
-    Send Keys    keys={Alt}1
-    Sleep    1s
-
-Calculator Temperature Converter View
-    Click    id:TogglePaneButton
-    Send Keys    keys={PAGEDOWN}    wait_time=0.1    # to see the Temperature view
-    ${temp} =    Set Variable    id:Temperature    # works on Windows 10 and lower
-    ${ver} =    Get OS Version
-    IF    "${ver}" == "11"
-        ${temp} =    Set Variable    name:"Temperature Converter"
-    END
-    Click    ${temp}
-
-Calculator Standard View
-    Click    id:TogglePaneButton
-    Send Keys    keys={PAGEUP}    wait_time=0.1    # to see the Standard view
-    ${std} =    Set Variable    id:Standard
-    ${ver} =    Get OS Version
-    IF    "${ver}" == "11"
-        ${std} =    Set Variable    name:"Standard Calculator"
-    END
-    Click    ${std}
-
-Select Temperature Unit
-    [Arguments]    ${unit}    ${degrees}
-    # Select Unit
-    Click    id:Units1
-    Click    id:Units1 > name:${unit}
-    Send Keys    keys=${degrees}
-    Log To Console    Set ${unit}: ${degrees}
-    Send Keys    keys={Esc}
-
-Get Temperature Values
-    [Arguments]    ${keys}
-    ${values} =    Split String    ${keys}    ,
-    FOR    ${val}    IN    @{values}
-        ${temperature} =    Get Attribute    id:UnitConverterRootGrid > type:TextControl and regex:.*\\s${val}    Name
-        Log To Console    ${temperature}
-    END
-
-Calculator button actions
-    Control Window    Calculator type:Window
-    Click    id:num9Button
-    Click    id:num6Button
-    Click    id:plusButton
-    Click    id:num4Button
-    Click    id:equalButton
-    ${result} =    Get Attribute    id:CalculatorResults    Name
-    Log To Console    \n${result}
-    Send Keys    keys={Esc}
-
-Calculator with keys
-    Control Window    Calculator
-    Click    id:clearButton
-    Send Keys    keys=96+4=    interval=0.1
-    ${result} =    Get Attribute    id:CalculatorResults    Name
-    Log To Console    ${result}
-    ${buttons} =    Get Elements    type:Group and name:"Number pad" > type:Button
-    FOR    ${button}    IN    @{buttons}
-        Log To Console    ${button}
-    END
-    Length Should Be    ${buttons}    11    msg=From 0 to 9 and decimlar separator
-
-Keep open a single Notepad
-    Set Global Timeout    ${TIMEOUT}
-    ${closed} =    Set Variable    0
-    ${run} =    Run Keyword And Ignore Error    Close Window    ${LOC_NOTEPAD} control:WindowControl
-    IF    "${run}[0]" == "PASS"
-        ${closed} =    Set Variable    ${run}[1]
-    END
-    Log    Closed Notepads: ${closed}
-    Windows Run    Notepad
-
-Kill app by name
-    [Arguments]    ${app_name}
-    ${window_list} =    List Windows
-    FOR    ${win}    IN    @{window_list}
-        ${exists} =    Evaluate    re.match(".*${app_name}.*", """${win}[title]""")
-        IF    ${exists}
-            ${command} =    Set Variable    os.kill($win["pid"], signal.SIGTERM)
-            Log    Killing app: ${win}[title] (PID: $win["pid"])
-            Evaluate    ${command}    signal
-        END
-    END
-
-Close Current Window And Sleep
-    Close Current Window
-    Sleep    1s
 
 
 *** Test Cases ***
+Test App Inspect Tree
+    [Documentation]     Print the UIAutomation tree of the test app for locator discovery.
+    [Tags]    manual
+    [Setup]     Start Test App
+    
+    Control Window    ${LOC_TESTAPP}
+    Print Tree    log_as_warnings=${True}
+    
+    [Teardown]  Stop Test App
+      
 Windows search Calculator by clicking buttons
     Windows Search    Calculator    wait_time=1
     Calculator button actions
@@ -484,3 +380,226 @@ Click and set values in WordPad
     Should Be Equal     ${text}     This i\rs my test text.\r\r\r2nd line text.\r\r
 
     [Teardown]  Close Current Window
+
+*** Test Cases ***
+
+
+Test App Inspect Tree
+    [Documentation]     Print the UIAutomation tree of the test app for locator discovery.
+    [Tags]    manual
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+    Print Tree    log_as_warnings=${True}
+
+    [Teardown]  Stop Test App
+
+
+Test App Checkboxes
+    [Documentation]     Verify Get Checkbox State returns correct values for
+    ...                 checked, unchecked and indeterminate checkboxes (issue #1166).
+    ...                 NOTE: tkinter does not expose UIAutomation attributes — run
+    ...                 Test App WX Checkboxes for the automated version of this test.
+    [Tags]    manual
+    [Setup]     Start Test App
+
+    # Navigate to the "Basic Controls" tab (it is the first tab, already active).
+    Control Window    ${LOC_TESTAPP}
+
+    # Checked checkbox — should return True
+    ${state} =    Get Checkbox State    name:Checked
+    Should Be True    ${state}    msg=Expected 'Checked' checkbox to be True
+
+    # Unchecked checkbox — should return False
+    ${state} =    Get Checkbox State    name:Unchecked
+    Should Be True    ${state} == ${False}    msg=Expected 'Unchecked' checkbox to be False
+
+    # Indeterminate checkbox — should return None
+    ${state} =    Get Checkbox State    name:"Indeterminate (tri-state)"
+    Should Be Equal    ${state}    ${None}    msg=Expected indeterminate checkbox to be None
+
+    [Teardown]  Stop Test App
+
+Test App Radio Buttons
+    [Documentation]     Verify Is Selected works on radio buttons inside the test app.
+    [Tags]    manual
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    # "Option A" starts selected
+    ${selected} =    Is Selected    name:"Option A"
+    Should Be True    ${selected}
+
+    # "Option B" starts unselected
+    ${selected} =    Is Selected    name:"Option B"
+    Should Be True    ${selected} == ${False}
+
+    [Teardown]  Stop Test App
+
+Test App Text Entry
+    [Documentation]     Set and get values in single-line text entry.
+    ...                 NOTE: tkinter does not expose UIAutomation attributes — manual only.
+    [Tags]    manual
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    # The LabelFrame "Text Entry" is a Group with Name="Text Entry".
+    # The first EditControl inside it is the single-line entry.
+    ${entry} =    Get Element
+    ...    name:"Text Entry" > type:EditControl
+    Set Value    ${entry}    New text value
+    ${val} =    Get Value    ${entry}
+    Should Contain    ${val}    New text value
+
+    [Teardown]  Stop Test App
+
+Test App Combobox
+    [Documentation]     Select a value from the combobox and confirm via Get Value.
+    ...                 NOTE: tkinter does not expose UIAutomation attributes — manual only.
+    [Tags]    manual
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    # Switch to the "Input Controls" tab
+    Click    name:"Input Controls"
+
+    # Combobox UIAutomation Name = currently selected value ("Apple" on start).
+    Select    name:Apple    Banana
+    # After selection the combobox Name changes to "Banana" — locate and confirm.
+    ${elem} =    Get Element    name:Banana
+    ${val} =    Get Value    ${elem}
+    Should Be Equal    ${val}    Banana
+
+    [Teardown]  Stop Test App
+
+Test App Slider
+    [Documentation]     Move the slider and verify its value changes.
+    ...                 The ttk.Scale widget is a SliderControl in UIAutomation.
+    ...                 The exact locator depends on how Windows exposes the widget name;
+    ...                 update the locator after inspecting with Accessibility Insights.
+    [Tags]      manual
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    Click    name:"Input Controls"
+
+    # Locate the slider within the "Slider" LabelFrame (Group) by control type.
+    ${slider} =    Get Element
+    ...    name:Slider > type:SliderControl
+    Set Value    ${slider}    75
+    ${val} =    Get Value    ${slider}
+    Should Be True    ${val} >= 70
+
+    [Teardown]  Stop Test App
+
+Test App Path Locator Timeout
+    [Documentation]     Trigger a delayed element (3 s) and assert that a locator with
+    ...                 timeout=5 finds it while timeout=1 raises ElementNotFound
+    ...                 (exercises the path: timeout fix, issue #1125).
+    ...                 NOTE: tkinter does not expose UIAutomation attributes — run
+    ...                 Test App WX Path Locator Timeout for the automated version.
+    [Tags]    manual
+    [Setup]     Start Test App
+
+    Control Window    ${LOC_TESTAPP}
+
+    Click    name:"Dynamic Controls"
+
+    # The label should NOT exist yet — a short timeout must raise quickly.
+    ${result} =    Run Keyword And Ignore Error
+    ...    Get Element
+    ...    name:dynamic_label
+    ...    timeout=0.5
+    Should Be Equal    ${result}[0]    FAIL    msg=Short timeout should have failed
+
+    # Now show after 3 s delay, then find it within 5 s timeout.
+    Click    name:"Show after 3s"
+    ${elem} =    Get Element
+    ...    name:dynamic_label
+    ...    timeout=5
+    Should Not Be Equal    ${elem}    ${None}
+
+    [Teardown]  Stop Test App
+
+
+
+
+Test App WX Checkboxes
+    [Documentation]     Verify Get Checkbox State against the wxPython test app.
+    ...                 wxPython uses native Win32 controls that expose proper
+    ...                 UIAutomation TogglePattern (issue #1166).
+    [Setup]     Start Test App WX
+
+    # Checked checkbox — should return True
+    ${state} =    Get Checkbox State    name:Checked
+    Should Be True    ${state}    msg=Expected 'Checked' checkbox to be True
+
+    # Unchecked checkbox — should return False
+    ${state} =    Get Checkbox State    name:Unchecked
+    Should Be True    ${state} == ${False}    msg=Expected 'Unchecked' checkbox to be False
+
+    # Indeterminate (tri-state) checkbox — should return None
+    ${state} =    Get Checkbox State    name:Indeterminate
+    Should Be Equal    ${state}    ${None}    msg=Expected indeterminate checkbox to be None
+
+    [Teardown]  Stop Test App WX
+
+
+Test App WX Path Locator Timeout
+    [Documentation]     Verify the path: locator timeout fix (issue #1125) using the
+    ...                 wxPython test app.  "Show after 3s" creates a StaticText
+    ...                 control after a 3-second delay.  A 0.5 s timeout must fail
+    ...                 fast; a 5 s timeout must succeed.
+    [Setup]     Start Test App WX
+
+    # Element does not exist yet — short timeout must fail quickly.
+    ${result} =    Run Keyword And Ignore Error
+    ...    Get Element    name:DynamicContent    timeout=0.5
+    Should Be Equal    ${result}[0]    FAIL    msg=Short timeout should have failed
+
+    # Trigger the 3-second delayed element, then find it within 8 s.
+    Click    name:"Show after 3s"
+    Sleep    0.5s
+    ${elem} =    Get Element    name:DynamicContent    timeout=8
+    Should Not Be Equal    ${elem}    ${None}
+
+    [Teardown]  Stop Test App WX
+
+Test App WX Radio Buttons
+    [Documentation]     Verify Is Selected returns correct values for radio buttons.
+    ...                 "Option A" starts selected; "Option B" starts unselected.
+    [Setup]     Start Test App WX
+
+    ${sel_a} =    Is Selected    name:"Option A"
+    Should Be True    ${sel_a}
+
+    ${sel_b} =    Is Selected    name:"Option B"
+    Should Be True    ${sel_b} == ${False}
+
+    [Teardown]  Stop Test App WX
+
+Test App WX Text Entry
+    [Documentation]     Set and read a value from the single-line text entry (EditControl).
+    [Setup]     Start Test App WX
+
+    ${entry} =    Get Element    type:EditControl
+    Set Value    ${entry}    Hello RPA
+    ${val} =    Get Value    ${entry}
+    Should Be Equal    ${val}    Hello RPA
+
+    [Teardown]  Stop Test App WX
+
+Test App WX Combobox
+    [Documentation]     Select "Banana" from the combobox and confirm via Get Value.
+    [Setup]     Start Test App WX
+
+    Select    type:ComboBoxControl    Banana
+    ${elem} =    Get Element    type:ComboBoxControl
+    ${val} =    Get Value    ${elem}
+    Should Be Equal    ${val}    Banana
+
+    [Teardown]  Stop Test App WX

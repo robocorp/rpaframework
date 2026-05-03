@@ -1,6 +1,6 @@
 from time import sleep
 import RPA.Assistant
-from RPA.Assistant.types import Icon, VerticalLocation, WindowLocation
+from RPA.Assistant.types import Icon, HorizontalLocation, WindowLocation
 
 
 assistant = RPA.Assistant.Assistant()
@@ -117,7 +117,7 @@ def manual():
     assistant.add_button(
         "clear elements",
         lambda: assistant.clear_dialog(),
-        location=VerticalLocation.Right,
+        location=HorizontalLocation.Right,
     )
 
     assistant.add_text_input(
