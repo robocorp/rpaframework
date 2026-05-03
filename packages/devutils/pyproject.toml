@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-devutils"
-version = "0.0.1"
+version = "0.1.0"
 description = "Utilities for development in monorepo."
 authors = [
 	{name = "Mika H.", email = "mika.hanninen@gmail.com"}
