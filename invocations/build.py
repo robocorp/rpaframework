@@ -4,6 +4,7 @@ packages.
 from pathlib import Path
 
 import keyring
+import toml
 import yaml
 from invoke import Collection, Context, ParseError
 from invoke import config as inv_config
@@ -131,7 +132,7 @@ def publish(ctx, ci=False, build_=True, version=None, yes_to_all=False):
         shell.invoke(ctx, f"build.version --version={version}", echo=False)
         if not ci:
             pkg_name = get_current_package_name(ctx)
-            new_version = shell.uv(ctx, "version", echo=False).stdout.strip().split()[-1]
+            new_version = toml.load("pyproject.toml")["project"]["version"]
             shell.git(ctx, "add pyproject.toml uv.lock")
             shell.git(ctx, f'commit -m "chore(release): {pkg_name} {new_version}"')
             shell.git(ctx, "push origin master")
