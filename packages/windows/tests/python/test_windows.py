@@ -86,6 +86,25 @@ def test_select_raises_when_value_cannot_be_selected():
     )
 
 
+def test_select_succeeds_when_select_returns_none():
+    """UIAutomation Select() returns None on success — must not raise.
+
+    The guard uses `is False` (identity), not a falsy check, so that a None
+    return (typical for COM void methods) is treated as success.
+    """
+    ctx = mock.Mock()
+    ctx.simulate_move = False
+    ctx.wait_time = 0.5
+    element = mock.Mock()
+    element.item.Select.return_value = None
+    ctx.get_element.return_value = element
+
+    keywords = ActionKeywords(ctx)
+    result = keywords.select("id:FontSizeComboBox", "22")
+
+    assert result is element
+
+
 @pytest.mark.skipif(not IS_WINDOWS, reason="Windows required")
 def test_list_windows_control_window_click_error_scenario(library):
     """Test error handling when window or element is not found.
