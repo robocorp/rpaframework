@@ -48,6 +48,12 @@ override-dependencies = [
 	"pyasn1>=0.6.3",
 ]
 
+[tool.uv.extra-build-dependencies]
+pyobjc-core = ["setuptools"]
+pyobjc-framework-applicationservices = ["setuptools"]
+pyobjc-framework-cocoa = ["setuptools"]
+pyobjc-framework-quartz = ["setuptools"]
+
 [tool.uv.sources]
 rpaframework = { path = "packages/main", editable = true }
 rpaframework-devutils = { path = "packages/devutils", editable = true }

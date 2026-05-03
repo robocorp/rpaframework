@@ -162,7 +162,6 @@ class TestLibrary:
 
         return path.read_text(encoding=ENCODING)
 
-    @classmethod
     @pytest.fixture(
         params=[
             ("mail-text.txt", "A message from e-mail"),
@@ -170,24 +169,23 @@ class TestLibrary:
             ("mail-yaml.txt", {"message": "from email", "extra": {"value": 1}}),
         ]
     )
-    def raw_email_data(cls, request):
-        raw_email = cls._get_resource_data(request.param[0])
+    def raw_email_data(self, request):
+        raw_email = self._get_resource_data(request.param[0])
         expected_body = request.param[1]
         return raw_email, expected_body
 
-    @classmethod
     @pytest.fixture(
         params=[
             ("email.text", False, "A message from e-mail"),
             ("__mail.html", True, "from email"),
         ]
     )
-    def parsed_email_data(cls, request):
+    def parsed_email_data(self, request):
         email_var = request.param[0]
         parsed_email = None
         expected_body = request.param[2]
         if request.param[1]:
-            parsed_email = cls._get_resource_data(email_var, binary=True)
+            parsed_email = self._get_resource_data(email_var, binary=True)
         return email_var, parsed_email, expected_body
 
     def test_autoload(self, library):

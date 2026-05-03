@@ -97,6 +97,13 @@ dev = [
 [tool.uv]
 package = true
 
+
+[tool.uv.extra-build-dependencies]
+pyobjc-core = ["setuptools"]
+pyobjc-framework-applicationservices = ["setuptools"]
+pyobjc-framework-cocoa = ["setuptools"]
+pyobjc-framework-quartz = ["setuptools"]
+
 [tool.uv.sources]
 rpaframework-devutils = { path = "../devutils", editable = true }
 rpaframework-windows = { path = "../windows", editable = true }
