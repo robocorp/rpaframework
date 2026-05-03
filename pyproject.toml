@@ -46,6 +46,8 @@ override-dependencies = [
 	"PyJWT>=2.12.0",
 	"pypdf>=6.10.2",
 	"pyasn1>=0.6.3",
+	"lxml>=6.1.0",
+	"urllib3>=2.6.3",
 ]
 
 [tool.uv.extra-build-dependencies]
