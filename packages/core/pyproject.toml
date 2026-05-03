@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-core"
-version = "13.0.0"
+version = "14.0.0"
 description = "Core utilities used by RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
