@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-windows"
-version = "10.0.3"
+version = "11.0.0"
 description = "Windows library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -24,7 +24,7 @@ classifiers = [
 
 dependencies = [
 	"dataclasses >=0.7; python_version >= '3.6' and python_version < '3.7'",
-	"rpaframework-core >=12.1.0",
+	"rpaframework-core >=13.0.0",
 	"robotframework >=4.0.0, !=4.0.1, !=6.1.0, <8.0.0",
 	"robotframework-pythonlibcore >=4.2.0",
 	"pynput>=1.8.1",
