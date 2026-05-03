@@ -5,9 +5,6 @@ Library           Process
 Library           RPA.Windows
 Library           String
 
-Test Setup      Set Wait Time    0.7
-
-Default Tags      windows   skip
 
 *** Variables ***
 ${RESOURCES}      ${CURDIR}${/}..${/}..${/}resources

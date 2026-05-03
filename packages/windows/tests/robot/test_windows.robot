@@ -1,7 +1,7 @@
 *** Settings ***
 Resource   keywords.robot
-
-
+Test Setup      Set Wait Time    0.7
+Default Tags      windows   skip
 
 
 *** Test Cases ***
