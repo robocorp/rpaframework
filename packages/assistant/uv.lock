@@ -1342,7 +1342,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework-assistant"
-version = "5.0.0"
+version = "6.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "flet" },
@@ -1362,7 +1362,7 @@ requires-dist = [
     { name = "flet", specifier = "~=0.82.0" },
     { name = "flet-desktop", specifier = "~=0.82.0" },
     { name = "robotframework", specifier = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0" },
-    { name = "rpaframework-core", specifier = ">=12.1.0" },
+    { name = "rpaframework-core", specifier = ">=13.0.0" },
     { name = "typing-extensions", specifier = ">=4.4.0" },
 ]
 
@@ -1371,7 +1371,7 @@ dev = [{ name = "rpaframework-devutils", editable = "../devutils" }]
 
 [[package]]
 name = "rpaframework-core"
-version = "12.1.1"
+version = "13.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -1383,9 +1383,9 @@ dependencies = [
     { name = "uiautomation", marker = "sys_platform == 'win32'" },
     { name = "webdriver-manager" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ae/97/c4ba88512cafdf009174fea6b0e3ff9aab77b98cbc025bf78e0e7f091396/rpaframework_core-12.1.1.tar.gz", hash = "sha256:7b9322c8b9f7ad3caae0770918048aa9b41e0d40f7285ecb0e4e911f8db425ab", size = 169633, upload-time = "2026-03-08T19:13:42.678Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/25/ea/4e4ba42b844361d5f4e601cec25a6052fc378b7e262fc18b70bf25fa256d/rpaframework_core-13.0.0.tar.gz", hash = "sha256:d05cc834ab2cfdfb3d206b78e79b8e19bb5871fffcf722057edaff2c6d686f8e", size = 142696, upload-time = "2026-05-03T18:38:13.348Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d4/c0/646d3572692e5e0d53f7fea35b7813beef5ee4b4233ec242a30d115b13c0/rpaframework_core-12.1.1-py3-none-any.whl", hash = "sha256:dfbbe0ddf5411254984f99975de3b9ab86a47d1364b47e2271a0438e501331f5", size = 56285, upload-time = "2026-03-08T19:13:40.915Z" },
+    { url = "https://files.pythonhosted.org/packages/da/c9/820e18034c59d96afdb8ae214003e4014b6d17101c4f46f25118ac5cdeaf/rpaframework_core-13.0.0-py3-none-any.whl", hash = "sha256:33a4bf1ae09a27d4454583fe51871a8c08e4ee9f2ac7260beaa203015ee018a9", size = 56658, upload-time = "2026-05-03T18:38:11.926Z" },
 ]
 
 [[package]]

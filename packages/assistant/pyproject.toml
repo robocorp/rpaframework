@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-assistant"
-version = "5.0.0"
+version = "6.0.0"
 description = "Interactive UI library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -24,7 +24,7 @@ classifiers = [
 
 dependencies = [
 	"robotframework>=4.0.0,!=4.0.1,!=6.1.0,<8.0.0",
-	"rpaframework-core>=12.1.0",
+	"rpaframework-core>=13.0.0",
 	"flet~=0.82.0",
 	"flet-desktop~=0.82.0",
 	"typing-extensions>=4.4.0",
