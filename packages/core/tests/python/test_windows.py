@@ -50,11 +50,11 @@ class TestMatchObject:
                     ("Name", "classx:Classx Test2", 0),
                 ],
             ),
-            ("'Robocorp Window'", [("Name", "'Robocorp Window'", 0)]),
+            ("'Robocorp Window'", [("Name", "Robocorp Window", 0)]),
             (
                 "name:'Robocorp Window'",
-                [("Name", "'Robocorp", 0), ("Name", "Window'", 0)],
-            ),  # single quotes don't work for enclosing, use double
+                [("Name", "Robocorp Window", 0)],
+            ),  # single quotes work as delimiters, same as double quotes
             ('Robocorp" Window', [("Name", 'Robocorp" Window', 0)]),
             (
                 'name:Robocorp" Window class:"My Class"',
