@@ -2121,7 +2121,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "31.2.0"
+version = "32.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -2230,7 +2230,7 @@ requires-dist = [
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
     { name = "rpaframework-core", editable = "../core" },
-    { name = "rpaframework-pdf", specifier = ">=10.0.3" },
+    { name = "rpaframework-pdf", specifier = ">=11.0.0" },
     { name = "rpaframework-windows", marker = "sys_platform == 'win32'", editable = "../windows" },
     { name = "selenium", specifier = ">=4.16.0,<5.0.0" },
     { name = "simple-salesforce", specifier = ">=1.0.0" },
@@ -2250,7 +2250,7 @@ dev = [{ name = "rpaframework-devutils", editable = "../devutils" }]
 
 [[package]]
 name = "rpaframework-core"
-version = "12.1.1"
+version = "13.0.0"
 source = { editable = "../core" }
 dependencies = [
     { name = "httpx" },
@@ -2341,7 +2341,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "10.0.3"
+version = "11.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docutils" },
@@ -2351,14 +2351,14 @@ dependencies = [
     { name = "robotframework" },
     { name = "rpaframework-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/74/a0/f36fa3a1211f0ea16ff9050a0a4bc973b49c671726f1ebd793db08e53c87/rpaframework_pdf-10.0.3.tar.gz", hash = "sha256:6d36aeacbe02625738cf57ada6dbac5fc584bf711d455da6c2004a9ecc5fb111", size = 4575911, upload-time = "2026-03-06T17:42:04.473Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/11/97/29ebea4a6393c2fef78996e6526416782ed384c5a267fab979a2d6b63594/rpaframework_pdf-11.0.0.tar.gz", hash = "sha256:0069195fe939d908f05a00fec84d4254bb66ab75af564433339694c4beaec2ef", size = 4530017, upload-time = "2026-05-03T18:45:16.479Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/eb/4f/f815398a6b4b2777d91657e82fc35430682f5fe157f3067133332db7d753/rpaframework_pdf-10.0.3-py3-none-any.whl", hash = "sha256:095d73c37aff2fa601560650cfaf9ad511da5832250c779a611eed146ddecc83", size = 612603, upload-time = "2026-03-06T17:42:01.059Z" },
+    { url = "https://files.pythonhosted.org/packages/f0/ec/7ba65232c019792a28b74effe6bdb51b340eaad17ea6c90a86ccbfdc127a/rpaframework_pdf-11.0.0-py3-none-any.whl", hash = "sha256:ceec10ed2c40b47b2fc4e7b271462c6ec1e0f186998b40ab0a168f12dfb33d00", size = 612597, upload-time = "2026-05-03T18:45:13.012Z" },
 ]
 
 [[package]]
 name = "rpaframework-windows"
-version = "10.0.3"
+version = "11.0.0"
 source = { editable = "../windows" }
 dependencies = [
     { name = "comtypes", marker = "sys_platform == 'win32'" },
@@ -2382,7 +2382,7 @@ requires-dist = [
     { name = "pywin32", marker = "sys_platform == 'win32'", specifier = ">=300,<=311" },
     { name = "robotframework", specifier = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0" },
     { name = "robotframework-pythonlibcore", specifier = ">=4.2.0" },
-    { name = "rpaframework-core", specifier = ">=12.1.0" },
+    { name = "rpaframework-core", specifier = ">=13.0.0" },
     { name = "uiautomation", specifier = ">=2.0.15" },
 ]
 
