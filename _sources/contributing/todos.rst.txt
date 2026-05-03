@@ -2,8 +2,8 @@
 TODO
 ****
 
-RPA.Desktop.Windows:
-====================
+Desktop.Windows:
+================
 
 .. csv-table::
    :header: "Line", "Message"
@@ -13,8 +13,8 @@ RPA.Desktop.Windows:
    "1394", "supporting multiple search criterias at same time to identify ONE element"
    "1420", "supporting multiple search criterias at same time to identify ONE element"
 
-RPA.Desktop.keywords.application:
-=================================
+Desktop.keywords.application:
+=============================
 
 .. csv-table::
    :header: "Line", "Message"
@@ -23,8 +23,8 @@ RPA.Desktop.keywords.application:
    "117", "Move implementations to platform-specific adapters"
    "173", "Find out way to get actual default application,"
 
-RPA.Desktop.keywords.finder:
-============================
+Desktop.keywords.finder:
+========================
 
 .. csv-table::
    :header: "Line", "Message"
@@ -32,8 +32,8 @@ RPA.Desktop.keywords.finder:
 
    "314", "Add run-on-error support and maybe screenshotting matches?"
 
-RPA.Desktop.keywords.mouse:
-===========================
+Desktop.keywords.mouse:
+=======================
 
 .. csv-table::
    :header: "Line", "Message"
@@ -42,8 +42,8 @@ RPA.Desktop.keywords.mouse:
    "73", "Clamp to screen dimensions?"
    "106", "mypy should handle enum exhaustivity validation"
 
-RPA.Desktop.keywords.screen:
-============================
+Desktop.keywords.screen:
+========================
 
 .. csv-table::
    :header: "Line", "Message"
@@ -51,8 +51,8 @@ RPA.Desktop.keywords.screen:
 
    "182", "Draw a circle instead?"
 
-RPA.Email.ImapSmtp:
-===================
+Email.ImapSmtp:
+===============
 
 .. csv-table::
    :header: "Line", "Message"
@@ -60,8 +60,8 @@ RPA.Email.ImapSmtp:
 
    "958", "mypy should handle enum exhaustivity validation"
 
-RPA.FileSystem:
-===============
+FileSystem:
+===========
 
 .. csv-table::
    :header: "Line", "Message"
@@ -74,8 +74,8 @@ RPA.FileSystem:
    "884", "Convert to proper date"
    "893", "Convert to human-friendly?"
 
-RPA.JSON:
-=========
+JSON:
+=====
 
 .. csv-table::
    :header: "Line", "Message"
@@ -83,8 +83,8 @@ RPA.JSON:
 
    "234", "Add more logging about affected rows, at least on debug level"
 
-RPA.JavaAccessBridge:
-=====================
+JavaAccessBridge:
+=================
 
 .. csv-table::
    :header: "Line", "Message"
@@ -92,8 +92,8 @@ RPA.JavaAccessBridge:
 
    "440", "add keyword for taking screenshots of elements and window"
 
-RPA.MSGraph:
-============
+MSGraph:
+========
 
 .. csv-table::
    :header: "Line", "Message"
@@ -102,8 +102,8 @@ RPA.MSGraph:
    "122", "Implement a `TokenBackend` that uses Robocorp vault,"
    "297", "Does this fail when we define a path we want?"
 
-RPA.Smartsheet:
-===============
+Smartsheet:
+===========
 
 .. csv-table::
    :header: "Line", "Message"
@@ -112,8 +112,8 @@ RPA.Smartsheet:
    "118", "ADD LOGGING THROUGHOUT"
    "218", "consider if this properly connects the logs."
 
-RPA.Tasks:
-==========
+Tasks:
+======
 
 .. csv-table::
    :header: "Line", "Message"
@@ -128,7 +128,7 @@ checkers.base.name_checker.checker:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "621", "when py3.12 is minimum, remove this condition"
+   "714", "when py3.12 is minimum, remove this condition"
 
 checkers.classes.class_checker:
 ===============================
@@ -137,8 +137,7 @@ checkers.classes.class_checker:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "1343", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
-   "2264", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "1334", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 checkers.design_analysis:
 =========================
@@ -147,16 +146,7 @@ checkers.design_analysis:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "26", "Unknown option value for 'disable', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
-
-checkers.imports:
-=================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "793", "# TODO - this isn't right for multiple on the same line..."
+   "25", "Unknown option value for 'disable', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
 
 checkers.logging:
 =================
@@ -174,7 +164,7 @@ checkers.stdlib:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "728", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "760", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 checkers.strings:
 =================
@@ -192,7 +182,7 @@ checkers.symilar:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "831", "4.0 Fix current_name"
+   "829", "4.0 Fix current_name"
 
 checkers.typecheck:
 ===================
@@ -201,10 +191,10 @@ checkers.typecheck:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "623", "The typing of the second return variable is actually Literal[0,1]"
-   "625", "The typing of the third return variable can be narrowed to a Literal"
-   "2064", "This check was disabled (by adding the leading underscore)"
-   "2072", "This check was disabled (by adding the leading underscore)"
+   "610", "The typing of the second return variable is actually Literal[0,1]"
+   "612", "The typing of the third return variable can be narrowed to a Literal"
+   "2068", "This check was disabled (by adding the leading underscore)"
+   "2076", "This check was disabled (by adding the leading underscore)"
 
 checkers.utils:
 ===============
@@ -213,9 +203,9 @@ checkers.utils:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "603", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
-   "1374", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
-   "2061", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "610", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "1378", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "2084", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 checkers.variables:
 ===================
@@ -224,8 +214,8 @@ checkers.variables:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "1386", "(performance), merging both checks would streamline this"
-   "2673", "4.0: Consider using utils.is_terminating_func"
+   "1378", "(performance), merging both checks would streamline this"
+   "2690", "4.0: Consider using utils.is_terminating_func"
 
 config._pylint_config.utils:
 ============================
@@ -234,9 +224,9 @@ config._pylint_config.utils:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "59", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
-   "78", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
-   "104", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
+   "54", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
+   "73", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
+   "99", "Unknown option value for 'disable-next', expected a valid pylint message and got 'bad-builtin'"
 
 config.callback_actions:
 ========================
@@ -254,7 +244,7 @@ config.config_initialization:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "113", "Change this to be checked only when upgrading the configuration"
+   "114", "Change this to be checked only when upgrading the configuration"
 
 config.utils:
 =============
@@ -272,7 +262,7 @@ extensions.docparams:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "484", "Unknown option value for 'disable', expected a valid pylint message and got 'useless-param-doc'"
+   "483", "Unknown option value for 'disable', expected a valid pylint message and got 'useless-param-doc'"
 
 lint.message_state_handler:
 ===========================
@@ -290,9 +280,8 @@ lint.pylinter:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "98", "Unknown option value for 'disable-next', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
-   "291", "Deprecate passing the pylintrc parameter"
-   "676", "Move the parallel invocation into step 3 of the checking process"
+   "102", "Unknown option value for 'disable-next', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
+   "695", "Move the parallel invocation into step 3 of the checking process"
 
 pyreverse.diagrams:
 ===================
@@ -337,7 +326,7 @@ testutils.functional.test_file:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "59", "4.0: Deprecate FunctionalTestFile.options and related code"
+   "63", "4.0: Deprecate FunctionalTestFile.options and related code"
 
 testutils.unittest_linter:
 ==========================
