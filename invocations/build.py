@@ -11,7 +11,7 @@ from invoke import task
 from keyring.errors import KeyringError
 
 from invocations import ROBOT_BUILD_STRATEGY, config, libspec, shell
-from invocations.util import REPO_ROOT, require_package, safely_load_config
+from invocations.util import REPO_ROOT, get_current_package_name, require_package, safely_load_config
 
 
 @task(
@@ -129,6 +129,12 @@ def publish(ctx, ci=False, build_=True, version=None, yes_to_all=False):
         shell.invoke(ctx, "install.clean", echo=False)
     if version:
         shell.invoke(ctx, f"build.version --version={version}", echo=False)
+        if not ci:
+            pkg_name = get_current_package_name(ctx)
+            new_version = shell.uv(ctx, "version", echo=False).stdout.strip().split()[-1]
+            shell.git(ctx, "add pyproject.toml uv.lock")
+            shell.git(ctx, f'commit -m "chore(release): {pkg_name} {new_version}"')
+            shell.git(ctx, "push origin master")
     if build_:
         test_arg = "--no-test" if ci else ""
         shell.invoke(
