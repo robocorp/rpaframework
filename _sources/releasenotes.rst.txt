@@ -12,13 +12,35 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- ``RPA.Windows``: New ``Get Checkbox State`` keyword to retrieve the toggle state of a checkbox control, returning ``True`` (checked), ``False`` (unchecked) or ``None`` (indeterminate). Closes :issue:`1166`.
-- ``RPA.Windows``: Fix ``path:`` locator strategy ignoring the ``timeout`` parameter — path traversal now retries each step until the active timeout expires instead of failing immediately. Closes :issue:`1125`.
-- ``rpaframework-core``: Fix locator parser not handling single-quoted names with spaces (e.g. ``name:'My Window'``) — both single and double quotes are now accepted as value delimiters.
-- ``rpaframework-core``: Fix ``path:`` locator ignoring the active timeout — each path step now retries until the deadline expires instead of failing immediately when a child is not yet present.
+No changes planned yet for the next release.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+4 May 2026
+----------
+
+- **Breaking:** Drop Python 3.9 support (EOL Oct 2025), minimum is now Python 3.10 (:pr:`1329`).
+- **Security:** Bump ``pillow`` ≥12.2.0, ``PyJWT`` ≥2.12.0, ``cryptography`` ≥46.0.7, ``requests`` ≥2.33.0, ``pypdf`` ≥6.10.2, ``pyasn1`` ≥0.6.3, ``lxml`` ≥6.1.0, ``urllib3`` ≥2.6.3 (:pr:`1330`).
+- **Dependencies:** Replace ``pynput-robocorp-fork`` with upstream ``pynput`` ≥1.8.1; unblocks Python 3.13 on macOS (:pr:`1328`).
+- ``RPA.Windows``: New ``Get Checkbox State`` keyword to retrieve the toggle state of a checkbox control, returning ``True`` (checked), ``False`` (unchecked) or ``None`` (indeterminate) (:pr:`1326`).
+- ``RPA.Windows``: ``Select`` keyword now raises an error when the requested value cannot be found (:pr:`1320`, :pr:`1326`).
+- ``rpaframework-core``: Fix locator parser not handling single-quoted names with spaces — both single and double quotes are now accepted as value delimiters (:pr:`1320`).
+- ``rpaframework-core``: Fix ``path:`` locator ignoring the active timeout — each step now retries until the deadline expires (:pr:`1320`).
+- ``RPA.Database``: Fix ``Connect To Database`` for ``psycopg``/``psycopg2`` — now passes ``dbname`` instead of ``database`` to match the driver's expected parameter name (:pr:`1325`).
+- ``rpaframework-recognition``: Expose Tesseract confidence score alongside OCR text matches (:pr:`1327`).
+- ``rpaframework-assistant``: Migrate from ``robocorp-flet`` fork to official ``flet`` ≥0.82.0; adds per-dialog theme support (:pr:`1321`).
+
+- ``rpaframework`` **32.0.0**
+- ``rpaframework-core`` **13.0.0**
+- ``rpaframework-pdf`` **11.0.0**
+- ``rpaframework-windows`` **11.0.0**
+- ``rpaframework-recognition`` **8.0.0**
+- ``rpaframework-aws`` **8.0.0**
+- ``rpaframework-google`` **12.0.0**
+- ``rpaframework-hubspot`` **4.0.0**
+- ``rpaframework-openai`` **5.0.0**
+- ``rpaframework-assistant`` **6.0.0**
 
 8 Mar 2026
 ----------
