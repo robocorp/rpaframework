@@ -40,7 +40,7 @@ repository = "https://github.com/robocorp/rpaframework"
 
 [dependency-groups]
 dev = [
-	"pytest>=7.0.0",
+	"pytest>=9.0.3",
 	"pytest-cov>=4.0.0",
 	"pylint>=3.3.2",
 ]

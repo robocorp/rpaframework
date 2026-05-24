@@ -2309,7 +2309,7 @@ requires-dist = [
     { name = "moto", specifier = "==5.1.0" },
     { name = "mypy", specifier = ">=1.4.1" },
     { name = "pylint", specifier = ">=3.3.2" },
-    { name = "pytest", specifier = ">=7.2.2" },
+    { name = "pytest", specifier = ">=9.0.3" },
     { name = "pytest-cov", specifier = ">=4.0.0" },
     { name = "pytest-env", specifier = ">=0.6.2" },
     { name = "pytest-mock", specifier = ">=3.8.2" },
