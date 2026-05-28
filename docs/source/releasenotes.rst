@@ -17,6 +17,14 @@ No changes planned yet for the next release.
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+28 May 2026
+-----------
+
+- **Security:** Bump ``urllib3`` ≥2.7.0 (CVE-2026-44431), ``idna`` ≥3.16 (CVE-2026-45409), ``pytest`` ≥9.0.3 (CVE-2025-71176), ``werkzeug`` ≥3.1.8 (CVE-2026-27199), ``python-dotenv`` ≥1.2.2 (CVE-2026-28684), ``Pygments`` ≥2.20.0 (CVE-2026-4539) across all package lock files (:pr:`1333`).
+- ``rpaframework-aws``: Tighten ``urllib3`` direct dependency floor to ``≥2.7.0`` (was ``≥1.25.4``) to enforce the security fix for end users (:pr:`1333`).
+
+- ``rpaframework-aws`` **8.0.1**
+
 4 May 2026
 ----------
 
