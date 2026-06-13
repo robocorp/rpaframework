@@ -17,6 +17,14 @@ No changes planned yet for the next release.
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+13 Jun 2026
+-----------
+
+- **Security:** Bump ``pypdf`` ≥6.12.0 (CVE-2026-48155, medium — potential large memory usage for large offsets in layout-mode text). Tightened as a direct dependency floor in ``rpaframework-pdf`` and resolved to 6.13.2 across the main and root lock files. Also refreshes ``pytest`` ≥9.0.3 and ``Pygments`` ≥2.20.0 in the root dev lock (:pr:`1334`).
+
+- ``rpaframework-pdf`` **11.0.1**
+- ``rpaframework`` **32.0.1**
+
 28 May 2026
 -----------
 
