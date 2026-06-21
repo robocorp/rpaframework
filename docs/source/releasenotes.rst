@@ -12,7 +12,7 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-No changes planned yet for the next release.
+- ``rpaframework-recognition``: Relax the ``numpy`` constraint from ``<2.0.0`` to allow numpy 2.x, fixing installation on Python 3.13 where numpy 1.26.x has no prebuilt wheel and a source build is attempted. Adds the Python 3.13 classifier (fixes :issue:`1331`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
