@@ -73,13 +73,13 @@ def use_system_certificates():
             LOGGER.debug("Dependency `truststore` is not installed!")
         else:
             truststore.inject_into_ssl()
-            LOGGER.info(
+            LOGGER.debug(
                 "Truststore injection done, using system certificate store to validate"
                 " HTTPS."
             )
             return
 
-    LOGGER.info(
+    LOGGER.debug(
         "Truststore not in use, HTTPS traffic validated against `certifi` package."
         " (requires Python %s and 'pip' %s at minimum)",
         ".".join(str(nr) for nr in py_version),

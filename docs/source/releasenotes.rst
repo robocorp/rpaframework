@@ -12,7 +12,7 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-No changes planned yet for the next release.
+- ``rpaframework-core``: Lower the truststore certificate-store log messages from ``INFO`` to ``DEBUG`` so they no longer appear on every run's console (fixes :issue:`1220`, :issue:`1093`, :issue:`1210`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
