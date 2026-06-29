@@ -16,6 +16,11 @@ Latest versions
 - ``rpaframework-core``: Lower the truststore certificate-store log messages from ``INFO`` to ``DEBUG`` so they no longer appear on every run's console (fixes :issue:`1220`, :issue:`1093`, :issue:`1210`) (:pr:`1335`).
 - ``rpaframework-recognition``: Relax the ``numpy`` constraint from ``<2.0.0`` to allow numpy 2.x, fixing installation on Python 3.13 where numpy 1.26.x has no prebuilt wheel and a source build is attempted. Adds the Python 3.13 classifier (fixes :issue:`1331`) (:pr:`1336`).
 
+- ``rpaframework-core`` **13.0.1**
+- ``rpaframework-recognition`` **8.0.1**
+- ``rpaframework-pdf`` **11.0.1**
+- ``rpaframework`` **32.0.1**
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
