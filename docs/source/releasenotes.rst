@@ -12,7 +12,8 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- **Security:** Bump ``pypdf`` ≥6.12.0 (CVE-2026-48155, medium — potential large memory usage for large offsets in layout-mode text). Tightened as a direct dependency floor in ``rpaframework-pdf`` and resolved to 6.13.2 across the main and root lock files. Also refreshes ``pytest`` ≥9.0.3 and ``Pygments`` ≥2.20.0 in the root dev lock (:pr:`1334`).
+- **Security:** Bump ``cryptography`` ≥48.0.1 (HIGH — vulnerable OpenSSL bundled in cryptography wheels), ``PyJWT`` ≥2.13.0 (HIGH/MEDIUM/LOW — SSRF via JWK/JWKS, algorithm allow-list bypass, DoS; CVE-2026-48522 through CVE-2026-48526), ``pypdf`` ≥6.13.3 (MEDIUM — missing stream length limits), ``msgpack`` ≥1.2.1 (HIGH — out-of-bounds read/crash on Unpacker reuse), ``zeep`` ≥4.3.3 (MEDIUM — SSRF). Tighten direct dependency floors for ``cryptography`` and ``PyJWT`` in ``rpaframework`` and ``pypdf`` in ``rpaframework-pdf``; refresh all lock files.
+- **Security:** Bump ``pypdf`` ≥6.12.0 (CVE-2026-48155, medium — potential large memory usage for large offsets in layout-mode text). Tightened as a direct dependency floor in ``rpaframework-pdf``; also refreshes ``pytest`` ≥9.0.3 and ``Pygments`` ≥2.20.0 in the root dev lock (:pr:`1334`).
 - ``rpaframework-core``: Lower the truststore certificate-store log messages from ``INFO`` to ``DEBUG`` so they no longer appear on every run's console (fixes :issue:`1220`, :issue:`1093`, :issue:`1210`) (:pr:`1335`).
 - ``rpaframework-recognition``: Relax the ``numpy`` constraint from ``<2.0.0`` to allow numpy 2.x, fixing installation on Python 3.13 where numpy 1.26.x has no prebuilt wheel and a source build is attempted. Adds the Python 3.13 classifier (fixes :issue:`1331`) (:pr:`1336`).
 

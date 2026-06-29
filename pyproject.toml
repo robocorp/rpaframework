@@ -41,13 +41,14 @@ override-dependencies = [
 	"h11>=0.16.0",
 	"protobuf>=6.33.5",
 	"pillow>=12.2.0",
-	"cryptography>=46.0.7",
+	"cryptography>=48.0.1",
 	"requests>=2.33.0",
-	"PyJWT>=2.12.0",
-	"pypdf>=6.12.0",
+	"PyJWT>=2.13.0",
+	"pypdf>=6.13.3",
 	"pyasn1>=0.6.3",
 	"lxml>=6.1.0",
 	"urllib3>=2.6.3",
+	"msgpack>=1.2.1",
 ]
 
 [tool.uv.extra-build-dependencies]
