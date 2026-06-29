@@ -12,6 +12,14 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+No changes planned yet for the next release.
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+29 Jun 2026
+-----------
+
 - **Security:** Bump the following dependencies across all package lock files:
 
   - ``cryptography`` ≥48.0.1 (HIGH — vulnerable OpenSSL bundled in wheels)
@@ -33,9 +41,6 @@ Latest versions
 - ``rpaframework-recognition`` **8.0.1**
 - ``rpaframework-pdf`` **11.0.1**
 - ``rpaframework`` **32.0.1**
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 28 May 2026
 -----------
