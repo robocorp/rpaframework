@@ -12,18 +12,17 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- ``rpaframework-core``: Lower the truststore certificate-store log messages from ``INFO`` to ``DEBUG`` so they no longer appear on every run's console (fixes :issue:`1220`, :issue:`1093`, :issue:`1210`).
+- **Security:** Bump ``pypdf`` ≥6.12.0 (CVE-2026-48155, medium — potential large memory usage for large offsets in layout-mode text). Tightened as a direct dependency floor in ``rpaframework-pdf`` and resolved to 6.13.2 across the main and root lock files. Also refreshes ``pytest`` ≥9.0.3 and ``Pygments`` ≥2.20.0 in the root dev lock (:pr:`1334`).
+- ``rpaframework-core``: Lower the truststore certificate-store log messages from ``INFO`` to ``DEBUG`` so they no longer appear on every run's console (fixes :issue:`1220`, :issue:`1093`, :issue:`1210`) (:pr:`1335`).
+- ``rpaframework-recognition``: Relax the ``numpy`` constraint from ``<2.0.0`` to allow numpy 2.x, fixing installation on Python 3.13 where numpy 1.26.x has no prebuilt wheel and a source build is attempted. Adds the Python 3.13 classifier (fixes :issue:`1331`) (:pr:`1336`).
+
+- ``rpaframework-core`` **13.0.1**
+- ``rpaframework-recognition`` **8.0.1**
+- ``rpaframework-pdf`` **11.0.1**
+- ``rpaframework`` **32.0.1**
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-13 Jun 2026
------------
-
-- **Security:** Bump ``pypdf`` ≥6.12.0 (CVE-2026-48155, medium — potential large memory usage for large offsets in layout-mode text). Tightened as a direct dependency floor in ``rpaframework-pdf`` and resolved to 6.13.2 across the main and root lock files. Also refreshes ``pytest`` ≥9.0.3 and ``Pygments`` ≥2.20.0 in the root dev lock (:pr:`1334`).
-
-- ``rpaframework-pdf`` **11.0.1**
-- ``rpaframework`` **32.0.1**
 
 28 May 2026
 -----------
