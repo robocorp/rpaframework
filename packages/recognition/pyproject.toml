@@ -20,13 +20,14 @@ classifiers = [
 	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
 ]
 
 dependencies = [
 	"rpaframework-core >=13.0.0",
 	"pillow >=10.2.0",
 	"opencv-python-headless >=4.8.1, <4.11.0",
-	"numpy >=1.19.3, <2.0.0",
+	"numpy >=1.19.3",
 	"pytesseract >=0.3.6, <0.4.0",
 	"docutils>=0.21.2",
 ]
