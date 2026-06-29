@@ -196,18 +196,14 @@
 </section>
 <section id="id3">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
-<p>No changes planned yet for the next release.</p>
+<ul class="simple">
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pypdf</span></code> ≥6.12.0 (CVE-2026-48155, medium — potential large memory usage for large offsets in layout-mode text). Tightened as a direct dependency floor in <code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> and resolved to 6.13.2 across the main and root lock files. Also refreshes <code class="docutils literal notranslate"><span class="pre">pytest</span></code> ≥9.0.3 and <code class="docutils literal notranslate"><span class="pre">Pygments</span></code> ≥2.20.0 in the root dev lock (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/1334">#1334</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code>: Lower the truststore certificate-store log messages from <code class="docutils literal notranslate"><span class="pre">INFO</span></code> to <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> so they no longer appear on every run’s console (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1220">#1220</a>, <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1093">#1093</a>, <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1210">#1210</a>) (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/1335">#1335</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code>: Relax the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> constraint from <code class="docutils literal notranslate"><span class="pre">&lt;2.0.0</span></code> to allow numpy 2.x, fixing installation on Python 3.13 where numpy 1.26.x has no prebuilt wheel and a source build is attempted. Adds the Python 3.13 classifier (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1331">#1331</a>) (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/1336">#1336</a>).</p></li>
+</ul>
 </section>
 <section id="id4">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
-<section id="jun-2026">
-<h3>13 Jun 2026<a class="headerlink" href="#jun-2026" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pypdf</span></code> ≥6.12.0 (CVE-2026-48155, medium — potential large memory usage for large offsets in layout-mode text). Tightened as a direct dependency floor in <code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> and resolved to 6.13.2 across the main and root lock files. Also refreshes <code class="docutils literal notranslate"><span class="pre">pytest</span></code> ≥9.0.3 and <code class="docutils literal notranslate"><span class="pre">Pygments</span></code> ≥2.20.0 in the root dev lock (<a class="reference external" href="https://github.com/robocorp/rpaframework/pull/1334">#1334</a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> <strong>11.0.1</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> <strong>32.0.1</strong></p></li>
-</ul>
-</section>
 <section id="may-2026">
 <h3>28 May 2026<a class="headerlink" href="#may-2026" title="Link to this heading"></a></h3>
 <ul class="simple">
