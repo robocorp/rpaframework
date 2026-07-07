@@ -25,6 +25,21 @@ def convert_date(timestamp):
     return formatted_date
 
 
+def _check_extraction_safety(names, dest: Path) -> None:
+    """Raise ValueError if extracting any of `names` under `dest` would escape it.
+
+    Guards against Zip Slip / path traversal (CWE-22) via archive members
+    containing sequences like ``../../evil.py``.
+    """
+    dest = dest.resolve()
+    for name in names:
+        target = (dest / name).resolve()
+        if target != dest and dest not in target.parents:
+            raise ValueError(
+                f"Refusing to extract {name!r}: path escapes destination directory"
+            )
+
+
 def list_files_in_directory(folder, recursive=False, include=None, exclude=None):
     filelist = []
     for rootdir, _, files in os.walk(folder):
@@ -373,15 +388,19 @@ class Archive:
             members = [members]
         if zipfile.is_zipfile(archive_name):
             with zipfile.ZipFile(archive_name, "r") as f:
+                names = members if members else f.namelist()
+                _check_extraction_safety(names, root)
                 if members:
                     f.extractall(path=root, members=members)
                 else:
                     f.extractall(path=root)
         elif tarfile.is_tarfile(archive_name):
-            members = map(tarfile.TarInfo, members) if members else None
             with tarfile.open(archive_name, "r") as f:
-                if members:
-                    f.extractall(path=root, members=members)
+                names = members if members else [m.name for m in f.getmembers()]
+                _check_extraction_safety(names, root)
+                tar_members = map(tarfile.TarInfo, members) if members else None
+                if tar_members:
+                    f.extractall(path=root, members=tar_members)
                 else:
                     f.extractall(path=root)
 
