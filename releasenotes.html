@@ -196,7 +196,14 @@
 </section>
 <section id="id3">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
-<p>No changes planned yet for the next release.</p>
+<ul class="simple">
+<li><p><strong>Security:</strong> <code class="docutils literal notranslate"><span class="pre">RPA.Archive</span></code>: Fix a Zip Slip path traversal vulnerability (CWE-22) in
+<code class="docutils literal notranslate"><span class="pre">Extract</span> <span class="pre">Archive</span></code> — archive members with path traversal sequences (e.g.
+<code class="docutils literal notranslate"><span class="pre">../../evil.py</span></code>) could previously be extracted outside the requested destination
+directory. Extraction now validates that every member resolves within the destination
+before extracting, raising <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> otherwise (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1339">#1339</a>, <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1340">#1340</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> <strong>32.0.2</strong></p></li>
+</ul>
 </section>
 <section id="id4">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
