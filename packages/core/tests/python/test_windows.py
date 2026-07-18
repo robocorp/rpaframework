@@ -96,6 +96,14 @@ class TestMatchObject:
                 "Calculator > path:2|3|2|8|2",
                 [("Name", "Calculator", 0), ("path", [2, 3, 2, 8, 2], 1)],
             ),
+            (
+                "locator='executable:AsdfConfigurator.exe",
+                [("executable", "AsdfConfigurator.exe", 0)],
+            ),  # stray `locator=` keyword-arg prefix + unmatched quote (issue #1323)
+            (
+                "LOCATOR=\"executable:AsdfConfigurator.exe",
+                [("executable", "AsdfConfigurator.exe", 0)],
+            ),  # case-insensitive, double-quote variant
         ],
     )
     def test_match_object(self, locator, locators):

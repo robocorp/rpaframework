@@ -168,22 +168,26 @@ class ScreenKeywords(LibraryContext):
             return _monitor_to_region(sct.monitors[0])
 
     @keyword
-    def highlight_elements(self, locator: LocatorType):
-        """Draw an outline around all matching elements."""
+    def highlight_elements(self, locator: LocatorType) -> List[Region]:
+        """Draw an outline around all matching elements, and return their regions."""
         if not utils.is_windows():
             raise NotImplementedError("Not supported on non-Windows platforms")
 
         matches = self.ctx.find_elements(locator)
+        regions = []
 
         for match in matches:
             if isinstance(match, Region):
-                _draw_outline(match)
+                region = match
             elif isinstance(match, Point):
                 # TODO: Draw a circle instead?
                 region = Region(match.x - 5, match.y - 5, match.x + 5, match.y + 5)
-                _draw_outline(region)
             else:
                 raise TypeError(f"Unknown location type: {match}")
+            _draw_outline(region)
+            regions.append(region)
+
+        return regions
 
     @keyword
     def define_region(self, left: int, top: int, right: int, bottom: int) -> Region:
