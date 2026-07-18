@@ -18,6 +18,10 @@ Latest versions
   directory. Extraction now validates that every member resolves within the destination
   before extracting, raising ``ValueError`` otherwise (fixes :issue:`1339`, :issue:`1340`).
 
+- **Security:** Bump ``soupsieve`` ≥2.8.4 (HIGH — memory exhaustion via large
+  comma-separated selector lists, CVE-2026-49476) in the root and ``rpaframework``
+  lock files.
+
 - ``rpaframework`` **32.0.2**
 
 `Released <https://pypi.org/project/rpaframework/#history>`_

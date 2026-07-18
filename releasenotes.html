@@ -202,6 +202,9 @@
 <code class="docutils literal notranslate"><span class="pre">../../evil.py</span></code>) could previously be extracted outside the requested destination
 directory. Extraction now validates that every member resolves within the destination
 before extracting, raising <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> otherwise (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1339">#1339</a>, <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1340">#1340</a>).</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">soupsieve</span></code> ≥2.8.4 (HIGH — memory exhaustion via large
+comma-separated selector lists, CVE-2026-49476) in the root and <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>
+lock files.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> <strong>32.0.2</strong></p></li>
 </ul>
 </section>
