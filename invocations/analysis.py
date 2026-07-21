@@ -246,7 +246,7 @@ def _test_async(ctx, python=True, robot=True):
         "robot": "Toggles executing Robot Framework unit tests. Defaults to True.",
         "asynchronous": (
             "When running both Python and RFW unit tests, setting this "
-            "will cause both to execute simultanously."
+            "will cause both to execute simultaneously."
         ),
     },
 )
