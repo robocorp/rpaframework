@@ -407,6 +407,7 @@ def install_local(ctx, package, extra=None, all_extras=False):
     """
     backup_dependency_files(ctx)
     valid_packages = get_package_paths()
+    pkg_root = get_current_package_root(ctx)
     if not package:
         package = valid_packages.keys()
     opt_dependencies = []
@@ -417,11 +418,15 @@ def install_local(ctx, package, extra=None, all_extras=False):
             pkg_name = "main"
         else:
             pkg_name = pkg
-        pkg_root = get_current_package_root(ctx)
         dependency_path = PACKAGES_ROOT / pkg_name
+        if dependency_path.resolve() == pkg_root.resolve():
+            continue
         opt_dependencies.append(str(relative_path(pkg_root, dependency_path)))
-        add_arg = " ".join(opt_dependencies)
-    shell.uv(ctx, f"add --editable {add_arg}")
+    if not opt_dependencies:
+        print("No external local packages to install.")
+        return
+    add_arg = " ".join(opt_dependencies)
+    shell.uv(ctx, f"add --editable {add_arg}", in_stream=False)
 
 
 def relative_path(first_path: Path, second_path: Path) -> Path:

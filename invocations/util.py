@@ -47,8 +47,12 @@ def get_package_paths():
     for project_toml in project_tomls:
         toml_path = Path(project_toml)
         project_config = toml.load(toml_path)
+        if "tool" in project_config and "poetry" in project_config.get("tool", {}):
+            name = str(project_config["tool"]["poetry"]["name"])
+        else:
+            name = str(project_config["project"]["name"])
         package_paths[toml_path.parent.name] = {
-            "name": str(project_config["tool"]["poetry"]["name"]),
+            "name": name,
             "path": toml_path.parent.resolve(),
         }
     return package_paths
