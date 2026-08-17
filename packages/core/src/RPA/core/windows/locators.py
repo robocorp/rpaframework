@@ -402,7 +402,18 @@ class LocatorMethods(WindowsContext):
         search_params = search_params.copy()  # to keep idempotent behaviour
         win_value = search_params.pop(param_type)
         window_list = self.ctx.list_windows()
-        matches = [win for win in window_list if win[win_type] == win_value]
+        if param_type == "executable":
+            # Windows file names are case-insensitive, so `executable:notepad.exe`
+            # has to match a process listed as `Notepad.exe`. Only the executable
+            # is compared this way; `handle` is numeric and matched as-is.
+            win_value_folded = str(win_value).casefold()
+            matches = [
+                win
+                for win in window_list
+                if str(win[win_type]).casefold() == win_value_folded
+            ]
+        else:
+            matches = [win for win in window_list if win[win_type] == win_value]
         if not matches:
             raise WindowControlError(
                 f"Could not locate window with {param_type} {win_value!r}"

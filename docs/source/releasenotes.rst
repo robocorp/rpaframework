@@ -28,6 +28,10 @@ Latest versions
 - ``RPA.Desktop``: ``Highlight Elements`` now returns the list of matched element regions
   instead of ``None``, exposing coordinates that were already being computed internally
   (fixes :issue:`1324`).
+- ``rpaframework-core``: Match ``executable:`` locators case-insensitively. Windows file
+  names are case-insensitive, but the comparison was not, so ``executable:notepad.exe``
+  could not find a process that Windows lists as ``Notepad.exe`` — as it does on Windows 11.
+  ``handle:`` matching is numeric and is unchanged.
 - **Security:** Bump ``soupsieve`` ≥2.8.4 (HIGH — memory exhaustion via large
   comma-separated selector lists, CVE-2026-49476) in the root and ``rpaframework``
   lock files.

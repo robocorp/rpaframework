@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 
-from RPA.core.windows.context import ElementNotFound
+from RPA.core.windows.context import ElementNotFound, WindowControlError
 from RPA.core.windows.locators import LocatorMethods, MatchObject
 
 
@@ -134,3 +134,54 @@ class TestLocatorMethods:
         with should_raise:
             leaf = library._get_control_from_path(search_params, root_control)
             assert leaf == child22
+
+    @pytest.mark.parametrize(
+        "locator_value, listed_name, should_match",
+        [
+            # Windows file names are case-insensitive, so the case a user writes
+            # must not decide whether the window is found. Windows 11 lists
+            # Notepad as "Notepad.exe" while everyone writes "notepad.exe".
+            ("notepad.exe", "Notepad.exe", True),
+            ("Notepad.exe", "notepad.exe", True),
+            ("NOTEPAD.EXE", "Notepad.exe", True),
+            ("notepad.exe", "notepad.exe", True),
+            # Different executables must still not match each other.
+            ("notepad.exe", "wordpad.exe", False),
+        ],
+    )
+    def test_executable_match_is_case_insensitive(
+        self, library, locator_value, listed_name, should_match
+    ):
+        library.ctx.list_windows.return_value = [
+            {"name": listed_name, "title": "Untitled - Notepad", "handle": 1}
+        ]
+
+        should_raise = (
+            nullcontext() if should_match else pytest.raises(WindowControlError)
+        )
+        with should_raise, mock.patch.object(
+            library, "_get_control_from_params"
+        ) as get_control:
+            library._get_control_from_listed_windows(
+                {"executable": locator_value}, param_type="executable", win_type="name"
+            )
+            # The window title of the matched process is what gets searched for.
+            assert get_control.call_args[0][0]["Name"] == "Untitled - Notepad"
+
+    def test_handle_match_stays_exact(self, library):
+        """Only `executable` is folded - `handle` is numeric and must not be."""
+        library.ctx.list_windows.return_value = [
+            {"name": "notepad.exe", "title": "Untitled - Notepad", "handle": 12345}
+        ]
+
+        with mock.patch.object(library, "_get_control_from_params") as get_control:
+            library._get_control_from_listed_windows(
+                {"handle": 12345}, param_type="handle", win_type="handle"
+            )
+            assert get_control.call_args[0][0]["Name"] == "Untitled - Notepad"
+
+        with pytest.raises(WindowControlError):
+            library._get_control_from_listed_windows(
+                {"handle": 99999}, param_type="handle", win_type="handle"
+            )
+
