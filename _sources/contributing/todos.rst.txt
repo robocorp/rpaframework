@@ -2,17 +2,6 @@
 TODO
 ****
 
-Desktop.Windows:
-================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "1141", "return more valuable information about what should"
-   "1394", "supporting multiple search criterias at same time to identify ONE element"
-   "1420", "supporting multiple search criterias at same time to identify ONE element"
-
 Desktop.keywords.application:
 =============================
 
@@ -49,7 +38,7 @@ Desktop.keywords.screen:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "182", "Draw a circle instead?"
+   "183", "Draw a circle instead?"
 
 Email.ImapSmtp:
 ===============

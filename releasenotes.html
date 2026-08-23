@@ -77,7 +77,6 @@
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop/index.html">Desktop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="libraries/desktop_windows/index.html">Desktop.Windows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/documentai/index.html">DocumentAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/documentai_base64ai/index.html">DocumentAI.Base64AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/documentai_nanonets/index.html">DocumentAI.Nanonets</a></li>
@@ -197,15 +196,31 @@
 <section id="id3">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <ul class="simple">
+<li><p><strong>Breaking:</strong> Remove the long-deprecated <code class="docutils literal notranslate"><span class="pre">RPA.Desktop.Windows</span></code> library (pywinauto-based).
+It has emitted a deprecation warning pointing to <code class="docutils literal notranslate"><span class="pre">RPA.Windows</span></code> since being deprecated in
+favor of it, and is no longer maintained. Use <code class="docutils literal notranslate"><span class="pre">RPA.Windows</span></code> for all Windows UI automation
+going forward (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1322">#1322</a>).</p></li>
 <li><p><strong>Security:</strong> <code class="docutils literal notranslate"><span class="pre">RPA.Archive</span></code>: Fix a Zip Slip path traversal vulnerability (CWE-22) in
 <code class="docutils literal notranslate"><span class="pre">Extract</span> <span class="pre">Archive</span></code> — archive members with path traversal sequences (e.g.
 <code class="docutils literal notranslate"><span class="pre">../../evil.py</span></code>) could previously be extracted outside the requested destination
 directory. Extraction now validates that every member resolves within the destination
 before extracting, raising <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> otherwise (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1339">#1339</a>, <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1340">#1340</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code>: Fix the Windows locator parser silently mis-tokenizing a strategy
+when the locator value contained a stray <code class="docutils literal notranslate"><span class="pre">locator=</span></code> prefix or an unmatched quote
+character (e.g. produced a bogus <code class="docutils literal notranslate"><span class="pre">locator='executable</span></code> strategy instead of recognizing
+<code class="docutils literal notranslate"><span class="pre">executable:</span></code>), with a clearer warning surfaced when this happens (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1323">#1323</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Desktop</span></code>: <code class="docutils literal notranslate"><span class="pre">Highlight</span> <span class="pre">Elements</span></code> now returns the list of matched element regions
+instead of <code class="docutils literal notranslate"><span class="pre">None</span></code>, exposing coordinates that were already being computed internally
+(fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1324">#1324</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code>: Match <code class="docutils literal notranslate"><span class="pre">executable:</span></code> locators case-insensitively. Windows file
+names are case-insensitive, but the comparison was not, so <code class="docutils literal notranslate"><span class="pre">executable:notepad.exe</span></code>
+could not find a process that Windows lists as <code class="docutils literal notranslate"><span class="pre">Notepad.exe</span></code> — as it does on Windows 11.
+<code class="docutils literal notranslate"><span class="pre">handle:</span></code> matching is numeric and is unchanged.</p></li>
 <li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">soupsieve</span></code> ≥2.8.4 (HIGH — memory exhaustion via large
 comma-separated selector lists, CVE-2026-49476) in the root and <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>
 lock files.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> <strong>32.0.2</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code> <strong>13.0.2</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> <strong>33.0.0</strong></p></li>
 </ul>
 </section>
 <section id="id4">

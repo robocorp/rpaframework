@@ -12,17 +12,32 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- **Breaking:** Remove the long-deprecated ``RPA.Desktop.Windows`` library (pywinauto-based).
+  It has emitted a deprecation warning pointing to ``RPA.Windows`` since being deprecated in
+  favor of it, and is no longer maintained. Use ``RPA.Windows`` for all Windows UI automation
+  going forward (fixes :issue:`1322`).
 - **Security:** ``RPA.Archive``: Fix a Zip Slip path traversal vulnerability (CWE-22) in
   ``Extract Archive`` — archive members with path traversal sequences (e.g.
   ``../../evil.py``) could previously be extracted outside the requested destination
   directory. Extraction now validates that every member resolves within the destination
   before extracting, raising ``ValueError`` otherwise (fixes :issue:`1339`, :issue:`1340`).
-
+- ``rpaframework-core``: Fix the Windows locator parser silently mis-tokenizing a strategy
+  when the locator value contained a stray ``locator=`` prefix or an unmatched quote
+  character (e.g. produced a bogus ``locator='executable`` strategy instead of recognizing
+  ``executable:``), with a clearer warning surfaced when this happens (fixes :issue:`1323`).
+- ``RPA.Desktop``: ``Highlight Elements`` now returns the list of matched element regions
+  instead of ``None``, exposing coordinates that were already being computed internally
+  (fixes :issue:`1324`).
+- ``rpaframework-core``: Match ``executable:`` locators case-insensitively. Windows file
+  names are case-insensitive, but the comparison was not, so ``executable:notepad.exe``
+  could not find a process that Windows lists as ``Notepad.exe`` — as it does on Windows 11.
+  ``handle:`` matching is numeric and is unchanged.
 - **Security:** Bump ``soupsieve`` ≥2.8.4 (HIGH — memory exhaustion via large
   comma-separated selector lists, CVE-2026-49476) in the root and ``rpaframework``
   lock files.
 
-- ``rpaframework`` **32.0.2**
+- ``rpaframework-core`` **13.0.2**
+- ``rpaframework`` **33.0.0**
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
