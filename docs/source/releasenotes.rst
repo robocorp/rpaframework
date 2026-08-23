@@ -35,9 +35,12 @@ Latest versions
 - **Security:** Bump ``soupsieve`` ≥2.8.4 (HIGH — memory exhaustion via large
   comma-separated selector lists, CVE-2026-49476) in the root and ``rpaframework``
   lock files.
+- ``rpaframework``: Require ``rpaframework-core`` ≥13.0.2. The floor was still
+  ``>=13.0.0``, so a fresh install could resolve an older core without the Windows
+  locator fixes that ``RPA.Windows`` relies on.
 
 - ``rpaframework-core`` **13.0.2**
-- ``rpaframework`` **33.0.0**
+- ``rpaframework`` **33.0.1**
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

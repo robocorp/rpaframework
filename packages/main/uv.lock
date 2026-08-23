@@ -2119,7 +2119,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "33.0.0"
+version = "33.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -2227,7 +2227,7 @@ requires-dist = [
     { name = "robotframework-sapguilibrary", marker = "sys_platform == 'win32'", specifier = ">=1.1" },
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
-    { name = "rpaframework-core", specifier = ">=13.0.0" },
+    { name = "rpaframework-core", specifier = ">=13.0.2" },
     { name = "rpaframework-pdf", specifier = ">=11.0.0" },
     { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=11.0.0" },
     { name = "selenium", specifier = ">=4.16.0,<5.0.0" },
@@ -2248,7 +2248,7 @@ dev = [{ name = "rpaframework-devutils", editable = "../devutils" }]
 
 [[package]]
 name = "rpaframework-core"
-version = "13.0.0"
+version = "13.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -2260,9 +2260,9 @@ dependencies = [
     { name = "uiautomation", marker = "sys_platform == 'win32'" },
     { name = "webdriver-manager" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/25/ea/4e4ba42b844361d5f4e601cec25a6052fc378b7e262fc18b70bf25fa256d/rpaframework_core-13.0.0.tar.gz", hash = "sha256:d05cc834ab2cfdfb3d206b78e79b8e19bb5871fffcf722057edaff2c6d686f8e", size = 142696, upload-time = "2026-05-03T18:38:13.348Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d5/ca/5de16ab2e65c24b6bd7db0f92532592373b718c4e669f6c743b87cda9ce8/rpaframework_core-13.0.2.tar.gz", hash = "sha256:e3c390fba8f2a441dfdd3240d0b971db5e9b9dd4612eab229f5dc6e0266645c9", size = 144649, upload-time = "2026-08-23T16:50:51.599Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/da/c9/820e18034c59d96afdb8ae214003e4014b6d17101c4f46f25118ac5cdeaf/rpaframework_core-13.0.0-py3-none-any.whl", hash = "sha256:33a4bf1ae09a27d4454583fe51871a8c08e4ee9f2ac7260beaa203015ee018a9", size = 56658, upload-time = "2026-05-03T18:38:11.926Z" },
+    { url = "https://files.pythonhosted.org/packages/cb/50/ce9cad798dc3d30de3cbf45be3dce47c042ba78e0e9347b36c16bebb6ee7/rpaframework_core-13.0.2-py3-none-any.whl", hash = "sha256:4ac93f1bc52d83b5989d92ef1d5d31e1fda0a5ca0571e463bb6c3cdd5def069d", size = 57097, upload-time = "2026-08-23T16:50:50.295Z" },
 ]
 
 [[package]]
