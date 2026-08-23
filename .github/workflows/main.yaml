@@ -54,6 +54,9 @@ jobs:
           - name: "macos-py311"
             python: "3.11"
             os: macos-latest
+          - name: "ubuntu-py314"
+            python: "3.14"
+            os: ubuntu-latest
 
     env:
       SETUPTOOLS_USE_DISTUTILS: stdlib
