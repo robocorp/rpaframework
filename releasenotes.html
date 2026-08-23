@@ -219,8 +219,26 @@ could not find a process that Windows lists as <code class="docutils literal not
 <li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">soupsieve</span></code> ≥2.8.4 (HIGH — memory exhaustion via large
 comma-separated selector lists, CVE-2026-49476) in the root and <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>
 lock files.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code> <strong>13.0.2</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> <strong>33.0.0</strong></p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pillow</span></code> ≥12.3.0 (HIGH — heap out-of-bounds write in
+<code class="docutils literal notranslate"><span class="pre">ImageCmsTransform.apply()</span></code>, CVE-2026-59205; decompression-bomb DoS in
+<code class="docutils literal notranslate"><span class="pre">PdfParser.PdfStream.decode()</span></code>, CVE-2026-59200) across all packages.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">cryptography</span></code> ≥50.0.0 (HIGH — Bleichenbacher oracle in PKCS#7
+<code class="docutils literal notranslate"><span class="pre">EnvelopedData</span></code> decryption, CVE-2026-69247) across all packages.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pypdf</span></code> ≥6.15.0 (MEDIUM — large memory usage for large
+<code class="docutils literal notranslate"><span class="pre">/ToUnicode</span></code> streams, CVE-2026-71870) in <code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code>.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pyasn1</span></code> ≥0.6.4 (HIGH — BER/CER/DER decoder DoS via unbounded
+long-form tag IDs, CVE-2026-59884) and <code class="docutils literal notranslate"><span class="pre">httplib2</span></code> ≥0.32.0 (HIGH — decompression-bomb
+DoS via unbounded gzip/deflate handling, CVE-2026-59939) in <code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code>.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> ≥83.0.0 (MEDIUM — <code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> exclusion bypass via
+Unicode normalization collision, CVE-2026-59890) in <code class="docutils literal notranslate"><span class="pre">rpaframework-sema4ai</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>: Require <code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code> ≥13.0.2, so a fresh install cannot
+resolve a core that predates the Windows locator fixes <code class="docutils literal notranslate"><span class="pre">RPA.Windows</span></code> relies on.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code> <strong>13.0.3</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> <strong>11.0.2</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code> <strong>8.0.2</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> <strong>12.0.1</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-sema4ai</span></code> <strong>1.1.1</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> <strong>33.0.1</strong></p></li>
 </ul>
 </section>
 <section id="id4">
