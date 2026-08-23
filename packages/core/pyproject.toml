@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-core"
-version = "13.0.2"
+version = "13.0.3"
 description = "Core utilities used by RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -28,7 +28,7 @@ dependencies = [
 	"psutil >=5.9.0; platform_system == 'Windows'",
 	"pywin32 >=300, <400; platform_system == 'Windows' and python_version != '3.8.1'",
 	"uiautomation >=2.0.15; platform_system == 'Windows'",
-	"pillow >=10.2.0",
+	"pillow >=12.3.0",
 	"packaging >=24.0",
 	"httpx>=0.28.1",
 ]

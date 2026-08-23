@@ -40,15 +40,17 @@ package = false
 override-dependencies = [
 	"h11>=0.16.0",
 	"protobuf>=6.33.5",
-	"pillow>=12.2.0",
-	"cryptography>=48.0.1",
+	"pillow>=12.3.0",
+	"cryptography>=50.0.0",
 	"requests>=2.33.0",
 	"PyJWT>=2.13.0",
-	"pypdf>=6.13.3",
-	"pyasn1>=0.6.3",
+	"pypdf>=6.15.0",
+	"pyasn1>=0.6.4",
 	"lxml>=6.1.0",
 	"urllib3>=2.6.3",
 	"msgpack>=1.2.1",
+	"setuptools>=83.0.0",
+	"httplib2>=0.32.0",
 ]
 
 [tool.uv.extra-build-dependencies]

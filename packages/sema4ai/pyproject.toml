@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-sema4ai"
-version = "1.1.0"
+version = "1.1.1"
 description = "Sema4ai library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -27,7 +27,7 @@ dependencies = [
 	"sema4ai-actions>=1.6.4",
 	"robocorp>=3.0.0",
 	"pydantic>=2.12.4",
-	"setuptools>=65.0.0",
+	"setuptools>=83.0.0",
 	"wheel>=0.40.0"
 ]
 
@@ -40,7 +40,7 @@ dev = [
 package = true
 
 override-dependencies = [
-	"cryptography>=46.0.5",
+	"cryptography>=50.0.0",
 ]
 
 [tool.uv.sources]

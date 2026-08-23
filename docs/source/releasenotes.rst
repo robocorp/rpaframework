@@ -35,9 +35,27 @@ Latest versions
 - **Security:** Bump ``soupsieve`` ≥2.8.4 (HIGH — memory exhaustion via large
   comma-separated selector lists, CVE-2026-49476) in the root and ``rpaframework``
   lock files.
+- **Security:** Bump ``pillow`` ≥12.3.0 (HIGH — heap out-of-bounds write in
+  ``ImageCmsTransform.apply()``, CVE-2026-59205; decompression-bomb DoS in
+  ``PdfParser.PdfStream.decode()``, CVE-2026-59200) across all packages.
+- **Security:** Bump ``cryptography`` ≥50.0.0 (HIGH — Bleichenbacher oracle in PKCS#7
+  ``EnvelopedData`` decryption, CVE-2026-69247) across all packages.
+- **Security:** Bump ``pypdf`` ≥6.15.0 (MEDIUM — large memory usage for large
+  ``/ToUnicode`` streams, CVE-2026-71870) in ``rpaframework-pdf``.
+- **Security:** Bump ``pyasn1`` ≥0.6.4 (HIGH — BER/CER/DER decoder DoS via unbounded
+  long-form tag IDs, CVE-2026-59884) and ``httplib2`` ≥0.32.0 (HIGH — decompression-bomb
+  DoS via unbounded gzip/deflate handling, CVE-2026-59939) in ``rpaframework-google``.
+- **Security:** Bump ``setuptools`` ≥83.0.0 (MEDIUM — ``MANIFEST.in`` exclusion bypass via
+  Unicode normalization collision, CVE-2026-59890) in ``rpaframework-sema4ai``.
+- ``rpaframework``: Require ``rpaframework-core`` ≥13.0.2, so a fresh install cannot
+  resolve a core that predates the Windows locator fixes ``RPA.Windows`` relies on.
 
-- ``rpaframework-core`` **13.0.2**
-- ``rpaframework`` **33.0.0**
+- ``rpaframework-core`` **13.0.3**
+- ``rpaframework-pdf`` **11.0.2**
+- ``rpaframework-recognition`` **8.0.2**
+- ``rpaframework-google`` **12.0.1**
+- ``rpaframework-sema4ai`` **1.1.1**
+- ``rpaframework`` **33.0.1**
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
