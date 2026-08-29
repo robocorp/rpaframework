@@ -12,6 +12,14 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+No changes planned yet for the next release.
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+23 Aug 2026
+-----------
+
 - **Breaking:** Remove the long-deprecated ``RPA.Desktop.Windows`` library (pywinauto-based).
   It has emitted a deprecation warning pointing to ``RPA.Windows`` since being deprecated in
   favor of it, and is no longer maintained. Use ``RPA.Windows`` for all Windows UI automation
@@ -56,9 +64,6 @@ Latest versions
 - ``rpaframework-google`` **12.0.1**
 - ``rpaframework-sema4ai`` **1.1.1**
 - ``rpaframework`` **33.0.1**
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 29 Jun 2026
 -----------
