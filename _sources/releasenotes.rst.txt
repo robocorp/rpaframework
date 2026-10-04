@@ -56,6 +56,8 @@ No changes planned yet for the next release.
 - ``RPA.Excel.Files``: ``Auto Size Columns`` now sets the column width from the longest
   text in each column. Previously it only flagged the columns as auto sized, which left
   the widths unchanged (fixes :issue:`1104`).
+- ``rpaframework``: Require ``rpaframework-pdf`` ≥11.0.3, so that upgrading
+  ``rpaframework`` also brings in the patched ``pypdf``.
 
 - ``rpaframework-pdf`` **11.0.3**
 - ``rpaframework-recognition`` **8.0.3**
