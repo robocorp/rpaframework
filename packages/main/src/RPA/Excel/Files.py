@@ -25,6 +25,9 @@ from RPA.Tables import Table, Tables, return_table_as_raw_list
 
 PathType = Union[str, pathlib.Path]
 
+# Extra characters added to the longest text when auto sizing a column
+AUTO_SIZE_COLUMN_PADDING = 2
+
 
 def get_column_index(column: str) -> int:
     """Get column index from name, e.g. A -> 1, D -> 4, AC -> 29.
@@ -1448,7 +1451,10 @@ class Files:
     ):
         """Auto size column widths.
 
-        Note. non-default font sizes might cause auto sizing issues
+        The width is estimated from the longest text in each column.
+
+        Note. non-default font sizes and number formats might cause
+        auto sizing issues
 
         :param start_column: column number or name to start from
         :param end_column: optional column number or name for last column
@@ -1486,12 +1492,27 @@ class Files:
                 else end_column
             )
 
+        sheet = self.workbook.book.active
         for col in range(start_index, end_index + 1):
             col_letter = get_column_letter(col)
             if width:
-                self.workbook.book.active.column_dimensions[col_letter].width = width
-            else:
-                self.workbook.book.active.column_dimensions[col_letter].auto_size = True
+                sheet.column_dimensions[col_letter].width = width
+                continue
+
+            sheet.column_dimensions[col_letter].auto_size = True
+            # openpyxl does not calculate the width for auto sized columns,
+            # so estimate it from the longest line of text in the column
+            longest = 0
+            for (value,) in sheet.iter_rows(
+                min_col=col, max_col=col, values_only=True
+            ):
+                if value is not None:
+                    lines = str(value).splitlines() or [""]
+                    longest = max(longest, *(len(line) for line in lines))
+            if longest:
+                sheet.column_dimensions[col_letter].width = (
+                    longest + AUTO_SIZE_COLUMN_PADDING
+                )
 
     def hide_columns(
         self,

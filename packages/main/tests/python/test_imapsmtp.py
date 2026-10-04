@@ -1,3 +1,7 @@
+from email import message_from_bytes
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from types import SimpleNamespace
 from unittest import mock
 
@@ -206,3 +210,50 @@ def test_counter_duplicate_path(tmp_path):
     new_file_path.write_text("some data 2")
     newest_file_path = counter_duplicate_path(file_path)
     assert newest_file_path.name == "my-attachment-3.txt"
+
+
+def _multipart_message(*parts):
+    message = MIMEMultipart()
+    for part in parts:
+        message.attach(part)
+    return message_from_bytes(message.as_bytes())
+
+
+def _part_without_charset(maintype, subtype, payload):
+    part = MIMEBase(maintype, subtype)
+    part.set_payload(payload)
+    assert part.get_content_charset() is None
+    return part
+
+
+def test_get_decoded_email_body_text_without_charset(library):
+    message = _multipart_message(_part_without_charset("text", "plain", "invoice body"))
+
+    body, has_attachments = library.get_decoded_email_body(message)
+
+    assert body == "invoice body"
+    assert not has_attachments
+
+
+def test_get_decoded_email_body_html_without_charset(library):
+    message = _multipart_message(
+        MIMEText("plain body", "plain", "utf-8"),
+        _part_without_charset("text", "html", "<p>html body</p>"),
+    )
+
+    assert library.get_decoded_email_body(message)[0] == "plain body"
+    assert library.get_decoded_email_body(message, html_first=True)[0] == (
+        "<p>html body</p>"
+    )
+
+
+def test_get_decoded_email_body_ignores_inline_binary(library):
+    message = _multipart_message(
+        MIMEText("plain body", "plain", "utf-8"),
+        _part_without_charset("image", "png", "not really an image"),
+    )
+
+    body, has_attachments = library.get_decoded_email_body(message)
+
+    assert body == "plain body"
+    assert not has_attachments
