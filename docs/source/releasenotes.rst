@@ -12,6 +12,14 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+No changes planned yet for the next release.
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+4 Oct 2026
+----------
+
 - ``rpaframework``: Support Python 3.13 and 3.14. The ``<3.14`` upper bound on the
   supported Python version is removed, so ``pip install rpaframework`` works on Python 3.14
   (fixes :issue:`1348`).
@@ -49,8 +57,10 @@ Latest versions
   text in each column. Previously it only flagged the columns as auto sized, which left
   the widths unchanged (fixes :issue:`1104`).
 
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+- ``rpaframework-pdf`` **11.0.3**
+- ``rpaframework-recognition`` **8.0.3**
+- ``rpaframework-aws`` **8.0.2**
+- ``rpaframework`` **33.0.2**
 
 23 Aug 2026
 -----------
