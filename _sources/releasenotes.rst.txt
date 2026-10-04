@@ -12,7 +12,10 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-No changes planned yet for the next release.
+- ``rpaframework-recognition``: Fix OCR text search failing with a bare ``AssertionError``
+  when Tesseract reported a blank word before the end of a text line. In ``RPA.Desktop``
+  this made ``ocr:`` locators fail immediately, so ``Wait For Element`` gave up on the
+  first attempt instead of retrying until its timeout (related to :issue:`1322`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

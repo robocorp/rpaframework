@@ -195,7 +195,12 @@
 </section>
 <section id="id3">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
-<p>No changes planned yet for the next release.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code>: Fix OCR text search failing with a bare <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code>
+when Tesseract reported a blank word before the end of a text line. In <code class="docutils literal notranslate"><span class="pre">RPA.Desktop</span></code>
+this made <code class="docutils literal notranslate"><span class="pre">ocr:</span></code> locators fail immediately, so <code class="docutils literal notranslate"><span class="pre">Wait</span> <span class="pre">For</span> <span class="pre">Element</span></code> gave up on the
+first attempt instead of retrying until its timeout (related to <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1322">#1322</a>).</p></li>
+</ul>
 </section>
 <section id="id4">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
