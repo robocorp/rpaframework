@@ -40,6 +40,14 @@ Latest versions
   ``rpaframework-google`` lock files. ``rpaframework`` stays on ``oauthlib`` 3.x because
   ``tweepy`` requires ``oauthlib<4``; the affected code is the authorization-server side of
   ``oauthlib``, which the libraries do not use.
+- ``RPA.Email.ImapSmtp``: Fix ``LookupError: unknown encoding: None`` when reading a
+  multipart message that has a text part without a charset, which made keywords like
+  ``List Messages`` fail. Such parts are now decoded with the library's default encoding,
+  and parts that are neither text nor attachments no longer end up in the message body
+  (fixes :issue:`1086`).
+- ``RPA.Excel.Files``: ``Auto Size Columns`` now sets the column width from the longest
+  text in each column. Previously it only flagged the columns as auto sized, which left
+  the widths unchanged (fixes :issue:`1104`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

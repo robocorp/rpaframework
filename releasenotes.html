@@ -224,6 +224,14 @@ parsing, CVE-2026-86000) in the root and <code class="docutils literal notransla
 <code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> lock files. <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> stays on <code class="docutils literal notranslate"><span class="pre">oauthlib</span></code> 3.x because
 <code class="docutils literal notranslate"><span class="pre">tweepy</span></code> requires <code class="docutils literal notranslate"><span class="pre">oauthlib&lt;4</span></code>; the affected code is the authorization-server side of
 <code class="docutils literal notranslate"><span class="pre">oauthlib</span></code>, which the libraries do not use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Email.ImapSmtp</span></code>: Fix <code class="docutils literal notranslate"><span class="pre">LookupError:</span> <span class="pre">unknown</span> <span class="pre">encoding:</span> <span class="pre">None</span></code> when reading a
+multipart message that has a text part without a charset, which made keywords like
+<code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Messages</span></code> fail. Such parts are now decoded with the library’s default encoding,
+and parts that are neither text nor attachments no longer end up in the message body
+(fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1086">#1086</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Excel.Files</span></code>: <code class="docutils literal notranslate"><span class="pre">Auto</span> <span class="pre">Size</span> <span class="pre">Columns</span></code> now sets the column width from the longest
+text in each column. Previously it only flagged the columns as auto sized, which left
+the widths unchanged (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1104">#1104</a>).</p></li>
 </ul>
 </section>
 <section id="id4">
