@@ -196,10 +196,34 @@
 <section id="id3">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>: Support Python 3.13 and 3.14. The <code class="docutils literal notranslate"><span class="pre">&lt;3.14</span></code> upper bound on the
+supported Python version is removed, so <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework</span></code> works on Python 3.14
+(fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1348">#1348</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpa-crypto</span></code>: The command-line tool no longer uses <code class="docutils literal notranslate"><span class="pre">argparse.FileType</span></code>, which is
+deprecated in Python 3.14. The output file is now created only when the command succeeds,
+and a missing input file is reported as a command failure instead of an argument error.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code>: Fix OCR text search failing with a bare <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code>
 when Tesseract reported a blank word before the end of a text line. In <code class="docutils literal notranslate"><span class="pre">RPA.Desktop</span></code>
 this made <code class="docutils literal notranslate"><span class="pre">ocr:</span></code> locators fail immediately, so <code class="docutils literal notranslate"><span class="pre">Wait</span> <span class="pre">For</span> <span class="pre">Element</span></code> gave up on the
 first attempt instead of retrying until its timeout (related to <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1322">#1322</a>).</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">anyio</span></code> ≥4.14.2 (CRITICAL — TLS certificate spoofing via IDNA 2003
+host name encoding in <code class="docutils literal notranslate"><span class="pre">TLSStream</span></code>, CVE-2026-63374) in the lock files of all packages.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">PyJWT</span></code> ≥2.14.0 (CRITICAL — <code class="docutils literal notranslate"><span class="pre">decode()</span></code> options-dict mutation
+enabling silent claim-verification bypass, CVE-2026-103001; HIGH — ReDoS in
+<code class="docutils literal notranslate"><span class="pre">is_pem_format</span></code>, CVE-2026-102270; MEDIUM — uncaught <code class="docutils literal notranslate"><span class="pre">RecursionError</span></code> on deeply nested
+token headers, CVE-2026-102265) in <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">urllib3</span></code> ≥2.8.0 (HIGH — infinite loop in chunked deflate streaming,
+CVE-2026-97688) in <code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code> and the lock files of all packages.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pypdf</span></code> ≥6.19.0 (HIGH — long runtimes with a large number of
+embedded files, CVE-2026-102999) in <code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code>.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">soupsieve</span></code> ≥2.9.0 (HIGH — polynomial-time ReDoS in selector
+parsing, CVE-2026-86000) in the root and <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> lock files.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">oauthlib</span></code> to 4.0.0 (MEDIUM — timing side channel in the PKCE
+<code class="docutils literal notranslate"><span class="pre">code_verifier</span></code> comparison, CVE-2026-49265; MEDIUM — JSONP callback injection in
+<code class="docutils literal notranslate"><span class="pre">RevocationEndpoint</span></code>, CVE-2026-49264) in the <code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> lock files. <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> stays on <code class="docutils literal notranslate"><span class="pre">oauthlib</span></code> 3.x because
+<code class="docutils literal notranslate"><span class="pre">tweepy</span></code> requires <code class="docutils literal notranslate"><span class="pre">oauthlib&lt;4</span></code>; the affected code is the authorization-server side of
+<code class="docutils literal notranslate"><span class="pre">oauthlib</span></code>, which the libraries do not use.</p></li>
 </ul>
 </section>
 <section id="id4">
