@@ -1,4 +1,5 @@
 import argparse
+import locale
 import logging
 import sys
 import traceback
@@ -62,6 +63,32 @@ def load_key(args):
     return lib
 
 
+def read_input(path, binary=False):
+    """Read input from given file path, or from stdin if not defined."""
+    if path is None:
+        return sys.stdin.read()
+
+    if path == "-":
+        return sys.stdin.buffer.read() if binary else sys.stdin.read()
+
+    if binary:
+        with open(path, "rb") as infile:
+            return infile.read()
+
+    with open(path, encoding=locale.getpreferredencoding(False)) as infile:
+        return infile.read()
+
+
+def write_output(path, data):
+    """Write output to given file path, or to stdout if not defined."""
+    if path is None or path == "-":
+        sys.stdout.buffer.write(data)
+        return
+
+    with open(path, "wb") as outfile:
+        outfile.write(data)
+
+
 def key_parser(parent):
     """Create parser for 'key' subcommand."""
     parser = parent.add_parser("key", help="generate encryption key")
@@ -85,9 +112,7 @@ def hash_parser(parent):
     """Create parser for 'hash' subcommand."""
     parser = parent.add_parser("hash", help="calculate hash digest")
     parser.set_defaults(func=hash_command)
-    parser.add_argument(
-        "input", nargs="?", type=argparse.FileType("r"), default=sys.stdin
-    )
+    parser.add_argument("input", nargs="?")
     parser.add_argument(
         "-m",
         "--method",
@@ -100,7 +125,7 @@ def hash_parser(parent):
 def hash_command(args):
     """Execute 'hash' subcommand."""
     method = Hash[args.method]
-    data = args.input.read()
+    data = read_input(args.input)
     digest = Crypto().hash_string(data, method)
     print(digest)
 
@@ -113,15 +138,11 @@ def encrypt_parser(parent):
         "input",
         help="path to input file, or stdin",
         nargs="?",
-        type=argparse.FileType("rb"),
-        default=sys.stdin,
     )
     parser.add_argument(
         "output",
         help="path to output file, or stdout",
         nargs="?",
-        type=argparse.FileType("wb"),
-        default=sys.stdout.buffer,
     )
     key_args(parser)
 
@@ -129,8 +150,9 @@ def encrypt_parser(parent):
 def encrypt_command(args):
     """Execute 'encrypt' subcommand."""
     lib = load_key(args)
-    token = lib.encrypt_string(args.input.read(), encryption_type=args.encryption_type)
-    args.output.write(token)
+    data = read_input(args.input, binary=True)
+    token = lib.encrypt_string(data, encryption_type=args.encryption_type)
+    write_output(args.output, token)
 
 
 def decrypt_parser(parent):
@@ -141,15 +163,11 @@ def decrypt_parser(parent):
         "input",
         help="path to input file, or stdin",
         nargs="?",
-        type=argparse.FileType("rb"),
-        default=sys.stdin,
     )
     parser.add_argument(
         "output",
         help="path to output file, or stdout",
         nargs="?",
-        type=argparse.FileType("wb"),
-        default=sys.stdout.buffer,
     )
     key_args(parser)
 
@@ -157,10 +175,11 @@ def decrypt_parser(parent):
 def decrypt_command(args):
     """Execute 'decrypt' subcommand."""
     lib = load_key(args)
+    data = read_input(args.input, binary=True)
     token = lib.decrypt_string(
-        args.input.read(), encoding=None, encryption_type=args.encryption_type
+        data, encoding=None, encryption_type=args.encryption_type
     )
-    args.output.write(token)
+    write_output(args.output, token)
 
 
 def main():
