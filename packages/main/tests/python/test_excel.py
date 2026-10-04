@@ -467,3 +467,50 @@ def test_create_with_sheet_name(fmt):
     name = "CustomName"
     library.create_workbook(path, fmt=fmt, sheet_name=name)
     assert library.get_active_worksheet() == name
+
+
+def test_auto_size_columns():
+    library = Files()
+    library.create_workbook(fmt="xlsx")
+    library.append_rows_to_worksheet(
+        [{"No": 1, "Description": "this is a long description", "Note": "a\nbcd"}],
+        header=True,
+    )
+    dimensions = library.workbook.book.active.column_dimensions
+    default_width = dimensions["D"].width
+
+    library.auto_size_columns("A", "D")
+
+    assert dimensions["A"].width == len("No") + 2
+    assert dimensions["B"].width == len("this is a long description") + 2
+    assert dimensions["C"].width == len("Note") + 2
+    assert dimensions["D"].width == default_width
+
+
+def test_auto_size_columns_fixed_width():
+    library = Files()
+    library.create_workbook(fmt="xlsx")
+    library.append_rows_to_worksheet([{"No": 1, "Description": "text"}], header=True)
+
+    library.auto_size_columns("A", "B", width=30)
+
+    dimensions = library.workbook.book.active.column_dimensions
+    assert dimensions["A"].width == 30
+    assert dimensions["B"].width == 30
+
+
+def test_auto_size_columns_saved(tmp_path):
+    path = tmp_path / "autosize.xlsx"
+    library = Files()
+    library.create_workbook(path, fmt="xlsx")
+    library.append_rows_to_worksheet(
+        [{"Description": "this is a long description"}], header=True
+    )
+    library.auto_size_columns("A")
+    library.save_workbook()
+    library.close_workbook()
+
+    library.open_workbook(path)
+    dimensions = library.workbook.book.active.column_dimensions
+    assert dimensions["A"].width == len("this is a long description") + 2
+    library.close_workbook()

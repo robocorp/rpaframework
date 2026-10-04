@@ -45,6 +45,9 @@ Latest versions
   ``List Messages`` fail. Such parts are now decoded with the library's default encoding,
   and parts that are neither text nor attachments no longer end up in the message body
   (fixes :issue:`1086`).
+- ``RPA.Excel.Files``: ``Auto Size Columns`` now sets the column width from the longest
+  text in each column. Previously it only flagged the columns as auto sized, which left
+  the widths unchanged (fixes :issue:`1104`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
