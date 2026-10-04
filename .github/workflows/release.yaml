@@ -91,10 +91,15 @@ jobs:
           PACKAGE: ${{ steps.parse.outputs.package }}
 
       - name: Create GitHub Release
+        # Pass values through the environment: the notes contain backticks, which
+        # the shell would run as commands if they were expanded into the script.
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.parse.outputs.tag }}
+          TITLE: ${{ steps.parse.outputs.package }} ${{ steps.parse.outputs.version }}
+          NOTES: ${{ steps.notes.outputs.notes }}
         run: |
-          gh release create "${{ steps.parse.outputs.tag }}" \
-            --title "${{ steps.parse.outputs.package }} ${{ steps.parse.outputs.version }}" \
-            --notes "${{ steps.notes.outputs.notes }}" \
+          gh release create "$TAG" \
+            --title "$TITLE" \
+            --notes "$NOTES" \
             --verify-tag
