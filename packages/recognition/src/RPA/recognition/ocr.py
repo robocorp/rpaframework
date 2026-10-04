@@ -147,7 +147,6 @@ def _dict_lines(data: Dict) -> List:
                 "ocr_confidence": _parse_ocr_confidence(word.get("conf")),
             }
         )
-        assert len(lines[key]) == word["word_num"]
 
     return list(lines.values())
 
