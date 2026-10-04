@@ -16,6 +16,23 @@ Latest versions
   when Tesseract reported a blank word before the end of a text line. In ``RPA.Desktop``
   this made ``ocr:`` locators fail immediately, so ``Wait For Element`` gave up on the
   first attempt instead of retrying until its timeout (related to :issue:`1322`).
+- **Security:** Bump ``anyio`` ≥4.14.2 (CRITICAL — TLS certificate spoofing via IDNA 2003
+  host name encoding in ``TLSStream``, CVE-2026-63374) in the lock files of all packages.
+- **Security:** Bump ``PyJWT`` ≥2.14.0 (CRITICAL — ``decode()`` options-dict mutation
+  enabling silent claim-verification bypass, CVE-2026-103001; HIGH — ReDoS in
+  ``is_pem_format``, CVE-2026-102270; MEDIUM — uncaught ``RecursionError`` on deeply nested
+  token headers, CVE-2026-102265) in ``rpaframework``.
+- **Security:** Bump ``urllib3`` ≥2.8.0 (HIGH — infinite loop in chunked deflate streaming,
+  CVE-2026-97688) in ``rpaframework-aws`` and the lock files of all packages.
+- **Security:** Bump ``pypdf`` ≥6.19.0 (HIGH — long runtimes with a large number of
+  embedded files, CVE-2026-102999) in ``rpaframework-pdf``.
+- **Security:** Bump ``soupsieve`` ≥2.9.0 (HIGH — polynomial-time ReDoS in selector
+  parsing, CVE-2026-86000) in the root and ``rpaframework`` lock files.
+- **Security:** Bump ``oauthlib`` to 4.0.0 (MEDIUM — timing side channel in the PKCE
+  ``code_verifier`` comparison, CVE-2026-49265) in the ``rpaframework-assistant`` and
+  ``rpaframework-google`` lock files. ``rpaframework`` stays on ``oauthlib`` 3.x because
+  ``tweepy`` requires ``oauthlib<4``; the affected code is the authorization-server side of
+  ``oauthlib``, which the libraries do not use.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

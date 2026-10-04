@@ -43,14 +43,16 @@ override-dependencies = [
 	"pillow>=12.3.0",
 	"cryptography>=50.0.0",
 	"requests>=2.33.0",
-	"PyJWT>=2.13.0",
-	"pypdf>=6.15.0",
+	"PyJWT>=2.14.0",
+	"pypdf>=6.19.0",
 	"pyasn1>=0.6.4",
 	"lxml>=6.1.0",
-	"urllib3>=2.6.3",
+	"urllib3>=2.8.0",
 	"msgpack>=1.2.1",
 	"setuptools>=83.0.0",
 	"httplib2>=0.32.0",
+	"anyio>=4.14.2",
+	"soupsieve>=2.9.0",
 ]
 
 [tool.uv.extra-build-dependencies]
