@@ -12,6 +12,12 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- ``rpaframework``: Support Python 3.13 and 3.14. The ``<3.14`` upper bound on the
+  supported Python version is removed, so ``pip install rpaframework`` works on Python 3.14
+  (fixes :issue:`1348`).
+- ``rpa-crypto``: The command-line tool no longer uses ``argparse.FileType``, which is
+  deprecated in Python 3.14. The output file is now created only when the command succeeds,
+  and a missing input file is reported as a command failure instead of an argument error.
 - ``rpaframework-recognition``: Fix OCR text search failing with a bare ``AssertionError``
   when Tesseract reported a blank word before the end of a text line. In ``RPA.Desktop``
   this made ``ocr:`` locators fail immediately, so ``Wait For Element`` gave up on the
