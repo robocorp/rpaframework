@@ -2535,7 +2535,7 @@ requires-dist = [
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
     { name = "rpaframework-core", specifier = ">=13.0.2" },
-    { name = "rpaframework-pdf", specifier = ">=11.0.0" },
+    { name = "rpaframework-pdf", specifier = ">=11.0.3" },
     { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=11.0.0" },
     { name = "selenium", specifier = ">=4.16.0,<5.0.0" },
     { name = "simple-salesforce", specifier = ">=1.0.0" },
@@ -2631,7 +2631,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "11.0.2"
+version = "11.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docutils" },
@@ -2641,9 +2641,9 @@ dependencies = [
     { name = "robotframework" },
     { name = "rpaframework-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c6/79/3cd8df1d55784390a436c92bd4e1b5f85153340e223a59664362e3279b65/rpaframework_pdf-11.0.2.tar.gz", hash = "sha256:2c1404e05e87fe51b200a9ea843d82f8153597aebe56e4dabd653c948732b366", size = 4528901, upload-time = "2026-08-23T17:56:19.18Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c9/11/6c017c44c92a3f6fcb9fd1ac1b2881c9bcd5dc1fd4b38e9f293fb4abc820/rpaframework_pdf-11.0.3.tar.gz", hash = "sha256:bc98c34454b436e912ac79945809ef984aec16a29b139ef59ce91c39cc330838", size = 4528866, upload-time = "2026-10-04T18:42:37.883Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/42/22/cfc0de600801d08fa1c7dea5a34385533d185829a2c2a11623b137dac7e8/rpaframework_pdf-11.0.2-py3-none-any.whl", hash = "sha256:eb1dc7b59ff9c8dce253fccd4b6620962c9213408869651b11085eb94d8cf59a", size = 612600, upload-time = "2026-08-23T17:56:14.794Z" },
+    { url = "https://files.pythonhosted.org/packages/8a/81/aa7393775fd314a23fdd8e100529396edcc56e61c96f4589153036e3faa7/rpaframework_pdf-11.0.3-py3-none-any.whl", hash = "sha256:68ce756106ca76ccb00c18ffd59435d658afd6195ab7fcfb8b909025d7f1812c", size = 612598, upload-time = "2026-10-04T18:42:39.584Z" },
 ]
 
 [[package]]
