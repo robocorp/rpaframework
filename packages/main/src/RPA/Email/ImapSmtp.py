@@ -742,14 +742,14 @@ class ImapSmtp(OAuthMixin):
             if content_filename:
                 has_attachments = True
                 continue
-            content_type = "text/plain"
+            content_type = part.get_content_type()
             _data = ""
             content_charset = part.get_content_charset()
-            if content_charset:
-                content_type = part.get_content_type()
+            if not content_charset and part.get_content_maintype() != "text":
+                continue
             payload = part.get_payload(decode=True)
             if payload:
-                _data = str(payload, str(content_charset), "ignore")
+                _data = str(payload, content_charset or self.encoding, "ignore")
 
             if content_type == "text/plain":
                 text = _data
