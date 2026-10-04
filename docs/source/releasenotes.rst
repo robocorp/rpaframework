@@ -35,7 +35,8 @@ Latest versions
 - **Security:** Bump ``soupsieve`` ≥2.9.0 (HIGH — polynomial-time ReDoS in selector
   parsing, CVE-2026-86000) in the root and ``rpaframework`` lock files.
 - **Security:** Bump ``oauthlib`` to 4.0.0 (MEDIUM — timing side channel in the PKCE
-  ``code_verifier`` comparison, CVE-2026-49265) in the ``rpaframework-assistant`` and
+  ``code_verifier`` comparison, CVE-2026-49265; MEDIUM — JSONP callback injection in
+  ``RevocationEndpoint``, CVE-2026-49264) in the ``rpaframework-assistant`` and
   ``rpaframework-google`` lock files. ``rpaframework`` stays on ``oauthlib`` 3.x because
   ``tweepy`` requires ``oauthlib<4``; the affected code is the authorization-server side of
   ``oauthlib``, which the libraries do not use.
