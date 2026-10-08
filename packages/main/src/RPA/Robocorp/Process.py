@@ -452,7 +452,7 @@ class Process:
         include_data: bool = False,
         item_state: Optional[str] = None,
     ) -> Union[str, None, Any]:
-        """List work items belonging to a process
+        """List work items belonging to a process across all result pages.
 
         :param include_data: include work item payload and files in
          the response (default False)
@@ -460,13 +460,21 @@ class Process:
         :param process_id: specific process to which items belongs to
         :return: the JSON data of the process runs based on the provided parameters
         """
-        response = self.http.session_less_get(
-            url=f"{self.process_api(process_id)}/work-items",
-            headers=self.headers,
-            params={"includeData": str(include_data).lower()},
-        )
-        response.raise_for_status()
-        data = response.json()["data"]
+        params = {"includeData": str(include_data).lower()}
+        data = []
+        while True:
+            response = self.http.session_less_get(
+                url=f"{self.process_api(process_id)}/work-items",
+                headers=self.headers,
+                params=params,
+            )
+            response.raise_for_status()
+            page = response.json()
+            data.extend(page["data"])
+            cursor = page.get("nextCursor")
+            if not cursor:
+                break
+            params = {**params, "cursor": cursor}
         return (
             [d for d in data if d["state"].upper() == item_state.upper()]
             if item_state
