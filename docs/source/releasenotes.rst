@@ -12,7 +12,9 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-No changes planned yet for the next release.
+- ``RPA.Robocorp.Process``: ``List Process Work Items`` now retrieves all result
+  pages, so items beyond the first page are returned and included when filtering
+  by state (fixes :issue:`1095`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
