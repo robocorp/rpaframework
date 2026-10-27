@@ -66,6 +66,10 @@
    :target: https://pypi.python.org/pypi/rpaframework-openai
    :alt: rpaframework-openai latest version
 
+.. image:: https://img.shields.io/pypi/v/rpaframework-decision.svg?label=rpaframework-decision&style=for-the-badge&color=blue
+   :target: https://pypi.python.org/pypi/rpaframework-decision
+   :alt: rpaframework-decision latest version
+
 .. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-pdf
    :alt: rpaframework-pdf latest version

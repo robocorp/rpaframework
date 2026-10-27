@@ -15,6 +15,14 @@ Latest versions
 - ``RPA.Robocorp.Process``: ``List Process Work Items`` now retrieves all result
   pages, so items beyond the first page are returned and included when filtering
   by state (fixes :issue:`1095`).
+- New package ``rpaframework-decision`` **1.0.0** with library **RPA.Decision**: typed,
+  calibrated decisions from *decision models* (System One models) such as TypeSafe's
+  Jev and the open-weight Laya. Keywords ``Decide``, ``Decide Or Escalate``, ``Check``,
+  ``Score``, ``Rank Options``, ``Ask Questions``, ``Classify Items`` and
+  ``Require Confidence``, with a confidence threshold for human hand-off and an
+  audit log of every decision (``Get`` / ``Save`` / ``Clear Decision Audit Log``).
+  Backends: ``jev`` (hosted), ``laya`` (local, via the ``laya`` extra), ``replay``
+  (recorded log, for dry runs) and any Python callable.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
