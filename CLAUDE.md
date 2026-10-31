@@ -120,7 +120,7 @@ invoke install --reset        # Reset to clean state
 
 GitHub Actions workflows in `.github/workflows/` - one per package. Tests run on:
 - Windows, Ubuntu, macOS
-- Python 3.9, 3.10, 3.11
+- Python 3.11, 3.12
 - Environment variable `INVOKE_IS_CI_CD=1` indicates CI context
 
 ## Development Workflow

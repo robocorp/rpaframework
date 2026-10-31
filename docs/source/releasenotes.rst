@@ -23,6 +23,42 @@ Latest versions
   audit log of every decision (``Get`` / ``Save`` / ``Clear Decision Audit Log``).
   Backends: ``jev`` (hosted), ``laya`` (local, via the ``laya`` extra), ``replay``
   (recorded log, for dry runs) and any Python callable.
+- **Breaking:** All packages now require **Python 3.11 or newer**. Python 3.10 reached
+  end of life in October 2026, and the security fixes below for ``pillow`` and ``dnspython``
+  are only available in releases that require Python 3.11. Every package released in this
+  batch gets a major version bump for that reason.
+- **Security:** Bump ``pillow`` ≥13.0.0 (42 advisories, 5 of them CRITICAL: heap buffer
+  overflows in JPEG, FlashPix and TIFF decoding, stale native storage reuse in multi-frame
+  loaders, and argument injection in the Ghostscript call; the rest are HIGH/MEDIUM memory
+  safety and denial-of-service issues in image parsers) in ``rpaframework-core``,
+  ``rpaframework-recognition`` and ``rpaframework``, and in the lock files of all packages.
+- **Security:** Bump ``certifi`` ≥2026.10.18 (CRITICAL — bundled emSign root CAs whose
+  intermediate CA keys were compromised) in the lock files of all packages.
+- **Security:** Bump ``pypdf`` ≥6.21.4 (HIGH — infinite loops and unbounded memory use on
+  crafted PDFs: xref table EOF, trailer search, page tree, page labels, encrypted files,
+  strict-mode exceptions, dictionary cloning, cross-reference streams, CVE-2026-115572,
+  CVE-2026-115580, CVE-2026-115585, CVE-2026-119203 to CVE-2026-119209; MEDIUM/LOW —
+  CVE-2026-113786 and CVE-2026-113789 to CVE-2026-113795) in ``rpaframework-pdf`` and the
+  ``rpaframework`` lock file.
+- **Security:** Bump ``fpdf2`` ≥2.8.8 (MEDIUM — implicit loading of external URLs and local
+  image paths from attacker-controlled content, CVE-2026-114609; exponential SVG ``<use>``
+  expansion in ``FPDF.image()``, CVE-2026-114610) in ``rpaframework-pdf``.
+- **Security:** Bump ``pyasn1`` ≥0.6.5 (HIGH — quadratic-time denial of service in BER/CER/DER
+  decoding, CVE-2026-119194 to CVE-2026-119197) in the ``rpaframework-google`` lock file.
+- **Security:** Bump ``dnspython`` ≥2.9.0 (HIGH — excessive CPU use in
+  ``dns.name.from_wire_parser()``, CVE-2026-114605) in the ``rpaframework`` lock file.
+- **Security:** Bump ``msgpack`` ≥1.2.3 (HIGH — unbounded memory leak in the C extension on
+  ``strict_map_key`` validation failure, CVE-2026-114613) in the ``rpaframework-assistant``
+  lock file.
+- **Security:** Bump ``setuptools`` ≥84.1.0 (LOW — Windows path escape via
+  ``namespace_packages.txt`` during legacy wheel installation) in ``rpaframework-sema4ai``.
+- **Security:** Bump ``Werkzeug`` ≥3.1.9 (MEDIUM — ``safe_join()`` allows Windows special
+  device names, CVE-2026-102598) and ``pylint`` ≥4.0.9 (MEDIUM — arbitrary code execution via
+  pickle deserialisation of the stats cache in ``PYLINT_HOME``, CVE-2026-114608) in the
+  development dependencies of all packages. ``rpaframework`` stays on ``oauthlib`` 3.x
+  (``tweepy`` requires ``oauthlib<4``); the two new advisories CVE-2026-49272 and
+  CVE-2026-118669 are in the device-flow and token-grant server endpoints, which the
+  libraries do not use.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

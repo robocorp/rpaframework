@@ -6,7 +6,7 @@ authors = [
 	{name = "Mika H.", email = "mika.hanninen@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 dependencies = [
 	"ruff>=0.1.14",
@@ -23,7 +23,7 @@ dependencies = [
 	"invoke>=2.2.0",  # keep in sync with requirements.txt
 	"tomlkit>=0.11.8",  # keep in sync with requirements.txt
 	"semver>=3.0.0",  # keep in sync with requirements.txt
-	"pylint>=3.3.2",
+	"pylint>=4.0.9",
 	"robotframework-docgen>=0.17.0",
 	"colorama>=0.4.5",
 	"keyring>=25.1.0",
