@@ -88,8 +88,7 @@ class OperationSystemManager(_OperationSystemManager):
             pattern = PATTERN[browser_type]
             version = read_version_from_cmd(cmd_mapping, pattern)
             return version
-        # pylint: disable=broad-except
-        except Exception as exc:
+        except Exception as exc:  # pylint: disable=broad-exception-caught
             LOGGER.warning(
                 "Can't read %r browser version due to: %s", browser_type, exc
             )

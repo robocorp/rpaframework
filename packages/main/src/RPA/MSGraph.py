@@ -37,7 +37,7 @@ class MSGraphDownloadError(Exception):
     "Error when download fails."
 
 
-class RobocorpVaultTokenBackend(BaseTokenBackend):
+class RobocorpVaultTokenBackend(BaseTokenBackend):  # pylint: disable=abstract-method
     "A simple Token backend that saves to Robocorp vault"
 
 

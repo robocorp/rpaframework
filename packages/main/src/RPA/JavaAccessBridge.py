@@ -522,8 +522,7 @@ class JavaAccessBridge:
                 TranslateMessage(message)
                 self.logger.debug("Dispatching msg=%s", repr(message))
                 DispatchMessage(message)
-        # pylint: disable=broad-except
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             self.logger.error(err)
             pipe.put(err)
         finally:
