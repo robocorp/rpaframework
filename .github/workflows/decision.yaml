@@ -7,12 +7,16 @@ on:
     paths:
       - 'packages/decision/**'
       - '.github/workflows/decision.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
   pull_request:
     branches:
       - master
     paths:
       - 'packages/decision/**'
       - '.github/workflows/decision.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
 
 defaults:
   run:
