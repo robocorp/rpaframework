@@ -3638,6 +3638,30 @@ wheels = [
 ]
 
 [[package]]
+name = "rpaframework-decision"
+version = "1.0.0"
+source = { editable = "packages/decision" }
+dependencies = [
+    { name = "docutils", version = "0.21.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "requests" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "docutils", specifier = ">=0.21.2" },
+    { name = "laya", marker = "extra == 'laya'", specifier = ">=0.1.0" },
+    { name = "requests", specifier = ">=2.28.0" },
+]
+provides-extras = ["laya"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "responses", specifier = ">=0.25.0" },
+    { name = "rpaframework-devutils", editable = "packages/devutils" },
+]
+
+[[package]]
 name = "rpaframework-devutils"
 version = "0.1.0"
 source = { editable = "packages/devutils" }
@@ -3746,6 +3770,7 @@ dependencies = [
     { name = "robotframework-browser" },
     { name = "rpaframework" },
     { name = "rpaframework-aws" },
+    { name = "rpaframework-decision" },
     { name = "rpaframework-google" },
     { name = "rpaframework-hubspot" },
     { name = "rpaframework-openai" },
@@ -3777,6 +3802,7 @@ requires-dist = [
     { name = "robotframework-browser", specifier = ">=17.2.0" },
     { name = "rpaframework", editable = "packages/main" },
     { name = "rpaframework-aws", specifier = ">=7.0.0" },
+    { name = "rpaframework-decision", editable = "packages/decision" },
     { name = "rpaframework-google", specifier = ">=11.0.0" },
     { name = "rpaframework-hubspot", specifier = ">=3.0.0" },
     { name = "rpaframework-openai", specifier = ">=4.0.0" },

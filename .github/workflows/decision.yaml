@@ -6,13 +6,13 @@ on:
       - master
     paths:
       - 'packages/decision/**'
-      - '.github/workflows/openai.yaml'
+      - '.github/workflows/decision.yaml'
   pull_request:
     branches:
       - master
     paths:
       - 'packages/decision/**'
-      - '.github/workflows/openai.yaml'
+      - '.github/workflows/decision.yaml'
 
 defaults:
   run:
