@@ -7,12 +7,16 @@ on:
     paths:
       - 'packages/hubspot/**'
       - '.github/workflows/hubspot.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
   pull_request:
     branches:
       - master
     paths:
       - 'packages/hubspot/**'
       - '.github/workflows/hubspot.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
 
 defaults:
   run:

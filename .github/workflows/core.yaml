@@ -7,12 +7,16 @@ on:
     paths:
       - "packages/core/**"
       - ".github/workflows/core.yaml"
+      - "packages/devutils/**"
+      - "invocations/**"
   pull_request:
     branches:
       - master
     paths:
       - "packages/core/**"
       - ".github/workflows/core.yaml"
+      - "packages/devutils/**"
+      - "invocations/**"
 
 defaults:
   run:
