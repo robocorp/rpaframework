@@ -6,6 +6,7 @@ from RPA.Windows import Windows
 from RPA.Windows.keywords.action import ActionKeywords
 from RPA.Windows.keywords.context import ActionNotPossible
 from RPA.Windows.utils import IS_WINDOWS
+from RPA.core.windows.locators import WindowsElement
 from RPA.core.windows.context import ElementNotFound, WindowControlError
 
 
@@ -81,9 +82,7 @@ def test_select_raises_when_value_cannot_be_selected():
     with pytest.raises(ActionNotPossible, match="could not select value"):
         keywords.select("id:FontSizeComboBox", "22")
 
-    element.item.Select.assert_called_once_with(
-        "22", simulateMove=False, waitTime=0.5
-    )
+    element.item.Select.assert_called_once_with("22", simulateMove=False, waitTime=0.5)
 
 
 def test_select_succeeds_when_select_returns_none():
@@ -180,8 +179,104 @@ def test_list_windows_control_window_click_error_mocked(
         assert result == mock_window
 
         # Mock get_element to raise ElementNotFound for click
-        mock_get_element.side_effect = ElementNotFound("Element not found with locator 'name:File'")
+        mock_get_element.side_effect = ElementNotFound(
+            "Element not found with locator 'name:File'"
+        )
 
         # click should raise ElementNotFound
         with pytest.raises(ElementNotFound, match="Element not found"):
             library.click("name:File")
+
+
+def _control(name, control_type, parent=None):
+    """Build a fake uiautomation control with the attributes WindowsElement reads."""
+    control = mock.Mock()
+    control.Name = name
+    control.AutomationId = ""
+    control.ControlTypeName = control_type
+    control.ClassName = ""
+    control.BoundingRectangle = None
+    control.GetParentControl.return_value = parent
+    return control
+
+
+@pytest.fixture
+def element_tree():
+    """A window containing a pane containing a text element."""
+    window = _control("Main", "WindowControl")
+    pane = _control("Panel 1", "PaneControl", parent=window)
+    text = _control("This panel is invisible", "TextControl", parent=pane)
+    return window, pane, text
+
+
+@mock.patch("RPA.core.windows.locators.LocatorMethods.get_element")
+def test_control_parent_window_direct_parent(mock_get_element, library, element_tree):
+    _, pane, text = element_tree
+    mock_get_element.return_value = WindowsElement(text, "name:Invisible")
+
+    window = library.control_parent_window("name:Invisible", foreground=False)
+
+    assert window.item is pane
+    assert window.name == "Panel 1"
+    assert window.control_type == "PaneControl"
+    assert library.window_element.item is pane
+
+
+@mock.patch("RPA.core.windows.locators.LocatorMethods.get_element")
+def test_control_parent_window_levels(mock_get_element, library, element_tree):
+    top, _, text = element_tree
+    mock_get_element.return_value = WindowsElement(text, None)
+
+    window = library.control_parent_window(
+        WindowsElement(text, None), foreground=False, levels=2
+    )
+
+    assert window.item is top
+    assert library.window_element.item is top
+
+
+@mock.patch("RPA.core.windows.locators.LocatorMethods.get_element")
+def test_control_parent_window_control_type(mock_get_element, library, element_tree):
+    top, _, text = element_tree
+    mock_get_element.return_value = WindowsElement(text, "name:Invisible")
+
+    window = library.control_parent_window(
+        "name:Invisible", foreground=False, control_type="WindowControl"
+    )
+
+    assert window.item is top
+    assert window.control_type == "WindowControl"
+
+
+@mock.patch("RPA.core.windows.locators.LocatorMethods.get_element")
+def test_control_parent_window_brings_to_foreground(
+    mock_get_element, library, element_tree
+):
+    _, pane, text = element_tree
+    mock_get_element.return_value = WindowsElement(text, "name:Invisible")
+
+    library.control_parent_window("name:Invisible")
+
+    pane.SetFocus.assert_called_once_with()
+    pane.SetActive.assert_called_once_with()
+    pane.MoveCursorToMyCenter.assert_called_once()
+
+
+@mock.patch("RPA.core.windows.locators.LocatorMethods.get_element")
+def test_control_parent_window_fails_at_top_of_tree(
+    mock_get_element, library, element_tree
+):
+    _, _, text = element_tree
+    mock_get_element.return_value = WindowsElement(text, "name:Invisible")
+
+    with pytest.raises(WindowControlError, match="ancestor of type 'DocumentControl'"):
+        library.control_parent_window(
+            "name:Invisible", foreground=False, control_type="DocumentControl"
+        )
+    with pytest.raises(WindowControlError, match="4 level\\(s\\) up"):
+        library.control_parent_window("name:Invisible", foreground=False, levels=4)
+
+
+def test_control_parent_window_rejects_zero_levels(library):
+    with pytest.raises(ValueError, match="at least 1"):
+        library.control_parent_window("name:Invisible", levels=0)

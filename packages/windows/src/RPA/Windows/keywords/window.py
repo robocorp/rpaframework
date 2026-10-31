@@ -120,6 +120,93 @@ class WindowKeywords(WindowMethods):
         """
         return self.control_window(locator, foreground, wait_time, timeout, main=False)
 
+    @keyword(tags=["window"])
+    @with_timeout
+    def control_parent_window(
+        self,
+        locator: Optional[Locator] = None,
+        foreground: bool = True,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,  # pylint: disable=unused-argument
+        levels: int = 1,
+        control_type: Optional[str] = None,
+    ) -> WindowsElement:
+        """Get control of a parent (ancestor) window of the element defined by
+        the locator.
+
+        Walks up the element tree from the element found by the locator and makes
+        the reached ancestor the active window, so it is used as the root element
+        for all the following keywords using locators. This is the counterpart of
+        ``Control Child Window`` and lets you move both down and up in the element
+        tree, e.g. when a panel or popup cannot be located directly but something
+        inside it can.
+
+        By default the direct parent is used. Set ``levels`` to go up more than one
+        level, or ``control_type`` to keep walking up until an ancestor with that
+        control type (e.g. ``WindowControl`` or ``PaneControl``) is reached.
+
+        :param locator: string locator or element whose ancestor is controlled
+        :param foreground: True to bring the window to foreground
+        :param wait_time: time to wait after activating the window
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
+        :param levels: how many levels to go up in the element tree (default 1);
+         ignored when ``control_type`` is given
+        :param control_type: stop at the first ancestor of this control type,
+         e.g. ``WindowControl``
+        :return: WindowsElement object
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Control Window    subname:"Sage 50" type:Window
+            # The panel itself cannot be found, but a text inside it can.
+            ${text} =    Get Element    name:"This panel is invisible" and type:Text
+            # Control the pane that contains the text ...
+            Control Parent Window    ${text}    control_type=PaneControl
+            # ... or just the direct parent of the text element.
+            Control Parent Window    ${text}    foreground=${True}    wait_time=1
+        """
+        if levels < 1:
+            raise ValueError(f"'levels' must be at least 1, got {levels!r}")
+
+        element = self.ctx.get_element(locator)
+        control = element.item
+        walked = 0
+        while True:
+            parent = control.GetParentControl()
+            if parent is None:
+                wanted = (
+                    f"an ancestor of type {control_type!r}"
+                    if control_type
+                    else f"the ancestor {levels} level(s) up"
+                )
+                raise WindowControlError(
+                    f"Could not find {wanted} from element with locator: {locator!r} "
+                    f"(reached the top of the element tree after {walked} level(s))"
+                )
+            control = parent
+            walked += 1
+            if control_type:
+                if control.ControlTypeName == control_type:
+                    break
+            elif walked >= levels:
+                break
+
+        self.ctx.window_element = WindowsElement(control, locator)
+        window = self.window
+        if window is None:
+            raise WindowControlError(
+                f"Parent window of element with locator {locator!r} is not available"
+            )
+
+        if foreground:
+            self.foreground_window()
+        if wait_time:
+            time.sleep(wait_time)
+        return window
+
     def _find_window(self, locator, main) -> Optional[WindowsElement]:
         try:
             # A `root_element=None` will use the `anchor` or `window` as root later

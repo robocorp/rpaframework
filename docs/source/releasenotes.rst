@@ -59,6 +59,11 @@ Latest versions
   (``tweepy`` requires ``oauthlib<4``); the two new advisories CVE-2026-49272 and
   CVE-2026-118669 are in the device-flow and token-grant server endpoints, which the
   libraries do not use.
+- ``RPA.Windows``: Add keyword ``Control Parent Window``, the counterpart of
+  ``Control Child Window``. It walks up the element tree from an element found by a
+  locator and makes the reached ancestor the active window, either a given number of
+  ``levels`` up or the first ancestor of a given ``control_type`` such as
+  ``WindowControl`` or ``PaneControl`` (fixes :issue:`1362`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
