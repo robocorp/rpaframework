@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-hubspot"
-version = "4.0.0"
+version = "5.0.0"
 description = "Robot Framework wrapper around the hubspot-api-client library."
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -23,7 +23,7 @@ classifiers = [
 
 dependencies = [
 	"robotframework >=4.0.0, !=4.0.1, !=6.1.0, <8.0.0",
-	"rpaframework-core >=13.0.0",
+	"rpaframework-core>=14.0.0",
 	"tenacity >=8.0.1",
 	"hubspot-api-client >=4.0.6",
 	"docutils>=0.21.2",
