@@ -2263,7 +2263,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "33.0.2"
+version = "34.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -2371,9 +2371,9 @@ requires-dist = [
     { name = "robotframework-sapguilibrary", marker = "sys_platform == 'win32'", specifier = ">=1.1" },
     { name = "robotframework-seleniumlibrary", specifier = ">=6.7.1" },
     { name = "robotframework-seleniumtestability", specifier = ">=2.0.0" },
-    { name = "rpaframework-core", specifier = ">=13.0.2" },
-    { name = "rpaframework-pdf", specifier = ">=11.0.3" },
-    { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=11.0.0" },
+    { name = "rpaframework-core", specifier = ">=14.0.0" },
+    { name = "rpaframework-pdf", specifier = ">=12.0.0" },
+    { name = "rpaframework-windows", marker = "sys_platform == 'win32'", specifier = ">=12.0.0" },
     { name = "selenium", specifier = ">=4.16.0,<5.0.0" },
     { name = "simple-salesforce", specifier = ">=1.0.0" },
     { name = "smartsheet-python-sdk", specifier = "==3.0.2" },
@@ -2392,7 +2392,7 @@ dev = [{ name = "rpaframework-devutils", editable = "../devutils" }]
 
 [[package]]
 name = "rpaframework-core"
-version = "13.0.3"
+version = "14.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -2404,9 +2404,9 @@ dependencies = [
     { name = "uiautomation", marker = "sys_platform == 'win32'" },
     { name = "webdriver-manager" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b8/6a/f725d35404e4498eac51d6e8f60f7c96910b118d44ffe491a48e071f36e9/rpaframework_core-13.0.3.tar.gz", hash = "sha256:18b7f8395d400808d0753dbcfe3ccf58820ec964f2a86652c51a71da5293ad98", size = 144186, upload-time = "2026-08-23T17:49:12.626Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9b/eb/b2d07de6bf8c75a2546acd1deef172d3f26d552c41c26ab29a9a347e6d6f/rpaframework_core-14.0.0.tar.gz", hash = "sha256:09925a79c8eced0eea05f2cfde72701a7ba9ca5ad02e8d6130cede4c6b5daf16", size = 104217, upload-time = "2026-11-01T14:29:49.804Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0c/9a/90824c68e1e71e962c923a02d7708971b30b1319832b086393b15a749536/rpaframework_core-13.0.3-py3-none-any.whl", hash = "sha256:415c1cbc7bf8146b40c6cfe7ee8de30de46b4a6ed90b8107bd414b275a27c763", size = 57098, upload-time = "2026-08-23T17:49:13.786Z" },
+    { url = "https://files.pythonhosted.org/packages/eb/ab/82f94370fb16a42ef70694634e4af0c8434f4846f06acc699da63c9d7779/rpaframework_core-14.0.0-py3-none-any.whl", hash = "sha256:fcbd6c764b0bc800b7ab0bdce96309fc9fab0e9740562f3d4da50fc23957320b", size = 57095, upload-time = "2026-11-01T14:29:48.21Z" },
 ]
 
 [[package]]
@@ -2468,7 +2468,7 @@ requires-dist = [
 
 [[package]]
 name = "rpaframework-pdf"
-version = "11.0.3"
+version = "12.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docutils" },
@@ -2478,14 +2478,14 @@ dependencies = [
     { name = "robotframework" },
     { name = "rpaframework-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c9/11/6c017c44c92a3f6fcb9fd1ac1b2881c9bcd5dc1fd4b38e9f293fb4abc820/rpaframework_pdf-11.0.3.tar.gz", hash = "sha256:bc98c34454b436e912ac79945809ef984aec16a29b139ef59ce91c39cc330838", size = 4528866, upload-time = "2026-10-04T18:42:37.883Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/42/fc/0b0719a02ad8d44ff5b657e71d9a34778434ebaed6b56cc20d12bb1b38c2/rpaframework_pdf-12.0.0.tar.gz", hash = "sha256:6d5bf6c8f5c7cb0a23f33e7fcd23e17f0b5693742a142a105cf36c15390abfc7", size = 4507204, upload-time = "2026-11-01T14:39:37.094Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8a/81/aa7393775fd314a23fdd8e100529396edcc56e61c96f4589153036e3faa7/rpaframework_pdf-11.0.3-py3-none-any.whl", hash = "sha256:68ce756106ca76ccb00c18ffd59435d658afd6195ab7fcfb8b909025d7f1812c", size = 612598, upload-time = "2026-10-04T18:42:39.584Z" },
+    { url = "https://files.pythonhosted.org/packages/aa/fe/3a36772f1c7b1db465718db4381fb83dd1d0d31302e0c8a522a173de0443/rpaframework_pdf-12.0.0-py3-none-any.whl", hash = "sha256:740f5e6785974aa10dd43eb2f753def801ab61dc4605aae56d49042269a326d6", size = 612596, upload-time = "2026-11-01T14:39:35.078Z" },
 ]
 
 [[package]]
 name = "rpaframework-windows"
-version = "11.0.0"
+version = "12.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "comtypes", marker = "sys_platform == 'win32'" },
@@ -2498,9 +2498,9 @@ dependencies = [
     { name = "rpaframework-core" },
     { name = "uiautomation" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b9/2c/288c81f7d15d4db6207bd15fa0256f952fec64b509c89f41a1cdd9a5fd40/rpaframework_windows-11.0.0.tar.gz", hash = "sha256:45d14684af1fe138130716d9fc33eb0ae4cf4268417f7564a00d7bedb86ff78f", size = 145414, upload-time = "2026-05-03T18:53:36.137Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ca/6d/0a314b2b1369de24304d2f6a56d955927f3e68cf36fb135eb4a68e9c7fb9/rpaframework_windows-12.0.0.tar.gz", hash = "sha256:554ab9f2e9a6953f233732fd4674edc27a3fd12e5734b19c22e7b6efe351c87c", size = 135918, upload-time = "2026-11-01T14:41:56.004Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/44/6b9ba27e3a6336bab699044b97cc38261aacb116b514ce200dec18f7cd0c/rpaframework_windows-11.0.0-py3-none-any.whl", hash = "sha256:2bbadefc832d989ba9ee0b2c58724342b8f88967c87788d90e783cd5ec10a9ad", size = 33721, upload-time = "2026-05-03T18:53:37.536Z" },
+    { url = "https://files.pythonhosted.org/packages/ac/7a/a5afdb505775b7eaf6423b69ac81d0a2bef4315f5c8667e6e1f7cc45dc1a/rpaframework_windows-12.0.0-py3-none-any.whl", hash = "sha256:a198b78a42abc825e5666c5404fa90e450d636c8640b48fddfade3d364ab2746", size = 34524, upload-time = "2026-11-01T14:41:54.819Z" },
 ]
 
 [[package]]
