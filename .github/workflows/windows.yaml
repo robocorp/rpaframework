@@ -7,12 +7,16 @@ on:
     paths:
       - 'packages/windows/**'
       - '.github/workflows/windows.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
   pull_request:
     branches:
       - master
     paths:
       - 'packages/windows/**'
       - '.github/workflows/windows.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
 
 defaults:
   run:

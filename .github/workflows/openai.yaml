@@ -7,12 +7,16 @@ on:
     paths:
       - 'packages/openai/**'
       - '.github/workflows/openai.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
   pull_request:
     branches:
       - master
     paths:
       - 'packages/openai/**'
       - '.github/workflows/openai.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
 
 defaults:
   run:

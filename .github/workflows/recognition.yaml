@@ -7,12 +7,16 @@ on:
     paths:
       - 'packages/recognition/**'
       - '.github/workflows/recognition.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
   pull_request:
     branches:
       - master
     paths:
       - 'packages/recognition/**'
       - '.github/workflows/recognition.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
 
 defaults:
   run:

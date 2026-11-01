@@ -7,12 +7,16 @@ on:
     paths:
       - 'packages/sema4ai/**'
       - '.github/workflows/sema4ai.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
   pull_request:
     branches:
       - master
     paths:
       - 'packages/sema4ai/**'
       - '.github/workflows/sema4ai.yaml'
+      - 'packages/devutils/**'
+      - 'invocations/**'
 
 defaults:
   run:
