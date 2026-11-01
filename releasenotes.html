@@ -15,8 +15,8 @@
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/iframeResizer.min.js?v=a9f7dbe8"></script>
       <script src="_static/custom.js?v=9670dbcd"></script>
     <script src="_static/js/theme.js"></script>
@@ -198,11 +198,21 @@
 </section>
 <section id="id3">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>No changes planned yet for the next release.</p>
+</section>
+<section id="id4">
+<h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="nov-2026">
+<h3>1 Nov 2026<a class="headerlink" href="#nov-2026" title="Link to this heading"></a></h3>
 <ul class="simple">
+<li><p><strong>Breaking:</strong> All packages now require <strong>Python 3.11 or newer</strong>. Python 3.10 reached
+end of life in October 2026, and the security fixes below for <code class="docutils literal notranslate"><span class="pre">pillow</span></code> and <code class="docutils literal notranslate"><span class="pre">dnspython</span></code>
+are only available in releases that require Python 3.11. Every package released in this
+batch gets a major version bump for that reason.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RPA.Robocorp.Process</span></code>: <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Process</span> <span class="pre">Work</span> <span class="pre">Items</span></code> now retrieves all result
 pages, so items beyond the first page are returned and included when filtering
 by state (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1095">#1095</a>).</p></li>
-<li><p>New package <code class="docutils literal notranslate"><span class="pre">rpaframework-decision</span></code> <strong>1.0.0</strong> with library <strong>RPA.Decision</strong>: typed,
+<li><p>New package <code class="docutils literal notranslate"><span class="pre">rpaframework-decision</span></code> with library <strong>RPA.Decision</strong>: typed,
 calibrated decisions from <em>decision models</em> (System One models) such as TypeSafe’s
 Jev and the open-weight Laya. Keywords <code class="docutils literal notranslate"><span class="pre">Decide</span></code>, <code class="docutils literal notranslate"><span class="pre">Decide</span> <span class="pre">Or</span> <span class="pre">Escalate</span></code>, <code class="docutils literal notranslate"><span class="pre">Check</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Score</span></code>, <code class="docutils literal notranslate"><span class="pre">Rank</span> <span class="pre">Options</span></code>, <code class="docutils literal notranslate"><span class="pre">Ask</span> <span class="pre">Questions</span></code>, <code class="docutils literal notranslate"><span class="pre">Classify</span> <span class="pre">Items</span></code> and
@@ -210,10 +220,62 @@ Jev and the open-weight Laya. Keywords <code class="docutils literal notranslate
 audit log of every decision (<code class="docutils literal notranslate"><span class="pre">Get</span></code> / <code class="docutils literal notranslate"><span class="pre">Save</span></code> / <code class="docutils literal notranslate"><span class="pre">Clear</span> <span class="pre">Decision</span> <span class="pre">Audit</span> <span class="pre">Log</span></code>).
 Backends: <code class="docutils literal notranslate"><span class="pre">jev</span></code> (hosted), <code class="docutils literal notranslate"><span class="pre">laya</span></code> (local, via the <code class="docutils literal notranslate"><span class="pre">laya</span></code> extra), <code class="docutils literal notranslate"><span class="pre">replay</span></code>
 (recorded log, for dry runs) and any Python callable.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pillow</span></code> ≥13.0.0 (42 advisories, 5 of them CRITICAL: heap buffer
+overflows in JPEG, FlashPix and TIFF decoding, stale native storage reuse in multi-frame
+loaders, and argument injection in the Ghostscript call; the rest are HIGH/MEDIUM memory
+safety and denial-of-service issues in image parsers) in <code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code> and <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>, and in the lock files of all packages.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">certifi</span></code> ≥2026.10.18 (CRITICAL — bundled emSign root CAs whose
+intermediate CA keys were compromised) in the lock files of all packages.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pypdf</span></code> ≥6.21.4 (HIGH — infinite loops and unbounded memory use on
+crafted PDFs: xref table EOF, trailer search, page tree, page labels, encrypted files,
+strict-mode exceptions, dictionary cloning, cross-reference streams, CVE-2026-115572,
+CVE-2026-115580, CVE-2026-115585, CVE-2026-119203 to CVE-2026-119209; MEDIUM/LOW —
+CVE-2026-113786 and CVE-2026-113789 to CVE-2026-113795) in <code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> lock file.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">fpdf2</span></code> ≥2.8.8 (MEDIUM — implicit loading of external URLs and local
+image paths from attacker-controlled content, CVE-2026-114609; exponential SVG <code class="docutils literal notranslate"><span class="pre">&lt;use&gt;</span></code>
+expansion in <code class="docutils literal notranslate"><span class="pre">FPDF.image()</span></code>, CVE-2026-114610) in <code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code>.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">pyasn1</span></code> ≥0.6.5 (HIGH — quadratic-time denial of service in BER/CER/DER
+decoding, CVE-2026-119194 to CVE-2026-119197) in the <code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> lock file.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">dnspython</span></code> ≥2.9.0 (HIGH — excessive CPU use in
+<code class="docutils literal notranslate"><span class="pre">dns.name.from_wire_parser()</span></code>, CVE-2026-114605) in the <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> lock file.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">msgpack</span></code> ≥1.2.3 (HIGH — unbounded memory leak in the C extension on
+<code class="docutils literal notranslate"><span class="pre">strict_map_key</span></code> validation failure, CVE-2026-114613) in the <code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code>
+lock file.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> ≥84.1.0 (LOW — Windows path escape via
+<code class="docutils literal notranslate"><span class="pre">namespace_packages.txt</span></code> during legacy wheel installation) in <code class="docutils literal notranslate"><span class="pre">rpaframework-sema4ai</span></code>.</p></li>
+<li><p><strong>Security:</strong> Bump <code class="docutils literal notranslate"><span class="pre">Werkzeug</span></code> ≥3.1.9 (MEDIUM — <code class="docutils literal notranslate"><span class="pre">safe_join()</span></code> allows Windows special
+device names, CVE-2026-102598) and <code class="docutils literal notranslate"><span class="pre">pylint</span></code> ≥4.0.9 (MEDIUM — arbitrary code execution via
+pickle deserialisation of the stats cache in <code class="docutils literal notranslate"><span class="pre">PYLINT_HOME</span></code>, CVE-2026-114608) in the
+development dependencies of all packages. <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> stays on <code class="docutils literal notranslate"><span class="pre">oauthlib</span></code> 3.x
+(<code class="docutils literal notranslate"><span class="pre">tweepy</span></code> requires <code class="docutils literal notranslate"><span class="pre">oauthlib&lt;4</span></code>); the two new advisories CVE-2026-49272 and
+CVE-2026-118669 are in the device-flow and token-grant server endpoints, which the
+libraries do not use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Windows</span></code>: Add keyword <code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Parent</span> <span class="pre">Window</span></code>, the counterpart of
+<code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Child</span> <span class="pre">Window</span></code>. It walks up the element tree from an element found by a
+locator and makes the reached ancestor the active window, either a given number of
+<code class="docutils literal notranslate"><span class="pre">levels</span></code> up or the first ancestor of a given <code class="docutils literal notranslate"><span class="pre">control_type</span></code> such as
+<code class="docutils literal notranslate"><span class="pre">WindowControl</span></code> or <code class="docutils literal notranslate"><span class="pre">PaneControl</span></code> (fixes <a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1362">#1362</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code>, <code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code>, <code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code>, <code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code>, <code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rpaframework-hubspot</span></code> and <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>: Require <code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code> ≥14.0.0, so
+that upgrading any of them also brings in the patched <code class="docutils literal notranslate"><span class="pre">pillow</span></code>. <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> also
+requires <code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> ≥12.0.0 and <code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> ≥12.0.0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-core</span></code> <strong>14.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-pdf</span></code> <strong>12.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code> <strong>9.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> <strong>12.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-decision</span></code> <strong>1.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-assistant</span></code> <strong>7.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-aws</span></code> <strong>9.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-google</span></code> <strong>13.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-hubspot</span></code> <strong>5.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-openai</span></code> <strong>6.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-sema4ai</span></code> <strong>2.0.0</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> <strong>34.0.0</strong></p></li>
 </ul>
 </section>
-<section id="id4">
-<h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <section id="oct-2026">
 <h3>4 Oct 2026<a class="headerlink" href="#oct-2026" title="Link to this heading"></a></h3>
 <ul class="simple">

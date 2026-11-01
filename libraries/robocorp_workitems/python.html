@@ -15,8 +15,8 @@
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/iframeResizer.min.js?v=a9f7dbe8"></script>
       <script src="../../_static/custom.js?v=9670dbcd"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -155,7 +155,7 @@
 <h1>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.WorkItems.</span></span><span class="sig-name descname"><span class="pre">WorkItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">autoload:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">root:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">default_adapter:</span> <span class="pre">~typing.Type[~RPA.Robocorp.WorkItems.BaseAdapter]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'RPA.Robocorp.WorkItems.RobocorpAdapter'&gt;,</span> <span class="pre">auto_parse_email:</span> <span class="pre">~typing.Dict[str</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">...],</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">...]]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{'rawEmail':</span> <span class="pre">'parsedEmail',</span> <span class="pre">('email.text',</span> <span class="pre">'__mail.html'):</span> <span class="pre">('email.body',</span> <span class="pre">'parsedEmail.Body')}</span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">RPA.Robocorp.WorkItems.</span></span><span class="sig-name descname"><span class="pre">WorkItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">autoload:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">root:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">default_adapter:</span> <span class="pre">~typing.Type[~RPA.Robocorp.WorkItems.BaseAdapter]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'RPA.Robocorp.WorkItems.RobocorpAdapter'&gt;,</span> <span class="pre">auto_parse_email:</span> <span class="pre">~typing.Dict[str</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">...],</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">...]]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{'rawEmail':</span> <span class="pre">'parsedEmail',</span> <span class="pre">('email.text',</span> <span class="pre">'__mail.html'):</span> <span class="pre">('email.body',</span> <span class="pre">'parsedEmail.Body')}</span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Link to this definition"></a></dt>
 <dd><p>A library for interacting with Control Room work items.</p>
 <p>Work items are used for managing data that go through multiple
 steps and tasks inside a process. Each step of a process receives
@@ -306,37 +306,37 @@ load the first work item.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.EMAIL_BODY_LOADERS">
-<span class="sig-name descname"><span class="pre">EMAIL_BODY_LOADERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('JSON',</span> <span class="pre">&lt;function</span> <span class="pre">loads&gt;),</span> <span class="pre">('YAML',</span> <span class="pre">&lt;function</span> <span class="pre">full_load&gt;)]</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.EMAIL_BODY_LOADERS" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">EMAIL_BODY_LOADERS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('JSON',</span> <span class="pre">&lt;function</span> <span class="pre">loads&gt;),</span> <span class="pre">('YAML',</span> <span class="pre">&lt;function</span> <span class="pre">full_load&gt;)]</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.EMAIL_BODY_LOADERS" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_AUTO_KEYWORDS">
-<span class="sig-name descname"><span class="pre">ROBOT_AUTO_KEYWORDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_AUTO_KEYWORDS" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_AUTO_KEYWORDS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_AUTO_KEYWORDS" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_DOC_FORMAT">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_DOC_FORMAT" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_DOC_FORMAT" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_SCOPE">
-<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_SCOPE" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LIBRARY_SCOPE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.ROBOT_LISTENER_API_VERSION">
-<span class="sig-name descname"><span class="pre">ROBOT_LISTENER_API_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LISTENER_API_VERSION" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ROBOT_LISTENER_API_VERSION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.ROBOT_LISTENER_API_VERSION" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.active_input">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">active_input</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">WorkItem</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.active_input" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">active_input</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">WorkItem</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.active_input" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.adapter">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adapter</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.adapter" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">adapter</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.adapter" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -461,7 +461,7 @@ output work item.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.current">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">WorkItem</span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.current" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">current</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">WorkItem</span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.current" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -636,7 +636,7 @@ Returns a list of absolute paths to the downloaded files.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_variable">
-<span class="sig-name descname"><span class="pre">get_work_item_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=&lt;object</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_variable" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_work_item_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_variable" title="Link to this definition"></a></dt>
 <dd><p>Return a single variable value from the work item,
 or default value if defined and key does not exist.</p>
 <p>If key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>
@@ -690,7 +690,7 @@ print(input_wi[“email”])</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.inputs">
-<span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">WorkItem</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.inputs" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">inputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">WorkItem</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.inputs" title="Link to this definition"></a></dt>
 <dd><p>Input work items</p>
 </dd></dl>
 
@@ -722,7 +722,7 @@ print(input_wi[“email”])</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="RPA.Robocorp.WorkItems.WorkItems.outputs">
-<span class="sig-name descname"><span class="pre">outputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">WorkItem</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.outputs" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">outputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">WorkItem</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.outputs" title="Link to this definition"></a></dt>
 <dd><p>Output work items</p>
 </dd></dl>
 

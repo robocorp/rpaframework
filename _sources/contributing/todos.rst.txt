@@ -117,7 +117,7 @@ checkers.base.name_checker.checker:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "714", "when py3.12 is minimum, remove this condition"
+   "784", "when py3.12 is minimum, remove this condition"
 
 checkers.classes.class_checker:
 ===============================
@@ -126,7 +126,7 @@ checkers.classes.class_checker:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "1334", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "1537", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 checkers.design_analysis:
 =========================
@@ -153,7 +153,7 @@ checkers.stdlib:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "760", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "865", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 checkers.strings:
 =================
@@ -171,7 +171,7 @@ checkers.symilar:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "829", "4.0 Fix current_name"
+   "839", "4.0 Fix current_name"
 
 checkers.typecheck:
 ===================
@@ -180,10 +180,10 @@ checkers.typecheck:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "610", "The typing of the second return variable is actually Literal[0,1]"
-   "612", "The typing of the third return variable can be narrowed to a Literal"
-   "2068", "This check was disabled (by adding the leading underscore)"
-   "2076", "This check was disabled (by adding the leading underscore)"
+   "657", "The typing of the second return variable is actually Literal[0,1]"
+   "659", "The typing of the third return variable can be narrowed to a Literal"
+   "2263", "This check was disabled (by adding the leading underscore)"
+   "2271", "This check was disabled (by adding the leading underscore)"
 
 checkers.utils:
 ===============
@@ -192,9 +192,9 @@ checkers.utils:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "610", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
-   "1378", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
-   "2084", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "645", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "1372", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "2140", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 checkers.variables:
 ===================
@@ -203,8 +203,8 @@ checkers.variables:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "1378", "(performance), merging both checks would streamline this"
-   "2690", "4.0: Consider using utils.is_terminating_func"
+   "1460", "(performance), merging both checks would streamline this"
+   "2790", "4.0: Consider using utils.is_terminating_func"
 
 config._pylint_config.utils:
 ============================
@@ -224,7 +224,7 @@ config.callback_actions:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "246", "4.x: Deprecate this after the auto-upgrade functionality of"
+   "249", "4.x: Deprecate this after the auto-upgrade functionality of"
 
 config.config_initialization:
 =============================
@@ -233,7 +233,7 @@ config.config_initialization:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "114", "Change this to be checked only when upgrading the configuration"
+   "119", "Change this to be checked only when upgrading the configuration"
 
 config.utils:
 =============
@@ -251,7 +251,7 @@ extensions.docparams:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "483", "Unknown option value for 'disable', expected a valid pylint message and got 'useless-param-doc'"
+   "498", "Unknown option value for 'disable', expected a valid pylint message and got 'useless-param-doc'"
 
 lint.message_state_handler:
 ===========================
@@ -260,7 +260,7 @@ lint.message_state_handler:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "371", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
+   "372", "Unknown option value for 'disable', expected a valid pylint message and got 'too-many-try-statements'"
 
 lint.pylinter:
 ==============
@@ -269,8 +269,8 @@ lint.pylinter:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "102", "Unknown option value for 'disable-next', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
-   "695", "Move the parallel invocation into step 3 of the checking process"
+   "112", "Unknown option value for 'disable-next', expected a valid pylint message and got 'consider-using-namedtuple-or-dataclass'"
+   "825", "Move the parallel invocation into step 3 of the checking process"
 
 pyreverse.diagrams:
 ===================
@@ -279,7 +279,7 @@ pyreverse.diagrams:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "89", "Specify 'Any' after refactor of `DiagramEntity`"
+   "106", "Specify 'Any' after refactor of `DiagramEntity`"
 
 pyreverse.dot_printer:
 ======================
