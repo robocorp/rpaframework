@@ -7,7 +7,7 @@ on:
       - master
     paths:
       - "pyproject.toml"
-      - "poetry.lock"
+      - "uv.lock"
       - "docs/source/**"
       - ".github/workflows/docs.yaml"
       - "packages/main/README.rst"
