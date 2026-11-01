@@ -1,0 +1,894 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python API &mdash; RPA Framework  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=6d878a92" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/iframeResizer.min.js?v=a9f7dbe8"></script>
+      <script src="../../_static/custom.js?v=9670dbcd"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Desktop" href="../desktop/index.html" />
+    <link rel="prev" title="Decision" href="index.html" />
+	<!-- Cookie consent -->
+<link async rel="stylesheet" type="text/css" href="../../_static/cookie.css"/>
+<script async src="../../_static/cookie.js"></script>
+<!-- Robocorp banner -->
+<link async rel="stylesheet" type="text/css" href="../../_static/robocorp.css"/>
+<script async src="../../_static/robocorp.js"></script>
+<!--            -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RPA Framework
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_playwright/index.html">Browser.Playwright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_selenium/index.html">Browser.Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../calendar/index.html">Calendar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Decision</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai/index.html">DocumentAI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai_base64ai/index.html">DocumentAI.Base64AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentai_nanonets/index.html">DocumentAI.Nanonets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hubspot/index.html">HubSpot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../javaaccessbridge/index.html">JavaAccessBridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mfa/index.html">MFA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../msgraph/index.html">MSGraph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openai/index.html">OpenAI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_process/index.html">Robocorp.Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_storage/index.html">Robocorp.Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_vault/index.html">Robocorp.Vault</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_workitems/index.html">Robocorp.WorkItems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smartsheet/index.html">Smartsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows/index.html">Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/todos.html">TODO</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Decision</a></li>
+      <li class="breadcrumb-item active">Python API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/libraries/decision/python.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+	
+           <div itemprop="articleBody">
+             
+  <section id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h1>
+<section id="decision">
+<h2>Decision<a class="headerlink" href="#decision" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.Decision">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.</span></span><span class="sig-name descname"><span class="pre">Decision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Decision.backends.DecisionBackend" title="RPA.Decision.backends.DecisionBackend"><span class="pre">DecisionBackend</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audit_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">backend_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.Decision" title="Link to this definition"></a></dt>
+<dd><p>Library for making small, typed decisions with a <em>decision model</em>
+(also called a <em>System One</em> model) such as <a class="reference external" href="https://typesafe.ai">Jev</a>
+or the open-weight <a class="reference external" href="https://github.com/NandhaKishorM/laya">Laya</a>.</p>
+<p>Unlike a generative LLM, a decision model does not write text. You give it
+a <em>state</em> (the thing to look at) and a question with a <strong>closed answer
+space</strong>, and it returns one of the allowed answers together with a
+calibrated probability. That makes it a natural fit for the branch points
+of an automation:</p>
+<ul class="simple">
+<li><p>routing work items (<code class="docutils literal notranslate"><span class="pre">invoice</span></code> / <code class="docutils literal notranslate"><span class="pre">credit</span> <span class="pre">note</span></code> / <code class="docutils literal notranslate"><span class="pre">reminder</span></code> / <code class="docutils literal notranslate"><span class="pre">junk</span></code>)</p></li>
+<li><p>classifying failures (business exception vs. application exception)</p></li>
+<li><p>guardrails before a side effect (“is it safe to auto-reply to this?”)</p></li>
+<li><p>deciding when to hand off to a human, using the confidence as the gate</p></li>
+</ul>
+<p>Three kinds of question are supported, mirroring the model APIs:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Kind</p></th>
+<th class="head"><p>Keyword</p></th>
+<th class="head"><p>Returns</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>choice</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Decide</span></code>, <code class="docutils literal notranslate"><span class="pre">Decide</span> <span class="pre">Or</span> <span class="pre">Escalate</span></code></p></td>
+<td><p>one option + probability for every option</p></td>
+</tr>
+<tr class="row-odd"><td><p>yes/no</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Check</span></code></p></td>
+<td><p>probability that the proposition is true</p></td>
+</tr>
+<tr class="row-even"><td><p>score</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Score</span></code></p></td>
+<td><p>position on an ordered rubric</p></td>
+</tr>
+</tbody>
+</table>
+<p>Every call is appended to an in-memory <strong>audit log</strong> (<code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Decision</span> <span class="pre">Audit</span>
+<span class="pre">Log</span></code>) and, optionally, to a JSON Lines file. Store those records in your
+work item payload: they are what you need to measure accuracy against
+ground truth later, and to explain a decision to an auditor.</p>
+<p>The library is <strong>not</strong> included in the <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> package. Add
+<code class="docutils literal notranslate"><span class="pre">rpaframework-decision</span></code> to your <em>conda.yaml</em> or <em>requirements.txt</em>.
+For the Laya backend use <code class="docutils literal notranslate"><span class="pre">rpaframework-decision[laya]</span></code>.</p>
+<p><strong>Backends</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">jev</span></code></p></td>
+<td><p>TypeSafe’s hosted model. Needs <code class="docutils literal notranslate"><span class="pre">api_key</span></code> or <code class="docutils literal notranslate"><span class="pre">TYPESAFE_API_KEY</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">laya</span></code></p></td>
+<td><p>Open-weight model running locally (CPU or CUDA). No data leaves
+the machine. Needs the <code class="docutils literal notranslate"><span class="pre">laya</span></code> extra.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">replay</span></code></p></td>
+<td><p>Replays answers from a saved audit log, for dry runs and tests.</p></td>
+</tr>
+<tr class="row-even"><td><p>callable</p></td>
+<td><p>Any Python <code class="docutils literal notranslate"><span class="pre">(state,</span> <span class="pre">questions)</span> <span class="pre">-&gt;</span> <span class="pre">answers</span></code> function.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Robot Framework example usage</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocorp.Vault</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocorp.WorkItems</span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Decision</span><span class="p">    </span><span class="s">threshold=0.85</span><span class="p">    </span><span class="s">audit_log=output/decisions.jsonl</span>
+
+<span class="gh">*** Tasks ***</span>
+<span class="gu">Route incoming documents</span>
+<span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=    </span><span class="nf">Get Secret</span><span class="p">    </span><span class="s">TypeSafe</span>
+<span class="p">    </span><span class="nf">Authorize To Jev</span><span class="p">    </span><span class="s">api_key=</span><span class="p">${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">api_key</span><span class="p">]</span>
+<span class="p">    </span><span class="nf">For Each Input Work Item</span><span class="p">    </span><span class="s">Route One Document</span>
+
+<span class="gh">*** Keywords ***</span>
+<span class="gu">Route One Document</span>
+<span class="p">    ${</span><span class="nv">text</span><span class="p">}=    </span><span class="nf">Get Work Item Variable</span><span class="p">    </span><span class="s">document_text</span>
+<span class="p">    ${</span><span class="nv">decision</span><span class="p">}=    </span><span class="nf">Decide</span><span class="p">    ${</span><span class="nv">text</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">question=What kind of document is this?</span>
+<span class="p">    ...    </span><span class="s">options=invoice=A request for payment, credit_note=A credit against an invoice, reminder, other</span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Routed as </span><span class="p">${</span><span class="nv">decision.choice</span><span class="p">}</span><span class="s"> (</span><span class="p">${</span><span class="nv">decision.confidence</span><span class="p">}</span><span class="s">)</span>
+<span class="p">    </span><span class="nf">IF</span><span class="p">    ${</span><span class="nv">decision.confidence</span><span class="p">}</span><span class="s"> &lt; 0.85</span>
+<span class="p">        </span><span class="nf">Set Work Item Variable</span><span class="p">    </span><span class="s">needs_review</span><span class="p">    ${</span><span class="nv">True</span><span class="p">}</span>
+<span class="p">    END</span>
+<span class="p">    </span><span class="nf">Set Work Item Variable</span><span class="p">    </span><span class="s">document_type</span><span class="p">    ${</span><span class="nv">decision.choice</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Set Work Item Variable</span><span class="p">    </span><span class="s">decision_audit</span><span class="p">    ${</span><span class="nv">decision.to_dict()</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Save Work Item</span>
+
+<span class="gu">Reply only when it is safe</span>
+<span class="p">    ${</span><span class="nv">verdict</span><span class="p">}=    </span><span class="nf">Check</span><span class="p">    ${</span><span class="nv">email_body</span><span class="p">}</span>
+<span class="p">    ...    </span><span class="s">question=Is this a routine request that can be answered with a template?</span>
+<span class="p">    ...    </span><span class="s">threshold=0.9</span>
+<span class="p">    </span><span class="nf">IF</span><span class="p">    ${</span><span class="nv">verdict</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Send Template Reply</span>
+<span class="p">    </span><span class="nf">ELSE</span>
+<span class="p">        </span><span class="nf">Create Output Work Item</span><span class="p">    </span><span class="s">variables={&quot;reason&quot;: &quot;manual&quot;}</span>
+<span class="p">    END</span>
+
+<span class="gu">Escalate instead of guessing</span>
+<span class="p">    </span><span class="nf">TRY</span>
+<span class="p">        ${</span><span class="nv">choice</span><span class="p">}=    </span><span class="nf">Decide Or Escalate</span><span class="p">    ${</span><span class="nv">ticket</span><span class="p">}</span>
+<span class="p">        ...    </span><span class="s">question=Which team owns this ticket?</span>
+<span class="p">        ...    </span><span class="s">options=billing,technical,sales</span>
+<span class="p">        ...    </span><span class="s">threshold=0.9</span>
+<span class="p">    </span><span class="nf">EXCEPT</span><span class="p">    </span><span class="s">LowConfidenceError*</span><span class="p">    </span><span class="s">type=glob</span>
+<span class="p">        </span><span class="nf">Escalate To Human</span><span class="p">    ${</span><span class="nv">ticket</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<p><strong>Python example usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">RPA.Decision</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decision</span><span class="p">,</span> <span class="n">LowConfidenceError</span>
+
+<span class="n">decide</span> <span class="o">=</span> <span class="n">Decision</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;jev&quot;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">decide</span><span class="o">.</span><span class="n">decide</span><span class="p">(</span>
+    <span class="n">invoice_text</span><span class="p">,</span>
+    <span class="n">question</span><span class="o">=</span><span class="s2">&quot;What kind of document is this?&quot;</span><span class="p">,</span>
+    <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;invoice&quot;</span><span class="p">:</span> <span class="s2">&quot;A request for payment&quot;</span><span class="p">,</span> <span class="s2">&quot;credit_note&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;other&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">choice</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">probabilities</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">team</span> <span class="o">=</span> <span class="n">decide</span><span class="o">.</span><span class="n">decide_or_escalate</span><span class="p">(</span><span class="n">ticket</span><span class="p">,</span> <span class="s2">&quot;Which team owns this?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;billing&quot;</span><span class="p">,</span> <span class="s2">&quot;tech&quot;</span><span class="p">])</span>
+<span class="k">except</span> <span class="n">LowConfidenceError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="n">route_to_human</span><span class="p">(</span><span class="n">ticket</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c1"># Local, offline alternative:</span>
+<span class="n">local</span> <span class="o">=</span> <span class="n">Decision</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;laya&quot;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<span class="n">ok</span> <span class="o">=</span> <span class="n">local</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="s2">&quot;Does the sender ask for a refund?&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><strong>Design notes</strong></p>
+<ul class="simple">
+<li><p>Keep questions <em>about</em> the state and name the field you mean when the
+state is a dictionary: <code class="docutils literal notranslate"><span class="pre">&quot;Does</span> <span class="pre">`body`</span> <span class="pre">ask</span> <span class="pre">for</span> <span class="pre">a</span> <span class="pre">refund?&quot;</span></code>.</p></li>
+<li><p>Give options a one-line description when labels are ambiguous; the
+description is part of the prompt the model sees.</p></li>
+<li><p>Decision models are strong on recognition and weak on arithmetic. Compute
+totals in Python; ask the model whether a document <em>is</em> an invoice, not
+whether its total is correct.</p></li>
+<li><p>Treat the threshold as a business decision, tune it per use case from the
+audit log, and store the chosen value next to the decision.</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.ROBOT_LIBRARY_DOC_FORMAT">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_DOC_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'REST'</span></em><a class="headerlink" href="#RPA.Decision.Decision.ROBOT_LIBRARY_DOC_FORMAT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.ROBOT_LIBRARY_SCOPE">
+<span class="sig-name descname"><span class="pre">ROBOT_LIBRARY_SCOPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBAL'</span></em><a class="headerlink" href="#RPA.Decision.Decision.ROBOT_LIBRARY_SCOPE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.ask_questions">
+<span class="sig-name descname"><span class="pre">ask_questions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">questions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Decision.ChoiceResult" title="RPA.Decision.types.ChoiceResult"><span class="pre">ChoiceResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Decision.CheckResult" title="RPA.Decision.types.CheckResult"><span class="pre">CheckResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Decision.ScoreResult" title="RPA.Decision.types.ScoreResult"><span class="pre">ScoreResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Decision.Decision.ask_questions" title="Link to this definition"></a></dt>
+<dd><p>Ask several questions about the <strong>same</strong> state in one call.</p>
+<p>Batching questions that share a state is cheaper and faster than
+separate calls. Each question is a dictionary with <code class="docutils literal notranslate"><span class="pre">type</span></code>
+(<code class="docutils literal notranslate"><span class="pre">choice</span></code> / <code class="docutils literal notranslate"><span class="pre">check</span></code> / <code class="docutils literal notranslate"><span class="pre">score</span></code>), <code class="docutils literal notranslate"><span class="pre">question</span></code>, and <code class="docutils literal notranslate"><span class="pre">options</span></code>
+(choice) or <code class="docutils literal notranslate"><span class="pre">levels</span></code> (score). Native backend question objects
+(<code class="docutils literal notranslate"><span class="pre">type:</span> <span class="pre">noul</span></code> with <code class="docutils literal notranslate"><span class="pre">instructions</span></code>) are also accepted as-is.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary keyed by question id with the matching result type.</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{type}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">type=choice</span>
+<span class="c">...</span><span class="p">    </span><span class="c">question=What kind of document is this?</span><span class="p">    </span><span class="c">options=invoice,other</span>
+<span class="c">&amp;{urgent}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">type=check</span>
+<span class="c">...</span><span class="p">    </span><span class="c">question=Does the document demand payment within 7 days?</span>
+<span class="c">&amp;{questions}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">doc_type=${type}</span><span class="p">    </span><span class="c">urgent=${urgent}</span>
+<span class="c">${answers}=</span><span class="p">    </span><span class="c">Ask Questions</span><span class="p">    </span><span class="c">${text}</span><span class="p">    </span><span class="c">${questions}</span>
+<span class="c">Log</span><span class="p">    </span><span class="c">${answers}[doc_type][choice] is urgent: ${answers}[urgent][result]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.authorize_to_jev">
+<span class="sig-name descname"><span class="pre">authorize_to_jev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Decision.Decision.authorize_to_jev" title="Link to this definition"></a></dt>
+<dd><p>Use TypeSafe’s hosted Jev model (or any <code class="docutils literal notranslate"><span class="pre">/v1/systemone</span></code> compatible
+endpoint).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api_key</strong> – TypeSafe API key. Keep it in Vault, not in the robot.</p></li>
+<li><p><strong>model</strong> – Model alias, default <code class="docutils literal notranslate"><span class="pre">jev-latest</span></code>.</p></li>
+<li><p><strong>base_url</strong> – Override the API host, e.g. for a logging proxy.</p></li>
+<li><p><strong>timeout</strong> – HTTP timeout in seconds.</p></li>
+<li><p><strong>retries</strong> – Retries on 429/5xx and connection errors.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${secrets}=</span><span class="p">    </span><span class="c">Get Secret</span><span class="p">    </span><span class="c">TypeSafe</span>
+<span class="c">Authorize To Jev</span><span class="p">    </span><span class="c">api_key=${secrets}[api_key]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.backend">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">backend</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Decision.backends.DecisionBackend" title="RPA.Decision.backends.DecisionBackend"><span class="pre">DecisionBackend</span></a></em><a class="headerlink" href="#RPA.Decision.Decision.backend" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.check">
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criteria_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criteria_false</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#RPA.Decision.CheckResult" title="RPA.Decision.types.CheckResult"><span class="pre">CheckResult</span></a></span></span><a class="headerlink" href="#RPA.Decision.Decision.check" title="Link to this definition"></a></dt>
+<dd><p>Answer a yes/no question with a calibrated probability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The text or dictionary to look at.</p></li>
+<li><p><strong>question</strong> – A proposition that is either true or false.</p></li>
+<li><p><strong>threshold</strong> – Probability at or above which <code class="docutils literal notranslate"><span class="pre">result</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+Raise it (<code class="docutils literal notranslate"><span class="pre">0.9</span></code>) when a false positive is expensive, lower it
+when a false negative is.</p></li>
+<li><p><strong>criteria_true</strong> – Optional description of what counts as <em>yes</em>.</p></li>
+<li><p><strong>criteria_false</strong> – Optional description of what counts as <em>no</em>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Decision.CheckResult" title="RPA.Decision.CheckResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">CheckResult</span></code></a>. <code class="docutils literal notranslate"><span class="pre">${result}</span></code> is truthy in <code class="docutils literal notranslate"><span class="pre">IF</span></code>;
+<code class="docutils literal notranslate"><span class="pre">${result.probability}</span></code> is the raw probability.</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${safe}=</span><span class="p">    </span><span class="c">Check</span><span class="p">    </span><span class="c">${email}</span>
+<span class="c">...</span><span class="p">    </span><span class="c">question=Is this a routine request that a template answers fully?</span>
+<span class="c">...</span><span class="p">    </span><span class="c">threshold=0.9</span>
+<span class="c">IF</span><span class="p">    </span><span class="c">${safe}</span><span class="p">    </span><span class="c">Send Template Reply</span><span class="p">    </span><span class="c">${email}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.classify_items">
+<span class="sig-name descname"><span class="pre">classify_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#RPA.Decision.ChoiceResult" title="RPA.Decision.types.ChoiceResult"><span class="pre">ChoiceResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Decision.Decision.classify_items" title="Link to this definition"></a></dt>
+<dd><p>Run <code class="docutils literal notranslate"><span class="pre">Decide</span></code> over a list of states and return one result per item.</p>
+<p>Items are decided one at a time so that a single failure does not lose
+the batch; the audit log records every item.</p>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${results}=</span><span class="p">    </span><span class="c">Classify Items</span><span class="p">    </span><span class="c">${subjects}</span>
+<span class="c">...</span><span class="p">    </span><span class="c">question=Is this email subject about an order or something else?</span>
+<span class="c">...</span><span class="p">    </span><span class="c">options=order,other</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${subject}</span><span class="p">    </span><span class="c">${result}</span><span class="p">    </span><span class="c">IN ZIP</span><span class="p">    </span><span class="c">${subjects}</span><span class="p">    </span><span class="c">${results}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${subject} -&gt; ${result.choice}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.clear_decision_audit_log">
+<span class="sig-name descname"><span class="pre">clear_decision_audit_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#RPA.Decision.Decision.clear_decision_audit_log" title="Link to this definition"></a></dt>
+<dd><p>Forget the in-memory audit records. Returns how many were cleared.
+The JSON Lines file, if any, is left untouched.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.decide">
+<span class="sig-name descname"><span class="pre">decide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#RPA.Decision.ChoiceResult" title="RPA.Decision.types.ChoiceResult"><span class="pre">ChoiceResult</span></a></span></span><a class="headerlink" href="#RPA.Decision.Decision.decide" title="Link to this definition"></a></dt>
+<dd><p>Pick one option from a closed set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The text or dictionary the model should look at. A
+dictionary is sent as structured JSON; refer to its keys in the
+question with backticks, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;What</span> <span class="pre">is</span> <span class="pre">`subject`</span> <span class="pre">about?&quot;</span></code>.</p></li>
+<li><p><strong>question</strong> – The question to answer, phrased so that exactly one
+of the options is the right answer.</p></li>
+<li><p><strong>options</strong> – The allowed answers. Accepts a list of labels, a
+dictionary <code class="docutils literal notranslate"><span class="pre">{label:</span> <span class="pre">description}</span></code> (description may be <code class="docutils literal notranslate"><span class="pre">None</span></code>),
+or a string: <code class="docutils literal notranslate"><span class="pre">billing,technical,sales</span></code> or
+<code class="docutils literal notranslate"><span class="pre">billing=Payments</span> <span class="pre">and</span> <span class="pre">refunds,technical=Bugs</span> <span class="pre">and</span> <span class="pre">outages,other</span></code>.</p></li>
+<li><p><strong>threshold</strong> – Only used for the <code class="docutils literal notranslate"><span class="pre">accepted</span></code> flag in the audit
+record; this keyword never fails on low confidence.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Decision.ChoiceResult" title="RPA.Decision.ChoiceResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChoiceResult</span></code></a> with <code class="docutils literal notranslate"><span class="pre">choice</span></code>, <code class="docutils literal notranslate"><span class="pre">confidence</span></code> and
+<code class="docutils literal notranslate"><span class="pre">probabilities</span></code>. Use <code class="docutils literal notranslate"><span class="pre">${result.choice}</span></code> in Robot Framework;
+<code class="docutils literal notranslate"><span class="pre">${result}</span></code> alone logs as the chosen label.</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${result}=</span><span class="p">    </span><span class="c">Decide</span><span class="p">    </span><span class="c">${email_text}</span>
+<span class="c">...</span><span class="p">    </span><span class="c">question=Which team should handle this email?</span>
+<span class="c">...</span><span class="p">    </span><span class="c">options=billing=Invoices and refunds,technical=Bugs and outages,sales</span>
+<span class="c">IF</span><span class="p">    </span><span class="c">${result.confidence} &gt;= 0.9</span>
+<span class="p">    </span><span class="c">Assign To</span><span class="p">    </span><span class="c">${result.choice}</span>
+<span class="c">ELSE</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">Unsure: ${result.probabilities}</span><span class="p">    </span><span class="c">level=WARN</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.decide_or_escalate">
+<span class="sig-name descname"><span class="pre">decide_or_escalate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#RPA.Decision.ChoiceResult" title="RPA.Decision.types.ChoiceResult"><span class="pre">ChoiceResult</span></a></span></span><a class="headerlink" href="#RPA.Decision.Decision.decide_or_escalate" title="Link to this definition"></a></dt>
+<dd><p>Like <code class="docutils literal notranslate"><span class="pre">Decide</span></code>, but <strong>fails</strong> with <code class="docutils literal notranslate"><span class="pre">LowConfidenceError</span></code> when the
+confidence is below <code class="docutils literal notranslate"><span class="pre">threshold</span></code> (default: the library threshold).</p>
+<p>The error message carries the choice, the confidence and the
+threshold. The exception object (in Python) carries the full result
+as <code class="docutils literal notranslate"><span class="pre">err.result</span></code>.</p>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">TRY</span>
+<span class="p">    </span><span class="c">${type}=</span><span class="p">    </span><span class="c">Decide Or Escalate</span><span class="p">    </span><span class="c">${text}</span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">question=What kind of document is this?</span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">options=invoice,credit_note,other</span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">threshold=0.9</span>
+<span class="c">EXCEPT</span><span class="p">    </span><span class="c">LowConfidenceError*</span><span class="p">    </span><span class="c">type=glob</span><span class="p">    </span><span class="c">AS</span><span class="p">    </span><span class="c">${error}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${error}</span><span class="p">    </span><span class="c">level=WARN</span>
+<span class="p">    </span><span class="c">Create Output Work Item</span><span class="p">    </span><span class="c">variables={&quot;route&quot;: &quot;manual_review&quot;}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.get_decision_audit_log">
+<span class="sig-name descname"><span class="pre">get_decision_audit_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Decision.Decision.get_decision_audit_log" title="Link to this definition"></a></dt>
+<dd><p>Return all decisions made so far as a list of dictionaries.</p>
+<p>Each record contains the question, options, answer, confidence,
+probabilities, threshold, whether it was accepted, latency, model and a
+digest of the state (never the state itself).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.rank_options">
+<span class="sig-name descname"><span class="pre">rank_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Decision.Decision.rank_options" title="Link to this definition"></a></dt>
+<dd><p>Return all options ordered from most to least probable.</p>
+<p>Handy when the top choice is not enough, e.g. to try candidates in
+order until one works, or to offer a human the best three.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of <code class="docutils literal notranslate"><span class="pre">(label,</span> <span class="pre">probability)</span></code> pairs.</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${ranked}=</span><span class="p">    </span><span class="c">Rank Options</span><span class="p">    </span><span class="c">${page_text}</span>
+<span class="c">...</span><span class="p">    </span><span class="c">question=Which link leads to the invoices page?</span>
+<span class="c">...</span><span class="p">    </span><span class="c">options=${link_texts}</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${label}</span><span class="p">    </span><span class="c">${prob}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{ranked}</span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">${label}: ${prob}</span>
+<span class="c">END</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.require_confidence">
+<span class="sig-name descname"><span class="pre">require_confidence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.Decision.ChoiceResult" title="RPA.Decision.types.ChoiceResult"><span class="pre">ChoiceResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Decision.CheckResult" title="RPA.Decision.types.CheckResult"><span class="pre">CheckResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Decision.ScoreResult" title="RPA.Decision.types.ScoreResult"><span class="pre">ScoreResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Decision.Decision.require_confidence" title="Link to this definition"></a></dt>
+<dd><p>Fail with <code class="docutils literal notranslate"><span class="pre">LowConfidenceError</span></code> unless the given result meets the
+threshold. Lets you make the decision first, log it, and gate later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> – A result from <code class="docutils literal notranslate"><span class="pre">Decide</span></code>, <code class="docutils literal notranslate"><span class="pre">Check</span></code> or <code class="docutils literal notranslate"><span class="pre">Score</span></code>.</p></li>
+<li><p><strong>threshold</strong> – Defaults to the library threshold.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.save_decision_audit_log">
+<span class="sig-name descname"><span class="pre">save_decision_audit_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#RPA.Decision.Decision.save_decision_audit_log" title="Link to this definition"></a></dt>
+<dd><p>Write the in-memory audit records to <code class="docutils literal notranslate"><span class="pre">path</span></code> as JSON Lines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path written.</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Save Decision Audit Log</span><span class="p">    </span><span class="c">${OUTPUT_DIR}${/}decisions.jsonl</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#RPA.Decision.ScoreResult" title="RPA.Decision.types.ScoreResult"><span class="pre">ScoreResult</span></a></span></span><a class="headerlink" href="#RPA.Decision.Decision.score" title="Link to this definition"></a></dt>
+<dd><p>Place the state on an ordered rubric of 2 - 10 levels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – The text or dictionary to look at.</p></li>
+<li><p><strong>question</strong> – What is being rated.</p></li>
+<li><p><strong>levels</strong> – Level labels from lowest to highest, as a list or a
+comma-separated string. Keep the labels descriptive; they are the
+rubric the model applies.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Decision.ScoreResult" title="RPA.Decision.ScoreResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScoreResult</span></code></a> with the weighted <code class="docutils literal notranslate"><span class="pre">score</span></code>, the most
+probable integer <code class="docutils literal notranslate"><span class="pre">level</span></code>, its <code class="docutils literal notranslate"><span class="pre">label</span></code> and per-level
+<code class="docutils literal notranslate"><span class="pre">probabilities</span></code>.</p>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${tone}=</span><span class="p">    </span><span class="c">Score</span><span class="p">    </span><span class="c">${complaint}</span>
+<span class="c">...</span><span class="p">    </span><span class="c">question=How upset is the customer?</span>
+<span class="c">...</span><span class="p">    </span><span class="c">levels=Calm,Irritated,Angry,Threatening to churn</span>
+<span class="c">IF</span><span class="p">    </span><span class="c">${tone.level} &gt;= 2</span><span class="p">    </span><span class="c">Flag For Account Manager</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.set_decision_backend">
+<span class="sig-name descname"><span class="pre">set_decision_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#RPA.Decision.backends.DecisionBackend" title="RPA.Decision.backends.DecisionBackend"><span class="pre">DecisionBackend</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Decision.Decision.set_decision_backend" title="Link to this definition"></a></dt>
+<dd><p>Select the decision model backend used by all other keywords.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>backend</strong> – <code class="docutils literal notranslate"><span class="pre">jev</span></code>, <code class="docutils literal notranslate"><span class="pre">laya</span></code>, <code class="docutils literal notranslate"><span class="pre">replay</span></code>, a backend instance,
+or a Python callable <code class="docutils literal notranslate"><span class="pre">(state,</span> <span class="pre">questions)</span> <span class="pre">-&gt;</span> <span class="pre">answers</span></code>.</p></li>
+<li><p><strong>options</strong> – Backend-specific options. <code class="docutils literal notranslate"><span class="pre">jev</span></code>: <code class="docutils literal notranslate"><span class="pre">api_key</span></code>,
+<code class="docutils literal notranslate"><span class="pre">model</span></code>, <code class="docutils literal notranslate"><span class="pre">base_url</span></code>, <code class="docutils literal notranslate"><span class="pre">timeout</span></code>, <code class="docutils literal notranslate"><span class="pre">retries</span></code>. <code class="docutils literal notranslate"><span class="pre">laya</span></code>:
+<code class="docutils literal notranslate"><span class="pre">model</span></code>, <code class="docutils literal notranslate"><span class="pre">device</span></code>, <code class="docutils literal notranslate"><span class="pre">preload</span></code>. <code class="docutils literal notranslate"><span class="pre">replay</span></code>: <code class="docutils literal notranslate"><span class="pre">path</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set Decision Backend</span><span class="p">    </span><span class="c">laya</span><span class="p">    </span><span class="c">device=cpu</span>
+<span class="c">Set Decision Backend</span><span class="p">    </span><span class="c">replay</span><span class="p">    </span><span class="c">path=recorded/decisions.jsonl</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.set_decision_threshold">
+<span class="sig-name descname"><span class="pre">set_decision_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#RPA.Decision.Decision.set_decision_threshold" title="Link to this definition"></a></dt>
+<dd><p>Change the default confidence threshold. Returns the previous value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>threshold</strong> – A value between 0 and 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.Decision.use_laya">
+<span class="sig-name descname"><span class="pre">use_laya</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Decision.Decision.use_laya" title="Link to this definition"></a></dt>
+<dd><p>Use the open-weight Laya model locally. Nothing leaves the machine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – Hugging Face repo or local path, default <code class="docutils literal notranslate"><span class="pre">convaiinnovations/laya</span></code>.</p></li>
+<li><p><strong>device</strong> – <code class="docutils literal notranslate"><span class="pre">cpu</span></code> or <code class="docutils literal notranslate"><span class="pre">cuda</span></code>; auto-detected when omitted.</p></li>
+<li><p><strong>preload</strong> – Keep checkpoints in memory between calls (recommended
+for robots that make many decisions).</p></li>
+</ul>
+</dd>
+</dl>
+<p>Robot Framework example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Use Laya</span><span class="p">    </span><span class="c">device=cpu</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<section id="result-types">
+<h3>Result types<a class="headerlink" href="#result-types" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.ChoiceResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.</span></span><span class="sig-name descname"><span class="pre">ChoiceResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">choice:</span> <span class="pre">str,</span> <span class="pre">confidence:</span> <span class="pre">float,</span> <span class="pre">probabilities:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">float],</span> <span class="pre">question:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">options:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">model:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">backend:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">request_id:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">latency_ms:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.ChoiceResult" title="Link to this definition"></a></dt>
+<dd><p>Answer to a <em>choice</em> question: one option picked from a closed set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attr choice<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The winning option label.</p>
+</dd>
+<dt class="field-even">Attr confidence<span class="colon">:</span></dt>
+<dd class="field-even"><p>How sure the model is about <code class="docutils literal notranslate"><span class="pre">choice</span></code> (0.0 - 1.0).</p>
+</dd>
+<dt class="field-odd">Attr probabilities<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Probability for <strong>every</strong> option, keyed by label.</p>
+</dd>
+<dt class="field-even">Attr question<span class="colon">:</span></dt>
+<dd class="field-even"><p>The instructions that were asked.</p>
+</dd>
+<dt class="field-odd">Attr options<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The option labels that were allowed.</p>
+</dd>
+<dt class="field-even">Attr model<span class="colon">:</span></dt>
+<dd class="field-even"><p>Resolved model identifier reported by the backend.</p>
+</dd>
+<dt class="field-odd">Attr backend<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the backend that produced the answer.</p>
+</dd>
+<dt class="field-even">Attr request_id<span class="colon">:</span></dt>
+<dd class="field-even"><p>Backend request id, when the backend reports one.</p>
+</dd>
+<dt class="field-odd">Attr latency_ms<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wall-clock time of the backend call.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.ChoiceResult.ranked">
+<span class="sig-name descname"><span class="pre">ranked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Decision.ChoiceResult.ranked" title="Link to this definition"></a></dt>
+<dd><p>Options sorted from most to least probable.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.CheckResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.</span></span><span class="sig-name descname"><span class="pre">CheckResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">probability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latency_ms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.CheckResult" title="Link to this definition"></a></dt>
+<dd><p>Answer to a yes/no question (a <em>noul</em> in TypeSafe’s terminology).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attr probability<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Calibrated probability that the proposition is true.</p>
+</dd>
+<dt class="field-even">Attr result<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when <code class="docutils literal notranslate"><span class="pre">probability</span> <span class="pre">&gt;=</span> <span class="pre">threshold</span></code>.</p>
+</dd>
+<dt class="field-odd">Attr threshold<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The threshold that was applied to produce <code class="docutils literal notranslate"><span class="pre">result</span></code>.</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="RPA.Decision.CheckResult.is_uncertain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_uncertain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#RPA.Decision.CheckResult.is_uncertain" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when the probability sits in the 0.35 - 0.65 band.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.ScoreResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.</span></span><span class="sig-name descname"><span class="pre">ScoreResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latency_ms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.ScoreResult" title="Link to this definition"></a></dt>
+<dd><p>Answer to a <em>score</em> question: a position on an ordered rubric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attr score<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Probability-weighted level, may fall between levels
+(e.g. <code class="docutils literal notranslate"><span class="pre">1.4</span></code> on a 0 - 2 rubric).</p>
+</dd>
+<dt class="field-even">Attr level<span class="colon">:</span></dt>
+<dd class="field-even"><p>The most probable integer level.</p>
+</dd>
+<dt class="field-odd">Attr label<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Human-readable label of <code class="docutils literal notranslate"><span class="pre">level</span></code>.</p>
+</dd>
+<dt class="field-even">Attr confidence<span class="colon">:</span></dt>
+<dd class="field-even"><p>Confidence in <code class="docutils literal notranslate"><span class="pre">level</span></code>.</p>
+</dd>
+<dt class="field-odd">Attr probabilities<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Probability per level, keyed by integer level.</p>
+</dd>
+<dt class="field-even">Attr legend<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mapping from level to its label.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.ScoreResult.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#RPA.Decision.ScoreResult.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Return the result as a plain, JSON-serializable dictionary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="RPA.Decision.LowConfidenceError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.</span></span><span class="sig-name descname"><span class="pre">LowConfidenceError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#RPA.Decision.ChoiceResult" title="RPA.Decision.types.ChoiceResult"><span class="pre">ChoiceResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.LowConfidenceError" title="Link to this definition"></a></dt>
+<dd><p>A decision was made, but its confidence is below the required threshold.</p>
+<p>The exception carries the full result so an <code class="docutils literal notranslate"><span class="pre">EXCEPT</span></code> branch in Robot
+Framework (or a Python <code class="docutils literal notranslate"><span class="pre">except</span></code>) can still inspect what the model
+thought, log it, or route the item to a human.</p>
+</dd></dl>
+
+</section>
+<section id="module-RPA.Decision.backends">
+<span id="backends"></span><h3>Backends<a class="headerlink" href="#module-RPA.Decision.backends" title="Link to this heading"></a></h3>
+<p>Decision-model backends.</p>
+<p>Every backend speaks the same <em>question schema</em>, which follows TypeSafe’s
+System One API because it is the de-facto convention that open models (Laya)
+have adopted as well:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">questions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;doc_type&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;choice&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;instructions&quot;</span><span class="p">:</span> <span class="s2">&quot;What kind of document is `text`?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;criteria&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;invoice&quot;</span><span class="p">:</span> <span class="s2">&quot;A request for payment&quot;</span><span class="p">,</span> <span class="s2">&quot;other&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;urgent&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;noul&quot;</span><span class="p">,</span> <span class="s2">&quot;instructions&quot;</span><span class="p">:</span> <span class="s2">&quot;Does `text` ask for urgent action?&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;tone&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;score&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;instructions&quot;</span><span class="p">:</span> <span class="s2">&quot;How upset is the writer?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;criteria&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Neutral&quot;</span><span class="p">,</span> <span class="s2">&quot;Irritated&quot;</span><span class="p">,</span> <span class="s2">&quot;Furious&quot;</span><span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>and every backend returns answers in the same normalized shape:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;doc_type&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;choice&quot;</span><span class="p">,</span> <span class="s2">&quot;choice&quot;</span><span class="p">:</span> <span class="s2">&quot;invoice&quot;</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.93</span><span class="p">,</span>
+                 <span class="s2">&quot;probabilities&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;invoice&quot;</span><span class="p">:</span> <span class="mf">0.93</span><span class="p">,</span> <span class="s2">&quot;other&quot;</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">}},</span>
+    <span class="s2">&quot;urgent&quot;</span><span class="p">:</span>   <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;noul&quot;</span><span class="p">,</span> <span class="s2">&quot;noul&quot;</span><span class="p">:</span> <span class="mf">0.12</span><span class="p">},</span>
+    <span class="s2">&quot;tone&quot;</span><span class="p">:</span>     <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+                 <span class="s2">&quot;probabilities&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+                 <span class="s2">&quot;legend&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="s2">&quot;Neutral&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;Irritated&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;Furious&quot;</span><span class="p">}},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The library never depends on a vendor SDK; the hosted backend is a thin
+<code class="docutils literal notranslate"><span class="pre">requests</span></code> call so the dependency footprint stays small and the request
+can be audited byte for byte.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.backends.CallableBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.backends.</span></span><span class="sig-name descname"><span class="pre">CallableBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'callable'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.backends.CallableBackend" title="Link to this definition"></a></dt>
+<dd><p>Wrap any Python callable <code class="docutils literal notranslate"><span class="pre">(state,</span> <span class="pre">questions)</span> <span class="pre">-&gt;</span> <span class="pre">answers</span></code>.</p>
+<p>Useful for tests, for deterministic fallbacks, and for plugging in a
+model the library does not know about yet without touching the library.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.backends.DecisionBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.backends.</span></span><span class="sig-name descname"><span class="pre">DecisionBackend</span></span><a class="headerlink" href="#RPA.Decision.backends.DecisionBackend" title="Link to this definition"></a></dt>
+<dd><p>Interface every backend implements.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.backends.DecisionBackend.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Decision.backends.DecisionBackend.close" title="Link to this definition"></a></dt>
+<dd><p>Release any resources (HTTP sessions, loaded models).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.backends.JevBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.backends.</span></span><span class="sig-name descname"><span class="pre">JevBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.backends.JevBackend" title="Link to this definition"></a></dt>
+<dd><p>TypeSafe AI’s hosted Jev model, via <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/v1/systemone</span></code>.</p>
+<p>Works with any service exposing the same endpoint, which is why
+<code class="docutils literal notranslate"><span class="pre">base_url</span></code> is configurable (a self-hosted gateway, a proxy that adds
+logging, a mock server in CI).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RPA.Decision.backends.JevBackend.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#RPA.Decision.backends.JevBackend.close" title="Link to this definition"></a></dt>
+<dd><p>Release any resources (HTTP sessions, loaded models).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.backends.LayaBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.backends.</span></span><span class="sig-name descname"><span class="pre">LayaBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">router_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.backends.LayaBackend" title="Link to this definition"></a></dt>
+<dd><p>Laya, the open-weight decision model, running locally.</p>
+<p>Requires the <code class="docutils literal notranslate"><span class="pre">laya</span></code> extra (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework-decision[laya]</span></code>).
+The model is loaded lazily on first use, and kept in memory for the
+lifetime of the library (which is GLOBAL scope by default).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RPA.Decision.backends.ReplayBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RPA.Decision.backends.</span></span><span class="sig-name descname"><span class="pre">ReplayBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Decision.backends.ReplayBackend" title="Link to this definition"></a></dt>
+<dd><p>Replay answers from a recorded audit log (JSON Lines) for dry runs.</p>
+<p>Each line is an <code class="xref py py-class docutils literal notranslate"><span class="pre">AuditRecord</span></code>; answers are
+matched by question text + options, in order of appearance.</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+	<div id="cookieConsentContainer">
+  <div class="cookieDesc">
+    <p>
+      This website uses cookies to enhance the user experience.
+      By using the website you accept the use of cookies.
+      You can check our <a href="https://robocorp.com/privacy-policy">Privacy Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookieButton">
+    <a onClick="cookieDismiss();">
+      I understand
+    </a>
+  </div>
+</div>
+	<div id="robocorpBanner">
+  <div id="bannerContent">
+    <div id="bannerDismiss">
+      <a onClick="bannerDismiss();">
+        <img src="/_static/icon_cross.svg"/>
+      </a>
+    </div>
+    <a href="https://robocorp.com">
+      <img id="bannerLogo" src="https://cdn.robocorp.com/brand/Logo/Negative logo transparent/Negative logo transparent.svg"/>
+    </a>
+    <span id="bannerText">
+      The automation stack for RPA Framework.
+    </span>
+    <a id="bannerButton" href="https://robocorp.com/get-started">
+      Get started <img src="/_static/icon_arrow.svg"/>
+    </a>
+  </div>
+</div>
+
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Decision" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../desktop/index.html" class="btn btn-neutral float-right" title="Desktop" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Sema4.ai.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
