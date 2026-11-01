@@ -16,8 +16,8 @@ dependencies = [
 	"rpaframework-google>=11.0.0",
 	"rpaframework-hubspot>=3.0.0",
 	"rpaframework-openai>=4.0.0",
-	"rpaframework-recognition>=7.0.0",
-	"rpaframework-windows>=10.0.0",
+	"rpaframework-recognition>=9.0.0",
+	"rpaframework-windows>=12.0.0",
 	"robotframework>=5.0.1"
 ]
 
