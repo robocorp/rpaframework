@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-sema4ai"
-version = "1.1.1"
+version = "2.0.0"
 description = "Sema4ai library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}

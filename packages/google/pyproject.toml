@@ -1,6 +1,6 @@
 [project]
 name = "rpaframework-google"
-version = "12.0.1"
+version = "13.0.0"
 description = "Google library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
@@ -22,7 +22,7 @@ classifiers = [
 ]
 
 dependencies = [
-	"rpaframework-core >=13.0.0",
+	"rpaframework-core>=14.0.0",
 	"robotframework >=4.0.0, !=4.0.1, !=6.1.0, <8.0.0",
 	"google-api-python-client >=2.58.0",
 	"google-auth-httplib2 >=0.1.0",
