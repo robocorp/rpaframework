@@ -12,10 +12,22 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+No changes planned yet for the next release.
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+1 Nov 2026
+----------
+
+- **Breaking:** All packages now require **Python 3.11 or newer**. Python 3.10 reached
+  end of life in October 2026, and the security fixes below for ``pillow`` and ``dnspython``
+  are only available in releases that require Python 3.11. Every package released in this
+  batch gets a major version bump for that reason.
 - ``RPA.Robocorp.Process``: ``List Process Work Items`` now retrieves all result
   pages, so items beyond the first page are returned and included when filtering
   by state (fixes :issue:`1095`).
-- New package ``rpaframework-decision`` **1.0.0** with library **RPA.Decision**: typed,
+- New package ``rpaframework-decision`` with library **RPA.Decision**: typed,
   calibrated decisions from *decision models* (System One models) such as TypeSafe's
   Jev and the open-weight Laya. Keywords ``Decide``, ``Decide Or Escalate``, ``Check``,
   ``Score``, ``Rank Options``, ``Ask Questions``, ``Classify Items`` and
@@ -23,10 +35,6 @@ Latest versions
   audit log of every decision (``Get`` / ``Save`` / ``Clear Decision Audit Log``).
   Backends: ``jev`` (hosted), ``laya`` (local, via the ``laya`` extra), ``replay``
   (recorded log, for dry runs) and any Python callable.
-- **Breaking:** All packages now require **Python 3.11 or newer**. Python 3.10 reached
-  end of life in October 2026, and the security fixes below for ``pillow`` and ``dnspython``
-  are only available in releases that require Python 3.11. Every package released in this
-  batch gets a major version bump for that reason.
 - **Security:** Bump ``pillow`` ≥13.0.0 (42 advisories, 5 of them CRITICAL: heap buffer
   overflows in JPEG, FlashPix and TIFF decoding, stale native storage reuse in multi-frame
   loaders, and argument injection in the Ghostscript call; the rest are HIGH/MEDIUM memory
@@ -64,9 +72,25 @@ Latest versions
   locator and makes the reached ancestor the active window, either a given number of
   ``levels`` up or the first ancestor of a given ``control_type`` such as
   ``WindowControl`` or ``PaneControl`` (fixes :issue:`1362`).
+- ``rpaframework-pdf``, ``rpaframework-windows``, ``rpaframework-recognition``,
+  ``rpaframework-assistant``, ``rpaframework-aws``, ``rpaframework-google``,
+  ``rpaframework-hubspot`` and ``rpaframework``: Require ``rpaframework-core`` ≥14.0.0, so
+  that upgrading any of them also brings in the patched ``pillow``. ``rpaframework`` also
+  requires ``rpaframework-pdf`` ≥12.0.0 and ``rpaframework-windows`` ≥12.0.0.
 
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- ``rpaframework-core`` **14.0.0**
+- ``rpaframework-pdf`` **12.0.0**
+- ``rpaframework-recognition`` **9.0.0**
+- ``rpaframework-windows`` **12.0.0**
+- ``rpaframework-decision`` **1.0.0**
+- ``rpaframework-assistant`` **7.0.0**
+- ``rpaframework-aws`` **9.0.0**
+- ``rpaframework-google`` **13.0.0**
+- ``rpaframework-hubspot`` **5.0.0**
+- ``rpaframework-openai`` **6.0.0**
+- ``rpaframework-sema4ai`` **2.0.0**
+- ``rpaframework`` **34.0.0**
 
 4 Oct 2026
 ----------
