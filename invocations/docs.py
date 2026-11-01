@@ -131,7 +131,7 @@ def build_python_markdown(ctx):
     docs_target = Path(safely_load_config(ctx, "ctx.docs.target", DOCS_ROOT / "build" / "markdown"))
 
     # shell.sphinx(ctx, f"-M clean {docs_source} {docs_target}")
-    shell.sphinx(ctx, f"-b markdown -D libdoc_markdown=True {docs_source} {docs_target}")
+    shell.sphinx(ctx, f"-b markdown -D libdoc_markdown=1 {docs_source} {docs_target}")
 
     # Build index of folder name to module name
     module_index: dict[str, str] = {}
