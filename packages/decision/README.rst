@@ -82,20 +82,20 @@ Python
 Keywords
 --------
 
-==========================  =====================================================
-``Decide``                  Pick one option; returns choice, confidence, probabilities
-``Decide Or Escalate``      Same, but fails with ``LowConfidenceError`` below threshold
-``Check``                   Yes/no with a calibrated probability
-``Score``                   Position on an ordered rubric (2 - 10 levels)
-``Rank Options``            All options ordered by probability
-``Ask Questions``           Several questions about one state in a single call
-``Classify Items``          ``Decide`` over a list of states
-``Require Confidence``      Fail unless a result meets a threshold
-``Authorize To Jev``        Use TypeSafe's hosted model
-``Use Laya``                Use the open-weight model locally
-``Set Decision Backend``    Any backend, incl. ``replay`` and Python callables
+=====================================  ===========================================================
+``Decide``                             Pick one option; returns choice, confidence, probabilities
+``Decide Or Escalate``                 Same, but fails with ``LowConfidenceError`` below threshold
+``Check``                              Yes/no with a calibrated probability
+``Score``                              Position on an ordered rubric (2 - 10 levels)
+``Rank Options``                       All options ordered by probability
+``Ask Questions``                      Several questions about one state in a single call
+``Classify Items``                     ``Decide`` over a list of states
+``Require Confidence``                 Fail unless a result meets a threshold
+``Authorize To Jev``                   Use TypeSafe's hosted model
+``Use Laya``                           Use the open-weight model locally
+``Set Decision Backend``               Any backend, incl. ``replay`` and Python callables
 ``Get/Save/Clear Decision Audit Log``  Inspect or persist what was decided and why
-==========================  =====================================================
+=====================================  ===========================================================
 
 What a decision model is not good at
 ------------------------------------

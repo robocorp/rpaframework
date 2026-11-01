@@ -517,7 +517,7 @@ All the following steps should be done within master branch.
    versioning, run ``uv lock`` in the package (and at the repository root when the root lock
    file is affected), and move the changes in **docs/source/releasenotes.rst** from
    *Upcoming release* into a dated block under *Released* that ends with the list of released
-   versions (``- ``rpaframework-core`` **14.0.0**``)
+   versions, one bullet per package in the form ``rpaframework-core`` **14.0.0**
 #. merge the pull request once the GitHub Actions on it are green
 #. ``git checkout master && git pull``, then in the package directory run
    ``python ../../tools/tag.py``. It creates and pushes the tag ``<package>-<version>``
