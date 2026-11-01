@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-RPA Framework is a collection of open-source Python libraries for Robotic Process Automation (RPA), designed for both Robot Framework and Python. This is a **monorepo** containing 12 interdependent packages managed by `uv` (with legacy Poetry support).
+RPA Framework is a collection of open-source Python libraries for Robotic Process Automation (RPA), designed for both Robot Framework and Python. This is a **monorepo** containing 13 interdependent packages managed by `uv` (with legacy Poetry support).
 
 **Documentation:** https://rpaframework.org/
 
@@ -22,6 +22,7 @@ packages/
 ├── google/     # Google APIs integration
 ├── hubspot/    # HubSpot CRM integration
 ├── openai/     # OpenAI API integration
+├── decision/   # Decision-model (Jev, Laya) integration
 ├── sema4ai/    # Sema4 AI platform integration
 └── devutils/   # Shared development utilities
 ```

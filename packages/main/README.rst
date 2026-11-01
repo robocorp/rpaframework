@@ -91,6 +91,10 @@ Packages
    :target: https://pypi.python.org/pypi/rpaframework-openai
    :alt: rpaframework-openai latest version
 
+.. image:: https://img.shields.io/pypi/v/rpaframework-decision.svg?label=rpaframework-decision&style=for-the-badge&color=blue
+   :target: https://pypi.python.org/pypi/rpaframework-decision
+   :alt: rpaframework-decision latest version
+
 .. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-pdf
    :alt: rpaframework-pdf latest version
@@ -179,6 +183,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services              | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `Decision`_                | Decision model (Jev, Laya) for typed decisions        | decision               |
 | `OpenAI`_                  | Artificial Intelligence service                       | openai                 |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Outlook.Application`_     | Control the Outlook desktop application               | x                      |
@@ -242,6 +247,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _MFA: https://rpaframework.org/libraries/mfa/
 .. _MSGraph: https://rpaframework.org/libraries/msgraph/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
+.. _Decision: https://rpaframework.org/libraries/decision/
 .. _OpenAI: https://rpaframework.org/libraries/openai/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
