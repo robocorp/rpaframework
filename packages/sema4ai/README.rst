@@ -16,7 +16,7 @@ Installation
 Requirements
 ------------
 
-- Python 3.10 or higher
+- Python 3.11 or higher
 - A Sema4.ai account with API access
 - Agent API key and endpoint URL
 

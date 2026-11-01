@@ -5,7 +5,7 @@ description = "Core utilities used by RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 keywords = ["robotframework", "rpa", "automation"]
 classifiers = [
@@ -17,7 +17,6 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
 ]
@@ -28,7 +27,7 @@ dependencies = [
 	"psutil >=5.9.0; platform_system == 'Windows'",
 	"pywin32 >=300, <400; platform_system == 'Windows' and python_version != '3.8.1'",
 	"uiautomation >=2.0.15; platform_system == 'Windows'",
-	"pillow >=12.3.0",
+	"pillow >=13.0.0",
 	"packaging >=24.0",
 	"httpx>=0.28.1",
 ]
@@ -42,7 +41,7 @@ repository = "https://github.com/robocorp/rpaframework"
 dev = [
 	"pytest>=9.0.3",
 	"pytest-cov>=4.0.0",
-	"pylint>=3.3.2",
+	"pylint>=4.0.9",
 ]
 
 [tool.uv]

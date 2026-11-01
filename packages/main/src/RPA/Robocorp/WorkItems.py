@@ -932,12 +932,11 @@ class WorkItems:
         ("YAML", yaml.full_load),
     ]
 
-    def __init__(
+    def __init__(  # pylint: disable=dangerous-default-value
         self,
         autoload: bool = True,
         root: Optional[str] = None,
         default_adapter: Union[Type[BaseAdapter], str] = RobocorpAdapter,
-        # pylint: disable=dangerous-default-value
         auto_parse_email: AUTO_PARSE_EMAIL_TYPE = AUTO_PARSE_EMAIL_DEFAULT,
     ):
         self.ROBOT_LIBRARY_LISTENER = self
@@ -1100,8 +1099,7 @@ class WorkItems:
 
         try:
             self.get_input_work_item(_internal_call=True)
-        # pylint: disable=broad-except
-        except Exception as exc:
+        except Exception as exc:  # pylint: disable=broad-exception-caught
             logging.warning("Failed to load input work item: %s", exc)
         finally:
             self.autoload = False

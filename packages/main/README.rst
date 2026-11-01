@@ -278,7 +278,7 @@ Minimum required `conda.yaml` to install Playwright:
     channels:
       - conda-forge
     dependencies:
-      - python=3.10.14
+      - python=3.11.13
       - nodejs=22.9.0
       - pip=24.0
       - pip:
@@ -299,7 +299,7 @@ Default installation method with Robocorp `Developer Tools`_ using `conda.yaml`:
    channels:
      - conda-forge
    dependencies:
-     - python=3.10.14
+     - python=3.11.13
      - pip=24.0
      - pip:
        - rpaframework==31.1.2
@@ -311,7 +311,7 @@ To install all extra packages (including Playwright dependencies), you can use:
    channels:
      - conda-forge
    dependencies:
-     - python=3.10.14
+     - python=3.11.13
      - tesseract=5.4.1
      - nodejs=22.9.0
      - pip=24.0
@@ -332,7 +332,7 @@ Separate installation of AWS, PDF and Windows libraries without the main
    channels:
      - conda-forge
    dependencies:
-     - python=3.10.14
+     - python=3.11.13
      - pip=24.0
      - pip:
        - rpaframework-aws==5.3.3  # included in the rpaframework as an extra
@@ -436,10 +436,9 @@ to see where to get started.
 Development
 -----------
 
-Repository development is `Python`_ based and requires Python **3.9.2 or higher**
-(tested up to 3.13) installed on the development machine. Python 3.10.14 is the
-default version used in the Robocorp Robot template and is a solid choice. Versions
-3.7.6 and 3.8.1 are known to have issues with some dependencies and are not supported.
+Repository development is `Python`_ based and requires Python **3.11 or higher**
+(tested up to 3.14) installed on the development machine. Python 3.10 and older are
+not supported since the November 2026 releases (3.10 reached end of life in October 2026).
 
 Repository development tooling is based on `uv`_ and `invoke`_. ``uv`` is used for
 dependency management, building and running the package. Invoke is used for

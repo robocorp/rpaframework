@@ -5,7 +5,7 @@ description = "OCR capabilities used by RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 keywords = ["robotframework", "rpa", "automation", "recognition", "cv", "ocr"]
 classifiers = [
@@ -17,7 +17,6 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
 	"Programming Language :: Python :: 3.13",
@@ -25,7 +24,7 @@ classifiers = [
 
 dependencies = [
 	"rpaframework-core >=13.0.0",
-	"pillow >=12.3.0",
+	"pillow >=13.0.0",
 	"opencv-python-headless >=4.8.1, <4.11.0",
 	"numpy >=1.19.3",
 	"pytesseract >=0.3.6, <0.4.0",

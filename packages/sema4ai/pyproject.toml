@@ -5,7 +5,7 @@ description = "Sema4ai library for RPA Framework"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
 keywords = ["robotframework", "rpa", "automation", "sema4ai"]
 classifiers = [
@@ -17,7 +17,6 @@ classifiers = [
 	"Topic :: Software Development :: Libraries",
 	"Framework :: Robot Framework :: Library",
 	"Framework :: Robot Framework",
-	"Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
 	"Programming Language :: Python :: 3.12",
 	"Programming Language :: Python :: 3.13",
@@ -27,7 +26,7 @@ dependencies = [
 	"sema4ai-actions>=1.6.4",
 	"robocorp>=3.0.0",
 	"pydantic>=2.12.4",
-	"setuptools>=83.0.0",
+	"setuptools>=84.1.0",
 	"wheel>=0.40.0"
 ]
 
