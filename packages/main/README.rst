@@ -513,15 +513,19 @@ First steps to start developing:
 Packaging and publishing are done after changes have been merged into master branch.
 All the following steps should be done within master branch.
 
-#. git pull latest changes into master branch
-#. in the package directory containing changes execute ``invoke lint`` and ``invoke test``
-#. update **pyproject.toml** with new version according to semantic versioning
-#. update **docs/source/releasenotes.rst** with changes
-#. in the repository root (so called "meta" package level) run command ``uv sync``
-#. git commit changed **uv.lock** files (on meta and target package level), **releasenotes.rst**
-   and **pyproject.toml** with message "PACKAGE. version x.y.z"
-#. git push
-#. ``invoke publish`` after Github action on master branch is all green
+#. in a pull request: update **pyproject.toml** with the new version according to semantic
+   versioning, run ``uv lock`` in the package (and at the repository root when the root lock
+   file is affected), and move the changes in **docs/source/releasenotes.rst** from
+   *Upcoming release* into a dated block under *Released* that ends with the list of released
+   versions (``- ``rpaframework-core`` **14.0.0**``)
+#. merge the pull request once the GitHub Actions on it are green
+#. ``git checkout master && git pull``, then in the package directory run
+   ``python ../../tools/tag.py``. It creates and pushes the tag ``<package>-<version>``
+#. the ``release`` workflow builds the package from the tagged commit, publishes it to PyPI
+   (trusted publishing from the ``pypi`` environment) and creates the GitHub release from the
+   dated release-notes block that contains the version
+#. when a package depends on another package of this repository with a raised version floor,
+   release the dependency first: the dependent can only be relocked once the dependency is on PyPI
 
 Some recommended tools for development
 
