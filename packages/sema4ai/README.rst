@@ -1,6 +1,18 @@
 rpaframework-sema4ai
 ====================
 
+.. warning::
+
+   **This package is deprecated.** ``rpaframework-sema4ai`` is no longer maintained and
+   **2.1.0 is its final release**. It will receive no further updates, including security
+   fixes, and the source has been removed from the `robocorp/rpaframework`_ repository.
+   Importing ``RPA.Sema4AI`` emits a ``DeprecationWarning``. If you still depend on it, pin
+   ``rpaframework-sema4ai==2.1.0`` and plan to call the Sema4.ai Agent API directly.
+
+   The soon to be released v3 Sema4.ai platform will be getting its own official Python package.
+
+.. _robocorp/rpaframework: https://github.com/robocorp/rpaframework
+
 This library enables Sema4.ai Agent API integration for `RPA Framework`_
 libraries, allowing you to communicate with AI agents in your automation workflows.
 

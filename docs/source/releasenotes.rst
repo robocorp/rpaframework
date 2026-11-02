@@ -27,6 +27,11 @@ No changes planned yet for the next release.
 - ``rpaframework``: the source distribution (``.tar.gz``) on PyPI is complete again. Since
   33.0.0 it contained only the metadata files, so a source install produced a package without
   any ``RPA`` modules; the wheel was not affected.
+- ``rpaframework-sema4ai`` **2.1.0**, **final release, package deprecated**: the library is
+  no longer maintained and is removed from this repository after this release. Importing
+  ``RPA.Sema4AI`` now emits a ``DeprecationWarning`` and the constructor logs a warning; the
+  PyPI classifier is ``Development Status :: 7 - Inactive``. Pin ``rpaframework-sema4ai==2.1.0``
+  if you still depend on it.
 
 1 Nov 2026
 ----------

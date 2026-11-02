@@ -1,7 +1,7 @@
 [project]
 name = "rpaframework-sema4ai"
-version = "2.0.0"
-description = "Sema4ai library for RPA Framework"
+version = "2.1.0"
+description = "Sema4ai library for RPA Framework (deprecated, final release)"
 authors = [{name = "RPA Framework", email = "rpafw@robocorp.com"}]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
@@ -10,7 +10,7 @@ requires-python = ">=3.11"
 keywords = ["robotframework", "rpa", "automation", "sema4ai"]
 classifiers = [
 	"License :: OSI Approved :: Apache Software License",
-	"Development Status :: 3 - Alpha",
+	"Development Status :: 7 - Inactive",
 	"Operating System :: OS Independent",
 	"Intended Audience :: Developers",
 	"Topic :: Software Development :: Libraries :: Python Modules",
