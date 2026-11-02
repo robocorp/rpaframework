@@ -9,6 +9,8 @@ rpaframework-sema4ai
    Importing ``RPA.Sema4AI`` emits a ``DeprecationWarning``. If you still depend on it, pin
    ``rpaframework-sema4ai==2.1.0`` and plan to call the Sema4.ai Agent API directly.
 
+   The soon to be released v3 Sema4.ai platform will be getting its own official Python package.
+
 .. _robocorp/rpaframework: https://github.com/robocorp/rpaframework
 
 This library enables Sema4.ai Agent API integration for `RPA Framework`_
