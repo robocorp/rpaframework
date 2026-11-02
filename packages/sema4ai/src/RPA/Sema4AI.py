@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import logging
 import time
+import warnings
 from functools import partial
 from typing import Optional
 from robocorp import log
@@ -19,6 +20,16 @@ from RPA._support import (
     timed_method,
 )
 
+DEPRECATION_MESSAGE = (
+    "rpaframework-sema4ai is deprecated and no longer maintained. Version 2.1.0 "
+    "is its final release: it will receive no further updates, including security "
+    "fixes, and the package is being removed from the robocorp/rpaframework "
+    "repository. Pin rpaframework-sema4ai==2.1.0 if you still depend on it and "
+    "plan to call the Sema4.ai Agent API directly."
+)
+
+warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning, stacklevel=2)
+
 # Export public classes for easier imports
 __all__ = [
     "Sema4AI",
@@ -33,6 +44,11 @@ __all__ = [
 
 class Sema4AI:
     """Sema4ai Agent API client.
+
+    .. warning::
+        **Deprecated.** ``rpaframework-sema4ai`` is no longer maintained and 2.1.0 is
+        its final release. Importing the library emits a ``DeprecationWarning`` and
+        the constructor logs a warning. Pin the version if you still depend on it.
 
     This library provides keywords for interacting with Sema4.ai Agent API,
     allowing you to send messages to agents, retrieve conversations, and
@@ -76,6 +92,7 @@ class Sema4AI:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
+        self.logger.warning(DEPRECATION_MESSAGE)
         self._client_cache: dict = {}
 
     def _get_client(
