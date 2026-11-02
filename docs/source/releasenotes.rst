@@ -17,6 +17,17 @@ No changes planned yet for the next release.
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+2 Nov 2026
+----------
+
+- ``rpaframework`` **34.0.1**: ``RPA.Twitter`` could not be imported on Python 3.13 and newer
+  when the package was installed with ``uv`` (``ModuleNotFoundError: No module named 'imghdr'``).
+  ``uv`` resolved ``tweepy`` 4.5.0, which imports the ``imghdr`` module removed in Python 3.13.
+  The ``tweepy`` floor is now ``>=4.14.0`` (fixes :issue:`1375`).
+- ``rpaframework``: the source distribution (``.tar.gz``) on PyPI is complete again. Since
+  33.0.0 it contained only the metadata files, so a source install produced a package without
+  any ``RPA`` modules; the wheel was not affected.
+
 1 Nov 2026
 ----------
 

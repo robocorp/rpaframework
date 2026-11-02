@@ -3262,7 +3262,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "34.0.0"
+version = "34.0.1"
 source = { editable = "packages/main" }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -3372,7 +3372,7 @@ requires-dist = [
     { name = "simple-salesforce", specifier = ">=1.0.0" },
     { name = "smartsheet-python-sdk", specifier = "==3.0.2" },
     { name = "tenacity", specifier = ">=8.0.1" },
-    { name = "tweepy", specifier = ">=3.8.0" },
+    { name = "tweepy", specifier = ">=4.14.0" },
     { name = "tzlocal", specifier = ">=4.2" },
     { name = "validators", specifier = ">=0.34.0" },
     { name = "wrapt", specifier = ">=1.14.0" },
