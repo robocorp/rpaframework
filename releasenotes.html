@@ -212,6 +212,11 @@ The <code class="docutils literal notranslate"><span class="pre">tweepy</span></
 <li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>: the source distribution (<code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code>) on PyPI is complete again. Since
 33.0.0 it contained only the metadata files, so a source install produced a package without
 any <code class="docutils literal notranslate"><span class="pre">RPA</span></code> modules; the wheel was not affected.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-sema4ai</span></code> <strong>2.1.0</strong>, <strong>final release, package deprecated</strong>: the library is
+no longer maintained and is removed from this repository after this release. Importing
+<code class="docutils literal notranslate"><span class="pre">RPA.Sema4AI</span></code> now emits a <code class="docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> and the constructor logs a warning; the
+PyPI classifier is <code class="docutils literal notranslate"><span class="pre">Development</span> <span class="pre">Status</span> <span class="pre">::</span> <span class="pre">7</span> <span class="pre">-</span> <span class="pre">Inactive</span></code>. Pin <code class="docutils literal notranslate"><span class="pre">rpaframework-sema4ai==2.1.0</span></code>
+if you still depend on it.</p></li>
 </ul>
 </section>
 <section id="id5">
