@@ -5,6 +5,9 @@ Standard library only, so it runs with any Python on Windows::
     python dpi_info.py              # system DPI, monitors, this process' awareness
     python dpi_info.py Calculator   # plus the DPI awareness of windows whose title contains "Calculator"
 
+Run it from a console on the desktop you automate, not from an SSH session:
+a remote shell lives in a separate session with its own virtual display.
+
 An application that is *unaware* or *system-aware* on a display scaled above
 100 % is bitmap-stretched by Windows, so the rectangle it reports through UI
 Automation can differ from the pixels drawn on screen; that is where offsets
@@ -20,7 +23,21 @@ from ctypes import wintypes
 user32 = ctypes.windll.user32
 shcore = ctypes.windll.shcore
 
-AWARENESS = {0: "unaware", 1: "system aware", 2: "per-monitor aware"}
+# DPI_AWARENESS_CONTEXT values are pointer-sized pseudo handles, so every call
+# that takes or returns one needs explicit argtypes; a bare Python int would be
+# passed as a 32-bit value and the call would silently fail.
+user32.SetProcessDpiAwarenessContext.argtypes = [ctypes.c_void_p]
+user32.SetProcessDpiAwarenessContext.restype = ctypes.c_bool
+user32.AreDpiAwarenessContextsEqual.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+user32.AreDpiAwarenessContextsEqual.restype = ctypes.c_bool
+user32.GetWindowDpiAwarenessContext.argtypes = [wintypes.HWND]
+user32.GetWindowDpiAwarenessContext.restype = ctypes.c_void_p
+user32.GetThreadDpiAwarenessContext.restype = ctypes.c_void_p
+user32.GetDpiForWindow.argtypes = [wintypes.HWND]
+user32.GetDpiForWindow.restype = wintypes.UINT
+user32.GetDpiForSystem.restype = wintypes.UINT
+user32.GetWindowRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
+
 CONTEXTS = {
     -1: "unaware",
     -2: "system aware",
@@ -31,13 +48,14 @@ CONTEXTS = {
 MDT_EFFECTIVE_DPI = 0
 
 
-def context_name(ctx: int) -> str:
+def context_name(ctx: int | None) -> str:
     """Translate a DPI_AWARENESS_CONTEXT handle into words."""
-    value = ctypes.c_long(ctx).value
+    if not ctx:
+        return "unknown (no context)"
     for known, name in CONTEXTS.items():
-        if user32.AreDpiAwarenessContextsEqual(ctx, known):
+        if user32.AreDpiAwarenessContextsEqual(ctx, ctypes.c_void_p(known).value):
             return name
-    return f"unknown ({value})"
+    return f"unknown ({ctx:#x})"
 
 
 def monitors() -> list[tuple[wintypes.RECT, int]]:
@@ -76,16 +94,15 @@ def windows_titled(fragment: str) -> list[tuple[int, str]]:
 
 def main(argv: list[str]) -> int:
     # Make this process per-monitor aware so the numbers below are real pixels.
-    user32.SetProcessDpiAwarenessContext(-4)
-    print(f"system DPI: {user32.GetDpiForSystem()} ({user32.GetDpiForSystem() * 100 // 96} %)")
+    user32.SetProcessDpiAwarenessContext(ctypes.c_void_p(-4).value)
+    system_dpi = user32.GetDpiForSystem()
+    print(f"system DPI: {system_dpi} ({system_dpi * 100 // 96} %)")
     for i, (rect, dpi) in enumerate(monitors(), start=1):
         print(
             f"monitor {i}: ({rect.left},{rect.top})-({rect.right},{rect.bottom}) "
             f"{rect.right - rect.left}x{rect.bottom - rect.top} px, DPI {dpi} ({dpi * 100 // 96} %)"
         )
-    awareness = ctypes.c_int()
-    shcore.GetProcessDpiAwareness(0, ctypes.byref(awareness))
-    print(f"this process: {AWARENESS.get(awareness.value, awareness.value)}")
+    print(f"this process: {context_name(user32.GetThreadDpiAwarenessContext())}")
 
     for fragment in argv[1:]:
         hits = windows_titled(fragment)
