@@ -12,7 +12,11 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-No changes planned yet for the next release.
+- ``rpaframework-windows``: the ``Click``, ``Double Click``, ``Right Click`` and ``Middle Click``
+  keyword docs now explain the ``offset:x,y`` locator strategy (pixels from the element center,
+  may point outside the element, kept by elements from ``Get Element``) with Robot Framework and
+  Python examples, and ``Middle Click`` no longer calls itself a right click. The offset behaviour
+  was verified on Windows 11 with the probes in ``packages/windows/tests/manual/`` (:issue:`1379`).
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
