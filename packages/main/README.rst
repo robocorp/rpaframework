@@ -143,6 +143,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Database`_                | Interact with databases                               | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `Decision`_                | Decision model (Jev, Laya) for typed decisions        | decision               |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Desktop`_                 | Cross-platform desktop automation                     | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Desktop.Clipboard`_       | Interact with the system clipboard                    | x                      |
@@ -181,9 +183,10 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `MSGraph`_                 | Access Microsoft 365 via the Microsoft Graph API      | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `Netsuite`_                | Access NetSuite via the SuiteTalk SOAP web service    | x                      |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Notifier`_                | Notify messages using different services              | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
-| `Decision`_                | Decision model (Jev, Laya) for typed decisions        | decision               |
 | `OpenAI`_                  | Artificial Intelligence service                       | openai                 |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Outlook.Application`_     | Control the Outlook desktop application               | x                      |
@@ -227,6 +230,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Cloud.Google: https://rpaframework.org/libraries/cloud_google/
 .. _Crypto: https://rpaframework.org/libraries/crypto/
 .. _Database: https://rpaframework.org/libraries/database/
+.. _Decision: https://rpaframework.org/libraries/decision/
 .. _Desktop: https://rpaframework.org/libraries/desktop/
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
 .. _Desktop.OperatingSystem: https://rpaframework.org/libraries/desktop_operatingsystem/
@@ -246,8 +250,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _JSON: https://rpaframework.org/libraries/json/
 .. _MFA: https://rpaframework.org/libraries/mfa/
 .. _MSGraph: https://rpaframework.org/libraries/msgraph/
+.. _Netsuite: https://rpaframework.org/libraries/netsuite/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
-.. _Decision: https://rpaframework.org/libraries/decision/
 .. _OpenAI: https://rpaframework.org/libraries/openai/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
