@@ -4,9 +4,11 @@ of the code base.
 
 import os
 import platform
+import re
 from pathlib import Path
+from typing import List
 
-from invoke import Collection, task
+from invoke import Collection, Exit, task
 
 from invocations import config, docs, shell
 from invocations.util import (
@@ -33,12 +35,61 @@ ROBOT_TEST_OUTPUT = Path("tests/results")
 ROBOT_TEST_RESOURCES = Path("tests/resources")
 
 MAIN_README = MAIN_PACKAGE / "README.rst"
+# A library row in the README grid table: first cell is a `Name`_ link.
+_LIBRARY_ROW = re.compile(r"^\|\s*`([^`]+)`_\s*\|")
+_LINK_TARGET = re.compile(r"^\.\. _([^:]+):", re.MULTILINE)
 
 EXCLUDE_ROBOT_TESTS = ["skip", "manual"]
 if platform.system() == "Windows":
     EXCLUDE_ROBOT_TESTS.append("posix")
 else:
     EXCLUDE_ROBOT_TESTS.append("windows")
+
+
+def check_library_table(readme: Path = MAIN_README) -> List[str]:
+    """Check the library grid table in the README for rows that would
+    silently merge or link nowhere.
+
+    In a reStructuredText grid table a row only ends at a ``+---+``
+    separator line, so a library row that is not followed by one is parsed
+    as a second line of the previous cell: the document still renders, but
+    the two libraries appear as one merged row (see PR #1381). Every row
+    must also have a ``.. _Name:`` link target.
+
+    Returns a list of problem descriptions; empty when the table is fine.
+    """
+    text = readme.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    targets = set(_LINK_TARGET.findall(text))
+    problems = []
+    for index, line in enumerate(lines, start=1):
+        match = _LIBRARY_ROW.match(line)
+        if not match:
+            continue
+        name = match.group(1)
+        following = lines[index] if index < len(lines) else ""
+        if not following.startswith("+"):
+            problems.append(
+                f"{readme}:{index}: row `{name}`_ is not followed by a separator"
+                " line, it would merge with the next row"
+            )
+        if name not in targets:
+            problems.append(
+                f"{readme}:{index}: row `{name}`_ has no `.. _{name}:` link target"
+            )
+    return problems
+
+
+def _lint_readme(exit_on_failure: bool) -> None:
+    """Run ``check_library_table`` and report like the other linters."""
+    problems = check_library_table()
+    if not problems:
+        print(f"README library table OK ({MAIN_README})")
+        return
+    message = "README library table problems:\n  " + "\n  ".join(problems)
+    if exit_on_failure:
+        raise Exit(message, code=1)
+    print(message)
 
 
 @task(
@@ -85,6 +136,7 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
             f"-b dummy -a -n --keep-going {docs.DOCS_SOURCE_DIR} {docs.DOCS_BUILD_DIR}",
             warn=warn_setting,
         )
+        _lint_readme(exit_on_failure)
         # shell.poetry(
         #     ctx,
         #     f"run flake8 --config {flake8_config} {docs.DOCS_SOURCE_DIR}",
@@ -104,6 +156,8 @@ def lint(ctx, docstrings=False, all=False, exit_on_failure=False):
             f"run pylint --rcfile {pylint_config}{pylint_jobs} src",
             warn=warn_setting,
         )
+        if current_package_name == "rpaframework":
+            _lint_readme(exit_on_failure)
 
 
 @task(config.install, aliases=["pretty"])
