@@ -56,6 +56,11 @@ def rect_of(element) -> tuple[int, int, int, int, int, int]:
     return rect.left, rect.top, rect.right, rect.bottom, rect.xcenter(), rect.ycenter()
 
 
+def clear(lib: Windows) -> None:
+    """Reset the display; Escape works whether the button reads C or CE."""
+    lib.send_keys(keys="{Esc}")
+
+
 def display(lib: Windows) -> str:
     return lib.get_attribute(RESULTS, "Name").replace("Display is ", "").strip()
 
@@ -72,7 +77,7 @@ def main() -> int:
     try:
         # 1. Geometry: cursor position after click == centre + offset.
         for dx, dy in OFFSETS:
-            lib.click("id:clearButton")
+            clear(lib)
             elem = lib.get_element(f"id:num5Button offset:{dx},{dy}")
             left, top, right, bottom, cx, cy = rect_of(elem)
             lib.click(elem)
@@ -90,16 +95,16 @@ def main() -> int:
         dy = six.item.BoundingRectangle.ycenter() - five.item.BoundingRectangle.ycenter()
         print(f"distance from '5' centre to '6' centre: {dx},{dy}")
 
-        lib.click("id:clearButton")
+        clear(lib)
         lib.click(f"id:num5Button offset:{dx},{dy}")
         checks.append(Check("string locator with offset presses '6'", "6", display(lib)))
 
-        lib.click("id:clearButton")
+        clear(lib)
         elem = lib.get_element(f"id:num5Button offset:{dx},{dy}")
         lib.click(elem)
         checks.append(Check("Get Element + Click keeps offset, presses '6'", "6", display(lib)))
 
-        lib.click("id:clearButton")
+        clear(lib)
         lib.click("id:num5Button")
         checks.append(Check("no offset presses '5'", "5", display(lib)))
     finally:

@@ -16,12 +16,12 @@ Offset Spanning To The Next Button Presses It
     ${dy} =    Evaluate    $six.item.BoundingRectangle.ycenter() - $five.item.BoundingRectangle.ycenter()
     Log To Console    distance from '5' to '6' centre: ${dx},${dy}
 
-    Click    id:clearButton
+    Send Keys    keys={Esc}    # clear; the button id changes between C and CE
     Click    id:num5Button offset:${dx},${dy}
     ${shown} =    Get Attribute    id:CalculatorResults    Name
     Should Be Equal    ${shown}    Display is 6
 
-    Click    id:clearButton
+    Send Keys    keys={Esc}    # clear; the button id changes between C and CE
     ${elem} =    Get Element    id:num5Button offset:${dx},${dy}
     Click    ${elem}
     ${shown} =    Get Attribute    id:CalculatorResults    Name
@@ -29,7 +29,7 @@ Offset Spanning To The Next Button Presses It
 
 Offset Forty Right Lands Forty Right Of Centre
     Control Window    name:Calculator
-    Click    id:clearButton
+    Send Keys    keys={Esc}    # clear; the button id changes between C and CE
     ${elem} =    Get Element    id:num5Button offset:40,0
     ${cx} =    Evaluate    $elem.item.BoundingRectangle.xcenter()
     ${cy} =    Evaluate    $elem.item.BoundingRectangle.ycenter()
