@@ -27,6 +27,10 @@ from RPA.RobotLogListener import RobotLogListener
 PathType = Union[Path, str]
 
 DEBUG_ON = bool(os.getenv("RPA_DEBUG_API"))
+# A pooled connection that sat idle may have been dropped by a firewall or NAT
+# without either side being told, and a request sent on it gets no answer. So
+# connections idle for longer than this many seconds are closed and reopened.
+MAX_IDLE = float(os.getenv("RC_API_CONNECTION_MAX_IDLE", "30"))
 log_to_console = BuiltIn().log_to_console
 
 
@@ -108,6 +112,10 @@ class Requests:
     def __init__(self, route_prefix: str, default_headers: Optional[dict] = None):
         self._route_prefix = route_prefix
         self._default_headers = default_headers
+        # Reuse connections across calls, so each request doesn't pay a new
+        # TCP and TLS handshake (costly when Control Room is far away).
+        self._session = requests.Session()
+        self._last_used = time.monotonic()
 
     def handle_error(self, response: requests.Response):
         resp_status_code = response.status_code
@@ -234,6 +242,13 @@ class Requests:
             url_for_log = urlparse.urlunsplit(
                 [split.scheme, split.netloc, split.path, "", split.fragment]
             )
+
+        now = time.monotonic()
+        if now - self._last_used > MAX_IDLE:
+            # Drops the pooled connections; the session itself stays usable.
+            self._session.close()
+        self._last_used = now
+
         log_more("%s %r", verb.__name__.upper(), url_for_log)
         response = verb(url, *args, headers=headers, **kwargs)
         handle_error(response)
@@ -241,19 +256,19 @@ class Requests:
 
     # CREATE
     def post(self, *args, **kwargs) -> requests.Response:
-        return self._request(requests.post, *args, **kwargs)
+        return self._request(self._session.post, *args, **kwargs)
 
     # RETRIEVE
     def get(self, *args, **kwargs) -> requests.Response:
-        return self._request(requests.get, *args, **kwargs)
+        return self._request(self._session.get, *args, **kwargs)
 
     # UPDATE
     def put(self, *args, **kwargs) -> requests.Response:
-        return self._request(requests.put, *args, **kwargs)
+        return self._request(self._session.put, *args, **kwargs)
 
     # DELETE
     def delete(self, *args, **kwargs) -> requests.Response:
-        return self._request(requests.delete, *args, **kwargs)
+        return self._request(self._session.delete, *args, **kwargs)
 
 
 def protect_keywords(base: str, keywords: List[str]):
