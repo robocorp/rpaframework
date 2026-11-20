@@ -958,12 +958,12 @@ class TestRobocorpAdapter:
         for name, value in self.ENV.items():
             monkeypatch.setenv(name, value)
 
-        with mock.patch("RPA.Robocorp.utils.requests.get") as mock_get, mock.patch(
-            "RPA.Robocorp.utils.requests.post"
+        with mock.patch("RPA.Robocorp.utils.requests.Session.get") as mock_get, mock.patch(
+            "RPA.Robocorp.utils.requests.Session.post"
         ) as mock_post, mock.patch(
-            "RPA.Robocorp.utils.requests.put"
+            "RPA.Robocorp.utils.requests.Session.put"
         ) as mock_put, mock.patch(
-            "RPA.Robocorp.utils.requests.delete"
+            "RPA.Robocorp.utils.requests.Session.delete"
         ) as mock_delete, mock.patch(
             "time.sleep", return_value=None
         ) as mock_sleep:

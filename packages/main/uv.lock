@@ -2171,15 +2171,15 @@ wheels = [
 
 [[package]]
 name = "robocorp-storage"
-version = "1.1.0"
+version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "requests" },
     { name = "tenacity" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/22/7b/a89deca98fc1a0d1b0e638fc0d9ac244d3c899929cb844e2f8b35d55825b/robocorp_storage-1.1.0.tar.gz", hash = "sha256:ae9d0f654e88047ea8efcce9d7cbb1017a52993da57b83c38d243395c3198d96", size = 8932, upload-time = "2026-03-13T09:15:36.291Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/08/7b/8c3238c50ccb0ac191b1df14e957cd7d03e9fb88d1eb73d8a35bd79b4ff8/robocorp_storage-1.2.0.tar.gz", hash = "sha256:014470f2b9872c1a5784a0dab663c06f66a06c3aa48b64648c626dc376de9645", size = 9491, upload-time = "2026-11-20T14:56:14.246Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c2/e5/bd5eeafbbcf60c91d5c13b9df3d51dc7362674484cf5646a7b4f99c19443/robocorp_storage-1.1.0-py3-none-any.whl", hash = "sha256:448e920e55698c40275605b600670becb5ae2393bb0c4b045ce9a08fa27a1875", size = 10941, upload-time = "2026-03-13T09:15:35.239Z" },
+    { url = "https://files.pythonhosted.org/packages/0f/fd/cb1f376d34886135ed56fef203e643dfba5b2388559e7358ea6deac0cb0c/robocorp_storage-1.2.0-py3-none-any.whl", hash = "sha256:b871359ee80c60c45857bd0e66d52ad01cc8a8051aeb323254b17aa1367cca13", size = 11485, upload-time = "2026-11-20T14:56:13.256Z" },
 ]
 
 [[package]]
@@ -2367,7 +2367,7 @@ requires-dist = [
     { name = "pyyaml", specifier = ">=5.4.1,<7.0.0" },
     { name = "requests", specifier = ">=2.33.0" },
     { name = "requests-oauthlib", specifier = ">=1.3.1" },
-    { name = "robocorp-storage", specifier = ">=1.0.2" },
+    { name = "robocorp-storage", specifier = ">=1.2.0" },
     { name = "robotframework", specifier = ">=4.0.0,!=4.0.1,!=6.1.0,<8.0.0" },
     { name = "robotframework-pythonlibcore", specifier = ">=4.2.0" },
     { name = "robotframework-requests", specifier = ">=0.9.1" },
