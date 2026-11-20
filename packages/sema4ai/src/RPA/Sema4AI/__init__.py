@@ -1,6 +1,7 @@
 import importlib
 import logging
 import os
+from pathlib import Path
 from typing import Any
 
 from .errors import (
@@ -11,11 +12,13 @@ from .errors import (
     WorkspaceFileNotFoundError,
     WorkspacePathError,
 )
+from .remote import API_KEY_ENV, BASE_URL_ENV, PROJECT_ID_ENV, RemoteWorkspace
 from .workspace import WORKSPACE_ROOT_ENV, FileEntry, Workspace
 
 __all__ = [
     "NotOnPlatformError",
     "ProjectNotFoundError",
+    "RemoteWorkspace",
     "Sema4AI",
     "Sema4AIError",
     "Workspace",
@@ -31,16 +34,24 @@ class Sema4AI:
     """Library for working with a project on the `Sema4.ai <https://sema4.ai>`_
     cloud platform.
 
-    This is the first part of the library. It covers the two things automation
-    code running **on the platform** needs most often:
+    It gives automation code two things:
 
-    - the **workspace files** of the project, which the platform mounts into the
-      sandbox as a normal directory, and
-    - the **projects** the current run can see.
+    - the **workspace files** of a project, and
+    - the **projects** the current run can see (on the platform only).
 
-    Access from outside the platform (a robot on a Control Room worker or on a
-    developer machine reaching into a Sema4.ai project) is planned and not part
-    of this version.
+    **Where the code runs**
+
+    *On the platform*, the files of the project are mounted into the sandbox as
+    a normal directory and no configuration is needed.
+
+    *Outside the platform*, for example a robot on a Control Room worker or on
+    a developer machine, the same file keywords work through the project's
+    REST API. Give the library the address of the deployment, the project ID
+    and a **project API key**, which is created in the project's settings.
+    They can be passed when the library is imported, set as the environment
+    variables ``SEMA4AI_BASE_URL``, ``SEMA4AI_PROJECT_ID`` and
+    ``SEMA4AI_API_KEY``, or given later with ``Connect To Sema4 Project``,
+    which suits a key read from a vault.
 
     **Workspace paths**
 
@@ -56,12 +67,10 @@ class Sema4AI:
     changed through its own review flows. They are also left out of
     ``List Workspace Files`` by default.
 
-    **Workspace root**
+    **Local directory**
 
-    On the platform the root comes from the ``BLOCKPARTY_WORKSPACE_ROOT``
-    environment variable, so no configuration is needed. Elsewhere, give the
-    library a ``workspace_root`` directory to develop and test against a local
-    copy.
+    Give the library a ``workspace_root`` directory to develop and test against
+    a local copy of a workspace. It takes precedence over everything else.
 
     **Robot Framework example**
 
@@ -97,24 +106,103 @@ class Sema4AI:
         self,
         workspace_root: str | None = None,
         protect_managed: bool = True,
+        project_id: str | None = None,
+        api_key: str | None = None,
+        base_url: str | None = None,
     ):
         """
         :param workspace_root: Directory to use as the workspace. Leave empty on
             the platform, where the root is taken from the environment.
         :param protect_managed: Refuse to write, move or delete files in
             platform-managed areas such as ``.blockparty``.
+        :param project_id: Project to reach through the REST API when the code
+            runs outside the platform.
+        :param api_key: Project API key for the REST API.
+        :param base_url: Address of the Sema4.ai deployment, for example
+            ``https://us3.sema4.ai``.
         """
         self.logger = logging.getLogger(__name__)
         self._workspace_root = workspace_root
         self._protect_managed = protect_managed
-        self._workspace: Workspace | None = None
+        self._project_id = project_id
+        self._api_key = api_key
+        self._base_url = base_url
+        self._workspace: Workspace | RemoteWorkspace | None = None
 
     @property
-    def workspace(self) -> Workspace:
+    def workspace(self) -> Workspace | RemoteWorkspace:
         """The workspace the file keywords operate on, resolved on first use."""
         if self._workspace is None:
-            self._workspace = Workspace(self._workspace_root, self._protect_managed)
+            self._workspace = self._open_workspace()
         return self._workspace
+
+    def _open_workspace(self) -> Workspace | RemoteWorkspace:
+        if self._workspace_root or os.environ.get(WORKSPACE_ROOT_ENV):
+            return Workspace(self._workspace_root, self._protect_managed)
+        settings = {
+            "base_url": self._base_url or os.environ.get(BASE_URL_ENV),
+            "project_id": self._project_id or os.environ.get(PROJECT_ID_ENV),
+            "api_key": self._api_key or os.environ.get(API_KEY_ENV),
+        }
+        if not any(settings.values()):
+            raise NotOnPlatformError(
+                f"No workspace: the {WORKSPACE_ROOT_ENV} environment variable is not "
+                "set, so this does not look like a Sema4.ai sandbox, and no project "
+                "API settings were given. Use 'Connect To Sema4 Project', set "
+                f"{BASE_URL_ENV}, {PROJECT_ID_ENV} and {API_KEY_ENV}, or give the "
+                "library a 'workspace_root' to work on a local directory."
+            )
+        missing = [name for name, value in settings.items() if not value]
+        if missing:
+            raise Sema4AIError(
+                "Incomplete project API settings, missing: " + ", ".join(missing)
+            )
+        return RemoteWorkspace(
+            str(settings["base_url"]),
+            str(settings["project_id"]),
+            str(settings["api_key"]),
+            self._protect_managed,
+        )
+
+    def connect_to_sema4_project(
+        self, project_id: str, api_key: str, base_url: str | None = None
+    ) -> None:
+        """Use the files of a project through its REST API from now on.
+
+        Meant for code running outside the platform. The API key is a project
+        API key, created in the project's settings; read it from a vault rather
+        than writing it into the robot.
+
+        :param project_id: ID of the project.
+        :param api_key: Project API key.
+        :param base_url: Address of the Sema4.ai deployment, for example
+            ``https://us3.sema4.ai``. When left out, the value given at import
+            or in ``SEMA4AI_BASE_URL`` is used.
+        :raises Sema4AIError: A value is missing, or the address is not https.
+
+        Robot Framework example:
+
+        .. code-block:: robotframework
+
+            ${secret}=    Get Secret    sema4_project
+            Connect To Sema4 Project    ${secret}[project_id]    ${secret}[api_key]
+            ...    base_url=https://us3.sema4.ai
+            ${files}=    List Workspace Files    reports
+
+        Python example:
+
+        .. code-block:: python
+
+            sema4.connect_to_sema4_project(
+                secret["project_id"], secret["api_key"], base_url="https://us3.sema4.ai"
+            )
+            files = sema4.list_workspace_files("reports")
+        """
+        address = base_url or self._base_url or os.environ.get(BASE_URL_ENV) or ""
+        self._workspace = RemoteWorkspace(
+            address, project_id, api_key, self._protect_managed
+        )
+        self.logger.info("Connected to Sema4.ai project %s at %s", project_id, address)
 
     def running_on_sema4_platform(self) -> bool:
         """Tell whether the code runs inside a Sema4.ai sandbox.
@@ -138,9 +226,10 @@ class Sema4AI:
         return bool(os.environ.get(WORKSPACE_ROOT_ENV))
 
     def get_workspace_root(self) -> str:
-        """Return the absolute path of the workspace root directory.
+        """Return the location of the workspace: a directory, or an API address.
 
-        :return: Directory under which every workspace path is resolved.
+        :return: Directory under which every workspace path is resolved. For a
+            project reached through the REST API, the address of its file API.
 
         Robot Framework example:
 
@@ -155,7 +244,7 @@ class Sema4AI:
 
             root = sema4.get_workspace_root()
         """
-        return str(self.workspace.root)
+        return self.workspace.location
 
     def list_workspace_files(
         self,
@@ -171,8 +260,9 @@ class Sema4AI:
         :param include_managed: Include platform-managed content such as
             ``.blockparty``.
         :return: One dictionary per file, with ``path`` (workspace-relative),
-            ``name``, ``size`` (bytes) and ``modified`` (UTC, ISO 8601), sorted
-            by path within each directory.
+            ``name`` and ``size`` (bytes). A local workspace adds ``modified``
+            (UTC, ISO 8601); a project reached through the REST API adds
+            ``sha256`` when the platform reports it.
         :raises WorkspaceFileNotFoundError: The prefix does not exist.
 
         Robot Framework example:
@@ -235,7 +325,7 @@ class Sema4AI:
 
             text = sema4.read_workspace_file("email_templates/reminder.md")
         """
-        return self.workspace.existing_file(path).read_text(encoding=encoding)
+        return self.workspace.read_bytes(path).decode(encoding)
 
     def read_workspace_binary_file(self, path: str) -> bytes:
         """Read a workspace file as bytes.
@@ -256,7 +346,7 @@ class Sema4AI:
 
             data = sema4.read_workspace_binary_file("invoices/1234.pdf")
         """
-        return self.workspace.existing_file(path).read_bytes()
+        return self.workspace.read_bytes(path)
 
     def write_workspace_file(
         self,
@@ -290,8 +380,15 @@ class Sema4AI:
             sema4.write_workspace_file("reports/summary.md", "All 12 invoices matched.")
             sema4.write_workspace_file("exports/data.bin", b"\\x00\\x01")
         """
-        written = self.workspace.write(path, content, overwrite, encoding)
-        relative = self.workspace.relative(written)
+        if isinstance(content, str):
+            data = content.encode(encoding)
+        elif isinstance(content, (bytes, bytearray)):
+            data = bytes(content)
+        else:
+            raise TypeError(
+                f"File content must be text or bytes, got {type(content).__name__}"
+            )
+        relative = self.workspace.write_bytes(path, data, overwrite)
         self.logger.info("Wrote workspace file %s", relative)
         return relative
 
@@ -323,8 +420,10 @@ class Sema4AI:
 
             sema4.copy_file_to_workspace("output/report.xlsx", "reports/report.xlsx")
         """
-        written = self.workspace.copy_in(source, path, overwrite)
-        relative = self.workspace.relative(written)
+        local = Path(source).expanduser()
+        if not local.is_file():
+            raise FileNotFoundError(f"Source file {str(local)!r} does not exist")
+        relative = self.workspace.write_bytes(path, local.read_bytes(), overwrite)
         self.logger.info("Copied %s to workspace file %s", source, relative)
         return relative
 
@@ -353,7 +452,18 @@ class Sema4AI:
 
             copy = sema4.copy_file_from_workspace("invoices/1234.pdf", "output")
         """
-        return str(self.workspace.copy_out(path, target, overwrite))
+        data = self.workspace.read_bytes(path)
+        local = Path(target).expanduser()
+        if local.is_dir():
+            local = (
+                local
+                / str(path).replace("\\", "/").rstrip("/").rsplit("/", maxsplit=1)[-1]
+            )
+        if local.exists() and not overwrite:
+            raise FileExistsError(f"Target file {str(local)!r} already exists")
+        local.parent.mkdir(parents=True, exist_ok=True)
+        local.write_bytes(data)
+        return str(local.resolve())
 
     def move_workspace_file(
         self, from_path: str, to_path: str, overwrite: bool = False
@@ -380,8 +490,7 @@ class Sema4AI:
 
             sema4.move_workspace_file("inbox/1234.pdf", "processed/1234.pdf")
         """
-        moved = self.workspace.move(from_path, to_path, overwrite)
-        relative = self.workspace.relative(moved)
+        relative = self.workspace.move_file(from_path, to_path, overwrite)
         self.logger.info("Moved workspace file %s to %s", from_path, relative)
         return relative
 

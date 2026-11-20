@@ -15,16 +15,20 @@ this package talked to the Sema4.ai Agent API; that library was retired with
 What it does
 ------------
 
-- **Workspace files.** On the platform the files of a project are mounted into
-  the sandbox as a normal directory. The library lists, reads, writes, moves,
-  copies and deletes them with workspace-relative paths, never leaves the
-  workspace, and by default leaves platform-managed content under
+- **Workspace files.** The library lists, reads, writes, moves, copies and
+  deletes the files of a project with workspace-relative paths. It never leaves
+  the workspace, and by default leaves platform-managed content under
   ``.blockparty`` untouched.
-- **Projects.** ``List Projects`` and ``Get Project`` return the projects the
-  current run can see, through the platform SDK.
 
-Both parts are meant for code running on the platform. Access from outside the
-platform is planned and not part of this version.
+  - *On the platform* the files are mounted into the sandbox as a normal
+    directory, and no configuration is needed.
+  - *Outside the platform* (a robot on a Control Room worker, a developer
+    machine) the same keywords use the project's REST API with a project API
+    key, which is created in the project's settings.
+
+- **Projects.** ``List Projects`` and ``Get Project`` return the projects the
+  current run can see, through the platform SDK. These work on the platform
+  only.
 
 Installation
 ------------
@@ -63,5 +67,23 @@ Robot Framework:
         Write Workspace File    reports/summary.md    All 12 invoices matched.
         ${files}=    List Workspace Files    reports
 
-Outside the platform, point the library at a local directory to develop and
-test: ``Sema4AI(workspace_root="path/to/copy")``.
+Outside the platform, connect to a project with its API key. Read the key from
+a vault instead of writing it into the robot:
+
+.. code-block:: python
+
+    from RPA.Robocorp.Vault import Vault
+    from RPA.Sema4AI import Sema4AI
+
+    secret = Vault().get_secret("sema4_project")
+    sema4 = Sema4AI()
+    sema4.connect_to_sema4_project(
+        secret["project_id"], secret["api_key"], base_url="https://us3.sema4.ai"
+    )
+    print(sema4.read_workspace_file("reports/summary.md"))
+
+The same settings can come from the environment variables ``SEMA4AI_BASE_URL``,
+``SEMA4AI_PROJECT_ID`` and ``SEMA4AI_API_KEY``.
+
+To develop and test against a local copy of a workspace, point the library at a
+directory: ``Sema4AI(workspace_root="path/to/copy")``.

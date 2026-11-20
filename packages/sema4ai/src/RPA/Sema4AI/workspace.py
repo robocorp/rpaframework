@@ -8,7 +8,6 @@ the platform's own interfaces do.
 """
 
 import os
-import shutil
 from collections.abc import Iterator
 from datetime import UTC, datetime
 from pathlib import Path
@@ -59,6 +58,37 @@ def find_workspace_root(explicit: PathLike | None = None) -> Path:
     return root.resolve()
 
 
+def split_workspace_path(path: PathLike) -> list[str]:
+    """Split a workspace-relative path and refuse anything that could leave the root."""
+    text = os.fspath(path) if path is not None else ""
+    if not isinstance(text, str) or not text.strip():
+        raise WorkspacePathError("Workspace path is empty")
+    if "\x00" in text:
+        raise WorkspacePathError("Workspace path contains a NUL character")
+    normalized = text.replace("\\", "/")
+    if normalized.startswith("/") or (len(normalized) > 1 and normalized[1] == ":"):
+        raise WorkspacePathError(
+            f"Workspace path {text!r} is absolute; use a path relative to the "
+            "workspace root"
+        )
+    parts = [part for part in normalized.split("/") if part not in ("", ".")]
+    if ".." in parts:
+        raise WorkspacePathError(
+            f"Workspace path {text!r} contains a '..' segment, which is not allowed"
+        )
+    return parts
+
+
+def check_not_managed(parts: list[str]) -> None:
+    """Refuse a path whose first part is a platform-managed name."""
+    if parts and is_managed(parts[0]):
+        raise WorkspacePathError(
+            f"Workspace path {'/'.join(parts)!r} is in a platform-managed area "
+            f"({parts[0]}); change such content through the platform, or create "
+            "the library with protect_managed=False"
+        )
+
+
 class Workspace:
     """Workspace-relative file operations confined to one root directory."""
 
@@ -68,23 +98,7 @@ class Workspace:
 
     def parts(self, path: PathLike) -> list[str]:
         """Split a workspace-relative path and refuse anything that could leave the root."""
-        text = os.fspath(path) if path is not None else ""
-        if not isinstance(text, str) or not text.strip():
-            raise WorkspacePathError("Workspace path is empty")
-        if "\x00" in text:
-            raise WorkspacePathError("Workspace path contains a NUL character")
-        normalized = text.replace("\\", "/")
-        if normalized.startswith("/") or (len(normalized) > 1 and normalized[1] == ":"):
-            raise WorkspacePathError(
-                f"Workspace path {text!r} is absolute; use a path relative to the "
-                "workspace root"
-            )
-        parts = [part for part in normalized.split("/") if part not in ("", ".")]
-        if ".." in parts:
-            raise WorkspacePathError(
-                f"Workspace path {text!r} contains a '..' segment, which is not allowed"
-            )
-        return parts
+        return split_workspace_path(path)
 
     def resolve(
         self, path: PathLike, *, writing: bool = False, allow_root: bool = False
@@ -101,12 +115,8 @@ class Workspace:
             if allow_root:
                 return self.root
             raise WorkspacePathError("Workspace path points at the workspace root")
-        if writing and self.protect_managed and is_managed(parts[0]):
-            raise WorkspacePathError(
-                f"Workspace path {'/'.join(parts)!r} is in a platform-managed area "
-                f"({parts[0]}); change such content through the platform, or create "
-                "the library with protect_managed=False"
-            )
+        if writing and self.protect_managed:
+            check_not_managed(parts)
         candidate = self.root.joinpath(*parts)
         # A symbolic link inside the workspace must not lead out of it.
         resolved = candidate.resolve(strict=False)
@@ -246,25 +256,21 @@ class Workspace:
         absolute.unlink()
         return True
 
-    def copy_in(self, source: PathLike, path: PathLike, overwrite: bool = True) -> Path:
-        """Copy a file from anywhere on the local machine into the workspace."""
-        local = Path(source).expanduser()
-        if not local.is_file():
-            raise FileNotFoundError(f"Source file {str(local)!r} does not exist")
-        target = self.target_for_write(path, overwrite)
-        shutil.copyfile(local, target)
-        return target
+    @property
+    def location(self) -> str:
+        """Where this workspace lives, for logs and ``Get Workspace Root``."""
+        return str(self.root)
 
-    def copy_out(
-        self, path: PathLike, target: PathLike, overwrite: bool = True
-    ) -> Path:
-        """Copy a workspace file to a location outside the workspace paths rules."""
-        source = self.existing_file(path)
-        local = Path(target).expanduser()
-        if local.is_dir():
-            local = local / source.name
-        if local.exists() and not overwrite:
-            raise FileExistsError(f"Target file {str(local)!r} already exists")
-        local.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(source, local)
-        return local.resolve()
+    def read_bytes(self, path: PathLike) -> bytes:
+        """Return the content of an existing workspace file."""
+        return self.existing_file(path).read_bytes()
+
+    def write_bytes(self, path: PathLike, data: bytes, overwrite: bool = True) -> str:
+        """Create or replace a workspace file and return its workspace-relative path."""
+        return self.relative(self.write(path, data, overwrite))
+
+    def move_file(
+        self, from_path: PathLike, to_path: PathLike, overwrite: bool = False
+    ) -> str:
+        """Move one workspace file and return its new workspace-relative path."""
+        return self.relative(self.move(from_path, to_path, overwrite))

@@ -14,13 +14,16 @@ Latest versions
 
 - ``rpaframework-sema4ai`` **3.0.0**: a new ``RPA.Sema4AI`` library for the `Sema4.ai
   <https://sema4.ai>`_ cloud platform, replacing the library that was retired with 2.1.0;
-  only the package and library names are shared. For code running on the platform it adds
-  workspace file keywords (``List Workspace Files``, ``Read Workspace File``,
+  only the package and library names are shared. It adds workspace file keywords (``List Workspace Files``, ``Read Workspace File``,
   ``Read Workspace Binary File``, ``Write Workspace File``, ``Move Workspace File``,
   ``Delete Workspace File``, ``Workspace File Exists``, ``Copy File To Workspace``,
   ``Copy File From Workspace``, ``Get Workspace Root``) and project keywords
-  (``List Projects``, ``Get Project``). File paths are relative to the workspace, cannot
-  leave it, and platform-managed content under ``.blockparty`` is read-only by default.
+  (``List Projects``, ``Get Project``, on the platform only). The file keywords work on the
+  platform, where the project's files are a local directory, and outside it through the
+  project REST API with a project API key (``Connect To Sema4 Project``, or the
+  ``SEMA4AI_BASE_URL``, ``SEMA4AI_PROJECT_ID`` and ``SEMA4AI_API_KEY`` environment
+  variables). File paths are relative to the workspace, cannot leave it, and
+  platform-managed content under ``.blockparty`` is read-only by default.
   The package has no runtime dependencies. **Breaking** for users of 2.x: none of the old
   keywords exist; pin ``rpaframework-sema4ai==2.1.0`` to keep them.
 

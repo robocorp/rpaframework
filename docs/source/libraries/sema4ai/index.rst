@@ -3,8 +3,9 @@ Sema4AI
 #######
 
 A library for automation code that works with a project on the `Sema4.ai`_
-cloud platform: the project's workspace files, which the platform mounts into
-the sandbox as a normal directory, and the projects the current run can see.
+cloud platform: the project's workspace files, on the platform as a mounted
+directory and from outside through the project REST API, and the projects the
+current run can see.
 
 .. _Sema4.ai: https://sema4.ai
 

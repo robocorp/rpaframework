@@ -25,6 +25,8 @@ symlinks = pytest.mark.skipif(
 @pytest.fixture
 def root(tmp_path, monkeypatch):
     monkeypatch.delenv(WORKSPACE_ROOT_ENV, raising=False)
+    for name in ("SEMA4AI_BASE_URL", "SEMA4AI_PROJECT_ID", "SEMA4AI_API_KEY"):
+        monkeypatch.delenv(name, raising=False)
     workspace = tmp_path / "workspace"
     workspace.mkdir()
     (workspace / "reports").mkdir()
