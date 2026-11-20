@@ -133,7 +133,7 @@ class Windows(WindowsElementsMixin, DynamicCore):
     regex           RegexName
     subname         SubName
     index           foundIndex (int)
-    offset          offset coordinates (x (int), y (int)) from control center
+    offset          click offset in pixels (x (int), y (int)) from the control center, positive is right/down
     executable      target window by its executable name
     handle          target window handle (int)
     desktop         *SPECIAL* target desktop, no value for the key e.g. `desktop:desktop and name:Calculator`

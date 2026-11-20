@@ -35,6 +35,21 @@ class ActionKeywords(ActionMethods):
     ) -> WindowsElement:
         """Mouse click on element matching given locator.
 
+        By default the click lands on the center of the element's bounding
+        rectangle. To click somewhere else, add ``offset:x,y`` to the locator:
+        ``x`` and ``y`` are distances in screen pixels from the element
+        center, positive to the right and down, negative to the left and up.
+        The offset may point outside the element, which is handy for controls
+        that UI Automation exposes as a single element (e.g. a button with an
+        embedded dropdown arrow). An element retrieved with ``Get Element``
+        using an offset locator remembers the offset for later clicks.
+
+        If the click lands somewhere unexpected, log
+        ``${element.item.BoundingRectangle}`` for the element you matched: the
+        offset is applied to that rectangle, so a locator that matches a
+        different element, or an application that is not DPI-aware, moves the
+        click accordingly.
+
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
@@ -50,8 +65,16 @@ class ActionKeywords(ActionMethods):
         .. code-block:: robotframework
 
             Click  id:button1
-            Click  id:button2 offset:10,10
+            Click  id:button2 offset:10,10    # 10 px right and 10 px below center
+            Click  name:StageMove offset:40,0    # dropdown arrow right of the button
             ${element}=  Click  name:SendButton  wait_time=5.0
+
+        .. code-block:: python
+
+            from RPA.Windows import Windows
+
+            windows = Windows()
+            windows.click("name:StageMove offset:40,0")
         """
         return self._mouse_click(locator, "Click", wait_time, timeout)
 
@@ -63,6 +86,9 @@ class ActionKeywords(ActionMethods):
         timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Double mouse click on element matching given locator.
+
+        Add ``offset:x,y`` to the locator to click at a pixel distance from the
+        element center, see keyword ``Click``.
 
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
@@ -91,6 +117,9 @@ class ActionKeywords(ActionMethods):
     ) -> WindowsElement:
         """Right mouse click on element matching given locator.
 
+        Add ``offset:x,y`` to the locator to click at a pixel distance from the
+        element center, see keyword ``Click``.
+
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
 
@@ -116,7 +145,10 @@ class ActionKeywords(ActionMethods):
         wait_time: Optional[float] = None,
         timeout: Optional[float] = None,
     ) -> WindowsElement:
-        """Right mouse click on element matching given locator.
+        """Middle mouse click on element matching given locator.
+
+        Add ``offset:x,y`` to the locator to click at a pixel distance from the
+        element center, see keyword ``Click``.
 
         Exception ``ActionNotPossible`` is raised if element does not
         allow Click action.
