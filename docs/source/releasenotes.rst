@@ -37,6 +37,9 @@ Latest versions
   a distant region. Connections left idle for more than 30 seconds are reopened, so a
   connection dropped by a firewall in the meantime is not used; the limit can be changed
   with the ``RC_API_CONNECTION_MAX_IDLE`` environment variable (seconds).
+- ``RPA.Robocorp.Storage``: Require ``robocorp-storage`` ≥1.2.0, which reuses its Control
+  Room connections in the same way and honours the same ``RC_API_CONNECTION_MAX_IDLE``
+  setting.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
