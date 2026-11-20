@@ -219,6 +219,15 @@ Comes in through <code class="docutils literal notranslate"><span class="pre">be
 the fixed releases; in an existing environment run
 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">dnspython</span> <span class="pre">soupsieve</span></code>.</p>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Robocorp.WorkItems</span></code>: Reuse HTTP connections to the Control Room APIs through a
+shared session, instead of opening a new connection (TCP and TLS handshake) for every
+request. This cuts the cost of each work item call, especially when Control Room is in
+a distant region. Connections left idle for more than 30 seconds are reopened, so a
+connection dropped by a firewall in the meantime is not used; the limit can be changed
+with the <code class="docutils literal notranslate"><span class="pre">RC_API_CONNECTION_MAX_IDLE</span></code> environment variable (seconds).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA.Robocorp.Storage</span></code>: Require <code class="docutils literal notranslate"><span class="pre">robocorp-storage</span></code> ≥1.2.0, which reuses its Control
+Room connections in the same way and honours the same <code class="docutils literal notranslate"><span class="pre">RC_API_CONNECTION_MAX_IDLE</span></code>
+setting.</p></li>
 </ul>
 </section>
 <section id="id4">

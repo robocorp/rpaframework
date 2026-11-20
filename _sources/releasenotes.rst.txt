@@ -31,6 +31,15 @@ Latest versions
   Neither package has a version floor in ``rpaframework``, so new installs already get
   the fixed releases; in an existing environment run
   ``pip install --upgrade dnspython soupsieve``.
+- ``RPA.Robocorp.WorkItems``: Reuse HTTP connections to the Control Room APIs through a
+  shared session, instead of opening a new connection (TCP and TLS handshake) for every
+  request. This cuts the cost of each work item call, especially when Control Room is in
+  a distant region. Connections left idle for more than 30 seconds are reopened, so a
+  connection dropped by a firewall in the meantime is not used; the limit can be changed
+  with the ``RC_API_CONNECTION_MAX_IDLE`` environment variable (seconds).
+- ``RPA.Robocorp.Storage``: Require ``robocorp-storage`` ≥1.2.0, which reuses its Control
+  Room connections in the same way and honours the same ``RC_API_CONNECTION_MAX_IDLE``
+  setting.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
