@@ -2266,7 +2266,7 @@ wheels = [
 
 [[package]]
 name = "rpaframework"
-version = "34.0.1"
+version = "34.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },

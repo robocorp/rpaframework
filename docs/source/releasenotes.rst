@@ -12,11 +12,23 @@ Latest versions
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- ``rpaframework-windows``: the ``Click``, ``Double Click``, ``Right Click`` and ``Middle Click``
-  keyword docs now explain the ``offset:x,y`` locator strategy (pixels from the element center,
-  may point outside the element, kept by elements from ``Get Element``) with Robot Framework and
-  Python examples, and ``Middle Click`` no longer calls itself a right click. The offset behaviour
-  was verified on Windows 11 with the probes in ``packages/windows/tests/manual/`` (:issue:`1379`).
+No changes planned yet for the next release.
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+20 Nov 2026
+-----------
+
+- ``rpaframework`` **34.1.0**: ``RPA.Robocorp.WorkItems`` reuses its HTTP connections to the
+  Control Room APIs through a shared session, instead of opening a new connection (TCP and
+  TLS handshake) for every request. This cuts the cost of each work item call, especially
+  when Control Room is in a distant region. Connections left idle for more than 30 seconds
+  are reopened, so a connection dropped by a firewall in the meantime is not used; the limit
+  can be changed with the ``RC_API_CONNECTION_MAX_IDLE`` environment variable (seconds).
+- ``rpaframework``: ``RPA.Robocorp.Storage`` requires ``robocorp-storage`` ≥1.2.0, which
+  reuses its Control Room connections in the same way and honours the same
+  ``RC_API_CONNECTION_MAX_IDLE`` setting.
 - ``rpaframework``: Security updates in the lock files for two transitive dependencies:
 
   - ``dnspython`` 2.9.2 — HIGH, excessive memory and CPU use (CVE-2026-128089). Comes in
@@ -31,18 +43,11 @@ Latest versions
   Neither package has a version floor in ``rpaframework``, so new installs already get
   the fixed releases; in an existing environment run
   ``pip install --upgrade dnspython soupsieve``.
-- ``RPA.Robocorp.WorkItems``: Reuse HTTP connections to the Control Room APIs through a
-  shared session, instead of opening a new connection (TCP and TLS handshake) for every
-  request. This cuts the cost of each work item call, especially when Control Room is in
-  a distant region. Connections left idle for more than 30 seconds are reopened, so a
-  connection dropped by a firewall in the meantime is not used; the limit can be changed
-  with the ``RC_API_CONNECTION_MAX_IDLE`` environment variable (seconds).
-- ``RPA.Robocorp.Storage``: Require ``robocorp-storage`` ≥1.2.0, which reuses its Control
-  Room connections in the same way and honours the same ``RC_API_CONNECTION_MAX_IDLE``
-  setting.
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+- ``rpaframework-windows`` **12.0.1**: the ``Click``, ``Double Click``, ``Right Click`` and
+  ``Middle Click`` keyword docs now explain the ``offset:x,y`` locator strategy (pixels from the element center,
+  may point outside the element, kept by elements from ``Get Element``) with Robot Framework and
+  Python examples, and ``Middle Click`` no longer calls itself a right click. The offset behaviour
+  was verified on Windows 11 with the probes in ``packages/windows/tests/manual/`` (:issue:`1379`).
 
 2 Nov 2026
 ----------
