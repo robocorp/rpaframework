@@ -198,12 +198,27 @@
 </section>
 <section id="id3">
 <h2><a class="reference external" href="https://github.com/robocorp/rpaframework/projects/3#column-16713994">Upcoming release</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
-<ul class="simple">
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code>: the <code class="docutils literal notranslate"><span class="pre">Click</span></code>, <code class="docutils literal notranslate"><span class="pre">Double</span> <span class="pre">Click</span></code>, <code class="docutils literal notranslate"><span class="pre">Right</span> <span class="pre">Click</span></code> and <code class="docutils literal notranslate"><span class="pre">Middle</span> <span class="pre">Click</span></code>
 keyword docs now explain the <code class="docutils literal notranslate"><span class="pre">offset:x,y</span></code> locator strategy (pixels from the element center,
 may point outside the element, kept by elements from <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Element</span></code>) with Robot Framework and
 Python examples, and <code class="docutils literal notranslate"><span class="pre">Middle</span> <span class="pre">Click</span></code> no longer calls itself a right click. The offset behaviour
 was verified on Windows 11 with the probes in <code class="docutils literal notranslate"><span class="pre">packages/windows/tests/manual/</span></code> (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/1379">#1379</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>: Security updates in the lock files for two transitive dependencies:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dnspython</span></code> 2.9.2 — HIGH, excessive memory and CPU use (CVE-2026-128089). Comes in
+through <code class="docutils literal notranslate"><span class="pre">exchangelib</span></code>, used by <code class="docutils literal notranslate"><span class="pre">RPA.Email.Exchange</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">soupsieve</span></code> 4.1.3 — HIGH, polynomial-time denial of service in the descendant
+combinator (CVE-2026-126190) and exponential backtracking in selector compilation
+(CVE-2026-126191); MEDIUM, uncontrolled recursion in the CSS parser (CVE-2026-126193).
+Comes in through <code class="docutils literal notranslate"><span class="pre">beautifulsoup4</span></code>. The fixed <code class="docutils literal notranslate"><span class="pre">soupsieve</span></code> releases require Python
+3.11.5 or newer, so on Python 3.11.0 to 3.11.4 the installer still picks the affected
+2.10; upgrade to a newer Python 3.11 patch release to get the fix.</p></li>
+</ul>
+<p>Neither package has a version floor in <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>, so new installs already get
+the fixed releases; in an existing environment run
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">dnspython</span> <span class="pre">soupsieve</span></code>.</p>
+</li>
 </ul>
 </section>
 <section id="id4">
