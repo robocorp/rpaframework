@@ -3560,6 +3560,7 @@ dependencies = [
     { name = "rpaframework-hubspot" },
     { name = "rpaframework-openai" },
     { name = "rpaframework-recognition" },
+    { name = "rpaframework-sema4ai" },
     { name = "rpaframework-windows" },
 ]
 
@@ -3590,6 +3591,7 @@ requires-dist = [
     { name = "rpaframework-hubspot", specifier = ">=3.0.0" },
     { name = "rpaframework-openai", specifier = ">=4.0.0" },
     { name = "rpaframework-recognition", editable = "packages/recognition" },
+    { name = "rpaframework-sema4ai", editable = "packages/sema4ai" },
     { name = "rpaframework-windows", specifier = ">=12.0.0" },
 ]
 
@@ -3659,6 +3661,16 @@ requires-dist = [
     { name = "pytesseract", specifier = ">=0.3.6,<0.4.0" },
     { name = "rpaframework-core", specifier = ">=14.0.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "rpaframework-devutils", editable = "packages/devutils" }]
+
+[[package]]
+name = "rpaframework-sema4ai"
+version = "3.0.0"
+source = { editable = "packages/sema4ai" }
+
+[package.metadata]
 
 [package.metadata.requires-dev]
 dev = [{ name = "rpaframework-devutils", editable = "packages/devutils" }]

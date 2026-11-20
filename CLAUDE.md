@@ -23,6 +23,7 @@ packages/
 ├── hubspot/    # HubSpot CRM integration
 ├── openai/     # OpenAI API integration
 ├── decision/   # Decision-model (Jev, Laya) integration
+├── sema4ai/    # Sema4.ai cloud platform: project workspace files, projects
 └── devutils/   # Shared development utilities
 ```
 
