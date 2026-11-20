@@ -137,6 +137,9 @@ class RemoteWorkspace:
             text += f" (request {request_id})"
         if exc.code == 404:
             return WorkspaceFileNotFoundError(text)
+        if exc.code == 409 and operation == "files/move":
+            # The platform refuses to move a file onto an occupied path.
+            return WorkspaceFileExistsError(text)
         if exc.code in (401, 403):
             return Sema4AIError(
                 f"{text}. Check the project API key and that it belongs to project "
@@ -182,8 +185,15 @@ class RemoteWorkspace:
     ) -> list[FileEntry]:
         """List the files under a workspace directory."""
         parts = split_workspace_path(prefix)
+        found = self._entries("/".join(parts) or None, recursive)
+        if parts and not found:
+            # Directories exist on the platform only while they hold a file, so
+            # nothing under a prefix means the prefix is not there.
+            raise WorkspaceFileNotFoundError(
+                f"Workspace path {'/'.join(parts)!r} does not exist"
+            )
         files: list[FileEntry] = []
-        for item in self._entries("/".join(parts) or None, recursive):
+        for item in found:
             path = str(item.get("path") or "")
             if item.get("kind") != "file" or not path:
                 continue
@@ -238,8 +248,18 @@ class RemoteWorkspace:
         target = self._path(to_path, writing=True)
         if source == target:
             return target
-        if not overwrite and self.exists(target):
-            raise WorkspaceFileExistsError(f"Workspace file {target!r} already exists")
+        if self.exists(target):
+            if not overwrite:
+                raise WorkspaceFileExistsError(
+                    f"Workspace file {target!r} already exists"
+                )
+            if not self.exists(source):
+                raise WorkspaceFileNotFoundError(
+                    f"Workspace file {source!r} does not exist"
+                )
+            # The platform refuses to move onto an occupied path, so the old
+            # target is removed first. The two steps are not atomic.
+            self.delete(target)
         body = json.dumps({"from": source, "to_path": target}).encode("utf-8")
         self._json("POST", "files/move", body=body, content_type="application/json")
         return target

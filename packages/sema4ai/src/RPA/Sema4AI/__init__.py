@@ -263,7 +263,8 @@ class Sema4AI:
             ``name`` and ``size`` (bytes). A local workspace adds ``modified``
             (UTC, ISO 8601); a project reached through the REST API adds
             ``sha256`` when the platform reports it.
-        :raises WorkspaceFileNotFoundError: The prefix does not exist.
+        :raises WorkspaceFileNotFoundError: The prefix does not exist. Through
+            the REST API a directory exists only while it holds a file.
 
         Robot Framework example:
 
@@ -358,7 +359,9 @@ class Sema4AI:
         """Create or replace a workspace file. Missing directories are created.
 
         :param path: Workspace-relative path.
-        :param content: Text or bytes to write.
+        :param content: Text or bytes to write. The project REST API does not
+            accept empty content, so an empty file can only be written on the
+            platform or into a local workspace.
         :param overwrite: Replace an existing file. With ``False`` an existing
             file raises an error and is left untouched.
         :param encoding: Encoding used when ``content`` is text.
@@ -472,7 +475,9 @@ class Sema4AI:
 
         :param from_path: Workspace-relative path of the file to move.
         :param to_path: Workspace-relative destination path.
-        :param overwrite: Replace an existing destination file.
+        :param overwrite: Replace an existing destination file. Through the
+            REST API this removes the old destination and then moves the file,
+            which is two steps and not atomic.
         :return: The workspace-relative destination path.
         :raises WorkspaceFileNotFoundError: The source file does not exist.
         :raises WorkspaceFileExistsError: The destination exists and

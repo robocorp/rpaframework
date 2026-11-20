@@ -65,7 +65,14 @@ class FakeProjectApi:
             {"path": "link", "kind": "symlink", "symlink_target": "notes.txt"}
         )
         if prefix:
-            result = [e for e in result if e["path"].startswith(prefix + "/")]
+            # As observed on the live service: a prefix naming a file returns that
+            # file, and a prefix that does not exist returns an empty page.
+            result = [
+                e
+                for e in result
+                if e["path"].startswith(prefix + "/")
+                or (e["path"] == prefix and e["kind"] == "file")
+            ]
         if not recursive:
             depth = prefix.count("/") + 2 if prefix else 1
             result = [e for e in result if e["path"].count("/") + 1 == depth]
@@ -139,6 +146,10 @@ def api():
                     return self._error(404, "INFRA_NOT_FOUND", "File not found")
                 return self._send(200, raw=state.files[query["path"]])
             if operation == "files" and self.command == "PUT":
+                if not body:
+                    return self._error(
+                        422, "INFRA_VALIDATION_FAILED", "Upload payload is empty."
+                    )
                 state.files[query["path"]] = body
                 return self._send(201, {"path": query["path"], "size_bytes": len(body)})
             if operation == "files" and self.command == "DELETE":
@@ -150,6 +161,10 @@ def api():
                 move = json.loads(body)
                 if move["from"] not in state.files:
                     return self._error(404, "INFRA_NOT_FOUND", "File not found")
+                if move["to_path"] in state.files:
+                    return self._error(
+                        409, "INFRA_CONFLICT", "destination is occupied."
+                    )
                 state.files[move["to_path"]] = state.files.pop(move["from"])
                 return self._send(
                     200, {"from_path": move["from"], "to_path": move["to_path"]}
@@ -407,9 +422,44 @@ class TestRemoteFiles:
         library.move_workspace_file("notes.txt", "reports/summary.md", overwrite=True)
         assert api.files["reports/summary.md"] == b"hello"
 
-    def test_move_of_a_missing_file(self, library):
+    def test_move_of_a_missing_file(self, library, api):
         with pytest.raises(WorkspaceFileNotFoundError):
             library.move_workspace_file("nope.txt", "x.txt")
+        with pytest.raises(WorkspaceFileNotFoundError):
+            library.move_workspace_file("nope.txt", "notes.txt", overwrite=True)
+        assert api.files["notes.txt"] == b"hello", (
+            "target must survive a failed overwrite move"
+        )
+
+    def test_server_conflict_on_move_is_file_exists(self, api):
+        # The destination appears between the check and the move.
+        workspace = RemoteWorkspace(api.url, PROJECT, KEY)
+        workspace.exists = lambda path: False
+
+        with pytest.raises(WorkspaceFileExistsError, match="409 INFRA_CONFLICT"):
+            workspace.move_file("notes.txt", "reports/summary.md")
+        assert api.files["notes.txt"] == b"hello"
+
+    def test_empty_content_is_refused_by_the_api(self, library, api):
+        with pytest.raises(
+            Sema4AIError, match="422 INFRA_VALIDATION_FAILED: Upload payload is empty"
+        ):
+            library.write_workspace_file("empty.txt", "")
+        assert "empty.txt" not in api.files
+
+    def test_listing_a_missing_prefix_is_an_error(self, library):
+        with pytest.raises(WorkspaceFileNotFoundError, match="no-such-dir"):
+            library.list_workspace_files("no-such-dir")
+
+    def test_listing_a_prefix_that_names_a_file(self, library):
+        assert [
+            e["path"] for e in library.list_workspace_files("reports/summary.md")
+        ] == ["reports/summary.md"]
+
+    def test_empty_workspace_root_lists_nothing(self, library, api):
+        api.files.clear()
+
+        assert library.list_workspace_files() == []
 
     def test_delete(self, library, api):
         assert library.delete_workspace_file("notes.txt") is True
