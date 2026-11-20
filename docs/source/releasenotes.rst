@@ -17,6 +17,20 @@ Latest versions
   may point outside the element, kept by elements from ``Get Element``) with Robot Framework and
   Python examples, and ``Middle Click`` no longer calls itself a right click. The offset behaviour
   was verified on Windows 11 with the probes in ``packages/windows/tests/manual/`` (:issue:`1379`).
+- ``rpaframework``: Security updates in the lock files for two transitive dependencies:
+
+  - ``dnspython`` 2.9.2 — HIGH, excessive memory and CPU use (CVE-2026-128089). Comes in
+    through ``exchangelib``, used by ``RPA.Email.Exchange``.
+  - ``soupsieve`` 4.1.3 — HIGH, polynomial-time denial of service in the descendant
+    combinator (CVE-2026-126190) and exponential backtracking in selector compilation
+    (CVE-2026-126191); MEDIUM, uncontrolled recursion in the CSS parser (CVE-2026-126193).
+    Comes in through ``beautifulsoup4``. The fixed ``soupsieve`` releases require Python
+    3.11.5 or newer, so on Python 3.11.0 to 3.11.4 the installer still picks the affected
+    2.10; upgrade to a newer Python 3.11 patch release to get the fix.
+
+  Neither package has a version floor in ``rpaframework``, so new installs already get
+  the fixed releases; in an existing environment run
+  ``pip install --upgrade dnspython soupsieve``.
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
