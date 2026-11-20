@@ -141,6 +141,18 @@ def api():
                         "has_more": offset + limit < len(found),
                     },
                 )
+            changed = []
+            if operation == "files" and self.command in ("PUT", "DELETE"):
+                changed = [query["path"]]
+            elif operation == "files/move" and self.command == "POST":
+                changed = list(json.loads(body).values())
+            for path in changed:
+                if path.split("/")[0] == ".blockparty":
+                    return self._error(
+                        400,
+                        "INFRA_VALIDATION_FAILED",
+                        f"system-managed paths cannot be edited via VFS APIs: {path}",
+                    )
             if operation == "files" and self.command == "GET":
                 if query["path"] not in state.files:
                     return self._error(404, "INFRA_NOT_FOUND", "File not found")
@@ -517,9 +529,29 @@ class TestRemoteSafety:
             project_id=PROJECT, api_key=KEY, base_url=api.url, protect_managed=False
         )
 
-        library.write_workspace_file(".blockparty/project/notes.md", "ok")
+        library.write_workspace_file(".workspace_mcp/notes.md", "ok")
 
-        assert api.files[".blockparty/project/notes.md"] == b"ok"
+        assert api.files[".workspace_mcp/notes.md"] == b"ok"
+
+    def test_platform_refuses_blockparty_even_with_protection_off(self, api):
+        library = Sema4AI(
+            project_id=PROJECT, api_key=KEY, base_url=api.url, protect_managed=False
+        )
+        managed = ".blockparty/workflows/run.workflow.json"
+
+        for call in (
+            lambda: library.write_workspace_file(".blockparty/notes.md", "x"),
+            lambda: library.delete_workspace_file(managed),
+            lambda: library.move_workspace_file(managed, "stolen.json"),
+            lambda: library.move_workspace_file("notes.txt", ".blockparty/notes.txt"),
+        ):
+            with pytest.raises(
+                WorkspacePathError, match="400 .*system-managed paths cannot be edited"
+            ):
+                call()
+        assert api.files[managed] == b"{}"
+        assert ".blockparty/notes.md" not in api.files
+        assert "notes.txt" in api.files
 
     @pytest.mark.parametrize(
         "status, code, expected",

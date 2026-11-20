@@ -65,7 +65,9 @@ class Sema4AI:
     refuses to write, move or delete them unless it is created with
     ``protect_managed=False``, because the platform expects such content to be
     changed through its own review flows. They are also left out of
-    ``List Workspace Files`` by default.
+    ``List Workspace Files`` by default. Through the REST API the platform
+    itself refuses every change under ``.blockparty``, so there the option does
+    not unlock that directory.
 
     **Local directory**
 

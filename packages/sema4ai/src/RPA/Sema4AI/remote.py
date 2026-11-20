@@ -140,6 +140,10 @@ class RemoteWorkspace:
         if exc.code == 409 and operation == "files/move":
             # The platform refuses to move a file onto an occupied path.
             return WorkspaceFileExistsError(text)
+        if exc.code == 400 and operation in ("files", "files/move"):
+            # The platform validates the path itself, for example it never lets
+            # ``.blockparty`` be changed through this API.
+            return WorkspacePathError(text)
         if exc.code in (401, 403):
             return Sema4AIError(
                 f"{text}. Check the project API key and that it belongs to project "
