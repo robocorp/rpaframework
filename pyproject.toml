@@ -17,6 +17,7 @@ dependencies = [
 	"rpaframework-hubspot>=3.0.0",
 	"rpaframework-openai>=4.0.0",
 	"rpaframework-recognition>=9.0.0",
+	"rpaframework-sema4ai>=3.0.0",
 	"rpaframework-windows>=12.0.0",
 	"robotframework>=5.0.1"
 ]
@@ -72,6 +73,7 @@ rpaframework = { path = "packages/main", editable = true }
 rpaframework-decision = { path = "packages/decision", editable = true }
 rpaframework-devutils = { path = "packages/devutils", editable = true }
 rpaframework-recognition = { path = "packages/recognition", editable = true }
+rpaframework-sema4ai = { path = "packages/sema4ai", editable = true }
 rpaframework-pdf = { path = "packages/pdf", editable = true }
 
 [build-system]

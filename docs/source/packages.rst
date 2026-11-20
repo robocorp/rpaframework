@@ -70,6 +70,10 @@
    :target: https://pypi.python.org/pypi/rpaframework-decision
    :alt: rpaframework-decision latest version
 
+.. image:: https://img.shields.io/pypi/v/rpaframework-sema4ai.svg?label=rpaframework-sema4ai&style=for-the-badge&color=blue
+   :target: https://pypi.python.org/pypi/rpaframework-sema4ai
+   :alt: rpaframework-sema4ai latest version
+
 .. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-pdf
    :alt: rpaframework-pdf latest version

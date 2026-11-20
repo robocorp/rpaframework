@@ -95,6 +95,10 @@ Packages
    :target: https://pypi.python.org/pypi/rpaframework-decision
    :alt: rpaframework-decision latest version
 
+.. image:: https://img.shields.io/pypi/v/rpaframework-sema4ai.svg?label=rpaframework-sema4ai&style=for-the-badge&color=blue
+   :target: https://pypi.python.org/pypi/rpaframework-sema4ai
+   :alt: rpaframework-sema4ai latest version
+
 .. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-pdf
    :alt: rpaframework-pdf latest version
@@ -205,6 +209,8 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 +----------------------------+-------------------------------------------------------+------------------------+
 | `SAP`_                     | Control SAP GUI desktop client                        | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
+| `Sema4AI`_                 | Work with a Sema4.ai cloud project's files            | sema4ai                |
++----------------------------+-------------------------------------------------------+------------------------+
 | `Slack`_                   | Send messages and interact with Slack workspaces      | x                      |
 +----------------------------+-------------------------------------------------------+------------------------+
 | `Smartsheet`_              | Access Smartsheet sheets                              | x                      |
@@ -261,6 +267,7 @@ The ``x`` in the **PACKAGE** column means that library **is** included in the **
 .. _Robocorp.Storage: https://rpaframework.org/libraries/robocorp_storage/
 .. _Salesforce: https://rpaframework.org/libraries/salesforce/
 .. _SAP: https://rpaframework.org/libraries/sap/
+.. _Sema4AI: https://rpaframework.org/libraries/sema4ai/
 .. _Slack: https://rpaframework.org/libraries/slack/
 .. _Smartsheet: https://rpaframework.org/libraries/smartsheet/
 .. _Tables: https://rpaframework.org/libraries/tables/
